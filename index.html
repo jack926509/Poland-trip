@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POLSKA — 波蘭旅遊指南 2025–2026 | Eastern Europe Magazine</title>
+<meta name="description" content="2025-2026 波蘭旅遊深度指南：華沙、克拉科夫、格但斯克、弗羅茨瓦夫、扎科帕內。涵蓋景點、美食、人文歷史、天氣與交通，整合社群熱門貼文與權威資料。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Bodoni+Moda:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Serif+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4ecd8;
+  --paper-deep:#ebe1c9;
+  --ink:#1a1612;
+  --ink-soft:#3d362e;
+  --crimson:#a8231d;       /* 波蘭國旗紅 */
+  --crimson-deep:#7a1812;
+  --amber:#c4892b;         /* 波羅的海琥珀 */
+  --amber-deep:#8b5e15;
+  --moss:#3d4a2a;
+  --rule:#1a1612;
+  --shadow:rgba(26,22,18,0.08);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Noto Serif TC','Cormorant Garamond',Georgia,serif;
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.65;
+  font-size:17px;
+  overflow-x:hidden;
+  background-image:
+    radial-gradient(ellipse at top,rgba(196,137,43,.06) 0,transparent 60%),
+    radial-gradient(ellipse at bottom right,rgba(168,35,29,.04) 0,transparent 60%);
+}
+
+/* 紙張紋理 */
+body::before{
+  content:"";
+  position:fixed;inset:0;pointer-events:none;z-index:1;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+  opacity:.5;
+}
+
+/* === HEADER / MASTHEAD === */
+.masthead{
+  border-bottom:3px double var(--ink);
+  padding:1.2rem 2rem .9rem;
+  background:var(--paper);
+  position:relative;
+  z-index:10;
+}
+.masthead-inner{
+  max-width:1280px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:baseline;
+  gap:1rem;flex-wrap:wrap;
+  font-family:'Bodoni Moda',serif;
+  font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;
+}
+.masthead-meta{color:var(--ink-soft)}
+.masthead-flag{
+  display:inline-flex;align-items:center;gap:.4rem;
+}
+.masthead-flag::before{
+  content:"";width:14px;height:10px;
+  background:linear-gradient(180deg,#fff 50%,var(--crimson) 50%);
+  border:.5px solid var(--ink);
+  display:inline-block;
+}
+
+/* === HERO === */
+.hero{
+  padding:4rem 2rem 5rem;
+  border-bottom:1px solid var(--ink);
+  position:relative;
+  overflow:hidden;
+}
+.hero-grid{
+  max-width:1280px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:end;
+  position:relative;
+}
+.hero-issue{
+  font-family:'Bodoni Moda',serif;
+  font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--crimson);font-weight:700;
+  margin-bottom:1.5rem;
+  display:flex;gap:1rem;align-items:center;
+}
+.hero-issue::after{
+  content:"";flex:1;height:1px;background:var(--ink);max-width:160px;
+}
+.hero h1{
+  font-family:'Bodoni Moda',serif;
+  font-size:clamp(4rem,11vw,9rem);
+  font-weight:900;
+  line-height:.85;
+  letter-spacing:-.04em;
+  margin-bottom:1.5rem;
+  color:var(--ink);
+}
+.hero h1 .accent{
+  font-style:italic;
+  color:var(--crimson);
+  font-weight:400;
+}
+.hero-subtitle{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.5rem;font-style:italic;
+  color:var(--ink-soft);
+  font-weight:500;
+  max-width:480px;
+  line-height:1.4;
+}
+.hero-meta{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-soft);
+  margin-top:2rem;
+  display:flex;flex-direction:column;gap:.4rem;
+}
+.hero-meta strong{color:var(--ink);font-weight:700}
+
+.hero-quote{
+  border-left:3px solid var(--crimson);
+  padding:1.5rem 0 1.5rem 2rem;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:1.4rem;
+  line-height:1.5;
+  color:var(--ink);
+  position:relative;
+}
+.hero-quote::before{
+  content:"\201C";
+  position:absolute;
+  font-family:'Bodoni Moda',serif;
+  font-size:6rem;
+  color:var(--crimson);
+  opacity:.2;
+  top:-2rem;left:1rem;
+  line-height:1;
+}
+.hero-quote cite{
+  display:block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;
+  font-style:normal;
+  margin-top:1rem;
+  color:var(--ink-soft);
+}
+
+/* 大型背景字 */
+.hero::after{
+  content:"POLSKA";
+  position:absolute;
+  font-family:'Bodoni Moda',serif;
+  font-weight:900;
+  font-size:30vw;
+  bottom:-8vw;right:-3vw;
+  color:var(--crimson);
+  opacity:.04;
+  pointer-events:none;
+  letter-spacing:-.05em;
+  z-index:0;
+}
+
+/* === NAV === */
+.nav-strip{
+  background:var(--ink);
+  color:var(--paper);
+  padding:.8rem 2rem;
+  position:sticky;top:0;z-index:50;
+  border-bottom:1px solid var(--paper);
+}
+.nav-inner{
+  max-width:1280px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'Bodoni Moda',serif;
+  font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;
+  flex-wrap:wrap;gap:1rem;
+}
+.nav-links{display:flex;gap:1.8rem;flex-wrap:wrap}
+.nav-links a{
+  color:var(--paper);text-decoration:none;
+  position:relative;padding-bottom:2px;
+  transition:color .3s;
+}
+.nav-links a:hover{color:var(--amber)}
+.nav-brand{
+  font-family:'Bodoni Moda',serif;font-weight:900;
+  letter-spacing:.2em;color:var(--paper);
+}
+
+/* === SECTIONS === */
+section{
+  padding:5rem 2rem;
+  border-bottom:1px solid var(--ink);
+  position:relative;
+  z-index:2;
+}
+.container{max-width:1280px;margin:0 auto}
+
+.section-header{
+  display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:center;
+  margin-bottom:3rem;
+  border-bottom:3px double var(--ink);
+  padding-bottom:1.5rem;
+}
+.section-num{
+  font-family:'Bodoni Moda',serif;
+  font-weight:900;font-size:5rem;line-height:1;
+  color:var(--crimson);
+  font-style:italic;
+}
+.section-title-block h2{
+  font-family:'Bodoni Moda',serif;
+  font-size:clamp(2rem,5vw,3.5rem);
+  font-weight:900;line-height:1;
+  letter-spacing:-.02em;
+}
+.section-title-block .kicker{
+  font-family:'Bodoni Moda',serif;
+  font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--ink-soft);
+  margin-bottom:.5rem;
+}
+
+/* === ABOUT POLAND === */
+.about-grid{
+  display:grid;
+  grid-template-columns:1.5fr 1fr;
+  gap:4rem;
+}
+.about-lead{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.4rem;
+  line-height:1.55;
+  font-weight:500;
+}
+.about-lead::first-letter{
+  font-family:'Bodoni Moda',serif;
+  font-size:5rem;
+  font-weight:900;
+  float:left;
+  line-height:.85;
+  margin:.4rem .6rem -.2rem 0;
+  color:var(--crimson);
+  font-style:normal;
+}
+.about-lead p+p{margin-top:1.2rem;font-size:1.1rem}
+
+.fact-card{
+  background:var(--paper-deep);
+  border:1px solid var(--ink);
+  padding:2rem;
+}
+.fact-card h3{
+  font-family:'Bodoni Moda',serif;
+  font-size:.78rem;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--crimson);font-weight:700;
+  margin-bottom:1.5rem;
+  border-bottom:1px solid var(--ink);
+  padding-bottom:.6rem;
+}
+.fact-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:.6rem 0;
+  border-bottom:1px dotted var(--ink);
+  font-size:.95rem;
+}
+.fact-row:last-child{border-bottom:none}
+.fact-key{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-soft);
+}
+.fact-val{font-weight:500;text-align:right}
+
+/* === CITIES === */
+.cities-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+  gap:0;
+  border-left:1px solid var(--ink);
+  border-top:1px solid var(--ink);
+}
+.city-card{
+  border-right:1px solid var(--ink);
+  border-bottom:1px solid var(--ink);
+  padding:2.5rem;
+  background:var(--paper);
+  transition:background .4s,transform .4s;
+  position:relative;
+  cursor:default;
+}
+.city-card:hover{
+  background:var(--paper-deep);
+}
+.city-num{
+  position:absolute;top:1rem;right:1.5rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;
+  color:var(--ink-soft);
+  letter-spacing:.1em;
+}
+.city-name{
+  font-family:'Bodoni Moda',serif;
+  font-size:2.4rem;font-weight:900;
+  line-height:1;
+  margin-bottom:.3rem;
+  letter-spacing:-.02em;
+}
+.city-name-pl{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:1.1rem;
+  color:var(--crimson);
+  margin-bottom:1.2rem;
+  font-weight:500;
+}
+.city-tag{
+  display:inline-block;
+  font-family:'Bodoni Moda',serif;
+  font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--paper);background:var(--ink);
+  padding:.3rem .7rem;
+  margin-bottom:1.2rem;
+}
+.city-desc{
+  font-size:1rem;
+  line-height:1.65;
+  margin-bottom:1.4rem;
+}
+.city-highlights{
+  list-style:none;
+  border-top:1px dotted var(--ink);
+  padding-top:1rem;
+}
+.city-highlights li{
+  font-size:.92rem;
+  padding:.3rem 0;
+  position:relative;
+  padding-left:1.5rem;
+  color:var(--ink-soft);
+}
+.city-highlights li::before{
+  content:"◆";
+  position:absolute;left:0;top:.4rem;
+  color:var(--amber);
+  font-size:.7rem;
+}
+.city-highlights strong{color:var(--ink)}
+
+/* === FOOD === */
+.food-section{
+  background:linear-gradient(180deg,var(--paper) 0%,var(--paper-deep) 100%);
+}
+.food-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1.5rem;
+  margin-bottom:3rem;
+}
+.food-item{
+  border:1px solid var(--ink);
+  padding:1.8rem 1.5rem;
+  background:var(--paper);
+  position:relative;
+  transition:transform .3s,box-shadow .3s;
+}
+.food-item:hover{
+  transform:translateY(-4px);
+  box-shadow:6px 6px 0 var(--ink);
+}
+.food-item .num{
+  font-family:'Bodoni Moda',serif;
+  font-style:italic;font-weight:900;
+  font-size:2.2rem;
+  color:var(--crimson);
+  line-height:1;margin-bottom:.5rem;
+}
+.food-item h4{
+  font-family:'Bodoni Moda',serif;
+  font-size:1.4rem;
+  font-weight:700;
+  margin-bottom:.2rem;
+}
+.food-item .pl-name{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:.95rem;
+  color:var(--amber-deep);
+  margin-bottom:.8rem;
+}
+.food-item p{
+  font-size:.95rem;
+  color:var(--ink-soft);
+  line-height:1.55;
+}
+
+.food-tip{
+  background:var(--ink);color:var(--paper);
+  padding:2rem;
+  border-left:6px solid var(--amber);
+  font-size:1.05rem;
+  line-height:1.6;
+}
+.food-tip strong{color:var(--amber);letter-spacing:.05em}
+
+/* === CULTURE / HISTORY === */
+.history-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  border:1px solid var(--ink);
+}
+.history-cell{
+  padding:2.5rem;
+  border-right:1px solid var(--ink);
+  border-bottom:1px solid var(--ink);
+}
+.history-cell:nth-child(2n){border-right:none}
+.history-cell:nth-last-child(-n+2){border-bottom:none}
+.history-cell h4{
+  font-family:'Bodoni Moda',serif;
+  font-size:1.5rem;font-weight:700;
+  margin-bottom:1rem;
+  color:var(--crimson);
+}
+.history-cell .era{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;letter-spacing:.15em;
+  color:var(--ink-soft);
+  margin-bottom:.6rem;
+}
+.history-cell p{
+  font-size:1rem;
+  line-height:1.65;
+  color:var(--ink-soft);
+}
+
+/* === WEATHER === */
+.weather-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+  border:1px solid var(--ink);
+}
+.weather-card{
+  padding:2rem 1.5rem;
+  border-right:1px solid var(--ink);
+  background:var(--paper);
+  text-align:center;
+}
+.weather-card:last-child{border-right:none}
+.weather-card .season{
+  font-family:'Bodoni Moda',serif;
+  font-style:italic;
+  font-size:1.6rem;
+  font-weight:700;
+  margin-bottom:.3rem;
+}
+.weather-card .months{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;letter-spacing:.1em;
+  color:var(--ink-soft);
+  margin-bottom:1.2rem;
+}
+.weather-card .temp{
+  font-family:'Bodoni Moda',serif;
+  font-size:2.2rem;font-weight:900;
+  color:var(--crimson);
+  margin-bottom:.5rem;
+  line-height:1;
+}
+.weather-card .desc{
+  font-size:.92rem;
+  color:var(--ink-soft);
+  line-height:1.5;
+}
+.weather-card.spring{background:linear-gradient(180deg,var(--paper) 0%,#e8e9d4 100%)}
+.weather-card.summer{background:linear-gradient(180deg,var(--paper) 0%,#f4dcb5 100%)}
+.weather-card.autumn{background:linear-gradient(180deg,var(--paper) 0%,#e4c8a8 100%)}
+.weather-card.winter{background:linear-gradient(180deg,var(--paper) 0%,#d8dde2 100%)}
+
+.best-time{
+  margin-top:2rem;
+  padding:2rem;
+  background:var(--paper-deep);
+  border:1px solid var(--ink);
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:2rem;align-items:center;
+}
+.best-time .badge{
+  font-family:'Bodoni Moda',serif;
+  font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;
+  background:var(--crimson);color:var(--paper);
+  padding:.5rem 1rem;
+  display:inline-block;
+}
+
+/* === TRANSPORT === */
+.transport-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:0;
+  border:1px solid var(--ink);
+}
+.transport-cell{
+  padding:2rem;
+  border-right:1px solid var(--ink);
+  background:var(--paper);
+}
+.transport-cell:last-child{border-right:none}
+.transport-cell .icon{
+  font-family:'Bodoni Moda',serif;
+  font-style:italic;font-weight:900;
+  font-size:3rem;
+  color:var(--amber-deep);
+  line-height:1;margin-bottom:.5rem;
+}
+.transport-cell h4{
+  font-family:'Bodoni Moda',serif;
+  font-size:1.5rem;font-weight:700;
+  margin-bottom:.8rem;
+}
+.transport-cell p{
+  font-size:.95rem;
+  color:var(--ink-soft);
+  line-height:1.6;margin-bottom:.8rem;
+}
+.transport-cell .tip{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.75rem;
+  background:var(--paper-deep);
+  padding:.6rem .8rem;
+  border-left:3px solid var(--crimson);
+  color:var(--ink);line-height:1.5;
+  letter-spacing:.02em;
+}
+
+/* === SOCIAL === */
+.social-section{
+  background:var(--ink);color:var(--paper);
+  border-bottom-color:var(--paper);
+}
+.social-section .section-num,
+.social-section .section-title-block h2{color:var(--paper)}
+.social-section .section-num{color:var(--amber)}
+.social-section .section-header{border-bottom-color:var(--paper)}
+.social-section .section-title-block .kicker{color:var(--amber)}
+
+.posts-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+  gap:1.5rem;
+}
+.post-card{
+  background:var(--paper);color:var(--ink);
+  padding:1.6rem;
+  border:1px solid var(--paper);
+  display:flex;flex-direction:column;
+  position:relative;
+  transition:transform .3s;
+}
+.post-card:hover{transform:translateY(-4px)}
+.post-platform{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;
+  background:var(--crimson);color:var(--paper);
+  padding:.25rem .6rem;
+  margin-bottom:.8rem;
+  align-self:flex-start;
+}
+.post-author{
+  font-family:'Bodoni Moda',serif;
+  font-weight:700;font-size:1rem;
+  margin-bottom:.5rem;
+}
+.post-text{
+  font-size:.92rem;
+  line-height:1.55;
+  color:var(--ink-soft);
+  margin-bottom:1rem;
+  flex:1;
+  display:-webkit-box;
+  -webkit-line-clamp:5;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.post-stats{
+  display:flex;gap:1rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;
+  color:var(--ink-soft);
+  border-top:1px dotted var(--ink);
+  padding-top:.7rem;
+  margin-bottom:.7rem;
+}
+.post-link{
+  font-family:'Bodoni Moda',serif;
+  font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--crimson);
+  text-decoration:none;
+  font-weight:700;
+}
+.post-link:hover{text-decoration:underline}
+
+.social-stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:0;
+  margin-bottom:3rem;
+  border:1px solid var(--paper);
+}
+.stat-cell{
+  padding:1.5rem;
+  border-right:1px solid var(--paper);
+  text-align:center;
+}
+.stat-cell:last-child{border-right:none}
+.stat-num{
+  font-family:'Bodoni Moda',serif;
+  font-weight:900;font-size:2.5rem;
+  color:var(--amber);
+  line-height:1;margin-bottom:.3rem;
+}
+.stat-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--paper);opacity:.7;
+}
+
+/* === ITINERARY === */
+.itinerary-section{padding-top:6rem}
+.day-row{
+  display:grid;
+  grid-template-columns:120px 1fr;
+  gap:2rem;
+  padding:2rem 0;
+  border-bottom:1px dotted var(--ink);
+  align-items:start;
+}
+.day-row:last-child{border-bottom:none}
+.day-num{
+  font-family:'Bodoni Moda',serif;
+  font-style:italic;font-weight:900;
+  font-size:3.5rem;line-height:1;
+  color:var(--crimson);
+}
+.day-num small{
+  display:block;
+  font-style:normal;font-weight:400;
+  font-size:.7rem;letter-spacing:.2em;
+  color:var(--ink-soft);
+  font-family:'JetBrains Mono',monospace;
+  margin-top:.4rem;
+}
+.day-content h4{
+  font-family:'Bodoni Moda',serif;
+  font-size:1.5rem;font-weight:700;
+  margin-bottom:.5rem;
+}
+.day-content p{
+  font-size:1rem;
+  line-height:1.65;
+  color:var(--ink-soft);
+}
+
+/* === FOOTER === */
+footer{
+  background:var(--ink);
+  color:var(--paper);
+  padding:4rem 2rem 2rem;
+  position:relative;z-index:2;
+}
+.footer-inner{
+  max-width:1280px;margin:0 auto;
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  gap:3rem;
+  padding-bottom:3rem;
+  border-bottom:1px solid var(--paper);
+}
+.footer-brand{
+  font-family:'Bodoni Moda',serif;
+  font-weight:900;
+  font-size:3rem;
+  line-height:1;
+  letter-spacing:-.02em;
+  margin-bottom:1rem;
+}
+.footer-brand .accent{color:var(--crimson);font-style:italic;font-weight:400}
+.footer-tag{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:1.1rem;
+  color:var(--paper);opacity:.7;
+  max-width:380px;
+}
+.footer-col h5{
+  font-family:'Bodoni Moda',serif;
+  font-size:.72rem;letter-spacing:.25em;text-transform:uppercase;
+  margin-bottom:1rem;
+  color:var(--amber);
+}
+.footer-col ul{list-style:none}
+.footer-col li{padding:.3rem 0;font-size:.92rem}
+.footer-col a{color:var(--paper);opacity:.7;text-decoration:none;transition:opacity .3s}
+.footer-col a:hover{opacity:1;color:var(--amber)}
+.footer-bottom{
+  max-width:1280px;margin:0 auto;
+  padding-top:2rem;
+  display:flex;justify-content:space-between;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--paper);opacity:.6;
+  flex-wrap:wrap;gap:1rem;
+}
+
+/* === DECORATIVE === */
+.divider-decorative{
+  text-align:center;
+  font-family:'Bodoni Moda',serif;
+  font-size:1.5rem;
+  letter-spacing:1.5em;
+  color:var(--crimson);
+  padding:2rem 0;
+  opacity:.7;
+}
+
+/* === RESPONSIVE === */
+@media(max-width:900px){
+  .hero-grid,.about-grid{grid-template-columns:1fr;gap:2.5rem}
+  .weather-grid{grid-template-columns:repeat(2,1fr)}
+  .weather-card{border-bottom:1px solid var(--ink)}
+  .weather-card:nth-child(2n){border-right:none}
+  .weather-card:nth-last-child(-n+2){border-bottom:none}
+  .history-grid{grid-template-columns:1fr}
+  .history-cell{border-right:none !important;border-bottom:1px solid var(--ink) !important}
+  .history-cell:last-child{border-bottom:none !important}
+  .footer-inner{grid-template-columns:1fr;gap:2rem}
+  .day-row{grid-template-columns:80px 1fr;gap:1.2rem}
+  .day-num{font-size:2.5rem}
+  .section-header{grid-template-columns:1fr;gap:.5rem}
+  .section-num{font-size:3rem}
+  section{padding:3.5rem 1.2rem}
+  .hero{padding:2.5rem 1.2rem 3rem}
+  .hero-quote{padding-left:1.5rem;font-size:1.1rem}
+  .nav-links{font-size:.7rem;gap:1rem}
+}
+
+@media(max-width:600px){
+  .weather-grid{grid-template-columns:1fr}
+  .weather-card{border-right:none !important;border-bottom:1px solid var(--ink) !important}
+  .weather-card:last-child{border-bottom:none !important}
+  .stat-cell{border-right:none;border-bottom:1px solid var(--paper)}
+  .stat-cell:last-child{border-bottom:none}
+}
+
+/* === SCROLL ANIMATIONS === */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.reveal{animation:fadeUp .8s ease-out backwards}
+.reveal:nth-child(1){animation-delay:.05s}
+.reveal:nth-child(2){animation-delay:.15s}
+.reveal:nth-child(3){animation-delay:.25s}
+.reveal:nth-child(4){animation-delay:.35s}
+.reveal:nth-child(5){animation-delay:.45s}
+.reveal:nth-child(6){animation-delay:.55s}
+
+/* a tag style global */
+a{color:var(--crimson)}
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <span class="masthead-meta">Vol. I · No. 1 · 2025–2026 Edition</span>
+    <span class="masthead-flag">Republic of Poland · Rzeczpospolita Polska</span>
+    <span class="masthead-meta">繁體中文版 · Traditional Chinese</span>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav-strip">
+  <div class="nav-inner">
+    <span class="nav-brand">POLSKA &mdash; Travel Atlas</span>
+    <div class="nav-links">
+      <a href="#about">關於波蘭</a>
+      <a href="#cities">城市</a>
+      <a href="#food">美食</a>
+      <a href="#history">人文歷史</a>
+      <a href="#weather">天氣</a>
+      <a href="#transport">交通</a>
+      <a href="#social">社群熱話</a>
+      <a href="#itinerary">行程</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" style="padding-top:5rem">
+  <div class="hero-grid">
+    <div class="reveal">
+      <div class="hero-issue">A Field Guide · 一本田野指南</div>
+      <h1>
+        POLSKA
+        <span class="accent">.</span>
+      </h1>
+      <p class="hero-subtitle">
+        從華沙的鋼鐵摩天到克拉科夫的中世紀石板路，<br>
+        從波羅的海的琥珀岸到塔特拉山的雪頂——<br>
+        這是一份給 2025–2026 旅人的波蘭深度地圖。
+      </p>
+      <div class="hero-meta">
+        <span><strong>面積：</strong>312,696 km² · 中歐第六大</span>
+        <span><strong>人口：</strong>約 3,700 萬</span>
+        <span><strong>首都：</strong>華沙 Warszawa</span>
+        <span><strong>貨幣：</strong>波蘭茲羅提 PLN（złoty）</span>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="hero-quote">
+        Poland is one of the cheaper countries to travel to in Europe compared to its Western neighbors — yet it remains one of the most underrated.
+        <cite>— Salt in Our Hair, Travel Guide 2026</cite>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-title-block">
+        <div class="kicker">Prologue · 前言</div>
+        <h2>關於這個被低估的中歐國度</h2>
+      </div>
+    </div>
+    <div class="about-grid">
+      <div class="about-lead">
+        <p>波蘭是個矛盾的國家：她在二戰中被夷為平地，又從廢墟中重建出 UNESCO 認定的歷史中心；她跨越普魯士、奧匈、俄羅斯三大帝國邊界，卻保留了獨特的斯拉夫靈魂；她的物價只有西歐的一半，但她的城市美學足以與布拉格、布達佩斯並列。</p>
+        <p>從北方的波羅的海漁村，到南方的塔特拉山滑雪小鎮；從首都華沙的玻璃帷幕摩天樓，到克拉科夫從未被戰火摧毀的中世紀廣場——波蘭擁有歐洲少見的多樣性。它是 2026 年最值得規劃 7–14 天深度旅行的目的地之一。</p>
+      </div>
+      <div class="fact-card">
+        <h3>速覽資料</h3>
+        <div class="fact-row"><span class="fact-key">語言</span><span class="fact-val">波蘭語（觀光區英語通）</span></div>
+        <div class="fact-row"><span class="fact-key">電壓</span><span class="fact-val">230V · C/E/F 型插座</span></div>
+        <div class="fact-row"><span class="fact-key">時區</span><span class="fact-val">CET（夏令 CEST）</span></div>
+        <div class="fact-row"><span class="fact-key">台幣換算</span><span class="fact-val">1 PLN ≈ 8.5 TWD</span></div>
+        <div class="fact-row"><span class="fact-key">物價水位</span><span class="fact-val">西歐之 50–60%</span></div>
+        <div class="fact-row"><span class="fact-key">小費文化</span><span class="fact-val">餐廳 10%（非強制）</span></div>
+        <div class="fact-row"><span class="fact-key">台灣簽證</span><span class="fact-val">免申根簽 90 天</span></div>
+        <div class="fact-row"><span class="fact-key">ETIAS</span><span class="fact-val">2026 Q4 起須申請</span></div>
+      </div>
+    </div>
+
+    <div class="best-time" style="margin-top:3rem">
+      <span class="badge">重要更新</span>
+      <p style="font-size:1rem;line-height:1.6">
+        <strong>2026 年 ETIAS 即將上路：</strong>歐盟「歐洲旅行資訊與授權系統」（European Travel Information and Authorisation System）預計 2026 年第 4 季啟用，台灣護照仍可免簽，但啟用後需在出發前線上申請 ETIAS 授權（類似美國 ESTA）。建議出發前確認最新公告。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- CITIES -->
+<section id="cities">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-title-block">
+        <div class="kicker">Six Cities · 六大旅遊重鎮</div>
+        <h2>從中世紀廣場到塔特拉雪山</h2>
+      </div>
+    </div>
+
+    <div class="cities-grid">
+      <article class="city-card reveal">
+        <span class="city-num">— 01</span>
+        <span class="city-tag">首都 · Capital</span>
+        <h3 class="city-name">華沙</h3>
+        <p class="city-name-pl">Warszawa &middot; The Phoenix City</p>
+        <p class="city-desc">二戰中 85% 被夷為平地的城市，戰後波蘭人靠 18 世紀畫家 Canaletto 的城市畫作為藍本，將整個老城重建成原樣，1980 年被 UNESCO 列為世界遺產——這是一座從灰燼中重生的鳳凰之城。</p>
+        <ul class="city-highlights">
+          <li><strong>老城廣場 Rynek Starego Miasta</strong>：戰後完美復原</li>
+          <li><strong>皇家城堡 Zamek Królewski</strong>：波蘭王室象徵</li>
+          <li><strong>蕭邦博物館</strong>：互動式體驗鋼琴詩人故鄉</li>
+          <li><strong>波蘭猶太人歷史博物館 POLIN</strong>：當代必訪</li>
+          <li><strong>科學文化宮</strong>：史達林時代地標，30 樓觀景台</li>
+          <li><strong>維拉諾夫宮</strong>：「波蘭凡爾賽」巴洛克典範</li>
+        </ul>
+      </article>
+
+      <article class="city-card reveal">
+        <span class="city-num">— 02</span>
+        <span class="city-tag">最美 · Most Beautiful</span>
+        <h3 class="city-name">克拉科夫</h3>
+        <p class="city-name-pl">Kraków &middot; The Royal Capital</p>
+        <p class="city-desc">波蘭千年古都，二戰中幾乎完整保存。被許多旅遊作家評為波蘭「最漂亮的城市」，其老城（Stare Miasto）是首批列入 UNESCO 世界遺產的歐洲城市之一。歐洲最大中世紀廣場 Rynek Główny 就在這裡。</p>
+        <ul class="city-highlights">
+          <li><strong>瓦維爾城堡 Wawel</strong>：歷代波蘭國王居所</li>
+          <li><strong>聖瑪麗教堂</strong>：每整點塔上號角手吹奏</li>
+          <li><strong>紡織會館 Sukiennice</strong>：文藝復興市集</li>
+          <li><strong>卡齊米日 Kazimierz</strong>：猶太區，《辛德勒名單》取景地</li>
+          <li><strong>辛德勒工廠博物館</strong>：必訪 WWII 展示</li>
+          <li><strong>奧斯威辛 Auschwitz</strong>：1.5 小時車程，可一日往返</li>
+          <li><strong>維利奇卡鹽礦</strong>：UNESCO 地下鹽教堂</li>
+        </ul>
+      </article>
+
+      <article class="city-card reveal">
+        <span class="city-num">— 03</span>
+        <span class="city-tag">海港 · Coastal</span>
+        <h3 class="city-name">格但斯克</h3>
+        <p class="city-name-pl">Gdańsk &middot; The Amber Capital</p>
+        <p class="city-desc">波羅的海的色彩之城。二戰首戰於此爆發，戰後團結工聯運動也誕生於此造船廠。今日的 Gdańsk 以彩色山牆建築、琥珀工藝、與冷戰歷史聞名，搭配 Sopot 海濱與 Gdynia 構成「三聯市 Trójmiasto」。</p>
+        <ul class="city-highlights">
+          <li><strong>長街 Długi Targ</strong>：彩色聯排建築與海神噴泉</li>
+          <li><strong>瑪利亞教堂</strong>：世界最大磚造教堂，登塔 405 階</li>
+          <li><strong>歐洲團結中心</strong>：Solidarność 運動博物館</li>
+          <li><strong>琥珀博物館</strong>：波羅的海「金子」之鄉</li>
+          <li><strong>馬爾堡城堡 Malbork</strong>：1 小時車程，世界最大磚砌城堡</li>
+          <li><strong>Westerplatte</strong>：二戰首戰紀念地</li>
+          <li><strong>Sopot 海灘</strong>：歐陸最長木棧道</li>
+        </ul>
+      </article>
+
+      <article class="city-card reveal">
+        <span class="city-num">— 04</span>
+        <span class="city-tag">秘境 · Hidden Gem</span>
+        <h3 class="city-name">弗羅茨瓦夫</h3>
+        <p class="city-name-pl">Wrocław &middot; The City of Dwarfs</p>
+        <p class="city-desc">波蘭第三大城，奧得河上的 12 座島嶼以橋串接。最特別的是全城散布著 700 多個迷你銅雕「小矮人」，源於 1980 年代反共產的「橙色替代」運動，如今成為尋寶式的觀光特色。</p>
+        <ul class="city-highlights">
+          <li><strong>市集廣場 Rynek</strong>：哥德式市政廳與彩色山牆</li>
+          <li><strong>百年廳 Hala Stulecia</strong>：UNESCO 早期現代主義建築</li>
+          <li><strong>拉茨瓦維採全景畫</strong>：1794 年戰役巨幅環景</li>
+          <li><strong>Ostrów Tumski 主教座堂島</strong>：仍保留瓦斯街燈</li>
+          <li><strong>尋找小矮人 Krasnale</strong>：手機 App 可下載地圖</li>
+          <li><strong>聖誕市集</strong>：被評為波蘭最佳之一</li>
+        </ul>
+      </article>
+
+      <article class="city-card reveal">
+        <span class="city-num">— 05</span>
+        <span class="city-tag">山城 · Alpine</span>
+        <h3 class="city-name">扎科帕內</h3>
+        <p class="city-name-pl">Zakopane &middot; Winter Capital</p>
+        <p class="city-desc">「波蘭冬季首都」。坐落於塔特拉山（Tatra）腳下，是波蘭最知名的滑雪與登山度假小鎮。木造高地民居建築（styl zakopiański）獨樹一幟，從克拉科夫搭巴士約 2 小時可達。</p>
+        <ul class="city-highlights">
+          <li><strong>Morskie Oko 海洋之眼</strong>：塔特拉最美高山湖</li>
+          <li><strong>Gubałówka 纜車</strong>：俯瞰整片塔特拉山脈</li>
+          <li><strong>Krupówki 大街</strong>：木造民宅商店街</li>
+          <li><strong>Kasprowy Wierch</strong>：滑雪場與健行起點</li>
+          <li><strong>溫泉浴場 Aqua Park</strong>：高山溫泉</li>
+          <li><strong>Oscypek 煙燻羊乳酪</strong>：當地必嘗特產</li>
+        </ul>
+      </article>
+
+      <article class="city-card reveal">
+        <span class="city-num">— 06</span>
+        <span class="city-tag">底蘊 · Cultural</span>
+        <h3 class="city-name">波茲南</h3>
+        <p class="city-name-pl">Poznań &middot; Birthplace of Poland</p>
+        <p class="city-desc">波蘭文化的發源地，10 世紀第一位波蘭國王 Mieszko I 從此地受洗，正式將基督教引入波蘭。今日是被低估的旅遊地，文藝復興市政廳每天中午有著名的「兩隻機械山羊頂角」表演。</p>
+        <ul class="city-highlights">
+          <li><strong>舊市政廳</strong>：每日 12:00 機械山羊互頂</li>
+          <li><strong>聖馬丁牛角麵包博物館</strong>：當地傳統 rogal świętomarciński</li>
+          <li><strong>羊角麵包節</strong>：11/11 慶典</li>
+          <li><strong>Stary Browar 啤酒廠購物中心</strong>：工業改造典範</li>
+          <li><strong>Ostrów Tumski 主教座堂島</strong>：波蘭基督教起源地</li>
+          <li><strong>物價最便宜</strong>：四大城中消費最低</li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="divider-decorative">◆ ◆ ◆</div>
+  </div>
+</section>
+
+<!-- FOOD -->
+<section id="food" class="food-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-title-block">
+        <div class="kicker">Polish Cuisine · 波蘭美食</div>
+        <h2>餃子、酸湯、與一杯野牛草伏特加</h2>
+      </div>
+    </div>
+
+    <p style="font-size:1.2rem;font-style:italic;font-family:'Cormorant Garamond',serif;margin-bottom:2.5rem;max-width:700px;line-height:1.5;color:var(--ink-soft)">
+      波蘭料理融合了立陶宛、烏克蘭、德國、俄羅斯與猶太風味——這是中歐千年遷徙與佔領史的食物記憶。重口味、馬鈴薯、發酵酸味、與長時間燉煮的肉類，是它的核心。
+    </p>
+
+    <div class="food-grid">
+      <div class="food-item reveal">
+        <div class="num">01</div>
+        <h4>波蘭餃子</h4>
+        <p class="pl-name">Pierogi</p>
+        <p>國民料理，半月形餃子有鹹甜兩款。最經典是 <em>Pierogi Ruskie</em>（馬鈴薯加 twaróg 起司），其他常見內餡包括肉、蘑菇酸菜、藍莓。</p>
+      </div>
+
+      <div class="food-item reveal">
+        <div class="num">02</div>
+        <h4>獵人燉菜</h4>
+        <p class="pl-name">Bigos</p>
+        <p>被視為波蘭國菜。酸菜、新鮮高麗菜、多種肉（香腸、培根、豬肉）長時間慢燉，每位媽媽都有自家配方，搭配黑麵包食用。</p>
+      </div>
+
+      <div class="food-item reveal">
+        <div class="num">03</div>
+        <h4>酸黑麥湯</h4>
+        <p class="pl-name">Żurek</p>
+        <p>由發酵黑麥麵粉熬製，酸香獨特。常配香腸、水煮蛋，盛在挖空的麵包碗中——湯喝完，碗也吃掉，這是波蘭傳統。</p>
+      </div>
+
+      <div class="food-item reveal">
+        <div class="num">04</div>
+        <h4>炸豬排</h4>
+        <p class="pl-name">Kotlet Schabowy</p>
+        <p>波蘭家庭週日必備料理。豬里肌錘薄、裹麵包粉炸至金黃，配馬鈴薯泥與酸菜沙拉。被視為「波蘭人在外國最想念的味道」。</p>
+      </div>
+
+      <div class="food-item reveal">
+        <div class="num">05</div>
+        <h4>包心菜捲</h4>
+        <p class="pl-name">Gołąbki</p>
+        <p>意為「小鴿子」。高麗菜葉包裹米飯與絞肉，淋上番茄醬汁或蘑菇醬汁烘烤。中世紀就有的中歐共同料理。</p>
+      </div>
+
+      <div class="food-item reveal">
+        <div class="num">06</div>
+        <h4>波蘭披薩</h4>
+        <p class="pl-name">Zapiekanka</p>
+        <p>長棍麵包剖半，鋪上蘑菇、起司、火腿、洋蔥烤製，淋番茄醬與大蒜醬。1970 年代誕生於共產時期的街頭速食，克拉科夫卡齊米日廣場最有名。</p>
+      </div>
+
+      <div class="food-item reveal">
+        <div class="num">07</div>
+        <h4>波蘭甜甜圈</h4>
+        <p class="pl-name">Pączki</p>
+        <p>油炸酵母麵團，內餡通常是玫瑰果醬或卡士達。華沙百年老店 Blikle 與克拉科夫 Stara Pączkarnia 是公認最佳店家。</p>
+      </div>
+
+      <div class="food-item reveal">
+        <div class="num">08</div>
+        <h4>蕎麥餅乾</h4>
+        <p class="pl-name">Sernik / Szarlotka</p>
+        <p>Sernik 是 twaróg 起司蛋糕，比紐約款更輕盈濕潤；Szarlotka 是波蘭蘋果派，配香草冰淇淋與一杯熱茶是完美下午茶。</p>
+      </div>
+
+      <div class="food-item reveal">
+        <div class="num">09</div>
+        <h4>克拉科夫圓圈麵包</h4>
+        <p class="pl-name">Obwarzanek Krakowski</p>
+        <p>克拉科夫街頭隨處可見的環形麵包，類似貝果但更輕。受歐盟地理標誌保護，價格 PLN 3–5，當地早餐首選。</p>
+      </div>
+
+      <div class="food-item reveal">
+        <div class="num">10</div>
+        <h4>煙燻羊乳酪</h4>
+        <p class="pl-name">Oscypek</p>
+        <p>塔特拉山區牧羊人手工製作，鹽水浸泡後以針葉樹煙燻。聖誕市集會販售，可直接吃或炙烤淋蔓越莓醬。</p>
+      </div>
+
+      <div class="food-item reveal">
+        <div class="num">11</div>
+        <h4>馬鈴薯餅</h4>
+        <p class="pl-name">Placki Ziemniaczane</p>
+        <p>馬鈴薯刨絲混蛋液煎成酥脆餅，可純吃配酸奶油，或淋上匈牙利風味的牛肉燉醬（z gulaszem），是經典 comfort food。</p>
+      </div>
+
+      <div class="food-item reveal">
+        <div class="num">12</div>
+        <h4>野牛草伏特加</h4>
+        <p class="pl-name">Żubrówka</p>
+        <p>取自比亞沃韋札森林的野牛草浸泡製成，每瓶都有一根真草。經典喝法 <em>Tatanka</em>：野牛草伏特加 + 蘋果汁，意外迷人。</p>
+      </div>
+    </div>
+
+    <div class="food-tip">
+      <strong>★ 旅人提示</strong> &nbsp;|&nbsp;
+      在波蘭找最道地、最便宜的家常菜，請尋找 <em>Bar Mleczny</em>（牛奶吧）——這是共產時期遺留的國營廉價餐廳，至今仍由政府補貼。一份完整套餐（湯+主菜+沙拉）約 PLN 25–35（NTD 215–300），是體驗真正波蘭日常飲食的最佳場所。
+    </div>
+  </div>
+</section>
+
+<!-- HISTORY / CULTURE -->
+<section id="history">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-title-block">
+        <div class="kicker">Culture &amp; History · 人文歷史</div>
+        <h2>千年波蘭：從基督化到團結工聯</h2>
+      </div>
+    </div>
+
+    <div class="history-grid">
+      <div class="history-cell">
+        <p class="era">966 — 1569 · 中世紀</p>
+        <h4>波蘭王國的誕生</h4>
+        <p>966 年，國王 Mieszko I 受洗於波茲南，正式將波蘭納入西方基督教世界。雅蓋洛王朝（Jagiellonian）時期波蘭與立陶宛聯姻，14 世紀末建立的克拉科夫雅蓋洛大學是中歐第二古老的大學（哥白尼曾就讀於此）。</p>
+      </div>
+
+      <div class="history-cell">
+        <p class="era">1569 — 1795 · 共和時代</p>
+        <h4>波立聯邦的黃金與崩解</h4>
+        <p>1569 年盧布林聯合條約創立波蘭立陶宛聯邦，是當時歐洲最大、最寬容的多民族國家，採行「貴族民主」與「自由否決權」（liberum veto）。然而政治癱瘓導致 1772、1793、1795 年三次被普魯士、奧地利、俄羅斯瓜分，波蘭從地圖上消失 123 年。</p>
+      </div>
+
+      <div class="history-cell">
+        <p class="era">1918 — 1939 · 兩次大戰之間</p>
+        <h4>第二共和的二十年</h4>
+        <p>一戰結束、《凡爾賽和約》使波蘭重新獨立。蕭邦的鋼琴遺產、瑪麗居禮的科學成就、布魯諾·舒爾茲的文學，都是這個時期的產物。但 1939 年 9 月 1 日，納粹德國入侵格但斯克附近的 Westerplatte，揭開二戰序幕，波蘭再次成為戰場。</p>
+      </div>
+
+      <div class="history-cell">
+        <p class="era">1939 — 1989 · 戰爭與共產</p>
+        <h4>從廢墟到團結工聯</h4>
+        <p>二戰中波蘭損失 600 萬人口（其中 300 萬猶太人於 Auschwitz 等集中營遇難），華沙幾乎被夷平。戰後成為蘇聯衛星國，1980 年格但斯克列寧造船廠工人 Lech Wałęsa 領導「團結工聯」運動，1989 年圓桌會議催化東歐共產政權連鎖崩解。</p>
+      </div>
+
+      <div class="history-cell">
+        <p class="era">1989 — 2026 · 第三共和</p>
+        <h4>現代波蘭的三十年崛起</h4>
+        <p>1999 年加入北約、2004 年加入歐盟、2007 年加入申根區。今日波蘭是中歐最大經濟體之一，基礎建設大幅升級，首都華沙天際線完全現代化。但波蘭仍堅持使用茲羅提（不採歐元）、保留強烈的天主教傳統與民族認同。</p>
+      </div>
+
+      <div class="history-cell">
+        <p class="era">永續至今 · 文化標誌</p>
+        <h4>波蘭文化十大標誌</h4>
+        <p>蕭邦（Chopin）、哥白尼（Copernicus）、瑪麗居禮、若望保祿二世（前教宗）、辛波絲卡（諾貝爾文學獎詩人）、團結工聯標誌、琥珀工藝、彩色木造東正教教堂、波蘭民俗剪紙（wycinanki）、以及——餃子。每一樣都是理解波蘭靈魂的鑰匙。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WEATHER -->
+<section id="weather">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="section-title-block">
+        <div class="kicker">Climate · 天氣</div>
+        <h2>四季分明的中歐溫帶氣候</h2>
+      </div>
+    </div>
+
+    <div class="weather-grid">
+      <div class="weather-card spring">
+        <div class="season">Spring</div>
+        <div class="months">MAR — MAY</div>
+        <div class="temp">5°–17°C</div>
+        <p class="desc">逐漸回暖、花朵綻放。3 月仍冷且偶降雪；5 月最舒適，遊客少、價格低。</p>
+      </div>
+      <div class="weather-card summer">
+        <div class="season">Summer</div>
+        <div class="months">JUN — AUG</div>
+        <div class="temp">18°–25°C</div>
+        <p class="desc">旅遊旺季。7 月最熱可達 28°C，但夜晚偏涼。雨水多、午後雷陣雨頻繁。</p>
+      </div>
+      <div class="weather-card autumn">
+        <div class="season">Autumn</div>
+        <div class="months">SEP — NOV</div>
+        <div class="temp">5°–18°C</div>
+        <p class="desc">9 月為金秋最美時節，氣溫宜人、人潮褪去。10 月後逐漸轉涼，11 月開始有雪。</p>
+      </div>
+      <div class="weather-card winter">
+        <div class="season">Winter</div>
+        <div class="months">DEC — FEB</div>
+        <div class="temp">-5°–3°C</div>
+        <p class="desc">寒冷但充滿氛圍。12 月聖誕市集是亮點，1 月最冷可達 -10°C，山區滑雪季開始。</p>
+      </div>
+    </div>
+
+    <div class="best-time">
+      <span class="badge">最佳旅遊月份</span>
+      <p style="font-size:1.05rem;line-height:1.65">
+        <strong>5 月與 9 月</strong>是綜合評估最佳的兩個月——天氣宜人（15–22°C）、人潮中等、住宿價格比 7–8 月低 20–30%、所有景點正常開放。<strong>12 月聖誕市集</strong>專為冬季愛好者：克拉科夫、弗羅茨瓦夫、格但斯克的市集是歐洲最美之列。<strong>1–2 月</strong>是預算旅人之選，住宿價格比夏季低 30–40%，但日照僅 8–9 小時。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- TRANSPORT -->
+<section id="transport">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="section-title-block">
+        <div class="kicker">Getting Around · 交通</div>
+        <h2>火車、巴士、廉航——波蘭很好走</h2>
+      </div>
+    </div>
+
+    <div class="transport-grid">
+      <div class="transport-cell">
+        <div class="icon">i.</div>
+        <h4>城際火車</h4>
+        <p><strong>PKP Intercity</strong> 是國營主力，連接所有大城。其中 <em>Express InterCity Premium (EIP)</em> 是高速 Pendolino 列車，華沙—克拉科夫僅需 2 小時 20 分。所有列車都有空調、插座、餐車。</p>
+        <div class="tip">官網 intercity.pl／提早訂票享 30% 折扣／華沙→格但斯克 2.5h、華沙→克拉科夫 2.5h、華沙→弗羅茨瓦夫 3.5h</div>
+      </div>
+
+      <div class="transport-cell">
+        <div class="icon">ii.</div>
+        <h4>長途巴士</h4>
+        <p><strong>FlixBus</strong> 與 <strong>Polonus</strong> 提供綿密的城際巴士網絡，價格通常比火車便宜 30–50%。Wi-Fi、廁所、插座皆備，舒適度不輸火車。</p>
+        <div class="tip">FlixBus App 訂票最方便／華沙→克拉科夫 PLN 30–50（約 NTD 250–425）／適合預算旅人</div>
+      </div>
+
+      <div class="transport-cell">
+        <div class="icon">iii.</div>
+        <h4>城內交通</h4>
+        <p>每個大城都有完善的電車（tram）+ 公車 + 地鐵（僅華沙）系統。可下載各城市專屬 App：華沙 ZTM、克拉科夫 MPK。地圖整合於 Google Maps 中相當準確。</p>
+        <div class="tip">單程票 PLN 4–6／24 小時票約 PLN 15／Uber 與 Bolt 都可用</div>
+      </div>
+
+      <div class="transport-cell">
+        <div class="icon">iv.</div>
+        <h4>機場接駁</h4>
+        <p>三大國際機場：華沙 Chopin (WAW)、克拉科夫 Balice (KRK)、格但斯克 Lech Wałęsa (GDN)。皆有便利的火車或機場巴士直達市中心，時間 15–25 分鐘，費用 PLN 5–20。</p>
+        <div class="tip">台北—華沙：經中東/中歐轉機，約 14–17 小時／LOT 波蘭航空為國籍航空</div>
+      </div>
+
+      <div class="transport-cell">
+        <div class="icon">v.</div>
+        <h4>租車自駕</h4>
+        <p>適合想探訪山區小鎮（如 Zakopane、Białowieża 原始森林、Zalipie 彩繪村）。波蘭高速公路網絡完善，部分路段需付通行費。需國際駕照（IDP）。</p>
+        <div class="tip">Bolt、Free Now 也提供市區用車／加油費略低於西歐</div>
+      </div>
+
+      <div class="transport-cell">
+        <div class="icon">vi.</div>
+        <h4>支付方式</h4>
+        <p>波蘭高度數位化，幾乎所有店家都接受信用卡與 Apple Pay。但部分小店、市場、夜間計程車可能仍需現金。建議準備少量茲羅提（PLN）現金備用。</p>
+        <div class="tip">機場匯率差／市區 Kantor 換匯所匯率最佳／ATM 可直接領 PLN</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL -->
+<section id="social" class="social-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div class="section-title-block">
+        <div class="kicker">Social Pulse · 社群熱話</div>
+        <h2>來自 IG、TikTok、YouTube 的最新趨勢</h2>
+      </div>
+    </div>
+
+    <div class="social-stats">
+      <div class="stat-cell">
+        <div class="stat-num">150+</div>
+        <div class="stat-label">爬取貼文總數</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">17M</div>
+        <div class="stat-label">總觸及次數</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">3</div>
+        <div class="stat-label">平台來源</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-num">#krakow</div>
+        <div class="stat-label">最熱門主題</div>
+      </div>
+    </div>
+
+    <p style="font-style:italic;font-size:1.1rem;margin-bottom:2rem;opacity:.8;font-family:'Cormorant Garamond',serif;max-width:700px;line-height:1.55">
+      以下精選 12 則 2025–2026 年波蘭旅遊高互動貼文，依互動分數（觸及 × 參與率）排序。所有資料透過 Apify 從 Instagram、TikTok 與 YouTube 爬取。
+    </p>
+
+    <div class="posts-grid">
+      <article class="post-card">
+        <span class="post-platform">TikTok · 4.8M views</span>
+        <div class="post-author">@nathanandgrace</div>
+        <p class="post-text">Tag someone that you want to go to Krakow with 👇 克拉科夫的標誌性瓦維爾城堡與中世紀廣場航拍片段，吸引近 480 萬次觀看。</p>
+        <div class="post-stats"><span>❤ 263,800</span><span>💬 2,624</span></div>
+        <a class="post-link" href="https://www.tiktok.com/@nathanandgrace/video/7290226335551589665" target="_blank" rel="noopener">前往 TikTok →</a>
+      </article>
+
+      <article class="post-card">
+        <span class="post-platform">TikTok · 2.8M views</span>
+        <div class="post-author">@edita.kaite</div>
+        <p class="post-text">Gdańsk, Poland 😍 City with a unique charm—彩色山牆建築、海神噴泉與長街市場，被譽為「歐洲最美海岸城市之一」。</p>
+        <div class="post-stats"><span>❤ 171,500</span><span>💬 5,360</span></div>
+        <a class="post-link" href="https://www.tiktok.com/@edita.kaite/video/7511446380636933398" target="_blank" rel="noopener">前往 TikTok →</a>
+      </article>
+
+      <article class="post-card">
+        <span class="post-platform">TikTok · 1.4M views</span>
+        <div class="post-author">@brtprvt</div>
+        <p class="post-text">Warsaw's best view—華沙制高點全景，從科學文化宮俯瞰整個城市天際線，現代與歷史的強烈對比。</p>
+        <div class="post-stats"><span>❤ 257,700</span><span>💬 369</span></div>
+        <a class="post-link" href="https://www.tiktok.com/@brtprvt/video/7625746943909580064" target="_blank" rel="noopener">前往 TikTok →</a>
+      </article>
+
+      <article class="post-card">
+        <span class="post-platform">TikTok · 1.6M views</span>
+        <div class="post-author">@jyptravels</div>
+        <p class="post-text">Five Things to do in Krakow 🇵🇱 主廣場、瓦維爾城堡、卡齊米日、聖瑪麗教堂、辛德勒工廠——克拉科夫五大必訪景點。</p>
+        <div class="post-stats"><span>❤ 41,900</span><span>💬 384</span></div>
+        <a class="post-link" href="https://www.tiktok.com/@jyptravels/video/7346269604324412704" target="_blank" rel="noopener">前往 TikTok →</a>
+      </article>
+
+      <article class="post-card">
+        <span class="post-platform">TikTok · 1.5M views</span>
+        <div class="post-author">@blendbyhan</div>
+        <p class="post-text">72 hours in Krakow 🇵🇱🫶 三天兩夜克拉科夫深度行程，從早午餐咖啡店到夜晚的卡齊米日酒吧。</p>
+        <div class="post-stats"><span>❤ 39,600</span><span>💬 560</span></div>
+        <a class="post-link" href="https://www.tiktok.com/@blendbyhan/video/7434990772300172577" target="_blank" rel="noopener">前往 TikTok →</a>
+      </article>
+
+      <article class="post-card">
+        <span class="post-platform">TikTok · 685K views</span>
+        <div class="post-author">@adrianaugustyn_foto</div>
+        <p class="post-text">Experience Krakow Like Never Before ✨—瓦維爾城堡、紡織會館、聖瑪麗教堂的航拍鏡頭，展現克拉科夫的中世紀風華。</p>
+        <div class="post-stats"><span>❤ 50,000</span><span>💬 390</span></div>
+        <a class="post-link" href="https://www.tiktok.com/@adrianaugustyn_foto/video/7586032695638052118" target="_blank" rel="noopener">前往 TikTok →</a>
+      </article>
+
+      <article class="post-card">
+        <span class="post-platform">TikTok · 549K views</span>
+        <div class="post-author">@cchengeeee</div>
+        <p class="post-text">I LOVE THIS CITY (Gdańsk)—來自 black girl in poland 視角的格但斯克日常，海邊、彩色街道、夏日氛圍。</p>
+        <div class="post-stats"><span>❤ 92,000</span><span>💬 1,510</span></div>
+        <a class="post-link" href="https://www.tiktok.com/@cchengeeee/video/7479559173441686790" target="_blank" rel="noopener">前往 TikTok →</a>
+      </article>
+
+      <article class="post-card">
+        <span class="post-platform">TikTok · 383K views</span>
+        <div class="post-author">@hungrypursuit</div>
+        <p class="post-text">20 Things To Do In Gdansk Including Places To Eat 🇵🇱—格但斯克 20 件必做事+必吃餐廳清單，第三集旅遊系列。</p>
+        <div class="post-stats"><span>❤ 10,700</span><span>💬 137</span></div>
+        <a class="post-link" href="https://www.tiktok.com/@hungrypursuit/video/7439072657376595256" target="_blank" rel="noopener">前往 TikTok →</a>
+      </article>
+
+      <article class="post-card">
+        <span class="post-platform">TikTok · 299K views</span>
+        <div class="post-author">@krakowcityguide</div>
+        <p class="post-text">Kraków in 2026 - a total must ❤️—當地導遊整理的克拉科夫私房景點，從魔幻日落到 Kazimierz 夜生活。</p>
+        <div class="post-stats"><span>❤ 12,200</span><span>💬 N/A</span></div>
+        <a class="post-link" href="https://www.tiktok.com/@krakowcityguide" target="_blank" rel="noopener">前往 TikTok →</a>
+      </article>
+
+      <article class="post-card">
+        <span class="post-platform">TikTok · 261K views</span>
+        <div class="post-author">@emmahaswanderlust</div>
+        <p class="post-text">5 mistakes not to make when visiting Krakow—第一次去克拉科夫常見的 5 個錯誤，包括觀光陷阱與餐廳推薦。</p>
+        <div class="post-stats"><span>❤ 5,515</span><span>💬 N/A</span></div>
+        <a class="post-link" href="https://www.tiktok.com/@emmahaswanderlust" target="_blank" rel="noopener">前往 TikTok →</a>
+      </article>
+
+      <article class="post-card">
+        <span class="post-platform">TikTok · 192K views</span>
+        <div class="post-author">@damiankobus</div>
+        <p class="post-text">Don't make these 5 mistakes when visiting Kraków 🇵🇱—當地波蘭創作者直白指出觀光客常踩雷的點。</p>
+        <div class="post-stats"><span>❤ 6,361</span><span>💬 N/A</span></div>
+        <a class="post-link" href="https://www.tiktok.com/@damiankobus" target="_blank" rel="noopener">前往 TikTok →</a>
+      </article>
+
+      <article class="post-card">
+        <span class="post-platform">TikTok · 169K views</span>
+        <div class="post-author">@boopfoodie</div>
+        <p class="post-text">Ultimate Gdansk food guide ⤵️—格但斯克美食終極指南，從 Lakahappybar 到 Bar Turystyczny，逐一介紹必訪餐廳。</p>
+        <div class="post-stats"><span>❤ 3,664</span><span>💬 N/A</span></div>
+        <a class="post-link" href="https://www.tiktok.com/@boopfoodie" target="_blank" rel="noopener">前往 TikTok →</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ITINERARY -->
+<section id="itinerary" class="itinerary-section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-num">08</div>
+      <div class="section-title-block">
+        <div class="kicker">Sample Itinerary · 行程建議</div>
+        <h2>10 天波蘭精華環遊</h2>
+      </div>
+    </div>
+
+    <p style="font-size:1.1rem;font-style:italic;margin-bottom:2rem;color:var(--ink-soft);font-family:'Cormorant Garamond',serif;max-width:680px;line-height:1.55">
+      下面是建議的 10 天行程，從華沙進、克拉科夫出，涵蓋三大城市與一個山區小鎮。火車與巴士交通，無需租車。
+    </p>
+
+    <div class="day-row">
+      <div class="day-num">01<small>WARSAW</small></div>
+      <div class="day-content">
+        <h4>抵達華沙</h4>
+        <p>從台北經一次轉機抵 Chopin 機場，搭火車進市中心，入住老城區附近。傍晚漫步老城廣場與皇家城堡外觀，於老城區用波蘭餃子晚餐。建議：<em>U Fukiera</em> 或 <em>Zapiecek</em>。</p>
+      </div>
+    </div>
+
+    <div class="day-row">
+      <div class="day-num">02<small>WARSAW</small></div>
+      <div class="day-content">
+        <h4>華沙博物館日</h4>
+        <p>上午訪問波蘭猶太人歷史博物館 POLIN（震撼必訪）；下午參觀蕭邦博物館或華沙起義博物館。傍晚搭 Vistula 河遊船，欣賞夜景。</p>
+      </div>
+    </div>
+
+    <div class="day-row">
+      <div class="day-num">03<small>WARSAW → GDANSK</small></div>
+      <div class="day-content">
+        <h4>移動至格但斯克</h4>
+        <p>清晨搭 EIC 火車前往格但斯克（約 2.5 小時）。下午老城區漫步：長街、海神噴泉、聖瑪麗教堂登塔。傍晚 Motława 河畔啤酒+海鮮晚餐。</p>
+      </div>
+    </div>
+
+    <div class="day-row">
+      <div class="day-num">04<small>GDANSK</small></div>
+      <div class="day-content">
+        <h4>馬爾堡 + 三聯市</h4>
+        <p>上午一日往返馬爾堡城堡（世界最大磚造城堡，車程 1 小時）；下午搭近郊火車到 Sopot 海灘漫步歐陸最長木棧道；傍晚回 Gdańsk 享受琥珀工藝街。</p>
+      </div>
+    </div>
+
+    <div class="day-row">
+      <div class="day-num">05<small>GDANSK → WROCLAW</small></div>
+      <div class="day-content">
+        <h4>移動至弗羅茨瓦夫</h4>
+        <p>早晨搭乘高速火車前往弗羅茨瓦夫（約 5 小時）。抵達後直奔市集廣場，下午尋找小矮人 Krasnale，並參觀百年廳（UNESCO）。傍晚於 Ostrów Tumski 主教座堂島看瓦斯街燈點亮的儀式。</p>
+      </div>
+    </div>
+
+    <div class="day-row">
+      <div class="day-num">06<small>WROCLAW → KRAKOW</small></div>
+      <div class="day-content">
+        <h4>移動至克拉科夫</h4>
+        <p>火車前往克拉科夫（約 3 小時）。下午抵達後逛 Rynek Główny 主廣場、紡織會館，登聖瑪麗教堂塔聽號角手；晚上於 Kazimierz 區尋找 Zapiekanka 街頭披薩。</p>
+      </div>
+    </div>
+
+    <div class="day-row">
+      <div class="day-num">07<small>KRAKOW</small></div>
+      <div class="day-content">
+        <h4>瓦維爾與辛德勒</h4>
+        <p>上午參觀瓦維爾城堡與大教堂；下午步行或搭電車至辛德勒工廠博物館，了解二戰克拉科夫猶太區歷史。傍晚回老城區享用米其林級的 <em>Szara Gęś</em> 或 <em>Pod Wawelem</em>。</p>
+      </div>
+    </div>
+
+    <div class="day-row">
+      <div class="day-num">08<small>KRAKOW · DAY TRIP</small></div>
+      <div class="day-content">
+        <h4>奧斯威辛集中營</h4>
+        <p>提早預約導覽，搭專車或巴士前往 Auschwitz-Birkenau（車程 1.5 小時）。完整參觀需 4–5 小時，是極為沉重但必要的體驗。傍晚返回克拉科夫，安靜用晚餐沉澱情緒。</p>
+      </div>
+    </div>
+
+    <div class="day-row">
+      <div class="day-num">09<small>KRAKOW → ZAKOPANE</small></div>
+      <div class="day-content">
+        <h4>塔特拉山一日往返</h4>
+        <p>清晨巴士前往 Zakopane（2 小時車程）。搭 Gubałówka 纜車鳥瞰塔特拉山脈；午餐嚐 Oscypek 煙燻起司；下午沿 Krupówki 大街漫步購買山區工藝品。傍晚返回克拉科夫。</p>
+      </div>
+    </div>
+
+    <div class="day-row">
+      <div class="day-num">10<small>KRAKOW</small></div>
+      <div class="day-content">
+        <h4>維利奇卡鹽礦 + 返程</h4>
+        <p>上午前往 UNESCO 世界遺產維利奇卡鹽礦（含地下鹽教堂，約 2.5 小時導覽）。下午回市區買最後紀念品（琥珀飾品、波蘭餐具品牌 Bolesławiec）。從 Kraków-Balice 機場踏上歸途。</p>
+      </div>
+    </div>
+
+    <div class="divider-decorative">◆ ◆ ◆</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">POLSKA<span class="accent">.</span></div>
+      <p class="footer-tag">A field guide to Poland for travelers from Taiwan, 2025–2026 edition. Compiled from social pulse + authoritative sources.</p>
+    </div>
+    <div class="footer-col">
+      <h5>章節</h5>
+      <ul>
+        <li><a href="#about">關於波蘭</a></li>
+        <li><a href="#cities">六大城市</a></li>
+        <li><a href="#food">美食指南</a></li>
+        <li><a href="#history">人文歷史</a></li>
+        <li><a href="#weather">氣候</a></li>
+        <li><a href="#transport">交通</a></li>
+        <li><a href="#social">社群熱話</a></li>
+        <li><a href="#itinerary">10 日行程</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>實用連結</h5>
+      <ul>
+        <li><a href="https://www.intercity.pl/en/" target="_blank" rel="noopener">PKP Intercity 訂票</a></li>
+        <li><a href="https://www.flixbus.com/bus/poland" target="_blank" rel="noopener">FlixBus 巴士</a></li>
+        <li><a href="https://poland.tw/web/tajwan-zh/" target="_blank" rel="noopener">波蘭臺北辦事處</a></li>
+        <li><a href="https://www.boca.gov.tw/sp-foof-countrycp-01-62-aa8d5-1.html" target="_blank" rel="noopener">外交部國家資訊</a></li>
+        <li><a href="https://www.mofa.gov.tw/News_toggle.aspx?n=87&sms=72" target="_blank" rel="noopener">申根免簽 Q&amp;A</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 · Compiled with care</span>
+    <span>Published May 2026 · Vol I · No 1</span>
+  </div>
+</footer>
+
+<script>
+// 平滑捲動已用 CSS 處理，這裡加入 nav active 高亮
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+function updateNav(){
+  const scrollY = window.scrollY + 100;
+  sections.forEach(s=>{
+    const id = s.id;
+    const top = s.offsetTop;
+    const h = s.offsetHeight;
+    const link = document.querySelector(`.nav-links a[href="#${id}"]`);
+    if(link){
+      if(scrollY >= top && scrollY < top+h){
+        navLinks.forEach(l=>l.style.color='');
+        link.style.color = 'var(--amber)';
+      }
+    }
+  });
+}
+window.addEventListener('scroll',updateNav,{passive:true});
+
+// reveal on scroll
+const obs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.style.animationPlayState = 'running';
+      obs.unobserve(e.target);
+    }
+  });
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>{
+  el.style.animationPlayState = 'paused';
+  obs.observe(el);
+});
+</script>
+
+</body>
+</html>
