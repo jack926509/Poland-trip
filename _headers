@@ -10,9 +10,31 @@
 /index.html
   Cache-Control: public, max-age=300, must-revalidate
 
+/mobile.html
+  Cache-Control: public, max-age=300, must-revalidate
+
+/desktop.html
+  Cache-Control: public, max-age=300, must-revalidate
+
+/app-preview.html
+  Cache-Control: public, max-age=300, must-revalidate
+
 # Service Worker：絕對不快取
 /sw.js
   Cache-Control: public, max-age=0, must-revalidate
+
+# React vendor + redesign 編譯產物：1 年快取（檔名固定，內容變動需手動 bust）
+/vendor/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/redesign/dist/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/redesign/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+/redesign/data.js
+  Cache-Control: public, max-age=86400
 
 # Manifest：1 天快取
 /manifest.json

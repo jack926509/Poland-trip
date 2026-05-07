@@ -3,10 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>POLSKA — 旅伴版 · 出門帶著看</title>
-<meta name="description" content="今日 = Day X，現在該做什麼。手機優先的波蘭旅伴。">
+<title>POLSKA — 旅伴版 · 波蘭 8 日四城路線</title>
+<meta name="description" content="今日 = Day X，現在該做什麼。手機優先的波蘭旅伴：每日步驟、火車時刻、必吃美食一站搞定。">
 <meta name="theme-color" content="#a8231d">
+
+<link rel="canonical" href="https://trip.xieh.tw/mobile.html">
 <link rel="manifest" href="/manifest.json">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjZjRlY2Q4Ii8+PHJlY3QgeT0iNTAiIHdpZHRoPSIxMDAiIGhlaWdodD0iNTAiIGZpbGw9IiNhODIzMWQiLz48L3N2Zz4=">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="POLSKA — 旅伴版 · 波蘭 8 日四城路線">
+<meta property="og:description" content="今日 = Day X，現在該做什麼。手機優先的波蘭旅伴。">
+<meta property="og:url" content="https://trip.xieh.tw/mobile.html">
+<meta property="og:image" content="https://trip.xieh.tw/og-image.svg">
+<meta property="og:locale" content="zh_TW">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="POLSKA — 旅伴版">
+<meta name="twitter:description" content="今日 = Day X，現在該做什麼。手機優先的波蘭旅伴。">
+<meta name="twitter:image" content="https://trip.xieh.tw/og-image.svg">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Bodoni+Moda:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Serif+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap">
@@ -20,13 +36,19 @@
 </head>
 <body>
 <div id="root"></div>
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-<script src="redesign/data.js"></script>
-<script type="text/babel" src="redesign/B-companion.jsx"></script>
-<script type="text/babel">
-ReactDOM.createRoot(document.getElementById('root')).render(<B_Companion />);
+<script src="/vendor/react.production.min.js"></script>
+<script src="/vendor/react-dom.production.min.js"></script>
+<script src="/redesign/data.js"></script>
+<script src="/redesign/dist/B-companion.js"></script>
+<script>
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(B_Companion));
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js').catch(function(){});
+  });
+}
 </script>
 </body>
 </html>

@@ -1,18 +1,37 @@
 // POLSKA 旅遊指南 Service Worker — 離線優先策略
 // 出發到波蘭時即使無網路也能看完整指南
-const CACHE_VERSION = 'polska-v1';
+const CACHE_VERSION = 'polska-v2';
 const PRECACHE_URLS = [
   '/',
   '/index.html',
+  '/mobile.html',
+  '/desktop.html',
+  '/app-preview.html',
   '/manifest.json',
+  '/styles.css',
+  '/main.js',
+  '/vendor/react.production.min.js',
+  '/vendor/react-dom.production.min.js',
+  '/redesign/data.js',
+  '/redesign/tokens.css',
+  '/redesign/A-magazine.css',
+  '/redesign/B-companion.css',
+  '/redesign/C-app.css',
+  '/redesign/dist/A-magazine.js',
+  '/redesign/dist/B-companion.js',
+  '/redesign/dist/C-app.js',
+  '/redesign/dist/ios-frame.js',
 ];
 
 // 安裝時預先快取核心資源
 // 注意：這裡不呼叫 skipWaiting()——讓使用者看到「新版本可用」提示後再決定何時切換
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_VERSION)
-      .then((cache) => cache.addAll(PRECACHE_URLS))
+    caches.open(CACHE_VERSION).then((cache) =>
+      Promise.all(
+        PRECACHE_URLS.map((url) => cache.add(url).catch(() => {}))
+      )
+    )
   );
 });
 
