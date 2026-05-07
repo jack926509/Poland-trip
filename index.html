@@ -929,6 +929,16 @@ a{color:var(--crimson)}
   font-style:italic;
   color:var(--crimson-deep);
 }
+.city-food-cell li a{
+  color:inherit;
+  text-decoration:none;
+  border-bottom:1px dotted rgba(168,35,29,.4);
+  transition:border-color .2s, color .2s;
+}
+.city-food-cell li a:hover{
+  border-bottom:1px solid var(--crimson-deep);
+  color:var(--crimson-deep);
+}
 .city-food-cell .cf-star{
   display:inline-block;
   background:var(--amber);
@@ -1292,7 +1302,7 @@ a{color:var(--crimson)}
     </div>
 
     <p style="font-size:1rem;font-style:italic;margin:0 0 1.5rem;color:var(--ink-soft);font-family:'Cormorant Garamond',serif;max-width:760px;line-height:1.55">
-      除了上述 12 道全國通行料理，每座城市都有自己的招牌：克拉科夫的 Obwarzanek 圓圈麵包、弗羅茨瓦夫的西里西亞馬鈴薯丸、波茲南的聖馬丁牛角麵包都受歐盟 PGI 地理標誌保護——只有當地才能稱呼這個名字。
+      除了上述 12 道全國通行料理，每座城市都有自己的招牌：克拉科夫的 Obwarzanek 圓圈麵包、弗羅茨瓦夫的西里西亞馬鈴薯丸、波茲南的聖馬丁牛角麵包都受歐盟 PGI 地理標誌保護——只有當地才能稱呼這個名字。<strong>店名為 Google Map 連結</strong>，點擊即可導航。
     </p>
 
     <div class="city-food-grid">
@@ -1302,19 +1312,31 @@ a{color:var(--crimson)}
         <ul>
           <li>
             <strong>Pierogi 波蘭餃子</strong>
-            <em>Zapiecek</em> 連鎖（觀光客友善）/ <em>Pierożki u Vincenta</em>（手工小店）
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Zapiecek+Warszawa" target="_blank" rel="noopener"><em>Zapiecek</em></a>（連鎖、觀光客友善）/ <a href="https://www.google.com/maps/search/?api=1&amp;query=Pierozki+u+Vincenta+Warszawa" target="_blank" rel="noopener"><em>Pierożki u Vincenta</em></a>（手工小店）
           </li>
           <li>
-            <strong>Żurek 酸黑麥湯</strong>
-            <em>U Fukiera</em> 米其林必比登 / <em>Polka</em>（Magda Gessler 名廚店）
+            <strong>Żurek 酸黑麥湯 · 米其林必比登</strong>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=U+Fukiera+Warszawa" target="_blank" rel="noopener"><em>U Fukiera</em></a>（老城廣場）/ <a href="https://www.google.com/maps/search/?api=1&amp;query=Polka+Restauracja+Warszawa" target="_blank" rel="noopener"><em>Polka</em></a>（Magda Gessler 名廚店）
           </li>
           <li>
-            <strong>Pączki 波蘭甜甜圈</strong>
-            <em>A. Blikle</em> 1869 年老字號
+            <strong>Schabowy 炸豬排 · 牛奶吧家常</strong>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Bar+Prasowy+Warszawa" target="_blank" rel="noopener"><em>Bar Prasowy</em></a>（Bar Mleczny 平價代表，套餐 PLN 25–35）
+          </li>
+          <li>
+            <strong>Bigos 獵人燉肉</strong>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=U+Kucharzy+Warszawa" target="_blank" rel="noopener"><em>U Kucharzy</em></a>（前皇宮主廚開店、可外帶罐裝伴手）
+          </li>
+          <li>
+            <strong>中東風 · 美食市集</strong>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Tel+Aviv+Urban+Food+Warszawa" target="_blank" rel="noopener"><em>Tel Aviv Urban Food</em></a>（POLIN 旁素食）/ <a href="https://www.google.com/maps/search/?api=1&amp;query=Hala+Koszyki+Warszawa" target="_blank" rel="noopener"><em>Hala Koszyki</em></a>（美食市集）
+          </li>
+          <li>
+            <strong>Pączki 玫瑰甜甜圈</strong>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=A.+Blikle+Nowy+Swiat+Warszawa" target="_blank" rel="noopener"><em>A. Blikle</em></a>（1869 年老字號）
           </li>
           <li>
             <strong>Wedel 熱巧克力</strong>
-            <em>E. Wedel Pijalnia Czekolady</em>（蕭邦曾常去）
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Wedel+Pijalnia+Czekolady+Warszawa" target="_blank" rel="noopener"><em>E. Wedel Pijalnia Czekolady</em></a>（蕭邦曾常去）
           </li>
         </ul>
       </div>
@@ -1325,23 +1347,39 @@ a{color:var(--crimson)}
         <ul>
           <li>
             <strong>Obwarzanek 圓圈麵包<span class="cf-star">PGI</span></strong>
-            老城各街角藍色推車，PLN 3–4 銅板價
+            老城各街角藍色推車（廣場周邊均有），PLN 3–4 銅板價
           </li>
           <li>
             <strong>Zapiekanka 開放披薩</strong>
-            <em>Plac Nowy 圓亭</em>（Endzior、Krzysiek，街頭聖地）
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Okraglak+Plac+Nowy+Krakow" target="_blank" rel="noopener"><em>Plac Nowy 圓亭</em></a>（Endzior、Krzysiek，街頭聖地）
+          </li>
+          <li>
+            <strong>Pierogi 餃子午餐</strong>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Pierogarnia+Krakowiacy+Krakow" target="_blank" rel="noopener"><em>Pierogarnia Krakowiacy</em></a>（老城手工餃子）
+          </li>
+          <li>
+            <strong>傳統氛圍晚餐</strong>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Pod+Aniolami+Krakow" target="_blank" rel="noopener"><em>Pod Aniołami</em></a>（地窖燭光）/ <a href="https://www.google.com/maps/search/?api=1&amp;query=Miod+Malina+Krakow" target="_blank" rel="noopener"><em>Miód Malina</em></a>（蜂蜜藍莓主題）
+          </li>
+          <li>
+            <strong>米其林必比登</strong>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Szara+Ges+Krakow" target="_blank" rel="noopener"><em>Szara Gęś</em></a>（中央廣場）/ <a href="https://www.google.com/maps/search/?api=1&amp;query=Starka+Restauracja+Krakow" target="_blank" rel="noopener"><em>Starka</em></a>（Kazimierz）
+          </li>
+          <li>
+            <strong>米其林一星升級</strong>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Bottiglieria+1881+Krakow" target="_blank" rel="noopener"><em>Bottiglieria 1881</em></a>（Kazimierz，需提前訂位）
           </li>
           <li>
             <strong>Sernik krakowski 起司蛋糕</strong>
-            <em>Cukiernia Michałek</em> 百年甜點店
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Cukiernia+Michalek+Krakow" target="_blank" rel="noopener"><em>Cukiernia Michałek</em></a>（百年甜點老店）
           </li>
           <li>
-            <strong>米其林必比登晚餐</strong>
-            <em>Szara Gęś</em>（中央廣場）/ <em>Starka</em>（Kazimierz）
+            <strong>法式早午餐</strong>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Charlotte+Plac+Szczepanski+Krakow" target="_blank" rel="noopener"><em>Charlotte</em></a>（Plac Szczepański 文青麵包店）
           </li>
           <li>
-            <strong>猶太料理（Kazimierz）</strong>
-            <em>Klezmer-Hois</em> / <em>Hamsa</em> 現代以色列料理
+            <strong>猶太區料理（Kazimierz）</strong>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Klezmer-Hois+Krakow" target="_blank" rel="noopener"><em>Klezmer-Hois</em></a>（傳統猶太）/ <a href="https://www.google.com/maps/search/?api=1&amp;query=Hamsa+Krakow" target="_blank" rel="noopener"><em>Hamsa</em></a>（現代以色列）
           </li>
         </ul>
       </div>
@@ -1351,20 +1389,28 @@ a{color:var(--crimson)}
         <div class="cf-name">Wrocław</div>
         <ul>
           <li>
-            <strong>Śląskie kluski 西里西亞馬鈴薯丸</strong>
-            <em>Konspira</em>（80 年代地下反共主題餐廳）
-          </li>
-          <li>
-            <strong>Rolada śląska 牛肉卷</strong>
-            <em>Konspira</em>，配 modra kapusta 紫高麗菜
+            <strong>Śląskie kluski 馬鈴薯丸 · Rolada śląska 牛肉卷</strong>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Konspira+Wroclaw" target="_blank" rel="noopener"><em>Konspira</em></a>（80 年代反共地下主題，配 modra kapusta 紫高麗菜）
           </li>
           <li>
             <strong>波蘭精釀啤酒</strong>
-            <em>Browar Stu Mostów</em>（旗艦廠）/ <em>Browar Spiż</em>（廣場地下）
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Browar+Stu+Mostow+Wroclaw" target="_blank" rel="noopener"><em>Browar Stu Mostów</em></a>（旗艦廠）/ <a href="https://www.google.com/maps/search/?api=1&amp;query=Browar+Spiz+Wroclaw" target="_blank" rel="noopener"><em>Browar Spiż</em></a>（廣場地下）
+          </li>
+          <li>
+            <strong>廣場 pub 融合料理</strong>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Bernard+Pub+Wroclaw" target="_blank" rel="noopener"><em>Bernard Pub</em></a>（捷克啤酒 + 波蘭料理）/ <a href="https://www.google.com/maps/search/?api=1&amp;query=Karczma+Lwowska+Wroclaw" target="_blank" rel="noopener"><em>Karczma Lwowska</em></a>（波蘭/烏克蘭融合）
+          </li>
+          <li>
+            <strong>米其林必比登</strong>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Jadka+Restauracja+Wroclaw" target="_blank" rel="noopener"><em>Jadka</em></a>（傳統高級）/ <a href="https://www.google.com/maps/search/?api=1&amp;query=Pod+Fredra+Wroclaw" target="_blank" rel="noopener"><em>Pod Fredrą</em></a>（廣場旁）
           </li>
           <li>
             <strong>Pierogi 西里西亞風</strong>
-            <em>Pierogarnia Stary Młyn</em>（廣場旁）
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Pierogarnia+Stary+Mlyn+Wroclaw" target="_blank" rel="noopener"><em>Pierogarnia Stary Młyn</em></a>（廣場旁）
+          </li>
+          <li>
+            <strong>市場銅板午餐</strong>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Hala+Targowa+Wroclaw" target="_blank" rel="noopener"><em>Hala Targowa</em></a>（百年市場大廳，攤食 PLN 20–30）
           </li>
         </ul>
       </div>
@@ -1375,23 +1421,27 @@ a{color:var(--crimson)}
         <ul>
           <li>
             <strong>Rogal Świętomarciński 聖馬丁牛角麵包<span class="cf-star">PGI</span></strong>
-            <em>Cukiernia Kandulski</em> 百年老店 / 牛角麵包博物館內
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Cukiernia+Kandulski+Poznan" target="_blank" rel="noopener"><em>Cukiernia Kandulski</em></a>（百年老店）/ <a href="https://www.google.com/maps/search/?api=1&amp;query=Rogalowe+Muzeum+Poznania" target="_blank" rel="noopener"><em>Rogalowe Muzeum Poznania</em></a>（牛角麵包博物館內）
           </li>
           <li>
-            <strong>Pyry z gzikiem 馬鈴薯佐凝乳</strong>
-            <em>Pyra Bar</em>（市中心連鎖、觀光客友善）
-          </li>
-          <li>
-            <strong>Plyndze 馬鈴薯煎餅</strong>
-            <em>Pyra Bar</em> / 傳統波蘭料理小館
+            <strong>Pyry z gzikiem 馬鈴薯佐凝乳 · Plyndze 煎餅</strong>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Pyra+Bar+Poznan" target="_blank" rel="noopener"><em>Pyra Bar</em></a>（市中心連鎖、觀光客友善）
           </li>
           <li>
             <strong>Czernina 鴨血酸湯</strong>
-            <em>Stary Maglownik</em>（挑戰級，重口味老菜）
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Stary+Maglownik+Poznan" target="_blank" rel="noopener"><em>Stary Maglownik</em></a>（挑戰級重口味老菜）
           </li>
           <li>
-            <strong>Lech 啤酒</strong>
-            波茲南本地釀造，Stary Browar 古釀酒廠最齊全
+            <strong>歷史名宅晚餐</strong>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Hotel+Bazar+Poznan+restauracja" target="_blank" rel="noopener"><em>Hotel Bazar 餐廳</em></a>（蕭邦曾下榻、19 世紀名宅）
+          </li>
+          <li>
+            <strong>燒烤 / 美式融合</strong>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Whiskey+in+the+Jar+Poznan" target="_blank" rel="noopener"><em>Whiskey In The Jar</em></a>（燒烤名店）
+          </li>
+          <li>
+            <strong>Lech 啤酒 · 古釀酒廠</strong>
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=Stary+Browar+Poznan" target="_blank" rel="noopener"><em>Stary Browar</em></a>（古釀酒廠改造商場、Lech 本地釀最齊全）
           </li>
         </ul>
       </div>
