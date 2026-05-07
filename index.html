@@ -832,6 +832,56 @@ footer{
   /* 表格與長字串斷行 */
   .train-table{font-size:.78rem}
   p,li,td,th{word-break:break-word;overflow-wrap:break-word}
+
+  /* ── ② 行程 Timeline（手機豎軸） ── */
+  .day-row{
+    display:grid;grid-template-columns:3rem 1fr;
+    gap:0;padding:1.2rem 0;
+    border-left:2px solid var(--ink);margin-left:1rem;
+    position:relative;
+  }
+  .day-row::before{
+    content:attr(data-day);
+    position:absolute;left:-2.6rem;top:1.2rem;
+    font-family:'Bodoni Moda',serif;font-size:1.4rem;font-weight:700;
+    color:var(--crimson);background:var(--paper);padding:.1rem .3rem;
+    border:2px solid var(--crimson);border-radius:50%;
+    width:2.4rem;height:2.4rem;display:flex;align-items:center;justify-content:center;
+    line-height:1;
+  }
+  .day-num{font-size:1rem;padding:.1rem 0 .6rem;display:flex;flex-direction:column;gap:.15rem;grid-column:1}
+  .day-num small{display:inline-block;font-size:.58rem;letter-spacing:.08em;color:var(--ink-soft);margin-top:.05rem}
+  .day-content{grid-column:2;padding:0 0 0 .8rem}
+  .day-content h4{font-size:1.05rem;line-height:1.3;margin-bottom:.3rem}
+  .day-content p{font-size:.88rem;line-height:1.55}
+  .hours{margin:.7rem 0;padding:.8rem .9rem;font-size:.78rem}
+  .day-eats{margin:.6rem 0;padding:.7rem .9rem}
+  .day-warn{padding:.6rem .8rem;font-size:.82rem}
+  .day-train{font-size:.65rem;padding:.35rem .6rem}
+
+  /* ── ③ Hero clamp 安全化（320px 不爆框） ── */
+  .hero h1{font-size:clamp(2.6rem,9vw,4.5rem)!important;line-height:1.05}
+  .hero-subtitle{font-size:.95rem}
+
+  /* ── ④ fact-card 加大間距 ── */
+  .fact-card{padding:1.4rem 1.2rem}
+  .fact-row{padding:.6rem 0}
+
+  /* ── ⑤ 城市美食：折疊選單 ── */
+  .city-food-grid{display:flex;flex-direction:column;gap:0}
+  .city-food-cell{
+    border-right:none;
+    border-bottom:1.5px solid rgba(26,22,18,.18);
+    padding:1rem;
+  }
+  .city-food-cell summary{
+    font-family:'Bodoni Moda',serif;font-size:1rem;font-weight:700;
+    cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;
+    padding:.3rem 0;
+  }
+  .city-food-cell summary::after{content:'▾';font-size:.8rem;margin-left:.5rem;color:var(--amber-deep)}
+  .city-food-cell[open] summary::after{content:'▴'}
+  .city-food-cell ul{margin:.6rem 0 0;padding-left:1.1rem}
 }
 
 @media(max-width:380px){
@@ -1126,18 +1176,52 @@ a{color:var(--crimson)}
 }
 
 /* Mobile RWD for tables */
-@media (max-width:760px){
-  .train-table{font-size:.85rem}
-  .train-table thead{display:none}
-  .train-table tbody tr{display:block;border-bottom:2px solid var(--ink);padding:.8rem 0}
-  .train-table tbody td{display:block;border-bottom:none;padding:.3rem 0}
-  .train-table tbody td::before{
-    content:attr(data-label);
-    font-family:'Bodoni Moda',serif;
-    font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--amber-deep);font-weight:700;
-    display:block;margin-bottom:.2rem;
+/* ── 火車表：手機卡片化 ── */
+.train-table{width:100%;border-collapse:collapse;font-family:'Noto Serif TC',serif;font-size:.95rem;margin:0 0 1.5rem}
+.train-table thead th{font-family:'Bodoni Moda',serif;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;font-weight:700;text-align:left;padding:.9rem 1rem;background:var(--paper-deep);border-bottom:2px solid var(--ink)}
+.train-table tbody td{padding:1rem;border-bottom:1px solid rgba(26,22,18,.15);vertical-align:top}
+.train-table tbody tr:last-child td{border-bottom:none}
+.train-table tbody tr:hover{background:rgba(196,137,43,.06)}
+.train-num{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--crimson);font-size:.95rem}
+.train-time{font-family:'JetBrains Mono',monospace;font-size:.92rem;color:var(--ink)}
+.tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.1em;padding:.15rem .5rem;border:1px solid var(--ink);background:var(--paper);margin-right:.3rem}
+.tag.eip{background:var(--crimson);color:var(--paper);border-color:var(--crimson)}
+.tag.ic{background:var(--amber);color:var(--ink);border-color:var(--amber-deep)}
+.tag.bus{background:var(--moss);color:var(--paper);border-color:var(--moss)}
+/* 火車表：手機卡片 */
+.train-card{display:none}
+.train-table-mobile{display:none}
+@media(max-width:760px){
+  .train-table{display:none}
+  .train-table-mobile{display:flex;flex-direction:column;gap:1rem;margin:0 0 1.5rem}
+  .train-card{
+    background:var(--paper);border:1.5px solid var(--ink);
+    padding:1.1rem 1.2rem;position:relative;
+    transition:box-shadow .2s;
   }
+  .train-card::before{
+    content:'';position:absolute;left:0;top:0;bottom:0;
+    width:4px;background:var(--crimson);border-radius:2px 0 0 2px;
+  }
+  .train-card.tag-ic::before{background:var(--amber-deep)}
+  .train-card.tag-bus::before{background:var(--moss)}
+  .train-card-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.7rem;flex-wrap:wrap}
+  .train-card .tag{margin-bottom:0}
+  .train-card-route{
+    font-family:'Bodoni Moda',serif;font-weight:700;font-size:1.05rem;
+    color:var(--ink);letter-spacing:-.01em;
+  }
+  .train-card-body{display:grid;grid-template-columns:1fr 1fr;gap:.5rem 1rem}
+  .train-card-item{display:flex;flex-direction:column;gap:.1rem}
+  .train-card-label{
+    font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.15em;
+    text-transform:uppercase;color:var(--ink-soft);
+  }
+  .train-card-value{
+    font-family:'JetBrains Mono',monospace;font-size:.88rem;font-weight:600;
+    color:var(--ink);
+  }
+  .train-card-value.price{color:var(--crimson);font-weight:700}
   .booking-grid{grid-template-columns:1fr}
   .booking-cell{border-right:none}
   .city-food-grid{grid-template-columns:1fr}
@@ -1352,6 +1436,72 @@ a{color:var(--crimson)}
       </tbody>
     </table>
 
+    <!-- 火車表：手機卡片版（760px 以下顯示） -->
+    <div class="train-table-mobile">
+      <div class="train-card">
+        <div class="train-card-header">
+          <span class="tag eip">EIP</span>
+          <span class="train-card-route">WAW → KRK</span>
+        </div>
+        <div class="train-card-body">
+          <div class="train-card-item"><span class="train-card-label">日期</span><span class="train-card-value">10/25 (日)</span></div>
+          <div class="train-card-item"><span class="train-card-label">班次</span><span class="train-card-value">09:00 → 11:25</span></div>
+          <div class="train-card-item"><span class="train-card-label">艙等</span><span class="train-card-value">頭等艙</span></div>
+          <div class="train-card-item"><span class="train-card-label">車程</span><span class="train-card-value">2h25</span></div>
+          <div class="train-card-item"><span class="train-card-label">票價</span><span class="train-card-value price">PLN 130–180</span></div>
+        </div>
+      </div>
+      <div class="train-card tag-bus">
+        <div class="train-card-header">
+          <span class="tag bus">BUS</span>
+          <span class="train-card-route">KRK ⇄ Auschwitz</span>
+        </div>
+        <div class="train-card-body">
+          <div class="train-card-item"><span class="train-card-label">日期</span><span class="train-card-value">10/26 (一)</span></div>
+          <div class="train-card-item"><span class="train-card-label">去程</span><span class="train-card-value">Lajkonik 07:30</span></div>
+          <div class="train-card-item"><span class="train-card-label">回程</span><span class="train-card-value">14:30 返</span></div>
+          <div class="train-card-item"><span class="train-card-label">車程</span><span class="train-card-value">1h30 × 2</span></div>
+          <div class="train-card-item"><span class="train-card-label">票價</span><span class="train-card-value price">PLN 44</span></div>
+        </div>
+      </div>
+      <div class="train-card tag-ic">
+        <div class="train-card-header">
+          <span class="tag ic">IC</span>
+          <span class="train-card-route">KRK → WRO</span>
+        </div>
+        <div class="train-card-body">
+          <div class="train-card-item"><span class="train-card-label">日期</span><span class="train-card-value">10/27 (二)</span></div>
+          <div class="train-card-item"><span class="train-card-label">班次</span><span class="train-card-value">17:30 → 21:00</span></div>
+          <div class="train-card-item"><span class="train-card-label">車程</span><span class="train-card-value">3h30</span></div>
+          <div class="train-card-item"><span class="train-card-label">票價</span><span class="train-card-value price">PLN 60–110</span></div>
+        </div>
+      </div>
+      <div class="train-card tag-ic">
+        <div class="train-card-header">
+          <span class="tag ic">IC</span>
+          <span class="train-card-route">WRO → POZ</span>
+        </div>
+        <div class="train-card-body">
+          <div class="train-card-item"><span class="train-card-label">日期</span><span class="train-card-value">10/28 (三)</span></div>
+          <div class="train-card-item"><span class="train-card-label">班次</span><span class="train-card-value">19:00 → 21:20</span></div>
+          <div class="train-card-item"><span class="train-card-label">車程</span><span class="train-card-value">2h20</span></div>
+          <div class="train-card-item"><span class="train-card-label">票價</span><span class="train-card-value price">PLN 50–90</span></div>
+        </div>
+      </div>
+      <div class="train-card">
+        <div class="train-card-header">
+          <span class="tag eip">EIP</span>
+          <span class="train-card-route">POZ → WAW</span>
+        </div>
+        <div class="train-card-body">
+          <div class="train-card-item"><span class="train-card-label">日期</span><span class="train-card-value">10/29 (四)</span></div>
+          <div class="train-card-item"><span class="train-card-label">班次</span><span class="train-card-value">17:30 → 20:15</span></div>
+          <div class="train-card-item"><span class="train-card-label">車程</span><span class="train-card-value">2h45</span></div>
+          <div class="train-card-item"><span class="train-card-label">票價</span><span class="train-card-value price">PLN 90–150</span></div>
+        </div>
+      </div>
+    </div>
+
     <div class="food-tip">
       <strong>★ 火車類型速查</strong> &nbsp;|&nbsp;
       <strong>EIP</strong>（Pendolino）— 最快、強制訂位、頭等艙含早餐 + Wi-Fi ｜
@@ -1366,7 +1516,7 @@ a{color:var(--crimson)}
       <div class="sub-kicker">逐日完整行程</div>
     </div>
 
-    <div class="day-row">
+    <div class="day-row" data-day="01">
       <div class="day-num">01<small>10/24 週六 · 華沙</small></div>
       <div class="day-content">
         <h4>抵達華沙 · 老城傍晚漫步</h4>
@@ -1392,7 +1542,7 @@ a{color:var(--crimson)}
       </div>
     </div>
 
-    <div class="day-row">
+    <div class="day-row" data-day="02">
       <div class="day-num">02<small>10/25 週日 · 華沙 → 克拉科夫</small></div>
       <div class="day-content">
         <h4>南下克拉科夫 · 老城三大景點</h4>
@@ -1423,7 +1573,7 @@ a{color:var(--crimson)}
       </div>
     </div>
 
-    <div class="day-row">
+    <div class="day-row" data-day="03">
       <div class="day-num">03<small>10/26 週一 · 一日往返</small></div>
       <div class="day-content">
         <h4>奧斯威辛 - 比克瑙集中營（一日往返）</h4>
@@ -1444,7 +1594,7 @@ a{color:var(--crimson)}
       </div>
     </div>
 
-    <div class="day-row">
+    <div class="day-row" data-day="04">
       <div class="day-num">04<small>10/27 週二 · 克拉科夫 → 弗羅茨瓦夫</small></div>
       <div class="day-content">
         <h4>辛德勒工廠 + Kazimierz · 傍晚火車到弗羅茨瓦夫</h4>
@@ -1477,7 +1627,7 @@ a{color:var(--crimson)}
       </div>
     </div>
 
-    <div class="day-row">
+    <div class="day-row" data-day="05">
       <div class="day-num">05<small>10/28 週三 · 弗羅茨瓦夫 → 波茲南</small></div>
       <div class="day-content">
         <h4>弗羅茨瓦夫一日精華 · 點燈儀式 · 晚轉場波茲南</h4>
@@ -1510,7 +1660,7 @@ a{color:var(--crimson)}
       </div>
     </div>
 
-    <div class="day-row">
+    <div class="day-row" data-day="06">
       <div class="day-num">06<small>10/29 週四 · 波茲南 → 華沙</small></div>
       <div class="day-content">
         <h4>波茲南完整白天 · 山羊秀 + 教堂島 + 帝王城堡</h4>
@@ -1543,7 +1693,7 @@ a{color:var(--crimson)}
       </div>
     </div>
 
-    <div class="day-row">
+    <div class="day-row" data-day="07">
       <div class="day-num">07<small>10/30 週五 · 華沙</small></div>
       <div class="day-content">
         <h4>華沙告別日 · POLIN + 起義 + 皇家城堡 + 蕭邦音樂會</h4>
@@ -1573,7 +1723,7 @@ a{color:var(--crimson)}
       </div>
     </div>
 
-    <div class="day-row">
+    <div class="day-row" data-day="08">
       <div class="day-num">08<small>10/31 週六 · 華沙 → 多哈</small></div>
       <div class="day-content">
         <h4>機場日 · 14:40 卡達航空 QR 260 起飛</h4>
@@ -2040,9 +2190,11 @@ a{color:var(--crimson)}
     </p>
 
     <div class="city-food-grid">
-      <div class="city-food-cell">
-        <div class="cf-city">華沙</div>
-        <div class="cf-name">Warszawa</div>
+      <details class="city-food-cell">
+        <summary>
+          <div class="cf-city">華沙</div>
+          <div class="cf-name">Warszawa</div>
+        </summary>
         <ul>
           <li>
             <strong>美食市集 · 中東風</strong>
@@ -2073,11 +2225,13 @@ a{color:var(--crimson)}
             <a href="https://www.google.com/maps/search/?api=1&amp;query=U+Kucharzy+Warszawa" target="_blank" rel="noopener"><em>U Kucharzy</em></a>（前皇宮主廚開店、可外帶罐裝伴手）
           </li>
         </ul>
-      </div>
+      </details>
 
-      <div class="city-food-cell">
-        <div class="cf-city">克拉科夫</div>
-        <div class="cf-name">Kraków</div>
+      <details class="city-food-cell">
+        <summary>
+          <div class="cf-city">克拉科夫</div>
+          <div class="cf-name">Kraków</div>
+        </summary>
         <ul>
           <li>
             <strong>米其林必比登</strong>
@@ -2116,11 +2270,13 @@ a{color:var(--crimson)}
             老城各街角藍色推車（廣場周邊均有），PLN 3–4 銅板價
           </li>
         </ul>
-      </div>
+      </details>
 
-      <div class="city-food-cell">
-        <div class="cf-city">弗羅茨瓦夫</div>
-        <div class="cf-name">Wrocław</div>
+      <details class="city-food-cell">
+        <summary>
+          <div class="cf-city">弗羅茨瓦夫</div>
+          <div class="cf-name">Wrocław</div>
+        </summary>
         <ul>
           <li>
             <strong>Śląskie kluski 馬鈴薯丸 · Rolada śląska 牛肉卷</strong>
@@ -2147,11 +2303,13 @@ a{color:var(--crimson)}
             <a href="https://www.google.com/maps/search/?api=1&amp;query=Pod+Fredra+Wroclaw" target="_blank" rel="noopener"><em>Pod Fredrą</em></a>（廣場旁）/ <a href="https://www.google.com/maps/search/?api=1&amp;query=Jadka+Restauracja+Wroclaw" target="_blank" rel="noopener"><em>Jadka</em></a>（傳統高級）
           </li>
         </ul>
-      </div>
+      </details>
 
-      <div class="city-food-cell">
-        <div class="cf-city">波茲南</div>
-        <div class="cf-name">Poznań</div>
+      <details class="city-food-cell">
+        <summary>
+          <div class="cf-city">波茲南</div>
+          <div class="cf-name">Poznań</div>
+        </summary>
         <ul>
           <li>
             <strong>Lech 啤酒 · 古釀酒廠</strong>
