@@ -8,7 +8,7 @@
 |---|------|---------|
 | 01 | 關於波蘭 | 速覽資料、ETIAS 2026 重要更新 |
 | 02 | 六大城市 | 華沙、克拉科夫、格但斯克、弗羅茨瓦夫、扎科帕內、波茲南 |
-| 03 | 波蘭美食 | 12 道必嘗料理 + Bar Mleczny 牛奶吧提示 |
+| 03 | 波蘭美食 | 12 道必嘗料理 + Bar Mleczny 牛奶吧提示 + **四城專屬料理對照表** |
 | 04 | 人文歷史 | 966 基督化 → 1989 團結工聯 → 第三共和 |
 | 05 | 氣候天氣 | 四季氣溫、最佳旅遊月份 |
 | 06 | 交通指南 | 火車、巴士、城內交通、必備 App、城際時間票價表 |
@@ -19,7 +19,7 @@
 | 11 | 鄰國延伸 | 柏林、布拉格、布達佩斯、維爾紐斯 |
 | 12 | 安全與緊急 | 緊急電話、駐波蘭代表處、觀光陷阱、在地禮儀 |
 | 13 | 本次航班 | 台北 ↔ 華沙（國泰 + 卡達 + 長榮）|
-| 14 | **8 日行程 v2** | **四城深度路線：路線地圖 + 火車一覽 + 逐時刻表 + 訂票時程 + 注意事項** |
+| 14 | **8 日行程 v2** | **四城深度路線：路線地圖 + 火車一覽 + 逐時刻表 + 必吃美食 + 訂票時程 + 注意事項** |
 
 ## ✈️ 本次旅行概要
 
@@ -65,6 +65,17 @@ Day 6  POZ → WAW   EIP              17:30 → 20:15  (2h45)
 ```
 
 完整逐時刻表、訂票時程、住宿區建議、注意事項詳見 **[index.html § 14](https://jack926509.github.io/Poland-trip/#itinerary)**
+
+### 🍴 四城必吃美食精選
+
+| 城市 | 招牌料理 | 推薦店家 |
+|---|---|---|
+| 🍞 **華沙** | Pierogi · Żurek · Wedel 熱巧克力 | Zapiecek / U Fukiera / E. Wedel Pijalnia |
+| 🥨 **克拉科夫** | Obwarzanek (PGI) · Zapiekanka · Sernik · 米其林 | 街頭藍車 / Plac Nowy 圓亭 / Szara Gęś |
+| 🍺 **弗羅茨瓦夫** | Śląskie kluski · Rolada śląska · 精釀啤酒 | Konspira / Browar Stu Mostów |
+| 🥐 **波茲南** | Rogal Świętomarciński (PGI) ⭐ · Pyry z gzikiem | Cukiernia Kandulski / Pyra Bar |
+
+完整 4 城專屬料理對照表詳見 **[index.html § 3](https://jack926509.github.io/Poland-trip/#food)**
 
 ## 📊 資料來源
 

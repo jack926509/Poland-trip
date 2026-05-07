@@ -834,6 +834,114 @@ a{color:var(--crimson)}
   color:var(--amber-deep);text-transform:uppercase;
 }
 
+/* Day-row eats block (food recommendations within day) */
+.day-eats{
+  background:rgba(196,137,43,.08);
+  border-left:3px solid var(--amber-deep);
+  padding:.95rem 1.3rem;
+  margin:.8rem 0 1rem;
+  font-size:.95rem;
+  font-family:'Noto Serif TC','Cormorant Garamond',serif;
+  line-height:1.7;
+}
+.day-eats .e-label{
+  display:inline-block;
+  font-family:'Bodoni Moda',serif;
+  font-size:.7rem;letter-spacing:.25em;
+  color:var(--amber-deep);
+  text-transform:uppercase;
+  font-weight:700;
+  margin-bottom:.4rem;
+}
+.day-eats em{color:var(--crimson-deep);font-style:italic;font-weight:500}
+.day-eats strong{color:var(--ink)}
+.day-eats ul{list-style:none;margin:.3rem 0 0;padding:0}
+.day-eats li{
+  margin-bottom:.4rem;
+  padding-left:1.1rem;
+  position:relative;
+}
+.day-eats li:last-child{margin-bottom:0}
+.day-eats li::before{
+  content:"●";
+  position:absolute;left:0;top:.05rem;
+  color:var(--amber);
+  font-size:.7rem;
+}
+
+/* §3 city-specific food showcase */
+.city-food-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:0;
+  border:2px solid var(--ink);
+  margin:1.5rem 0 0;
+}
+.city-food-cell{
+  padding:1.6rem;
+  border-right:1px solid var(--ink);
+  border-bottom:1px solid var(--ink);
+  background:var(--paper);
+}
+.city-food-cell:last-child{border-right:none}
+.city-food-cell .cf-city{
+  font-family:'Bodoni Moda',serif;
+  font-size:1.5rem;font-weight:700;
+  color:var(--crimson);
+  margin-bottom:.1rem;
+  letter-spacing:-.01em;
+}
+.city-food-cell .cf-name{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:1rem;
+  color:var(--amber-deep);
+  margin-bottom:1rem;
+  padding-bottom:.7rem;
+  border-bottom:1px solid var(--ink);
+}
+.city-food-cell ul{list-style:none;margin:0;padding:0}
+.city-food-cell li{
+  font-size:.9rem;
+  line-height:1.5;
+  margin-bottom:.85rem;
+  padding-left:1.1rem;
+  position:relative;
+  color:var(--ink-soft);
+}
+.city-food-cell li::before{
+  content:"●";
+  position:absolute;left:0;top:.45rem;
+  color:var(--amber);
+  font-size:.7rem;
+}
+.city-food-cell li strong{
+  display:block;
+  color:var(--ink);
+  font-weight:700;
+  font-family:'Bodoni Moda',serif;
+  font-size:1rem;
+  margin-bottom:.15rem;
+  letter-spacing:-.005em;
+}
+.city-food-cell li em{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  color:var(--crimson-deep);
+}
+.city-food-cell .cf-star{
+  display:inline-block;
+  background:var(--amber);
+  color:var(--ink);
+  font-size:.6rem;
+  font-family:'JetBrains Mono',monospace;
+  letter-spacing:.1em;
+  padding:.1rem .35rem;
+  margin-left:.3rem;
+  font-weight:700;
+  vertical-align:middle;
+}
+
 /* Mobile RWD for tables */
 @media (max-width:760px){
   .train-table{font-size:.85rem}
@@ -849,6 +957,8 @@ a{color:var(--crimson)}
   }
   .booking-grid{grid-template-columns:1fr}
   .booking-cell{border-right:none}
+  .city-food-grid{grid-template-columns:1fr}
+  .city-food-cell{border-right:none}
   .sub-section-header{flex-direction:column;align-items:flex-start}
 }
 </style>
@@ -1173,6 +1283,118 @@ a{color:var(--crimson)}
     <div class="food-tip">
       <strong>★ 旅人提示</strong> &nbsp;|&nbsp;
       在波蘭找最道地、最便宜的家常菜，請尋找 <em>Bar Mleczny</em>（牛奶吧）——這是共產時期遺留的國營廉價餐廳，至今仍由政府補貼。一份完整套餐（湯+主菜+沙拉）約 PLN 25–35（NTD 215–300），是體驗真正波蘭日常飲食的最佳場所。
+    </div>
+
+    <!-- Sub-section: 四城專屬料理 -->
+    <div class="sub-section-header">
+      <h3>四城專屬料理</h3>
+      <div class="sub-kicker">City-Specific Specialties · 各城必吃 + 推薦店家</div>
+    </div>
+
+    <p style="font-size:1rem;font-style:italic;margin:0 0 1.5rem;color:var(--ink-soft);font-family:'Cormorant Garamond',serif;max-width:760px;line-height:1.55">
+      除了上述 12 道全國通行料理，每座城市都有自己的招牌：克拉科夫的 Obwarzanek 圓圈麵包、弗羅茨瓦夫的西里西亞馬鈴薯丸、波茲南的聖馬丁牛角麵包都受歐盟 PGI 地理標誌保護——只有當地才能稱呼這個名字。
+    </p>
+
+    <div class="city-food-grid">
+      <div class="city-food-cell">
+        <div class="cf-city">華沙</div>
+        <div class="cf-name">Warszawa</div>
+        <ul>
+          <li>
+            <strong>Pierogi 波蘭餃子</strong>
+            <em>Zapiecek</em> 連鎖（觀光客友善）/ <em>Pierożki u Vincenta</em>（手工小店）
+          </li>
+          <li>
+            <strong>Żurek 酸黑麥湯</strong>
+            <em>U Fukiera</em> 米其林必比登 / <em>Polka</em>（Magda Gessler 名廚店）
+          </li>
+          <li>
+            <strong>Pączki 波蘭甜甜圈</strong>
+            <em>A. Blikle</em> 1869 年老字號
+          </li>
+          <li>
+            <strong>Wedel 熱巧克力</strong>
+            <em>E. Wedel Pijalnia Czekolady</em>（蕭邦曾常去）
+          </li>
+        </ul>
+      </div>
+
+      <div class="city-food-cell">
+        <div class="cf-city">克拉科夫</div>
+        <div class="cf-name">Kraków</div>
+        <ul>
+          <li>
+            <strong>Obwarzanek 圓圈麵包<span class="cf-star">PGI</span></strong>
+            老城各街角藍色推車，PLN 3–4 銅板價
+          </li>
+          <li>
+            <strong>Zapiekanka 開放披薩</strong>
+            <em>Plac Nowy 圓亭</em>（Endzior、Krzysiek，街頭聖地）
+          </li>
+          <li>
+            <strong>Sernik krakowski 起司蛋糕</strong>
+            <em>Cukiernia Michałek</em> 百年甜點店
+          </li>
+          <li>
+            <strong>米其林必比登晚餐</strong>
+            <em>Szara Gęś</em>（中央廣場）/ <em>Starka</em>（Kazimierz）
+          </li>
+          <li>
+            <strong>猶太料理（Kazimierz）</strong>
+            <em>Klezmer-Hois</em> / <em>Hamsa</em> 現代以色列料理
+          </li>
+        </ul>
+      </div>
+
+      <div class="city-food-cell">
+        <div class="cf-city">弗羅茨瓦夫</div>
+        <div class="cf-name">Wrocław</div>
+        <ul>
+          <li>
+            <strong>Śląskie kluski 西里西亞馬鈴薯丸</strong>
+            <em>Konspira</em>（80 年代地下反共主題餐廳）
+          </li>
+          <li>
+            <strong>Rolada śląska 牛肉卷</strong>
+            <em>Konspira</em>，配 modra kapusta 紫高麗菜
+          </li>
+          <li>
+            <strong>波蘭精釀啤酒</strong>
+            <em>Browar Stu Mostów</em>（旗艦廠）/ <em>Browar Spiż</em>（廣場地下）
+          </li>
+          <li>
+            <strong>Pierogi 西里西亞風</strong>
+            <em>Pierogarnia Stary Młyn</em>（廣場旁）
+          </li>
+        </ul>
+      </div>
+
+      <div class="city-food-cell">
+        <div class="cf-city">波茲南</div>
+        <div class="cf-name">Poznań</div>
+        <ul>
+          <li>
+            <strong>Rogal Świętomarciński 聖馬丁牛角麵包<span class="cf-star">PGI</span></strong>
+            <em>Cukiernia Kandulski</em> 百年老店 / 牛角麵包博物館內
+          </li>
+          <li>
+            <strong>Pyry z gzikiem 馬鈴薯佐凝乳</strong>
+            <em>Pyra Bar</em>（市中心連鎖、觀光客友善）
+          </li>
+          <li>
+            <strong>Plyndze 馬鈴薯煎餅</strong>
+            <em>Pyra Bar</em> / 傳統波蘭料理小館
+          </li>
+          <li>
+            <strong>Czernina 鴨血酸湯</strong>
+            <em>Stary Maglownik</em>（挑戰級，重口味老菜）
+          </li>
+          <li>
+            <strong>Lech 啤酒</strong>
+            波茲南本地釀造，Stary Browar 古釀酒廠最齊全
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
@@ -1896,6 +2118,13 @@ a{color:var(--crimson)}
           <span class="h-time">19:00</span> Pierogi 晚餐（<em>Zapiecek</em> 或 <em>Pierożki u Vincenta</em>）<br>
           <span class="h-time">21:00</span> 早睡倒時差
         </div>
+        <div class="day-eats">
+          <div class="e-label">🍴 抵達日必吃</div>
+          <ul>
+            <li><strong>Pierogi 波蘭餃子</strong>（晚餐首選）— <em>Zapiecek</em>（連鎖、觀光客友善）或 <em>Pierożki u Vincenta</em>（手工小店）</li>
+            <li><strong>Wedel 熱巧克力</strong>（飯後甜點）— <em>E. Wedel Pijalnia Czekolady</em>，蕭邦曾常去的百年甜店</li>
+          </ul>
+        </div>
         <div class="day-warn"><strong>⚠ DST 提醒</strong>　今晚凌晨 03:00 → 02:00 自動多睡一小時。手機鬧鐘自動調整，傳統旅館鬧鐘可能不會。</div>
       </div>
     </div>
@@ -1917,6 +2146,14 @@ a{color:var(--crimson)}
           <span class="h-time">16:00</span> <span class="h-star">★</span> 瓦維爾城堡 Wawel（皇家寢宮 + 大教堂）<br>
           <span class="h-time">18:00</span> Planty 環城公園散步<br>
           <span class="h-time">19:00</span> 晚餐（<em>Pod Aniołami</em> 或 <em>Miód Malina</em>）
+        </div>
+        <div class="day-eats">
+          <div class="e-label">🍴 克拉科夫初體驗</div>
+          <ul>
+            <li><strong>Obwarzanek krakowski 圓圈麵包</strong>（街頭早午餐）— EU PGI 認證，老城藍色推車 PLN 3–4 銅板價</li>
+            <li><strong>Pierogi 餃子午餐</strong> — <em>Pierogarnia Krakowiacy</em> 或 Plac Nowy 街邊</li>
+            <li><strong>傳統晚餐</strong> — <em>Pod Aniołami</em>（地窖氛圍）或 <em>Miód Malina</em>（蜂蜜藍莓主題）</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -1963,6 +2200,15 @@ a{color:var(--crimson)}
           <span class="h-time">17:30</span> IC 火車出發<br>
           <span class="h-time">21:00</span> 抵 Wrocław Główny → Bolt 到旅館
         </div>
+        <div class="day-eats">
+          <div class="e-label">🍴 Kazimierz 招牌</div>
+          <ul>
+            <li><strong>Zapiekanka 開放披薩</strong>（必吃街頭聖地）— <em>Plac Nowy 圓亭</em>，Endzior 和 Krzysiek 是兩大攤位</li>
+            <li><strong>Sernik krakowski 起司蛋糕</strong>（下午茶）— <em>Cukiernia Michałek</em> 百年甜點老店</li>
+            <li><strong>猶太料理選項</strong>（替代）— <em>Klezmer-Hois</em> 傳統 / <em>Hamsa</em> 現代以色列料理</li>
+            <li><strong>米其林必比登</strong>（升級晚餐）— <em>Starka</em>（Kazimierz）or <em>Szara Gęś</em>（中央廣場）</li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -1986,6 +2232,15 @@ a{color:var(--crimson)}
           <span class="h-time">17:45</span> 回旅館拉行李<br>
           <span class="h-time">19:00</span> IC 火車出發<br>
           <span class="h-time">21:20</span> 抵 Poznań Główny → 旅館 check-in
+        </div>
+        <div class="day-eats">
+          <div class="e-label">🍴 弗羅茨瓦夫西里西亞風味</div>
+          <ul>
+            <li><strong>Śląskie kluski 西里西亞馬鈴薯丸</strong>（午餐）— <em>Konspira</em>，80 年代反共地下主題餐廳</li>
+            <li><strong>Rolada śląska 牛肉卷</strong>（替代主餐）— <em>Konspira</em>，配 modra kapusta 紫高麗菜</li>
+            <li><strong>波蘭精釀啤酒</strong>（午後或晚餐配）— <em>Browar Stu Mostów</em> 旗艦廠 / <em>Browar Spiż</em> 廣場地下</li>
+            <li><strong>Bernard Pub</strong>（廣場上）— 捷克啤酒 + 波蘭料理融合</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -2011,6 +2266,15 @@ a{color:var(--crimson)}
           <span class="h-time">17:30</span> EIP 出發<br>
           <span class="h-time">20:15</span> 抵 Warszawa Centralna → 旅館 check-in
         </div>
+        <div class="day-eats">
+          <div class="e-label">🍴 波茲南專屬美食</div>
+          <ul>
+            <li><strong>Rogal Świętomarciński 聖馬丁牛角麵包</strong> ⭐ 必吃 — EU PGI 認證、月牙形罌粟籽白杏仁餡。<em>Cukiernia Kandulski</em> 百年老店或 <em>Rogalowe Muzeum Poznania</em> 牛角麵包博物館內</li>
+            <li><strong>Pyry z gzikiem 馬鈴薯佐凝乳</strong>（大波蘭省家常菜）— <em>Pyra Bar</em> 市中心連鎖，觀光客友善</li>
+            <li><strong>Czernina 鴨血酸湯</strong>（重口味挑戰）— <em>Stary Maglownik</em>，傳統大波蘭料理</li>
+            <li><strong>Lech 啤酒</strong>（波茲南本地釀）— Stary Browar 古釀酒廠</li>
+          </ul>
+        </div>
       </div>
     </div>
 
@@ -2030,6 +2294,15 @@ a{color:var(--crimson)}
           <span class="h-time">18:30</span> Krakowskie Przedmieście 大街採購（Wedel 巧克力、Bolesławiec 陶瓷）<br>
           <span class="h-time">19:30</span> 老城最後晚餐（<em>U Fukiera</em> 或 <em>Polka</em>）<br>
           <span class="h-time">21:30</span> 老城夜景收尾、旅館整理行李
+        </div>
+        <div class="day-eats">
+          <div class="e-label">🍴 華沙告別餐</div>
+          <ul>
+            <li><strong>Żurek 酸黑麥湯</strong>（傳統正餐主湯）— <em>U Fukiera</em> 米其林必比登老牌 / <em>Polka</em> Magda Gessler 名廚店，麵包碗盛裝最有儀式感</li>
+            <li><strong>Schabowy 炸豬排</strong>（家常選擇）— Bar Mleczny 牛奶吧，便宜大份 PLN 25–35</li>
+            <li><strong>Pączki 波蘭甜甜圈</strong>（伴手禮）— <em>A. Blikle</em> 1869 年老字號，玫瑰花瓣果醬內餡</li>
+            <li><strong>Bigos 獵人燉肉</strong>（帶外帶罐裝）— <em>U Kucharzy</em> 皇宮主廚改開的店</li>
+          </ul>
         </div>
         <div class="day-warn"><strong>⚠ 諸聖節前夕</strong>　10/31 是諸聖節前一天（11/1 為波蘭最重要家庭節日），但你 14:40 已起飛恰好避開。10/30 採購時店家可能提早關門，建議下午就買齊。</div>
       </div>
