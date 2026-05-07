@@ -2,6 +2,21 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
+<!-- Device redirect: mobile users get the companion app, ?classic=1 stays here -->
+<script>
+(function(){
+  try {
+    var url = new URL(window.location.href);
+    if (url.searchParams.get('classic') === '1') return;
+    if (sessionStorage.getItem('polska-classic') === '1') return;
+    var isMobile = window.matchMedia('(max-width: 640px)').matches
+                || /iPhone|Android.+Mobile|iPod/i.test(navigator.userAgent);
+    if (isMobile) {
+      window.location.replace('mobile.html');
+    }
+  } catch(e) {}
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>POLSKA — 波蘭旅遊指南 2025–2026 | Eastern Europe Magazine</title>
 <meta name="description" content="2025-2026 波蘭旅遊深度指南：華沙、克拉科夫、格但斯克、弗羅茨瓦夫、扎科帕內。涵蓋景點、美食、人文歷史、天氣與交通，整合權威旅遊資料。">
@@ -1716,7 +1731,7 @@
   </div>
   <div class="footer-bottom">
     <span>© 2026 · Compiled with care</span>
-    <span>Published May 2026 · Vol I · No 1</span>
+    <span><a href="mobile.html" style="color:inherit">行動旅伴版</a> · <a href="app-preview.html" style="color:inherit">App 預覽</a> · Vol I · No 1</span>
   </div>
 </footer>
 
