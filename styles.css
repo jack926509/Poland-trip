@@ -1,0 +1,1360 @@
+:root{
+  --paper:#f4ecd8;
+  --paper-deep:#ebe1c9;
+  --ink:#1a1612;
+  --ink-soft:#3d362e;
+  --crimson:#a8231d;       /* 波蘭國旗紅 */
+  --crimson-deep:#7a1812;
+  --amber:#c4892b;         /* 波羅的海琥珀 */
+  --amber-deep:#8b5e15;
+  --moss:#3d4a2a;
+  --rule:#1a1612;
+  --shadow:rgba(26,22,18,0.08);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{
+  font-family:'Noto Serif TC','Cormorant Garamond',Georgia,serif;
+  background:var(--paper);
+  color:var(--ink);
+  line-height:1.65;
+  font-size:17px;
+  overflow-x:hidden;
+  background-image:
+    radial-gradient(ellipse at top,rgba(196,137,43,.06) 0,transparent 60%),
+    radial-gradient(ellipse at bottom right,rgba(168,35,29,.04) 0,transparent 60%);
+}
+
+/* 紙張紋理 */
+body::before{
+  content:"";
+  position:fixed;inset:0;pointer-events:none;z-index:1;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+  opacity:.5;
+}
+
+/* === HEADER / MASTHEAD === */
+.masthead{
+  border-bottom:3px double var(--ink);
+  padding:1.2rem 2rem .9rem;
+  background:var(--paper);
+  position:relative;
+  z-index:10;
+}
+.masthead-inner{
+  max-width:1280px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:baseline;
+  gap:1rem;flex-wrap:wrap;
+  font-family:'Bodoni Moda',serif;
+  font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;
+}
+.masthead-meta{color:var(--ink-soft)}
+.masthead-flag{
+  display:inline-flex;align-items:center;gap:.4rem;
+}
+.masthead-flag::before{
+  content:"";width:14px;height:10px;
+  background:linear-gradient(180deg,#fff 50%,var(--crimson) 50%);
+  border:.5px solid var(--ink);
+  display:inline-block;
+}
+
+/* === HERO === */
+.hero{
+  padding:4rem 2rem 5rem;
+  border-bottom:1px solid var(--ink);
+  position:relative;
+  overflow:hidden;
+}
+.hero-grid{
+  max-width:1280px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:end;
+  position:relative;
+}
+.hero-issue{
+  font-family:'Bodoni Moda',serif;
+  font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--crimson);font-weight:700;
+  margin-bottom:1.5rem;
+  display:flex;gap:1rem;align-items:center;
+}
+.hero-issue::after{
+  content:"";flex:1;height:1px;background:var(--ink);max-width:160px;
+}
+.hero h1{
+  font-family:'Bodoni Moda',serif;
+  font-size:clamp(4rem,11vw,9rem);
+  font-weight:900;
+  line-height:.85;
+  letter-spacing:-.04em;
+  margin-bottom:1.5rem;
+  color:var(--ink);
+}
+.hero h1 .accent{
+  font-style:italic;
+  color:var(--crimson);
+  font-weight:400;
+}
+.hero-subtitle{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.5rem;font-style:italic;
+  color:var(--ink-soft);
+  font-weight:500;
+  max-width:480px;
+  line-height:1.4;
+}
+.hero-meta{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-soft);
+  margin-top:2rem;
+  display:flex;flex-direction:column;gap:.4rem;
+}
+.hero-meta strong{color:var(--ink);font-weight:700}
+
+.hero-quote{
+  border-left:3px solid var(--crimson);
+  padding:1.5rem 0 1.5rem 2rem;
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:1.4rem;
+  line-height:1.5;
+  color:var(--ink);
+  position:relative;
+}
+.hero-quote::before{
+  content:"\201C";
+  position:absolute;
+  font-family:'Bodoni Moda',serif;
+  font-size:6rem;
+  color:var(--crimson);
+  opacity:.2;
+  top:-2rem;left:1rem;
+  line-height:1;
+}
+.hero-quote cite{
+  display:block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;
+  font-style:normal;
+  margin-top:1rem;
+  color:var(--ink-soft);
+}
+
+/* 大型背景字 */
+.hero::after{
+  content:"POLSKA";
+  position:absolute;
+  font-family:'Bodoni Moda',serif;
+  font-weight:900;
+  font-size:30vw;
+  bottom:-8vw;right:-3vw;
+  color:var(--crimson);
+  opacity:.04;
+  pointer-events:none;
+  letter-spacing:-.05em;
+  z-index:0;
+}
+
+/* === NAV === */
+.nav-strip{
+  background:var(--ink);
+  color:var(--paper);
+  padding:.8rem 2rem;
+  position:sticky;top:0;z-index:50;
+  border-bottom:1px solid var(--paper);
+}
+.nav-inner{
+  max-width:1280px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'Bodoni Moda',serif;
+  font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;
+  flex-wrap:wrap;gap:1rem;
+}
+.nav-links{display:flex;gap:1.8rem;flex-wrap:wrap}
+.nav-links a{
+  color:var(--paper);text-decoration:none;
+  position:relative;padding-bottom:2px;
+  transition:color .3s;
+}
+.nav-links a:hover{color:var(--amber)}
+.nav-brand{
+  font-family:'Bodoni Moda',serif;font-weight:900;
+  letter-spacing:.2em;color:var(--paper);
+}
+
+/* 漢堡按鈕（桌面隱藏） */
+.nav-toggle{
+  display:none;
+  width:44px;height:44px;
+  flex-direction:column;justify-content:center;align-items:center;gap:5px;
+  background:transparent;border:none;cursor:pointer;padding:0;
+}
+.nav-toggle span{
+  display:block;width:22px;height:2px;background:var(--paper);
+  transition:transform .25s ease,opacity .15s;
+}
+.nav-toggle[aria-expanded="true"] span:nth-child(1){transform:translate(0,7px) rotate(45deg)}
+.nav-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.nav-toggle[aria-expanded="true"] span:nth-child(3){transform:translate(0,-7px) rotate(-45deg)}
+
+/* 抽屜遮罩（桌面隱藏） */
+.nav-overlay{
+  position:fixed;inset:0;
+  background:rgba(26,22,18,.55);
+  z-index:54;opacity:0;pointer-events:none;
+  transition:opacity .25s ease;
+}
+.nav-overlay.open{opacity:1;pointer-events:auto}
+body.nav-open{overflow:hidden}
+
+/* 閱讀進度條 */
+.reading-progress{
+  position:fixed;top:0;left:0;height:3px;width:0;
+  background:var(--crimson);
+  z-index:100;pointer-events:none;
+  transition:width .12s linear;
+}
+
+/* 回到頂部按鈕 */
+.back-to-top{
+  position:fixed;bottom:1.2rem;right:1.2rem;
+  width:44px;height:44px;border-radius:50%;
+  background:var(--ink);color:var(--paper);
+  border:1px solid var(--paper);
+  font-family:'Bodoni Moda',serif;font-size:1.3rem;font-weight:700;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  z-index:60;opacity:0;transform:translateY(8px);
+  transition:opacity .25s,transform .25s;
+  pointer-events:none;
+  box-shadow:0 4px 12px rgba(0,0,0,.25);
+}
+.back-to-top.show{opacity:1;transform:none;pointer-events:auto}
+.back-to-top:hover{background:var(--crimson);border-color:var(--crimson)}
+
+/* === SECTIONS === */
+section{
+  padding:5rem 2rem;
+  border-bottom:1px solid var(--ink);
+  position:relative;
+  z-index:2;
+}
+.container{max-width:1280px;margin:0 auto}
+
+.section-header{
+  display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:center;
+  margin-bottom:3rem;
+  border-bottom:3px double var(--ink);
+  padding-bottom:1.5rem;
+}
+.section-num{
+  font-family:'Bodoni Moda',serif;
+  font-weight:900;font-size:5rem;line-height:1;
+  color:var(--crimson);
+  font-style:italic;
+}
+.section-title-block h2{
+  font-family:'Bodoni Moda',serif;
+  font-size:clamp(2rem,5vw,3.5rem);
+  font-weight:900;line-height:1;
+  letter-spacing:-.02em;
+}
+.section-title-block .kicker{
+  font-family:'Bodoni Moda',serif;
+  font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--ink-soft);
+  margin-bottom:.5rem;
+}
+
+/* === ABOUT POLAND === */
+.about-grid{
+  display:grid;
+  grid-template-columns:1.5fr 1fr;
+  gap:4rem;
+}
+.about-lead{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.4rem;
+  line-height:1.55;
+  font-weight:500;
+}
+.about-lead::first-letter{
+  font-family:'Bodoni Moda',serif;
+  font-size:5rem;
+  font-weight:900;
+  float:left;
+  line-height:.85;
+  margin:.4rem .6rem -.2rem 0;
+  color:var(--crimson);
+  font-style:normal;
+}
+.about-lead p+p{margin-top:1.2rem;font-size:1.1rem}
+
+.fact-card{
+  background:var(--paper-deep);
+  border:1px solid var(--ink);
+  padding:2rem;
+}
+.fact-card h3{
+  font-family:'Bodoni Moda',serif;
+  font-size:.78rem;letter-spacing:.25em;text-transform:uppercase;
+  color:var(--crimson);font-weight:700;
+  margin-bottom:1.5rem;
+  border-bottom:1px solid var(--ink);
+  padding-bottom:.6rem;
+}
+.fact-row{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:.6rem 0;
+  border-bottom:1px dotted var(--ink);
+  font-size:.95rem;
+}
+.fact-row:last-child{border-bottom:none}
+.fact-key{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-soft);
+}
+.fact-val{font-weight:500;text-align:right}
+
+/* === CITIES === */
+.cities-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+  gap:0;
+  border-left:1px solid var(--ink);
+  border-top:1px solid var(--ink);
+}
+.city-card{
+  border-right:1px solid var(--ink);
+  border-bottom:1px solid var(--ink);
+  padding:2.5rem;
+  background:var(--paper);
+  transition:background .4s,transform .4s;
+  position:relative;
+  cursor:default;
+}
+.city-card:hover{
+  background:var(--paper-deep);
+}
+.city-num{
+  position:absolute;top:1rem;right:1.5rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;
+  color:var(--ink-soft);
+  letter-spacing:.1em;
+}
+.city-name{
+  font-family:'Bodoni Moda',serif;
+  font-size:2.4rem;font-weight:900;
+  line-height:1;
+  margin-bottom:.3rem;
+  letter-spacing:-.02em;
+}
+.city-name-pl{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:1.1rem;
+  color:var(--crimson);
+  margin-bottom:1.2rem;
+  font-weight:500;
+}
+.city-tag{
+  display:inline-block;
+  font-family:'Bodoni Moda',serif;
+  font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--paper);background:var(--ink);
+  padding:.3rem .7rem;
+  margin-bottom:1.2rem;
+}
+.city-desc{
+  font-size:1rem;
+  line-height:1.65;
+  margin-bottom:1.4rem;
+}
+.city-highlights{
+  list-style:none;
+  border-top:1px dotted var(--ink);
+  padding-top:1rem;
+}
+.city-highlights li{
+  font-size:.92rem;
+  padding:.3rem 0;
+  position:relative;
+  padding-left:1.5rem;
+  color:var(--ink-soft);
+}
+.city-highlights li::before{
+  content:"◆";
+  position:absolute;left:0;top:.4rem;
+  color:var(--amber);
+  font-size:.7rem;
+}
+.city-highlights strong{color:var(--ink)}
+
+/* === FOOD === */
+.food-section{
+  background:linear-gradient(180deg,var(--paper) 0%,var(--paper-deep) 100%);
+}
+.food-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1.5rem;
+  margin-bottom:3rem;
+}
+.food-item{
+  border:1px solid var(--ink);
+  padding:1.8rem 1.5rem;
+  background:var(--paper);
+  position:relative;
+  transition:transform .3s,box-shadow .3s;
+}
+.food-item:hover{
+  transform:translateY(-4px);
+  box-shadow:6px 6px 0 var(--ink);
+}
+.food-item .num{
+  font-family:'Bodoni Moda',serif;
+  font-style:italic;font-weight:900;
+  font-size:2.2rem;
+  color:var(--crimson);
+  line-height:1;margin-bottom:.5rem;
+}
+.food-item h4{
+  font-family:'Bodoni Moda',serif;
+  font-size:1.4rem;
+  font-weight:700;
+  margin-bottom:.2rem;
+}
+.food-item .pl-name{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:.95rem;
+  color:var(--amber-deep);
+  margin-bottom:.8rem;
+}
+.food-item p{
+  font-size:.95rem;
+  color:var(--ink-soft);
+  line-height:1.55;
+}
+
+.food-tip{
+  background:var(--ink);color:var(--paper);
+  padding:2rem;
+  border-left:6px solid var(--amber);
+  font-size:1.05rem;
+  line-height:1.6;
+}
+.food-tip strong{color:var(--amber);letter-spacing:.05em}
+
+/* === CULTURE / HISTORY === */
+.history-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  border:1px solid var(--ink);
+}
+.history-cell{
+  padding:2.5rem;
+  border-right:1px solid var(--ink);
+  border-bottom:1px solid var(--ink);
+}
+.history-cell:nth-child(2n){border-right:none}
+.history-cell:nth-last-child(-n+2){border-bottom:none}
+.history-cell h4{
+  font-family:'Bodoni Moda',serif;
+  font-size:1.5rem;font-weight:700;
+  margin-bottom:1rem;
+  color:var(--crimson);
+}
+.history-cell .era{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;letter-spacing:.15em;
+  color:var(--ink-soft);
+  margin-bottom:.6rem;
+}
+.history-cell p{
+  font-size:1rem;
+  line-height:1.65;
+  color:var(--ink-soft);
+}
+
+/* === WEATHER === */
+.weather-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+  border:1px solid var(--ink);
+}
+.weather-card{
+  padding:2rem 1.5rem;
+  border-right:1px solid var(--ink);
+  background:var(--paper);
+  text-align:center;
+}
+.weather-card:last-child{border-right:none}
+.weather-card .season{
+  font-family:'Bodoni Moda',serif;
+  font-style:italic;
+  font-size:1.6rem;
+  font-weight:700;
+  margin-bottom:.3rem;
+}
+.weather-card .months{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;letter-spacing:.1em;
+  color:var(--ink-soft);
+  margin-bottom:1.2rem;
+}
+.weather-card .temp{
+  font-family:'Bodoni Moda',serif;
+  font-size:2.2rem;font-weight:900;
+  color:var(--crimson);
+  margin-bottom:.5rem;
+  line-height:1;
+}
+.weather-card .desc{
+  font-size:.92rem;
+  color:var(--ink-soft);
+  line-height:1.5;
+}
+.weather-card.spring{background:linear-gradient(180deg,var(--paper) 0%,#e8e9d4 100%)}
+.weather-card.summer{background:linear-gradient(180deg,var(--paper) 0%,#f4dcb5 100%)}
+.weather-card.autumn{background:linear-gradient(180deg,var(--paper) 0%,#e4c8a8 100%)}
+.weather-card.winter{background:linear-gradient(180deg,var(--paper) 0%,#d8dde2 100%)}
+
+.best-time{
+  margin-top:2rem;
+  padding:2rem;
+  background:var(--paper-deep);
+  border:1px solid var(--ink);
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:2rem;align-items:center;
+}
+.best-time .badge{
+  font-family:'Bodoni Moda',serif;
+  font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;
+  background:var(--crimson);color:var(--paper);
+  padding:.5rem 1rem;
+  display:inline-block;
+}
+
+/* === TRANSPORT === */
+.transport-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:0;
+  border:1px solid var(--ink);
+}
+.transport-cell{
+  padding:2rem;
+  border-right:1px solid var(--ink);
+  background:var(--paper);
+}
+.transport-cell:last-child{border-right:none}
+.transport-cell .icon{
+  font-family:'Bodoni Moda',serif;
+  font-style:italic;font-weight:900;
+  font-size:3rem;
+  color:var(--amber-deep);
+  line-height:1;margin-bottom:.5rem;
+}
+.transport-cell h4{
+  font-family:'Bodoni Moda',serif;
+  font-size:1.5rem;font-weight:700;
+  margin-bottom:.8rem;
+}
+.transport-cell p{
+  font-size:.95rem;
+  color:var(--ink-soft);
+  line-height:1.6;margin-bottom:.8rem;
+}
+.transport-cell .tip{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.75rem;
+  background:var(--paper-deep);
+  padding:.6rem .8rem;
+  border-left:3px solid var(--crimson);
+  color:var(--ink);line-height:1.5;
+  letter-spacing:.02em;
+}
+
+/* === ITINERARY === */
+.itinerary-section{padding-top:6rem}
+.day-row{
+  display:grid;
+  grid-template-columns:120px 1fr;
+  gap:2rem;
+  padding:2rem 0;
+  border-bottom:1px dotted var(--ink);
+  align-items:start;
+}
+.day-row:last-child{border-bottom:none}
+.day-num{
+  font-family:'Bodoni Moda',serif;
+  font-style:italic;font-weight:900;
+  font-size:3.5rem;line-height:1;
+  color:var(--crimson);
+}
+.day-num small{
+  display:block;
+  font-style:normal;font-weight:400;
+  font-size:.7rem;letter-spacing:.2em;
+  color:var(--ink-soft);
+  font-family:'JetBrains Mono',monospace;
+  margin-top:.4rem;
+}
+.day-content h4{
+  font-family:'Bodoni Moda',serif;
+  font-size:1.5rem;font-weight:700;
+  margin-bottom:.5rem;
+}
+.day-content p{
+  font-size:1rem;
+  line-height:1.65;
+  color:var(--ink-soft);
+}
+
+/* === FOOTER === */
+footer{
+  background:var(--ink);
+  color:var(--paper);
+  padding:4rem 2rem 2rem;
+  position:relative;z-index:2;
+}
+.footer-inner{
+  max-width:1280px;margin:0 auto;
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  gap:3rem;
+  padding-bottom:3rem;
+  border-bottom:1px solid var(--paper);
+}
+.footer-brand{
+  font-family:'Bodoni Moda',serif;
+  font-weight:900;
+  font-size:3rem;
+  line-height:1;
+  letter-spacing:-.02em;
+  margin-bottom:1rem;
+}
+.footer-brand .accent{color:var(--crimson);font-style:italic;font-weight:400}
+.footer-tag{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:1.1rem;
+  color:var(--paper);opacity:.7;
+  max-width:380px;
+}
+.footer-col h5{
+  font-family:'Bodoni Moda',serif;
+  font-size:.72rem;letter-spacing:.25em;text-transform:uppercase;
+  margin-bottom:1rem;
+  color:var(--amber);
+}
+.footer-col ul{list-style:none}
+.footer-col li{padding:.3rem 0;font-size:.92rem}
+.footer-col a{color:var(--paper);opacity:.7;text-decoration:none;transition:opacity .3s}
+.footer-col a:hover{opacity:1;color:var(--amber)}
+.footer-bottom{
+  max-width:1280px;margin:0 auto;
+  padding-top:2rem;
+  display:flex;justify-content:space-between;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--paper);opacity:.6;
+  flex-wrap:wrap;gap:1rem;
+}
+
+/* === DECORATIVE === */
+.divider-decorative{
+  text-align:center;
+  font-family:'Bodoni Moda',serif;
+  font-size:1.5rem;
+  letter-spacing:1.5em;
+  color:var(--crimson);
+  padding:2rem 0;
+  opacity:.7;
+}
+
+/* === RESPONSIVE === */
+@media(max-width:900px){
+  .hero-grid,.about-grid{grid-template-columns:1fr;gap:2.5rem}
+  .weather-grid{grid-template-columns:repeat(2,1fr)}
+  .weather-card{border-bottom:1px solid var(--ink)}
+  .weather-card:nth-child(2n){border-right:none}
+  .weather-card:nth-last-child(-n+2){border-bottom:none}
+  .history-grid{grid-template-columns:1fr}
+  .history-cell{border-right:none !important;border-bottom:1px solid var(--ink) !important}
+  .history-cell:last-child{border-bottom:none !important}
+  .footer-inner{grid-template-columns:1fr;gap:2rem}
+  .day-row{grid-template-columns:80px 1fr;gap:1.2rem}
+  .day-num{font-size:2.5rem}
+  .section-header{grid-template-columns:1fr;gap:.5rem}
+  .section-num{font-size:3rem}
+  section{padding:3.5rem 1.2rem}
+  .hero{padding:2.5rem 1.2rem 3rem}
+  .hero-quote{padding-left:1.5rem;font-size:1.1rem}
+  .nav-links{font-size:.7rem;gap:1rem}
+}
+
+@media(max-width:600px){
+  /* base sizing */
+  html{font-size:16px}
+  section{padding:2.5rem 1rem}
+  .hero{padding:2rem 1rem 2.5rem}
+
+  /* nav：漢堡按鈕 + 滑出抽屜 */
+  .nav-strip{padding:.4rem 1rem}
+  .nav-inner{
+    flex-direction:row;justify-content:space-between;align-items:center;gap:.5rem;
+    flex-wrap:nowrap;
+  }
+  .nav-brand{font-size:.78rem;flex:1;min-width:0}
+  .nav-toggle{display:flex}
+  .nav-links{
+    position:fixed;top:0;right:0;
+    width:78%;max-width:320px;height:100vh;height:100dvh;
+    background:var(--ink);
+    flex-direction:column;flex-wrap:nowrap;overflow-y:auto;
+    padding:4.5rem 1.8rem 2rem;
+    gap:0;
+    transform:translateX(100%);
+    transition:transform .3s ease;
+    z-index:55;
+    box-shadow:-2px 0 22px rgba(0,0,0,.28);
+  }
+  .nav-links.open{transform:none}
+  .nav-links a{
+    display:block;
+    padding:1rem .2rem;
+    font-size:1rem;letter-spacing:.18em;
+    border-bottom:1px solid rgba(244,236,216,.12);
+    min-height:44px;
+  }
+  .nav-links a:first-child{border-top:1px solid rgba(244,236,216,.12)}
+
+  /* hero */
+  .hero-grid{gap:1.8rem}
+  .hero-subtitle{font-size:1.1rem;line-height:1.5}
+  .hero-meta{font-size:.62rem;gap:.3rem}
+  .hero-quote{font-size:1.05rem;padding:1rem 0 1rem 1.2rem;line-height:1.55}
+  .hero-quote::before{font-size:4rem;top:-1rem;left:.4rem}
+
+  /* section header 緊縮 */
+  .section-header{gap:.3rem;margin-bottom:1.8rem;padding-bottom:1rem}
+  .section-num{font-size:2.4rem}
+  .section-title-block h2{font-size:1.7rem;line-height:1.15}
+  .section-title-block .kicker{font-size:.65rem;letter-spacing:.2em}
+
+  /* about poland */
+  .weather-grid{grid-template-columns:1fr}
+  .about-lead{font-size:1.1rem;line-height:1.55}
+  .about-lead::first-letter{font-size:3.5rem;margin:.3rem .5rem -.1rem 0}
+  .about-lead p+p{font-size:1rem}
+  .fact-card{padding:1.3rem}
+  .fact-row{flex-direction:column;align-items:flex-start;gap:.15rem;padding:.5rem 0}
+  .fact-val{text-align:left}
+
+  /* cities & 其他 grids 變單欄 */
+  .cities-grid{grid-template-columns:1fr;gap:1.4rem}
+  .city-card{padding:1.5rem}
+  .city-name{font-size:1.9rem}
+  .city-num{font-size:.8rem}
+  .food-grid,.transport-grid{grid-template-columns:1fr}
+
+  /* itinerary 每日行程：堆疊式佈局 */
+  .itinerary-section{padding-top:3rem}
+  .day-row{grid-template-columns:1fr;gap:.4rem;padding:1.5rem 0}
+  .day-num{
+    font-size:2rem;
+    display:flex;align-items:baseline;gap:.8rem;flex-wrap:wrap;
+  }
+  .day-num small{
+    display:inline-block;margin-top:0;
+    font-size:.62rem;letter-spacing:.12em;
+  }
+  .day-content h4{font-size:1.15rem;line-height:1.3;margin-bottom:.4rem}
+  .day-content p{font-size:.95rem;line-height:1.6}
+
+  /* hours 區塊 */
+  .hours{padding:.9rem 1rem;font-size:.8rem;line-height:1.75}
+  .hours .h-time{width:46px;font-size:.78rem}
+  .hours .h-label{font-size:.62rem;letter-spacing:.18em}
+
+  /* day-eats / day-warn / day-train */
+  .day-eats{padding:.9rem 1rem;margin:.8rem 0}
+  .day-eats ul li{font-size:.9rem;line-height:1.55}
+  .day-warn{padding:.7rem .9rem;font-size:.88rem;line-height:1.55}
+  .day-train{font-size:.68rem;padding:.4rem .7rem;flex-wrap:wrap;line-height:1.4}
+
+  /* booking timeline */
+  .booking-grid{grid-template-columns:1fr}
+  .booking-cell{border-right:none;padding:1.2rem}
+  .booking-cell .b-date{font-size:1.3rem}
+
+  /* sub-section header */
+  .sub-section-header{margin:2.5rem 0 1rem;padding-bottom:.6rem}
+  .sub-section-header h3{font-size:1.35rem}
+  .sub-section-header .sub-kicker{font-size:.62rem}
+
+  /* v2 stat bar */
+  .v2-stat-bar{font-size:.75rem;padding:.7rem .9rem;line-height:1.6}
+
+  /* route map padding */
+  .route-wrap{padding:2rem 1rem 1.2rem;margin-bottom:1.8rem}
+
+  /* food / city food / 其他特殊 */
+  .city-food-grid{grid-template-columns:1fr}
+  .food-tip{padding:.9rem 1rem;font-size:.9rem;line-height:1.6}
+
+  /* footer */
+  footer{padding:2.5rem 1rem 1.5rem}
+  .footer-brand{font-size:2.2rem}
+  .footer-inner{gap:1.8rem;padding-bottom:2rem}
+  .footer-bottom{flex-direction:column;gap:.4rem;text-align:center}
+
+  /* 表格與長字串斷行 */
+  .train-table{font-size:.78rem}
+  p,li,td,th{word-break:break-word;overflow-wrap:break-word}
+
+  /* ── ② 行程 Timeline（手機豎軸） ── */
+  .day-row{
+    display:grid;grid-template-columns:3rem 1fr;
+    gap:0;padding:1.2rem 0;
+    border-left:2px solid var(--ink);margin-left:1rem;
+    position:relative;
+  }
+  .day-row::before{
+    content:attr(data-day);
+    position:absolute;left:-2.6rem;top:1.2rem;
+    font-family:'Bodoni Moda',serif;font-size:1.4rem;font-weight:700;
+    color:var(--crimson);background:var(--paper);padding:.1rem .3rem;
+    border:2px solid var(--crimson);border-radius:50%;
+    width:2.4rem;height:2.4rem;display:flex;align-items:center;justify-content:center;
+    line-height:1;
+  }
+  .day-num{font-size:1rem;padding:.1rem 0 .6rem;display:flex;flex-direction:column;gap:.15rem;grid-column:1}
+  .day-num small{display:inline-block;font-size:.58rem;letter-spacing:.08em;color:var(--ink-soft);margin-top:.05rem}
+  .day-content{grid-column:2;padding:0 0 0 .8rem}
+  .day-content h4{font-size:1.05rem;line-height:1.3;margin-bottom:.3rem}
+  .day-content p{font-size:.88rem;line-height:1.55}
+  .hours{margin:.7rem 0;padding:.8rem .9rem;font-size:.78rem}
+  .day-eats{margin:.6rem 0;padding:.7rem .9rem}
+  .day-warn{padding:.6rem .8rem;font-size:.82rem}
+  .day-train{font-size:.65rem;padding:.35rem .6rem}
+
+  /* ── ③ Hero clamp 安全化（320px 不爆框） ── */
+  .hero h1{font-size:clamp(2.6rem,9vw,4.5rem)!important;line-height:1.05}
+  .hero-subtitle{font-size:.95rem}
+
+  /* ── ④ fact-card 加大間距 ── */
+  .fact-card{padding:1.4rem 1.2rem}
+  .fact-row{padding:.6rem 0}
+
+  /* ── ⑤ 城市美食：折疊選單 ── */
+  .city-food-grid{display:flex;flex-direction:column;gap:0}
+  .city-food-cell{
+    border-right:none;
+    border-bottom:1.5px solid rgba(26,22,18,.18);
+    padding:1rem;
+  }
+  .city-food-cell summary{
+    font-family:'Bodoni Moda',serif;font-size:1rem;font-weight:700;
+    cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;
+    padding:.3rem 0;
+  }
+  .city-food-cell summary::after{content:'▾';font-size:.8rem;margin-left:.5rem;color:var(--amber-deep)}
+  .city-food-cell[open] summary::after{content:'▴'}
+  .city-food-cell ul{margin:.6rem 0 0;padding-left:1.1rem}
+}
+
+@media(max-width:380px){
+  html{font-size:15px}
+  .section-num{font-size:2rem}
+  .section-title-block h2{font-size:1.45rem}
+  .day-num{font-size:1.7rem}
+  .hours .h-time{width:42px}
+}
+
+/* === SCROLL ANIMATIONS === */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.reveal{animation:fadeUp .8s ease-out backwards}
+.reveal:nth-child(1){animation-delay:.05s}
+.reveal:nth-child(2){animation-delay:.15s}
+.reveal:nth-child(3){animation-delay:.25s}
+.reveal:nth-child(4){animation-delay:.35s}
+.reveal:nth-child(5){animation-delay:.45s}
+.reveal:nth-child(6){animation-delay:.55s}
+
+/* a tag style global */
+a{color:var(--crimson)}
+
+/* === V2 ITINERARY ADDITIONS === */
+/* Route map wrapper */
+.route-wrap{
+  background:var(--paper-deep);
+  border:2px solid var(--ink);
+  padding:2.5rem 2rem 2rem;
+  margin:0 0 2.5rem;
+  position:relative;
+}
+.route-wrap::before{
+  content:"GEOGRAPHIC ROUTE";
+  position:absolute;top:-.65rem;left:1.5rem;
+  background:var(--paper);padding:0 .8rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;letter-spacing:.2em;color:var(--ink-soft);
+}
+.route-svg{display:block;width:100%;height:auto;max-width:900px;margin:0 auto}
+
+/* Train table */
+.train-table{
+  width:100%;border-collapse:collapse;
+  font-family:'Noto Serif TC',serif;font-size:.95rem;
+  margin:0 0 1.5rem;
+}
+.train-table thead th{
+  font-family:'Bodoni Moda',serif;
+  font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;
+  font-weight:700;text-align:left;
+  padding:.9rem 1rem;
+  background:var(--paper-deep);
+  border-bottom:2px solid var(--ink);
+}
+.train-table tbody td{
+  padding:1rem;
+  border-bottom:1px solid rgba(26,22,18,.15);
+  vertical-align:top;
+}
+.train-table tbody tr:last-child td{border-bottom:none}
+.train-table tbody tr:hover{background:rgba(196,137,43,.06)}
+.train-num{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--crimson);font-size:.95rem}
+.train-time{font-family:'JetBrains Mono',monospace;font-size:.92rem;color:var(--ink)}
+.tag{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;letter-spacing:.1em;
+  padding:.15rem .5rem;
+  border:1px solid var(--ink);
+  background:var(--paper);
+  margin-right:.3rem;
+}
+.tag.eip{background:var(--crimson);color:var(--paper);border-color:var(--crimson)}
+.tag.ic{background:var(--amber);color:var(--ink);border-color:var(--amber-deep)}
+.tag.bus{background:var(--moss);color:var(--paper);border-color:var(--moss)}
+
+/* Hour-by-hour mini schedule inside day-row */
+.hours{
+  background:var(--paper-deep);
+  border-left:3px solid var(--amber);
+  padding:1.2rem 1.5rem;
+  margin:1.2rem 0;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.88rem;line-height:1.85;
+}
+.hours .h-label{
+  display:inline-block;
+  font-family:'Bodoni Moda',serif;
+  font-size:.7rem;letter-spacing:.25em;
+  color:var(--amber-deep);text-transform:uppercase;
+  font-weight:700;margin-bottom:.5rem;
+}
+.hours .h-time{color:var(--crimson-deep);font-weight:700;display:inline-block;width:60px}
+.hours .h-star{color:var(--amber);font-weight:700}
+
+/* Train banner inside day-row */
+.day-train{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:var(--ink);color:var(--paper);
+  padding:.5rem .9rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.78rem;letter-spacing:.05em;
+  margin:.4rem 0 1rem;
+}
+.day-train::before{content:"⛯";font-size:1rem}
+
+/* Warning callout inside day-row */
+.day-warn{
+  background:rgba(168,35,29,.08);
+  border-left:3px solid var(--crimson);
+  padding:.9rem 1.2rem;
+  margin:1rem 0 0;
+  font-size:.95rem;color:var(--ink);
+  font-family:'Noto Serif TC',serif;
+}
+.day-warn strong{color:var(--crimson-deep)}
+
+/* Booking timeline grid */
+.booking-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:0;
+  border:2px solid var(--ink);
+  margin:0 0 2rem;
+}
+.booking-cell{
+  padding:1.5rem;
+  border-right:1px solid var(--ink);
+  border-bottom:1px solid var(--ink);
+  background:var(--paper);
+}
+.booking-cell:last-child{border-right:none}
+.booking-cell .b-date{
+  font-family:'Bodoni Moda',serif;
+  font-size:1.6rem;font-weight:700;
+  color:var(--crimson);margin-bottom:.3rem;
+}
+.booking-cell .b-action{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--amber-deep);
+  margin-bottom:.6rem;
+}
+.booking-cell .b-detail{font-size:.95rem;color:var(--ink-soft);line-height:1.55}
+
+/* Notice box for v2 sub-section header */
+.v2-stat-bar{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.85rem;letter-spacing:.05em;
+  color:var(--ink-soft);
+  margin:0 0 2.5rem;
+  padding:.9rem 1.1rem;
+  background:var(--paper-deep);
+  border-left:3px solid var(--amber);
+}
+.v2-stat-bar strong{color:var(--amber-deep)}
+
+/* Sub-section divider within itinerary */
+.sub-section-header{
+  margin:4rem 0 1.5rem;
+  padding-bottom:.8rem;
+  border-bottom:2px solid var(--ink);
+  display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:.5rem;
+}
+.sub-section-header h3{
+  font-family:'Bodoni Moda',serif;
+  font-size:1.8rem;font-weight:700;letter-spacing:-.01em;
+}
+.sub-section-header .sub-kicker{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;letter-spacing:.25em;
+  color:var(--amber-deep);text-transform:uppercase;
+}
+
+/* Day-row eats block (food recommendations within day) */
+.day-eats{
+  background:rgba(196,137,43,.08);
+  border-left:3px solid var(--amber-deep);
+  padding:.95rem 1.3rem;
+  margin:.8rem 0 1rem;
+  font-size:.95rem;
+  font-family:'Noto Serif TC','Cormorant Garamond',serif;
+  line-height:1.7;
+}
+.day-eats .e-label{
+  display:inline-block;
+  font-family:'Bodoni Moda',serif;
+  font-size:.7rem;letter-spacing:.25em;
+  color:var(--amber-deep);
+  text-transform:uppercase;
+  font-weight:700;
+  margin-bottom:.4rem;
+}
+.day-eats em{color:var(--crimson-deep);font-style:italic;font-weight:500}
+.day-eats strong{color:var(--ink)}
+.day-eats ul{list-style:none;margin:.3rem 0 0;padding:0}
+.day-eats li{
+  margin-bottom:.4rem;
+  padding-left:1.1rem;
+  position:relative;
+}
+.day-eats li:last-child{margin-bottom:0}
+.day-eats li::before{
+  content:"●";
+  position:absolute;left:0;top:.05rem;
+  color:var(--amber);
+  font-size:.7rem;
+}
+
+/* §3 city-specific food showcase */
+.city-food-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:0;
+  border:2px solid var(--ink);
+  margin:1.5rem 0 0;
+}
+.city-food-cell{
+  padding:1.6rem;
+  border-right:1px solid var(--ink);
+  border-bottom:1px solid var(--ink);
+  background:var(--paper);
+}
+.city-food-cell:last-child{border-right:none}
+.city-food-cell .cf-city{
+  font-family:'Bodoni Moda',serif;
+  font-size:1.5rem;font-weight:700;
+  color:var(--crimson);
+  margin-bottom:.1rem;
+  letter-spacing:-.01em;
+}
+.city-food-cell .cf-name{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size:1rem;
+  color:var(--amber-deep);
+  margin-bottom:1rem;
+  padding-bottom:.7rem;
+  border-bottom:1px solid var(--ink);
+}
+.city-food-cell ul{list-style:none;margin:0;padding:0}
+.city-food-cell li{
+  font-size:.9rem;
+  line-height:1.5;
+  margin-bottom:.85rem;
+  padding-left:1.1rem;
+  position:relative;
+  color:var(--ink-soft);
+}
+.city-food-cell li::before{
+  content:"●";
+  position:absolute;left:0;top:.45rem;
+  color:var(--amber);
+  font-size:.7rem;
+}
+.city-food-cell li strong{
+  display:block;
+  color:var(--ink);
+  font-weight:700;
+  font-family:'Bodoni Moda',serif;
+  font-size:1rem;
+  margin-bottom:.15rem;
+  letter-spacing:-.005em;
+}
+.city-food-cell li em{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  color:var(--crimson-deep);
+}
+.city-food-cell li a{
+  color:inherit;
+  text-decoration:none;
+  border-bottom:1px dotted rgba(168,35,29,.4);
+  transition:border-color .2s, color .2s;
+}
+.city-food-cell li a:hover{
+  border-bottom:1px solid var(--crimson-deep);
+  color:var(--crimson-deep);
+}
+.city-food-cell .cf-star{
+  display:inline-block;
+  background:var(--amber);
+  color:var(--ink);
+  font-size:.6rem;
+  font-family:'JetBrains Mono',monospace;
+  letter-spacing:.1em;
+  padding:.1rem .35rem;
+  margin-left:.3rem;
+  font-weight:700;
+  vertical-align:middle;
+}
+
+/* Mobile RWD for tables */
+/* ── 火車表：手機卡片化 ── */
+.train-table{width:100%;border-collapse:collapse;font-family:'Noto Serif TC',serif;font-size:.95rem;margin:0 0 1.5rem}
+.train-table thead th{font-family:'Bodoni Moda',serif;font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;font-weight:700;text-align:left;padding:.9rem 1rem;background:var(--paper-deep);border-bottom:2px solid var(--ink)}
+.train-table tbody td{padding:1rem;border-bottom:1px solid rgba(26,22,18,.15);vertical-align:top}
+.train-table tbody tr:last-child td{border-bottom:none}
+.train-table tbody tr:hover{background:rgba(196,137,43,.06)}
+.train-num{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--crimson);font-size:.95rem}
+.train-time{font-family:'JetBrains Mono',monospace;font-size:.92rem;color:var(--ink)}
+.tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.1em;padding:.15rem .5rem;border:1px solid var(--ink);background:var(--paper);margin-right:.3rem}
+.tag.eip{background:var(--crimson);color:var(--paper);border-color:var(--crimson)}
+.tag.ic{background:var(--amber);color:var(--ink);border-color:var(--amber-deep)}
+.tag.bus{background:var(--moss);color:var(--paper);border-color:var(--moss)}
+/* 火車表：手機卡片 */
+.train-card{display:none}
+.train-table-mobile{display:none}
+@media(max-width:760px){
+  .train-table{display:none}
+  .train-table-mobile{display:flex;flex-direction:column;gap:1rem;margin:0 0 1.5rem}
+  .train-card{
+    background:var(--paper);border:1.5px solid var(--ink);
+    padding:1.1rem 1.2rem;position:relative;
+    transition:box-shadow .2s;
+  }
+  .train-card::before{
+    content:'';position:absolute;left:0;top:0;bottom:0;
+    width:4px;background:var(--crimson);border-radius:2px 0 0 2px;
+  }
+  .train-card.tag-ic::before{background:var(--amber-deep)}
+  .train-card.tag-bus::before{background:var(--moss)}
+  .train-card-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.7rem;flex-wrap:wrap}
+  .train-card .tag{margin-bottom:0}
+  .train-card-route{
+    font-family:'Bodoni Moda',serif;font-weight:700;font-size:1.05rem;
+    color:var(--ink);letter-spacing:-.01em;
+  }
+  .train-card-body{display:grid;grid-template-columns:1fr 1fr;gap:.5rem 1rem}
+  .train-card-item{display:flex;flex-direction:column;gap:.1rem}
+  .train-card-label{
+    font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.15em;
+    text-transform:uppercase;color:var(--ink-soft);
+  }
+  .train-card-value{
+    font-family:'JetBrains Mono',monospace;font-size:.88rem;font-weight:600;
+    color:var(--ink);
+  }
+  .train-card-value.price{color:var(--crimson);font-weight:700}
+  .booking-grid{grid-template-columns:1fr}
+  .booking-cell{border-right:none}
+  .city-food-grid{grid-template-columns:1fr}
+  .city-food-cell{border-right:none}
+  .sub-section-header{flex-direction:column;align-items:flex-start}
+}
+
+/* === 無障礙：跳至主內容（鍵盤焦點時可見） === */
+.skip-to-content{
+  position:absolute;
+  top:-44px;
+  left:0;
+  background:var(--crimson);
+  color:#fff !important;
+  padding:.6rem 1.2rem;
+  z-index:1000;
+  text-decoration:none;
+  font-family:'Noto Serif TC',serif;
+  font-weight:700;
+  font-size:.95rem;
+  transition:top .15s ease;
+  border-bottom-right-radius:4px;
+}
+.skip-to-content:focus{
+  top:0;
+  outline:3px solid var(--amber);
+  outline-offset:2px;
+}
+
+/* === 列印樣式（A4 / Letter 旅遊指南實體備份） === */
+@media print {
+  *{ -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+  body{
+    background:#fff !important;
+    color:#000 !important;
+    font-size:11pt;
+    line-height:1.5;
+  }
+  body::before{ display:none !important; }
+
+  /* 隱藏互動元素 */
+  .nav-strip, .nav-toggle, .nav-overlay,
+  .reading-progress, .back-to-top,
+  .hero-meta, .masthead-meta{ display:none !important; }
+
+  /* 主視覺壓縮 */
+  .hero{ padding:1rem 0 !important; }
+  .hero h1{ font-size:36pt !important; }
+
+  /* 章節避免跨頁切斷 */
+  section{ page-break-inside:avoid; break-inside:avoid; }
+  .day-row{
+    page-break-inside:avoid;
+    break-inside:avoid;
+    border-bottom:1px solid #888 !important;
+  }
+  h2, h3, h4{ page-break-after:avoid; break-after:avoid; }
+
+  /* 連結顯示 URL */
+  a[href^="http"]::after{
+    content:" (" attr(href) ")";
+    font-size:9pt;
+    color:#555;
+    word-break:break-all;
+  }
+
+  /* 表格保留邊框 */
+  table, th, td{ border:1px solid #999 !important; }
+
+  /* 不要顯示音樂會、火車等資訊框內的背景色濾鏡 */
+  .day-train, .warn, .day-eats{
+    background:#f5f5f5 !important;
+    border:1px solid #999 !important;
+    color:#000 !important;
+  }
+}
+
+/* === 動畫尊重使用者偏好 === */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after{
+    animation-duration:0.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:0.01ms !important;
+    scroll-behavior:auto !important;
+  }
+  .reveal{ opacity:1 !important; transform:none !important; }
+}
+
+/* === Service Worker 更新 banner === */
+#sw-update-banner{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--ink);
+  color:var(--paper);
+  padding:.85rem 1.2rem;
+  border-radius:6px;
+  display:flex;
+  align-items:center;
+  gap:.85rem;
+  z-index:999;
+  box-shadow:0 8px 30px rgba(0,0,0,0.25);
+  font-family:'Noto Serif TC',serif;
+  font-size:.95rem;
+  max-width:calc(100% - 40px);
+  animation:swSlideUp .35s ease-out;
+}
+@keyframes swSlideUp{
+  from{ opacity:0; transform:translate(-50%, 20px); }
+  to{ opacity:1; transform:translate(-50%, 0); }
+}
+.sw-update-text{ white-space:nowrap; }
+.sw-update-btn{
+  background:var(--crimson);
+  color:#fff;
+  border:none;
+  padding:.45rem .95rem;
+  border-radius:4px;
+  font-family:'Noto Serif TC',serif;
+  font-weight:700;
+  font-size:.9rem;
+  cursor:pointer;
+  transition:background .15s;
+}
+.sw-update-btn:hover{ background:var(--crimson-deep); }
+.sw-update-close{
+  background:transparent;
+  color:var(--paper);
+  border:none;
+  font-size:1.4rem;
+  cursor:pointer;
+  padding:0 .3rem;
+  line-height:1;
+  opacity:.7;
+  transition:opacity .15s;
+}
+.sw-update-close:hover{ opacity:1; }
+@media (max-width:480px){
+  #sw-update-banner{
+    bottom:10px;
+    flex-wrap:wrap;
+    font-size:.88rem;
+    padding:.7rem .9rem;
+  }
+  .sw-update-text{ flex:1 1 100%; text-align:center; }
+}

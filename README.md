@@ -64,7 +64,7 @@ Day 5  WRO → POZ   IC               19:00 → 21:20  (2h20)
 Day 6  POZ → WAW   EIP              17:30 → 20:15  (2h45)
 ```
 
-完整逐時刻表、訂票時程、住宿區建議、注意事項詳見 **[index.html § 14](https://jack926509.github.io/Poland-trip/#itinerary)**
+完整逐時刻表、訂票時程、住宿區建議、注意事項詳見 **[index.html § 14](https://trip.xieh.tw/#itinerary)**
 
 ### 🍴 四城必吃美食精選
 
@@ -75,7 +75,7 @@ Day 6  POZ → WAW   EIP              17:30 → 20:15  (2h45)
 | 🍺 **弗羅茨瓦夫** | Śląskie kluski · Rolada śląska · 精釀啤酒 | Konspira / Browar Stu Mostów |
 | 🥐 **波茲南** | Rogal Świętomarciński (PGI) ⭐ · Pyry z gzikiem | Cukiernia Kandulski / Pyra Bar |
 
-完整 4 城專屬料理對照表詳見 **[index.html § 3](https://jack926509.github.io/Poland-trip/#food)**
+完整 4 城專屬料理對照表詳見 **[index.html § 3](https://trip.xieh.tw/#food)**
 
 ## 📊 資料來源
 
