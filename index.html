@@ -681,6 +681,176 @@ footer{
 
 /* a tag style global */
 a{color:var(--crimson)}
+
+/* === V2 ITINERARY ADDITIONS === */
+/* Route map wrapper */
+.route-wrap{
+  background:var(--paper-deep);
+  border:2px solid var(--ink);
+  padding:2.5rem 2rem 2rem;
+  margin:0 0 2.5rem;
+  position:relative;
+}
+.route-wrap::before{
+  content:"GEOGRAPHIC ROUTE";
+  position:absolute;top:-.65rem;left:1.5rem;
+  background:var(--paper);padding:0 .8rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;letter-spacing:.2em;color:var(--ink-soft);
+}
+.route-svg{display:block;width:100%;height:auto;max-width:900px;margin:0 auto}
+
+/* Train table */
+.train-table{
+  width:100%;border-collapse:collapse;
+  font-family:'Noto Serif TC',serif;font-size:.95rem;
+  margin:0 0 1.5rem;
+}
+.train-table thead th{
+  font-family:'Bodoni Moda',serif;
+  font-size:.85rem;letter-spacing:.05em;text-transform:uppercase;
+  font-weight:700;text-align:left;
+  padding:.9rem 1rem;
+  background:var(--paper-deep);
+  border-bottom:2px solid var(--ink);
+}
+.train-table tbody td{
+  padding:1rem;
+  border-bottom:1px solid rgba(26,22,18,.15);
+  vertical-align:top;
+}
+.train-table tbody tr:last-child td{border-bottom:none}
+.train-table tbody tr:hover{background:rgba(196,137,43,.06)}
+.train-num{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--crimson);font-size:.95rem}
+.train-time{font-family:'JetBrains Mono',monospace;font-size:.92rem;color:var(--ink)}
+.tag{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.65rem;letter-spacing:.1em;
+  padding:.15rem .5rem;
+  border:1px solid var(--ink);
+  background:var(--paper);
+  margin-right:.3rem;
+}
+.tag.eip{background:var(--crimson);color:var(--paper);border-color:var(--crimson)}
+.tag.ic{background:var(--amber);color:var(--ink);border-color:var(--amber-deep)}
+.tag.bus{background:var(--moss);color:var(--paper);border-color:var(--moss)}
+
+/* Hour-by-hour mini schedule inside day-row */
+.hours{
+  background:var(--paper-deep);
+  border-left:3px solid var(--amber);
+  padding:1.2rem 1.5rem;
+  margin:1.2rem 0;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.88rem;line-height:1.85;
+}
+.hours .h-label{
+  display:inline-block;
+  font-family:'Bodoni Moda',serif;
+  font-size:.7rem;letter-spacing:.25em;
+  color:var(--amber-deep);text-transform:uppercase;
+  font-weight:700;margin-bottom:.5rem;
+}
+.hours .h-time{color:var(--crimson-deep);font-weight:600;display:inline-block;width:60px}
+.hours .h-star{color:var(--amber);font-weight:700}
+
+/* Train banner inside day-row */
+.day-train{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:var(--ink);color:var(--paper);
+  padding:.5rem .9rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.78rem;letter-spacing:.05em;
+  margin:.4rem 0 1rem;
+}
+.day-train::before{content:"⛯";font-size:1rem}
+
+/* Warning callout inside day-row */
+.day-warn{
+  background:rgba(168,35,29,.08);
+  border-left:3px solid var(--crimson);
+  padding:.9rem 1.2rem;
+  margin:1rem 0 0;
+  font-size:.95rem;color:var(--ink);
+  font-family:'Noto Serif TC',serif;
+}
+.day-warn strong{color:var(--crimson-deep)}
+
+/* Booking timeline grid */
+.booking-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:0;
+  border:2px solid var(--ink);
+  margin:0 0 2rem;
+}
+.booking-cell{
+  padding:1.5rem;
+  border-right:1px solid var(--ink);
+  border-bottom:1px solid var(--ink);
+  background:var(--paper);
+}
+.booking-cell:last-child{border-right:none}
+.booking-cell .b-date{
+  font-family:'Bodoni Moda',serif;
+  font-size:1.6rem;font-weight:700;
+  color:var(--crimson);margin-bottom:.3rem;
+}
+.booking-cell .b-action{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.72rem;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--amber-deep);
+  margin-bottom:.6rem;
+}
+.booking-cell .b-detail{font-size:.95rem;color:var(--ink-soft);line-height:1.55}
+
+/* Notice box for v2 sub-section header */
+.v2-stat-bar{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.85rem;letter-spacing:.05em;
+  color:var(--ink-soft);
+  margin:0 0 2.5rem;
+  padding:.9rem 1.1rem;
+  background:var(--paper-deep);
+  border-left:3px solid var(--amber);
+}
+.v2-stat-bar strong{color:var(--amber-deep)}
+
+/* Sub-section divider within itinerary */
+.sub-section-header{
+  margin:4rem 0 1.5rem;
+  padding-bottom:.8rem;
+  border-bottom:2px solid var(--ink);
+  display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:.5rem;
+}
+.sub-section-header h3{
+  font-family:'Bodoni Moda',serif;
+  font-size:1.8rem;font-weight:700;letter-spacing:-.01em;
+}
+.sub-section-header .sub-kicker{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;letter-spacing:.25em;
+  color:var(--amber-deep);text-transform:uppercase;
+}
+
+/* Mobile RWD for tables */
+@media (max-width:760px){
+  .train-table{font-size:.85rem}
+  .train-table thead{display:none}
+  .train-table tbody tr{display:block;border-bottom:2px solid var(--ink);padding:.8rem 0}
+  .train-table tbody td{display:block;border-bottom:none;padding:.3rem 0}
+  .train-table tbody td::before{
+    content:attr(data-label);
+    font-family:'Bodoni Moda',serif;
+    font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--amber-deep);font-weight:700;
+    display:block;margin-bottom:.2rem;
+  }
+  .booking-grid{grid-template-columns:1fr}
+  .booking-cell{border-right:none}
+  .sub-section-header{flex-direction:column;align-items:flex-start}
+}
 </style>
 </head>
 <body>
@@ -1525,7 +1695,7 @@ a{color:var(--crimson)}
     </div>
 
     <p style="font-size:1.1rem;font-style:italic;margin-bottom:2rem;color:var(--ink-soft);font-family:'Cormorant Garamond',serif;max-width:720px;line-height:1.55">
-      去程國泰 + 卡達雙轉，回程卡達 + 長榮雙轉。寄艙 25kg／人。實際在波蘭時間：10/24 (六) 下午 – 10/31 (六) 上午，共 7 晚 8 天。
+      去程國泰 + 卡達雙轉，回程卡達 + 長榮雙轉。寄艙 25kg／人。實際在波蘭時間：10/24 (六) 下午 – 10/31 (六) 上午，共 7 晚 8 天。修訂版四城路線：<strong>華沙(1) + 克拉科夫(3) + 弗羅茨瓦夫(1) + 波茲南(1) + 華沙(1)</strong>，含 Auschwitz 一日往返。
     </p>
 
     <div class="about-grid">
@@ -1561,83 +1731,411 @@ a{color:var(--crimson)}
   </div>
 </section>
 
-<!-- ITINERARY -->
+<!-- ITINERARY v2 -->
 <section id="itinerary" class="itinerary-section">
   <div class="container">
     <div class="section-header">
       <div class="section-num">14</div>
       <div class="section-title-block">
-        <div class="kicker">Adjusted Itinerary · 8 日行程</div>
-        <h2>華沙 + 克拉科夫雙城深度（10/24 – 10/31）</h2>
+        <div class="kicker">Adjusted Itinerary v2 · 8 日行程修訂版</div>
+        <h2>四城深度路線（10/24 – 10/31）</h2>
       </div>
     </div>
 
-    <p style="font-size:1.1rem;font-style:italic;margin-bottom:2rem;color:var(--ink-soft);font-family:'Cormorant Garamond',serif;max-width:720px;line-height:1.55">
-      因實際在地時間僅 7 晚 8 天（10/24 六 13:30 抵 – 10/31 六 14:40 離），把行程聚焦在華沙 + 克拉科夫雙城（含 Auschwitz、鹽礦、Zakopane 三個一日往返）。格但斯克 / 弗羅茨瓦夫留給下次。
+    <p style="font-size:1.1rem;font-style:italic;margin-bottom:1.5rem;color:var(--ink-soft);font-family:'Cormorant Garamond',serif;max-width:760px;line-height:1.55">
+      修訂版避開「抵達當天搭火車」與「時差未消去 Auschwitz」兩大陷阱。把原本的 Zakopane + 鹽礦改為弗羅茨瓦夫 + 波茲南，四城各有性格、行李壓力分散在 5 段火車上、每段最佳體驗時段都對齊。
     </p>
+
+    <p class="v2-stat-bar">
+      <strong>晚數分配</strong>　WAW × 1 + KRK × 3 + WRO × 1 + POZ × 1 + WAW × 1 ＝ 7 晚 ｜
+      <strong>跨城火車</strong>　5 段共約 11h45m
+    </p>
+
+    <!-- Sub-section: Route Map -->
+    <div class="sub-section-header">
+      <h3>路線總覽</h3>
+      <div class="sub-kicker">Geographic Overview</div>
+    </div>
+
+    <div class="route-wrap">
+      <svg class="route-svg" viewBox="0 0 880 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="波蘭四城路線地理示意圖">
+        <rect x="40" y="30" width="800" height="400" rx="24" fill="none" stroke="#1a1612" stroke-opacity="0.2" stroke-width="0.8" stroke-dasharray="5 5"/>
+        <text x="58" y="56" font-family="JetBrains Mono, monospace" font-size="11" fill="#3d362e" letter-spacing="2">POLAND · POLSKA</text>
+        <defs>
+          <marker id="arrow-v2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+        <line x1="700" y1="125" x2="600" y2="335" stroke="#a8231d" stroke-width="2.2" stroke-linecap="round" marker-end="url(#arrow-v2)"/>
+        <line x1="540" y1="345" x2="290" y2="335" stroke="#a8231d" stroke-width="2.2" stroke-linecap="round" marker-end="url(#arrow-v2)"/>
+        <line x1="240" y1="305" x2="220" y2="160" stroke="#a8231d" stroke-width="2.2" stroke-linecap="round" marker-end="url(#arrow-v2)"/>
+        <line x1="280" y1="135" x2="640" y2="120" stroke="#a8231d" stroke-width="2.2" stroke-linecap="round" marker-end="url(#arrow-v2)"/>
+        <g>
+          <rect x="624" y="220" width="68" height="22" rx="11" fill="#f4ecd8" stroke="#a8231d" stroke-width="1"/>
+          <text x="658" y="235" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#7a1812">2h25 EIP</text>
+        </g>
+        <g>
+          <rect x="385" y="328" width="68" height="22" rx="11" fill="#f4ecd8" stroke="#a8231d" stroke-width="1"/>
+          <text x="419" y="343" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#7a1812">3h30 IC</text>
+        </g>
+        <g>
+          <rect x="172" y="222" width="68" height="22" rx="11" fill="#f4ecd8" stroke="#a8231d" stroke-width="1"/>
+          <text x="206" y="237" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#7a1812">2h20 IC</text>
+        </g>
+        <g>
+          <rect x="430" y="115" width="68" height="22" rx="11" fill="#f4ecd8" stroke="#a8231d" stroke-width="1"/>
+          <text x="464" y="130" text-anchor="middle" font-family="JetBrains Mono" font-size="11" font-weight="600" fill="#7a1812">2h45 EIP</text>
+        </g>
+        <g>
+          <circle cx="700" cy="100" r="22" fill="none" stroke="#a8231d" stroke-width="1" stroke-dasharray="3 3" opacity="0.6"/>
+          <circle cx="700" cy="100" r="13" fill="#a8231d" stroke="#1a1612" stroke-width="1.5"/>
+          <text x="700" y="105" text-anchor="middle" font-family="Bodoni Moda" font-size="14" font-weight="700" fill="#fff">1</text>
+          <text x="730" y="92" font-family="Bodoni Moda" font-size="20" font-weight="700" fill="#1a1612">華沙 Warszawa</text>
+          <text x="730" y="110" font-family="JetBrains Mono" font-size="10" letter-spacing="1.5" fill="#3d362e">DAY 1 · ENTRY</text>
+          <text x="730" y="135" font-family="JetBrains Mono" font-size="9" letter-spacing="1.2" fill="#a8231d" font-weight="600">↻ DAY 7-8 · EXIT</text>
+        </g>
+        <g>
+          <circle cx="585" cy="350" r="13" fill="#a8231d" stroke="#1a1612" stroke-width="1.5"/>
+          <text x="585" y="355" text-anchor="middle" font-family="Bodoni Moda" font-size="14" font-weight="700" fill="#fff">2</text>
+          <text x="615" y="342" font-family="Bodoni Moda" font-size="20" font-weight="700" fill="#1a1612">克拉科夫 Kraków</text>
+          <text x="615" y="360" font-family="JetBrains Mono" font-size="10" letter-spacing="1.5" fill="#3d362e">DAY 2-4 · 3 NIGHTS</text>
+        </g>
+        <g>
+          <circle cx="265" cy="335" r="13" fill="#c4892b" stroke="#1a1612" stroke-width="1.5"/>
+          <text x="265" y="340" text-anchor="middle" font-family="Bodoni Moda" font-size="14" font-weight="700" fill="#fff">3</text>
+          <text x="105" y="325" font-family="Bodoni Moda" font-size="18" font-weight="700" fill="#1a1612">弗羅茨瓦夫</text>
+          <text x="105" y="345" font-family="Bodoni Moda" font-size="13" font-style="italic" fill="#3d362e">Wrocław</text>
+          <text x="105" y="362" font-family="JetBrains Mono" font-size="10" letter-spacing="1.5" fill="#3d362e">DAY 5</text>
+        </g>
+        <g>
+          <circle cx="245" cy="140" r="13" fill="#c4892b" stroke="#1a1612" stroke-width="1.5"/>
+          <text x="245" y="145" text-anchor="middle" font-family="Bodoni Moda" font-size="14" font-weight="700" fill="#fff">4</text>
+          <text x="80" y="135" font-family="Bodoni Moda" font-size="18" font-weight="700" fill="#1a1612">波茲南</text>
+          <text x="80" y="155" font-family="Bodoni Moda" font-size="13" font-style="italic" fill="#3d362e">Poznań</text>
+          <text x="80" y="172" font-family="JetBrains Mono" font-size="10" letter-spacing="1.5" fill="#3d362e">DAY 6</text>
+        </g>
+      </svg>
+    </div>
+
+    <table class="train-table">
+      <thead>
+        <tr>
+          <th>路段</th>
+          <th>日期</th>
+          <th>建議班次</th>
+          <th>車程</th>
+          <th>票價（早訂）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="路段"><span class="tag eip">EIP</span> WAW → KRK</td>
+          <td data-label="日期" class="train-time">10/25 (日)</td>
+          <td data-label="班次" class="train-time">09:00 → 11:25 · 頭等艙</td>
+          <td data-label="車程" class="train-time">2h25</td>
+          <td data-label="票價">PLN 130–180</td>
+        </tr>
+        <tr>
+          <td data-label="路段"><span class="tag bus">BUS</span> KRK ⇄ Auschwitz</td>
+          <td data-label="日期" class="train-time">10/26 (一)</td>
+          <td data-label="班次" class="train-time">Lajkonik 巴士</td>
+          <td data-label="車程" class="train-time">1h30 × 2</td>
+          <td data-label="票價">PLN 30 來回</td>
+        </tr>
+        <tr>
+          <td data-label="路段"><span class="tag ic">IC</span> KRK → WRO</td>
+          <td data-label="日期" class="train-time">10/27 (二)</td>
+          <td data-label="班次" class="train-time">17:30 → 21:00</td>
+          <td data-label="車程" class="train-time">3h30</td>
+          <td data-label="票價">PLN 60–110</td>
+        </tr>
+        <tr>
+          <td data-label="路段"><span class="tag ic">IC</span> WRO → POZ</td>
+          <td data-label="日期" class="train-time">10/28 (三)</td>
+          <td data-label="班次" class="train-time">19:00 → 21:20</td>
+          <td data-label="車程" class="train-time">2h20</td>
+          <td data-label="票價">PLN 50–90</td>
+        </tr>
+        <tr>
+          <td data-label="路段"><span class="tag eip">EIP</span> POZ → WAW</td>
+          <td data-label="日期" class="train-time">10/29 (四)</td>
+          <td data-label="班次" class="train-time">17:30 → 20:15</td>
+          <td data-label="車程" class="train-time">2h45</td>
+          <td data-label="票價">PLN 90–150</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="food-tip">
+      <strong>★ 火車類型速查</strong> &nbsp;|&nbsp;
+      <strong>EIP</strong>（Pendolino）— 最快、強制訂位、頭等艙含早餐 + Wi-Fi ｜
+      <strong>EIC</strong>— 快、強制訂位、傳統車廂 ｜
+      <strong>IC</strong>— 中速、停站多一些、價格實惠 ｜
+      <strong>避開 TLK</strong>（最慢）。所有票券於 <strong>intercity.pl</strong> 預訂，提前 30 天 Super Promo 票價可低至 PLN 49。
+    </div>
+
+    <!-- Sub-section: Day-by-Day -->
+    <div class="sub-section-header">
+      <h3>每日逐時刻表</h3>
+      <div class="sub-kicker">Day-by-Day Schedule</div>
+    </div>
 
     <div class="day-row">
       <div class="day-num">01<small>10/24 SAT · WAW</small></div>
       <div class="day-content">
         <h4>抵達華沙 · 老城傍晚漫步</h4>
-        <p>13:30 抵 Chopin 機場，搭 SKM 火車或 175 號公車進市中心約 20 分鐘。Check in 後（建議住 Śródmieście Północne 或老城區）小睡片刻。傍晚漫步老城廣場、皇家城堡外觀、聖約翰主教座堂。晚餐推薦 <em>Zapiecek</em>（連鎖餃子）或 <em>U Fukiera</em>（傳統波蘭菜）。早睡調時差。</p>
+        <p>13:30 抵 Chopin 機場，搭 SKM 通勤火車約 20 分鐘進市中心，<em>住車站附近</em>方便隔天早班 EIP。傍晚漫步老城廣場、皇家城堡外觀與 Krakowskie Przedmieście 大街，pierogi 晚餐後早睡倒時差。</p>
+        <div class="hours">
+          <span class="h-label">Hour by Hour</span><br>
+          <span class="h-time">13:00</span> 抵 Chopin 機場 → 入境提行李<br>
+          <span class="h-time">14:00</span> SKM S2/S3 線 → Warszawa Centralna（PLN 4.4）<br>
+          <span class="h-time">14:30</span> 旅館 check-in<br>
+          <span class="h-time">15:30</span> 步行 / 175 公車到老城<br>
+          <span class="h-time">16:00</span> <span class="h-star">★</span> 老城廣場 + 皇家城堡（外觀）+ 美人魚雕像<br>
+          <span class="h-time">18:00</span> Krakowskie Przedmieście 大街黃昏氛圍<br>
+          <span class="h-time">19:00</span> Pierogi 晚餐（<em>Zapiecek</em> 或 <em>Pierożki u Vincenta</em>）<br>
+          <span class="h-time">21:00</span> 早睡倒時差
+        </div>
+        <div class="day-warn"><strong>⚠ DST 提醒</strong>　今晚凌晨 03:00 → 02:00 自動多睡一小時。手機鬧鐘自動調整，傳統旅館鬧鐘可能不會。</div>
       </div>
     </div>
 
     <div class="day-row">
-      <div class="day-num">02<small>10/25 SUN · WAW</small></div>
+      <div class="day-num">02<small>10/25 SUN · WAW → KRK</small></div>
       <div class="day-content">
-        <h4>華沙博物館日（夏令時間結束）</h4>
-        <p>今晨 03:00 → 02:00 多睡一小時。上午 POLIN 波蘭猶太人歷史博物館（週日免費，建議線上預約 10:00 入場）；午餐於 Plac Grzybowski 附近。下午華沙起義博物館或皇家城堡（週日有部分免費名額）。傍晚天黑得早（約 16:30），到 Łazienki 公園賞秋景或科學文化宮 30 樓觀景台看夜景。</p>
+        <h4>南下克拉科夫 · 老城三大景點</h4>
+        <div class="day-train">EIP Pendolino · 09:00 Warszawa Centralna → 11:25 Kraków Główny · 頭等艙</div>
+        <p>早班 EIP 頭等艙含早餐 + Wi-Fi + 寬敞座位，11:25 抵達剛好午餐時間。下午把克拉科夫老城三大重點全部解決，傍晚 16:50 日落前在瓦維爾城堡賞夕陽，晚餐 <em>Pod Aniołami</em> 或 <em>Miód Malina</em>。</p>
+        <div class="hours">
+          <span class="h-label">Hour by Hour</span><br>
+          <span class="h-time">07:30</span> 起床（DST 多一小時睡眠）→ 退房<br>
+          <span class="h-time">09:00</span> EIP Pendolino 頭等艙出發<br>
+          <span class="h-time">11:25</span> 抵 Kraków Główny → Bolt 到旅館<br>
+          <span class="h-time">12:30</span> 午餐（Plac Nowy 的 zapiekanka 或老城）<br>
+          <span class="h-time">14:00</span> <span class="h-star">★</span> 中央廣場 Rynek Główny + 紡織會館 Sukiennice<br>
+          <span class="h-time">15:00</span> <span class="h-star">★</span> 聖瑪利亞教堂 + 整點號角秀 Hejnał<br>
+          <span class="h-time">16:00</span> <span class="h-star">★</span> 瓦維爾城堡 Wawel（皇家寢宮 + 大教堂）<br>
+          <span class="h-time">18:00</span> Planty 環城公園散步<br>
+          <span class="h-time">19:00</span> 晚餐（<em>Pod Aniołami</em> 或 <em>Miód Malina</em>）
+        </div>
       </div>
     </div>
 
     <div class="day-row">
-      <div class="day-num">03<small>10/26 MON · WAW → KRK</small></div>
+      <div class="day-num">03<small>10/26 MON · DAY TRIP</small></div>
       <div class="day-content">
-        <h4>移動日：搭 EIP 至克拉科夫</h4>
-        <p>週一多數博物館休館，排為移動日最佳。上午輕鬆早餐 + 維拉諾夫宮花園（戶外）。中午搭 EIP Pendolino 從 Warszawa Centralna → Kraków Główny（2h20m，PLN 70–160，建議提前 1 個月於 intercity.pl 訂享 30% 折扣）。下午抵克拉科夫，入住老城或 Kazimierz。傍晚登 Rynek Główny 主廣場、聖瑪麗教堂（17:00 整點聽號角），晚餐於 Kazimierz 嚐 Zapiekanka 街頭披薩。</p>
+        <h4>奧斯威辛 - 比克瑙集中營（一日往返）</h4>
+        <div class="day-train">Lajkonik Bus · KRK MDA 巴士站 ⇄ Oświęcim Muzeum · 1h30m × 2</div>
+        <p>整趟波蘭最沉重也最重要的一天。<strong>必須提前 2–3 週於 visit.auschwitz.org 線上預約英文 educator-led 導覽</strong>（PLN 100，3.5 小時）。完整參觀 Auschwitz I + Birkenau 兩個營區。傍晚返克拉科夫安靜用晚餐沉澱情緒。</p>
+        <div class="hours">
+          <span class="h-label">Hour by Hour</span><br>
+          <span class="h-time">07:00</span> 早餐<br>
+          <span class="h-time">07:45</span> 步行到 MDA 巴士站<br>
+          <span class="h-time">08:00</span> Lajkonik 巴士出發<br>
+          <span class="h-time">09:30</span> 抵達 Auschwitz I 主營<br>
+          <span class="h-time">10:00</span> <span class="h-star">★</span> 英文 educator-led 導覽（含一館 + 二館 Birkenau）<br>
+          <span class="h-time">13:30</span> 導覽結束 → 紀念品商店、簡單午餐<br>
+          <span class="h-time">14:30</span> 巴士返克拉科夫<br>
+          <span class="h-time">16:00</span> 抵 Kraków → 回旅館休息<br>
+          <span class="h-time">18:00</span> 安靜晚餐沉澱情緒
+        </div>
+        <div class="day-warn"><strong>⚠ 預約規則</strong>　Auschwitz 旺季常滿團，務必出發前 2–3 週上 visit.auschwitz.org 預訂。穿著樸素、全程禁笑鬧自拍、嚴禁穿過於休閒服裝。10 月開放 07:30–16:00。</div>
       </div>
     </div>
 
     <div class="day-row">
-      <div class="day-num">04<small>10/27 TUE · KRK</small></div>
+      <div class="day-num">04<small>10/27 TUE · KRK → WRO</small></div>
       <div class="day-content">
-        <h4>瓦維爾 · 紡織會館 · 卡齊米日</h4>
-        <p>上午瓦維爾城堡（套票 PLN 45–65，含皇家寢宮、大教堂、龍洞）。中午紡織會館 Sukiennice 二樓 19 世紀波蘭繪畫館。下午卡齊米日猶太區散步：Szeroka 街、舊猶太會堂、辛德勒名單取景巷弄。傍晚辛德勒工廠博物館（PLN 38，必預約）。晚餐 <em>Pod Wawelem</em> 或 <em>Starka</em>。</p>
+        <h4>辛德勒工廠 + Kazimierz · 傍晚火車到弗羅茨瓦夫</h4>
+        <div class="day-train">IC · 17:30 Kraków Główny → 21:00 Wrocław Główny · 3h30</div>
+        <p>克拉科夫老城景點 Day 2 已完成，這天聚焦於 Kazimierz 猶太區。<strong>辛德勒工廠週二正常 10:00–20:00，必預約</strong>（mhk.pl/en）。工廠看完直接走到 Kazimierz（步行 5 分鐘）享 zapiekanka 街頭披薩。下午採購收尾、傍晚搭 IC 北上弗羅茨瓦夫。</p>
+        <div class="hours">
+          <span class="h-label">Hour by Hour</span><br>
+          <span class="h-time">08:30</span> 早餐<br>
+          <span class="h-time">09:30</span> 電車（Line 50 / 24）到 Plac Bohaterów Getta<br>
+          <span class="h-time">10:00</span> <span class="h-star">★</span> 辛德勒工廠開門入場<br>
+          <span class="h-time">12:00</span> 步行 5 分鐘到 Kazimierz<br>
+          <span class="h-time">12:15</span> <span class="h-star">★</span> Plac Nowy 圓亭 zapiekanka 午餐 / <em>Miodova</em><br>
+          <span class="h-time">13:30</span> Kazimierz 散步：舊猶太會堂、Szeroka 街、《辛德勒名單》場景<br>
+          <span class="h-time">15:00</span> 電車回老城 → 紡織會館採購（琥珀、刺繡）<br>
+          <span class="h-time">16:30</span> 旅館拉行李、結帳<br>
+          <span class="h-time">17:00</span> Bolt 到 Kraków Główny（PLN 15）<br>
+          <span class="h-time">17:30</span> IC 火車出發<br>
+          <span class="h-time">21:00</span> 抵 Wrocław Główny → Bolt 到旅館
+        </div>
       </div>
     </div>
 
     <div class="day-row">
-      <div class="day-num">05<small>10/28 WED · DAY TRIP</small></div>
+      <div class="day-num">05<small>10/28 WED · WRO → POZ</small></div>
       <div class="day-content">
-        <h4>奧斯威辛集中營（一日往返）</h4>
-        <p>提早一個月於 visit.auschwitz.org 預約英文導覽（PLN 100，09:00 或 11:00 場）。從克拉科夫搭 Lajkonik 巴士直達 Oświęcim 約 1h30m（PLN 15–25）。完整參觀 Auschwitz I + Birkenau 約 4–5 小時，極沉重但必要。傍晚返克拉科夫，安靜用晚餐沉澱情緒。</p>
+        <h4>弗羅茨瓦夫一日精華 · 點燈儀式 · 晚轉場波茲南</h4>
+        <div class="day-train">IC · 19:00 Wrocław Główny → 21:20 Poznań Główny · 2h20</div>
+        <p>弗羅茨瓦夫景點密度極高，<em>700 個小矮人雕像</em>、UNESCO 百年廳、拉茨瓦夫全景畫、座堂島煤氣燈點燈儀式——一天剛好排得下。<strong>16:00 座堂島點燈儀式</strong>是這天高潮（10 月底日落 16:15，點燈師逐盞點亮煤氣燈）。看完點燈再上火車。</p>
+        <div class="hours">
+          <span class="h-label">Hour by Hour</span><br>
+          <span class="h-time">08:00</span> 早餐<br>
+          <span class="h-time">09:00</span> <span class="h-star">★</span> 中央廣場 Rynek + 紡織會館（用 dwarfsmap.com 找小矮人）<br>
+          <span class="h-time">10:30</span> 弗羅茨瓦夫大學主樓 Aula Leopoldina<br>
+          <span class="h-time">11:30</span> <span class="h-star">★</span> 拉茨瓦夫全景畫 Panorama Racławicka（30 分鐘導覽）<br>
+          <span class="h-time">12:30</span> 午餐（<em>Konspira</em> 或 <em>Bernard</em> 啤酒餐廳）<br>
+          <span class="h-time">14:00</span> <span class="h-star">★</span> 路面電車到百年廳 Hala Stulecia（UNESCO）+ 日本花園<br>
+          <span class="h-time">15:30</span> 電車回老城<br>
+          <span class="h-time">16:00</span> <span class="h-star">★</span> 座堂島 Ostrów Tumski 煤氣燈點燈儀式<br>
+          <span class="h-time">17:00</span> 奧得河岸黃昏散步、最後幾隻小矮人<br>
+          <span class="h-time">17:45</span> 回旅館拉行李<br>
+          <span class="h-time">19:00</span> IC 火車出發<br>
+          <span class="h-time">21:20</span> 抵 Poznań Główny → 旅館 check-in
+        </div>
       </div>
     </div>
 
     <div class="day-row">
-      <div class="day-num">06<small>10/29 THU · DAY TRIP</small></div>
+      <div class="day-num">06<small>10/29 THU · POZ → WAW</small></div>
       <div class="day-content">
-        <h4>維利奇卡鹽礦 + 老城自由時間</h4>
-        <p>上午搭 304 號公車或近郊火車至維利奇卡鹽礦（PLN 159，含 2.5 小時導覽，地下 135 公尺、聖金加禮拜堂）。中午返克拉科夫，下午自由時間：Plac Nowy 圓形市場、聖體聖殿、波蘭民俗博物館、或 Wedel 巧克力咖啡館。晚上推薦米其林必比登 <em>Szara Gęś</em> 或猶太料理 <em>Hamsa</em>。</p>
+        <h4>波茲南完整白天 · 山羊秀 + 教堂島 + 帝王城堡</h4>
+        <div class="day-train">EIP · 17:30 Poznań Główny → 20:15 Warszawa Centralna · 2h45</div>
+        <p>波蘭文明發源地。<em>早上先到教堂島</em>（梅什科一世受洗地，人最少光線最好），再回中央廣場提前卡位 12:00 山羊鐘樓秀。午餐必吃 <strong>EU PGI 認證的聖馬丁牛角麵包</strong>。下午看帝王城堡或 Stary Browar 古釀酒廠。傍晚 17:30 EIP 北上華沙。</p>
+        <div class="hours">
+          <span class="h-label">Hour by Hour</span><br>
+          <span class="h-time">08:30</span> 早餐<br>
+          <span class="h-time">09:00</span> <span class="h-star">★</span> 教堂島 Ostrów Tumski（梅什科一世受洗地、波蘭基督教發源地）<br>
+          <span class="h-time">10:30</span> 步行 / 電車回舊市集廣場<br>
+          <span class="h-time">11:00</span> 提前到中央廣場卡好正面位置<br>
+          <span class="h-time">12:00</span> <span class="h-star">★</span> 山羊鐘樓秀（每天中午限定）<br>
+          <span class="h-time">12:15</span> <span class="h-star">★</span> 聖馬丁牛角麵包午餐（<em>Cukiernia Kandulski</em> 百年老店）<br>
+          <span class="h-time">13:30</span> 牛角麵包博物館（30 分鐘導覽）<br>
+          <span class="h-time">14:00</span> 帝王城堡 Zamek Cesarski 或 Stary Browar 古釀酒廠<br>
+          <span class="h-time">15:30</span> 咖啡 + 整理行李<br>
+          <span class="h-time">16:30</span> Bolt 回 Poznań Główny<br>
+          <span class="h-time">17:30</span> EIP 出發<br>
+          <span class="h-time">20:15</span> 抵 Warszawa Centralna → 旅館 check-in
+        </div>
       </div>
     </div>
 
     <div class="day-row">
-      <div class="day-num">07<small>10/30 FRI · DAY TRIP</small></div>
+      <div class="day-num">07<small>10/30 FRI · WAW</small></div>
       <div class="day-content">
-        <h4>扎科帕內塔特拉山一日往返</h4>
-        <p>清晨 07:00 巴士前往 Zakopane（2h，PLN 25–40，於 MDA 巴士站）。先搭 Gubałówka 纜車鳥瞰塔特拉山脈雪頂（10 月底已可能初雪）；午餐嚐 Oscypek 煙燻羊乳酪 + 波蘭山區燉肉；下午沿 Krupówki 大街選購木雕、羊毛拖鞋等山區工藝品。傍晚回克拉科夫，於老城享最後一晚晚餐。</p>
+        <h4>華沙博物館全力日 · POLIN + 起義 + 蕭邦</h4>
+        <p>把華沙的三大博物館全部解決：<em>POLIN 猶太歷史博物館</em>（3 小時）、<em>起義博物館</em>（2.5 小時）、<em>蕭邦博物館</em>（1.5 小時）。最後在 Krakowskie Przedmieście 大街採購、Łazienki 公園黃昏散步、老城享最後一晚晚餐。<strong>10/30 為週五，POLIN 與起義博物館均開放</strong>。</p>
+        <div class="hours">
+          <span class="h-label">Hour by Hour</span><br>
+          <span class="h-time">09:00</span> <span class="h-star">★</span> POLIN 猶太博物館入場（線上預約）<br>
+          <span class="h-time">12:00</span> 看完 → 走到 Plac Grzybowski<br>
+          <span class="h-time">12:30</span> 午餐（<em>Tel Aviv Urban Food</em> 或附近咖啡店）<br>
+          <span class="h-time">14:00</span> <span class="h-star">★</span> 華沙起義博物館<br>
+          <span class="h-time">16:30</span> 路面電車到蕭邦博物館（Ostrogski 宮）<br>
+          <span class="h-time">17:00</span> <span class="h-star">★</span> 蕭邦博物館（沉浸式音樂體驗）<br>
+          <span class="h-time">18:30</span> Krakowskie Przedmieście 大街採購（Wedel 巧克力、Bolesławiec 陶瓷）<br>
+          <span class="h-time">19:30</span> 老城最後晚餐（<em>U Fukiera</em> 或 <em>Polka</em>）<br>
+          <span class="h-time">21:30</span> 老城夜景收尾、旅館整理行李
+        </div>
+        <div class="day-warn"><strong>⚠ 諸聖節前夕</strong>　10/31 是諸聖節前一天（11/1 為波蘭最重要家庭節日），但你 14:40 已起飛恰好避開。10/30 採購時店家可能提早關門，建議下午就買齊。</div>
       </div>
     </div>
 
     <div class="day-row">
-      <div class="day-num">08<small>10/31 SAT · KRK → WAW → DOH</small></div>
+      <div class="day-num">08<small>10/31 SAT · WAW → DOH</small></div>
       <div class="day-content">
-        <h4>返華沙 · 機場</h4>
-        <p>注意：今天是諸聖節前夕，火車可能擁擠，務必<strong>提前一週訂票</strong>。建議搭 06:30–07:30 EIP 從 Kraków → Warszawa（2h20m），09:00 前抵華沙中央站。寄行李於車站置物櫃，09:30–11:00 老城區或 Złote Tarasy 商場最後採購（Wedel 巧克力、E.Wedel 鳥奶、Bolesławiec 陶瓷）。11:30 搭 SKM 火車至 Chopin 機場（20 分鐘），12:30 報到。<strong>14:40 QR 260 起飛回程。</strong></p>
+        <h4>機場日 · 14:40 QR 260 起飛</h4>
+        <div class="day-train">SKM 機場線 · S2 / S3 · 20 分鐘 · PLN 4.4</div>
+        <p>從容收尾。早餐後輕鬆散步、11:00 退房、SKM 機場線只要 20 分鐘到 Chopin。國際航班建議起飛前 2 小時抵達，11:30 抵機場、12:00 完成安檢，留 2.5 小時從容用餐免稅店。</p>
+        <div class="hours">
+          <span class="h-label">Hour by Hour</span><br>
+          <span class="h-time">07:30</span> 起床<br>
+          <span class="h-time">08:00</span> 早餐 + 老城最後散步（Krakowskie Przedmieście）<br>
+          <span class="h-time">10:30</span> 整理行李、確認護照、登機證、退稅單<br>
+          <span class="h-time">11:00</span> 退房 → 走到 Warszawa Centralna<br>
+          <span class="h-time">11:10</span> SKM S2 / S3 出發<br>
+          <span class="h-time">11:30</span> 抵 Chopin 機場 (T1)<br>
+          <span class="h-time">12:00</span> Check-in（QR 開放線上 check-in 24h 前）→ 安檢<br>
+          <span class="h-time">13:00</span> 候機區、最後採購、用餐<br>
+          <span class="h-time">14:00</span> 登機口<br>
+          <span class="h-time">14:40</span> <span class="h-star">★</span> QR 260 起飛 → DOH → HKG → TPE
+        </div>
       </div>
+    </div>
+
+    <!-- Sub-section: Booking Timeline -->
+    <div class="sub-section-header">
+      <h3>火車訂票時程</h3>
+      <div class="sub-kicker">PKP Booking Schedule · 開賣前 30 天</div>
+    </div>
+
+    <p style="font-size:1rem;margin-bottom:1.5rem;color:var(--ink-soft);font-family:'Cormorant Garamond',serif;font-style:italic;max-width:760px;line-height:1.55">
+      PKP Intercity 採動態票價，越早訂越便宜。Super Promo 於發車前 30 天開賣，價差可達 2–3 倍。建議於 intercity.pl 開賣當日下單，搶頭等艙（EIP）+ Super Promo 級。
+    </p>
+
+    <div class="booking-grid">
+      <div class="booking-cell">
+        <div class="b-date">9/25 四</div>
+        <div class="b-action">★ 開賣即訂</div>
+        <div class="b-detail"><strong>WAW → KRK · 10/25 (日) 09:00 EIP 頭等艙</strong><br>週日早班是熱門時段，務必當日下單搶 Super Promo。預估 PLN 130–180。</div>
+      </div>
+      <div class="booking-cell">
+        <div class="b-date">9/27 六</div>
+        <div class="b-action">2-3 日內</div>
+        <div class="b-detail"><strong>KRK → WRO · 10/27 (二) 17:30 IC</strong><br>傍晚班次無太多競爭。預估 PLN 60–110。</div>
+      </div>
+      <div class="booking-cell">
+        <div class="b-date">9/28 日</div>
+        <div class="b-action">2-3 日內</div>
+        <div class="b-detail"><strong>WRO → POZ · 10/28 (三) 19:00 IC</strong><br>晚班較空，價格穩定。預估 PLN 50–90。</div>
+      </div>
+      <div class="booking-cell">
+        <div class="b-date">9/29 一</div>
+        <div class="b-action">★ 開賣即訂</div>
+        <div class="b-detail"><strong>POZ → WAW · 10/29 (四) 17:30 EIP</strong><br>傍晚商務尖峰，特別早搶。預估 PLN 90–150。</div>
+      </div>
+    </div>
+
+    <div class="food-tip">
+      <strong>★ 訂票實戰流程</strong> &nbsp;|&nbsp;
+      ① 上 <strong>intercity.pl</strong> 切換 EN（右上角）·
+      ② 註冊帳號（保存資訊、處理退票方便）·
+      ③ 站名打前 3 字會自動下拉：<em>Warszawa Centralna</em> / <em>Kraków Główny</em> / <em>Wrocław Główny</em> / <em>Poznań Główny</em> ·
+      ④ 勾選 EIP / EIC / IC（避開 TLK）·
+      ⑤ 信用卡付款 → 收 PDF 票（手機出示 QR Code 即可，無需印列）。
+    </div>
+
+    <!-- Sub-section: Key Reminders -->
+    <div class="sub-section-header">
+      <h3>關鍵注意事項</h3>
+      <div class="sub-kicker">Key Reminders</div>
+    </div>
+
+    <div class="food-tip">
+      <strong>★ DST 日光節約時間結束</strong> &nbsp;|&nbsp;
+      10/25 (日) 凌晨 03:00 → 02:00 多睡一小時，但日落會從 17:30 提早到 16:15。Day 3 起所有戶外景點請排上午到午後。手機鬧鐘自動調，傳統旅館鬧鐘可能不會。
+    </div>
+
+    <div class="food-tip">
+      <strong>★ 諸聖節 11/1 影響</strong> &nbsp;|&nbsp;
+      波蘭最重要家庭節日，全國商店與博物館關閉。你 10/31 14:40 已起飛、剛好避開。但 10/30–10/31 是節前一天，波蘭人大量返鄉掃墓，火車與高速公路擁擠，Day 6 POZ→WAW 火車<strong>務必提前訂</strong>。
+    </div>
+
+    <div class="food-tip">
+      <strong>★ Auschwitz 預約最重要</strong> &nbsp;|&nbsp;
+      visit.auschwitz.org 出發前 2–3 週訂英文 educator-led 導覽（PLN 100，3.5 小時）。穿樸素、勿笑鬧自拍、勿穿過於休閒服裝。10 月開放 07:30–16:00。
+    </div>
+
+    <div class="food-tip">
+      <strong>★ 弗羅茨瓦夫點燈儀式</strong> &nbsp;|&nbsp;
+      座堂島 Ostrów Tumski 每天日落點燈師逐盞點亮煤氣燈。10/28 日落 16:15，建議 15:50 之前抵達看完整過程（約 30 分鐘）。Day 5 行程已對齊此時間。
+    </div>
+
+    <div class="food-tip">
+      <strong>★ 城市交通必裝 App</strong> &nbsp;|&nbsp;
+      <strong>Jakdojade</strong>（4 城公車電車地鐵查詢 + 購票）·
+      <strong>Bolt</strong>（叫車，比 Uber 便宜）·
+      <strong>PKP Intercity</strong>（火車訂票）·
+      <strong>Google Maps</strong>（出發前下載 4 城離線地圖）。所有 App 出發前在台灣完成註冊綁卡。
+    </div>
+
+    <div class="food-tip">
+      <strong>★ 免簽 90 天 + ETIAS 2026</strong> &nbsp;|&nbsp;
+      台灣護照享申根免簽 90 天。<strong>2026 年 ETIAS 系統如已上線，需事前線上申請（EUR 7，3 年有效）</strong>，類似美簽 ESTA。出發前 1 個月務必確認最新規定。
     </div>
 
     <div class="divider-decorative">◆ ◆ ◆</div>
