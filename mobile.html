@@ -29,19 +29,29 @@
 <link rel="stylesheet" href="redesign/tokens.css">
 <link rel="stylesheet" href="redesign/B-companion.css">
 <style>
-  body{margin:0;background:#f0eee9;font-family:'Noto Serif TC',serif}
-  #root{max-width:480px;margin:0 auto;min-height:100vh;background:var(--paper);box-shadow:0 0 30px rgba(0,0,0,.08)}
+  /* Hardware-accelerate scrolling on iOS Safari + scroll only the body. */
+  html,body{margin:0;-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
+  body{background:#f0eee9;font-family:'Noto Serif TC',serif}
+  /* Promote #root to its own composite layer so the drop-shadow on the
+     edges doesn't get repainted on every scroll frame. */
+  #root{
+    max-width:480px;margin:0 auto;min-height:100vh;
+    background:var(--paper);
+    box-shadow:0 0 30px rgba(0,0,0,.08);
+    transform:translateZ(0);
+    will-change:transform;
+  }
   .B-frame{border-radius:0;height:auto;min-height:100vh}
   .desktop-escape{
     position:fixed;top:.45rem;right:.5rem;z-index:99;
     font-family:'JetBrains Mono',ui-monospace,monospace;
     font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
-    padding:.3rem .55rem;border-radius:999px;
-    background:rgba(244,236,216,.85);color:#1a1612;
-    border:1px solid rgba(26,22,18,.18);text-decoration:none;
-    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    padding:.32rem .58rem;border-radius:999px;
+    background:#f4ecd8;color:#1a1612;
+    border:1px solid rgba(26,22,18,.22);text-decoration:none;
+    box-shadow:0 1px 3px rgba(26,22,18,.08);
   }
-  .desktop-escape:active{background:rgba(244,236,216,1)}
+  .desktop-escape:active{background:#ebe1c9}
 </style>
 </head>
 <body>

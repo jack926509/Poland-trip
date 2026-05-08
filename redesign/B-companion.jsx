@@ -5,12 +5,21 @@ const B_useMemo = React.useMemo;
 
 /* ── External-link helpers ───────────────────────────────────────── */
 
-// Map Chinese city name → English Latin form for Google Maps queries.
+// Map Chinese city name → English Latin form for map queries.
 const B_CITY_EN = {
   '華沙': 'Warsaw',
   '克拉科夫': 'Kraków',
   '弗羅茨瓦夫': 'Wrocław',
   '波茲南': 'Poznań',
+};
+
+// Train station code / shorthand → full station name for map lookup.
+const B_STATIONS = {
+  'WAW':       'Warszawa Centralna',
+  'KRK':       'Kraków Główny',
+  'WRO':       'Wrocław Główny',
+  'POZ':       'Poznań Główny',
+  'Oświęcim':  'Oświęcim Dworzec PKS',
 };
 
 // Curated booking / official URLs keyed by Chinese / English fragments
@@ -37,16 +46,41 @@ const B_BOOKING_LINKS = [
   ['Lajkonik',    'https://www.lajkonikbus.pl/'],
 ];
 
+// Detect iOS / iPadOS — used to prefer Apple Maps URL scheme so
+// taps deep-link straight into the native Maps app.
+const B_isIOS = (() => {
+  if (typeof navigator === 'undefined') return false;
+  const p = navigator.platform || '';
+  if (/iPad|iPhone|iPod/.test(p)) return true;
+  // iPadOS 13+ reports as MacIntel + multi-touch
+  return p === 'MacIntel' && navigator.maxTouchPoints > 1;
+})();
+
 function B_focusCity(city) {
   // Transit days look like "華沙 → 克拉科夫"; pick the destination.
-  return city.split('→').pop().trim();
+  return (city || '').split('→').pop().trim();
 }
 
 function B_mapsURL(label, city) {
-  const cleanLabel = (label || '').replace(/^★\s*/, '').trim();
-  const cityEn = B_CITY_EN[B_focusCity(city)] || B_focusCity(city);
-  const q = encodeURIComponent([cleanLabel, cityEn, 'Poland'].filter(Boolean).join(' '));
-  return `https://www.google.com/maps/search/?api=1&query=${q}`;
+  const cleanLabel = (label || '').replace(/^★\s*/, '').replace(/^@\s*/, '').trim();
+  const cityKey = B_focusCity(city);
+  const cityEn = B_CITY_EN[cityKey] || cityKey;
+  // If label already includes the city (or a station code), don't double up.
+  const parts = cleanLabel ? [cleanLabel] : [];
+  if (cityEn && !cleanLabel.includes(cityEn) && !cleanLabel.includes(cityKey)) parts.push(cityEn);
+  parts.push('Poland');
+  const q = encodeURIComponent(parts.join(' '));
+  return B_isIOS
+    ? `https://maps.apple.com/?q=${q}`
+    : `https://www.google.com/maps/search/?api=1&query=${q}`;
+}
+
+function B_stationMapsURL(code) {
+  const full = B_STATIONS[code] || code;
+  const q = encodeURIComponent(`${full} train station Poland`);
+  return B_isIOS
+    ? `https://maps.apple.com/?q=${q}`
+    : `https://www.google.com/maps/search/?api=1&query=${q}`;
 }
 
 function B_bookingURL(label) {
@@ -59,6 +93,14 @@ function B_bookingURL(label) {
 function B_hasBooking(label) {
   const clean = (label || '').replace(/^★\s*/, '');
   return B_BOOKING_LINKS.some(([k]) => clean.includes(k));
+}
+
+// Pull venue name out of "Dish @ Venue" format. Falls back to whole string.
+function B_eatVenue(item) {
+  if (!item) return '';
+  const at = item.indexOf('@');
+  if (at >= 0) return item.slice(at + 1).trim();
+  return item;
 }
 
 // Map real-world clock to a synthetic trip moment so the demo feels alive.
@@ -183,8 +225,19 @@ function B_Companion({ initialDay }) {
         </span>
       </div>
       <header className="B-head">
-        <div className="brand">POLSKA<span className="dot">.</span></div>
-        <div className="meta">10/24 → 10/31</div>
+        <a className="brand"
+           href="#top"
+           aria-label="回到頁首"
+           onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+          POLSKA<span className="dot">.</span>
+        </a>
+        <button
+          type="button"
+          className="meta"
+          aria-label="顯示完整 8 日行程"
+          onClick={() => setDrawerOpen(true)}>
+          10/24 → 10/31
+        </button>
         <button
           type="button"
           className="menu"
@@ -196,10 +249,14 @@ function B_Companion({ initialDay }) {
         </button>
       </header>
 
-      <section className="B-today" data-bg={`0${d.n}`}>
+      <section className="B-today" data-bg={`0${d.n}`} id="top">
         <div className="kicker">Today is</div>
         <div className="day-line">
-          <span className="day-num">{d.n}</span>
+          <button
+            type="button"
+            className="day-num"
+            aria-label="開啟 8 日行程選單"
+            onClick={() => setDrawerOpen(true)}>{d.n}</button>
           <span className="day-of">/ 8 · {d.date}<br/>{d.city}</span>
         </div>
         <h1>{d.title}</h1>
@@ -210,7 +267,17 @@ function B_Companion({ initialDay }) {
           {d.train && <span>{d.train.type} · {d.train.dur}</span>}
         </div>
 
-        <div className="B-now">
+        <button
+          type="button"
+          className="B-now"
+          aria-label="跳到目前進行中的行程"
+          onClick={() => {
+            setOpenStep(idx);
+            const els = document.querySelectorAll('.B-step');
+            if (els[idx] && els[idx].scrollIntoView) {
+              els[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          }}>
           <div className="now-label">
             {beforeStart ? '今日尚未開始' : afterEnd ? '今日已結束' : 'Now · 現在該做什麼'}
           </div>
@@ -233,7 +300,7 @@ function B_Companion({ initialDay }) {
               <div className="next-up">Next · <strong>{next.t}{inLabel}</strong> {next.label.replace(/^★\s*/, '')}</div>
             );
           })()}
-        </div>
+        </button>
       </section>
 
       <div className="B-scrub" ref={scrubRef} role="tablist" aria-label="日次切換">
@@ -250,32 +317,42 @@ function B_Companion({ initialDay }) {
         ))}
       </div>
 
-      {d.train && (
-        <a className="B-train"
-           href={d.train.type === 'BUS'
-             ? 'https://www.lajkonikbus.pl/'
-             : 'https://www.intercity.pl/en/'}
-           target="_blank" rel="noopener noreferrer"
-           aria-label={`${d.train.type === 'BUS' ? 'Lajkonik 巴士' : 'Intercity 火車'}訂票`}>
-          <div className="seg">
-            <span className={`pill ${d.train.type.toLowerCase()}`}>{d.train.type}</span>
-            <span>{d.train.date || d.date}</span>
-            <span>· PLN {d.train.price}</span>
-            <span className="book-cta" aria-hidden="true">訂票 →</span>
-          </div>
-          <div className="route">
-            <div className="stop">
-              <strong>{d.train.from}</strong>
-              <small>{d.train.dep}</small>
+      {d.train && (() => {
+        const isBus = d.train.type === 'BUS';
+        const bookHref = isBus ? 'https://www.lajkonikbus.pl/' : 'https://www.intercity.pl/en/';
+        return (
+          <div className="B-train">
+            <div className="seg">
+              <span className={`pill ${d.train.type.toLowerCase()}`}>{d.train.type}</span>
+              <span>{d.train.date || d.date}</span>
+              <span>· PLN {d.train.price}</span>
+              <a className="book-cta"
+                 href={bookHref}
+                 target="_blank" rel="noopener noreferrer"
+                 aria-label={`${isBus ? 'Lajkonik 巴士' : 'Intercity 火車'}訂票`}>
+                訂票 →
+              </a>
             </div>
-            <div className="arrow"><span className="dur">{d.train.dur}</span></div>
-            <div className="stop right">
-              <strong>{d.train.to}</strong>
-              <small>{d.train.arr}</small>
+            <div className="route">
+              <a className="stop"
+                 href={B_stationMapsURL(d.train.from)}
+                 target="_blank" rel="noopener noreferrer"
+                 aria-label={`地圖：${B_STATIONS[d.train.from] || d.train.from}`}>
+                <strong>{d.train.from}</strong>
+                <small>{d.train.dep}</small>
+              </a>
+              <div className="arrow"><span className="dur">{d.train.dur}</span></div>
+              <a className="stop right"
+                 href={B_stationMapsURL(d.train.to)}
+                 target="_blank" rel="noopener noreferrer"
+                 aria-label={`地圖：${B_STATIONS[d.train.to] || d.train.to}`}>
+                <strong>{d.train.to}</strong>
+                <small>{d.train.arr}</small>
+              </a>
             </div>
           </div>
-        </a>
-      )}
+        );
+      })()}
 
       <div className="B-timeline">
         {d.steps.map((s, i) => {
@@ -368,7 +445,18 @@ function B_Companion({ initialDay }) {
       {d.eat && (
         <div className="B-card eat">
           <div className="label">🍴 今日必吃</div>
-          <ul>{d.eat.map((e, i) => <li key={i}>{e}</li>)}</ul>
+          <ul>
+            {d.eat.map((e, i) => (
+              <li key={i}>
+                <a href={B_mapsURL(B_eatVenue(e), d.city)}
+                   target="_blank" rel="noopener noreferrer"
+                   aria-label={`地圖：${B_eatVenue(e)}`}>
+                  {e}
+                  <span className="eat-arr" aria-hidden="true">↗</span>
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 

@@ -61,8 +61,17 @@ function A_Day({ d, scoped }) {
   return (
     <article className="A-day" id={`A-day-${d.n}`}>
       <div className="A-day-num">
-        Day {d.n}
-        <small>{d.date}{d.weather ? ` · ${d.weather}` : ''}<br />{d.city}</small>
+        <span className="num-label">Day {d.n}</span>
+        <small>
+          <span className="day-meta">
+            <span>{d.date}</span>
+            {d.weather && <>
+              <span className="sep" aria-hidden="true">·</span>
+              <span>{d.weather}</span>
+            </>}
+          </span>
+          <span className="day-city">{d.city}</span>
+        </small>
         <span className="A-day-tag">{d.tag}</span>
       </div>
       <div className="A-day-body">
