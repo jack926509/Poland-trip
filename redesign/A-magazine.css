@@ -203,10 +203,12 @@
 .A-chip .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
 .A-chip strong{font-family:var(--serif);font-weight:900;font-style:italic;font-size:1.1em;letter-spacing:0}
 
-/* DAY CARD ── new richer block */
+/* DAY ROW ── classic field-guide layout (matches screenshot)
+   Left: large italic Bodoni numeral + mono date.
+   Right: title, body paragraph, optional train pill, boxed schedule, boxed eats. */
 .A-day{
-  display:grid;grid-template-columns:160px 1fr 300px;
-  gap:2.4rem;
+  display:grid;grid-template-columns:120px 1fr;
+  gap:2rem;
   padding:2.4rem 0;
   border-bottom:1px dotted var(--ink);
   align-items:start;
@@ -214,43 +216,110 @@
 .A-day:last-child{border-bottom:none}
 .A-day-num{
   font-family:var(--serif);font-style:italic;font-weight:900;
-  font-size:4rem;line-height:1;color:var(--accent);
-  position:relative;
-  text-align:center;
-  border:2px double var(--accent);
-  padding:.6rem .4rem .8rem;
-  background:repeating-linear-gradient(45deg, transparent 0 10px, rgba(168,35,29,.04) 10px 11px);
+  font-size:3.5rem;line-height:1;color:var(--accent);
+  letter-spacing:-.02em;
+  background:none;border:none;padding:0;text-align:left;
 }
 .A-day-num small{
-  display:block;font-style:normal;font-weight:400;
-  font-family:var(--mono);font-size:var(--fs-xs);
-  letter-spacing:.15em;color:var(--ink-mute);margin-top:.5rem;line-height:1.6;
+  display:block;
+  font-style:normal;font-weight:400;
+  font-family:var(--mono);font-size:.7rem;
+  letter-spacing:.18em;color:var(--ink-soft);
+  margin-top:.6rem;line-height:1.6;
 }
 .A-day-tag{
-  display:inline-block;margin-top:.6rem;
-  font-family:var(--serif);font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;
-  background:var(--accent);color:var(--paper);padding:.18rem .5rem;font-weight:700;
+  display:inline-block;margin-top:.7rem;
+  font-family:var(--serif);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;
+  background:var(--accent);color:var(--paper);padding:.18rem .55rem;font-weight:700;
 }
-.A-day-body{
-  background:var(--paper);
-  padding:.4rem 0 1.2rem;
-  position:relative;
-}
+.A-day-body{padding:0;background:transparent}
 .A-day-body h4{
   font-family:var(--serif);font-weight:700;
-  font-size:var(--fs-xl);line-height:1.2;margin-bottom:.4rem;
+  font-size:1.5rem;line-height:1.3;letter-spacing:-.005em;
+  margin-bottom:.5rem;
 }
 .A-day-body .lead{
-  font-family:var(--display);font-style:italic;
-  font-size:var(--fs-md);color:var(--ink-soft);
-  margin-bottom:1rem;line-height:1.5;
+  font-family:var(--body);font-style:normal;
+  font-size:1rem;line-height:1.75;color:var(--ink-soft);
+  margin-bottom:1.2rem;
 }
+.A-day-body .lead em,
+.A-day-body .lead i{font-family:var(--display);font-style:italic;color:var(--ink)}
+
+/* Train inline (kept above schedule when day has transit) */
 .A-train{
   display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:1.2rem;
   font-family:var(--mono);font-size:var(--fs-xs);
   background:#fbf5e3;border:1px solid var(--amber-deep);
-  padding:.7rem 1.1rem;margin-bottom:1rem;letter-spacing:.05em;
+  padding:.7rem 1.1rem;margin-bottom:1.2rem;letter-spacing:.05em;
   width:fit-content;max-width:100%;
+}
+
+/* SCHEDULE BOX — boxed "逐時行程" panel */
+.A-schedule{
+  background:rgba(196,137,43,.06);
+  border-left:3px solid var(--amber-deep);
+  padding:1rem 1.4rem 1.1rem;
+  margin:0 0 1rem;
+}
+.A-schedule .sched-label{
+  display:inline-block;
+  font-family:var(--serif);font-size:.7rem;letter-spacing:.32em;
+  font-weight:700;text-transform:uppercase;
+  color:var(--amber-deep);
+  margin-bottom:.7rem;
+}
+.A-steps{
+  list-style:none;padding:0;margin:0;
+  display:grid;gap:.45rem;border-left:none;
+}
+.A-steps li{
+  display:grid;grid-template-columns:64px 1fr;gap:1rem;
+  font-size:.92rem;line-height:1.6;align-items:baseline;
+}
+.A-steps li .t{
+  font-family:var(--mono);color:var(--accent);font-weight:700;
+  font-size:.78rem;letter-spacing:.05em;
+}
+.A-steps li .lab{color:var(--ink);font-family:var(--body)}
+.A-steps li .lab small{
+  display:inline;font-family:var(--display);font-style:italic;
+  color:var(--ink-mute);font-size:.92em;margin-left:.3rem;
+}
+
+/* EATS BOX — "抵達日必吃" amber-tinted card */
+.A-day-eats{
+  background:rgba(196,137,43,.08);
+  border-left:3px solid var(--amber-deep);
+  padding:.95rem 1.3rem 1.05rem;
+  margin:0 0 1rem;
+  font-family:var(--body);
+  font-size:.95rem;line-height:1.7;
+}
+.A-day-eats .e-label{
+  display:inline-block;
+  font-family:var(--serif);font-size:.7rem;letter-spacing:.25em;
+  color:var(--amber-deep);text-transform:uppercase;font-weight:700;
+  margin-bottom:.4rem;
+}
+.A-day-eats ul{list-style:none;margin:.2rem 0 0;padding:0}
+.A-day-eats li{
+  margin-bottom:.4rem;padding-left:1.1rem;position:relative;
+  color:var(--ink);
+}
+.A-day-eats li:last-child{margin-bottom:0}
+.A-day-eats li::before{
+  content:"●";position:absolute;left:0;top:.05rem;
+  color:var(--amber);font-size:.7rem;
+}
+.A-day-eats em{color:var(--crimson-deep);font-style:italic;font-weight:500}
+.A-day-eats strong{color:var(--ink)}
+
+.A-warn{
+  background:var(--ink);color:var(--paper);
+  padding:.7rem .9rem;font-size:var(--fs-sm);line-height:1.5;
+  border-left:4px solid var(--amber);
+  margin-top:.6rem;
 }
 .A-train .pill{
   font-weight:700;color:var(--paper);background:var(--accent);
@@ -270,36 +339,6 @@
 }
 .A-train .pill.bus{background:var(--moss)}
 .A-train .pill.ic{background:var(--amber-deep)}
-.A-steps{
-  border-left:1px solid var(--ink);
-  padding-left:1.2rem;margin:0;list-style:none;
-  display:grid;gap:.5rem;
-}
-.A-steps li{display:grid;grid-template-columns:54px 1fr;gap:.8rem;font-size:var(--fs-sm);line-height:1.5}
-.A-steps li .t{font-family:var(--mono);color:var(--accent);font-weight:600;font-size:var(--fs-xs);letter-spacing:.05em;padding-top:.18rem}
-.A-steps li .lab{color:var(--ink)}
-.A-steps li .lab small{display:block;color:var(--ink-mute);font-size:.85em;margin-top:.1rem}
-.A-day-side{
-  background:#fbf5e3;
-  border:1px solid var(--ink);
-  padding:1.2rem;display:grid;gap:1rem;
-  transform:rotate(-.3deg);
-  box-shadow:3px 3px 0 rgba(168,35,29,.12);
-}
-.A-side-block .label{
-  font-family:var(--serif);font-size:var(--fs-xs);
-  letter-spacing:.22em;text-transform:uppercase;color:var(--accent);font-weight:700;
-  border-bottom:1px solid var(--ink);padding-bottom:.4rem;margin-bottom:.6rem;
-}
-.A-side-block ul{list-style:none;padding:0;margin:0;display:grid;gap:.4rem}
-.A-side-block li{font-size:var(--fs-sm);color:var(--ink-soft);padding-left:1rem;position:relative;line-height:1.5}
-.A-side-block li::before{content:"◆";position:absolute;left:0;top:.18rem;color:var(--amber);font-size:.55em}
-.A-warn{
-  background:var(--ink);color:var(--paper);
-  padding:.7rem .9rem;font-size:var(--fs-sm);line-height:1.5;
-  border-left:4px solid var(--amber);
-  margin-top:1rem;
-}
 
 /* CITY GRID — 4 equal columns */
 .A-cities{
@@ -639,8 +678,8 @@
 @media (max-width: 1024px) {
   .A-cities{grid-template-columns:repeat(2,1fr)}
   .A-shop-grid{grid-template-columns:repeat(3,1fr)}
-  .A-day{grid-template-columns:120px 1fr;gap:1.6rem}
-  .A-day-side{grid-column:1 / -1;transform:none}
+  .A-day{grid-template-columns:90px 1fr;gap:1.4rem}
+  .A-day-num{font-size:3rem}
   .A-hero-grid{grid-template-columns:1fr;gap:1.6rem}
 }
 
@@ -677,14 +716,14 @@
   .A-shead .num{font-size:3rem}
   .A-shead .meta{display:none}
 
-  .A-day{grid-template-columns:1fr;gap:1rem;padding:1.6rem 0}
-  .A-day-num{
-    display:flex;align-items:baseline;gap:.6rem;
-    font-size:2.4rem;text-align:left;
-    padding:.4rem .6rem;border-width:1px;
-  }
-  .A-day-num small{display:inline;margin:0 0 0 .4rem}
-  .A-day-tag{margin-top:0;margin-left:.4rem;align-self:center}
+  .A-day{grid-template-columns:80px 1fr;gap:1rem;padding:1.6rem 0}
+  .A-day-num{font-size:2.5rem}
+  .A-day-num small{font-size:.62rem;letter-spacing:.14em}
+  .A-day-tag{font-size:.55rem;padding:.14rem .42rem;margin-top:.5rem}
+  .A-day-body h4{font-size:1.2rem}
+  .A-day-body .lead{font-size:.95rem}
+  .A-schedule{padding:.85rem 1rem .9rem}
+  .A-steps li{grid-template-columns:54px 1fr;gap:.7rem;font-size:.88rem}
   .A-train{grid-template-columns:auto 1fr;gap:.4rem .8rem}
   .A-train .times,.A-train .dur{grid-column:1 / -1}
 
@@ -697,9 +736,16 @@
   .A-flight-list li{grid-template-columns:80px 1fr;gap:.4rem}
   .A-flight-list li .when{grid-column:2}
   .A-flight-list li .dur{display:none}
+}
 
-  /* Disable subtle rotation on cards (looks busy on mobile) */
-  .A-day-side{transform:none}
+@media (max-width: 480px){
+  .A-day{grid-template-columns:1fr;gap:.6rem}
+  .A-day-num{
+    display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;
+    font-size:2.2rem;
+  }
+  .A-day-num small{display:inline;margin-top:0;font-size:.6rem}
+  .A-day-tag{margin-top:0;align-self:center}
 }
 
 @media (max-width: 420px){

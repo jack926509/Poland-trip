@@ -62,7 +62,7 @@ function A_Day({ d, scoped }) {
     <article className="A-day" id={`A-day-${d.n}`}>
       <div className="A-day-num">
         0{d.n}
-        <small>{d.date}<br />{d.city}</small>
+        <small>{d.date}{d.weather ? ` · ${d.weather}` : ''}<br />{d.city}</small>
         <span className="A-day-tag">{d.tag}</span>
       </div>
       <div className="A-day-body">
@@ -76,28 +76,25 @@ function A_Day({ d, scoped }) {
             <span className="dur">{d.train.dur}</span>
           </div>
         }
-        <ul className="A-steps">
-          {d.steps.map((s, i) =>
-          <li key={i}>
-              <span className="t">{s.t}</span>
-              <span className="lab">{s.label}{s.sub && <small>{s.sub}</small>}</span>
-            </li>
-          )}
-        </ul>
-        {d.warn && <div className="A-warn">⚠ {d.warn}</div>}
-      </div>
-      <aside className="A-day-side">
+        <div className="A-schedule">
+          <span className="sched-label">逐時行程</span>
+          <ul className="A-steps">
+            {d.steps.map((s, i) =>
+            <li key={i}>
+                <span className="t">{s.t}</span>
+                <span className="lab">{s.label}{s.sub && <small>（{s.sub}）</small>}</span>
+              </li>
+            )}
+          </ul>
+        </div>
         {d.eat &&
-        <div className="A-side-block">
-            <div className="label">必吃 · Eat</div>
+        <div className="A-day-eats">
+            <span className="e-label">🍴 {d.n === 1 ? '抵達日必吃' : '今日必吃'}</span>
             <ul>{d.eat.map((e, i) => <li key={i}>{e}</li>)}</ul>
           </div>
         }
-        <div className="A-side-block">
-          <div className="label">天氣 · Weather</div>
-          <ul><li>{d.weather || '—'}</li></ul>
-        </div>
-      </aside>
+        {d.warn && <div className="A-warn">⚠ {d.warn}</div>}
+      </div>
     </article>);
 
 }
