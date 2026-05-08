@@ -167,8 +167,8 @@
   transition:background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
 }
 .B-scrub .pill strong{
-  font-family:var(--serif);font-style:italic;font-weight:900;font-size:.95rem;color:var(--accent);
-  line-height:1;letter-spacing:0;
+  font-family:var(--serif);font-style:italic;font-weight:900;font-size:.85rem;color:var(--accent);
+  line-height:1;letter-spacing:.01em;
 }
 .B-scrub .pill.active{background:var(--ink);color:var(--paper)}
 .B-scrub .pill.active strong{color:var(--amber)}

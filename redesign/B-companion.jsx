@@ -163,7 +163,7 @@ function B_Companion({ initialDay }) {
              aria-current={x.n === active ? 'true' : undefined}
              onClick={e => { e.preventDefault(); setActive(x.n); }}
              className={`pill ${x.n === active ? 'active' : ''} ${x.n < active ? 'done' : ''}`}>
-            <strong>0{x.n}</strong>
+            <strong>Day {x.n}</strong>
             <span>{x.date.slice(0,5)}</span>
           </a>
         ))}
@@ -321,7 +321,7 @@ function B_Companion({ initialDay }) {
                 href={`#B-day-${x.n}`}
                 className={x.n === active ? 'active' : ''}
                 onClick={(e) => { e.preventDefault(); setActive(x.n); }}>
-                <span>Day 0{x.n} · {x.title}</span>
+                <span>Day {x.n} · {x.title}</span>
                 <small>{x.date}</small>
               </a>
             </li>
