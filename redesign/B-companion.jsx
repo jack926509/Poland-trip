@@ -3,6 +3,64 @@ const B_useState = React.useState;
 const B_useEffect = React.useEffect;
 const B_useMemo = React.useMemo;
 
+/* ── External-link helpers ───────────────────────────────────────── */
+
+// Map Chinese city name → English Latin form for Google Maps queries.
+const B_CITY_EN = {
+  '華沙': 'Warsaw',
+  '克拉科夫': 'Kraków',
+  '弗羅茨瓦夫': 'Wrocław',
+  '波茲南': 'Poznań',
+};
+
+// Curated booking / official URLs keyed by Chinese / English fragments
+// found in step labels. First match wins.
+const B_BOOKING_LINKS = [
+  ['Auschwitz',   'https://visit.auschwitz.org/'],
+  ['奧斯威辛',     'https://visit.auschwitz.org/'],
+  ['瓦維爾',       'https://wawel.krakow.pl/en'],
+  ['Wawel',       'https://wawel.krakow.pl/en'],
+  ['辛德勒',       'https://mhk.pl/branches/oskar-schindlers-enamel-factory'],
+  ['Schindler',   'https://mhk.pl/branches/oskar-schindlers-enamel-factory'],
+  ['皇家城堡',     'https://www.zamek-krolewski.pl/en'],
+  ['紡織會館',     'https://mnk.pl/en/branches/the-cloth-hall-gallery-of-19th-century-polish-art'],
+  ['聖瑪利亞',     'https://mariacki.com/en/'],
+  ['老城廣場',     'https://warsawtour.pl/en/'],
+  ['美人魚',       'https://warsawtour.pl/en/syrenka-warsawska-en/'],
+  ['Pierogi',     'https://www.zapiecek.eu/'],
+  ['Zapiecek',    'https://www.zapiecek.eu/'],
+  ['Wedel',       'https://www.wedelpijalnie.pl/'],
+  ['EIP',         'https://www.intercity.pl/en/'],
+  ['IC',          'https://www.intercity.pl/en/'],
+  ['Pendolino',   'https://www.intercity.pl/en/'],
+  ['SKM',         'https://www.skm.warszawa.pl/en/'],
+  ['Lajkonik',    'https://www.lajkonikbus.pl/'],
+];
+
+function B_focusCity(city) {
+  // Transit days look like "華沙 → 克拉科夫"; pick the destination.
+  return city.split('→').pop().trim();
+}
+
+function B_mapsURL(label, city) {
+  const cleanLabel = (label || '').replace(/^★\s*/, '').trim();
+  const cityEn = B_CITY_EN[B_focusCity(city)] || B_focusCity(city);
+  const q = encodeURIComponent([cleanLabel, cityEn, 'Poland'].filter(Boolean).join(' '));
+  return `https://www.google.com/maps/search/?api=1&query=${q}`;
+}
+
+function B_bookingURL(label) {
+  const clean = (label || '').replace(/^★\s*/, '');
+  const hit = B_BOOKING_LINKS.find(([k]) => clean.includes(k));
+  if (hit) return hit[1];
+  return `https://www.google.com/search?q=${encodeURIComponent(clean + ' Poland tickets booking')}`;
+}
+
+function B_hasBooking(label) {
+  const clean = (label || '').replace(/^★\s*/, '');
+  return B_BOOKING_LINKS.some(([k]) => clean.includes(k));
+}
+
 // Map real-world clock to a synthetic trip moment so the demo feels alive.
 // Strategy: take current local time-of-day; project onto Day 2 (mid-trip transit day).
 // User can override by tapping a day pill — that takes priority.
@@ -39,7 +97,30 @@ function B_Companion({ initialDay }) {
   const [openStep, setOpenStep] = B_useState(null);
   const [tick, setTick] = B_useState(0);
   const [drawerOpen, setDrawerOpen] = B_useState(false);
+  const [notes, setNotes] = B_useState(() => {
+    try { return JSON.parse(localStorage.getItem('polska-notes') || '{}'); }
+    catch (e) { return {}; }
+  });
   const scrubRef = React.useRef(null);
+
+  const noteKey = (dn, si) => `${dn}-${si}`;
+  const editNote = (dn, si) => {
+    const k = noteKey(dn, si);
+    const prev = notes[k] || '';
+    const v = window.prompt('在這個行程加上備註：', prev);
+    if (v === null) return;
+    setNotes((p) => {
+      const next = { ...p };
+      const trimmed = v.trim();
+      if (trimmed) next[k] = trimmed; else delete next[k];
+      try { localStorage.setItem('polska-notes', JSON.stringify(next)); } catch (e) {}
+      return next;
+    });
+  };
+  const openExt = (url) => {
+    if (!url) return;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
 
   // refresh every minute so the Now widget stays accurate
   B_useEffect(() => {
@@ -170,11 +251,17 @@ function B_Companion({ initialDay }) {
       </div>
 
       {d.train && (
-        <div className="B-train">
+        <a className="B-train"
+           href={d.train.type === 'BUS'
+             ? 'https://www.lajkonikbus.pl/'
+             : 'https://www.intercity.pl/en/'}
+           target="_blank" rel="noopener noreferrer"
+           aria-label={`${d.train.type === 'BUS' ? 'Lajkonik 巴士' : 'Intercity 火車'}訂票`}>
           <div className="seg">
             <span className={`pill ${d.train.type.toLowerCase()}`}>{d.train.type}</span>
             <span>{d.train.date || d.date}</span>
             <span>· PLN {d.train.price}</span>
+            <span className="book-cta" aria-hidden="true">訂票 →</span>
           </div>
           <div className="route">
             <div className="stop">
@@ -187,13 +274,15 @@ function B_Companion({ initialDay }) {
               <small>{d.train.arr}</small>
             </div>
           </div>
-        </div>
+        </a>
       )}
 
       <div className="B-timeline">
         {d.steps.map((s, i) => {
           const isStar = s.label.includes('★');
           const cleanLabel = s.label.replace(/^★\s*/, '');
+          const myNote = notes[noteKey(d.n, i)];
+          const showBooking = isStar || B_hasBooking(s.label);
           let cls = '';
           if (i < idx) cls = 'done';
           else if (i === idx) cls = 'now';
@@ -216,6 +305,7 @@ function B_Companion({ initialDay }) {
                 <span className="dot"></span>
                 <span className="lab">
                   {cleanLabel}
+                  {myNote && <span className="note-dot" title="已有備註" aria-label="已有備註">📒</span>}
                   {s.sub && <small>{s.sub}</small>}
                   <span className="chev">{open ? '−' : '+'}</span>
                 </span>
@@ -233,8 +323,14 @@ function B_Companion({ initialDay }) {
                   </div>
                   {s.sub && (
                     <div className="row">
-                      <span className="k">備註</span>
+                      <span className="k">提示</span>
                       <span className="v">{s.sub}</span>
+                    </div>
+                  )}
+                  {myNote && (
+                    <div className="row">
+                      <span className="k">備註</span>
+                      <span className="v" style={{whiteSpace:'pre-wrap'}}>📒 {myNote}</span>
                     </div>
                   )}
                   <div className="row">
@@ -242,9 +338,23 @@ function B_Companion({ initialDay }) {
                     <span className="v">{i < idx ? '已完成' : i === idx ? '進行中' : '尚未開始'}{isStar ? ' · ★ 重點' : ''}</span>
                   </div>
                   <div className="actions">
-                    <button>📍 地圖</button>
-                    <button>📒 加備註</button>
-                    {isStar && <button>🎟 訂票連結</button>}
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); openExt(B_mapsURL(s.label, d.city)); }}>
+                      📍 地圖
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); editNote(d.n, i); }}>
+                      📒 {myNote ? '編輯備註' : '加備註'}
+                    </button>
+                    {showBooking && (
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); openExt(B_bookingURL(s.label)); }}>
+                        🎟 訂票 / 官網
+                      </button>
+                    )}
                   </div>
                 </div>
               )}
@@ -279,8 +389,9 @@ function B_Companion({ initialDay }) {
           <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16M9 6v12"/></svg>
           行程
         </a>
-        <a href="https://maps.google.com/?q=Warsaw+Poland"
-           target="_blank" rel="noopener noreferrer">
+        <a href={B_mapsURL(B_focusCity(d.city), d.city)}
+           target="_blank" rel="noopener noreferrer"
+           aria-label={`在 Google Maps 查看 ${B_focusCity(d.city)}`}>
           <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>
           地圖
         </a>
@@ -289,8 +400,9 @@ function B_Companion({ initialDay }) {
           <svg viewBox="0 0 24 24"><path d="M4 19V5a2 2 0 012-2h11l3 3v13a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
           手冊
         </a>
-        <a href="index.html?classic=1">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+        <a href="desktop.html"
+           aria-label="切換到桌機雜誌版">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M9 21h6M12 17v4"/></svg>
           桌機版
         </a>
       </nav>
