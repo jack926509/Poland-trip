@@ -228,7 +228,7 @@ function A_RouteMap() {
         <g><rect x="624" y="220" width="68" height="22" rx="11" fill="#f4ecd8" stroke="#a8231d" strokeWidth="1"/><text x="658" y="235" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="11" fontWeight="600" fill="#7a1812">2h25 EIP</text></g>
         <g><rect x="385" y="328" width="68" height="22" rx="11" fill="#f4ecd8" stroke="#a8231d" strokeWidth="1"/><text x="419" y="343" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="11" fontWeight="600" fill="#7a1812">3h30 IC</text></g>
         <g><rect x="172" y="222" width="68" height="22" rx="11" fill="#f4ecd8" stroke="#a8231d" strokeWidth="1"/><text x="206" y="237" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="11" fontWeight="600" fill="#7a1812">2h20 IC</text></g>
-        <g><rect x="430" y="115" width="68" height="22" rx="11" fill="#f4ecd8" stroke="#a8231d" strokeWidth="1"/><text x="464" y="130" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="11" fontWeight="600" fill="#7a1812">2h45 EIP</text></g>
+        <g><rect x="430" y="115" width="68" height="22" rx="11" fill="#f4ecd8" stroke="#a8231d" strokeWidth="1"/><text x="464" y="130" textAnchor="middle" fontFamily="JetBrains Mono" fontSize="11" fontWeight="600" fill="#7a1812">2h20 EIP</text></g>
         <g>
           <circle cx="700" cy="100" r="22" fill="none" stroke="#a8231d" strokeWidth="1" strokeDasharray="3 3" opacity="0.6"/>
           <circle cx="700" cy="100" r="13" fill="#a8231d" stroke="#1a1612" strokeWidth="1.5"/>

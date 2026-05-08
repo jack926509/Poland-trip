@@ -45,7 +45,7 @@ window.TRIP = {
       steps: [
         {t:'09:00', label:'EIP Pendolino 出發', sub:'頭等艙 · Wi-Fi · 早餐', cost:'PLN 130–180', dur:'2h25'},
         {t:'11:25', label:'抵 Kraków Główny', dur:'10 min 拖行李'},
-        {t:'13:00', label:'★ 瓦維爾大教堂', sub:'週日 12:30–17:00', cost:'PLN 21', dur:'45 min'},
+        {t:'13:00', label:'★ 瓦維爾大教堂', sub:'週日 12:30–17:00', cost:'PLN 26', dur:'45 min'},
         {t:'14:00', label:'★ Wawel 國家廳室', sub:'最後入場 15:10 ⚠', cost:'PLN 45–65', dur:'1.5 h'},
         {t:'16:00', label:'★ 中央廣場 + 聖瑪利亞', sub:'整點 Hejnał 號角', cost:'PLN 20 (登塔)', dur:'1 h'},
         {t:'17:00', label:'紡織會館 Sukiennice', cost:'免費入場', dur:'30 min'},
@@ -67,13 +67,13 @@ window.TRIP = {
       headline: '波蘭最沉重也最重要的一天',
       tag: 'Memorial',
       weather: '10° / 4°',
-      train: {type:'BUS', from:'KRK', to:'Oświęcim', dep:'07:30', arr:'09:00', dur:'1h30 ×2', price:'PLN 22 ×2'},
+      train: {type:'BUS', from:'KRK', to:'Oświęcim', dep:'07:30', arr:'09:00', dur:'1h30 ×2', price:'PLN 15 ×2'},
       steps: [
-        {t:'07:30', label:'Lajkonik 巴士', sub:'MDA D10 月台', cost:'PLN 22', dur:'1h30'},
+        {t:'07:30', label:'Lajkonik 巴士', sub:'MDA D9 / D10 月台', cost:'PLN 15', dur:'1h30'},
         {t:'09:00', label:'抵 Auschwitz I', sub:'安檢、寄包、領耳機', dur:'30 min'},
         {t:'10:00', label:'★ 英文官方導覽', sub:'一館 + 比克瑙 · 3.5h', cost:'PLN 150', dur:'3.5 h'},
         {t:'13:30', label:'導覽結束'},
-        {t:'14:30', label:'巴士返克拉科夫', cost:'PLN 22', dur:'1h30'},
+        {t:'14:30', label:'巴士返克拉科夫', cost:'PLN 15', dur:'1h30'},
         {t:'16:00', label:'抵 Kraków · 休息'},
         {t:'18:00', label:'安靜晚餐沉澱情緒', cost:'PLN 60–100'},
       ],
@@ -117,7 +117,7 @@ window.TRIP = {
       steps: [
         {t:'09:00', label:'★ 中央廣場 + 紡織會館', sub:'dwarfsmap.com 找小矮人', cost:'免費', dur:'1.5 h'},
         {t:'10:30', label:'糖果屋雙屋 + 教堂塔樓', sub:'91m 全景', cost:'PLN 15', dur:'45 min'},
-        {t:'11:30', label:'★ 拉茨瓦夫全景畫', sub:'30 分鐘導覽', cost:'PLN 40', dur:'1 h'},
+        {t:'11:30', label:'★ 拉茨瓦夫全景畫', sub:'30 分鐘導覽', cost:'PLN 50', dur:'1 h'},
         {t:'13:30', label:'★ 百年廳 (UNESCO)', sub:'外觀 + 4 圓頂展館', cost:'PLN 30', dur:'1.5 h'},
         {t:'15:50', label:'★ 座堂島煤氣燈', sub:'點燈師 102 盞 · 日落 16:32', cost:'免費', dur:'45 min'},
         {t:'19:00', label:'IC 火車出發', cost:'PLN 50–90', dur:'2h20'},
@@ -131,18 +131,18 @@ window.TRIP = {
     {
       n: 6, date: '10/29 (四)', city: '波茲南 → 華沙',
       title: '山羊鐘樓秀 + 聖馬丁牛角麵包',
-      headline: 'EIP 17:30 → 20:15 · 2h45',
+      headline: 'EIP 17:30 → 19:50 · 2h20',
       tag: 'Transit',
       weather: '11° / 5°',
-      train: {type:'EIP', from:'POZ', to:'WAW', dep:'17:30', arr:'20:15', dur:'2h45', price:'PLN 90–150'},
+      train: {type:'EIP', from:'POZ', to:'WAW', dep:'17:30', arr:'19:50', dur:'2h20', price:'PLN 90–150'},
       steps: [
         {t:'09:00', label:'★ 教堂島 Ostrów Tumski', sub:'梅什科一世受洗地', cost:'PLN 16', dur:'1.5 h'},
         {t:'11:00', label:'廣場卡正面位置', dur:'45 min · 提早卡位'},
         {t:'12:00', label:'★ 山羊鐘樓秀', sub:'每天中午限定', cost:'免費', dur:'5 min'},
         {t:'12:15', label:'★ 聖馬丁牛角麵包 (PGI)', sub:'Cukiernia Kandulski', cost:'PLN 12–18', dur:'15 min'},
         {t:'14:00', label:'帝王城堡 / Stary Browar', cost:'PLN 16', dur:'2 h'},
-        {t:'17:30', label:'EIP 出發', cost:'PLN 90–150', dur:'2h45'},
-        {t:'20:15', label:'抵華沙中央車站'},
+        {t:'17:30', label:'EIP 出發', cost:'PLN 90–150', dur:'2h20'},
+        {t:'19:50', label:'抵華沙中央車站'},
       ],
       eat: ['Rogal Świętomarciński (PGI) ⭐', 'Pyry z gzikiem @ Pyra Bar'],
       backup: [
@@ -157,11 +157,11 @@ window.TRIP = {
       tag: 'Capital',
       weather: '10° / 4°',
       steps: [
-        {t:'10:00', label:'★ POLIN 猶太博物館', sub:'線上預約 · 含中文語音', cost:'PLN 45', dur:'2.5 h'},
+        {t:'10:00', label:'★ POLIN 猶太博物館', sub:'線上預約 · 含中文語音', cost:'PLN 45 (週四免費)', dur:'2.5 h'},
         {t:'13:30', label:'午餐 Tel Aviv Urban', cost:'PLN 50–80', dur:'1 h'},
-        {t:'14:30', label:'★ 華沙起義博物館', sub:'3D 影院 · 互動區', cost:'PLN 30 (週日免費)', dur:'2 h'},
-        {t:'17:00', label:'★ 皇家城堡內部', sub:'最後入場 · 林布蘭', cost:'PLN 50', dur:'1.5 h'},
-        {t:'19:00', label:'★ Fryderyk 蕭邦獨奏會', sub:'95–140 PLN · Podwale 13', cost:'PLN 95–140', dur:'1 h'},
+        {t:'14:30', label:'★ 華沙起義博物館', sub:'3D 影院 · 互動區', cost:'PLN 30 (週一/四免費)', dur:'2 h'},
+        {t:'17:00', label:'★ 皇家城堡內部', sub:'最後入場 · 林布蘭', cost:'PLN 60 (週三免費)', dur:'1.5 h'},
+        {t:'19:00', label:'★ Fryderyk 蕭邦獨奏會', sub:'95–140 PLN · Podwale 13/15', cost:'PLN 95–140', dur:'1 h'},
         {t:'20:00', label:'晚餐 U Fukiera / Polka', cost:'PLN 120–200'},
       ],
       eat: ['Żurek 酸黑麥湯 @ U Fukiera', 'Pączki @ A. Blikle 1869'],
@@ -200,10 +200,10 @@ window.TRIP = {
   ],
   trains: [
     {seg:'WAW → KRK', date:'10/25', type:'EIP', dep:'09:00', arr:'11:25', dur:'2h25', price:'130–180'},
-    {seg:'KRK ⇄ Auschwitz', date:'10/26', type:'BUS', dep:'07:30', arr:'14:30', dur:'1h30 ×2', price:'44'},
+    {seg:'KRK ⇄ Auschwitz', date:'10/26', type:'BUS', dep:'07:30', arr:'14:30', dur:'1h30 ×2', price:'30'},
     {seg:'KRK → WRO', date:'10/27', type:'IC', dep:'17:30', arr:'21:00', dur:'3h30', price:'60–110'},
     {seg:'WRO → POZ', date:'10/28', type:'IC', dep:'19:00', arr:'21:20', dur:'2h20', price:'50–90'},
-    {seg:'POZ → WAW', date:'10/29', type:'EIP', dep:'17:30', arr:'20:15', dur:'2h45', price:'90–150'},
+    {seg:'POZ → WAW', date:'10/29', type:'EIP', dep:'17:30', arr:'19:50', dur:'2h20', price:'90–150'},
   ],
 
   flights: {
@@ -232,9 +232,9 @@ window.TRIP = {
 
   tickets: [
     {city:'華沙', items:[
-      ['皇家城堡', 'PLN 50'],
-      ['POLIN 猶太歷史', 'PLN 45'],
-      ['華沙起義博物館', 'PLN 30 · 週日免費'],
+      ['皇家城堡', 'PLN 60 · 週三免費'],
+      ['POLIN 猶太歷史', 'PLN 45 · 週四免費'],
+      ['華沙起義博物館', 'PLN 30 · 週一/週四免費'],
       ['蕭邦博物館', '2026 整年閉館'],
       ['Fryderyk Hall 蕭邦音樂會', 'PLN 95–140'],
       ['科學文化宮觀景台', 'PLN 25'],
@@ -249,7 +249,7 @@ window.TRIP = {
     ]},
     {city:'弗羅茨瓦夫', items:[
       ['百年廳 Hala Stulecia', 'PLN 30'],
-      ['拉茨瓦夫全景畫', 'PLN 40'],
+      ['拉茨瓦夫全景畫', 'PLN 50'],
     ]},
     {city:'波茲南', items:[
       ['牛角麵包博物館', 'PLN 25'],
@@ -345,7 +345,7 @@ window.TRIP = {
     {when:'出發前 21 天', what:'Auschwitz 英文官方導覽（visit.auschwitz.org · 旺季 14 天前售完）'},
     {when:'出發前 14 天', what:'POLIN 猶太博物館 + 華沙起義博物館 + 辛德勒工廠（mhk.pl/en）'},
     {when:'出發前 7 天', what:'米其林餐廳：Bottiglieria 1881、U Fukiera、Pod Aniołami、Pod Fredrą（TheFork / OpenTable / 餐廳官網）'},
-    {when:'出發前 3 天', what:'Fryderyk Hall 蕭邦獨奏會（chopinconcerts.pl · Podwale 13 票常於前一週售罄）'},
+    {when:'出發前 3 天', what:'Fryderyk Hall 蕭邦獨奏會（chopinconcerts.pl · Podwale 13/15 票常於前一週售罄）'},
     {when:'抵達當日', what:'隔日 Wawel 國家廳室現場票（限額制，售完只能改廷院）'},
   ],
 
