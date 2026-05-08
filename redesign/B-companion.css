@@ -8,15 +8,13 @@
   font-size:.92rem;
   line-height:1.55;
   position:relative;
-  height:100%;
-  overflow-y:auto;
-  scrollbar-width:thin;
+  /* No inner overflow on mobile — let body scroll natively. The wrapper
+     in mobile.html flattens this to height:auto, and an unused
+     overflow-y:auto would still register as a scroll context on iOS
+     Safari, fighting momentum and stealing pan gestures. */
   border-radius:28px;
   /* leave clearance so bottom tab bar never covers content on iOS */
   padding-bottom:calc(var(--safe-bottom) + 4.4rem);
-}
-@supports (overflow:clip){
-  .B-frame{overscroll-behavior-y:contain}
 }
 
 .B-status-bar{
@@ -33,6 +31,10 @@
   display:flex;justify-content:space-between;align-items:center;
   background:var(--paper);
   position:sticky;top:0;z-index:20;
+  /* Promote to its own composite layer so sticky doesn't trigger paint
+     of everything behind it on every scroll frame. */
+  will-change:transform;
+  transform:translateZ(0);
 }
 .B-head .brand{
   font-family:var(--serif);font-weight:900;
@@ -131,16 +133,25 @@
   color:var(--amber);text-transform:uppercase;margin-bottom:.4rem;
   display:flex;align-items:center;gap:.4rem;
 }
+/* Live pulse: dot stays solid, transform-only animation (cheap, GPU). */
 .B-now .now-label::before{
   content:"";width:8px;height:8px;border-radius:50%;
   background:var(--amber);
-  box-shadow:0 0 0 0 rgba(196,137,43,.6);
-  animation:B-pulse 1.8s infinite;
+  position:relative;flex:none;
+}
+.B-now .now-label{position:relative}
+.B-now .now-label::after{
+  content:"";position:absolute;left:0;top:50%;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--amber);
+  transform:translateY(-50%) scale(1);
+  animation:B-pulse 1.8s ease-out infinite;
+  pointer-events:none;will-change:transform,opacity;
 }
 @keyframes B-pulse{
-  0%{box-shadow:0 0 0 0 rgba(196,137,43,.55)}
-  70%{box-shadow:0 0 0 10px rgba(196,137,43,0)}
-  100%{box-shadow:0 0 0 0 rgba(196,137,43,0)}
+  0%  {transform:translateY(-50%) scale(1);   opacity:.55}
+  70% {transform:translateY(-50%) scale(3.5); opacity:0}
+  100%{transform:translateY(-50%) scale(3.5); opacity:0}
 }
 .B-now .now-time{
   font-family:var(--serif);font-style:italic;font-size:1.05rem;font-weight:700;color:var(--amber);
@@ -371,18 +382,22 @@
   padding:0 .35rem;color:var(--ink-soft);letter-spacing:.08em;
 }
 
-/* TAB BAR — bottom dock */
+/* TAB BAR — bottom dock
+   No backdrop-filter: Safari composites it on every scroll frame which
+   is the single biggest source of mobile jank. Solid paper bg with
+   shadow does the same job at zero cost. */
 .B-tabbar{
   position:fixed;bottom:0;left:0;right:0;
   max-width:480px;margin:0 auto;
   display:grid;grid-template-columns:repeat(5,1fr);
-  background:rgba(244,236,216,.94);
-  -webkit-backdrop-filter:saturate(1.4) blur(8px);
-          backdrop-filter:saturate(1.4) blur(8px);
+  background:var(--paper);
   border-top:3px double var(--ink);
+  box-shadow:0 -6px 18px rgba(26,22,18,.06);
   padding:.4rem .2rem calc(.6rem + var(--safe-bottom));
   font-family:var(--serif);font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;
   z-index:10;
+  will-change:transform;
+  transform:translateZ(0);
 }
 .B-tabbar a{
   display:flex;flex-direction:column;align-items:center;gap:.2rem;
