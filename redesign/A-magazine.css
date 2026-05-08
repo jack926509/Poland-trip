@@ -621,6 +621,26 @@
 .A-cityfood-cell li .n{
   font-family:var(--serif);font-weight:700;color:var(--accent);font-style:italic;
   display:inline-flex;align-items:center;gap:.35rem;flex-wrap:wrap;
+  text-decoration:none;
+  transition:color var(--dur-fast) var(--ease-out), text-decoration-color var(--dur-fast) var(--ease-out);
+}
+a.A-cityfood-cell{display:block}
+.A-cityfood-cell li a.n{cursor:pointer}
+.A-cityfood-cell li a.n:hover,
+.A-cityfood-cell li a.n:focus-visible{
+  color:var(--crimson-deep);
+  text-decoration:underline;
+  text-decoration-color:var(--crimson-deep);
+  text-underline-offset:3px;
+}
+.A-cityfood-cell li a.n .map-arr{
+  font-family:var(--mono);font-style:normal;font-size:.7em;
+  color:var(--accent);opacity:.45;
+  transition:opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+}
+.A-cityfood-cell li a.n:hover .map-arr,
+.A-cityfood-cell li a.n:focus-visible .map-arr{
+  opacity:1;transform:translate(2px,-2px);
 }
 .A-cityfood-cell li small{display:block;color:var(--ink-mute);font-size:.78em;margin-top:.1rem;grid-column:2}
 

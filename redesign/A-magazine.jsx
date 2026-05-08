@@ -291,6 +291,11 @@ function A_Tickets() {
 }
 
 function A_Foods() {
+  const mapsURL = (name, city) => {
+    // Use first venue if name contains "/" (e.g. "Starka / Szara Gęś")
+    const venue = String(name).split('/')[0].trim();
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${venue} ${city}`)}`;
+  };
   return (
     <>
       <p className="A-lead">
@@ -324,15 +329,19 @@ function A_Foods() {
               {c.items.map((it, i) => (
                 <li key={i}>
                   <span className="t">{it.tag}</span>
-                  <span className="n">
-                    {it.name}
+                  <a className="n"
+                     href={mapsURL(it.name, c.en)}
+                     target="_blank" rel="noopener noreferrer"
+                     aria-label={`Google 地圖：${it.name}（${c.city}）`}>
+                    <span>{it.name}</span>
                     {it.book && <span className={`bk ${it.book}`} title={
                       it.book === 'must' ? '建議提前訂位' :
                       it.book === 'queue' ? '排隊熱點，建議離峰前往' : '走進去就好'
                     }>
                       {it.book === 'must' ? '訂' : it.book === 'queue' ? '排' : '走'}
                     </span>}
-                  </span>
+                    <span className="map-arr" aria-hidden="true">↗</span>
+                  </a>
                   <small>{it.note}</small>
                 </li>
               ))}
