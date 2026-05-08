@@ -134,8 +134,8 @@
   letter-spacing:.28em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:.3rem;
 }
 .A-shead h2{
-  font-family:var(--serif);font-weight:900;line-height:1;
-  font-size:clamp(2rem, 4vw, 3rem);letter-spacing:-.02em;
+  font-family:var(--serif);font-weight:900;line-height:1.05;
+  font-size:clamp(2rem, 4vw, 3rem);letter-spacing:-.025em;
 }
 .A-shead .meta{
   font-family:var(--mono);font-size:var(--fs-xs);
@@ -234,12 +234,12 @@
 }
 .A-day-body{padding:0;background:transparent}
 .A-day-body h4{
-  font-family:var(--serif);font-weight:700;
-  font-size:1.35rem;line-height:1.3;letter-spacing:-.005em;
+  font-family:var(--serif);font-weight:900;
+  font-size:1.4rem;line-height:1.3;letter-spacing:-.01em;
   margin-bottom:.35rem;
 }
 .A-day-body .lead{
-  font-family:var(--body);font-style:normal;
+  font-family:var(--body);font-style:normal;font-weight:500;
   font-size:.98rem;line-height:1.65;color:var(--ink-soft);
   margin-bottom:.75rem;
 }
@@ -458,7 +458,7 @@
   background:var(--paper);border:1px solid var(--ink);padding:1.2rem 1.4rem;
 }
 .A-ticket-card h4{
-  font-family:var(--serif);font-weight:700;font-size:1.2rem;
+  font-family:var(--serif);font-weight:900;font-size:1.2rem;letter-spacing:-.01em;
   border-bottom:3px double var(--ink);padding-bottom:.5rem;margin-bottom:.6rem;
 }
 .A-ticket-rows{display:grid;gap:.3rem}
@@ -493,7 +493,7 @@
   font-size:1.6rem;line-height:1;
 }
 .A-food-cell h5{
-  font-family:var(--serif);font-weight:700;font-size:1.15rem;margin:.4rem 0 .15rem;
+  font-family:var(--serif);font-weight:900;font-size:1.15rem;letter-spacing:-.01em;margin:.4rem 0 .15rem;
 }
 .A-food-cell .pl{
   font-family:var(--display);font-style:italic;color:var(--accent);
@@ -508,7 +508,7 @@
 .A-tip strong{font-family:var(--serif);color:var(--accent);font-weight:700;letter-spacing:.05em}
 .A-sub-h{
   margin:2.4rem 0 1rem;
-  font-family:var(--serif);font-weight:700;font-size:1.4rem;letter-spacing:-.01em;
+  font-family:var(--serif);font-weight:900;font-size:1.4rem;letter-spacing:-.02em;
   border-bottom:3px double var(--ink);padding-bottom:.5rem;
 }
 /* CITY FOOD — alternating tones */
@@ -545,7 +545,7 @@
 .A-safety-card.emergency{background:var(--ink);color:var(--paper);grid-column:span 3}
 .A-safety-card.embassy{grid-column:span 2}
 .A-safety-card h4{
-  font-family:var(--serif);font-weight:700;font-size:1.05rem;
+  font-family:var(--serif);font-weight:900;font-size:1.05rem;letter-spacing:-.01em;
   border-bottom:3px double currentColor;padding-bottom:.4rem;margin-bottom:.6rem;
 }
 .A-safety-card.emergency h4{color:var(--amber)}
@@ -608,7 +608,7 @@
 .A-phrase-cell:nth-child(2n){background:#fbf5e3}
 .A-phrase-cell:nth-child(5n){background:#f7e9c8}
 .A-phrase-cell .cn{
-  font-family:var(--serif);font-weight:700;font-size:.95rem;color:var(--ink);
+  font-family:var(--serif);font-weight:900;font-size:.95rem;color:var(--ink);letter-spacing:-.005em;
 }
 .A-phrase-cell .pl{
   font-family:var(--display);font-style:italic;color:var(--accent);
@@ -644,7 +644,7 @@
 }
 .A-fact-card{background:var(--paper);border:1px solid var(--ink);padding:1.2rem 1.4rem}
 .A-fact-card h5{
-  font-family:var(--serif);font-weight:700;font-size:1.1rem;
+  font-family:var(--serif);font-weight:900;font-size:1.1rem;letter-spacing:-.01em;
   border-bottom:3px double var(--ink);padding-bottom:.4rem;margin-bottom:.6rem;
 }
 .A-fact-row{
