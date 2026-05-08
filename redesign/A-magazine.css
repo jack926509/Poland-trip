@@ -342,6 +342,81 @@
 .A-steps li .lab .meta .m-cost{color:var(--amber-deep);font-weight:600}
 .A-steps li .lab .meta .m-dur{color:var(--moss);font-weight:600}
 
+/* Place-link variant on schedule rows + map ↗ indicator */
+.A-steps li a.lab.is-link{
+  color:inherit;text-decoration:none;
+  display:inline;
+  transition:color var(--dur-fast) var(--ease-out);
+}
+.A-steps li a.lab.is-link:hover,
+.A-steps li a.lab.is-link:focus-visible{
+  color:var(--crimson-deep);
+  text-decoration:underline;
+  text-decoration-color:var(--accent);
+  text-underline-offset:3px;
+}
+.A-steps li a.lab.is-link .map-arr,
+.A-day-eats li a .map-arr,
+.A-day-backup li a em .map-arr,
+.A-day-practical li a strong .map-arr,
+.A-ticket-row a .map-arr{
+  font-family:var(--mono);font-style:normal;font-size:.7em;
+  color:var(--accent);opacity:.4;margin-left:.25rem;
+  transition:opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  display:inline-block;
+}
+.A-steps li a.lab.is-link:hover .map-arr,
+.A-day-eats li a:hover .map-arr,
+.A-day-backup li a:hover em .map-arr,
+.A-day-practical li a:hover strong .map-arr,
+.A-ticket-row a:hover .map-arr{
+  opacity:1;transform:translate(2px,-2px);
+}
+
+/* EATS / BACKUP / PRACTICAL — wrap content in <a> tags */
+.A-day-eats li a{
+  color:inherit;text-decoration:none;display:inline-flex;
+  align-items:baseline;gap:.3rem;
+  transition:color var(--dur-fast) var(--ease-out);
+}
+.A-day-eats li a:hover,.A-day-eats li a:focus-visible{
+  color:var(--crimson-deep);
+  text-decoration:underline;text-decoration-color:var(--amber-deep);
+  text-underline-offset:3px;
+}
+
+.A-day-backup li a,
+.A-day-practical li a{
+  display:contents;color:inherit;text-decoration:none;
+}
+.A-day-backup li:hover,
+.A-day-backup li:focus-within{background:rgba(61,74,42,.08)}
+.A-day-practical li:hover,
+.A-day-practical li:focus-within{background:rgba(26,22,18,.05)}
+.A-day-backup li a:hover em,
+.A-day-backup li a:focus-visible em{
+  text-decoration:underline;text-decoration-color:var(--moss);text-underline-offset:3px;
+}
+.A-day-practical li a:hover strong,
+.A-day-practical li a:focus-visible strong{
+  text-decoration:underline;text-decoration-color:var(--ink-soft);text-underline-offset:3px;
+}
+
+/* TICKETS — make rows clickable */
+.A-ticket-row a{
+  display:flex;align-items:baseline;justify-content:space-between;gap:.6rem;
+  width:100%;color:inherit;text-decoration:none;
+  padding:.05rem 0;
+  transition:color var(--dur-fast) var(--ease-out);
+}
+.A-ticket-row a:hover,.A-ticket-row a:focus-visible{
+  color:var(--crimson-deep);
+}
+.A-ticket-row a:hover span:first-child,
+.A-ticket-row a:focus-visible span:first-child{
+  text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px;
+}
+
 /* PLAN B / 雨天備案 — moss accent so it reads distinct from amber eats */
 .A-day-backup{
   background:rgba(61,74,42,.06);

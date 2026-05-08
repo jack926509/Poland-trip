@@ -2,6 +2,48 @@
    Renders into the #A-root mount. Uses window.TRIP. */
 const { useState, useMemo, useEffect, useRef } = React;
 
+// Map city → English name for Maps queries (mirrors B-companion's B_CITY_EN).
+const A_CITY_EN = {
+  '華沙': 'Warsaw',
+  '克拉科夫': 'Kraków',
+  '弗羅茨瓦夫': 'Wrocław',
+  '波茲南': 'Poznań',
+  '多哈': 'Doha',
+};
+// In transit days like "華沙 → 克拉科夫", anchor the search to the destination.
+function A_focusCity(city) {
+  if (!city) return 'Poland';
+  const last = city.split('→').pop().trim();
+  return A_CITY_EN[last] || last;
+}
+// Strip leading ★, brackets, "@ Venue" splits, etc., so the search hits the place.
+function A_cleanPlace(name) {
+  if (!name) return '';
+  let s = String(name).replace(/^★\s*/, '').trim();
+  // Eat string "Pierogi @ Zapiecek" → use venue after @
+  if (s.includes('@')) s = s.split('@').pop().trim();
+  // Pick first venue when separated by /
+  if (s.includes('/')) s = s.split('/')[0].trim();
+  // Strip trailing parentheses notes (PGI), (UNESCO), (Marszałkowska)
+  s = s.replace(/[（(].*?[）)]/g, '').trim();
+  return s;
+}
+function A_mapsURL(name, city) {
+  const venue = A_cleanPlace(name);
+  const ctx = A_focusCity(city);
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${venue} ${ctx}`)}`;
+}
+// Heuristic: should this step label get a maps link? Star marker, or a name-y
+// pattern (place keywords / proper noun). Skip pure transit / admin lines.
+function A_stepIsPlace(label) {
+  if (!label) return false;
+  if (label.includes('★')) return true;
+  const skip = /(出發|抵|入境|提行李|Check-in|退房|報到|安檢|退稅|早睡|休息|散步$|起飛|沉澱|導覽結束|散步$)/;
+  if (skip.test(label)) return false;
+  const placeHints = /(廣場|教堂|城堡|工廠|博物館|大學|公園|大廳|車站|麵包|餃子|餐廳|晚餐|午餐|早餐|塔樓|商場|市集|站|塔|壇|區|街)/;
+  return placeHints.test(label);
+}
+
 function A_Hero() {
   const t = window.TRIP;
   return (
@@ -88,10 +130,10 @@ function A_Day({ d, scoped }) {
         <div className="A-schedule">
           <span className="sched-label">逐時行程</span>
           <ul className="A-steps">
-            {d.steps.map((s, i) =>
-            <li key={i}>
-                <span className="t">{s.t}</span>
-                <span className="lab">
+            {d.steps.map((s, i) => {
+              const linkable = A_stepIsPlace(s.label);
+              const Inner = (
+                <>
                   {s.label}{s.sub && <small>（{s.sub}）</small>}
                   {(s.cost || s.dur) && (
                     <span className="meta">
@@ -99,15 +141,40 @@ function A_Day({ d, scoped }) {
                       {s.cost && <span className="m-cost">💰 {s.cost}</span>}
                     </span>
                   )}
-                </span>
-              </li>
-            )}
+                  {linkable && <span className="map-arr" aria-hidden="true">↗</span>}
+                </>
+              );
+              return (
+                <li key={i}>
+                  <span className="t">{s.t}</span>
+                  {linkable ? (
+                    <a className="lab is-link"
+                       href={A_mapsURL(s.label, d.city)}
+                       target="_blank" rel="noopener noreferrer"
+                       aria-label={`Google 地圖：${A_cleanPlace(s.label)}`}>
+                      {Inner}
+                    </a>
+                  ) : (
+                    <span className="lab">{Inner}</span>
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </div>
         {d.eat &&
         <div className="A-day-eats">
             <span className="e-label">🍴 {d.n === 1 ? '抵達日必吃' : '今日必吃'}</span>
-            <ul>{d.eat.map((e, i) => <li key={i}>{e}</li>)}</ul>
+            <ul>{d.eat.map((e, i) =>
+              <li key={i}>
+                <a href={A_mapsURL(e, d.city)}
+                   target="_blank" rel="noopener noreferrer"
+                   aria-label={`Google 地圖：${A_cleanPlace(e)}`}>
+                  {e}
+                  <span className="map-arr" aria-hidden="true">↗</span>
+                </a>
+              </li>
+            )}</ul>
           </div>
         }
         {d.backup && d.backup.length > 0 &&
@@ -115,9 +182,13 @@ function A_Day({ d, scoped }) {
             <span className="b-label">☂ 備案 / Plan B</span>
             <ul>{d.backup.map((b, i) =>
               <li key={i}>
-                <strong>{b.label}</strong>
-                <em>{b.where}</em>
-                <span>{b.why}</span>
+                <a href={A_mapsURL(b.where, d.city)}
+                   target="_blank" rel="noopener noreferrer"
+                   aria-label={`Google 地圖：${A_cleanPlace(b.where)}`}>
+                  <strong>{b.label}</strong>
+                  <em>{b.where}<span className="map-arr" aria-hidden="true"> ↗</span></em>
+                  <span>{b.why}</span>
+                </a>
               </li>
             )}</ul>
           </div>
@@ -127,9 +198,13 @@ function A_Day({ d, scoped }) {
             <span className="p-label">🛠 實務節點</span>
             <ul>{d.practical.map((p, i) =>
               <li key={i}>
-                <span className="t">{p.tag}</span>
-                <strong>{p.name}</strong>
-                <small>{p.note}</small>
+                <a href={A_mapsURL(p.name, d.city)}
+                   target="_blank" rel="noopener noreferrer"
+                   aria-label={`Google 地圖：${A_cleanPlace(p.name)}`}>
+                  <span className="t">{p.tag}</span>
+                  <strong>{p.name}<span className="map-arr" aria-hidden="true"> ↗</span></strong>
+                  <small>{p.note}</small>
+                </a>
               </li>
             )}</ul>
           </div>
@@ -280,7 +355,12 @@ function A_Tickets() {
           <div className="A-ticket-rows">
             {c.items.map(([k, v], i) => (
               <div className="A-ticket-row" key={i}>
-                <span>{k}</span><strong>{v}</strong>
+                <a href={A_mapsURL(k, c.city)}
+                   target="_blank" rel="noopener noreferrer"
+                   aria-label={`Google 地圖：${A_cleanPlace(k)}（${c.city}）`}>
+                  <span>{k}<span className="map-arr" aria-hidden="true"> ↗</span></span>
+                  <strong>{v}</strong>
+                </a>
               </div>
             ))}
           </div>
@@ -291,11 +371,6 @@ function A_Tickets() {
 }
 
 function A_Foods() {
-  const mapsURL = (name, city) => {
-    // Use first venue if name contains "/" (e.g. "Starka / Szara Gęś")
-    const venue = String(name).split('/')[0].trim();
-    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${venue} ${city}`)}`;
-  };
   return (
     <>
       <p className="A-lead">
@@ -330,9 +405,9 @@ function A_Foods() {
                 <li key={i}>
                   <span className="t">{it.tag}</span>
                   <a className="n"
-                     href={mapsURL(it.name, c.en)}
+                     href={A_mapsURL(it.name, c.city)}
                      target="_blank" rel="noopener noreferrer"
-                     aria-label={`Google 地圖：${it.name}（${c.city}）`}>
+                     aria-label={`Google 地圖：${A_cleanPlace(it.name)}（${c.city}）`}>
                     <span>{it.name}</span>
                     {it.book && <span className={`bk ${it.book}`} title={
                       it.book === 'must' ? '建議提前訂位' :
