@@ -122,29 +122,29 @@ function A_RouteMap() {
         <g>
           <circle cx="700" cy="100" r="22" fill="none" stroke="#a8231d" strokeWidth="1" strokeDasharray="3 3" opacity="0.6"/>
           <circle cx="700" cy="100" r="13" fill="#a8231d" stroke="#1a1612" strokeWidth="1.5"/>
-          <text x="700" y="105" textAnchor="middle" fontFamily="Bodoni Moda" fontSize="14" fontWeight="700" fill="#fff">1</text>
-          <text x="730" y="92" fontFamily="Bodoni Moda" fontSize="20" fontWeight="700" fill="#1a1612">華沙 Warszawa</text>
+          <text x="700" y="105" textAnchor="middle" fontFamily="Bodoni Moda, Noto Serif TC, serif" fontSize="14" fontWeight="700" fill="#fff">1</text>
+          <text x="730" y="92" fontFamily="Bodoni Moda, Noto Serif TC, serif" fontSize="20" fontWeight="700" fill="#1a1612">華沙 Warszawa</text>
           <text x="730" y="110" fontFamily="JetBrains Mono" fontSize="10" letterSpacing="1.5" fill="#3d362e">DAY 1 · ENTRY</text>
           <text x="730" y="135" fontFamily="JetBrains Mono" fontSize="9" letterSpacing="1.2" fill="#a8231d" fontWeight="600">↻ DAY 7-8 · EXIT</text>
         </g>
         <g>
           <circle cx="585" cy="350" r="13" fill="#a8231d" stroke="#1a1612" strokeWidth="1.5"/>
-          <text x="585" y="355" textAnchor="middle" fontFamily="Bodoni Moda" fontSize="14" fontWeight="700" fill="#fff">2</text>
-          <text x="615" y="342" fontFamily="Bodoni Moda" fontSize="20" fontWeight="700" fill="#1a1612">克拉科夫 Kraków</text>
+          <text x="585" y="355" textAnchor="middle" fontFamily="Bodoni Moda, Noto Serif TC, serif" fontSize="14" fontWeight="700" fill="#fff">2</text>
+          <text x="615" y="342" fontFamily="Bodoni Moda, Noto Serif TC, serif" fontSize="20" fontWeight="700" fill="#1a1612">克拉科夫 Kraków</text>
           <text x="615" y="360" fontFamily="JetBrains Mono" fontSize="10" letterSpacing="1.5" fill="#3d362e">DAY 2-4 · 3 NIGHTS</text>
         </g>
         <g>
           <circle cx="265" cy="335" r="13" fill="#c4892b" stroke="#1a1612" strokeWidth="1.5"/>
-          <text x="265" y="340" textAnchor="middle" fontFamily="Bodoni Moda" fontSize="14" fontWeight="700" fill="#fff">3</text>
-          <text x="105" y="325" fontFamily="Bodoni Moda" fontSize="18" fontWeight="700" fill="#1a1612">弗羅茨瓦夫</text>
-          <text x="105" y="345" fontFamily="Bodoni Moda" fontSize="13" fontStyle="italic" fill="#3d362e">Wrocław</text>
+          <text x="265" y="340" textAnchor="middle" fontFamily="Bodoni Moda, Noto Serif TC, serif" fontSize="14" fontWeight="700" fill="#fff">3</text>
+          <text x="105" y="325" fontFamily="Bodoni Moda, Noto Serif TC, serif" fontSize="18" fontWeight="700" fill="#1a1612">弗羅茨瓦夫</text>
+          <text x="105" y="345" fontFamily="Bodoni Moda, Noto Serif TC, serif" fontSize="13" fontStyle="italic" fill="#3d362e">Wrocław</text>
           <text x="105" y="362" fontFamily="JetBrains Mono" fontSize="10" letterSpacing="1.5" fill="#3d362e">DAY 5</text>
         </g>
         <g>
           <circle cx="245" cy="140" r="13" fill="#c4892b" stroke="#1a1612" strokeWidth="1.5"/>
-          <text x="245" y="145" textAnchor="middle" fontFamily="Bodoni Moda" fontSize="14" fontWeight="700" fill="#fff">4</text>
-          <text x="80" y="135" fontFamily="Bodoni Moda" fontSize="18" fontWeight="700" fill="#1a1612">波茲南</text>
-          <text x="80" y="155" fontFamily="Bodoni Moda" fontSize="13" fontStyle="italic" fill="#3d362e">Poznań</text>
+          <text x="245" y="145" textAnchor="middle" fontFamily="Bodoni Moda, Noto Serif TC, serif" fontSize="14" fontWeight="700" fill="#fff">4</text>
+          <text x="80" y="135" fontFamily="Bodoni Moda, Noto Serif TC, serif" fontSize="18" fontWeight="700" fill="#1a1612">波茲南</text>
+          <text x="80" y="155" fontFamily="Bodoni Moda, Noto Serif TC, serif" fontSize="13" fontStyle="italic" fill="#3d362e">Poznań</text>
           <text x="80" y="172" fontFamily="JetBrains Mono" fontSize="10" letterSpacing="1.5" fill="#3d362e">DAY 6</text>
         </g>
       </svg>
