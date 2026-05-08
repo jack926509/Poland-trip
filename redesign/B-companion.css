@@ -301,6 +301,12 @@
   display:flex;align-items:center;gap:.4rem;
 }
 .B-card.eat{background:var(--paper-warm)}
+.B-card.backup{background:rgba(61,74,42,.07);border-color:var(--moss)}
+.B-card.backup .label{color:var(--moss)}
+.B-card.backup li > a::before{color:var(--moss)}
+.B-card.practical{background:rgba(26,22,18,.04)}
+.B-card.practical .label{color:var(--ink-soft)}
+.B-card.practical li > a::before{color:var(--ink-soft)}
 .B-card ul{list-style:none;padding:0;margin:0;display:grid;gap:.18rem}
 .B-card li{font-size:.9rem;color:var(--ink-soft);position:relative;line-height:1.45}
 .B-card li > a{
@@ -316,6 +322,53 @@
   flex:none;font-family:var(--mono);font-size:.75em;color:var(--accent);opacity:.5;
 }
 .B-card li > a:hover .eat-arr,.B-card li > a:active .eat-arr{opacity:1}
+
+/* Backup card — multiline anchor with label / where / why stacked */
+.B-card.backup li > a{
+  flex-wrap:wrap;align-items:baseline;
+  padding:.45rem .55rem .5rem 1.1rem;
+}
+.B-card.backup li > a strong{
+  font-family:var(--serif);font-weight:700;color:var(--moss);
+  font-size:.82rem;letter-spacing:.04em;
+  flex:0 0 auto;
+}
+.B-card.backup li > a em{
+  font-family:var(--display);font-style:italic;color:var(--accent);
+  font-weight:600;font-size:.85rem;flex:1 1 auto;
+}
+.B-card.backup li > a span:not(.eat-arr){
+  flex:1 0 100%;color:var(--ink-mute);font-size:.78rem;line-height:1.45;
+  margin-top:.15rem;
+}
+
+/* Practical card — tag + name + note stacked */
+.B-card.practical li > a{
+  flex-wrap:wrap;align-items:baseline;
+  padding:.4rem .55rem .45rem 1.1rem;
+}
+.B-card.practical li > a .t{
+  font-family:var(--mono);font-size:.56rem;letter-spacing:.14em;
+  color:var(--paper);background:var(--ink-soft);
+  padding:.12rem .42rem;border-radius:3px;text-transform:uppercase;
+  flex:0 0 auto;
+}
+.B-card.practical li > a strong{
+  font-family:var(--serif);font-weight:700;color:var(--ink);
+  font-size:.85rem;flex:1 1 auto;
+}
+.B-card.practical li > a small{
+  flex:1 0 100%;color:var(--ink-mute);font-size:.76rem;line-height:1.45;
+  margin-top:.18rem;
+}
+
+/* Step inline cost / dur meta — compact mono badges */
+.B-step .lab .step-meta{
+  display:inline-flex;flex-wrap:wrap;gap:.4rem;margin-top:.18rem;
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.04em;
+}
+.B-step .lab .step-meta .m-cost{color:var(--amber-deep);font-weight:600}
+.B-step .lab .step-meta .m-dur{color:var(--moss);font-weight:600}
 .B-warn{
   margin:.55rem 1rem;padding:.6rem .9rem;
   background:var(--ink);color:var(--paper);
