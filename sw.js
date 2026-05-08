@@ -1,28 +1,30 @@
 // POLSKA 旅遊指南 Service Worker — 離線優先策略
 // 出發到波蘭時即使無網路也能看完整指南
-const CACHE_VERSION = 'polska-v3';
+const CACHE_VERSION = 'polska-v4';
+// Relative paths so the SW works on root domain (trip.xieh.tw) and
+// sub-path deploys (jack926509.github.io/Poland-trip/) alike.
 const PRECACHE_URLS = [
-  '/',
-  '/index.html',
-  '/mobile.html',
-  '/desktop.html',
-  '/app-preview.html',
-  '/manifest.json',
-  '/styles.css',
-  '/main.js',
-  '/apple-touch-icon.png',
-  '/og-image.svg',
-  '/vendor/react.production.min.js',
-  '/vendor/react-dom.production.min.js',
-  '/redesign/data.js',
-  '/redesign/tokens.css',
-  '/redesign/A-magazine.css',
-  '/redesign/B-companion.css',
-  '/redesign/C-app.css',
-  '/redesign/dist/A-magazine.js',
-  '/redesign/dist/B-companion.js',
-  '/redesign/dist/C-app.js',
-  '/redesign/dist/ios-frame.js',
+  './',
+  './index.html',
+  './mobile.html',
+  './desktop.html',
+  './app-preview.html',
+  './manifest.json',
+  './styles.css',
+  './main.js',
+  './apple-touch-icon.png',
+  './og-image.svg',
+  './vendor/react.production.min.js',
+  './vendor/react-dom.production.min.js',
+  './redesign/data.js',
+  './redesign/tokens.css',
+  './redesign/A-magazine.css',
+  './redesign/B-companion.css',
+  './redesign/C-app.css',
+  './redesign/dist/A-magazine.js',
+  './redesign/dist/B-companion.js',
+  './redesign/dist/C-app.js',
+  './redesign/dist/ios-frame.js',
 ];
 
 // 安裝時預先快取核心資源
@@ -74,7 +76,7 @@ self.addEventListener('fetch', (event) => {
           caches.open(CACHE_VERSION).then((cache) => cache.put(request, copy));
           return res;
         })
-        .catch(() => caches.match(request).then((cached) => cached || caches.match('/index.html')))
+        .catch(() => caches.match(request).then((cached) => cached || caches.match('./index.html')))
     );
     return;
   }

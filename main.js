@@ -92,7 +92,7 @@ document.querySelectorAll('.reveal').forEach(el=>{
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
     try {
-      const reg = await navigator.serviceWorker.register('/sw.js');
+      const reg = await navigator.serviceWorker.register('sw.js');
 
       function showUpdateBanner(worker) {
         if (document.getElementById('sw-update-banner')) return;
