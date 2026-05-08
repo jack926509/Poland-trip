@@ -16,7 +16,7 @@
 
 .A-masthead{
   border-bottom:3px double var(--ink);
-  padding:var(--pad-sm) var(--pad-lg);
+  padding:.45rem var(--pad-lg);
   display:flex;justify-content:space-between;align-items:baseline;
   font-family:var(--serif);
   font-size:var(--fs-xs);letter-spacing:.18em;text-transform:uppercase;
@@ -62,43 +62,43 @@
 
 /* HERO ── refined */
 .A-hero{
-  padding:var(--pad-lg) var(--pad-lg) calc(var(--pad-lg) * 1.4);
+  padding:var(--pad-lg) var(--pad-lg) calc(var(--pad-lg) * 1.05);
   border-bottom:1px solid var(--ink);
   position:relative;overflow:hidden;
 }
 .A-hero-grid{
-  display:grid;grid-template-columns:1.4fr 1fr;gap:3rem;align-items:end;
+  display:grid;grid-template-columns:1.4fr 1fr;gap:2rem;align-items:end;
   max-width:1280px;margin:0 auto;
 }
 .A-hero-issue{
   font-family:var(--serif);
   font-size:var(--fs-xs);letter-spacing:.32em;text-transform:uppercase;
   color:var(--accent);font-weight:700;
-  display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem;
+  display:flex;align-items:center;gap:1rem;margin-bottom:.85rem;
 }
 .A-hero-issue::after{content:"";flex:1;height:1px;background:var(--ink);max-width:120px}
 .A-hero h1{
   font-family:var(--serif);font-weight:900;
-  font-size:clamp(4rem, 9vw, 8rem);
-  line-height:.86;letter-spacing:-.04em;
-  margin-bottom:1.2rem;
+  font-size:clamp(3.4rem, 8vw, 7rem);
+  line-height:.88;letter-spacing:-.04em;
+  margin-bottom:.85rem;
 }
 .A-hero h1 .accent{font-style:italic;color:var(--accent);font-weight:400}
 .A-hero-sub{
   font-family:var(--display);font-style:italic;
-  font-size:var(--fs-lg);line-height:1.45;color:var(--ink-soft);
-  max-width:32em;margin-bottom:1.6rem;
+  font-size:var(--fs-lg);line-height:1.4;color:var(--ink-soft);
+  max-width:32em;margin-bottom:1.1rem;
 }
 .A-hero-stats{
-  display:grid;grid-template-columns:repeat(4, auto);gap:1.6rem;
+  display:grid;grid-template-columns:repeat(4, auto);gap:1.2rem;
   font-family:var(--mono);font-size:var(--fs-xs);
   letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);
 }
-.A-hero-stats div strong{display:block;font-family:var(--serif);font-style:italic;color:var(--accent);font-size:1.6rem;letter-spacing:0;text-transform:none}
+.A-hero-stats div strong{display:block;font-family:var(--serif);font-style:italic;color:var(--accent);font-size:1.4rem;letter-spacing:0;text-transform:none}
 .A-hero-quote{
-  border-left:3px solid var(--accent);padding:1.2rem 0 1.2rem 1.6rem;
+  border-left:3px solid var(--accent);padding:.9rem 0 .9rem 1.3rem;
   font-family:var(--display);font-style:italic;font-size:var(--fs-md);
-  position:relative;line-height:1.5;
+  position:relative;line-height:1.45;
 }
 .A-hero-quote cite{
   display:block;margin-top:.8rem;font-family:var(--mono);font-style:normal;
@@ -113,7 +113,7 @@
 
 /* SECTION HEADER */
 .A-section{
-  padding:calc(var(--pad-lg) * 1.4) var(--pad-lg);
+  padding:calc(var(--pad-lg) * 1.05) var(--pad-lg);
   border-bottom:1px solid var(--ink);
   position:relative;
   /* anchor links should clear sticky nav (and day rail when present) */
@@ -122,20 +122,20 @@
 #A-itin [id^="A-day-"]{scroll-margin-top:calc(var(--sticky-nav-h) + var(--sticky-rail-h) + .5rem)}
 .A-section-inner{max-width:1280px;margin:0 auto}
 .A-shead{
-  display:grid;grid-template-columns:auto 1fr;gap:1.8rem;align-items:end;
-  margin-bottom:2rem;border-bottom:3px double var(--ink);padding-bottom:1.2rem;
+  display:grid;grid-template-columns:auto 1fr;gap:1.4rem;align-items:end;
+  margin-bottom:1.3rem;border-bottom:3px double var(--ink);padding-bottom:.8rem;
 }
 .A-shead .num{
   font-family:var(--serif);font-style:italic;font-weight:900;
-  font-size:4.5rem;line-height:1;color:var(--accent);
+  font-size:3.6rem;line-height:1;color:var(--accent);
 }
 .A-shead .kicker{
   font-family:var(--serif);font-size:var(--fs-xs);
   letter-spacing:.28em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:.3rem;
 }
 .A-shead h2{
-  font-family:var(--serif);font-weight:900;line-height:1;
-  font-size:clamp(2rem, 4vw, 3rem);letter-spacing:-.02em;
+  font-family:var(--serif);font-weight:900;line-height:1.05;
+  font-size:clamp(2rem, 4vw, 3rem);letter-spacing:-.025em;
 }
 .A-shead .meta{
   font-family:var(--mono);font-size:var(--fs-xs);
@@ -144,8 +144,8 @@
 
 /* ROUTE MAP (geographic overview, before day rail) */
 .A-route{
-  margin:0 0 2rem;
-  padding:1.4rem 1.6rem 1rem;
+  margin:0 0 1.2rem;
+  padding:.9rem 1.2rem .7rem;
   background:#faf6ec;
   border:1px solid rgba(26,22,18,.12);
   border-radius:6px;
@@ -207,51 +207,51 @@
    Left: large italic Bodoni numeral + mono date.
    Right: title, body paragraph, optional train pill, boxed schedule, boxed eats. */
 .A-day{
-  display:grid;grid-template-columns:120px 1fr;
-  gap:2rem;
-  padding:2.4rem 0;
+  display:grid;grid-template-columns:108px 1fr;
+  gap:1.4rem;
+  padding:1.5rem 0;
   border-bottom:1px dotted var(--ink);
   align-items:start;
 }
 .A-day:last-child{border-bottom:none}
 .A-day-num{
   font-family:var(--serif);font-style:italic;font-weight:900;
-  font-size:3.5rem;line-height:1;color:var(--accent);
+  font-size:3rem;line-height:1;color:var(--accent);
   letter-spacing:-.02em;
   background:none;border:none;padding:0;text-align:left;
 }
 .A-day-num small{
   display:block;
   font-style:normal;font-weight:400;
-  font-family:var(--mono);font-size:.7rem;
-  letter-spacing:.18em;color:var(--ink-soft);
-  margin-top:.6rem;line-height:1.6;
+  font-family:var(--mono);font-size:.66rem;
+  letter-spacing:.16em;color:var(--ink-soft);
+  margin-top:.4rem;line-height:1.55;
 }
 .A-day-tag{
-  display:inline-block;margin-top:.7rem;
-  font-family:var(--serif);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;
-  background:var(--accent);color:var(--paper);padding:.18rem .55rem;font-weight:700;
+  display:inline-block;margin-top:.5rem;
+  font-family:var(--serif);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;
+  background:var(--accent);color:var(--paper);padding:.14rem .5rem;font-weight:700;
 }
 .A-day-body{padding:0;background:transparent}
 .A-day-body h4{
-  font-family:var(--serif);font-weight:700;
-  font-size:1.5rem;line-height:1.3;letter-spacing:-.005em;
-  margin-bottom:.5rem;
+  font-family:var(--serif);font-weight:900;
+  font-size:1.4rem;line-height:1.3;letter-spacing:-.01em;
+  margin-bottom:.35rem;
 }
 .A-day-body .lead{
-  font-family:var(--body);font-style:normal;
-  font-size:1rem;line-height:1.75;color:var(--ink-soft);
-  margin-bottom:1.2rem;
+  font-family:var(--body);font-style:normal;font-weight:500;
+  font-size:.98rem;line-height:1.65;color:var(--ink-soft);
+  margin-bottom:.75rem;
 }
 .A-day-body .lead em,
 .A-day-body .lead i{font-family:var(--display);font-style:italic;color:var(--ink)}
 
 /* Train inline (kept above schedule when day has transit) */
 .A-train{
-  display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:1.2rem;
+  display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:1rem;
   font-family:var(--mono);font-size:var(--fs-xs);
   background:#fbf5e3;border:1px solid var(--amber-deep);
-  padding:.7rem 1.1rem;margin-bottom:1.2rem;letter-spacing:.05em;
+  padding:.5rem .9rem;margin-bottom:.7rem;letter-spacing:.05em;
   width:fit-content;max-width:100%;
 }
 
@@ -259,67 +259,67 @@
 .A-schedule{
   background:rgba(196,137,43,.06);
   border-left:3px solid var(--amber-deep);
-  padding:1rem 1.4rem 1.1rem;
-  margin:0 0 1rem;
+  padding:.7rem 1.1rem .8rem;
+  margin:0 0 .6rem;
 }
 .A-schedule .sched-label{
   display:inline-block;
-  font-family:var(--serif);font-size:.7rem;letter-spacing:.32em;
+  font-family:var(--serif);font-size:.66rem;letter-spacing:.3em;
   font-weight:700;text-transform:uppercase;
   color:var(--amber-deep);
-  margin-bottom:.7rem;
+  margin-bottom:.45rem;
 }
 .A-steps{
   list-style:none;padding:0;margin:0;
-  display:grid;gap:.45rem;border-left:none;
+  display:grid;gap:.25rem;border-left:none;
 }
 .A-steps li{
-  display:grid;grid-template-columns:64px 1fr;gap:1rem;
-  font-size:.92rem;line-height:1.6;align-items:baseline;
+  display:grid;grid-template-columns:58px 1fr;gap:.8rem;
+  font-size:.9rem;line-height:1.5;align-items:baseline;
 }
 .A-steps li .t{
   font-family:var(--mono);color:var(--accent);font-weight:700;
-  font-size:.78rem;letter-spacing:.05em;
+  font-size:.74rem;letter-spacing:.04em;
 }
 .A-steps li .lab{color:var(--ink);font-family:var(--body)}
 .A-steps li .lab small{
   display:inline;font-family:var(--display);font-style:italic;
-  color:var(--ink-mute);font-size:.92em;margin-left:.3rem;
+  color:var(--ink-mute);font-size:.9em;margin-left:.25rem;
 }
 
 /* EATS BOX — "抵達日必吃" amber-tinted card */
 .A-day-eats{
   background:rgba(196,137,43,.08);
   border-left:3px solid var(--amber-deep);
-  padding:.95rem 1.3rem 1.05rem;
-  margin:0 0 1rem;
+  padding:.65rem 1.05rem .75rem;
+  margin:0 0 .6rem;
   font-family:var(--body);
-  font-size:.95rem;line-height:1.7;
+  font-size:.92rem;line-height:1.55;
 }
 .A-day-eats .e-label{
   display:inline-block;
-  font-family:var(--serif);font-size:.7rem;letter-spacing:.25em;
+  font-family:var(--serif);font-size:.66rem;letter-spacing:.24em;
   color:var(--amber-deep);text-transform:uppercase;font-weight:700;
-  margin-bottom:.4rem;
+  margin-bottom:.25rem;
 }
-.A-day-eats ul{list-style:none;margin:.2rem 0 0;padding:0}
+.A-day-eats ul{list-style:none;margin:.15rem 0 0;padding:0}
 .A-day-eats li{
-  margin-bottom:.4rem;padding-left:1.1rem;position:relative;
+  margin-bottom:.22rem;padding-left:1rem;position:relative;
   color:var(--ink);
 }
 .A-day-eats li:last-child{margin-bottom:0}
 .A-day-eats li::before{
-  content:"●";position:absolute;left:0;top:.05rem;
-  color:var(--amber);font-size:.7rem;
+  content:"●";position:absolute;left:0;top:.1rem;
+  color:var(--amber);font-size:.66rem;
 }
 .A-day-eats em{color:var(--crimson-deep);font-style:italic;font-weight:500}
 .A-day-eats strong{color:var(--ink)}
 
 .A-warn{
   background:var(--ink);color:var(--paper);
-  padding:.7rem .9rem;font-size:var(--fs-sm);line-height:1.5;
+  padding:.55rem .85rem;font-size:var(--fs-sm);line-height:1.45;
   border-left:4px solid var(--amber);
-  margin-top:.6rem;
+  margin-top:.4rem;
 }
 .A-train .pill{
   font-weight:700;color:var(--paper);background:var(--accent);
@@ -348,7 +348,7 @@
 .A-city:nth-child(2n){background:#fbf5e3}
 .A-city{
   border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);
-  padding:1.6rem 1.4rem;background:var(--paper);position:relative;
+  padding:1.1rem 1.1rem 1.2rem;background:var(--paper);position:relative;
   transition:transform .25s, background .25s;cursor:default;
 }
 .A-city:hover{transform:translateY(-3px);background:#f7e9c8;z-index:2}
@@ -428,7 +428,7 @@
 .A-stay-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
 .A-stay-cell{
   border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);
-  padding:1.4rem 1.6rem;background:var(--paper);position:relative;
+  padding:1rem 1.2rem 1.1rem;background:var(--paper);position:relative;
   transition:transform .25s, background .25s;
 }
 .A-stay-cell:hover{transform:translateY(-3px);background:#fbf5e3;z-index:2}
@@ -458,7 +458,7 @@
   background:var(--paper);border:1px solid var(--ink);padding:1.2rem 1.4rem;
 }
 .A-ticket-card h4{
-  font-family:var(--serif);font-weight:700;font-size:1.2rem;
+  font-family:var(--serif);font-weight:900;font-size:1.2rem;letter-spacing:-.01em;
   border-bottom:3px double var(--ink);padding-bottom:.5rem;margin-bottom:.6rem;
 }
 .A-ticket-rows{display:grid;gap:.3rem}
@@ -482,7 +482,7 @@
 }
 .A-food-cell{
   border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);
-  padding:1.2rem 1.3rem;background:var(--paper);position:relative;
+  padding:.9rem 1rem 1rem;background:var(--paper);position:relative;
   transition:transform .25s, background .25s;
 }
 .A-food-cell:hover{transform:translateY(-2px);background:#fbf5e3;z-index:2}
@@ -493,7 +493,7 @@
   font-size:1.6rem;line-height:1;
 }
 .A-food-cell h5{
-  font-family:var(--serif);font-weight:700;font-size:1.15rem;margin:.4rem 0 .15rem;
+  font-family:var(--serif);font-weight:900;font-size:1.15rem;letter-spacing:-.01em;margin:.4rem 0 .15rem;
 }
 .A-food-cell .pl{
   font-family:var(--display);font-style:italic;color:var(--accent);
@@ -508,7 +508,7 @@
 .A-tip strong{font-family:var(--serif);color:var(--accent);font-weight:700;letter-spacing:.05em}
 .A-sub-h{
   margin:2.4rem 0 1rem;
-  font-family:var(--serif);font-weight:700;font-size:1.4rem;letter-spacing:-.01em;
+  font-family:var(--serif);font-weight:900;font-size:1.4rem;letter-spacing:-.02em;
   border-bottom:3px double var(--ink);padding-bottom:.5rem;
 }
 /* CITY FOOD — alternating tones */
@@ -545,7 +545,7 @@
 .A-safety-card.emergency{background:var(--ink);color:var(--paper);grid-column:span 3}
 .A-safety-card.embassy{grid-column:span 2}
 .A-safety-card h4{
-  font-family:var(--serif);font-weight:700;font-size:1.05rem;
+  font-family:var(--serif);font-weight:900;font-size:1.05rem;letter-spacing:-.01em;
   border-bottom:3px double currentColor;padding-bottom:.4rem;margin-bottom:.6rem;
 }
 .A-safety-card.emergency h4{color:var(--amber)}
@@ -608,7 +608,7 @@
 .A-phrase-cell:nth-child(2n){background:#fbf5e3}
 .A-phrase-cell:nth-child(5n){background:#f7e9c8}
 .A-phrase-cell .cn{
-  font-family:var(--serif);font-weight:700;font-size:.95rem;color:var(--ink);
+  font-family:var(--serif);font-weight:900;font-size:.95rem;color:var(--ink);letter-spacing:-.005em;
 }
 .A-phrase-cell .pl{
   font-family:var(--display);font-style:italic;color:var(--accent);
@@ -644,7 +644,7 @@
 }
 .A-fact-card{background:var(--paper);border:1px solid var(--ink);padding:1.2rem 1.4rem}
 .A-fact-card h5{
-  font-family:var(--serif);font-weight:700;font-size:1.1rem;
+  font-family:var(--serif);font-weight:900;font-size:1.1rem;letter-spacing:-.01em;
   border-bottom:3px double var(--ink);padding-bottom:.4rem;margin-bottom:.6rem;
 }
 .A-fact-row{
@@ -678,9 +678,9 @@
 @media (max-width: 1024px) {
   .A-cities{grid-template-columns:repeat(2,1fr)}
   .A-shop-grid{grid-template-columns:repeat(3,1fr)}
-  .A-day{grid-template-columns:90px 1fr;gap:1.4rem}
-  .A-day-num{font-size:3rem}
-  .A-hero-grid{grid-template-columns:1fr;gap:1.6rem}
+  .A-day{grid-template-columns:84px 1fr;gap:1.1rem;padding:1.2rem 0}
+  .A-day-num{font-size:2.6rem}
+  .A-hero-grid{grid-template-columns:1fr;gap:1.2rem}
 }
 
 /* ───── Mobile ───── */
@@ -716,15 +716,16 @@
   .A-shead .num{font-size:3rem}
   .A-shead .meta{display:none}
 
-  .A-day{grid-template-columns:80px 1fr;gap:1rem;padding:1.6rem 0}
-  .A-day-num{font-size:2.5rem}
-  .A-day-num small{font-size:.62rem;letter-spacing:.14em}
-  .A-day-tag{font-size:.55rem;padding:.14rem .42rem;margin-top:.5rem}
-  .A-day-body h4{font-size:1.2rem}
-  .A-day-body .lead{font-size:.95rem}
-  .A-schedule{padding:.85rem 1rem .9rem}
-  .A-steps li{grid-template-columns:54px 1fr;gap:.7rem;font-size:.88rem}
-  .A-train{grid-template-columns:auto 1fr;gap:.4rem .8rem}
+  .A-day{grid-template-columns:72px 1fr;gap:.9rem;padding:1.1rem 0}
+  .A-day-num{font-size:2.2rem}
+  .A-day-num small{font-size:.6rem;letter-spacing:.13em;margin-top:.3rem}
+  .A-day-tag{font-size:.55rem;padding:.12rem .4rem;margin-top:.35rem}
+  .A-day-body h4{font-size:1.12rem;margin-bottom:.25rem}
+  .A-day-body .lead{font-size:.92rem;line-height:1.55;margin-bottom:.55rem}
+  .A-schedule{padding:.6rem .85rem .65rem}
+  .A-day-eats{padding:.55rem .85rem .65rem}
+  .A-steps li{grid-template-columns:50px 1fr;gap:.6rem;font-size:.86rem;line-height:1.45}
+  .A-train{grid-template-columns:auto 1fr;gap:.3rem .7rem;padding:.45rem .75rem;margin-bottom:.55rem}
   .A-train .times,.A-train .dur{grid-column:1 / -1}
 
   .A-flights, .A-about-grid{grid-template-columns:1fr}
