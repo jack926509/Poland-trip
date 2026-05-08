@@ -29,8 +29,8 @@
   --fs-2xl:calc(2.4rem * var(--type-scale));
   --fs-3xl:calc(3.4rem * var(--type-scale));
 
-  /* Density */
-  --density:1;
+  /* Density (lower = tighter layout) */
+  --density:.88;
   --pad-xs:calc(0.4rem * var(--density));
   --pad-sm:calc(0.7rem * var(--density));
   --pad-md:calc(1.1rem * var(--density));

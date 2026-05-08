@@ -53,7 +53,7 @@
 
 /* HERO — TODAY IS DAY X */
 .B-today{
-  padding:1.1rem 1rem 1.3rem;
+  padding:.85rem 1rem 1rem;
   border-bottom:1px solid var(--ink);
   position:relative;overflow:hidden;
 }
@@ -177,17 +177,17 @@
 
 /* TIMELINE */
 .B-timeline{
-  padding:1rem 1rem;
+  padding:.7rem 1rem .4rem;
   position:relative;
 }
 .B-timeline::before{
   content:"";position:absolute;
-  left:calc(1rem + 35px);top:1rem;bottom:1rem;width:2px;
+  left:calc(1rem + 35px);top:.7rem;bottom:.7rem;width:2px;
   background:var(--ink);opacity:.18;
 }
 .B-step{
-  display:grid;grid-template-columns:38px 16px 1fr;gap:.6rem;
-  padding:.45rem 0;align-items:start;
+  display:grid;grid-template-columns:38px 16px 1fr;gap:.5rem;
+  padding:.3rem 0;align-items:start;
 }
 .B-step .t{
   font-family:var(--mono);font-size:.68rem;font-weight:600;
@@ -255,7 +255,7 @@
 
 /* CARDS */
 .B-card{
-  margin:.8rem 1rem;padding:.85rem .95rem;
+  margin:.55rem 1rem;padding:.65rem .9rem .7rem;
   border:1px solid var(--ink);background:var(--paper-deep);
   position:relative;
   border-radius:14px;
@@ -270,19 +270,19 @@
 .B-card li{font-size:.9rem;color:var(--ink-soft);padding-left:.9rem;position:relative;line-height:1.45}
 .B-card li::before{content:"◆";position:absolute;left:0;top:.1rem;color:var(--amber);font-size:.6em}
 .B-warn{
-  margin:.8rem 1rem;padding:.75rem .95rem;
+  margin:.55rem 1rem;padding:.6rem .9rem;
   background:var(--ink);color:var(--paper);
   border-left:4px solid var(--amber);
-  font-size:.78rem;line-height:1.5;
+  font-size:.78rem;line-height:1.45;
   border-radius:12px;
 }
 .B-warn strong{color:var(--amber)}
 
 /* TRAIN MINI */
 .B-train{
-  margin:.8rem 1rem;
+  margin:.55rem 1rem;
   border:1px solid var(--ink);background:var(--paper);
-  padding:.8rem 1rem;
+  padding:.6rem .9rem;
   border-radius:14px;
 }
 .B-train .seg{
