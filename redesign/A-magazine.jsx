@@ -16,10 +16,10 @@ function A_focusCity(city) {
   const last = city.split('→').pop().trim();
   return A_CITY_EN[last] || last;
 }
-// Strip leading ★, brackets, "@ Venue" splits, etc., so the search hits the place.
+// Strip leading ★, ⭐, brackets, "@ Venue" splits, etc., so the search hits the place.
 function A_cleanPlace(name) {
   if (!name) return '';
-  let s = String(name).replace(/^★\s*/, '').trim();
+  let s = String(name).replace(/^★\s*/, '').replace(/⭐/g, '').trim();
   // Eat string "Pierogi @ Zapiecek" → use venue after @
   if (s.includes('@')) s = s.split('@').pop().trim();
   // Pick first venue when separated by /
@@ -33,15 +33,11 @@ function A_mapsURL(name, city) {
   const ctx = A_focusCity(city);
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${venue} ${ctx}`)}`;
 }
-// Heuristic: should this step label get a maps link? Star marker, or a name-y
-// pattern (place keywords / proper noun). Skip pure transit / admin lines.
+// Permissive: link unless the label is clearly an admin / transit action.
 function A_stepIsPlace(label) {
   if (!label) return false;
-  if (label.includes('★')) return true;
-  const skip = /(出發|抵|入境|提行李|Check-in|退房|報到|安檢|退稅|早睡|休息|散步$|起飛|沉澱|導覽結束|散步$)/;
-  if (skip.test(label)) return false;
-  const placeHints = /(廣場|教堂|城堡|工廠|博物館|大學|公園|大廳|車站|麵包|餃子|餐廳|晚餐|午餐|早餐|塔樓|商場|市集|站|塔|壇|區|街)/;
-  return placeHints.test(label);
+  const skip = /(SKM|EIP|^IC\b|巴士|抵\s?\S|入境|提行李|Check-in|退房|報到|安檢|退稅|早睡|沉澱|起飛|導覽結束|休息$|出發$|出發[\s·]|S2\/S3)/;
+  return !skip.test(label);
 }
 
 function A_Hero() {
@@ -141,7 +137,6 @@ function A_Day({ d, scoped }) {
                       {s.cost && <span className="m-cost">💰 {s.cost}</span>}
                     </span>
                   )}
-                  {linkable && <span className="map-arr" aria-hidden="true">↗</span>}
                 </>
               );
               return (
@@ -171,7 +166,6 @@ function A_Day({ d, scoped }) {
                    target="_blank" rel="noopener noreferrer"
                    aria-label={`Google 地圖：${A_cleanPlace(e)}`}>
                   {e}
-                  <span className="map-arr" aria-hidden="true">↗</span>
                 </a>
               </li>
             )}</ul>
@@ -186,7 +180,7 @@ function A_Day({ d, scoped }) {
                    target="_blank" rel="noopener noreferrer"
                    aria-label={`Google 地圖：${A_cleanPlace(b.where)}`}>
                   <strong>{b.label}</strong>
-                  <em>{b.where}<span className="map-arr" aria-hidden="true"> ↗</span></em>
+                  <em>{b.where}</em>
                   <span>{b.why}</span>
                 </a>
               </li>
@@ -202,7 +196,7 @@ function A_Day({ d, scoped }) {
                    target="_blank" rel="noopener noreferrer"
                    aria-label={`Google 地圖：${A_cleanPlace(p.name)}`}>
                   <span className="t">{p.tag}</span>
-                  <strong>{p.name}<span className="map-arr" aria-hidden="true"> ↗</span></strong>
+                  <strong>{p.name}</strong>
                   <small>{p.note}</small>
                 </a>
               </li>
@@ -277,7 +271,18 @@ function A_Cities() {
           <h3>{c.name}</h3>
           <div className="pl">{c.pl}</div>
           <p className="vibe">{c.vibe}</p>
-          <div className="nights">住 <strong>{c.nights}</strong> 晚 · {c.highlights[0]} 等 {c.highlights.length} 大景點</div>
+          <div className="nights">住 <strong>{c.nights}</strong> 晚 · {c.highlights.length} 大景點</div>
+          <ul className="A-city-highlights">
+            {c.highlights.map((h, j) => (
+              <li key={j}>
+                <a href={A_mapsURL(h, c.name)}
+                   target="_blank" rel="noopener noreferrer"
+                   aria-label={`Google 地圖：${A_cleanPlace(h)}（${c.name}）`}>
+                  {h}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </div>);
@@ -358,7 +363,7 @@ function A_Tickets() {
                 <a href={A_mapsURL(k, c.city)}
                    target="_blank" rel="noopener noreferrer"
                    aria-label={`Google 地圖：${A_cleanPlace(k)}（${c.city}）`}>
-                  <span>{k}<span className="map-arr" aria-hidden="true"> ↗</span></span>
+                  <span>{k}</span>
                   <strong>{v}</strong>
                 </a>
               </div>
@@ -415,7 +420,6 @@ function A_Foods() {
                     }>
                       {it.book === 'must' ? '訂' : it.book === 'queue' ? '排' : '走'}
                     </span>}
-                    <span className="map-arr" aria-hidden="true">↗</span>
                   </a>
                   <small>{it.note}</small>
                 </li>

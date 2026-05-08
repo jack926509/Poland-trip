@@ -342,49 +342,40 @@
 .A-steps li .lab .meta .m-cost{color:var(--amber-deep);font-weight:600}
 .A-steps li .lab .meta .m-dur{color:var(--moss);font-weight:600}
 
-/* Place-link variant on schedule rows + map ↗ indicator */
-.A-steps li a.lab.is-link{
-  color:inherit;text-decoration:none;
-  display:inline;
-  transition:color var(--dur-fast) var(--ease-out);
+/* === Universal link style: dotted underline on idle, solid on hover === */
+.A-steps li a.lab.is-link,
+.A-day-eats li a,
+.A-day-backup li a em,
+.A-day-practical li a strong,
+.A-ticket-row a span:first-child,
+.A-city-highlights li a{
+  text-decoration:underline dotted rgba(168,35,29,.5);
+  text-underline-offset:3px;
+  text-decoration-thickness:1px;
+  transition:color var(--dur-fast) var(--ease-out),
+             text-decoration-color var(--dur-fast) var(--ease-out),
+             text-decoration-style var(--dur-fast) var(--ease-out);
 }
+.A-steps li a.lab.is-link{color:inherit;display:inline}
 .A-steps li a.lab.is-link:hover,
 .A-steps li a.lab.is-link:focus-visible{
   color:var(--crimson-deep);
-  text-decoration:underline;
-  text-decoration-color:var(--accent);
+  text-decoration:underline solid var(--crimson-deep);
   text-underline-offset:3px;
 }
-.A-steps li a.lab.is-link .map-arr,
-.A-day-eats li a .map-arr,
-.A-day-backup li a em .map-arr,
-.A-day-practical li a strong .map-arr,
-.A-ticket-row a .map-arr{
-  font-family:var(--mono);font-style:normal;font-size:.7em;
-  color:var(--accent);opacity:.4;margin-left:.25rem;
-  transition:opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
-  display:inline-block;
-}
-.A-steps li a.lab.is-link:hover .map-arr,
-.A-day-eats li a:hover .map-arr,
-.A-day-backup li a:hover em .map-arr,
-.A-day-practical li a:hover strong .map-arr,
-.A-ticket-row a:hover .map-arr{
-  opacity:1;transform:translate(2px,-2px);
-}
 
-/* EATS / BACKUP / PRACTICAL — wrap content in <a> tags */
+/* EATS — wrap content in <a> tags */
 .A-day-eats li a{
-  color:inherit;text-decoration:none;display:inline-flex;
+  color:inherit;display:inline-flex;
   align-items:baseline;gap:.3rem;
-  transition:color var(--dur-fast) var(--ease-out);
 }
 .A-day-eats li a:hover,.A-day-eats li a:focus-visible{
   color:var(--crimson-deep);
-  text-decoration:underline;text-decoration-color:var(--amber-deep);
+  text-decoration:underline solid var(--amber-deep);
   text-underline-offset:3px;
 }
 
+/* BACKUP / PRACTICAL — anchor uses display:contents to keep parent grid */
 .A-day-backup li a,
 .A-day-practical li a{
   display:contents;color:inherit;text-decoration:none;
@@ -393,13 +384,21 @@
 .A-day-backup li:focus-within{background:rgba(61,74,42,.08)}
 .A-day-practical li:hover,
 .A-day-practical li:focus-within{background:rgba(26,22,18,.05)}
+.A-day-backup li a em{
+  text-decoration:underline dotted rgba(61,74,42,.55);
+  text-underline-offset:3px;
+}
+.A-day-practical li a strong{
+  text-decoration:underline dotted rgba(26,22,18,.45);
+  text-underline-offset:3px;
+}
 .A-day-backup li a:hover em,
 .A-day-backup li a:focus-visible em{
-  text-decoration:underline;text-decoration-color:var(--moss);text-underline-offset:3px;
+  text-decoration:underline solid var(--moss);
 }
 .A-day-practical li a:hover strong,
 .A-day-practical li a:focus-visible strong{
-  text-decoration:underline;text-decoration-color:var(--ink-soft);text-underline-offset:3px;
+  text-decoration:underline solid var(--ink-soft);
 }
 
 /* TICKETS — make rows clickable */
@@ -414,7 +413,26 @@
 }
 .A-ticket-row a:hover span:first-child,
 .A-ticket-row a:focus-visible span:first-child{
-  text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px;
+  text-decoration:underline solid var(--accent);
+  text-underline-offset:3px;
+}
+
+/* CITY HIGHLIGHTS — chip list with dotted-underline links */
+.A-city-highlights{
+  list-style:none;padding:0;margin:.55rem 0 0;
+  display:flex;flex-wrap:wrap;gap:.35rem .6rem;
+}
+.A-city-highlights li{font-family:var(--body);font-size:.82rem;line-height:1.4}
+.A-city-highlights li::after{content:"·";color:var(--ink-mute);margin-left:.5rem;opacity:.5}
+.A-city-highlights li:last-child::after{content:""}
+.A-city-highlights li a{
+  color:var(--ink);
+}
+.A-city-highlights li a:hover,
+.A-city-highlights li a:focus-visible{
+  color:var(--crimson-deep);
+  text-decoration:underline solid var(--accent);
+  text-underline-offset:3px;
 }
 
 /* PLAN B / 雨天備案 — moss accent so it reads distinct from amber eats */
@@ -696,26 +714,26 @@
 .A-cityfood-cell li .n{
   font-family:var(--serif);font-weight:700;color:var(--accent);font-style:italic;
   display:inline-flex;align-items:center;gap:.35rem;flex-wrap:wrap;
-  text-decoration:none;
-  transition:color var(--dur-fast) var(--ease-out), text-decoration-color var(--dur-fast) var(--ease-out);
+  text-decoration:underline dotted rgba(168,35,29,.55);
+  text-decoration-thickness:1px;
+  text-underline-offset:3px;
+  transition:color var(--dur-fast) var(--ease-out),
+             text-decoration-color var(--dur-fast) var(--ease-out),
+             text-decoration-style var(--dur-fast) var(--ease-out);
 }
-a.A-cityfood-cell{display:block}
 .A-cityfood-cell li a.n{cursor:pointer}
 .A-cityfood-cell li a.n:hover,
 .A-cityfood-cell li a.n:focus-visible{
   color:var(--crimson-deep);
-  text-decoration:underline;
-  text-decoration-color:var(--crimson-deep);
+  text-decoration:underline solid var(--crimson-deep);
   text-underline-offset:3px;
 }
-.A-cityfood-cell li a.n .map-arr{
-  font-family:var(--mono);font-style:normal;font-size:.7em;
-  color:var(--accent);opacity:.45;
-  transition:opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+/* Stop the underline running across the badge — apply only to the name span */
+.A-cityfood-cell li a.n > span:first-child{
+  text-decoration:inherit;
 }
-.A-cityfood-cell li a.n:hover .map-arr,
-.A-cityfood-cell li a.n:focus-visible .map-arr{
-  opacity:1;transform:translate(2px,-2px);
+.A-cityfood-cell li a.n .bk{
+  text-decoration:none;
 }
 .A-cityfood-cell li small{display:block;color:var(--ink-mute);font-size:.78em;margin-top:.1rem;grid-column:2}
 
