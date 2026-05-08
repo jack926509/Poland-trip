@@ -471,7 +471,7 @@ function A_Magazine() {
                onClick={(e) => handleNavClick(e, item.id)}>{item.label}</a>
           ))}
         </div>
-        <a href="?classic=1" className="A-nav-cta">經典版</a>
+        <a href="index.html?classic=1" className="A-nav-cta">經典版</a>
       </nav>
       <A_Hero />
 

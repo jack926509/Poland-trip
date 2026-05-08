@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<!-- Device redirect: mobile users get the companion app, ?classic=1 stays here -->
+<!-- Device redirect: mobile → companion, desktop → magazine redesign, ?classic=1 stays here -->
 <script>
 (function(){
   try {
@@ -16,6 +16,8 @@
                 || /iPhone|Android.+Mobile|iPod/i.test(navigator.userAgent);
     if (isMobile) {
       window.location.replace('mobile.html');
+    } else {
+      window.location.replace('desktop.html');
     }
   } catch(e) {}
 })();
