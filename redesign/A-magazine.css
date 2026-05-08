@@ -332,6 +332,72 @@
   border-left:4px solid var(--amber);
   margin-top:.4rem;
 }
+
+/* Per-step cost / duration meta inline */
+.A-steps li .lab .meta{
+  display:inline-flex;flex-wrap:wrap;gap:.55rem;margin-left:.5rem;
+  font-family:var(--mono);font-size:.66rem;letter-spacing:.05em;
+  color:var(--ink-mute);vertical-align:baseline;
+}
+.A-steps li .lab .meta .m-cost{color:var(--amber-deep);font-weight:600}
+.A-steps li .lab .meta .m-dur{color:var(--moss);font-weight:600}
+
+/* PLAN B / 雨天備案 — moss accent so it reads distinct from amber eats */
+.A-day-backup{
+  background:rgba(61,74,42,.06);
+  border-left:3px solid var(--moss);
+  padding:.6rem 1.05rem .7rem;margin:0 0 .6rem;
+  font-family:var(--body);font-size:.9rem;line-height:1.5;
+}
+.A-day-backup .b-label{
+  display:inline-block;font-family:var(--serif);font-size:.66rem;
+  letter-spacing:.24em;text-transform:uppercase;font-weight:700;
+  color:var(--moss);margin-bottom:.35rem;
+}
+.A-day-backup ul{list-style:none;margin:0;padding:0;display:grid;gap:.4rem}
+.A-day-backup li{
+  display:grid;grid-template-columns:auto 1fr;column-gap:.55rem;
+  padding:.25rem 0;border-bottom:1px dotted rgba(61,74,42,.25);
+}
+.A-day-backup li:last-child{border-bottom:none}
+.A-day-backup li strong{
+  font-family:var(--serif);font-weight:700;color:var(--moss);
+  font-size:.85rem;letter-spacing:.04em;white-space:nowrap;
+}
+.A-day-backup li em{
+  grid-column:2;font-style:italic;color:var(--accent);
+  font-family:var(--display);font-weight:600;
+}
+.A-day-backup li span{grid-column:2;color:var(--ink-soft);font-size:.85em}
+
+/* PRACTICAL nodes inside day card — neutral grey */
+.A-day-practical{
+  background:rgba(26,22,18,.04);
+  border-left:3px solid var(--ink-soft);
+  padding:.55rem 1.05rem .65rem;margin:0 0 .6rem;
+  font-family:var(--body);font-size:.88rem;line-height:1.5;
+}
+.A-day-practical .p-label{
+  display:inline-block;font-family:var(--serif);font-size:.62rem;
+  letter-spacing:.24em;text-transform:uppercase;font-weight:700;
+  color:var(--ink-soft);margin-bottom:.3rem;
+}
+.A-day-practical ul{list-style:none;margin:0;padding:0;display:grid;gap:.3rem}
+.A-day-practical li{
+  display:grid;grid-template-columns:auto 1fr;column-gap:.55rem;align-items:baseline;
+  padding:.18rem 0;border-bottom:1px dotted rgba(26,22,18,.15);
+}
+.A-day-practical li:last-child{border-bottom:none}
+.A-day-practical li .t{
+  font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;
+  color:var(--ink-mute);text-transform:uppercase;
+  background:var(--paper-deep);padding:.12rem .4rem;white-space:nowrap;
+}
+.A-day-practical li strong{font-family:var(--serif);font-weight:700;color:var(--ink)}
+.A-day-practical li small{
+  grid-column:2;display:block;color:var(--ink-mute);
+  font-size:.85em;margin-top:.1rem;
+}
 .A-train .pill{
   font-weight:700;color:var(--paper);background:var(--accent);
   padding:.25rem .6rem;font-size:.72rem;letter-spacing:.18em;
@@ -552,8 +618,72 @@
   font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;color:var(--ink-mute);text-transform:uppercase;
   background:var(--paper-deep);padding:.12rem .4rem;white-space:nowrap;
 }
-.A-cityfood-cell li .n{font-family:var(--serif);font-weight:700;color:var(--accent);font-style:italic}
+.A-cityfood-cell li .n{
+  font-family:var(--serif);font-weight:700;color:var(--accent);font-style:italic;
+  display:inline-flex;align-items:center;gap:.35rem;flex-wrap:wrap;
+}
 .A-cityfood-cell li small{display:block;color:var(--ink-mute);font-size:.78em;margin-top:.1rem;grid-column:2}
+
+/* Booking badge inside cityFood items */
+.A-cityfood-cell li .bk,
+.A-cityfood-legend .bk{
+  font-family:var(--mono);font-style:normal;font-weight:700;
+  font-size:.58rem;letter-spacing:.1em;
+  padding:.12rem .35rem;border-radius:2px;
+  white-space:nowrap;line-height:1.2;
+}
+.A-cityfood-cell li .bk.must,
+.A-cityfood-legend .bk.must{background:var(--crimson);color:var(--paper)}
+.A-cityfood-cell li .bk.queue,
+.A-cityfood-legend .bk.queue{background:var(--amber-deep);color:var(--paper)}
+.A-cityfood-cell li .bk.walk,
+.A-cityfood-legend .bk.walk{background:var(--paper-deep);color:var(--ink-mute);border:1px solid var(--ink-mute)}
+.A-cityfood-legend{
+  display:flex;flex-wrap:wrap;gap:.55rem;margin:.4rem 0 .9rem;
+  font-size:.66rem;
+}
+.A-cityfood-legend .bk{padding:.22rem .55rem;font-size:.62rem}
+
+/* PRACTICAL section — section-level grid */
+.A-practical-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:.85rem;
+  margin-bottom:1.6rem;
+}
+.A-practical-cell{
+  background:var(--paper);border:1px solid var(--ink);
+  padding:1rem 1.15rem 1.1rem;position:relative;
+  transition:transform .25s;
+}
+.A-practical-cell:hover{transform:translateY(-2px);box-shadow:4px 4px 0 rgba(168,35,29,.12)}
+.A-practical-cell:nth-child(2n){background:#fbf5e3}
+.A-practical-cell:nth-child(3n){background:#f7e9c8}
+.A-practical-cell .tag{
+  display:inline-block;font-family:var(--mono);font-size:.6rem;letter-spacing:.18em;
+  text-transform:uppercase;font-weight:700;
+  background:var(--ink);color:var(--amber);padding:.18rem .55rem;margin-bottom:.55rem;
+}
+.A-practical-cell h5{
+  font-family:var(--serif);font-weight:900;font-size:1.05rem;
+  letter-spacing:-.01em;margin:.1rem 0 .4rem;
+}
+.A-practical-cell p{font-family:var(--body);font-size:.86rem;line-height:1.55;color:var(--ink-soft)}
+
+.A-resv-list{
+  display:grid;gap:.4rem;margin-top:.6rem;
+  border-top:2px solid var(--ink);padding-top:.8rem;
+}
+.A-resv-row{
+  display:grid;grid-template-columns:200px 1fr;gap:1rem;align-items:baseline;
+  padding:.5rem .2rem;border-bottom:1px dashed var(--ink-mute);
+}
+.A-resv-row:last-child{border-bottom:none}
+.A-resv-row .when{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);font-weight:700;
+}
+.A-resv-row .what{
+  font-family:var(--body);font-size:.95rem;line-height:1.5;color:var(--ink);
+}
 
 /* SAFETY — chequered, varied accent */
 .A-safety-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}
@@ -696,7 +826,7 @@
 /* ───── Tablet ───── */
 @media (max-width: 1024px) {
   .A-cities{grid-template-columns:repeat(2,1fr)}
-  .A-shop-grid{grid-template-columns:repeat(3,1fr)}
+  .A-shop-grid, .A-practical-grid{grid-template-columns:repeat(2,1fr)}
   .A-day{grid-template-columns:104px 1fr;gap:1.1rem;padding:1.2rem 0}
   .A-day-num{font-size:1.7rem}
   .A-hero-grid{grid-template-columns:1fr;gap:1.2rem}
@@ -738,8 +868,10 @@
   .A-sub-h{font-size:1.4rem;margin:1.6rem 0 .8rem}
 
   .A-flights, .A-about-grid{grid-template-columns:1fr}
-  .A-stay-grid, .A-ticket-grid, .A-cityfood-grid{grid-template-columns:1fr}
+  .A-stay-grid, .A-ticket-grid, .A-cityfood-grid, .A-practical-grid{grid-template-columns:1fr}
   .A-food-grid, .A-shop-grid, .A-phrase-grid{grid-template-columns:1fr 1fr}
+  .A-resv-row{grid-template-columns:1fr;gap:.2rem}
+  .A-resv-row .when{font-size:.66rem}
   .A-cities{grid-template-columns:1fr}
   .A-safety-grid{grid-template-columns:1fr}
   .A-safety-card.embassy{grid-column:auto}

@@ -91,7 +91,15 @@ function A_Day({ d, scoped }) {
             {d.steps.map((s, i) =>
             <li key={i}>
                 <span className="t">{s.t}</span>
-                <span className="lab">{s.label}{s.sub && <small>（{s.sub}）</small>}</span>
+                <span className="lab">
+                  {s.label}{s.sub && <small>（{s.sub}）</small>}
+                  {(s.cost || s.dur) && (
+                    <span className="meta">
+                      {s.dur && <span className="m-dur">⏱ {s.dur}</span>}
+                      {s.cost && <span className="m-cost">💰 {s.cost}</span>}
+                    </span>
+                  )}
+                </span>
               </li>
             )}
           </ul>
@@ -100,6 +108,30 @@ function A_Day({ d, scoped }) {
         <div className="A-day-eats">
             <span className="e-label">🍴 {d.n === 1 ? '抵達日必吃' : '今日必吃'}</span>
             <ul>{d.eat.map((e, i) => <li key={i}>{e}</li>)}</ul>
+          </div>
+        }
+        {d.backup && d.backup.length > 0 &&
+        <div className="A-day-backup">
+            <span className="b-label">☂ 備案 / Plan B</span>
+            <ul>{d.backup.map((b, i) =>
+              <li key={i}>
+                <strong>{b.label}</strong>
+                <em>{b.where}</em>
+                <span>{b.why}</span>
+              </li>
+            )}</ul>
+          </div>
+        }
+        {d.practical && d.practical.length > 0 &&
+        <div className="A-day-practical">
+            <span className="p-label">🛠 實務節點</span>
+            <ul>{d.practical.map((p, i) =>
+              <li key={i}>
+                <span className="t">{p.tag}</span>
+                <strong>{p.name}</strong>
+                <small>{p.note}</small>
+              </li>
+            )}</ul>
           </div>
         }
         {d.warn && <div className="A-warn">⚠ {d.warn}</div>}
@@ -279,6 +311,11 @@ function A_Foods() {
         最道地、最便宜的家常菜在共產時期遺留的國營廉價餐廳，套餐 PLN 25–35（NTD 215–300）。
       </div>
       <h3 className="A-sub-h">四城專屬料理 · City Specialties</h3>
+      <div className="A-cityfood-legend" aria-hidden="true">
+        <span className="bk must">必訂位</span>
+        <span className="bk queue">排隊熱點</span>
+        <span className="bk walk">走進去就好</span>
+      </div>
       <div className="A-cityfood-grid">
         {window.TRIP.cityFood.map((c) => (
           <div className="A-cityfood-cell" key={c.city}>
@@ -287,11 +324,45 @@ function A_Foods() {
               {c.items.map((it, i) => (
                 <li key={i}>
                   <span className="t">{it.tag}</span>
-                  <span className="n">{it.name}</span>
+                  <span className="n">
+                    {it.name}
+                    {it.book && <span className={`bk ${it.book}`} title={
+                      it.book === 'must' ? '建議提前訂位' :
+                      it.book === 'queue' ? '排隊熱點，建議離峰前往' : '走進去就好'
+                    }>
+                      {it.book === 'must' ? '訂' : it.book === 'queue' ? '排' : '走'}
+                    </span>}
+                  </span>
                   <small>{it.note}</small>
                 </li>
               ))}
             </ul>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+function A_Practical() {
+  const t = window.TRIP;
+  return (
+    <>
+      <div className="A-practical-grid">
+        {t.practical.map((p, i) => (
+          <div className="A-practical-cell" key={i}>
+            <span className="tag">{p.tag}</span>
+            <h5>{p.name}</h5>
+            <p>{p.note}</p>
+          </div>
+        ))}
+      </div>
+      <h3 className="A-sub-h">行前預約時間軸 · Reservation Timeline</h3>
+      <div className="A-resv-list">
+        {t.reservations.map((r, i) => (
+          <div className="A-resv-row" key={i}>
+            <span className="when">{r.when}</span>
+            <span className="what">{r.what}</span>
           </div>
         ))}
       </div>
@@ -403,18 +474,19 @@ function A_About() {
 /* ───────── Main ───────── */
 
 const A_NAV = [
-  { id: 'A-about',    n: '01', label: '前言' },
-  { id: 'A-itin',     n: '02', label: '行程' },
-  { id: 'A-flights',  n: '03', label: '航班' },
-  { id: 'A-cities',   n: '04', label: '城市' },
-  { id: 'A-trains',   n: '05', label: '火車' },
-  { id: 'A-stay',     n: '06', label: '住宿' },
-  { id: 'A-tickets',  n: '07', label: '門票' },
-  { id: 'A-food',     n: '08', label: '美食' },
-  { id: 'A-shopping', n: '09', label: '購物' },
-  { id: 'A-phrases',  n: '10', label: '波語' },
-  { id: 'A-safety',   n: '11', label: '安全' },
-  { id: 'A-cost',     n: '12', label: '預算' },
+  { id: 'A-about',     n: '01', label: '前言' },
+  { id: 'A-itin',      n: '02', label: '行程' },
+  { id: 'A-flights',   n: '03', label: '航班' },
+  { id: 'A-cities',    n: '04', label: '城市' },
+  { id: 'A-trains',    n: '05', label: '火車' },
+  { id: 'A-stay',      n: '06', label: '住宿' },
+  { id: 'A-tickets',   n: '07', label: '門票' },
+  { id: 'A-food',      n: '08', label: '美食' },
+  { id: 'A-practical', n: '09', label: '實務' },
+  { id: 'A-shopping',  n: '10', label: '購物' },
+  { id: 'A-phrases',   n: '11', label: '波語' },
+  { id: 'A-safety',    n: '12', label: '安全' },
+  { id: 'A-cost',      n: '13', label: '預算' },
 ];
 
 function A_Section({ id, num, kicker, title, meta, children }) {
@@ -563,25 +635,31 @@ function A_Magazine() {
         <A_Foods />
       </A_Section>
 
-      <A_Section id="A-shopping" num="09" kicker="Souvenirs · 帶什麼回家"
+      <A_Section id="A-practical" num="09" kicker="Practical · 實務節點"
+        title="寄物 · 換錢 · SIM · 退稅"
+        meta="行前預約時間軸 + 抵達後關鍵動作">
+        <A_Practical />
+      </A_Section>
+
+      <A_Section id="A-shopping" num="10" kicker="Souvenirs · 帶什麼回家"
         title="七件值得帶回的波蘭物產"
         meta="Tax Free 8–18% VAT 可退">
         <A_Shopping />
       </A_Section>
 
-      <A_Section id="A-phrases" num="10" kicker="Phrasebook · 波蘭語生存包"
+      <A_Section id="A-phrases" num="11" kicker="Phrasebook · 波蘭語生存包"
         title="說幾句波蘭語"
         meta="ł 發英文 w · ą/ę 為鼻化音">
         <A_Phrases />
       </A_Section>
 
-      <A_Section id="A-safety" num="11" kicker="Safety · 安全與緊急"
+      <A_Section id="A-safety" num="12" kicker="Safety · 安全與緊急"
         title="遇到狀況時，這些電話救命"
         meta="全球安全指數前 30">
         <A_Safety />
       </A_Section>
 
-      <A_Section id="A-cost" num="12" kicker="Budget · 預算估算"
+      <A_Section id="A-cost" num="13" kicker="Budget · 預算估算"
         title="單人 8 日總花費（NTD）"
         meta="不含購物與酒類">
         <A_Cost />

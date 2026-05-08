@@ -384,6 +384,12 @@ function B_Companion({ initialDay }) {
                   {cleanLabel}
                   {myNote && <span className="note-dot" title="已有備註" aria-label="已有備註">📒</span>}
                   {s.sub && <small>{s.sub}</small>}
+                  {(s.cost || s.dur) && (
+                    <span className="step-meta">
+                      {s.dur && <span className="m-dur">⏱ {s.dur}</span>}
+                      {s.cost && <span className="m-cost">💰 {s.cost}</span>}
+                    </span>
+                  )}
                   <span className="chev">{open ? '−' : '+'}</span>
                 </span>
               </div>
@@ -398,6 +404,18 @@ function B_Companion({ initialDay }) {
                       return dm > 0 ? ` · 距上一站 ${dm} 分` : '';
                     })()}</span>
                   </div>
+                  {s.dur && (
+                    <div className="row">
+                      <span className="k">停留</span>
+                      <span className="v">⏱ {s.dur}</span>
+                    </div>
+                  )}
+                  {s.cost && (
+                    <div className="row">
+                      <span className="k">花費</span>
+                      <span className="v">💰 {s.cost}</span>
+                    </div>
+                  )}
                   {s.sub && (
                     <div className="row">
                       <span className="k">提示</span>
@@ -452,6 +470,46 @@ function B_Companion({ initialDay }) {
                    target="_blank" rel="noopener noreferrer"
                    aria-label={`地圖：${B_eatVenue(e)}`}>
                   {e}
+                  <span className="eat-arr" aria-hidden="true">↗</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {d.backup && d.backup.length > 0 && (
+        <div className="B-card backup">
+          <div className="label">☂ 備案 / Plan B</div>
+          <ul>
+            {d.backup.map((b, i) => (
+              <li key={i}>
+                <a href={B_mapsURL(b.where, d.city)}
+                   target="_blank" rel="noopener noreferrer"
+                   aria-label={`地圖：${b.where}`}>
+                  <strong>{b.label}</strong>
+                  <em>{b.where}</em>
+                  <span>{b.why}</span>
+                  <span className="eat-arr" aria-hidden="true">↗</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {d.practical && d.practical.length > 0 && (
+        <div className="B-card practical">
+          <div className="label">🛠 實務節點</div>
+          <ul>
+            {d.practical.map((p, i) => (
+              <li key={i}>
+                <a href={B_mapsURL(p.name, d.city)}
+                   target="_blank" rel="noopener noreferrer"
+                   aria-label={`地圖：${p.name}`}>
+                  <span className="t">{p.tag}</span>
+                  <strong>{p.name}</strong>
+                  <small>{p.note}</small>
                   <span className="eat-arr" aria-hidden="true">↗</span>
                 </a>
               </li>
