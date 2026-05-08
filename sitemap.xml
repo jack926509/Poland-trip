@@ -1,72 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://trip.xieh.tw/</loc>
+    <loc>https://jack926509.github.io/Poland-trip/</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://trip.xieh.tw/mobile.html</loc>
+    <loc>https://jack926509.github.io/Poland-trip/mobile.html</loc>
     <lastmod>2026-05-07</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://trip.xieh.tw/#itinerary</loc>
+    <loc>https://jack926509.github.io/Poland-trip/#itinerary</loc>
     <lastmod>2026-05-07</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://trip.xieh.tw/#flights</loc>
+    <loc>https://jack926509.github.io/Poland-trip/#flights</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trip.xieh.tw/#transport</loc>
+    <loc>https://jack926509.github.io/Poland-trip/#transport</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://trip.xieh.tw/#stay</loc>
+    <loc>https://jack926509.github.io/Poland-trip/#stay</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://trip.xieh.tw/#tickets</loc>
+    <loc>https://jack926509.github.io/Poland-trip/#tickets</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://trip.xieh.tw/#food</loc>
+    <loc>https://jack926509.github.io/Poland-trip/#food</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://trip.xieh.tw/#cities</loc>
+    <loc>https://jack926509.github.io/Poland-trip/#cities</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://trip.xieh.tw/#shopping</loc>
+    <loc>https://jack926509.github.io/Poland-trip/#shopping</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://trip.xieh.tw/#safety</loc>
+    <loc>https://jack926509.github.io/Poland-trip/#safety</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://trip.xieh.tw/#weather</loc>
+    <loc>https://jack926509.github.io/Poland-trip/#weather</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://trip.xieh.tw/#festival</loc>
+    <loc>https://jack926509.github.io/Poland-trip/#festival</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://trip.xieh.tw/#history</loc>
+    <loc>https://jack926509.github.io/Poland-trip/#history</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://trip.xieh.tw/#beyond</loc>
+    <loc>https://jack926509.github.io/Poland-trip/#beyond</loc>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://trip.xieh.tw/#about</loc>
+    <loc>https://jack926509.github.io/Poland-trip/#about</loc>
     <priority>0.4</priority>
   </url>
 </urlset>
