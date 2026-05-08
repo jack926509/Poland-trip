@@ -63,12 +63,14 @@ function A_Day({ d, scoped }) {
       <div className="A-day-num">
         <span className="num-label">Day {d.n}</span>
         <small>
-          {[d.date, d.weather, d.city].filter(Boolean).map((m, i) => (
-            <React.Fragment key={i}>
-              {i > 0 && <span className="sep" aria-hidden="true">·</span>}
-              <span>{m}</span>
-            </React.Fragment>
-          ))}
+          <span className="day-meta">
+            <span>{d.date}</span>
+            {d.weather && <>
+              <span className="sep" aria-hidden="true">·</span>
+              <span>{d.weather}</span>
+            </>}
+          </span>
+          <span className="day-city">{d.city}</span>
         </small>
         <span className="A-day-tag">{d.tag}</span>
       </div>

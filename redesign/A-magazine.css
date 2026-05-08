@@ -228,14 +228,15 @@
   display:block;
   font-style:normal;font-weight:400;
   font-family:var(--mono);font-size:.66rem;
-  letter-spacing:.12em;color:var(--ink-soft);
+  letter-spacing:.08em;color:var(--ink-soft);
   margin-top:.4rem;line-height:1.55;
   white-space:normal;
 }
-.A-day-num small > span{display:inline-block}
-.A-day-num small .sep{
-  margin:0 .35em;color:var(--ink-mute);font-weight:400;
-}
+/* Desktop default: meta on line 1, city on line 2 (predictable break) */
+.A-day-num small .day-meta{display:block}
+.A-day-num small .day-meta > span{display:inline}
+.A-day-num small .day-meta .sep{margin:0 .3em;color:var(--ink-mute)}
+.A-day-num small .day-city{display:block;margin-top:.1rem}
 .A-day-tag{
   display:inline-block;margin-top:.5rem;
   font-family:var(--serif);font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;
@@ -767,13 +768,23 @@
   .A-day-num .num-label{flex:none}
   .A-day-num small{
     display:inline-flex;align-items:baseline;flex-wrap:wrap;
-    gap:.15rem .35rem;
+    gap:.1rem .35rem;
     margin-top:0;
     font-family:var(--mono);font-size:.62rem;
     letter-spacing:.04em;line-height:1.4;
     color:var(--ink-soft);
   }
-  .A-day-num small .sep{margin:0 .15em}
+  .A-day-num small .day-meta{
+    display:inline-flex;flex-wrap:wrap;align-items:baseline;
+    gap:.1rem .3rem;
+  }
+  .A-day-num small .day-meta .sep{margin:0 .1em}
+  .A-day-num small .day-city{
+    display:inline-flex;align-items:baseline;margin-top:0;
+  }
+  .A-day-num small .day-city::before{
+    content:"·";margin-right:.35rem;color:var(--ink-mute);
+  }
   .A-day-tag{
     margin-top:0;align-self:center;
     font-size:.55rem;padding:.14rem .5rem;letter-spacing:.2em;
