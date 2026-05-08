@@ -360,8 +360,8 @@
 .A-day-backup li a em .map-arr,
 .A-day-practical li a strong .map-arr,
 .A-ticket-row a .map-arr{
-  font-family:var(--mono);font-style:normal;font-size:.7em;
-  color:var(--accent);opacity:.4;margin-left:.25rem;
+  font-family:var(--mono);font-style:normal;font-size:.78em;font-weight:700;
+  color:var(--accent);opacity:.8;margin-left:.25rem;
   transition:opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
   display:inline-block;
 }
@@ -696,7 +696,8 @@
 .A-cityfood-cell li .n{
   font-family:var(--serif);font-weight:700;color:var(--accent);font-style:italic;
   display:inline-flex;align-items:center;gap:.35rem;flex-wrap:wrap;
-  text-decoration:none;
+  text-decoration:underline dotted rgba(168,35,29,.4);
+  text-underline-offset:3px;
   transition:color var(--dur-fast) var(--ease-out), text-decoration-color var(--dur-fast) var(--ease-out);
 }
 a.A-cityfood-cell{display:block}
@@ -704,13 +705,12 @@ a.A-cityfood-cell{display:block}
 .A-cityfood-cell li a.n:hover,
 .A-cityfood-cell li a.n:focus-visible{
   color:var(--crimson-deep);
-  text-decoration:underline;
-  text-decoration-color:var(--crimson-deep);
+  text-decoration:underline solid var(--crimson-deep);
   text-underline-offset:3px;
 }
 .A-cityfood-cell li a.n .map-arr{
-  font-family:var(--mono);font-style:normal;font-size:.7em;
-  color:var(--accent);opacity:.45;
+  font-family:var(--mono);font-style:normal;font-size:.78em;font-weight:700;
+  color:var(--accent);opacity:.85;
   transition:opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
 }
 .A-cityfood-cell li a.n:hover .map-arr,
