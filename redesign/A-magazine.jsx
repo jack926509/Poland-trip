@@ -61,8 +61,15 @@ function A_Day({ d, scoped }) {
   return (
     <article className="A-day" id={`A-day-${d.n}`}>
       <div className="A-day-num">
-        Day {d.n}
-        <small>{d.date}{d.weather ? ` · ${d.weather}` : ''}<br />{d.city}</small>
+        <span className="num-label">Day {d.n}</span>
+        <small>
+          {[d.date, d.weather, d.city].filter(Boolean).map((m, i) => (
+            <React.Fragment key={i}>
+              {i > 0 && <span className="sep" aria-hidden="true">·</span>}
+              <span>{m}</span>
+            </React.Fragment>
+          ))}
+        </small>
         <span className="A-day-tag">{d.tag}</span>
       </div>
       <div className="A-day-body">

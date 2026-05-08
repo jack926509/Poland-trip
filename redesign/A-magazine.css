@@ -228,8 +228,13 @@
   display:block;
   font-style:normal;font-weight:400;
   font-family:var(--mono);font-size:.66rem;
-  letter-spacing:.16em;color:var(--ink-soft);
+  letter-spacing:.12em;color:var(--ink-soft);
   margin-top:.4rem;line-height:1.55;
+  white-space:normal;
+}
+.A-day-num small > span{display:inline-block}
+.A-day-num small .sep{
+  margin:0 .35em;color:var(--ink-mute);font-weight:400;
 }
 .A-day-tag{
   display:inline-block;margin-top:.5rem;
@@ -731,18 +736,6 @@
   .A-shead .meta{display:none}
   .A-sub-h{font-size:1.4rem;margin:1.6rem 0 .8rem}
 
-  .A-day{grid-template-columns:88px 1fr;gap:.9rem;padding:1.1rem 0}
-  .A-day-num{font-size:1.45rem}
-  .A-day-num small{font-size:.6rem;letter-spacing:.13em;margin-top:.3rem}
-  .A-day-tag{font-size:.55rem;padding:.12rem .4rem;margin-top:.35rem}
-  .A-day-body h4{font-size:1.1rem;margin-bottom:.25rem}
-  .A-day-body .lead{font-size:.92rem;line-height:1.55;margin-bottom:.55rem}
-  .A-schedule{padding:.6rem .85rem .65rem}
-  .A-day-eats{padding:.55rem .85rem .65rem}
-  .A-steps li{grid-template-columns:50px 1fr;gap:.6rem;font-size:.86rem;line-height:1.45}
-  .A-train{grid-template-columns:auto 1fr;gap:.3rem .7rem;padding:.45rem .75rem;margin-bottom:.55rem}
-  .A-train .times,.A-train .dur{grid-column:1 / -1}
-
   .A-flights, .A-about-grid{grid-template-columns:1fr}
   .A-stay-grid, .A-ticket-grid, .A-cityfood-grid{grid-template-columns:1fr}
   .A-food-grid, .A-shop-grid, .A-phrase-grid{grid-template-columns:1fr 1fr}
@@ -754,14 +747,53 @@
   .A-flight-list li .dur{display:none}
 }
 
-@media (max-width: 480px){
-  .A-day{grid-template-columns:1fr;gap:.5rem}
-  .A-day-num{
-    display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap;
-    font-size:1.5rem;white-space:normal;
+/* ───── Phone (portrait) — collapse Day card to single column ─────
+   At narrow widths a 2-col day card squeezes the meta column too tight
+   ("10/24 (六) · 11° / 6°" wraps mid-string and the right body title
+   loses horizontal space). Stack day-num as a horizontal header row
+   above the body so each element gets full width. */
+@media (max-width: 640px){
+  .A-day{
+    grid-template-columns:1fr;
+    gap:.55rem;
+    padding:1.1rem 0;
   }
-  .A-day-num small{display:inline;margin-top:0;font-size:.6rem}
-  .A-day-tag{margin-top:0;align-self:center}
+  .A-day-num{
+    display:flex;align-items:baseline;flex-wrap:wrap;
+    gap:.4rem .7rem;
+    font-size:1.55rem;line-height:1;
+    white-space:normal;
+  }
+  .A-day-num .num-label{flex:none}
+  .A-day-num small{
+    display:inline-flex;align-items:baseline;flex-wrap:wrap;
+    gap:.15rem .35rem;
+    margin-top:0;
+    font-family:var(--mono);font-size:.62rem;
+    letter-spacing:.04em;line-height:1.4;
+    color:var(--ink-soft);
+  }
+  .A-day-num small .sep{margin:0 .15em}
+  .A-day-tag{
+    margin-top:0;align-self:center;
+    font-size:.55rem;padding:.14rem .5rem;letter-spacing:.2em;
+  }
+  .A-day-body h4{font-size:1.15rem;margin-bottom:.25rem}
+  .A-day-body .lead{font-size:.92rem;line-height:1.55;margin-bottom:.55rem}
+  .A-schedule{padding:.6rem .85rem .65rem}
+  .A-day-eats{padding:.55rem .85rem .65rem}
+  .A-steps li{grid-template-columns:50px 1fr;gap:.6rem;font-size:.86rem;line-height:1.45}
+  .A-train{
+    grid-template-columns:auto 1fr;gap:.3rem .7rem;
+    padding:.45rem .75rem;margin-bottom:.55rem;
+    width:100%;
+  }
+  .A-train .times,.A-train .dur{grid-column:1 / -1}
+}
+
+@media (max-width: 380px){
+  .A-day-num{font-size:1.4rem}
+  .A-day-num small{font-size:.58rem}
 }
 
 @media (max-width: 420px){
