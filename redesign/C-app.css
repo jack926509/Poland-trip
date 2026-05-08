@@ -330,4 +330,15 @@
 .C-tabbar a svg{width:20px;height:20px;stroke:currentColor;stroke-width:1.6;fill:none}
 .C-tabbar a.active svg{stroke-width:2.2}
 
+/* Warning block (C reuses .B-warn class — duplicated here so app-preview.html
+   doesn't need to load B-companion.css just for this one rule) */
+.C-frame .B-warn{
+  margin:.6rem 1rem;padding:.75rem .95rem;
+  background:var(--ink);color:var(--paper);
+  border-left:4px solid var(--amber);
+  font-size:.78rem;line-height:1.5;
+  border-radius:12px;
+}
+.C-frame .B-warn strong{color:var(--amber)}
+
 /* Home indicator (frame's, but we draw a faux for clarity) */

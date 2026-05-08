@@ -1,13 +1,38 @@
 /* Direction C — iOS app preview (sits inside an ios_frame) */
 const C_useState = React.useState;
+const C_useEffect = React.useEffect;
+
+// Project current wall-clock time onto a day's step list so the preview
+// shows a believable "Now" marker. Falls back to middle step before/after window.
+function C_projectStep(day) {
+  const now = new Date();
+  const mins = now.getHours() * 60 + now.getMinutes();
+  const stepMins = day.steps.map(s => {
+    const [h, m] = s.t.split(':').map(Number);
+    return h * 60 + m;
+  });
+  if (mins < stepMins[0] || mins > stepMins[stepMins.length - 1] + 60) {
+    return Math.min(Math.floor(day.steps.length / 2), day.steps.length - 1);
+  }
+  let idx = 0;
+  for (let i = 0; i < stepMins.length; i++) {
+    if (stepMins[i] <= mins) idx = i;
+  }
+  return idx;
+}
 
 function C_App({ initialDay = 2 }) {
   const t = window.TRIP;
   const [active, setActive] = C_useState(initialDay);
   const [openStep, setOpenStep] = C_useState(null);
   const [trainSheet, setTrainSheet] = C_useState(false);
+  const [tick, setTick] = C_useState(0);
+  C_useEffect(() => {
+    const id = setInterval(() => setTick(x => x + 1), 60000);
+    return () => clearInterval(id);
+  }, []);
   const d = t.days.find(x => x.n === active) || t.days[0];
-  const idx = Math.min(Math.floor(d.steps.length / 2), d.steps.length - 1);
+  const idx = React.useMemo(() => C_projectStep(d), [d, tick]);
   const now = d.steps[idx];
 
   return (
@@ -106,7 +131,15 @@ function C_App({ initialDay = 2 }) {
           return (
             <React.Fragment key={i}>
               <div className={`C-row ${cls} ${open ? 'open' : ''}`}
-                onClick={() => setOpenStep(open ? null : i)}>
+                role="button" tabIndex={0}
+                aria-expanded={open}
+                onClick={() => setOpenStep(open ? null : i)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setOpenStep(open ? null : i);
+                  }
+                }}>
                 <span className="t">{s.t}</span>
                 <span className="lab">{cleanLabel}{s.sub && <small>{s.sub}</small>}</span>
                 <span className="act">{i < idx ? '✓' : i === idx ? '◉' : '›'}</span>

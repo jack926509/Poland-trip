@@ -1,6 +1,6 @@
 /* Direction A — Refined Magazine
    Renders into the #A-root mount. Uses window.TRIP. */
-const { useState, useMemo } = React;
+const { useState, useMemo, useEffect, useRef } = React;
 
 function A_Hero() {
   const t = window.TRIP;
@@ -33,12 +33,18 @@ function A_Hero() {
 
 function A_DayRail({ activeDay, onPick }) {
   const t = window.TRIP;
+  const handleClick = (e, n) => {
+    e.preventDefault();
+    onPick(n);
+    const el = document.getElementById(`A-day-${n}`);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
   return (
     <div className="A-day-rail">
       {t.days.map((d) =>
       <a key={d.n} href={`#A-day-${d.n}`}
       className={`A-chip ${activeDay === d.n ? 'active' : ''}`}
-      onClick={(e) => {e.preventDefault();onPick(d.n);}}>
+      onClick={(e) => handleClick(e, d.n)}>
           <span className="dot"></span>
           <strong>0{d.n}</strong>
           <span>{d.date}</span>
@@ -418,6 +424,37 @@ function A_Section({ id, num, kicker, title, meta, children }) {
 
 function A_Magazine() {
   const [activeDay, setActiveDay] = useState(1);
+  const [activeNavId, setActiveNavId] = useState(A_NAV[0].id);
+
+  useEffect(() => {
+    const opts = { rootMargin: '-15% 0px -75% 0px', threshold: 0 };
+    const dayObs = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) {
+          const n = parseInt(e.target.id.replace('A-day-', ''), 10);
+          if (!Number.isNaN(n)) setActiveDay(n);
+        }
+      }
+    }, opts);
+    document.querySelectorAll('[id^="A-day-"]').forEach((el) => dayObs.observe(el));
+
+    const sectObs = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) setActiveNavId(e.target.id);
+      }
+    }, opts);
+    document.querySelectorAll('section.A-section').forEach((el) => sectObs.observe(el));
+
+    return () => { dayObs.disconnect(); sectObs.disconnect(); };
+  }, []);
+
+  const handleNavClick = (e, id) => {
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setActiveNavId(id);
+  };
+
   return (
     <div className="A-frame paper-tex">
       <header className="A-masthead">
@@ -428,11 +465,13 @@ function A_Magazine() {
       <nav className="A-nav">
         <span className="A-nav-brand">POLSKA — Travel Atlas</span>
         <div className="A-nav-links">
-          {A_NAV.map((item, i) => (
-            <a key={item.id} href={`#${item.id}`} className={i === 0 ? 'active' : ''}>{item.label}</a>
+          {A_NAV.map((item) => (
+            <a key={item.id} href={`#${item.id}`}
+               className={activeNavId === item.id ? 'active' : ''}
+               onClick={(e) => handleNavClick(e, item.id)}>{item.label}</a>
           ))}
         </div>
-        <a href="#" className="A-nav-cta">離線版</a>
+        <a href="?classic=1" className="A-nav-cta">經典版</a>
       </nav>
       <A_Hero />
 

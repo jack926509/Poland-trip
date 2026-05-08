@@ -32,9 +32,20 @@
   body{margin:0;background:#f0eee9;font-family:'Noto Serif TC',serif}
   #root{max-width:480px;margin:0 auto;min-height:100vh;background:var(--paper);box-shadow:0 0 30px rgba(0,0,0,.08)}
   .B-frame{border-radius:0;height:auto;min-height:100vh}
+  .desktop-escape{
+    position:fixed;top:.45rem;right:.5rem;z-index:99;
+    font-family:'JetBrains Mono',ui-monospace,monospace;
+    font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
+    padding:.3rem .55rem;border-radius:999px;
+    background:rgba(244,236,216,.85);color:#1a1612;
+    border:1px solid rgba(26,22,18,.18);text-decoration:none;
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  }
+  .desktop-escape:active{background:rgba(244,236,216,1)}
 </style>
 </head>
 <body>
+<a class="desktop-escape" href="index.html?classic=1" title="切回桌機版">桌機版 →</a>
 <div id="root"></div>
 <script src="/vendor/react.production.min.js"></script>
 <script src="/vendor/react-dom.production.min.js"></script>
