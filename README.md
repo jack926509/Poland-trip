@@ -2,7 +2,7 @@
 
 > 一份給台灣旅人的波蘭深度田野指南。整合權威旅遊資料來源，涵蓋六大城市、美食、人文歷史、天氣與交通，並附 10/24–10/31 個人化 8 日四城行程。
 
-🌐 **線上閱讀**：https://trip.xieh.tw
+🌐 **線上閱讀**：https://jack926509.github.io/Poland-trip
 
 ## 📖 內容架構
 
@@ -66,7 +66,7 @@ Day 5  WRO → POZ   IC               19:00 → 21:20  (2h20)
 Day 6  POZ → WAW   EIP              17:30 → 20:15  (2h45)
 ```
 
-完整逐時刻表、訂票時程、住宿區建議、注意事項詳見 **[index.html § 14](https://trip.xieh.tw/#itinerary)**
+完整逐時刻表、訂票時程、住宿區建議、注意事項詳見 **[index.html § 14](https://jack926509.github.io/Poland-trip/#itinerary)**
 
 ### 🍴 四城必吃美食精選
 
@@ -77,7 +77,7 @@ Day 6  POZ → WAW   EIP              17:30 → 20:15  (2h45)
 | 🍺 **弗羅茨瓦夫** | Śląskie kluski · Rolada śląska · 精釀啤酒 | Konspira / Browar Stu Mostów |
 | 🥐 **波茲南** | Rogal Świętomarciński (PGI) ⭐ · Pyry z gzikiem | Cukiernia Kandulski / Pyra Bar |
 
-完整 4 城專屬料理對照表詳見 **[index.html § 3](https://trip.xieh.tw/#food)**
+完整 4 城專屬料理對照表詳見 **[index.html § 3](https://jack926509.github.io/Poland-trip/#food)**
 
 ## 🗓️ 每日大致安排
 
@@ -104,7 +104,7 @@ Day 6  POZ → WAW   EIP              17:30 → 20:15  (2h45)
 | 城內交通 + 雜支 | 2,000 – 3,000 | 公車地鐵 24/72hr 票、SIM 卡 |
 | **小計** | **27,500 – 41,000** | 不含血拼伴手禮 |
 
-完整逐日時刻表、訂票連結、住宿區建議：**[線上版 § 14](https://trip.xieh.tw/#itinerary)**
+完整逐日時刻表、訂票連結、住宿區建議：**[線上版 § 14](https://jack926509.github.io/Poland-trip/#itinerary)**
 
 ## 📊 資料來源
 

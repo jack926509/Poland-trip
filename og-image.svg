@@ -62,5 +62,5 @@
 
   <!-- 下方裝飾線 + 細節 -->
   <text x="60" y="600" font-family="JetBrains Mono, Courier, monospace" font-size="13" letter-spacing="2" fill="#3d362e">2026/10/23 — 11/01 · 七晚八日 · 個人化深度路線</text>
-  <text x="1140" y="600" text-anchor="end" font-family="JetBrains Mono, Courier, monospace" font-size="13" letter-spacing="2" fill="#3d362e">trip.xieh.tw</text>
+  <text x="1140" y="600" text-anchor="end" font-family="JetBrains Mono, Courier, monospace" font-size="13" letter-spacing="2" fill="#3d362e">jack926509.github.io/Poland-trip</text>
 </svg>
