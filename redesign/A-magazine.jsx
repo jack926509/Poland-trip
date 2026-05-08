@@ -40,12 +40,15 @@ function A_DayRail({ activeDay, onPick }) {
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
   return (
-    <div className="A-day-rail">
+    <div className="A-day-rail" role="tablist" aria-label="日次導覽">
       {t.days.map((d) =>
       <a key={d.n} href={`#A-day-${d.n}`}
+      role="tab"
+      aria-selected={activeDay === d.n}
+      aria-current={activeDay === d.n ? 'true' : undefined}
       className={`A-chip ${activeDay === d.n ? 'active' : ''}`}
       onClick={(e) => handleClick(e, d.n)}>
-          <span className="dot"></span>
+          <span className="dot" aria-hidden="true"></span>
           <strong>0{d.n}</strong>
           <span>{d.date}</span>
         </a>
@@ -170,18 +173,20 @@ function A_Cities() {
 
 function A_Trains() {
   return (
-    <table className="A-train-table">
-      <thead>
-        <tr><th>路段</th><th>日期</th><th>類型</th><th>發車</th><th>抵達</th><th>車程</th><th>票價 PLN</th></tr>
-      </thead>
-      <tbody>
-        {window.TRIP.trains.map((tr, i) =>
-        <tr key={i}>
-            <td>{tr.seg}</td><td>{tr.date}</td><td>{tr.type}</td><td>{tr.dep}</td><td>{tr.arr}</td><td>{tr.dur}</td><td>{tr.price}</td>
-          </tr>
-        )}
-      </tbody>
-    </table>);
+    <div className="A-table-wrap" role="region" aria-label="跨城火車一覽" tabIndex={0}>
+      <table className="A-train-table">
+        <thead>
+          <tr><th>路段</th><th>日期</th><th>類型</th><th>發車</th><th>抵達</th><th>車程</th><th>票價 PLN</th></tr>
+        </thead>
+        <tbody>
+          {window.TRIP.trains.map((tr, i) =>
+          <tr key={i}>
+              <td>{tr.seg}</td><td>{tr.date}</td><td>{tr.type}</td><td>{tr.dep}</td><td>{tr.arr}</td><td>{tr.dur}</td><td>{tr.price}</td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+    </div>);
 
 }
 
@@ -355,18 +360,20 @@ function A_Phrases() {
 function A_Cost() {
   const t = window.TRIP;
   return (
-    <table className="A-cost-table">
-      <thead><tr><th>項目</th><th style={{textAlign:'right'}}>NTD</th></tr></thead>
-      <tbody>
-        {t.cost.map(([k, v], i) => (
-          <tr key={i}><td>{k}</td><td>{v}</td></tr>
-        ))}
-        <tr className="total">
-          <td>合計（個人 · 估算）</td>
-          <td>約 95,000 – 132,000</td>
-        </tr>
-      </tbody>
-    </table>
+    <div className="A-table-wrap" role="region" aria-label="預算估算" tabIndex={0}>
+      <table className="A-cost-table">
+        <thead><tr><th>項目</th><th style={{textAlign:'right'}}>NTD</th></tr></thead>
+        <tbody>
+          {t.cost.map(([k, v], i) => (
+            <tr key={i}><td>{k}</td><td>{v}</td></tr>
+          ))}
+          <tr className="total">
+            <td>合計（個人 · 估算）</td>
+            <td>約 95,000 – 132,000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   );
 }
 
@@ -425,6 +432,8 @@ function A_Section({ id, num, kicker, title, meta, children }) {
 function A_Magazine() {
   const [activeDay, setActiveDay] = useState(1);
   const [activeNavId, setActiveNavId] = useState(A_NAV[0].id);
+  const [navOpen, setNavOpen] = useState(false);
+  const [showTop, setShowTop] = useState(false);
 
   useEffect(() => {
     const opts = { rootMargin: '-15% 0px -75% 0px', threshold: 0 };
@@ -445,7 +454,18 @@ function A_Magazine() {
     }, opts);
     document.querySelectorAll('section.A-section').forEach((el) => sectObs.observe(el));
 
-    return () => { dayObs.disconnect(); sectObs.disconnect(); };
+    const onScroll = () => setShowTop(window.scrollY > 600);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    const onKey = (e) => { if (e.key === 'Escape') setNavOpen(false); };
+    window.addEventListener('keydown', onKey);
+
+    return () => {
+      dayObs.disconnect(); sectObs.disconnect();
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('keydown', onKey);
+    };
   }, []);
 
   const handleNavClick = (e, id) => {
@@ -453,7 +473,10 @@ function A_Magazine() {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     setActiveNavId(id);
+    setNavOpen(false);
   };
+
+  const scrollTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
     <div className="A-frame paper-tex">
@@ -462,12 +485,21 @@ function A_Magazine() {
         <span className="flag">Republic of Poland · Rzeczpospolita Polska</span>
         <span>繁體中文版</span>
       </header>
-      <nav className="A-nav">
+      <nav className="A-nav" aria-label="主導覽">
         <span className="A-nav-brand">POLSKA — Travel Atlas</span>
-        <div className="A-nav-links">
+        <button
+          type="button"
+          className="A-nav-toggle"
+          aria-expanded={navOpen}
+          aria-controls="A-nav-links"
+          onClick={() => setNavOpen((v) => !v)}>
+          {navOpen ? '關閉' : '目錄'}
+        </button>
+        <div id="A-nav-links" className={`A-nav-links ${navOpen ? 'open' : ''}`}>
           {A_NAV.map((item) => (
             <a key={item.id} href={`#${item.id}`}
                className={activeNavId === item.id ? 'active' : ''}
+               aria-current={activeNavId === item.id ? 'true' : undefined}
                onClick={(e) => handleNavClick(e, item.id)}>{item.label}</a>
           ))}
         </div>
@@ -553,6 +585,13 @@ function A_Magazine() {
         <span>POLSKA · 波蘭旅遊指南 2025–2026</span>
         <span>Compiled with care · 🇵🇱</span>
       </footer>
+
+      <button
+        type="button"
+        className={`A-totop ${showTop ? 'show' : ''}`}
+        onClick={scrollTop}
+        aria-label="回到最上方"
+        title="回到最上方">↑</button>
     </div>);
 
 }
