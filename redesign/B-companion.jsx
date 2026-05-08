@@ -168,7 +168,14 @@ function B_Companion({ initialDay }) {
             <React.Fragment key={i}>
               <div className={`B-step ${cls}`}
                 onClick={() => setOpenStep(open ? null : i)}
-                role="button" tabIndex={0}>
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    setOpenStep(open ? null : i);
+                  }
+                }}
+                role="button" tabIndex={0}
+                aria-expanded={open}>
                 <span className="t">{s.t}</span>
                 <span className="dot"></span>
                 <span className="lab">
