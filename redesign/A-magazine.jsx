@@ -49,7 +49,7 @@ function A_DayRail({ activeDay, onPick }) {
       className={`A-chip ${activeDay === d.n ? 'active' : ''}`}
       onClick={(e) => handleClick(e, d.n)}>
           <span className="dot" aria-hidden="true"></span>
-          <strong>0{d.n}</strong>
+          <strong>Day {d.n}</strong>
           <span>{d.date}</span>
         </a>
       )}
@@ -61,7 +61,7 @@ function A_Day({ d, scoped }) {
   return (
     <article className="A-day" id={`A-day-${d.n}`}>
       <div className="A-day-num">
-        0{d.n}
+        Day {d.n}
         <small>{d.date}{d.weather ? ` · ${d.weather}` : ''}<br />{d.city}</small>
         <span className="A-day-tag">{d.tag}</span>
       </div>
