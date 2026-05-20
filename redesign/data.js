@@ -129,8 +129,8 @@ window.TRIP = {
       steps: [
         {t:'09:00', label:'★ 中央廣場 + 紡織會館', sub:'dwarfsmap.com 找小矮人', cost:'免費', dur:'1.5 h'},
         {t:'10:30', label:'糖果屋雙屋 + 教堂塔樓', sub:'91m 全景', cost:'PLN 15', dur:'45 min'},
-        {t:'11:30', label:'★ 拉茨瓦夫全景畫', sub:'30 分鐘導覽', cost:'PLN 50', dur:'1 h'},
-        {t:'13:30', label:'★ 百年廳 (UNESCO)', sub:'外觀 + 4 圓頂展館', cost:'PLN 30', dur:'1.5 h'},
+        {t:'11:30', label:'★ 拉茨瓦維採全景畫', sub:'30 分鐘導覽', cost:'PLN 50', dur:'1 h'},
+        {t:'13:30', label:'★ 百年廳 (UNESCO)', sub:'外觀 + 四穹頂展館', cost:'PLN 30', dur:'1.5 h'},
         {t:'15:50', label:'★ 座堂島煤氣燈', sub:'點燈師 102 盞 · 日落 16:32', cost:'免費', dur:'45 min'},
         {t:'19:00', label:'IC 火車出發', cost:'PLN 50–90', dur:'2h20'},
       ],
@@ -261,7 +261,7 @@ window.TRIP = {
     ]},
     {city:'弗羅茨瓦夫', items:[
       ['百年廳 Hala Stulecia', 'PLN 30'],
-      ['拉茨瓦夫全景畫', 'PLN 50'],
+      ['拉茨瓦維採全景畫', 'PLN 50'],
     ]},
     {city:'波茲南', items:[
       ['牛角麵包博物館', 'PLN 25'],
