@@ -88,7 +88,7 @@ window.TRIP = {
       ],
     },
     {
-      n: 4, date: '10/27 (二)', city: '克拉科夫 → 弗羅茨瓦夫',
+      n: 4, date: '10/27 (二)', city: '克拉科夫 → 樂斯拉夫',
       title: 'Wieliczka 鹽礦 + Kazimierz 白天 · 傍晚轉場',
       headline: 'IC 17:30 → 21:00 · 3h30',
       tag: 'Transit',
@@ -120,7 +120,7 @@ window.TRIP = {
       ],
     },
     {
-      n: 5, date: '10/28 (三)', city: '弗羅茨瓦夫 → 波茲南',
+      n: 5, date: '10/28 (三)', city: '樂斯拉夫 → 波茲南',
       title: '小矮人尋寶 + 點燈儀式 + 晚轉場',
       headline: 'IC 19:00 → 21:20 · 2h20',
       tag: 'Transit',
@@ -207,7 +207,7 @@ window.TRIP = {
   cities: [
     {key:'WAW', name:'華沙', pl:'Warszawa', tag:'CAPITAL', nights:2, vibe:'鋼鐵摩天 × 重建老城', highlights:['POLIN 猶太博物館','起義博物館','皇家城堡','Krakowskie Przedmieście']},
     {key:'KRK', name:'克拉科夫', pl:'Kraków', tag:'OLD WORLD', nights:3, vibe:'中世紀石板路 × 千年王城', highlights:['Wawel 城堡','中央市集 Rynek','Auschwitz 一日往返','Kazimierz 猶太區']},
-    {key:'WRO', name:'弗羅茨瓦夫', pl:'Wrocław', tag:'700 DWARFS', nights:1, vibe:'700 小矮人 × 煤氣燈點燈', highlights:['百年廳 UNESCO','全景畫 Panorama','座堂島 Ostrów Tumski','糖果屋雙屋']},
+    {key:'WRO', name:'樂斯拉夫', pl:'Wrocław', tag:'700 DWARFS', nights:1, vibe:'700 小矮人 × 煤氣燈點燈', highlights:['百年廳 UNESCO','全景畫 Panorama','座堂島 Ostrów Tumski','糖果屋雙屋']},
     {key:'POZ', name:'波茲南', pl:'Poznań', tag:'CRADLE', nights:1, vibe:'波蘭文明發源 × 山羊報時', highlights:['教堂島 Ostrów Tumski','12:00 山羊鐘樓秀','聖馬丁牛角麵包 PGI','帝王城堡']},
   ],
   trains: [
@@ -238,7 +238,7 @@ window.TRIP = {
   stay: [
     {city:'華沙', en:'Warszawa', pick:'Śródmieście Północne / Powiśle', note:'Śródmieście 交通最便利、地鐵 1/2 線交會；老城氣氛佳但晚上冷清；Praga 河東岸藝術替代區。', tip:'兼顧便利與在地感'},
     {city:'克拉科夫', en:'Kraków', pick:'Kazimierz 或 Stradom', note:'老城 5 分鐘步行可達景點但週末喧鬧；Kazimierz 餐酒密集文青氛圍；Podgórze 安靜在地。', tip:'想睡好覺住 Kazimierz；想熱鬧住老城正中'},
-    {city:'弗羅茨瓦夫', en:'Wrocław', pick:'Stare Miasto', note:'城本來就不大，住老城最合理。', tip:'老城是首選，無須考慮其他區'},
+    {city:'樂斯拉夫', en:'Wrocław', pick:'Stare Miasto', note:'城本來就不大，住老城最合理。', tip:'老城是首選，無須考慮其他區'},
     {city:'波茲南', en:'Poznań', pick:'Stary Rynek 周邊', note:'廣場周邊步行可達山羊鐘樓秀、教堂島；Stary Browar 商圈消費低。', tip:'四城物價最低'},
   ],
 
@@ -258,7 +258,7 @@ window.TRIP = {
       ['維利奇卡鹽礦', 'PLN 159'],
       ['地下市集博物館', 'PLN 32'],
     ]},
-    {city:'弗羅茨瓦夫', items:[
+    {city:'樂斯拉夫', items:[
       ['百年廳 Hala Stulecia', 'PLN 30'],
       ['拉茨瓦維採全景畫', 'PLN 50'],
     ]},
@@ -303,7 +303,7 @@ window.TRIP = {
       {tag:'米其林一星', name:'Bottiglieria 1881', note:'需提前 2 週訂位', book:'must'},
       {tag:'Sernik', name:'Cukiernia Michałek', note:'百年甜點老店', book:'walk'},
     ]},
-    {city:'弗羅茨瓦夫', en:'Wrocław', items:[
+    {city:'樂斯拉夫', en:'Wrocław', items:[
       {tag:'西里西亞', name:'Konspira', note:'80 年代反共主題', book:'walk'},
       {tag:'Pierogi', name:'Pierogarnia Stary Młyn', note:'廣場旁', book:'walk'},
       {tag:'融合料理', name:'Karczma Lwowska', note:'波蘭/烏克蘭', book:'walk'},

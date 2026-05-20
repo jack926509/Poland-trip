@@ -9,7 +9,7 @@ const B_useMemo = React.useMemo;
 const B_CITY_EN = {
   '華沙': 'Warsaw',
   '克拉科夫': 'Kraków',
-  '弗羅茨瓦夫': 'Wrocław',
+  '樂斯拉夫': 'Wrocław',
   '波茲南': 'Poznań',
 };
 
