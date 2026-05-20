@@ -164,8 +164,8 @@ window.TRIP = {
     },
     {
       n: 7, date: '10/30 (五)', city: '華沙',
-      title: 'POLIN + 起義 + 蕭邦音樂會',
-      headline: '華沙告別日 · 三大博物館 + 鋼琴獨奏',
+      title: 'POLIN + 起義 + 皇家城堡',
+      headline: '華沙告別日 · 三大博物館',
       tag: 'Capital',
       weather: '10° / 4°',
       steps: [
@@ -173,14 +173,14 @@ window.TRIP = {
         {t:'13:30', label:'午餐 Tel Aviv Urban', cost:'PLN 50–80', dur:'1 h'},
         {t:'14:30', label:'★ 華沙起義博物館', sub:'3D 影院 · 互動區', cost:'PLN 30 (週一/四免費)', dur:'2 h'},
         {t:'17:00', label:'★ 皇家城堡內部', sub:'最後入場 · 林布蘭', cost:'PLN 60 (週三免費)', dur:'1.5 h'},
-        {t:'19:00', label:'★ Fryderyk 蕭邦獨奏會', sub:'95–140 PLN · Podwale 13/15', cost:'PLN 95–140', dur:'1 h'},
-        {t:'20:00', label:'晚餐 U Fukiera / Polka', cost:'PLN 120–200'},
+        {t:'19:30', label:'老城最後晚餐', sub:'U Fukiera / Polka', cost:'PLN 120–200', dur:'1.5 h'},
+        {t:'21:00', label:'老城廣場夜燈漫步', sub:'自由收尾'},
       ],
       eat: ['Żurek 酸黑麥湯 @ U Fukiera', 'Pączki @ A. Blikle 1869'],
-      warn: '蕭邦博物館 2026 全年閉館整修，改聽 Fryderyk Concert Hall 真人獨奏',
+      warn: '蕭邦博物館 2026 全年閉館整修，2027/1 才重開',
       backup: [
         {label:'三館太累', where:'擇 POLIN + 起義 二選一 → 多留 1.5 h 給城堡', why:'POLIN 動線完整需 3 h，起義內容沉重，連看會疲乏'},
-        {label:'蕭邦門票售完', where:'Time For Chopin · 老城聖十字教堂', why:'PLN 80 · 1 h 蕭邦心臟所在地，氛圍極佳'},
+        {label:'天氣轉壞', where:'科學文化宮 30 樓觀景台（室內）', why:'PLN 25 · 45 min · 直通老城地鐵，雨天備案'},
       ],
     },
     {
@@ -248,7 +248,6 @@ window.TRIP = {
       ['POLIN 猶太歷史', 'PLN 45 · 週四免費'],
       ['華沙起義博物館', 'PLN 30 · 週一/週四免費'],
       ['蕭邦博物館', '2026 整年閉館'],
-      ['Fryderyk Hall 蕭邦音樂會', 'PLN 95–140'],
       ['科學文化宮觀景台', 'PLN 25'],
     ]},
     {city:'克拉科夫', items:[
@@ -358,7 +357,6 @@ window.TRIP = {
     {when:'出發前 14–21 天', what:'Wieliczka 鹽礦英文 Tourist Route 10:00 場（wieliczka-saltmine.com · 英文場名額少需早卡位）'},
     {when:'出發前 14 天', what:'POLIN 猶太博物館 + 華沙起義博物館 + 辛德勒工廠 10/25 (日) 17:30 最後入場場次（mhk.pl/en）'},
     {when:'出發前 7 天', what:'米其林餐廳：Bottiglieria 1881、U Fukiera、Pod Aniołami、Pod Fredrą（TheFork / OpenTable / 餐廳官網）'},
-    {when:'出發前 3 天', what:'Fryderyk Hall 蕭邦獨奏會（chopinconcerts.pl · Podwale 13/15 票常於前一週售罄）'},
     {when:'抵達當日', what:'隔日 Wawel 國家廳室現場票（限額制，售完只能改廷院）'},
   ],
 
@@ -396,19 +394,5 @@ window.TRIP = {
     ['小費文化', '餐廳 10%（非強制）'],
     ['台灣簽證', '免申根簽 90 天'],
     ['ETIAS', '2026 Q4 起須申請'],
-  ],
-
-  cost: [
-    ['國際機票', '50,000 – 65,000'],
-    ['7 晚住宿（雙人房一半）', '22,000 – 32,000'],
-    ['5 段跨城火車', '1,800 – 3,500'],
-    ['Auschwitz 一日往返', '1,650'],
-    ['主要景點門票', '2,300 – 3,000'],
-    ['蕭邦真人鋼琴音樂會', '800 – 1,150'],
-    ['城內交通 + Bolt', '1,500 – 2,000'],
-    ['餐飲 8 天', '8,000 – 14,000'],
-    ['電信 SIM', '350 – 600'],
-    ['旅平險 + 不便險', '1,500 – 2,500'],
-    ['緩衝預備金', '5,000'],
   ],
 };
