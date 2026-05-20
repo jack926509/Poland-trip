@@ -522,26 +522,6 @@ function A_Phrases() {
   );
 }
 
-function A_Cost() {
-  const t = window.TRIP;
-  return (
-    <div className="A-table-wrap" role="region" aria-label="預算估算" tabIndex={0}>
-      <table className="A-cost-table">
-        <thead><tr><th>項目</th><th style={{textAlign:'right'}}>NTD</th></tr></thead>
-        <tbody>
-          {t.cost.map(([k, v], i) => (
-            <tr key={i}><td>{k}</td><td>{v}</td></tr>
-          ))}
-          <tr className="total">
-            <td>合計（個人 · 估算）</td>
-            <td>約 95,000 – 132,000</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
 function A_About() {
   return (
     <div className="A-about-grid">
@@ -574,7 +554,6 @@ const A_NAV = [
   { id: 'A-shopping',  n: '10', label: '購物' },
   { id: 'A-phrases',   n: '11', label: '波語' },
   { id: 'A-safety',    n: '12', label: '安全' },
-  { id: 'A-cost',      n: '13', label: '預算' },
 ];
 
 function A_Section({ id, num, kicker, title, meta, children }) {
@@ -745,12 +724,6 @@ function A_Magazine() {
         title="遇到狀況時，這些電話救命"
         meta="全球安全指數前 30">
         <A_Safety />
-      </A_Section>
-
-      <A_Section id="A-cost" num="13" kicker="Budget · 預算估算"
-        title="單人 8 日總花費（NTD）"
-        meta="不含購物與酒類">
-        <A_Cost />
       </A_Section>
 
       <footer className="A-foot">
