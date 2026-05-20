@@ -319,6 +319,18 @@ section{
   color:var(--ink-soft);
 }
 .fact-val{font-weight:500;text-align:right}
+.book-btn{
+  display:inline-block;
+  margin-left:.5rem;
+  padding:.15rem .55rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.68rem;letter-spacing:.05em;
+  background:#1a3a5c;color:#fff;
+  border-radius:3px;text-decoration:none;
+  transition:background .15s ease;
+  white-space:nowrap;
+}
+.book-btn:hover{background:#2a5a8c;text-decoration:none}
 
 /* === CITIES === */
 .cities-grid{
