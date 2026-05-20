@@ -362,7 +362,7 @@ window.TRIP = {
 
   shopping: [
     {tag:'陶瓷', name:'Bolesławiec', note:'藍底白點手繪餐具，全球收藏家追捧'},
-    {tag:'琥珀', name:'格但斯克琥珀', note:'辨真偽：泡鹽水會浮、靜電可吸紙屑'},
+    {tag:'琥珀', name:'波羅的海琥珀', note:'克拉科夫紡織會館或華沙老城；辨真偽：泡鹽水會浮、靜電可吸紙屑'},
     {tag:'伏特加', name:'Żubrówka / Soplica', note:'野牛草 / 果味，伴手首選'},
     {tag:'巧克力', name:'E. Wedel', note:'1851 年華沙百年品牌'},
     {tag:'糖果', name:'Krówki', note:'波蘭奶油糖，超市到處有'},
