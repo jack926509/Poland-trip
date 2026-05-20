@@ -6,7 +6,7 @@ const { useState, useMemo, useEffect, useRef } = React;
 const A_CITY_EN = {
   '華沙': 'Warsaw',
   '克拉科夫': 'Kraków',
-  '弗羅茨瓦夫': 'Wrocław',
+  '樂斯拉夫': 'Wrocław',
   '波茲南': 'Poznań',
   '多哈': 'Doha',
 };
@@ -246,7 +246,7 @@ function A_RouteMap() {
         <g>
           <circle cx="265" cy="335" r="13" fill="#c4892b" stroke="#1a1612" strokeWidth="1.5"/>
           <text x="265" y="340" textAnchor="middle" fontFamily="Bodoni Moda, Noto Serif TC, serif" fontSize="14" fontWeight="700" fill="#fff">3</text>
-          <text x="105" y="325" fontFamily="Bodoni Moda, Noto Serif TC, serif" fontSize="18" fontWeight="700" fill="#1a1612">弗羅茨瓦夫</text>
+          <text x="105" y="325" fontFamily="Bodoni Moda, Noto Serif TC, serif" fontSize="18" fontWeight="700" fill="#1a1612">樂斯拉夫</text>
           <text x="105" y="345" fontFamily="Bodoni Moda, Noto Serif TC, serif" fontSize="13" fontStyle="italic" fill="#3d362e">Wrocław</text>
           <text x="105" y="362" fontFamily="JetBrains Mono" fontSize="10" letterSpacing="1.5" fill="#3d362e">DAY 5</text>
         </g>
