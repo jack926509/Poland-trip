@@ -144,6 +144,7 @@ function B_Companion({ initialDay }) {
   const [openStep, setOpenStep] = B_useState(null);
   const [tick, setTick] = B_useState(0);
   const [drawerOpen, setDrawerOpen] = B_useState(false);
+  const [trainSheet, setTrainSheet] = B_useState(false);
   const [online, setOnline] = B_useState(() => typeof navigator === 'undefined' ? true : navigator.onLine);
   const [standalone, setStandalone] = B_useState(B_isStandaloneMode);
   const [notes, setNotes] = B_useState(() => {
@@ -190,18 +191,23 @@ function B_Companion({ initialDay }) {
     };
   }, []);
 
-  // Close drawer on Escape
+  // Close modal surfaces on Escape
   B_useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') setDrawerOpen(false); };
+    const onKey = (e) => {
+      if (e.key === 'Escape') {
+        setDrawerOpen(false);
+        setTrainSheet(false);
+      }
+    };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
-  // Lock body scroll while drawer is open
+  // Lock body scroll while modal surfaces are open.
   B_useEffect(() => {
-    document.body.style.overflow = drawerOpen ? 'hidden' : '';
+    document.body.style.overflow = drawerOpen || trainSheet ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
-  }, [drawerOpen]);
+  }, [drawerOpen, trainSheet]);
 
   const { d, idx, now, next, beforeStart, afterEnd } = B_useMemo(
     () => B_synthetic(t.days, override),
@@ -367,7 +373,18 @@ function B_Companion({ initialDay }) {
         const isBus = d.train.type === 'BUS';
         const bookHref = isBus ? 'https://www.lajkonikbus.pl/' : 'https://www.intercity.pl/en/';
         return (
-          <div className="B-train">
+          <div
+            className="B-train"
+            role="button"
+            tabIndex={0}
+            aria-label={`${isBus ? '巴士' : '火車'}詳情：${d.train.from} 到 ${d.train.to}`}
+            onClick={() => setTrainSheet(true)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setTrainSheet(true);
+              }
+            }}>
             <div className="seg">
               <span className={`pill ${d.train.type.toLowerCase()}`}>{d.train.type}</span>
               <span>{d.train.date || d.date}</span>
@@ -375,6 +392,7 @@ function B_Companion({ initialDay }) {
               <a className="book-cta"
                  href={bookHref}
                  target="_blank" rel="noopener noreferrer"
+                 onClick={(e) => e.stopPropagation()}
                  aria-label={`${isBus ? 'Lajkonik 巴士' : 'Intercity 火車'}訂票`}>
                 訂票 →
               </a>
@@ -396,6 +414,50 @@ function B_Companion({ initialDay }) {
                 <small>{d.train.arr}</small>
               </a>
             </div>
+          </div>
+        );
+      })()}
+
+      {trainSheet && d.train && (() => {
+        const isBus = d.train.type === 'BUS';
+        const bookHref = isBus ? 'https://www.lajkonikbus.pl/' : 'https://www.intercity.pl/en/';
+        return (
+          <div
+            className="B-sheet-mask open"
+            role="presentation"
+            onClick={() => setTrainSheet(false)}>
+            <section
+              className="B-train-sheet"
+              role="dialog"
+              aria-modal="true"
+              aria-label={`${isBus ? '巴士' : '火車'}詳情`}
+              onClick={(e) => e.stopPropagation()}>
+              <div className="sheet-grab" />
+              <div className="sheet-head">
+                <div>
+                  <span>{isBus ? 'Bus transfer' : 'Rail transfer'}</span>
+                  <h2>{d.train.from} → {d.train.to}</h2>
+                </div>
+                <button type="button" aria-label="關閉火車詳情" onClick={() => setTrainSheet(false)}>×</button>
+              </div>
+              <div className="sheet-route">
+                <span className={`pill ${d.train.type.toLowerCase()}`}>{d.train.type}</span>
+                <strong>{d.train.dep}</strong>
+                <span>{d.train.dur}</span>
+                <strong>{d.train.arr}</strong>
+              </div>
+              <dl className="sheet-list">
+                <div><dt>日期</dt><dd>{d.train.date || d.date}</dd></div>
+                <div><dt>出發</dt><dd>{B_STATIONS[d.train.from] || d.train.from}</dd></div>
+                <div><dt>抵達</dt><dd>{B_STATIONS[d.train.to] || d.train.to}</dd></div>
+                <div><dt>票價</dt><dd>{d.train.price}</dd></div>
+                <div><dt>預訂</dt><dd>{isBus ? 'Lajkonik 官方網站' : 'PKP Intercity 官方網站'}</dd></div>
+              </dl>
+              <div className="sheet-actions">
+                <a href={bookHref} target="_blank" rel="noopener noreferrer">前往訂票</a>
+                <a href={B_stationMapsURL(d.train.from)} target="_blank" rel="noopener noreferrer">出發站地圖</a>
+              </div>
+            </section>
           </div>
         );
       })()}

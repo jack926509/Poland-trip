@@ -1,5 +1,6 @@
-/* Direction C — iOS App preview
-   Native-feel app shell: status bar, large title, today widget, tab bar */
+/* Deprecated historical concept.
+   app-preview.html now renders the real B_Companion PWA inside ios-frame.
+   Keep these styles only with the archived C-app design study. */
 
 .C-frame{
   background:#f6efd9;

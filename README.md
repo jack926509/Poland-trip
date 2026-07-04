@@ -6,14 +6,14 @@
 
 ## 站台架構
 
-這份指南有**三個並行版本**，依裝置自動分流：
+這份指南有**兩個主要入口**，依裝置自動分流；另保留一個 PWA 安裝預覽頁：
 
 | 版本 | 入口 | 適用情境 | 技術 |
 |---|---|---|---|
 | 經典雜誌版 | `index.html` | 完整田野指南 / SEO 主頁 | 純 HTML + CSS + 原生 JS |
 | **A · 桌機雜誌版** | `desktop.html` | 出發前在電腦上閱覽 | React 18 + `redesign/A-magazine.*` |
-| **B · 手機旅伴版** | `mobile.html` | 出門帶著看（Today = Day X） | React 18 + `redesign/B-companion.*` |
-| **C · iOS App 預覽** | `app-preview.html` | 未來 App 樣貌的設計稿 | React 18 + `redesign/C-app.*` |
+| **手機 PWA 旅伴版** | `mobile.html` | 出門帶著看（Today = Day X） | React 18 + `redesign/B-companion.*` |
+| **iOS PWA 預覽** | `app-preview.html` | 加到主畫面後的 iPhone 外觀展示 | React 18 + `B-companion` + `ios-frame` |
 
 ### 自動分流邏輯
 
@@ -25,20 +25,20 @@
 
 ### 共用資料
 
-四個版本的行程資料由 `redesign/data.js` 提供（`window.TRIP`），三個 React 版本共享同一份來源，所以更新一次三處同步。
+行程資料由 `redesign/data.js` 提供（`window.TRIP`），桌機版與手機 PWA 共享同一份來源；經典版 `index.html` 是手寫內容，需另外同步。
 
 ---
 
 ## 離線與 PWA
 
-`sw.js` 是 Service Worker（目前 `polska-v10`），在 `main.js` 載入後註冊：
+`sw.js` 是 Service Worker（目前 `polska-v11`），在 `main.js` 載入後註冊：
 
 - **HTML**：network-first，失敗回快取（出國當地無 Wi-Fi 仍可看舊版）
 - **同源資源（CSS / JS / 圖片）**：cache-first + 背景更新
 - **第三方（Google Fonts 等）**：stale-while-revalidate
 - 內容有更新時跳出「📖 指南有新內容可用」banner，由使用者決定何時切換（不自動 `skipWaiting`）
 
-`manifest.json` 提供 PWA 安裝資訊（紅白雙色 icon、`#a8231d` theme），iOS / Android 可加到主畫面當 App 用。
+`manifest.json` 提供 PWA 安裝資訊（波蘭風景照 icon、`#a8231d` theme），iOS / Android 可加到主畫面當 App 用。
 
 ---
 
@@ -57,7 +57,7 @@
 # 釘版 esbuild@0.24.0，避免跨日跳號導致輸出飄移
 ```
 
-腳本會處理：`A-magazine.jsx`、`B-companion.jsx`、`C-app.jsx`、`ios-frame.jsx`、`tweaks-panel.jsx`。
+腳本會處理：`A-magazine.jsx`、`B-companion.jsx`、`C-app.jsx`、`ios-frame.jsx`、`tweaks-panel.jsx`。`C-app` 目前僅作歷史設計稿保留，正式手機體驗以 `B-companion` 為準。
 
 ### 更新行程資料
 
@@ -65,7 +65,7 @@
 
 ### 更新 Service Worker
 
-修改 `sw.js` 時記得提升 `CACHE_VERSION`（如 `polska-v10` → `polska-v11`），舊快取會在啟用時清除，並讓使用者看到更新提示。
+修改 `sw.js` 時記得提升 `CACHE_VERSION`（如 `polska-v11` → `polska-v12`），舊快取會在啟用時清除，並讓使用者看到更新提示。
 
 ### 部署
 
@@ -81,12 +81,13 @@ Poland-trip/
 ├── styles.css              經典版樣式
 ├── main.js                 經典版互動 + Service Worker 註冊
 ├── desktop.html            A · 桌機雜誌版入口
-├── mobile.html             B · 手機旅伴版入口
-├── app-preview.html        C · iOS App 預覽入口
+├── mobile.html             手機 PWA 旅伴版入口
+├── app-preview.html        iOS PWA 安裝預覽入口
 ├── sw.js                   Service Worker（離線快取）
 ├── manifest.json           PWA manifest
 ├── build.sh                esbuild JSX → dist 編譯腳本
-├── apple-touch-icon.png    iOS 桌面圖示
+├── apple-touch-icon.png    iOS 桌面圖示（由 app-icon-source.png 輸出）
+├── app-icon-source.png     PWA 風景圖示來源圖
 ├── og-image.svg            Open Graph 分享圖
 ├── sitemap.xml / robots.txt
 ├── redesign/
@@ -94,7 +95,7 @@ Poland-trip/
 │   ├── tokens.css          設計 token（顏色 / 字級）
 │   ├── A-magazine.{jsx,css}    桌機雜誌版 React
 │   ├── B-companion.{jsx,css}   手機旅伴版 React
-│   ├── C-app.{jsx,css}         iOS App 預覽 React
+│   ├── C-app.{jsx,css}         歷史 iOS App 設計稿（正式入口不載入）
 │   ├── ios-frame.jsx       iOS 裝置外框
 │   ├── tweaks-panel.jsx    設計微調面板
 │   └── dist/               build.sh 編譯產物

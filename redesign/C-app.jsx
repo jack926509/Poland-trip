@@ -1,4 +1,6 @@
-/* Direction C — iOS app preview (sits inside an ios_frame) */
+/* Deprecated historical concept.
+   The live mobile PWA and app-preview.html now use B_Companion as the single
+   source of truth. Keep this file only as an archived iOS app design study. */
 const C_useState = React.useState;
 const C_useEffect = React.useEffect;
 
