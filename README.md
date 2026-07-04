@@ -2,7 +2,7 @@
 
 > 一份給台灣旅人的波蘭四城旅行控制台。整合權威旅遊資料來源，涵蓋華沙、克拉科夫、樂斯拉夫、波茲南的 10/24–10/31 個人化 8 日行程、美食、交通、住宿、訂票與備案。
 
-線上閱讀：https://jack926509.github.io/Poland-trip
+線上閱讀：https://trip.xieh.tw
 
 ---
 
@@ -174,7 +174,7 @@ Day 5  WRO → POZ   IC               19:00 → 21:20  (2h20)
 Day 6  POZ → WAW   EIP              17:30 → 19:50  (2h20)
 ```
 
-完整逐時刻表、訂票時程、住宿區建議、注意事項詳見 **[index.html § 14](https://jack926509.github.io/Poland-trip/#itinerary)**。
+完整逐時刻表、訂票時程、住宿區建議、注意事項詳見 **[index.html § 14](https://trip.xieh.tw/#itinerary)**。
 
 ### 四城必吃美食精選
 
@@ -185,7 +185,7 @@ Day 6  POZ → WAW   EIP              17:30 → 19:50  (2h20)
 | 樂斯拉夫 | Śląskie kluski · Rolada śląska · 精釀啤酒 | Konspira / Browar Stu Mostów |
 | 波茲南 | Rogal Świętomarciński (PGI) · Pyry z gzikiem | Cukiernia Kandulski / Pyra Bar |
 
-完整 4 城專屬料理對照表詳見 **[index.html § 3](https://jack926509.github.io/Poland-trip/#food)**。
+完整 4 城專屬料理對照表詳見 **[index.html § 3](https://trip.xieh.tw/#food)**。
 
 ---
 
@@ -202,7 +202,7 @@ Day 6  POZ → WAW   EIP              17:30 → 19:50  (2h20)
 | 7 | 10/30（五） | 華沙 | POLIN 猶太博物館 · 起義博物館 · 皇家城堡 · 老城晚餐 + 自由漫步 |
 | 8 | 10/31（六） | 華沙 → 桃園 | 上午購物或補景點 · 14:40 起飛 · 11/01（日）抵桃園 |
 
-完整逐日時刻表、訂票連結、住宿區建議：**[線上版](https://jack926509.github.io/Poland-trip/#itinerary)**。
+完整逐日時刻表、訂票連結、住宿區建議：**[線上版](https://trip.xieh.tw/#itinerary)**。
 
 ---
 
