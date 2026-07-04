@@ -2,10 +2,13 @@
 window.TRIP = {
   meta: {
     code: 'POLSKA',
-    edition: 'Vol. I · No. 1 · 2025–2026',
+    edition: '2026 Poland Field Plan',
     dateRange: '2026 / 10 / 24 — 10 / 31',
     nights: 7, days: 8,
     cities: ['Warszawa', 'Kraków', 'Wrocław', 'Poznań'],
+    route: '華沙 → 克拉科夫 → 樂斯拉夫 → 波茲南 → 華沙',
+    style: '高效率城市探索 · 腳程快 · 重點景點完整走完',
+    highestRiskDays: ['Day 4 鹽礦 + 轉場', 'Day 5 樂斯拉夫全景點 + 晚轉場', 'Day 7 三館連看'],
     flights: '國泰 + 卡達 + 長榮聯運',
   },
   days: [
@@ -14,6 +17,10 @@ window.TRIP = {
       title: '抵達華沙 · 老城傍晚漫步',
       headline: '13:30 抵蕭邦機場，SKM 進城，老城散步、倒時差',
       tag: 'Arrival',
+      intensity: '低',
+      hardConstraints: ['不排室內博物館', '晚上早睡，保留 Day 2 轉場體力'],
+      mustBook: [],
+      compressible: ['老城散步範圍', '晚餐後甜點'],
       weather: '11° / 6°',
       steps: [
         {t:'13:30', label:'抵蕭邦機場', sub:'申根入境 + 提行李 ~75min', cost:'—', dur:'75 min'},
@@ -40,6 +47,10 @@ window.TRIP = {
       title: 'Wawel + 老城 + 辛德勒最後入場 + Kazimierz 晚餐',
       headline: 'EIP Pendolino 09:00 → 11:25 · 頭等艙含早餐',
       tag: 'Transit',
+      intensity: '高',
+      hardConstraints: ['09:00 華沙 → 克拉科夫火車', '辛德勒工廠 17:30 最後入場', '午餐與 Check-in 不能拖太久'],
+      mustBook: ['華沙 → 克拉科夫火車', '辛德勒工廠 17:30 時段票'],
+      compressible: ['聖瑪利亞教堂內部參觀', '紡織會館購物時間'],
       weather: '12° / 5°',
       train: {type:'EIP', from:'WAW', to:'KRK', dep:'09:00', arr:'11:25', dur:'2h25', price:'PLN 130–180'},
       steps: [
@@ -70,6 +81,10 @@ window.TRIP = {
       title: 'Auschwitz-Birkenau · 一日往返',
       headline: '波蘭最沉重也最重要的一天',
       tag: 'Memorial',
+      intensity: '中高',
+      hardConstraints: ['導覽開團前 30 分鐘抵達', '晚間不再加博物館或長距離步行'],
+      mustBook: ['Auschwitz 官方英文導覽'],
+      compressible: ['回克拉科夫後晚餐形式', '晚間自由活動'],
       weather: '10° / 4°',
       train: {type:'BUS', from:'KRK', to:'Oświęcim', dep:'07:30', arr:'09:00', dur:'1h30 ×2', price:'PLN 15 ×2'},
       steps: [
@@ -92,12 +107,16 @@ window.TRIP = {
       title: 'Wieliczka 鹽礦 + Kazimierz 白天 · 傍晚轉場',
       headline: 'IC 17:30 → 21:00 · 3h30',
       tag: 'Transit',
+      intensity: '高',
+      hardConstraints: ['早上完成 Wieliczka 鹽礦', '16:30 前取行李並前往 Kraków Główny', '17:30 克拉科夫 → 樂斯拉夫火車'],
+      mustBook: ['Wieliczka 鹽礦英文團', '克拉科夫 → 樂斯拉夫火車'],
+      compressible: ['Kazimierz 白天散步', '紡織會館採購'],
       weather: '11° / 5°',
       train: {type:'IC', from:'KRK', to:'WRO', dep:'17:30', arr:'21:00', dur:'3h30', price:'PLN 60–110'},
       steps: [
         {t:'08:00', label:'早餐 + 退房', sub:'行李寄旅館'},
         {t:'09:00', label:'火車到 Wieliczka Rynek-Kopalnia', sub:'Koleje Małopolskie', cost:'PLN 4.50', dur:'25 min'},
-        {t:'10:00', label:'★ Wieliczka 鹽礦 Tourist Route 英文團', sub:'378 階下井 · St. Kinga 鹽教堂 · 地下湖', cost:'PLN 134–156', dur:'2.5 h'},
+        {t:'10:00', label:'★ Wieliczka 鹽礦 Tourist Route 英文團', sub:'3.5 km · 135m 深 · St. Kinga 鹽教堂', cost:'from PLN 131', dur:'2–3 h'},
         {t:'13:00', label:'Wieliczka 鎮中心午餐', cost:'PLN 40–60', dur:'30 min'},
         {t:'13:30', label:'火車回 Kraków Główny', cost:'PLN 4.50', dur:'25 min'},
         {t:'14:30', label:'★ Kazimierz 白天散步', sub:'舊猶太會堂 · Szeroka 街 · 《辛德勒名單》場景', cost:'免費', dur:'1.5 h'},
@@ -110,13 +129,13 @@ window.TRIP = {
       warn: '⚠️ 鹽礦英文團名額有限，必須提前 2–4 週於 wieliczka-saltmine.com 預約 10:00 場次',
       backup: [
         {label:'鹽礦客滿', where:'改 11:00 / 12:00 英文場', why:'回程到 14:30 / 15:30，Kazimierz 與紡織會館擇一'},
-        {label:'雨天備案', where:'鹽礦本身就在地下 135m', why:'全程恆溫 14°C、防雨遮陽最佳備案'},
+        {label:'雨天備案', where:'鹽礦本身就在地下 135m', why:'地下約 17–18°C、防雨遮陽最佳備案'},
         {label:'時間吃緊', where:'跳過 Kazimierz 白天散步直接回旅館取行李', why:'IC 月台廣，Główny 大廳寄物滿員時可提早入站'},
       ],
       practical: [
         {tag:'交通', name:'Wieliczka 火車', note:'Kraków Główny S1 / R 線到 Wieliczka Rynek-Kopalnia，月台買票 PLN 4.50'},
         {tag:'寄物', name:'旅館 + Główny locker 雙層保險', note:'退房後優先寄旅館；若旅館不收，車站 locker PLN 9'},
-        {tag:'裝備', name:'鹽礦低溫', note:'地下恆溫 14°C，攜薄外套；378 階下井須穿好走鞋'},
+        {tag:'裝備', name:'鹽礦低溫', note:'地下約 17–18°C，攜薄外套；官方標示全程超過 800 階，須穿好走鞋'},
       ],
     },
     {
@@ -124,6 +143,10 @@ window.TRIP = {
       title: '小矮人尋寶 + 點燈儀式 + 晚轉場',
       headline: 'IC 19:00 → 21:20 · 2h20',
       tag: 'Transit',
+      intensity: '很高',
+      hardConstraints: ['早餐後早出門', '百年廳距離老城較遠需抓交通', '19:00 樂斯拉夫 → 波茲南火車'],
+      mustBook: ['樂斯拉夫 → 波茲南火車', '拉茨瓦維採全景畫場次'],
+      compressible: ['百年廳停留縮短為外觀與周邊', '座堂島改 45–60 分鐘重點散步', '午餐改簡餐或外帶'],
       weather: '10° / 4°',
       train: {type:'IC', from:'WRO', to:'POZ', dep:'19:00', arr:'21:20', dur:'2h20', price:'PLN 50–90'},
       steps: [
@@ -145,6 +168,10 @@ window.TRIP = {
       title: '山羊鐘樓秀 + 聖馬丁牛角麵包',
       headline: 'EIP 17:30 → 19:50 · 2h20',
       tag: 'Transit',
+      intensity: '中高',
+      hardConstraints: ['11:45 前抵達老城廣場卡位', '12:00 山羊鐘樓秀', '17:30 波茲南 → 華沙火車'],
+      mustBook: ['波茲南 → 華沙火車', '牛角麵包博物館場次'],
+      compressible: ['Stary Browar 停留時間', '帝王城堡內部參觀'],
       weather: '11° / 5°',
       train: {type:'EIP', from:'POZ', to:'WAW', dep:'17:30', arr:'19:50', dur:'2h20', price:'PLN 90–150'},
       steps: [
@@ -167,11 +194,15 @@ window.TRIP = {
       title: 'POLIN + 起義 + 皇家城堡',
       headline: '華沙告別日 · 三大博物館',
       tag: 'Capital',
+      intensity: '高',
+      hardConstraints: ['POLIN、起義博物館、皇家城堡皆需控制停留上限', '皇家城堡最後入場前抵達', '晚餐建議預約'],
+      mustBook: ['POLIN 波蘭猶太人歷史博物館', '華沙起義博物館', '皇家城堡', '華沙最後晚餐'],
+      compressible: ['POLIN 看主展重點', '起義博物館抓核心展區', '皇家城堡控制在 60–90 分鐘'],
       weather: '10° / 4°',
       steps: [
         {t:'10:00', label:'★ POLIN 猶太博物館', sub:'線上預約 · 含中文語音', cost:'PLN 45 (週四免費)', dur:'2.5 h'},
         {t:'13:30', label:'午餐 Tel Aviv Urban', cost:'PLN 50–80', dur:'1 h'},
-        {t:'14:30', label:'★ 華沙起義博物館', sub:'3D 影院 · 互動區', cost:'PLN 30 (週一/四免費)', dur:'2 h'},
+        {t:'14:30', label:'★ 華沙起義博物館', sub:'3D 影院 · 互動區', cost:'PLN 35 / discount 30', dur:'2 h'},
         {t:'17:00', label:'★ 皇家城堡內部', sub:'最後入場 · 林布蘭', cost:'PLN 60 (週三免費)', dur:'1.5 h'},
         {t:'19:30', label:'老城最後晚餐', sub:'U Fukiera / Polka', cost:'PLN 120–200', dur:'1.5 h'},
         {t:'21:00', label:'老城廣場夜燈漫步', sub:'自由收尾'},
@@ -188,6 +219,10 @@ window.TRIP = {
       title: '機場日 · 14:40 QR 260 起飛',
       headline: '從容收尾 · SKM 機場線 20 分鐘',
       tag: 'Departure',
+      intensity: '低',
+      hardConstraints: ['11:00 前抵達華沙蕭邦機場', '如需退稅需預留更多機場時間', '不排正式景點'],
+      mustBook: [],
+      compressible: ['飯店周邊散步', '最後採買'],
       weather: '9° / 3°',
       steps: [
         {t:'08:00', label:'早餐 + 老城散步', cost:'PLN 40', dur:'1.5 h'},
@@ -205,8 +240,8 @@ window.TRIP = {
     },
   ],
   cities: [
-    {key:'WAW', name:'華沙', pl:'Warszawa', tag:'CAPITAL', nights:2, vibe:'鋼鐵摩天 × 重建老城', highlights:['POLIN 猶太博物館','起義博物館','皇家城堡','Krakowskie Przedmieście']},
-    {key:'KRK', name:'克拉科夫', pl:'Kraków', tag:'OLD WORLD', nights:3, vibe:'中世紀石板路 × 千年王城', highlights:['Wawel 城堡','中央市集 Rynek','Auschwitz 一日往返','Kazimierz 猶太區']},
+    {key:'WAW', name:'華沙', pl:'Warszawa', tag:'CAPITAL', nights:'1 + 2', totalNights:3, stayNote:'首晚倒時差 + 回程兩晚收尾', vibe:'鋼鐵摩天 × 重建老城', highlights:['POLIN 猶太博物館','起義博物館','皇家城堡','Krakowskie Przedmieście']},
+    {key:'KRK', name:'克拉科夫', pl:'Kraków', tag:'OLD WORLD', nights:2, totalNights:2, stayNote:'兩晚承接老城、Auschwitz、鹽礦', vibe:'中世紀石板路 × 千年王城', highlights:['Wawel 城堡','中央市集 Rynek','Auschwitz 一日往返','Kazimierz 猶太區']},
     {key:'WRO', name:'樂斯拉夫', pl:'Wrocław', tag:'700 DWARFS', nights:1, vibe:'700 小矮人 × 煤氣燈點燈', highlights:['百年廳 UNESCO','全景畫 Panorama','座堂島 Ostrów Tumski','糖果屋雙屋']},
     {key:'POZ', name:'波茲南', pl:'Poznań', tag:'CRADLE', nights:1, vibe:'波蘭文明發源 × 山羊報時', highlights:['教堂島 Ostrów Tumski','12:00 山羊鐘樓秀','聖馬丁牛角麵包 PGI','帝王城堡']},
   ],
@@ -216,6 +251,31 @@ window.TRIP = {
     {seg:'KRK → WRO', date:'10/27', type:'IC', dep:'17:30', arr:'21:00', dur:'3h30', price:'60–110'},
     {seg:'WRO → POZ', date:'10/28', type:'IC', dep:'19:00', arr:'21:20', dur:'2h20', price:'50–90'},
     {seg:'POZ → WAW', date:'10/29', type:'EIP', dep:'17:30', arr:'19:50', dur:'2h20', price:'90–150'},
+  ],
+
+  bookingTiers: [
+    {tier:'第一優先', note:'一定要先確認', items:[
+      {name:'Auschwitz 官方英文導覽', url:'https://visit.auschwitz.org/'},
+      {name:'Wieliczka 鹽礦英文團', url:'https://www.wieliczka-saltmine.com/'},
+      {name:'華沙 → 克拉科夫火車', url:'https://www.intercity.pl/en/'},
+      {name:'克拉科夫 → 樂斯拉夫火車', url:'https://www.intercity.pl/en/'},
+      {name:'樂斯拉夫 → 波茲南火車', url:'https://www.intercity.pl/en/'},
+      {name:'波茲南 → 華沙火車', url:'https://www.intercity.pl/en/'},
+    ]},
+    {tier:'第二優先', note:'建議先買或預約', items:[
+      {name:'辛德勒工廠', url:'https://mhk.pl/branches/oskar-schindlers-enamel-factory'},
+      {name:'POLIN 波蘭猶太人歷史博物館', url:'https://polin.pl/en'},
+      {name:'華沙起義博物館', url:'https://www.1944.pl/en'},
+      {name:'皇家城堡', url:'https://www.zamek-krolewski.pl/en'},
+      {name:'牛角麵包博物館', url:'https://rogalowemuzeum.pl/en/'},
+      {name:'拉茨瓦維採全景畫', url:'https://mnwr.pl/en/category/branches/panorama-raclawicka/'},
+    ]},
+    {tier:'餐廳與備案', note:'旅行品質加分', items:[
+      {name:'克拉科夫 Kazimierz 晚餐', url:'https://www.google.com/maps/search/?api=1&query=Kazimierz+Krakow+restaurants'},
+      {name:'華沙最後晚餐', url:'https://www.google.com/maps/search/?api=1&query=Warsaw+old+town+Polish+restaurant'},
+      {name:'樂斯拉夫午餐或晚餐', url:'https://www.google.com/maps/search/?api=1&query=Wroclaw+old+town+Polish+restaurant'},
+      {name:'波茲南老城午餐', url:'https://www.google.com/maps/search/?api=1&query=Poznan+old+town+restaurant'},
+    ]},
   ],
 
   flights: {
@@ -246,7 +306,7 @@ window.TRIP = {
     {city:'華沙', items:[
       ['皇家城堡', 'PLN 60 · 週三免費'],
       ['POLIN 猶太歷史', 'PLN 45 · 週四免費'],
-      ['華沙起義博物館', 'PLN 30 · 週一/週四免費'],
+      ['華沙起義博物館', 'PLN 35 · discount 30'],
       ['蕭邦博物館', '2026 整年閉館'],
       ['科學文化宮觀景台', 'PLN 25'],
     ]},
@@ -255,7 +315,7 @@ window.TRIP = {
       ['辛德勒工廠', 'PLN 38'],
       ['聖瑪麗教堂登塔', 'PLN 20'],
       ['奧斯威辛 Educator 導覽', 'PLN 150'],
-      ['維利奇卡鹽礦', 'PLN 159'],
+      ['維利奇卡鹽礦', 'from PLN 131'],
       ['地下市集博物館', 'PLN 32'],
     ]},
     {city:'樂斯拉夫', items:[
@@ -354,7 +414,7 @@ window.TRIP = {
   reservations: [
     {when:'出發前 60+ 天', what:'機票 + 各城火車（intercity.pl Super Promo 提前 30 天 5 折）'},
     {when:'出發前 21 天', what:'Auschwitz 英文官方導覽（visit.auschwitz.org · 旺季 14 天前售完）'},
-    {when:'出發前 14–21 天', what:'Wieliczka 鹽礦英文 Tourist Route 10:00 場（wieliczka-saltmine.com · 英文場名額少需早卡位）'},
+    {when:'出發前 14–21 天', what:'Wieliczka 鹽礦英文 Tourist Route 10:00 場（官方標示 2–3 h、from PLN 131；英文場名額少需早卡位）'},
     {when:'出發前 14 天', what:'POLIN 猶太博物館 + 華沙起義博物館 + 辛德勒工廠 10/25 (日) 17:30 最後入場場次（mhk.pl/en）'},
     {when:'出發前 7 天', what:'米其林餐廳：Bottiglieria 1881、U Fukiera、Pod Aniołami、Pod Fredrą（TheFork / OpenTable / 餐廳官網）'},
     {when:'抵達當日', what:'隔日 Wawel 國家廳室現場票（限額制，售完只能改廷院）'},
@@ -367,7 +427,7 @@ window.TRIP = {
     {tag:'巧克力', name:'E. Wedel', note:'1851 年華沙百年品牌'},
     {tag:'糖果', name:'Krówki', note:'波蘭奶油糖，超市到處有'},
     {tag:'剪紙', name:'Wycinanki', note:'庫亞瓦、洛維奇地區傳統'},
-    {tag:'起司', name:'Oscypek', note:'扎科帕內當地產，可帶上飛機'},
+    {tag:'起司', name:'Oscypek', note:'塔特拉山區代表性乳酪，可帶上飛機'},
   ],
 
   phrases: [
@@ -393,6 +453,6 @@ window.TRIP = {
     ['物價水位', '西歐之 50–60%'],
     ['小費文化', '餐廳 10%（非強制）'],
     ['台灣簽證', '免申根簽 90 天'],
-    ['ETIAS', '2026 Q4 起須申請'],
+    ['ETIAS', '預計 2026 Q4 啟用 · 費用 EUR 20'],
   ],
 };

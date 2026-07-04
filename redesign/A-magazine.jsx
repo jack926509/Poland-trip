@@ -42,14 +42,15 @@ function A_stepIsPlace(label) {
 
 function A_Hero() {
   const t = window.TRIP;
+  const risk = t.meta.highestRiskDays || [];
   return (
     <section className="A-hero">
       <div className="A-hero-grid">
         <div>
-          <div className="A-hero-issue">A Field Guide · 一本田野指南</div>
-          <h1>POLSKA<span className="accent">.</span></h1>
+          <div className="A-hero-issue">Trip Control · 實際旅行控制台</div>
+          <h1>波蘭 8 天 7 晚<span className="accent">.</span></h1>
           <p className="A-hero-sub">
-            從華沙的鋼鐵摩天到克拉科夫的中世紀石板路，從波羅的海的琥珀岸到塔特拉山的雪頂——一份給 2025–2026 旅人的波蘭深度地圖。
+            {t.meta.dateRange}，{t.meta.route}。{t.meta.style}，以火車順時針完成四城重點收集。
           </p>
           <div className="A-hero-stats">
             <div><strong>{t.meta.days}</strong>days</div>
@@ -59,9 +60,12 @@ function A_Hero() {
           </div>
         </div>
         <div>
-          <div className="A-hero-quote">
-            Poland is one of the cheaper countries to travel to in Europe — yet it remains one of the most underrated.
-            <cite>— Salt in Our Hair, Travel Guide 2026</cite>
+          <div className="A-hero-control">
+            <div className="A-control-title">行前判讀</div>
+            <div className="A-control-row"><span>路線</span><strong>{t.meta.route}</strong></div>
+            <div className="A-control-row"><span>晚數</span><strong>華沙 1+2 · 克拉科夫 2 · 樂斯拉夫 1 · 波茲南 1</strong></div>
+            <div className="A-control-row"><span>硬日</span><strong>{risk.join(' / ')}</strong></div>
+            <div className="A-control-note">先處理 Auschwitz、鹽礦與 4 段城際火車，整趟行程就穩。</div>
           </div>
         </div>
       </div>
@@ -123,6 +127,11 @@ function A_Day({ d, scoped }) {
             <span className="dur">{d.train.dur}</span>
           </div>
         }
+        <div className="A-day-readout" aria-label={`Day ${d.n} 快速判讀`}>
+          <div><span>體力</span><strong>{d.intensity || '—'}</strong></div>
+          <div><span>硬時間</span><strong>{(d.hardConstraints || []).slice(0, 2).join(' · ') || '彈性日'}</strong></div>
+          <div><span>必訂票</span><strong>{(d.mustBook || []).join(' · ') || '無'}</strong></div>
+        </div>
         <div className="A-schedule">
           <span className="sched-label">逐時行程</span>
           <ul className="A-steps">
@@ -187,6 +196,22 @@ function A_Day({ d, scoped }) {
             )}</ul>
           </div>
         }
+        {(d.hardConstraints?.length || d.compressible?.length) &&
+        <div className="A-day-constraints">
+            {d.hardConstraints?.length > 0 &&
+              <div>
+                <span className="c-label">硬限制</span>
+                <ul>{d.hardConstraints.map((x, i) => <li key={i}>{x}</li>)}</ul>
+              </div>
+            }
+            {d.compressible?.length > 0 &&
+              <div>
+                <span className="c-label">可壓縮</span>
+                <ul>{d.compressible.map((x, i) => <li key={i}>{x}</li>)}</ul>
+              </div>
+            }
+          </div>
+        }
         {d.practical && d.practical.length > 0 &&
         <div className="A-day-practical">
             <span className="p-label">🛠 實務節點</span>
@@ -241,7 +266,7 @@ function A_RouteMap() {
           <circle cx="585" cy="350" r="13" fill="#a8231d" stroke="#1a1612" strokeWidth="1.5"/>
           <text x="585" y="355" textAnchor="middle" fontFamily="Bodoni Moda, Noto Serif TC, serif" fontSize="14" fontWeight="700" fill="#fff">2</text>
           <text x="615" y="342" fontFamily="Bodoni Moda, Noto Serif TC, serif" fontSize="20" fontWeight="700" fill="#1a1612">克拉科夫 Kraków</text>
-          <text x="615" y="360" fontFamily="JetBrains Mono" fontSize="10" letterSpacing="1.5" fill="#3d362e">DAY 2-4 · 3 NIGHTS</text>
+          <text x="615" y="360" fontFamily="JetBrains Mono" fontSize="10" letterSpacing="1.5" fill="#3d362e">DAY 2-4 · 2 NIGHTS</text>
         </g>
         <g>
           <circle cx="265" cy="335" r="13" fill="#c4892b" stroke="#1a1612" strokeWidth="1.5"/>
@@ -271,7 +296,7 @@ function A_Cities() {
           <h3>{c.name}</h3>
           <div className="pl">{c.pl}</div>
           <p className="vibe">{c.vibe}</p>
-          <div className="nights">住 <strong>{c.nights}</strong> 晚 · {c.highlights.length} 大景點</div>
+          <div className="nights">住 <strong>{c.nights}</strong> 晚 · {c.stayNote || `${c.highlights.length} 大景點`}</div>
           <ul className="A-city-highlights">
             {c.highlights.map((h, j) => (
               <li key={j}>
@@ -290,22 +315,54 @@ function A_Cities() {
 }
 
 function A_Trains() {
+  const mustBook = new Set(['WAW → KRK', 'KRK → WRO', 'WRO → POZ', 'POZ → WAW']);
+  const riskCopy = {
+    'WAW → KRK': '早班南下，抵達後接景點',
+    'KRK ⇄ Auschwitz': '配合導覽時間',
+    'KRK → WRO': '鹽礦回程後轉場',
+    'WRO → POZ': '樂斯拉夫全日後晚轉場',
+    'POZ → WAW': '山羊秀後回華沙',
+  };
   return (
     <div className="A-table-wrap" role="region" aria-label="跨城火車一覽" tabIndex={0}>
       <table className="A-train-table">
         <thead>
-          <tr><th>路段</th><th>日期</th><th>類型</th><th>發車</th><th>抵達</th><th>車程</th><th>票價 PLN</th></tr>
+          <tr><th>路段</th><th>日期</th><th>類型</th><th>發車</th><th>抵達</th><th>車程</th><th>票價 PLN</th><th>預訂</th><th>轉場風險</th></tr>
         </thead>
         <tbody>
           {window.TRIP.trains.map((tr, i) =>
           <tr key={i}>
               <td>{tr.seg}</td><td>{tr.date}</td><td>{tr.type}</td><td>{tr.dep}</td><td>{tr.arr}</td><td>{tr.dur}</td><td>{tr.price}</td>
+              <td><span className={mustBook.has(tr.seg) ? 'A-booking must' : 'A-booking'}>{mustBook.has(tr.seg) ? '必買' : '配合導覽'}</span></td>
+              <td>{riskCopy[tr.seg] || '—'}</td>
             </tr>
           )}
         </tbody>
       </table>
     </div>);
 
+}
+
+function A_BookingTiers() {
+  return (
+    <div className="A-booking-grid">
+      {window.TRIP.bookingTiers.map((tier) => (
+        <div className="A-booking-card" key={tier.tier}>
+          <header>
+            <span>{tier.tier}</span>
+            <small>{tier.note}</small>
+          </header>
+          <ul>
+            {tier.items.map((item) => (
+              <li key={item.name}>
+                <a href={item.url} target="_blank" rel="noopener noreferrer">{item.name}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
 }
 
 /* ───────── New sections ───────── */
@@ -526,8 +583,8 @@ function A_About() {
   return (
     <div className="A-about-grid">
       <div className="A-about-lead">
-        <p>波蘭是個矛盾的國家：她在二戰中被夷為平地，又從廢墟中重建出 UNESCO 認定的歷史中心；她跨越普魯士、奧匈、俄羅斯三大帝國邊界，卻保留了獨特的斯拉夫靈魂；她的物價只有西歐的一半，但她的城市美學足以與布拉格、布達佩斯並列。</p>
-        <p>從北方的波羅的海漁村，到南方的塔特拉山滑雪小鎮——波蘭擁有歐洲少見的多樣性。它是 2026 年最值得規劃 7–14 天深度旅行的目的地之一。</p>
+        <p>這份網站現在以 2026/10/24–10/31 的實際旅行為核心：華沙進出，先南下克拉科夫，再往西到樂斯拉夫，接著到波茲南，最後回華沙。重點不是把波蘭全部看完，而是把四座城市的核心景點、交通轉場與訂票風險排到可執行。</p>
+        <p>整體節奏偏積極，Day 4、Day 5、Day 7 是壓力最高的三天。網站版的閱讀重點因此放在硬時間、必訂票、可壓縮項目與 Plan B，讓出發前檢查和旅途中查閱都更直接。</p>
       </div>
       <div className="A-fact-card">
         <h5>速覽</h5>
@@ -626,12 +683,12 @@ function A_Magazine() {
   return (
     <div className="A-frame paper-tex">
       <header className="A-masthead">
-        <span>Vol. I · No. 1 · 2025–2026 Edition</span>
-        <span className="flag">Republic of Poland · Rzeczpospolita Polska</span>
-        <span>繁體中文版</span>
+        <span>2026/10/24–10/31</span>
+        <span className="flag">Warszawa · Kraków · Wrocław · Poznań</span>
+        <span>8 天 7 晚</span>
       </header>
       <nav className="A-nav" aria-label="主導覽">
-        <span className="A-nav-brand">POLSKA — Travel Atlas</span>
+        <span className="A-nav-brand">POLSKA — Trip Control</span>
         <button
           type="button"
           className="A-nav-toggle"
@@ -653,8 +710,8 @@ function A_Magazine() {
       <A_Hero />
 
       <A_Section id="A-about" num="01" kicker="Prologue · 前言"
-        title="關於這個被低估的中歐國度"
-        meta="2025–2026 旅人指南">
+        title="這趟旅行的操作邏輯"
+        meta="以四城路線為主，不是泛用國家指南">
         <A_About />
       </A_Section>
 
@@ -672,9 +729,9 @@ function A_Magazine() {
         <A_Flights />
       </A_Section>
 
-      <A_Section id="A-cities" num="04" kicker="Six Cities · 六大城市"
+      <A_Section id="A-cities" num="04" kicker="Four Cities · 四城角色"
         title="本次造訪的四座王城"
-        meta="每城 1 — 3 晚 · 各有性格">
+        meta="華沙分段住宿 · 克拉科夫 2 晚">
         <A_Cities />
       </A_Section>
 
@@ -691,8 +748,9 @@ function A_Magazine() {
       </A_Section>
 
       <A_Section id="A-tickets" num="07" kicker="Admission · 門票價格"
-        title="主要景點門票（成人全票）"
-        meta="多數博物館每週一天免費">
+        title="訂票優先級與主要門票"
+        meta="先鎖硬限制，再處理餐廳">
+        <A_BookingTiers />
         <A_Tickets />
       </A_Section>
 
@@ -727,8 +785,8 @@ function A_Magazine() {
       </A_Section>
 
       <footer className="A-foot">
-        <span>POLSKA · 波蘭旅遊指南 2025–2026</span>
-        <span>Compiled with care · 🇵🇱</span>
+        <span>POLSKA · 波蘭 8 天 7 晚旅行控制台</span>
+        <span>2026/10/24–10/31</span>
       </footer>
 
       <button

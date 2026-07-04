@@ -6,6 +6,10 @@
 <title>POLSKA — 旅伴版 · 波蘭 8 日四城路線</title>
 <meta name="description" content="今日 = Day X，現在該做什麼。手機優先的波蘭旅伴：每日步驟、火車時刻、必吃美食一站搞定。">
 <meta name="theme-color" content="#a8231d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="POLSKA">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <link rel="canonical" href="https://jack926509.github.io/Poland-trip/mobile.html">
 <link rel="manifest" href="manifest.json">
@@ -26,8 +30,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Bodoni+Moda:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Serif+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap">
-<link rel="stylesheet" href="redesign/tokens.css">
-<link rel="stylesheet" href="redesign/B-companion.css">
+<link rel="stylesheet" href="redesign/tokens.css?v=polska-v10">
+<link rel="stylesheet" href="redesign/B-companion.css?v=polska-v10">
 <style>
   /* Hardware-accelerate scrolling on iOS Safari + scroll only the body. */
   html,body{margin:0;-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
@@ -52,6 +56,22 @@
     box-shadow:0 1px 3px rgba(26,22,18,.08);
   }
   .desktop-escape:active{background:#ebe1c9}
+  .pwa-update{
+    position:fixed;left:50%;bottom:calc(5.35rem + env(safe-area-inset-bottom,0px));z-index:120;
+    transform:translateX(-50%);
+    width:min(21rem,calc(100vw - 2rem));
+    display:flex;align-items:center;justify-content:space-between;gap:.75rem;
+    padding:.65rem .8rem;border:1px solid #1a1612;border-radius:12px;
+    background:#1a1612;color:#f4ecd8;
+    font-family:'Noto Serif TC',serif;font-size:.78rem;
+    box-shadow:0 12px 28px rgba(26,22,18,.22);
+  }
+  .pwa-update button{
+    flex:none;border:1px solid #f4ecd8;border-radius:999px;
+    background:#f4ecd8;color:#1a1612;
+    font:600 .68rem 'JetBrains Mono',ui-monospace,monospace;
+    letter-spacing:.08em;padding:.36rem .62rem;
+  }
 </style>
 </head>
 <body>
@@ -59,15 +79,40 @@
 <div id="root"></div>
 <script src="vendor/react.production.min.js"></script>
 <script src="vendor/react-dom.production.min.js"></script>
-<script src="redesign/data.js"></script>
-<script src="redesign/dist/B-companion.js"></script>
+<script src="redesign/data.js?v=polska-v10"></script>
+<script src="redesign/dist/B-companion.js?v=polska-v10"></script>
 <script>
 ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(B_Companion));
 </script>
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
-    navigator.serviceWorker.register('sw.js').catch(function(){});
+    var refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', function() {
+      if (refreshing) return;
+      refreshing = true;
+      window.location.reload();
+    });
+    navigator.serviceWorker.register('sw.js').then(function(reg) {
+      function showUpdate(worker) {
+        if (!worker || document.querySelector('.pwa-update')) return;
+        var notice = document.createElement('div');
+        notice.className = 'pwa-update';
+        notice.innerHTML = '<span>新版離線資料已準備好</span><button type="button">更新</button>';
+        notice.querySelector('button').addEventListener('click', function() {
+          worker.postMessage({ type: 'SKIP_WAITING' });
+        });
+        document.body.appendChild(notice);
+      }
+      if (reg.waiting) showUpdate(reg.waiting);
+      reg.addEventListener('updatefound', function() {
+        var worker = reg.installing;
+        if (!worker) return;
+        worker.addEventListener('statechange', function() {
+          if (worker.state === 'installed' && navigator.serviceWorker.controller) showUpdate(worker);
+        });
+      });
+    }).catch(function(){});
   });
 }
 </script>

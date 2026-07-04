@@ -95,6 +95,11 @@ function B_hasBooking(label) {
   return B_BOOKING_LINKS.some(([k]) => clean.includes(k));
 }
 
+function B_isStandaloneMode() {
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+
 // Pull venue name out of "Dish @ Venue" format. Falls back to whole string.
 function B_eatVenue(item) {
   if (!item) return '';
@@ -139,6 +144,8 @@ function B_Companion({ initialDay }) {
   const [openStep, setOpenStep] = B_useState(null);
   const [tick, setTick] = B_useState(0);
   const [drawerOpen, setDrawerOpen] = B_useState(false);
+  const [online, setOnline] = B_useState(() => typeof navigator === 'undefined' ? true : navigator.onLine);
+  const [standalone, setStandalone] = B_useState(B_isStandaloneMode);
   const [notes, setNotes] = B_useState(() => {
     try { return JSON.parse(localStorage.getItem('polska-notes') || '{}'); }
     catch (e) { return {}; }
@@ -170,6 +177,19 @@ function B_Companion({ initialDay }) {
     return () => clearInterval(id);
   }, []);
 
+  B_useEffect(() => {
+    const updateOnline = () => setOnline(navigator.onLine);
+    const updateStandalone = () => setStandalone(B_isStandaloneMode());
+    window.addEventListener('online', updateOnline);
+    window.addEventListener('offline', updateOnline);
+    window.matchMedia?.('(display-mode: standalone)').addEventListener?.('change', updateStandalone);
+    return () => {
+      window.removeEventListener('online', updateOnline);
+      window.removeEventListener('offline', updateOnline);
+      window.matchMedia?.('(display-mode: standalone)').removeEventListener?.('change', updateStandalone);
+    };
+  }, []);
+
   // Close drawer on Escape
   B_useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') setDrawerOpen(false); };
@@ -189,6 +209,10 @@ function B_Companion({ initialDay }) {
   );
   const active = d.n;
   const setActive = (n) => { setOverride(n); setOpenStep(null); setDrawerOpen(false); };
+  const hardNow = d.hardConstraints?.[0] || '今日沒有固定硬時間';
+  const bookNow = d.mustBook?.length ? d.mustBook.join(' / ') : '無需預先訂票';
+  const compressNow = d.compressible?.[0] || '保留彈性休息';
+  const backupNow = d.backup?.[0]?.label ? `${d.backup[0].label} · ${d.backup[0].where}` : '無指定備案';
 
   // Auto-scroll active scrub pill into view when active changes
   B_useEffect(() => {
@@ -264,7 +288,29 @@ function B_Companion({ initialDay }) {
         <div className="meta-row">
           <span><strong>{d.weather || '—'}</strong></span>
           <span>{d.tag}</span>
+          {d.intensity && <span>強度 · {d.intensity}</span>}
           {d.train && <span>{d.train.type} · {d.train.dur}</span>}
+        </div>
+
+        <div className="B-mobile-brief" aria-label="今日快速判讀">
+          <div className="brief-card urgent">
+            <span className="brief-k">硬時間</span>
+            <strong>{hardNow}</strong>
+          </div>
+          <div className="brief-card">
+            <span className="brief-k">必訂票</span>
+            <strong>{bookNow}</strong>
+          </div>
+          <div className="brief-card">
+            <span className="brief-k">可壓縮</span>
+            <strong>{compressNow}</strong>
+          </div>
+        </div>
+
+        <div className={`B-pwa-state ${online ? 'online' : 'offline'}`} aria-live="polite">
+          <span>{online ? '已連線' : '離線模式'}</span>
+          <strong>{standalone ? '主畫面 App' : '可加到主畫面'}</strong>
+          <em>{online ? '新版會自動背景快取' : '已快取核心行程與交通資料'}</em>
         </div>
 
         <button
@@ -325,7 +371,7 @@ function B_Companion({ initialDay }) {
             <div className="seg">
               <span className={`pill ${d.train.type.toLowerCase()}`}>{d.train.type}</span>
               <span>{d.train.date || d.date}</span>
-              <span>· PLN {d.train.price}</span>
+              <span>· {d.train.price}</span>
               <a className="book-cta"
                  href={bookHref}
                  target="_blank" rel="noopener noreferrer"
@@ -460,6 +506,14 @@ function B_Companion({ initialDay }) {
 
       {d.warn && <div className="B-warn"><strong>⚠ 注意</strong> · {d.warn}</div>}
 
+      <div className="B-card field-note">
+        <div className="label">今日提醒</div>
+        <ul>
+          <li><span className="field-tag">Plan B</span><strong>{backupNow}</strong></li>
+          <li><span className="field-tag">節奏</span><strong>{d.intensity ? `今日強度 ${d.intensity}` : '按體力調整'}</strong></li>
+        </ul>
+      </div>
+
       {d.eat && (
         <div className="B-card eat">
           <div className="label">🍴 今日必吃</div>
@@ -546,10 +600,14 @@ function B_Companion({ initialDay }) {
           <svg viewBox="0 0 24 24"><path d="M4 19V5a2 2 0 012-2h11l3 3v13a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
           手冊
         </a>
-        <a href="desktop.html"
-           aria-label="切換到桌機雜誌版">
-          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M9 21h6M12 17v4"/></svg>
-          桌機版
+        <a href="#plan-b"
+           onClick={(e) => {
+             e.preventDefault();
+             const el = document.querySelector('.B-card.backup, .B-card.field-note');
+             if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+           }}>
+          <svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M4.9 4.9L7 7M17 17l2.1 2.1M3 12h3M18 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/><circle cx="12" cy="12" r="4"/></svg>
+          備案
         </a>
       </nav>
 

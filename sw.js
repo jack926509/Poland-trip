@@ -1,6 +1,6 @@
 // POLSKA 旅遊指南 Service Worker — 離線優先策略
 // 出發到波蘭時即使無網路也能看完整指南
-const CACHE_VERSION = 'polska-v5';
+const CACHE_VERSION = 'polska-v10';
 // Relative paths so the SW works on root domain (trip.xieh.tw) and
 // sub-path deploys (jack926509.github.io/Poland-trip/) alike.
 const PRECACHE_URLS = [
@@ -13,16 +13,22 @@ const PRECACHE_URLS = [
   './styles.css',
   './main.js',
   './apple-touch-icon.png',
+  './icon-192.png',
+  './icon-512.png',
   './og-image.svg',
   './vendor/react.production.min.js',
   './vendor/react-dom.production.min.js',
   './redesign/data.js',
+  './redesign/data.js?v=polska-v10',
   './redesign/tokens.css',
+  './redesign/tokens.css?v=polska-v10',
   './redesign/A-magazine.css',
   './redesign/B-companion.css',
+  './redesign/B-companion.css?v=polska-v10',
   './redesign/C-app.css',
   './redesign/dist/A-magazine.js',
   './redesign/dist/B-companion.js',
+  './redesign/dist/B-companion.js?v=polska-v10',
   './redesign/dist/C-app.js',
   './redesign/dist/ios-frame.js',
 ];

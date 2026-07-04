@@ -67,7 +67,7 @@
   position:relative;overflow:hidden;
 }
 .A-hero-grid{
-  display:grid;grid-template-columns:1.4fr 1fr;gap:2rem;align-items:end;
+  display:grid;grid-template-columns:1.25fr 1fr;gap:2rem;align-items:end;
   max-width:1280px;margin:0 auto;
 }
 .A-hero-issue{
@@ -80,8 +80,8 @@
 /* ── TIER 1 · HERO ── */
 .A-hero h1{
   font-family:var(--serif);font-weight:900;
-  font-size:clamp(4rem, 9vw, 8rem);
-  line-height:.88;letter-spacing:-.04em;
+  font-size:clamp(3.4rem, 7.4vw, 7.2rem);
+  line-height:.95;letter-spacing:0;
   margin-bottom:.85rem;
 }
 .A-hero h1 .accent{font-style:italic;color:var(--accent);font-weight:400}
@@ -96,14 +96,34 @@
   letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);
 }
 .A-hero-stats div strong{display:block;font-family:var(--serif);font-style:italic;color:var(--accent);font-size:1.4rem;letter-spacing:0;text-transform:none}
-.A-hero-quote{
-  border-left:3px solid var(--accent);padding:.9rem 0 .9rem 1.3rem;
-  font-family:var(--display);font-style:italic;font-size:var(--fs-md);
-  position:relative;line-height:1.45;
+.A-hero-control{
+  border:1px solid var(--ink);
+  background:#fbf5e3;
+  box-shadow:8px 8px 0 rgba(26,22,18,.08);
+  padding:1rem 1.1rem;
 }
-.A-hero-quote cite{
-  display:block;margin-top:.8rem;font-family:var(--mono);font-style:normal;
-  font-size:var(--fs-xs);letter-spacing:.15em;text-transform:uppercase;color:var(--ink-mute);
+.A-control-title{
+  font-family:var(--serif);font-weight:900;
+  font-size:1.25rem;letter-spacing:.02em;
+  border-bottom:3px double var(--ink);
+  padding-bottom:.45rem;margin-bottom:.65rem;
+}
+.A-control-row{
+  display:grid;grid-template-columns:4.5rem 1fr;
+  gap:.7rem;padding:.48rem 0;
+  border-bottom:1px dotted rgba(26,22,18,.35);
+}
+.A-control-row span{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;
+  color:var(--accent);font-weight:700;
+}
+.A-control-row strong{
+  font-family:var(--body);font-size:.92rem;line-height:1.55;color:var(--ink);
+}
+.A-control-note{
+  margin-top:.7rem;
+  font-family:var(--display);font-style:italic;
+  color:var(--ink-soft);line-height:1.45;
 }
 .A-hero::after{
   content:"POLSKA";position:absolute;
@@ -264,6 +284,30 @@
   background:#fbf5e3;border:1px solid var(--amber-deep);
   padding:.5rem .9rem;margin-bottom:.7rem;letter-spacing:.05em;
   width:fit-content;max-width:100%;
+}
+
+.A-day-readout{
+  display:grid;
+  grid-template-columns:.55fr 1.35fr 1.1fr;
+  gap:.55rem;
+  margin:0 0 .7rem;
+}
+.A-day-readout div{
+  border:1px solid rgba(26,22,18,.22);
+  background:rgba(255,255,255,.32);
+  padding:.5rem .65rem;
+  min-width:0;
+}
+.A-day-readout span{
+  display:block;
+  font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;
+  color:var(--ink-mute);text-transform:uppercase;margin-bottom:.2rem;
+}
+.A-day-readout strong{
+  display:block;
+  font-family:var(--body);font-size:.84rem;line-height:1.45;
+  color:var(--ink);
+  overflow-wrap:anywhere;
 }
 
 /* SCHEDULE BOX — boxed "逐時行程" panel */
@@ -463,6 +507,41 @@
 }
 .A-day-backup li span{grid-column:2;color:var(--ink-soft);font-size:.85em}
 
+.A-day-constraints{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:.6rem;
+  margin:0 0 .6rem;
+}
+.A-day-constraints > div{
+  border-left:3px solid var(--accent);
+  background:rgba(168,35,29,.045);
+  padding:.55rem .85rem .65rem;
+}
+.A-day-constraints > div:last-child{
+  border-left-color:var(--ink-soft);
+  background:rgba(26,22,18,.04);
+}
+.A-day-constraints .c-label{
+  display:inline-block;
+  font-family:var(--serif);font-size:.62rem;
+  letter-spacing:.24em;text-transform:uppercase;font-weight:700;
+  color:var(--accent);margin-bottom:.3rem;
+}
+.A-day-constraints > div:last-child .c-label{color:var(--ink-soft)}
+.A-day-constraints ul{
+  list-style:none;margin:0;padding:0;
+  display:grid;gap:.22rem;
+}
+.A-day-constraints li{
+  position:relative;padding-left:.85rem;
+  font-size:.84rem;line-height:1.45;color:var(--ink-soft);
+}
+.A-day-constraints li::before{
+  content:"";position:absolute;left:0;top:.62em;
+  width:4px;height:4px;border-radius:50%;background:currentColor;
+}
+
 /* PRACTICAL nodes inside day card — neutral grey */
 .A-day-practical{
   background:rgba(26,22,18,.04);
@@ -559,7 +638,7 @@
   width:100%;border-collapse:collapse;
   border:1px solid var(--ink);
   font-size:var(--fs-sm);
-  min-width:560px;
+  min-width:860px;
 }
 .A-train-table thead th{
   background:var(--ink);color:var(--paper);
@@ -568,6 +647,22 @@
 }
 .A-train-table td{padding:.7rem .8rem;border-top:1px dotted var(--ink);font-family:var(--mono);font-size:var(--fs-xs);letter-spacing:.04em}
 .A-train-table td:first-child{font-family:var(--serif);font-weight:700;font-size:var(--fs-sm);letter-spacing:0}
+.A-booking{
+  display:inline-block;
+  border:1px solid rgba(26,22,18,.35);
+  padding:.1rem .45rem;
+  font-family:var(--serif);
+  font-size:.68rem;
+  letter-spacing:.12em;
+  color:var(--ink-soft);
+  white-space:nowrap;
+}
+.A-booking.must{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:var(--paper);
+  font-weight:700;
+}
 
 /* ───── New sections styles ───── */
 
@@ -624,6 +719,59 @@
 
 /* TICKETS */
 .A-ticket-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem}
+.A-booking-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1rem;
+  margin:0 0 1.4rem;
+}
+.A-booking-card{
+  border:1px solid var(--ink);
+  background:var(--paper);
+}
+.A-booking-card header{
+  background:var(--ink);
+  color:var(--paper);
+  padding:.65rem .85rem;
+}
+.A-booking-card header span{
+  display:block;
+  font-family:var(--serif);
+  font-weight:900;
+  font-size:1rem;
+  letter-spacing:.08em;
+}
+.A-booking-card header small{
+  display:block;
+  margin-top:.15rem;
+  font-family:var(--mono);
+  font-size:.62rem;
+  letter-spacing:.12em;
+  color:rgba(244,236,216,.72);
+}
+.A-booking-card ul{
+  list-style:none;
+  margin:0;
+  padding:.55rem .85rem .75rem;
+  display:grid;
+  gap:.35rem;
+}
+.A-booking-card li{
+  font-size:.9rem;
+  line-height:1.45;
+  border-bottom:1px dotted rgba(26,22,18,.18);
+  padding-bottom:.28rem;
+}
+.A-booking-card li:last-child{border-bottom:none;padding-bottom:0}
+.A-booking-card a{
+  color:var(--ink);
+  text-decoration:underline dotted rgba(168,35,29,.5);
+  text-underline-offset:3px;
+}
+.A-booking-card a:hover,.A-booking-card a:focus-visible{
+  color:var(--crimson-deep);
+  text-decoration-style:solid;
+}
 .A-ticket-card{
   background:var(--paper);border:1px solid var(--ink);padding:1.2rem 1.4rem;
 }
@@ -973,6 +1121,7 @@
   .A-hero{padding:1.4rem 1rem 1.8rem}
   .A-hero h1{font-size:clamp(3rem, 14vw, 5rem)}
   .A-hero-stats{grid-template-columns:repeat(2, 1fr);gap:.9rem}
+  .A-control-row{grid-template-columns:1fr;gap:.2rem}
 
   .A-shead{grid-template-columns:auto 1fr;gap:1rem}
   .A-shead .num{font-size:2.6rem}
@@ -981,8 +1130,10 @@
   .A-sub-h{font-size:1.4rem;margin:1.6rem 0 .8rem}
 
   .A-flights, .A-about-grid{grid-template-columns:1fr}
-  .A-stay-grid, .A-ticket-grid, .A-cityfood-grid, .A-practical-grid{grid-template-columns:1fr}
+  .A-stay-grid, .A-ticket-grid, .A-booking-grid, .A-cityfood-grid, .A-practical-grid{grid-template-columns:1fr}
   .A-food-grid, .A-shop-grid, .A-phrase-grid{grid-template-columns:1fr 1fr}
+  .A-day-readout{grid-template-columns:1fr}
+  .A-day-constraints{grid-template-columns:1fr}
   .A-resv-row{grid-template-columns:1fr;gap:.2rem}
   .A-resv-row .when{font-size:.66rem}
   .A-cities{grid-template-columns:1fr}
@@ -1038,6 +1189,8 @@
   .A-day-body .lead{font-size:.92rem;line-height:1.55;margin-bottom:.55rem}
   .A-schedule{padding:.6rem .85rem .65rem}
   .A-day-eats{padding:.55rem .85rem .65rem}
+  .A-day-readout div{padding:.45rem .6rem}
+  .A-day-constraints > div{padding:.5rem .75rem .6rem}
   .A-steps li{grid-template-columns:50px 1fr;gap:.6rem;font-size:.86rem;line-height:1.45}
   .A-train{
     grid-template-columns:auto 1fr;gap:.3rem .7rem;

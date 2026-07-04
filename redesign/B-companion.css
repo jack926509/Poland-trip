@@ -111,6 +111,54 @@
 }
 .B-today .meta-row span strong{color:var(--accent);font-family:var(--serif);font-style:italic;font-size:1.15em;letter-spacing:0;text-transform:none}
 
+.B-mobile-brief{
+  display:grid;grid-template-columns:1fr;
+  gap:.45rem;margin:.75rem 0 .25rem;
+}
+.B-mobile-brief .brief-card{
+  display:grid;grid-template-columns:4.2rem 1fr;align-items:start;gap:.55rem;
+  padding:.58rem .7rem;
+  border:1px solid rgba(26,22,18,.32);
+  background:rgba(244,236,216,.72);
+  border-radius:12px;
+}
+.B-mobile-brief .brief-card.urgent{
+  border-color:var(--accent);
+  background:rgba(168,35,29,.06);
+}
+.B-mobile-brief .brief-k{
+  font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;
+  color:var(--ink-mute);text-transform:uppercase;
+  padding-top:.1rem;
+}
+.B-mobile-brief strong{
+  font-family:var(--serif);font-size:.82rem;line-height:1.38;
+  color:var(--ink);font-weight:800;
+  overflow-wrap:anywhere;
+}
+.B-mobile-brief .urgent strong{color:var(--accent)}
+
+.B-pwa-state{
+  display:grid;grid-template-columns:auto auto 1fr;align-items:center;gap:.45rem;
+  margin:.65rem 0 0;padding:.45rem .58rem;
+  border-radius:999px;
+  background:rgba(26,22,18,.06);
+  color:var(--ink-soft);
+  font-family:var(--mono);font-size:.57rem;letter-spacing:.08em;
+  text-transform:uppercase;
+  overflow:hidden;
+}
+.B-pwa-state span{
+  color:var(--paper);background:var(--moss);
+  padding:.12rem .42rem;border-radius:999px;font-weight:700;
+}
+.B-pwa-state.offline span{background:var(--accent)}
+.B-pwa-state strong{color:var(--ink);font-weight:700}
+.B-pwa-state em{
+  font-style:normal;color:var(--ink-mute);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+
 /* NOW WIDGET — current step (rendered as <button> for "tap to jump") */
 .B-now{
   display:block;width:100%;text-align:left;
@@ -307,6 +355,11 @@
 .B-card.practical{background:rgba(26,22,18,.04)}
 .B-card.practical .label{color:var(--ink-soft)}
 .B-card.practical li > a::before{color:var(--ink-soft)}
+.B-card.field-note{
+  background:rgba(168,35,29,.045);
+  border-color:rgba(168,35,29,.55);
+}
+.B-card.field-note .label{color:var(--accent)}
 .B-card ul{list-style:none;padding:0;margin:0;display:grid;gap:.18rem}
 .B-card li{font-size:.9rem;color:var(--ink-soft);position:relative;line-height:1.45}
 .B-card li > a{
@@ -360,6 +413,21 @@
 .B-card.practical li > a small{
   flex:1 0 100%;color:var(--ink-mute);font-size:.76rem;line-height:1.45;
   margin-top:.18rem;
+}
+.B-card.field-note li{
+  display:grid;grid-template-columns:4.1rem 1fr;gap:.5rem;align-items:start;
+  padding:.38rem .2rem;
+}
+.B-card.field-note li + li{border-top:1px dotted rgba(26,22,18,.18)}
+.B-card.field-note .field-tag{
+  font-family:var(--mono);font-size:.56rem;letter-spacing:.12em;
+  color:var(--paper);background:var(--accent);
+  padding:.12rem .36rem;border-radius:4px;text-transform:uppercase;
+  justify-self:start;margin-top:.12rem;
+}
+.B-card.field-note strong{
+  font-family:var(--serif);font-size:.86rem;line-height:1.38;
+  color:var(--ink);font-weight:800;
 }
 
 /* Step inline cost / dur meta — compact mono badges */
@@ -521,4 +589,28 @@
 /* Touch devices: kill hover lift */
 @media (hover:none){
   .B-step:hover{background:transparent}
+}
+
+@media (max-width:360px){
+  .B-head{padding:.55rem .85rem .7rem}
+  .B-today{padding:.8rem .85rem .95rem}
+  .B-today .day-num{font-size:3.2rem}
+  .B-today h1{font-size:1.18rem}
+  .B-mobile-brief{gap:.34rem;margin-top:.62rem}
+  .B-mobile-brief .brief-card{
+    grid-template-columns:3.9rem 1fr;gap:.42rem;
+    padding:.46rem .56rem;
+  }
+  .B-mobile-brief .brief-k{font-size:.54rem;letter-spacing:.1em}
+  .B-mobile-brief strong{font-size:.78rem;line-height:1.32}
+  .B-pwa-state{
+    grid-template-columns:auto 1fr;
+    gap:.38rem;margin-top:.5rem;
+    padding:.38rem .5rem;border-radius:999px;
+  }
+  .B-pwa-state em{display:none}
+  .B-step{grid-template-columns:34px 14px 1fr;gap:.42rem}
+  .B-step-detail{margin-left:calc(34px + .42rem + 14px + .42rem)}
+  .B-tabbar{font-size:.54rem;letter-spacing:.08em}
+  .B-tabbar a svg{width:18px;height:18px}
 }
