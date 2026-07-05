@@ -90,6 +90,17 @@ function B_bookingURL(label) {
   return `https://www.google.com/search?q=${encodeURIComponent(clean + ' Poland tickets booking')}`;
 }
 
+function B_findBookingItem(trip, label) {
+  const clean = (label || '').replace(/^★\s*/, '').trim();
+  if (!clean) return null;
+  const tiers = trip?.bookingTiers || [];
+  for (const tier of tiers) {
+    const hit = tier.items?.find((item) => clean.includes(item.name) || item.name.includes(clean));
+    if (hit) return { ...hit, tier: tier.tier };
+  }
+  return { name: clean, url: B_bookingURL(clean), tier: '今日項目' };
+}
+
 function B_hasBooking(label) {
   const clean = (label || '').replace(/^★\s*/, '');
   return B_BOOKING_LINKS.some(([k]) => clean.includes(k));
@@ -219,6 +230,17 @@ function B_Companion({ initialDay }) {
   const bookNow = d.mustBook?.length ? d.mustBook.join(' / ') : '無需預先訂票';
   const compressNow = d.compressible?.[0] || '保留彈性休息';
   const backupNow = d.backup?.[0]?.label ? `${d.backup[0].label} · ${d.backup[0].where}` : '無指定備案';
+  const ticketItems = B_useMemo(
+    () => (d.mustBook || []).map((name) => B_findBookingItem(t, name)).filter(Boolean),
+    [d.mustBook, t]
+  );
+  const nextBookingItems = B_useMemo(() => {
+    const current = new Set(d.mustBook || []);
+    return (t.bookingTiers || [])
+      .flatMap((tier) => (tier.items || []).map((item) => ({ ...item, tier: tier.tier })))
+      .filter((item) => !current.has(item.name))
+      .slice(0, 3);
+  }, [d.mustBook, t.bookingTiers]);
 
   // Auto-scroll active scrub pill into view when active changes
   B_useEffect(() => {
@@ -576,6 +598,44 @@ function B_Companion({ initialDay }) {
         </ul>
       </div>
 
+      <div className="B-card tickets" id="B-tickets">
+        <div className="label">今日訂票</div>
+        {ticketItems.length > 0 ? (
+          <ul>
+            {ticketItems.map((item, i) => (
+              <li key={`${item.name}-${i}`}>
+                <a href={item.url}
+                   target="_blank" rel="noopener noreferrer"
+                   aria-label={`訂票或官網：${item.name}`}>
+                  <span className="ticket-tier">{item.tier}</span>
+                  <strong>{item.name}</strong>
+                  <span className="eat-arr" aria-hidden="true">↗</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="B-empty-card">
+            <strong>今日無需預先訂票</strong>
+            <span>保留手機電量與離線行程，跨城票和博物館票依總表確認。</span>
+          </div>
+        )}
+        {nextBookingItems.length > 0 && (
+          <div className="B-ticket-next">
+            <span>下一批要確認</span>
+            <div>
+              {nextBookingItems.map((item, i) => (
+                <a key={`${item.name}-${i}`}
+                   href={item.url}
+                   target="_blank" rel="noopener noreferrer">
+                  {item.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
       {d.eat && (
         <div className="B-card eat">
           <div className="label">🍴 今日必吃</div>
@@ -651,25 +711,34 @@ function B_Companion({ initialDay }) {
           <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16M9 6v12"/></svg>
           行程
         </a>
-        <a href={B_mapsURL(B_focusCity(d.city), d.city)}
-           target="_blank" rel="noopener noreferrer"
-           aria-label={`在 Google Maps 查看 ${B_focusCity(d.city)}`}>
-          <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 1118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          地圖
-        </a>
-        <a href="#manual"
-           onClick={(e) => { e.preventDefault(); setDrawerOpen(true); }}>
-          <svg viewBox="0 0 24 24"><path d="M4 19V5a2 2 0 012-2h11l3 3v13a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
-          手冊
-        </a>
-        <a href="#plan-b"
+        <a href="#transport"
            onClick={(e) => {
              e.preventDefault();
-             const el = document.querySelector('.B-card.backup, .B-card.field-note');
+             if (d.train) {
+               setTrainSheet(true);
+               return;
+             }
+             const transportStep = Array.from(document.querySelectorAll('.B-step')).find((el) => {
+               const text = el.textContent || '';
+               return /SKM|火車|巴士|機場|車站|Bolt|電車/.test(text);
+             });
+             if (transportStep) transportStep.scrollIntoView({ behavior: 'smooth', block: 'center' });
+             else {
+               const el = document.querySelector('.B-timeline');
+               if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+             }
+           }}>
+          <svg viewBox="0 0 24 24"><path d="M4 16V7a2 2 0 012-2h12a2 2 0 012 2v9"/><path d="M6 16h12M8 19h.01M16 19h.01M8 9h8M8 12h8"/></svg>
+          交通
+        </a>
+        <a href="#B-tickets"
+           onClick={(e) => {
+             e.preventDefault();
+             const el = document.getElementById('B-tickets');
              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
            }}>
-          <svg viewBox="0 0 24 24"><path d="M12 3v3M12 18v3M4.9 4.9L7 7M17 17l2.1 2.1M3 12h3M18 12h3M4.9 19.1L7 17M17 7l2.1-2.1"/><circle cx="12" cy="12" r="4"/></svg>
-          備案
+          <svg viewBox="0 0 24 24"><path d="M4 7a2 2 0 012-2h12a2 2 0 012 2v3a2 2 0 010 4v3a2 2 0 01-2 2H6a2 2 0 01-2-2v-3a2 2 0 010-4V7z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
+          訂票
         </a>
       </nav>
 

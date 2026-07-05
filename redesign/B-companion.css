@@ -440,6 +440,11 @@
   display:flex;align-items:center;gap:.4rem;
 }
 .B-card.eat{background:var(--paper-warm)}
+.B-card.tickets{
+  background:rgba(196,137,43,.08);
+  border-color:rgba(196,137,43,.78);
+}
+.B-card.tickets .label{color:var(--amber-deep)}
 .B-card.backup{background:rgba(61,74,42,.07);border-color:var(--moss)}
 .B-card.backup .label{color:var(--moss)}
 .B-card.backup li > a::before{color:var(--moss)}
@@ -466,6 +471,78 @@
   flex:none;font-family:var(--mono);font-size:.75em;color:var(--accent);opacity:.5;
 }
 .B-card li > a:hover .eat-arr,.B-card li > a:active .eat-arr{opacity:1}
+
+/* Tickets card — compact official-link checklist */
+.B-card.tickets li > a{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:.5rem;
+  padding:.42rem .55rem .42rem 1.1rem;
+}
+.B-card.tickets li > a strong{
+  font-family:var(--serif);
+  font-size:.86rem;
+  line-height:1.32;
+  color:var(--ink);
+  min-width:0;
+  overflow-wrap:anywhere;
+}
+.B-card.tickets .ticket-tier{
+  font-family:var(--mono);
+  font-size:.52rem;
+  letter-spacing:.12em;
+  color:var(--paper);
+  background:var(--amber-deep);
+  padding:.12rem .36rem;
+  border-radius:4px;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+.B-empty-card{
+  display:grid;gap:.18rem;
+  padding:.45rem .2rem .35rem;
+}
+.B-empty-card strong{
+  font-family:var(--serif);
+  font-size:.9rem;
+  color:var(--ink);
+}
+.B-empty-card span{
+  font-size:.78rem;
+  color:var(--ink-mute);
+  line-height:1.45;
+}
+.B-ticket-next{
+  margin-top:.55rem;
+  padding-top:.55rem;
+  border-top:1px dotted rgba(26,22,18,.18);
+  display:grid;
+  gap:.35rem;
+}
+.B-ticket-next > span{
+  font-family:var(--mono);
+  font-size:.55rem;
+  letter-spacing:.14em;
+  color:var(--ink-mute);
+  text-transform:uppercase;
+}
+.B-ticket-next > div{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.35rem;
+}
+.B-ticket-next a{
+  color:var(--ink);
+  background:rgba(255,248,227,.72);
+  border:1px solid rgba(26,22,18,.12);
+  border-radius:999px;
+  padding:.22rem .5rem;
+  text-decoration:none;
+  font-family:var(--serif);
+  font-size:.76rem;
+  line-height:1.25;
+}
 
 /* Backup card — multiline anchor with label / where / why stacked */
 .B-card.backup li > a{
@@ -606,7 +683,7 @@
 .B-tabbar{
   position:fixed;bottom:0;left:0;right:0;
   max-width:480px;margin:0 auto;
-  display:grid;grid-template-columns:repeat(5,1fr);
+  display:grid;grid-template-columns:repeat(4,1fr);
   background:rgba(244,236,216,.84);
   backdrop-filter:blur(16px);
   -webkit-backdrop-filter:blur(16px);

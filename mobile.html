@@ -30,20 +30,16 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Bodoni+Moda:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Serif+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap">
-<link rel="stylesheet" href="redesign/tokens.css?v=polska-v11">
-<link rel="stylesheet" href="redesign/B-companion.css?v=polska-v11">
+<link rel="stylesheet" href="redesign/tokens.css?v=polska-v12">
+<link rel="stylesheet" href="redesign/B-companion.css?v=polska-v12">
 <style>
   /* Hardware-accelerate scrolling on iOS Safari + scroll only the body. */
   html,body{margin:0;-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
   body{background:#f0eee9;font-family:'Noto Serif TC',serif}
-  /* Promote #root to its own composite layer so the drop-shadow on the
-     edges doesn't get repainted on every scroll frame. */
   #root{
     max-width:480px;margin:0 auto;min-height:100vh;
     background:var(--paper);
     box-shadow:0 0 30px rgba(0,0,0,.08);
-    transform:translateZ(0);
-    will-change:transform;
   }
   .B-frame{border-radius:0;height:auto;min-height:100vh}
   .desktop-escape{
@@ -79,8 +75,8 @@
 <div id="root"></div>
 <script src="vendor/react.production.min.js"></script>
 <script src="vendor/react-dom.production.min.js"></script>
-<script src="redesign/data.js?v=polska-v11"></script>
-<script src="redesign/dist/B-companion.js?v=polska-v11"></script>
+<script src="redesign/data.js?v=polska-v12"></script>
+<script src="redesign/dist/B-companion.js?v=polska-v12"></script>
 <script>
 ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(B_Companion));
 </script>
