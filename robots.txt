@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /sw.js
 
-Sitemap: https://trip.xieh.tw/sitemap.xml
+Sitemap: https://jack926509.github.io/Poland-trip/sitemap.xml
