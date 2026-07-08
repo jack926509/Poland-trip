@@ -467,7 +467,7 @@ function A_Foods() {
                 <li key={i}>
                   <span className="t">{it.tag}</span>
                   <a className="n"
-                     href={A_mapsURL(it.name, c.city)}
+                     href={it.map || A_mapsURL(it.name, c.city)}
                      target="_blank" rel="noopener noreferrer"
                      aria-label={`Google 地圖：${A_cleanPlace(it.name)}（${c.city}）`}>
                     <span>{it.name}</span>
@@ -593,6 +593,74 @@ function A_About() {
         ))}
       </div>
     </div>
+  );
+}
+
+function A_CityStories() {
+  const stories = window.TRIP.cityStories;
+  if (!stories || !stories.length) return null;
+  return (
+    <>
+      {stories.map((cs) => (
+        <article className="A-citystory" key={cs.city} id={`A-story-${cs.en}`}>
+          <header><h4>{cs.city}</h4><em>{cs.en}</em></header>
+          <p className="geo">{cs.geo}</p>
+          <div className="A-citystory-grid">
+            <p className="history">{cs.history}</p>
+            <div>
+              {cs.stories.map((st, i) => (
+                <div className="A-story-card" key={i}>
+                  <h6>{st.title}</h6>
+                  <p>{st.text}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="A-fieldnotes">
+            <span className="k">▣ FIELD NOTES · 現場筆記</span>
+            <ul>{cs.onSite.map((o, i) => <li key={i}>{o}</li>)}</ul>
+          </div>
+        </article>
+      ))}
+    </>
+  );
+}
+
+function A_FoodBackup() {
+  const backup = window.TRIP.foodBackup;
+  if (!backup || !backup.length) return null;
+  const total = backup.reduce((s, c) => s + c.items.length, 0);
+  return (
+    <details className="A-foodbackup">
+      <summary>備援梯隊 · Backup Roster（{total} 間 · 首選滿座時展開）</summary>
+      <div className="A-cityfood-grid">
+        {backup.map((c) => (
+          <div className="A-cityfood-cell" key={c.city}>
+            <header><strong>{c.city}</strong><em>{c.en}</em></header>
+            <ul>
+              {c.items.map((it, i) => (
+                <li key={i}>
+                  <span className="t">{it.tag}</span>
+                  <a className="n"
+                     href={it.map || A_mapsURL(it.name, c.city)}
+                     target="_blank" rel="noopener noreferrer"
+                     aria-label={`Google 地圖：${A_cleanPlace(it.name)}（${c.city}）`}>
+                    <span>{it.name}</span>
+                    {it.book && <span className={`bk ${it.book}`} title={
+                      it.book === 'must' ? '建議提前訂位' :
+                      it.book === 'queue' ? '排隊熱點，建議離峰前往' : '走進去就好'
+                    }>
+                      {it.book === 'must' ? '訂' : it.book === 'queue' ? '排' : '走'}
+                    </span>}
+                  </a>
+                  <small>{it.note}</small>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </details>
   );
 }
 
@@ -733,6 +801,7 @@ function A_Magazine() {
         title="本次造訪的四座王城"
         meta="華沙分段住宿 · 克拉科夫 2 晚">
         <A_Cities />
+        <A_CityStories />
       </A_Section>
 
       <A_Section id="A-trains" num="05" kicker="Rail Schedule · 跨城火車"
@@ -758,6 +827,7 @@ function A_Magazine() {
         title="餃子、酸湯、與一杯野牛草伏特加"
         meta="12 道國民料理 + 四城招牌">
         <A_Foods />
+        <A_FoodBackup />
       </A_Section>
 
       <A_Section id="A-practical" num="09" kicker="Practical · 實務節點"

@@ -694,6 +694,60 @@ function B_Companion({ initialDay }) {
         </div>
       )}
 
+      {(() => {
+        const focusCityName = B_focusCity(d.city);
+        const cs = (t.cityStories || []).find(s => s.city === focusCityName || s.en === focusCityName);
+        if (!cs) return null;
+        return (
+          <details className="B-card B-citystory-detail">
+            <summary>
+              <strong>{cs.city} · {cs.en}</strong>
+              <span className="eat-arr" aria-hidden="true">歷史與現場筆記</span>
+            </summary>
+            <div className="B-cs-body">
+              <ul className="B-cs-onsites">
+                {cs.onSite.map((o, i) => <li key={i}>{o}</li>)}
+              </ul>
+              <p className="B-cs-geo">{cs.geo}</p>
+              {cs.stories.map((st, i) => (
+                <div className="B-cs-story" key={i}>
+                  <strong>{st.title}</strong>
+                  <p>{st.text}</p>
+                </div>
+              ))}
+            </div>
+          </details>
+        );
+      })()}
+
+      {(() => {
+        const focusCityName = B_focusCity(d.city);
+        const cityBackup = (t.foodBackup || []).find(c => c.city === focusCityName);
+        if (!cityBackup || !cityBackup.items.length) return null;
+        return (
+          <details className="B-card B-foodbackup-detail">
+            <summary>
+              <strong>備援餐廳 · {cityBackup.city}</strong>
+              <span className="eat-arr" aria-hidden="true">{cityBackup.items.length} 間</span>
+            </summary>
+            <ul>
+              {cityBackup.items.map((it, i) => (
+                <li key={i}>
+                  <a href={it.map || B_mapsURL(it.name, d.city)}
+                     target="_blank" rel="noopener noreferrer"
+                     aria-label={`地圖：${it.name}`}>
+                    <span className="ticket-tier">{it.tag}</span>
+                    <strong>{it.name}</strong>
+                    <small>{it.note}</small>
+                    <span className="eat-arr" aria-hidden="true">↗</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </details>
+        );
+      })()}
+
       <nav className="B-tabbar" aria-label="底部切換">
         <a href="#today"
            className="active"
