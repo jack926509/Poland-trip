@@ -144,6 +144,36 @@
 
 ---
 
+## 部署（Cloudflare Pages）
+
+前端為純靜態網站，可直接部署到 Cloudflare Pages。設定檔 `wrangler.toml`：
+
+```toml
+name = "poland-trip"
+pages_build_output_dir = "."
+```
+
+### 自動部署（GitHub Actions）
+
+push 到 `main` 會觸發 `.github/workflows/cloudflare-pages.yml`，用 wrangler 自動發佈到 Cloudflare Pages。需先在 GitHub repo 的 **Settings → Secrets and variables → Actions** 加入兩個 secret：
+
+| Secret | 說明 |
+|---|---|
+| `CLOUDFLARE_API_TOKEN` | Cloudflare API Token，權限勾選 **Account → Cloudflare Pages → Edit** |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare 帳號 ID（Dashboard 右側可複製） |
+
+> 首次發佈前，請先在 Cloudflare Dashboard 建立名為 `poland-trip` 的 Pages 專案（或第一次 `wrangler pages deploy` 時會自動建立）。
+
+### 手動部署（本機）
+
+```bash
+npx wrangler pages deploy --branch=main
+```
+
+（會依 `wrangler.toml` 的 `name` 與輸出目錄發佈整個 repo 根目錄。）
+
+---
+
 ## 資料來源
 
 - 中華民國外交部領事事務局
