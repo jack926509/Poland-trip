@@ -2,22 +2,21 @@
 
 ## Diff 與狀態
 
-審查基準為 `git diff a0d2553..c1b6c72`。最終 committed diff 為 28 個檔案、3,653 行新增、2,825 行刪除，其中包含逐字經典版封存與 2 份新增行為測試。
+審查基準為 `git diff a0d2553..75ac832`。最終 committed diff 為 31 個檔案、3,675 行新增、2,826 行刪除，包含 `prepare-site.sh` 與 `tests/deploy-contract.test.mjs`。
 
-本次已修正整體審查的 8 個 Important 與 2 個 Minor：經典版封存、下一硬時間、manifest 錨點、交通卡鍵盤、背景更新失敗、bundle parity、更新 lifecycle、SEO 日期，以及歷史 merge 說明與交通 sheet aria-label。
+第四輪修正 3 個 Important 與 1 個 Minor：Pages artifact 改為安全 allowlist、預覽其他日不套用現在分鐘、背景更新失敗清除失效 waiting worker、archive 測試改固定 SHA-256。瀏覽器另發現 unversioned 核心程式可與新版 bundle 混載，已把 `pwa-core.js`、`pwa-register.js` 一併版本化並補契約。
 
 ## 驗收證據
 
-- 46/46 Node tests；`./verify.sh` exit 0。
-- bundle 32,110 bytes，source／dist build 前後一致。
-- 320 × 844、390 × 844、1440 × 900 均 overflow 0。
-- 交通詳情鍵盤 Enter 開關與三個獨立連結實測。
-- 三舊入口 query/hash 保留。
-- v14 waiting → 按鈕確認 → controllerchange reload；停止 server 後新版離線 reload 成功。
-- console error／warning 0。
+- 52/52 Node tests；`./verify.sh` exit 0。
+- bundle 32,150 bytes；source／dist build 前後一致。
+- temp `_site` 共 21 個 allowlist 檔，forbidden count 0。
+- 390 px overflow 0；Day 2 預覽 09:00、Day 4 預覽 18:30；當日 Day 2 分鐘過濾由純行為測試覆蓋。
+- 真實 redundant probe：ready 保留、更新失敗文案顯示、立即更新按鈕與 panel 都消失。
+- v15 核心 URL 一致後，停止 server 離線 reload 成功，乾淨分頁 console error／warning 0。
 
 完整證據見 `docs/verification/2026-07-16-single-pwa-results.md`。
 
 ## 獨立審查狀態與部署門檻
 
-這份文件只提供交接，不宣稱 Claude 已完成獨立審查。iPhone 真機 non-zero safe-area、真正 standalone 安裝啟動與使用者核心路徑仍未完成。因此不得推送或部署；待另一個 AI 獨立審查與使用者操作確認後，再另行詢問是否發布。
+本文件不宣稱 Claude 已完成獨立審查。iPhone non-zero safe-area、真正 standalone 安裝啟動與使用者核心路徑仍未完成；不得推送或部署。待另一個 AI 獨立審查與使用者操作確認後，再另行詢問是否發布。
