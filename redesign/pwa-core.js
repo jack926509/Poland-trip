@@ -17,7 +17,7 @@
     const phase = clock.iso < tripMeta.tripStart ? 'before' : clock.iso > tripMeta.tripEnd ? 'after' : 'during';
     const d = override
       ? days.find((day) => day.n === override) || days[0]
-      : matched || (phase === 'before' ? days[0] : days[days.length - 1]);
+      : (phase === 'during' && matched) || (phase === 'before' ? days[0] : days[days.length - 1]);
     const stepMins = d.steps.map((step) => {
       const [hour, minute] = step.t.split(':').map(Number);
       return hour * 60 + minute;
@@ -32,7 +32,13 @@
   }
 
   function readNotes(storage) {
-    try { return { notes: JSON.parse(storage.getItem('polska-notes') || '{}'), persistent: true }; }
+    try {
+      const notes = JSON.parse(storage.getItem('polska-notes') || '{}');
+      if (!notes || typeof notes !== 'object' || Array.isArray(notes)) {
+        return { notes: {}, persistent: false };
+      }
+      return { notes, persistent: true };
+    }
     catch (_) { return { notes: {}, persistent: false }; }
   }
 
