@@ -207,6 +207,39 @@
   font-style:normal;color:var(--ink-mute);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
+.B-install-hint{
+  display:grid;grid-template-columns:1fr auto;gap:.25rem .7rem;align-items:center;
+  margin:.65rem 0 0;padding:.7rem .78rem;
+  border:1px solid var(--amber-deep);border-radius:14px;
+  background:rgba(196,137,43,.12);color:var(--ink);
+}
+.B-install-hint strong{font:800 .82rem var(--serif)}
+.B-install-hint span{grid-column:1;font-size:.73rem;line-height:1.45;color:var(--ink-soft)}
+.B-install-hint button{
+  grid-column:2;grid-row:1 / span 2;min-height:40px;padding:.35rem .65rem;
+  border:1px solid var(--ink);border-radius:999px;background:var(--paper);color:var(--ink);
+  font:700 .66rem var(--mono);cursor:pointer;
+}
+.B-update-ready,.B-toast{
+  position:fixed;left:50%;z-index:120;transform:translateX(-50%);
+  width:min(22rem,calc(100vw - 2rem));
+  border:1px solid var(--ink);border-radius:14px;background:var(--ink);color:var(--paper);
+  box-shadow:0 14px 34px rgba(26,22,18,.24);
+}
+.B-update-ready{
+  bottom:calc(5.35rem + var(--safe-bottom));
+  display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.68rem .78rem;
+}
+.B-update-ready span{display:grid;gap:.08rem;font-size:.7rem;line-height:1.35}
+.B-update-ready strong{color:var(--amber);font:800 .75rem var(--serif)}
+.B-update-ready button{
+  flex:none;min-height:40px;padding:.35rem .65rem;border:1px solid var(--paper);
+  border-radius:999px;background:var(--paper);color:var(--ink);font:700 .65rem var(--mono);cursor:pointer;
+}
+.B-toast{
+  bottom:calc(5.35rem + var(--safe-bottom));padding:.7rem .85rem;
+  text-align:center;font-size:.75rem;line-height:1.45;
+}
 
 /* NOW WIDGET — current step (rendered as <button> for "tap to jump") */
 .B-now{
@@ -766,7 +799,7 @@
 
 /* Print */
 @media print{
-  .B-primary-nav, .B-status-bar, .B-scrub, .B-drawer-mask, .B-drawer{display:none !important}
+  .B-primary-nav, .B-status-bar, .B-scrub, .B-drawer-mask, .B-drawer, .B-update-ready, .B-toast, .B-install-hint{display:none !important}
   .B-frame{height:auto;border-radius:0;box-shadow:none}
 }
 

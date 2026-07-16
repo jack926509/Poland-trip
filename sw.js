@@ -1,45 +1,29 @@
 // POLSKA 旅遊指南 Service Worker — 離線優先策略
 // 出發到波蘭時即使無網路也能看完整指南
-const CACHE_VERSION = 'polska-v12';
+const CACHE_VERSION = 'polska-v13';
 // Relative paths so the SW works on root domains and
 // sub-path deploys like jack926509.github.io/Poland-trip/.
 const PRECACHE_URLS = [
   './',
-  './index.html',
-  './mobile.html',
-  './desktop.html',
-  './app-preview.html',
   './manifest.json',
-  './styles.css',
-  './main.js',
+  './pwa-register.js',
   './apple-touch-icon.png',
   './icon-192.png',
   './icon-512.png',
-  './og-image.svg',
   './vendor/react.production.min.js',
   './vendor/react-dom.production.min.js',
-  './redesign/data.js',
-  './redesign/data.js?v=polska-v12',
-  './redesign/tokens.css',
-  './redesign/tokens.css?v=polska-v12',
-  './redesign/A-magazine.css',
-  './redesign/B-companion.css',
-  './redesign/B-companion.css?v=polska-v12',
-  './redesign/dist/A-magazine.js',
-  './redesign/dist/B-companion.js',
-  './redesign/dist/B-companion.js?v=polska-v12',
-  './redesign/dist/ios-frame.js',
+  './redesign/pwa-core.js',
+  './redesign/data.js?v=polska-v13',
+  './redesign/tokens.css?v=polska-v13',
+  './redesign/B-companion.css?v=polska-v13',
+  './redesign/dist/B-companion.js?v=polska-v13',
 ];
 
 // 安裝時預先快取核心資源
 // 注意：這裡不呼叫 skipWaiting()——讓使用者看到「新版本可用」提示後再決定何時切換
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_VERSION).then((cache) =>
-      Promise.all(
-        PRECACHE_URLS.map((url) => cache.add(url).catch(() => {}))
-      )
-    )
+    caches.open(CACHE_VERSION).then((cache) => cache.addAll(PRECACHE_URLS))
   );
 });
 
@@ -55,7 +39,9 @@ self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys()
       .then((keys) => Promise.all(
-        keys.filter((k) => k !== CACHE_VERSION).map((k) => caches.delete(k))
+        keys
+          .filter((k) => k.startsWith('polska-') && k !== CACHE_VERSION)
+          .map((k) => caches.delete(k))
       ))
       .then(() => self.clients.claim())
   );
@@ -80,7 +66,7 @@ self.addEventListener('fetch', (event) => {
           caches.open(CACHE_VERSION).then((cache) => cache.put(request, copy));
           return res;
         })
-        .catch(() => caches.match(request).then((cached) => cached || caches.match('./index.html')))
+        .catch(() => caches.match(request).then((cached) => cached || caches.match('./')))
     );
     return;
   }

@@ -111,6 +111,12 @@ function B_isStandaloneMode() {
   return window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone === true;
 }
 
+function B_isIOSSafari() {
+  if (!B_isIOS || typeof navigator === 'undefined') return false;
+  const ua = navigator.userAgent || '';
+  return /AppleWebKit/.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
+}
+
 // Pull venue name out of "Dish @ Venue" format. Falls back to whole string.
 function B_eatVenue(item) {
   if (!item) return '';
@@ -222,6 +228,10 @@ function B_Companion({ initialDay }) {
   const [trainSheet, setTrainSheet] = B_useState(false);
   const [online, setOnline] = B_useState(() => typeof navigator === 'undefined' ? true : navigator.onLine);
   const [standalone, setStandalone] = B_useState(B_isStandaloneMode);
+  const [pwaStatus, setPwaStatus] = B_useState(() => 'serviceWorker' in navigator ? 'loading' : 'unsupported');
+  const [waitingWorker, setWaitingWorker] = B_useState(null);
+  const [toast, setToast] = B_useState(null);
+  const [showInstallHint, setShowInstallHint] = B_useState(() => B_isIOSSafari() && !B_isStandaloneMode());
   const [notes, setNotes] = B_useState(initialNotes.notes);
   const [notesPersistent, setNotesPersistent] = B_useState(initialNotes.persistent);
   const scrubRef = React.useRef(null);
@@ -231,6 +241,8 @@ function B_Companion({ initialDay }) {
   const trainSheetRef = React.useRef(null);
   const trainCloseRef = React.useRef(null);
   const trainReturnFocusRef = React.useRef(null);
+  const updateApprovedRef = React.useRef(false);
+  const reloadingRef = React.useRef(false);
 
   B_useModalFocus(drawerOpen, drawerRef, drawerCloseRef, drawerReturnFocusRef);
   B_useModalFocus(trainSheet, trainSheetRef, trainCloseRef, trainReturnFocusRef);
@@ -257,7 +269,25 @@ function B_Companion({ initialDay }) {
   };
   const openExt = (url) => {
     if (!url) return;
+    if (!online) {
+      setToast('目前離線；站名與地址仍可在本頁查看');
+      return;
+    }
     window.open(url, '_blank', 'noopener,noreferrer');
+  };
+  const dismissInstallHint = () => setShowInstallHint(false);
+  const applyUpdate = () => {
+    if (!waitingWorker) return;
+    updateApprovedRef.current = true;
+    waitingWorker.postMessage({ type: 'SKIP_WAITING' });
+  };
+  const interceptOfflineLink = (e) => {
+    if (online) return;
+    const link = e.target.closest?.('a[target="_blank"]');
+    if (!link) return;
+    e.preventDefault();
+    e.stopPropagation();
+    setToast('目前離線；站名與地址仍可在本頁查看');
   };
 
   // refresh every minute so the Now widget stays accurate
@@ -265,6 +295,36 @@ function B_Companion({ initialDay }) {
     const id = setInterval(() => setTick(x => x + 1), 60000);
     return () => clearInterval(id);
   }, []);
+
+  B_useEffect(() => {
+    const onReady = () => setPwaStatus((current) => current === 'update-ready' ? current : 'ready');
+    const onUpdateReady = (event) => {
+      setWaitingWorker(event.detail?.worker || null);
+      setPwaStatus('update-ready');
+    };
+    const onError = () => setPwaStatus('error');
+    const onControllerChange = () => {
+      if (!updateApprovedRef.current || reloadingRef.current) return;
+      reloadingRef.current = true;
+      window.location.reload();
+    };
+    window.addEventListener('pwa-ready', onReady);
+    window.addEventListener('pwa-update-ready', onUpdateReady);
+    window.addEventListener('pwa-error', onError);
+    navigator.serviceWorker?.addEventListener('controllerchange', onControllerChange);
+    return () => {
+      window.removeEventListener('pwa-ready', onReady);
+      window.removeEventListener('pwa-update-ready', onUpdateReady);
+      window.removeEventListener('pwa-error', onError);
+      navigator.serviceWorker?.removeEventListener('controllerchange', onControllerChange);
+    };
+  }, []);
+
+  B_useEffect(() => {
+    if (!toast) return undefined;
+    const id = setTimeout(() => setToast(null), 4500);
+    return () => clearTimeout(id);
+  }, [toast]);
 
   B_useEffect(() => {
     const updateOnline = () => setOnline(navigator.onLine);
@@ -385,7 +445,7 @@ function B_Companion({ initialDay }) {
       </header>
 
       <B_PrimaryNav placement="desktop" {...navActions} />
-      <main id="app-main" className="B-web-grid">
+      <main id="app-main" className="B-web-grid" onClickCapture={interceptOfflineLink}>
         <section className="B-primary-column" aria-label="今日行程">
 
       <section className="B-today" data-bg={`0${d.n}`} id="top">
@@ -422,11 +482,19 @@ function B_Companion({ initialDay }) {
           </div>
         </div>
 
-        <div className={`B-pwa-state ${online ? 'online' : 'offline'}`} aria-live="polite">
+        <div className={`B-pwa-state ${online ? 'online' : 'offline'}`} data-pwa-status={pwaStatus} aria-live="polite">
           <span>{online ? '已連線' : '離線模式'}</span>
-          <strong>{standalone ? '主畫面 App' : '可加到主畫面'}</strong>
-          <em>{!notesPersistent ? '備註僅保留於本次開啟' : online ? '新版會自動背景快取' : '已快取核心行程與交通資料'}</em>
+          <strong>{standalone ? '已安裝' : '可安裝'}</strong>
+          <em>{waitingWorker ? '更新可用' : !notesPersistent ? '備註只保留到這次關閉前' : online ? '離線資料已準備' : '已快取核心行程與交通資料'}</em>
         </div>
+
+        {showInstallHint && !standalone && (
+          <aside className="B-install-hint" role="note">
+            <strong>加到 iPhone 主畫面</strong>
+            <span>點 Safari 分享按鈕，再選「加入主畫面」，即可離線開啟。</span>
+            <button type="button" onClick={dismissInstallHint}>知道了</button>
+          </aside>
+        )}
 
         <button
           type="button"
@@ -841,6 +909,15 @@ function B_Companion({ initialDay }) {
       <B_PreTripGuide trip={t} />
         </aside>
       </main>
+
+      {waitingWorker && (
+        <aside className="B-update-ready" role="status" aria-live="polite">
+          <span><strong>更新可用</strong>新版離線資料已準備好</span>
+          <button type="button" onClick={applyUpdate}>立即更新</button>
+        </aside>
+      )}
+
+      {toast && <div className="B-toast" role="status" aria-live="assertive">{toast}</div>}
 
       <B_PrimaryNav placement="mobile" {...navActions} />
 
