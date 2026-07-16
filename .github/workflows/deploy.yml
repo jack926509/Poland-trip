@@ -20,9 +20,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      - name: 驗證正式 PWA
+        run: ./verify.sh
+      - name: 組裝安全公開輸出
+        run: mkdir _site && ./prepare-site.sh _site
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
 
   deploy:
     needs: build

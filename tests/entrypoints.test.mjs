@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import test from 'node:test';
 import vm from 'node:vm';
-import { execFileSync } from 'node:child_process';
 
 const read = (path) => fs.readFileSync(path, 'utf8');
 
@@ -11,6 +11,8 @@ test('根入口直接載入唯一 PWA，不做裝置跳轉', () => {
   assert.match(html, /redesign\/pwa-core\.js/);
   assert.match(html, /redesign\/dist\/B-companion\.js/);
   assert.doesNotMatch(html, /matchMedia\('\(max-width: 640px\)'\)/);
+  assert.match(html, /redesign\/pwa-core\.js\?v=polska-v15/);
+  assert.match(html, /pwa-register\.js\?v=polska-v15/);
 });
 
 test('舊入口只載入共用轉址', () => {
@@ -54,8 +56,10 @@ test('manifest 與 sitemap 只公開根入口', () => {
 
 test('經典版逐位元封存且不進入公開或快取路徑', () => {
   const archived = fs.readFileSync('archive/classic-index.html');
-  const baseline = execFileSync('git', ['show', 'a0d2553:index.html']);
-  assert.deepEqual(archived, baseline);
+  assert.equal(
+    crypto.createHash('sha256').update(archived).digest('hex'),
+    '5d1126029e882a15e285ba7e2fa107a7a55f13869b2b7a38e1ac41ac481df978',
+  );
   for (const file of ['manifest.json', 'sitemap.xml', 'sw.js', 'build.sh']) {
     assert.doesNotMatch(read(file), /archive\/classic-index\.html/);
   }

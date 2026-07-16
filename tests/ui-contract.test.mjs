@@ -87,3 +87,12 @@ test('交通卡使用獨立詳情按鈕且不建立巢狀互動元素', () => {
 test('交通 sheet 關閉按鈕依類型命名', () => {
   assert.match(jsx, /aria-label=\{`關閉\$\{isBus \? '巴士' : '火車'\}詳情`\}/);
 });
+
+test('硬時間只在旅程中查看當日時套用 Warsaw mins', () => {
+  assert.match(jsx, /selectHardConstraintForMoment\(d\.hardConstraints,\s*phase,\s*d\.n,\s*momentDay,\s*mins\)/);
+});
+
+test('更新失敗會清除 React waiting worker 並隱藏更新按鈕', () => {
+  assert.match(jsx, /const onUpdateError = \(\) => \{[\s\S]*?setWaitingWorker\(null\)/);
+  assert.match(jsx, /waitingWorker && !updateFailed/);
+});

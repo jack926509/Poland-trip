@@ -19,6 +19,7 @@
       state.updateError = null;
     }
     else if (name === 'pwa-update-error') {
+      state.waitingWorker = null;
       state.updateError = detail;
     }
     else if (name === 'pwa-error') {

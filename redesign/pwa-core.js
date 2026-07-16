@@ -26,6 +26,7 @@
     stepMins.forEach((minutes, index) => { if (minutes <= clock.mins) idx = index; });
     return {
       d, idx, now: d.steps[idx], next: d.steps[idx + 1], mins: clock.mins, phase,
+      momentDay: matched?.n ?? null,
       beforeStart: clock.mins < stepMins[0],
       afterEnd: clock.mins > stepMins[stepMins.length - 1] + 60,
     };
@@ -40,6 +41,11 @@
     if (next) return { label: '下一個硬時間', text: next.text };
     const untimed = constraints.find((text) => !/(?:^|\s)([01]\d|2[0-3]):[0-5]\d(?:\s|$)/.test(text));
     return { label: '今日硬限制', text: untimed || '今日沒有未來硬時間' };
+  }
+
+  function selectHardConstraintForMoment(constraints, phase, displayedDay, momentDay, mins) {
+    const cutoff = phase === 'during' && displayedDay === momentDay ? mins : 0;
+    return selectNextHardConstraint(constraints, cutoff);
   }
 
   function readNotes(storage) {
@@ -58,5 +64,7 @@
     catch (_) { return false; }
   }
 
-  root.PolskaPwaCore = { projectTripMoment, selectNextHardConstraint, readNotes, writeNotes };
+  root.PolskaPwaCore = {
+    projectTripMoment, selectNextHardConstraint, selectHardConstraintForMoment, readNotes, writeNotes,
+  };
 })(typeof window === 'undefined' ? globalThis : window);

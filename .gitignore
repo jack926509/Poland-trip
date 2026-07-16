@@ -9,3 +9,6 @@
 # 本機隔離開發工作區
 .worktrees/
 .superpowers/
+
+# Pages 公開輸出
+_site/

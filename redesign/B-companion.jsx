@@ -322,6 +322,7 @@ function B_Companion({ initialDay }) {
     };
     const onUpdateError = () => {
       setPwaStatus('ready');
+      setWaitingWorker(null);
       setUpdateFailed(true);
     };
     const onError = () => setPwaStatus('error');
@@ -398,7 +399,7 @@ function B_Companion({ initialDay }) {
     return () => { document.body.style.overflow = ''; };
   }, [drawerOpen, trainSheet]);
 
-  const { d, phase, mins, beforeStart, afterEnd, idx: projectedIdx } = B_useMemo(
+  const { d, phase, mins, momentDay, beforeStart, afterEnd, idx: projectedIdx } = B_useMemo(
     () => core.projectTripMoment(t.days, new Date(), override, t.meta),
     [core, t.days, t.meta, override, tick]
   );
@@ -407,7 +408,7 @@ function B_Companion({ initialDay }) {
   const next = d.steps[idx + 1];
   const active = d.n;
   const setActive = (n) => { setOverride(n); setOpenStep(null); setDrawerOpen(false); };
-  const hardNow = core.selectNextHardConstraint(d.hardConstraints, mins);
+  const hardNow = core.selectHardConstraintForMoment(d.hardConstraints, phase, d.n, momentDay, mins);
   const bookNow = d.mustBook?.length ? d.mustBook.join(' / ') : '無需預先訂票';
   const compressNow = d.compressible?.[0] || '保留彈性休息';
   const backupNow = d.backup?.[0]?.label ? `${d.backup[0].label} · ${d.backup[0].where}` : '無指定備案';
@@ -965,7 +966,7 @@ function B_Companion({ initialDay }) {
         </aside>
       </main>
 
-      {waitingWorker && (
+      {waitingWorker && !updateFailed && (
         <aside className="B-update-ready" role="status" aria-live="polite">
           <span><strong>更新可用</strong>新版離線資料已準備好</span>
           <button type="button" onClick={applyUpdate}>立即更新</button>

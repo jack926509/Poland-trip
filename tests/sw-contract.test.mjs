@@ -153,7 +153,7 @@ test('巢狀路徑下的同名正式資產也不得命中 runtime cache', async 
     });
     const response = await dispatchFetch(
       handler,
-      makeRequest(`${prefix}/redesign/B-companion.css?v=polska-v14`),
+      makeRequest(`${prefix}/redesign/B-companion.css?v=polska-v15`),
     );
     assert.equal(response, network, `${prefix} 誤回舊 cache`);
     assert.equal(matches.length, 0, `${prefix} 不得讀 cache`);
@@ -170,26 +170,26 @@ test('正式根應用資產仍使用 cache-first', async () => {
   });
   const response = await dispatchFetch(
     handler,
-    makeRequest('redesign/B-companion.css?v=polska-v14'),
+    makeRequest('redesign/B-companion.css?v=polska-v15'),
   );
   assert.equal(response, cached);
   assert.equal(matches.length, 1);
 });
 
-test('核心快取與根入口統一使用 polska-v14', () => {
-  assert.match(sw, /const CACHE_VERSION = 'polska-v14'/);
+test('核心快取與根入口統一使用 polska-v15', () => {
+  assert.match(sw, /const CACHE_VERSION = 'polska-v15'/);
   for (const asset of [
-    './manifest.json', './pwa-register.js', './redesign/pwa-core.js',
-    './redesign/data.js?v=polska-v14', './redesign/tokens.css?v=polska-v14',
-    './redesign/B-companion.css?v=polska-v14',
-    './redesign/dist/B-companion.js?v=polska-v14',
+    './manifest.json', './pwa-register.js?v=polska-v15', './redesign/pwa-core.js?v=polska-v15',
+    './redesign/data.js?v=polska-v15', './redesign/tokens.css?v=polska-v15',
+    './redesign/B-companion.css?v=polska-v15',
+    './redesign/dist/B-companion.js?v=polska-v15',
   ]) assert.match(sw, new RegExp(asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.doesNotMatch(sw, /polska-v12/);
 });
 
 test('Service Worker 註冊抽離為三種 PWA 事件', () => {
   const register = fs.readFileSync('pwa-register.js', 'utf8');
-  assert.match(html, /<script src="pwa-register\.js"><\/script>/);
+  assert.match(html, /<script src="pwa-register\.js\?v=polska-v15"><\/script>/);
   assert.doesNotMatch(html, /navigator\.serviceWorker\.register/);
   for (const eventName of ['pwa-ready', 'pwa-update-ready', 'pwa-error']) {
     assert.match(register, new RegExp(eventName));

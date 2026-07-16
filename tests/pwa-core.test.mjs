@@ -5,7 +5,7 @@ import vm from 'node:vm';
 
 const context = { globalThis: {}, Intl, Date };
 vm.runInNewContext(fs.readFileSync('redesign/pwa-core.js', 'utf8'), context);
-const { projectTripMoment, selectNextHardConstraint, readNotes, writeNotes } = context.globalThis.PolskaPwaCore;
+const { projectTripMoment, selectNextHardConstraint, selectHardConstraintForMoment, readNotes, writeNotes } = context.globalThis.PolskaPwaCore;
 const tripMeta = { tripStart: '2026-10-24', tripEnd: '2026-10-31', timeZone: 'Europe/Warsaw' };
 const days = [
   { n: 1, date: '10/24 (六)', steps: [{ t: '09:00' }, { t: '12:00' }] },
@@ -61,4 +61,18 @@ test('當日沒有未來硬時間時不顯示過期時間', () => {
     JSON.parse(JSON.stringify(selectNextHardConstraint(['09:00 火車', '一般提醒'], 18 * 60))),
     { label: '今日硬限制', text: '一般提醒' },
   );
+});
+
+test('旅程中查看當日才依 Warsaw 分鐘過濾硬時間', () => {
+  const constraints = ['09:00 火車', '17:30 最後入場'];
+  assert.equal(selectHardConstraintForMoment(constraints, 'during', 2, 2, 12 * 60).text, '17:30 最後入場');
+});
+
+test('行前行後或預覽其他日均從當日最早硬時間開始', () => {
+  const constraints = ['17:30 最後入場', '09:00 火車'];
+  for (const args of [
+    ['before', 2, null, 18 * 60],
+    ['after', 2, null, 18 * 60],
+    ['during', 3, 2, 18 * 60],
+  ]) assert.equal(selectHardConstraintForMoment(constraints, ...args).text, '09:00 火車');
 });
