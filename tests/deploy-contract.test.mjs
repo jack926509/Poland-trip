@@ -15,6 +15,15 @@ test('Pages workflow 驗證後只上傳安全組裝的 _site', () => {
   assert.doesNotMatch(workflow, /path:\s*\./);
 });
 
+test('Cloudflare workflow 驗證後只發布安全組裝的 _site', () => {
+  const workflow = fs.readFileSync('.github/workflows/cloudflare-pages.yml', 'utf8');
+  const verifyAt = workflow.indexOf('./verify.sh');
+  const prepareAt = workflow.indexOf('./prepare-site.sh _site');
+  const deployAt = workflow.indexOf('pages deploy _site --branch=main');
+  assert.ok(verifyAt >= 0 && verifyAt < prepareAt && prepareAt < deployAt);
+  assert.doesNotMatch(workflow, /pages deploy --branch=main/);
+});
+
 test('prepare-site 從空目錄組出唯一 PWA allowlist', () => {
   const parent = fs.mkdtempSync(path.join(os.tmpdir(), 'polska-site-'));
   const output = path.join(parent, 'site');

@@ -13,3 +13,7 @@
 ## 經典版原始碼封存
 
 `archive/classic-index.html` 逐字保存整併前 `a0d2553:index.html` 的經典版原始碼，僅供歷史查閱。此檔不公開於 sitemap、manifest、正式 build 或 Service Worker 快取。
+
+## 自動部署
+
+推送到 `main` 後，GitHub Pages 與 Cloudflare Pages workflow 都會先執行 `./verify.sh`，再由 `./prepare-site.sh` 組裝安全 `_site` allowlist。實際發布內容只包含正式 PWA、相容轉址、圖示與 SEO 檔案；`archive/`、測試、文件及封存設計不會對外發布。
