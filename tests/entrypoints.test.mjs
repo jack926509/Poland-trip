@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import test from 'node:test';
+import vm from 'node:vm';
 
 const read = (path) => fs.readFileSync(path, 'utf8');
 
@@ -17,6 +18,30 @@ test('舊入口只載入共用轉址', () => {
     assert.match(html, /legacy-redirect\.js/);
     assert.doesNotMatch(html, /B_Companion|A_Magazine|IOSDevice/);
   }
+});
+
+test('舊入口轉址保留 GitHub Pages 子路徑、query 與 hash', () => {
+  let replacedWith = '';
+  const href = 'https://jack926509.github.io/Poland-trip/mobile.html?day=3#B-tickets';
+
+  vm.runInNewContext(read('legacy-redirect.js'), {
+    URL,
+    window: {
+      location: {
+        href,
+        search: '?day=3',
+        hash: '#B-tickets',
+        replace(target) {
+          replacedWith = target;
+        },
+      },
+    },
+  });
+
+  assert.equal(
+    replacedWith,
+    'https://jack926509.github.io/Poland-trip/?day=3#B-tickets',
+  );
 });
 
 test('manifest 與 sitemap 只公開根入口', () => {
