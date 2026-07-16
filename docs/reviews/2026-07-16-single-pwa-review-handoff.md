@@ -37,13 +37,13 @@ git diff a0d2553..HEAD
 - 320 × 844：clientWidth／scrollWidth 320／320，overflow 0；四個手機入口都可見；console error／warning 0。
 - 390 × 844：clientWidth／scrollWidth 390／390，overflow 0；現在與下一站資訊正常；PWA `ready` 且收到可安裝事件；console error／warning 0。
 - 1440 × 900：clientWidth／scrollWidth 1440／1440，overflow 0；桌機四入口與右欄可見，手機底欄隱藏；console error／warning 0。
-- 三舊入口均導回 `/`，各自 query/hash 完整保留。
+- 三舊入口均在固定 390 × 844 實測導回 `/`，各自 query/hash 完整保留；三次 clientWidth／scrollWidth 均為 390／390、overflow 0、console error／warning 0。
 - 實際停止 `python3 -m http.server 4173` 後 reload 根網址，Day 1–8、交通詳情與訂票內容仍可讀；console error／warning 0。
 
 ## 風險焦點
 
 - Service Worker 是否會留下半套 cache，尤其 install `addAll` 失敗或跨版本更新時。
-- iPhone standalone safe-area 與更新重載是否穩定；本次一般 Chrome viewport 的 safe-area computed value 是 0，尚未覆蓋真實瀏海環境。
+- iPhone standalone safe-area 與更新重載是否穩定；三種 viewport 的一般版面驗收通過，但本次一般 Chrome viewport 的 safe-area computed value 是 0，非零 safe-area 尚待實機驗證。
 - 寬螢幕雙欄是否仍能操作所有手機功能，特別是交通 modal、日次切換、備註與外部連結。
 - 舊 GitHub Pages 子路徑部署下，根入口與轉址是否正確；本次 localhost 根路徑與單元測試已過，但尚未部署實測。
 - Chrome 已出現「安裝 App」且 PWA 狀態為 `ready`，但本次沒有接受安裝提示；需由使用者實測 standalone 啟動。

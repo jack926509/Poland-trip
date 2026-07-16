@@ -53,15 +53,15 @@
 
 ## 4. 三個舊入口轉址
 
-以下均在真實瀏覽器載入；三次 console error／warning 都是 0：
+以下均在固定 390 × 844 的真實瀏覽器 viewport 載入。每個入口都量測轉址完成後的 DOM 寬度，`overflow` 同樣是 `scrollWidth - clientWidth`：
 
-| 舊入口 | Final URL | Query | Hash | 可見主標題 |
-| --- | --- | --- | --- | --- |
-| `mobile.html?day=3&from=legacy#B-tickets` | `http://localhost:4173/?day=3&from=legacy#B-tickets` | 完整保留 | 完整保留 | 抵達華沙 · 老城傍晚漫步 |
-| `desktop.html?day=4&from=legacy#B-guide` | `http://localhost:4173/?day=4&from=legacy#B-guide` | 完整保留 | 完整保留 | 抵達華沙 · 老城傍晚漫步 |
-| `app-preview.html?day=5&from=legacy#B-day-5` | `http://localhost:4173/?day=5&from=legacy#B-day-5` | 完整保留 | 完整保留 | 抵達華沙 · 老城傍晚漫步 |
+| 舊入口 | Viewport | Final URL | 頁面標題 | 可見主標題 | clientWidth | scrollWidth | overflow | Console error | Console warning |
+| --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |
+| `mobile.html?day=3&from=legacy#B-tickets` | 390 × 844 | `http://localhost:4173/?day=3&from=legacy#B-tickets` | POLSKA — 波蘭旅遊指南 2025–2026 \| Eastern Europe Magazine | 抵達華沙 · 老城傍晚漫步 | 390 | 390 | 0 px | 0 | 0 |
+| `desktop.html?day=4&from=legacy#B-guide` | 390 × 844 | `http://localhost:4173/?day=4&from=legacy#B-guide` | POLSKA — 波蘭旅遊指南 2025–2026 \| Eastern Europe Magazine | 抵達華沙 · 老城傍晚漫步 | 390 | 390 | 0 px | 0 | 0 |
+| `app-preview.html?day=5&from=legacy#B-day-5` | 390 × 844 | `http://localhost:4173/?day=5&from=legacy#B-day-5` | POLSKA — 波蘭旅遊指南 2025–2026 \| Eastern Europe Magazine | 抵達華沙 · 老城傍晚漫步 | 390 | 390 | 0 px | 0 | 0 |
 
-三者最後都載入同一正式頁面標題，沒有再呈現舊版獨立 UI。
+三者的 query/hash 都完整保留，最後載入同一正式頁面，沒有再呈現舊版獨立 UI。
 
 ## 5. 停止 server 後離線重載
 
@@ -84,9 +84,8 @@
 
 ## 6. 驗收結論與仍待人工確認
 
-自動驗收、三種 viewport、舊入口轉址及停止 server 後離線重載均通過。尚未直接證明的兩項是：
+自動驗收、三個舊入口轉址及停止 server 後離線重載均通過；三種 viewport 的一般版面驗收通過，非零 safe-area 尚待實機驗證。另有一項尚未直接證明：
 
-1. 實機 iPhone standalone 模式下的非零 safe-area。
-2. 使用者實際接受安裝提示後，由主畫面 standalone 啟動。
+1. 使用者實際接受安裝提示後，由主畫面 standalone 啟動。
 
-這兩項需要改動真實裝置／瀏覽器安裝狀態，留在部署前的使用者核心路徑驗收。
+非零 safe-area 與 standalone 啟動都需要真實裝置／瀏覽器安裝狀態，留在部署前的使用者核心路徑驗收。
