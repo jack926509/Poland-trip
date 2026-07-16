@@ -32,7 +32,7 @@ function loadFetchHandler({ fetchImpl, matchImpl }) {
       delete() { return Promise.resolve(true); },
     },
     self: {
-      location: { origin: 'https://example.test' },
+      location: { origin: 'https://example.test', href: 'https://example.test/sw.js' },
       clients: { claim() { return Promise.resolve(); } },
       skipWaiting() {},
       addEventListener(name, handler) { listeners[name] = handler; },
@@ -139,6 +139,24 @@ test('非正式同源資產不讀寫 runtime cache', async () => {
   assert.equal(response, network);
   assert.equal(matches.length, 0);
   assert.equal(puts.length, 0);
+});
+
+test('巢狀路徑下的同名正式資產也不得命中 runtime cache', async () => {
+  for (const prefix of ['archive', 'legacy']) {
+    const stale = { marker: `stale-${prefix}` };
+    const network = { marker: `network-${prefix}`, ok: true, clone() { return this; } };
+    const { handler, matches, puts } = loadFetchHandler({
+      fetchImpl: () => Promise.resolve(network),
+      matchImpl: () => stale,
+    });
+    const response = await dispatchFetch(
+      handler,
+      makeRequest(`${prefix}/redesign/B-companion.css?v=polska-v13`),
+    );
+    assert.equal(response, network, `${prefix} 誤回舊 cache`);
+    assert.equal(matches.length, 0, `${prefix} 不得讀 cache`);
+    assert.equal(puts.length, 0, `${prefix} 不得寫 cache`);
+  }
 });
 
 test('正式根應用資產仍使用 cache-first', async () => {
@@ -255,4 +273,17 @@ test('PWA 狀態與 Chromium 安裝訊號來自真實事件', () => {
   assert.match(jsx, /appinstalled/);
   assert.match(jsx, /installStatus/);
   assert.doesNotMatch(jsx, /online \? '離線資料已準備'/);
+});
+
+test('Chromium deferred prompt 只由使用者按鈕觸發並正確清理', () => {
+  assert.match(jsx, /installPromptRef/);
+  assert.match(jsx, /event\.preventDefault\(\)/);
+  assert.match(jsx, /installPromptRef\.current\s*=\s*event/);
+  assert.match(jsx, /const installApp\s*=\s*async/);
+  assert.match(jsx, /await promptEvent\.prompt\(\)/);
+  assert.match(jsx, /await promptEvent\.userChoice/);
+  assert.match(jsx, /installPromptRef\.current\s*=\s*null/);
+  assert.match(jsx, /outcome\s*===\s*'accepted'/);
+  assert.match(jsx, /onClick=\{installApp\}>安裝 App<\/button>/);
+  assert.match(jsx, /setInstallStatus\('browser'\)/);
 });

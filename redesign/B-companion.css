@@ -211,6 +211,11 @@
   grid-column:1 / -1;color:var(--accent);font-size:.56rem;letter-spacing:.04em;
   text-transform:none;
 }
+.B-pwa-state .B-install-action{
+  grid-column:1 / -1;justify-self:start;min-height:36px;padding:.3rem .65rem;
+  border:1px solid var(--ink);border-radius:999px;background:var(--ink);color:var(--paper);
+  font:700 .62rem var(--mono);letter-spacing:.08em;cursor:pointer;
+}
 .B-install-hint{
   display:grid;grid-template-columns:1fr auto;gap:.25rem .7rem;align-items:center;
   margin:.65rem 0 0;padding:.7rem .78rem;

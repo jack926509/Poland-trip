@@ -18,6 +18,11 @@ const PRECACHE_URLS = [
   './redesign/B-companion.css?v=polska-v13',
   './redesign/dist/B-companion.js?v=polska-v13',
 ];
+const OFFICIAL_APP_URLS = new Set(
+  PRECACHE_URLS
+    .filter((asset) => asset !== './')
+    .map((asset) => new URL(asset, self.location.href).href)
+);
 
 // 安裝時預先快取核心資源
 // 注意：這裡不呼叫 skipWaiting()——讓使用者看到「新版本可用」提示後再決定何時切換
@@ -48,11 +53,7 @@ self.addEventListener('activate', (event) => {
 });
 
 function isOfficialAppAsset(url) {
-  return PRECACHE_URLS.some((asset) => {
-    if (asset === './') return false;
-    const [path, query = ''] = asset.slice(2).split('?');
-    return url.pathname.endsWith(`/${path}`) && url.search === (query ? `?${query}` : '');
-  });
+  return OFFICIAL_APP_URLS.has(url.href);
 }
 
 // 取資源策略

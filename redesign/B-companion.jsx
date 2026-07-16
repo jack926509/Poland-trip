@@ -244,6 +244,7 @@ function B_Companion({ initialDay }) {
   const trainReturnFocusRef = React.useRef(null);
   const updateApprovedRef = React.useRef(false);
   const reloadingRef = React.useRef(false);
+  const installPromptRef = React.useRef(null);
 
   B_useModalFocus(drawerOpen, drawerRef, drawerCloseRef, drawerReturnFocusRef);
   B_useModalFocus(trainSheet, trainSheetRef, trainCloseRef, trainReturnFocusRef);
@@ -281,6 +282,24 @@ function B_Companion({ initialDay }) {
     if (!waitingWorker) return;
     updateApprovedRef.current = true;
     waitingWorker.postMessage({ type: 'SKIP_WAITING' });
+  };
+  const installApp = async () => {
+    const promptEvent = installPromptRef.current;
+    if (!promptEvent) {
+      setInstallStatus('browser');
+      return;
+    }
+    try {
+      await promptEvent.prompt();
+      const { outcome } = await promptEvent.userChoice;
+      setInstallStatus(outcome === 'accepted' ? 'installing' : 'browser');
+    }
+    catch (_) {
+      setInstallStatus('browser');
+    }
+    finally {
+      if (installPromptRef.current === promptEvent) installPromptRef.current = null;
+    }
   };
   const interceptOfflineLink = (e) => {
     if (online) return;
@@ -328,9 +347,11 @@ function B_Companion({ initialDay }) {
   B_useEffect(() => {
     const onBeforeInstallPrompt = (event) => {
       event.preventDefault();
+      installPromptRef.current = event;
       setInstallStatus('installable');
     };
     const onAppInstalled = () => {
+      installPromptRef.current = null;
       setInstallStatus('installed');
       setStandalone(true);
       setShowInstallHint(false);
@@ -416,6 +437,8 @@ function B_Companion({ initialDay }) {
   const liveClock = B_formatMinutes(mins);
   const installLabel = standalone || installStatus === 'installed'
     ? '已安裝'
+    : installStatus === 'installing'
+      ? '安裝中'
     : installStatus === 'installable'
       ? '可安裝'
       : B_isIOSSafari()
@@ -523,6 +546,9 @@ function B_Companion({ initialDay }) {
           <span>{online ? '已連線' : '離線模式'}</span>
           <strong>{installLabel}</strong>
           <em>{waitingWorker ? '更新可用' : readinessLabel}</em>
+          {installStatus === 'installable' && (
+            <button type="button" className="B-install-action" onClick={installApp}>安裝 App</button>
+          )}
           {!notesPersistent && <small>備註只保留到這次關閉前</small>}
         </div>
 
