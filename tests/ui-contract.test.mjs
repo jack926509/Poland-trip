@@ -5,6 +5,12 @@ import test from 'node:test';
 const jsx = fs.readFileSync('redesign/B-companion.jsx', 'utf8');
 const css = fs.readFileSync('redesign/B-companion.css', 'utf8');
 
+test('build 只編譯正式 PWA 介面', () => {
+  const build = fs.readFileSync('build.sh', 'utf8');
+  assert.match(build, /redesign\/B-companion\.jsx/);
+  assert.doesNotMatch(build, /A-magazine\.jsx|C-app\.jsx|ios-frame\.jsx|tweaks-panel\.jsx/);
+});
+
 test('手機與桌機導覽共用四個固定功能', () => {
   for (const label of ['今日', '行程', '交通', '訂票']) assert.match(jsx, new RegExp(label));
   assert.match(jsx, /B-mobile-nav/);

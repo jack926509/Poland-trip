@@ -1,3 +1,5 @@
+> 歷史三版本合併紀錄；現況以 README 與單一 PWA 設計規格為準。
+
 # Poland Trip Redesign — 三個版本
 
 把這個 zip 解壓後跟原本 `Poland-trip` repo 的內容合併（保留下列既有檔案不動）：

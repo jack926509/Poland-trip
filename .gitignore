@@ -8,3 +8,4 @@
 
 # 本機隔離開發工作區
 .worktrees/
+.superpowers/
