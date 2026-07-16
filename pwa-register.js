@@ -1,5 +1,25 @@
 (function () {
-  const emit = (name, detail) => window.dispatchEvent(new CustomEvent(name, { detail }));
+  const state = window.PolskaPwaState = {
+    status: 'loading',
+    registration: null,
+    waitingWorker: null,
+    error: null,
+  };
+  const watchedWorkers = new WeakSet();
+  const emit = (name, detail) => {
+    if (name === 'pwa-ready') {
+      state.status = 'ready';
+      state.registration = detail.registration;
+    }
+    else if (name === 'pwa-update-ready') {
+      state.waitingWorker = detail.worker;
+    }
+    else if (name === 'pwa-error') {
+      state.status = 'error';
+      state.error = detail;
+    }
+    window.dispatchEvent(new CustomEvent(name, { detail }));
+  };
 
   if (!('serviceWorker' in navigator)) {
     emit('pwa-error', { reason: 'unsupported' });
@@ -9,18 +29,32 @@
   window.addEventListener('load', async () => {
     try {
       const registration = await navigator.serviceWorker.register('./sw.js');
-      if (registration.waiting) {
-        emit('pwa-update-ready', { worker: registration.waiting });
-      }
-      registration.addEventListener('updatefound', () => {
-        const worker = registration.installing;
-        worker?.addEventListener('statechange', () => {
-          if (worker.state === 'installed' && navigator.serviceWorker.controller) {
+      state.registration = registration;
+      const watchWorker = (worker) => {
+        if (!worker || watchedWorkers.has(worker)) return;
+        watchedWorkers.add(worker);
+        worker.addEventListener('statechange', () => {
+          if (worker.state === 'redundant') {
+            emit('pwa-error', { reason: 'worker-redundant' });
+          }
+          else if (worker.state === 'installed' && navigator.serviceWorker.controller) {
             emit('pwa-update-ready', { worker });
           }
         });
+      };
+      if (registration.waiting) {
+        emit('pwa-update-ready', { worker: registration.waiting });
+      }
+      watchWorker(registration.installing);
+      registration.addEventListener('updatefound', () => {
+        watchWorker(registration.installing);
       });
-      emit('pwa-ready', { registration });
+      const readyRegistration = await navigator.serviceWorker.ready;
+      if (!readyRegistration.active || (readyRegistration.active.state && readyRegistration.active.state !== 'activated')) {
+        emit('pwa-error', { reason: 'worker-not-active' });
+        return;
+      }
+      emit('pwa-ready', { registration: readyRegistration });
     }
     catch (error) {
       emit('pwa-error', { reason: 'registration', message: error.message });

@@ -207,6 +207,10 @@
   font-style:normal;color:var(--ink-mute);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
+.B-pwa-state small{
+  grid-column:1 / -1;color:var(--accent);font-size:.56rem;letter-spacing:.04em;
+  text-transform:none;
+}
 .B-install-hint{
   display:grid;grid-template-columns:1fr auto;gap:.25rem .7rem;align-items:center;
   margin:.65rem 0 0;padding:.7rem .78rem;

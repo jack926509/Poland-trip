@@ -228,8 +228,9 @@ function B_Companion({ initialDay }) {
   const [trainSheet, setTrainSheet] = B_useState(false);
   const [online, setOnline] = B_useState(() => typeof navigator === 'undefined' ? true : navigator.onLine);
   const [standalone, setStandalone] = B_useState(B_isStandaloneMode);
-  const [pwaStatus, setPwaStatus] = B_useState(() => 'serviceWorker' in navigator ? 'loading' : 'unsupported');
-  const [waitingWorker, setWaitingWorker] = B_useState(null);
+  const [pwaStatus, setPwaStatus] = B_useState(() => window.PolskaPwaState?.status || ('serviceWorker' in navigator ? 'loading' : 'unsupported'));
+  const [waitingWorker, setWaitingWorker] = B_useState(() => window.PolskaPwaState?.waitingWorker || null);
+  const [installStatus, setInstallStatus] = B_useState(() => B_isStandaloneMode() ? 'installed' : 'browser');
   const [toast, setToast] = B_useState(null);
   const [showInstallHint, setShowInstallHint] = B_useState(() => B_isIOSSafari() && !B_isStandaloneMode());
   const [notes, setNotes] = B_useState(initialNotes.notes);
@@ -297,10 +298,9 @@ function B_Companion({ initialDay }) {
   }, []);
 
   B_useEffect(() => {
-    const onReady = () => setPwaStatus((current) => current === 'update-ready' ? current : 'ready');
+    const onReady = () => setPwaStatus('ready');
     const onUpdateReady = (event) => {
       setWaitingWorker(event.detail?.worker || null);
-      setPwaStatus('update-ready');
     };
     const onError = () => setPwaStatus('error');
     const onControllerChange = () => {
@@ -312,11 +312,34 @@ function B_Companion({ initialDay }) {
     window.addEventListener('pwa-update-ready', onUpdateReady);
     window.addEventListener('pwa-error', onError);
     navigator.serviceWorker?.addEventListener('controllerchange', onControllerChange);
+    const current = window.PolskaPwaState;
+    if (current) {
+      setPwaStatus(current.status);
+      setWaitingWorker(current.waitingWorker || null);
+    }
     return () => {
       window.removeEventListener('pwa-ready', onReady);
       window.removeEventListener('pwa-update-ready', onUpdateReady);
       window.removeEventListener('pwa-error', onError);
       navigator.serviceWorker?.removeEventListener('controllerchange', onControllerChange);
+    };
+  }, []);
+
+  B_useEffect(() => {
+    const onBeforeInstallPrompt = (event) => {
+      event.preventDefault();
+      setInstallStatus('installable');
+    };
+    const onAppInstalled = () => {
+      setInstallStatus('installed');
+      setStandalone(true);
+      setShowInstallHint(false);
+    };
+    window.addEventListener('beforeinstallprompt', onBeforeInstallPrompt);
+    window.addEventListener('appinstalled', onAppInstalled);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', onBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', onAppInstalled);
     };
   }, []);
 
@@ -391,6 +414,20 @@ function B_Companion({ initialDay }) {
   }, [active]);
 
   const liveClock = B_formatMinutes(mins);
+  const installLabel = standalone || installStatus === 'installed'
+    ? '已安裝'
+    : installStatus === 'installable'
+      ? '可安裝'
+      : B_isIOSSafari()
+        ? '可加入主畫面'
+        : '瀏覽器模式';
+  const readinessLabel = pwaStatus === 'loading'
+    ? '正在準備離線資料'
+    : pwaStatus === 'ready'
+      ? '離線資料已準備'
+      : pwaStatus === 'error'
+        ? '離線資料準備失敗'
+        : '此瀏覽器不支援離線安裝';
   const navActions = {
     onToday: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
     onItinerary: () => document.querySelector('.B-timeline')?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
@@ -484,8 +521,9 @@ function B_Companion({ initialDay }) {
 
         <div className={`B-pwa-state ${online ? 'online' : 'offline'}`} data-pwa-status={pwaStatus} aria-live="polite">
           <span>{online ? '已連線' : '離線模式'}</span>
-          <strong>{standalone ? '已安裝' : '可安裝'}</strong>
-          <em>{waitingWorker ? '更新可用' : !notesPersistent ? '備註只保留到這次關閉前' : online ? '離線資料已準備' : '已快取核心行程與交通資料'}</em>
+          <strong>{installLabel}</strong>
+          <em>{waitingWorker ? '更新可用' : readinessLabel}</em>
+          {!notesPersistent && <small>備註只保留到這次關閉前</small>}
         </div>
 
         {showInstallHint && !standalone && (

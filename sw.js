@@ -47,9 +47,18 @@ self.addEventListener('activate', (event) => {
   );
 });
 
+function isOfficialAppAsset(url) {
+  return PRECACHE_URLS.some((asset) => {
+    if (asset === './') return false;
+    const [path, query = ''] = asset.slice(2).split('?');
+    return url.pathname.endsWith(`/${path}`) && url.search === (query ? `?${query}` : '');
+  });
+}
+
 // 取資源策略
-//   - HTML（導航）：network-first，失敗回快取（離線時可看舊版）
-//   - 其他（字型/圖片/CSS/JS）：cache-first，背景更新
+//   - HTML（導航）：network-first，離線時一律回根 app shell
+//   - 正式根應用資產：cache-first，背景更新
+//   - 其他同源資產：只走網路，不讀寫 PWA runtime cache
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET') return;
@@ -61,18 +70,17 @@ self.addEventListener('fetch', (event) => {
   if (isHTML) {
     event.respondWith(
       fetch(request)
-        .then((res) => {
-          const copy = res.clone();
-          caches.open(CACHE_VERSION).then((cache) => cache.put(request, copy));
-          return res;
-        })
-        .catch(() => caches.match(request).then((cached) => cached || caches.match('./')))
+        .catch(() => caches.match('./'))
     );
     return;
   }
 
-  // 同源資源：cache-first
+  // 同源只允許正式根應用資產進 runtime cache。
   if (url.origin === self.location.origin) {
+    if (!isOfficialAppAsset(url)) {
+      event.respondWith(fetch(request));
+      return;
+    }
     event.respondWith(
       caches.match(request).then((cached) => {
         if (cached) {
