@@ -64,9 +64,10 @@
 <link rel="stylesheet" href="redesign/tokens.css?v=polska-v13">
 <link rel="stylesheet" href="redesign/B-companion.css?v=polska-v13">
 <style>
-  html,body{margin:0;-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;max-width:100%;overflow-x:hidden;-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
   body{background:#f0eee9;font-family:'Noto Serif TC',serif}
-  #root{max-width:480px;margin:0 auto;min-height:100vh;background:var(--paper);box-shadow:0 0 30px rgba(0,0,0,.08)}
+  #root{width:100%;min-height:100vh;background:var(--paper)}
   .B-frame{border-radius:0;height:auto;min-height:100vh}
   .skip-link{position:fixed;top:.5rem;left:.5rem;z-index:200;transform:translateY(-200%);padding:.5rem .75rem;background:#1a1612;color:#f4ecd8}
   .skip-link:focus{transform:translateY(0)}
@@ -76,9 +77,7 @@
 </head>
 <body>
   <a class="skip-link" href="#app-main">跳到主要內容</a>
-  <main id="app-main">
-    <div id="root"></div>
-  </main>
+  <div id="root"></div>
   <script src="vendor/react.production.min.js"></script>
   <script src="vendor/react-dom.production.min.js"></script>
   <script src="redesign/pwa-core.js"></script>

@@ -119,38 +119,50 @@ function B_eatVenue(item) {
   return item;
 }
 
-// Map real-world clock to a synthetic trip moment so the demo feels alive.
-// Strategy: take current local time-of-day; project onto Day 2 (mid-trip transit day).
-// User can override by tapping a day pill — that takes priority.
-function B_synthetic(days, override) {
-  const now = new Date();
-  const mins = now.getHours() * 60 + now.getMinutes();
-  // Use override day if provided, else pick day based on weekday (mod 8) for variety
-  const dayNum = override ?? ((now.getDate() % 8) + 1);
-  const d = days.find(x => x.n === dayNum) || days[1];
+function B_PrimaryNav({ placement, onToday, onItinerary, onTransport, onTickets }) {
+  const items = [
+    ['今日', onToday], ['行程', onItinerary], ['交通', onTransport], ['訂票', onTickets],
+  ];
+  const placementClass = placement === 'mobile' ? 'B-mobile-nav' : 'B-desktop-nav';
+  return (
+    <nav
+      className={`B-primary-nav ${placementClass}`}
+      aria-label={placement === 'mobile' ? '手機主要導覽' : '網頁主要導覽'}>
+      {items.map(([label, action]) => (
+        <button type="button" key={label} onClick={action}>{label}</button>
+      ))}
+    </nav>
+  );
+}
 
-  // find current step: latest step whose time <= now
-  const stepMins = d.steps.map(s => {
-    const [h, m] = s.t.split(':').map(Number);
-    return h * 60 + m;
-  });
-  let idx = 0;
-  for (let i = 0; i < stepMins.length; i++) {
-    if (stepMins[i] <= mins) idx = i;
-  }
-  // if before first step, idx=0 but mark "upcoming"
-  const beforeStart = mins < stepMins[0];
-  const afterEnd = mins > stepMins[stepMins.length - 1] + 60;
-  return {
-    d, idx, beforeStart, afterEnd,
-    now: d.steps[idx],
-    next: d.steps[idx + 1],
-    mins,
-  };
+function B_PreTripGuide({ trip }) {
+  const sections = [
+    ['航班', [...trip.flights.out, ...trip.flights.back].map((flight) => `${flight.code} · ${flight.leg} · ${flight.when}`)],
+    ['住宿區域', trip.stay.map((item) => `${item.city} · ${item.pick} · ${item.note}`)],
+    ['安全與緊急資訊', [
+      ...trip.safety.emergency.map(([label, value]) => `${label} · ${value}`),
+      ...trip.safety.tips.map((item) => `${item.label} · ${item.text}`),
+    ]],
+    ['實用資訊', trip.practical.map((item) => `${item.tag} · ${item.name} · ${item.note}`)],
+    ['常用波蘭語', trip.phrases.map(([zh, pl]) => `${zh} · ${pl}`)],
+  ];
+  return (
+    <section id="B-guide" className="B-pretrip-guide" aria-labelledby="B-guide-title">
+      <h2 id="B-guide-title">行前指南</h2>
+      {sections.map(([title, rows]) => (
+        <details key={title}>
+          <summary>{title}</summary>
+          <ul>{rows.map((row) => <li key={row}>{row}</li>)}</ul>
+        </details>
+      ))}
+    </section>
+  );
 }
 
 function B_Companion({ initialDay }) {
   const t = window.TRIP;
+  const core = window.PolskaPwaCore;
+  const initialNotes = B_useMemo(() => core.readNotes(window.localStorage), [core]);
   const [override, setOverride] = B_useState(initialDay ?? null);
   const [openStep, setOpenStep] = B_useState(null);
   const [tick, setTick] = B_useState(0);
@@ -158,10 +170,8 @@ function B_Companion({ initialDay }) {
   const [trainSheet, setTrainSheet] = B_useState(false);
   const [online, setOnline] = B_useState(() => typeof navigator === 'undefined' ? true : navigator.onLine);
   const [standalone, setStandalone] = B_useState(B_isStandaloneMode);
-  const [notes, setNotes] = B_useState(() => {
-    try { return JSON.parse(localStorage.getItem('polska-notes') || '{}'); }
-    catch (e) { return {}; }
-  });
+  const [notes, setNotes] = B_useState(initialNotes.notes);
+  const [notesPersistent, setNotesPersistent] = B_useState(initialNotes.persistent);
   const scrubRef = React.useRef(null);
 
   const noteKey = (dn, si) => `${dn}-${si}`;
@@ -170,13 +180,11 @@ function B_Companion({ initialDay }) {
     const prev = notes[k] || '';
     const v = window.prompt('在這個行程加上備註：', prev);
     if (v === null) return;
-    setNotes((p) => {
-      const next = { ...p };
-      const trimmed = v.trim();
-      if (trimmed) next[k] = trimmed; else delete next[k];
-      try { localStorage.setItem('polska-notes', JSON.stringify(next)); } catch (e) {}
-      return next;
-    });
+    const next = { ...notes };
+    const trimmed = v.trim();
+    if (trimmed) next[k] = trimmed; else delete next[k];
+    setNotes(next);
+    setNotesPersistent(core.writeNotes(window.localStorage, next));
   };
   const openExt = (url) => {
     if (!url) return;
@@ -221,8 +229,8 @@ function B_Companion({ initialDay }) {
   }, [drawerOpen, trainSheet]);
 
   const { d, idx, now, next, beforeStart, afterEnd } = B_useMemo(
-    () => B_synthetic(t.days, override),
-    [t.days, override, tick]
+    () => core.projectTripMoment(t.days, new Date(), override, t.meta),
+    [core, t.days, t.meta, override, tick]
   );
   const active = d.n;
   const setActive = (n) => { setOverride(n); setOpenStep(null); setDrawerOpen(false); };
@@ -256,6 +264,14 @@ function B_Companion({ initialDay }) {
     const n = new Date();
     return `${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`;
   })();
+  const navActions = {
+    onToday: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
+    onItinerary: () => document.querySelector('.B-timeline')?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+    onTransport: () => d.train
+      ? setTrainSheet(true)
+      : document.querySelector('.B-timeline')?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+    onTickets: () => document.getElementById('B-tickets')?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
+  };
 
   return (
     <div className="B-frame paper-tex">
@@ -301,6 +317,10 @@ function B_Companion({ initialDay }) {
         </button>
       </header>
 
+      <B_PrimaryNav placement="desktop" {...navActions} />
+      <main id="app-main" className="B-web-grid">
+        <section className="B-primary-column" aria-label="今日行程">
+
       <section className="B-today" data-bg={`0${d.n}`} id="top">
         <div className="kicker">Today is</div>
         <div className="day-line">
@@ -338,7 +358,7 @@ function B_Companion({ initialDay }) {
         <div className={`B-pwa-state ${online ? 'online' : 'offline'}`} aria-live="polite">
           <span>{online ? '已連線' : '離線模式'}</span>
           <strong>{standalone ? '主畫面 App' : '可加到主畫面'}</strong>
-          <em>{online ? '新版會自動背景快取' : '已快取核心行程與交通資料'}</em>
+          <em>{!notesPersistent ? '備註僅保留於本次開啟' : online ? '新版會自動背景快取' : '已快取核心行程與交通資料'}</em>
         </div>
 
         <button
@@ -590,6 +610,9 @@ function B_Companion({ initialDay }) {
 
       {d.warn && <div className="B-warn"><strong>⚠ 注意</strong> · {d.warn}</div>}
 
+        </section>
+        <aside className="B-secondary-column" aria-label="行程補充資訊">
+
       <div className="B-card field-note">
         <div className="label">今日提醒</div>
         <ul>
@@ -748,53 +771,11 @@ function B_Companion({ initialDay }) {
         );
       })()}
 
-      <nav className="B-tabbar" aria-label="底部切換">
-        <a href="#today"
-           className="active"
-           aria-current="page"
-           onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-          <svg viewBox="0 0 24 24"><path d="M3 12L12 4l9 8M5 10v10h14V10"/></svg>
-          今日
-        </a>
-        <a href="#timeline"
-           onClick={(e) => {
-             e.preventDefault();
-             const el = document.querySelector('.B-timeline');
-             if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-           }}>
-          <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16M9 6v12"/></svg>
-          行程
-        </a>
-        <a href="#transport"
-           onClick={(e) => {
-             e.preventDefault();
-             if (d.train) {
-               setTrainSheet(true);
-               return;
-             }
-             const transportStep = Array.from(document.querySelectorAll('.B-step')).find((el) => {
-               const text = el.textContent || '';
-               return /SKM|火車|巴士|機場|車站|Bolt|電車/.test(text);
-             });
-             if (transportStep) transportStep.scrollIntoView({ behavior: 'smooth', block: 'center' });
-             else {
-               const el = document.querySelector('.B-timeline');
-               if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-             }
-           }}>
-          <svg viewBox="0 0 24 24"><path d="M4 16V7a2 2 0 012-2h12a2 2 0 012 2v9"/><path d="M6 16h12M8 19h.01M16 19h.01M8 9h8M8 12h8"/></svg>
-          交通
-        </a>
-        <a href="#B-tickets"
-           onClick={(e) => {
-             e.preventDefault();
-             const el = document.getElementById('B-tickets');
-             if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-           }}>
-          <svg viewBox="0 0 24 24"><path d="M4 7a2 2 0 012-2h12a2 2 0 012 2v3a2 2 0 010 4v3a2 2 0 01-2 2H6a2 2 0 01-2-2v-3a2 2 0 010-4V7z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
-          訂票
-        </a>
-      </nav>
+      <B_PreTripGuide trip={t} />
+        </aside>
+      </main>
+
+      <B_PrimaryNav placement="mobile" {...navActions} />
 
       <div
         className={`B-drawer-mask ${drawerOpen ? 'open' : ''}`}
@@ -827,6 +808,12 @@ function B_Companion({ initialDay }) {
               </a>
             </li>
           ))}
+          <li>
+            <a href="#B-guide" onClick={() => setDrawerOpen(false)}>
+              <span>行前指南</span>
+              <small>航班 · 住宿 · 安全</small>
+            </a>
+          </li>
         </ul>
       </aside>
     </div>

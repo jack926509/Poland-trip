@@ -17,6 +17,52 @@
   padding-bottom:calc(var(--safe-bottom) + 4.4rem);
 }
 
+.B-web-grid{display:block}
+.B-primary-column,.B-secondary-column{min-width:0}
+.B-desktop-nav{display:none}
+.B-primary-nav{
+  font-family:var(--serif);
+  background:var(--paper);
+  border-top:1px solid rgba(26,22,18,.18);
+  border-bottom:1px solid rgba(26,22,18,.18);
+}
+.B-primary-nav button{
+  min-width:0;min-height:48px;padding:.65rem .45rem;
+  border:0;border-right:1px dotted rgba(26,22,18,.22);
+  background:transparent;color:var(--ink);
+  font:800 .78rem var(--serif);letter-spacing:.12em;
+  cursor:pointer;
+}
+.B-primary-nav button:last-child{border-right:0}
+.B-primary-nav button:active{background:var(--paper-deep);color:var(--accent)}
+.B-mobile-nav{
+  position:fixed;left:50%;bottom:0;transform:translateX(-50%);
+  z-index:40;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  width:min(100%,480px);
+  padding:0 var(--safe-right) var(--safe-bottom) var(--safe-left);
+  box-sizing:border-box;
+  box-shadow:0 -10px 32px rgba(26,22,18,.12);
+}
+
+.B-pretrip-guide{
+  margin:.55rem 1rem;padding:.8rem .9rem;
+  border:3px double var(--ink);background:var(--paper-warm);
+  border-radius:14px;
+}
+.B-pretrip-guide h2{
+  margin:0 0 .55rem;font:900 1.05rem var(--serif);color:var(--accent);
+}
+.B-pretrip-guide details{border-top:1px dotted rgba(26,22,18,.3)}
+.B-pretrip-guide summary{
+  padding:.62rem .1rem;cursor:pointer;
+  font:800 .86rem var(--serif);color:var(--ink);
+}
+.B-pretrip-guide ul{margin:0 0 .65rem;padding-left:1.1rem}
+.B-pretrip-guide li{
+  margin:.32rem 0;color:var(--ink-soft);font-size:.76rem;line-height:1.5;
+  overflow-wrap:anywhere;
+}
+
 .B-status-bar{
   display:flex;justify-content:space-between;align-items:center;
   padding:calc(.4rem + var(--safe-top)) calc(1.4rem + var(--safe-right)) .2rem calc(1.4rem + var(--safe-left));
@@ -676,43 +722,6 @@
   padding:0 .35rem;color:var(--ink-soft);letter-spacing:.08em;
 }
 
-/* TAB BAR — bottom dock
-   No backdrop-filter: Safari composites it on every scroll frame which
-   is the single biggest source of mobile jank. Solid paper bg with
-   shadow does the same job at zero cost. */
-.B-tabbar{
-  position:fixed;bottom:0;left:0;right:0;
-  max-width:480px;margin:0 auto;
-  display:grid;grid-template-columns:repeat(4,1fr);
-  background:rgba(244,236,216,.84);
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
-  border-top:1px solid rgba(26,22,18,.18);
-  box-shadow:0 -10px 32px rgba(26,22,18,.12);
-  padding:.38rem .2rem calc(.55rem + var(--safe-bottom));
-  font-family:var(--serif);font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;
-  z-index:10;
-  will-change:transform;
-  transform:translateZ(0);
-}
-.B-tabbar a{
-  display:flex;flex-direction:column;align-items:center;gap:.2rem;
-  text-decoration:none;color:var(--ink-mute);
-  padding:.5rem .2rem;min-height:44px;
-  border-radius:8px;
-  transition:color var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out);
-}
-.B-tabbar a:active{background:var(--paper-deep)}
-.B-tabbar a.active{color:var(--accent)}
-.B-tabbar a.active::before{
-  content:"";position:absolute;top:-3px;width:28px;height:3px;
-  background:var(--accent);border-radius:0 0 3px 3px;
-  transform:translateY(-3px);
-}
-.B-tabbar a{position:relative}
-.B-tabbar a svg{width:20px;height:20px;stroke:currentColor;stroke-width:1.6;fill:none}
-.B-tabbar a.active svg{stroke-width:2}
-
 /* DRAWER (menu) */
 .B-drawer-mask{
   position:fixed;inset:0;background:rgba(26,22,18,.4);
@@ -757,7 +766,7 @@
 
 /* Print */
 @media print{
-  .B-tabbar, .B-status-bar, .B-scrub, .B-drawer-mask, .B-drawer{display:none !important}
+  .B-primary-nav, .B-status-bar, .B-scrub, .B-drawer-mask, .B-drawer{display:none !important}
   .B-frame{height:auto;border-radius:0;box-shadow:none}
 }
 
@@ -786,6 +795,32 @@
   .B-pwa-state em{display:none}
   .B-step{grid-template-columns:34px 14px 1fr;gap:.42rem}
   .B-step-detail{margin-left:calc(34px + .42rem + 14px + .42rem)}
-  .B-tabbar{font-size:.54rem;letter-spacing:.08em}
-  .B-tabbar a svg{width:18px;height:18px}
+  .B-primary-nav button{font-size:.72rem;letter-spacing:.08em;padding-inline:.2rem}
+}
+
+@media (min-width: 900px){
+  .B-frame{max-width:1180px;margin:0 auto;min-height:100vh;padding-bottom:0;border-radius:0}
+  .B-status-bar{display:none}
+  .B-head{position:static;padding:1rem 2rem}
+  .B-head .brand{font-size:1.15rem}
+  .B-desktop-nav{
+    display:grid;grid-template-columns:repeat(4,minmax(7rem,1fr));
+    position:sticky;top:0;z-index:80;
+  }
+  .B-mobile-nav{display:none}
+  .B-web-grid{
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(18rem,24rem);
+    gap:clamp(1.5rem,3vw,3rem);padding:1.5rem 2rem 4rem;
+  }
+  .B-primary-column{border-right:1px solid rgba(26,22,18,.18);padding-right:clamp(1rem,2vw,2rem)}
+  .B-secondary-column{
+    position:sticky;top:5rem;align-self:start;
+    max-height:calc(100vh - 6rem);overflow:auto;
+    padding-right:.35rem;
+  }
+  .B-primary-column .B-today{padding:1.25rem 1.4rem 1.4rem}
+  .B-primary-column .B-today h1{font-size:1.8rem}
+  .B-mobile-brief{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .B-mobile-brief .brief-card{grid-template-columns:1fr;gap:.25rem}
+  .B-secondary-column .B-card,.B-secondary-column .B-pretrip-guide{margin:.55rem 0}
 }
