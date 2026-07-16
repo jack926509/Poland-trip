@@ -31,6 +31,17 @@
     };
   }
 
+  function selectNextHardConstraint(constraints = [], mins = 0) {
+    const timed = constraints.map((text) => {
+      const match = text.match(/(?:^|\s)([01]\d|2[0-3]):([0-5]\d)(?:\s|$)/);
+      return match ? { text, mins: Number(match[1]) * 60 + Number(match[2]) } : null;
+    }).filter(Boolean).sort((a, b) => a.mins - b.mins);
+    const next = timed.find((item) => item.mins >= mins);
+    if (next) return { label: '下一個硬時間', text: next.text };
+    const untimed = constraints.find((text) => !/(?:^|\s)([01]\d|2[0-3]):[0-5]\d(?:\s|$)/.test(text));
+    return { label: '今日硬限制', text: untimed || '今日沒有未來硬時間' };
+  }
+
   function readNotes(storage) {
     try {
       const notes = JSON.parse(storage.getItem('polska-notes') || '{}');
@@ -47,5 +58,5 @@
     catch (_) { return false; }
   }
 
-  root.PolskaPwaCore = { projectTripMoment, readNotes, writeNotes };
+  root.PolskaPwaCore = { projectTripMoment, selectNextHardConstraint, readNotes, writeNotes };
 })(typeof window === 'undefined' ? globalThis : window);

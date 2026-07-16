@@ -4,7 +4,10 @@
     registration: null,
     waitingWorker: null,
     error: null,
+    updateError: null,
   };
+  let updateApproved = false;
+  let reloaded = false;
   const watchedWorkers = new WeakSet();
   const emit = (name, detail) => {
     if (name === 'pwa-ready') {
@@ -13,6 +16,10 @@
     }
     else if (name === 'pwa-update-ready') {
       state.waitingWorker = detail.worker;
+      state.updateError = null;
+    }
+    else if (name === 'pwa-update-error') {
+      state.updateError = detail;
     }
     else if (name === 'pwa-error') {
       state.status = 'error';
@@ -26,6 +33,18 @@
     return;
   }
 
+  state.applyUpdate = () => {
+    if (!state.waitingWorker) return false;
+    updateApproved = true;
+    state.waitingWorker.postMessage({ type: 'SKIP_WAITING' });
+    return true;
+  };
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!updateApproved || reloaded) return;
+    reloaded = true;
+    window.location.reload();
+  });
+
   window.addEventListener('load', async () => {
     try {
       const registration = await navigator.serviceWorker.register('./sw.js');
@@ -35,7 +54,12 @@
         watchedWorkers.add(worker);
         worker.addEventListener('statechange', () => {
           if (worker.state === 'redundant') {
-            emit('pwa-error', { reason: 'worker-redundant' });
+            if (registration.active || navigator.serviceWorker.controller) {
+              emit('pwa-update-error', { reason: 'worker-redundant' });
+            }
+            else {
+              emit('pwa-error', { reason: 'worker-redundant' });
+            }
           }
           else if (worker.state === 'installed' && navigator.serviceWorker.controller) {
             emit('pwa-update-ready', { worker });

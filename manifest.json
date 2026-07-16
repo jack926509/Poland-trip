@@ -17,7 +17,7 @@
       "name": "今日行程",
       "short_name": "今日",
       "description": "打開今日行程",
-      "url": "./#today",
+      "url": "./#top",
       "icons": [
         {
           "src": "apple-touch-icon.png",

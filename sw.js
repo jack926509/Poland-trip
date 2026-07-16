@@ -1,6 +1,6 @@
 // POLSKA 旅遊指南 Service Worker — 離線優先策略
 // 出發到波蘭時即使無網路也能看完整指南
-const CACHE_VERSION = 'polska-v13';
+const CACHE_VERSION = 'polska-v14';
 // Relative paths so the SW works on root domains and
 // sub-path deploys like jack926509.github.io/Poland-trip/.
 const PRECACHE_URLS = [
@@ -13,10 +13,10 @@ const PRECACHE_URLS = [
   './vendor/react.production.min.js',
   './vendor/react-dom.production.min.js',
   './redesign/pwa-core.js',
-  './redesign/data.js?v=polska-v13',
-  './redesign/tokens.css?v=polska-v13',
-  './redesign/B-companion.css?v=polska-v13',
-  './redesign/dist/B-companion.js?v=polska-v13',
+  './redesign/data.js?v=polska-v14',
+  './redesign/tokens.css?v=polska-v14',
+  './redesign/B-companion.css?v=polska-v14',
+  './redesign/dist/B-companion.js?v=polska-v14',
 ];
 const OFFICIAL_APP_URLS = new Set(
   PRECACHE_URLS

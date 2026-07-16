@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import test from 'node:test';
 import vm from 'node:vm';
+import { execFileSync } from 'node:child_process';
 
 const read = (path) => fs.readFileSync(path, 'utf8');
 
@@ -49,4 +50,35 @@ test('manifest 與 sitemap 只公開根入口', () => {
   assert.equal(manifest.start_url, './');
   assert.equal(manifest.id, './');
   assert.doesNotMatch(read('sitemap.xml'), /mobile\.html|desktop\.html|app-preview\.html/);
+});
+
+test('經典版逐位元封存且不進入公開或快取路徑', () => {
+  const archived = fs.readFileSync('archive/classic-index.html');
+  const baseline = execFileSync('git', ['show', 'a0d2553:index.html']);
+  assert.deepEqual(archived, baseline);
+  for (const file of ['manifest.json', 'sitemap.xml', 'sw.js', 'build.sh']) {
+    assert.doesNotMatch(read(file), /archive\/classic-index\.html/);
+  }
+  assert.match(read('README.md'), /archive\/classic-index\.html/);
+});
+
+test('manifest 今日 shortcut 對應實際存在的 JSX 錨點', () => {
+  const shortcut = JSON.parse(read('manifest.json')).shortcuts.find((item) => item.short_name === '今日');
+  assert.equal(shortcut.url, './#top');
+  assert.match(read('redesign/B-companion.jsx'), /id="top"/);
+});
+
+test('入口 metadata 日期與唯一資料來源一致', () => {
+  const html = read('index.html');
+  const data = read('redesign/data.js');
+  assert.match(data, /tripStart:\s*'2026-10-24'/);
+  assert.match(data, /tripEnd:\s*'2026-10-31'/);
+  assert.match(html, /2026\/10\/24[–-]10\/31/);
+  assert.doesNotMatch(html, /2026\/10\/23[–-]11\/1|2025[–-]2026/);
+});
+
+test('合併說明只保留歷史脈絡，不再指示建立或推送三版本', () => {
+  const notes = read('MERGE-NOTES.md');
+  assert.match(notes, /歷史封存/);
+  assert.doesNotMatch(notes, /git push|git checkout -b|unzip|cp -r/);
 });

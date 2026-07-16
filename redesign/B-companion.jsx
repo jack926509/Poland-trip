@@ -230,6 +230,7 @@ function B_Companion({ initialDay }) {
   const [standalone, setStandalone] = B_useState(B_isStandaloneMode);
   const [pwaStatus, setPwaStatus] = B_useState(() => window.PolskaPwaState?.status || ('serviceWorker' in navigator ? 'loading' : 'unsupported'));
   const [waitingWorker, setWaitingWorker] = B_useState(() => window.PolskaPwaState?.waitingWorker || null);
+  const [updateFailed, setUpdateFailed] = B_useState(() => Boolean(window.PolskaPwaState?.updateError));
   const [installStatus, setInstallStatus] = B_useState(() => B_isStandaloneMode() ? 'installed' : 'browser');
   const [toast, setToast] = B_useState(null);
   const [showInstallHint, setShowInstallHint] = B_useState(() => B_isIOSSafari() && !B_isStandaloneMode());
@@ -242,8 +243,6 @@ function B_Companion({ initialDay }) {
   const trainSheetRef = React.useRef(null);
   const trainCloseRef = React.useRef(null);
   const trainReturnFocusRef = React.useRef(null);
-  const updateApprovedRef = React.useRef(false);
-  const reloadingRef = React.useRef(false);
   const installPromptRef = React.useRef(null);
 
   B_useModalFocus(drawerOpen, drawerRef, drawerCloseRef, drawerReturnFocusRef);
@@ -280,8 +279,7 @@ function B_Companion({ initialDay }) {
   const dismissInstallHint = () => setShowInstallHint(false);
   const applyUpdate = () => {
     if (!waitingWorker) return;
-    updateApprovedRef.current = true;
-    waitingWorker.postMessage({ type: 'SKIP_WAITING' });
+    window.PolskaPwaState?.applyUpdate?.();
   };
   const installApp = async () => {
     const promptEvent = installPromptRef.current;
@@ -320,27 +318,28 @@ function B_Companion({ initialDay }) {
     const onReady = () => setPwaStatus('ready');
     const onUpdateReady = (event) => {
       setWaitingWorker(event.detail?.worker || null);
+      setUpdateFailed(false);
+    };
+    const onUpdateError = () => {
+      setPwaStatus('ready');
+      setUpdateFailed(true);
     };
     const onError = () => setPwaStatus('error');
-    const onControllerChange = () => {
-      if (!updateApprovedRef.current || reloadingRef.current) return;
-      reloadingRef.current = true;
-      window.location.reload();
-    };
     window.addEventListener('pwa-ready', onReady);
     window.addEventListener('pwa-update-ready', onUpdateReady);
+    window.addEventListener('pwa-update-error', onUpdateError);
     window.addEventListener('pwa-error', onError);
-    navigator.serviceWorker?.addEventListener('controllerchange', onControllerChange);
     const current = window.PolskaPwaState;
     if (current) {
       setPwaStatus(current.status);
       setWaitingWorker(current.waitingWorker || null);
+      setUpdateFailed(Boolean(current.updateError));
     }
     return () => {
       window.removeEventListener('pwa-ready', onReady);
       window.removeEventListener('pwa-update-ready', onUpdateReady);
+      window.removeEventListener('pwa-update-error', onUpdateError);
       window.removeEventListener('pwa-error', onError);
-      navigator.serviceWorker?.removeEventListener('controllerchange', onControllerChange);
     };
   }, []);
 
@@ -408,7 +407,7 @@ function B_Companion({ initialDay }) {
   const next = d.steps[idx + 1];
   const active = d.n;
   const setActive = (n) => { setOverride(n); setOpenStep(null); setDrawerOpen(false); };
-  const hardNow = d.hardConstraints?.[0] || '今日沒有固定硬時間';
+  const hardNow = core.selectNextHardConstraint(d.hardConstraints, mins);
   const bookNow = d.mustBook?.length ? d.mustBook.join(' / ') : '無需預先訂票';
   const compressNow = d.compressible?.[0] || '保留彈性休息';
   const backupNow = d.backup?.[0]?.label ? `${d.backup[0].label} · ${d.backup[0].where}` : '無指定備案';
@@ -529,8 +528,8 @@ function B_Companion({ initialDay }) {
 
         <div className="B-mobile-brief" aria-label="今日快速判讀">
           <div className="brief-card urgent">
-            <span className="brief-k">硬時間</span>
-            <strong>{hardNow}</strong>
+            <span className="brief-k">{hardNow.label}</span>
+            <strong>{hardNow.text}</strong>
           </div>
           <div className="brief-card">
             <span className="brief-k">必訂票</span>
@@ -545,7 +544,7 @@ function B_Companion({ initialDay }) {
         <div className={`B-pwa-state ${online ? 'online' : 'offline'}`} data-pwa-status={pwaStatus} aria-live="polite">
           <span>{online ? '已連線' : '離線模式'}</span>
           <strong>{installLabel}</strong>
-          <em>{waitingWorker ? '更新可用' : readinessLabel}</em>
+          <em>{updateFailed ? '更新失敗，仍使用目前版本' : waitingWorker ? '更新可用' : readinessLabel}</em>
           {installStatus === 'installable' && (
             <button type="button" className="B-install-action" onClick={installApp}>安裝 App</button>
           )}
@@ -613,18 +612,7 @@ function B_Companion({ initialDay }) {
         const isBus = d.train.type === 'BUS';
         const bookHref = isBus ? 'https://www.lajkonikbus.pl/' : 'https://www.intercity.pl/en/';
         return (
-          <div
-            className="B-train"
-            role="button"
-            tabIndex={0}
-            aria-label={`${isBus ? '巴士' : '火車'}詳情：${d.train.from} 到 ${d.train.to}`}
-            onClick={openTrainSheet}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                openTrainSheet(e);
-              }
-            }}>
+          <div className="B-train">
             <div className="seg">
               <span className={`pill ${d.train.type.toLowerCase()}`}>{d.train.type}</span>
               <span>{d.train.date || d.date}</span>
@@ -654,6 +642,9 @@ function B_Companion({ initialDay }) {
                 <small>{d.train.arr}</small>
               </a>
             </div>
+            <button type="button" className="train-details" onClick={openTrainSheet}>
+              開啟{isBus ? '巴士' : '火車'}交通詳情
+            </button>
           </div>
         );
       })()}
@@ -679,7 +670,7 @@ function B_Companion({ initialDay }) {
                   <span>{isBus ? 'Bus transfer' : 'Rail transfer'}</span>
                   <h2>{d.train.from} → {d.train.to}</h2>
                 </div>
-                <button ref={trainCloseRef} type="button" aria-label="關閉火車詳情" onClick={() => setTrainSheet(false)}>×</button>
+                <button ref={trainCloseRef} type="button" aria-label={`關閉${isBus ? '巴士' : '火車'}詳情`} onClick={() => setTrainSheet(false)}>×</button>
               </div>
               <div className="sheet-route">
                 <span className={`pill ${d.train.type.toLowerCase()}`}>{d.train.type}</span>

@@ -9,3 +9,7 @@
 - 修改後驗收：`./verify.sh`
 
 `mobile.html`、`desktop.html`、`app-preview.html` 僅保留舊書籤相容轉址，不再是獨立版本。
+
+## 經典版原始碼封存
+
+`archive/classic-index.html` 逐字保存整併前 `a0d2553:index.html` 的經典版原始碼，僅供歷史查閱。此檔不公開於 sitemap、manifest、正式 build 或 Service Worker 快取。

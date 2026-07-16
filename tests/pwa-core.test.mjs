@@ -5,7 +5,7 @@ import vm from 'node:vm';
 
 const context = { globalThis: {}, Intl, Date };
 vm.runInNewContext(fs.readFileSync('redesign/pwa-core.js', 'utf8'), context);
-const { projectTripMoment, readNotes, writeNotes } = context.globalThis.PolskaPwaCore;
+const { projectTripMoment, selectNextHardConstraint, readNotes, writeNotes } = context.globalThis.PolskaPwaCore;
 const tripMeta = { tripStart: '2026-10-24', tripEnd: '2026-10-31', timeZone: 'Europe/Warsaw' };
 const days = [
   { n: 1, date: '10/24 (六)', steps: [{ t: '09:00' }, { t: '12:00' }] },
@@ -46,4 +46,19 @@ test('備註不是普通物件時安全降級', () => {
     const result = JSON.parse(JSON.stringify(readNotes(storage)));
     assert.deepEqual(result, { notes: {}, persistent: false }, `未拒絕 ${value}`);
   }
+});
+
+test('下一硬時間只選尚未發生且含 HH:MM 的限制', () => {
+  const constraints = ['一般提醒', '09:00 已過', '辛德勒工廠 17:30 最後入場', '19:30 火車'];
+  assert.deepEqual(
+    JSON.parse(JSON.stringify(selectNextHardConstraint(constraints, 17 * 60))),
+    { label: '下一個硬時間', text: '辛德勒工廠 17:30 最後入場' },
+  );
+});
+
+test('當日沒有未來硬時間時不顯示過期時間', () => {
+  assert.deepEqual(
+    JSON.parse(JSON.stringify(selectNextHardConstraint(['09:00 火車', '一般提醒'], 18 * 60))),
+    { label: '今日硬限制', text: '一般提醒' },
+  );
 });

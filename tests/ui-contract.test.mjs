@@ -75,3 +75,15 @@ test('Drawer 與交通 sheet 共用 modal 焦點循環', () => {
   assert.match(jsx, /ref={drawerRef}/);
   assert.match(jsx, /ref={trainSheetRef}/);
 });
+
+test('交通卡使用獨立詳情按鈕且不建立巢狀互動元素', () => {
+  const card = jsx.slice(jsx.indexOf('{d.train &&'), jsx.indexOf('{trainSheet &&'));
+  assert.doesNotMatch(card, /role="button"|tabIndex=\{0\}|onKeyDown=/);
+  assert.match(card, /<button[\s\S]*?開啟[\s\S]*?交通詳情[\s\S]*?<\/button>/);
+  assert.match(card, /<a className="book-cta"/);
+  assert.match(card, /<a className="stop"/);
+});
+
+test('交通 sheet 關閉按鈕依類型命名', () => {
+  assert.match(jsx, /aria-label=\{`關閉\$\{isBus \? '巴士' : '火車'\}詳情`\}/);
+});

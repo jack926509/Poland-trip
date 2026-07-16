@@ -74,9 +74,11 @@ function loadRegisterHarness({ registration, ready, registerError }) {
         register() {
           return registerError ? Promise.reject(registerError) : Promise.resolve(registration);
         },
+        addEventListener() {},
       },
     },
     window: {
+      location: { reload() {} },
       addEventListener(name, handler) { windowListeners[name] = handler; },
       dispatchEvent(event) { events.push(event); },
     },
@@ -151,7 +153,7 @@ test('巢狀路徑下的同名正式資產也不得命中 runtime cache', async 
     });
     const response = await dispatchFetch(
       handler,
-      makeRequest(`${prefix}/redesign/B-companion.css?v=polska-v13`),
+      makeRequest(`${prefix}/redesign/B-companion.css?v=polska-v14`),
     );
     assert.equal(response, network, `${prefix} 誤回舊 cache`);
     assert.equal(matches.length, 0, `${prefix} 不得讀 cache`);
@@ -168,19 +170,19 @@ test('正式根應用資產仍使用 cache-first', async () => {
   });
   const response = await dispatchFetch(
     handler,
-    makeRequest('redesign/B-companion.css?v=polska-v13'),
+    makeRequest('redesign/B-companion.css?v=polska-v14'),
   );
   assert.equal(response, cached);
   assert.equal(matches.length, 1);
 });
 
-test('核心快取與根入口統一使用 polska-v13', () => {
-  assert.match(sw, /const CACHE_VERSION = 'polska-v13'/);
+test('核心快取與根入口統一使用 polska-v14', () => {
+  assert.match(sw, /const CACHE_VERSION = 'polska-v14'/);
   for (const asset of [
     './manifest.json', './pwa-register.js', './redesign/pwa-core.js',
-    './redesign/data.js?v=polska-v13', './redesign/tokens.css?v=polska-v13',
-    './redesign/B-companion.css?v=polska-v13',
-    './redesign/dist/B-companion.js?v=polska-v13',
+    './redesign/data.js?v=polska-v14', './redesign/tokens.css?v=polska-v14',
+    './redesign/B-companion.css?v=polska-v14',
+    './redesign/dist/B-companion.js?v=polska-v14',
   ]) assert.match(sw, new RegExp(asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.doesNotMatch(sw, /polska-v12/);
 });
@@ -212,7 +214,7 @@ test('pwa-ready 等 active worker 完成後才送出', async () => {
   assert.equal(harness.events.some((event) => event.type === 'pwa-ready'), true);
 });
 
-test('worker redundant 與註冊失敗均送出 pwa-error', async () => {
+test('首次安裝 worker redundant 與註冊失敗均送出 pwa-error', async () => {
   let stateHandler;
   const worker = {
     state: 'installing',
@@ -248,11 +250,9 @@ test('worker redundant 與註冊失敗均送出 pwa-error', async () => {
   );
 });
 
-test('更新只由使用者按鈕觸發，controllerchange 才重載一次', () => {
-  assert.match(jsx, /waitingWorker\.postMessage\(\{ type: 'SKIP_WAITING' \}\)/);
-  assert.match(jsx, /controllerchange/);
-  assert.match(jsx, /window\.location\.reload\(\)/);
-  assert.match(jsx, /updateApprovedRef/);
+test('更新按鈕委派給可執行 lifecycle 控制器', () => {
+  assert.match(jsx, /PolskaPwaState\?\.applyUpdate\?\.\(\)/);
+  assert.match(jsx, /更新失敗，仍使用目前版本/);
 });
 
 test('顯示安裝、離線、更新與儲存降級狀態', () => {
