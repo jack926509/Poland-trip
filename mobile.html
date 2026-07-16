@@ -1,116 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>POLSKA — 旅伴版 · 波蘭 8 日四城路線</title>
-<meta name="description" content="今日 = Day X，現在該做什麼。手機優先的波蘭旅伴：每日步驟、火車時刻、必吃美食一站搞定。">
-<meta name="theme-color" content="#a8231d">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="POLSKA">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-<link rel="canonical" href="https://jack926509.github.io/Poland-trip/mobile.html">
-<link rel="manifest" href="manifest.json">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjZjRlY2Q4Ii8+PHJlY3QgeT0iNTAiIHdpZHRoPSIxMDAiIGhlaWdodD0iNTAiIGZpbGw9IiNhODIzMWQiLz48L3N2Zz4=">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-
-<meta property="og:type" content="website">
-<meta property="og:title" content="POLSKA — 旅伴版 · 波蘭 8 日四城路線">
-<meta property="og:description" content="今日 = Day X，現在該做什麼。手機優先的波蘭旅伴。">
-<meta property="og:url" content="https://jack926509.github.io/Poland-trip/mobile.html">
-<meta property="og:image" content="https://jack926509.github.io/Poland-trip/og-image.svg">
-<meta property="og:locale" content="zh_TW">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="POLSKA — 旅伴版">
-<meta name="twitter:description" content="今日 = Day X，現在該做什麼。手機優先的波蘭旅伴。">
-<meta name="twitter:image" content="https://jack926509.github.io/Poland-trip/og-image.svg">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Bodoni+Moda:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Serif+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap">
-<link rel="stylesheet" href="redesign/tokens.css?v=polska-v12">
-<link rel="stylesheet" href="redesign/B-companion.css?v=polska-v12">
-<style>
-  /* Hardware-accelerate scrolling on iOS Safari + scroll only the body. */
-  html,body{margin:0;-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
-  body{background:#f0eee9;font-family:'Noto Serif TC',serif}
-  #root{
-    max-width:480px;margin:0 auto;min-height:100vh;
-    background:var(--paper);
-    box-shadow:0 0 30px rgba(0,0,0,.08);
-  }
-  .B-frame{border-radius:0;height:auto;min-height:100vh}
-  .desktop-escape{
-    position:fixed;top:.45rem;right:.5rem;z-index:99;
-    font-family:'JetBrains Mono',ui-monospace,monospace;
-    font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;
-    padding:.32rem .58rem;border-radius:999px;
-    background:#f4ecd8;color:#1a1612;
-    border:1px solid rgba(26,22,18,.22);text-decoration:none;
-    box-shadow:0 1px 3px rgba(26,22,18,.08);
-  }
-  .desktop-escape:active{background:#ebe1c9}
-  .pwa-update{
-    position:fixed;left:50%;bottom:calc(5.35rem + env(safe-area-inset-bottom,0px));z-index:120;
-    transform:translateX(-50%);
-    width:min(21rem,calc(100vw - 2rem));
-    display:flex;align-items:center;justify-content:space-between;gap:.75rem;
-    padding:.65rem .8rem;border:1px solid #1a1612;border-radius:12px;
-    background:#1a1612;color:#f4ecd8;
-    font-family:'Noto Serif TC',serif;font-size:.78rem;
-    box-shadow:0 12px 28px rgba(26,22,18,.22);
-  }
-  .pwa-update button{
-    flex:none;border:1px solid #f4ecd8;border-radius:999px;
-    background:#f4ecd8;color:#1a1612;
-    font:600 .68rem 'JetBrains Mono',ui-monospace,monospace;
-    letter-spacing:.08em;padding:.36rem .62rem;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>POLSKA — 正在前往新版</title>
 </head>
 <body>
-<a class="desktop-escape" href="index.html?classic=1" title="切回桌機版">桌機版 →</a>
-<div id="root"></div>
-<script src="vendor/react.production.min.js"></script>
-<script src="vendor/react-dom.production.min.js"></script>
-<script src="redesign/data.js?v=polska-v12"></script>
-<script src="redesign/dist/B-companion.js?v=polska-v12"></script>
-<script>
-ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(B_Companion));
-</script>
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    var refreshing = false;
-    navigator.serviceWorker.addEventListener('controllerchange', function() {
-      if (refreshing) return;
-      refreshing = true;
-      window.location.reload();
-    });
-    navigator.serviceWorker.register('sw.js').then(function(reg) {
-      function showUpdate(worker) {
-        if (!worker || document.querySelector('.pwa-update')) return;
-        var notice = document.createElement('div');
-        notice.className = 'pwa-update';
-        notice.innerHTML = '<span>新版離線資料已準備好</span><button type="button">更新</button>';
-        notice.querySelector('button').addEventListener('click', function() {
-          worker.postMessage({ type: 'SKIP_WAITING' });
-        });
-        document.body.appendChild(notice);
-      }
-      if (reg.waiting) showUpdate(reg.waiting);
-      reg.addEventListener('updatefound', function() {
-        var worker = reg.installing;
-        if (!worker) return;
-        worker.addEventListener('statechange', function() {
-          if (worker.state === 'installed' && navigator.serviceWorker.controller) showUpdate(worker);
-        });
-      });
-    }).catch(function(){});
-  });
-}
-</script>
+  <p>POLSKA 已整併，正在前往新版網頁與手機 PWA…</p>
+  <script src="legacy-redirect.js"></script>
 </body>
 </html>

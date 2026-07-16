@@ -111,6 +111,12 @@ function B_isStandaloneMode() {
   return window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone === true;
 }
 
+function B_isIOSSafari() {
+  if (!B_isIOS || typeof navigator === 'undefined') return false;
+  const ua = navigator.userAgent || '';
+  return /AppleWebKit/.test(ua) && !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
+}
+
 // Pull venue name out of "Dish @ Venue" format. Falls back to whole string.
 function B_eatVenue(item) {
   if (!item) return '';
@@ -119,38 +125,102 @@ function B_eatVenue(item) {
   return item;
 }
 
-// Map real-world clock to a synthetic trip moment so the demo feels alive.
-// Strategy: take current local time-of-day; project onto Day 2 (mid-trip transit day).
-// User can override by tapping a day pill — that takes priority.
-function B_synthetic(days, override) {
-  const now = new Date();
-  const mins = now.getHours() * 60 + now.getMinutes();
-  // Use override day if provided, else pick day based on weekday (mod 8) for variety
-  const dayNum = override ?? ((now.getDate() % 8) + 1);
-  const d = days.find(x => x.n === dayNum) || days[1];
+function B_getStorage() {
+  try { return window.localStorage; }
+  catch (_) { return null; }
+}
 
-  // find current step: latest step whose time <= now
-  const stepMins = d.steps.map(s => {
-    const [h, m] = s.t.split(':').map(Number);
-    return h * 60 + m;
-  });
-  let idx = 0;
-  for (let i = 0; i < stepMins.length; i++) {
-    if (stepMins[i] <= mins) idx = i;
-  }
-  // if before first step, idx=0 but mark "upcoming"
-  const beforeStart = mins < stepMins[0];
-  const afterEnd = mins > stepMins[stepMins.length - 1] + 60;
-  return {
-    d, idx, beforeStart, afterEnd,
-    now: d.steps[idx],
-    next: d.steps[idx + 1],
-    mins,
-  };
+function B_formatMinutes(mins) {
+  const normalized = ((mins % 1440) + 1440) % 1440;
+  return `${String(Math.floor(normalized / 60)).padStart(2, '0')}:${String(normalized % 60).padStart(2, '0')}`;
+}
+
+function B_useModalFocus(open, containerRef, initialFocusRef, returnFocusRef) {
+  const wasOpenRef = React.useRef(false);
+
+  B_useEffect(() => {
+    if (open) {
+      wasOpenRef.current = true;
+      initialFocusRef.current?.focus();
+      return;
+    }
+    if (wasOpenRef.current) {
+      wasOpenRef.current = false;
+      returnFocusRef.current?.focus();
+    }
+  }, [open, initialFocusRef, returnFocusRef]);
+
+  B_useEffect(() => {
+    if (!open) return undefined;
+    const container = containerRef.current;
+    if (!container) return undefined;
+    const onKeyDown = (e) => {
+      if (e.key !== 'Tab') return;
+      const focusable = Array.from(container.querySelectorAll(
+        'a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])'
+      )).filter((item) => item.getAttribute('aria-hidden') !== 'true');
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && (document.activeElement === first || !container.contains(document.activeElement))) {
+        e.preventDefault();
+        last.focus();
+      }
+      else if (!e.shiftKey && (document.activeElement === last || !container.contains(document.activeElement))) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    container.addEventListener('keydown', onKeyDown);
+    return () => container.removeEventListener('keydown', onKeyDown);
+  }, [open, containerRef]);
+}
+
+function B_PrimaryNav({ placement, onToday, onItinerary, onTransport, onTickets }) {
+  const items = [
+    ['今日', onToday], ['行程', onItinerary], ['交通', onTransport], ['訂票', onTickets],
+  ];
+  const placementClass = placement === 'mobile' ? 'B-mobile-nav' : 'B-desktop-nav';
+  return (
+    <nav
+      className={`B-primary-nav ${placementClass}`}
+      aria-label={placement === 'mobile' ? '手機主要導覽' : '網頁主要導覽'}>
+      {items.map(([label, action]) => (
+        <button type="button" key={label} onClick={action}>{label}</button>
+      ))}
+    </nav>
+  );
+}
+
+function B_PreTripGuide({ trip }) {
+  const sections = [
+    ['航班', [...trip.flights.out, ...trip.flights.back].map((flight) => `${flight.code} · ${flight.leg} · ${flight.when}`)],
+    ['住宿區域', trip.stay.map((item) => `${item.city} · ${item.pick} · ${item.note}`)],
+    ['安全與緊急資訊', [
+      ...trip.safety.emergency.map(([label, value]) => `${label} · ${value}`),
+      ...trip.safety.tips.map((item) => `${item.label} · ${item.text}`),
+    ]],
+    ['實用資訊', trip.practical.map((item) => `${item.tag} · ${item.name} · ${item.note}`)],
+    ['常用波蘭語', trip.phrases.map(([zh, pl]) => `${zh} · ${pl}`)],
+  ];
+  return (
+    <section id="B-guide" className="B-pretrip-guide" aria-labelledby="B-guide-title">
+      <h2 id="B-guide-title">行前指南</h2>
+      {sections.map(([title, rows]) => (
+        <details key={title}>
+          <summary>{title}</summary>
+          <ul>{rows.map((row) => <li key={row}>{row}</li>)}</ul>
+        </details>
+      ))}
+    </section>
+  );
 }
 
 function B_Companion({ initialDay }) {
   const t = window.TRIP;
+  const core = window.PolskaPwaCore;
+  const storage = B_useMemo(B_getStorage, []);
+  const initialNotes = B_useMemo(() => core.readNotes(storage), [core, storage]);
   const [override, setOverride] = B_useState(initialDay ?? null);
   const [openStep, setOpenStep] = B_useState(null);
   const [tick, setTick] = B_useState(0);
@@ -158,11 +228,25 @@ function B_Companion({ initialDay }) {
   const [trainSheet, setTrainSheet] = B_useState(false);
   const [online, setOnline] = B_useState(() => typeof navigator === 'undefined' ? true : navigator.onLine);
   const [standalone, setStandalone] = B_useState(B_isStandaloneMode);
-  const [notes, setNotes] = B_useState(() => {
-    try { return JSON.parse(localStorage.getItem('polska-notes') || '{}'); }
-    catch (e) { return {}; }
-  });
+  const [pwaStatus, setPwaStatus] = B_useState(() => window.PolskaPwaState?.status || ('serviceWorker' in navigator ? 'loading' : 'unsupported'));
+  const [waitingWorker, setWaitingWorker] = B_useState(() => window.PolskaPwaState?.waitingWorker || null);
+  const [updateFailed, setUpdateFailed] = B_useState(() => Boolean(window.PolskaPwaState?.updateError));
+  const [installStatus, setInstallStatus] = B_useState(() => B_isStandaloneMode() ? 'installed' : 'browser');
+  const [toast, setToast] = B_useState(null);
+  const [showInstallHint, setShowInstallHint] = B_useState(() => B_isIOSSafari() && !B_isStandaloneMode());
+  const [notes, setNotes] = B_useState(initialNotes.notes);
+  const [notesPersistent, setNotesPersistent] = B_useState(initialNotes.persistent);
   const scrubRef = React.useRef(null);
+  const drawerRef = React.useRef(null);
+  const drawerCloseRef = React.useRef(null);
+  const drawerReturnFocusRef = React.useRef(null);
+  const trainSheetRef = React.useRef(null);
+  const trainCloseRef = React.useRef(null);
+  const trainReturnFocusRef = React.useRef(null);
+  const installPromptRef = React.useRef(null);
+
+  B_useModalFocus(drawerOpen, drawerRef, drawerCloseRef, drawerReturnFocusRef);
+  B_useModalFocus(trainSheet, trainSheetRef, trainCloseRef, trainReturnFocusRef);
 
   const noteKey = (dn, si) => `${dn}-${si}`;
   const editNote = (dn, si) => {
@@ -170,17 +254,58 @@ function B_Companion({ initialDay }) {
     const prev = notes[k] || '';
     const v = window.prompt('在這個行程加上備註：', prev);
     if (v === null) return;
-    setNotes((p) => {
-      const next = { ...p };
-      const trimmed = v.trim();
-      if (trimmed) next[k] = trimmed; else delete next[k];
-      try { localStorage.setItem('polska-notes', JSON.stringify(next)); } catch (e) {}
-      return next;
-    });
+    const next = { ...notes };
+    const trimmed = v.trim();
+    if (trimmed) next[k] = trimmed; else delete next[k];
+    setNotes(next);
+    setNotesPersistent(core.writeNotes(storage, next));
+  };
+  const openDrawer = (e) => {
+    drawerReturnFocusRef.current = e.currentTarget;
+    setDrawerOpen(true);
+  };
+  const openTrainSheet = (e) => {
+    trainReturnFocusRef.current = e.currentTarget;
+    setTrainSheet(true);
   };
   const openExt = (url) => {
     if (!url) return;
+    if (!online) {
+      setToast('目前離線；站名與地址仍可在本頁查看');
+      return;
+    }
     window.open(url, '_blank', 'noopener,noreferrer');
+  };
+  const dismissInstallHint = () => setShowInstallHint(false);
+  const applyUpdate = () => {
+    if (!waitingWorker) return;
+    window.PolskaPwaState?.applyUpdate?.();
+  };
+  const installApp = async () => {
+    const promptEvent = installPromptRef.current;
+    if (!promptEvent) {
+      setInstallStatus('browser');
+      return;
+    }
+    try {
+      await promptEvent.prompt();
+      const { outcome } = await promptEvent.userChoice;
+      setInstallStatus(outcome === 'accepted' ? 'installing' : 'browser');
+    }
+    catch (_) {
+      setInstallStatus('browser');
+    }
+    finally {
+      if (installPromptRef.current === promptEvent) installPromptRef.current = null;
+    }
+  };
+  const interceptOfflineLink = (e) => {
+    if (online) return;
+    const link = e.target.closest?.('a[target="_blank"]');
+    if (!link) return;
+    e.preventDefault();
+    e.stopPropagation();
+    setToast('目前離線；站名與地址仍可在本頁查看');
   };
 
   // refresh every minute so the Now widget stays accurate
@@ -188,6 +313,62 @@ function B_Companion({ initialDay }) {
     const id = setInterval(() => setTick(x => x + 1), 60000);
     return () => clearInterval(id);
   }, []);
+
+  B_useEffect(() => {
+    const onReady = () => setPwaStatus('ready');
+    const onUpdateReady = (event) => {
+      setWaitingWorker(event.detail?.worker || null);
+      setUpdateFailed(false);
+    };
+    const onUpdateError = () => {
+      setPwaStatus('ready');
+      setWaitingWorker(null);
+      setUpdateFailed(true);
+    };
+    const onError = () => setPwaStatus('error');
+    window.addEventListener('pwa-ready', onReady);
+    window.addEventListener('pwa-update-ready', onUpdateReady);
+    window.addEventListener('pwa-update-error', onUpdateError);
+    window.addEventListener('pwa-error', onError);
+    const current = window.PolskaPwaState;
+    if (current) {
+      setPwaStatus(current.status);
+      setWaitingWorker(current.waitingWorker || null);
+      setUpdateFailed(Boolean(current.updateError));
+    }
+    return () => {
+      window.removeEventListener('pwa-ready', onReady);
+      window.removeEventListener('pwa-update-ready', onUpdateReady);
+      window.removeEventListener('pwa-update-error', onUpdateError);
+      window.removeEventListener('pwa-error', onError);
+    };
+  }, []);
+
+  B_useEffect(() => {
+    const onBeforeInstallPrompt = (event) => {
+      event.preventDefault();
+      installPromptRef.current = event;
+      setInstallStatus('installable');
+    };
+    const onAppInstalled = () => {
+      installPromptRef.current = null;
+      setInstallStatus('installed');
+      setStandalone(true);
+      setShowInstallHint(false);
+    };
+    window.addEventListener('beforeinstallprompt', onBeforeInstallPrompt);
+    window.addEventListener('appinstalled', onAppInstalled);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', onBeforeInstallPrompt);
+      window.removeEventListener('appinstalled', onAppInstalled);
+    };
+  }, []);
+
+  B_useEffect(() => {
+    if (!toast) return undefined;
+    const id = setTimeout(() => setToast(null), 4500);
+    return () => clearTimeout(id);
+  }, [toast]);
 
   B_useEffect(() => {
     const updateOnline = () => setOnline(navigator.onLine);
@@ -205,14 +386,12 @@ function B_Companion({ initialDay }) {
   // Close modal surfaces on Escape
   B_useEffect(() => {
     const onKey = (e) => {
-      if (e.key === 'Escape') {
-        setDrawerOpen(false);
-        setTrainSheet(false);
-      }
+      if (e.key === 'Escape' && drawerOpen) setDrawerOpen(false);
+      if (e.key === 'Escape' && trainSheet) setTrainSheet(false);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, []);
+  }, [drawerOpen, trainSheet]);
 
   // Lock body scroll while modal surfaces are open.
   B_useEffect(() => {
@@ -220,13 +399,16 @@ function B_Companion({ initialDay }) {
     return () => { document.body.style.overflow = ''; };
   }, [drawerOpen, trainSheet]);
 
-  const { d, idx, now, next, beforeStart, afterEnd } = B_useMemo(
-    () => B_synthetic(t.days, override),
-    [t.days, override, tick]
+  const { d, phase, mins, momentDay, beforeStart, afterEnd, idx: projectedIdx } = B_useMemo(
+    () => core.projectTripMoment(t.days, new Date(), override, t.meta),
+    [core, t.days, t.meta, override, tick]
   );
+  const idx = phase === 'before' ? 0 : phase === 'after' ? d.steps.length - 1 : projectedIdx;
+  const now = d.steps[idx];
+  const next = d.steps[idx + 1];
   const active = d.n;
   const setActive = (n) => { setOverride(n); setOpenStep(null); setDrawerOpen(false); };
-  const hardNow = d.hardConstraints?.[0] || '今日沒有固定硬時間';
+  const hardNow = core.selectHardConstraintForMoment(d.hardConstraints, phase, d.n, momentDay, mins);
   const bookNow = d.mustBook?.length ? d.mustBook.join(' / ') : '無需預先訂票';
   const compressNow = d.compressible?.[0] || '保留彈性休息';
   const backupNow = d.backup?.[0]?.label ? `${d.backup[0].label} · ${d.backup[0].where}` : '無指定備案';
@@ -252,10 +434,31 @@ function B_Companion({ initialDay }) {
     }
   }, [active]);
 
-  const liveClock = (() => {
-    const n = new Date();
-    return `${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`;
-  })();
+  const liveClock = B_formatMinutes(mins);
+  const installLabel = standalone || installStatus === 'installed'
+    ? '已安裝'
+    : installStatus === 'installing'
+      ? '安裝中'
+    : installStatus === 'installable'
+      ? '可安裝'
+      : B_isIOSSafari()
+        ? '可加入主畫面'
+        : '瀏覽器模式';
+  const readinessLabel = pwaStatus === 'loading'
+    ? '正在準備離線資料'
+    : pwaStatus === 'ready'
+      ? '離線資料已準備'
+      : pwaStatus === 'error'
+        ? '離線資料準備失敗'
+        : '此瀏覽器不支援離線安裝';
+  const navActions = {
+    onToday: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
+    onItinerary: () => document.querySelector('.B-timeline')?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+    onTransport: (e) => d.train
+      ? openTrainSheet(e)
+      : document.querySelector('.B-timeline')?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+    onTickets: () => document.getElementById('B-tickets')?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
+  };
 
   return (
     <div className="B-frame paper-tex">
@@ -287,7 +490,7 @@ function B_Companion({ initialDay }) {
           type="button"
           className="meta"
           aria-label="顯示完整 8 日行程"
-          onClick={() => setDrawerOpen(true)}>
+          onClick={openDrawer}>
           10/24 → 10/31
         </button>
         <button
@@ -296,10 +499,14 @@ function B_Companion({ initialDay }) {
           aria-label="開啟選單"
           aria-expanded={drawerOpen}
           aria-controls="B-drawer"
-          onClick={() => setDrawerOpen(true)}>
+          onClick={openDrawer}>
           <span/><span/><span/>
         </button>
       </header>
+
+      <B_PrimaryNav placement="desktop" {...navActions} />
+      <main id="app-main" className="B-web-grid" onClickCapture={interceptOfflineLink}>
+        <section className="B-primary-column" aria-label="今日行程">
 
       <section className="B-today" data-bg={`0${d.n}`} id="top">
         <div className="kicker">Today is</div>
@@ -308,7 +515,7 @@ function B_Companion({ initialDay }) {
             type="button"
             className="day-num"
             aria-label="開啟 8 日行程選單"
-            onClick={() => setDrawerOpen(true)}>{d.n}</button>
+            onClick={openDrawer}>{d.n}</button>
           <span className="day-of">/ 8 · {d.date}<br/>{d.city}</span>
         </div>
         <h1>{d.title}</h1>
@@ -322,8 +529,8 @@ function B_Companion({ initialDay }) {
 
         <div className="B-mobile-brief" aria-label="今日快速判讀">
           <div className="brief-card urgent">
-            <span className="brief-k">硬時間</span>
-            <strong>{hardNow}</strong>
+            <span className="brief-k">{hardNow.label}</span>
+            <strong>{hardNow.text}</strong>
           </div>
           <div className="brief-card">
             <span className="brief-k">必訂票</span>
@@ -335,11 +542,23 @@ function B_Companion({ initialDay }) {
           </div>
         </div>
 
-        <div className={`B-pwa-state ${online ? 'online' : 'offline'}`} aria-live="polite">
+        <div className={`B-pwa-state ${online ? 'online' : 'offline'}`} data-pwa-status={pwaStatus} aria-live="polite">
           <span>{online ? '已連線' : '離線模式'}</span>
-          <strong>{standalone ? '主畫面 App' : '可加到主畫面'}</strong>
-          <em>{online ? '新版會自動背景快取' : '已快取核心行程與交通資料'}</em>
+          <strong>{installLabel}</strong>
+          <em>{updateFailed ? '更新失敗，仍使用目前版本' : waitingWorker ? '更新可用' : readinessLabel}</em>
+          {installStatus === 'installable' && (
+            <button type="button" className="B-install-action" onClick={installApp}>安裝 App</button>
+          )}
+          {!notesPersistent && <small>備註只保留到這次關閉前</small>}
         </div>
+
+        {showInstallHint && !standalone && (
+          <aside className="B-install-hint" role="note">
+            <strong>加到 iPhone 主畫面</strong>
+            <span>點 Safari 分享按鈕，再選「加入主畫面」，即可離線開啟。</span>
+            <button type="button" onClick={dismissInstallHint}>知道了</button>
+          </aside>
+        )}
 
         <button
           type="button"
@@ -353,7 +572,7 @@ function B_Companion({ initialDay }) {
             }
           }}>
           <div className="now-label">
-            {beforeStart ? '今日尚未開始' : afterEnd ? '今日已結束' : 'Now · 現在該做什麼'}
+            {phase === 'before' ? '行程尚未開始 · 預覽' : phase === 'after' ? '行程已結束 · 回顧' : beforeStart ? '今日尚未開始' : afterEnd ? '今日已結束' : 'Now · 現在該做什麼'}
           </div>
           <span className="now-time">{now.t}</span>
           <div className="now-task">{now.label.replace(/^★\s*/, '')}</div>
@@ -367,9 +586,8 @@ function B_Companion({ initialDay }) {
           </div>
           {next && (() => {
             const [nh, nm] = next.t.split(':').map(Number);
-            const cur = new Date();
-            const diff = (nh * 60 + nm) - (cur.getHours() * 60 + cur.getMinutes());
-            const inLabel = diff > 0 && diff < 600 ? ` · ${diff} min` : '';
+            const diff = (nh * 60 + nm) - mins;
+            const inLabel = phase === 'during' && diff > 0 && diff < 600 ? ` · ${diff} min` : '';
             return (
               <div className="next-up">Next · <strong>{next.t}{inLabel}</strong> {next.label.replace(/^★\s*/, '')}</div>
             );
@@ -395,18 +613,7 @@ function B_Companion({ initialDay }) {
         const isBus = d.train.type === 'BUS';
         const bookHref = isBus ? 'https://www.lajkonikbus.pl/' : 'https://www.intercity.pl/en/';
         return (
-          <div
-            className="B-train"
-            role="button"
-            tabIndex={0}
-            aria-label={`${isBus ? '巴士' : '火車'}詳情：${d.train.from} 到 ${d.train.to}`}
-            onClick={() => setTrainSheet(true)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                setTrainSheet(true);
-              }
-            }}>
+          <div className="B-train">
             <div className="seg">
               <span className={`pill ${d.train.type.toLowerCase()}`}>{d.train.type}</span>
               <span>{d.train.date || d.date}</span>
@@ -436,6 +643,9 @@ function B_Companion({ initialDay }) {
                 <small>{d.train.arr}</small>
               </a>
             </div>
+            <button type="button" className="train-details" onClick={openTrainSheet}>
+              開啟{isBus ? '巴士' : '火車'}交通詳情
+            </button>
           </div>
         );
       })()}
@@ -449,6 +659,7 @@ function B_Companion({ initialDay }) {
             role="presentation"
             onClick={() => setTrainSheet(false)}>
             <section
+              ref={trainSheetRef}
               className="B-train-sheet"
               role="dialog"
               aria-modal="true"
@@ -460,7 +671,7 @@ function B_Companion({ initialDay }) {
                   <span>{isBus ? 'Bus transfer' : 'Rail transfer'}</span>
                   <h2>{d.train.from} → {d.train.to}</h2>
                 </div>
-                <button type="button" aria-label="關閉火車詳情" onClick={() => setTrainSheet(false)}>×</button>
+                <button ref={trainCloseRef} type="button" aria-label={`關閉${isBus ? '巴士' : '火車'}詳情`} onClick={() => setTrainSheet(false)}>×</button>
               </div>
               <div className="sheet-route">
                 <span className={`pill ${d.train.type.toLowerCase()}`}>{d.train.type}</span>
@@ -491,8 +702,8 @@ function B_Companion({ initialDay }) {
           const myNote = notes[noteKey(d.n, i)];
           const showBooking = isStar || B_hasBooking(s.label);
           let cls = '';
-          if (i < idx) cls = 'done';
-          else if (i === idx) cls = 'now';
+          if (phase === 'after' || (phase === 'during' && i < idx)) cls = 'done';
+          else if (phase === 'during' && i === idx) cls = 'now';
           if (isStar) cls += ' star';
           const open = openStep === i;
           if (open) cls += ' open';
@@ -560,7 +771,7 @@ function B_Companion({ initialDay }) {
                   )}
                   <div className="row">
                     <span className="k">狀態</span>
-                    <span className="v">{i < idx ? '已完成' : i === idx ? '進行中' : '尚未開始'}{isStar ? ' · ★ 重點' : ''}</span>
+                    <span className="v">{phase === 'after' || (phase === 'during' && i < idx) ? '已完成' : phase === 'during' && i === idx ? '進行中' : '尚未開始'}{isStar ? ' · ★ 重點' : ''}</span>
                   </div>
                   <div className="actions">
                     <button
@@ -589,6 +800,9 @@ function B_Companion({ initialDay }) {
       </div>
 
       {d.warn && <div className="B-warn"><strong>⚠ 注意</strong> · {d.warn}</div>}
+
+        </section>
+        <aside className="B-secondary-column" aria-label="行程補充資訊">
 
       <div className="B-card field-note">
         <div className="label">今日提醒</div>
@@ -748,87 +962,66 @@ function B_Companion({ initialDay }) {
         );
       })()}
 
-      <nav className="B-tabbar" aria-label="底部切換">
-        <a href="#today"
-           className="active"
-           aria-current="page"
-           onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-          <svg viewBox="0 0 24 24"><path d="M3 12L12 4l9 8M5 10v10h14V10"/></svg>
-          今日
-        </a>
-        <a href="#timeline"
-           onClick={(e) => {
-             e.preventDefault();
-             const el = document.querySelector('.B-timeline');
-             if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-           }}>
-          <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16M9 6v12"/></svg>
-          行程
-        </a>
-        <a href="#transport"
-           onClick={(e) => {
-             e.preventDefault();
-             if (d.train) {
-               setTrainSheet(true);
-               return;
-             }
-             const transportStep = Array.from(document.querySelectorAll('.B-step')).find((el) => {
-               const text = el.textContent || '';
-               return /SKM|火車|巴士|機場|車站|Bolt|電車/.test(text);
-             });
-             if (transportStep) transportStep.scrollIntoView({ behavior: 'smooth', block: 'center' });
-             else {
-               const el = document.querySelector('.B-timeline');
-               if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-             }
-           }}>
-          <svg viewBox="0 0 24 24"><path d="M4 16V7a2 2 0 012-2h12a2 2 0 012 2v9"/><path d="M6 16h12M8 19h.01M16 19h.01M8 9h8M8 12h8"/></svg>
-          交通
-        </a>
-        <a href="#B-tickets"
-           onClick={(e) => {
-             e.preventDefault();
-             const el = document.getElementById('B-tickets');
-             if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-           }}>
-          <svg viewBox="0 0 24 24"><path d="M4 7a2 2 0 012-2h12a2 2 0 012 2v3a2 2 0 010 4v3a2 2 0 01-2 2H6a2 2 0 01-2-2v-3a2 2 0 010-4V7z"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>
-          訂票
-        </a>
-      </nav>
+      <B_PreTripGuide trip={t} />
+        </aside>
+      </main>
 
-      <div
-        className={`B-drawer-mask ${drawerOpen ? 'open' : ''}`}
-        onClick={() => setDrawerOpen(false)}
-        aria-hidden="true"
-      />
-      <aside
-        id="B-drawer"
-        className={`B-drawer ${drawerOpen ? 'open' : ''}`}
-        role="dialog"
-        aria-modal="true"
-        aria-label="日次選單">
-        <div className="B-drawer-head">
-          <span>POLSKA · 8 日</span>
-          <button
-            type="button"
-            className="B-drawer-close"
-            aria-label="關閉選單"
-            onClick={() => setDrawerOpen(false)}>×</button>
-        </div>
-        <ul>
-          {t.days.map(x => (
-            <li key={x.n}>
-              <a
-                href={`#B-day-${x.n}`}
-                className={x.n === active ? 'active' : ''}
-                onClick={(e) => { e.preventDefault(); setActive(x.n); }}>
-                <span>Day {x.n} · {x.title}</span>
-                <small>{x.date}</small>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </aside>
+      {waitingWorker && !updateFailed && (
+        <aside className="B-update-ready" role="status" aria-live="polite">
+          <span><strong>更新可用</strong>新版離線資料已準備好</span>
+          <button type="button" onClick={applyUpdate}>立即更新</button>
+        </aside>
+      )}
+
+      {toast && <div className="B-toast" role="status" aria-live="assertive">{toast}</div>}
+
+      <B_PrimaryNav placement="mobile" {...navActions} />
+
+      {drawerOpen && (
+        <React.Fragment>
+          <div
+            className="B-drawer-mask open"
+            onClick={() => setDrawerOpen(false)}
+            aria-hidden="true"
+          />
+          <aside
+            ref={drawerRef}
+            id="B-drawer"
+            className="B-drawer open"
+            role="dialog"
+            aria-modal="true"
+            aria-label="日次選單">
+            <div className="B-drawer-head">
+              <span>POLSKA · 8 日</span>
+              <button
+                ref={drawerCloseRef}
+                type="button"
+                className="B-drawer-close"
+                aria-label="關閉選單"
+                onClick={() => setDrawerOpen(false)}>×</button>
+            </div>
+            <ul>
+              {t.days.map(x => (
+                <li key={x.n}>
+                  <a
+                    href={`#B-day-${x.n}`}
+                    className={x.n === active ? 'active' : ''}
+                    onClick={(e) => { e.preventDefault(); setActive(x.n); }}>
+                    <span>Day {x.n} · {x.title}</span>
+                    <small>{x.date}</small>
+                  </a>
+                </li>
+              ))}
+              <li>
+                <a href="#B-guide" onClick={() => setDrawerOpen(false)}>
+                  <span>行前指南</span>
+                  <small>航班 · 住宿 · 安全</small>
+                </a>
+              </li>
+            </ul>
+          </aside>
+        </React.Fragment>
+      )}
     </div>
   );
 }

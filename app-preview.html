@@ -1,107 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>POLSKA — App 預覽</title>
-<meta name="description" content="POLSKA 手機 PWA 安裝後的 iOS 外觀預覽：離線旅伴、今日行程、火車與備案。">
-<meta name="theme-color" content="#a8231d">
-<link rel="canonical" href="https://jack926509.github.io/Poland-trip/app-preview.html">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Bodoni+Moda:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Serif+TC:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap">
-<link rel="stylesheet" href="redesign/tokens.css?v=polska-v11">
-<link rel="stylesheet" href="redesign/B-companion.css?v=polska-v11">
-<style>
-  body{
-    margin:0;min-height:100vh;
-    background:
-      radial-gradient(circle at 20% 10%, rgba(196,137,43,.22), transparent 32rem),
-      linear-gradient(135deg,#1a1612 0%,#2a231a 54%,#7a1812 100%);
-    font-family:'Noto Serif TC',serif;color:#f4ecd8;
-  }
-  #root{min-height:100vh}
-  .preview-page{
-    min-height:100vh;display:grid;grid-template-columns:minmax(18rem,28rem) auto;
-    gap:clamp(1.2rem,4vw,4rem);align-items:center;justify-content:center;
-    padding:clamp(.9rem,2vw,1.5rem) clamp(1rem,4vw,3rem);
-  }
-  .preview-copy{max-width:27rem}
-  .preview-icon{
-    width:88px;height:88px;border-radius:22px;
-    box-shadow:0 18px 36px rgba(0,0,0,.28), inset 0 0 0 1px rgba(255,255,255,.25);
-    margin-bottom:1.2rem;
-  }
-  .preview-kicker{
-    font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.68rem;
-    letter-spacing:.22em;text-transform:uppercase;color:#c4892b;margin-bottom:.8rem;
-  }
-  .preview-copy h1{
-    font-family:'Bodoni Moda',Georgia,serif;font-size:clamp(2.2rem,5vw,4.4rem);
-    line-height:.92;margin:0 0 1rem;letter-spacing:0;
-  }
-  .preview-copy p{
-    margin:0 0 1.1rem;color:rgba(244,236,216,.78);
-    font-size:1rem;line-height:1.7;
-  }
-  .preview-facts{display:grid;gap:.55rem;margin-top:1.25rem}
-  .preview-facts span{
-    display:flex;align-items:center;gap:.55rem;
-    font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.72rem;
-    letter-spacing:.08em;text-transform:uppercase;color:#f4ecd8;
-  }
-  .preview-facts span::before{
-    content:"";width:8px;height:8px;border-radius:50%;background:#c4892b;flex:none;
-  }
-  .preview-phone{filter:drop-shadow(0 30px 70px rgba(0,0,0,.34))}
-  .preview-phone .B-frame{
-    min-height:100%;border-radius:0;padding-top:54px;
-    padding-bottom:calc(var(--safe-bottom) + 4.5rem);
-  }
-  .preview-phone .B-status-bar{display:none}
-  .preview-phone .B-head{top:0}
-  .preview-phone .B-tabbar{position:sticky;left:0;right:0;bottom:0;transform:none;max-width:none}
-  .preview-phone .B-sheet-mask{position:absolute;border-radius:inherit}
-  @media (max-width: 860px){
-    .preview-page{grid-template-columns:1fr;justify-items:center;text-align:left}
-    .preview-copy{max-width:min(100%,28rem)}
-  }
-  @media (max-width: 460px){
-    .preview-page{padding:1rem;overflow:hidden}
-    .preview-phone{transform:scale(.86);transform-origin:top center;margin-bottom:-7rem}
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>POLSKA — 正在前往新版</title>
 </head>
 <body>
-<div id="root"></div>
-<script src="vendor/react.production.min.js"></script>
-<script src="vendor/react-dom.production.min.js"></script>
-<script src="redesign/data.js?v=polska-v11"></script>
-<script src="redesign/dist/ios-frame.js"></script>
-<script src="redesign/dist/B-companion.js?v=polska-v11"></script>
-<script>
-ReactDOM.createRoot(document.getElementById('root')).render(
-  React.createElement('main', { className: 'preview-page' },
-    React.createElement('section', { className: 'preview-copy' },
-      React.createElement('img', { className: 'preview-icon', src: 'apple-touch-icon.png', alt: 'POLSKA PWA app icon' }),
-      React.createElement('div', { className: 'preview-kicker' }, 'Installed PWA Preview'),
-      React.createElement('h1', null, 'POLSKA 旅伴 App'),
-      React.createElement('p', null, '加到 iPhone 主畫面後，直接打開 2026/10/24–10/31 波蘭四城行程。重點放在今日行程、硬時間、交通、訂票與離線查閱。'),
-      React.createElement('div', { className: 'preview-facts' },
-        React.createElement('span', null, 'offline-ready'),
-        React.createElement('span', null, 'mobile.html single PWA'),
-        React.createElement('span', null, 'Day 1–8 travel companion')
-      )
-    ),
-    React.createElement('section', { className: 'preview-phone', 'aria-label': 'iPhone PWA preview' },
-      React.createElement(IOSDevice, { width: 390, height: 844, statusBarTime: '9:41' },
-        React.createElement(B_Companion, { initialDay: 2 })
-      )
-    )
-  )
-);
-</script>
+  <p>POLSKA 已整併，正在前往新版網頁與手機 PWA…</p>
+  <script src="legacy-redirect.js"></script>
 </body>
 </html>

@@ -19,9 +19,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: 驗證正式 PWA
+        run: ./verify.sh
+
+      - name: 組裝安全公開輸出
+        run: mkdir _site && ./prepare-site.sh _site
+
       - name: Publish to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy --branch=main
+          command: pages deploy _site --branch=main --project-name=poland-trip

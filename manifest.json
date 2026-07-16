@@ -1,10 +1,10 @@
 {
-  "id": "./mobile.html",
+  "id": "./",
   "name": "POLSKA — 波蘭 8 天旅伴",
   "short_name": "POLSKA",
   "description": "2026/10/24–10/31 波蘭四城行程、火車、訂票與離線旅伴",
   "lang": "zh-Hant",
-  "start_url": "./mobile.html",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui", "browser"],
@@ -16,8 +16,8 @@
     {
       "name": "今日行程",
       "short_name": "今日",
-      "description": "打開手機旅伴版今日行程",
-      "url": "./mobile.html",
+      "description": "打開今日行程",
+      "url": "./#top",
       "icons": [
         {
           "src": "apple-touch-icon.png",
@@ -27,10 +27,10 @@
       ]
     },
     {
-      "name": "桌機總覽",
-      "short_name": "桌機",
-      "description": "打開桌機版旅行控制台",
-      "url": "./desktop.html",
+      "name": "訂票總覽",
+      "short_name": "訂票",
+      "description": "打開訂票總覽",
+      "url": "./#B-tickets",
       "icons": [
         {
           "src": "apple-touch-icon.png",
