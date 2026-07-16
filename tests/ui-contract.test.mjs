@@ -50,7 +50,22 @@ test('localStorage getter 拋出 SecurityError 時可降級', () => {
 test('Drawer 只在開啟時可對焦並還原開啟者焦點', () => {
   assert.match(jsx, /drawerOpen\s*&&\s*\(/);
   assert.match(jsx, /drawerReturnFocusRef/);
-  assert.match(jsx, /drawerCloseRef\.current\?\.focus\(\)/);
-  assert.match(jsx, /drawerReturnFocusRef\.current\?\.focus\(\)/);
+  assert.match(jsx, /initialFocusRef\.current\?\.focus\(\)/);
+  assert.match(jsx, /returnFocusRef\.current\?\.focus\(\)/);
+  assert.match(jsx, /B_useModalFocus\(drawerOpen,\s*drawerRef,\s*drawerCloseRef,\s*drawerReturnFocusRef\)/);
   assert.match(jsx, /if \(e\.key === 'Escape' && drawerOpen\)/);
+});
+
+test('Drawer 與交通 sheet 共用 modal 焦點循環', () => {
+  assert.match(jsx, /function B_useModalFocus\(/);
+  assert.match(jsx, /e\.key !== 'Tab'/);
+  assert.match(jsx, /e\.shiftKey/);
+  assert.match(jsx, /e\.preventDefault\(\)/);
+  assert.match(jsx, /last\.focus\(\)/);
+  assert.match(jsx, /first\.focus\(\)/);
+  assert.doesNotMatch(jsx, /offsetParent/, '固定定位 modal 不可用 offsetParent 判斷可對焦項目');
+  const uses = jsx.match(/B_useModalFocus\(/g) || [];
+  assert.equal(uses.length, 3, '應定義一次並分別套用於 Drawer 與交通 sheet');
+  assert.match(jsx, /ref={drawerRef}/);
+  assert.match(jsx, /ref={trainSheetRef}/);
 });

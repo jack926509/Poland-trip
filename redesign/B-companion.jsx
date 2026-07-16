@@ -129,6 +129,47 @@ function B_formatMinutes(mins) {
   return `${String(Math.floor(normalized / 60)).padStart(2, '0')}:${String(normalized % 60).padStart(2, '0')}`;
 }
 
+function B_useModalFocus(open, containerRef, initialFocusRef, returnFocusRef) {
+  const wasOpenRef = React.useRef(false);
+
+  B_useEffect(() => {
+    if (open) {
+      wasOpenRef.current = true;
+      initialFocusRef.current?.focus();
+      return;
+    }
+    if (wasOpenRef.current) {
+      wasOpenRef.current = false;
+      returnFocusRef.current?.focus();
+    }
+  }, [open, initialFocusRef, returnFocusRef]);
+
+  B_useEffect(() => {
+    if (!open) return undefined;
+    const container = containerRef.current;
+    if (!container) return undefined;
+    const onKeyDown = (e) => {
+      if (e.key !== 'Tab') return;
+      const focusable = Array.from(container.querySelectorAll(
+        'a[href],button:not([disabled]),[tabindex]:not([tabindex="-1"])'
+      )).filter((item) => item.getAttribute('aria-hidden') !== 'true');
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && (document.activeElement === first || !container.contains(document.activeElement))) {
+        e.preventDefault();
+        last.focus();
+      }
+      else if (!e.shiftKey && (document.activeElement === last || !container.contains(document.activeElement))) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    container.addEventListener('keydown', onKeyDown);
+    return () => container.removeEventListener('keydown', onKeyDown);
+  }, [open, containerRef]);
+}
+
 function B_PrimaryNav({ placement, onToday, onItinerary, onTransport, onTickets }) {
   const items = [
     ['今日', onToday], ['行程', onItinerary], ['交通', onTransport], ['訂票', onTickets],
@@ -184,9 +225,15 @@ function B_Companion({ initialDay }) {
   const [notes, setNotes] = B_useState(initialNotes.notes);
   const [notesPersistent, setNotesPersistent] = B_useState(initialNotes.persistent);
   const scrubRef = React.useRef(null);
+  const drawerRef = React.useRef(null);
   const drawerCloseRef = React.useRef(null);
   const drawerReturnFocusRef = React.useRef(null);
-  const drawerWasOpenRef = React.useRef(false);
+  const trainSheetRef = React.useRef(null);
+  const trainCloseRef = React.useRef(null);
+  const trainReturnFocusRef = React.useRef(null);
+
+  B_useModalFocus(drawerOpen, drawerRef, drawerCloseRef, drawerReturnFocusRef);
+  B_useModalFocus(trainSheet, trainSheetRef, trainCloseRef, trainReturnFocusRef);
 
   const noteKey = (dn, si) => `${dn}-${si}`;
   const editNote = (dn, si) => {
@@ -203,6 +250,10 @@ function B_Companion({ initialDay }) {
   const openDrawer = (e) => {
     drawerReturnFocusRef.current = e.currentTarget;
     setDrawerOpen(true);
+  };
+  const openTrainSheet = (e) => {
+    trainReturnFocusRef.current = e.currentTarget;
+    setTrainSheet(true);
   };
   const openExt = (url) => {
     if (!url) return;
@@ -237,18 +288,6 @@ function B_Companion({ initialDay }) {
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [drawerOpen, trainSheet]);
-
-  B_useEffect(() => {
-    if (drawerOpen) {
-      drawerWasOpenRef.current = true;
-      drawerCloseRef.current?.focus();
-      return;
-    }
-    if (drawerWasOpenRef.current) {
-      drawerWasOpenRef.current = false;
-      drawerReturnFocusRef.current?.focus();
-    }
-  }, [drawerOpen]);
 
   // Lock body scroll while modal surfaces are open.
   B_useEffect(() => {
@@ -295,8 +334,8 @@ function B_Companion({ initialDay }) {
   const navActions = {
     onToday: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
     onItinerary: () => document.querySelector('.B-timeline')?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
-    onTransport: () => d.train
-      ? setTrainSheet(true)
+    onTransport: (e) => d.train
+      ? openTrainSheet(e)
       : document.querySelector('.B-timeline')?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
     onTickets: () => document.getElementById('B-tickets')?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
   };
@@ -447,11 +486,11 @@ function B_Companion({ initialDay }) {
             role="button"
             tabIndex={0}
             aria-label={`${isBus ? '巴士' : '火車'}詳情：${d.train.from} 到 ${d.train.to}`}
-            onClick={() => setTrainSheet(true)}
+            onClick={openTrainSheet}
             onKeyDown={(e) => {
               if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
-                setTrainSheet(true);
+                openTrainSheet(e);
               }
             }}>
             <div className="seg">
@@ -496,6 +535,7 @@ function B_Companion({ initialDay }) {
             role="presentation"
             onClick={() => setTrainSheet(false)}>
             <section
+              ref={trainSheetRef}
               className="B-train-sheet"
               role="dialog"
               aria-modal="true"
@@ -507,7 +547,7 @@ function B_Companion({ initialDay }) {
                   <span>{isBus ? 'Bus transfer' : 'Rail transfer'}</span>
                   <h2>{d.train.from} → {d.train.to}</h2>
                 </div>
-                <button type="button" aria-label="關閉火車詳情" onClick={() => setTrainSheet(false)}>×</button>
+                <button ref={trainCloseRef} type="button" aria-label="關閉火車詳情" onClick={() => setTrainSheet(false)}>×</button>
               </div>
               <div className="sheet-route">
                 <span className={`pill ${d.train.type.toLowerCase()}`}>{d.train.type}</span>
@@ -812,6 +852,7 @@ function B_Companion({ initialDay }) {
             aria-hidden="true"
           />
           <aside
+            ref={drawerRef}
             id="B-drawer"
             className="B-drawer open"
             role="dialog"
