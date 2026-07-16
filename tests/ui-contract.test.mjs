@@ -30,3 +30,27 @@ test('完整網頁資訊已整合回同一應用', () => {
     assert.match(jsx, new RegExp(key.replace('.', '\\.')));
   }
 });
+
+test('日期 UI 使用 Warsaw 旅程階段與核心分鐘數', () => {
+  assert.match(jsx, /phase,\s*mins/);
+  assert.match(jsx, /phase === 'before'\s*\?\s*'行程尚未開始 · 預覽'/);
+  assert.match(jsx, /phase === 'after'\s*\?\s*'行程已結束 · 回顧'/);
+  assert.match(jsx, /B_formatMinutes\(mins\)/);
+  assert.match(jsx, /\- mins/);
+  assert.doesNotMatch(jsx, /cur\.getHours\(\)|cur\.getMinutes\(\)|n\.getHours\(\)|n\.getMinutes\(\)/);
+});
+
+test('localStorage getter 拋出 SecurityError 時可降級', () => {
+  assert.match(jsx, /function B_getStorage\(\)\s*{\s*try\s*{\s*return window\.localStorage;\s*}\s*catch/);
+  assert.match(jsx, /core\.readNotes\(storage\)/);
+  assert.match(jsx, /core\.writeNotes\(storage,\s*next\)/);
+  assert.doesNotMatch(jsx, /core\.(?:readNotes|writeNotes)\(window\.localStorage/);
+});
+
+test('Drawer 只在開啟時可對焦並還原開啟者焦點', () => {
+  assert.match(jsx, /drawerOpen\s*&&\s*\(/);
+  assert.match(jsx, /drawerReturnFocusRef/);
+  assert.match(jsx, /drawerCloseRef\.current\?\.focus\(\)/);
+  assert.match(jsx, /drawerReturnFocusRef\.current\?\.focus\(\)/);
+  assert.match(jsx, /if \(e\.key === 'Escape' && drawerOpen\)/);
+});

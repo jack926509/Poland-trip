@@ -119,6 +119,16 @@ function B_eatVenue(item) {
   return item;
 }
 
+function B_getStorage() {
+  try { return window.localStorage; }
+  catch (_) { return null; }
+}
+
+function B_formatMinutes(mins) {
+  const normalized = ((mins % 1440) + 1440) % 1440;
+  return `${String(Math.floor(normalized / 60)).padStart(2, '0')}:${String(normalized % 60).padStart(2, '0')}`;
+}
+
 function B_PrimaryNav({ placement, onToday, onItinerary, onTransport, onTickets }) {
   const items = [
     ['今日', onToday], ['行程', onItinerary], ['交通', onTransport], ['訂票', onTickets],
@@ -162,7 +172,8 @@ function B_PreTripGuide({ trip }) {
 function B_Companion({ initialDay }) {
   const t = window.TRIP;
   const core = window.PolskaPwaCore;
-  const initialNotes = B_useMemo(() => core.readNotes(window.localStorage), [core]);
+  const storage = B_useMemo(B_getStorage, []);
+  const initialNotes = B_useMemo(() => core.readNotes(storage), [core, storage]);
   const [override, setOverride] = B_useState(initialDay ?? null);
   const [openStep, setOpenStep] = B_useState(null);
   const [tick, setTick] = B_useState(0);
@@ -173,6 +184,9 @@ function B_Companion({ initialDay }) {
   const [notes, setNotes] = B_useState(initialNotes.notes);
   const [notesPersistent, setNotesPersistent] = B_useState(initialNotes.persistent);
   const scrubRef = React.useRef(null);
+  const drawerCloseRef = React.useRef(null);
+  const drawerReturnFocusRef = React.useRef(null);
+  const drawerWasOpenRef = React.useRef(false);
 
   const noteKey = (dn, si) => `${dn}-${si}`;
   const editNote = (dn, si) => {
@@ -184,7 +198,11 @@ function B_Companion({ initialDay }) {
     const trimmed = v.trim();
     if (trimmed) next[k] = trimmed; else delete next[k];
     setNotes(next);
-    setNotesPersistent(core.writeNotes(window.localStorage, next));
+    setNotesPersistent(core.writeNotes(storage, next));
+  };
+  const openDrawer = (e) => {
+    drawerReturnFocusRef.current = e.currentTarget;
+    setDrawerOpen(true);
   };
   const openExt = (url) => {
     if (!url) return;
@@ -213,14 +231,24 @@ function B_Companion({ initialDay }) {
   // Close modal surfaces on Escape
   B_useEffect(() => {
     const onKey = (e) => {
-      if (e.key === 'Escape') {
-        setDrawerOpen(false);
-        setTrainSheet(false);
-      }
+      if (e.key === 'Escape' && drawerOpen) setDrawerOpen(false);
+      if (e.key === 'Escape' && trainSheet) setTrainSheet(false);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, []);
+  }, [drawerOpen, trainSheet]);
+
+  B_useEffect(() => {
+    if (drawerOpen) {
+      drawerWasOpenRef.current = true;
+      drawerCloseRef.current?.focus();
+      return;
+    }
+    if (drawerWasOpenRef.current) {
+      drawerWasOpenRef.current = false;
+      drawerReturnFocusRef.current?.focus();
+    }
+  }, [drawerOpen]);
 
   // Lock body scroll while modal surfaces are open.
   B_useEffect(() => {
@@ -228,10 +256,13 @@ function B_Companion({ initialDay }) {
     return () => { document.body.style.overflow = ''; };
   }, [drawerOpen, trainSheet]);
 
-  const { d, idx, now, next, beforeStart, afterEnd } = B_useMemo(
+  const { d, phase, mins, beforeStart, afterEnd, idx: projectedIdx } = B_useMemo(
     () => core.projectTripMoment(t.days, new Date(), override, t.meta),
     [core, t.days, t.meta, override, tick]
   );
+  const idx = phase === 'before' ? 0 : phase === 'after' ? d.steps.length - 1 : projectedIdx;
+  const now = d.steps[idx];
+  const next = d.steps[idx + 1];
   const active = d.n;
   const setActive = (n) => { setOverride(n); setOpenStep(null); setDrawerOpen(false); };
   const hardNow = d.hardConstraints?.[0] || '今日沒有固定硬時間';
@@ -260,10 +291,7 @@ function B_Companion({ initialDay }) {
     }
   }, [active]);
 
-  const liveClock = (() => {
-    const n = new Date();
-    return `${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}`;
-  })();
+  const liveClock = B_formatMinutes(mins);
   const navActions = {
     onToday: () => window.scrollTo({ top: 0, behavior: 'smooth' }),
     onItinerary: () => document.querySelector('.B-timeline')?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
@@ -303,7 +331,7 @@ function B_Companion({ initialDay }) {
           type="button"
           className="meta"
           aria-label="顯示完整 8 日行程"
-          onClick={() => setDrawerOpen(true)}>
+          onClick={openDrawer}>
           10/24 → 10/31
         </button>
         <button
@@ -312,7 +340,7 @@ function B_Companion({ initialDay }) {
           aria-label="開啟選單"
           aria-expanded={drawerOpen}
           aria-controls="B-drawer"
-          onClick={() => setDrawerOpen(true)}>
+          onClick={openDrawer}>
           <span/><span/><span/>
         </button>
       </header>
@@ -328,7 +356,7 @@ function B_Companion({ initialDay }) {
             type="button"
             className="day-num"
             aria-label="開啟 8 日行程選單"
-            onClick={() => setDrawerOpen(true)}>{d.n}</button>
+            onClick={openDrawer}>{d.n}</button>
           <span className="day-of">/ 8 · {d.date}<br/>{d.city}</span>
         </div>
         <h1>{d.title}</h1>
@@ -373,7 +401,7 @@ function B_Companion({ initialDay }) {
             }
           }}>
           <div className="now-label">
-            {beforeStart ? '今日尚未開始' : afterEnd ? '今日已結束' : 'Now · 現在該做什麼'}
+            {phase === 'before' ? '行程尚未開始 · 預覽' : phase === 'after' ? '行程已結束 · 回顧' : beforeStart ? '今日尚未開始' : afterEnd ? '今日已結束' : 'Now · 現在該做什麼'}
           </div>
           <span className="now-time">{now.t}</span>
           <div className="now-task">{now.label.replace(/^★\s*/, '')}</div>
@@ -387,9 +415,8 @@ function B_Companion({ initialDay }) {
           </div>
           {next && (() => {
             const [nh, nm] = next.t.split(':').map(Number);
-            const cur = new Date();
-            const diff = (nh * 60 + nm) - (cur.getHours() * 60 + cur.getMinutes());
-            const inLabel = diff > 0 && diff < 600 ? ` · ${diff} min` : '';
+            const diff = (nh * 60 + nm) - mins;
+            const inLabel = phase === 'during' && diff > 0 && diff < 600 ? ` · ${diff} min` : '';
             return (
               <div className="next-up">Next · <strong>{next.t}{inLabel}</strong> {next.label.replace(/^★\s*/, '')}</div>
             );
@@ -511,8 +538,8 @@ function B_Companion({ initialDay }) {
           const myNote = notes[noteKey(d.n, i)];
           const showBooking = isStar || B_hasBooking(s.label);
           let cls = '';
-          if (i < idx) cls = 'done';
-          else if (i === idx) cls = 'now';
+          if (phase === 'after' || (phase === 'during' && i < idx)) cls = 'done';
+          else if (phase === 'during' && i === idx) cls = 'now';
           if (isStar) cls += ' star';
           const open = openStep === i;
           if (open) cls += ' open';
@@ -580,7 +607,7 @@ function B_Companion({ initialDay }) {
                   )}
                   <div className="row">
                     <span className="k">狀態</span>
-                    <span className="v">{i < idx ? '已完成' : i === idx ? '進行中' : '尚未開始'}{isStar ? ' · ★ 重點' : ''}</span>
+                    <span className="v">{phase === 'after' || (phase === 'during' && i < idx) ? '已完成' : phase === 'during' && i === idx ? '進行中' : '尚未開始'}{isStar ? ' · ★ 重點' : ''}</span>
                   </div>
                   <div className="actions">
                     <button
@@ -777,45 +804,50 @@ function B_Companion({ initialDay }) {
 
       <B_PrimaryNav placement="mobile" {...navActions} />
 
-      <div
-        className={`B-drawer-mask ${drawerOpen ? 'open' : ''}`}
-        onClick={() => setDrawerOpen(false)}
-        aria-hidden="true"
-      />
-      <aside
-        id="B-drawer"
-        className={`B-drawer ${drawerOpen ? 'open' : ''}`}
-        role="dialog"
-        aria-modal="true"
-        aria-label="日次選單">
-        <div className="B-drawer-head">
-          <span>POLSKA · 8 日</span>
-          <button
-            type="button"
-            className="B-drawer-close"
-            aria-label="關閉選單"
-            onClick={() => setDrawerOpen(false)}>×</button>
-        </div>
-        <ul>
-          {t.days.map(x => (
-            <li key={x.n}>
-              <a
-                href={`#B-day-${x.n}`}
-                className={x.n === active ? 'active' : ''}
-                onClick={(e) => { e.preventDefault(); setActive(x.n); }}>
-                <span>Day {x.n} · {x.title}</span>
-                <small>{x.date}</small>
-              </a>
-            </li>
-          ))}
-          <li>
-            <a href="#B-guide" onClick={() => setDrawerOpen(false)}>
-              <span>行前指南</span>
-              <small>航班 · 住宿 · 安全</small>
-            </a>
-          </li>
-        </ul>
-      </aside>
+      {drawerOpen && (
+        <React.Fragment>
+          <div
+            className="B-drawer-mask open"
+            onClick={() => setDrawerOpen(false)}
+            aria-hidden="true"
+          />
+          <aside
+            id="B-drawer"
+            className="B-drawer open"
+            role="dialog"
+            aria-modal="true"
+            aria-label="日次選單">
+            <div className="B-drawer-head">
+              <span>POLSKA · 8 日</span>
+              <button
+                ref={drawerCloseRef}
+                type="button"
+                className="B-drawer-close"
+                aria-label="關閉選單"
+                onClick={() => setDrawerOpen(false)}>×</button>
+            </div>
+            <ul>
+              {t.days.map(x => (
+                <li key={x.n}>
+                  <a
+                    href={`#B-day-${x.n}`}
+                    className={x.n === active ? 'active' : ''}
+                    onClick={(e) => { e.preventDefault(); setActive(x.n); }}>
+                    <span>Day {x.n} · {x.title}</span>
+                    <small>{x.date}</small>
+                  </a>
+                </li>
+              ))}
+              <li>
+                <a href="#B-guide" onClick={() => setDrawerOpen(false)}>
+                  <span>行前指南</span>
+                  <small>航班 · 住宿 · 安全</small>
+                </a>
+              </li>
+            </ul>
+          </aside>
+        </React.Fragment>
+      )}
     </div>
   );
 }
