@@ -39,6 +39,7 @@ test('手機正式入口直接載入既有旅伴並提供失敗降級', () => {
   assert.match(mobile, /行程資料載入失敗，請重新整理/);
   assert.match(mobile, /href="#app-main"/);
   assert.match(mobile, /<noscript>/);
+  assert.match(mobile, /rel="icon" href="icon-192\.png"/);
   assert.doesNotMatch(mobile, /legacy-redirect\.js/);
 });
 
