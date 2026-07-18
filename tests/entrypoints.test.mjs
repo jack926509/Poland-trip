@@ -6,11 +6,16 @@ import vm from 'node:vm';
 
 const read = (path) => fs.readFileSync(path, 'utf8');
 
-test('根入口直接載入唯一 PWA，不做裝置跳轉', () => {
+test('根入口依 768 px 與 view query 分流桌機雜誌和既有手機 PWA', () => {
   const html = read('index.html');
   assert.match(html, /redesign\/pwa-core\.js/);
   assert.match(html, /redesign\/dist\/B-companion\.js/);
-  assert.doesNotMatch(html, /matchMedia\('\(max-width: 640px\)'\)/);
+  assert.match(html, /matchMedia\('\(min-width: 768px\)'\)/);
+  assert.match(html, /searchParams\.get\('view'\)/);
+  assert.match(html, /desktop\/desktop\.css/);
+  assert.match(html, /desktop\/chapters\.js/);
+  assert.match(html, /desktop\/desktop-app\.js/);
+  assert.match(html, /行程資料載入失敗，請重新整理/);
   assert.match(html, /redesign\/pwa-core\.js\?v=polska-v15/);
   assert.match(html, /pwa-register\.js\?v=polska-v15/);
 });
