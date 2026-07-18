@@ -4,20 +4,21 @@
 
 ## 自動驗收
 
-執行 `./verify.sh`：66 項測試全部通過，0 fail。驗證範圍包含桌機路由、實際資料欄位與渲染結果、入口分流、發布 allowlist、既有手機 PWA、Service Worker 及 bundle 一致性。
+手機穩定化完成後重新執行 `./verify.sh`：73 項測試全部通過，0 fail。驗證範圍包含桌機路由、完整章節內容、資料降級、入口分流、發布 allowlist、手機 PWA、雙殼 Service Worker 及 bundle 一致性。
 
 ## 實際瀏覽器驗證
 
 - 桌機驗證寬度：1440、1024、768 px；手機驗證寬度：390、320 px。
 - 所有尺寸的 client width 與 scroll width 相同，沒有水平溢出。
 - Masthead、紅白旗線、郵票章、七個章節按鈕與單一主內容區均成功渲染。
-- 交通章顯示 `WAW → KRK` 等完整路線、四城住宿及可讀航班資料，不含 `undefined` 或 `[object Object]`。
+- 交通章可依 Warszawa、Kraków、Wrocław、Poznań 切換，顯示相關路線、住宿與實務節點，不含 `undefined` 或 `[object Object]`。
 - 門票章顯示各城票價、確認期限及 16 個官方連結，不含 `[object Object]`。
-- 城市章可在同一個 `#cities` hash 內由 Warszawa 切換至 Kraków，標題、美食及焦點會立即更新。
+- 城市章可在同一個 `#cities` hash 內切換四城，並包含景點、歷史文化、現場筆記、購物與雨天備案。
 - Day 2 顯示警告、必訂項目、備案地點與原因、實務節點；方向鍵、返回鍵及焦點管理維持正常。
 - 390、320 px 根網址依寬度自動載入既有 `B_Companion`，跳到主要內容指向存在的 `#app-main`。
 - `?view=desktop` 在 390 px 仍可強制開啟桌機指南。
-- console：桌機與手機均為 0 error、0 warning。
+- 實用資訊已包含緊急聯絡、代表處、換錢與常用波蘭語；資料損壞時會顯示可理解的重新整理提示。
+- console：桌機與手機均為 0 error。
 
 ## 尚待使用者驗收
 
