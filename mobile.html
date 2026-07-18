@@ -2,11 +2,50 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>POLSKA — 正在前往新版</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>POLSKA — 波蘭 8 日手機旅伴</title>
+  <meta name="description" content="2026/10/24–10/31 波蘭四城行程、交通、訂票與離線手機旅伴。">
+  <meta name="theme-color" content="#a8231d">
+  <meta name="color-scheme" content="light">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="POLSKA">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="redesign/tokens.css?v=polska-v16">
+  <link rel="stylesheet" href="redesign/B-companion.css?v=polska-v16">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{margin:0;max-width:100%;overflow-x:hidden;-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
+    body{background:#f0eee9;font-family:'Noto Serif TC',serif}
+    #root{width:100%;min-height:100vh;background:var(--paper)}
+    .B-frame{border-radius:0;height:auto;min-height:100vh}
+    .skip-link{position:fixed;top:.5rem;left:.5rem;z-index:200;transform:translateY(-200%);padding:.5rem .75rem;background:#1a1612;color:#f4ecd8}
+    .skip-link:focus{transform:translateY(0)}
+  </style>
 </head>
 <body>
-  <p>POLSKA 已整併，正在前往新版網頁與手機 PWA…</p>
-  <script src="legacy-redirect.js"></script>
+  <a class="skip-link" href="#app-main">跳到主要內容</a>
+  <div id="root"></div>
+  <noscript><main><h1>POLSKA 手機旅伴</h1><p>手機旅伴需要 JavaScript；你仍可返回 <a href="./">POLSKA 網頁版</a>。</p></main></noscript>
+  <script src="vendor/react.production.min.js"></script>
+  <script src="vendor/react-dom.production.min.js"></script>
+  <script src="redesign/pwa-core.js?v=polska-v16"></script>
+  <script src="redesign/data.js?v=polska-v16"></script>
+  <script src="redesign/dist/B-companion.js?v=polska-v16"></script>
+  <script>
+    (function () {
+      const root = document.getElementById('root');
+      try {
+        if (!window.TRIP || !Array.isArray(window.TRIP.days) || window.TRIP.days.length !== 8 || typeof window.B_Companion !== 'function') {
+          throw new Error('mobile app data unavailable');
+        }
+        ReactDOM.createRoot(root).render(React.createElement(B_Companion));
+      } catch (error) {
+        root.innerHTML = '<main id="app-main"><h1>行程資料載入失敗，請重新整理</h1><p>若問題持續，請確認網路連線後再試一次。</p></main>';
+      }
+    }());
+  </script>
+  <script src="pwa-register.js?v=polska-v16"></script>
 </body>
 </html>

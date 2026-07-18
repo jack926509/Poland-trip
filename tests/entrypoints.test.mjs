@@ -24,41 +24,57 @@ test('根入口依 768 px 與 view query 分流桌機雜誌和既有手機 PWA',
   assert.match(html, /手機旅伴/);
 });
 
-test('舊入口只載入共用轉址', () => {
-  for (const file of ['mobile.html', 'desktop.html', 'app-preview.html']) {
+test('手機正式入口直接載入既有旅伴並提供失敗降級', () => {
+  const mobile = read('mobile.html');
+  for (const asset of [
+    'redesign/pwa-core.js?v=polska-v16',
+    'redesign/data.js?v=polska-v16',
+    'redesign/dist/B-companion.js?v=polska-v16',
+    'pwa-register.js?v=polska-v16',
+  ]) assert.match(mobile, new RegExp(asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.match(mobile, /ReactDOM\.createRoot/);
+  assert.match(mobile, /B_Companion/);
+  assert.match(mobile, /行程資料載入失敗，請重新整理/);
+  assert.match(mobile, /href="#app-main"/);
+  assert.match(mobile, /<noscript>/);
+  assert.doesNotMatch(mobile, /legacy-redirect\.js/);
+});
+
+test('桌機與舊預覽入口只載入共用轉址', () => {
+  for (const file of ['desktop.html', 'app-preview.html']) {
     const html = read(file);
     assert.match(html, /legacy-redirect\.js/);
     assert.doesNotMatch(html, /B_Companion|A_Magazine|IOSDevice/);
   }
 });
 
-test('舊入口轉址保留 GitHub Pages 子路徑、query 與 hash', () => {
-  let replacedWith = '';
-  const href = 'https://jack926509.github.io/Poland-trip/mobile.html?day=3#B-tickets';
-
-  vm.runInNewContext(read('legacy-redirect.js'), {
-    URL,
-    window: {
-      location: {
-        href,
-        search: '?day=3',
-        hash: '#B-tickets',
-        replace(target) {
-          replacedWith = target;
+test('舊入口依桌機與手機來源分流並保留子路徑、query 與 hash', () => {
+  function redirect(file) {
+    let replacedWith = '';
+    const href = `https://jack926509.github.io/Poland-trip/${file}`;
+    const current = new URL(href);
+    vm.runInNewContext(read('legacy-redirect.js'), {
+      URL,
+      URLSearchParams,
+      window: {
+        location: {
+          href,
+          pathname: current.pathname,
+          search: current.search,
+          hash: current.hash,
+          replace(target) { replacedWith = target; },
         },
       },
-    },
-  });
-
-  assert.equal(
-    replacedWith,
-    'https://jack926509.github.io/Poland-trip/?day=3#B-tickets',
-  );
+    });
+    return replacedWith;
+  }
+  assert.equal(redirect('desktop.html?day=3#logistics'), 'https://jack926509.github.io/Poland-trip/?day=3&view=desktop#logistics');
+  assert.equal(redirect('app-preview.html?day=3#B-tickets'), 'https://jack926509.github.io/Poland-trip/mobile.html?day=3&view=mobile#B-tickets');
 });
 
-test('manifest 與 sitemap 只公開根入口', () => {
+test('manifest 固定由手機殼啟動且 sitemap 只公開根入口', () => {
   const manifest = JSON.parse(read('manifest.json'));
-  assert.equal(manifest.start_url, './');
+  assert.equal(manifest.start_url, './mobile.html');
   assert.equal(manifest.id, './');
   assert.doesNotMatch(read('sitemap.xml'), /mobile\.html|desktop\.html|app-preview\.html/);
 });
@@ -76,8 +92,11 @@ test('經典版逐位元封存且不進入公開或快取路徑', () => {
 });
 
 test('manifest 今日 shortcut 對應實際存在的 JSX 錨點', () => {
-  const shortcut = JSON.parse(read('manifest.json')).shortcuts.find((item) => item.short_name === '今日');
-  assert.equal(shortcut.url, './#top');
+  const shortcuts = JSON.parse(read('manifest.json')).shortcuts;
+  const shortcut = shortcuts.find((item) => item.short_name === '今日');
+  const tickets = shortcuts.find((item) => item.short_name === '訂票');
+  assert.equal(shortcut.url, './mobile.html#top');
+  assert.equal(tickets.url, './mobile.html#B-tickets');
   assert.match(read('redesign/B-companion.jsx'), /id="top"/);
 });
 
