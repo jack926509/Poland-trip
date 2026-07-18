@@ -40,3 +40,17 @@ test('桌機文章不得重複定義行程班次、抵達時間或票價', () =>
   assert.doesNotMatch(source, /\b(?:dep|arr|price)\s*:/);
   assert.doesNotMatch(source, /2026-10-(?:2[4-9]|3[0-1])/);
 });
+
+test('桌機程式包含焦點、目前章節與單一主內容區的可存取契約', () => {
+  const source = fs.readFileSync('desktop/desktop-app.js', 'utf8');
+  assert.match(source, /aria-current/);
+  assert.match(source, /focus\(\)/);
+  assert.match(source, /id="desktop-main"/);
+});
+
+test('桌機樣式包含紅白國旗、郵票章與 768 px 桌機斷點', () => {
+  const css = fs.readFileSync('desktop/desktop.css', 'utf8');
+  assert.match(css, /desktop-flag/);
+  assert.match(css, /desktop-stamp/);
+  assert.match(css, /@media \(min-width:\s*768px\)/);
+});
