@@ -14,6 +14,8 @@ fi
 node --check redesign/dist/B-companion.js
 node --check redesign/data.js
 node --check redesign/pwa-core.js
+node --check desktop/desktop-app.js
+node --check desktop/chapters.js
 node --check pwa-register.js
 node --check legacy-redirect.js
 node --check sw.js

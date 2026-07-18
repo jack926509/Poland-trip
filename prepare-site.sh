@@ -13,7 +13,7 @@ if find "$output" -mindepth 1 -print -quit | grep -q .; then
   exit 1
 fi
 
-mkdir -p "$output/redesign/dist" "$output/vendor"
+mkdir -p "$output/redesign/dist" "$output/vendor" "$output/desktop"
 
 cp \
   index.html manifest.json sw.js pwa-register.js \
@@ -27,5 +27,6 @@ cp \
   "$output/redesign/"
 cp redesign/dist/B-companion.js "$output/redesign/dist/"
 cp vendor/react.production.min.js vendor/react-dom.production.min.js "$output/vendor/"
+cp desktop/desktop.css desktop/desktop-app.js desktop/chapters.js "$output/desktop/"
 
 echo "✅ Pages 公開輸出已組裝：$output"

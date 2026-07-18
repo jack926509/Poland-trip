@@ -35,6 +35,7 @@ test('prepare-site 從空目錄組出唯一 PWA allowlist', () => {
       'mobile.html', 'desktop.html', 'app-preview.html', 'legacy-redirect.js',
       'redesign/B-companion.css', 'redesign/dist/B-companion.js',
       'redesign/data.js', 'redesign/pwa-core.js', 'redesign/tokens.css',
+      'desktop/desktop.css', 'desktop/desktop-app.js', 'desktop/chapters.js',
       'vendor/react.production.min.js', 'vendor/react-dom.production.min.js',
       'apple-touch-icon.png', 'icon-192.png', 'icon-512.png',
     ]) assert.equal(fs.existsSync(path.join(output, file)), true, `缺少 ${file}`);
