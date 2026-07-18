@@ -20,6 +20,8 @@ test('根入口依 768 px 與 view query 分流桌機雜誌和既有手機 PWA',
   assert.match(html, /pwa-register\.js\?v=polska-v15/);
   assert.match(html, /href="#app-main"/);
   assert.match(html, /desktop \? '#desktop-main' : '#app-main'/);
+  assert.match(html, /<noscript>/);
+  assert.match(html, /手機旅伴/);
 });
 
 test('舊入口只載入共用轉址', () => {

@@ -11,6 +11,8 @@ function loadTrip() {
 
 function loadDesktop() {
   const context = { globalThis: {} };
+  context.window = context.globalThis;
+  vm.runInNewContext(fs.readFileSync('desktop/chapters.js', 'utf8'), context);
   vm.runInNewContext(fs.readFileSync('desktop/desktop-app.js', 'utf8'), context);
   return context.globalThis.PolskaDesktop;
 }
@@ -82,6 +84,55 @@ test('每日行程保留警告、必訂、備案細節與實務節點', () => {
   assert.match(html, /Kraków Główny 主月台/);
 });
 
+test('桌機資料驗證要求 Day 1–8 編號完整且不可重複', () => {
+  const trip = loadTrip();
+  const { validateTripData } = loadDesktop();
+  assert.equal(validateTripData(trip), true);
+  assert.equal(validateTripData({ ...trip, days: trip.days.map((day, index) => ({ ...day, n: index === 7 ? 7 : day.n })) }), false);
+  assert.equal(validateTripData({ ...trip, days: trip.days.slice(1) }), false);
+});
+
+test('交通章依城市顯示住宿、相關路段與實務節點', () => {
+  const trip = loadTrip();
+  const { renderLogistics } = loadDesktop();
+  const html = renderLogistics(trip, 'Kraków');
+  assert.match(html, /克拉科夫 · Kazimierz 或 Stradom/);
+  assert.match(html, /WAW → KRK/);
+  assert.match(html, /KRK → WRO/);
+  assert.match(html, /Kraków Główny 主月台/);
+  assert.doesNotMatch(html, /華沙 · Śródmieście Północne/);
+});
+
+test('城市章保留景點、歷史、現場筆記、購物與雨天備案', () => {
+  const trip = loadTrip();
+  const { renderCities } = loadDesktop();
+  const html = renderCities(trip, 'Warszawa');
+  assert.match(html, /POLIN 猶太博物館/);
+  assert.match(html, /二戰中被系統性夷平的城市/);
+  assert.match(html, /老城廣場地面找/);
+  assert.match(html, /Bolesławiec/);
+  assert.match(html, /科學文化宮 30F 觀景台/);
+});
+
+test('實用資訊包含緊急聯絡、代表處、換錢與常用波蘭語', () => {
+  const trip = loadTrip();
+  const { renderPractical } = loadDesktop();
+  const html = renderPractical(trip);
+  assert.match(html, /歐洲通用緊急/);
+  assert.match(html, /駐波蘭台北代表處/);
+  assert.match(html, /Kantor 民間匯兌/);
+  assert.match(html, /Dzień dobry/);
+});
+
+test('關於波蘭保留基本資料與四城歷史長文', () => {
+  const trip = loadTrip();
+  const { renderAbout } = loadDesktop();
+  const html = renderAbout(trip);
+  assert.match(html, /230V · C\/E\/F 型插座/);
+  assert.match(html, /1038–1596 年的波蘭王都/);
+  assert.match(html, /波蘭國家的搖籃/);
+});
+
 test('桌機文章不得重複定義行程班次、抵達時間或票價', () => {
   const source = fs.readFileSync('desktop/chapters.js', 'utf8');
   assert.doesNotMatch(source, /\b(?:dep|arr|price)\s*:/);
@@ -100,4 +151,5 @@ test('桌機樣式包含紅白國旗、郵票章與 768 px 桌機斷點', () => 
   assert.match(css, /desktop-flag/);
   assert.match(css, /desktop-stamp/);
   assert.match(css, /@media \(min-width:\s*768px\)/);
+  assert.match(css, /prefers-reduced-motion:\s*reduce/);
 });
