@@ -17,10 +17,12 @@
 - `prepare-site.sh`、`verify.sh`
 - `tests/desktop-router.test.mjs`、`tests/desktop-content.test.mjs`、`tests/entrypoints.test.mjs`、`tests/deploy-contract.test.mjs`
 
-## 驗收證據
+## 修正後驗收證據
 
-- `./verify.sh`：61 pass、0 fail。
-- 實際瀏覽器：桌機章節與 Day 切換、hash、焦點、1280 px 無溢出；手機強制模式與 console 0 error。
+- `./verify.sh`：66 pass、0 fail。
+- 已新增資料渲染回歸測試，會檢查交通路線、住宿、票價、預約期限、官方連結、城市美食及每日完整內容，不再只檢查資料物件是否為同一參照。
+- 實際瀏覽器：1440、1024、768、390、320 px 均無水平溢出；桌機與手機 console 0 error、0 warning。
+- 已重現並修正交通起訖空白、住宿空白、門票 `[object Object]`、城市美食空白、同 hash 城市不切換及手機 skip link 失效。
 
 ## 風險焦點
 

@@ -4,19 +4,20 @@
 
 ## 自動驗收
 
-執行 `./verify.sh`：61 項測試全部通過，0 fail。驗證範圍包含桌機路由、資料來源、入口分流、發布 allowlist、既有手機 PWA、Service Worker 及 bundle 一致性。
+執行 `./verify.sh`：66 項測試全部通過，0 fail。驗證範圍包含桌機路由、實際資料欄位與渲染結果、入口分流、發布 allowlist、既有手機 PWA、Service Worker 及 bundle 一致性。
 
 ## 實際瀏覽器驗證
 
-- 桌機網址：`http://localhost:4173/?view=desktop#overview`
-- 觀察結果：Masthead、紅白旗線、郵票章、七個章節按鈕與總覽內容均成功渲染。
-- 點選「每日行程」後：顯示 Day 1，網址為 `#itinerary/day-1`。
-- 點選 Day 2 後：顯示「華沙 → 克拉科夫 · Wawel + 老城 + 辛德勒最後入場 + Kazimierz 晚餐」，網址更新為 `#itinerary/day-2`。
-- 焦點：每次切換後落在 `#desktop-heading`。
-- 寬度：實測 client width 1280 px，scroll width 1280 px，無水平溢出。
-- console：桌機 0 error。
-- 手機回歸網址：`http://localhost:4173/?view=mobile`
-- 手機回歸結果：既有「今日」與四分頁導覽成功載入，console 0 error。
+- 桌機驗證寬度：1440、1024、768 px；手機驗證寬度：390、320 px。
+- 所有尺寸的 client width 與 scroll width 相同，沒有水平溢出。
+- Masthead、紅白旗線、郵票章、七個章節按鈕與單一主內容區均成功渲染。
+- 交通章顯示 `WAW → KRK` 等完整路線、四城住宿及可讀航班資料，不含 `undefined` 或 `[object Object]`。
+- 門票章顯示各城票價、確認期限及 16 個官方連結，不含 `[object Object]`。
+- 城市章可在同一個 `#cities` hash 內由 Warszawa 切換至 Kraków，標題、美食及焦點會立即更新。
+- Day 2 顯示警告、必訂項目、備案地點與原因、實務節點；方向鍵、返回鍵及焦點管理維持正常。
+- 390、320 px 根網址依寬度自動載入既有 `B_Companion`，跳到主要內容指向存在的 `#app-main`。
+- `?view=desktop` 在 390 px 仍可強制開啟桌機指南。
+- console：桌機與手機均為 0 error、0 warning。
 
 ## 尚待使用者驗收
 

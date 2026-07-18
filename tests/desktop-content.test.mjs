@@ -35,6 +35,53 @@ test('交通與訂票模型只從 TRIP 公開資料組成', () => {
   assert.equal(bookings.reservations, trip.reservations);
 });
 
+test('交通與住宿章節使用現有資料欄位顯示完整文字', () => {
+  const trip = loadTrip();
+  const { renderLogistics } = loadDesktop();
+  const html = renderLogistics(trip);
+  assert.match(html, /WAW → KRK/);
+  assert.match(html, /華沙 · Śródmieście Północne \/ Powiśle/);
+  assert.match(html, /CX 479 · TPE → HKG/);
+  assert.doesNotMatch(html, /undefined|\[object Object\]/);
+});
+
+test('門票與預約章節顯示票價、期限與官方連結', () => {
+  const trip = loadTrip();
+  const { renderBookings } = loadDesktop();
+  const html = renderBookings(trip);
+  assert.match(html, /皇家城堡/);
+  assert.match(html, /PLN 60 · 週三免費/);
+  assert.match(html, /出發前 60\+ 天/);
+  assert.match(html, /機票確認 \+ 各城住宿/);
+  assert.match(html, /https:\/\/visit\.auschwitz\.org\//);
+  assert.doesNotMatch(html, /\[object Object\]/);
+});
+
+test('城市美食用波蘭城市名稱找到共用資料中的對應項目', () => {
+  const trip = loadTrip();
+  const { getCityFood } = loadDesktop();
+  const food = getCityFood(trip, 'Kraków');
+  assert.equal(food, trip.cityFood[1].items);
+  assert.equal(food[0].name, 'Starka / Szara Gęś');
+});
+
+test('同一城市 hash 的按鈕需要立即重新渲染', () => {
+  const { shouldRenderImmediately } = loadDesktop();
+  assert.equal(shouldRenderImmediately('#cities', '#cities'), true);
+  assert.equal(shouldRenderImmediately('#overview', '#cities'), false);
+});
+
+test('每日行程保留警告、必訂、備案細節與實務節點', () => {
+  const trip = loadTrip();
+  const { renderDay } = loadDesktop();
+  const html = renderDay(trip, 2);
+  assert.match(html, /辛德勒 17:30 為週日最後入場時段/);
+  assert.match(html, /華沙 → 克拉科夫火車/);
+  assert.match(html, /改至下午較早時段/);
+  assert.match(html, /mhk\.pl\/en 開放預約後立即下單/);
+  assert.match(html, /Kraków Główny 主月台/);
+});
+
 test('桌機文章不得重複定義行程班次、抵達時間或票價', () => {
   const source = fs.readFileSync('desktop/chapters.js', 'utf8');
   assert.doesNotMatch(source, /\b(?:dep|arr|price)\s*:/);
