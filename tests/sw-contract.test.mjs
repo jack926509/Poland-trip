@@ -87,9 +87,16 @@ function loadRegisterHarness({ registration, ready, registerError }) {
   return { events, load: windowListeners.load, navigator: context.navigator };
 }
 
-test('只預快取單一正式應用', () => {
-  assert.match(sw, /'\.\/'/);
-  assert.doesNotMatch(sw, /mobile\.html|desktop\.html|app-preview\.html|A-magazine|ios-frame|C-app/);
+test('預快取桌機與手機雙殼及其正式資產', () => {
+  for (const asset of [
+    './', './mobile.html',
+    './desktop/desktop.css?v=polska-v16',
+    './desktop/desktop-app.js?v=polska-v16',
+    './desktop/chapters.js?v=polska-v16',
+    './redesign/data.js?v=polska-v16',
+    './redesign/dist/B-companion.js?v=polska-v16',
+  ]) assert.match(sw, new RegExp(asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.doesNotMatch(sw, /desktop\.html|app-preview\.html|A-magazine|ios-frame|C-app/);
 });
 
 test('核心資源使用完整 addAll，不吞掉安裝錯誤', () => {
@@ -97,23 +104,35 @@ test('核心資源使用完整 addAll，不吞掉安裝錯誤', () => {
   assert.doesNotMatch(sw, /cache\.add\(url\)\.catch/);
 });
 
-test('離線導覽回到根應用殼', () => {
-  assert.match(sw, /caches\.match\('\.\/'\)/);
+test('離線導覽依網址選擇桌機或手機應用殼', () => {
+  assert.match(sw, /function navigationFallback\(url\)/);
+  assert.match(sw, /url\.pathname\.endsWith\('\/mobile\.html'\)/);
+  assert.match(sw, /caches\.match\(navigationFallback\(url\)\)/);
 });
 
-test('舊入口 navigation 離線時不回舊 URL cache，統一回根 app shell', async () => {
+test('手機 navigation 離線時回手機殼', async () => {
   const legacy = { marker: 'legacy' };
-  const root = { marker: 'root' };
+  const mobile = { marker: 'mobile' };
   const { handler, puts } = loadFetchHandler({
     fetchImpl: () => Promise.reject(new Error('offline')),
-    matchImpl: (request) => request === './' ? root : legacy,
+    matchImpl: (request) => request === './mobile.html' ? mobile : legacy,
   });
   const response = await dispatchFetch(
     handler,
     makeRequest('mobile.html', { mode: 'navigate', accept: 'text/html' }),
   );
-  assert.equal(response, root);
+  assert.equal(response, mobile);
   assert.equal(puts.length, 0);
+});
+
+test('根 navigation 離線時回桌機共用根殼', async () => {
+  const root = { marker: 'root' };
+  const { handler } = loadFetchHandler({
+    fetchImpl: () => Promise.reject(new Error('offline')),
+    matchImpl: (request) => request === './' ? root : null,
+  });
+  const response = await dispatchFetch(handler, makeRequest('', { mode: 'navigate', accept: 'text/html' }));
+  assert.equal(response, root);
 });
 
 test('navigation 線上回應不寫入 URL runtime cache', async () => {
@@ -153,7 +172,7 @@ test('巢狀路徑下的同名正式資產也不得命中 runtime cache', async 
     });
     const response = await dispatchFetch(
       handler,
-      makeRequest(`${prefix}/redesign/B-companion.css?v=polska-v15`),
+      makeRequest(`${prefix}/redesign/B-companion.css?v=polska-v16`),
     );
     assert.equal(response, network, `${prefix} 誤回舊 cache`);
     assert.equal(matches.length, 0, `${prefix} 不得讀 cache`);
@@ -170,26 +189,26 @@ test('正式根應用資產仍使用 cache-first', async () => {
   });
   const response = await dispatchFetch(
     handler,
-    makeRequest('redesign/B-companion.css?v=polska-v15'),
+    makeRequest('redesign/B-companion.css?v=polska-v16'),
   );
   assert.equal(response, cached);
   assert.equal(matches.length, 1);
 });
 
-test('核心快取與根入口統一使用 polska-v15', () => {
-  assert.match(sw, /const CACHE_VERSION = 'polska-v15'/);
+test('核心快取與雙入口統一使用 polska-v16', () => {
+  assert.match(sw, /const CACHE_VERSION = 'polska-v16'/);
   for (const asset of [
-    './manifest.json', './pwa-register.js?v=polska-v15', './redesign/pwa-core.js?v=polska-v15',
-    './redesign/data.js?v=polska-v15', './redesign/tokens.css?v=polska-v15',
-    './redesign/B-companion.css?v=polska-v15',
-    './redesign/dist/B-companion.js?v=polska-v15',
+    './manifest.json', './pwa-register.js?v=polska-v16', './redesign/pwa-core.js?v=polska-v16',
+    './redesign/data.js?v=polska-v16', './redesign/tokens.css?v=polska-v16',
+    './redesign/B-companion.css?v=polska-v16',
+    './redesign/dist/B-companion.js?v=polska-v16',
   ]) assert.match(sw, new RegExp(asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
-  assert.doesNotMatch(sw, /polska-v12/);
+  assert.doesNotMatch(sw, /polska-v1[0-5]/);
 });
 
 test('Service Worker 註冊抽離為三種 PWA 事件', () => {
   const register = fs.readFileSync('pwa-register.js', 'utf8');
-  assert.match(html, /<script src="pwa-register\.js\?v=polska-v15"><\/script>/);
+  assert.match(html, /<script src="pwa-register\.js\?v=polska-v16"><\/script>/);
   assert.doesNotMatch(html, /navigator\.serviceWorker\.register/);
   for (const eventName of ['pwa-ready', 'pwa-update-ready', 'pwa-error']) {
     assert.match(register, new RegExp(eventName));

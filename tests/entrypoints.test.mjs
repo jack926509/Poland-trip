@@ -16,8 +16,10 @@ test('根入口依 768 px 與 view query 分流桌機雜誌和既有手機 PWA',
   assert.match(html, /desktop\/chapters\.js/);
   assert.match(html, /desktop\/desktop-app\.js/);
   assert.match(html, /行程資料載入失敗，請重新整理/);
-  assert.match(html, /redesign\/pwa-core\.js\?v=polska-v15/);
-  assert.match(html, /pwa-register\.js\?v=polska-v15/);
+  assert.match(html, /window\.TRIP\.days\.length !== 8/);
+  assert.match(html, /typeof window\.B_Companion !== 'function'/);
+  assert.match(html, /redesign\/pwa-core\.js\?v=polska-v16/);
+  assert.match(html, /pwa-register\.js\?v=polska-v16/);
   assert.match(html, /href="#app-main"/);
   assert.match(html, /desktop \? '#desktop-main' : '#app-main'/);
   assert.match(html, /<noscript>/);
