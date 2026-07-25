@@ -105,6 +105,23 @@
 .B-head .menu span{display:block;height:1.5px;background:var(--ink);transition:transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out)}
 .B-head .menu:hover{background:var(--paper-deep)}
 
+/* Task 3: 首頁四城市 hero 輪播（開發期漸層佔位） */
+.B-hero{ position:relative; height:230px; border-radius:16px; overflow:hidden; margin:0 0 var(--gap-md); box-shadow:var(--shadow-md); }
+.B-hero-slide{ position:absolute; inset:0; opacity:0; transition:opacity .8s var(--ease-out); }
+.B-hero-slide.is-active{ opacity:1; }
+.B-hero-slide.hs-waw{ background:linear-gradient(150deg,#8a1a15,#c4892b); }
+.B-hero-slide.hs-krk{ background:linear-gradient(150deg,#7a1812,#3d4a2a); }
+.B-hero-slide.hs-wro{ background:linear-gradient(150deg,#a8231d,#6e6358); }
+.B-hero-slide.hs-poz{ background:linear-gradient(150deg,#8b5e15,#1a1612); }
+.B-hero-cap{ position:absolute; left:16px; bottom:26px; display:flex; flex-direction:column; gap:2px; color:#f4ecd8; text-shadow:0 1px 8px rgba(0,0,0,.4); }
+.B-hero-code{ font-family:var(--display); font-size:2.4rem; letter-spacing:.14em; line-height:1; }
+.B-hero-city{ font-family:var(--serif); font-size:1.1rem; }
+.B-hero-date{ font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; opacity:.9; }
+.B-hero-dots{ position:absolute; left:16px; bottom:14px; display:flex; gap:6px; }
+.B-hero-dot{ width:6px; height:6px; border-radius:999px; background:rgba(244,236,216,.45); transition:background .3s; }
+.B-hero-dot.is-active{ background:#f4ecd8; }
+@media (prefers-reduced-motion: reduce){ .B-hero-slide{ transition:none; } }
+
 /* HERO — TODAY IS DAY X */
 .B-today{
   padding:.85rem 1rem 1rem;

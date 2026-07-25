@@ -207,6 +207,37 @@ function B_PrimaryNav({ placement, active, onChange, onToday, onItinerary, onTra
   );
 }
 
+function B_Hero(props) {
+  var cities = ['華沙', '克拉科夫', '樂斯拉夫', '波茲南'];
+  var slides = ['hs-waw', 'hs-krk', 'hs-wro', 'hs-poz'];
+  var reduce = false;
+  try { reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+  var idxState = React.useState(0);
+  var idx = idxState[0], setIdx = idxState[1];
+  React.useEffect(function () {
+    if (reduce) return undefined;
+    var id = setInterval(function () { setIdx(function (i) { return (i + 1) % slides.length; }); }, 3200);
+    return function () { clearInterval(id); };
+  }, [reduce]);
+  return React.createElement('div', { className: 'B-hero' },
+    slides.map(function (s, i) {
+      return React.createElement('div', {
+        key: s, className: 'B-hero-slide ' + s + (i === idx ? ' is-active' : ''), 'aria-hidden': i === idx ? undefined : 'true',
+      });
+    }),
+    React.createElement('div', { className: 'B-hero-cap' },
+      React.createElement('span', { className: 'B-hero-code' }, props.code || 'POLSKA'),
+      React.createElement('span', { className: 'B-hero-city' }, cities[idx]),
+      React.createElement('span', { className: 'B-hero-date' }, props.dateRange || '')
+    ),
+    React.createElement('div', { className: 'B-hero-dots', role: 'presentation' },
+      slides.map(function (s, i) {
+        return React.createElement('span', { key: s, className: 'B-hero-dot' + (i === idx ? ' is-active' : '') });
+      })
+    )
+  );
+}
+
 function B_PreTripGuide({ trip }) {
   const sections = [
     ['航班', [...trip.flights.out, ...trip.flights.back].map((flight) => `${flight.code} · ${flight.leg} · ${flight.when}`)],
@@ -523,6 +554,10 @@ function B_Companion({ initialDay }) {
       <B_PrimaryNav placement="desktop" {...navActions} />
       <main id="app-main" className="B-web-grid B-tabview" data-tab={activeTab} onClickCapture={interceptOfflineLink}>
         <section className="B-primary-column" aria-label="今日行程">
+
+      <div data-tabsection="home">
+        <B_Hero code={t.meta.code} dateRange={t.meta.dateRange} />
+      </div>
 
       <section className="B-today" data-bg={`0${d.n}`} id="top" data-tabsection="home">
         <div className="kicker">Today is</div>

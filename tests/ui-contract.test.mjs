@@ -104,3 +104,11 @@ test('卡片套用米紙底與金色點綴語彙', () => {
   assert.match(css, /--card-bg:\s*#fbf6ea|background:\s*#fbf6ea/);
   assert.match(css, /var\(--amber\)/); // 金色作為點綴出現
 });
+
+test('首頁 hero 為四城市輪播且尊重減量動畫', () => {
+  assert.match(jsx, /function B_Hero/);
+  assert.match(jsx, /華沙[\s\S]*克拉科夫[\s\S]*樂斯拉夫[\s\S]*波茲南/);
+  assert.match(jsx, /prefers-reduced-motion/);
+  assert.match(css, /\.B-hero-slide/);
+  assert.match(css, /\.B-hero-dots/);
+});
