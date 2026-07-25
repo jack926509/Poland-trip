@@ -866,3 +866,19 @@
   .B-mobile-brief .brief-card{grid-template-columns:1fr;gap:.25rem}
   .B-secondary-column .B-card,.B-secondary-column .B-pretrip-guide{margin:.55rem 0}
 }
+
+/* Task 1: mobile bottom nav becomes real tabs (home/trip/move/more) */
+.B-primary-nav button{ position:relative; }
+.B-primary-nav button.active{ color:var(--crimson); }
+.B-primary-nav button.active::after{
+  content:""; position:absolute; left:50%; bottom:6px; width:5px; height:5px;
+  transform:translateX(-50%); border-radius:999px; background:var(--crimson);
+}
+
+@media (max-width: 899px){
+  .B-tabview [data-tabsection]{ display:none; }
+  .B-tabview[data-tab="home"] [data-tabsection="home"],
+  .B-tabview[data-tab="trip"] [data-tabsection="trip"],
+  .B-tabview[data-tab="move"] [data-tabsection="move"],
+  .B-tabview[data-tab="more"] [data-tabsection="more"]{ display:block; }
+}

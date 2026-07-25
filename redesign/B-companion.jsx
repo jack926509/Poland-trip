@@ -176,15 +176,30 @@ function B_useModalFocus(open, containerRef, initialFocusRef, returnFocusRef) {
   }, [open, containerRef]);
 }
 
-function B_PrimaryNav({ placement, onToday, onItinerary, onTransport, onTickets }) {
+function B_PrimaryNav({ placement, active, onChange, onToday, onItinerary, onTransport, onTickets }) {
+  const placementClass = placement === 'mobile' ? 'B-mobile-nav' : 'B-desktop-nav';
+  if (placement === 'mobile') {
+    const tabs = [['home', '首頁'], ['trip', '行程'], ['move', '交通'], ['more', '更多']];
+    return (
+      <nav className={`B-primary-nav ${placementClass}`} aria-label="手機主要導覽">
+        {tabs.map(([key, label]) => (
+          <button
+            type="button"
+            key={key}
+            className={active === key ? 'active' : ''}
+            aria-current={active === key ? 'page' : undefined}
+            onClick={() => onChange(key)}>
+            {label}
+          </button>
+        ))}
+      </nav>
+    );
+  }
   const items = [
     ['今日', onToday], ['行程', onItinerary], ['交通', onTransport], ['訂票', onTickets],
   ];
-  const placementClass = placement === 'mobile' ? 'B-mobile-nav' : 'B-desktop-nav';
   return (
-    <nav
-      className={`B-primary-nav ${placementClass}`}
-      aria-label={placement === 'mobile' ? '手機主要導覽' : '網頁主要導覽'}>
+    <nav className={`B-primary-nav ${placementClass}`} aria-label="網頁主要導覽">
       {items.map(([label, action]) => (
         <button type="button" key={label} onClick={action}>{label}</button>
       ))}
@@ -204,7 +219,7 @@ function B_PreTripGuide({ trip }) {
     ['常用波蘭語', trip.phrases.map(([zh, pl]) => `${zh} · ${pl}`)],
   ];
   return (
-    <section id="B-guide" className="B-pretrip-guide" aria-labelledby="B-guide-title">
+    <section id="B-guide" className="B-pretrip-guide" aria-labelledby="B-guide-title" data-tabsection="more">
       <h2 id="B-guide-title">行前指南</h2>
       {sections.map(([title, rows]) => (
         <details key={title}>
@@ -222,6 +237,7 @@ function B_Companion({ initialDay }) {
   const storage = B_useMemo(B_getStorage, []);
   const initialNotes = B_useMemo(() => core.readNotes(storage), [core, storage]);
   const [override, setOverride] = B_useState(initialDay ?? null);
+  const [activeTab, setActiveTab] = B_useState('home');
   const [openStep, setOpenStep] = B_useState(null);
   const [tick, setTick] = B_useState(0);
   const [drawerOpen, setDrawerOpen] = B_useState(false);
@@ -505,10 +521,10 @@ function B_Companion({ initialDay }) {
       </header>
 
       <B_PrimaryNav placement="desktop" {...navActions} />
-      <main id="app-main" className="B-web-grid" onClickCapture={interceptOfflineLink}>
+      <main id="app-main" className="B-web-grid B-tabview" data-tab={activeTab} onClickCapture={interceptOfflineLink}>
         <section className="B-primary-column" aria-label="今日行程">
 
-      <section className="B-today" data-bg={`0${d.n}`} id="top">
+      <section className="B-today" data-bg={`0${d.n}`} id="top" data-tabsection="home">
         <div className="kicker">Today is</div>
         <div className="day-line">
           <button
@@ -595,7 +611,7 @@ function B_Companion({ initialDay }) {
         </button>
       </section>
 
-      <div className="B-scrub" ref={scrubRef} role="tablist" aria-label="日次切換">
+      <div className="B-scrub" ref={scrubRef} role="tablist" aria-label="日次切換" data-tabsection="trip">
         {t.days.map(x => (
           <a key={x.n} href={`#B-day-${x.n}`}
              role="tab"
@@ -613,7 +629,7 @@ function B_Companion({ initialDay }) {
         const isBus = d.train.type === 'BUS';
         const bookHref = isBus ? 'https://www.lajkonikbus.pl/' : 'https://www.intercity.pl/en/';
         return (
-          <div className="B-train">
+          <div className="B-train" data-tabsection="move">
             <div className="seg">
               <span className={`pill ${d.train.type.toLowerCase()}`}>{d.train.type}</span>
               <span>{d.train.date || d.date}</span>
@@ -695,7 +711,7 @@ function B_Companion({ initialDay }) {
         );
       })()}
 
-      <div className="B-timeline">
+      <div className="B-timeline" data-tabsection="trip">
         {d.steps.map((s, i) => {
           const isStar = s.label.includes('★');
           const cleanLabel = s.label.replace(/^★\s*/, '');
@@ -799,12 +815,12 @@ function B_Companion({ initialDay }) {
         })}
       </div>
 
-      {d.warn && <div className="B-warn"><strong>⚠ 注意</strong> · {d.warn}</div>}
+      {d.warn && <div className="B-warn" data-tabsection="trip"><strong>⚠ 注意</strong> · {d.warn}</div>}
 
         </section>
         <aside className="B-secondary-column" aria-label="行程補充資訊">
 
-      <div className="B-card field-note">
+      <div className="B-card field-note" data-tabsection="trip">
         <div className="label">今日提醒</div>
         <ul>
           <li><span className="field-tag">Plan B</span><strong>{backupNow}</strong></li>
@@ -812,7 +828,7 @@ function B_Companion({ initialDay }) {
         </ul>
       </div>
 
-      <div className="B-card tickets" id="B-tickets">
+      <div className="B-card tickets" id="B-tickets" data-tabsection="move">
         <div className="label">今日訂票</div>
         {ticketItems.length > 0 ? (
           <ul>
@@ -851,7 +867,7 @@ function B_Companion({ initialDay }) {
       </div>
 
       {d.eat && (
-        <div className="B-card eat">
+        <div className="B-card eat" data-tabsection="trip">
           <div className="label">🍴 今日必吃</div>
           <ul>
             {d.eat.map((e, i) => (
@@ -869,7 +885,7 @@ function B_Companion({ initialDay }) {
       )}
 
       {d.backup && d.backup.length > 0 && (
-        <div className="B-card backup">
+        <div className="B-card backup" data-tabsection="trip">
           <div className="label">☂ 備案 / Plan B</div>
           <ul>
             {d.backup.map((b, i) => (
@@ -889,7 +905,7 @@ function B_Companion({ initialDay }) {
       )}
 
       {d.practical && d.practical.length > 0 && (
-        <div className="B-card practical">
+        <div className="B-card practical" data-tabsection="trip">
           <div className="label">🛠 實務節點</div>
           <ul>
             {d.practical.map((p, i) => (
@@ -913,7 +929,7 @@ function B_Companion({ initialDay }) {
         const cs = (t.cityStories || []).find(s => s.city === focusCityName || s.en === focusCityName);
         if (!cs) return null;
         return (
-          <details className="B-card B-citystory-detail">
+          <details className="B-card B-citystory-detail" data-tabsection="trip">
             <summary>
               <strong>{cs.city} · {cs.en}</strong>
               <span className="eat-arr" aria-hidden="true">歷史與現場筆記</span>
@@ -939,7 +955,7 @@ function B_Companion({ initialDay }) {
         const cityBackup = (t.foodBackup || []).find(c => c.city === focusCityName);
         if (!cityBackup || !cityBackup.items.length) return null;
         return (
-          <details className="B-card B-foodbackup-detail">
+          <details className="B-card B-foodbackup-detail" data-tabsection="trip">
             <summary>
               <strong>備援餐廳 · {cityBackup.city}</strong>
               <span className="eat-arr" aria-hidden="true">{cityBackup.items.length} 間</span>
@@ -975,7 +991,7 @@ function B_Companion({ initialDay }) {
 
       {toast && <div className="B-toast" role="status" aria-live="assertive">{toast}</div>}
 
-      <B_PrimaryNav placement="mobile" {...navActions} />
+      <B_PrimaryNav placement="mobile" active={activeTab} onChange={setActiveTab} />
 
       {drawerOpen && (
         <React.Fragment>

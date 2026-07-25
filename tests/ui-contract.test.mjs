@@ -11,10 +11,13 @@ test('build 只編譯正式 PWA 介面', () => {
   assert.doesNotMatch(build, /A-magazine\.jsx|C-app\.jsx|ios-frame\.jsx|tweaks-panel\.jsx/);
 });
 
-test('手機與桌機導覽共用四個固定功能', () => {
-  for (const label of ['今日', '行程', '交通', '訂票']) assert.match(jsx, new RegExp(label));
+test('行動版底部導覽為四個真分頁', () => {
+  for (const label of ['首頁', '行程', '交通', '更多']) assert.match(jsx, new RegExp(label));
   assert.match(jsx, /B-mobile-nav/);
-  assert.match(jsx, /B-desktop-nav/);
+  assert.match(jsx, /B-desktop-nav/); // 桌機雙欄 nav 保留
+  assert.match(jsx, /activeTab/);
+  assert.match(jsx, /setActiveTab/);
+  assert.match(css, /\.B-primary-nav button\.active/);
 });
 
 test('寬螢幕採雙欄網頁布局', () => {
