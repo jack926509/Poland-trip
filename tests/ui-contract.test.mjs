@@ -99,3 +99,8 @@ test('更新失敗會清除 React waiting worker 並隱藏更新按鈕', () => {
   assert.match(jsx, /const onUpdateError = \(\) => \{[\s\S]*?setWaitingWorker\(null\)/);
   assert.match(jsx, /waitingWorker && !updateFailed/);
 });
+
+test('卡片套用米紙底與金色點綴語彙', () => {
+  assert.match(css, /--card-bg:\s*#fbf6ea|background:\s*#fbf6ea/);
+  assert.match(css, /var\(--amber\)/); // 金色作為點綴出現
+});
