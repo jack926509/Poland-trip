@@ -112,3 +112,14 @@ test('首頁 hero 為四城市輪播且尊重減量動畫', () => {
   assert.match(css, /\.B-hero-slide/);
   assert.match(css, /\.B-hero-dots/);
 });
+
+test('更多頁有六張工具卡與可返回的子頁容器', () => {
+  assert.match(jsx, /subpage/);
+  assert.match(jsx, /setSubpage/);
+  assert.match(jsx, /function B_Subpage/);
+  for (const label of ['旅行記帳', 'Photo Map', '匯率換算', '打包清單', 'SOS', '實用資訊']) {
+    assert.match(jsx, new RegExp(label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  }
+  assert.match(css, /\.B-tool-card/);
+  assert.match(css, /\.B-subpage/);
+});

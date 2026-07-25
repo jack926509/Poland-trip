@@ -262,6 +262,69 @@ function B_PreTripGuide({ trip }) {
   );
 }
 
+/* Task 4: "更多" 分頁工具方格與可返回子頁容器 */
+const B_TOOLS = [
+  ['expense', '旅行記帳', 'EXPENSE'],
+  ['photomap', 'Photo Map', 'MAP'],
+  ['fx', '匯率換算', 'FX RATE'],
+  ['packing', '打包清單', 'PACKING'],
+  ['sos', 'SOS 緊急卡', 'EMERGENCY'],
+  ['info', '實用資訊', 'INFO'],
+];
+
+const SUBPAGE_TITLES = {
+  expense: '旅行記帳',
+  photomap: 'Photo Map',
+  fx: '匯率換算',
+  packing: '打包清單',
+  sos: 'SOS 緊急卡',
+  info: '實用資訊',
+};
+
+function B_Subpage(props) {
+  return (
+    <div className="B-subpage-mask" role="dialog" aria-modal="true" aria-label={props.title}>
+      <div className="B-subpage">
+        <header className="B-subpage-head">
+          <button type="button" className="B-subpage-back" onClick={props.onBack} aria-label="返回更多">‹ 返回</button>
+          <h2>{props.title}</h2>
+        </header>
+        <div className="B-subpage-body">{props.children}</div>
+      </div>
+    </div>
+  );
+}
+
+function B_ToolGrid({ onOpen }) {
+  // 外層負責 mobile 分頁顯示/隱藏（Task 1 的 [data-tabsection] 機制），
+  // .B-more-grid 保留在內層，避免該規則的 display:block 蓋掉 grid 版面。
+  return (
+    <section className="B-more-tools" aria-label="旅行工具" data-tabsection="more">
+      <div className="B-more-grid">
+        {B_TOOLS.map(([key, label, sub]) => (
+          <button
+            type="button"
+            key={key}
+            className="B-tool-card"
+            data-open={key}
+            onClick={() => onOpen(key)}>
+            <span className="tool-name">{label}</span>
+            <span className="tool-sub">{sub}</span>
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* Task 5–7 會補齊以下子頁內容，本 Task 先放暫時佔位 */
+function B_Expense() { return React.createElement('p', null, '（記帳，下一步實作）'); }
+function B_PhotoMap() { return React.createElement('p', null, '（Photo Map，下一步實作）'); }
+function B_FxTool() { return React.createElement('p', null, '（匯率換算，下一步實作）'); }
+function B_Packing() { return React.createElement('p', null, '（打包清單，下一步實作）'); }
+function B_Sos() { return React.createElement('p', null, '（SOS 緊急卡，下一步實作）'); }
+function B_Info() { return React.createElement('p', null, '（實用資訊，下一步實作）'); }
+
 function B_Companion({ initialDay }) {
   const t = window.TRIP;
   const core = window.PolskaPwaCore;
@@ -273,6 +336,7 @@ function B_Companion({ initialDay }) {
   const [tick, setTick] = B_useState(0);
   const [drawerOpen, setDrawerOpen] = B_useState(false);
   const [trainSheet, setTrainSheet] = B_useState(false);
+  const [subpage, setSubpage] = B_useState(null);
   const [online, setOnline] = B_useState(() => typeof navigator === 'undefined' ? true : navigator.onLine);
   const [standalone, setStandalone] = B_useState(B_isStandaloneMode);
   const [pwaStatus, setPwaStatus] = B_useState(() => window.PolskaPwaState?.status || ('serviceWorker' in navigator ? 'loading' : 'unsupported'));
@@ -1013,6 +1077,7 @@ function B_Companion({ initialDay }) {
         );
       })()}
 
+      <B_ToolGrid onOpen={setSubpage} />
       <B_PreTripGuide trip={t} />
         </aside>
       </main>
@@ -1072,6 +1137,17 @@ function B_Companion({ initialDay }) {
             </ul>
           </aside>
         </React.Fragment>
+      )}
+
+      {subpage && (
+        <B_Subpage title={SUBPAGE_TITLES[subpage]} onBack={() => setSubpage(null)}>
+          {subpage === 'expense' && <B_Expense storage={storage} />}
+          {subpage === 'fx' && <B_FxTool storage={storage} />}
+          {subpage === 'packing' && <B_Packing storage={storage} />}
+          {subpage === 'sos' && <B_Sos trip={t} />}
+          {subpage === 'info' && <B_Info trip={t} />}
+          {subpage === 'photomap' && <B_PhotoMap trip={t} storage={storage} />}
+        </B_Subpage>
       )}
     </div>
   );
