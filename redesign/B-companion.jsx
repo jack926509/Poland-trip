@@ -484,19 +484,22 @@ function B_FxTool({ storage }) {
   const [pln, setPln] = B_useState('100');
   const [twd, setTwd] = B_useState(() => String(core.plnToTwd(100, settings.fxRate)));
 
+  // 匯率為空或非正數視為「尚未設定」，換算欄不可靜默顯示 0——見 Task 6 審查問題 1。
+  const rateNum = Number(settings.fxRate);
+  const rateValid = settings.fxRate !== '' && isFinite(rateNum) && rateNum > 0;
+
   const onPlnChange = (ev) => {
     const v = ev.target.value;
     setPln(v);
     const n = Number(v);
-    setTwd(isFinite(n) && v !== '' ? String(core.plnToTwd(n, settings.fxRate)) : '');
+    setTwd(rateValid && isFinite(n) && v !== '' ? String(core.plnToTwd(n, rateNum)) : '');
   };
 
   const onTwdChange = (ev) => {
     const v = ev.target.value;
     setTwd(v);
     const n = Number(v);
-    const rate = Number(settings.fxRate) || 0;
-    setPln(isFinite(n) && v !== '' && rate > 0 ? (n / rate).toFixed(2) : '');
+    setPln(rateValid && isFinite(n) && v !== '' ? (n / rateNum).toFixed(2) : '');
   };
 
   const onRateChange = (ev) => {
@@ -504,8 +507,9 @@ function B_FxTool({ storage }) {
     const rate = Number(v);
     const nextSettings = { ...settings, fxRate: v === '' ? '' : rate };
     setSettings(nextSettings);
-    if (v === '' || !isFinite(rate)) return;
-    core.writeJSON(storage, 'polska.settings.v1', { ...nextSettings, fxRate: rate });
+    const nextRateValid = v !== '' && isFinite(rate) && rate > 0;
+    if (!nextRateValid) { setTwd(''); return; }
+    core.writeJSON(storage, 'polska.settings.v1', nextSettings);
     const p = Number(pln);
     if (isFinite(p) && pln !== '') setTwd(String(core.plnToTwd(p, rate)));
   };
@@ -522,7 +526,9 @@ function B_FxTool({ storage }) {
         TWD
         <input
           type="number" inputMode="decimal" min="0" step="1"
-          value={twd} onChange={onTwdChange} aria-label="台幣金額" />
+          value={twd} onChange={onTwdChange}
+          placeholder={rateValid ? undefined : '—'}
+          aria-label="台幣金額" />
       </label>
       <label className="B-fx-rate">
         1 PLN =
@@ -531,6 +537,9 @@ function B_FxTool({ storage }) {
           value={settings.fxRate} onChange={onRateChange} aria-label="可調匯率" />
         TWD
       </label>
+      {!rateValid && (
+        <p className="B-fx-hint" role="status">請先設定有效匯率（大於 0），換算結果暫不顯示</p>
+      )}
     </div>
   );
 }
@@ -541,8 +550,13 @@ function B_Packing({ storage }) {
   const packingDefault = (window.TRIP && window.TRIP.packingDefault) || {};
   const [checked, setChecked] = B_useState(() => core.readJSON(storage, 'polska.packing.v1', {}));
 
-  const toggle = (item) => {
-    const next = { ...checked, [item]: !checked[item] };
+  // key 用「分類::項目」而非純項目文字，避免不同分類的同名項目互相污染勾選狀態
+  // （見 Task 6 審查問題 2）。
+  const packKey = (group, item) => `${group}::${item}`;
+
+  const toggle = (group, item) => {
+    const key = packKey(group, item);
+    const next = { ...checked, [key]: !checked[key] };
     setChecked(next);
     core.writeJSON(storage, 'polska.packing.v1', next);
   };
@@ -550,7 +564,7 @@ function B_Packing({ storage }) {
   return (
     <div className="B-packing">
       {Object.entries(packingDefault).map(([group, items]) => {
-        const packedCount = items.filter((item) => checked[item]).length;
+        const packedCount = items.filter((item) => checked[packKey(group, item)]).length;
         return (
           <div className="B-packing-group" key={group}>
             <h3>
@@ -561,8 +575,8 @@ function B_Packing({ storage }) {
               <label key={item}>
                 <input
                   type="checkbox"
-                  checked={Boolean(checked[item])}
-                  onChange={() => toggle(item)} />
+                  checked={Boolean(checked[packKey(group, item)])}
+                  onChange={() => toggle(group, item)} />
                 {item}
               </label>
             ))}

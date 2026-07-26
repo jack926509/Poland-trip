@@ -985,6 +985,7 @@
   padding:10px 12px; border:1px solid rgba(26,22,18,.18); border-radius:10px; background:#fbf6ea;
 }
 .B-fx-rate{ color:var(--ink-mute); font-size:.85rem; }
+.B-fx-hint{ font-family:var(--mono); font-size:.68rem; color:var(--crimson); background:rgba(168,35,29,.08); border:1px solid rgba(168,35,29,.25); border-radius:10px; padding:var(--pad-sm); }
 
 /* Task 6: 打包清單 */
 .B-packing-group{ margin-bottom:var(--gap-md); }
