@@ -144,11 +144,11 @@
 - **M4** `redesign/B-companion.jsx:918-931`：子頁宣告 `role="dialog" aria-modal="true"` 但 Escape 不關、背景可滾動、焦點不進子頁。把 `subpage` 併入 Escape 與 scroll lock 條件；開啟時 focus 子頁標題、關閉時還原開啟者焦點（比照 `drawerReturnFocusRef`）。
 - 低優先：`README.md:15,19` 的 `polska-v16` 更正為實際版本；「實用資訊」頁「1 PLN ≈ 8 TWD」改為讀即時匯率設定；金額加千分位。
 
-## 7. 照片策略（本規格唯一的待確認假設）
+## 7. 照片策略（2026-07-26 使用者定案：「照片來源你來找」）
 
-方案 A 依賴照片。使用者尚未前往波蘭，無自有照片。
+方案 A 依賴照片。使用者尚未前往波蘭，無自有照片，且已指示由我負責取得。
 
-**假設（若使用者不同意，只需改本節）：** 由我取得 Wikimedia Commons 上公有領域或 CC 授權的四城照片，處理後入庫：
+**定案做法：** 取得 Wikimedia Commons 上公有領域或 CC 授權（PD / CC0 / CC-BY / CC-BY-SA）的四城照片，處理後入庫：
 
 - 四張城市 hero（華沙、克拉科夫、樂斯拉夫、波茲南）＋ 行程縮圖沿用城市照裁切版。
 - 格式 WebP，hero 長邊 1200px、每張 ≤ 70KB；縮圖 200px、每張 ≤ 12KB；**全部影像總計 ≤ 400KB**。
