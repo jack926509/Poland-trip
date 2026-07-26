@@ -123,3 +123,14 @@ test('更多頁有六張工具卡與可返回的子頁容器', () => {
   assert.match(css, /\.B-tool-card/);
   assert.match(css, /\.B-subpage/);
 });
+
+test('記帳子頁含總額、預算條、分類統計、新增與列表', () => {
+  assert.match(jsx, /function B_Expense/);
+  assert.match(jsx, /polska\.expenses\.v1/);
+  assert.match(jsx, /新增記帳/);
+  assert.match(jsx, /core\.expenseTotals|expenseTotals\(/);
+  assert.match(jsx, /core\.budgetStatus|budgetStatus\(/);
+  assert.match(css, /\.B-expense-total/);
+  assert.match(css, /\.B-budget-bar/);
+  assert.match(css, /\.B-fab/);
+});

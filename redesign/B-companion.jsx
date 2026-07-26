@@ -317,8 +317,164 @@ function B_ToolGrid({ onOpen }) {
   );
 }
 
-/* Task 5–7 會補齊以下子頁內容，本 Task 先放暫時佔位 */
-function B_Expense() { return React.createElement('p', null, '（記帳，下一步實作）'); }
+/* Task 5: 記帳子頁（完整功能） */
+function B_Expense({ storage }) {
+  const core = window.PolskaPwaCore;
+  const days = (window.TRIP && window.TRIP.days) || [];
+  const [expenses, setExpenses] = B_useState(() => core.readJSON(storage, 'polska.expenses.v1', []));
+  const [settings] = B_useState(() => core.readJSON(storage, 'polska.settings.v1', core.DEFAULT_SETTINGS));
+  const [filterDay, setFilterDay] = B_useState('all');
+  const [formOpen, setFormOpen] = B_useState(false);
+  const [persistOk, setPersistOk] = B_useState(true);
+  const [form, setForm] = B_useState(() => ({
+    item: '', amountPLN: '', category: core.EXPENSE_CATEGORIES[0].key,
+    day: days[0] ? days[0].n : 1, method: '現金',
+  }));
+
+  const totals = B_useMemo(() => core.expenseTotals(expenses), [core, expenses]);
+  const budget = B_useMemo(
+    () => core.budgetStatus(totals.totalPLN, settings.fxRate, settings.budgetTWD),
+    [core, totals.totalPLN, settings.fxRate, settings.budgetTWD]
+  );
+  const totalTWD = core.plnToTwd(totals.totalPLN, settings.fxRate);
+  const filtered = filterDay === 'all' ? expenses : expenses.filter((e) => e.day === filterDay);
+  const catLabel = (key) => (core.EXPENSE_CATEGORIES.find((c) => c.key === key) || {}).label || key;
+
+  const persist = (next) => {
+    setExpenses(next);
+    setPersistOk(core.writeJSON(storage, 'polska.expenses.v1', next));
+  };
+
+  const submitForm = (e) => {
+    e.preventDefault();
+    const amount = Number(form.amountPLN);
+    if (!form.item.trim() || !isFinite(amount) || amount <= 0) return;
+    const entry = {
+      id: Date.now() + Math.random(),
+      day: Number(form.day),
+      category: form.category,
+      item: form.item.trim(),
+      amountPLN: amount,
+      method: form.method,
+      ts: Date.now(),
+    };
+    persist([entry, ...expenses]);
+    setForm({ item: '', amountPLN: '', category: form.category, day: Number(form.day), method: form.method });
+    setFormOpen(false);
+  };
+
+  const removeExpense = (id) => persist(expenses.filter((e) => e.id !== id));
+
+  return (
+    <div className="B-expense">
+      {!persistOk && <p className="B-expense-storage-warn">目前無法儲存，本次紀錄僅暫存</p>}
+
+      <div className="B-expense-total">
+        <span className="total-pln">{totals.totalPLN.toFixed(2)} PLN</span>
+        <span className="total-twd">≈ NT${totalTWD}</span>
+        <span className="total-rate">1 PLN ≈ NT${settings.fxRate}</span>
+        <div className="B-budget-bar">
+          <div
+            className={`fill${budget.over ? ' is-over' : ''}`}
+            style={{ width: `${Math.min(budget.ratio, 1) * 100}%` }}
+          />
+        </div>
+        <span className="B-budget-label">已花 NT${budget.spentTWD} / 預算 NT${budget.budgetTWD}</span>
+      </div>
+
+      <div className="B-cat-grid">
+        {core.EXPENSE_CATEGORIES.map((c) => (
+          <div className="B-cat-tile" key={c.key}>
+            <span className="label">{c.label}</span>
+            <span className="amt">NT${core.plnToTwd(totals.byCategory[c.key], settings.fxRate)}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="B-day-filter" role="group" aria-label="依日期篩選記帳列表">
+        <button type="button" className={`pill${filterDay === 'all' ? ' active' : ''}`} onClick={() => setFilterDay('all')}>全部</button>
+        {days.map((d) => (
+          <button
+            type="button" key={d.n}
+            className={`pill${filterDay === d.n ? ' active' : ''}`}
+            onClick={() => setFilterDay(d.n)}>
+            Day{d.n}
+          </button>
+        ))}
+      </div>
+
+      <div className="B-expense-list">
+        {filtered.length === 0 && <p className="B-expense-empty">尚無記帳紀錄</p>}
+        {filtered.map((e) => (
+          <div className="B-expense-row" key={e.id}>
+            <div className="item">
+              <span className="name">{e.item}</span>
+              <span className="meta">
+                <span className="cat">{catLabel(e.category)}</span>
+                {' · '}
+                <span className="method">{e.method}</span>
+                {' · '}
+                <span className="day">Day{e.day}</span>
+              </span>
+            </div>
+            <div className="amounts">
+              <span className="amt">{e.amountPLN} PLN</span>
+              <span className="twd">≈NT${core.plnToTwd(e.amountPLN, settings.fxRate)}</span>
+            </div>
+            <button type="button" className="del" aria-label={`刪除記帳：${e.item}`} onClick={() => removeExpense(e.id)}>✕</button>
+          </div>
+        ))}
+      </div>
+
+      {formOpen && (
+        <form className="B-expense-form" onSubmit={submitForm} aria-label="新增記帳">
+          <label>
+            品項
+            <input type="text" value={form.item} onChange={(ev) => setForm({ ...form, item: ev.target.value })} required />
+          </label>
+          <div className="row">
+            <label>
+              金額（PLN）
+              <input
+                type="number" min="0" step="0.01" inputMode="decimal"
+                value={form.amountPLN}
+                onChange={(ev) => setForm({ ...form, amountPLN: ev.target.value })}
+                required />
+            </label>
+            <label>
+              分類
+              <select value={form.category} onChange={(ev) => setForm({ ...form, category: ev.target.value })}>
+                {core.EXPENSE_CATEGORIES.map((c) => <option key={c.key} value={c.key}>{c.label}</option>)}
+              </select>
+            </label>
+          </div>
+          <div className="row">
+            <label>
+              Day
+              <select value={form.day} onChange={(ev) => setForm({ ...form, day: Number(ev.target.value) })}>
+                {days.map((d) => <option key={d.n} value={d.n}>{`Day${d.n}（${d.date}）`}</option>)}
+              </select>
+            </label>
+            <label>
+              付款方式
+              <select value={form.method} onChange={(ev) => setForm({ ...form, method: ev.target.value })}>
+                <option value="現金">現金</option>
+                <option value="信用卡">信用卡</option>
+                <option value="行動支付">行動支付</option>
+              </select>
+            </label>
+          </div>
+          <div className="actions">
+            <button type="button" className="cancel" onClick={() => setFormOpen(false)}>取消</button>
+            <button type="submit" className="submit">儲存</button>
+          </div>
+        </form>
+      )}
+
+      <button type="button" className="B-fab" onClick={() => setFormOpen((v) => !v)}>＋新增記帳</button>
+    </div>
+  );
+}
 function B_PhotoMap() { return React.createElement('p', null, '（Photo Map，下一步實作）'); }
 function B_FxTool() { return React.createElement('p', null, '（匯率換算，下一步實作）'); }
 function B_Packing() { return React.createElement('p', null, '（打包清單，下一步實作）'); }

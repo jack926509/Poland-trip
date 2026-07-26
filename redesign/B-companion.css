@@ -912,9 +912,67 @@
 .B-tool-card .tool-name{ font-size:1rem; color:var(--ink); }
 .B-tool-card .tool-sub{ font-size:.72rem; color:var(--ink-mute); font-family:var(--mono); letter-spacing:.06em; }
 .B-tool-card::before{ content:""; width:22px; height:3px; border-radius:999px; background:var(--amber); }
-.B-subpage-mask{ position:fixed; inset:0; z-index:120; background:var(--paper); display:flex; flex-direction:column; padding-bottom:var(--safe-bottom); }
+.B-subpage-mask{ position:fixed; inset:0; z-index:130; background:var(--paper); display:flex; flex-direction:column; padding-bottom:var(--safe-bottom); }
 .B-subpage{ display:flex; flex-direction:column; height:100%; }
 .B-subpage-head{ position:sticky; top:0; display:flex; align-items:center; gap:12px; padding:calc(var(--safe-top) + 12px) 16px 12px; background:var(--paper); border-bottom:1px solid var(--amber); }
 .B-subpage-head h2{ margin:0; font-family:var(--serif); font-size:1.15rem; }
 .B-subpage-back{ font-family:var(--mono); font-size:.85rem; color:var(--crimson); background:none; border:none; padding:4px 2px; }
 .B-subpage-body{ flex:1; overflow-y:auto; padding:16px; -webkit-overflow-scrolling:touch; }
+
+/* Task 5: 記帳子頁 */
+.B-expense{ display:flex; flex-direction:column; gap:var(--gap-md); padding-bottom:88px; }
+.B-expense-storage-warn{ font-family:var(--mono); font-size:.68rem; color:var(--crimson); background:rgba(168,35,29,.08); border:1px solid rgba(168,35,29,.25); border-radius:10px; padding:var(--pad-sm); }
+.B-expense-total{ background:var(--ink); color:var(--paper); border-radius:16px; padding:var(--pad-lg); display:flex; flex-direction:column; gap:4px; }
+.B-expense-total .total-pln{ font-family:var(--mono); font-size:2.1rem; font-variant-numeric:tabular-nums; }
+.B-expense-total .total-twd{ font-family:var(--mono); font-size:1rem; color:var(--amber); font-variant-numeric:tabular-nums; }
+.B-expense-total .total-rate{ font-family:var(--mono); font-size:.7rem; opacity:.7; letter-spacing:.08em; }
+.B-budget-bar{ margin:var(--gap-md) 0; height:10px; border-radius:999px; background:rgba(26,22,18,.10); overflow:hidden; }
+.B-budget-bar .fill{ height:100%; background:var(--amber); transition:width .4s var(--ease-out); }
+.B-budget-bar .fill.is-over{ background:var(--crimson); }
+.B-budget-label{ font-family:var(--mono); font-size:.72rem; color:var(--ink-mute); font-variant-numeric:tabular-nums; }
+.B-cat-grid{ display:grid; grid-template-columns:1fr 1fr; gap:var(--gap-sm); }
+.B-cat-tile{ background:#fbf6ea; border:1px solid rgba(26,22,18,.10); border-radius:12px; padding:var(--pad-sm); }
+.B-cat-tile .label{ display:block; font-family:var(--serif); font-size:.82rem; color:var(--ink-mute); margin-bottom:2px; }
+.B-cat-tile .amt{ font-family:var(--mono); font-variant-numeric:tabular-nums; color:var(--crimson); font-size:1rem; }
+.B-day-filter{ display:flex; gap:6px; overflow-x:auto; padding:var(--gap-sm) 0; -webkit-overflow-scrolling:touch; }
+.B-day-filter .pill{
+  flex:none; white-space:nowrap; font-family:var(--mono); font-size:.68rem; letter-spacing:.06em;
+  border:1px solid rgba(26,22,18,.18); border-radius:999px; padding:.4rem .8rem; background:var(--paper);
+  color:var(--ink-mute); cursor:pointer;
+}
+.B-day-filter .pill.active{ background:var(--crimson); color:var(--paper); border-color:var(--crimson); }
+.B-expense-list{ display:flex; flex-direction:column; }
+.B-expense-row{ display:grid; grid-template-columns:1fr auto auto; gap:8px; align-items:center; padding:var(--pad-sm) 0; border-bottom:1px solid rgba(26,22,18,.08); }
+.B-expense-row .item{ display:flex; flex-direction:column; gap:2px; }
+.B-expense-row .item .name{ font-family:var(--serif); font-size:.92rem; color:var(--ink); }
+.B-expense-row .item .meta{ font-family:var(--mono); font-size:.62rem; color:var(--ink-mute); letter-spacing:.04em; }
+.B-expense-row .cat{ font-family:var(--mono); font-size:.6rem; letter-spacing:.06em; color:var(--ink-mute); }
+.B-expense-row .method{ font-family:var(--mono); font-size:.6rem; letter-spacing:.06em; color:var(--ink-mute); }
+.B-expense-row .day{ font-family:var(--mono); font-size:.6rem; letter-spacing:.06em; color:var(--ink-mute); }
+.B-expense-row .amounts{ display:flex; flex-direction:column; align-items:flex-end; gap:2px; }
+.B-expense-row .amt,.B-expense-row .twd{ font-family:var(--mono); font-variant-numeric:tabular-nums; }
+.B-expense-row .amt{ font-size:.9rem; color:var(--ink); }
+.B-expense-row .twd{ font-size:.66rem; color:var(--ink-mute); }
+.B-expense-row .del{ color:var(--crimson); background:none; border:none; font-size:1.1rem; cursor:pointer; padding:6px; }
+.B-expense-empty{ text-align:center; color:var(--ink-mute); padding:var(--pad-lg); font-family:var(--serif); }
+.B-fab{
+  position:fixed; right:16px; bottom:calc(var(--safe-bottom) + 76px); background:var(--crimson); color:var(--paper);
+  border:none; border-radius:999px; padding:14px 20px; box-shadow:var(--shadow-md); font-family:var(--serif);
+  font-size:.92rem; cursor:pointer; z-index:130;
+}
+.B-expense-form{
+  display:flex; flex-direction:column; gap:var(--gap-sm); background:#fbf6ea; border:1px solid rgba(26,22,18,.12);
+  border-radius:14px; padding:var(--pad-md); margin-top:var(--gap-sm);
+}
+.B-expense-form label{ display:flex; flex-direction:column; gap:4px; font-family:var(--mono); font-size:.68rem; color:var(--ink-mute); letter-spacing:.04em; }
+.B-expense-form input,.B-expense-form select{
+  font-family:var(--serif); font-size:.95rem; color:var(--ink); background:var(--paper);
+  border:1px solid rgba(26,22,18,.2); border-radius:8px; padding:.5rem .6rem;
+}
+.B-expense-form .row{ display:grid; grid-template-columns:1fr 1fr; gap:var(--gap-sm); }
+.B-expense-form .actions{ display:flex; gap:var(--gap-sm); justify-content:flex-end; margin-top:4px; }
+.B-expense-form .actions button{
+  font-family:var(--mono); font-size:.75rem; letter-spacing:.04em; border-radius:999px; padding:.5rem 1rem; cursor:pointer;
+}
+.B-expense-form .actions .cancel{ background:none; border:1px solid rgba(26,22,18,.2); color:var(--ink-mute); }
+.B-expense-form .actions .submit{ background:var(--crimson); border:1px solid var(--crimson); color:var(--paper); }
