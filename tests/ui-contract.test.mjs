@@ -143,3 +143,14 @@ test('匯率換算與打包清單子頁存在且持久化', () => {
   assert.match(css, /\.B-fx/);
   assert.match(css, /\.B-packing/);
 });
+
+test('SOS、實用資訊、Photo Map 子頁存在且接既有資料', () => {
+  assert.match(jsx, /function B_Sos/);
+  assert.match(jsx, /function B_Info/);
+  assert.match(jsx, /function B_PhotoMap/);
+  assert.match(jsx, /safety/);
+  assert.match(jsx, /phrases/);
+  assert.match(jsx, /polska\.photomap\.v1/);
+  assert.match(css, /\.B-sos/);
+  assert.match(css, /\.B-photomap/);
+});

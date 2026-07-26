@@ -475,7 +475,44 @@ function B_Expense({ storage }) {
     </div>
   );
 }
-function B_PhotoMap() { return React.createElement('p', null, '（Photo Map，下一步實作）'); }
+/* Task 7: Photo Map 城市打卡（本機持久化） */
+function B_PhotoMap({ storage }) {
+  const core = window.PolskaPwaCore;
+  const cities = Object.keys(B_CITY_EN);
+  const [checkins, setCheckins] = B_useState(() => core.readJSON(storage, 'polska.photomap.v1', {}));
+
+  const doneCount = cities.filter((city) => checkins[city]).length;
+
+  const toggle = (city) => {
+    const next = { ...checkins, [city]: !checkins[city] };
+    setCheckins(next);
+    core.writeJSON(storage, 'polska.photomap.v1', next);
+  };
+
+  return (
+    <div className="B-photomap">
+      <p className="B-photomap-head">已打卡 {doneCount}/{cities.length}</p>
+      {cities.map((city) => {
+        const done = Boolean(checkins[city]);
+        return (
+          <div className={`B-photomap-city${done ? ' is-done' : ''}`} key={city}>
+            <div className="B-photomap-name">
+              <strong>{city}</strong>
+              <span className="en">{B_CITY_EN[city]}</span>
+            </div>
+            <button
+              type="button"
+              className="B-photomap-toggle"
+              aria-pressed={done}
+              onClick={() => toggle(city)}>
+              {done ? '已打卡 ✓' : '打卡'}
+            </button>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 /* Task 6: 匯率換算子頁（與記帳共用 polska.settings.v1） */
 function B_FxTool({ storage }) {
@@ -587,8 +624,102 @@ function B_Packing({ storage }) {
   );
 }
 
-function B_Sos() { return React.createElement('p', null, '（SOS 緊急卡，下一步實作）'); }
-function B_Info() { return React.createElement('p', null, '（實用資訊，下一步實作）'); }
+/* Task 7: SOS 緊急卡 — 讀 trip.safety，缺欄位不渲染、不報錯 */
+function B_Sos({ trip }) {
+  const safety = (trip && trip.safety) || {};
+  const emergency = Array.isArray(safety.emergency) ? safety.emergency : [];
+  const embassy = Array.isArray(safety.embassy) ? safety.embassy : [];
+  const tips = Array.isArray(safety.tips) ? safety.tips : [];
+  const empty = emergency.length === 0 && embassy.length === 0 && tips.length === 0;
+
+  return (
+    <div className="B-sos">
+      {emergency.length > 0 && (
+        <section className="B-sos-section">
+          <h3>緊急電話</h3>
+          {emergency.map(([label, number]) => (
+            <a
+              key={label}
+              className="B-sos-call"
+              href={`tel:${String(number).replace(/\s+/g, '')}`}>
+              <span>{label}</span>
+              <span>{number}</span>
+            </a>
+          ))}
+        </section>
+      )}
+      {embassy.length > 0 && (
+        <section className="B-sos-section">
+          <h3>駐波蘭代表處</h3>
+          {embassy.map(([label, value]) => (
+            <div className="B-sos-tip" key={label}>
+              <strong>{label}</strong>：{value}
+            </div>
+          ))}
+        </section>
+      )}
+      {tips.length > 0 && (
+        <section className="B-sos-section">
+          <h3>安全提醒</h3>
+          {tips.map((tip) => (
+            <div className="B-sos-tip" key={tip.label}>
+              <strong>{tip.label}</strong>：{tip.text}
+            </div>
+          ))}
+        </section>
+      )}
+      {empty && <p className="B-sos-empty">尚無安全資料</p>}
+    </div>
+  );
+}
+
+/* Task 7: 實用資訊 — trip.practical（頂層）＋ trip.about（電壓/小費等）＋ trip.phrases（波蘭語） */
+function B_Info({ trip }) {
+  const practical = Array.isArray(trip && trip.practical) ? trip.practical : [];
+  const about = Array.isArray(trip && trip.about) ? trip.about : [];
+  const phrases = Array.isArray(trip && trip.phrases) ? trip.phrases : [];
+  const empty = practical.length === 0 && about.length === 0 && phrases.length === 0;
+
+  return (
+    <div className="B-info">
+      {about.length > 0 && (
+        <section className="B-info-section">
+          <h3>旅行小抄</h3>
+          {about.map(([label, value]) => (
+            <div className="B-info-about" key={label}>
+              <span className="label">{label}</span>
+              <span className="value">{value}</span>
+            </div>
+          ))}
+        </section>
+      )}
+      {practical.length > 0 && (
+        <section className="B-info-section">
+          <h3>實用資訊</h3>
+          {practical.map((item) => (
+            <div className="B-info-practical" key={item.name || item.tag}>
+              <span className="tag">{item.tag}</span>
+              <strong>{item.name}</strong>
+              {item.note && <p>{item.note}</p>}
+            </div>
+          ))}
+        </section>
+      )}
+      {phrases.length > 0 && (
+        <section className="B-info-section">
+          <h3>波蘭語小抄</h3>
+          {phrases.map(([zh, pl, pron]) => (
+            <div className="B-info-phrase" key={zh}>
+              <span className="zh">{zh}</span>
+              <span className="pl">{pl}{pron ? `（${pron}）` : ''}</span>
+            </div>
+          ))}
+        </section>
+      )}
+      {empty && <p className="B-info-empty">尚無實用資訊</p>}
+    </div>
+  );
+}
 
 function B_Companion({ initialDay }) {
   const t = window.TRIP;

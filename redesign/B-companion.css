@@ -996,3 +996,30 @@
 .B-packing-group h3 span:last-child{ font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:.8rem; color:var(--ink-mute); }
 .B-packing label{ display:flex; align-items:center; gap:10px; padding:8px 0; font-family:var(--serif); }
 .B-packing input[type="checkbox"]{ width:20px; height:20px; accent-color:var(--crimson); }
+
+/* Task 7: SOS 緊急卡 */
+.B-sos-section{ margin-bottom:var(--gap-md); }
+.B-sos-section h3{ font-family:var(--serif); font-size:1rem; border-bottom:1px solid var(--amber); padding-bottom:4px; margin:0 0 var(--gap-sm); }
+.B-sos-call{ display:flex; justify-content:space-between; align-items:center; background:var(--crimson); color:var(--paper); border-radius:14px; padding:var(--pad-md); margin-bottom:var(--gap-sm); font-family:var(--mono); font-size:1.3rem; text-decoration:none; }
+.B-sos-tip{ padding:8px 0; border-bottom:1px solid rgba(26,22,18,.08); font-family:var(--serif); }
+.B-sos-empty{ font-family:var(--serif); color:var(--ink-mute); }
+
+/* Task 7: 實用資訊 */
+.B-info-section{ margin-bottom:var(--gap-md); }
+.B-info-section h3{ font-family:var(--serif); font-size:1rem; border-bottom:1px solid var(--amber); padding-bottom:4px; margin:0 0 var(--gap-sm); }
+.B-info-about{ display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-bottom:1px solid rgba(26,22,18,.08); font-family:var(--serif); }
+.B-info-practical{ padding:8px 0; border-bottom:1px solid rgba(26,22,18,.08); font-family:var(--serif); }
+.B-info-practical .tag{ font-family:var(--mono); font-size:.7rem; color:var(--amber-deep); letter-spacing:.04em; display:block; }
+.B-info-practical p{ margin:2px 0 0; font-size:.85rem; color:var(--ink-mute); }
+.B-info-phrase{ display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-bottom:1px solid rgba(26,22,18,.08); }
+.B-info-phrase .pl{ font-family:var(--serif); color:var(--crimson); }
+.B-info-empty{ font-family:var(--serif); color:var(--ink-mute); }
+
+/* Task 7: Photo Map 城市打卡 */
+.B-photomap-head{ font-family:var(--mono); color:var(--amber-deep); margin-bottom:var(--gap-sm); }
+.B-photomap-city{ display:flex; justify-content:space-between; align-items:center; padding:var(--pad-md); background:#fbf6ea; border:1px solid rgba(26,22,18,.10); border-radius:14px; margin-bottom:var(--gap-sm); }
+.B-photomap-city.is-done{ border-color:var(--crimson); }
+.B-photomap-name{ display:flex; flex-direction:column; font-family:var(--serif); }
+.B-photomap-name .en{ font-family:var(--mono); font-size:.7rem; color:var(--ink-mute); }
+.B-photomap-toggle{ font-family:var(--mono); font-size:.75rem; letter-spacing:.04em; border-radius:999px; padding:.5rem 1rem; background:none; border:1px solid var(--crimson); color:var(--crimson); }
+.B-photomap-city.is-done .B-photomap-toggle{ background:var(--crimson); color:var(--paper); }
