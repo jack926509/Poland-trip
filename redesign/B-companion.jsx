@@ -476,8 +476,103 @@ function B_Expense({ storage }) {
   );
 }
 function B_PhotoMap() { return React.createElement('p', null, '（Photo Map，下一步實作）'); }
-function B_FxTool() { return React.createElement('p', null, '（匯率換算，下一步實作）'); }
-function B_Packing() { return React.createElement('p', null, '（打包清單，下一步實作）'); }
+
+/* Task 6: 匯率換算子頁（與記帳共用 polska.settings.v1） */
+function B_FxTool({ storage }) {
+  const core = window.PolskaPwaCore;
+  const [settings, setSettings] = B_useState(() => core.readJSON(storage, 'polska.settings.v1', core.DEFAULT_SETTINGS));
+  const [pln, setPln] = B_useState('100');
+  const [twd, setTwd] = B_useState(() => String(core.plnToTwd(100, settings.fxRate)));
+
+  const onPlnChange = (ev) => {
+    const v = ev.target.value;
+    setPln(v);
+    const n = Number(v);
+    setTwd(isFinite(n) && v !== '' ? String(core.plnToTwd(n, settings.fxRate)) : '');
+  };
+
+  const onTwdChange = (ev) => {
+    const v = ev.target.value;
+    setTwd(v);
+    const n = Number(v);
+    const rate = Number(settings.fxRate) || 0;
+    setPln(isFinite(n) && v !== '' && rate > 0 ? (n / rate).toFixed(2) : '');
+  };
+
+  const onRateChange = (ev) => {
+    const v = ev.target.value;
+    const rate = Number(v);
+    const nextSettings = { ...settings, fxRate: v === '' ? '' : rate };
+    setSettings(nextSettings);
+    if (v === '' || !isFinite(rate)) return;
+    core.writeJSON(storage, 'polska.settings.v1', { ...nextSettings, fxRate: rate });
+    const p = Number(pln);
+    if (isFinite(p) && pln !== '') setTwd(String(core.plnToTwd(p, rate)));
+  };
+
+  return (
+    <div className="B-fx">
+      <label className="B-fx-input">
+        PLN
+        <input
+          type="number" inputMode="decimal" min="0" step="0.01"
+          value={pln} onChange={onPlnChange} aria-label="茲羅提金額" />
+      </label>
+      <label className="B-fx-input">
+        TWD
+        <input
+          type="number" inputMode="decimal" min="0" step="1"
+          value={twd} onChange={onTwdChange} aria-label="台幣金額" />
+      </label>
+      <label className="B-fx-rate">
+        1 PLN =
+        <input
+          type="number" inputMode="decimal" min="0" step="0.01"
+          value={settings.fxRate} onChange={onRateChange} aria-label="可調匯率" />
+        TWD
+      </label>
+    </div>
+  );
+}
+
+/* Task 6: 打包清單子頁（分類 checkbox，本機持久化） */
+function B_Packing({ storage }) {
+  const core = window.PolskaPwaCore;
+  const packingDefault = (window.TRIP && window.TRIP.packingDefault) || {};
+  const [checked, setChecked] = B_useState(() => core.readJSON(storage, 'polska.packing.v1', {}));
+
+  const toggle = (item) => {
+    const next = { ...checked, [item]: !checked[item] };
+    setChecked(next);
+    core.writeJSON(storage, 'polska.packing.v1', next);
+  };
+
+  return (
+    <div className="B-packing">
+      {Object.entries(packingDefault).map(([group, items]) => {
+        const packedCount = items.filter((item) => checked[item]).length;
+        return (
+          <div className="B-packing-group" key={group}>
+            <h3>
+              <span>{group}</span>
+              <span>已打包 {packedCount}/{items.length}</span>
+            </h3>
+            {items.map((item) => (
+              <label key={item}>
+                <input
+                  type="checkbox"
+                  checked={Boolean(checked[item])}
+                  onChange={() => toggle(item)} />
+                {item}
+              </label>
+            ))}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function B_Sos() { return React.createElement('p', null, '（SOS 緊急卡，下一步實作）'); }
 function B_Info() { return React.createElement('p', null, '（實用資訊，下一步實作）'); }
 

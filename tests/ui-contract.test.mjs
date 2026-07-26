@@ -134,3 +134,12 @@ test('記帳子頁含總額、預算條、分類統計、新增與列表', () =>
   assert.match(css, /\.B-budget-bar/);
   assert.match(css, /\.B-fab/);
 });
+
+test('匯率換算與打包清單子頁存在且持久化', () => {
+  assert.match(jsx, /function B_FxTool/);
+  assert.match(jsx, /function B_Packing/);
+  assert.match(jsx, /polska\.settings\.v1/);
+  assert.match(jsx, /polska\.packing\.v1/);
+  assert.match(css, /\.B-fx/);
+  assert.match(css, /\.B-packing/);
+});
