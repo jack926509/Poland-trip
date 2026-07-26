@@ -336,6 +336,25 @@
 }
 .B-now .next-up strong{color:var(--amber);font-family:var(--serif);font-style:italic;font-size:1.15em;letter-spacing:0;text-transform:none;margin-right:.3rem}
 
+/* HOME DASHBOARD — day / spend / next-step tiles (Task 8) */
+.B-dash{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--gap-sm);margin:var(--gap-md) 0;
+}
+.B-dash .dash-tile{
+  background:#fbf6ea;border:1px solid rgba(26,22,18,.10);border-radius:14px;
+  box-shadow:var(--shadow-sm);padding:.55rem .5rem;text-align:center;
+  display:flex;flex-direction:column;gap:.22rem;
+}
+.B-dash .dash-k{
+  font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;
+  color:var(--ink-mute);text-transform:uppercase;
+}
+.B-dash .dash-v{
+  font-family:var(--serif);font-weight:900;font-size:.92rem;line-height:1.25;
+  color:var(--ink);font-variant-numeric:tabular-nums;overflow-wrap:anywhere;
+}
+
 /* SCRUB STRIP — drag to other days */
 .B-scrub{
   padding:.55rem .8rem;border-bottom:1px solid var(--ink);
@@ -912,6 +931,17 @@
 .B-tool-card .tool-name{ font-size:1rem; color:var(--ink); }
 .B-tool-card .tool-sub{ font-size:.72rem; color:var(--ink-mute); font-family:var(--mono); letter-spacing:.06em; }
 .B-tool-card::before{ content:""; width:22px; height:3px; border-radius:999px; background:var(--amber); }
+/* Task 8: 更多頁預算預覽（讀記帳累計，點入記帳子頁） */
+.B-budget-preview{
+  display:block; width:100%; margin-top:var(--gap-sm); padding:var(--pad-md);
+  background:#fbf6ea; border:1px solid rgba(26,22,18,.10); border-radius:14px;
+  box-shadow:var(--shadow-sm); text-align:left; font-family:var(--serif);
+}
+.B-budget-cats{ display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.3rem; }
+.B-budget-cats .cat-chip{
+  font-family:var(--mono); font-size:.66rem; letter-spacing:.03em; color:var(--ink-mute);
+  background:rgba(26,22,18,.06); border-radius:999px; padding:.2rem .55rem;
+}
 .B-subpage-mask{ position:fixed; inset:0; z-index:130; background:var(--paper); display:flex; flex-direction:column; padding-bottom:var(--safe-bottom); }
 .B-subpage{ display:flex; flex-direction:column; height:100%; }
 .B-subpage-head{ position:sticky; top:0; display:flex; align-items:center; gap:12px; padding:calc(var(--safe-top) + 12px) 16px 12px; background:var(--paper); border-bottom:1px solid var(--amber); }

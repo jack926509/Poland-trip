@@ -144,6 +144,11 @@ test('匯率換算與打包清單子頁存在且持久化', () => {
   assert.match(css, /\.B-packing/);
 });
 
+test('首頁三格儀表接記帳累計', () => {
+  assert.match(jsx, /B-dash/);
+  assert.match(jsx, /expenseTotals\(/);
+});
+
 test('SOS、實用資訊、Photo Map 子頁存在且接既有資料', () => {
   assert.match(jsx, /function B_Sos/);
   assert.match(jsx, /function B_Info/);

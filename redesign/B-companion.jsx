@@ -295,9 +295,10 @@ function B_Subpage(props) {
   );
 }
 
-function B_ToolGrid({ onOpen }) {
+function B_ToolGrid({ onOpen, totals, budget, fxRate }) {
   // 外層負責 mobile 分頁顯示/隱藏（Task 1 的 [data-tabsection] 機制），
   // .B-more-grid 保留在內層，避免該規則的 display:block 蓋掉 grid 版面。
+  const core = window.PolskaPwaCore;
   return (
     <section className="B-more-tools" aria-label="旅行工具" data-tabsection="more">
       <div className="B-more-grid">
@@ -313,6 +314,27 @@ function B_ToolGrid({ onOpen }) {
           </button>
         ))}
       </div>
+      {/* Task 8：預算預覽——讀記帳累計，點入記帳子頁 */}
+      <button
+        type="button"
+        className="B-budget-preview"
+        aria-label={`預算預覽：已花新台幣 ${budget.spentTWD} 元，預算新台幣 ${budget.budgetTWD} 元，點擊開啟記帳`}
+        onClick={() => onOpen('expense')}>
+        <div className="B-budget-bar">
+          <div
+            className={`fill${budget.over ? ' is-over' : ''}`}
+            style={{ width: `${Math.min(budget.ratio, 1) * 100}%` }}
+          />
+        </div>
+        <span className="B-budget-label">已花 NT${budget.spentTWD} / 預算 NT${budget.budgetTWD}</span>
+        <div className="B-budget-cats">
+          {core.EXPENSE_CATEGORIES.map((c) => (
+            <span key={c.key} className="cat-chip">
+              {c.label} NT${core.plnToTwd(totals.byCategory[c.key], fxRate)}
+            </span>
+          ))}
+        </div>
+      </button>
     </section>
   );
 }
@@ -743,6 +765,8 @@ function B_Companion({ initialDay }) {
   const [showInstallHint, setShowInstallHint] = B_useState(() => B_isIOSSafari() && !B_isStandaloneMode());
   const [notes, setNotes] = B_useState(initialNotes.notes);
   const [notesPersistent, setNotesPersistent] = B_useState(initialNotes.persistent);
+  const [expenses, setExpenses] = B_useState(() => core.readJSON(storage, 'polska.expenses.v1', []));
+  const [expSettings, setExpSettings] = B_useState(() => core.readJSON(storage, 'polska.settings.v1', core.DEFAULT_SETTINGS));
   const scrubRef = React.useRef(null);
   const drawerRef = React.useRef(null);
   const drawerCloseRef = React.useRef(null);
@@ -906,6 +930,13 @@ function B_Companion({ initialDay }) {
     return () => { document.body.style.overflow = ''; };
   }, [drawerOpen, trainSheet]);
 
+  // 記帳/預算會在「更多」子頁被新增或修改；離開子頁或切回首頁/更多分頁時
+  // 從 storage 重新讀入，讓首頁三格儀表與更多頁預算預覽反映最新累計。
+  B_useEffect(() => {
+    setExpenses(core.readJSON(storage, 'polska.expenses.v1', []));
+    setExpSettings(core.readJSON(storage, 'polska.settings.v1', core.DEFAULT_SETTINGS));
+  }, [core, storage, subpage, activeTab]);
+
   const { d, phase, mins, momentDay, beforeStart, afterEnd, idx: projectedIdx } = B_useMemo(
     () => core.projectTripMoment(t.days, new Date(), override, t.meta),
     [core, t.days, t.meta, override, tick]
@@ -915,6 +946,14 @@ function B_Companion({ initialDay }) {
   const next = d.steps[idx + 1];
   const active = d.n;
   const setActive = (n) => { setOverride(n); setOpenStep(null); setDrawerOpen(false); };
+  // 首頁三格儀表與更多頁預算預覽共用的記帳累計（Task 8）。
+  const dashTotals = B_useMemo(() => core.expenseTotals(expenses), [core, expenses]);
+  const dashBudget = B_useMemo(
+    () => core.budgetStatus(dashTotals.totalPLN, expSettings.fxRate, expSettings.budgetTWD),
+    [core, dashTotals.totalPLN, expSettings.fxRate, expSettings.budgetTWD]
+  );
+  const dashSpentTWD = core.plnToTwd(dashTotals.totalPLN, expSettings.fxRate);
+  const dashNextLabel = next ? next.label.replace(/^★\s*/, '') : '今日行程已完成';
   const hardNow = core.selectHardConstraintForMoment(d.hardConstraints, phase, d.n, momentDay, mins);
   const bookNow = d.mustBook?.length ? d.mustBook.join(' / ') : '無需預先訂票';
   const compressNow = d.compressible?.[0] || '保留彈性休息';
@@ -1105,6 +1144,23 @@ function B_Companion({ initialDay }) {
           })()}
         </button>
       </section>
+
+      <div data-tabsection="home">
+        <div className="B-dash" aria-label="今日儀表">
+          <div className="dash-tile">
+            <span className="dash-k">天數</span>
+            <span className="dash-v">Day {d.n} / {t.days.length}</span>
+          </div>
+          <div className="dash-tile">
+            <span className="dash-k">累計花費</span>
+            <span className="dash-v">NT${dashSpentTWD}</span>
+          </div>
+          <div className="dash-tile">
+            <span className="dash-k">下一步</span>
+            <span className="dash-v">{dashNextLabel}</span>
+          </div>
+        </div>
+      </div>
 
       <div className="B-scrub" ref={scrubRef} role="tablist" aria-label="日次切換" data-tabsection="trip">
         {t.days.map(x => (
@@ -1473,7 +1529,7 @@ function B_Companion({ initialDay }) {
         );
       })()}
 
-      <B_ToolGrid onOpen={setSubpage} />
+      <B_ToolGrid onOpen={setSubpage} totals={dashTotals} budget={dashBudget} fxRate={expSettings.fxRate} />
       <B_PreTripGuide trip={t} />
         </aside>
       </main>
