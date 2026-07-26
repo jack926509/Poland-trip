@@ -90,11 +90,11 @@ function loadRegisterHarness({ registration, ready, registerError }) {
 test('預快取桌機與手機雙殼及其正式資產', () => {
   for (const asset of [
     './', './mobile.html',
-    './desktop/desktop.css?v=polska-v16',
-    './desktop/desktop-app.js?v=polska-v16',
-    './desktop/chapters.js?v=polska-v16',
-    './redesign/data.js?v=polska-v16',
-    './redesign/dist/B-companion.js?v=polska-v16',
+    './desktop/desktop.css?v=polska-v17',
+    './desktop/desktop-app.js?v=polska-v17',
+    './desktop/chapters.js?v=polska-v17',
+    './redesign/data.js?v=polska-v17',
+    './redesign/dist/B-companion.js?v=polska-v17',
   ]) assert.match(sw, new RegExp(asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.doesNotMatch(sw, /desktop\.html|app-preview\.html|A-magazine|ios-frame|C-app/);
 });
@@ -172,7 +172,7 @@ test('巢狀路徑下的同名正式資產也不得命中 runtime cache', async 
     });
     const response = await dispatchFetch(
       handler,
-      makeRequest(`${prefix}/redesign/B-companion.css?v=polska-v16`),
+      makeRequest(`${prefix}/redesign/B-companion.css?v=polska-v17`),
     );
     assert.equal(response, network, `${prefix} 誤回舊 cache`);
     assert.equal(matches.length, 0, `${prefix} 不得讀 cache`);
@@ -189,26 +189,26 @@ test('正式根應用資產仍使用 cache-first', async () => {
   });
   const response = await dispatchFetch(
     handler,
-    makeRequest('redesign/B-companion.css?v=polska-v16'),
+    makeRequest('redesign/B-companion.css?v=polska-v17'),
   );
   assert.equal(response, cached);
   assert.equal(matches.length, 1);
 });
 
-test('核心快取與雙入口統一使用 polska-v16', () => {
-  assert.match(sw, /const CACHE_VERSION = 'polska-v16'/);
+test('核心快取與雙入口統一使用 polska-v17', () => {
+  assert.match(sw, /const CACHE_VERSION = 'polska-v17'/);
   for (const asset of [
-    './manifest.json', './pwa-register.js?v=polska-v16', './redesign/pwa-core.js?v=polska-v16',
-    './redesign/data.js?v=polska-v16', './redesign/tokens.css?v=polska-v16',
-    './redesign/B-companion.css?v=polska-v16',
-    './redesign/dist/B-companion.js?v=polska-v16',
+    './manifest.json', './pwa-register.js?v=polska-v17', './redesign/pwa-core.js?v=polska-v17',
+    './redesign/data.js?v=polska-v17', './redesign/tokens.css?v=polska-v17',
+    './redesign/B-companion.css?v=polska-v17',
+    './redesign/dist/B-companion.js?v=polska-v17',
   ]) assert.match(sw, new RegExp(asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
-  assert.doesNotMatch(sw, /polska-v1[0-5]/);
+  assert.doesNotMatch(sw, /polska-v1[0-6]/);
 });
 
 test('Service Worker 註冊抽離為三種 PWA 事件', () => {
   const register = fs.readFileSync('pwa-register.js', 'utf8');
-  assert.match(html, /<script src="pwa-register\.js\?v=polska-v16"><\/script>/);
+  assert.match(html, /<script src="pwa-register\.js\?v=polska-v17"><\/script>/);
   assert.doesNotMatch(html, /navigator\.serviceWorker\.register/);
   for (const eventName of ['pwa-ready', 'pwa-update-ready', 'pwa-error']) {
     assert.match(register, new RegExp(eventName));

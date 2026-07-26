@@ -11,10 +11,13 @@ test('build 只編譯正式 PWA 介面', () => {
   assert.doesNotMatch(build, /A-magazine\.jsx|C-app\.jsx|ios-frame\.jsx|tweaks-panel\.jsx/);
 });
 
-test('手機與桌機導覽共用四個固定功能', () => {
-  for (const label of ['今日', '行程', '交通', '訂票']) assert.match(jsx, new RegExp(label));
+test('行動版底部導覽為四個真分頁', () => {
+  for (const label of ['首頁', '行程', '交通', '更多']) assert.match(jsx, new RegExp(label));
   assert.match(jsx, /B-mobile-nav/);
-  assert.match(jsx, /B-desktop-nav/);
+  assert.match(jsx, /B-desktop-nav/); // 桌機雙欄 nav 保留
+  assert.match(jsx, /activeTab/);
+  assert.match(jsx, /setActiveTab/);
+  assert.match(css, /\.B-primary-nav button\.active/);
 });
 
 test('寬螢幕採雙欄網頁布局', () => {
@@ -95,4 +98,64 @@ test('硬時間只在旅程中查看當日時套用 Warsaw mins', () => {
 test('更新失敗會清除 React waiting worker 並隱藏更新按鈕', () => {
   assert.match(jsx, /const onUpdateError = \(\) => \{[\s\S]*?setWaitingWorker\(null\)/);
   assert.match(jsx, /waitingWorker && !updateFailed/);
+});
+
+test('卡片套用米紙底與金色點綴語彙', () => {
+  assert.match(css, /--card-bg:\s*#fbf6ea|background:\s*#fbf6ea/);
+  assert.match(css, /var\(--amber\)/); // 金色作為點綴出現
+});
+
+test('首頁 hero 為四城市輪播且尊重減量動畫', () => {
+  assert.match(jsx, /function B_Hero/);
+  assert.match(jsx, /華沙[\s\S]*克拉科夫[\s\S]*樂斯拉夫[\s\S]*波茲南/);
+  assert.match(jsx, /prefers-reduced-motion/);
+  assert.match(css, /\.B-hero-slide/);
+  assert.match(css, /\.B-hero-dots/);
+});
+
+test('更多頁有六張工具卡與可返回的子頁容器', () => {
+  assert.match(jsx, /subpage/);
+  assert.match(jsx, /setSubpage/);
+  assert.match(jsx, /function B_Subpage/);
+  for (const label of ['旅行記帳', 'Photo Map', '匯率換算', '打包清單', 'SOS', '實用資訊']) {
+    assert.match(jsx, new RegExp(label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  }
+  assert.match(css, /\.B-tool-card/);
+  assert.match(css, /\.B-subpage/);
+});
+
+test('記帳子頁含總額、預算條、分類統計、新增與列表', () => {
+  assert.match(jsx, /function B_Expense/);
+  assert.match(jsx, /polska\.expenses\.v1/);
+  assert.match(jsx, /新增記帳/);
+  assert.match(jsx, /core\.expenseTotals|expenseTotals\(/);
+  assert.match(jsx, /core\.budgetStatus|budgetStatus\(/);
+  assert.match(css, /\.B-expense-total/);
+  assert.match(css, /\.B-budget-bar/);
+  assert.match(css, /\.B-fab/);
+});
+
+test('匯率換算與打包清單子頁存在且持久化', () => {
+  assert.match(jsx, /function B_FxTool/);
+  assert.match(jsx, /function B_Packing/);
+  assert.match(jsx, /polska\.settings\.v1/);
+  assert.match(jsx, /polska\.packing\.v1/);
+  assert.match(css, /\.B-fx/);
+  assert.match(css, /\.B-packing/);
+});
+
+test('首頁三格儀表接記帳累計', () => {
+  assert.match(jsx, /B-dash/);
+  assert.match(jsx, /expenseTotals\(/);
+});
+
+test('SOS、實用資訊、Photo Map 子頁存在且接既有資料', () => {
+  assert.match(jsx, /function B_Sos/);
+  assert.match(jsx, /function B_Info/);
+  assert.match(jsx, /function B_PhotoMap/);
+  assert.match(jsx, /safety/);
+  assert.match(jsx, /phrases/);
+  assert.match(jsx, /polska\.photomap\.v1/);
+  assert.match(css, /\.B-sos/);
+  assert.match(css, /\.B-photomap/);
 });

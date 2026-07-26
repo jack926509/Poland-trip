@@ -64,7 +64,65 @@
     catch (_) { return false; }
   }
 
+  var DEFAULT_SETTINGS = { fxRate: 7.7, budgetTWD: 21600 };
+  var EXPENSE_CATEGORIES = [
+    { key: 'food', label: '餐飲' },
+    { key: 'ticket', label: '門票' },
+    { key: 'transport', label: '交通' },
+    { key: 'shop', label: '購物' },
+  ];
+
+  function readJSON(storage, key, fallback) {
+    var clone = JSON.parse(JSON.stringify(fallback));
+    try {
+      var raw = storage && storage.getItem ? storage.getItem(key) : null;
+      if (raw == null) return clone;
+      var parsed = JSON.parse(raw);
+      return parsed == null ? clone : parsed;
+    } catch (e) {
+      return clone;
+    }
+  }
+
+  function writeJSON(storage, key, value) {
+    try {
+      if (!storage || !storage.setItem) return false;
+      storage.setItem(key, JSON.stringify(value));
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function plnToTwd(amountPLN, fxRate) {
+    var a = Number(amountPLN), r = Number(fxRate);
+    if (!isFinite(a) || !isFinite(r)) return 0;
+    return Math.round(a * r);
+  }
+
+  function expenseTotals(expenses) {
+    var by = { food: 0, ticket: 0, transport: 0, shop: 0 };
+    var totalPLN = 0, count = 0;
+    (expenses || []).forEach(function (e) {
+      count += 1;
+      var amt = Number(e && e.amountPLN) || 0;
+      if (Object.prototype.hasOwnProperty.call(by, e && e.category)) {
+        by[e.category] += amt;
+        totalPLN += amt;
+      }
+    });
+    return { count: count, totalPLN: totalPLN, byCategory: by };
+  }
+
+  function budgetStatus(totalPLN, fxRate, budgetTWD) {
+    var spentTWD = plnToTwd(totalPLN, fxRate);
+    var budget = Number(budgetTWD) || 0;
+    var ratio = budget > 0 ? spentTWD / budget : 0;
+    return { spentTWD: spentTWD, budgetTWD: budget, ratio: ratio, over: budget > 0 && spentTWD > budget };
+  }
+
   root.PolskaPwaCore = {
     projectTripMoment, selectNextHardConstraint, selectHardConstraintForMoment, readNotes, writeNotes,
+    DEFAULT_SETTINGS, EXPENSE_CATEGORIES, readJSON, writeJSON, plnToTwd, expenseTotals, budgetStatus,
   };
 })(typeof window === 'undefined' ? globalThis : window);

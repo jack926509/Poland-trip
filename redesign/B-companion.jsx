@@ -176,19 +176,65 @@ function B_useModalFocus(open, containerRef, initialFocusRef, returnFocusRef) {
   }, [open, containerRef]);
 }
 
-function B_PrimaryNav({ placement, onToday, onItinerary, onTransport, onTickets }) {
+function B_PrimaryNav({ placement, active, onChange, onToday, onItinerary, onTransport, onTickets }) {
+  const placementClass = placement === 'mobile' ? 'B-mobile-nav' : 'B-desktop-nav';
+  if (placement === 'mobile') {
+    const tabs = [['home', '首頁'], ['trip', '行程'], ['move', '交通'], ['more', '更多']];
+    return (
+      <nav className={`B-primary-nav ${placementClass}`} aria-label="手機主要導覽">
+        {tabs.map(([key, label]) => (
+          <button
+            type="button"
+            key={key}
+            className={active === key ? 'active' : ''}
+            aria-current={active === key ? 'page' : undefined}
+            onClick={() => onChange(key)}>
+            {label}
+          </button>
+        ))}
+      </nav>
+    );
+  }
   const items = [
     ['今日', onToday], ['行程', onItinerary], ['交通', onTransport], ['訂票', onTickets],
   ];
-  const placementClass = placement === 'mobile' ? 'B-mobile-nav' : 'B-desktop-nav';
   return (
-    <nav
-      className={`B-primary-nav ${placementClass}`}
-      aria-label={placement === 'mobile' ? '手機主要導覽' : '網頁主要導覽'}>
+    <nav className={`B-primary-nav ${placementClass}`} aria-label="網頁主要導覽">
       {items.map(([label, action]) => (
         <button type="button" key={label} onClick={action}>{label}</button>
       ))}
     </nav>
+  );
+}
+
+function B_Hero(props) {
+  var cities = ['華沙', '克拉科夫', '樂斯拉夫', '波茲南'];
+  var slides = ['hs-waw', 'hs-krk', 'hs-wro', 'hs-poz'];
+  var reduce = false;
+  try { reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+  var idxState = React.useState(0);
+  var idx = idxState[0], setIdx = idxState[1];
+  React.useEffect(function () {
+    if (reduce) return undefined;
+    var id = setInterval(function () { setIdx(function (i) { return (i + 1) % slides.length; }); }, 3200);
+    return function () { clearInterval(id); };
+  }, [reduce]);
+  return React.createElement('div', { className: 'B-hero' },
+    slides.map(function (s, i) {
+      return React.createElement('div', {
+        key: s, className: 'B-hero-slide ' + s + (i === idx ? ' is-active' : ''), 'aria-hidden': i === idx ? undefined : 'true',
+      });
+    }),
+    React.createElement('div', { className: 'B-hero-cap' },
+      React.createElement('span', { className: 'B-hero-code' }, props.code || 'POLSKA'),
+      React.createElement('span', { className: 'B-hero-city' }, cities[idx]),
+      React.createElement('span', { className: 'B-hero-date' }, props.dateRange || '')
+    ),
+    React.createElement('div', { className: 'B-hero-dots', role: 'presentation' },
+      slides.map(function (s, i) {
+        return React.createElement('span', { key: s, className: 'B-hero-dot' + (i === idx ? ' is-active' : '') });
+      })
+    )
   );
 }
 
@@ -204,7 +250,7 @@ function B_PreTripGuide({ trip }) {
     ['常用波蘭語', trip.phrases.map(([zh, pl]) => `${zh} · ${pl}`)],
   ];
   return (
-    <section id="B-guide" className="B-pretrip-guide" aria-labelledby="B-guide-title">
+    <section id="B-guide" className="B-pretrip-guide" aria-labelledby="B-guide-title" data-tabsection="more">
       <h2 id="B-guide-title">行前指南</h2>
       {sections.map(([title, rows]) => (
         <details key={title}>
@@ -216,16 +262,499 @@ function B_PreTripGuide({ trip }) {
   );
 }
 
+/* Task 4: "更多" 分頁工具方格與可返回子頁容器 */
+const B_TOOLS = [
+  ['expense', '旅行記帳', 'EXPENSE'],
+  ['photomap', 'Photo Map', 'MAP'],
+  ['fx', '匯率換算', 'FX RATE'],
+  ['packing', '打包清單', 'PACKING'],
+  ['sos', 'SOS 緊急卡', 'EMERGENCY'],
+  ['info', '實用資訊', 'INFO'],
+];
+
+const SUBPAGE_TITLES = {
+  expense: '旅行記帳',
+  photomap: 'Photo Map',
+  fx: '匯率換算',
+  packing: '打包清單',
+  sos: 'SOS 緊急卡',
+  info: '實用資訊',
+};
+
+function B_Subpage(props) {
+  return (
+    <div className="B-subpage-mask" role="dialog" aria-modal="true" aria-label={props.title}>
+      <div className="B-subpage">
+        <header className="B-subpage-head">
+          <button type="button" className="B-subpage-back" onClick={props.onBack} aria-label="返回更多">‹ 返回</button>
+          <h2>{props.title}</h2>
+        </header>
+        <div className="B-subpage-body">{props.children}</div>
+      </div>
+    </div>
+  );
+}
+
+function B_ToolGrid({ onOpen, totals, budget, fxRate }) {
+  // 外層負責 mobile 分頁顯示/隱藏（Task 1 的 [data-tabsection] 機制），
+  // .B-more-grid 保留在內層，避免該規則的 display:block 蓋掉 grid 版面。
+  const core = window.PolskaPwaCore;
+  return (
+    <section className="B-more-tools" aria-label="旅行工具" data-tabsection="more">
+      <div className="B-more-grid">
+        {B_TOOLS.map(([key, label, sub]) => (
+          <button
+            type="button"
+            key={key}
+            className="B-tool-card"
+            data-open={key}
+            onClick={() => onOpen(key)}>
+            <span className="tool-name">{label}</span>
+            <span className="tool-sub">{sub}</span>
+          </button>
+        ))}
+      </div>
+      {/* Task 8：預算預覽——讀記帳累計，點入記帳子頁 */}
+      <button
+        type="button"
+        className="B-budget-preview"
+        aria-label={`預算預覽：已花新台幣 ${budget.spentTWD} 元，預算新台幣 ${budget.budgetTWD} 元，點擊開啟記帳`}
+        onClick={() => onOpen('expense')}>
+        <div className="B-budget-bar">
+          <div
+            className={`fill${budget.over ? ' is-over' : ''}`}
+            style={{ width: `${Math.min(budget.ratio, 1) * 100}%` }}
+          />
+        </div>
+        <span className="B-budget-label">已花 NT${budget.spentTWD} / 預算 NT${budget.budgetTWD}</span>
+        <div className="B-budget-cats">
+          {core.EXPENSE_CATEGORIES.map((c) => (
+            <span key={c.key} className="cat-chip">
+              {c.label} NT${core.plnToTwd(totals.byCategory[c.key], fxRate)}
+            </span>
+          ))}
+        </div>
+      </button>
+    </section>
+  );
+}
+
+/* Task 5: 記帳子頁（完整功能） */
+function B_Expense({ storage }) {
+  const core = window.PolskaPwaCore;
+  const days = (window.TRIP && window.TRIP.days) || [];
+  const [expenses, setExpenses] = B_useState(() => core.readJSON(storage, 'polska.expenses.v1', []));
+  const [settings] = B_useState(() => core.readJSON(storage, 'polska.settings.v1', core.DEFAULT_SETTINGS));
+  const [filterDay, setFilterDay] = B_useState('all');
+  const [formOpen, setFormOpen] = B_useState(false);
+  const [persistOk, setPersistOk] = B_useState(true);
+  const [form, setForm] = B_useState(() => ({
+    item: '', amountPLN: '', category: core.EXPENSE_CATEGORIES[0].key,
+    day: days[0] ? days[0].n : 1, method: '現金',
+  }));
+
+  const totals = B_useMemo(() => core.expenseTotals(expenses), [core, expenses]);
+  const budget = B_useMemo(
+    () => core.budgetStatus(totals.totalPLN, settings.fxRate, settings.budgetTWD),
+    [core, totals.totalPLN, settings.fxRate, settings.budgetTWD]
+  );
+  const totalTWD = core.plnToTwd(totals.totalPLN, settings.fxRate);
+  const filtered = filterDay === 'all' ? expenses : expenses.filter((e) => e.day === filterDay);
+  const catLabel = (key) => (core.EXPENSE_CATEGORIES.find((c) => c.key === key) || {}).label || key;
+
+  const persist = (next) => {
+    setExpenses(next);
+    setPersistOk(core.writeJSON(storage, 'polska.expenses.v1', next));
+  };
+
+  const submitForm = (e) => {
+    e.preventDefault();
+    const amount = Number(form.amountPLN);
+    if (!form.item.trim() || !isFinite(amount) || amount <= 0) return;
+    const entry = {
+      id: Date.now() + Math.random(),
+      day: Number(form.day),
+      category: form.category,
+      item: form.item.trim(),
+      amountPLN: amount,
+      method: form.method,
+      ts: Date.now(),
+    };
+    persist([entry, ...expenses]);
+    setForm({ item: '', amountPLN: '', category: form.category, day: Number(form.day), method: form.method });
+    setFormOpen(false);
+  };
+
+  const removeExpense = (id) => persist(expenses.filter((e) => e.id !== id));
+
+  return (
+    <div className="B-expense">
+      {!persistOk && <p className="B-expense-storage-warn">目前無法儲存，本次紀錄僅暫存</p>}
+
+      <div className="B-expense-total">
+        <span className="total-pln">{totals.totalPLN.toFixed(2)} PLN</span>
+        <span className="total-twd">≈ NT${totalTWD}</span>
+        <span className="total-rate">1 PLN ≈ NT${settings.fxRate}</span>
+        <div className="B-budget-bar">
+          <div
+            className={`fill${budget.over ? ' is-over' : ''}`}
+            style={{ width: `${Math.min(budget.ratio, 1) * 100}%` }}
+          />
+        </div>
+        <span className="B-budget-label">已花 NT${budget.spentTWD} / 預算 NT${budget.budgetTWD}</span>
+      </div>
+
+      <div className="B-cat-grid">
+        {core.EXPENSE_CATEGORIES.map((c) => (
+          <div className="B-cat-tile" key={c.key}>
+            <span className="label">{c.label}</span>
+            <span className="amt">NT${core.plnToTwd(totals.byCategory[c.key], settings.fxRate)}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="B-day-filter" role="group" aria-label="依日期篩選記帳列表">
+        <button type="button" className={`pill${filterDay === 'all' ? ' active' : ''}`} onClick={() => setFilterDay('all')}>全部</button>
+        {days.map((d) => (
+          <button
+            type="button" key={d.n}
+            className={`pill${filterDay === d.n ? ' active' : ''}`}
+            onClick={() => setFilterDay(d.n)}>
+            Day{d.n}
+          </button>
+        ))}
+      </div>
+
+      <div className="B-expense-list">
+        {filtered.length === 0 && <p className="B-expense-empty">尚無記帳紀錄</p>}
+        {filtered.map((e) => (
+          <div className="B-expense-row" key={e.id}>
+            <div className="item">
+              <span className="name">{e.item}</span>
+              <span className="meta">
+                <span className="cat">{catLabel(e.category)}</span>
+                {' · '}
+                <span className="method">{e.method}</span>
+                {' · '}
+                <span className="day">Day{e.day}</span>
+              </span>
+            </div>
+            <div className="amounts">
+              <span className="amt">{e.amountPLN} PLN</span>
+              <span className="twd">≈NT${core.plnToTwd(e.amountPLN, settings.fxRate)}</span>
+            </div>
+            <button type="button" className="del" aria-label={`刪除記帳：${e.item}`} onClick={() => removeExpense(e.id)}>✕</button>
+          </div>
+        ))}
+      </div>
+
+      {formOpen && (
+        <form className="B-expense-form" onSubmit={submitForm} aria-label="新增記帳">
+          <label>
+            品項
+            <input type="text" value={form.item} onChange={(ev) => setForm({ ...form, item: ev.target.value })} required />
+          </label>
+          <div className="row">
+            <label>
+              金額（PLN）
+              <input
+                type="number" min="0" step="0.01" inputMode="decimal"
+                value={form.amountPLN}
+                onChange={(ev) => setForm({ ...form, amountPLN: ev.target.value })}
+                required />
+            </label>
+            <label>
+              分類
+              <select value={form.category} onChange={(ev) => setForm({ ...form, category: ev.target.value })}>
+                {core.EXPENSE_CATEGORIES.map((c) => <option key={c.key} value={c.key}>{c.label}</option>)}
+              </select>
+            </label>
+          </div>
+          <div className="row">
+            <label>
+              Day
+              <select value={form.day} onChange={(ev) => setForm({ ...form, day: Number(ev.target.value) })}>
+                {days.map((d) => <option key={d.n} value={d.n}>{`Day${d.n}（${d.date}）`}</option>)}
+              </select>
+            </label>
+            <label>
+              付款方式
+              <select value={form.method} onChange={(ev) => setForm({ ...form, method: ev.target.value })}>
+                <option value="現金">現金</option>
+                <option value="信用卡">信用卡</option>
+                <option value="行動支付">行動支付</option>
+              </select>
+            </label>
+          </div>
+          <div className="actions">
+            <button type="button" className="cancel" onClick={() => setFormOpen(false)}>取消</button>
+            <button type="submit" className="submit">儲存</button>
+          </div>
+        </form>
+      )}
+
+      <button type="button" className="B-fab" onClick={() => setFormOpen((v) => !v)}>＋新增記帳</button>
+    </div>
+  );
+}
+/* Task 7: Photo Map 城市打卡（本機持久化） */
+function B_PhotoMap({ storage }) {
+  const core = window.PolskaPwaCore;
+  const cities = Object.keys(B_CITY_EN);
+  const [checkins, setCheckins] = B_useState(() => core.readJSON(storage, 'polska.photomap.v1', {}));
+
+  const doneCount = cities.filter((city) => checkins[city]).length;
+
+  const toggle = (city) => {
+    const next = { ...checkins, [city]: !checkins[city] };
+    setCheckins(next);
+    core.writeJSON(storage, 'polska.photomap.v1', next);
+  };
+
+  return (
+    <div className="B-photomap">
+      <p className="B-photomap-head">已打卡 {doneCount}/{cities.length}</p>
+      {cities.map((city) => {
+        const done = Boolean(checkins[city]);
+        return (
+          <div className={`B-photomap-city${done ? ' is-done' : ''}`} key={city}>
+            <div className="B-photomap-name">
+              <strong>{city}</strong>
+              <span className="en">{B_CITY_EN[city]}</span>
+            </div>
+            <button
+              type="button"
+              className="B-photomap-toggle"
+              aria-pressed={done}
+              onClick={() => toggle(city)}>
+              {done ? '已打卡 ✓' : '打卡'}
+            </button>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* Task 6: 匯率換算子頁（與記帳共用 polska.settings.v1） */
+function B_FxTool({ storage }) {
+  const core = window.PolskaPwaCore;
+  const [settings, setSettings] = B_useState(() => core.readJSON(storage, 'polska.settings.v1', core.DEFAULT_SETTINGS));
+  const [pln, setPln] = B_useState('100');
+  const [twd, setTwd] = B_useState(() => String(core.plnToTwd(100, settings.fxRate)));
+
+  // 匯率為空或非正數視為「尚未設定」，換算欄不可靜默顯示 0——見 Task 6 審查問題 1。
+  const rateNum = Number(settings.fxRate);
+  const rateValid = settings.fxRate !== '' && isFinite(rateNum) && rateNum > 0;
+
+  const onPlnChange = (ev) => {
+    const v = ev.target.value;
+    setPln(v);
+    const n = Number(v);
+    setTwd(rateValid && isFinite(n) && v !== '' ? String(core.plnToTwd(n, rateNum)) : '');
+  };
+
+  const onTwdChange = (ev) => {
+    const v = ev.target.value;
+    setTwd(v);
+    const n = Number(v);
+    setPln(rateValid && isFinite(n) && v !== '' ? (n / rateNum).toFixed(2) : '');
+  };
+
+  const onRateChange = (ev) => {
+    const v = ev.target.value;
+    const rate = Number(v);
+    const nextSettings = { ...settings, fxRate: v === '' ? '' : rate };
+    setSettings(nextSettings);
+    const nextRateValid = v !== '' && isFinite(rate) && rate > 0;
+    if (!nextRateValid) { setTwd(''); return; }
+    core.writeJSON(storage, 'polska.settings.v1', nextSettings);
+    const p = Number(pln);
+    if (isFinite(p) && pln !== '') setTwd(String(core.plnToTwd(p, rate)));
+  };
+
+  return (
+    <div className="B-fx">
+      <label className="B-fx-input">
+        PLN
+        <input
+          type="number" inputMode="decimal" min="0" step="0.01"
+          value={pln} onChange={onPlnChange} aria-label="茲羅提金額" />
+      </label>
+      <label className="B-fx-input">
+        TWD
+        <input
+          type="number" inputMode="decimal" min="0" step="1"
+          value={twd} onChange={onTwdChange}
+          placeholder={rateValid ? undefined : '—'}
+          aria-label="台幣金額" />
+      </label>
+      <label className="B-fx-rate">
+        1 PLN =
+        <input
+          type="number" inputMode="decimal" min="0" step="0.01"
+          value={settings.fxRate} onChange={onRateChange} aria-label="可調匯率" />
+        TWD
+      </label>
+      {!rateValid && (
+        <p className="B-fx-hint" role="status">請先設定有效匯率（大於 0），換算結果暫不顯示</p>
+      )}
+    </div>
+  );
+}
+
+/* Task 6: 打包清單子頁（分類 checkbox，本機持久化） */
+function B_Packing({ storage }) {
+  const core = window.PolskaPwaCore;
+  const packingDefault = (window.TRIP && window.TRIP.packingDefault) || {};
+  const [checked, setChecked] = B_useState(() => core.readJSON(storage, 'polska.packing.v1', {}));
+
+  // key 用「分類::項目」而非純項目文字，避免不同分類的同名項目互相污染勾選狀態
+  // （見 Task 6 審查問題 2）。
+  const packKey = (group, item) => `${group}::${item}`;
+
+  const toggle = (group, item) => {
+    const key = packKey(group, item);
+    const next = { ...checked, [key]: !checked[key] };
+    setChecked(next);
+    core.writeJSON(storage, 'polska.packing.v1', next);
+  };
+
+  return (
+    <div className="B-packing">
+      {Object.entries(packingDefault).map(([group, items]) => {
+        const packedCount = items.filter((item) => checked[packKey(group, item)]).length;
+        return (
+          <div className="B-packing-group" key={group}>
+            <h3>
+              <span>{group}</span>
+              <span>已打包 {packedCount}/{items.length}</span>
+            </h3>
+            {items.map((item) => (
+              <label key={item}>
+                <input
+                  type="checkbox"
+                  checked={Boolean(checked[packKey(group, item)])}
+                  onChange={() => toggle(group, item)} />
+                {item}
+              </label>
+            ))}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* Task 7: SOS 緊急卡 — 讀 trip.safety，缺欄位不渲染、不報錯 */
+function B_Sos({ trip }) {
+  const safety = (trip && trip.safety) || {};
+  const emergency = Array.isArray(safety.emergency) ? safety.emergency : [];
+  const embassy = Array.isArray(safety.embassy) ? safety.embassy : [];
+  const tips = Array.isArray(safety.tips) ? safety.tips : [];
+  const empty = emergency.length === 0 && embassy.length === 0 && tips.length === 0;
+
+  return (
+    <div className="B-sos">
+      {emergency.length > 0 && (
+        <section className="B-sos-section">
+          <h3>緊急電話</h3>
+          {emergency.map(([label, number]) => (
+            <a
+              key={label}
+              className="B-sos-call"
+              href={`tel:${String(number).replace(/\s+/g, '')}`}>
+              <span>{label}</span>
+              <span>{number}</span>
+            </a>
+          ))}
+        </section>
+      )}
+      {embassy.length > 0 && (
+        <section className="B-sos-section">
+          <h3>駐波蘭代表處</h3>
+          {embassy.map(([label, value]) => (
+            <div className="B-sos-tip" key={label}>
+              <strong>{label}</strong>：{value}
+            </div>
+          ))}
+        </section>
+      )}
+      {tips.length > 0 && (
+        <section className="B-sos-section">
+          <h3>安全提醒</h3>
+          {tips.map((tip) => (
+            <div className="B-sos-tip" key={tip.label}>
+              <strong>{tip.label}</strong>：{tip.text}
+            </div>
+          ))}
+        </section>
+      )}
+      {empty && <p className="B-sos-empty">尚無安全資料</p>}
+    </div>
+  );
+}
+
+/* Task 7: 實用資訊 — trip.practical（頂層）＋ trip.about（電壓/小費等）＋ trip.phrases（波蘭語） */
+function B_Info({ trip }) {
+  const practical = Array.isArray(trip && trip.practical) ? trip.practical : [];
+  const about = Array.isArray(trip && trip.about) ? trip.about : [];
+  const phrases = Array.isArray(trip && trip.phrases) ? trip.phrases : [];
+  const empty = practical.length === 0 && about.length === 0 && phrases.length === 0;
+
+  return (
+    <div className="B-info">
+      {about.length > 0 && (
+        <section className="B-info-section">
+          <h3>旅行小抄</h3>
+          {about.map(([label, value]) => (
+            <div className="B-info-about" key={label}>
+              <span className="label">{label}</span>
+              <span className="value">{value}</span>
+            </div>
+          ))}
+        </section>
+      )}
+      {practical.length > 0 && (
+        <section className="B-info-section">
+          <h3>實用資訊</h3>
+          {practical.map((item) => (
+            <div className="B-info-practical" key={item.name || item.tag}>
+              <span className="tag">{item.tag}</span>
+              <strong>{item.name}</strong>
+              {item.note && <p>{item.note}</p>}
+            </div>
+          ))}
+        </section>
+      )}
+      {phrases.length > 0 && (
+        <section className="B-info-section">
+          <h3>波蘭語小抄</h3>
+          {phrases.map(([zh, pl, pron]) => (
+            <div className="B-info-phrase" key={zh}>
+              <span className="zh">{zh}</span>
+              <span className="pl">{pl}{pron ? `（${pron}）` : ''}</span>
+            </div>
+          ))}
+        </section>
+      )}
+      {empty && <p className="B-info-empty">尚無實用資訊</p>}
+    </div>
+  );
+}
+
 function B_Companion({ initialDay }) {
   const t = window.TRIP;
   const core = window.PolskaPwaCore;
   const storage = B_useMemo(B_getStorage, []);
   const initialNotes = B_useMemo(() => core.readNotes(storage), [core, storage]);
   const [override, setOverride] = B_useState(initialDay ?? null);
+  const [activeTab, setActiveTab] = B_useState('home');
   const [openStep, setOpenStep] = B_useState(null);
   const [tick, setTick] = B_useState(0);
   const [drawerOpen, setDrawerOpen] = B_useState(false);
   const [trainSheet, setTrainSheet] = B_useState(false);
+  const [subpage, setSubpage] = B_useState(null);
   const [online, setOnline] = B_useState(() => typeof navigator === 'undefined' ? true : navigator.onLine);
   const [standalone, setStandalone] = B_useState(B_isStandaloneMode);
   const [pwaStatus, setPwaStatus] = B_useState(() => window.PolskaPwaState?.status || ('serviceWorker' in navigator ? 'loading' : 'unsupported'));
@@ -236,6 +765,8 @@ function B_Companion({ initialDay }) {
   const [showInstallHint, setShowInstallHint] = B_useState(() => B_isIOSSafari() && !B_isStandaloneMode());
   const [notes, setNotes] = B_useState(initialNotes.notes);
   const [notesPersistent, setNotesPersistent] = B_useState(initialNotes.persistent);
+  const [expenses, setExpenses] = B_useState(() => core.readJSON(storage, 'polska.expenses.v1', []));
+  const [expSettings, setExpSettings] = B_useState(() => core.readJSON(storage, 'polska.settings.v1', core.DEFAULT_SETTINGS));
   const scrubRef = React.useRef(null);
   const drawerRef = React.useRef(null);
   const drawerCloseRef = React.useRef(null);
@@ -399,6 +930,13 @@ function B_Companion({ initialDay }) {
     return () => { document.body.style.overflow = ''; };
   }, [drawerOpen, trainSheet]);
 
+  // 記帳/預算會在「更多」子頁被新增或修改；離開子頁或切回首頁/更多分頁時
+  // 從 storage 重新讀入，讓首頁三格儀表與更多頁預算預覽反映最新累計。
+  B_useEffect(() => {
+    setExpenses(core.readJSON(storage, 'polska.expenses.v1', []));
+    setExpSettings(core.readJSON(storage, 'polska.settings.v1', core.DEFAULT_SETTINGS));
+  }, [core, storage, subpage, activeTab]);
+
   const { d, phase, mins, momentDay, beforeStart, afterEnd, idx: projectedIdx } = B_useMemo(
     () => core.projectTripMoment(t.days, new Date(), override, t.meta),
     [core, t.days, t.meta, override, tick]
@@ -408,6 +946,14 @@ function B_Companion({ initialDay }) {
   const next = d.steps[idx + 1];
   const active = d.n;
   const setActive = (n) => { setOverride(n); setOpenStep(null); setDrawerOpen(false); };
+  // 首頁三格儀表與更多頁預算預覽共用的記帳累計（Task 8）。
+  const dashTotals = B_useMemo(() => core.expenseTotals(expenses), [core, expenses]);
+  const dashBudget = B_useMemo(
+    () => core.budgetStatus(dashTotals.totalPLN, expSettings.fxRate, expSettings.budgetTWD),
+    [core, dashTotals.totalPLN, expSettings.fxRate, expSettings.budgetTWD]
+  );
+  const dashSpentTWD = core.plnToTwd(dashTotals.totalPLN, expSettings.fxRate);
+  const dashNextLabel = next ? next.label.replace(/^★\s*/, '') : '今日行程已完成';
   const hardNow = core.selectHardConstraintForMoment(d.hardConstraints, phase, d.n, momentDay, mins);
   const bookNow = d.mustBook?.length ? d.mustBook.join(' / ') : '無需預先訂票';
   const compressNow = d.compressible?.[0] || '保留彈性休息';
@@ -505,10 +1051,14 @@ function B_Companion({ initialDay }) {
       </header>
 
       <B_PrimaryNav placement="desktop" {...navActions} />
-      <main id="app-main" className="B-web-grid" onClickCapture={interceptOfflineLink}>
+      <main id="app-main" className="B-web-grid B-tabview" data-tab={activeTab} onClickCapture={interceptOfflineLink}>
         <section className="B-primary-column" aria-label="今日行程">
 
-      <section className="B-today" data-bg={`0${d.n}`} id="top">
+      <div data-tabsection="home">
+        <B_Hero code={t.meta.code} dateRange={t.meta.dateRange} />
+      </div>
+
+      <section className="B-today" data-bg={`0${d.n}`} id="top" data-tabsection="home">
         <div className="kicker">Today is</div>
         <div className="day-line">
           <button
@@ -595,7 +1145,24 @@ function B_Companion({ initialDay }) {
         </button>
       </section>
 
-      <div className="B-scrub" ref={scrubRef} role="tablist" aria-label="日次切換">
+      <div data-tabsection="home">
+        <div className="B-dash" aria-label="今日儀表">
+          <div className="dash-tile">
+            <span className="dash-k">天數</span>
+            <span className="dash-v">Day {d.n} / {t.days.length}</span>
+          </div>
+          <div className="dash-tile">
+            <span className="dash-k">累計花費</span>
+            <span className="dash-v">NT${dashSpentTWD}</span>
+          </div>
+          <div className="dash-tile">
+            <span className="dash-k">下一步</span>
+            <span className="dash-v">{dashNextLabel}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="B-scrub" ref={scrubRef} role="tablist" aria-label="日次切換" data-tabsection="trip">
         {t.days.map(x => (
           <a key={x.n} href={`#B-day-${x.n}`}
              role="tab"
@@ -613,7 +1180,7 @@ function B_Companion({ initialDay }) {
         const isBus = d.train.type === 'BUS';
         const bookHref = isBus ? 'https://www.lajkonikbus.pl/' : 'https://www.intercity.pl/en/';
         return (
-          <div className="B-train">
+          <div className="B-train" data-tabsection="move">
             <div className="seg">
               <span className={`pill ${d.train.type.toLowerCase()}`}>{d.train.type}</span>
               <span>{d.train.date || d.date}</span>
@@ -695,7 +1262,7 @@ function B_Companion({ initialDay }) {
         );
       })()}
 
-      <div className="B-timeline">
+      <div className="B-timeline" data-tabsection="trip">
         {d.steps.map((s, i) => {
           const isStar = s.label.includes('★');
           const cleanLabel = s.label.replace(/^★\s*/, '');
@@ -799,12 +1366,12 @@ function B_Companion({ initialDay }) {
         })}
       </div>
 
-      {d.warn && <div className="B-warn"><strong>⚠ 注意</strong> · {d.warn}</div>}
+      {d.warn && <div className="B-warn" data-tabsection="trip"><strong>⚠ 注意</strong> · {d.warn}</div>}
 
         </section>
         <aside className="B-secondary-column" aria-label="行程補充資訊">
 
-      <div className="B-card field-note">
+      <div className="B-card field-note" data-tabsection="trip">
         <div className="label">今日提醒</div>
         <ul>
           <li><span className="field-tag">Plan B</span><strong>{backupNow}</strong></li>
@@ -812,7 +1379,7 @@ function B_Companion({ initialDay }) {
         </ul>
       </div>
 
-      <div className="B-card tickets" id="B-tickets">
+      <div className="B-card tickets" id="B-tickets" data-tabsection="move">
         <div className="label">今日訂票</div>
         {ticketItems.length > 0 ? (
           <ul>
@@ -851,7 +1418,7 @@ function B_Companion({ initialDay }) {
       </div>
 
       {d.eat && (
-        <div className="B-card eat">
+        <div className="B-card eat" data-tabsection="trip">
           <div className="label">🍴 今日必吃</div>
           <ul>
             {d.eat.map((e, i) => (
@@ -869,7 +1436,7 @@ function B_Companion({ initialDay }) {
       )}
 
       {d.backup && d.backup.length > 0 && (
-        <div className="B-card backup">
+        <div className="B-card backup" data-tabsection="trip">
           <div className="label">☂ 備案 / Plan B</div>
           <ul>
             {d.backup.map((b, i) => (
@@ -889,7 +1456,7 @@ function B_Companion({ initialDay }) {
       )}
 
       {d.practical && d.practical.length > 0 && (
-        <div className="B-card practical">
+        <div className="B-card practical" data-tabsection="trip">
           <div className="label">🛠 實務節點</div>
           <ul>
             {d.practical.map((p, i) => (
@@ -913,7 +1480,7 @@ function B_Companion({ initialDay }) {
         const cs = (t.cityStories || []).find(s => s.city === focusCityName || s.en === focusCityName);
         if (!cs) return null;
         return (
-          <details className="B-card B-citystory-detail">
+          <details className="B-card B-citystory-detail" data-tabsection="trip">
             <summary>
               <strong>{cs.city} · {cs.en}</strong>
               <span className="eat-arr" aria-hidden="true">歷史與現場筆記</span>
@@ -939,7 +1506,7 @@ function B_Companion({ initialDay }) {
         const cityBackup = (t.foodBackup || []).find(c => c.city === focusCityName);
         if (!cityBackup || !cityBackup.items.length) return null;
         return (
-          <details className="B-card B-foodbackup-detail">
+          <details className="B-card B-foodbackup-detail" data-tabsection="trip">
             <summary>
               <strong>備援餐廳 · {cityBackup.city}</strong>
               <span className="eat-arr" aria-hidden="true">{cityBackup.items.length} 間</span>
@@ -962,6 +1529,7 @@ function B_Companion({ initialDay }) {
         );
       })()}
 
+      <B_ToolGrid onOpen={setSubpage} totals={dashTotals} budget={dashBudget} fxRate={expSettings.fxRate} />
       <B_PreTripGuide trip={t} />
         </aside>
       </main>
@@ -975,7 +1543,7 @@ function B_Companion({ initialDay }) {
 
       {toast && <div className="B-toast" role="status" aria-live="assertive">{toast}</div>}
 
-      <B_PrimaryNav placement="mobile" {...navActions} />
+      <B_PrimaryNav placement="mobile" active={activeTab} onChange={setActiveTab} />
 
       {drawerOpen && (
         <React.Fragment>
@@ -1021,6 +1589,17 @@ function B_Companion({ initialDay }) {
             </ul>
           </aside>
         </React.Fragment>
+      )}
+
+      {subpage && (
+        <B_Subpage title={SUBPAGE_TITLES[subpage]} onBack={() => setSubpage(null)}>
+          {subpage === 'expense' && <B_Expense storage={storage} />}
+          {subpage === 'fx' && <B_FxTool storage={storage} />}
+          {subpage === 'packing' && <B_Packing storage={storage} />}
+          {subpage === 'sos' && <B_Sos trip={t} />}
+          {subpage === 'info' && <B_Info trip={t} />}
+          {subpage === 'photomap' && <B_PhotoMap trip={t} storage={storage} />}
+        </B_Subpage>
       )}
     </div>
   );
