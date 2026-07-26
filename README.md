@@ -4,7 +4,7 @@
 
 - 正式入口：根網址 `/`
 - 電腦：寬度大於等於 768 px 時顯示「POLSKA — Travel Atlas」分章雜誌；可用 `?view=desktop` 強制預覽。
-- 手機：寬度小於 768 px 時維持固定「今日／行程／交通／訂票」四分頁；可用 `?view=mobile` 強制預覽，並可加入主畫面及離線使用。
+- 手機：寬度小於 768 px 時顯示固定「首頁／行程／交通／更多」四分頁（「更多」內含旅行記帳、Photo Map、匯率換算、打包清單、SOS 緊急卡、實用資訊六張工具卡）；可用 `?view=mobile` 強制預覽，並可加入主畫面及離線使用。
 - 手機直接入口：`/mobile.html`，不受螢幕寬度影響；PWA 安裝後也固定由此入口啟動。
 - 唯一旅程資料來源：`redesign/data.js`
 - 桌機的 Day 1–8、交通與訂票同樣引用 `redesign/data.js`；`desktop/chapters.js` 只存城市、文化與實用文章。
@@ -12,7 +12,7 @@
 
 `desktop.html` 與 `app-preview.html` 僅保留舊書籤相容轉址；`mobile.html` 是正式手機 PWA 應用殼。
 
-Service Worker 使用 `polska-v16`，同時預快取桌機根殼與手機殼。離線開啟 `/mobile.html` 會回手機旅伴，開啟根網址則回桌機／響應式共用入口；更新仍需由使用者確認後才切換。
+Service Worker 使用 `polska-v17`，同時預快取桌機根殼與手機殼。離線開啟 `/mobile.html` 會回手機旅伴，開啟根網址則回桌機／響應式共用入口；更新仍需由使用者確認後才切換。
 
 ## 經典版原始碼封存
 
