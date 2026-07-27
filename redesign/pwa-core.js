@@ -166,9 +166,57 @@
     return { count: count, totalPLN: totalPLN, lowTWD: est.lowTWD, highTWD: est.highTWD };
   }
 
+  // 2026 年歐洲夏令時間於 10/25（十月最後一個週日）結束。
+  // 本趟行程 10/24–10/31：10/24 為 CEST(UTC+2)，10/25 起為 CET(UTC+1)。
+  // 只服務這段日期，不引入時區函式庫。
+  var DST_END_MMDD = '10/25';
+
+  function warsawOffsetHours(mmdd) {
+    var parts = String(mmdd || '').split('/');
+    var m = Number(parts[0]), d = Number(parts[1]);
+    if (!isFinite(m) || !isFinite(d)) return 1;
+    var endParts = DST_END_MMDD.split('/');
+    var em = Number(endParts[0]), ed = Number(endParts[1]);
+    if (m < em || (m === em && d < ed)) return 2;
+    return 1;
+  }
+
+  function trainDepartureMs(train, year) {
+    if (!train || !train.date || !train.dep) return NaN;
+    var dparts = String(train.date).split('/');
+    var tparts = String(train.dep).split(':');
+    var m = Number(dparts[0]), d = Number(dparts[1]);
+    var hh = Number(tparts[0]), mm = Number(tparts[1]);
+    if (![m, d, hh, mm].every(isFinite)) return NaN;
+    return Date.UTC(year, m - 1, d, hh - warsawOffsetHours(train.date), mm);
+  }
+
+  function nextTrain(trains, nowMs, year) {
+    var list = trains || [];
+    for (var i = 0; i < list.length; i += 1) {
+      var ms = trainDepartureMs(list[i], year);
+      if (!isFinite(ms) || ms < nowMs) continue;
+      return { index: i, train: list[i], minutesUntil: Math.round((ms - nowMs) / 60000) };
+    }
+    return null;
+  }
+
+  function formatCountdown(minutes) {
+    var mins = Number(minutes);
+    if (!isFinite(mins) || mins <= 0) return '即將出發';
+    if (mins < 60) return '還有 ' + mins + ' 分';
+    if (mins < 60 * 24) {
+      var h = Math.floor(mins / 60);
+      var rest = mins % 60;
+      return rest ? '還有 ' + h + ' 小時 ' + rest + ' 分' : '還有 ' + h + ' 小時';
+    }
+    return Math.floor(mins / (60 * 24)) + ' 天後';
+  }
+
   root.PolskaPwaCore = {
     projectTripMoment, selectNextHardConstraint, selectHardConstraintForMoment, readNotes, writeNotes,
     DEFAULT_SETTINGS, EXPENSE_CATEGORIES, readJSON, writeJSON, plnToTwd, expenseTotals, budgetStatus,
     TAX_FREE_MIN_PLN, taxRefundStatus, taxRefundEstimate, taxRefundSummary,
+    warsawOffsetHours, trainDepartureMs, nextTrain, formatCountdown,
   };
 })(typeof window === 'undefined' ? globalThis : window);
