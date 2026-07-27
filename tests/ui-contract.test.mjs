@@ -65,7 +65,7 @@ test('Drawer 只在開啟時可對焦並還原開啟者焦點', () => {
   assert.match(jsx, /if \(e\.key === 'Escape' && drawerOpen\)/);
 });
 
-test('Drawer 與交通 sheet 共用 modal 焦點循環', () => {
+test('Drawer、交通 sheet 與子頁共用 modal 焦點循環', () => {
   assert.match(jsx, /function B_useModalFocus\(/);
   assert.match(jsx, /e\.key !== 'Tab'/);
   assert.match(jsx, /e\.shiftKey/);
@@ -74,9 +74,16 @@ test('Drawer 與交通 sheet 共用 modal 焦點循環', () => {
   assert.match(jsx, /first\.focus\(\)/);
   assert.doesNotMatch(jsx, /offsetParent/, '固定定位 modal 不可用 offsetParent 判斷可對焦項目');
   const uses = jsx.match(/B_useModalFocus\(/g) || [];
-  assert.equal(uses.length, 3, '應定義一次並分別套用於 Drawer 與交通 sheet');
+  assert.equal(uses.length, 4, '應定義一次並分別套用於 Drawer、交通 sheet 與子頁');
   assert.match(jsx, /ref={drawerRef}/);
   assert.match(jsx, /ref={trainSheetRef}/);
+});
+
+test('子頁沿用既有 modal 焦點契約，Escape 可關且鎖背景滾動', () => {
+  assert.match(jsx, /subpageReturnFocusRef/);
+  assert.match(jsx, /B_useModalFocus\(\s*!!subpage/);
+  assert.match(jsx, /e\.key === 'Escape' && subpage/);
+  assert.match(jsx, /drawerOpen \|\| trainSheet \|\| subpage \? 'hidden' : ''/);
 });
 
 test('交通卡使用獨立詳情按鈕且不建立巢狀互動元素', () => {

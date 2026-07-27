@@ -281,15 +281,15 @@ const SUBPAGE_TITLES = {
   info: '實用資訊',
 };
 
-function B_Subpage(props) {
+function B_Subpage({ title, onBack, panelRef, closeRef, children }) {
   return (
-    <div className="B-subpage-mask" role="dialog" aria-modal="true" aria-label={props.title}>
+    <div className="B-subpage-mask" role="dialog" aria-modal="true" aria-label={title} ref={panelRef}>
       <div className="B-subpage">
         <header className="B-subpage-head">
-          <button type="button" className="B-subpage-back" onClick={props.onBack} aria-label="返回更多">‹ 返回</button>
-          <h2>{props.title}</h2>
+          <button type="button" className="B-subpage-back" ref={closeRef} onClick={onBack} aria-label="返回更多">‹ 返回</button>
+          <h2>{title}</h2>
         </header>
-        <div className="B-subpage-body">{props.children}</div>
+        <div className="B-subpage-body">{children}</div>
       </div>
     </div>
   );
@@ -308,7 +308,7 @@ function B_ToolGrid({ onOpen, totals, budget, fxRate }) {
             key={key}
             className="B-tool-card"
             data-open={key}
-            onClick={() => onOpen(key)}>
+            onClick={(ev) => onOpen(key, ev)}>
             <span className="tool-name">{label}</span>
             <span className="tool-sub">{sub}</span>
           </button>
@@ -785,9 +785,13 @@ function B_Companion({ initialDay }) {
   const trainCloseRef = React.useRef(null);
   const trainReturnFocusRef = React.useRef(null);
   const installPromptRef = React.useRef(null);
+  const subpageRef = React.useRef(null);
+  const subpageCloseRef = React.useRef(null);
+  const subpageReturnFocusRef = React.useRef(null);
 
   B_useModalFocus(drawerOpen, drawerRef, drawerCloseRef, drawerReturnFocusRef);
   B_useModalFocus(trainSheet, trainSheetRef, trainCloseRef, trainReturnFocusRef);
+  B_useModalFocus(!!subpage, subpageRef, subpageCloseRef, subpageReturnFocusRef);
 
   const noteKey = (dn, si) => `${dn}-${si}`;
   const editNote = (dn, si) => {
@@ -927,18 +931,19 @@ function B_Companion({ initialDay }) {
   // Close modal surfaces on Escape
   B_useEffect(() => {
     const onKey = (e) => {
+      if (e.key === 'Escape' && subpage) { setSubpage(null); return; }
+      if (e.key === 'Escape' && trainSheet) { setTrainSheet(false); return; }
       if (e.key === 'Escape' && drawerOpen) setDrawerOpen(false);
-      if (e.key === 'Escape' && trainSheet) setTrainSheet(false);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [drawerOpen, trainSheet]);
+  }, [drawerOpen, trainSheet, subpage]);
 
   // Lock body scroll while modal surfaces are open.
   B_useEffect(() => {
-    document.body.style.overflow = drawerOpen || trainSheet ? 'hidden' : '';
+    document.body.style.overflow = drawerOpen || trainSheet || subpage ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
-  }, [drawerOpen, trainSheet]);
+  }, [drawerOpen, trainSheet, subpage]);
 
   // 記帳/預算會在「更多」子頁被新增或修改；離開子頁或切回首頁/更多分頁時
   // 從 storage 重新讀入，讓首頁三格儀表與更多頁預算預覽反映最新累計。
@@ -1539,7 +1544,7 @@ function B_Companion({ initialDay }) {
         );
       })()}
 
-      <B_ToolGrid onOpen={setSubpage} totals={dashTotals} budget={dashBudget} fxRate={expSettings.fxRate} />
+      <B_ToolGrid onOpen={(key, ev) => { subpageReturnFocusRef.current = ev && ev.currentTarget; setSubpage(key); }} totals={dashTotals} budget={dashBudget} fxRate={expSettings.fxRate} />
       <B_PreTripGuide trip={t} />
         </aside>
       </main>
@@ -1602,7 +1607,7 @@ function B_Companion({ initialDay }) {
       )}
 
       {subpage && (
-        <B_Subpage title={SUBPAGE_TITLES[subpage]} onBack={() => setSubpage(null)}>
+        <B_Subpage title={SUBPAGE_TITLES[subpage]} onBack={() => setSubpage(null)} panelRef={subpageRef} closeRef={subpageCloseRef}>
           {subpage === 'expense' && <B_Expense storage={storage} />}
           {subpage === 'fx' && <B_FxTool storage={storage} />}
           {subpage === 'packing' && <B_Packing storage={storage} />}
