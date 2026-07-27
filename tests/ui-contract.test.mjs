@@ -65,7 +65,7 @@ test('Drawer 只在開啟時可對焦並還原開啟者焦點', () => {
   assert.match(jsx, /if \(e\.key === 'Escape' && drawerOpen\)/);
 });
 
-test('Drawer、交通 sheet 與子頁共用 modal 焦點循環', () => {
+test('Drawer、交通 sheet、子頁與工具選單共用 modal 焦點循環', () => {
   assert.match(jsx, /function B_useModalFocus\(/);
   assert.match(jsx, /e\.key !== 'Tab'/);
   assert.match(jsx, /e\.shiftKey/);
@@ -74,16 +74,22 @@ test('Drawer、交通 sheet 與子頁共用 modal 焦點循環', () => {
   assert.match(jsx, /first\.focus\(\)/);
   assert.doesNotMatch(jsx, /offsetParent/, '固定定位 modal 不可用 offsetParent 判斷可對焦項目');
   const uses = jsx.match(/B_useModalFocus\(/g) || [];
-  assert.equal(uses.length, 4, '應定義一次並分別套用於 Drawer、交通 sheet 與子頁');
+  assert.equal(uses.length, 5, '應定義一次並分別套用於 Drawer、交通 sheet、子頁與工具選單');
   assert.match(jsx, /ref={drawerRef}/);
   assert.match(jsx, /ref={trainSheetRef}/);
+  assert.match(jsx, /B_useModalFocus\(toolsOpen,\s*toolsMenuRef,\s*toolsMenuCloseRef,\s*toolsBtnRef\)/);
 });
 
 test('子頁沿用既有 modal 焦點契約，Escape 可關且鎖背景滾動', () => {
   assert.match(jsx, /subpageReturnFocusRef/);
   assert.match(jsx, /B_useModalFocus\(\s*!!subpage/);
   assert.match(jsx, /e\.key === 'Escape' && subpage/);
-  assert.match(jsx, /drawerOpen \|\| trainSheet \|\| subpage \? 'hidden' : ''/);
+  assert.match(jsx, /drawerOpen \|\| trainSheet \|\| subpage \|\| toolsOpen \? 'hidden' : ''/);
+});
+
+test('工具選單沿用既有 modal 焦點契約，Escape 可關且鎖背景滾動', () => {
+  assert.match(jsx, /e\.key === 'Escape' && toolsOpen/);
+  assert.match(jsx, /B_useModalFocus\(toolsOpen,\s*toolsMenuRef,\s*toolsMenuCloseRef,\s*toolsBtnRef\)/);
 });
 
 test('交通卡使用獨立詳情按鈕且不建立巢狀互動元素', () => {
@@ -120,14 +126,14 @@ test('首頁 hero 為四城市輪播且尊重減量動畫', () => {
   assert.match(css, /\.B-hero-dots/);
 });
 
-test('更多頁有六張工具卡與可返回的子頁容器', () => {
+test('首頁選單有五個工具卡與可返回的子頁容器', () => {
   assert.match(jsx, /subpage/);
   assert.match(jsx, /setSubpage/);
   assert.match(jsx, /function B_Subpage/);
-  for (const label of ['旅行記帳', 'Photo Map', '匯率換算', '打包清單', 'SOS', '實用資訊']) {
+  for (const label of ['拍照清單', '匯率換算', '打包清單', 'SOS', '實用資訊']) {
     assert.match(jsx, new RegExp(label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   }
-  assert.match(css, /\.B-tool-card/);
+  assert.match(css, /\.B-tools-menu/);
   assert.match(css, /\.B-subpage/);
 });
 
@@ -196,6 +202,25 @@ test('方案 A token 存在且不污染桌機 tokens.css', () => {
   const tokens = fs.readFileSync('redesign/tokens.css', 'utf8');
   assert.doesNotMatch(tokens, /--A-/);
   assert.match(tokens, /--paper:\s*#f4ecd8/);  // 桌機色票未被動過
+});
+
+test('底部四分頁為 首頁/行程/交通/記帳，記帳在第一層', () => {
+  assert.match(jsx, /\['home', ?'首頁'\]/);
+  assert.match(jsx, /\['trip', ?'行程'\]/);
+  assert.match(jsx, /\['move', ?'交通'\]/);
+  assert.match(jsx, /\['money', ?'記帳'\]/);
+  assert.doesNotMatch(jsx, /\['more', ?'更多'\]/);
+  assert.match(jsx, /data-tabsection="money"/);
+});
+
+test('五個工具改由首頁右上選單進入，記帳不在選單內', () => {
+  assert.match(jsx, /toolsOpen/);
+  assert.match(jsx, /aria-label="更多工具"/);
+  for (const label of ['拍照清單', '匯率換算', '打包清單', 'SOS 緊急卡', '實用資訊']) {
+    assert.match(jsx, new RegExp(label));
+  }
+  assert.doesNotMatch(jsx, /\['expense', ?'旅行記帳'\]/);
+  assert.match(css, /\.B-tools-menu/);
 });
 
 test('方案 A 對比度修正：ink-2／tag-book-fg 調色達 4.5:1，ink-3 改限非文字用途', () => {

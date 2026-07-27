@@ -179,7 +179,7 @@ function B_useModalFocus(open, containerRef, initialFocusRef, returnFocusRef) {
 function B_PrimaryNav({ placement, active, onChange, onToday, onItinerary, onTransport, onTickets }) {
   const placementClass = placement === 'mobile' ? 'B-mobile-nav' : 'B-desktop-nav';
   if (placement === 'mobile') {
-    const tabs = [['home', '首頁'], ['trip', '行程'], ['move', '交通'], ['more', '更多']];
+    const tabs = [['home', '首頁'], ['trip', '行程'], ['move', '交通'], ['money', '記帳']];
     return (
       <nav className={`B-primary-nav ${placementClass}`} aria-label="手機主要導覽">
         {tabs.map(([key, label]) => (
@@ -250,7 +250,7 @@ function B_PreTripGuide({ trip }) {
     ['常用波蘭語', trip.phrases.map(([zh, pl]) => `${zh} · ${pl}`)],
   ];
   return (
-    <section id="B-guide" className="B-pretrip-guide" aria-labelledby="B-guide-title" data-tabsection="more">
+    <section id="B-guide" className="B-pretrip-guide" aria-labelledby="B-guide-title" data-tabsection="home">
       <h2 id="B-guide-title">行前指南</h2>
       {sections.map(([title, rows]) => (
         <details key={title}>
@@ -262,10 +262,9 @@ function B_PreTripGuide({ trip }) {
   );
 }
 
-/* Task 4: "更多" 分頁工具方格與可返回子頁容器 */
+/* Task 9: 首頁右上「⋯」選單裡的五個工具，與可返回子頁容器共用 */
 const B_TOOLS = [
-  ['expense', '旅行記帳', 'EXPENSE'],
-  ['photomap', 'Photo Map', 'MAP'],
+  ['photomap', '拍照清單', 'PHOTO'],
   ['fx', '匯率換算', 'FX RATE'],
   ['packing', '打包清單', 'PACKING'],
   ['sos', 'SOS 緊急卡', 'EMERGENCY'],
@@ -273,8 +272,7 @@ const B_TOOLS = [
 ];
 
 const SUBPAGE_TITLES = {
-  expense: '旅行記帳',
-  photomap: 'Photo Map',
+  photomap: '拍照清單',
   fx: '匯率換算',
   packing: '打包清單',
   sos: 'SOS 緊急卡',
@@ -295,47 +293,27 @@ function B_Subpage({ title, onBack, panelRef, closeRef, children }) {
   );
 }
 
-function B_ToolGrid({ onOpen, totals, budget, fxRate }) {
-  // 外層負責 mobile 分頁顯示/隱藏（Task 1 的 [data-tabsection] 機制），
-  // .B-more-grid 保留在內層，避免該規則的 display:block 蓋掉 grid 版面。
-  const core = window.PolskaPwaCore;
+/* Task 9: 首頁右上「⋯」開啟的工具選單（取代原「更多」分頁的工具方格） */
+function B_ToolGrid({ onOpen, onClose, panelRef, closeRef }) {
   return (
-    <section className="B-more-tools" aria-label="旅行工具" data-tabsection="more">
-      <div className="B-more-grid">
-        {B_TOOLS.map(([key, label, sub]) => (
-          <button
-            type="button"
-            key={key}
-            className="B-tool-card"
-            data-open={key}
-            onClick={(ev) => onOpen(key, ev)}>
-            <span className="tool-name">{label}</span>
-            <span className="tool-sub">{sub}</span>
-          </button>
-        ))}
-      </div>
-      {/* Task 8：預算預覽——讀記帳累計，點入記帳子頁 */}
-      <button
-        type="button"
-        className="B-budget-preview"
-        aria-label={`預算預覽：已花新台幣 ${budget.spentTWD} 元，預算新台幣 ${budget.budgetTWD} 元，點擊開啟記帳`}
-        onClick={() => onOpen('expense')}>
-        <div className="B-budget-bar">
-          <div
-            className={`fill${budget.over ? ' is-over' : ''}`}
-            style={{ width: `${Math.min(budget.ratio, 1) * 100}%` }}
-          />
+    <div className="B-tools-menu B-companion" role="dialog" aria-modal="true" aria-label="更多工具" ref={panelRef}>
+      <div className="B-tools-menu-panel">
+        <div className="B-tools-menu-head">
+          <h3>更多工具</h3>
+          <button type="button" ref={closeRef} onClick={onClose} aria-label="關閉">×</button>
         </div>
-        <span className="B-budget-label">已花 NT${budget.spentTWD} / 預算 NT${budget.budgetTWD}</span>
-        <div className="B-budget-cats">
-          {core.EXPENSE_CATEGORIES.map((c) => (
-            <span key={c.key} className="cat-chip">
-              {c.label} NT${core.plnToTwd(totals.byCategory[c.key], fxRate)}
-            </span>
+        <ul>
+          {B_TOOLS.map(([key, label, kicker]) => (
+            <li key={key}>
+              <button type="button" onClick={(ev) => onOpen(key, ev)}>
+                <span className="B-tools-menu-label">{label}</span>
+                <span className="B-tools-menu-kicker">{kicker}</span>
+              </button>
+            </li>
           ))}
-        </div>
-      </button>
-    </section>
+        </ul>
+      </div>
+    </div>
   );
 }
 
@@ -765,6 +743,7 @@ function B_Companion({ initialDay }) {
   const [drawerOpen, setDrawerOpen] = B_useState(false);
   const [trainSheet, setTrainSheet] = B_useState(false);
   const [subpage, setSubpage] = B_useState(null);
+  const [toolsOpen, setToolsOpen] = B_useState(false);
   const [online, setOnline] = B_useState(() => typeof navigator === 'undefined' ? true : navigator.onLine);
   const [standalone, setStandalone] = B_useState(B_isStandaloneMode);
   const [pwaStatus, setPwaStatus] = B_useState(() => window.PolskaPwaState?.status || ('serviceWorker' in navigator ? 'loading' : 'unsupported'));
@@ -788,9 +767,16 @@ function B_Companion({ initialDay }) {
   const subpageRef = React.useRef(null);
   const subpageCloseRef = React.useRef(null);
   const subpageReturnFocusRef = React.useRef(null);
+  const toolsMenuRef = React.useRef(null);
+  const toolsMenuCloseRef = React.useRef(null);
+  const toolsBtnRef = React.useRef(null);
 
   B_useModalFocus(drawerOpen, drawerRef, drawerCloseRef, drawerReturnFocusRef);
   B_useModalFocus(trainSheet, trainSheetRef, trainCloseRef, trainReturnFocusRef);
+  // toolsOpen 的焦點契約要在 subpage 之前呼叫：從工具選單直接點開子頁時，
+  // 兩個 state 在同一次 commit 內先關後開，effect 依宣告順序執行，
+  // 讓子頁的「初次對焦」效果最後跑，焦點才會停在子頁而不是被選單搶回。
+  B_useModalFocus(toolsOpen, toolsMenuRef, toolsMenuCloseRef, toolsBtnRef);
   B_useModalFocus(!!subpage, subpageRef, subpageCloseRef, subpageReturnFocusRef);
 
   const noteKey = (dn, si) => `${dn}-${si}`;
@@ -932,21 +918,22 @@ function B_Companion({ initialDay }) {
   B_useEffect(() => {
     const onKey = (e) => {
       if (e.key === 'Escape' && subpage) { setSubpage(null); return; }
+      if (e.key === 'Escape' && toolsOpen) { setToolsOpen(false); return; }
       if (e.key === 'Escape' && trainSheet) { setTrainSheet(false); return; }
       if (e.key === 'Escape' && drawerOpen) setDrawerOpen(false);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [drawerOpen, trainSheet, subpage]);
+  }, [drawerOpen, trainSheet, subpage, toolsOpen]);
 
   // Lock body scroll while modal surfaces are open.
   B_useEffect(() => {
-    document.body.style.overflow = drawerOpen || trainSheet || subpage ? 'hidden' : '';
+    document.body.style.overflow = drawerOpen || trainSheet || subpage || toolsOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
-  }, [drawerOpen, trainSheet, subpage]);
+  }, [drawerOpen, trainSheet, subpage, toolsOpen]);
 
-  // 記帳/預算會在「更多」子頁被新增或修改；離開子頁或切回首頁/更多分頁時
-  // 從 storage 重新讀入，讓首頁三格儀表與更多頁預算預覽反映最新累計。
+  // 記帳/預算會在「記帳」分頁被新增或修改；切換分頁或子頁時
+  // 從 storage 重新讀入，讓首頁三格儀表反映最新累計。
   B_useEffect(() => {
     setExpenses(core.readJSON(storage, 'polska.expenses.v1', []));
     setExpSettings(core.readJSON(storage, 'polska.settings.v1', core.DEFAULT_SETTINGS));
@@ -1074,6 +1061,14 @@ function B_Companion({ initialDay }) {
       </div>
 
       <section className="B-today" data-bg={`0${d.n}`} id="top" data-tabsection="home">
+        <button
+          type="button"
+          className="B-tools-btn"
+          aria-label="更多工具"
+          aria-expanded={toolsOpen}
+          ref={toolsBtnRef}
+          onClick={() => setToolsOpen(true)}
+        >⋯</button>
         <div className="kicker">Today is</div>
         <div className="day-line">
           <button
@@ -1544,7 +1539,10 @@ function B_Companion({ initialDay }) {
         );
       })()}
 
-      <B_ToolGrid onOpen={(key, ev) => { subpageReturnFocusRef.current = ev && ev.currentTarget; setSubpage(key); }} totals={dashTotals} budget={dashBudget} fxRate={expSettings.fxRate} />
+      <section data-tabsection="money">
+        <B_Expense storage={storage} />
+      </section>
+
       <B_PreTripGuide trip={t} />
         </aside>
       </main>
@@ -1606,9 +1604,21 @@ function B_Companion({ initialDay }) {
         </React.Fragment>
       )}
 
+      {toolsOpen && (
+        <B_ToolGrid
+          panelRef={toolsMenuRef}
+          closeRef={toolsMenuCloseRef}
+          onClose={() => setToolsOpen(false)}
+          onOpen={(key, ev) => {
+            subpageReturnFocusRef.current = (ev && ev.currentTarget) || toolsBtnRef.current;
+            setToolsOpen(false);
+            setSubpage(key);
+          }}
+        />
+      )}
+
       {subpage && (
         <B_Subpage title={SUBPAGE_TITLES[subpage]} onBack={() => setSubpage(null)} panelRef={subpageRef} closeRef={subpageCloseRef}>
-          {subpage === 'expense' && <B_Expense storage={storage} />}
           {subpage === 'fx' && <B_FxTool storage={storage} />}
           {subpage === 'packing' && <B_Packing storage={storage} />}
           {subpage === 'sos' && <B_Sos trip={t} />}
