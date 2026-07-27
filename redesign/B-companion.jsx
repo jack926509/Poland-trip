@@ -948,10 +948,8 @@ function B_Companion({ initialDay }) {
   const next = d.steps[idx + 1];
   const active = d.n;
   const setActive = (n) => { setOverride(n); setOpenStep(null); setDrawerOpen(false); };
-  // 首頁三格儀表共用的記帳累計（Task 8）。
+  // 首頁統計四宮格共用的記帳累計（Task 8 建、Task 10 改接四宮格，取代已移除的舊版三格今日儀表）。
   const dashTotals = B_useMemo(() => core.expenseTotals(expenses), [core, expenses]);
-  const dashSpentTWD = core.plnToTwd(dashTotals.totalPLN, expSettings.fxRate);
-  const dashNextLabel = next ? next.label.replace(/^★\s*/, '') : '今日行程已完成';
   // Task 10：首頁照片 hero 用當前顯示日的目的城市；轉場日 d.city 形如
   // 「華沙 → 克拉科夫」，B_focusCity 已處理過取目的地。
   const heroCityName = B_focusCity(d.city);
@@ -1180,23 +1178,6 @@ function B_Companion({ initialDay }) {
           })()}
         </button>
       </section>
-
-      <div data-tabsection="home">
-        <div className="B-dash" aria-label="今日儀表">
-          <div className="dash-tile">
-            <span className="dash-k">天數</span>
-            <span className="dash-v">Day {d.n} / {t.days.length}</span>
-          </div>
-          <div className="dash-tile">
-            <span className="dash-k">累計花費</span>
-            <span className="dash-v">NT${dashSpentTWD}</span>
-          </div>
-          <div className="dash-tile">
-            <span className="dash-k">下一步</span>
-            <span className="dash-v">{dashNextLabel}</span>
-          </div>
-        </div>
-      </div>
 
       <div className="B-scrub" ref={scrubRef} role="tablist" aria-label="日次切換" data-tabsection="trip">
         {t.days.map(x => (

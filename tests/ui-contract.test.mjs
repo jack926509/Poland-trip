@@ -181,9 +181,13 @@ test('匯率換算與打包清單子頁存在且持久化', () => {
   assert.match(css, /\.B-packing/);
 });
 
-test('首頁三格儀表接記帳累計', () => {
-  assert.match(jsx, /B-dash/);
+test('首頁統計四宮格接記帳累計，舊版三格儀表已移除不留孤兒樣式', () => {
+  // Task 10 收斂：新的 .B-quad 四宮格取代 Task 8 的舊版 .B-dash 三格，
+  // 避免使用者在首頁同時看到兩組不同來源的統計數字。
   assert.match(jsx, /expenseTotals\(/);
+  assert.match(jsx, /core\.budgetStatus\(/);
+  assert.doesNotMatch(jsx, /B-dash/);
+  assert.doesNotMatch(css, /\.B-dash/);
 });
 
 test('SOS、實用資訊、Photo Map 子頁存在且接既有資料', () => {
