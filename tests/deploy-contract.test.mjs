@@ -50,3 +50,16 @@ test('prepare-site 從空目錄組出唯一 PWA allowlist', () => {
     fs.rmSync(parent, { recursive: true, force: true });
   }
 });
+
+test('照片目錄有進發布白名單，否則線上 404', () => {
+  const prep = fs.readFileSync('prepare-site.sh', 'utf8');
+  assert.match(prep, /mkdir -p[^\n]*assets\/photos/);
+  assert.match(prep, /cp assets\/photos\/\*\.webp "\$output\/assets\/photos\/"/);
+});
+
+test('data.js 引用的照片檔案實際存在', () => {
+  const data = fs.readFileSync('redesign/data.js', 'utf8');
+  const refs = [...data.matchAll(/assets\/photos\/[a-z-]+\.webp/g)].map((m) => m[0]);
+  assert.equal(refs.length, 8);
+  for (const r of refs) assert.ok(fs.existsSync(r), `缺檔案 ${r}`);
+});
