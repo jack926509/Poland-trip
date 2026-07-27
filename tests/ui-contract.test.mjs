@@ -159,3 +159,19 @@ test('SOS、實用資訊、Photo Map 子頁存在且接既有資料', () => {
   assert.match(css, /\.B-sos/);
   assert.match(css, /\.B-photomap/);
 });
+
+test('三個工具子頁接住 writeJSON 失敗並顯示警語', () => {
+  assert.match(jsx, /const \[storeOk, setStoreOk\] = B_useState\(true\)/);
+  assert.match(jsx, /setStoreOk\(core\.writeJSON\(storage, 'polska\.photomap\.v1'/);
+  assert.match(jsx, /setStoreOk\(core\.writeJSON\(storage, 'polska\.settings\.v1'/);
+  assert.match(jsx, /setStoreOk\(core\.writeJSON\(storage, 'polska\.packing\.v1'/);
+  assert.match(css, /\.B-store-warn/);
+});
+
+test('記帳表單驗證失敗顯示可讀錯誤而非靜默 return', () => {
+  assert.match(jsx, /const \[formError, setFormError\] = B_useState\(''\)/);
+  assert.match(jsx, /setFormError\('請填品項名稱'\)/);
+  assert.match(jsx, /setFormError\('金額請填大於 0 的數字'\)/);
+  assert.match(jsx, /role="alert"/);
+  assert.match(css, /\.B-form-error/);
+});

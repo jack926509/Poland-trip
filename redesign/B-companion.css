@@ -1053,3 +1053,15 @@
 .B-photomap-name .en{ font-family:var(--mono); font-size:.7rem; color:var(--ink-mute); }
 .B-photomap-toggle{ font-family:var(--mono); font-size:.75rem; letter-spacing:.04em; border-radius:999px; padding:.5rem 1rem; background:none; border:1px solid var(--crimson); color:var(--crimson); }
 .B-photomap-city.is-done .B-photomap-toggle{ background:var(--crimson); color:var(--paper); }
+
+/* ---- 儲存失敗與表單錯誤提示 ---- */
+.B-store-warn,
+.B-form-error {
+  margin: 0 0 10px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  background: #FDEDE3;
+  color: #8C3E1C;
+}

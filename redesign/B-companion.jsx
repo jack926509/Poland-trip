@@ -348,6 +348,7 @@ function B_Expense({ storage }) {
   const [filterDay, setFilterDay] = B_useState('all');
   const [formOpen, setFormOpen] = B_useState(false);
   const [persistOk, setPersistOk] = B_useState(true);
+  const [formError, setFormError] = B_useState('');
   const [form, setForm] = B_useState(() => ({
     item: '', amountPLN: '', category: core.EXPENSE_CATEGORIES[0].key,
     day: days[0] ? days[0].n : 1, method: '現金',
@@ -370,7 +371,9 @@ function B_Expense({ storage }) {
   const submitForm = (e) => {
     e.preventDefault();
     const amount = Number(form.amountPLN);
-    if (!form.item.trim() || !isFinite(amount) || amount <= 0) return;
+    if (!form.item.trim()) { setFormError('請填品項名稱'); return; }
+    if (!isFinite(amount) || amount <= 0) { setFormError('金額請填大於 0 的數字'); return; }
+    setFormError('');
     const entry = {
       id: Date.now() + Math.random(),
       day: Number(form.day),
@@ -486,6 +489,7 @@ function B_Expense({ storage }) {
               </select>
             </label>
           </div>
+          {formError && <p className="B-form-error" role="alert">{formError}</p>}
           <div className="actions">
             <button type="button" className="cancel" onClick={() => setFormOpen(false)}>取消</button>
             <button type="submit" className="submit">儲存</button>
@@ -502,17 +506,19 @@ function B_PhotoMap({ storage }) {
   const core = window.PolskaPwaCore;
   const cities = Object.keys(B_CITY_EN);
   const [checkins, setCheckins] = B_useState(() => core.readJSON(storage, 'polska.photomap.v1', {}));
+  const [storeOk, setStoreOk] = B_useState(true);
 
   const doneCount = cities.filter((city) => checkins[city]).length;
 
   const toggle = (city) => {
     const next = { ...checkins, [city]: !checkins[city] };
     setCheckins(next);
-    core.writeJSON(storage, 'polska.photomap.v1', next);
+    setStoreOk(core.writeJSON(storage, 'polska.photomap.v1', next));
   };
 
   return (
     <div className="B-photomap">
+      {!storeOk && <p className="B-store-warn">目前無法儲存，這次的變更只在這個畫面有效</p>}
       <p className="B-photomap-head">已打卡 {doneCount}/{cities.length}</p>
       {cities.map((city) => {
         const done = Boolean(checkins[city]);
@@ -542,6 +548,7 @@ function B_FxTool({ storage }) {
   const [settings, setSettings] = B_useState(() => core.readJSON(storage, 'polska.settings.v1', core.DEFAULT_SETTINGS));
   const [pln, setPln] = B_useState('100');
   const [twd, setTwd] = B_useState(() => String(core.plnToTwd(100, settings.fxRate)));
+  const [storeOk, setStoreOk] = B_useState(true);
 
   // 匯率為空或非正數視為「尚未設定」，換算欄不可靜默顯示 0——見 Task 6 審查問題 1。
   const rateNum = Number(settings.fxRate);
@@ -568,13 +575,14 @@ function B_FxTool({ storage }) {
     setSettings(nextSettings);
     const nextRateValid = v !== '' && isFinite(rate) && rate > 0;
     if (!nextRateValid) { setTwd(''); return; }
-    core.writeJSON(storage, 'polska.settings.v1', nextSettings);
+    setStoreOk(core.writeJSON(storage, 'polska.settings.v1', nextSettings));
     const p = Number(pln);
     if (isFinite(p) && pln !== '') setTwd(String(core.plnToTwd(p, rate)));
   };
 
   return (
     <div className="B-fx">
+      {!storeOk && <p className="B-store-warn">目前無法儲存，這次的變更只在這個畫面有效</p>}
       <label className="B-fx-input">
         PLN
         <input
@@ -608,6 +616,7 @@ function B_Packing({ storage }) {
   const core = window.PolskaPwaCore;
   const packingDefault = (window.TRIP && window.TRIP.packingDefault) || {};
   const [checked, setChecked] = B_useState(() => core.readJSON(storage, 'polska.packing.v1', {}));
+  const [storeOk, setStoreOk] = B_useState(true);
 
   // key 用「分類::項目」而非純項目文字，避免不同分類的同名項目互相污染勾選狀態
   // （見 Task 6 審查問題 2）。
@@ -617,11 +626,12 @@ function B_Packing({ storage }) {
     const key = packKey(group, item);
     const next = { ...checked, [key]: !checked[key] };
     setChecked(next);
-    core.writeJSON(storage, 'polska.packing.v1', next);
+    setStoreOk(core.writeJSON(storage, 'polska.packing.v1', next));
   };
 
   return (
     <div className="B-packing">
+      {!storeOk && <p className="B-store-warn">目前無法儲存，這次的變更只在這個畫面有效</p>}
       {Object.entries(packingDefault).map(([group, items]) => {
         const packedCount = items.filter((item) => checked[packKey(group, item)]).length;
         return (
