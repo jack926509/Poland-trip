@@ -213,10 +213,70 @@
     return Math.floor(mins / (60 * 24)) + ' 天後';
   }
 
+  // Task 6：拍照清單從城市級打卡改為景點級。舊 key（中文城市名，例 '華沙'）
+  // 遷移到該城第一個景點的 id；呼叫端須先把 old 原封不動備份到
+  // PHOTOMAP_BACKUP_KEY，再把 next 寫回 polska.photomap.v1。
+  var PHOTOMAP_BACKUP_KEY = 'polska.photomap.v0.backup';
+
+  function migratePhotoCheckins(old, spots) {
+    var src = old && typeof old === 'object' && !Array.isArray(old) ? old : {};
+    var list = spots || [];
+    var ids = {};
+    list.forEach(function (s) { if (s && s.id) ids[s.id] = true; });
+
+    var keys = Object.keys(src);
+    var looksOld = keys.some(function (k) { return !ids[k]; });
+    if (!keys.length || !looksOld) return { next: src, migrated: false };
+
+    var firstOfCity = {};
+    list.forEach(function (s) {
+      if (s && s.cityKey && !firstOfCity[s.cityKey]) firstOfCity[s.cityKey] = s.id;
+    });
+
+    var next = {};
+    keys.forEach(function (k) {
+      if (ids[k]) { next[k] = !!src[k]; return; }
+      if (!src[k]) return;
+      for (var ck in firstOfCity) {
+        if (!Object.prototype.hasOwnProperty.call(firstOfCity, ck)) continue;
+        var city = null;
+        for (var i = 0; i < list.length; i += 1) {
+          if (list[i].cityKey === ck) { city = list[i]; break; }
+        }
+        if (city && cityNameMatches(k, ck)) { next[firstOfCity[ck]] = true; return; }
+      }
+    });
+    return { next: next, migrated: true };
+  }
+
+  // 舊 key 是中文城市名（例 '華沙'），對應到城市代碼。
+  function cityNameMatches(name, cityKey) {
+    var map = { 華沙: 'WAW', 克拉科夫: 'KRK', 樂斯拉夫: 'WRO', 波茲南: 'POZ' };
+    return map[name] === cityKey;
+  }
+
+  var PHOTOMAP_KEY = 'polska.photomap.v1';
+
+  // 實際跑遷移並落地到 storage：先把舊值「原封不動」備份到 PHOTOMAP_BACKUP_KEY，
+  // 才把新格式寫回 PHOTOMAP_KEY。若備份 key 已存在則不覆寫——同一支 App 可能
+  // 被打開很多次，第二次以後 migratePhotoCheckins 就會回報 migrated:false，
+  // 但這裡仍加一層「備份已存在就不動」的保險，避免任何後續情境誤把備份寫成新值。
+  function migratePhotoMapStorage(storage, spots) {
+    var old = readJSON(storage, PHOTOMAP_KEY, {});
+    var result = migratePhotoCheckins(old, spots);
+    if (result.migrated) {
+      var hasBackup = storage && storage.getItem && storage.getItem(PHOTOMAP_BACKUP_KEY) != null;
+      if (!hasBackup) writeJSON(storage, PHOTOMAP_BACKUP_KEY, old);
+      writeJSON(storage, PHOTOMAP_KEY, result.next);
+    }
+    return result;
+  }
+
   root.PolskaPwaCore = {
     projectTripMoment, selectNextHardConstraint, selectHardConstraintForMoment, readNotes, writeNotes,
     DEFAULT_SETTINGS, EXPENSE_CATEGORIES, readJSON, writeJSON, plnToTwd, expenseTotals, budgetStatus,
     TAX_FREE_MIN_PLN, taxRefundStatus, taxRefundEstimate, taxRefundSummary,
     warsawOffsetHours, trainDepartureMs, nextTrain, formatCountdown,
+    PHOTOMAP_BACKUP_KEY, PHOTOMAP_KEY, migratePhotoCheckins, migratePhotoMapStorage,
   };
 })(typeof window === 'undefined' ? globalThis : window);
