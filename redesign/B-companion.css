@@ -6,7 +6,10 @@
   --A-ground: #F7F4EF;
   --A-board: #FFFFFF;
   --A-ink: #1B1917;
-  --A-ink-2: #7C736B;
+  --A-ink-2: #736A61;
+  /* --A-ink-3：僅供非文字元素使用（分隔線／hairline／邊框）。在暖白底 #F7F4EF 上
+     無法同時做出三階明顯區隔的文字色又都達 4.5:1 對比，故此色不可再指定為任何
+     文字 color——需要第三層文字（例如小字標籤）一律改用 --A-ink-2。 */
   --A-ink-3: #8A8078;
   --A-line: #F1EDE6;
   --A-espresso: #33261E;
@@ -16,7 +19,7 @@
   --A-tag-move-bg: #E8EFF8;
   --A-tag-move-fg: #3F6491;
   --A-tag-book-bg: #FDEDE3;
-  --A-tag-book-fg: #C2653A;
+  --A-tag-book-fg: #9D522F;
   --A-display: "Hoefler Text", "Iowan Old Style", Palatino, serif;
   --A-body: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", sans-serif;
   --A-mono: "SF Mono", ui-monospace, Menlo, monospace;
@@ -71,7 +74,7 @@
   font-size: 19px;
   line-height: 1.1;
 }
-.B-quad span { font-size: 10.5px; color: var(--A-ink-3); letter-spacing: .04em; }
+.B-quad span { font-size: 11px; color: var(--A-ink-2); letter-spacing: .04em; }
 
 .B-scroll-x {
   display: flex;

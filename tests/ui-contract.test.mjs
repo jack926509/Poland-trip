@@ -197,3 +197,15 @@ test('方案 A token 存在且不污染桌機 tokens.css', () => {
   assert.doesNotMatch(tokens, /--A-/);
   assert.match(tokens, /--paper:\s*#f4ecd8/);  // 桌機色票未被動過
 });
+
+test('方案 A 對比度修正：ink-2／tag-book-fg 調色達 4.5:1，ink-3 改限非文字用途', () => {
+  // ink-2 調深供正文使用（原 #7C736B 在 --A-ground 上僅 4.23:1，改後 4.83:1）
+  assert.match(css, /--A-ink-2:\s*#736A61/);
+  // tag-book-fg 調深供標籤文字使用（原 #C2653A 在 --A-tag-book-bg 上僅 3.53:1，改後 5.00:1）
+  assert.match(css, /--A-tag-book-fg:\s*#9D522F/);
+  // ink-3 保留原色碼，但註解須明白禁止再拿來當文字色，只能用於分隔線／hairline／邊框
+  assert.match(css, /僅供非文字元素[\s\S]{0,400}--A-ink-3:\s*#8A8078/);
+  // .B-quad span 不得再用 ink-3 當文字色，字級由 10.5px 提到 11px 並改用 ink-2
+  assert.doesNotMatch(css, /color:\s*var\(--A-ink-3\)/);
+  assert.match(css, /\.B-quad span\s*\{\s*font-size:\s*11px;\s*color:\s*var\(--A-ink-2\);/);
+});
