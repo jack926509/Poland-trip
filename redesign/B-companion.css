@@ -203,6 +203,26 @@
 .B-hero-dot.is-active{ background:#f4ecd8; }
 @media (prefers-reduced-motion: reduce){ .B-hero-slide{ transition:none; } }
 
+/* ---- 方案 A 照片 hero（Task 10）---- */
+.B-hero-photo { position: relative; height: 230px; overflow: hidden; border-radius: 0 0 20px 20px; }
+.B-hero-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.B-hero-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(27, 25, 23, 0) 38%, rgba(27, 25, 23, .74) 100%);
+}
+/* 照片上壓字必須是接近白色的亮字才讀得清楚；--A-board（#FFFFFF）是唯一數值
+   等於純白的既有 token，借用它取代硬編碼 #fff，避免色碼脫離 token 系統。 */
+.B-hero-text { position: absolute; left: 18px; right: 18px; bottom: 16px; color: var(--A-board); }
+.B-hero-kicker { margin: 0 0 4px; font-size: 11px; letter-spacing: .12em; opacity: .9; }
+.B-hero-photo h2 { margin: 0; font-size: 31px; line-height: 1.05; letter-spacing: -.01em; }
+.B-hero-sub { margin: 3px 0 0; font-size: 12.5px; opacity: .88; }
+/* --A-ink-3 只能用於分隔線／邊框等非文字，這裡是文字色，改用 --A-ink-2。 */
+.B-kicker-a { margin: 0 0 6px; font-family: var(--A-mono); font-size: 10.5px; letter-spacing: .1em; color: var(--A-ink-2); }
+.B-nextmove-seg { margin: 0; font-size: 26px; }
+.B-nextmove-time { margin: 2px 0 0; font-size: 13px; color: var(--A-ink-2); }
+.B-nextmove-count { margin: 6px 0 0; font-size: 12.5px; color: var(--A-signal); }
+
 /* HERO — TODAY IS DAY X */
 .B-today{
   padding:.85rem 1rem 1rem;

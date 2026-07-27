@@ -208,6 +208,9 @@ function B_PrimaryNav({ placement, active, onChange, onToday, onItinerary, onTra
 }
 
 function B_Hero(props) {
+  // 方案 A：照片 hero 取代漸層佔位。輪播 index state 與
+  // prefers-reduced-motion 判斷現行行為正確、不動判斷邏輯，只換視覺層
+  // （下方 return 從多張漸層 slide 換成單張真實城市照）。
   var cities = ['華沙', '克拉科夫', '樂斯拉夫', '波茲南'];
   var slides = ['hs-waw', 'hs-krk', 'hs-wro', 'hs-poz'];
   var reduce = false;
@@ -219,22 +222,18 @@ function B_Hero(props) {
     var id = setInterval(function () { setIdx(function (i) { return (i + 1) % slides.length; }); }, 3200);
     return function () { clearInterval(id); };
   }, [reduce]);
-  return React.createElement('div', { className: 'B-hero' },
-    slides.map(function (s, i) {
-      return React.createElement('div', {
-        key: s, className: 'B-hero-slide ' + s + (i === idx ? ' is-active' : ''), 'aria-hidden': i === idx ? undefined : 'true',
-      });
-    }),
-    React.createElement('div', { className: 'B-hero-cap' },
-      React.createElement('span', { className: 'B-hero-code' }, props.code || 'POLSKA'),
-      React.createElement('span', { className: 'B-hero-city' }, cities[idx]),
-      React.createElement('span', { className: 'B-hero-date' }, props.dateRange || '')
-    ),
-    React.createElement('div', { className: 'B-hero-dots', role: 'presentation' },
-      slides.map(function (s, i) {
-        return React.createElement('span', { key: s, className: 'B-hero-dot' + (i === idx ? ' is-active' : '') });
-      })
-    )
+  var city = props.city;
+  var day = props.day;
+  return (
+    <div className="B-hero-photo">
+      <img src={city.photo.hero} alt={`${city.name} ${city.pl}`} loading="lazy" width="1200" height="800" />
+      <div className="B-hero-veil" />
+      <div className="B-hero-text">
+        <p className="B-hero-kicker B-num">DAY {day.n} · {day.date}</p>
+        <h2 className="B-num">{city.name}</h2>
+        <p className="B-hero-sub">{city.pl} · {day.tag}</p>
+      </div>
+    </div>
   );
 }
 
@@ -953,6 +952,20 @@ function B_Companion({ initialDay }) {
   const dashTotals = B_useMemo(() => core.expenseTotals(expenses), [core, expenses]);
   const dashSpentTWD = core.plnToTwd(dashTotals.totalPLN, expSettings.fxRate);
   const dashNextLabel = next ? next.label.replace(/^★\s*/, '') : '今日行程已完成';
+  // Task 10：首頁照片 hero 用當前顯示日的目的城市；轉場日 d.city 形如
+  // 「華沙 → 克拉科夫」，B_focusCity 已處理過取目的地。
+  const heroCityName = B_focusCity(d.city);
+  const heroCity = t.cities.find((c) => c.name === heroCityName) || t.cities[0];
+  // 首頁統計四宮格的預算格，與記帳分頁共用同一套 budgetStatus 計算。
+  const homeBudget = B_useMemo(
+    () => core.budgetStatus(dashTotals.totalPLN, expSettings.fxRate, expSettings.budgetTWD),
+    [core, dashTotals.totalPLN, expSettings.fxRate, expSettings.budgetTWD]
+  );
+  // 下一段長途車：跨全行程找最近一班尚未出發的車，非僅當日 d.train。
+  const nt = B_useMemo(
+    () => core.nextTrain(t.trains, Date.now(), 2026),
+    [core, t.trains, tick]
+  );
   const hardNow = core.selectHardConstraintForMoment(d.hardConstraints, phase, d.n, momentDay, mins);
   const bookNow = d.mustBook?.length ? d.mustBook.join(' / ') : '無需預先訂票';
   const compressNow = d.compressible?.[0] || '保留彈性休息';
@@ -1054,7 +1067,23 @@ function B_Companion({ initialDay }) {
         <section className="B-primary-column" aria-label="今日行程">
 
       <div data-tabsection="home">
-        <B_Hero code={t.meta.code} dateRange={t.meta.dateRange} />
+        <B_Hero city={heroCity} day={d} />
+        <div className="B-card-a B-quad">
+          <div><b>{momentDay ?? d.n}/8</b><span>今天</span></div>
+          <div><b>{d.weather ? d.weather.split('/')[0].trim() : '—'}</b><span>白天</span></div>
+          <div><b>{homeBudget.spentTWD.toLocaleString('zh-TW')}</b><span>已花 NT$</span></div>
+          <div><b>{Math.round(homeBudget.ratio * 100)}%</b><span>預算</span></div>
+        </div>
+        {nt && (
+          <div className="B-card-a B-nextmove">
+            <p className="B-kicker-a">下一段長途車</p>
+            <p className="B-nextmove-seg B-num">{nt.train.seg}</p>
+            <p className="B-nextmove-time B-num">{nt.train.date} {nt.train.dep} → {nt.train.arr}</p>
+            <p className="B-nextmove-count">{core.formatCountdown(nt.minutesUntil)} · {nt.train.type} · PLN {nt.train.price}</p>
+          </div>
+        )}
+        {/* 沒有下一班車不是警訊，不可套用 --A-signal 紅字，改用中性的 ink-2 樣式 */}
+        {!nt && <div className="B-card-a"><p className="B-nextmove-time">今天沒有長途車</p></div>}
       </div>
 
       <section className="B-today" data-bg={`0${d.n}`} id="top" data-tabsection="home">

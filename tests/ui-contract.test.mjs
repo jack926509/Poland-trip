@@ -147,7 +147,7 @@ test('.B-frame 不再自設底色／文字色／字型，避免蓋掉同節點 .
   // .B-frame 與 .B-companion 現在掛在同一個根節點，兩者都是單一 class 選擇器、
   // specificity 相同——CSS 平局時比檔案順序，寫在後面的 .B-frame 會贏，即使
   // .B-companion 的 --A-ground／--A-ink／--A-body 有正確 cascade，底色、文字色、
-  // 字型也不會真的换成新值。三者統一交給 .B-companion 負責，.B-frame 規則區塊
+  // 字型也不會真的換成新值。三者統一交給 .B-companion 負責，.B-frame 規則區塊
   // 內不可再自設同名屬性。
   const start = css.indexOf('.B-frame{');
   assert.notEqual(start, -1, '.B-frame 規則區塊不存在');
@@ -257,4 +257,14 @@ test('方案 A 對比度修正：ink-2／tag-book-fg 調色達 4.5:1，ink-3 改
   // .B-quad span 不得再用 ink-3 當文字色，字級由 10.5px 提到 11px 並改用 ink-2
   assert.doesNotMatch(css, /color:\s*var\(--A-ink-3\)/);
   assert.match(css, /\.B-quad span\s*\{\s*font-size:\s*11px;\s*color:\s*var\(--A-ink-2\);/);
+});
+
+test('首頁 hero 用真實城市照，且四宮格與倒數就位', () => {
+  assert.match(jsx, /photo\.hero/);
+  assert.match(jsx, /loading="lazy"/);
+  assert.match(jsx, /alt=\{/);
+  assert.match(jsx, /core\.nextTrain\(/);
+  assert.match(jsx, /core\.formatCountdown\(/);
+  assert.match(css, /\.B-hero-photo/);
+  assert.match(css, /linear-gradient\([^)]*rgba\(27, 25, 23/);
 });
