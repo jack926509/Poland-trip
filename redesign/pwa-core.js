@@ -124,8 +124,51 @@
     return { spentTWD: spentTWD, budgetTWD: budget, ratio: ratio, over: budget > 0 && spentTWD > budget };
   }
 
+  // 波蘭 TAX FREE：門檻為「單張收據、同一店家」滿 200 PLN 含稅。
+  // 不同收據不可合併——這是規定，不是簡化。實拿回約 10–18%（標準稅率 23%）。
+  var TAX_FREE_MIN_PLN = 200;
+  var TAX_FREE_NEAR_PLN = 150;
+  var TAX_FREE_LOW_RATE = 0.10;
+  var TAX_FREE_HIGH_RATE = 0.18;
+
+  function taxRefundStatus(amountPLN, category) {
+    var amt = Number(amountPLN);
+    if (category !== 'shop' || !isFinite(amt) || amt <= 0) {
+      return { state: 'none', shortfallPLN: 0 };
+    }
+    if (amt >= TAX_FREE_MIN_PLN) return { state: 'eligible', shortfallPLN: 0 };
+    if (amt >= TAX_FREE_NEAR_PLN) {
+      return { state: 'near', shortfallPLN: Math.round((TAX_FREE_MIN_PLN - amt) * 100) / 100 };
+    }
+    return { state: 'none', shortfallPLN: 0 };
+  }
+
+  function taxRefundEstimate(amountPLN, fxRate) {
+    var amt = Number(amountPLN);
+    var rate = Number(fxRate);
+    if (!isFinite(amt) || amt <= 0 || !isFinite(rate) || rate <= 0) {
+      return { lowTWD: 0, highTWD: 0 };
+    }
+    return {
+      lowTWD: Math.round(amt * TAX_FREE_LOW_RATE * rate),
+      highTWD: Math.round(amt * TAX_FREE_HIGH_RATE * rate),
+    };
+  }
+
+  function taxRefundSummary(expenses, fxRate) {
+    var count = 0, totalPLN = 0;
+    (expenses || []).forEach(function (e) {
+      if (!e || taxRefundStatus(e.amountPLN, e.category).state !== 'eligible') return;
+      count += 1;
+      totalPLN += Number(e.amountPLN) || 0;
+    });
+    var est = taxRefundEstimate(totalPLN, fxRate);
+    return { count: count, totalPLN: totalPLN, lowTWD: est.lowTWD, highTWD: est.highTWD };
+  }
+
   root.PolskaPwaCore = {
     projectTripMoment, selectNextHardConstraint, selectHardConstraintForMoment, readNotes, writeNotes,
     DEFAULT_SETTINGS, EXPENSE_CATEGORIES, readJSON, writeJSON, plnToTwd, expenseTotals, budgetStatus,
+    TAX_FREE_MIN_PLN, taxRefundStatus, taxRefundEstimate, taxRefundSummary,
   };
 })(typeof window === 'undefined' ? globalThis : window);
