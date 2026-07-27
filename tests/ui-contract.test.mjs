@@ -166,6 +166,10 @@ test('三個工具子頁接住 writeJSON 失敗並顯示警語', () => {
   assert.match(jsx, /setStoreOk\(core\.writeJSON\(storage, 'polska\.settings\.v1'/);
   assert.match(jsx, /setStoreOk\(core\.writeJSON\(storage, 'polska\.packing\.v1'/);
   assert.match(css, /\.B-store-warn/);
+  // 只驗 state 與 writeJSON 包裝不夠：使用者看得到的警語才是 M2 的核心，
+  // 必須確認三個子頁都真的把警語 render 出來，不能只宣告 state 卻不顯示。
+  const warnRenders = jsx.match(/\{!storeOk &&\s*<p className="B-store-warn">/g) || [];
+  assert.equal(warnRenders.length, 3, 'B_PhotoMap／B_FxTool／B_Packing 三個子頁都要 render .B-store-warn 警語');
 });
 
 test('記帳表單驗證失敗顯示可讀錯誤而非靜默 return', () => {

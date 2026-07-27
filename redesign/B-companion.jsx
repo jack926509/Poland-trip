@@ -491,13 +491,13 @@ function B_Expense({ storage }) {
           </div>
           {formError && <p className="B-form-error" role="alert">{formError}</p>}
           <div className="actions">
-            <button type="button" className="cancel" onClick={() => setFormOpen(false)}>取消</button>
+            <button type="button" className="cancel" onClick={() => { setFormOpen(false); setFormError(''); }}>取消</button>
             <button type="submit" className="submit">儲存</button>
           </div>
         </form>
       )}
 
-      <button type="button" className="B-fab" onClick={() => setFormOpen((v) => !v)}>＋新增記帳</button>
+      <button type="button" className="B-fab" onClick={() => { setFormOpen((v) => !v); setFormError(''); }}>＋新增記帳</button>
     </div>
   );
 }
