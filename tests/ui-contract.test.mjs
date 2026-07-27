@@ -126,15 +126,21 @@ test('首頁 hero 為四城市輪播且尊重減量動畫', () => {
   assert.match(css, /\.B-hero-dots/);
 });
 
-test('首頁選單有五個工具卡與可返回的子頁容器', () => {
+test('首頁選單有六個工具卡與可返回的子頁容器', () => {
   assert.match(jsx, /subpage/);
   assert.match(jsx, /setSubpage/);
   assert.match(jsx, /function B_Subpage/);
-  for (const label of ['拍照清單', '匯率換算', '打包清單', 'SOS', '實用資訊']) {
+  for (const label of ['拍照清單', '匯率換算', '打包清單', 'SOS', '實用資訊', '行前指南']) {
     assert.match(jsx, new RegExp(label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   }
   assert.match(css, /\.B-tools-menu/);
   assert.match(css, /\.B-subpage/);
+});
+
+test('方案 A token 從根節點 cascade，避免只定義沒掛載', () => {
+  // .B-companion（redesign/B-companion.css）是 --A-* token 的唯一定義處；
+  // 沒有元素掛這個 class，token 全部解析成空字串，css 裡寫 var(--A-*) 只是文字，不會生效。
+  assert.match(jsx, /<div className="B-frame paper-tex B-companion">/);
 });
 
 test('記帳子頁含總額、預算條、分類統計、新增與列表', () => {
@@ -213,10 +219,10 @@ test('底部四分頁為 首頁/行程/交通/記帳，記帳在第一層', () =
   assert.match(jsx, /data-tabsection="money"/);
 });
 
-test('五個工具改由首頁右上選單進入，記帳不在選單內', () => {
+test('六個工具改由首頁右上選單進入，記帳不在選單內', () => {
   assert.match(jsx, /toolsOpen/);
   assert.match(jsx, /aria-label="更多工具"/);
-  for (const label of ['拍照清單', '匯率換算', '打包清單', 'SOS 緊急卡', '實用資訊']) {
+  for (const label of ['拍照清單', '匯率換算', '打包清單', 'SOS 緊急卡', '實用資訊', '行前指南']) {
     assert.match(jsx, new RegExp(label));
   }
   assert.doesNotMatch(jsx, /\['expense', ?'旅行記帳'\]/);

@@ -132,9 +132,6 @@
   border:3px double var(--ink);background:var(--paper-warm);
   border-radius:14px;
 }
-.B-pretrip-guide h2{
-  margin:0 0 .55rem;font:900 1.05rem var(--serif);color:var(--accent);
-}
 .B-pretrip-guide details{border-top:1px dotted rgba(26,22,18,.3)}
 .B-pretrip-guide summary{
   padding:.62rem .1rem;cursor:pointer;
@@ -989,7 +986,7 @@
   .B-primary-column .B-today h1{font-size:1.8rem}
   .B-mobile-brief{grid-template-columns:repeat(3,minmax(0,1fr))}
   .B-mobile-brief .brief-card{grid-template-columns:1fr;gap:.25rem}
-  .B-secondary-column .B-card,.B-secondary-column .B-pretrip-guide{margin:.55rem 0}
+  .B-secondary-column .B-card{margin:.55rem 0}
 }
 
 /* Task 1: mobile bottom nav becomes real tabs (home/trip/move/money) */

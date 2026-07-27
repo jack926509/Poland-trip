@@ -250,8 +250,7 @@ function B_PreTripGuide({ trip }) {
     ['常用波蘭語', trip.phrases.map(([zh, pl]) => `${zh} · ${pl}`)],
   ];
   return (
-    <section id="B-guide" className="B-pretrip-guide" aria-labelledby="B-guide-title" data-tabsection="home">
-      <h2 id="B-guide-title">行前指南</h2>
+    <section className="B-pretrip-guide">
       {sections.map(([title, rows]) => (
         <details key={title}>
           <summary>{title}</summary>
@@ -262,13 +261,14 @@ function B_PreTripGuide({ trip }) {
   );
 }
 
-/* Task 9: 首頁右上「⋯」選單裡的五個工具，與可返回子頁容器共用 */
+/* Task 9: 首頁右上「⋯」選單裡的六個工具，與可返回子頁容器共用 */
 const B_TOOLS = [
   ['photomap', '拍照清單', 'PHOTO'],
   ['fx', '匯率換算', 'FX RATE'],
   ['packing', '打包清單', 'PACKING'],
   ['sos', 'SOS 緊急卡', 'EMERGENCY'],
   ['info', '實用資訊', 'INFO'],
+  ['guide', '行前指南', 'GUIDE'],
 ];
 
 const SUBPAGE_TITLES = {
@@ -277,6 +277,7 @@ const SUBPAGE_TITLES = {
   packing: '打包清單',
   sos: 'SOS 緊急卡',
   info: '實用資訊',
+  guide: '行前指南',
 };
 
 function B_Subpage({ title, onBack, panelRef, closeRef, children }) {
@@ -296,7 +297,7 @@ function B_Subpage({ title, onBack, panelRef, closeRef, children }) {
 /* Task 9: 首頁右上「⋯」開啟的工具選單（取代原「更多」分頁的工具方格） */
 function B_ToolGrid({ onOpen, onClose, panelRef, closeRef }) {
   return (
-    <div className="B-tools-menu B-companion" role="dialog" aria-modal="true" aria-label="更多工具" ref={panelRef}>
+    <div className="B-tools-menu" role="dialog" aria-modal="true" aria-label="更多工具" ref={panelRef}>
       <div className="B-tools-menu-panel">
         <div className="B-tools-menu-head">
           <h3>更多工具</h3>
@@ -948,12 +949,8 @@ function B_Companion({ initialDay }) {
   const next = d.steps[idx + 1];
   const active = d.n;
   const setActive = (n) => { setOverride(n); setOpenStep(null); setDrawerOpen(false); };
-  // 首頁三格儀表與更多頁預算預覽共用的記帳累計（Task 8）。
+  // 首頁三格儀表共用的記帳累計（Task 8）。
   const dashTotals = B_useMemo(() => core.expenseTotals(expenses), [core, expenses]);
-  const dashBudget = B_useMemo(
-    () => core.budgetStatus(dashTotals.totalPLN, expSettings.fxRate, expSettings.budgetTWD),
-    [core, dashTotals.totalPLN, expSettings.fxRate, expSettings.budgetTWD]
-  );
   const dashSpentTWD = core.plnToTwd(dashTotals.totalPLN, expSettings.fxRate);
   const dashNextLabel = next ? next.label.replace(/^★\s*/, '') : '今日行程已完成';
   const hardNow = core.selectHardConstraintForMoment(d.hardConstraints, phase, d.n, momentDay, mins);
@@ -1009,7 +1006,7 @@ function B_Companion({ initialDay }) {
   };
 
   return (
-    <div className="B-frame paper-tex">
+    <div className="B-frame paper-tex B-companion">
       <div className="B-status-bar">
         <span>{liveClock}</span>
         <span style={{display:'flex', gap:6, alignItems:'center'}}>
@@ -1543,7 +1540,6 @@ function B_Companion({ initialDay }) {
         <B_Expense storage={storage} />
       </section>
 
-      <B_PreTripGuide trip={t} />
         </aside>
       </main>
 
@@ -1594,7 +1590,14 @@ function B_Companion({ initialDay }) {
                 </li>
               ))}
               <li>
-                <a href="#B-guide" onClick={() => setDrawerOpen(false)}>
+                <a
+                  href="#B-guide"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    subpageReturnFocusRef.current = drawerReturnFocusRef.current;
+                    setDrawerOpen(false);
+                    setSubpage('guide');
+                  }}>
                   <span>行前指南</span>
                   <small>航班 · 住宿 · 安全</small>
                 </a>
@@ -1609,8 +1612,12 @@ function B_Companion({ initialDay }) {
           panelRef={toolsMenuRef}
           closeRef={toolsMenuCloseRef}
           onClose={() => setToolsOpen(false)}
-          onOpen={(key, ev) => {
-            subpageReturnFocusRef.current = (ev && ev.currentTarget) || toolsBtnRef.current;
+          onOpen={(key) => {
+            // 不可用 ev.currentTarget：那是選單裡的工具按鈕，選單一關（toolsOpen
+            // 變 false）整塊 .B-tools-menu 就會 unmount，子頁關閉時再對它 focus()
+            // 會是操作一個已經不在 DOM 上的節點、悄悄失敗，焦點會掉到 <body>。
+            // 唯一在子頁關閉當下還存在的，是開選單的那顆「⋯」鈕本身。
+            subpageReturnFocusRef.current = toolsBtnRef.current;
             setToolsOpen(false);
             setSubpage(key);
           }}
@@ -1624,6 +1631,7 @@ function B_Companion({ initialDay }) {
           {subpage === 'sos' && <B_Sos trip={t} />}
           {subpage === 'info' && <B_Info trip={t} />}
           {subpage === 'photomap' && <B_PhotoMap trip={t} storage={storage} />}
+          {subpage === 'guide' && <B_PreTripGuide trip={t} />}
         </B_Subpage>
       )}
     </div>
