@@ -28,6 +28,43 @@ test('每張照片都有可顯示的授權出處', () => {
   }
 });
 
+// 釘死授權資料的來源：assets/photos/CREDITS.md（唯一權威來源）。
+// hero 與 thumb 是同一張原圖裁切縮放而成，所以同城市兩筆的 author／license／url
+// 必須逐字相同——換圖卻忘了同步授權，這條要能立刻炸掉。
+test('photoCredits 逐檔對應實際素材，且同城市 hero／thumb 授權三欄完全相同', () => {
+  const expectedFiles = [
+    'warszawa-hero.webp', 'warszawa-thumb.webp',
+    'krakow-hero.webp', 'krakow-thumb.webp',
+    'wroclaw-hero.webp', 'wroclaw-thumb.webp',
+    'poznan-hero.webp', 'poznan-thumb.webp',
+  ];
+  assert.deepEqual(JSON.parse(JSON.stringify(TRIP.photoCredits.map((c) => c.file))), expectedFiles);
+
+  const byCity = {};
+  for (const c of TRIP.photoCredits) {
+    const city = c.file.split('-')[0];
+    if (!byCity[city]) { byCity[city] = c; continue; }
+    assert.equal(c.author, byCity[city].author, `${city} hero／thumb 作者不一致`);
+    assert.equal(c.license, byCity[city].license, `${city} hero／thumb 授權不一致`);
+    assert.equal(c.url, byCity[city].url, `${city} hero／thumb 來源網址不一致`);
+  }
+
+  // 對照 CREDITS.md 的確切值，防止未來任何一筆被悄悄改錯。
+  const known = {
+    warszawa: { author: 'Rhododendrites', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Market_Square_Warsaw_(22594p).jpg' },
+    krakow: { author: 'Andrzej Otrębski', license: 'CC BY-SA 4.0', url: 'https://commons.wikimedia.org/wiki/File:Krakow_Rynek_Glowny_panorama_2.jpg' },
+    wroclaw: { author: 'Gerd Eichmann', license: 'CC BY 4.0', url: 'https://commons.wikimedia.org/wiki/File:Breslau-Rynek-38-Panorama-2014-gje.jpg' },
+    poznan: { author: 'Mateusz.woźniak', license: 'CC BY-SA 3.0', url: 'https://commons.wikimedia.org/wiki/File:Poznan_stary_rynek_panorama.jpg' },
+  };
+  for (const [city, expected] of Object.entries(known)) {
+    assert.deepEqual(
+      { author: byCity[city].author, license: byCity[city].license, url: byCity[city].url },
+      expected,
+      `${city} 授權資料須逐字對照 CREDITS.md`,
+    );
+  }
+});
+
 test('拍照清單是景點層級且每個景點都有光線建議', () => {
   assert.ok(TRIP.photoSpots.length >= 8);
   const cityKeys = new Set(TRIP.cities.map((c) => c.key));
