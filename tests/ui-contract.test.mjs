@@ -186,3 +186,14 @@ test('記帳表單驗證失敗顯示可讀錯誤而非靜默 return', () => {
   assert.match(jsx, /role="alert"/);
   assert.match(css, /\.B-form-error/);
 });
+
+test('方案 A token 存在且不污染桌機 tokens.css', () => {
+  assert.match(css, /--A-ground:\s*#F7F4EF/);
+  assert.match(css, /--A-ink:\s*#1B1917/);
+  assert.match(css, /--A-signal:\s*#B5502E/);
+  assert.match(css, /--A-espresso:\s*#33261E/);
+  assert.match(css, /font-variant-numeric:\s*lining-nums tabular-nums/);
+  const tokens = fs.readFileSync('redesign/tokens.css', 'utf8');
+  assert.doesNotMatch(tokens, /--A-/);
+  assert.match(tokens, /--paper:\s*#f4ecd8/);  // 桌機色票未被動過
+});

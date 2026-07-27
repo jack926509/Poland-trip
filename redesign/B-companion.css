@@ -1,6 +1,86 @@
 /* Direction B — iPhone reading companion
    "Today is Day X · here's what to do now" — mobile-first, paper-feel preserved */
 
+/* ==== 方案 A：暖白紙卡・照片主導（僅手機殼作用域，桌機請用 tokens.css）==== */
+.B-companion {
+  --A-ground: #F7F4EF;
+  --A-board: #FFFFFF;
+  --A-ink: #1B1917;
+  --A-ink-2: #7C736B;
+  --A-ink-3: #8A8078;
+  --A-line: #F1EDE6;
+  --A-espresso: #33261E;
+  --A-brass: #C9A46F;
+  --A-signal: #B5502E;
+  --A-done: #2F6B4F;
+  --A-tag-move-bg: #E8EFF8;
+  --A-tag-move-fg: #3F6491;
+  --A-tag-book-bg: #FDEDE3;
+  --A-tag-book-fg: #C2653A;
+  --A-display: "Hoefler Text", "Iowan Old Style", Palatino, serif;
+  --A-body: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", sans-serif;
+  --A-mono: "SF Mono", ui-monospace, Menlo, monospace;
+  --A-radius: 18px;
+  --A-shadow: 0 1px 2px rgba(27, 25, 23, .05), 0 10px 22px -14px rgba(27, 25, 23, .28);
+  background: var(--A-ground);
+  color: var(--A-ink);
+  font-family: var(--A-body);
+}
+
+.B-card-a {
+  background: var(--A-board);
+  border-radius: var(--A-radius);
+  box-shadow: var(--A-shadow);
+  padding: 16px;
+}
+
+/* Hoefler Text 預設是舊式數字，會把 Day 1 排成 Day I。全站數字強制 lining。 */
+.B-num {
+  font-family: var(--A-display);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.B-pill-a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 10px 16px;
+  border: 1px solid var(--A-line);
+  border-radius: 999px;
+  background: var(--A-board);
+  color: var(--A-ink-2);
+  font-size: 13px;
+}
+.B-pill-a.is-active {
+  background: var(--A-ink);
+  border-color: var(--A-ink);
+  color: #fff;
+  font-weight: 600;
+}
+
+.B-quad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.B-quad > div { text-align: center; padding: 4px 2px; }
+.B-quad b {
+  display: block;
+  font-family: var(--A-display);
+  font-variant-numeric: lining-nums tabular-nums;
+  font-size: 19px;
+  line-height: 1.1;
+}
+.B-quad span { font-size: 10.5px; color: var(--A-ink-3); letter-spacing: .04em; }
+
+.B-scroll-x {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
 .B-frame{
   background:var(--paper);
   color:var(--ink);
