@@ -143,19 +143,22 @@ test('方案 A token 從根節點 cascade，避免只定義沒掛載', () => {
   assert.match(jsx, /<div className="B-frame paper-tex B-companion">/);
 });
 
-test('.B-frame 不再自設底色／文字色，避免蓋掉同節點 .B-companion 的 A token', () => {
+test('.B-frame 不再自設底色／文字色／字型，避免蓋掉同節點 .B-companion 的 A token', () => {
   // .B-frame 與 .B-companion 現在掛在同一個根節點，兩者都是單一 class 選擇器、
   // specificity 相同——CSS 平局時比檔案順序，寫在後面的 .B-frame 會贏，即使
-  // .B-companion 的 --A-ground／--A-ink 有正確 cascade，底色也不會真的换成新色。
-  // 底色／文字色改由 .B-companion 統一負責，.B-frame 規則區塊內不可再自設。
+  // .B-companion 的 --A-ground／--A-ink／--A-body 有正確 cascade，底色、文字色、
+  // 字型也不會真的换成新值。三者統一交給 .B-companion 負責，.B-frame 規則區塊
+  // 內不可再自設同名屬性。
   const start = css.indexOf('.B-frame{');
   assert.notEqual(start, -1, '.B-frame 規則區塊不存在');
   const end = css.indexOf('}', start);
   const block = css.slice(start, end);
   assert.doesNotMatch(block, /background:\s*var\(--paper\)/);
   assert.doesNotMatch(block, /color:\s*var\(--ink\)/);
+  assert.doesNotMatch(block, /font-family:\s*var\(--body\)/);
   assert.match(css, /\.B-companion\s*\{[\s\S]*?background:\s*var\(--A-ground\)/);
   assert.match(css, /\.B-companion\s*\{[\s\S]*?color:\s*var\(--A-ink\);/);
+  assert.match(css, /\.B-companion\s*\{[\s\S]*?font-family:\s*var\(--A-body\)/);
 });
 
 test('記帳子頁含總額、預算條、分類統計、新增與列表', () => {
