@@ -85,8 +85,10 @@
 }
 
 .B-frame{
-  background:var(--paper);
-  color:var(--ink);
+  /* 底色／文字色刻意不在這裡設：根節點同時掛 .B-companion，兩個規則
+     都是單一 class 選擇器、specificity 相同，寫在後面的這條會贏，
+     蓋掉 .B-companion 的 --A-ground／--A-ink，讓 A token 白掛。
+     底色改由 .B-companion（redesign/B-companion.css:5）統一負責。 */
   font-family:var(--body);
   font-size:.92rem;
   line-height:1.55;
