@@ -78,7 +78,10 @@
       var raw = storage && storage.getItem ? storage.getItem(key) : null;
       if (raw == null) return clone;
       var parsed = JSON.parse(raw);
-      return parsed == null ? clone : parsed;
+      if (parsed == null) return clone;
+      if (Array.isArray(fallback) !== Array.isArray(parsed)) return clone;
+      if (typeof parsed !== typeof fallback) return clone;
+      return parsed;
     } catch (e) {
       return clone;
     }
