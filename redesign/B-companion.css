@@ -13,6 +13,7 @@
   --A-ink-3: #8A8078;
   --A-line: #F1EDE6;
   --A-espresso: #33261E;
+  --A-espresso-track: #5E524A;
   --A-brass: #C9A46F;
   --A-signal: #B5502E;
   --A-done: #2F6B4F;
@@ -1061,18 +1062,50 @@
 /* Task 5: 記帳子頁 */
 .B-expense{ display:flex; flex-direction:column; gap:var(--gap-md); padding-bottom:88px; }
 .B-expense-storage-warn{ font-family:var(--mono); font-size:.68rem; color:var(--crimson); background:rgba(168,35,29,.08); border:1px solid rgba(168,35,29,.25); border-radius:10px; padding:var(--pad-sm); }
-.B-expense-total{ background:var(--ink); color:var(--paper); border-radius:16px; padding:var(--pad-lg); display:flex; flex-direction:column; gap:4px; }
-.B-expense-total .total-pln{ font-family:var(--mono); font-size:2.1rem; font-variant-numeric:tabular-nums; }
-.B-expense-total .total-twd{ font-family:var(--mono); font-size:1rem; color:var(--amber); font-variant-numeric:tabular-nums; }
-.B-expense-total .total-rate{ font-family:var(--mono); font-size:.7rem; opacity:.7; letter-spacing:.08em; }
-.B-budget-bar{ margin:var(--gap-md) 0; height:10px; border-radius:999px; background:rgba(26,22,18,.10); overflow:hidden; }
-.B-budget-bar .fill{ height:100%; background:var(--amber); transition:width .4s var(--ease-out); }
-.B-budget-bar .fill.is-over{ background:var(--crimson); }
-.B-budget-label{ font-family:var(--mono); font-size:.72rem; color:var(--ink-mute); font-variant-numeric:tabular-nums; }
-.B-cat-grid{ display:grid; grid-template-columns:1fr 1fr; gap:var(--gap-sm); }
-.B-cat-tile{ background:#fbf6ea; border:1px solid rgba(26,22,18,.10); border-radius:12px; padding:var(--pad-sm); }
-.B-cat-tile .label{ display:block; font-family:var(--serif); font-size:.82rem; color:var(--ink-mute); margin-bottom:2px; }
-.B-cat-tile .amt{ font-family:var(--mono); font-variant-numeric:tabular-nums; color:var(--crimson); font-size:1rem; }
+/* ---- 方案 A 記帳：深咖啡主卡 ---- */
+.B-expense-hero {
+  background: var(--A-espresso);
+  color: var(--A-ground);
+  border-radius: var(--A-radius);
+  padding: 18px;
+  margin-bottom: 12px;
+}
+.B-expense-hero-kicker { margin: 0; font-family: var(--A-mono); font-size: 10.5px; letter-spacing: .1em; opacity: .72; }
+.B-expense-hero-amt {
+  margin: 4px 0 0;
+  font-family: var(--A-display);
+  font-variant-numeric: lining-nums tabular-nums;
+  font-size: 34px;
+  line-height: 1;
+  color: var(--A-brass);
+}
+.B-expense-hero-amt small { font-size: 14px; letter-spacing: .06em; }
+.B-expense-hero-twd { margin: 4px 0 0; font-size: 13px; opacity: .85; }
+.B-expense-bar { height: 4px; border-radius: 999px; background: var(--A-espresso-track); margin: 12px 0 6px; overflow: hidden; }
+.B-expense-bar i { display: block; height: 100%; border-radius: 999px; background: var(--A-brass); }
+.B-expense-bar i.is-over { background: var(--A-signal); }
+.B-expense-hero-budget { margin: 0; font-size: 11.5px; opacity: .78; }
+
+.B-expense-hint {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--A-tag-book-bg);
+  color: var(--A-tag-book-fg);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+.B-tag-refund {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--A-tag-book-bg);
+  color: var(--A-tag-book-fg);
+  font-size: 10.5px;
+  font-style: normal;
+}
+
 .B-day-filter{ display:flex; gap:6px; overflow-x:auto; padding:var(--gap-sm) 0; -webkit-overflow-scrolling:touch; }
 .B-day-filter .pill{
   flex:none; white-space:nowrap; font-family:var(--mono); font-size:.68rem; letter-spacing:.06em;

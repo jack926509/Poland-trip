@@ -191,9 +191,23 @@ test('記帳子頁含總額、預算條、分類統計、新增與列表', () =>
   assert.match(jsx, /新增記帳/);
   assert.match(jsx, /core\.expenseTotals|expenseTotals\(/);
   assert.match(jsx, /core\.budgetStatus|budgetStatus\(/);
-  assert.match(css, /\.B-expense-total/);
-  assert.match(css, /\.B-budget-bar/);
+  assert.match(css, /\.B-expense-hero/);
+  assert.match(css, /\.B-expense-bar/);
   assert.match(css, /\.B-fab/);
+});
+
+test('記帳頁接上退稅提示與可退稅篩選', () => {
+  assert.match(jsx, /core\.taxRefundStatus\(/);
+  assert.match(jsx, /core\.taxRefundSummary\(/);
+  assert.match(jsx, /同一張收據/);
+  assert.match(jsx, /可退稅/);
+  assert.match(css, /\.B-expense-hero/);
+  assert.match(css, /--A-espresso/);
+});
+
+test('記帳金額格式統一兩位小數且台幣加千分位', () => {
+  assert.match(jsx, /toFixed\(2\)/);
+  assert.match(jsx, /toLocaleString\('zh-TW'\)/);
 });
 
 test('匯率換算與打包清單子頁存在且持久化', () => {

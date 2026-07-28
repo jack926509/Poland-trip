@@ -319,9 +319,11 @@ function B_Expense({ storage }) {
   const [expenses, setExpenses] = B_useState(() => core.readJSON(storage, 'polska.expenses.v1', []));
   const [settings] = B_useState(() => core.readJSON(storage, 'polska.settings.v1', core.DEFAULT_SETTINGS));
   const [filterDay, setFilterDay] = B_useState('all');
+  const [onlyRefund, setOnlyRefund] = B_useState(false);
   const [formOpen, setFormOpen] = B_useState(false);
   const [persistOk, setPersistOk] = B_useState(true);
   const [formError, setFormError] = B_useState('');
+  const [hint, setHint] = B_useState('');
   const [form, setForm] = B_useState(() => ({
     item: '', amountPLN: '', category: core.EXPENSE_CATEGORIES[0].key,
     day: days[0] ? days[0].n : 1, method: '現金',
@@ -332,8 +334,14 @@ function B_Expense({ storage }) {
     () => core.budgetStatus(totals.totalPLN, settings.fxRate, settings.budgetTWD),
     [core, totals.totalPLN, settings.fxRate, settings.budgetTWD]
   );
-  const totalTWD = core.plnToTwd(totals.totalPLN, settings.fxRate);
-  const filtered = filterDay === 'all' ? expenses : expenses.filter((e) => e.day === filterDay);
+  const refund = B_useMemo(
+    () => core.taxRefundSummary(expenses, settings.fxRate),
+    [core, expenses, settings.fxRate]
+  );
+  const dayFiltered = filterDay === 'all' ? expenses : expenses.filter((e) => e.day === filterDay);
+  const visible = onlyRefund
+    ? expenses.filter((e) => core.taxRefundStatus(e.amountPLN, e.category).state === 'eligible')
+    : dayFiltered;
   const catLabel = (key) => (core.EXPENSE_CATEGORIES.find((c) => c.key === key) || {}).label || key;
 
   const persist = (next) => {
@@ -357,6 +365,15 @@ function B_Expense({ storage }) {
       ts: Date.now(),
     };
     persist([entry, ...expenses]);
+    const rs = core.taxRefundStatus(entry.amountPLN, entry.category);
+    if (rs.state === 'eligible') {
+      const est = core.taxRefundEstimate(entry.amountPLN, settings.fxRate);
+      setHint(`這筆可辦退稅 · 預估可退 NT$${est.lowTWD.toLocaleString('zh-TW')}–${est.highTWD.toLocaleString('zh-TW')}（同一張收據才算）`);
+    } else if (rs.state === 'near') {
+      setHint(`距離退稅門檻還差 ${rs.shortfallPLN} PLN（同一張收據才算，不同店家不能合併）`);
+    } else {
+      setHint('');
+    }
     setForm({ item: '', amountPLN: '', category: form.category, day: Number(form.day), method: form.method });
     setFormOpen(false);
   };
@@ -367,27 +384,31 @@ function B_Expense({ storage }) {
     <div className="B-expense">
       {!persistOk && <p className="B-expense-storage-warn">目前無法儲存，本次紀錄僅暫存</p>}
 
-      <div className="B-expense-total">
-        <span className="total-pln">{totals.totalPLN.toFixed(2)} PLN</span>
-        <span className="total-twd">≈ NT${totalTWD}</span>
-        <span className="total-rate">1 PLN ≈ NT${settings.fxRate}</span>
-        <div className="B-budget-bar">
-          <div
-            className={`fill${budget.over ? ' is-over' : ''}`}
-            style={{ width: `${Math.min(budget.ratio, 1) * 100}%` }}
+      <div className="B-expense-hero">
+        <p className="B-expense-hero-kicker">總花費</p>
+        <p className="B-expense-hero-amt B-num">{totals.totalPLN.toFixed(2)} <small>PLN</small></p>
+        <p className="B-expense-hero-twd B-num">≈ NT${budget.spentTWD.toLocaleString('zh-TW')}</p>
+        <div className="B-expense-bar">
+          <i
+            className={budget.over ? 'is-over' : ''}
+            style={{ width: Math.min(100, budget.ratio * 100) + '%' }}
           />
         </div>
-        <span className="B-budget-label">已花 NT${budget.spentTWD} / 預算 NT${budget.budgetTWD}</span>
+        <p className="B-expense-hero-budget B-num">
+          已花 NT${budget.spentTWD.toLocaleString('zh-TW')} / 預算 NT${budget.budgetTWD.toLocaleString('zh-TW')}
+        </p>
       </div>
 
-      <div className="B-cat-grid">
+      <div className="B-card-a B-quad">
         {core.EXPENSE_CATEGORIES.map((c) => (
-          <div className="B-cat-tile" key={c.key}>
-            <span className="label">{c.label}</span>
-            <span className="amt">NT${core.plnToTwd(totals.byCategory[c.key], settings.fxRate)}</span>
+          <div key={c.key}>
+            <b>{core.plnToTwd(totals.byCategory[c.key], settings.fxRate).toLocaleString('zh-TW')}</b>
+            <span>{c.label}</span>
           </div>
         ))}
       </div>
+
+      {hint && <p className="B-expense-hint" role="status">{hint}</p>}
 
       <div className="B-day-filter" role="group" aria-label="依日期篩選記帳列表">
         <button type="button" className={`pill${filterDay === 'all' ? ' active' : ''}`} onClick={() => setFilterDay('all')}>全部</button>
@@ -401,12 +422,25 @@ function B_Expense({ storage }) {
         ))}
       </div>
 
+      {refund.count > 0 && (
+        <button
+          type="button"
+          className={'B-pill-a' + (onlyRefund ? ' is-active' : '')}
+          aria-pressed={onlyRefund}
+          onClick={() => setOnlyRefund(!onlyRefund)}>
+          可退稅 {refund.count} 筆 · 預估 NT${refund.lowTWD.toLocaleString('zh-TW')}–{refund.highTWD.toLocaleString('zh-TW')}
+        </button>
+      )}
+
       <div className="B-expense-list">
-        {filtered.length === 0 && <p className="B-expense-empty">尚無記帳紀錄</p>}
-        {filtered.map((e) => (
+        {visible.length === 0 && <p className="B-expense-empty">尚無記帳紀錄</p>}
+        {visible.map((e) => (
           <div className="B-expense-row" key={e.id}>
             <div className="item">
-              <span className="name">{e.item}</span>
+              <span className="name">
+                {e.item}
+                {core.taxRefundStatus(e.amountPLN, e.category).state === 'eligible' && <em className="B-tag-refund">可退稅</em>}
+              </span>
               <span className="meta">
                 <span className="cat">{catLabel(e.category)}</span>
                 {' · '}
@@ -416,8 +450,8 @@ function B_Expense({ storage }) {
               </span>
             </div>
             <div className="amounts">
-              <span className="amt">{e.amountPLN} PLN</span>
-              <span className="twd">≈NT${core.plnToTwd(e.amountPLN, settings.fxRate)}</span>
+              <span className="amt">{Number(e.amountPLN).toFixed(2)} PLN</span>
+              <span className="twd">≈NT${core.plnToTwd(e.amountPLN, settings.fxRate).toLocaleString('zh-TW')}</span>
             </div>
             <button type="button" className="del" aria-label={`刪除記帳：${e.item}`} onClick={() => removeExpense(e.id)}>✕</button>
           </div>
@@ -470,7 +504,7 @@ function B_Expense({ storage }) {
         </form>
       )}
 
-      <button type="button" className="B-fab" onClick={() => { setFormOpen((v) => !v); setFormError(''); }}>＋新增記帳</button>
+      <button type="button" className="B-fab" onClick={() => { setFormOpen((v) => !v); setFormError(''); setHint(''); }}>＋新增記帳</button>
     </div>
   );
 }
