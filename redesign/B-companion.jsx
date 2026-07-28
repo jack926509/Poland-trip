@@ -1080,8 +1080,15 @@ function B_Companion({ initialDay }) {
             <p className="B-nextmove-count">{core.formatCountdown(nt.minutesUntil)} · {nt.train.type} · PLN {nt.train.price}</p>
           </div>
         )}
-        {/* 沒有下一班車不是警訊，不可套用 --A-signal 紅字，改用中性的 ink-2 樣式 */}
-        {!nt && <div className="B-card-a"><p className="B-nextmove-time">今天沒有長途車</p></div>}
+        {/* nt 為 null 代表整趟行程往後已無長途車（core.nextTrain 找不到任何尚未出發的班次），
+            不是「今天沒有車」——今天的車可能才剛開走，這句話不能對使用者說謊。
+            沒有下一班車也不是警訊，不可套用 --A-signal 紅字，改用中性的 ink-2 樣式。 */}
+        {!nt && (
+          <div className="B-card-a">
+            <p className="B-kicker-a">下一段長途車</p>
+            <p className="B-nextmove-time">行程中已無下一段長途車</p>
+          </div>
+        )}
       </div>
 
       <section className="B-today" data-bg={`0${d.n}`} id="top" data-tabsection="home">

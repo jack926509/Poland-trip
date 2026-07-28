@@ -272,3 +272,30 @@ test('首頁 hero 用真實城市照，且四宮格與倒數就位', () => {
   assert.match(css, /\.B-hero-photo/);
   assert.match(css, /linear-gradient\([^)]*rgba\(27, 25, 23/);
 });
+
+test('首頁統計四宮格與下一段交通卡真的 render，不是只算了值沒吐出來', () => {
+  // 審查 F3：上一版測試只驗證 core.nextTrain(／core.formatCountdown( 等字串
+  // 存在於檔案（B_Hero 或 nt 的 useMemo 本身就會命中），從沒斷言過 .B-quad
+  // 或 .B-nextmove 真的被 render 出來——突變測試把整個四宮格 JSX 刪掉，
+  // 124 個測試仍全線。這裡改成直接釘住四宮格與交通卡的實際 render 結構。
+
+  // 四宮格：class 與四格內容（今天／白天／已花 NT$／預算）都要真的出現在 JSX 裡。
+  assert.match(jsx, /className="B-card-a B-quad"/);
+  assert.match(jsx, /\{momentDay \?\? d\.n\}\/8<\/b><span>今天<\/span>/);
+  assert.match(jsx, /<span>白天<\/span>/);
+  assert.match(jsx, /homeBudget\.spentTWD\.toLocaleString\('zh-TW'\)/);
+  assert.match(jsx, /<span>已花 NT\$<\/span>/);
+  assert.match(jsx, /Math\.round\(homeBudget\.ratio \* 100\)\}%<\/b><span>預算<\/span>/);
+  assert.match(css, /\.B-quad\s*\{/);
+
+  // 下一段交通卡：有車／沒車兩種分支都要真的 render，且沒車文案不能誤稱「今天」
+  // （F1：nt 為 null 代表整趟行程已無下一段車，不是當天沒車，當天車可能剛開走）。
+  assert.match(jsx, /\{nt && \(/);
+  assert.match(jsx, /className="B-card-a B-nextmove"/);
+  assert.match(jsx, /\{nt\.train\.seg\}/);
+  assert.match(jsx, /core\.formatCountdown\(nt\.minutesUntil\)/);
+  assert.match(jsx, /\{!nt && \(/);
+  assert.match(jsx, /行程中已無下一段長途車/);
+  assert.doesNotMatch(jsx, /今天沒有長途車/);
+  assert.match(css, /\.B-nextmove-seg/);
+});
