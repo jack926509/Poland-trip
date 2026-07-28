@@ -208,20 +208,15 @@ function B_PrimaryNav({ placement, active, onChange, onToday, onItinerary, onTra
 }
 
 function B_Hero(props) {
-  // 方案 A：照片 hero 取代漸層佔位。輪播 index state 與
-  // prefers-reduced-motion 判斷現行行為正確、不動判斷邏輯，只換視覺層
-  // （下方 return 從多張漸層 slide 換成單張真實城市照）。
-  var cities = ['華沙', '克拉科夫', '樂斯拉夫', '波茲南'];
-  var slides = ['hs-waw', 'hs-krk', 'hs-wro', 'hs-poz'];
-  var reduce = false;
-  try { reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
-  var idxState = React.useState(0);
-  var idx = idxState[0], setIdx = idxState[1];
-  React.useEffect(function () {
-    if (reduce) return undefined;
-    var id = setInterval(function () { setIdx(function (i) { return (i + 1) % slides.length; }); }, 3200);
-    return function () { clearInterval(id); };
-  }, [reduce]);
+  // 方案 A：照片 hero，依當天所在城市顯示對應照片與資訊（規格 2026-07-26
+  // 裁定：維持現況，取消原規格 specs:73 的四城輪播——輪播每 3.2 秒換城市，
+  // 牴觸規格自述的痛點「辨識不出今天在哪座城」）。
+  // 舊版四城輪播的 index state／setInterval／prefers-reduced-motion 判斷
+  // 已隨輪播視覺一併移除；本頁唯一的自動播放動畫是 .B-now .now-label::after
+  // 的 B-pulse（見 B-companion.css），已由 redesign/tokens.css:78-86 的全域
+  // `@media (prefers-reduced-motion: reduce)` 規則（mobile.html 有載入
+  // tokens.css，且該規則用 `*` + `!important` 蓋到全站）一併守住，這裡不用
+  // 也不該再自己接一份。
   var city = props.city;
   var day = props.day;
   return (

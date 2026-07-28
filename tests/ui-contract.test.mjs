@@ -118,12 +118,36 @@ test('卡片套用米紙底與金色點綴語彙', () => {
   assert.match(css, /var\(--amber\)/); // 金色作為點綴出現
 });
 
-test('首頁 hero 為四城市輪播且尊重減量動畫', () => {
+test('首頁 hero 依當天所在城市顯示對應照片，四城輪播已依規格裁定移除', () => {
+  // 2026-07-26 規格衝突裁決：specs:73 原寫「四城輪播」，但輪播每 3.2 秒
+  // 換城市牴觸規格自述的痛點「辨識不出今天在哪座城」，使用者裁定維持
+  // 「依當天所在城市顯示對應照片」的現況，specs:73 的輪播描述作廢。
+  // 這條測試把裁決後的行為釘死，取代舊版「四城輪播」測試。
   assert.match(jsx, /function B_Hero/);
-  assert.match(jsx, /華沙[\s\S]*克拉科夫[\s\S]*樂斯拉夫[\s\S]*波茲南/);
-  assert.match(jsx, /prefers-reduced-motion/);
-  assert.match(css, /\.B-hero-slide/);
-  assert.match(css, /\.B-hero-dots/);
+
+  // hero 的城市由 B_focusCity(d.city) 在 t.cities 裡找出來（轉場日取目的地），
+  // 不是寫死或輪播 index 挑出來的。
+  assert.match(jsx, /const heroCityName = B_focusCity\(d\.city\);/);
+  assert.match(jsx, /const heroCity = t\.cities\.find\(\(c\) => c\.name === heroCityName\) \|\| t\.cities\[0\];/);
+  assert.match(jsx, /<B_Hero city=\{heroCity\} day=\{d\}\s*\/>/);
+  assert.match(jsx, /<img src=\{city\.photo\.hero\}/);
+  assert.match(jsx, /<h2 className="B-num">\{city\.name\}<\/h2>/);
+  assert.match(jsx, /<p className="B-hero-sub">\{city\.pl\}/);
+
+  // 舊版四城漸層輪播（Task 3）與其 setInterval／index state／
+  // prefers-reduced-motion 判斷已整段移除，CSS 孤兒規則也一併清掉，
+  // 不可死灰復燃。手機端唯一的自動播放動畫（.B-now 的 B-pulse）改由
+  // redesign/tokens.css 的全域 reduced-motion 規則守住（見該檔測試）。
+  assert.doesNotMatch(jsx, /hs-waw|hs-krk|hs-wro|hs-poz/);
+  // 精準鎖定「已移除的那個 matchMedia 呼叫」，不是禁止提到這個詞——
+  // 程式碼裡的說明註解可以講為什麼移除，PWA standalone 偵測也合法用
+  // window.matchMedia，這裡只釘死 reduced-motion 那個呼叫式不能死灰復燃。
+  assert.doesNotMatch(jsx, /matchMedia\([^)]*prefers-reduced-motion/);
+  // 找「真的有這條規則」（class 名後面接 `{`），不是禁止在說明註解裡提到
+  // 這幾個舊 class 名——移除說明本身就需要點名被刪的 class。
+  assert.doesNotMatch(css, /\.B-hero-slide\s*\{/);
+  assert.doesNotMatch(css, /\.B-hero-dots\s*\{/);
+  assert.doesNotMatch(css, /\.B-hero-cap\s*\{/);
 });
 
 test('首頁選單有六個工具卡與可返回的子頁容器', () => {
