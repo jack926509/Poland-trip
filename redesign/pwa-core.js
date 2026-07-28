@@ -218,11 +218,18 @@
   // 出發」，對一班已經開走的車顯示「即將出發」是說謊。這裡把「算一次出發時間、
   // 判斷是否已出發、產生對應文案」收在同一個函式裡：呼叫端只需要呼叫一次，
   // 不會像迴圈裡各自重算 trainDepartureMs 兩次那樣意外算錯或看漏已出發狀態。
+  // Task 12 修正輪（I3）：原本用「四捨五入後的分鐘數 <= 0」判斷是否已出發，
+  // 導致發車前 29 秒（29000ms／60000 四捨五入為 0）就被判定已出發，早了
+  // 29 秒，且與首頁 nextTrain+formatCountdown 同一瞬間顯示「即將出發」互相
+  // 矛盾。改成直接比較毫秒時間戳（與 nextTrain 判斷「已出發要跳過」用的
+  // ms < nowMs 同一套語意一致），不再讓四捨五入影響「是否已出發」這個布林值；
+  // 分鐘數只用來組文案，不參與判斷。
   function trainCountdownState(train, nowMs, year) {
     var depMs = trainDepartureMs(train, year);
     if (!isFinite(depMs)) return { departed: null, minutesUntil: null, text: '時間未定' };
+    var departed = depMs <= nowMs;
     var minutesUntil = Math.round((depMs - nowMs) / 60000);
-    if (minutesUntil <= 0) return { departed: true, minutesUntil: minutesUntil, text: '已出發' };
+    if (departed) return { departed: true, minutesUntil: minutesUntil, text: '已出發' };
     return { departed: false, minutesUntil: minutesUntil, text: formatCountdown(minutesUntil) };
   }
 

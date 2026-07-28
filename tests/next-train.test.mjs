@@ -81,3 +81,28 @@ test('trainCountdownState：全部車段都已開走很久，仍各自標記已�
     assert.equal(r.text, '已出發');
   }
 });
+
+// I3 修正輪：原本用 Math.round((depMs-nowMs)/60000) <= 0 判斷是否已出發，
+// 導致發車前 29 秒（29000ms 四捨五入到 0 分鐘）就被判定已出發，且與首頁
+// nextTrain + formatCountdown 在同一瞬間顯示「即將出發」互相矛盾。改成直接
+// 比較毫秒時間戳，這裡釘住發車前 29 秒／1 秒兩個曾經誤判的邊界。
+test('trainCountdownState：發車前 29 秒不可標記已出發（Math.round 邊界修正）', () => {
+  const depMs = core.trainDepartureMs(TRAINS[0], 2026);
+  const r = core.trainCountdownState(TRAINS[0], depMs - 29 * 1000, 2026);
+  assert.equal(r.departed, false);
+  assert.doesNotMatch(r.text, /已出發/, '距出發還有 29 秒卻顯示已出發，會與首頁「即將出發」矛盾');
+});
+
+test('trainCountdownState：發車前 1 秒不可標記已出發', () => {
+  const depMs = core.trainDepartureMs(TRAINS[0], 2026);
+  const r = core.trainCountdownState(TRAINS[0], depMs - 1000, 2026);
+  assert.equal(r.departed, false);
+  assert.doesNotMatch(r.text, /已出發/);
+});
+
+test('trainCountdownState：發車後 1 秒必須標記已出發', () => {
+  const depMs = core.trainDepartureMs(TRAINS[0], 2026);
+  const r = core.trainCountdownState(TRAINS[0], depMs + 1000, 2026);
+  assert.equal(r.departed, true);
+  assert.equal(r.text, '已出發');
+});

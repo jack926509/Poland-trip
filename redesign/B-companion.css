@@ -21,8 +21,8 @@
      三者都達到 3:1（見 task-11-report.md 的證明）。此 token 專供深色卡片
      （--A-espresso 底）上的警示用途，文字與非文字元素皆可用：對軌道與卡底都
      ≥3:1，作文字色時另達 4.5:1（.B-expense-over-tag 實測 6.41:1，見
-     task-12-report.md）；與 brass 的區隔改靠文字／圖示（非顏色指示），不是靠
-     色彩對比硬湊。 */
+     task-11-rereview.md:27）；與 brass 的區隔改靠文字／圖示（非顏色指示），
+     不是靠色彩對比硬湊。 */
   --A-signal-bright: #FF8C66;
   --A-done: #2F6B4F;
   --A-tag-move-bg: #E8EFF8;
@@ -467,6 +467,7 @@
 .B-scrub .B-pill-a{
   scroll-snap-align:center;
   flex-direction:column;
+  flex:none;
   gap:2px;
   min-width:52px;
   min-height:auto;
@@ -509,9 +510,11 @@
 /* Task 12：時間軸列縮圖——四座城市縮圖的實際檔案都是寬扁全景比例
    （200×76／200×97／200×55／200×51，2.06:1～3.92:1），刻意不寫 width/height
    屬性宣告與檔案不符的假尺寸（會造成版面跳動），改用 aspect-ratio 保留版位；
-   2/1 取四張比例的中間值，object-fit:cover 置中裁切後四座城市的市集廣場全景
-   仍可辨識（見 task-12-report.md 的 Playwright 截圖佐證）。alt="" 是刻意的：
-   縮圖是裝飾，旁邊已有文字標題，螢幕閱讀器不需重複讀。 */
+   2/1 取四張比例的中間值，object-fit:cover 置中裁切後保留畫面中央構圖。
+   alt="" 是刻意的：縮圖是裝飾，旁邊已有文字標題，螢幕閱讀器不需重複讀。
+   修正輪（C1/I4）：縮圖不再每列都貼同一張——只在每天第一列與轉場日城市真正
+   變換的那一列出現，判斷邏輯見 B-companion.jsx 的 dayStartCity／cityChangeIdx
+   （在 heroCity 計算之後）。 */
 .B-tl-thumb{
   width:100%;aspect-ratio:2/1;object-fit:cover;
   border-radius:8px;display:block;margin-top:.05rem;
@@ -539,7 +542,10 @@
 }
 .B-step.open .chev{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .B-step-detail{
-  margin:.2rem 0 .6rem calc(38px + .6rem + 16px + .6rem + 72px + .6rem);
+  /* Task 12 修正輪（I1）：對齊縮圖欄左緣，不對齊文字欄——縮圖現在只在少數列
+     出現（見 .B-tl-thumb 用法），細節卡若仍對齊到縮圖欄之後的文字欄，寬度會被
+     72px 縮圖欄吃掉，四行內容全部折行。 */
+  margin:.2rem 0 .6rem calc(38px + .5rem + 16px + .5rem);
   padding:.65rem .8rem;
   background:var(--paper-deep);
   border:1px solid var(--ink);
@@ -1010,8 +1016,7 @@
   }
   .B-pwa-state em{display:none}
   .B-step{grid-template-columns:34px 14px 52px 1fr;gap:.42rem}
-  .B-tl-thumb{aspect-ratio:2/1}
-  .B-step-detail{margin-left:calc(34px + .42rem + 14px + .42rem + 52px + .42rem)}
+  .B-step-detail{margin-left:calc(34px + .42rem + 14px + .42rem)}
   .B-primary-nav button{font-size:.72rem;letter-spacing:.08em;padding-inline:.2rem}
 }
 
@@ -1182,7 +1187,8 @@
 
 /* Task 12：記帳頁日期篩選改用 .B-pill-a 統一的 A token 樣式，選中狀態不再
    借用 --crimson 紅（紅色只作訊號用途，不是選中態的裝飾色，見全域硬規則）。
-   容器本身仍是縱向不可捲、橫向可捲，故 overflow-x:auto／overflow-y 不設。 */
+   容器橫向可捲、縱向不可捲：overflow-x:auto，overflow-y 明確設 hidden——
+   不設的話瀏覽器會因 overflow-x:auto 自動給一條可能出現的縱向捲軸。 */
 .B-day-filter{ display:flex; gap:8px; overflow-x:auto; overflow-y:hidden; padding:var(--gap-sm) 0; -webkit-overflow-scrolling:touch; }
 .B-day-filter .B-pill-a{ flex:none; white-space:nowrap; }
 .B-expense-list{ display:flex; flex-direction:column; }

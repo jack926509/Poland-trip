@@ -412,6 +412,26 @@ test('行程頁 Day 藥丸列改用 .B-scroll-x + .B-pill-a，且保留 tablist/
   assert.match(jsx, /el\.querySelector\('\.B-pill-a\.is-active'\)/);
 });
 
+test('C2 修正：.B-scrub 內的 Day 藥丸必須 flex:none，否則 8 顆會被壓到 min-width 地板換行溢出', () => {
+  // 舊規則 .B-scrub .pill 有 flex:none，改用 .B-pill-a 後漏補，導致 flex-shrink
+  // 預設 1，藥丸被壓成 52px（「Day 1」的「1」擠到第二行、日期文字溢出內距）。
+  // 對照組：記帳頁同一顆 .B-pill-a 在 .B-day-filter 底下已有 flex:none（見下一則測試）。
+  const start = css.indexOf('.B-scrub .B-pill-a{');
+  assert.notEqual(start, -1, '.B-scrub .B-pill-a 規則區塊不存在');
+  const block = css.slice(start, css.indexOf('}', start) + 1);
+  assert.match(block, /flex:\s*none/, '.B-scrub .B-pill-a 必須有 flex:none，否則會被壓扁到 min-width 地板');
+});
+
+test('I2 修正：.B-scrub 的 display:flex 必須有蓋過分頁 display:block 的 specificity 修法', () => {
+  // 這是本 task 最有價值的發現（第 4 次 specificity 陷阱）：.B-scrub 同時是
+  // role="tablist" 容器又掛 data-tabsection="trip"，會被既有的
+  // .B-tabview[data-tab="trip"] [data-tabsection="trip"]{display:block}
+  // （attribute+attribute，specificity 比單一 class 的 .B-scrub 高）蓋掉
+  // flex 版面，導致 Day 藥丸整段換行、無法橫向捲動。build 綠燈、既有 regex
+  // 測試都測不出來（只有 computed display 抓得到），刪掉這行不該讓測試還是全綠。
+  assert.match(css, /\.B-tabview\[data-tab="trip"\]\s*\[data-tabsection="trip"\]\.B-scrub\{\s*display:\s*flex;?\s*\}/);
+});
+
 test('記帳頁 .B-day-filter 改用 B-pill-a token 化樣式，不再借用 --crimson 當選中態裝飾色', () => {
   assert.match(jsx, /className=\{`B-pill-a\$\{filterDay === 'all' \? ' is-active' : ''\}`\}/);
   assert.match(jsx, /className=\{`B-pill-a\$\{filterDay === d\.n \? ' is-active' : ''\}`\}/);
@@ -428,7 +448,7 @@ test('記帳頁 .B-day-filter 改用 B-pill-a token 化樣式，不再借用 --c
 });
 
 test('時間軸列帶城市縮圖，既有展開/收合、筆記、訂票連結結構不變', () => {
-  assert.match(jsx, /<img className="B-tl-thumb" src=\{heroCity\.photo\.thumb\} alt="" loading="lazy" \/>/);
+  assert.match(jsx, /<img className="B-tl-thumb" src=\{thumbCity\.photo\.thumb\} alt="" loading="lazy" \/>/);
   // 縮圖不可寫死與檔案不符的 intrinsic 尺寸（四張縮圖實際比例 2.06:1～3.92:1
   // 各不相同，brief 原本的 width="200" height="150" 是假數字）。
   assert.doesNotMatch(jsx, /className="B-tl-thumb"[^>]*width=/);
@@ -449,10 +469,32 @@ test('時間軸列帶城市縮圖，既有展開/收合、筆記、訂票連結�
   assert.match(stepBlock, /📍 地圖/);
 });
 
+test('C1/I4 修正輪：縮圖只在城市變換的那一列出現，不是整天貼同一張目的地照片', () => {
+  // 每天第一列固定用「起始城市」（split('→')[0]，非轉場日等於 d.city 本身）。
+  assert.match(jsx, /const dayStartCityName = \(d\.city \|\| ''\)\.split\('→'\)\[0\]\.trim\(\);/);
+  assert.match(jsx, /const dayStartCity = t\.cities\.find\(\(c\) => c\.name === dayStartCityName\) \|\| null;/);
+  // 城市變換的那一列 = 出發那一步（step.t 與 d.train.dep 字串相等）之後的下一步；
+  // 找不到出發列、或當天沒有城市變換（無 d.train 或 city 不含「→」）時回 -1，
+  // 不猜測。
+  assert.match(jsx, /if \(!d\.train \|\| !d\.city\.includes\('→'\)\) return -1;/);
+  assert.match(jsx, /const depIdx = d\.steps\.findIndex\(\(s\) => s\.t === d\.train\.dep\);/);
+  assert.match(jsx, /if \(depIdx === -1\) return -1;/);
+  assert.match(jsx, /return depIdx \+ 1 < d\.steps\.length \? depIdx \+ 1 : -1;/);
+  // 每一列的縮圖城市 = 第一列用 dayStartCity，城市變換列用 cityChangeCity，其餘列 null（不顯示）。
+  assert.match(jsx, /const thumbCity = i === 0 \? dayStartCity : \(i === cityChangeIdx \? cityChangeCity : null\);/);
+  // 縮圖改成有條件才 render，不是每列都無條件輸出。
+  assert.match(jsx, /\{thumbCity\?\.photo\?\.thumb && \(/);
+  // 舊版「整天都用 heroCity（轉場日的目的地）當縮圖」的寫法不可再出現。
+  assert.doesNotMatch(jsx, /src=\{heroCity\.photo\.thumb\}/);
+});
+
 test('交通頁列出全部五段長途車並各自帶倒數，已出發的段落不騙人', () => {
   assert.match(jsx, /const moveLegs = B_useMemo\(/);
   assert.match(jsx, /core\.trainCountdownState\(tr, Date\.now\(\), 2026\)/);
-  assert.match(jsx, /<div className="B-move-list" data-tabsection="move" aria-label="長途交通總覽">/);
+  // M2 修正：aria-label 掛在無 role 的 div 上，無障礙樹讀不到；改用 <section>
+  // 讓它天生帶 role="region" 並被 aria-label 命名。
+  assert.match(jsx, /<section className="B-move-list" data-tabsection="move" aria-label="長途交通總覽">/);
+  assert.doesNotMatch(jsx, /<div className="B-move-list"/);
   assert.match(jsx, /\{moveLegs\.map\(\(\{ train: tr, state \}, i\) => \(/);
   assert.match(jsx, /<li className="B-move-row" key=\{i\}>/);
   assert.match(jsx, /\{state\.text\}/);

@@ -987,6 +987,24 @@ function B_Companion({ initialDay }) {
   // 「華沙 → 克拉科夫」，B_focusCity 已處理過取目的地。
   const heroCityName = B_focusCity(d.city);
   const heroCity = t.cities.find((c) => c.name === heroCityName) || t.cities[0];
+  // Task 12 修正輪（C1/I4 一併解）：時間軸縮圖不再整天貼同一張目的地照片——
+  // 8 天裡 Day 4/5/6 轉場日大多數步驟其實還在出發地，貼目的地照片等於指錯城市；
+  // 同一天每列貼相同圖也只是壁紙，沒有資訊量。改成「城市變換時才顯示」：每天
+  // 第一列固定顯示當天起始城市；轉場日在搭車出發之後、真正抵達目的地城市的
+  // 那一列（= steps 陣列裡緊接在出發那一步之後的下一步）才換成目的地縮圖，
+  // 其餘列不顯示縮圖。分界靠 d.train.dep 與 step.t 字串相等找出「出發那一列」——
+  // Day2/4/5/6 四個轉場日都能精準命中（見 task-12-report.md 驗證表）。找不到
+  // 出發列、或當天沒有城市變換（含 Day8「華沙 → 多哈」這種目的地不在城市清單裡
+  // 的情況）時，全天只在第一列顯示起始城市，不硬猜目的地在哪一列。
+  const dayStartCityName = (d.city || '').split('→')[0].trim();
+  const dayStartCity = t.cities.find((c) => c.name === dayStartCityName) || null;
+  const cityChangeIdx = B_useMemo(() => {
+    if (!d.train || !d.city.includes('→')) return -1;
+    const depIdx = d.steps.findIndex((s) => s.t === d.train.dep);
+    if (depIdx === -1) return -1;
+    return depIdx + 1 < d.steps.length ? depIdx + 1 : -1;
+  }, [d]);
+  const cityChangeCity = cityChangeIdx === -1 ? null : (t.cities.find((c) => c.name === heroCityName) || null);
   // 首頁統計四宮格的預算格，與記帳分頁共用同一套 budgetStatus 計算。
   const homeBudget = B_useMemo(
     () => core.budgetStatus(dashTotals.totalPLN, expSettings.fxRate, expSettings.budgetTWD),
@@ -1282,7 +1300,7 @@ function B_Companion({ initialDay }) {
         );
       })()}
 
-      <div className="B-move-list" data-tabsection="move" aria-label="長途交通總覽">
+      <section className="B-move-list" data-tabsection="move" aria-label="長途交通總覽">
         <p className="B-kicker-a">長途交通總覽 · 全部 {moveLegs.length} 段</p>
         <ul>
           {moveLegs.map(({ train: tr, state }, i) => (
@@ -1299,7 +1317,7 @@ function B_Companion({ initialDay }) {
             </li>
           ))}
         </ul>
-      </div>
+      </section>
 
       {trainSheet && d.train && (() => {
         const isBus = d.train.type === 'BUS';
@@ -1352,6 +1370,7 @@ function B_Companion({ initialDay }) {
           const cleanLabel = s.label.replace(/^★\s*/, '');
           const myNote = notes[noteKey(d.n, i)];
           const showBooking = isStar || B_hasBooking(s.label);
+          const thumbCity = i === 0 ? dayStartCity : (i === cityChangeIdx ? cityChangeCity : null);
           let cls = '';
           if (phase === 'after' || (phase === 'during' && i < idx)) cls = 'done';
           else if (phase === 'during' && i === idx) cls = 'now';
@@ -1372,7 +1391,9 @@ function B_Companion({ initialDay }) {
                 aria-expanded={open}>
                 <span className="t">{s.t}</span>
                 <span className="dot"></span>
-                <img className="B-tl-thumb" src={heroCity.photo.thumb} alt="" loading="lazy" />
+                {thumbCity?.photo?.thumb && (
+                  <img className="B-tl-thumb" src={thumbCity.photo.thumb} alt="" loading="lazy" />
+                )}
                 <span className="lab">
                   {cleanLabel}
                   {myNote && <span className="note-dot" title="已有備註" aria-label="已有備註">📒</span>}
