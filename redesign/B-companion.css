@@ -18,9 +18,11 @@
   --A-signal: #B5502E;
   /* --A-signal 在深咖啡卡（--A-espresso 底）上不夠亮，數學上不可能同時對
      --A-espresso-track（軌道）／--A-espresso（卡底）／--A-brass（一般狀態金色）
-     三者都達到 3:1（見 task-11-report.md 的證明）。此 token 專供深色卡片上的
-     非文字警示元素使用，對軌道與卡底都 ≥3:1；與 brass 的區隔改靠文字／圖示
-     （非顏色指示），不是靠色彩對比硬湊。 */
+     三者都達到 3:1（見 task-11-report.md 的證明）。此 token 專供深色卡片
+     （--A-espresso 底）上的警示用途，文字與非文字元素皆可用：對軌道與卡底都
+     ≥3:1，作文字色時另達 4.5:1（.B-expense-over-tag 實測 6.41:1，見
+     task-12-report.md）；與 brass 的區隔改靠文字／圖示（非顏色指示），不是靠
+     色彩對比硬湊。 */
   --A-signal-bright: #FF8C66;
   --A-done: #2F6B4F;
   --A-tag-move-bg: #E8EFF8;
@@ -229,7 +231,12 @@
 .B-kicker-a { margin: 0 0 6px; font-family: var(--A-mono); font-size: 10.5px; letter-spacing: .1em; color: var(--A-ink-2); }
 .B-nextmove-seg { margin: 0; font-size: 26px; }
 .B-nextmove-time { margin: 2px 0 0; font-size: 13px; color: var(--A-ink-2); }
-.B-nextmove-count { margin: 6px 0 0; font-size: 12.5px; color: var(--A-signal); }
+/* Task 12 裁決：紅色（--A-signal）只作「真的即將出發」的訊號，不當恆亮裝飾——
+   預設中性 ink-2，60 分鐘內才由 JS 加上 .is-soon 轉紅；已出發的段落用
+   .is-departed（同樣中性色，明確語意），不可顯示倒數數字。 */
+.B-nextmove-count { margin: 6px 0 0; font-size: 12.5px; color: var(--A-ink-2); }
+.B-nextmove-count.is-soon { color: var(--A-signal); font-weight: 600; }
+.B-nextmove-count.is-departed { color: var(--A-ink-2); }
 
 /* HERO — TODAY IS DAY X */
 .B-today{
@@ -445,33 +452,35 @@
 }
 .B-now .next-up strong{color:var(--amber);font-family:var(--serif);font-style:italic;font-size:1.15em;letter-spacing:0;text-transform:none;margin-right:.3rem}
 
-/* SCRUB STRIP — drag to other days */
+/* SCRUB STRIP — drag to other days（方案 A：Day 藥丸列改用 .B-scroll-x + .B-pill-a，
+   Task 12 裁決見 task-12-brief.md 開頭裁示；role="tablist"/role="tab"/
+   aria-selected/aria-current 語意不變，只換視覺） */
 .B-scrub{
-  padding:.55rem .8rem;border-bottom:1px solid var(--ink);
-  background:var(--paper-deep);
-  display:flex;gap:.35rem;overflow-x:auto;scrollbar-width:none;
+  padding:10px 16px;
+  background:var(--A-ground);
+  border-bottom:1px solid var(--A-line);
   align-items:center;
   scroll-snap-type:x mandatory;
-  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
 }
-.B-scrub .pill{scroll-snap-align:center}
 .B-scrub::-webkit-scrollbar{display:none}
-.B-scrub .pill{
-  flex:none;display:flex;flex-direction:row;align-items:center;gap:.3rem;
-  font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;color:var(--ink-mute);
-  border:1px solid var(--ink);padding:.42rem .65rem;background:var(--paper);
-  min-width:auto;min-height:34px;cursor:pointer;text-decoration:none;
-  border-radius:999px;
-  transition:background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+.B-scrub .B-pill-a{
+  scroll-snap-align:center;
+  flex-direction:column;
+  gap:2px;
+  min-width:52px;
+  min-height:auto;
+  padding:8px 12px;
+  text-decoration:none;
 }
-.B-scrub .pill strong{
-  font-family:var(--serif);font-style:italic;font-weight:900;font-size:.85rem;color:var(--accent);
-  line-height:1;letter-spacing:.01em;
+.B-scrub .B-pill-a strong{
+  font-family:var(--A-display);font-style:italic;font-weight:700;font-size:14px;
+  line-height:1.05;letter-spacing:.01em;color:inherit;
 }
-.B-scrub .pill.active{background:var(--ink);color:var(--paper)}
-.B-scrub .pill.active strong{color:var(--amber)}
-.B-scrub .pill.done{opacity:.45}
-.B-scrub .pill.done strong{color:var(--ink-mute)}
+.B-scrub .B-pill-a span{
+  font-family:var(--A-mono);font-size:10px;letter-spacing:.04em;color:inherit;opacity:.75;
+}
+.B-scrub .B-pill-a.is-done{opacity:.5}
 
 /* TIMELINE */
 .B-timeline{
@@ -484,7 +493,7 @@
   background:var(--ink);opacity:.18;
 }
 .B-step{
-  display:grid;grid-template-columns:38px 16px 1fr;gap:.5rem;
+  display:grid;grid-template-columns:38px 16px 72px 1fr;gap:.5rem;
   padding:.24rem 0;align-items:start;
 }
 .B-step .t{
@@ -496,6 +505,16 @@
   width:14px;height:14px;border-radius:50%;
   background:var(--paper);border:2px solid var(--ink);
   margin:.25rem auto 0;position:relative;z-index:1;
+}
+/* Task 12：時間軸列縮圖——四座城市縮圖的實際檔案都是寬扁全景比例
+   （200×76／200×97／200×55／200×51，2.06:1～3.92:1），刻意不寫 width/height
+   屬性宣告與檔案不符的假尺寸（會造成版面跳動），改用 aspect-ratio 保留版位；
+   2/1 取四張比例的中間值，object-fit:cover 置中裁切後四座城市的市集廣場全景
+   仍可辨識（見 task-12-report.md 的 Playwright 截圖佐證）。alt="" 是刻意的：
+   縮圖是裝飾，旁邊已有文字標題，螢幕閱讀器不需重複讀。 */
+.B-tl-thumb{
+  width:100%;aspect-ratio:2/1;object-fit:cover;
+  border-radius:8px;display:block;margin-top:.05rem;
 }
 .B-step.star .dot{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 3px var(--paper)}
 .B-step.now .dot{background:var(--amber);border-color:var(--amber);box-shadow:0 0 0 3px var(--paper), 0 0 0 5px var(--amber)}
@@ -520,7 +539,7 @@
 }
 .B-step.open .chev{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .B-step-detail{
-  margin:.2rem 0 .6rem calc(38px + .6rem + 16px + .6rem);
+  margin:.2rem 0 .6rem calc(38px + .6rem + 16px + .6rem + 72px + .6rem);
   padding:.65rem .8rem;
   background:var(--paper-deep);
   border:1px solid var(--ink);
@@ -896,6 +915,29 @@
   padding:0 .35rem;color:var(--ink-soft);letter-spacing:.08em;
 }
 
+/* Task 12：交通頁五段長途車總覽（方案 A）——.B-train 只顯示「當天」那一段，
+   這裡把 t.trains 全部 5 段都列出來，各自用 core.trainCountdownState 算出
+   是否已出發；已出發的段落不可顯示倒數數字，只顯示「已出發」文字狀態。
+   .B-nextmove-count／.is-soon／.is-departed 與首頁下一段車卡共用同一套規則。 */
+.B-move-list{ margin:12px 16px; }
+.B-move-list ul{ list-style:none; margin:8px 0 0; padding:0; display:flex; flex-direction:column; gap:8px; }
+.B-move-row{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:12px 14px;
+  background:var(--A-board); border-radius:var(--A-radius); box-shadow:var(--A-shadow);
+}
+.B-move-main{ display:flex; flex-direction:column; gap:3px; min-width:0; }
+.B-move-type{
+  display:inline-block; align-self:flex-start;
+  padding:2px 7px; margin-right:4px;
+  border-radius:999px;
+  background:var(--A-tag-move-bg); color:var(--A-tag-move-fg);
+  font-size:10.5px; font-weight:700; letter-spacing:.06em;
+}
+.B-move-seg{ font-size:14px; font-weight:600; }
+.B-move-time{ font-size:12px; color:var(--A-ink-2); }
+.B-move-row .B-nextmove-count{ margin:0; flex:none; white-space:nowrap; text-align:right; }
+
 /* DRAWER (menu) */
 .B-drawer-mask{
   position:fixed;inset:0;background:rgba(26,22,18,.4);
@@ -967,8 +1009,9 @@
     padding:.38rem .5rem;border-radius:999px;
   }
   .B-pwa-state em{display:none}
-  .B-step{grid-template-columns:34px 14px 1fr;gap:.42rem}
-  .B-step-detail{margin-left:calc(34px + .42rem + 14px + .42rem)}
+  .B-step{grid-template-columns:34px 14px 52px 1fr;gap:.42rem}
+  .B-tl-thumb{aspect-ratio:2/1}
+  .B-step-detail{margin-left:calc(34px + .42rem + 14px + .42rem + 52px + .42rem)}
   .B-primary-nav button{font-size:.72rem;letter-spacing:.08em;padding-inline:.2rem}
 }
 
@@ -1013,6 +1056,14 @@
   .B-tabview[data-tab="trip"] [data-tabsection="trip"],
   .B-tabview[data-tab="move"] [data-tabsection="move"],
   .B-tabview[data-tab="money"] [data-tabsection="money"]{ display:block; }
+  /* Task 12 真實瀏覽器測試發現：.B-scrub 本身同時是 tablist 容器又掛
+     data-tabsection="trip"，會被上面這條 display:block 蓋掉 .B-scroll-x／
+     .B-scrub 原本要的 display:flex（[data-tab="trip"] [data-tabsection="trip"]
+     是 attribute+attribute，specificity 比單一 class 的 .B-scrub／.B-scroll-x
+     高，跟後面誰宣告無關，永遠贏）。結果 Day 藥丸不會橫向捲動，改成整段換行——
+     build 綠燈、regex 測試也測不出來，只有 computed display 抓得到。這裡用
+     attribute+attribute+class 的選擇器把 specificity 疊高，改回 flex。 */
+  .B-tabview[data-tab="trip"] [data-tabsection="trip"].B-scrub{ display:flex; }
 }
 
 /* Task 9: 首頁右上工具選單 */
@@ -1129,13 +1180,11 @@
   font-style: normal;
 }
 
-.B-day-filter{ display:flex; gap:6px; overflow-x:auto; padding:var(--gap-sm) 0; -webkit-overflow-scrolling:touch; }
-.B-day-filter .pill{
-  flex:none; white-space:nowrap; font-family:var(--mono); font-size:.68rem; letter-spacing:.06em;
-  border:1px solid rgba(26,22,18,.18); border-radius:999px; padding:.4rem .8rem; background:var(--paper);
-  color:var(--ink-mute); cursor:pointer;
-}
-.B-day-filter .pill.active{ background:var(--crimson); color:var(--paper); border-color:var(--crimson); }
+/* Task 12：記帳頁日期篩選改用 .B-pill-a 統一的 A token 樣式，選中狀態不再
+   借用 --crimson 紅（紅色只作訊號用途，不是選中態的裝飾色，見全域硬規則）。
+   容器本身仍是縱向不可捲、橫向可捲，故 overflow-x:auto／overflow-y 不設。 */
+.B-day-filter{ display:flex; gap:8px; overflow-x:auto; overflow-y:hidden; padding:var(--gap-sm) 0; -webkit-overflow-scrolling:touch; }
+.B-day-filter .B-pill-a{ flex:none; white-space:nowrap; }
 .B-expense-list{ display:flex; flex-direction:column; }
 .B-expense-row{ display:grid; grid-template-columns:1fr auto auto; gap:8px; align-items:center; padding:var(--pad-sm) 0; border-bottom:1px solid rgba(26,22,18,.08); }
 .B-expense-row .item{ display:flex; flex-direction:column; gap:2px; }

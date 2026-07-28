@@ -389,3 +389,90 @@ test('首頁統計四宮格與下一段交通卡真的 render，不是只算了�
   assert.doesNotMatch(jsx, /今天沒有長途車/);
   assert.match(css, /\.B-nextmove-seg/);
 });
+
+// ============================================================
+// Task 12：行程與交通分頁改版（Day 藥丸列、帶縮圖的時間軸列、長途車倒數）
+// 每一則對應一個獨立交付物，各自做過突變驗證（刪掉該段 render → 該則單獨
+// FAIL，其餘不受影響），數字記錄在 task-12-report.md。
+// ============================================================
+
+test('行程頁 Day 藥丸列改用 .B-scroll-x + .B-pill-a，且保留 tablist/tab 無障礙語意', () => {
+  // brief 原本指錯頁面（誤把記帳頁的 .B-day-filter 當成行程頁的日次切換器）；
+  // 行程頁真正的日次切換器是 .B-scrub（role="tablist"，內含 role="tab" 的 <a>）。
+  assert.match(jsx, /<div className="B-scrub B-scroll-x" ref=\{scrubRef\} role="tablist" aria-label="日次切換" data-tabsection="trip">/);
+  assert.match(jsx, /role="tab"/);
+  assert.match(jsx, /aria-selected=\{x\.n === active\}/);
+  assert.match(jsx, /aria-current=\{x\.n === active \? 'true' : undefined\}/);
+  assert.match(jsx, /className=\{`B-pill-a \$\{x\.n === active \? 'is-active' : ''\} \$\{x\.n < active \? 'is-done' : ''\}`\}/);
+  // 舊版 pill/active/done 三個裸字 class 不可再被 .B-scrub 的規則引用（新規則改掛在 .B-pill-a 上）。
+  assert.doesNotMatch(css, /\.B-scrub \.pill\{/);
+  assert.match(css, /\.B-scrub \.B-pill-a\{/);
+  assert.match(css, /\.B-scrub \.B-pill-a\.is-done\{opacity:\.5\}/);
+  // 自動捲動目前作用中 pill 的 querySelector 要跟著新 class 走，否則切換 Day 時捲動會失效。
+  assert.match(jsx, /el\.querySelector\('\.B-pill-a\.is-active'\)/);
+});
+
+test('記帳頁 .B-day-filter 改用 B-pill-a token 化樣式，不再借用 --crimson 當選中態裝飾色', () => {
+  assert.match(jsx, /className=\{`B-pill-a\$\{filterDay === 'all' \? ' is-active' : ''\}`\}/);
+  assert.match(jsx, /className=\{`B-pill-a\$\{filterDay === d\.n \? ' is-active' : ''\}`\}/);
+  const start = css.indexOf('.B-day-filter{');
+  assert.notEqual(start, -1, '.B-day-filter 規則區塊不存在');
+  const end = css.indexOf('.B-expense-list{');
+  const block = css.slice(start, end);
+  assert.doesNotMatch(block, /crimson/, '.B-day-filter 區塊不可再出現 --crimson（紅色只作訊號，不當選中態裝飾色）');
+  assert.doesNotMatch(block, /var\(--paper\)/, '.B-day-filter 區塊不可再用舊版 --paper token');
+  assert.match(block, /\.B-day-filter \.B-pill-a\{/);
+  // 真正釘住的行為（取代 brief 原本的空斷言）：容器只能橫向捲動，不可縱向捲動。
+  assert.match(block, /overflow-x:\s*auto/);
+  assert.doesNotMatch(block, /overflow-y:\s*auto/);
+});
+
+test('時間軸列帶城市縮圖，既有展開/收合、筆記、訂票連結結構不變', () => {
+  assert.match(jsx, /<img className="B-tl-thumb" src=\{heroCity\.photo\.thumb\} alt="" loading="lazy" \/>/);
+  // 縮圖不可寫死與檔案不符的 intrinsic 尺寸（四張縮圖實際比例 2.06:1～3.92:1
+  // 各不相同，brief 原本的 width="200" height="150" 是假數字）。
+  assert.doesNotMatch(jsx, /className="B-tl-thumb"[^>]*width=/);
+  assert.doesNotMatch(jsx, /className="B-tl-thumb"[^>]*height=/);
+  assert.match(css, /\.B-tl-thumb\{/);
+  assert.match(css, /\.B-tl-thumb\{[^}]*aspect-ratio:\s*2\/1/);
+  assert.match(css, /\.B-tl-thumb\{[^}]*object-fit:\s*cover/);
+  // 縮圖必須加在既有 .B-step 結構裡（time/dot/thumb/label 同一個 grid row），
+  // 不是整段換掉：openStep 展開收合、★ 重點、筆記 note-dot、訂票按鈕都要還在。
+  const stepBlock = jsx.slice(jsx.indexOf('{d.steps.map((s, i) => {'), jsx.indexOf('{d.warn &&'));
+  assert.match(stepBlock, /<span className="t">\{s\.t\}<\/span>/);
+  assert.match(stepBlock, /<span className="dot"><\/span>/);
+  assert.match(stepBlock, /<img className="B-tl-thumb"/);
+  assert.match(stepBlock, /<span className="lab">/);
+  assert.match(stepBlock, /setOpenStep\(open \? null : i\)/);
+  assert.match(stepBlock, /myNote && <span className="note-dot"/);
+  assert.match(stepBlock, /🎟 訂票 \/ 官網/);
+  assert.match(stepBlock, /📍 地圖/);
+});
+
+test('交通頁列出全部五段長途車並各自帶倒數，已出發的段落不騙人', () => {
+  assert.match(jsx, /const moveLegs = B_useMemo\(/);
+  assert.match(jsx, /core\.trainCountdownState\(tr, Date\.now\(\), 2026\)/);
+  assert.match(jsx, /<div className="B-move-list" data-tabsection="move" aria-label="長途交通總覽">/);
+  assert.match(jsx, /\{moveLegs\.map\(\(\{ train: tr, state \}, i\) => \(/);
+  assert.match(jsx, /<li className="B-move-row" key=\{i\}>/);
+  assert.match(jsx, /\{state\.text\}/);
+  assert.match(css, /\.B-move-row\{/);
+  assert.match(css, /\.B-move-list ul\{/);
+  // trainDepartureMs 只該在 pwa-core.js 的 trainCountdownState 內算一次；
+  // JSX 端不可重蹈 brief 原稿的覆轍——同一運算式呼叫兩次、且把已開走的車
+  // 傳 0 給 formatCountdown（會顯示騙人的「即將出發」）。
+  assert.doesNotMatch(jsx, /core\.trainDepartureMs\(tr, 2026\) > Date\.now\(\)/);
+  assert.doesNotMatch(jsx, /formatCountdown\(Math\.round\(\(core\.trainDepartureMs/);
+});
+
+test('長途車倒數紅字只在即將出發時觸發，預設中性色，首頁與交通頁共用同一套規則', () => {
+  assert.match(css, /\.B-nextmove-count \{ margin: 6px 0 0; font-size: 12\.5px; color: var\(--A-ink-2\); \}/);
+  assert.match(css, /\.B-nextmove-count\.is-soon \{ color: var\(--A-signal\); font-weight: 600; \}/);
+  assert.match(css, /\.B-nextmove-count\.is-departed \{ color: var\(--A-ink-2\); \}/);
+  assert.match(jsx, /className=\{`B-nextmove-count\$\{nt\.minutesUntil <= 60 \? ' is-soon' : ''\}`\}/);
+  assert.match(jsx, /is-departed/);
+});
+
+test('--A-signal-bright 註解涵蓋文字與非文字用途，不再與 .B-expense-over-tag 的實際用法矛盾', () => {
+  assert.match(css, /文字與非文字元素皆可用[\s\S]{0,300}--A-signal-bright:\s*#FF8C66/);
+});

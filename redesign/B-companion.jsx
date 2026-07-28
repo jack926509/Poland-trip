@@ -412,11 +412,11 @@ function B_Expense({ storage }) {
       {hint && <p className="B-expense-hint" role="status">{hint}</p>}
 
       <div className="B-day-filter" role="group" aria-label="依日期篩選記帳列表">
-        <button type="button" className={`pill${filterDay === 'all' ? ' active' : ''}`} onClick={() => setFilterDay('all')}>全部</button>
+        <button type="button" className={`B-pill-a${filterDay === 'all' ? ' is-active' : ''}`} onClick={() => setFilterDay('all')}>全部</button>
         {days.map((d) => (
           <button
             type="button" key={d.n}
-            className={`pill${filterDay === d.n ? ' active' : ''}`}
+            className={`B-pill-a${filterDay === d.n ? ' is-active' : ''}`}
             onClick={() => setFilterDay(d.n)}>
             Day{d.n}
           </button>
@@ -997,6 +997,12 @@ function B_Companion({ initialDay }) {
     () => core.nextTrain(t.trains, Date.now(), 2026),
     [core, t.trains, tick]
   );
+  // Task 12：交通頁要列出全部五段長途車（不是只有下一段），每段各自算一次
+  // core.trainCountdownState，已開走的段落顯示「已出發」而不是騙人的倒數。
+  const moveLegs = B_useMemo(
+    () => (t.trains || []).map((tr) => ({ train: tr, state: core.trainCountdownState(tr, Date.now(), 2026) })),
+    [core, t.trains, tick]
+  );
   const hardNow = core.selectHardConstraintForMoment(d.hardConstraints, phase, d.n, momentDay, mins);
   const bookNow = d.mustBook?.length ? d.mustBook.join(' / ') : '無需預先訂票';
   const compressNow = d.compressible?.[0] || '保留彈性休息';
@@ -1017,7 +1023,7 @@ function B_Companion({ initialDay }) {
   B_useEffect(() => {
     const el = scrubRef.current;
     if (!el) return;
-    const activePill = el.querySelector('.pill.active');
+    const activePill = el.querySelector('.B-pill-a.is-active');
     if (activePill && activePill.scrollIntoView) {
       activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     }
@@ -1110,12 +1116,14 @@ function B_Companion({ initialDay }) {
             <p className="B-kicker-a">下一段長途車</p>
             <p className="B-nextmove-seg B-num">{nt.train.seg}</p>
             <p className="B-nextmove-time B-num">{nt.train.date} {nt.train.dep} → {nt.train.arr}</p>
-            <p className="B-nextmove-count">{core.formatCountdown(nt.minutesUntil)} · {nt.train.type} · PLN {nt.train.price}</p>
+            <p className={`B-nextmove-count${nt.minutesUntil <= 60 ? ' is-soon' : ''}`}>{core.formatCountdown(nt.minutesUntil)} · {nt.train.type} · PLN {nt.train.price}</p>
           </div>
         )}
         {/* nt 為 null 代表整趟行程往後已無長途車（core.nextTrain 找不到任何尚未出發的班次），
             不是「今天沒有車」——今天的車可能才剛開走，這句話不能對使用者說謊。
-            沒有下一班車也不是警訊，不可套用 --A-signal 紅字，改用中性的 ink-2 樣式。 */}
+            沒有下一班車也不是警訊，不可套用 --A-signal 紅字，改用中性的 ink-2 樣式。
+            Task 12 裁決：.B-nextmove-count 預設中性色，紅字（--A-signal）只在
+            60 分鐘內即將出發時用 is-soon 觸發，不可對所有倒數恆亮紅字。 */}
         {!nt && (
           <div className="B-card-a">
             <p className="B-kicker-a">下一段長途車</p>
@@ -1219,14 +1227,14 @@ function B_Companion({ initialDay }) {
         </button>
       </section>
 
-      <div className="B-scrub" ref={scrubRef} role="tablist" aria-label="日次切換" data-tabsection="trip">
+      <div className="B-scrub B-scroll-x" ref={scrubRef} role="tablist" aria-label="日次切換" data-tabsection="trip">
         {t.days.map(x => (
           <a key={x.n} href={`#B-day-${x.n}`}
              role="tab"
              aria-selected={x.n === active}
              aria-current={x.n === active ? 'true' : undefined}
              onClick={e => { e.preventDefault(); setActive(x.n); }}
-             className={`pill ${x.n === active ? 'active' : ''} ${x.n < active ? 'done' : ''}`}>
+             className={`B-pill-a ${x.n === active ? 'is-active' : ''} ${x.n < active ? 'is-done' : ''}`}>
             <strong>Day {x.n}</strong>
             <span>{x.date.slice(0,5)}</span>
           </a>
@@ -1273,6 +1281,25 @@ function B_Companion({ initialDay }) {
           </div>
         );
       })()}
+
+      <div className="B-move-list" data-tabsection="move" aria-label="長途交通總覽">
+        <p className="B-kicker-a">長途交通總覽 · 全部 {moveLegs.length} 段</p>
+        <ul>
+          {moveLegs.map(({ train: tr, state }, i) => (
+            <li className="B-move-row" key={i}>
+              <div className="B-move-main">
+                <span className="B-move-seg B-num">
+                  <span className={`B-move-type ${tr.type.toLowerCase()}`}>{tr.type}</span> {tr.seg}
+                </span>
+                <span className="B-move-time B-num">{tr.date} {tr.dep} → {tr.arr}</span>
+              </div>
+              <span className={`B-nextmove-count${!state.departed && state.minutesUntil !== null && state.minutesUntil <= 60 ? ' is-soon' : ''}${state.departed ? ' is-departed' : ''}`}>
+                {state.text}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       {trainSheet && d.train && (() => {
         const isBus = d.train.type === 'BUS';
@@ -1345,6 +1372,7 @@ function B_Companion({ initialDay }) {
                 aria-expanded={open}>
                 <span className="t">{s.t}</span>
                 <span className="dot"></span>
+                <img className="B-tl-thumb" src={heroCity.photo.thumb} alt="" loading="lazy" />
                 <span className="lab">
                   {cleanLabel}
                   {myNote && <span className="note-dot" title="已有備註" aria-label="已有備註">📒</span>}

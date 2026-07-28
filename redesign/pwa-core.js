@@ -213,6 +213,19 @@
     return Math.floor(mins / (60 * 24)) + ' 天後';
   }
 
+  // Task 12：交通頁要同時列出全部長途車段（不像 nextTrain 只找「下一段」），
+  // 所以已經開走的車也要能被畫出來——但 formatCountdown(負數或 0) 會回「即將
+  // 出發」，對一班已經開走的車顯示「即將出發」是說謊。這裡把「算一次出發時間、
+  // 判斷是否已出發、產生對應文案」收在同一個函式裡：呼叫端只需要呼叫一次，
+  // 不會像迴圈裡各自重算 trainDepartureMs 兩次那樣意外算錯或看漏已出發狀態。
+  function trainCountdownState(train, nowMs, year) {
+    var depMs = trainDepartureMs(train, year);
+    if (!isFinite(depMs)) return { departed: null, minutesUntil: null, text: '時間未定' };
+    var minutesUntil = Math.round((depMs - nowMs) / 60000);
+    if (minutesUntil <= 0) return { departed: true, minutesUntil: minutesUntil, text: '已出發' };
+    return { departed: false, minutesUntil: minutesUntil, text: formatCountdown(minutesUntil) };
+  }
+
   // Task 6：拍照清單從城市級打卡改為景點級。舊 key（中文城市名，例 '華沙'）
   // 遷移到該城第一個景點的 id；呼叫端須先把 old 原封不動備份到
   // PHOTOMAP_BACKUP_KEY，再把 next 寫回 polska.photomap.v1。
@@ -276,7 +289,7 @@
     projectTripMoment, selectNextHardConstraint, selectHardConstraintForMoment, readNotes, writeNotes,
     DEFAULT_SETTINGS, EXPENSE_CATEGORIES, readJSON, writeJSON, plnToTwd, expenseTotals, budgetStatus,
     TAX_FREE_MIN_PLN, taxRefundStatus, taxRefundEstimate, taxRefundSummary,
-    warsawOffsetHours, trainDepartureMs, nextTrain, formatCountdown,
+    warsawOffsetHours, trainDepartureMs, nextTrain, formatCountdown, trainCountdownState,
     PHOTOMAP_BACKUP_KEY, PHOTOMAP_KEY, migratePhotoCheckins, migratePhotoMapStorage,
   };
 })(typeof window === 'undefined' ? globalThis : window);
