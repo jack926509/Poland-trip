@@ -340,7 +340,7 @@ function B_Expense({ storage }) {
   );
   const dayFiltered = filterDay === 'all' ? expenses : expenses.filter((e) => e.day === filterDay);
   const visible = onlyRefund
-    ? expenses.filter((e) => core.taxRefundStatus(e.amountPLN, e.category).state === 'eligible')
+    ? dayFiltered.filter((e) => core.taxRefundStatus(e.amountPLN, e.category).state === 'eligible')
     : dayFiltered;
   const catLabel = (key) => (core.EXPENSE_CATEGORIES.find((c) => c.key === key) || {}).label || key;
 
@@ -397,13 +397,14 @@ function B_Expense({ storage }) {
         <p className="B-expense-hero-budget B-num">
           已花 NT${budget.spentTWD.toLocaleString('zh-TW')} / 預算 NT${budget.budgetTWD.toLocaleString('zh-TW')}
         </p>
+        {budget.over && <p className="B-expense-over-tag">⚠ 已超支</p>}
       </div>
 
       <div className="B-card-a B-quad">
         {core.EXPENSE_CATEGORIES.map((c) => (
           <div key={c.key}>
             <b>{core.plnToTwd(totals.byCategory[c.key], settings.fxRate).toLocaleString('zh-TW')}</b>
-            <span>{c.label}</span>
+            <span>{c.label} NT$</span>
           </div>
         ))}
       </div>
@@ -422,14 +423,17 @@ function B_Expense({ storage }) {
         ))}
       </div>
 
-      {refund.count > 0 && (
-        <button
-          type="button"
-          className={'B-pill-a' + (onlyRefund ? ' is-active' : '')}
-          aria-pressed={onlyRefund}
-          onClick={() => setOnlyRefund(!onlyRefund)}>
-          可退稅 {refund.count} 筆 · 預估 NT${refund.lowTWD.toLocaleString('zh-TW')}–{refund.highTWD.toLocaleString('zh-TW')}
-        </button>
+      {(refund.count > 0 || onlyRefund) && (
+        <div className="B-expense-refund">
+          <button
+            type="button"
+            className={'B-pill-a' + (onlyRefund ? ' is-active' : '')}
+            aria-pressed={onlyRefund}
+            onClick={() => setOnlyRefund(!onlyRefund)}>
+            {refund.count} 筆各自已達退稅門檻 · 合計約退 NT${refund.lowTWD.toLocaleString('zh-TW')}–{refund.highTWD.toLocaleString('zh-TW')}
+          </button>
+          <p className="B-expense-refund-note">退稅門檻採「同一張收據、同一店家」滿 200 PLN 計算，不同收據、不同店家不可合併。</p>
+        </div>
       )}
 
       <div className="B-expense-list">

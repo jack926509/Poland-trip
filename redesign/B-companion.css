@@ -16,6 +16,12 @@
   --A-espresso-track: #5E524A;
   --A-brass: #C9A46F;
   --A-signal: #B5502E;
+  /* --A-signal 在深咖啡卡（--A-espresso 底）上不夠亮，數學上不可能同時對
+     --A-espresso-track（軌道）／--A-espresso（卡底）／--A-brass（一般狀態金色）
+     三者都達到 3:1（見 task-11-report.md 的證明）。此 token 專供深色卡片上的
+     非文字警示元素使用，對軌道與卡底都 ≥3:1；與 brass 的區隔改靠文字／圖示
+     （非顏色指示），不是靠色彩對比硬湊。 */
+  --A-signal-bright: #FF8C66;
   --A-done: #2F6B4F;
   --A-tag-move-bg: #E8EFF8;
   --A-tag-move-fg: #3F6491;
@@ -46,6 +52,7 @@
 
 .B-pill-a {
   display: inline-flex;
+  align-self: flex-start;
   align-items: center;
   min-height: 40px;
   padding: 10px 16px;
@@ -54,6 +61,7 @@
   background: var(--A-board);
   color: var(--A-ink-2);
   font-size: 13px;
+  cursor: pointer;
 }
 .B-pill-a.is-active {
   background: var(--A-ink);
@@ -1083,8 +1091,10 @@
 .B-expense-hero-twd { margin: 4px 0 0; font-size: 13px; opacity: .85; }
 .B-expense-bar { height: 4px; border-radius: 999px; background: var(--A-espresso-track); margin: 12px 0 6px; overflow: hidden; }
 .B-expense-bar i { display: block; height: 100%; border-radius: 999px; background: var(--A-brass); }
-.B-expense-bar i.is-over { background: var(--A-signal); }
+.B-expense-bar i.is-over { background: var(--A-signal-bright); }
 .B-expense-hero-budget { margin: 0; font-size: 11.5px; opacity: .78; }
+/* 超支不只靠顏色：這段文字本身不含 opacity，維持與底色 6.41:1 的全對比度 */
+.B-expense-over-tag { margin: 6px 0 0; font-size: 11px; font-weight: 700; letter-spacing: .04em; color: var(--A-signal-bright); }
 
 .B-expense-hint {
   margin: 0 0 12px;
@@ -1094,6 +1104,19 @@
   color: var(--A-tag-book-fg);
   font-size: 12.5px;
   line-height: 1.45;
+}
+.B-expense-refund {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.B-expense-refund-note {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--A-ink-2);
 }
 .B-tag-refund {
   display: inline-block;

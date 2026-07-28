@@ -196,18 +196,70 @@ test('記帳子頁含總額、預算條、分類統計、新增與列表', () =>
   assert.match(css, /\.B-fab/);
 });
 
-test('記帳頁接上退稅提示與可退稅篩選', () => {
-  assert.match(jsx, /core\.taxRefundStatus\(/);
-  assert.match(jsx, /core\.taxRefundSummary\(/);
-  assert.match(jsx, /同一張收據/);
-  assert.match(jsx, /可退稅/);
-  assert.match(css, /\.B-expense-hero/);
-  assert.match(css, /--A-espresso/);
-});
-
 test('記帳金額格式統一兩位小數且台幣加千分位', () => {
   assert.match(jsx, /toFixed\(2\)/);
   assert.match(jsx, /toLocaleString\('zh-TW'\)/);
+});
+
+// 下面每一則都釘住「真的 render 出來的 JSX 結構」，不是只釘中文字串——
+// 字串出現在註解裡也會讓 regex 命中，這是前一位實作者兩次絆倒自己測試的原因。
+// 每一則對應一個獨立交付物，並各自做過突變驗證（刪掉該段 render → 該則單獨 FAIL，
+// 其餘不受影響），數字記錄在 task-11-report.md。
+
+test('深咖啡主卡：總花費／進度條／預算列五個節點在同一個 .B-expense-hero 內真的 render', () => {
+  assert.match(
+    jsx,
+    /<div className="B-expense-hero">[\s\S]*?<p className="B-expense-hero-kicker">總花費<\/p>[\s\S]*?<p className="B-expense-hero-amt B-num">\{totals\.totalPLN\.toFixed\(2\)\} <small>PLN<\/small><\/p>[\s\S]*?<p className="B-expense-hero-twd B-num">[\s\S]*?<div className="B-expense-bar">[\s\S]*?<p className="B-expense-hero-budget B-num">[\s\S]*?<\/div>/
+  );
+});
+
+test('分類四宮格：.B-card-a.B-quad 內每格真的用 core.plnToTwd 換算並標示 NT$ 幣別', () => {
+  assert.match(
+    jsx,
+    /<div className="B-card-a B-quad">[\s\S]*?core\.EXPENSE_CATEGORIES\.map[\s\S]*?<b>\{core\.plnToTwd\(totals\.byCategory\[c\.key\], settings\.fxRate\)\.toLocaleString\('zh-TW'\)\}<\/b>[\s\S]*?<span>\{c\.label\} NT\$<\/span>/
+  );
+});
+
+test('退稅提示真的 render 到畫面（不是只活在 setHint 的字串常數裡）', () => {
+  assert.match(jsx, /\{hint && <p className="B-expense-hint" role="status">\{hint\}<\/p>\}/);
+  assert.match(jsx, /setHint\(`這筆可辦退稅[^`]*同一張收據[^`]*`\)/);
+  assert.match(jsx, /setHint\(`距離退稅門檻還差[^`]*同一張收據[^`]*不同店家不能合併[^`]*`\)/);
+});
+
+test('可退稅彙總按鈕在篩選開啟時即使清單清空也留在畫面上可關閉（C1：不會篩選卡死）', () => {
+  assert.match(jsx, /\{\(refund\.count > 0 \|\| onlyRefund\) && \(/);
+  assert.doesNotMatch(jsx, /\{refund\.count > 0 && \(\s*\n\s*<button/); // 舊的卡死守衛不可再出現
+  assert.match(jsx, /className=\{'B-pill-a' \+ \(onlyRefund \? ' is-active' : ''\)\}/);
+  assert.match(jsx, /aria-pressed=\{onlyRefund\}/);
+});
+
+test('退稅彙總附近有常駐可見的「同一張收據」說明，不只是暫態提示', () => {
+  assert.match(jsx, /<p className="B-expense-refund-note">[^<]*同一張收據[^<]*不可合併[^<]*<\/p>/);
+});
+
+test('明細列的可退稅標籤依每筆狀態真的 render', () => {
+  assert.match(
+    jsx,
+    /core\.taxRefundStatus\(e\.amountPLN, e\.category\)\.state === 'eligible' && <em className="B-tag-refund">可退稅<\/em>/
+  );
+});
+
+test('可退稅篩選套用在 Day 篩選結果之上，不會蓋掉 Day 篩選（I4）', () => {
+  assert.match(
+    jsx,
+    /const visible = onlyRefund\s*\n\s*\? dayFiltered\.filter\(\(e\) => core\.taxRefundStatus\(e\.amountPLN, e\.category\)\.state === 'eligible'\)\s*\n\s*: dayFiltered;/
+  );
+  assert.doesNotMatch(jsx, /\? expenses\.filter\(\(e\) => core\.taxRefundStatus/);
+});
+
+test('超支狀態有非顏色的文字指示，不是只靠變色（I5）', () => {
+  assert.match(jsx, /\{budget\.over && <p className="B-expense-over-tag">⚠ 已超支<\/p>\}/);
+  assert.match(css, /\.B-expense-over-tag\s*\{[^}]*color:\s*var\(--A-signal-bright\)/);
+  assert.match(css, /\.B-expense-bar i\.is-over\s*\{\s*background:\s*var\(--A-signal-bright\);?\s*\}/);
+});
+
+test('可退稅彙總按鈕不是全寬區塊，寬度自適應內容（I7）', () => {
+  assert.match(css, /\.B-pill-a\s*\{[^}]*align-self:\s*flex-start/);
 });
 
 test('匯率換算與打包清單子頁存在且持久化', () => {
