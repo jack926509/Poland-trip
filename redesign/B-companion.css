@@ -524,6 +524,16 @@
 .B-step.done{opacity:.55}
 .B-step.done .dot{background:var(--ink-mute);border-color:var(--ink-mute)}
 .B-step .lab{font-family:var(--serif);font-weight:900;font-size:.9rem;line-height:1.3;letter-spacing:-.005em;color:var(--ink)}
+/* Task 12 修正輪（C3）：.B-step 是隱式定位的 CSS Grid（38px/16px/72px/1fr）。
+   縮圖改條件式渲染（C1/I4）後，沒有縮圖的列少一個子元素，.lab 會被隱式定位
+   遞補進本來留給縮圖的 72px／52px 窄欄，不是原本的 1fr 寬欄，導致文字大量
+   折行（比 I1 更嚴重、影響列數更多）。選項 (b)：沒縮圖時明確讓 .lab 從縮圖欄
+   起點跨欄到最後一欄，拿回完整寬度——320px 螢幕每一像素都有用，「有照片的列
+   縮排、沒照片的列滿版」是常見且可讀的樣式；沒有選 (a)（縮圖欄恆佔位）是因為
+   多數列本來就不會顯示縮圖（只有城市變換那一兩列），恆佔位等於讓大多數列白白
+   少 72px+gap，違背 I4 當初要拿回窄螢幕行寬的目的。有縮圖的列不受影響，img
+   仍隱式佔第 3 欄、.lab 隱式佔第 4 欄。 */
+.B-step .lab.is-full{ grid-column: 3 / -1; }
 .B-step .lab .note-dot{
   display:inline-block;margin-left:.3rem;font-size:.7em;
   vertical-align:baseline;filter:saturate(.8);

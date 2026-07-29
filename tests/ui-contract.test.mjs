@@ -462,7 +462,7 @@ test('時間軸列帶城市縮圖，既有展開/收合、筆記、訂票連結�
   assert.match(stepBlock, /<span className="t">\{s\.t\}<\/span>/);
   assert.match(stepBlock, /<span className="dot"><\/span>/);
   assert.match(stepBlock, /<img className="B-tl-thumb"/);
-  assert.match(stepBlock, /<span className="lab">/);
+  assert.match(stepBlock, /<span className=\{`lab\$\{thumbCity\?\.photo\?\.thumb \? '' : ' is-full'\}`\}>/);
   assert.match(stepBlock, /setOpenStep\(open \? null : i\)/);
   assert.match(stepBlock, /myNote && <span className="note-dot"/);
   assert.match(stepBlock, /🎟 訂票 \/ 官網/);
@@ -486,6 +486,17 @@ test('C1/I4 修正輪：縮圖只在城市變換的那一列出現，不是整�
   assert.match(jsx, /\{thumbCity\?\.photo\?\.thumb && \(/);
   // 舊版「整天都用 heroCity（轉場日的目的地）當縮圖」的寫法不可再出現。
   assert.doesNotMatch(jsx, /src=\{heroCity\.photo\.thumb\}/);
+});
+
+test('C3 修正：.B-step 是隱式 grid，沒縮圖的列不可讓 .lab 被擠進縮圖欄', () => {
+  // .B-step 只有 4 個直接子元素（t／dot／可選的 img／lab），少了 img 時隱式
+  // 定位會讓 .lab 遞補進本來留給縮圖的 72px／52px 窄欄，不是原本的 1fr 寬欄
+  // ——這是本輪新發現的 Critical（比 I1 更廣、更嚴重，八天裡除了第一列幾乎
+  // 每列都中招）。修法（裁決 b）：沒縮圖時 .lab 明確 grid-column:3/-1 跨欄
+  // 拿回完整寬度，不是恆佔位（那樣多數列會白白少 72px，違背 I4 的窄螢幕行寬
+  // 目的）。
+  assert.match(jsx, /<span className=\{`lab\$\{thumbCity\?\.photo\?\.thumb \? '' : ' is-full'\}`\}>/);
+  assert.match(css, /\.B-step \.lab\.is-full\{\s*grid-column:\s*3\s*\/\s*-1;?\s*\}/);
 });
 
 test('交通頁列出全部五段長途車並各自帶倒數，已出發的段落不騙人', () => {

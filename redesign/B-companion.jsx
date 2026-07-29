@@ -1394,7 +1394,7 @@ function B_Companion({ initialDay }) {
                 {thumbCity?.photo?.thumb && (
                   <img className="B-tl-thumb" src={thumbCity.photo.thumb} alt="" loading="lazy" />
                 )}
-                <span className="lab">
+                <span className={`lab${thumbCity?.photo?.thumb ? '' : ' is-full'}`}>
                   {cleanLabel}
                   {myNote && <span className="note-dot" title="已有備註" aria-label="已有備註">📒</span>}
                   {s.sub && <small>{s.sub}</small>}
