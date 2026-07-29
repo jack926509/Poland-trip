@@ -512,43 +512,60 @@ function B_Expense({ storage }) {
     </div>
   );
 }
-/* Task 7: Photo Map 城市打卡（本機持久化） */
-function B_PhotoMap({ storage }) {
+/* Task 13：拍照清單改景點層級，附光線建議；沿用既有 .B-card-a／.B-quad／.B-pill-a
+   設計語彙（Task 7 的 .B-tl-row／.B-tl-time／.B-tl-body 從未真的建立，不可引用）。
+   舊城市級打卡（中文城市名 key）交給 core.migratePhotoMapStorage 一次遷移：它會
+   讀舊值、算出新格式、把舊值原封不動備份到 core.PHOTOMAP_BACKUP_KEY（若備份已
+   存在則不覆寫，避免使用者重複開 App 時把原始資料蓋掉），再寫回 core.PHOTOMAP_KEY。
+   這裡不手刻遷移流程，只呼叫這支已寫好且經過測試的函式。 */
+function B_PhotoMap({ trip, storage }) {
   const core = window.PolskaPwaCore;
-  const cities = Object.keys(B_CITY_EN);
-  const [checkins, setCheckins] = B_useState(() => core.readJSON(storage, 'polska.photomap.v1', {}));
+  const spots = (trip && trip.photoSpots) || [];
   const [storeOk, setStoreOk] = B_useState(true);
+  const [checked, setChecked] = B_useState(() => core.migratePhotoMapStorage(storage, spots).next);
 
-  const doneCount = cities.filter((city) => checkins[city]).length;
-
-  const toggle = (city) => {
-    const next = { ...checkins, [city]: !checkins[city] };
-    setCheckins(next);
-    setStoreOk(core.writeJSON(storage, 'polska.photomap.v1', next));
+  const toggle = (id) => {
+    const next = { ...checked, [id]: !checked[id] };
+    setChecked(next);
+    setStoreOk(core.writeJSON(storage, core.PHOTOMAP_KEY, next));
   };
+
+  const done = spots.filter((s) => checked[s.id]).length;
+  const pct = spots.length ? Math.round((done / spots.length) * 100) : 0;
 
   return (
     <div className="B-photomap">
       {!storeOk && <p className="B-store-warn">目前無法儲存，這次的變更只在這個畫面有效</p>}
-      <p className="B-photomap-head">已打卡 {doneCount}/{cities.length}</p>
-      {cities.map((city) => {
-        const done = Boolean(checkins[city]);
-        return (
-          <div className={`B-photomap-city${done ? ' is-done' : ''}`} key={city}>
-            <div className="B-photomap-name">
-              <strong>{city}</strong>
-              <span className="en">{B_CITY_EN[city]}</span>
-            </div>
-            <button
-              type="button"
-              className="B-photomap-toggle"
-              aria-pressed={done}
-              onClick={() => toggle(city)}>
-              {done ? '已打卡 ✓' : '打卡'}
-            </button>
-          </div>
-        );
-      })}
+      <div className="B-card-a B-quad">
+        <div><b className="B-num">{spots.length}</b><span>全部</span></div>
+        <div><b className="B-num">{done}</b><span>已拍</span></div>
+        <div><b className="B-num">{spots.length - done}</b><span>未拍</span></div>
+        <div><b className="B-num">{pct}%</b><span>完成度</span></div>
+      </div>
+      {spots.length === 0 && <p className="B-photomap-empty">尚無拍照建議</p>}
+      {/* .B-photo-item 三個子元素（Day 標籤／內文／按鈕）一律無條件 render，
+          不會像 Task 12 的 .B-step 縮圖那樣因條件式子元素改變數量而撞上
+          CSS Grid 隱式定位，故不需要額外的 grid-column 覆寫。 */}
+      <ul className="B-photo-list">
+        {spots.map((s) => {
+          const isDone = Boolean(checked[s.id]);
+          return (
+            <li className={`B-card-a B-photo-item${isDone ? ' is-done' : ''}`} key={s.id}>
+              <span className="B-photo-day B-num">Day {s.day}</span>
+              <span className="B-photo-body">
+                <b>{s.name}</b>
+                <em>{s.bestTime} · {s.light}</em>
+              </span>
+              <button
+                type="button"
+                className={'B-pill-a' + (isDone ? ' is-active' : '')}
+                aria-pressed={isDone}
+                onClick={() => toggle(s.id)}
+              >{isDone ? '已拍' : '待拍'}</button>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
@@ -723,6 +740,18 @@ function B_Info({ trip }) {
   const phrases = Array.isArray(trip && trip.phrases) ? trip.phrases : [];
   const empty = practical.length === 0 && about.length === 0 && phrases.length === 0;
 
+  // Task 13：photoCredits 每座城市有 hero／thumb 兩筆（同一張原圖的兩種裁切，
+  // 作者／授權／來源網址逐字相同），畫面上依來源網址去重成四座城市各一筆，
+  // 避免使用者看到兩組一模一樣的出處而困惑。data.js 本身的八筆不刪，那是
+  // 檔案層級的對應紀錄，有 tests/photo-spots.test.mjs 釘住。
+  const allCredits = Array.isArray(trip && trip.photoCredits) ? trip.photoCredits : [];
+  const seenCreditUrls = new Set();
+  const credits = allCredits.filter((c) => {
+    if (seenCreditUrls.has(c.url)) return false;
+    seenCreditUrls.add(c.url);
+    return true;
+  });
+
   return (
     <div className="B-info">
       {about.length > 0 && (
@@ -760,6 +789,22 @@ function B_Info({ trip }) {
         </section>
       )}
       {empty && <p className="B-info-empty">尚無實用資訊</p>}
+      {credits.length > 0 && (
+        <section className="B-credits">
+          <h4>照片出處</h4>
+          <p>本站城市照片取自 Wikimedia Commons，依授權標示作者與授權條款。</p>
+          <ul>
+            {credits.map((c) => (
+              <li key={c.url}>
+                <b>{c.city}</b> — {c.author}（
+                <a href={c.licenseUrl} target="_blank" rel="noopener noreferrer">{c.license}</a>
+                ）
+                <a href={c.url} target="_blank" rel="noopener noreferrer">來源</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 }

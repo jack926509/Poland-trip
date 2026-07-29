@@ -1275,14 +1275,26 @@
 .B-info-phrase .pl{ font-family:var(--serif); color:var(--crimson); }
 .B-info-empty{ font-family:var(--serif); color:var(--ink-mute); }
 
-/* Task 7: Photo Map 城市打卡 */
-.B-photomap-head{ font-family:var(--mono); color:var(--amber-deep); margin-bottom:var(--gap-sm); }
-.B-photomap-city{ display:flex; justify-content:space-between; align-items:center; padding:var(--pad-md); background:#fbf6ea; border:1px solid rgba(26,22,18,.10); border-radius:14px; margin-bottom:var(--gap-sm); }
-.B-photomap-city.is-done{ border-color:var(--crimson); }
-.B-photomap-name{ display:flex; flex-direction:column; font-family:var(--serif); }
-.B-photomap-name .en{ font-family:var(--mono); font-size:.7rem; color:var(--ink-mute); }
-.B-photomap-toggle{ font-family:var(--mono); font-size:.75rem; letter-spacing:.04em; border-radius:999px; padding:.5rem 1rem; background:none; border:1px solid var(--crimson); color:var(--crimson); }
-.B-photomap-city.is-done .B-photomap-toggle{ background:var(--crimson); color:var(--paper); }
+/* Task 13：拍照清單改景點層級（取代 Task 7 城市打卡的 .B-photomap-head／
+   -city／-name／-toggle，這幾個 class 已不再被 render，一併移除避免孤兒 CSS）。
+   沿用 .B-card-a／.B-quad／.B-pill-a 既有語彙，其餘採方案 A 的 --A-* token，
+   不與本頁其他尚未改版子頁（SOS／實用資訊）的舊 --serif／--crimson 混用。 */
+.B-photomap-empty{ text-align:center; color:var(--A-ink-2); padding:16px 0; font-size:12.5px; }
+.B-photo-list{ list-style:none; margin:12px 0 0; padding:0; display:flex; flex-direction:column; gap:8px; }
+.B-photo-item{ display:grid; grid-template-columns:44px 1fr auto; gap:10px; align-items:center; }
+.B-photo-item .B-photo-day{ font-size:11px; color:var(--A-ink-2); }
+.B-photo-item .B-photo-body{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+.B-photo-item .B-photo-body b{ font-size:14px; font-weight:600; color:var(--A-ink); }
+.B-photo-item .B-photo-body em{ font-style:normal; font-size:11px; color:var(--A-ink-2); }
+.B-photo-item.is-done .B-photo-body b{ color:var(--A-done); }
+
+/* ---- 照片出處（CC BY／BY-SA 要求出處隨作品呈現） ---- */
+.B-credits { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--A-line); }
+.B-credits h4 { margin: 0 0 6px; font-size: 13px; }
+.B-credits p { margin: 0 0 8px; font-size: 11.5px; color: var(--A-ink-2); }
+.B-credits ul { list-style: none; margin: 0; padding: 0; }
+.B-credits li { font-size: 11.5px; color: var(--A-ink-2); padding: 4px 0; }
+.B-credits a { margin-left: 4px; color: var(--A-ink); }
 
 /* ---- 儲存失敗與表單錯誤提示 ---- */
 .B-store-warn,

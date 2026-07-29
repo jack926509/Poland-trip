@@ -267,15 +267,17 @@ window.TRIP = {
     {id:'poz-rynek', cityKey:'POZ', name:'舊市集廣場彩色立面', day:6, bestTime:'11:30–12:15', light:'12:00 山羊報時前卡位，正午光平但人潮是主角'},
     {id:'poz-tumski', cityKey:'POZ', name:'教堂島 Ostrów Tumski', day:6, bestTime:'15:40–16:20', light:'雙塔逆光剪影，或轉到橋上拍側光'},
   ],
+  // licenseUrl：CC 授權要求提供「授權條款本身」的 URI，不是照片來源頁（url 欄位）。
+  // 三個值皆為 Creative Commons 官方標準授權頁，逐一對應 license 欄位，不得自行更動。
   photoCredits: [
-    {file:'warszawa-hero.webp', city:'華沙', author:'Rhododendrites', license:'CC BY-SA 4.0', url:'https://commons.wikimedia.org/wiki/File:Market_Square_Warsaw_(22594p).jpg'},
-    {file:'warszawa-thumb.webp', city:'華沙', author:'Rhododendrites', license:'CC BY-SA 4.0', url:'https://commons.wikimedia.org/wiki/File:Market_Square_Warsaw_(22594p).jpg'},
-    {file:'krakow-hero.webp', city:'克拉科夫', author:'Andrzej Otrębski', license:'CC BY-SA 4.0', url:'https://commons.wikimedia.org/wiki/File:Krakow_Rynek_Glowny_panorama_2.jpg'},
-    {file:'krakow-thumb.webp', city:'克拉科夫', author:'Andrzej Otrębski', license:'CC BY-SA 4.0', url:'https://commons.wikimedia.org/wiki/File:Krakow_Rynek_Glowny_panorama_2.jpg'},
-    {file:'wroclaw-hero.webp', city:'樂斯拉夫', author:'Gerd Eichmann', license:'CC BY 4.0', url:'https://commons.wikimedia.org/wiki/File:Breslau-Rynek-38-Panorama-2014-gje.jpg'},
-    {file:'wroclaw-thumb.webp', city:'樂斯拉夫', author:'Gerd Eichmann', license:'CC BY 4.0', url:'https://commons.wikimedia.org/wiki/File:Breslau-Rynek-38-Panorama-2014-gje.jpg'},
-    {file:'poznan-hero.webp', city:'波茲南', author:'Mateusz.woźniak', license:'CC BY-SA 3.0', url:'https://commons.wikimedia.org/wiki/File:Poznan_stary_rynek_panorama.jpg'},
-    {file:'poznan-thumb.webp', city:'波茲南', author:'Mateusz.woźniak', license:'CC BY-SA 3.0', url:'https://commons.wikimedia.org/wiki/File:Poznan_stary_rynek_panorama.jpg'},
+    {file:'warszawa-hero.webp', city:'華沙', author:'Rhododendrites', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Market_Square_Warsaw_(22594p).jpg'},
+    {file:'warszawa-thumb.webp', city:'華沙', author:'Rhododendrites', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Market_Square_Warsaw_(22594p).jpg'},
+    {file:'krakow-hero.webp', city:'克拉科夫', author:'Andrzej Otrębski', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Krakow_Rynek_Glowny_panorama_2.jpg'},
+    {file:'krakow-thumb.webp', city:'克拉科夫', author:'Andrzej Otrębski', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Krakow_Rynek_Glowny_panorama_2.jpg'},
+    {file:'wroclaw-hero.webp', city:'樂斯拉夫', author:'Gerd Eichmann', license:'CC BY 4.0', licenseUrl:'https://creativecommons.org/licenses/by/4.0/', url:'https://commons.wikimedia.org/wiki/File:Breslau-Rynek-38-Panorama-2014-gje.jpg'},
+    {file:'wroclaw-thumb.webp', city:'樂斯拉夫', author:'Gerd Eichmann', license:'CC BY 4.0', licenseUrl:'https://creativecommons.org/licenses/by/4.0/', url:'https://commons.wikimedia.org/wiki/File:Breslau-Rynek-38-Panorama-2014-gje.jpg'},
+    {file:'poznan-hero.webp', city:'波茲南', author:'Mateusz.woźniak', license:'CC BY-SA 3.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/3.0/', url:'https://commons.wikimedia.org/wiki/File:Poznan_stary_rynek_panorama.jpg'},
+    {file:'poznan-thumb.webp', city:'波茲南', author:'Mateusz.woźniak', license:'CC BY-SA 3.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/3.0/', url:'https://commons.wikimedia.org/wiki/File:Poznan_stary_rynek_panorama.jpg'},
   ],
   trains: [
     {seg:'WAW → KRK', date:'10/25', type:'EIP', dep:'09:00', arr:'11:25', dur:'2h25', price:'130–180'},

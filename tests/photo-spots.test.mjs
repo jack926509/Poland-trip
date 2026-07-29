@@ -65,6 +65,24 @@ test('photoCredits 逐檔對應實際素材，且同城市 hero／thumb 授權�
   }
 });
 
+// Task 13：CC BY／BY-SA 要求提供授權條款本身的 URI，不能只有照片來源頁（url 欄位）。
+// licenseUrl 只能是三個 Creative Commons 官方標準授權頁之一，且必須對應 license 欄位。
+test('每筆 photoCredits 都有對應授權條款的 licenseUrl（CC 官方標準頁）', () => {
+  const knownLicenseUrls = {
+    'CC BY-SA 4.0': 'https://creativecommons.org/licenses/by-sa/4.0/',
+    'CC BY 4.0': 'https://creativecommons.org/licenses/by/4.0/',
+    'CC BY-SA 3.0': 'https://creativecommons.org/licenses/by-sa/3.0/',
+  };
+  for (const c of TRIP.photoCredits) {
+    assert.ok(c.licenseUrl, `${c.file} 缺少 licenseUrl`);
+    assert.equal(
+      c.licenseUrl,
+      knownLicenseUrls[c.license],
+      `${c.file} 的 licenseUrl 須對應 license「${c.license}」的官方標準頁`,
+    );
+  }
+});
+
 test('拍照清單是景點層級且每個景點都有光線建議', () => {
   assert.ok(TRIP.photoSpots.length >= 8);
   const cityKeys = new Set(TRIP.cities.map((c) => c.key));

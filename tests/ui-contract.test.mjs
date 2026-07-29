@@ -286,14 +286,16 @@ test('SOS、實用資訊、Photo Map 子頁存在且接既有資料', () => {
   assert.match(jsx, /function B_PhotoMap/);
   assert.match(jsx, /safety/);
   assert.match(jsx, /phrases/);
-  assert.match(jsx, /polska\.photomap\.v1/);
+  // Task 13：storage key 改用 core.PHOTOMAP_KEY 常數，不再寫死 'polska.photomap.v1'
+  // 字串（該字面值只留在 pwa-core.js 的常數定義本身）。
+  assert.match(jsx, /core\.PHOTOMAP_KEY/);
   assert.match(css, /\.B-sos/);
   assert.match(css, /\.B-photomap/);
 });
 
 test('三個工具子頁接住 writeJSON 失敗並顯示警語', () => {
   assert.match(jsx, /const \[storeOk, setStoreOk\] = B_useState\(true\)/);
-  assert.match(jsx, /setStoreOk\(core\.writeJSON\(storage, 'polska\.photomap\.v1'/);
+  assert.match(jsx, /setStoreOk\(core\.writeJSON\(storage, core\.PHOTOMAP_KEY,/);
   assert.match(jsx, /setStoreOk\(core\.writeJSON\(storage, 'polska\.settings\.v1'/);
   assert.match(jsx, /setStoreOk\(core\.writeJSON\(storage, 'polska\.packing\.v1'/);
   assert.match(css, /\.B-store-warn/);
@@ -301,6 +303,27 @@ test('三個工具子頁接住 writeJSON 失敗並顯示警語', () => {
   // 必須確認三個子頁都真的把警語 render 出來，不能只宣告 state 卻不顯示。
   const warnRenders = jsx.match(/\{!storeOk &&\s*<p className="B-store-warn">/g) || [];
   assert.equal(warnRenders.length, 3, 'B_PhotoMap／B_FxTool／B_Packing 三個子頁都要 render .B-store-warn 警語');
+});
+
+test('Task 13：拍照清單改為景點層級，經 core.migratePhotoMapStorage 遷移舊打卡', () => {
+  assert.match(jsx, /function B_PhotoMap\(\{ trip, storage \}\)/);
+  assert.match(jsx, /core\.migratePhotoMapStorage\(storage, spots\)/);
+  assert.match(jsx, /s\.bestTime/);
+  assert.match(jsx, /s\.light/);
+  assert.match(jsx, /className="B-photo-list"/);
+  assert.match(css, /\.B-photo-list/);
+  assert.match(css, /\.B-photo-item/);
+});
+
+test('Task 13：App 內看得見照片授權出處（CC BY／BY-SA 要求出處隨作品呈現）', () => {
+  assert.match(jsx, /照片出處/);
+  assert.match(jsx, /trip\.photoCredits/);
+  assert.match(jsx, /c\.licenseUrl/);
+  assert.match(jsx, /rel="noopener noreferrer"/);
+  assert.match(css, /\.B-credits/);
+  // 同城市 hero／thumb 的 url 逐字相同，畫面上須依 url 去重顯示 4 筆而非 8 筆，
+  // 否則使用者會看到四組一模一樣的重複出處。
+  assert.match(jsx, /seenCreditUrls\.has\(c\.url\)/, '缺少依 url 去重邏輯，會顯示 8 筆重複出處');
 });
 
 test('記帳表單驗證失敗顯示可讀錯誤而非靜默 return', () => {
