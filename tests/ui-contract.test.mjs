@@ -326,6 +326,30 @@ test('Task 13：App 內看得見照片授權出處（CC BY／BY-SA 要求出處�
   assert.match(jsx, /seenCreditUrls\.has\(c\.url\)/, '缺少依 url 去重邏輯，會顯示 8 筆重複出處');
 });
 
+// C1（獨立審查，Critical）：照片經裁切與縮放屬於 CC 授權定義的 Adapted Material，
+// CC BY 4.0 §3(a)(1)(B) 要求標示已修改，CC BY-SA §3(b) 要求改作後以相同授權釋出，
+// 原文案兩者都沒寫，屬法律義務未完整履行。這裡釘住修改後的完整句子（不是只驗
+// 關鍵字片段），避免未來改動悄悄把「已修改」或「相同授權」兩個法律要件其中一個改掉。
+test('C1：照片出處文案含「已修改」與 CC BY-SA 改作後相同授權釋出的法律標示', () => {
+  assert.match(
+    jsx,
+    /本站城市照片取自 Wikimedia Commons，經裁切與縮放後使用；依授權標示作者與授權條款，標示 CC BY-SA 者，改作後之圖檔以相同授權釋出。/,
+  );
+});
+
+// I1（獨立審查，Important）：「來源」連結原本只有 24×13px，低於 WCAG 2.5.8
+// 最小可觸區 24×24，這是法律義務要求的授權連結，按不準等於義務履行不完整。
+test('I1：.B-credits 連結有足夠大的可觸區（inline-block + padding）', () => {
+  assert.match(css, /\.B-credits a\s*\{[^}]*display:\s*inline-block/);
+  assert.match(css, /\.B-credits a\s*\{[^}]*padding:\s*6px 4px/);
+});
+
+// I3（獨立審查，Important）：十個打卡按鈕原本的可視文字都是「已拍」或「待拍」，
+// 螢幕報讀器會聽到十個一模一樣的名稱、分不出是哪個景點；aria-label 帶上景點名稱。
+test('I3：拍照清單打卡按鈕的 aria-label 帶景點名稱，螢幕報讀器可分辨', () => {
+  assert.match(jsx, /aria-label=\{`\$\{s\.name\} \$\{isDone \? '已拍' : '待拍'\}`\}/);
+});
+
 test('記帳表單驗證失敗顯示可讀錯誤而非靜默 return', () => {
   assert.match(jsx, /const \[formError, setFormError\] = B_useState\(''\)/);
   assert.match(jsx, /setFormError\('請填品項名稱'\)/);

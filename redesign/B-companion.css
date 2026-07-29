@@ -1294,7 +1294,10 @@
 .B-credits p { margin: 0 0 8px; font-size: 11.5px; color: var(--A-ink-2); }
 .B-credits ul { list-style: none; margin: 0; padding: 0; }
 .B-credits li { font-size: 11.5px; color: var(--A-ink-2); padding: 4px 0; }
-.B-credits a { margin-left: 4px; color: var(--A-ink); }
+/* I1（獨立審查）：「來源」連結原本只有 24×13px，低於 WCAG 2.5.8 的 24×24
+   最小可觸區——這是法律義務要求的授權連結，按不準等於義務履行不完整。
+   inline-block + padding 撐開命中區，不改變視覺文字大小。 */
+.B-credits a { display: inline-block; margin-left: 4px; padding: 6px 4px; color: var(--A-ink); }
 
 /* ---- 儲存失敗與表單錯誤提示 ---- */
 .B-store-warn,

@@ -241,6 +241,12 @@
   function migratePhotoCheckins(old, spots) {
     var src = old && typeof old === 'object' && !Array.isArray(old) ? old : {};
     var list = spots || [];
+    // I2（獨立審查）：spots 為空陣列時，下面的 looksOld 判斷會把 src 的每一個 key
+    // 都誤判為「舊格式」（因為 ids 是空物件，任何 key 都不在其中），導致
+    // migratePhotoCheckins 把使用者已經是新格式的打卡資料當成舊資料處理、
+    // 最終在呼叫端把 polska.photomap.v1 覆寫成 {}——這是會造成資料損失的路徑，
+    // 即使正常情況下 photoSpots 不會是空陣列，也要守住這個邊界。
+    if (!list.length) return { next: src, migrated: false };
     var ids = {};
     list.forEach(function (s) { if (s && s.id) ids[s.id] = true; });
 

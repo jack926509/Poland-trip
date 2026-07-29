@@ -114,6 +114,17 @@ test('已是新格式的資料不會被重複遷移', () => {
   assert.equal(r.next['waw-oldtown'], true);
 });
 
+// I2（獨立審查）：photoSpots 為空陣列時，ids 是空物件，若沒有這道守衛，
+// looksOld 會把 src 的每一個 key 都誤判為舊格式，migrated 變 true，
+// 呼叫端就會把使用者已是新格式的打卡資料覆寫成 {}——資料直接歸零。
+// 這條測試釘住「spots 為空時一律不遷移、原樣傳回」這個保護。
+test('photoSpots 為空陣列時不遷移，不清空既有打卡資料（防資料歸零）', () => {
+  const existing = { 'waw-oldtown': true, 'waw-castle': false };
+  const r = core.migratePhotoCheckins(existing, []);
+  assert.equal(r.migrated, false, 'spots 為空時不可回報 migrated:true');
+  assert.deepEqual(r.next, existing, 'spots 為空時必須原樣傳回既有資料，不可清空');
+});
+
 // 以下兩條是本 task 補的測試：brief 只驗了純函式 migratePhotoCheckins 的計算結果，
 // 沒有驗到「真的把舊值寫進 localStorage 的備份 key」這條紅線本身。
 // migratePhotoCheckins 不碰 storage，所以用會實際落地的 migratePhotoMapStorage 來驗。

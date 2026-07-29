@@ -560,6 +560,7 @@ function B_PhotoMap({ trip, storage }) {
                 type="button"
                 className={'B-pill-a' + (isDone ? ' is-active' : '')}
                 aria-pressed={isDone}
+                aria-label={`${s.name} ${isDone ? '已拍' : '待拍'}`}
                 onClick={() => toggle(s.id)}
               >{isDone ? '已拍' : '待拍'}</button>
             </li>
@@ -792,7 +793,7 @@ function B_Info({ trip }) {
       {credits.length > 0 && (
         <section className="B-credits">
           <h4>照片出處</h4>
-          <p>本站城市照片取自 Wikimedia Commons，依授權標示作者與授權條款。</p>
+          <p>本站城市照片取自 Wikimedia Commons，經裁切與縮放後使用；依授權標示作者與授權條款，標示 CC BY-SA 者，改作後之圖檔以相同授權釋出。</p>
           <ul>
             {credits.map((c) => (
               <li key={c.url}>
