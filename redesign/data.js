@@ -89,7 +89,12 @@ window.TRIP = {
       mustBook: ['Auschwitz 官方英文導覽'],
       compressible: ['回克拉科夫後晚餐形式', '晚間自由活動'],
       weather: '10° / 4°',
-      train: {type:'BUS', from:'KRK', to:'Oświęcim', dep:'07:30', arr:'09:00', dur:'1h30 ×2', price:'PLN 15 ×2'},
+      // leg：這一筆是「去程」——07:30 離開克拉科夫、09:00 抵達奧斯威辛。
+      // trains 陣列裡的 'KRK ⇄ Auschwitz' 是同一天同一班巴士的「往返全程」，
+      // 07:30 出發、14:30 回到克拉科夫。兩筆時間都是對的，指的是不同區段，
+      // 所以兩筆都要保留，靠 leg 標籤讓畫面看得出各自在講哪一段。
+      // 票價統一寫法：單程 15、來回共 30。
+      train: {type:'BUS', leg:'去程 · 抵奧斯威辛', from:'KRK', to:'Oświęcim', dep:'07:30', arr:'09:00', dur:'1h30 ×2', price:'PLN 30（單程 15 ×2）'},
       steps: [
         {t:'07:30', label:'Lajkonik 巴士', sub:'MDA D9 / D10 月台', cost:'PLN 15', dur:'1h30'},
         {t:'09:00', label:'抵 Auschwitz I', sub:'安檢、寄包、領耳機', dur:'30 min'},
@@ -281,7 +286,9 @@ window.TRIP = {
   ],
   trains: [
     {seg:'WAW → KRK', date:'10/25', type:'EIP', dep:'09:00', arr:'11:25', dur:'2h25', price:'130–180'},
-    {seg:'KRK ⇄ Auschwitz', date:'10/26', type:'BUS', dep:'07:30', arr:'14:30', dur:'1h30 ×2', price:'30'},
+    // arr 14:30 是「回到克拉科夫」的時刻（往返全程），不是抵達奧斯威辛的時刻；
+    // 抵達奧斯威辛 09:00 記在 days[2].train（leg:'去程 · 抵奧斯威辛'）。
+    {seg:'KRK ⇄ Auschwitz', date:'10/26', type:'BUS', leg:'往返全程 · 回抵克拉科夫', dep:'07:30', arr:'14:30', dur:'1h30 ×2', price:'30（單程 15 ×2）'},
     {seg:'KRK → WRO', date:'10/27', type:'IC', dep:'19:30', arr:'22:20', dur:'2h50', price:'60–110'},
     {seg:'WRO → POZ', date:'10/28', type:'IC', dep:'19:00', arr:'21:20', dur:'2h20', price:'50–90'},
     {seg:'POZ → WAW', date:'10/29', type:'EIP', dep:'17:30', arr:'19:50', dur:'2h20', price:'90–150'},

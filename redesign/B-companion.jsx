@@ -279,7 +279,8 @@ function B_Subpage({ title, onBack, panelRef, closeRef, children }) {
     <div className="B-subpage-mask" role="dialog" aria-modal="true" aria-label={title} ref={panelRef}>
       <div className="B-subpage">
         <header className="B-subpage-head">
-          <button type="button" className="B-subpage-back" ref={closeRef} onClick={onBack} aria-label="返回更多">‹ 返回</button>
+          {/* 「更多」分頁已於 Task 9 移除，可及名稱不可再承諾返回到不存在的分頁。 */}
+          <button type="button" className="B-subpage-back" ref={closeRef} onClick={onBack} aria-label="返回上一頁">‹ 返回</button>
           <h2>{title}</h2>
         </header>
         <div className="B-subpage-body">{children}</div>
@@ -313,11 +314,22 @@ function B_ToolGrid({ onOpen, onClose, panelRef, closeRef }) {
 }
 
 /* Task 5: 記帳子頁（完整功能） */
-function B_Expense({ storage }) {
+function B_Expense({ storage, activeTab, subpage }) {
   const core = window.PolskaPwaCore;
   const days = (window.TRIP && window.TRIP.days) || [];
   const [expenses, setExpenses] = B_useState(() => core.readJSON(storage, 'polska.expenses.v1', []));
-  const [settings] = B_useState(() => core.readJSON(storage, 'polska.settings.v1', core.DEFAULT_SETTINGS));
+  const [settings, setSettings] = B_useState(() => core.readJSON(storage, 'polska.settings.v1', core.DEFAULT_SETTINGS));
+
+  // 2026-07-26 修正輪（A3）：本元件是常駐 DOM 的（切分頁只被 CSS 隱藏，不會
+  // remount），原本 settings 只在 mount 讀一次且沒有 setter。使用者在「匯率換算」
+  // 子頁改過匯率後，首頁四宮格用新匯率、這裡仍用舊匯率，同一筆花費在兩個畫面
+  // 換出不同台幣金額。這裡用與 B_Companion 首頁那份 effect 完全相同的觸發條件
+  // （activeTab／subpage 變動）重讀 storage，兩邊永遠拿到同一份設定。
+  // 只重讀 settings 不重讀 expenses：expenses 的唯一寫入者是本元件自己，
+  // 重讀會有把使用者剛按下的新增／刪除蓋掉的風險。
+  B_useEffect(() => {
+    setSettings(core.readJSON(storage, 'polska.settings.v1', core.DEFAULT_SETTINGS));
+  }, [core, storage, activeTab, subpage]);
   const [filterDay, setFilterDay] = B_useState('all');
   const [onlyRefund, setOnlyRefund] = B_useState(false);
   const [formOpen, setFormOpen] = B_useState(false);
@@ -412,13 +424,18 @@ function B_Expense({ storage }) {
       {hint && <p className="B-expense-hint" role="status">{hint}</p>}
 
       <div className="B-day-filter" role="group" aria-label="依日期篩選記帳列表">
-        <button type="button" className={`B-pill-a${filterDay === 'all' ? ' is-active' : ''}`} onClick={() => setFilterDay('all')}>全部</button>
+        <button
+          type="button"
+          className={`B-pill-a${filterDay === 'all' ? ' is-active' : ''}`}
+          aria-pressed={filterDay === 'all'}
+          onClick={() => setFilterDay('all')}>全部</button>
         {days.map((d) => (
           <button
             type="button" key={d.n}
             className={`B-pill-a${filterDay === d.n ? ' is-active' : ''}`}
+            aria-pressed={filterDay === d.n}
             onClick={() => setFilterDay(d.n)}>
-            Day{d.n}
+            Day {d.n}
           </button>
         ))}
       </div>
@@ -432,7 +449,8 @@ function B_Expense({ storage }) {
             onClick={() => setOnlyRefund(!onlyRefund)}>
             {refund.count} 筆各自已達退稅門檻 · 合計約退 NT${refund.lowTWD.toLocaleString('zh-TW')}–{refund.highTWD.toLocaleString('zh-TW')}
           </button>
-          <p className="B-expense-refund-note">退稅門檻採「同一張收據、同一店家」滿 200 PLN 計算，不同收據、不同店家不可合併。</p>
+          {/* 門檻數字一律從 core.TAX_FREE_MIN_PLN 插值，不再寫死，避免常數改了文案沒跟上。 */}
+          <p className="B-expense-refund-note">退稅門檻採「同一張收據、同一店家」滿 {core.TAX_FREE_MIN_PLN} PLN 計算，不同收據、不同店家不可合併。</p>
         </div>
       )}
 
@@ -450,12 +468,12 @@ function B_Expense({ storage }) {
                 {' · '}
                 <span className="method">{e.method}</span>
                 {' · '}
-                <span className="day">Day{e.day}</span>
+                <span className="day">Day {e.day}</span>
               </span>
             </div>
             <div className="amounts">
               <span className="amt">{Number(e.amountPLN).toFixed(2)} PLN</span>
-              <span className="twd">≈NT${core.plnToTwd(e.amountPLN, settings.fxRate).toLocaleString('zh-TW')}</span>
+              <span className="twd">≈ NT${core.plnToTwd(e.amountPLN, settings.fxRate).toLocaleString('zh-TW')}</span>
             </div>
             <button type="button" className="del" aria-label={`刪除記帳：${e.item}`} onClick={() => removeExpense(e.id)}>✕</button>
           </div>
@@ -488,7 +506,9 @@ function B_Expense({ storage }) {
             <label>
               Day
               <select value={form.day} onChange={(ev) => setForm({ ...form, day: Number(ev.target.value) })}>
-                {days.map((d) => <option key={d.n} value={d.n}>{`Day${d.n}（${d.date}）`}</option>)}
+                {/* 原本組出「Day1（10/24 (六)）」——全形括號包半形括號、Day 後缺空格。
+                    d.date 本身已含半形括號的星期，外層不再套一層括號。 */}
+                {days.map((d) => <option key={d.n} value={d.n}>{`Day ${d.n} · ${d.date}`}</option>)}
               </select>
             </label>
             <label>
@@ -1027,6 +1047,12 @@ function B_Companion({ initialDay }) {
   const next = d.steps[idx + 1];
   const active = d.n;
   const setActive = (n) => { setOverride(n); setOpenStep(null); setDrawerOpen(false); };
+  // 2026-07-26 修正輪（A2）：override 一旦被行程頁 Day 藥丸或 drawer 設住，原本
+  // 全 App 沒有任何清除路徑，回首頁 hero 與 Now 卡會繼續放被瀏覽那天的行程，
+  // 標籤卻寫「Now · 現在該做什麼」。backToToday 是清除 override 的唯一入口；
+  // previewingOtherDay 讓 Now 卡標籤在顯示日不是今天時說出實話。
+  const backToToday = () => { setOverride(null); setOpenStep(null); };
+  const previewingOtherDay = phase === 'during' && d.n !== momentDay;
   // 首頁統計四宮格共用的記帳累計（Task 8 建、Task 10 改接四宮格，取代已移除的舊版三格今日儀表）。
   const dashTotals = B_useMemo(() => core.expenseTotals(expenses), [core, expenses]);
   // Task 10：首頁照片 hero 用當前顯示日的目的城市；轉場日 d.city 形如
@@ -1120,7 +1146,11 @@ function B_Companion({ initialDay }) {
   };
 
   return (
-    <div className="B-frame paper-tex B-companion">
+    // 2026-07-26 修正輪（A8-6）：離線點擊攔截原本掛在 <main> 的 onClickCapture，
+    // 但子頁（B_Subpage）、工具選單與 drawer 都 render 在 <main> 之外，所以子頁內
+    // 的外部連結（例如照片出處）離線點下去只會開出一個失敗的空白分頁。改掛在根
+    // 節點，覆蓋整個 App；<main> 是根節點的後代，主畫面原有行為不變。
+    <div className="B-frame paper-tex B-companion" onClickCapture={interceptOfflineLink}>
       <div className="B-status-bar">
         <span>{liveClock}</span>
         <span style={{display:'flex', gap:6, alignItems:'center'}}>
@@ -1164,7 +1194,7 @@ function B_Companion({ initialDay }) {
       </header>
 
       <B_PrimaryNav placement="desktop" {...navActions} />
-      <main id="app-main" className="B-web-grid B-tabview" data-tab={activeTab} onClickCapture={interceptOfflineLink}>
+      <main id="app-main" className="B-web-grid B-tabview" data-tab={activeTab}>
         <section className="B-primary-column" aria-label="今日行程">
 
       <div data-tabsection="home">
@@ -1179,7 +1209,10 @@ function B_Companion({ initialDay }) {
           <div className="B-card-a B-nextmove">
             <p className="B-kicker-a">下一段長途車</p>
             <p className="B-nextmove-seg B-num">{nt.train.seg}</p>
+            {/* leg 只在同一天同一班車有多個區段（去程／往返全程）時才有值，
+                讓 07:30 → 14:30 這種「往返全程」的時間不會被讀成單程抵達時刻。 */}
             <p className="B-nextmove-time B-num">{nt.train.date} {nt.train.dep} → {nt.train.arr}</p>
+            {nt.train.leg && <p className="B-move-leg">{nt.train.leg}</p>}
             <p className={`B-nextmove-count${nt.minutesUntil <= 60 ? ' is-soon' : ''}`}>{core.formatCountdown(nt.minutesUntil)} · {nt.train.type} · PLN {nt.train.price}</p>
           </div>
         )}
@@ -1256,19 +1289,40 @@ function B_Companion({ initialDay }) {
           </aside>
         )}
 
+        {override != null && (
+          <button
+            type="button"
+            className="B-back-today"
+            onClick={backToToday}>
+            ↩ 回到今天{momentDay ? `（Day ${momentDay}）` : ''}
+          </button>
+        )}
+
         <button
           type="button"
           className="B-now"
           aria-label="跳到目前進行中的行程"
           onClick={() => {
+            // 2026-07-26 修正輪（A1）：.B-step 全部在 data-tabsection="trip" 裡，
+            // 手機上非當前分頁被 CSS display:none 隱藏；對沒有 layout box 的元素
+            // 呼叫 scrollIntoView 是 no-op，所以先切到行程分頁，等 React commit
+            // 後的下一次繪製（兩層 rAF 保證分頁真的顯示出來、版面算好）才捲動。
             setOpenStep(idx);
-            const els = document.querySelectorAll('.B-step');
-            if (els[idx] && els[idx].scrollIntoView) {
-              els[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setActiveTab('trip');
+            const scrollToStep = () => {
+              const els = document.querySelectorAll('.B-step');
+              if (els[idx] && els[idx].scrollIntoView) {
+                els[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+            };
+            if (typeof requestAnimationFrame === 'function') {
+              requestAnimationFrame(() => requestAnimationFrame(scrollToStep));
+            } else {
+              scrollToStep();
             }
           }}>
           <div className="now-label">
-            {phase === 'before' ? '行程尚未開始 · 預覽' : phase === 'after' ? '行程已結束 · 回顧' : beforeStart ? '今日尚未開始' : afterEnd ? '今日已結束' : 'Now · 現在該做什麼'}
+            {phase === 'before' ? '行程尚未開始 · 預覽' : phase === 'after' ? '行程已結束 · 回顧' : previewingOtherDay ? `Day ${d.n} 預覽 · 不是現在` : beforeStart ? '今日尚未開始' : afterEnd ? '今日已結束' : 'Now · 現在該做什麼'}
           </div>
           <span className="now-time">{now.t}</span>
           <div className="now-task">{now.label.replace(/^★\s*/, '')}</div>
@@ -1313,6 +1367,7 @@ function B_Companion({ initialDay }) {
             <div className="seg">
               <span className={`pill ${d.train.type.toLowerCase()}`}>{d.train.type}</span>
               <span>{d.train.date || d.date}</span>
+              {d.train.leg && <span className="B-move-leg">· {d.train.leg}</span>}
               <span>· {d.train.price}</span>
               <a className="book-cta"
                  href={bookHref}
@@ -1356,6 +1411,7 @@ function B_Companion({ initialDay }) {
                   <span className={`B-move-type ${tr.type.toLowerCase()}`}>{tr.type}</span> {tr.seg}
                 </span>
                 <span className="B-move-time B-num">{tr.date} {tr.dep} → {tr.arr}</span>
+                {tr.leg && <span className="B-move-leg">{tr.leg}</span>}
               </div>
               <span className={`B-nextmove-count${!state.departed && state.minutesUntil !== null && state.minutesUntil <= 60 ? ' is-soon' : ''}${state.departed ? ' is-departed' : ''}`}>
                 {state.text}
@@ -1396,6 +1452,7 @@ function B_Companion({ initialDay }) {
               </div>
               <dl className="sheet-list">
                 <div><dt>日期</dt><dd>{d.train.date || d.date}</dd></div>
+                {d.train.leg && <div><dt>區段</dt><dd>{d.train.leg}</dd></div>}
                 <div><dt>出發</dt><dd>{B_STATIONS[d.train.from] || d.train.from}</dd></div>
                 <div><dt>抵達</dt><dd>{B_STATIONS[d.train.to] || d.train.to}</dd></div>
                 <div><dt>票價</dt><dd>{d.train.price}</dd></div>
@@ -1682,7 +1739,7 @@ function B_Companion({ initialDay }) {
       })()}
 
       <section data-tabsection="money">
-        <B_Expense storage={storage} />
+        <B_Expense storage={storage} activeTab={activeTab} subpage={subpage} />
       </section>
 
         </aside>

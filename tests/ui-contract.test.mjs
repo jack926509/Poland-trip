@@ -12,7 +12,10 @@ test('build 只編譯正式 PWA 介面', () => {
 });
 
 test('行動版底部導覽為四個真分頁', () => {
-  for (const label of ['首頁', '行程', '交通', '更多']) assert.match(jsx, new RegExp(label));
+  // 原本清單寫 '更多'，但實際四個分頁是 首頁／行程／交通／記帳；'更多' 只是被
+  // aria-label="更多工具" 這類不相干字串誤中，與下方「底部四分頁為 首頁/行程/交通/記帳」
+  // 的 doesNotMatch(/\['more', ?'更多'\]/) 語意相反。
+  for (const label of ['首頁', '行程', '交通', '記帳']) assert.match(jsx, new RegExp(label));
   assert.match(jsx, /B-mobile-nav/);
   assert.match(jsx, /B-desktop-nav/); // 桌機雙欄 nav 保留
   assert.match(jsx, /activeTab/);
@@ -164,7 +167,9 @@ test('首頁選單有六個工具卡與可返回的子頁容器', () => {
 test('方案 A token 從根節點 cascade，避免只定義沒掛載', () => {
   // .B-companion（redesign/B-companion.css）是 --A-* token 的唯一定義處；
   // 沒有元素掛這個 class，token 全部解析成空字串，css 裡寫 var(--A-*) 只是文字，不會生效。
-  assert.match(jsx, /<div className="B-frame paper-tex B-companion">/);
+  // 2026-07-26 修正輪（A8-6）：根節點多了 onClickCapture（離線點擊攔截從 <main>
+  // 移上來，好讓子頁的外部連結也攔得到），所以 class 之後不再緊接 '>'。
+  assert.match(jsx, /<div className="B-frame paper-tex B-companion"[ >]/);
 });
 
 test('.B-frame 不再自設底色／文字色／字型，避免蓋掉同節點 .B-companion 的 A token', () => {
@@ -575,4 +580,139 @@ test('長途車倒數紅字只在即將出發時觸發，預設中性色，首�
 
 test('--A-signal-bright 註解涵蓋文字與非文字用途，不再與 .B-expense-over-tag 的實際用法矛盾', () => {
   assert.match(css, /文字與非文字元素皆可用[\s\S]{0,300}--A-signal-bright:\s*#FF8C66/);
+});
+
+/* ── 2026-07-26 最終修正輪：四分頁骨幹與各項修正的守護 ────────────────
+   審查發現四分頁機制（本次改版的骨幹功能）零測試守護：刪掉切換用的 CSS 規則、
+   刪掉 <main> 的 data-tab、把手機 nav 的 onChange 換成空函式，三個突變都能讓
+   158 個測試全綠。以下測試釘住 CSS 規則本體與兩處 JSX 接線。
+   註解剝除：本檔的 regex 是對原始碼字串比對，寫在註解裡的字串也會通過。以下
+   斷言一律用剝掉區塊註解的副本，避免「規則被刪掉但註解裡剛好提到」還能過關。 */
+const cssCode = css.replace(/\/\*[\s\S]*?\*\//g, '');
+const jsxCode = jsx.replace(/\/\*[\s\S]*?\*\//g, '');
+const TAB_KEYS = ['home', 'trip', 'move', 'money'];
+
+test('四分頁切換的 CSS 規則本體存在（隱藏全部＋四條顯示規則）', () => {
+  const mobileBlockAt = cssCode.indexOf('@media (max-width: 899px)');
+  assert.ok(mobileBlockAt > -1, '手機分頁規則所在的 @media (max-width: 899px) 區塊不存在');
+
+  // 1) 「非當前分頁全部隱藏」這條被刪掉，四個分頁內容就會同時堆疊在一頁。
+  const hideRule = /\.B-tabview \[data-tabsection\]\{\s*display:\s*none;\s*\}/;
+  assert.match(cssCode, hideRule);
+  assert.ok(cssCode.search(hideRule) > mobileBlockAt, '隱藏規則必須在手機 @media 區塊內');
+
+  // 2) 四條顯示規則必須成組存在且共用同一個 display:block；少一條就不匹配。
+  const showRule = new RegExp(
+    TAB_KEYS.map((k) => `\\.B-tabview\\[data-tab="${k}"\\] \\[data-tabsection="${k}"\\]`).join(',\\s*')
+    + '\\{\\s*display:\\s*block;\\s*\\}'
+  );
+  assert.match(cssCode, showRule);
+  assert.ok(cssCode.search(showRule) > mobileBlockAt, '顯示規則必須在手機 @media 區塊內');
+
+  // 3) .B-scrub 的 flex 例外規則（原本唯一被釘住的那條）也要留著。
+  assert.match(cssCode, /\.B-tabview\[data-tab="trip"\] \[data-tabsection="trip"\]\.B-scrub\{\s*display:\s*flex;\s*\}/);
+});
+
+test('四分頁的兩處 JSX 接線存在：main 的 data-tab 與手機 nav 的 onChange', () => {
+  // <main> 少了 data-tab={activeTab}，CSS 選擇器就永遠選不到，分頁完全失效。
+  assert.match(jsxCode, /<main[^>]*className="B-web-grid B-tabview"[^>]*data-tab=\{activeTab\}/);
+  // 手機 nav 的 onChange 必須真的接到 setActiveTab，換成空函式則按分頁沒反應。
+  assert.match(jsxCode, /<B_PrimaryNav\s+placement="mobile"\s+active=\{activeTab\}\s+onChange=\{setActiveTab\}\s*\/>/);
+  // nav 內部按鈕要真的呼叫 onChange(key)。
+  assert.match(jsxCode, /onClick=\{\(\)\s*=>\s*onChange\(key\)\}/);
+  // 四個分頁 key 與標籤成組釘住，順序與文字都不可漂移。
+  assert.match(jsxCode, /const tabs = \[\['home', '首頁'\], \['trip', '行程'\], \['move', '交通'\], \['money', '記帳'\]\]/);
+  // 四個 data-tabsection 都要有實際 render 的節點。
+  for (const k of TAB_KEYS) assert.match(jsxCode, new RegExp(`data-tabsection="${k}"`));
+});
+
+test('A1：Now 按鈕會先切到行程分頁再捲動（隱藏元素 scrollIntoView 是 no-op）', () => {
+  const from = jsxCode.indexOf('aria-label="跳到目前進行中的行程"');
+  const to = jsxCode.indexOf('<div className="now-label">', from);
+  assert.ok(from > -1 && to > from, '找不到 .B-now 按鈕的 onClick 區塊');
+  const body = jsxCode.slice(from, to);
+  assert.match(body, /setActiveTab\('trip'\)/);
+  assert.match(body, /requestAnimationFrame/);
+  assert.match(body, /scrollIntoView/);
+  // 切分頁必須排在取 .B-step 之前，否則目標仍是 display:none 的節點。
+  assert.ok(
+    body.indexOf("setActiveTab('trip')") < body.indexOf("querySelectorAll('.B-step')"),
+    'setActiveTab 必須在 querySelectorAll(.B-step) 之前'
+  );
+});
+
+test('A2：override 有清除入口，且顯示日不是今天時 Now 標籤不寫「現在」', () => {
+  assert.match(jsxCode, /const backToToday = \(\) => \{ setOverride\(null\); setOpenStep\(null\); \};/);
+  assert.match(jsxCode, /const previewingOtherDay = phase === 'during' && d\.n !== momentDay;/);
+  assert.match(jsxCode, /\{override != null && \(/);
+  assert.match(jsxCode, /className="B-back-today"[\s\S]{0,200}onClick=\{backToToday\}/);
+  assert.match(jsxCode, /↩ 回到今天/);
+  assert.match(jsxCode, /previewingOtherDay \? `Day \$\{d\.n\} 預覽 · 不是現在`/);
+  // 按鈕要有足夠的點擊尺寸（最小 24×24，這裡給 44px）。
+  assert.match(cssCode, /\.B-back-today\{[^}]*min-height:44px/);
+});
+
+test('A3：記帳分頁的匯率設定會跟著分頁／子頁切換重讀，與首頁同一份來源', () => {
+  assert.match(jsxCode, /function B_Expense\(\{ storage, activeTab, subpage \}\)/);
+  assert.match(jsxCode, /const \[settings, setSettings\] = B_useState/);
+  assert.match(
+    jsxCode,
+    /setSettings\(core\.readJSON\(storage, 'polska\.settings\.v1', core\.DEFAULT_SETTINGS\)\);\s*\}, \[core, storage, activeTab, subpage\]\)/
+  );
+  assert.match(jsxCode, /<B_Expense storage=\{storage\} activeTab=\{activeTab\} subpage=\{subpage\} \/>/);
+  // 首頁那份 effect 的觸發條件必須一致，兩邊才不會各拿一份匯率。
+  assert.match(jsxCode, /\}, \[core, storage, subpage, activeTab\]\)/);
+});
+
+test('A6：Day 3 巴士兩筆資料都保留，靠 leg 標籤區分去程與往返全程', () => {
+  const data = fs.readFileSync('redesign/data.js', 'utf8');
+  const dataCode = data.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+  // 兩筆時間都是事實，不可為了統一而刪掉或改掉。
+  assert.match(dataCode, /leg:'去程 · 抵奧斯威辛'[\s\S]{0,120}dep:'07:30', arr:'09:00'/);
+  assert.match(dataCode, /leg:'往返全程 · 回抵克拉科夫'[\s\S]{0,80}dep:'07:30', arr:'14:30'/);
+  // 票價寫法一致：兩處都是「30（單程 15 ×2）」，不再是 'PLN 15 ×2' 對 '30'。
+  assert.match(dataCode, /price:'PLN 30（單程 15 ×2）'/);
+  assert.match(dataCode, /price:'30（單程 15 ×2）'/);
+  assert.doesNotMatch(dataCode, /price:'PLN 15 ×2'/);
+  // 三個 render 點都要把 leg 吐出來，否則資料改了畫面照舊。
+  assert.match(jsxCode, /\{nt\.train\.leg && <p className="B-move-leg">\{nt\.train\.leg\}<\/p>\}/);
+  assert.match(jsxCode, /\{d\.train\.leg && <span className="B-move-leg">· \{d\.train\.leg\}<\/span>\}/);
+  assert.match(jsxCode, /\{tr\.leg && <span className="B-move-leg">\{tr\.leg\}<\/span>\}/);
+  assert.match(cssCode, /\.B-move-leg\{/);
+});
+
+test('A8：記帳頁文案與無障礙細節（NT$ 空格、Day 空格、aria-pressed、門檻插值）', () => {
+  // 台幣前綴一律「≈ NT$」，不可有貼在一起的 ≈NT$。
+  assert.doesNotMatch(jsxCode, /≈NT\$/);
+  assert.match(jsxCode, /≈ NT\$\{budget\.spentTWD/);
+  assert.match(jsxCode, /≈ NT\$\{core\.plnToTwd\(e\.amountPLN/);
+  // 記帳頁的 Day 一律帶半形空格；首頁 hero 的大寫 DAY 排版不在此列。
+  assert.doesNotMatch(jsxCode, /Day\{d\.n\}/);
+  assert.doesNotMatch(jsxCode, /Day\{e\.day\}/);
+  assert.match(jsxCode, /<span className="day">Day \{e\.day\}<\/span>/);
+  assert.match(jsxCode, /`Day \$\{d\.n\} · \$\{d\.date\}`/);
+  // 不再用全形括號包住已含半形括號的日期。
+  assert.doesNotMatch(jsxCode, /Day\$\{d\.n\}（\$\{d\.date\}）/);
+  // 日期篩選藥丸補上 aria-pressed（與退稅篩選、拍照打卡一致）。
+  assert.match(jsxCode, /aria-pressed=\{filterDay === 'all'\}/);
+  assert.match(jsxCode, /aria-pressed=\{filterDay === d\.n\}/);
+  // 子頁返回鈕不再承諾返回已被移除的「更多」分頁。
+  assert.doesNotMatch(jsxCode, /aria-label="返回更多"/);
+  assert.match(jsxCode, /aria-label="返回上一頁"/);
+  // 退稅門檻文案改用常數插值。
+  assert.match(jsxCode, /滿 \{core\.TAX_FREE_MIN_PLN\} PLN 計算/);
+  assert.doesNotMatch(jsxCode, /滿 200 PLN/);
+});
+
+test('A8-6：離線點擊攔截掛在根節點，子頁的外部連結也攔得到', () => {
+  assert.match(jsxCode, /<div className="B-frame paper-tex B-companion" onClickCapture=\{interceptOfflineLink\}>/);
+  // 不可留在 <main> 上——子頁 render 在 <main> 之外。
+  assert.doesNotMatch(jsxCode, /<main[^>]*onClickCapture/);
+});
+
+test('A8-7：離線提示 toast 疊在工具選單與子頁（z-index 130）之上', () => {
+  assert.match(cssCode, /\.B-toast\{[^}]*z-index:140/);
+  // 子頁與工具選單維持 130，toast 必須高於它們。
+  assert.match(cssCode, /\.B-subpage-mask\{[^}]*z-index:\s*130/);
+  assert.match(cssCode, /\.B-tools-menu \{[^}]*z-index:\s*130/);
 });
