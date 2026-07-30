@@ -191,11 +191,20 @@
     return Date.UTC(year, m - 1, d, hh - warsawOffsetHours(train.date), mm);
   }
 
+  // 「這班車是否已經出發」唯一的判斷來源。首頁的 nextTrain（決定要跳過哪些
+  // 班次）與交通頁的 trainCountdownState（決定顯示「已出發」還是倒數）都必須
+  // 呼叫這一支，否則兩處各寫一次比較式就會像 2026-07-26 審查抓到的那樣，一處
+  // 寫 ms < nowMs、一處寫 depMs <= nowMs，在「剛好等於發車時刻」那一毫秒互相
+  // 矛盾（首頁說即將出發、交通頁說已出發）。語意採「發車時刻本身即視為已出發」。
+  function hasDeparted(depMs, nowMs) {
+    return depMs <= nowMs;
+  }
+
   function nextTrain(trains, nowMs, year) {
     var list = trains || [];
     for (var i = 0; i < list.length; i += 1) {
       var ms = trainDepartureMs(list[i], year);
-      if (!isFinite(ms) || ms < nowMs) continue;
+      if (!isFinite(ms) || hasDeparted(ms, nowMs)) continue;
       return { index: i, train: list[i], minutesUntil: Math.round((ms - nowMs) / 60000) };
     }
     return null;
@@ -221,13 +230,16 @@
   // Task 12 修正輪（I3）：原本用「四捨五入後的分鐘數 <= 0」判斷是否已出發，
   // 導致發車前 29 秒（29000ms／60000 四捨五入為 0）就被判定已出發，早了
   // 29 秒，且與首頁 nextTrain+formatCountdown 同一瞬間顯示「即將出發」互相
-  // 矛盾。改成直接比較毫秒時間戳（與 nextTrain 判斷「已出發要跳過」用的
-  // ms < nowMs 同一套語意一致），不再讓四捨五入影響「是否已出發」這個布林值；
+  // 矛盾。改成直接比較毫秒時間戳，不再讓四捨五入影響「是否已出發」這個布林值；
   // 分鐘數只用來組文案，不參與判斷。
+  // 2026-07-26 修正輪（A8-8）：判斷式抽成上方共用的 hasDeparted，nextTrain 與
+  // 本函式呼叫同一支，兩處不再各寫一次比較式。原註解宣稱與 nextTrain 的
+  // `ms < nowMs` 一致，但實際是 `depMs <= nowMs`，兩者在等號那一刻不同；
+  // 現已統一為 hasDeparted 的 `<=`（發車時刻本身視為已出發）。
   function trainCountdownState(train, nowMs, year) {
     var depMs = trainDepartureMs(train, year);
     if (!isFinite(depMs)) return { departed: null, minutesUntil: null, text: '時間未定' };
-    var departed = depMs <= nowMs;
+    var departed = hasDeparted(depMs, nowMs);
     var minutesUntil = Math.round((depMs - nowMs) / 60000);
     if (departed) return { departed: true, minutesUntil: minutesUntil, text: '已出發' };
     return { departed: false, minutesUntil: minutesUntil, text: formatCountdown(minutesUntil) };
@@ -287,12 +299,19 @@
   // 才把新格式寫回 PHOTOMAP_KEY。若備份 key 已存在則不覆寫——同一支 App 可能
   // 被打開很多次，第二次以後 migratePhotoCheckins 就會回報 migrated:false，
   // 但這裡仍加一層「備份已存在就不動」的保險，避免任何後續情境誤把備份寫成新值。
+  // 2026-07-26 修正輪（A5）：writeJSON 會在 storage 滿了／被拒絕時回 false。
+  // 原本沒檢查回傳值就覆寫主 key，備份失敗時舊格式打卡資料會在沒有任何副本的
+  // 情況下被蓋掉。現在只有「備份原本就存在」或「這次備份確實寫成功」才覆寫主
+  // key；兩者都不成立時保留舊資料原封不動、回報 migrated:false，讓下次啟動重試。
+  // 回傳 next:old（未遷移的原值）而不是 result.next，是為了讓呼叫端看到的狀態
+  // 與 storage 裡真正的內容一致——不讓畫面顯示一份沒有落地的遷移結果。
   function migratePhotoMapStorage(storage, spots) {
     var old = readJSON(storage, PHOTOMAP_KEY, {});
     var result = migratePhotoCheckins(old, spots);
     if (result.migrated) {
       var hasBackup = storage && storage.getItem && storage.getItem(PHOTOMAP_BACKUP_KEY) != null;
-      if (!hasBackup) writeJSON(storage, PHOTOMAP_BACKUP_KEY, old);
+      var backupSafe = hasBackup || writeJSON(storage, PHOTOMAP_BACKUP_KEY, old);
+      if (!backupSafe) return { next: old, migrated: false, backupFailed: true };
       writeJSON(storage, PHOTOMAP_KEY, result.next);
     }
     return result;
@@ -302,7 +321,7 @@
     projectTripMoment, selectNextHardConstraint, selectHardConstraintForMoment, readNotes, writeNotes,
     DEFAULT_SETTINGS, EXPENSE_CATEGORIES, readJSON, writeJSON, plnToTwd, expenseTotals, budgetStatus,
     TAX_FREE_MIN_PLN, taxRefundStatus, taxRefundEstimate, taxRefundSummary,
-    warsawOffsetHours, trainDepartureMs, nextTrain, formatCountdown, trainCountdownState,
+    warsawOffsetHours, trainDepartureMs, hasDeparted, nextTrain, formatCountdown, trainCountdownState,
     PHOTOMAP_BACKUP_KEY, PHOTOMAP_KEY, migratePhotoCheckins, migratePhotoMapStorage,
   };
 })(typeof window === 'undefined' ? globalThis : window);

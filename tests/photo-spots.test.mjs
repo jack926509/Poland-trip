@@ -198,3 +198,62 @@ test('即使備份已存在，migratePhotoMapStorage 也不會覆寫備份內容
   const backup = JSON.parse(storage.getItem(core.PHOTOMAP_BACKUP_KEY));
   assert.deepEqual(backup, { 華沙: true }, '備份已存在時不可被覆寫');
 });
+
+/* 2026-07-26 修正輪（A5）：備份寫入失敗時不得覆寫主資料。
+   原本 migratePhotoMapStorage 沒有檢查 writeJSON 的回傳值就覆寫 PHOTOMAP_KEY，
+   若備份那次因容量等原因失敗，舊格式打卡資料會在沒有任何副本的情況下被蓋掉。 */
+function makeBackupFailingStorage() {
+  const bag = {};
+  return {
+    getItem: (k) => (Object.prototype.hasOwnProperty.call(bag, k) ? bag[k] : null),
+    setItem: (k, v) => {
+      if (k === core.PHOTOMAP_BACKUP_KEY) {
+        const err = new Error('QuotaExceededError');
+        err.name = 'QuotaExceededError';
+        throw err;
+      }
+      bag[k] = v;
+    },
+    _bag: bag,
+  };
+}
+
+test('備份寫入失敗時不覆寫主 key，舊資料原封不動保留', () => {
+  const spots = [
+    { id: 'waw-oldtown', cityKey: 'WAW' },
+    { id: 'krk-rynek', cityKey: 'KRK' },
+  ];
+  const storage = makeBackupFailingStorage();
+  const original = { 華沙: true, 克拉科夫: false };
+  storage._bag['polska.photomap.v1'] = JSON.stringify(original);
+
+  const r = core.migratePhotoMapStorage(storage, spots);
+
+  // 主 key 必須完全沒被動過。
+  assert.deepEqual(
+    JSON.parse(storage.getItem('polska.photomap.v1')),
+    original,
+    '備份失敗時主 key 不可被覆寫'
+  );
+  // 備份 key 沒有內容（寫入拋錯）。
+  assert.equal(storage.getItem(core.PHOTOMAP_BACKUP_KEY), null);
+  // 回報必須誠實：遷移沒有落地。
+  assert.equal(r.migrated, false);
+  assert.equal(r.backupFailed, true);
+  // 回傳的 next 是尚未遷移的原值，與 storage 內容一致。
+  assert.deepEqual(JSON.parse(JSON.stringify(r.next)), original);
+});
+
+test('備份寫入成功時才覆寫主 key（正常路徑不受 A5 修正影響）', () => {
+  const spots = [
+    { id: 'waw-oldtown', cityKey: 'WAW' },
+    { id: 'krk-rynek', cityKey: 'KRK' },
+  ];
+  const storage = makeFakeStorage();
+  storage.setItem('polska.photomap.v1', JSON.stringify({ 華沙: true }));
+
+  const r = core.migratePhotoMapStorage(storage, spots);
+  assert.equal(r.migrated, true);
+  assert.deepEqual(JSON.parse(storage.getItem(core.PHOTOMAP_BACKUP_KEY)), { 華沙: true });
+  assert.equal(JSON.parse(storage.getItem('polska.photomap.v1'))['waw-oldtown'], true);
+});

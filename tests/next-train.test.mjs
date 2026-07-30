@@ -106,3 +106,39 @@ test('trainCountdownState：發車後 1 秒必須標記已出發', () => {
   assert.equal(r.departed, true);
   assert.equal(r.text, '已出發');
 });
+
+/* 2026-07-26 修正輪（A8-8）：「是否已出發」原本在 nextTrain（ms < nowMs）與
+   trainCountdownState（depMs <= nowMs）各寫一次，兩者在「剛好等於發車時刻」
+   那一毫秒結論相反，而註解卻宣稱兩處一致。現在抽成共用的 core.hasDeparted，
+   兩處都呼叫它。 */
+test('hasDeparted 是共用判斷：發車時刻本身視為已出發，前一毫秒不算', () => {
+  assert.equal(typeof core.hasDeparted, 'function');
+  assert.equal(core.hasDeparted(1000, 1000), true);
+  assert.equal(core.hasDeparted(1000, 999), false);
+  assert.equal(core.hasDeparted(1000, 1001), true);
+});
+
+test('nextTrain 與 trainCountdownState 在發車時刻同一毫秒結論一致', () => {
+  const depMs = core.trainDepartureMs(TRAINS[0], 2026);
+  // 交通頁：這班車已出發。
+  assert.equal(core.trainCountdownState(TRAINS[0], depMs, 2026).departed, true);
+  // 首頁：同一瞬間 nextTrain 必須跳過同一班車，不可還把它當成「下一段」。
+  const r = core.nextTrain(TRAINS, depMs, 2026);
+  assert.notEqual(r, null);
+  assert.equal(r.index, 1, '發車時刻當下第一段已出發，下一段應是 index 1');
+  // 前一毫秒兩處都認為還沒出發。
+  assert.equal(core.trainCountdownState(TRAINS[0], depMs - 1, 2026).departed, false);
+  assert.equal(core.nextTrain(TRAINS, depMs - 1, 2026).index, 0);
+});
+
+test('pwa-core 只有一處寫「是否已出發」的比較式', () => {
+  const src = fs.readFileSync('redesign/pwa-core.js', 'utf8');
+  const code = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+  assert.match(code, /function hasDeparted\(depMs, nowMs\) \{\s*return depMs <= nowMs;\s*\}/);
+  assert.match(code, /if \(!isFinite\(ms\) \|\| hasDeparted\(ms, nowMs\)\) continue;/);
+  assert.match(code, /var departed = hasDeparted\(depMs, nowMs\);/);
+  // 呼叫端不得再自己寫比較式（`ms < nowMs` 是修正前 nextTrain 的寫法）。
+  assert.doesNotMatch(code, /ms < nowMs/);
+  // `depMs <= nowMs` 全檔只能出現一次，就是 hasDeparted 的函式本體。
+  assert.equal((code.match(/depMs <= nowMs/g) || []).length, 1);
+});
