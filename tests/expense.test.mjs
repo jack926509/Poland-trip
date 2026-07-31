@@ -75,3 +75,17 @@ test('DEFAULT_SETTINGS 與分類常數存在且正確', () => {
   assert.deepEqual(JSON.parse(JSON.stringify(core.EXPENSE_CATEGORIES.map((c) => c.key))), ['food', 'ticket', 'transport', 'shop']);
   assert.deepEqual(JSON.parse(JSON.stringify(core.EXPENSE_CATEGORIES.map((c) => c.label))), ['餐飲', '門票', '交通', '購物']);
 });
+
+test('readJSON 型別不符時回 fallback，不把壞資料交出去', () => {
+  const bad = { getItem: () => '{"oops":1}', setItem: () => {} };
+  assert.deepEqual(JSON.parse(JSON.stringify(core.readJSON(bad, 'polska.expenses.v1', []))), []);
+
+  const badArr = { getItem: () => '[1,2,3]', setItem: () => {} };
+  assert.deepEqual(JSON.parse(JSON.stringify(core.readJSON(badArr, 'polska.settings.v1', { fxRate: 7.7 }))), { fxRate: 7.7 });
+
+  const good = { getItem: () => '[{"amountPLN":50}]', setItem: () => {} };
+  assert.deepEqual(JSON.parse(JSON.stringify(core.readJSON(good, 'polska.expenses.v1', []))), [{ amountPLN: 50 }]);
+
+  const num = { getItem: () => '"abc"', setItem: () => {} };
+  assert.equal(core.readJSON(num, 'k', 0), 0);
+});

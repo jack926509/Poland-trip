@@ -12,7 +12,10 @@ test('build 只編譯正式 PWA 介面', () => {
 });
 
 test('行動版底部導覽為四個真分頁', () => {
-  for (const label of ['首頁', '行程', '交通', '更多']) assert.match(jsx, new RegExp(label));
+  // 原本清單寫 '更多'，但實際四個分頁是 首頁／行程／交通／記帳；'更多' 只是被
+  // aria-label="更多工具" 這類不相干字串誤中，與下方「底部四分頁為 首頁/行程/交通/記帳」
+  // 的 doesNotMatch(/\['more', ?'更多'\]/) 語意相反。
+  for (const label of ['首頁', '行程', '交通', '記帳']) assert.match(jsx, new RegExp(label));
   assert.match(jsx, /B-mobile-nav/);
   assert.match(jsx, /B-desktop-nav/); // 桌機雙欄 nav 保留
   assert.match(jsx, /activeTab/);
@@ -65,7 +68,7 @@ test('Drawer 只在開啟時可對焦並還原開啟者焦點', () => {
   assert.match(jsx, /if \(e\.key === 'Escape' && drawerOpen\)/);
 });
 
-test('Drawer 與交通 sheet 共用 modal 焦點循環', () => {
+test('Drawer、交通 sheet、子頁與工具選單共用 modal 焦點循環', () => {
   assert.match(jsx, /function B_useModalFocus\(/);
   assert.match(jsx, /e\.key !== 'Tab'/);
   assert.match(jsx, /e\.shiftKey/);
@@ -74,9 +77,22 @@ test('Drawer 與交通 sheet 共用 modal 焦點循環', () => {
   assert.match(jsx, /first\.focus\(\)/);
   assert.doesNotMatch(jsx, /offsetParent/, '固定定位 modal 不可用 offsetParent 判斷可對焦項目');
   const uses = jsx.match(/B_useModalFocus\(/g) || [];
-  assert.equal(uses.length, 3, '應定義一次並分別套用於 Drawer 與交通 sheet');
+  assert.equal(uses.length, 5, '應定義一次並分別套用於 Drawer、交通 sheet、子頁與工具選單');
   assert.match(jsx, /ref={drawerRef}/);
   assert.match(jsx, /ref={trainSheetRef}/);
+  assert.match(jsx, /B_useModalFocus\(toolsOpen,\s*toolsMenuRef,\s*toolsMenuCloseRef,\s*toolsBtnRef\)/);
+});
+
+test('子頁沿用既有 modal 焦點契約，Escape 可關且鎖背景滾動', () => {
+  assert.match(jsx, /subpageReturnFocusRef/);
+  assert.match(jsx, /B_useModalFocus\(\s*!!subpage/);
+  assert.match(jsx, /e\.key === 'Escape' && subpage/);
+  assert.match(jsx, /drawerOpen \|\| trainSheet \|\| subpage \|\| toolsOpen \? 'hidden' : ''/);
+});
+
+test('工具選單沿用既有 modal 焦點契約，Escape 可關且鎖背景滾動', () => {
+  assert.match(jsx, /e\.key === 'Escape' && toolsOpen/);
+  assert.match(jsx, /B_useModalFocus\(toolsOpen,\s*toolsMenuRef,\s*toolsMenuCloseRef,\s*toolsBtnRef\)/);
 });
 
 test('交通卡使用獨立詳情按鈕且不建立巢狀互動元素', () => {
@@ -105,23 +121,73 @@ test('卡片套用米紙底與金色點綴語彙', () => {
   assert.match(css, /var\(--amber\)/); // 金色作為點綴出現
 });
 
-test('首頁 hero 為四城市輪播且尊重減量動畫', () => {
+test('首頁 hero 依當天所在城市顯示對應照片，四城輪播已依規格裁定移除', () => {
+  // 2026-07-26 規格衝突裁決：specs:73 原寫「四城輪播」，但輪播每 3.2 秒
+  // 換城市牴觸規格自述的痛點「辨識不出今天在哪座城」，使用者裁定維持
+  // 「依當天所在城市顯示對應照片」的現況，specs:73 的輪播描述作廢。
+  // 這條測試把裁決後的行為釘死，取代舊版「四城輪播」測試。
   assert.match(jsx, /function B_Hero/);
-  assert.match(jsx, /華沙[\s\S]*克拉科夫[\s\S]*樂斯拉夫[\s\S]*波茲南/);
-  assert.match(jsx, /prefers-reduced-motion/);
-  assert.match(css, /\.B-hero-slide/);
-  assert.match(css, /\.B-hero-dots/);
+
+  // hero 的城市由 B_focusCity(d.city) 在 t.cities 裡找出來（轉場日取目的地），
+  // 不是寫死或輪播 index 挑出來的。
+  assert.match(jsx, /const heroCityName = B_focusCity\(d\.city\);/);
+  assert.match(jsx, /const heroCity = t\.cities\.find\(\(c\) => c\.name === heroCityName\) \|\| t\.cities\[0\];/);
+  assert.match(jsx, /<B_Hero city=\{heroCity\} day=\{d\}\s*\/>/);
+  assert.match(jsx, /<img src=\{city\.photo\.hero\}/);
+  assert.match(jsx, /<h2 className="B-num">\{city\.name\}<\/h2>/);
+  assert.match(jsx, /<p className="B-hero-sub">\{city\.pl\}/);
+
+  // 舊版四城漸層輪播（Task 3）與其 setInterval／index state／
+  // prefers-reduced-motion 判斷已整段移除，CSS 孤兒規則也一併清掉，
+  // 不可死灰復燃。手機端唯一的自動播放動畫（.B-now 的 B-pulse）改由
+  // redesign/tokens.css 的全域 reduced-motion 規則守住（見該檔測試）。
+  assert.doesNotMatch(jsx, /hs-waw|hs-krk|hs-wro|hs-poz/);
+  // 精準鎖定「已移除的那個 matchMedia 呼叫」，不是禁止提到這個詞——
+  // 程式碼裡的說明註解可以講為什麼移除，PWA standalone 偵測也合法用
+  // window.matchMedia，這裡只釘死 reduced-motion 那個呼叫式不能死灰復燃。
+  assert.doesNotMatch(jsx, /matchMedia\([^)]*prefers-reduced-motion/);
+  // 找「真的有這條規則」（class 名後面接 `{`），不是禁止在說明註解裡提到
+  // 這幾個舊 class 名——移除說明本身就需要點名被刪的 class。
+  assert.doesNotMatch(css, /\.B-hero-slide\s*\{/);
+  assert.doesNotMatch(css, /\.B-hero-dots\s*\{/);
+  assert.doesNotMatch(css, /\.B-hero-cap\s*\{/);
 });
 
-test('更多頁有六張工具卡與可返回的子頁容器', () => {
+test('首頁選單有六個工具卡與可返回的子頁容器', () => {
   assert.match(jsx, /subpage/);
   assert.match(jsx, /setSubpage/);
   assert.match(jsx, /function B_Subpage/);
-  for (const label of ['旅行記帳', 'Photo Map', '匯率換算', '打包清單', 'SOS', '實用資訊']) {
+  for (const label of ['拍照清單', '匯率換算', '打包清單', 'SOS', '實用資訊', '行前指南']) {
     assert.match(jsx, new RegExp(label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   }
-  assert.match(css, /\.B-tool-card/);
+  assert.match(css, /\.B-tools-menu/);
   assert.match(css, /\.B-subpage/);
+});
+
+test('方案 A token 從根節點 cascade，避免只定義沒掛載', () => {
+  // .B-companion（redesign/B-companion.css）是 --A-* token 的唯一定義處；
+  // 沒有元素掛這個 class，token 全部解析成空字串，css 裡寫 var(--A-*) 只是文字，不會生效。
+  // 2026-07-26 修正輪（A8-6）：根節點多了 onClickCapture（離線點擊攔截從 <main>
+  // 移上來，好讓子頁的外部連結也攔得到），所以 class 之後不再緊接 '>'。
+  assert.match(jsx, /<div className="B-frame paper-tex B-companion"[ >]/);
+});
+
+test('.B-frame 不再自設底色／文字色／字型，避免蓋掉同節點 .B-companion 的 A token', () => {
+  // .B-frame 與 .B-companion 現在掛在同一個根節點，兩者都是單一 class 選擇器、
+  // specificity 相同——CSS 平局時比檔案順序，寫在後面的 .B-frame 會贏，即使
+  // .B-companion 的 --A-ground／--A-ink／--A-body 有正確 cascade，底色、文字色、
+  // 字型也不會真的換成新值。三者統一交給 .B-companion 負責，.B-frame 規則區塊
+  // 內不可再自設同名屬性。
+  const start = css.indexOf('.B-frame{');
+  assert.notEqual(start, -1, '.B-frame 規則區塊不存在');
+  const end = css.indexOf('}', start);
+  const block = css.slice(start, end);
+  assert.doesNotMatch(block, /background:\s*var\(--paper\)/);
+  assert.doesNotMatch(block, /color:\s*var\(--ink\)/);
+  assert.doesNotMatch(block, /font-family:\s*var\(--body\)/);
+  assert.match(css, /\.B-companion\s*\{[\s\S]*?background:\s*var\(--A-ground\)/);
+  assert.match(css, /\.B-companion\s*\{[\s\S]*?color:\s*var\(--A-ink\);/);
+  assert.match(css, /\.B-companion\s*\{[\s\S]*?font-family:\s*var\(--A-body\)/);
 });
 
 test('記帳子頁含總額、預算條、分類統計、新增與列表', () => {
@@ -130,9 +196,75 @@ test('記帳子頁含總額、預算條、分類統計、新增與列表', () =>
   assert.match(jsx, /新增記帳/);
   assert.match(jsx, /core\.expenseTotals|expenseTotals\(/);
   assert.match(jsx, /core\.budgetStatus|budgetStatus\(/);
-  assert.match(css, /\.B-expense-total/);
-  assert.match(css, /\.B-budget-bar/);
+  assert.match(css, /\.B-expense-hero/);
+  assert.match(css, /\.B-expense-bar/);
   assert.match(css, /\.B-fab/);
+});
+
+test('記帳金額格式統一兩位小數且台幣加千分位', () => {
+  assert.match(jsx, /toFixed\(2\)/);
+  assert.match(jsx, /toLocaleString\('zh-TW'\)/);
+});
+
+// 下面每一則都釘住「真的 render 出來的 JSX 結構」，不是只釘中文字串——
+// 字串出現在註解裡也會讓 regex 命中，這是前一位實作者兩次絆倒自己測試的原因。
+// 每一則對應一個獨立交付物，並各自做過突變驗證（刪掉該段 render → 該則單獨 FAIL，
+// 其餘不受影響），數字記錄在 task-11-report.md。
+
+test('深咖啡主卡：總花費／進度條／預算列五個節點在同一個 .B-expense-hero 內真的 render', () => {
+  assert.match(
+    jsx,
+    /<div className="B-expense-hero">[\s\S]*?<p className="B-expense-hero-kicker">總花費<\/p>[\s\S]*?<p className="B-expense-hero-amt B-num">\{totals\.totalPLN\.toFixed\(2\)\} <small>PLN<\/small><\/p>[\s\S]*?<p className="B-expense-hero-twd B-num">[\s\S]*?<div className="B-expense-bar">[\s\S]*?<p className="B-expense-hero-budget B-num">[\s\S]*?<\/div>/
+  );
+});
+
+test('分類四宮格：.B-card-a.B-quad 內每格真的用 core.plnToTwd 換算並標示 NT$ 幣別', () => {
+  assert.match(
+    jsx,
+    /<div className="B-card-a B-quad">[\s\S]*?core\.EXPENSE_CATEGORIES\.map[\s\S]*?<b>\{core\.plnToTwd\(totals\.byCategory\[c\.key\], settings\.fxRate\)\.toLocaleString\('zh-TW'\)\}<\/b>[\s\S]*?<span>\{c\.label\} NT\$<\/span>/
+  );
+});
+
+test('退稅提示真的 render 到畫面（不是只活在 setHint 的字串常數裡）', () => {
+  assert.match(jsx, /\{hint && <p className="B-expense-hint" role="status">\{hint\}<\/p>\}/);
+  assert.match(jsx, /setHint\(`這筆可辦退稅[^`]*同一張收據[^`]*`\)/);
+  assert.match(jsx, /setHint\(`距離退稅門檻還差[^`]*同一張收據[^`]*不同店家不能合併[^`]*`\)/);
+});
+
+test('可退稅彙總按鈕在篩選開啟時即使清單清空也留在畫面上可關閉（C1：不會篩選卡死）', () => {
+  assert.match(jsx, /\{\(refund\.count > 0 \|\| onlyRefund\) && \(/);
+  assert.doesNotMatch(jsx, /\{refund\.count > 0 && \(\s*\n\s*<button/); // 舊的卡死守衛不可再出現
+  assert.match(jsx, /className=\{'B-pill-a' \+ \(onlyRefund \? ' is-active' : ''\)\}/);
+  assert.match(jsx, /aria-pressed=\{onlyRefund\}/);
+});
+
+test('退稅彙總附近有常駐可見的「同一張收據」說明，不只是暫態提示', () => {
+  assert.match(jsx, /<p className="B-expense-refund-note">[^<]*同一張收據[^<]*不可合併[^<]*<\/p>/);
+});
+
+test('明細列的可退稅標籤依每筆狀態真的 render', () => {
+  assert.match(
+    jsx,
+    /core\.taxRefundStatus\(e\.amountPLN, e\.category\)\.state === 'eligible' && <em className="B-tag-refund">可退稅<\/em>/
+  );
+});
+
+test('可退稅篩選套用在 Day 篩選結果之上，不會蓋掉 Day 篩選（I4）', () => {
+  assert.match(
+    jsx,
+    /const visible = onlyRefund\s*\n\s*\? dayFiltered\.filter\(\(e\) => core\.taxRefundStatus\(e\.amountPLN, e\.category\)\.state === 'eligible'\)\s*\n\s*: dayFiltered;/
+  );
+  assert.doesNotMatch(jsx, /\? expenses\.filter\(\(e\) => core\.taxRefundStatus/);
+});
+
+test('超支狀態有非顏色的文字指示，不是只靠變色（I5）', () => {
+  assert.match(jsx, /\{budget\.over && <p className="B-expense-over-tag">⚠ 已超支<\/p>\}/);
+  assert.match(css, /\.B-expense-over-tag\s*\{[^}]*color:\s*var\(--A-signal-bright\)/);
+  assert.match(css, /\.B-expense-bar i\.is-over\s*\{\s*background:\s*var\(--A-signal-bright\);?\s*\}/);
+});
+
+test('可退稅彙總按鈕不是全寬區塊，寬度自適應內容（I7）', () => {
+  assert.match(css, /\.B-pill-a\s*\{[^}]*align-self:\s*flex-start/);
 });
 
 test('匯率換算與打包清單子頁存在且持久化', () => {
@@ -144,9 +276,13 @@ test('匯率換算與打包清單子頁存在且持久化', () => {
   assert.match(css, /\.B-packing/);
 });
 
-test('首頁三格儀表接記帳累計', () => {
-  assert.match(jsx, /B-dash/);
+test('首頁統計四宮格接記帳累計，舊版三格儀表已移除不留孤兒樣式', () => {
+  // Task 10 收斂：新的 .B-quad 四宮格取代 Task 8 的舊版 .B-dash 三格，
+  // 避免使用者在首頁同時看到兩組不同來源的統計數字。
   assert.match(jsx, /expenseTotals\(/);
+  assert.match(jsx, /core\.budgetStatus\(/);
+  assert.doesNotMatch(jsx, /B-dash/);
+  assert.doesNotMatch(css, /\.B-dash/);
 });
 
 test('SOS、實用資訊、Photo Map 子頁存在且接既有資料', () => {
@@ -155,7 +291,428 @@ test('SOS、實用資訊、Photo Map 子頁存在且接既有資料', () => {
   assert.match(jsx, /function B_PhotoMap/);
   assert.match(jsx, /safety/);
   assert.match(jsx, /phrases/);
-  assert.match(jsx, /polska\.photomap\.v1/);
+  // Task 13：storage key 改用 core.PHOTOMAP_KEY 常數，不再寫死 'polska.photomap.v1'
+  // 字串（該字面值只留在 pwa-core.js 的常數定義本身）。
+  assert.match(jsx, /core\.PHOTOMAP_KEY/);
   assert.match(css, /\.B-sos/);
   assert.match(css, /\.B-photomap/);
+});
+
+test('三個工具子頁接住 writeJSON 失敗並顯示警語', () => {
+  assert.match(jsx, /const \[storeOk, setStoreOk\] = B_useState\(true\)/);
+  assert.match(jsx, /setStoreOk\(core\.writeJSON\(storage, core\.PHOTOMAP_KEY,/);
+  assert.match(jsx, /setStoreOk\(core\.writeJSON\(storage, 'polska\.settings\.v1'/);
+  assert.match(jsx, /setStoreOk\(core\.writeJSON\(storage, 'polska\.packing\.v1'/);
+  assert.match(css, /\.B-store-warn/);
+  // 只驗 state 與 writeJSON 包裝不夠：使用者看得到的警語才是 M2 的核心，
+  // 必須確認三個子頁都真的把警語 render 出來，不能只宣告 state 卻不顯示。
+  const warnRenders = jsx.match(/\{!storeOk &&\s*<p className="B-store-warn">/g) || [];
+  assert.equal(warnRenders.length, 3, 'B_PhotoMap／B_FxTool／B_Packing 三個子頁都要 render .B-store-warn 警語');
+});
+
+test('Task 13：拍照清單改為景點層級，經 core.migratePhotoMapStorage 遷移舊打卡', () => {
+  assert.match(jsx, /function B_PhotoMap\(\{ trip, storage \}\)/);
+  assert.match(jsx, /core\.migratePhotoMapStorage\(storage, spots\)/);
+  assert.match(jsx, /s\.bestTime/);
+  assert.match(jsx, /s\.light/);
+  assert.match(jsx, /className="B-photo-list"/);
+  assert.match(css, /\.B-photo-list/);
+  assert.match(css, /\.B-photo-item/);
+});
+
+test('Task 13：App 內看得見照片授權出處（CC BY／BY-SA 要求出處隨作品呈現）', () => {
+  assert.match(jsx, /照片出處/);
+  assert.match(jsx, /trip\.photoCredits/);
+  assert.match(jsx, /c\.licenseUrl/);
+  assert.match(jsx, /rel="noopener noreferrer"/);
+  assert.match(css, /\.B-credits/);
+  // 同城市 hero／thumb 的 url 逐字相同，畫面上須依 url 去重顯示 4 筆而非 8 筆，
+  // 否則使用者會看到四組一模一樣的重複出處。
+  assert.match(jsx, /seenCreditUrls\.has\(c\.url\)/, '缺少依 url 去重邏輯，會顯示 8 筆重複出處');
+});
+
+// C1（獨立審查，Critical）：照片經裁切與縮放屬於 CC 授權定義的 Adapted Material，
+// CC BY 4.0 §3(a)(1)(B) 要求標示已修改，CC BY-SA §3(b) 要求改作後以相同授權釋出，
+// 原文案兩者都沒寫，屬法律義務未完整履行。這裡釘住修改後的完整句子（不是只驗
+// 關鍵字片段），避免未來改動悄悄把「已修改」或「相同授權」兩個法律要件其中一個改掉。
+test('C1：照片出處文案含「已修改」與 CC BY-SA 改作後相同授權釋出的法律標示', () => {
+  assert.match(
+    jsx,
+    /本站城市照片取自 Wikimedia Commons，經裁切與縮放後使用；依授權標示作者與授權條款，標示 CC BY-SA 者，改作後之圖檔以相同授權釋出。/,
+  );
+});
+
+// I1（獨立審查，Important）：「來源」連結原本只有 24×13px，低於 WCAG 2.5.8
+// 最小可觸區 24×24，這是法律義務要求的授權連結，按不準等於義務履行不完整。
+test('I1：.B-credits 連結有足夠大的可觸區（inline-block + padding）', () => {
+  assert.match(css, /\.B-credits a\s*\{[^}]*display:\s*inline-block/);
+  assert.match(css, /\.B-credits a\s*\{[^}]*padding:\s*6px 4px/);
+});
+
+// I3（獨立審查，Important）：十個打卡按鈕原本的可視文字都是「已拍」或「待拍」，
+// 螢幕報讀器會聽到十個一模一樣的名稱、分不出是哪個景點；aria-label 帶上景點名稱。
+test('I3：拍照清單打卡按鈕的 aria-label 帶景點名稱，螢幕報讀器可分辨', () => {
+  assert.match(jsx, /aria-label=\{`\$\{s\.name\} \$\{isDone \? '已拍' : '待拍'\}`\}/);
+});
+
+test('記帳表單驗證失敗顯示可讀錯誤而非靜默 return', () => {
+  assert.match(jsx, /const \[formError, setFormError\] = B_useState\(''\)/);
+  assert.match(jsx, /setFormError\('請填品項名稱'\)/);
+  assert.match(jsx, /setFormError\('金額請填大於 0 的數字'\)/);
+  assert.match(jsx, /role="alert"/);
+  assert.match(css, /\.B-form-error/);
+});
+
+test('方案 A token 存在且不污染桌機 tokens.css', () => {
+  assert.match(css, /--A-ground:\s*#F7F4EF/);
+  assert.match(css, /--A-ink:\s*#1B1917/);
+  assert.match(css, /--A-signal:\s*#B5502E/);
+  assert.match(css, /--A-espresso:\s*#33261E/);
+  assert.match(css, /font-variant-numeric:\s*lining-nums tabular-nums/);
+  const tokens = fs.readFileSync('redesign/tokens.css', 'utf8');
+  assert.doesNotMatch(tokens, /--A-/);
+  assert.match(tokens, /--paper:\s*#f4ecd8/);  // 桌機色票未被動過
+});
+
+test('底部四分頁為 首頁/行程/交通/記帳，記帳在第一層', () => {
+  assert.match(jsx, /\['home', ?'首頁'\]/);
+  assert.match(jsx, /\['trip', ?'行程'\]/);
+  assert.match(jsx, /\['move', ?'交通'\]/);
+  assert.match(jsx, /\['money', ?'記帳'\]/);
+  assert.doesNotMatch(jsx, /\['more', ?'更多'\]/);
+  assert.match(jsx, /data-tabsection="money"/);
+});
+
+test('六個工具改由首頁右上選單進入，記帳不在選單內', () => {
+  assert.match(jsx, /toolsOpen/);
+  assert.match(jsx, /aria-label="更多工具"/);
+  for (const label of ['拍照清單', '匯率換算', '打包清單', 'SOS 緊急卡', '實用資訊', '行前指南']) {
+    assert.match(jsx, new RegExp(label));
+  }
+  assert.doesNotMatch(jsx, /\['expense', ?'旅行記帳'\]/);
+  assert.match(css, /\.B-tools-menu/);
+});
+
+test('方案 A 對比度修正：ink-2／tag-book-fg 調色達 4.5:1，ink-3 改限非文字用途', () => {
+  // ink-2 調深供正文使用（原 #7C736B 在 --A-ground 上僅 4.23:1，改後 4.83:1）
+  assert.match(css, /--A-ink-2:\s*#736A61/);
+  // tag-book-fg 調深供標籤文字使用（原 #C2653A 在 --A-tag-book-bg 上僅 3.53:1，改後 5.00:1）
+  assert.match(css, /--A-tag-book-fg:\s*#9D522F/);
+  // ink-3 保留原色碼，但註解須明白禁止再拿來當文字色，只能用於分隔線／hairline／邊框
+  assert.match(css, /僅供非文字元素[\s\S]{0,400}--A-ink-3:\s*#8A8078/);
+  // .B-quad span 不得再用 ink-3 當文字色，字級由 10.5px 提到 11px 並改用 ink-2
+  assert.doesNotMatch(css, /color:\s*var\(--A-ink-3\)/);
+  assert.match(css, /\.B-quad span\s*\{\s*font-size:\s*11px;\s*color:\s*var\(--A-ink-2\);/);
+});
+
+test('首頁 hero 用真實城市照，且四宮格與倒數就位', () => {
+  assert.match(jsx, /photo\.hero/);
+  assert.match(jsx, /loading="lazy"/);
+  assert.match(jsx, /alt=\{/);
+  assert.match(jsx, /core\.nextTrain\(/);
+  assert.match(jsx, /core\.formatCountdown\(/);
+  assert.match(css, /\.B-hero-photo/);
+  assert.match(css, /linear-gradient\([^)]*rgba\(27, 25, 23/);
+});
+
+test('首頁統計四宮格與下一段交通卡真的 render，不是只算了值沒吐出來', () => {
+  // 審查 F3：上一版測試只驗證 core.nextTrain(／core.formatCountdown( 等字串
+  // 存在於檔案（B_Hero 或 nt 的 useMemo 本身就會命中），從沒斷言過 .B-quad
+  // 或 .B-nextmove 真的被 render 出來——突變測試把整個四宮格 JSX 刪掉，
+  // 124 個測試仍全線。這裡改成直接釘住四宮格與交通卡的實際 render 結構。
+
+  // 四宮格：class 與四格內容（今天／白天／已花 NT$／預算）都要真的出現在 JSX 裡。
+  assert.match(jsx, /className="B-card-a B-quad"/);
+  assert.match(jsx, /\{momentDay \?\? d\.n\}\/8<\/b><span>今天<\/span>/);
+  assert.match(jsx, /<span>白天<\/span>/);
+  assert.match(jsx, /homeBudget\.spentTWD\.toLocaleString\('zh-TW'\)/);
+  assert.match(jsx, /<span>已花 NT\$<\/span>/);
+  assert.match(jsx, /Math\.round\(homeBudget\.ratio \* 100\)\}%<\/b><span>預算<\/span>/);
+  assert.match(css, /\.B-quad\s*\{/);
+
+  // 下一段交通卡：有車／沒車兩種分支都要真的 render，且沒車文案不能誤稱「今天」
+  // （F1：nt 為 null 代表整趟行程已無下一段車，不是當天沒車，當天車可能剛開走）。
+  assert.match(jsx, /\{nt && \(/);
+  assert.match(jsx, /className="B-card-a B-nextmove"/);
+  assert.match(jsx, /\{nt\.train\.seg\}/);
+  assert.match(jsx, /core\.formatCountdown\(nt\.minutesUntil\)/);
+  assert.match(jsx, /\{!nt && \(/);
+  assert.match(jsx, /行程中已無下一段長途車/);
+  assert.doesNotMatch(jsx, /今天沒有長途車/);
+  assert.match(css, /\.B-nextmove-seg/);
+});
+
+// ============================================================
+// Task 12：行程與交通分頁改版（Day 藥丸列、帶縮圖的時間軸列、長途車倒數）
+// 每一則對應一個獨立交付物，各自做過突變驗證（刪掉該段 render → 該則單獨
+// FAIL，其餘不受影響），數字記錄在 task-12-report.md。
+// ============================================================
+
+test('行程頁 Day 藥丸列改用 .B-scroll-x + .B-pill-a，且保留 tablist/tab 無障礙語意', () => {
+  // brief 原本指錯頁面（誤把記帳頁的 .B-day-filter 當成行程頁的日次切換器）；
+  // 行程頁真正的日次切換器是 .B-scrub（role="tablist"，內含 role="tab" 的 <a>）。
+  assert.match(jsx, /<div className="B-scrub B-scroll-x" ref=\{scrubRef\} role="tablist" aria-label="日次切換" data-tabsection="trip">/);
+  assert.match(jsx, /role="tab"/);
+  assert.match(jsx, /aria-selected=\{x\.n === active\}/);
+  assert.match(jsx, /aria-current=\{x\.n === active \? 'true' : undefined\}/);
+  assert.match(jsx, /className=\{`B-pill-a \$\{x\.n === active \? 'is-active' : ''\} \$\{x\.n < active \? 'is-done' : ''\}`\}/);
+  // 舊版 pill/active/done 三個裸字 class 不可再被 .B-scrub 的規則引用（新規則改掛在 .B-pill-a 上）。
+  assert.doesNotMatch(css, /\.B-scrub \.pill\{/);
+  assert.match(css, /\.B-scrub \.B-pill-a\{/);
+  assert.match(css, /\.B-scrub \.B-pill-a\.is-done\{opacity:\.5\}/);
+  // 自動捲動目前作用中 pill 的 querySelector 要跟著新 class 走，否則切換 Day 時捲動會失效。
+  assert.match(jsx, /el\.querySelector\('\.B-pill-a\.is-active'\)/);
+});
+
+test('C2 修正：.B-scrub 內的 Day 藥丸必須 flex:none，否則 8 顆會被壓到 min-width 地板換行溢出', () => {
+  // 舊規則 .B-scrub .pill 有 flex:none，改用 .B-pill-a 後漏補，導致 flex-shrink
+  // 預設 1，藥丸被壓成 52px（「Day 1」的「1」擠到第二行、日期文字溢出內距）。
+  // 對照組：記帳頁同一顆 .B-pill-a 在 .B-day-filter 底下已有 flex:none（見下一則測試）。
+  const start = css.indexOf('.B-scrub .B-pill-a{');
+  assert.notEqual(start, -1, '.B-scrub .B-pill-a 規則區塊不存在');
+  const block = css.slice(start, css.indexOf('}', start) + 1);
+  assert.match(block, /flex:\s*none/, '.B-scrub .B-pill-a 必須有 flex:none，否則會被壓扁到 min-width 地板');
+});
+
+test('I2 修正：.B-scrub 的 display:flex 必須有蓋過分頁 display:block 的 specificity 修法', () => {
+  // 這是本 task 最有價值的發現（第 4 次 specificity 陷阱）：.B-scrub 同時是
+  // role="tablist" 容器又掛 data-tabsection="trip"，會被既有的
+  // .B-tabview[data-tab="trip"] [data-tabsection="trip"]{display:block}
+  // （attribute+attribute，specificity 比單一 class 的 .B-scrub 高）蓋掉
+  // flex 版面，導致 Day 藥丸整段換行、無法橫向捲動。build 綠燈、既有 regex
+  // 測試都測不出來（只有 computed display 抓得到），刪掉這行不該讓測試還是全綠。
+  assert.match(css, /\.B-tabview\[data-tab="trip"\]\s*\[data-tabsection="trip"\]\.B-scrub\{\s*display:\s*flex;?\s*\}/);
+});
+
+test('記帳頁 .B-day-filter 改用 B-pill-a token 化樣式，不再借用 --crimson 當選中態裝飾色', () => {
+  assert.match(jsx, /className=\{`B-pill-a\$\{filterDay === 'all' \? ' is-active' : ''\}`\}/);
+  assert.match(jsx, /className=\{`B-pill-a\$\{filterDay === d\.n \? ' is-active' : ''\}`\}/);
+  const start = css.indexOf('.B-day-filter{');
+  assert.notEqual(start, -1, '.B-day-filter 規則區塊不存在');
+  const end = css.indexOf('.B-expense-list{');
+  const block = css.slice(start, end);
+  assert.doesNotMatch(block, /crimson/, '.B-day-filter 區塊不可再出現 --crimson（紅色只作訊號，不當選中態裝飾色）');
+  assert.doesNotMatch(block, /var\(--paper\)/, '.B-day-filter 區塊不可再用舊版 --paper token');
+  assert.match(block, /\.B-day-filter \.B-pill-a\{/);
+  // 真正釘住的行為（取代 brief 原本的空斷言）：容器只能橫向捲動，不可縱向捲動。
+  assert.match(block, /overflow-x:\s*auto/);
+  assert.doesNotMatch(block, /overflow-y:\s*auto/);
+});
+
+test('時間軸列帶城市縮圖，既有展開/收合、筆記、訂票連結結構不變', () => {
+  assert.match(jsx, /<img className="B-tl-thumb" src=\{thumbCity\.photo\.thumb\} alt="" loading="lazy" \/>/);
+  // 縮圖不可寫死與檔案不符的 intrinsic 尺寸（四張縮圖實際比例 2.06:1～3.92:1
+  // 各不相同，brief 原本的 width="200" height="150" 是假數字）。
+  assert.doesNotMatch(jsx, /className="B-tl-thumb"[^>]*width=/);
+  assert.doesNotMatch(jsx, /className="B-tl-thumb"[^>]*height=/);
+  assert.match(css, /\.B-tl-thumb\{/);
+  assert.match(css, /\.B-tl-thumb\{[^}]*aspect-ratio:\s*2\/1/);
+  assert.match(css, /\.B-tl-thumb\{[^}]*object-fit:\s*cover/);
+  // 縮圖必須加在既有 .B-step 結構裡（time/dot/thumb/label 同一個 grid row），
+  // 不是整段換掉：openStep 展開收合、★ 重點、筆記 note-dot、訂票按鈕都要還在。
+  const stepBlock = jsx.slice(jsx.indexOf('{d.steps.map((s, i) => {'), jsx.indexOf('{d.warn &&'));
+  assert.match(stepBlock, /<span className="t">\{s\.t\}<\/span>/);
+  assert.match(stepBlock, /<span className="dot"><\/span>/);
+  assert.match(stepBlock, /<img className="B-tl-thumb"/);
+  assert.match(stepBlock, /<span className=\{`lab\$\{thumbCity\?\.photo\?\.thumb \? '' : ' is-full'\}`\}>/);
+  assert.match(stepBlock, /setOpenStep\(open \? null : i\)/);
+  assert.match(stepBlock, /myNote && <span className="note-dot"/);
+  assert.match(stepBlock, /🎟 訂票 \/ 官網/);
+  assert.match(stepBlock, /📍 地圖/);
+});
+
+test('C1/I4 修正輪：縮圖只在城市變換的那一列出現，不是整天貼同一張目的地照片', () => {
+  // 每天第一列固定用「起始城市」（split('→')[0]，非轉場日等於 d.city 本身）。
+  assert.match(jsx, /const dayStartCityName = \(d\.city \|\| ''\)\.split\('→'\)\[0\]\.trim\(\);/);
+  assert.match(jsx, /const dayStartCity = t\.cities\.find\(\(c\) => c\.name === dayStartCityName\) \|\| null;/);
+  // 城市變換的那一列 = 出發那一步（step.t 與 d.train.dep 字串相等）之後的下一步；
+  // 找不到出發列、或當天沒有城市變換（無 d.train 或 city 不含「→」）時回 -1，
+  // 不猜測。
+  assert.match(jsx, /if \(!d\.train \|\| !d\.city\.includes\('→'\)\) return -1;/);
+  assert.match(jsx, /const depIdx = d\.steps\.findIndex\(\(s\) => s\.t === d\.train\.dep\);/);
+  assert.match(jsx, /if \(depIdx === -1\) return -1;/);
+  assert.match(jsx, /return depIdx \+ 1 < d\.steps\.length \? depIdx \+ 1 : -1;/);
+  // 每一列的縮圖城市 = 第一列用 dayStartCity，城市變換列用 cityChangeCity，其餘列 null（不顯示）。
+  assert.match(jsx, /const thumbCity = i === 0 \? dayStartCity : \(i === cityChangeIdx \? cityChangeCity : null\);/);
+  // 縮圖改成有條件才 render，不是每列都無條件輸出。
+  assert.match(jsx, /\{thumbCity\?\.photo\?\.thumb && \(/);
+  // 舊版「整天都用 heroCity（轉場日的目的地）當縮圖」的寫法不可再出現。
+  assert.doesNotMatch(jsx, /src=\{heroCity\.photo\.thumb\}/);
+});
+
+test('C3 修正：.B-step 是隱式 grid，沒縮圖的列不可讓 .lab 被擠進縮圖欄', () => {
+  // .B-step 只有 4 個直接子元素（t／dot／可選的 img／lab），少了 img 時隱式
+  // 定位會讓 .lab 遞補進本來留給縮圖的 72px／52px 窄欄，不是原本的 1fr 寬欄
+  // ——這是本輪新發現的 Critical（比 I1 更廣、更嚴重，八天裡除了第一列幾乎
+  // 每列都中招）。修法（裁決 b）：沒縮圖時 .lab 明確 grid-column:3/-1 跨欄
+  // 拿回完整寬度，不是恆佔位（那樣多數列會白白少 72px，違背 I4 的窄螢幕行寬
+  // 目的）。
+  assert.match(jsx, /<span className=\{`lab\$\{thumbCity\?\.photo\?\.thumb \? '' : ' is-full'\}`\}>/);
+  assert.match(css, /\.B-step \.lab\.is-full\{\s*grid-column:\s*3\s*\/\s*-1;?\s*\}/);
+});
+
+test('交通頁列出全部五段長途車並各自帶倒數，已出發的段落不騙人', () => {
+  assert.match(jsx, /const moveLegs = B_useMemo\(/);
+  assert.match(jsx, /core\.trainCountdownState\(tr, Date\.now\(\), 2026\)/);
+  // M2 修正：aria-label 掛在無 role 的 div 上，無障礙樹讀不到；改用 <section>
+  // 讓它天生帶 role="region" 並被 aria-label 命名。
+  assert.match(jsx, /<section className="B-move-list" data-tabsection="move" aria-label="長途交通總覽">/);
+  assert.doesNotMatch(jsx, /<div className="B-move-list"/);
+  assert.match(jsx, /\{moveLegs\.map\(\(\{ train: tr, state \}, i\) => \(/);
+  assert.match(jsx, /<li className="B-move-row" key=\{i\}>/);
+  assert.match(jsx, /\{state\.text\}/);
+  assert.match(css, /\.B-move-row\{/);
+  assert.match(css, /\.B-move-list ul\{/);
+  // trainDepartureMs 只該在 pwa-core.js 的 trainCountdownState 內算一次；
+  // JSX 端不可重蹈 brief 原稿的覆轍——同一運算式呼叫兩次、且把已開走的車
+  // 傳 0 給 formatCountdown（會顯示騙人的「即將出發」）。
+  assert.doesNotMatch(jsx, /core\.trainDepartureMs\(tr, 2026\) > Date\.now\(\)/);
+  assert.doesNotMatch(jsx, /formatCountdown\(Math\.round\(\(core\.trainDepartureMs/);
+});
+
+test('長途車倒數紅字只在即將出發時觸發，預設中性色，首頁與交通頁共用同一套規則', () => {
+  assert.match(css, /\.B-nextmove-count \{ margin: 6px 0 0; font-size: 12\.5px; color: var\(--A-ink-2\); \}/);
+  assert.match(css, /\.B-nextmove-count\.is-soon \{ color: var\(--A-signal\); font-weight: 600; \}/);
+  assert.match(css, /\.B-nextmove-count\.is-departed \{ color: var\(--A-ink-2\); \}/);
+  assert.match(jsx, /className=\{`B-nextmove-count\$\{nt\.minutesUntil <= 60 \? ' is-soon' : ''\}`\}/);
+  assert.match(jsx, /is-departed/);
+});
+
+test('--A-signal-bright 註解涵蓋文字與非文字用途，不再與 .B-expense-over-tag 的實際用法矛盾', () => {
+  assert.match(css, /文字與非文字元素皆可用[\s\S]{0,300}--A-signal-bright:\s*#FF8C66/);
+});
+
+/* ── 2026-07-26 最終修正輪：四分頁骨幹與各項修正的守護 ────────────────
+   審查發現四分頁機制（本次改版的骨幹功能）零測試守護：刪掉切換用的 CSS 規則、
+   刪掉 <main> 的 data-tab、把手機 nav 的 onChange 換成空函式，三個突變都能讓
+   158 個測試全綠。以下測試釘住 CSS 規則本體與兩處 JSX 接線。
+   註解剝除：本檔的 regex 是對原始碼字串比對，寫在註解裡的字串也會通過。以下
+   斷言一律用剝掉區塊註解的副本，避免「規則被刪掉但註解裡剛好提到」還能過關。 */
+const cssCode = css.replace(/\/\*[\s\S]*?\*\//g, '');
+const jsxCode = jsx.replace(/\/\*[\s\S]*?\*\//g, '');
+const TAB_KEYS = ['home', 'trip', 'move', 'money'];
+
+test('四分頁切換的 CSS 規則本體存在（隱藏全部＋四條顯示規則）', () => {
+  const mobileBlockAt = cssCode.indexOf('@media (max-width: 899px)');
+  assert.ok(mobileBlockAt > -1, '手機分頁規則所在的 @media (max-width: 899px) 區塊不存在');
+
+  // 1) 「非當前分頁全部隱藏」這條被刪掉，四個分頁內容就會同時堆疊在一頁。
+  const hideRule = /\.B-tabview \[data-tabsection\]\{\s*display:\s*none;\s*\}/;
+  assert.match(cssCode, hideRule);
+  assert.ok(cssCode.search(hideRule) > mobileBlockAt, '隱藏規則必須在手機 @media 區塊內');
+
+  // 2) 四條顯示規則必須成組存在且共用同一個 display:block；少一條就不匹配。
+  const showRule = new RegExp(
+    TAB_KEYS.map((k) => `\\.B-tabview\\[data-tab="${k}"\\] \\[data-tabsection="${k}"\\]`).join(',\\s*')
+    + '\\{\\s*display:\\s*block;\\s*\\}'
+  );
+  assert.match(cssCode, showRule);
+  assert.ok(cssCode.search(showRule) > mobileBlockAt, '顯示規則必須在手機 @media 區塊內');
+
+  // 3) .B-scrub 的 flex 例外規則（原本唯一被釘住的那條）也要留著。
+  assert.match(cssCode, /\.B-tabview\[data-tab="trip"\] \[data-tabsection="trip"\]\.B-scrub\{\s*display:\s*flex;\s*\}/);
+});
+
+test('四分頁的兩處 JSX 接線存在：main 的 data-tab 與手機 nav 的 onChange', () => {
+  // <main> 少了 data-tab={activeTab}，CSS 選擇器就永遠選不到，分頁完全失效。
+  assert.match(jsxCode, /<main[^>]*className="B-web-grid B-tabview"[^>]*data-tab=\{activeTab\}/);
+  // 手機 nav 的 onChange 必須真的接到 setActiveTab，換成空函式則按分頁沒反應。
+  assert.match(jsxCode, /<B_PrimaryNav\s+placement="mobile"\s+active=\{activeTab\}\s+onChange=\{setActiveTab\}\s*\/>/);
+  // nav 內部按鈕要真的呼叫 onChange(key)。
+  assert.match(jsxCode, /onClick=\{\(\)\s*=>\s*onChange\(key\)\}/);
+  // 四個分頁 key 與標籤成組釘住，順序與文字都不可漂移。
+  assert.match(jsxCode, /const tabs = \[\['home', '首頁'\], \['trip', '行程'\], \['move', '交通'\], \['money', '記帳'\]\]/);
+  // 四個 data-tabsection 都要有實際 render 的節點。
+  for (const k of TAB_KEYS) assert.match(jsxCode, new RegExp(`data-tabsection="${k}"`));
+});
+
+test('A1：Now 按鈕會先切到行程分頁再捲動（隱藏元素 scrollIntoView 是 no-op）', () => {
+  const from = jsxCode.indexOf('aria-label="跳到目前進行中的行程"');
+  const to = jsxCode.indexOf('<div className="now-label">', from);
+  assert.ok(from > -1 && to > from, '找不到 .B-now 按鈕的 onClick 區塊');
+  const body = jsxCode.slice(from, to);
+  assert.match(body, /setActiveTab\('trip'\)/);
+  assert.match(body, /requestAnimationFrame/);
+  assert.match(body, /scrollIntoView/);
+  // 切分頁必須排在取 .B-step 之前，否則目標仍是 display:none 的節點。
+  assert.ok(
+    body.indexOf("setActiveTab('trip')") < body.indexOf("querySelectorAll('.B-step')"),
+    'setActiveTab 必須在 querySelectorAll(.B-step) 之前'
+  );
+});
+
+test('A2：override 有清除入口，且顯示日不是今天時 Now 標籤不寫「現在」', () => {
+  assert.match(jsxCode, /const backToToday = \(\) => \{ setOverride\(null\); setOpenStep\(null\); \};/);
+  assert.match(jsxCode, /const previewingOtherDay = phase === 'during' && d\.n !== momentDay;/);
+  assert.match(jsxCode, /\{override != null && \(/);
+  assert.match(jsxCode, /className="B-back-today"[\s\S]{0,200}onClick=\{backToToday\}/);
+  assert.match(jsxCode, /↩ 回到今天/);
+  assert.match(jsxCode, /previewingOtherDay \? `Day \$\{d\.n\} 預覽 · 不是現在`/);
+  // 按鈕要有足夠的點擊尺寸（最小 24×24，這裡給 44px）。
+  assert.match(cssCode, /\.B-back-today\{[^}]*min-height:44px/);
+});
+
+test('A3：記帳分頁的匯率設定會跟著分頁／子頁切換重讀，與首頁同一份來源', () => {
+  assert.match(jsxCode, /function B_Expense\(\{ storage, activeTab, subpage \}\)/);
+  assert.match(jsxCode, /const \[settings, setSettings\] = B_useState/);
+  assert.match(
+    jsxCode,
+    /setSettings\(core\.readJSON\(storage, 'polska\.settings\.v1', core\.DEFAULT_SETTINGS\)\);\s*\}, \[core, storage, activeTab, subpage\]\)/
+  );
+  assert.match(jsxCode, /<B_Expense storage=\{storage\} activeTab=\{activeTab\} subpage=\{subpage\} \/>/);
+  // 首頁那份 effect 的觸發條件必須一致，兩邊才不會各拿一份匯率。
+  assert.match(jsxCode, /\}, \[core, storage, subpage, activeTab\]\)/);
+});
+
+test('A6：Day 3 巴士兩筆資料都保留，靠 leg 標籤區分去程與往返全程', () => {
+  const data = fs.readFileSync('redesign/data.js', 'utf8');
+  const dataCode = data.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+  // 兩筆時間都是事實，不可為了統一而刪掉或改掉。
+  assert.match(dataCode, /leg:'去程 · 抵奧斯威辛'[\s\S]{0,120}dep:'07:30', arr:'09:00'/);
+  assert.match(dataCode, /leg:'往返全程 · 回抵克拉科夫'[\s\S]{0,80}dep:'07:30', arr:'14:30'/);
+  // 票價寫法一致：兩處都是「30（單程 15 ×2）」，不再是 'PLN 15 ×2' 對 '30'。
+  assert.match(dataCode, /price:'PLN 30（單程 15 ×2）'/);
+  assert.match(dataCode, /price:'30（單程 15 ×2）'/);
+  assert.doesNotMatch(dataCode, /price:'PLN 15 ×2'/);
+  // 三個 render 點都要把 leg 吐出來，否則資料改了畫面照舊。
+  assert.match(jsxCode, /\{nt\.train\.leg && <p className="B-move-leg">\{nt\.train\.leg\}<\/p>\}/);
+  assert.match(jsxCode, /\{d\.train\.leg && <span className="B-move-leg">· \{d\.train\.leg\}<\/span>\}/);
+  assert.match(jsxCode, /\{tr\.leg && <span className="B-move-leg">\{tr\.leg\}<\/span>\}/);
+  assert.match(cssCode, /\.B-move-leg\{/);
+});
+
+test('A8：記帳頁文案與無障礙細節（NT$ 空格、Day 空格、aria-pressed、門檻插值）', () => {
+  // 台幣前綴一律「≈ NT$」，不可有貼在一起的 ≈NT$。
+  assert.doesNotMatch(jsxCode, /≈NT\$/);
+  assert.match(jsxCode, /≈ NT\$\{budget\.spentTWD/);
+  assert.match(jsxCode, /≈ NT\$\{core\.plnToTwd\(e\.amountPLN/);
+  // 記帳頁的 Day 一律帶半形空格；首頁 hero 的大寫 DAY 排版不在此列。
+  assert.doesNotMatch(jsxCode, /Day\{d\.n\}/);
+  assert.doesNotMatch(jsxCode, /Day\{e\.day\}/);
+  assert.match(jsxCode, /<span className="day">Day \{e\.day\}<\/span>/);
+  assert.match(jsxCode, /`Day \$\{d\.n\} · \$\{d\.date\}`/);
+  // 不再用全形括號包住已含半形括號的日期。
+  assert.doesNotMatch(jsxCode, /Day\$\{d\.n\}（\$\{d\.date\}）/);
+  // 日期篩選藥丸補上 aria-pressed（與退稅篩選、拍照打卡一致）。
+  assert.match(jsxCode, /aria-pressed=\{filterDay === 'all'\}/);
+  assert.match(jsxCode, /aria-pressed=\{filterDay === d\.n\}/);
+  // 子頁返回鈕不再承諾返回已被移除的「更多」分頁。
+  assert.doesNotMatch(jsxCode, /aria-label="返回更多"/);
+  assert.match(jsxCode, /aria-label="返回上一頁"/);
+  // 退稅門檻文案改用常數插值。
+  assert.match(jsxCode, /滿 \{core\.TAX_FREE_MIN_PLN\} PLN 計算/);
+  assert.doesNotMatch(jsxCode, /滿 200 PLN/);
+});
+
+test('A8-6：離線點擊攔截掛在根節點，子頁的外部連結也攔得到', () => {
+  assert.match(jsxCode, /<div className="B-frame paper-tex B-companion" onClickCapture=\{interceptOfflineLink\}>/);
+  // 不可留在 <main> 上——子頁 render 在 <main> 之外。
+  assert.doesNotMatch(jsxCode, /<main[^>]*onClickCapture/);
+});
+
+test('A8-7：離線提示 toast 疊在工具選單與子頁（z-index 130）之上', () => {
+  assert.match(cssCode, /\.B-toast\{[^}]*z-index:140/);
+  // 子頁與工具選單維持 130，toast 必須高於它們。
+  assert.match(cssCode, /\.B-subpage-mask\{[^}]*z-index:\s*130/);
+  assert.match(cssCode, /\.B-tools-menu \{[^}]*z-index:\s*130/);
 });

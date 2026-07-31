@@ -1,10 +1,105 @@
 /* Direction B — iPhone reading companion
    "Today is Day X · here's what to do now" — mobile-first, paper-feel preserved */
 
+/* ==== 方案 A：暖白紙卡・照片主導（僅手機殼作用域，桌機請用 tokens.css）==== */
+.B-companion {
+  --A-ground: #F7F4EF;
+  --A-board: #FFFFFF;
+  --A-ink: #1B1917;
+  --A-ink-2: #736A61;
+  /* --A-ink-3：僅供非文字元素使用（分隔線／hairline／邊框）。在暖白底 #F7F4EF 上
+     無法同時做出三階明顯區隔的文字色又都達 4.5:1 對比，故此色不可再指定為任何
+     文字 color——需要第三層文字（例如小字標籤）一律改用 --A-ink-2。 */
+  --A-ink-3: #8A8078;
+  --A-line: #F1EDE6;
+  --A-espresso: #33261E;
+  --A-espresso-track: #5E524A;
+  --A-brass: #C9A46F;
+  --A-signal: #B5502E;
+  /* --A-signal 在深咖啡卡（--A-espresso 底）上不夠亮，數學上不可能同時對
+     --A-espresso-track（軌道）／--A-espresso（卡底）／--A-brass（一般狀態金色）
+     三者都達到 3:1（見 task-11-report.md 的證明）。此 token 專供深色卡片
+     （--A-espresso 底）上的警示用途，文字與非文字元素皆可用：對軌道與卡底都
+     ≥3:1，作文字色時另達 4.5:1（.B-expense-over-tag 實測 6.41:1，見
+     task-11-rereview.md:27）；與 brass 的區隔改靠文字／圖示（非顏色指示），
+     不是靠色彩對比硬湊。 */
+  --A-signal-bright: #FF8C66;
+  --A-done: #2F6B4F;
+  --A-tag-move-bg: #E8EFF8;
+  --A-tag-move-fg: #3F6491;
+  --A-tag-book-bg: #FDEDE3;
+  --A-tag-book-fg: #9D522F;
+  --A-display: "Hoefler Text", "Iowan Old Style", Palatino, serif;
+  --A-body: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", sans-serif;
+  --A-mono: "SF Mono", ui-monospace, Menlo, monospace;
+  --A-radius: 18px;
+  --A-shadow: 0 1px 2px rgba(27, 25, 23, .05), 0 10px 22px -14px rgba(27, 25, 23, .28);
+  background: var(--A-ground);
+  color: var(--A-ink);
+  font-family: var(--A-body);
+}
+
+.B-card-a {
+  background: var(--A-board);
+  border-radius: var(--A-radius);
+  box-shadow: var(--A-shadow);
+  padding: 16px;
+}
+
+/* Hoefler Text 預設是舊式數字，會把 Day 1 排成 Day I。全站數字強制 lining。 */
+.B-num {
+  font-family: var(--A-display);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.B-pill-a {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  min-height: 40px;
+  padding: 10px 16px;
+  border: 1px solid var(--A-line);
+  border-radius: 999px;
+  background: var(--A-board);
+  color: var(--A-ink-2);
+  font-size: 13px;
+  cursor: pointer;
+}
+.B-pill-a.is-active {
+  background: var(--A-ink);
+  border-color: var(--A-ink);
+  color: #fff;
+  font-weight: 600;
+}
+
+.B-quad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+.B-quad > div { text-align: center; padding: 4px 2px; }
+.B-quad b {
+  display: block;
+  font-family: var(--A-display);
+  font-variant-numeric: lining-nums tabular-nums;
+  font-size: 19px;
+  line-height: 1.1;
+}
+.B-quad span { font-size: 11px; color: var(--A-ink-2); letter-spacing: .04em; }
+
+.B-scroll-x {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
 .B-frame{
-  background:var(--paper);
-  color:var(--ink);
-  font-family:var(--body);
+  /* 底色／文字色／字型刻意不在這裡設：根節點同時掛 .B-companion，兩個規則
+     都是單一 class 選擇器、specificity 相同，寫在後面的這條會贏，
+     蓋掉 .B-companion 的 --A-ground／--A-ink／--A-body，讓 A token 白掛。
+     底色、文字色、字型改由 .B-companion（redesign/B-companion.css:5）統一負責。 */
   font-size:.92rem;
   line-height:1.55;
   position:relative;
@@ -48,9 +143,6 @@
   margin:.55rem 1rem;padding:.8rem .9rem;
   border:3px double var(--ink);background:var(--paper-warm);
   border-radius:14px;
-}
-.B-pretrip-guide h2{
-  margin:0 0 .55rem;font:900 1.05rem var(--serif);color:var(--accent);
 }
 .B-pretrip-guide details{border-top:1px dotted rgba(26,22,18,.3)}
 .B-pretrip-guide summary{
@@ -105,22 +197,46 @@
 .B-head .menu span{display:block;height:1.5px;background:var(--ink);transition:transform var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out)}
 .B-head .menu:hover{background:var(--paper-deep)}
 
-/* Task 3: 首頁四城市 hero 輪播（開發期漸層佔位） */
-.B-hero{ position:relative; height:230px; border-radius:16px; overflow:hidden; margin:0 0 var(--gap-md); box-shadow:var(--shadow-md); }
-.B-hero-slide{ position:absolute; inset:0; opacity:0; transition:opacity .8s var(--ease-out); }
-.B-hero-slide.is-active{ opacity:1; }
-.B-hero-slide.hs-waw{ background:linear-gradient(150deg,#8a1a15,#c4892b); }
-.B-hero-slide.hs-krk{ background:linear-gradient(150deg,#7a1812,#3d4a2a); }
-.B-hero-slide.hs-wro{ background:linear-gradient(150deg,#a8231d,#6e6358); }
-.B-hero-slide.hs-poz{ background:linear-gradient(150deg,#8b5e15,#1a1612); }
-.B-hero-cap{ position:absolute; left:16px; bottom:26px; display:flex; flex-direction:column; gap:2px; color:#f4ecd8; text-shadow:0 1px 8px rgba(0,0,0,.4); }
-.B-hero-code{ font-family:var(--display); font-size:2.4rem; letter-spacing:.14em; line-height:1; }
-.B-hero-city{ font-family:var(--serif); font-size:1.1rem; }
-.B-hero-date{ font-family:var(--mono); font-size:.72rem; letter-spacing:.12em; opacity:.9; }
-.B-hero-dots{ position:absolute; left:16px; bottom:14px; display:flex; gap:6px; }
-.B-hero-dot{ width:6px; height:6px; border-radius:999px; background:rgba(244,236,216,.45); transition:background .3s; }
-.B-hero-dot.is-active{ background:#f4ecd8; }
-@media (prefers-reduced-motion: reduce){ .B-hero-slide{ transition:none; } }
+/* ---- 方案 A 照片 hero（Task 10）----
+   （原 Task 3 的四城輪播漸層佔位 CSS 已整段移除：2026-07-26 規格裁定拿掉
+   輪播改成「依當天所在城市顯示對應照片」，.B-hero／.B-hero-slide／
+   .B-hero-cap／.B-hero-code／.B-hero-city／.B-hero-date／.B-hero-dots／
+   .B-hero-dot／.hs-waw／.hs-krk／.hs-wro／.hs-poz 這些 class 在 .jsx 與
+   編譯後的 dist bundle 裡都已零引用，比照上一輪清舊版三格儀表的方式一併清掉，不留
+   孤兒規則；連帶那條只保護 .B-hero-slide 的 reduced-motion 規則也一起
+   移除——唯一還在跑的自動播放動畫（.B-now .now-label::after 的
+   B-pulse）已由 redesign/tokens.css:78-86 的全域規則守住，不需要這裡
+   再補一份。） ---- */
+.B-hero-photo { position: relative; height: 230px; overflow: hidden; border-radius: 0 0 20px 20px; }
+.B-hero-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* 對比度修正（審查 F2）：原本 0%→38% 透明、最深只到 .74，實測壓字區域
+   最亮的照片像素（四張城市照都測過）時 kicker 只有 2.33:1、h2 只有 2.85:1，
+   離文字需要的 4.5:1／大字 3:1 都不夠。改成 0% 就有 .12 起跳、到 100% 收到
+   .96，四張照片壓字區域實測全數達標（見 task-10-report.md 對比度量測表）。 */
+.B-hero-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(27, 25, 23, .12) 0%, rgba(27, 25, 23, .96) 100%);
+}
+/* 照片上壓字必須是接近白色的亮字才讀得清楚；--A-board（#FFFFFF）是唯一數值
+   等於純白的既有 token，借用它取代硬編碼 #fff，避免色碼脫離 token 系統。 */
+.B-hero-text { position: absolute; left: 18px; right: 18px; bottom: 16px; color: var(--A-board); }
+/* kicker／sub 原本各自再疊一層 opacity（.9／.88）把白字調暗，等於自己再
+   把好不容易拉出來的對比度吃掉一截，故移除；亮度層次改由字級與 h2 自己
+   撐開即可。 */
+.B-hero-kicker { margin: 0 0 4px; font-size: 11px; letter-spacing: .12em; }
+.B-hero-photo h2 { margin: 0; font-size: 31px; line-height: 1.05; letter-spacing: -.01em; }
+.B-hero-sub { margin: 3px 0 0; font-size: 12.5px; }
+/* --A-ink-3 只能用於分隔線／邊框等非文字，這裡是文字色，改用 --A-ink-2。 */
+.B-kicker-a { margin: 0 0 6px; font-family: var(--A-mono); font-size: 10.5px; letter-spacing: .1em; color: var(--A-ink-2); }
+.B-nextmove-seg { margin: 0; font-size: 26px; }
+.B-nextmove-time { margin: 2px 0 0; font-size: 13px; color: var(--A-ink-2); }
+/* Task 12 裁決：紅色（--A-signal）只作「真的即將出發」的訊號，不當恆亮裝飾——
+   預設中性 ink-2，60 分鐘內才由 JS 加上 .is-soon 轉紅；已出發的段落用
+   .is-departed（同樣中性色，明確語意），不可顯示倒數數字。 */
+.B-nextmove-count { margin: 6px 0 0; font-size: 12.5px; color: var(--A-ink-2); }
+.B-nextmove-count.is-soon { color: var(--A-signal); font-weight: 600; }
+.B-nextmove-count.is-departed { color: var(--A-ink-2); }
 
 /* HERO — TODAY IS DAY X */
 .B-today{
@@ -266,7 +382,23 @@
 .B-toast{
   bottom:calc(5.35rem + var(--safe-bottom));padding:.7rem .85rem;
   text-align:center;font-size:.75rem;line-height:1.45;
+  /* 2026-07-26 修正輪（A8-7）：上面 .B-update-ready,.B-toast 共用的 z-index:120
+     低於工具選單與子頁的 130，離線提示會被整片蓋住看不到。這條寫在共用規則之後、
+     同為單一 class，靠源碼順序勝出，把 toast 疊到 140；.B-update-ready 維持 120，
+     它是可延後處理的更新提示，不該蓋在子頁上面。 */
+  z-index:140;
 }
+
+/* 2026-07-26 修正輪（A2）：清除 override（回到今天）的唯一入口。只在 override
+   有值時 render，所以平常不佔版面。高度 44px 滿足最小點擊尺寸。 */
+.B-back-today{
+  display:inline-flex;align-items:center;align-self:flex-start;
+  margin:.9rem 0 0;min-height:44px;padding:.4rem .9rem;
+  border:1px solid var(--ink);border-radius:999px;
+  background:var(--paper);color:var(--ink);
+  font:700 .72rem var(--mono);cursor:pointer;
+}
+.B-back-today:active{transform:scale(.98)}
 
 /* NOW WIDGET — current step (rendered as <button> for "tap to jump") */
 .B-now{
@@ -336,52 +468,36 @@
 }
 .B-now .next-up strong{color:var(--amber);font-family:var(--serif);font-style:italic;font-size:1.15em;letter-spacing:0;text-transform:none;margin-right:.3rem}
 
-/* HOME DASHBOARD — day / spend / next-step tiles (Task 8) */
-.B-dash{
-  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:var(--gap-sm);margin:var(--gap-md) 0;
-}
-.B-dash .dash-tile{
-  background:#fbf6ea;border:1px solid rgba(26,22,18,.10);border-radius:14px;
-  box-shadow:var(--shadow-sm);padding:.55rem .5rem;text-align:center;
-  display:flex;flex-direction:column;gap:.22rem;
-}
-.B-dash .dash-k{
-  font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;
-  color:var(--ink-mute);text-transform:uppercase;
-}
-.B-dash .dash-v{
-  font-family:var(--serif);font-weight:900;font-size:.92rem;line-height:1.25;
-  color:var(--ink);font-variant-numeric:tabular-nums;overflow-wrap:anywhere;
-}
-
-/* SCRUB STRIP — drag to other days */
+/* SCRUB STRIP — drag to other days（方案 A：Day 藥丸列改用 .B-scroll-x + .B-pill-a，
+   Task 12 裁決見 task-12-brief.md 開頭裁示；role="tablist"/role="tab"/
+   aria-selected/aria-current 語意不變，只換視覺） */
 .B-scrub{
-  padding:.55rem .8rem;border-bottom:1px solid var(--ink);
-  background:var(--paper-deep);
-  display:flex;gap:.35rem;overflow-x:auto;scrollbar-width:none;
+  padding:10px 16px;
+  background:var(--A-ground);
+  border-bottom:1px solid var(--A-line);
   align-items:center;
   scroll-snap-type:x mandatory;
-  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
 }
-.B-scrub .pill{scroll-snap-align:center}
 .B-scrub::-webkit-scrollbar{display:none}
-.B-scrub .pill{
-  flex:none;display:flex;flex-direction:row;align-items:center;gap:.3rem;
-  font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;color:var(--ink-mute);
-  border:1px solid var(--ink);padding:.42rem .65rem;background:var(--paper);
-  min-width:auto;min-height:34px;cursor:pointer;text-decoration:none;
-  border-radius:999px;
-  transition:background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+.B-scrub .B-pill-a{
+  scroll-snap-align:center;
+  flex-direction:column;
+  flex:none;
+  gap:2px;
+  min-width:52px;
+  min-height:auto;
+  padding:8px 12px;
+  text-decoration:none;
 }
-.B-scrub .pill strong{
-  font-family:var(--serif);font-style:italic;font-weight:900;font-size:.85rem;color:var(--accent);
-  line-height:1;letter-spacing:.01em;
+.B-scrub .B-pill-a strong{
+  font-family:var(--A-display);font-style:italic;font-weight:700;font-size:14px;
+  line-height:1.05;letter-spacing:.01em;color:inherit;
 }
-.B-scrub .pill.active{background:var(--ink);color:var(--paper)}
-.B-scrub .pill.active strong{color:var(--amber)}
-.B-scrub .pill.done{opacity:.45}
-.B-scrub .pill.done strong{color:var(--ink-mute)}
+.B-scrub .B-pill-a span{
+  font-family:var(--A-mono);font-size:10px;letter-spacing:.04em;color:inherit;opacity:.75;
+}
+.B-scrub .B-pill-a.is-done{opacity:.5}
 
 /* TIMELINE */
 .B-timeline{
@@ -394,7 +510,7 @@
   background:var(--ink);opacity:.18;
 }
 .B-step{
-  display:grid;grid-template-columns:38px 16px 1fr;gap:.5rem;
+  display:grid;grid-template-columns:38px 16px 72px 1fr;gap:.5rem;
   padding:.24rem 0;align-items:start;
 }
 .B-step .t{
@@ -407,11 +523,33 @@
   background:var(--paper);border:2px solid var(--ink);
   margin:.25rem auto 0;position:relative;z-index:1;
 }
+/* Task 12：時間軸列縮圖——四座城市縮圖的實際檔案都是寬扁全景比例
+   （200×76／200×97／200×55／200×51，2.06:1～3.92:1），刻意不寫 width/height
+   屬性宣告與檔案不符的假尺寸（會造成版面跳動），改用 aspect-ratio 保留版位；
+   2/1 取四張比例的中間值，object-fit:cover 置中裁切後保留畫面中央構圖。
+   alt="" 是刻意的：縮圖是裝飾，旁邊已有文字標題，螢幕閱讀器不需重複讀。
+   修正輪（C1/I4）：縮圖不再每列都貼同一張——只在每天第一列與轉場日城市真正
+   變換的那一列出現，判斷邏輯見 B-companion.jsx 的 dayStartCity／cityChangeIdx
+   （在 heroCity 計算之後）。 */
+.B-tl-thumb{
+  width:100%;aspect-ratio:2/1;object-fit:cover;
+  border-radius:8px;display:block;margin-top:.05rem;
+}
 .B-step.star .dot{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 3px var(--paper)}
 .B-step.now .dot{background:var(--amber);border-color:var(--amber);box-shadow:0 0 0 3px var(--paper), 0 0 0 5px var(--amber)}
 .B-step.done{opacity:.55}
 .B-step.done .dot{background:var(--ink-mute);border-color:var(--ink-mute)}
 .B-step .lab{font-family:var(--serif);font-weight:900;font-size:.9rem;line-height:1.3;letter-spacing:-.005em;color:var(--ink)}
+/* Task 12 修正輪（C3）：.B-step 是隱式定位的 CSS Grid（38px/16px/72px/1fr）。
+   縮圖改條件式渲染（C1/I4）後，沒有縮圖的列少一個子元素，.lab 會被隱式定位
+   遞補進本來留給縮圖的 72px／52px 窄欄，不是原本的 1fr 寬欄，導致文字大量
+   折行（比 I1 更嚴重、影響列數更多）。選項 (b)：沒縮圖時明確讓 .lab 從縮圖欄
+   起點跨欄到最後一欄，拿回完整寬度——320px 螢幕每一像素都有用，「有照片的列
+   縮排、沒照片的列滿版」是常見且可讀的樣式；沒有選 (a)（縮圖欄恆佔位）是因為
+   多數列本來就不會顯示縮圖（只有城市變換那一兩列），恆佔位等於讓大多數列白白
+   少 72px+gap，違背 I4 當初要拿回窄螢幕行寬的目的。有縮圖的列不受影響，img
+   仍隱式佔第 3 欄、.lab 隱式佔第 4 欄。 */
+.B-step .lab.is-full{ grid-column: 3 / -1; }
 .B-step .lab .note-dot{
   display:inline-block;margin-left:.3rem;font-size:.7em;
   vertical-align:baseline;filter:saturate(.8);
@@ -430,7 +568,10 @@
 }
 .B-step.open .chev{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .B-step-detail{
-  margin:.2rem 0 .6rem calc(38px + .6rem + 16px + .6rem);
+  /* Task 12 修正輪（I1）：對齊縮圖欄左緣，不對齊文字欄——縮圖現在只在少數列
+     出現（見 .B-tl-thumb 用法），細節卡若仍對齊到縮圖欄之後的文字欄，寬度會被
+     72px 縮圖欄吃掉，四行內容全部折行。 */
+  margin:.2rem 0 .6rem calc(38px + .5rem + 16px + .5rem);
   padding:.65rem .8rem;
   background:var(--paper-deep);
   border:1px solid var(--ink);
@@ -806,6 +947,33 @@
   padding:0 .35rem;color:var(--ink-soft);letter-spacing:.08em;
 }
 
+/* Task 12：交通頁五段長途車總覽（方案 A）——.B-train 只顯示「當天」那一段，
+   這裡把 t.trains 全部 5 段都列出來，各自用 core.trainCountdownState 算出
+   是否已出發；已出發的段落不可顯示倒數數字，只顯示「已出發」文字狀態。
+   .B-nextmove-count／.is-soon／.is-departed 與首頁下一段車卡共用同一套規則。 */
+.B-move-list{ margin:12px 16px; }
+.B-move-list ul{ list-style:none; margin:8px 0 0; padding:0; display:flex; flex-direction:column; gap:8px; }
+.B-move-row{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+  padding:12px 14px;
+  background:var(--A-board); border-radius:var(--A-radius); box-shadow:var(--A-shadow);
+}
+.B-move-main{ display:flex; flex-direction:column; gap:3px; min-width:0; }
+.B-move-type{
+  display:inline-block; align-self:flex-start;
+  padding:2px 7px; margin-right:4px;
+  border-radius:999px;
+  background:var(--A-tag-move-bg); color:var(--A-tag-move-fg);
+  font-size:10.5px; font-weight:700; letter-spacing:.06em;
+}
+.B-move-seg{ font-size:14px; font-weight:600; }
+.B-move-time{ font-size:12px; color:var(--A-ink-2); }
+.B-move-row .B-nextmove-count{ margin:0; flex:none; white-space:nowrap; text-align:right; }
+/* 2026-07-26 修正輪（A6）：同一天同一班巴士同時有「去程」與「往返全程」兩筆
+   （抵達時間分別是 09:00 抵奧斯威辛、14:30 回抵克拉科夫，兩者都是事實）。
+   這個標籤說明每一列在講哪一段，使用者才不會把兩個抵達時間讀成互相矛盾。 */
+.B-move-leg{ margin:2px 0 0; font-size:11.5px; color:var(--A-ink-2); letter-spacing:.02em; }
+
 /* DRAWER (menu) */
 .B-drawer-mask{
   position:fixed;inset:0;background:rgba(26,22,18,.4);
@@ -877,7 +1045,7 @@
     padding:.38rem .5rem;border-radius:999px;
   }
   .B-pwa-state em{display:none}
-  .B-step{grid-template-columns:34px 14px 1fr;gap:.42rem}
+  .B-step{grid-template-columns:34px 14px 52px 1fr;gap:.42rem}
   .B-step-detail{margin-left:calc(34px + .42rem + 14px + .42rem)}
   .B-primary-nav button{font-size:.72rem;letter-spacing:.08em;padding-inline:.2rem}
 }
@@ -906,10 +1074,10 @@
   .B-primary-column .B-today h1{font-size:1.8rem}
   .B-mobile-brief{grid-template-columns:repeat(3,minmax(0,1fr))}
   .B-mobile-brief .brief-card{grid-template-columns:1fr;gap:.25rem}
-  .B-secondary-column .B-card,.B-secondary-column .B-pretrip-guide{margin:.55rem 0}
+  .B-secondary-column .B-card{margin:.55rem 0}
 }
 
-/* Task 1: mobile bottom nav becomes real tabs (home/trip/move/more) */
+/* Task 1: mobile bottom nav becomes real tabs (home/trip/move/money) */
 .B-primary-nav button{ position:relative; }
 .B-primary-nav button.active{ color:var(--crimson); }
 .B-primary-nav button.active::after{
@@ -922,26 +1090,62 @@
   .B-tabview[data-tab="home"] [data-tabsection="home"],
   .B-tabview[data-tab="trip"] [data-tabsection="trip"],
   .B-tabview[data-tab="move"] [data-tabsection="move"],
-  .B-tabview[data-tab="more"] [data-tabsection="more"]{ display:block; }
+  .B-tabview[data-tab="money"] [data-tabsection="money"]{ display:block; }
+  /* Task 12 真實瀏覽器測試發現：.B-scrub 本身同時是 tablist 容器又掛
+     data-tabsection="trip"，會被上面這條 display:block 蓋掉 .B-scroll-x／
+     .B-scrub 原本要的 display:flex（[data-tab="trip"] [data-tabsection="trip"]
+     是 attribute+attribute，specificity 比單一 class 的 .B-scrub／.B-scroll-x
+     高，跟後面誰宣告無關，永遠贏）。結果 Day 藥丸不會橫向捲動，改成整段換行——
+     build 綠燈、regex 測試也測不出來，只有 computed display 抓得到。這裡用
+     attribute+attribute+class 的選擇器把 specificity 疊高，改回 flex。 */
+  .B-tabview[data-tab="trip"] [data-tabsection="trip"].B-scrub{ display:flex; }
 }
 
-/* Task 4: 更多頁工具方格與可返回子頁容器 */
-.B-more-grid{ display:grid; grid-template-columns:1fr 1fr; gap:var(--gap-sm); }
-.B-tool-card{ display:flex; flex-direction:column; gap:6px; padding:var(--pad-md); background:#fbf6ea; border:1px solid rgba(26,22,18,.10); border-radius:14px; box-shadow:var(--shadow-sm); text-align:left; font-family:var(--serif); }
-.B-tool-card .tool-name{ font-size:1rem; color:var(--ink); }
-.B-tool-card .tool-sub{ font-size:.72rem; color:var(--ink-mute); font-family:var(--mono); letter-spacing:.06em; }
-.B-tool-card::before{ content:""; width:22px; height:3px; border-radius:999px; background:var(--amber); }
-/* Task 8: 更多頁預算預覽（讀記帳累計，點入記帳子頁） */
-.B-budget-preview{
-  display:block; width:100%; margin-top:var(--gap-sm); padding:var(--pad-md);
-  background:#fbf6ea; border:1px solid rgba(26,22,18,.10); border-radius:14px;
-  box-shadow:var(--shadow-sm); text-align:left; font-family:var(--serif);
+/* Task 9: 首頁右上工具選單 */
+.B-today .B-tools-btn{ position:absolute; top:.7rem; right:.75rem; z-index:2; }
+.B-tools-btn {
+  min-width: 44px;
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--A-ink);
+  font-size: 22px;
+  line-height: 1;
 }
-.B-budget-cats{ display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.3rem; }
-.B-budget-cats .cat-chip{
-  font-family:var(--mono); font-size:.66rem; letter-spacing:.03em; color:var(--ink-mute);
-  background:rgba(26,22,18,.06); border-radius:999px; padding:.2rem .55rem;
+.B-tools-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 130;
+  display: flex;
+  align-items: flex-end;
+  background: rgba(27, 25, 23, .38);
 }
+.B-tools-menu-panel {
+  width: 100%;
+  background: var(--A-board);
+  border-radius: 20px 20px 0 0;
+  padding: 14px 16px calc(16px + var(--safe-bottom, 0px));
+}
+.B-tools-menu-head { display: flex; align-items: center; justify-content: space-between; }
+.B-tools-menu-head h3 { margin: 0; font-size: 16.5px; }
+.B-tools-menu-head button { min-width: 44px; min-height: 44px; border: 0; background: transparent; font-size: 20px; }
+.B-tools-menu ul { list-style: none; margin: 8px 0 0; padding: 0; }
+.B-tools-menu li + li { border-top: 1px solid var(--A-line); }
+.B-tools-menu li button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 56px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+}
+.B-tools-menu-label { font-size: 15px; color: var(--A-ink); }
+/* ink-3 只能用於非文字（分隔線／邊框），這裡是文字標籤，改用 ink-2 */
+.B-tools-menu-kicker { font-family: var(--A-mono); font-size: 10.5px; letter-spacing: .1em; color: var(--A-ink-2); }
+
 .B-subpage-mask{ position:fixed; inset:0; z-index:130; background:var(--paper); display:flex; flex-direction:column; padding-bottom:var(--safe-bottom); }
 .B-subpage{ display:flex; flex-direction:column; height:100%; }
 .B-subpage-head{ position:sticky; top:0; display:flex; align-items:center; gap:12px; padding:calc(var(--safe-top) + 12px) 16px 12px; background:var(--paper); border-bottom:1px solid var(--amber); }
@@ -952,25 +1156,71 @@
 /* Task 5: 記帳子頁 */
 .B-expense{ display:flex; flex-direction:column; gap:var(--gap-md); padding-bottom:88px; }
 .B-expense-storage-warn{ font-family:var(--mono); font-size:.68rem; color:var(--crimson); background:rgba(168,35,29,.08); border:1px solid rgba(168,35,29,.25); border-radius:10px; padding:var(--pad-sm); }
-.B-expense-total{ background:var(--ink); color:var(--paper); border-radius:16px; padding:var(--pad-lg); display:flex; flex-direction:column; gap:4px; }
-.B-expense-total .total-pln{ font-family:var(--mono); font-size:2.1rem; font-variant-numeric:tabular-nums; }
-.B-expense-total .total-twd{ font-family:var(--mono); font-size:1rem; color:var(--amber); font-variant-numeric:tabular-nums; }
-.B-expense-total .total-rate{ font-family:var(--mono); font-size:.7rem; opacity:.7; letter-spacing:.08em; }
-.B-budget-bar{ margin:var(--gap-md) 0; height:10px; border-radius:999px; background:rgba(26,22,18,.10); overflow:hidden; }
-.B-budget-bar .fill{ height:100%; background:var(--amber); transition:width .4s var(--ease-out); }
-.B-budget-bar .fill.is-over{ background:var(--crimson); }
-.B-budget-label{ font-family:var(--mono); font-size:.72rem; color:var(--ink-mute); font-variant-numeric:tabular-nums; }
-.B-cat-grid{ display:grid; grid-template-columns:1fr 1fr; gap:var(--gap-sm); }
-.B-cat-tile{ background:#fbf6ea; border:1px solid rgba(26,22,18,.10); border-radius:12px; padding:var(--pad-sm); }
-.B-cat-tile .label{ display:block; font-family:var(--serif); font-size:.82rem; color:var(--ink-mute); margin-bottom:2px; }
-.B-cat-tile .amt{ font-family:var(--mono); font-variant-numeric:tabular-nums; color:var(--crimson); font-size:1rem; }
-.B-day-filter{ display:flex; gap:6px; overflow-x:auto; padding:var(--gap-sm) 0; -webkit-overflow-scrolling:touch; }
-.B-day-filter .pill{
-  flex:none; white-space:nowrap; font-family:var(--mono); font-size:.68rem; letter-spacing:.06em;
-  border:1px solid rgba(26,22,18,.18); border-radius:999px; padding:.4rem .8rem; background:var(--paper);
-  color:var(--ink-mute); cursor:pointer;
+/* ---- 方案 A 記帳：深咖啡主卡 ---- */
+.B-expense-hero {
+  background: var(--A-espresso);
+  color: var(--A-ground);
+  border-radius: var(--A-radius);
+  padding: 18px;
+  margin-bottom: 12px;
 }
-.B-day-filter .pill.active{ background:var(--crimson); color:var(--paper); border-color:var(--crimson); }
+.B-expense-hero-kicker { margin: 0; font-family: var(--A-mono); font-size: 10.5px; letter-spacing: .1em; opacity: .72; }
+.B-expense-hero-amt {
+  margin: 4px 0 0;
+  font-family: var(--A-display);
+  font-variant-numeric: lining-nums tabular-nums;
+  font-size: 34px;
+  line-height: 1;
+  color: var(--A-brass);
+}
+.B-expense-hero-amt small { font-size: 14px; letter-spacing: .06em; }
+.B-expense-hero-twd { margin: 4px 0 0; font-size: 13px; opacity: .85; }
+.B-expense-bar { height: 4px; border-radius: 999px; background: var(--A-espresso-track); margin: 12px 0 6px; overflow: hidden; }
+.B-expense-bar i { display: block; height: 100%; border-radius: 999px; background: var(--A-brass); }
+.B-expense-bar i.is-over { background: var(--A-signal-bright); }
+.B-expense-hero-budget { margin: 0; font-size: 11.5px; opacity: .78; }
+/* 超支不只靠顏色：這段文字本身不含 opacity，維持與底色 6.41:1 的全對比度 */
+.B-expense-over-tag { margin: 6px 0 0; font-size: 11px; font-weight: 700; letter-spacing: .04em; color: var(--A-signal-bright); }
+
+.B-expense-hint {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--A-tag-book-bg);
+  color: var(--A-tag-book-fg);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+.B-expense-refund {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.B-expense-refund-note {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--A-ink-2);
+}
+.B-tag-refund {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--A-tag-book-bg);
+  color: var(--A-tag-book-fg);
+  font-size: 10.5px;
+  font-style: normal;
+}
+
+/* Task 12：記帳頁日期篩選改用 .B-pill-a 統一的 A token 樣式，選中狀態不再
+   借用 --crimson 紅（紅色只作訊號用途，不是選中態的裝飾色，見全域硬規則）。
+   容器橫向可捲、縱向不可捲：overflow-x:auto，overflow-y 明確設 hidden——
+   不設的話瀏覽器會因 overflow-x:auto 自動給一條可能出現的縱向捲軸。 */
+.B-day-filter{ display:flex; gap:8px; overflow-x:auto; overflow-y:hidden; padding:var(--gap-sm) 0; -webkit-overflow-scrolling:touch; }
+.B-day-filter .B-pill-a{ flex:none; white-space:nowrap; }
 .B-expense-list{ display:flex; flex-direction:column; }
 .B-expense-row{ display:grid; grid-template-columns:1fr auto auto; gap:8px; align-items:center; padding:var(--pad-sm) 0; border-bottom:1px solid rgba(26,22,18,.08); }
 .B-expense-row .item{ display:flex; flex-direction:column; gap:2px; }
@@ -1045,11 +1295,38 @@
 .B-info-phrase .pl{ font-family:var(--serif); color:var(--crimson); }
 .B-info-empty{ font-family:var(--serif); color:var(--ink-mute); }
 
-/* Task 7: Photo Map 城市打卡 */
-.B-photomap-head{ font-family:var(--mono); color:var(--amber-deep); margin-bottom:var(--gap-sm); }
-.B-photomap-city{ display:flex; justify-content:space-between; align-items:center; padding:var(--pad-md); background:#fbf6ea; border:1px solid rgba(26,22,18,.10); border-radius:14px; margin-bottom:var(--gap-sm); }
-.B-photomap-city.is-done{ border-color:var(--crimson); }
-.B-photomap-name{ display:flex; flex-direction:column; font-family:var(--serif); }
-.B-photomap-name .en{ font-family:var(--mono); font-size:.7rem; color:var(--ink-mute); }
-.B-photomap-toggle{ font-family:var(--mono); font-size:.75rem; letter-spacing:.04em; border-radius:999px; padding:.5rem 1rem; background:none; border:1px solid var(--crimson); color:var(--crimson); }
-.B-photomap-city.is-done .B-photomap-toggle{ background:var(--crimson); color:var(--paper); }
+/* Task 13：拍照清單改景點層級（取代 Task 7 城市打卡的 .B-photomap-head／
+   -city／-name／-toggle，這幾個 class 已不再被 render，一併移除避免孤兒 CSS）。
+   沿用 .B-card-a／.B-quad／.B-pill-a 既有語彙，其餘採方案 A 的 --A-* token，
+   不與本頁其他尚未改版子頁（SOS／實用資訊）的舊 --serif／--crimson 混用。 */
+.B-photomap-empty{ text-align:center; color:var(--A-ink-2); padding:16px 0; font-size:12.5px; }
+.B-photo-list{ list-style:none; margin:12px 0 0; padding:0; display:flex; flex-direction:column; gap:8px; }
+.B-photo-item{ display:grid; grid-template-columns:44px 1fr auto; gap:10px; align-items:center; }
+.B-photo-item .B-photo-day{ font-size:11px; color:var(--A-ink-2); }
+.B-photo-item .B-photo-body{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+.B-photo-item .B-photo-body b{ font-size:14px; font-weight:600; color:var(--A-ink); }
+.B-photo-item .B-photo-body em{ font-style:normal; font-size:11px; color:var(--A-ink-2); }
+.B-photo-item.is-done .B-photo-body b{ color:var(--A-done); }
+
+/* ---- 照片出處（CC BY／BY-SA 要求出處隨作品呈現） ---- */
+.B-credits { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--A-line); }
+.B-credits h4 { margin: 0 0 6px; font-size: 13px; }
+.B-credits p { margin: 0 0 8px; font-size: 11.5px; color: var(--A-ink-2); }
+.B-credits ul { list-style: none; margin: 0; padding: 0; }
+.B-credits li { font-size: 11.5px; color: var(--A-ink-2); padding: 4px 0; }
+/* I1（獨立審查）：「來源」連結原本只有 24×13px，低於 WCAG 2.5.8 的 24×24
+   最小可觸區——這是法律義務要求的授權連結，按不準等於義務履行不完整。
+   inline-block + padding 撐開命中區，不改變視覺文字大小。 */
+.B-credits a { display: inline-block; margin-left: 4px; padding: 6px 4px; color: var(--A-ink); }
+
+/* ---- 儲存失敗與表單錯誤提示 ---- */
+.B-store-warn,
+.B-form-error {
+  margin: 0 0 10px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  background: #FDEDE3;
+  color: #8C3E1C;
+}

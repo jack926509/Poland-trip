@@ -179,7 +179,7 @@ function B_useModalFocus(open, containerRef, initialFocusRef, returnFocusRef) {
 function B_PrimaryNav({ placement, active, onChange, onToday, onItinerary, onTransport, onTickets }) {
   const placementClass = placement === 'mobile' ? 'B-mobile-nav' : 'B-desktop-nav';
   if (placement === 'mobile') {
-    const tabs = [['home', '首頁'], ['trip', '行程'], ['move', '交通'], ['more', '更多']];
+    const tabs = [['home', '首頁'], ['trip', '行程'], ['move', '交通'], ['money', '記帳']];
     return (
       <nav className={`B-primary-nav ${placementClass}`} aria-label="手機主要導覽">
         {tabs.map(([key, label]) => (
@@ -208,33 +208,27 @@ function B_PrimaryNav({ placement, active, onChange, onToday, onItinerary, onTra
 }
 
 function B_Hero(props) {
-  var cities = ['華沙', '克拉科夫', '樂斯拉夫', '波茲南'];
-  var slides = ['hs-waw', 'hs-krk', 'hs-wro', 'hs-poz'];
-  var reduce = false;
-  try { reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
-  var idxState = React.useState(0);
-  var idx = idxState[0], setIdx = idxState[1];
-  React.useEffect(function () {
-    if (reduce) return undefined;
-    var id = setInterval(function () { setIdx(function (i) { return (i + 1) % slides.length; }); }, 3200);
-    return function () { clearInterval(id); };
-  }, [reduce]);
-  return React.createElement('div', { className: 'B-hero' },
-    slides.map(function (s, i) {
-      return React.createElement('div', {
-        key: s, className: 'B-hero-slide ' + s + (i === idx ? ' is-active' : ''), 'aria-hidden': i === idx ? undefined : 'true',
-      });
-    }),
-    React.createElement('div', { className: 'B-hero-cap' },
-      React.createElement('span', { className: 'B-hero-code' }, props.code || 'POLSKA'),
-      React.createElement('span', { className: 'B-hero-city' }, cities[idx]),
-      React.createElement('span', { className: 'B-hero-date' }, props.dateRange || '')
-    ),
-    React.createElement('div', { className: 'B-hero-dots', role: 'presentation' },
-      slides.map(function (s, i) {
-        return React.createElement('span', { key: s, className: 'B-hero-dot' + (i === idx ? ' is-active' : '') });
-      })
-    )
+  // 方案 A：照片 hero，依當天所在城市顯示對應照片與資訊（規格 2026-07-26
+  // 裁定：維持現況，取消原規格 specs:73 的四城輪播——輪播每 3.2 秒換城市，
+  // 牴觸規格自述的痛點「辨識不出今天在哪座城」）。
+  // 舊版四城輪播的 index state／setInterval／prefers-reduced-motion 判斷
+  // 已隨輪播視覺一併移除；本頁唯一的自動播放動畫是 .B-now .now-label::after
+  // 的 B-pulse（見 B-companion.css），已由 redesign/tokens.css:78-86 的全域
+  // `@media (prefers-reduced-motion: reduce)` 規則（mobile.html 有載入
+  // tokens.css，且該規則用 `*` + `!important` 蓋到全站）一併守住，這裡不用
+  // 也不該再自己接一份。
+  var city = props.city;
+  var day = props.day;
+  return (
+    <div className="B-hero-photo">
+      <img src={city.photo.hero} alt={`${city.name} ${city.pl}`} loading="lazy" width="1200" height="800" />
+      <div className="B-hero-veil" />
+      <div className="B-hero-text">
+        <p className="B-hero-kicker B-num">DAY {day.n} · {day.date}</p>
+        <h2 className="B-num">{city.name}</h2>
+        <p className="B-hero-sub">{city.pl} · {day.tag}</p>
+      </div>
+    </div>
   );
 }
 
@@ -250,8 +244,7 @@ function B_PreTripGuide({ trip }) {
     ['常用波蘭語', trip.phrases.map(([zh, pl]) => `${zh} · ${pl}`)],
   ];
   return (
-    <section id="B-guide" className="B-pretrip-guide" aria-labelledby="B-guide-title" data-tabsection="more">
-      <h2 id="B-guide-title">行前指南</h2>
+    <section className="B-pretrip-guide">
       {sections.map(([title, rows]) => (
         <details key={title}>
           <summary>{title}</summary>
@@ -262,92 +255,87 @@ function B_PreTripGuide({ trip }) {
   );
 }
 
-/* Task 4: "更多" 分頁工具方格與可返回子頁容器 */
+/* Task 9: 首頁右上「⋯」選單裡的六個工具，與可返回子頁容器共用 */
 const B_TOOLS = [
-  ['expense', '旅行記帳', 'EXPENSE'],
-  ['photomap', 'Photo Map', 'MAP'],
+  ['photomap', '拍照清單', 'PHOTO'],
   ['fx', '匯率換算', 'FX RATE'],
   ['packing', '打包清單', 'PACKING'],
   ['sos', 'SOS 緊急卡', 'EMERGENCY'],
   ['info', '實用資訊', 'INFO'],
+  ['guide', '行前指南', 'GUIDE'],
 ];
 
 const SUBPAGE_TITLES = {
-  expense: '旅行記帳',
-  photomap: 'Photo Map',
+  photomap: '拍照清單',
   fx: '匯率換算',
   packing: '打包清單',
   sos: 'SOS 緊急卡',
   info: '實用資訊',
+  guide: '行前指南',
 };
 
-function B_Subpage(props) {
+function B_Subpage({ title, onBack, panelRef, closeRef, children }) {
   return (
-    <div className="B-subpage-mask" role="dialog" aria-modal="true" aria-label={props.title}>
+    <div className="B-subpage-mask" role="dialog" aria-modal="true" aria-label={title} ref={panelRef}>
       <div className="B-subpage">
         <header className="B-subpage-head">
-          <button type="button" className="B-subpage-back" onClick={props.onBack} aria-label="返回更多">‹ 返回</button>
-          <h2>{props.title}</h2>
+          {/* 「更多」分頁已於 Task 9 移除，可及名稱不可再承諾返回到不存在的分頁。 */}
+          <button type="button" className="B-subpage-back" ref={closeRef} onClick={onBack} aria-label="返回上一頁">‹ 返回</button>
+          <h2>{title}</h2>
         </header>
-        <div className="B-subpage-body">{props.children}</div>
+        <div className="B-subpage-body">{children}</div>
       </div>
     </div>
   );
 }
 
-function B_ToolGrid({ onOpen, totals, budget, fxRate }) {
-  // 外層負責 mobile 分頁顯示/隱藏（Task 1 的 [data-tabsection] 機制），
-  // .B-more-grid 保留在內層，避免該規則的 display:block 蓋掉 grid 版面。
-  const core = window.PolskaPwaCore;
+/* Task 9: 首頁右上「⋯」開啟的工具選單（取代原「更多」分頁的工具方格） */
+function B_ToolGrid({ onOpen, onClose, panelRef, closeRef }) {
   return (
-    <section className="B-more-tools" aria-label="旅行工具" data-tabsection="more">
-      <div className="B-more-grid">
-        {B_TOOLS.map(([key, label, sub]) => (
-          <button
-            type="button"
-            key={key}
-            className="B-tool-card"
-            data-open={key}
-            onClick={() => onOpen(key)}>
-            <span className="tool-name">{label}</span>
-            <span className="tool-sub">{sub}</span>
-          </button>
-        ))}
-      </div>
-      {/* Task 8：預算預覽——讀記帳累計，點入記帳子頁 */}
-      <button
-        type="button"
-        className="B-budget-preview"
-        aria-label={`預算預覽：已花新台幣 ${budget.spentTWD} 元，預算新台幣 ${budget.budgetTWD} 元，點擊開啟記帳`}
-        onClick={() => onOpen('expense')}>
-        <div className="B-budget-bar">
-          <div
-            className={`fill${budget.over ? ' is-over' : ''}`}
-            style={{ width: `${Math.min(budget.ratio, 1) * 100}%` }}
-          />
+    <div className="B-tools-menu" role="dialog" aria-modal="true" aria-label="更多工具" ref={panelRef}>
+      <div className="B-tools-menu-panel">
+        <div className="B-tools-menu-head">
+          <h3>更多工具</h3>
+          <button type="button" ref={closeRef} onClick={onClose} aria-label="關閉">×</button>
         </div>
-        <span className="B-budget-label">已花 NT${budget.spentTWD} / 預算 NT${budget.budgetTWD}</span>
-        <div className="B-budget-cats">
-          {core.EXPENSE_CATEGORIES.map((c) => (
-            <span key={c.key} className="cat-chip">
-              {c.label} NT${core.plnToTwd(totals.byCategory[c.key], fxRate)}
-            </span>
+        <ul>
+          {B_TOOLS.map(([key, label, kicker]) => (
+            <li key={key}>
+              <button type="button" onClick={(ev) => onOpen(key, ev)}>
+                <span className="B-tools-menu-label">{label}</span>
+                <span className="B-tools-menu-kicker">{kicker}</span>
+              </button>
+            </li>
           ))}
-        </div>
-      </button>
-    </section>
+        </ul>
+      </div>
+    </div>
   );
 }
 
 /* Task 5: 記帳子頁（完整功能） */
-function B_Expense({ storage }) {
+function B_Expense({ storage, activeTab, subpage }) {
   const core = window.PolskaPwaCore;
   const days = (window.TRIP && window.TRIP.days) || [];
   const [expenses, setExpenses] = B_useState(() => core.readJSON(storage, 'polska.expenses.v1', []));
-  const [settings] = B_useState(() => core.readJSON(storage, 'polska.settings.v1', core.DEFAULT_SETTINGS));
+  const [settings, setSettings] = B_useState(() => core.readJSON(storage, 'polska.settings.v1', core.DEFAULT_SETTINGS));
+
+  // 2026-07-26 修正輪（A3）：本元件是常駐 DOM 的（切分頁只被 CSS 隱藏，不會
+  // remount），原本 settings 只在 mount 讀一次且沒有 setter。使用者在「匯率換算」
+  // 子頁改過匯率後，首頁四宮格用新匯率、這裡仍用舊匯率，同一筆花費在兩個畫面
+  // 換出不同台幣金額。這裡用與 B_Companion 首頁那份 effect 完全相同的觸發條件
+  // （activeTab／subpage 變動）重讀 storage，兩邊永遠拿到同一份設定。
+  // 只重讀 settings 不重讀 expenses：expenses 的唯一寫入者是本元件自己，
+  // 重讀會有把使用者剛按下的新增／刪除蓋掉的風險。
+  B_useEffect(() => {
+    setSettings(core.readJSON(storage, 'polska.settings.v1', core.DEFAULT_SETTINGS));
+  }, [core, storage, activeTab, subpage]);
   const [filterDay, setFilterDay] = B_useState('all');
+  const [onlyRefund, setOnlyRefund] = B_useState(false);
   const [formOpen, setFormOpen] = B_useState(false);
   const [persistOk, setPersistOk] = B_useState(true);
+  const [formError, setFormError] = B_useState('');
+  const [hint, setHint] = B_useState('');
   const [form, setForm] = B_useState(() => ({
     item: '', amountPLN: '', category: core.EXPENSE_CATEGORIES[0].key,
     day: days[0] ? days[0].n : 1, method: '現金',
@@ -358,8 +346,14 @@ function B_Expense({ storage }) {
     () => core.budgetStatus(totals.totalPLN, settings.fxRate, settings.budgetTWD),
     [core, totals.totalPLN, settings.fxRate, settings.budgetTWD]
   );
-  const totalTWD = core.plnToTwd(totals.totalPLN, settings.fxRate);
-  const filtered = filterDay === 'all' ? expenses : expenses.filter((e) => e.day === filterDay);
+  const refund = B_useMemo(
+    () => core.taxRefundSummary(expenses, settings.fxRate),
+    [core, expenses, settings.fxRate]
+  );
+  const dayFiltered = filterDay === 'all' ? expenses : expenses.filter((e) => e.day === filterDay);
+  const visible = onlyRefund
+    ? dayFiltered.filter((e) => core.taxRefundStatus(e.amountPLN, e.category).state === 'eligible')
+    : dayFiltered;
   const catLabel = (key) => (core.EXPENSE_CATEGORIES.find((c) => c.key === key) || {}).label || key;
 
   const persist = (next) => {
@@ -370,7 +364,9 @@ function B_Expense({ storage }) {
   const submitForm = (e) => {
     e.preventDefault();
     const amount = Number(form.amountPLN);
-    if (!form.item.trim() || !isFinite(amount) || amount <= 0) return;
+    if (!form.item.trim()) { setFormError('請填品項名稱'); return; }
+    if (!isFinite(amount) || amount <= 0) { setFormError('金額請填大於 0 的數字'); return; }
+    setFormError('');
     const entry = {
       id: Date.now() + Math.random(),
       day: Number(form.day),
@@ -381,6 +377,15 @@ function B_Expense({ storage }) {
       ts: Date.now(),
     };
     persist([entry, ...expenses]);
+    const rs = core.taxRefundStatus(entry.amountPLN, entry.category);
+    if (rs.state === 'eligible') {
+      const est = core.taxRefundEstimate(entry.amountPLN, settings.fxRate);
+      setHint(`這筆可辦退稅 · 預估可退 NT$${est.lowTWD.toLocaleString('zh-TW')}–${est.highTWD.toLocaleString('zh-TW')}（同一張收據才算）`);
+    } else if (rs.state === 'near') {
+      setHint(`距離退稅門檻還差 ${rs.shortfallPLN} PLN（同一張收據才算，不同店家不能合併）`);
+    } else {
+      setHint('');
+    }
     setForm({ item: '', amountPLN: '', category: form.category, day: Number(form.day), method: form.method });
     setFormOpen(false);
   };
@@ -391,57 +396,84 @@ function B_Expense({ storage }) {
     <div className="B-expense">
       {!persistOk && <p className="B-expense-storage-warn">目前無法儲存，本次紀錄僅暫存</p>}
 
-      <div className="B-expense-total">
-        <span className="total-pln">{totals.totalPLN.toFixed(2)} PLN</span>
-        <span className="total-twd">≈ NT${totalTWD}</span>
-        <span className="total-rate">1 PLN ≈ NT${settings.fxRate}</span>
-        <div className="B-budget-bar">
-          <div
-            className={`fill${budget.over ? ' is-over' : ''}`}
-            style={{ width: `${Math.min(budget.ratio, 1) * 100}%` }}
+      <div className="B-expense-hero">
+        <p className="B-expense-hero-kicker">總花費</p>
+        <p className="B-expense-hero-amt B-num">{totals.totalPLN.toFixed(2)} <small>PLN</small></p>
+        <p className="B-expense-hero-twd B-num">≈ NT${budget.spentTWD.toLocaleString('zh-TW')}</p>
+        <div className="B-expense-bar">
+          <i
+            className={budget.over ? 'is-over' : ''}
+            style={{ width: Math.min(100, budget.ratio * 100) + '%' }}
           />
         </div>
-        <span className="B-budget-label">已花 NT${budget.spentTWD} / 預算 NT${budget.budgetTWD}</span>
+        <p className="B-expense-hero-budget B-num">
+          已花 NT${budget.spentTWD.toLocaleString('zh-TW')} / 預算 NT${budget.budgetTWD.toLocaleString('zh-TW')}
+        </p>
+        {budget.over && <p className="B-expense-over-tag">⚠ 已超支</p>}
       </div>
 
-      <div className="B-cat-grid">
+      <div className="B-card-a B-quad">
         {core.EXPENSE_CATEGORIES.map((c) => (
-          <div className="B-cat-tile" key={c.key}>
-            <span className="label">{c.label}</span>
-            <span className="amt">NT${core.plnToTwd(totals.byCategory[c.key], settings.fxRate)}</span>
+          <div key={c.key}>
+            <b>{core.plnToTwd(totals.byCategory[c.key], settings.fxRate).toLocaleString('zh-TW')}</b>
+            <span>{c.label} NT$</span>
           </div>
         ))}
       </div>
 
+      {hint && <p className="B-expense-hint" role="status">{hint}</p>}
+
       <div className="B-day-filter" role="group" aria-label="依日期篩選記帳列表">
-        <button type="button" className={`pill${filterDay === 'all' ? ' active' : ''}`} onClick={() => setFilterDay('all')}>全部</button>
+        <button
+          type="button"
+          className={`B-pill-a${filterDay === 'all' ? ' is-active' : ''}`}
+          aria-pressed={filterDay === 'all'}
+          onClick={() => setFilterDay('all')}>全部</button>
         {days.map((d) => (
           <button
             type="button" key={d.n}
-            className={`pill${filterDay === d.n ? ' active' : ''}`}
+            className={`B-pill-a${filterDay === d.n ? ' is-active' : ''}`}
+            aria-pressed={filterDay === d.n}
             onClick={() => setFilterDay(d.n)}>
-            Day{d.n}
+            Day {d.n}
           </button>
         ))}
       </div>
 
+      {(refund.count > 0 || onlyRefund) && (
+        <div className="B-expense-refund">
+          <button
+            type="button"
+            className={'B-pill-a' + (onlyRefund ? ' is-active' : '')}
+            aria-pressed={onlyRefund}
+            onClick={() => setOnlyRefund(!onlyRefund)}>
+            {refund.count} 筆各自已達退稅門檻 · 合計約退 NT${refund.lowTWD.toLocaleString('zh-TW')}–{refund.highTWD.toLocaleString('zh-TW')}
+          </button>
+          {/* 門檻數字一律從 core.TAX_FREE_MIN_PLN 插值，不再寫死，避免常數改了文案沒跟上。 */}
+          <p className="B-expense-refund-note">退稅門檻採「同一張收據、同一店家」滿 {core.TAX_FREE_MIN_PLN} PLN 計算，不同收據、不同店家不可合併。</p>
+        </div>
+      )}
+
       <div className="B-expense-list">
-        {filtered.length === 0 && <p className="B-expense-empty">尚無記帳紀錄</p>}
-        {filtered.map((e) => (
+        {visible.length === 0 && <p className="B-expense-empty">尚無記帳紀錄</p>}
+        {visible.map((e) => (
           <div className="B-expense-row" key={e.id}>
             <div className="item">
-              <span className="name">{e.item}</span>
+              <span className="name">
+                {e.item}
+                {core.taxRefundStatus(e.amountPLN, e.category).state === 'eligible' && <em className="B-tag-refund">可退稅</em>}
+              </span>
               <span className="meta">
                 <span className="cat">{catLabel(e.category)}</span>
                 {' · '}
                 <span className="method">{e.method}</span>
                 {' · '}
-                <span className="day">Day{e.day}</span>
+                <span className="day">Day {e.day}</span>
               </span>
             </div>
             <div className="amounts">
-              <span className="amt">{e.amountPLN} PLN</span>
-              <span className="twd">≈NT${core.plnToTwd(e.amountPLN, settings.fxRate)}</span>
+              <span className="amt">{Number(e.amountPLN).toFixed(2)} PLN</span>
+              <span className="twd">≈ NT${core.plnToTwd(e.amountPLN, settings.fxRate).toLocaleString('zh-TW')}</span>
             </div>
             <button type="button" className="del" aria-label={`刪除記帳：${e.item}`} onClick={() => removeExpense(e.id)}>✕</button>
           </div>
@@ -474,7 +506,9 @@ function B_Expense({ storage }) {
             <label>
               Day
               <select value={form.day} onChange={(ev) => setForm({ ...form, day: Number(ev.target.value) })}>
-                {days.map((d) => <option key={d.n} value={d.n}>{`Day${d.n}（${d.date}）`}</option>)}
+                {/* 原本組出「Day1（10/24 (六)）」——全形括號包半形括號、Day 後缺空格。
+                    d.date 本身已含半形括號的星期，外層不再套一層括號。 */}
+                {days.map((d) => <option key={d.n} value={d.n}>{`Day ${d.n} · ${d.date}`}</option>)}
               </select>
             </label>
             <label>
@@ -486,52 +520,73 @@ function B_Expense({ storage }) {
               </select>
             </label>
           </div>
+          {formError && <p className="B-form-error" role="alert">{formError}</p>}
           <div className="actions">
-            <button type="button" className="cancel" onClick={() => setFormOpen(false)}>取消</button>
+            <button type="button" className="cancel" onClick={() => { setFormOpen(false); setFormError(''); }}>取消</button>
             <button type="submit" className="submit">儲存</button>
           </div>
         </form>
       )}
 
-      <button type="button" className="B-fab" onClick={() => setFormOpen((v) => !v)}>＋新增記帳</button>
+      <button type="button" className="B-fab" onClick={() => { setFormOpen((v) => !v); setFormError(''); setHint(''); }}>＋新增記帳</button>
     </div>
   );
 }
-/* Task 7: Photo Map 城市打卡（本機持久化） */
-function B_PhotoMap({ storage }) {
+/* Task 13：拍照清單改景點層級，附光線建議；沿用既有 .B-card-a／.B-quad／.B-pill-a
+   設計語彙（Task 7 的 .B-tl-row／.B-tl-time／.B-tl-body 從未真的建立，不可引用）。
+   舊城市級打卡（中文城市名 key）交給 core.migratePhotoMapStorage 一次遷移：它會
+   讀舊值、算出新格式、把舊值原封不動備份到 core.PHOTOMAP_BACKUP_KEY（若備份已
+   存在則不覆寫，避免使用者重複開 App 時把原始資料蓋掉），再寫回 core.PHOTOMAP_KEY。
+   這裡不手刻遷移流程，只呼叫這支已寫好且經過測試的函式。 */
+function B_PhotoMap({ trip, storage }) {
   const core = window.PolskaPwaCore;
-  const cities = Object.keys(B_CITY_EN);
-  const [checkins, setCheckins] = B_useState(() => core.readJSON(storage, 'polska.photomap.v1', {}));
+  const spots = (trip && trip.photoSpots) || [];
+  const [storeOk, setStoreOk] = B_useState(true);
+  const [checked, setChecked] = B_useState(() => core.migratePhotoMapStorage(storage, spots).next);
 
-  const doneCount = cities.filter((city) => checkins[city]).length;
-
-  const toggle = (city) => {
-    const next = { ...checkins, [city]: !checkins[city] };
-    setCheckins(next);
-    core.writeJSON(storage, 'polska.photomap.v1', next);
+  const toggle = (id) => {
+    const next = { ...checked, [id]: !checked[id] };
+    setChecked(next);
+    setStoreOk(core.writeJSON(storage, core.PHOTOMAP_KEY, next));
   };
+
+  const done = spots.filter((s) => checked[s.id]).length;
+  const pct = spots.length ? Math.round((done / spots.length) * 100) : 0;
 
   return (
     <div className="B-photomap">
-      <p className="B-photomap-head">已打卡 {doneCount}/{cities.length}</p>
-      {cities.map((city) => {
-        const done = Boolean(checkins[city]);
-        return (
-          <div className={`B-photomap-city${done ? ' is-done' : ''}`} key={city}>
-            <div className="B-photomap-name">
-              <strong>{city}</strong>
-              <span className="en">{B_CITY_EN[city]}</span>
-            </div>
-            <button
-              type="button"
-              className="B-photomap-toggle"
-              aria-pressed={done}
-              onClick={() => toggle(city)}>
-              {done ? '已打卡 ✓' : '打卡'}
-            </button>
-          </div>
-        );
-      })}
+      {!storeOk && <p className="B-store-warn">目前無法儲存，這次的變更只在這個畫面有效</p>}
+      <div className="B-card-a B-quad">
+        <div><b className="B-num">{spots.length}</b><span>全部</span></div>
+        <div><b className="B-num">{done}</b><span>已拍</span></div>
+        <div><b className="B-num">{spots.length - done}</b><span>未拍</span></div>
+        <div><b className="B-num">{pct}%</b><span>完成度</span></div>
+      </div>
+      {spots.length === 0 && <p className="B-photomap-empty">尚無拍照建議</p>}
+      {/* .B-photo-item 三個子元素（Day 標籤／內文／按鈕）一律無條件 render，
+          不會像 Task 12 的 .B-step 縮圖那樣因條件式子元素改變數量而撞上
+          CSS Grid 隱式定位，故不需要額外的 grid-column 覆寫。 */}
+      <ul className="B-photo-list">
+        {spots.map((s) => {
+          const isDone = Boolean(checked[s.id]);
+          return (
+            <li className={`B-card-a B-photo-item${isDone ? ' is-done' : ''}`} key={s.id}>
+              <span className="B-photo-day B-num">Day {s.day}</span>
+              <span className="B-photo-body">
+                <b>{s.name}</b>
+                <em>{s.bestTime} · {s.light}</em>
+              </span>
+              <button
+                type="button"
+                className={'B-pill-a' + (isDone ? ' is-active' : '')}
+                aria-pressed={isDone}
+                aria-label={`${s.name} ${isDone ? '已拍' : '待拍'}`}
+                onClick={() => toggle(s.id)}
+              >{isDone ? '已拍' : '待拍'}</button>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
@@ -542,6 +597,7 @@ function B_FxTool({ storage }) {
   const [settings, setSettings] = B_useState(() => core.readJSON(storage, 'polska.settings.v1', core.DEFAULT_SETTINGS));
   const [pln, setPln] = B_useState('100');
   const [twd, setTwd] = B_useState(() => String(core.plnToTwd(100, settings.fxRate)));
+  const [storeOk, setStoreOk] = B_useState(true);
 
   // 匯率為空或非正數視為「尚未設定」，換算欄不可靜默顯示 0——見 Task 6 審查問題 1。
   const rateNum = Number(settings.fxRate);
@@ -568,13 +624,14 @@ function B_FxTool({ storage }) {
     setSettings(nextSettings);
     const nextRateValid = v !== '' && isFinite(rate) && rate > 0;
     if (!nextRateValid) { setTwd(''); return; }
-    core.writeJSON(storage, 'polska.settings.v1', nextSettings);
+    setStoreOk(core.writeJSON(storage, 'polska.settings.v1', nextSettings));
     const p = Number(pln);
     if (isFinite(p) && pln !== '') setTwd(String(core.plnToTwd(p, rate)));
   };
 
   return (
     <div className="B-fx">
+      {!storeOk && <p className="B-store-warn">目前無法儲存，這次的變更只在這個畫面有效</p>}
       <label className="B-fx-input">
         PLN
         <input
@@ -608,6 +665,7 @@ function B_Packing({ storage }) {
   const core = window.PolskaPwaCore;
   const packingDefault = (window.TRIP && window.TRIP.packingDefault) || {};
   const [checked, setChecked] = B_useState(() => core.readJSON(storage, 'polska.packing.v1', {}));
+  const [storeOk, setStoreOk] = B_useState(true);
 
   // key 用「分類::項目」而非純項目文字，避免不同分類的同名項目互相污染勾選狀態
   // （見 Task 6 審查問題 2）。
@@ -617,11 +675,12 @@ function B_Packing({ storage }) {
     const key = packKey(group, item);
     const next = { ...checked, [key]: !checked[key] };
     setChecked(next);
-    core.writeJSON(storage, 'polska.packing.v1', next);
+    setStoreOk(core.writeJSON(storage, 'polska.packing.v1', next));
   };
 
   return (
     <div className="B-packing">
+      {!storeOk && <p className="B-store-warn">目前無法儲存，這次的變更只在這個畫面有效</p>}
       {Object.entries(packingDefault).map(([group, items]) => {
         const packedCount = items.filter((item) => checked[packKey(group, item)]).length;
         return (
@@ -702,6 +761,18 @@ function B_Info({ trip }) {
   const phrases = Array.isArray(trip && trip.phrases) ? trip.phrases : [];
   const empty = practical.length === 0 && about.length === 0 && phrases.length === 0;
 
+  // Task 13：photoCredits 每座城市有 hero／thumb 兩筆（同一張原圖的兩種裁切，
+  // 作者／授權／來源網址逐字相同），畫面上依來源網址去重成四座城市各一筆，
+  // 避免使用者看到兩組一模一樣的出處而困惑。data.js 本身的八筆不刪，那是
+  // 檔案層級的對應紀錄，有 tests/photo-spots.test.mjs 釘住。
+  const allCredits = Array.isArray(trip && trip.photoCredits) ? trip.photoCredits : [];
+  const seenCreditUrls = new Set();
+  const credits = allCredits.filter((c) => {
+    if (seenCreditUrls.has(c.url)) return false;
+    seenCreditUrls.add(c.url);
+    return true;
+  });
+
   return (
     <div className="B-info">
       {about.length > 0 && (
@@ -739,6 +810,22 @@ function B_Info({ trip }) {
         </section>
       )}
       {empty && <p className="B-info-empty">尚無實用資訊</p>}
+      {credits.length > 0 && (
+        <section className="B-credits">
+          <h4>照片出處</h4>
+          <p>本站城市照片取自 Wikimedia Commons，經裁切與縮放後使用；依授權標示作者與授權條款，標示 CC BY-SA 者，改作後之圖檔以相同授權釋出。</p>
+          <ul>
+            {credits.map((c) => (
+              <li key={c.url}>
+                <b>{c.city}</b> — {c.author}（
+                <a href={c.licenseUrl} target="_blank" rel="noopener noreferrer">{c.license}</a>
+                ）
+                <a href={c.url} target="_blank" rel="noopener noreferrer">來源</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 }
@@ -755,6 +842,7 @@ function B_Companion({ initialDay }) {
   const [drawerOpen, setDrawerOpen] = B_useState(false);
   const [trainSheet, setTrainSheet] = B_useState(false);
   const [subpage, setSubpage] = B_useState(null);
+  const [toolsOpen, setToolsOpen] = B_useState(false);
   const [online, setOnline] = B_useState(() => typeof navigator === 'undefined' ? true : navigator.onLine);
   const [standalone, setStandalone] = B_useState(B_isStandaloneMode);
   const [pwaStatus, setPwaStatus] = B_useState(() => window.PolskaPwaState?.status || ('serviceWorker' in navigator ? 'loading' : 'unsupported'));
@@ -775,9 +863,20 @@ function B_Companion({ initialDay }) {
   const trainCloseRef = React.useRef(null);
   const trainReturnFocusRef = React.useRef(null);
   const installPromptRef = React.useRef(null);
+  const subpageRef = React.useRef(null);
+  const subpageCloseRef = React.useRef(null);
+  const subpageReturnFocusRef = React.useRef(null);
+  const toolsMenuRef = React.useRef(null);
+  const toolsMenuCloseRef = React.useRef(null);
+  const toolsBtnRef = React.useRef(null);
 
   B_useModalFocus(drawerOpen, drawerRef, drawerCloseRef, drawerReturnFocusRef);
   B_useModalFocus(trainSheet, trainSheetRef, trainCloseRef, trainReturnFocusRef);
+  // toolsOpen 的焦點契約要在 subpage 之前呼叫：從工具選單直接點開子頁時，
+  // 兩個 state 在同一次 commit 內先關後開，effect 依宣告順序執行，
+  // 讓子頁的「初次對焦」效果最後跑，焦點才會停在子頁而不是被選單搶回。
+  B_useModalFocus(toolsOpen, toolsMenuRef, toolsMenuCloseRef, toolsBtnRef);
+  B_useModalFocus(!!subpage, subpageRef, subpageCloseRef, subpageReturnFocusRef);
 
   const noteKey = (dn, si) => `${dn}-${si}`;
   const editNote = (dn, si) => {
@@ -917,21 +1016,23 @@ function B_Companion({ initialDay }) {
   // Close modal surfaces on Escape
   B_useEffect(() => {
     const onKey = (e) => {
+      if (e.key === 'Escape' && subpage) { setSubpage(null); return; }
+      if (e.key === 'Escape' && toolsOpen) { setToolsOpen(false); return; }
+      if (e.key === 'Escape' && trainSheet) { setTrainSheet(false); return; }
       if (e.key === 'Escape' && drawerOpen) setDrawerOpen(false);
-      if (e.key === 'Escape' && trainSheet) setTrainSheet(false);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [drawerOpen, trainSheet]);
+  }, [drawerOpen, trainSheet, subpage, toolsOpen]);
 
   // Lock body scroll while modal surfaces are open.
   B_useEffect(() => {
-    document.body.style.overflow = drawerOpen || trainSheet ? 'hidden' : '';
+    document.body.style.overflow = drawerOpen || trainSheet || subpage || toolsOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
-  }, [drawerOpen, trainSheet]);
+  }, [drawerOpen, trainSheet, subpage, toolsOpen]);
 
-  // 記帳/預算會在「更多」子頁被新增或修改；離開子頁或切回首頁/更多分頁時
-  // 從 storage 重新讀入，讓首頁三格儀表與更多頁預算預覽反映最新累計。
+  // 記帳/預算會在「記帳」分頁被新增或修改；切換分頁或子頁時
+  // 從 storage 重新讀入，讓首頁三格儀表反映最新累計。
   B_useEffect(() => {
     setExpenses(core.readJSON(storage, 'polska.expenses.v1', []));
     setExpSettings(core.readJSON(storage, 'polska.settings.v1', core.DEFAULT_SETTINGS));
@@ -946,14 +1047,52 @@ function B_Companion({ initialDay }) {
   const next = d.steps[idx + 1];
   const active = d.n;
   const setActive = (n) => { setOverride(n); setOpenStep(null); setDrawerOpen(false); };
-  // 首頁三格儀表與更多頁預算預覽共用的記帳累計（Task 8）。
+  // 2026-07-26 修正輪（A2）：override 一旦被行程頁 Day 藥丸或 drawer 設住，原本
+  // 全 App 沒有任何清除路徑，回首頁 hero 與 Now 卡會繼續放被瀏覽那天的行程，
+  // 標籤卻寫「Now · 現在該做什麼」。backToToday 是清除 override 的唯一入口；
+  // previewingOtherDay 讓 Now 卡標籤在顯示日不是今天時說出實話。
+  const backToToday = () => { setOverride(null); setOpenStep(null); };
+  const previewingOtherDay = phase === 'during' && d.n !== momentDay;
+  // 首頁統計四宮格共用的記帳累計（Task 8 建、Task 10 改接四宮格，取代已移除的舊版三格今日儀表）。
   const dashTotals = B_useMemo(() => core.expenseTotals(expenses), [core, expenses]);
-  const dashBudget = B_useMemo(
+  // Task 10：首頁照片 hero 用當前顯示日的目的城市；轉場日 d.city 形如
+  // 「華沙 → 克拉科夫」，B_focusCity 已處理過取目的地。
+  const heroCityName = B_focusCity(d.city);
+  const heroCity = t.cities.find((c) => c.name === heroCityName) || t.cities[0];
+  // Task 12 修正輪（C1/I4 一併解）：時間軸縮圖不再整天貼同一張目的地照片——
+  // 8 天裡 Day 4/5/6 轉場日大多數步驟其實還在出發地，貼目的地照片等於指錯城市；
+  // 同一天每列貼相同圖也只是壁紙，沒有資訊量。改成「城市變換時才顯示」：每天
+  // 第一列固定顯示當天起始城市；轉場日在搭車出發之後、真正抵達目的地城市的
+  // 那一列（= steps 陣列裡緊接在出發那一步之後的下一步）才換成目的地縮圖，
+  // 其餘列不顯示縮圖。分界靠 d.train.dep 與 step.t 字串相等找出「出發那一列」——
+  // Day2/4/5/6 四個轉場日都能精準命中（見 task-12-report.md 驗證表）。找不到
+  // 出發列、或當天沒有城市變換（含 Day8「華沙 → 多哈」這種目的地不在城市清單裡
+  // 的情況）時，全天只在第一列顯示起始城市，不硬猜目的地在哪一列。
+  const dayStartCityName = (d.city || '').split('→')[0].trim();
+  const dayStartCity = t.cities.find((c) => c.name === dayStartCityName) || null;
+  const cityChangeIdx = B_useMemo(() => {
+    if (!d.train || !d.city.includes('→')) return -1;
+    const depIdx = d.steps.findIndex((s) => s.t === d.train.dep);
+    if (depIdx === -1) return -1;
+    return depIdx + 1 < d.steps.length ? depIdx + 1 : -1;
+  }, [d]);
+  const cityChangeCity = cityChangeIdx === -1 ? null : (t.cities.find((c) => c.name === heroCityName) || null);
+  // 首頁統計四宮格的預算格，與記帳分頁共用同一套 budgetStatus 計算。
+  const homeBudget = B_useMemo(
     () => core.budgetStatus(dashTotals.totalPLN, expSettings.fxRate, expSettings.budgetTWD),
     [core, dashTotals.totalPLN, expSettings.fxRate, expSettings.budgetTWD]
   );
-  const dashSpentTWD = core.plnToTwd(dashTotals.totalPLN, expSettings.fxRate);
-  const dashNextLabel = next ? next.label.replace(/^★\s*/, '') : '今日行程已完成';
+  // 下一段長途車：跨全行程找最近一班尚未出發的車，非僅當日 d.train。
+  const nt = B_useMemo(
+    () => core.nextTrain(t.trains, Date.now(), 2026),
+    [core, t.trains, tick]
+  );
+  // Task 12：交通頁要列出全部五段長途車（不是只有下一段），每段各自算一次
+  // core.trainCountdownState，已開走的段落顯示「已出發」而不是騙人的倒數。
+  const moveLegs = B_useMemo(
+    () => (t.trains || []).map((tr) => ({ train: tr, state: core.trainCountdownState(tr, Date.now(), 2026) })),
+    [core, t.trains, tick]
+  );
   const hardNow = core.selectHardConstraintForMoment(d.hardConstraints, phase, d.n, momentDay, mins);
   const bookNow = d.mustBook?.length ? d.mustBook.join(' / ') : '無需預先訂票';
   const compressNow = d.compressible?.[0] || '保留彈性休息';
@@ -974,7 +1113,7 @@ function B_Companion({ initialDay }) {
   B_useEffect(() => {
     const el = scrubRef.current;
     if (!el) return;
-    const activePill = el.querySelector('.pill.active');
+    const activePill = el.querySelector('.B-pill-a.is-active');
     if (activePill && activePill.scrollIntoView) {
       activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     }
@@ -1007,7 +1146,11 @@ function B_Companion({ initialDay }) {
   };
 
   return (
-    <div className="B-frame paper-tex">
+    // 2026-07-26 修正輪（A8-6）：離線點擊攔截原本掛在 <main> 的 onClickCapture，
+    // 但子頁（B_Subpage）、工具選單與 drawer 都 render 在 <main> 之外，所以子頁內
+    // 的外部連結（例如照片出處）離線點下去只會開出一個失敗的空白分頁。改掛在根
+    // 節點，覆蓋整個 App；<main> 是根節點的後代，主畫面原有行為不變。
+    <div className="B-frame paper-tex B-companion" onClickCapture={interceptOfflineLink}>
       <div className="B-status-bar">
         <span>{liveClock}</span>
         <span style={{display:'flex', gap:6, alignItems:'center'}}>
@@ -1051,14 +1194,50 @@ function B_Companion({ initialDay }) {
       </header>
 
       <B_PrimaryNav placement="desktop" {...navActions} />
-      <main id="app-main" className="B-web-grid B-tabview" data-tab={activeTab} onClickCapture={interceptOfflineLink}>
+      <main id="app-main" className="B-web-grid B-tabview" data-tab={activeTab}>
         <section className="B-primary-column" aria-label="今日行程">
 
       <div data-tabsection="home">
-        <B_Hero code={t.meta.code} dateRange={t.meta.dateRange} />
+        <B_Hero city={heroCity} day={d} />
+        <div className="B-card-a B-quad">
+          <div><b>{momentDay ?? d.n}/8</b><span>今天</span></div>
+          <div><b>{d.weather ? d.weather.split('/')[0].trim() : '—'}</b><span>白天</span></div>
+          <div><b>{homeBudget.spentTWD.toLocaleString('zh-TW')}</b><span>已花 NT$</span></div>
+          <div><b>{Math.round(homeBudget.ratio * 100)}%</b><span>預算</span></div>
+        </div>
+        {nt && (
+          <div className="B-card-a B-nextmove">
+            <p className="B-kicker-a">下一段長途車</p>
+            <p className="B-nextmove-seg B-num">{nt.train.seg}</p>
+            {/* leg 只在同一天同一班車有多個區段（去程／往返全程）時才有值，
+                讓 07:30 → 14:30 這種「往返全程」的時間不會被讀成單程抵達時刻。 */}
+            <p className="B-nextmove-time B-num">{nt.train.date} {nt.train.dep} → {nt.train.arr}</p>
+            {nt.train.leg && <p className="B-move-leg">{nt.train.leg}</p>}
+            <p className={`B-nextmove-count${nt.minutesUntil <= 60 ? ' is-soon' : ''}`}>{core.formatCountdown(nt.minutesUntil)} · {nt.train.type} · PLN {nt.train.price}</p>
+          </div>
+        )}
+        {/* nt 為 null 代表整趟行程往後已無長途車（core.nextTrain 找不到任何尚未出發的班次），
+            不是「今天沒有車」——今天的車可能才剛開走，這句話不能對使用者說謊。
+            沒有下一班車也不是警訊，不可套用 --A-signal 紅字，改用中性的 ink-2 樣式。
+            Task 12 裁決：.B-nextmove-count 預設中性色，紅字（--A-signal）只在
+            60 分鐘內即將出發時用 is-soon 觸發，不可對所有倒數恆亮紅字。 */}
+        {!nt && (
+          <div className="B-card-a">
+            <p className="B-kicker-a">下一段長途車</p>
+            <p className="B-nextmove-time">行程中已無下一段長途車</p>
+          </div>
+        )}
       </div>
 
       <section className="B-today" data-bg={`0${d.n}`} id="top" data-tabsection="home">
+        <button
+          type="button"
+          className="B-tools-btn"
+          aria-label="更多工具"
+          aria-expanded={toolsOpen}
+          ref={toolsBtnRef}
+          onClick={() => setToolsOpen(true)}
+        >⋯</button>
         <div className="kicker">Today is</div>
         <div className="day-line">
           <button
@@ -1110,19 +1289,40 @@ function B_Companion({ initialDay }) {
           </aside>
         )}
 
+        {override != null && (
+          <button
+            type="button"
+            className="B-back-today"
+            onClick={backToToday}>
+            ↩ 回到今天{momentDay ? `（Day ${momentDay}）` : ''}
+          </button>
+        )}
+
         <button
           type="button"
           className="B-now"
           aria-label="跳到目前進行中的行程"
           onClick={() => {
+            // 2026-07-26 修正輪（A1）：.B-step 全部在 data-tabsection="trip" 裡，
+            // 手機上非當前分頁被 CSS display:none 隱藏；對沒有 layout box 的元素
+            // 呼叫 scrollIntoView 是 no-op，所以先切到行程分頁，等 React commit
+            // 後的下一次繪製（兩層 rAF 保證分頁真的顯示出來、版面算好）才捲動。
             setOpenStep(idx);
-            const els = document.querySelectorAll('.B-step');
-            if (els[idx] && els[idx].scrollIntoView) {
-              els[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setActiveTab('trip');
+            const scrollToStep = () => {
+              const els = document.querySelectorAll('.B-step');
+              if (els[idx] && els[idx].scrollIntoView) {
+                els[idx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+            };
+            if (typeof requestAnimationFrame === 'function') {
+              requestAnimationFrame(() => requestAnimationFrame(scrollToStep));
+            } else {
+              scrollToStep();
             }
           }}>
           <div className="now-label">
-            {phase === 'before' ? '行程尚未開始 · 預覽' : phase === 'after' ? '行程已結束 · 回顧' : beforeStart ? '今日尚未開始' : afterEnd ? '今日已結束' : 'Now · 現在該做什麼'}
+            {phase === 'before' ? '行程尚未開始 · 預覽' : phase === 'after' ? '行程已結束 · 回顧' : previewingOtherDay ? `Day ${d.n} 預覽 · 不是現在` : beforeStart ? '今日尚未開始' : afterEnd ? '今日已結束' : 'Now · 現在該做什麼'}
           </div>
           <span className="now-time">{now.t}</span>
           <div className="now-task">{now.label.replace(/^★\s*/, '')}</div>
@@ -1145,31 +1345,14 @@ function B_Companion({ initialDay }) {
         </button>
       </section>
 
-      <div data-tabsection="home">
-        <div className="B-dash" aria-label="今日儀表">
-          <div className="dash-tile">
-            <span className="dash-k">天數</span>
-            <span className="dash-v">Day {d.n} / {t.days.length}</span>
-          </div>
-          <div className="dash-tile">
-            <span className="dash-k">累計花費</span>
-            <span className="dash-v">NT${dashSpentTWD}</span>
-          </div>
-          <div className="dash-tile">
-            <span className="dash-k">下一步</span>
-            <span className="dash-v">{dashNextLabel}</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="B-scrub" ref={scrubRef} role="tablist" aria-label="日次切換" data-tabsection="trip">
+      <div className="B-scrub B-scroll-x" ref={scrubRef} role="tablist" aria-label="日次切換" data-tabsection="trip">
         {t.days.map(x => (
           <a key={x.n} href={`#B-day-${x.n}`}
              role="tab"
              aria-selected={x.n === active}
              aria-current={x.n === active ? 'true' : undefined}
              onClick={e => { e.preventDefault(); setActive(x.n); }}
-             className={`pill ${x.n === active ? 'active' : ''} ${x.n < active ? 'done' : ''}`}>
+             className={`B-pill-a ${x.n === active ? 'is-active' : ''} ${x.n < active ? 'is-done' : ''}`}>
             <strong>Day {x.n}</strong>
             <span>{x.date.slice(0,5)}</span>
           </a>
@@ -1184,6 +1367,7 @@ function B_Companion({ initialDay }) {
             <div className="seg">
               <span className={`pill ${d.train.type.toLowerCase()}`}>{d.train.type}</span>
               <span>{d.train.date || d.date}</span>
+              {d.train.leg && <span className="B-move-leg">· {d.train.leg}</span>}
               <span>· {d.train.price}</span>
               <a className="book-cta"
                  href={bookHref}
@@ -1217,6 +1401,26 @@ function B_Companion({ initialDay }) {
         );
       })()}
 
+      <section className="B-move-list" data-tabsection="move" aria-label="長途交通總覽">
+        <p className="B-kicker-a">長途交通總覽 · 全部 {moveLegs.length} 段</p>
+        <ul>
+          {moveLegs.map(({ train: tr, state }, i) => (
+            <li className="B-move-row" key={i}>
+              <div className="B-move-main">
+                <span className="B-move-seg B-num">
+                  <span className={`B-move-type ${tr.type.toLowerCase()}`}>{tr.type}</span> {tr.seg}
+                </span>
+                <span className="B-move-time B-num">{tr.date} {tr.dep} → {tr.arr}</span>
+                {tr.leg && <span className="B-move-leg">{tr.leg}</span>}
+              </div>
+              <span className={`B-nextmove-count${!state.departed && state.minutesUntil !== null && state.minutesUntil <= 60 ? ' is-soon' : ''}${state.departed ? ' is-departed' : ''}`}>
+                {state.text}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       {trainSheet && d.train && (() => {
         const isBus = d.train.type === 'BUS';
         const bookHref = isBus ? 'https://www.lajkonikbus.pl/' : 'https://www.intercity.pl/en/';
@@ -1248,6 +1452,7 @@ function B_Companion({ initialDay }) {
               </div>
               <dl className="sheet-list">
                 <div><dt>日期</dt><dd>{d.train.date || d.date}</dd></div>
+                {d.train.leg && <div><dt>區段</dt><dd>{d.train.leg}</dd></div>}
                 <div><dt>出發</dt><dd>{B_STATIONS[d.train.from] || d.train.from}</dd></div>
                 <div><dt>抵達</dt><dd>{B_STATIONS[d.train.to] || d.train.to}</dd></div>
                 <div><dt>票價</dt><dd>{d.train.price}</dd></div>
@@ -1268,6 +1473,7 @@ function B_Companion({ initialDay }) {
           const cleanLabel = s.label.replace(/^★\s*/, '');
           const myNote = notes[noteKey(d.n, i)];
           const showBooking = isStar || B_hasBooking(s.label);
+          const thumbCity = i === 0 ? dayStartCity : (i === cityChangeIdx ? cityChangeCity : null);
           let cls = '';
           if (phase === 'after' || (phase === 'during' && i < idx)) cls = 'done';
           else if (phase === 'during' && i === idx) cls = 'now';
@@ -1288,7 +1494,10 @@ function B_Companion({ initialDay }) {
                 aria-expanded={open}>
                 <span className="t">{s.t}</span>
                 <span className="dot"></span>
-                <span className="lab">
+                {thumbCity?.photo?.thumb && (
+                  <img className="B-tl-thumb" src={thumbCity.photo.thumb} alt="" loading="lazy" />
+                )}
+                <span className={`lab${thumbCity?.photo?.thumb ? '' : ' is-full'}`}>
                   {cleanLabel}
                   {myNote && <span className="note-dot" title="已有備註" aria-label="已有備註">📒</span>}
                   {s.sub && <small>{s.sub}</small>}
@@ -1529,8 +1738,10 @@ function B_Companion({ initialDay }) {
         );
       })()}
 
-      <B_ToolGrid onOpen={setSubpage} totals={dashTotals} budget={dashBudget} fxRate={expSettings.fxRate} />
-      <B_PreTripGuide trip={t} />
+      <section data-tabsection="money">
+        <B_Expense storage={storage} activeTab={activeTab} subpage={subpage} />
+      </section>
+
         </aside>
       </main>
 
@@ -1581,7 +1792,14 @@ function B_Companion({ initialDay }) {
                 </li>
               ))}
               <li>
-                <a href="#B-guide" onClick={() => setDrawerOpen(false)}>
+                <a
+                  href="#B-guide"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    subpageReturnFocusRef.current = drawerReturnFocusRef.current;
+                    setDrawerOpen(false);
+                    setSubpage('guide');
+                  }}>
                   <span>行前指南</span>
                   <small>航班 · 住宿 · 安全</small>
                 </a>
@@ -1591,14 +1809,31 @@ function B_Companion({ initialDay }) {
         </React.Fragment>
       )}
 
+      {toolsOpen && (
+        <B_ToolGrid
+          panelRef={toolsMenuRef}
+          closeRef={toolsMenuCloseRef}
+          onClose={() => setToolsOpen(false)}
+          onOpen={(key) => {
+            // 不可用 ev.currentTarget：那是選單裡的工具按鈕，選單一關（toolsOpen
+            // 變 false）整塊 .B-tools-menu 就會 unmount，子頁關閉時再對它 focus()
+            // 會是操作一個已經不在 DOM 上的節點、悄悄失敗，焦點會掉到 <body>。
+            // 唯一在子頁關閉當下還存在的，是開選單的那顆「⋯」鈕本身。
+            subpageReturnFocusRef.current = toolsBtnRef.current;
+            setToolsOpen(false);
+            setSubpage(key);
+          }}
+        />
+      )}
+
       {subpage && (
-        <B_Subpage title={SUBPAGE_TITLES[subpage]} onBack={() => setSubpage(null)}>
-          {subpage === 'expense' && <B_Expense storage={storage} />}
+        <B_Subpage title={SUBPAGE_TITLES[subpage]} onBack={() => setSubpage(null)} panelRef={subpageRef} closeRef={subpageCloseRef}>
           {subpage === 'fx' && <B_FxTool storage={storage} />}
           {subpage === 'packing' && <B_Packing storage={storage} />}
           {subpage === 'sos' && <B_Sos trip={t} />}
           {subpage === 'info' && <B_Info trip={t} />}
           {subpage === 'photomap' && <B_PhotoMap trip={t} storage={storage} />}
+          {subpage === 'guide' && <B_PreTripGuide trip={t} />}
         </B_Subpage>
       )}
     </div>

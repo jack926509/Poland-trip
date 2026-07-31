@@ -78,7 +78,10 @@
       var raw = storage && storage.getItem ? storage.getItem(key) : null;
       if (raw == null) return clone;
       var parsed = JSON.parse(raw);
-      return parsed == null ? clone : parsed;
+      if (parsed == null) return clone;
+      if (Array.isArray(fallback) !== Array.isArray(parsed)) return clone;
+      if (typeof parsed !== typeof fallback) return clone;
+      return parsed;
     } catch (e) {
       return clone;
     }
@@ -121,8 +124,204 @@
     return { spentTWD: spentTWD, budgetTWD: budget, ratio: ratio, over: budget > 0 && spentTWD > budget };
   }
 
+  // 波蘭 TAX FREE：門檻為「單張收據、同一店家」滿 200 PLN 含稅。
+  // 不同收據不可合併——這是規定，不是簡化。實拿回約 10–18%（標準稅率 23%）。
+  var TAX_FREE_MIN_PLN = 200;
+  var TAX_FREE_NEAR_PLN = 150;
+  var TAX_FREE_LOW_RATE = 0.10;
+  var TAX_FREE_HIGH_RATE = 0.18;
+
+  function taxRefundStatus(amountPLN, category) {
+    var amt = Number(amountPLN);
+    if (category !== 'shop' || !isFinite(amt) || amt <= 0) {
+      return { state: 'none', shortfallPLN: 0 };
+    }
+    if (amt >= TAX_FREE_MIN_PLN) return { state: 'eligible', shortfallPLN: 0 };
+    if (amt >= TAX_FREE_NEAR_PLN) {
+      return { state: 'near', shortfallPLN: Math.round((TAX_FREE_MIN_PLN - amt) * 100) / 100 };
+    }
+    return { state: 'none', shortfallPLN: 0 };
+  }
+
+  function taxRefundEstimate(amountPLN, fxRate) {
+    var amt = Number(amountPLN);
+    var rate = Number(fxRate);
+    if (!isFinite(amt) || amt <= 0 || !isFinite(rate) || rate <= 0) {
+      return { lowTWD: 0, highTWD: 0 };
+    }
+    return {
+      lowTWD: Math.round(amt * TAX_FREE_LOW_RATE * rate),
+      highTWD: Math.round(amt * TAX_FREE_HIGH_RATE * rate),
+    };
+  }
+
+  function taxRefundSummary(expenses, fxRate) {
+    var count = 0, totalPLN = 0;
+    (expenses || []).forEach(function (e) {
+      if (!e || taxRefundStatus(e.amountPLN, e.category).state !== 'eligible') return;
+      count += 1;
+      totalPLN += Number(e.amountPLN) || 0;
+    });
+    var est = taxRefundEstimate(totalPLN, fxRate);
+    return { count: count, totalPLN: totalPLN, lowTWD: est.lowTWD, highTWD: est.highTWD };
+  }
+
+  // 2026 年歐洲夏令時間於 10/25（十月最後一個週日）結束。
+  // 本趟行程 10/24–10/31：10/24 為 CEST(UTC+2)，10/25 起為 CET(UTC+1)。
+  // 只服務這段日期，不引入時區函式庫。
+  var DST_END_MMDD = '10/25';
+
+  function warsawOffsetHours(mmdd) {
+    var parts = String(mmdd || '').split('/');
+    var m = Number(parts[0]), d = Number(parts[1]);
+    if (!isFinite(m) || !isFinite(d)) return 1;
+    var endParts = DST_END_MMDD.split('/');
+    var em = Number(endParts[0]), ed = Number(endParts[1]);
+    if (m < em || (m === em && d < ed)) return 2;
+    return 1;
+  }
+
+  function trainDepartureMs(train, year) {
+    if (!train || !train.date || !train.dep) return NaN;
+    var dparts = String(train.date).split('/');
+    var tparts = String(train.dep).split(':');
+    var m = Number(dparts[0]), d = Number(dparts[1]);
+    var hh = Number(tparts[0]), mm = Number(tparts[1]);
+    if (![m, d, hh, mm].every(isFinite)) return NaN;
+    return Date.UTC(year, m - 1, d, hh - warsawOffsetHours(train.date), mm);
+  }
+
+  // 「這班車是否已經出發」唯一的判斷來源。首頁的 nextTrain（決定要跳過哪些
+  // 班次）與交通頁的 trainCountdownState（決定顯示「已出發」還是倒數）都必須
+  // 呼叫這一支，否則兩處各寫一次比較式就會像 2026-07-26 審查抓到的那樣，一處
+  // 寫 ms < nowMs、一處寫 depMs <= nowMs，在「剛好等於發車時刻」那一毫秒互相
+  // 矛盾（首頁說即將出發、交通頁說已出發）。語意採「發車時刻本身即視為已出發」。
+  function hasDeparted(depMs, nowMs) {
+    return depMs <= nowMs;
+  }
+
+  function nextTrain(trains, nowMs, year) {
+    var list = trains || [];
+    for (var i = 0; i < list.length; i += 1) {
+      var ms = trainDepartureMs(list[i], year);
+      if (!isFinite(ms) || hasDeparted(ms, nowMs)) continue;
+      return { index: i, train: list[i], minutesUntil: Math.round((ms - nowMs) / 60000) };
+    }
+    return null;
+  }
+
+  function formatCountdown(minutes) {
+    var mins = Number(minutes);
+    if (!isFinite(mins) || mins <= 0) return '即將出發';
+    if (mins < 60) return '還有 ' + mins + ' 分';
+    if (mins < 60 * 24) {
+      var h = Math.floor(mins / 60);
+      var rest = mins % 60;
+      return rest ? '還有 ' + h + ' 小時 ' + rest + ' 分' : '還有 ' + h + ' 小時';
+    }
+    return Math.floor(mins / (60 * 24)) + ' 天後';
+  }
+
+  // Task 12：交通頁要同時列出全部長途車段（不像 nextTrain 只找「下一段」），
+  // 所以已經開走的車也要能被畫出來——但 formatCountdown(負數或 0) 會回「即將
+  // 出發」，對一班已經開走的車顯示「即將出發」是說謊。這裡把「算一次出發時間、
+  // 判斷是否已出發、產生對應文案」收在同一個函式裡：呼叫端只需要呼叫一次，
+  // 不會像迴圈裡各自重算 trainDepartureMs 兩次那樣意外算錯或看漏已出發狀態。
+  // Task 12 修正輪（I3）：原本用「四捨五入後的分鐘數 <= 0」判斷是否已出發，
+  // 導致發車前 29 秒（29000ms／60000 四捨五入為 0）就被判定已出發，早了
+  // 29 秒，且與首頁 nextTrain+formatCountdown 同一瞬間顯示「即將出發」互相
+  // 矛盾。改成直接比較毫秒時間戳，不再讓四捨五入影響「是否已出發」這個布林值；
+  // 分鐘數只用來組文案，不參與判斷。
+  // 2026-07-26 修正輪（A8-8）：判斷式抽成上方共用的 hasDeparted，nextTrain 與
+  // 本函式呼叫同一支，兩處不再各寫一次比較式。原註解宣稱與 nextTrain 的
+  // `ms < nowMs` 一致，但實際是 `depMs <= nowMs`，兩者在等號那一刻不同；
+  // 現已統一為 hasDeparted 的 `<=`（發車時刻本身視為已出發）。
+  function trainCountdownState(train, nowMs, year) {
+    var depMs = trainDepartureMs(train, year);
+    if (!isFinite(depMs)) return { departed: null, minutesUntil: null, text: '時間未定' };
+    var departed = hasDeparted(depMs, nowMs);
+    var minutesUntil = Math.round((depMs - nowMs) / 60000);
+    if (departed) return { departed: true, minutesUntil: minutesUntil, text: '已出發' };
+    return { departed: false, minutesUntil: minutesUntil, text: formatCountdown(minutesUntil) };
+  }
+
+  // Task 6：拍照清單從城市級打卡改為景點級。舊 key（中文城市名，例 '華沙'）
+  // 遷移到該城第一個景點的 id；呼叫端須先把 old 原封不動備份到
+  // PHOTOMAP_BACKUP_KEY，再把 next 寫回 polska.photomap.v1。
+  var PHOTOMAP_BACKUP_KEY = 'polska.photomap.v0.backup';
+
+  function migratePhotoCheckins(old, spots) {
+    var src = old && typeof old === 'object' && !Array.isArray(old) ? old : {};
+    var list = spots || [];
+    // I2（獨立審查）：spots 為空陣列時，下面的 looksOld 判斷會把 src 的每一個 key
+    // 都誤判為「舊格式」（因為 ids 是空物件，任何 key 都不在其中），導致
+    // migratePhotoCheckins 把使用者已經是新格式的打卡資料當成舊資料處理、
+    // 最終在呼叫端把 polska.photomap.v1 覆寫成 {}——這是會造成資料損失的路徑，
+    // 即使正常情況下 photoSpots 不會是空陣列，也要守住這個邊界。
+    if (!list.length) return { next: src, migrated: false };
+    var ids = {};
+    list.forEach(function (s) { if (s && s.id) ids[s.id] = true; });
+
+    var keys = Object.keys(src);
+    var looksOld = keys.some(function (k) { return !ids[k]; });
+    if (!keys.length || !looksOld) return { next: src, migrated: false };
+
+    var firstOfCity = {};
+    list.forEach(function (s) {
+      if (s && s.cityKey && !firstOfCity[s.cityKey]) firstOfCity[s.cityKey] = s.id;
+    });
+
+    var next = {};
+    keys.forEach(function (k) {
+      if (ids[k]) { next[k] = !!src[k]; return; }
+      if (!src[k]) return;
+      for (var ck in firstOfCity) {
+        if (!Object.prototype.hasOwnProperty.call(firstOfCity, ck)) continue;
+        var city = null;
+        for (var i = 0; i < list.length; i += 1) {
+          if (list[i].cityKey === ck) { city = list[i]; break; }
+        }
+        if (city && cityNameMatches(k, ck)) { next[firstOfCity[ck]] = true; return; }
+      }
+    });
+    return { next: next, migrated: true };
+  }
+
+  // 舊 key 是中文城市名（例 '華沙'），對應到城市代碼。
+  function cityNameMatches(name, cityKey) {
+    var map = { 華沙: 'WAW', 克拉科夫: 'KRK', 樂斯拉夫: 'WRO', 波茲南: 'POZ' };
+    return map[name] === cityKey;
+  }
+
+  var PHOTOMAP_KEY = 'polska.photomap.v1';
+
+  // 實際跑遷移並落地到 storage：先把舊值「原封不動」備份到 PHOTOMAP_BACKUP_KEY，
+  // 才把新格式寫回 PHOTOMAP_KEY。若備份 key 已存在則不覆寫——同一支 App 可能
+  // 被打開很多次，第二次以後 migratePhotoCheckins 就會回報 migrated:false，
+  // 但這裡仍加一層「備份已存在就不動」的保險，避免任何後續情境誤把備份寫成新值。
+  // 2026-07-26 修正輪（A5）：writeJSON 會在 storage 滿了／被拒絕時回 false。
+  // 原本沒檢查回傳值就覆寫主 key，備份失敗時舊格式打卡資料會在沒有任何副本的
+  // 情況下被蓋掉。現在只有「備份原本就存在」或「這次備份確實寫成功」才覆寫主
+  // key；兩者都不成立時保留舊資料原封不動、回報 migrated:false，讓下次啟動重試。
+  // 回傳 next:old（未遷移的原值）而不是 result.next，是為了讓呼叫端看到的狀態
+  // 與 storage 裡真正的內容一致——不讓畫面顯示一份沒有落地的遷移結果。
+  function migratePhotoMapStorage(storage, spots) {
+    var old = readJSON(storage, PHOTOMAP_KEY, {});
+    var result = migratePhotoCheckins(old, spots);
+    if (result.migrated) {
+      var hasBackup = storage && storage.getItem && storage.getItem(PHOTOMAP_BACKUP_KEY) != null;
+      var backupSafe = hasBackup || writeJSON(storage, PHOTOMAP_BACKUP_KEY, old);
+      if (!backupSafe) return { next: old, migrated: false, backupFailed: true };
+      writeJSON(storage, PHOTOMAP_KEY, result.next);
+    }
+    return result;
+  }
+
   root.PolskaPwaCore = {
     projectTripMoment, selectNextHardConstraint, selectHardConstraintForMoment, readNotes, writeNotes,
     DEFAULT_SETTINGS, EXPENSE_CATEGORIES, readJSON, writeJSON, plnToTwd, expenseTotals, budgetStatus,
+    TAX_FREE_MIN_PLN, taxRefundStatus, taxRefundEstimate, taxRefundSummary,
+    warsawOffsetHours, trainDepartureMs, hasDeparted, nextTrain, formatCountdown, trainCountdownState,
+    PHOTOMAP_BACKUP_KEY, PHOTOMAP_KEY, migratePhotoCheckins, migratePhotoMapStorage,
   };
 })(typeof window === 'undefined' ? globalThis : window);

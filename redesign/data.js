@@ -89,7 +89,12 @@ window.TRIP = {
       mustBook: ['Auschwitz 官方英文導覽'],
       compressible: ['回克拉科夫後晚餐形式', '晚間自由活動'],
       weather: '10° / 4°',
-      train: {type:'BUS', from:'KRK', to:'Oświęcim', dep:'07:30', arr:'09:00', dur:'1h30 ×2', price:'PLN 15 ×2'},
+      // leg：這一筆是「去程」——07:30 離開克拉科夫、09:00 抵達奧斯威辛。
+      // trains 陣列裡的 'KRK ⇄ Auschwitz' 是同一天同一班巴士的「往返全程」，
+      // 07:30 出發、14:30 回到克拉科夫。兩筆時間都是對的，指的是不同區段，
+      // 所以兩筆都要保留，靠 leg 標籤讓畫面看得出各自在講哪一段。
+      // 票價統一寫法：單程 15、來回共 30。
+      train: {type:'BUS', leg:'去程 · 抵奧斯威辛', from:'KRK', to:'Oświęcim', dep:'07:30', arr:'09:00', dur:'1h30 ×2', price:'PLN 30（單程 15 ×2）'},
       steps: [
         {t:'07:30', label:'Lajkonik 巴士', sub:'MDA D9 / D10 月台', cost:'PLN 15', dur:'1h30'},
         {t:'09:00', label:'抵 Auschwitz I', sub:'安檢、寄包、領耳機', dur:'30 min'},
@@ -250,14 +255,40 @@ window.TRIP = {
     },
   ],
   cities: [
-    {key:'WAW', name:'華沙', pl:'Warszawa', tag:'CAPITAL', nights:'1 + 2', totalNights:3, stayNote:'首晚倒時差 + 回程兩晚收尾', vibe:'鋼鐵摩天 × 重建老城', highlights:['POLIN 猶太博物館','起義博物館','皇家城堡','Krakowskie Przedmieście']},
-    {key:'KRK', name:'克拉科夫', pl:'Kraków', tag:'OLD WORLD', nights:2, totalNights:2, stayNote:'兩晚承接老城、Auschwitz、鹽礦', vibe:'中世紀石板路 × 千年王城', highlights:['Wawel 城堡','中央市集 Rynek','Auschwitz 一日往返','Kazimierz 猶太區']},
-    {key:'WRO', name:'樂斯拉夫', pl:'Wrocław', tag:'700 DWARFS', nights:1, vibe:'700 小矮人 × 煤氣燈點燈', highlights:['百年廳 UNESCO','全景畫 Panorama','座堂島 Ostrów Tumski','糖果屋雙屋']},
-    {key:'POZ', name:'波茲南', pl:'Poznań', tag:'CRADLE', nights:1, vibe:'波蘭文明發源 × 山羊報時', highlights:['教堂島 Ostrów Tumski','12:00 山羊鐘樓秀','聖馬丁牛角麵包 PGI','帝王城堡']},
+    {key:'WAW', name:'華沙', pl:'Warszawa', tag:'CAPITAL', nights:'1 + 2', totalNights:3, stayNote:'首晚倒時差 + 回程兩晚收尾', vibe:'鋼鐵摩天 × 重建老城', highlights:['POLIN 猶太博物館','起義博物館','皇家城堡','Krakowskie Przedmieście'], photo:{hero:'assets/photos/warszawa-hero.webp',thumb:'assets/photos/warszawa-thumb.webp'}},
+    {key:'KRK', name:'克拉科夫', pl:'Kraków', tag:'OLD WORLD', nights:2, totalNights:2, stayNote:'兩晚承接老城、Auschwitz、鹽礦', vibe:'中世紀石板路 × 千年王城', highlights:['Wawel 城堡','中央市集 Rynek','Auschwitz 一日往返','Kazimierz 猶太區'], photo:{hero:'assets/photos/krakow-hero.webp',thumb:'assets/photos/krakow-thumb.webp'}},
+    {key:'WRO', name:'樂斯拉夫', pl:'Wrocław', tag:'700 DWARFS', nights:1, vibe:'700 小矮人 × 煤氣燈點燈', highlights:['百年廳 UNESCO','全景畫 Panorama','座堂島 Ostrów Tumski','糖果屋雙屋'], photo:{hero:'assets/photos/wroclaw-hero.webp',thumb:'assets/photos/wroclaw-thumb.webp'}},
+    {key:'POZ', name:'波茲南', pl:'Poznań', tag:'CRADLE', nights:1, vibe:'波蘭文明發源 × 山羊報時', highlights:['教堂島 Ostrów Tumski','12:00 山羊鐘樓秀','聖馬丁牛角麵包 PGI','帝王城堡'], photo:{hero:'assets/photos/poznan-hero.webp',thumb:'assets/photos/poznan-thumb.webp'}},
+  ],
+  photoSpots: [
+    {id:'waw-oldtown', cityKey:'WAW', name:'老城市集廣場', day:1, bestTime:'16:00–16:40', light:'日落前側光打在彩色立面，廣場人少'},
+    {id:'waw-castle', cityKey:'WAW', name:'皇家城堡與美人魚', day:1, bestTime:'15:30–16:10', light:'順光；城堡紅牆在低角度陽光下最飽和'},
+    {id:'waw-culture', cityKey:'WAW', name:'科學文化宮 30F 城景', day:7, bestTime:'16:10–17:00', light:'日落後藍調 20 分鐘，城市燈與天空同亮度'},
+    {id:'krk-rynek', cityKey:'KRK', name:'中央市集廣場與聖瑪利亞聖殿', day:2, bestTime:'16:00–16:45', light:'塔樓逆光，改拍東側迴廊反射光'},
+    {id:'krk-wawel', cityKey:'KRK', name:'Wawel 城堡河岸', day:2, bestTime:'15:40–16:30', light:'從 Dębnicki 橋往東拍，維斯瓦河面反光'},
+    {id:'krk-kazimierz', cityKey:'KRK', name:'Kazimierz 猶太區街景', day:4, bestTime:'10:00–12:00', light:'上午柔和散射光，適合窄巷與塗鴉'},
+    {id:'wro-rynek', cityKey:'WRO', name:'市政廳與彩色老屋', day:5, bestTime:'15:50–16:35', light:'西曬正打彩色立面，是全趟最上色的一刻'},
+    {id:'wro-dwarfs', cityKey:'WRO', name:'小矮人與座堂島煤氣燈', day:5, bestTime:'16:45–17:15', light:'點燈人 16:45 起逐盞點燈，需高感光度'},
+    {id:'poz-rynek', cityKey:'POZ', name:'舊市集廣場彩色立面', day:6, bestTime:'11:30–12:15', light:'12:00 山羊報時前卡位，正午光平但人潮是主角'},
+    {id:'poz-tumski', cityKey:'POZ', name:'教堂島 Ostrów Tumski', day:6, bestTime:'15:40–16:20', light:'雙塔逆光剪影，或轉到橋上拍側光'},
+  ],
+  // licenseUrl：CC 授權要求提供「授權條款本身」的 URI，不是照片來源頁（url 欄位）。
+  // 三個值皆為 Creative Commons 官方標準授權頁，逐一對應 license 欄位，不得自行更動。
+  photoCredits: [
+    {file:'warszawa-hero.webp', city:'華沙', author:'Rhododendrites', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Market_Square_Warsaw_(22594p).jpg'},
+    {file:'warszawa-thumb.webp', city:'華沙', author:'Rhododendrites', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Market_Square_Warsaw_(22594p).jpg'},
+    {file:'krakow-hero.webp', city:'克拉科夫', author:'Andrzej Otrębski', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Krakow_Rynek_Glowny_panorama_2.jpg'},
+    {file:'krakow-thumb.webp', city:'克拉科夫', author:'Andrzej Otrębski', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Krakow_Rynek_Glowny_panorama_2.jpg'},
+    {file:'wroclaw-hero.webp', city:'樂斯拉夫', author:'Gerd Eichmann', license:'CC BY 4.0', licenseUrl:'https://creativecommons.org/licenses/by/4.0/', url:'https://commons.wikimedia.org/wiki/File:Breslau-Rynek-38-Panorama-2014-gje.jpg'},
+    {file:'wroclaw-thumb.webp', city:'樂斯拉夫', author:'Gerd Eichmann', license:'CC BY 4.0', licenseUrl:'https://creativecommons.org/licenses/by/4.0/', url:'https://commons.wikimedia.org/wiki/File:Breslau-Rynek-38-Panorama-2014-gje.jpg'},
+    {file:'poznan-hero.webp', city:'波茲南', author:'Mateusz.woźniak', license:'CC BY-SA 3.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/3.0/', url:'https://commons.wikimedia.org/wiki/File:Poznan_stary_rynek_panorama.jpg'},
+    {file:'poznan-thumb.webp', city:'波茲南', author:'Mateusz.woźniak', license:'CC BY-SA 3.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/3.0/', url:'https://commons.wikimedia.org/wiki/File:Poznan_stary_rynek_panorama.jpg'},
   ],
   trains: [
     {seg:'WAW → KRK', date:'10/25', type:'EIP', dep:'09:00', arr:'11:25', dur:'2h25', price:'130–180'},
-    {seg:'KRK ⇄ Auschwitz', date:'10/26', type:'BUS', dep:'07:30', arr:'14:30', dur:'1h30 ×2', price:'30'},
+    // arr 14:30 是「回到克拉科夫」的時刻（往返全程），不是抵達奧斯威辛的時刻；
+    // 抵達奧斯威辛 09:00 記在 days[2].train（leg:'去程 · 抵奧斯威辛'）。
+    {seg:'KRK ⇄ Auschwitz', date:'10/26', type:'BUS', leg:'往返全程 · 回抵克拉科夫', dep:'07:30', arr:'14:30', dur:'1h30 ×2', price:'30（單程 15 ×2）'},
     {seg:'KRK → WRO', date:'10/27', type:'IC', dep:'19:30', arr:'22:20', dur:'2h50', price:'60–110'},
     {seg:'WRO → POZ', date:'10/28', type:'IC', dep:'19:00', arr:'21:20', dur:'2h20', price:'50–90'},
     {seg:'POZ → WAW', date:'10/29', type:'EIP', dep:'17:30', arr:'19:50', dur:'2h20', price:'90–150'},

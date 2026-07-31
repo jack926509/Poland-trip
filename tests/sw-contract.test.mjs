@@ -90,11 +90,11 @@ function loadRegisterHarness({ registration, ready, registerError }) {
 test('預快取桌機與手機雙殼及其正式資產', () => {
   for (const asset of [
     './', './mobile.html',
-    './desktop/desktop.css?v=polska-v17',
-    './desktop/desktop-app.js?v=polska-v17',
-    './desktop/chapters.js?v=polska-v17',
-    './redesign/data.js?v=polska-v17',
-    './redesign/dist/B-companion.js?v=polska-v17',
+    './desktop/desktop.css?v=polska-v20',
+    './desktop/desktop-app.js?v=polska-v20',
+    './desktop/chapters.js?v=polska-v20',
+    './redesign/data.js?v=polska-v20',
+    './redesign/dist/B-companion.js?v=polska-v20',
   ]) assert.match(sw, new RegExp(asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.doesNotMatch(sw, /desktop\.html|app-preview\.html|A-magazine|ios-frame|C-app/);
 });
@@ -172,7 +172,7 @@ test('巢狀路徑下的同名正式資產也不得命中 runtime cache', async 
     });
     const response = await dispatchFetch(
       handler,
-      makeRequest(`${prefix}/redesign/B-companion.css?v=polska-v17`),
+      makeRequest(`${prefix}/redesign/B-companion.css?v=polska-v20`),
     );
     assert.equal(response, network, `${prefix} 誤回舊 cache`);
     assert.equal(matches.length, 0, `${prefix} 不得讀 cache`);
@@ -189,26 +189,36 @@ test('正式根應用資產仍使用 cache-first', async () => {
   });
   const response = await dispatchFetch(
     handler,
-    makeRequest('redesign/B-companion.css?v=polska-v17'),
+    makeRequest('redesign/B-companion.css?v=polska-v20'),
   );
   assert.equal(response, cached);
   assert.equal(matches.length, 1);
 });
 
-test('核心快取與雙入口統一使用 polska-v17', () => {
-  assert.match(sw, /const CACHE_VERSION = 'polska-v17'/);
+test('核心快取與雙入口統一使用 polska-v20', () => {
+  assert.match(sw, /const CACHE_VERSION = 'polska-v20'/);
   for (const asset of [
-    './manifest.json', './pwa-register.js?v=polska-v17', './redesign/pwa-core.js?v=polska-v17',
-    './redesign/data.js?v=polska-v17', './redesign/tokens.css?v=polska-v17',
-    './redesign/B-companion.css?v=polska-v17',
-    './redesign/dist/B-companion.js?v=polska-v17',
+    './manifest.json', './pwa-register.js?v=polska-v20', './redesign/pwa-core.js?v=polska-v20',
+    './redesign/data.js?v=polska-v20', './redesign/tokens.css?v=polska-v20',
+    './redesign/B-companion.css?v=polska-v20',
+    './redesign/dist/B-companion.js?v=polska-v20',
   ]) assert.match(sw, new RegExp(asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
-  assert.doesNotMatch(sw, /polska-v1[0-6]/);
+  // 收緊：每次升版把字元類往上帶一格，舊版號一律不得殘留（v20 不在 v1[0-9] 內）。
+  assert.doesNotMatch(sw, /polska-v1[0-9]/);
+});
+
+test('八張城市照片都進了 precache 且版本已升 v20', () => {
+  assert.match(sw, /CACHE_VERSION = 'polska-v20'/);
+  for (const city of ['warszawa', 'krakow', 'wroclaw', 'poznan']) {
+    assert.match(sw, new RegExp(`\\./assets/photos/${city}-hero\\.webp`));
+    assert.match(sw, new RegExp(`\\./assets/photos/${city}-thumb\\.webp`));
+  }
+  assert.doesNotMatch(sw, /polska-v19/);
 });
 
 test('Service Worker 註冊抽離為三種 PWA 事件', () => {
   const register = fs.readFileSync('pwa-register.js', 'utf8');
-  assert.match(html, /<script src="pwa-register\.js\?v=polska-v17"><\/script>/);
+  assert.match(html, /<script src="pwa-register\.js\?v=polska-v20"><\/script>/);
   assert.doesNotMatch(html, /navigator\.serviceWorker\.register/);
   for (const eventName of ['pwa-ready', 'pwa-update-ready', 'pwa-error']) {
     assert.match(register, new RegExp(eventName));
@@ -305,4 +315,20 @@ test('Chromium deferred prompt 只由使用者按鈕觸發並正確清理', () =
   assert.match(jsx, /outcome\s*===\s*'accepted'/);
   assert.match(jsx, /onClick=\{installApp\}>安裝 App<\/button>/);
   assert.match(jsx, /setInstallStatus\('browser'\)/);
+});
+
+/* caches.addAll 是原子操作：PRECACHE_URLS 裡任何一條抓不到，整個 install 就失敗、
+   離線完全失效。這條測試逐一確認每個預快取路徑在檔案系統上真的存在。 */
+test('PRECACHE_URLS 每一條路徑都對應到實際存在的檔案', () => {
+  const block = sw.match(/const PRECACHE_URLS = \[([\s\S]*?)\];/);
+  assert.ok(block, '找不到 PRECACHE_URLS 陣列');
+  const urls = [...block[1].matchAll(/'([^']+)'/g)].map((m) => m[1]);
+  assert.ok(urls.length >= 25, `預快取清單只有 ${urls.length} 條，疑似解析失敗`);
+  const missing = [];
+  for (const url of urls) {
+    // './' 是 app shell，實體檔案是 index.html；?v= 查詢字串不是路徑的一部分。
+    const filePath = url === './' ? './index.html' : url.split('?')[0];
+    if (!fs.existsSync(filePath)) missing.push(`${url} -> ${filePath}`);
+  }
+  assert.deepEqual(missing, [], `預快取清單指向不存在的檔案：${missing.join('、')}`);
 });
