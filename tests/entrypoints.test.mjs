@@ -18,8 +18,8 @@ test('根入口依 768 px 與 view query 分流桌機雜誌和既有手機 PWA',
   assert.match(html, /行程資料載入失敗，請重新整理/);
   assert.match(html, /window\.TRIP\.days\.length !== 8/);
   assert.match(html, /typeof window\.B_Companion !== 'function'/);
-  assert.match(html, /redesign\/pwa-core\.js\?v=polska-v20/);
-  assert.match(html, /pwa-register\.js\?v=polska-v20/);
+  assert.match(html, /redesign\/pwa-core\.js\?v=polska-v21/);
+  assert.match(html, /pwa-register\.js\?v=polska-v21/);
   assert.match(html, /href="#app-main"/);
   assert.match(html, /desktop \? '#desktop-main' : '#app-main'/);
   assert.match(html, /<noscript>/);
@@ -29,10 +29,10 @@ test('根入口依 768 px 與 view query 分流桌機雜誌和既有手機 PWA',
 test('手機正式入口直接載入既有旅伴並提供失敗降級', () => {
   const mobile = read('mobile.html');
   for (const asset of [
-    'redesign/pwa-core.js?v=polska-v20',
-    'redesign/data.js?v=polska-v20',
-    'redesign/dist/B-companion.js?v=polska-v20',
-    'pwa-register.js?v=polska-v20',
+    'redesign/pwa-core.js?v=polska-v21',
+    'redesign/data.js?v=polska-v21',
+    'redesign/dist/B-companion.js?v=polska-v21',
+    'pwa-register.js?v=polska-v21',
   ]) assert.match(mobile, new RegExp(asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.match(mobile, /ReactDOM\.createRoot/);
   assert.match(mobile, /B_Companion/);

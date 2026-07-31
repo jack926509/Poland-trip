@@ -1,26 +1,26 @@
 // POLSKA 旅遊指南 Service Worker — 離線優先策略
 // 出發到波蘭時即使無網路也能看完整指南
-const CACHE_VERSION = 'polska-v20';
+const CACHE_VERSION = 'polska-v21';
 // Relative paths so the SW works on root domains and
 // sub-path deploys like jack926509.github.io/Poland-trip/.
 const PRECACHE_URLS = [
   './',
   './mobile.html',
   './manifest.json',
-  './pwa-register.js?v=polska-v20',
+  './pwa-register.js?v=polska-v21',
   './apple-touch-icon.png',
   './icon-192.png',
   './icon-512.png',
   './vendor/react.production.min.js',
   './vendor/react-dom.production.min.js',
-  './redesign/pwa-core.js?v=polska-v20',
-  './redesign/data.js?v=polska-v20',
-  './redesign/tokens.css?v=polska-v20',
-  './redesign/B-companion.css?v=polska-v20',
-  './redesign/dist/B-companion.js?v=polska-v20',
-  './desktop/desktop.css?v=polska-v20',
-  './desktop/desktop-app.js?v=polska-v20',
-  './desktop/chapters.js?v=polska-v20',
+  './redesign/pwa-core.js?v=polska-v21',
+  './redesign/data.js?v=polska-v21',
+  './redesign/tokens.css?v=polska-v21',
+  './redesign/B-companion.css?v=polska-v21',
+  './redesign/dist/B-companion.js?v=polska-v21',
+  './desktop/desktop.css?v=polska-v21',
+  './desktop/desktop-app.js?v=polska-v21',
+  './desktop/chapters.js?v=polska-v21',
   './assets/photos/warszawa-hero.webp',
   './assets/photos/warszawa-thumb.webp',
   './assets/photos/krakow-hero.webp',
