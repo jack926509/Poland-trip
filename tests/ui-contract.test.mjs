@@ -734,3 +734,13 @@ test('C：nowAriaLabel 涵蓋進行中與非進行中兩個分支，.B-now 的 a
   assert.match(jsxCode, /const nowStateLabel = phase === 'before'/);
   assert.match(jsxCode, /\{nowStateLabel\}/);
 });
+
+test('A：正式網域已切換到 polandtrip.xiehnet.com，不再殘留 GitHub Pages 網址', () => {
+  const html = fs.readFileSync('index.html', 'utf8');
+  const robots = fs.readFileSync('robots.txt', 'utf8');
+  const sitemap = fs.readFileSync('sitemap.xml', 'utf8');
+  for (const [name, content] of [['index.html', html], ['robots.txt', robots], ['sitemap.xml', sitemap]]) {
+    assert.doesNotMatch(content, /jack926509\.github\.io/, `${name} 不應再殘留舊網域`);
+    assert.match(content, /polandtrip\.xiehnet\.com/, `${name} 應含新網域`);
+  }
+});
