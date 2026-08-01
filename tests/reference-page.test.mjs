@@ -84,3 +84,47 @@ test('捲動軌與 sticky 舞台結構存在', () => {
   assert.match(html, /<div class="stage">/);
   assert.match(html, /<div class="world">/);
 });
+
+test(':root 自訂屬性初始值與來源規格 §4 一致', () => {
+  const css = fs.readFileSync(`${BASE}/styles.css`, 'utf8');
+  const expected = {
+    '--back-scale': '0.76',
+    '--four-y': '10vh',
+    '--four-scale': '0.78',
+    '--bazaar-y': '20vh',
+    '--blur-tint': '74, 181, 224',
+    '--bridge-bottom': '5vh',
+    '--bridge-width': '67.2vw',
+    '--bridge-scale': '1.02',
+    '--frame2-scale': '1.06',
+    '--sights-enter-x': '420vw',
+    '--sights-visibility': 'hidden',
+    '--ink': '#111411',
+    '--paper': '#fdf1e1',
+  };
+  for (const [prop, value] of Object.entries(expected)) {
+    const re = new RegExp(`${prop.replace(/-/g, '\\-')}\\s*:\\s*${value.replace(/[.()#]/g, '\\$&')}\\s*;`);
+    assert.match(css, re, `${prop} 應為 ${value}`);
+  }
+});
+
+test('捲動軌高度與 sticky 舞台照抄', () => {
+  const css = fs.readFileSync(`${BASE}/styles.css`, 'utf8');
+  assert.match(css, /height:\s*calc\(100vh \+ 3700px\)/, '捲動軌應為 100vh + 3700px');
+  assert.match(css, /position:\s*sticky/);
+  assert.match(css, /isolation:\s*isolate/);
+});
+
+test('輪播軌轉場曲線照抄', () => {
+  const css = fs.readFileSync(`${BASE}/styles.css`, 'utf8');
+  assert.match(css, /transform 640ms cubic-bezier\(0\.22,\s*1,\s*0\.36,\s*1\)/);
+  assert.match(css, /\.is-jumping\s*\{[^}]*transition:\s*none/);
+});
+
+test('三個媒體查詢斷點齊備', () => {
+  const css = fs.readFileSync(`${BASE}/styles.css`, 'utf8');
+  for (const q of ['max-width: 1500px', 'max-width: 1100px', 'max-width: 640px']) {
+    assert.ok(css.includes(`@media (${q})`), `缺少 @media (${q})`);
+  }
+  assert.ok(css.includes('prefers-reduced-motion: reduce'), '缺少 prefers-reduced-motion 區塊');
+});
