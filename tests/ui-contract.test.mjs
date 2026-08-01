@@ -627,7 +627,7 @@ test('四分頁的兩處 JSX 接線存在：main 的 data-tab 與手機 nav 的 
 });
 
 test('A1：Now 按鈕會先切到行程分頁再捲動（隱藏元素 scrollIntoView 是 no-op）', () => {
-  const from = jsxCode.indexOf('aria-label="跳到目前進行中的行程"');
+  const from = jsxCode.indexOf('aria-label={nowAriaLabel}');
   const to = jsxCode.indexOf('<div className="now-label">', from);
   assert.ok(from > -1 && to > from, '找不到 .B-now 按鈕的 onClick 區塊');
   const body = jsxCode.slice(from, to);
@@ -644,7 +644,7 @@ test('A1：Now 按鈕會先切到行程分頁再捲動（隱藏元素 scrollInto
 test('A2：override 有清除入口，且顯示日不是今天時 Now 標籤不寫「現在」', () => {
   assert.match(jsxCode, /const backToToday = \(\) => \{ setOverride\(null\); setOpenStep\(null\); \};/);
   assert.match(jsxCode, /const previewingOtherDay = phase === 'during' && d\.n !== momentDay;/);
-  assert.match(jsxCode, /\{override != null && \(/);
+  assert.match(jsxCode, /\{override != null && d\.n !== momentDay && \(/);
   assert.match(jsxCode, /className="B-back-today"[\s\S]{0,200}onClick=\{backToToday\}/);
   assert.match(jsxCode, /↩ 回到今天/);
   assert.match(jsxCode, /previewingOtherDay \? `Day \$\{d\.n\} 預覽 · 不是現在`/);
@@ -715,4 +715,32 @@ test('A8-7：離線提示 toast 疊在工具選單與子頁（z-index 130）之�
   // 子頁與工具選單維持 130，toast 必須高於它們。
   assert.match(cssCode, /\.B-subpage-mask\{[^}]*z-index:\s*130/);
   assert.match(cssCode, /\.B-tools-menu \{[^}]*z-index:\s*130/);
+});
+
+test('C：回到今天按鈕的顯示條件包含「顯示日不是今天」，不是單獨看 override', () => {
+  // 只看 override != null 會讓使用者點回今天那一天後按鈕仍卡著不消失；
+  // 必須確認條件式裡真的多了 d.n !== momentDay，且不是被拆成獨立判斷式繞過去。
+  assert.match(jsxCode, /\{override != null && d\.n !== momentDay && \(/);
+  assert.doesNotMatch(jsxCode, /\{override != null\}\s*&&\s*\{?\s*d\.n !== momentDay/);
+});
+
+test('C：nowAriaLabel 涵蓋進行中與非進行中兩個分支，.B-now 的 aria-label 跟著狀態換', () => {
+  assert.match(
+    jsxCode,
+    /const nowAriaLabel = phase === 'during' && !previewingOtherDay \? '跳到目前進行中的行程' : `跳到 Day \$\{d\.n\} 的行程`;/
+  );
+  assert.match(jsxCode, /aria-label=\{nowAriaLabel\}/);
+  // 可見標籤與 aria-label 共用同一份 nowStateLabel 文案，不落地成兩份。
+  assert.match(jsxCode, /const nowStateLabel = phase === 'before'/);
+  assert.match(jsxCode, /\{nowStateLabel\}/);
+});
+
+test('A：正式網域已切換到 polandtrip.xiehnet.com，不再殘留 GitHub Pages 網址', () => {
+  const html = fs.readFileSync('index.html', 'utf8');
+  const robots = fs.readFileSync('robots.txt', 'utf8');
+  const sitemap = fs.readFileSync('sitemap.xml', 'utf8');
+  for (const [name, content] of [['index.html', html], ['robots.txt', robots], ['sitemap.xml', sitemap]]) {
+    assert.doesNotMatch(content, /jack926509\.github\.io/, `${name} 不應再殘留舊網域`);
+    assert.match(content, /polandtrip\.xiehnet\.com/, `${name} 應含新網域`);
+  }
 });

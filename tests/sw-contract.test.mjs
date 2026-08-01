@@ -5,6 +5,7 @@ import vm from 'node:vm';
 
 const sw = fs.readFileSync('sw.js', 'utf8');
 const html = fs.readFileSync('index.html', 'utf8');
+const mobileHtml = fs.readFileSync('mobile.html', 'utf8');
 const jsx = fs.readFileSync('redesign/B-companion.jsx', 'utf8');
 
 function loadFetchHandler({ fetchImpl, matchImpl }) {
@@ -90,11 +91,11 @@ function loadRegisterHarness({ registration, ready, registerError }) {
 test('預快取桌機與手機雙殼及其正式資產', () => {
   for (const asset of [
     './', './mobile.html',
-    './desktop/desktop.css?v=polska-v20',
-    './desktop/desktop-app.js?v=polska-v20',
-    './desktop/chapters.js?v=polska-v20',
-    './redesign/data.js?v=polska-v20',
-    './redesign/dist/B-companion.js?v=polska-v20',
+    './desktop/desktop.css?v=polska-v21',
+    './desktop/desktop-app.js?v=polska-v21',
+    './desktop/chapters.js?v=polska-v21',
+    './redesign/data.js?v=polska-v21',
+    './redesign/dist/B-companion.js?v=polska-v21',
   ]) assert.match(sw, new RegExp(asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.doesNotMatch(sw, /desktop\.html|app-preview\.html|A-magazine|ios-frame|C-app/);
 });
@@ -172,7 +173,7 @@ test('巢狀路徑下的同名正式資產也不得命中 runtime cache', async 
     });
     const response = await dispatchFetch(
       handler,
-      makeRequest(`${prefix}/redesign/B-companion.css?v=polska-v20`),
+      makeRequest(`${prefix}/redesign/B-companion.css?v=polska-v21`),
     );
     assert.equal(response, network, `${prefix} 誤回舊 cache`);
     assert.equal(matches.length, 0, `${prefix} 不得讀 cache`);
@@ -189,36 +190,57 @@ test('正式根應用資產仍使用 cache-first', async () => {
   });
   const response = await dispatchFetch(
     handler,
-    makeRequest('redesign/B-companion.css?v=polska-v20'),
+    makeRequest('redesign/B-companion.css?v=polska-v21'),
   );
   assert.equal(response, cached);
   assert.equal(matches.length, 1);
 });
 
-test('核心快取與雙入口統一使用 polska-v20', () => {
-  assert.match(sw, /const CACHE_VERSION = 'polska-v20'/);
+test('核心快取與雙入口統一使用 polska-v21', () => {
+  assert.match(sw, /const CACHE_VERSION = 'polska-v21'/);
   for (const asset of [
-    './manifest.json', './pwa-register.js?v=polska-v20', './redesign/pwa-core.js?v=polska-v20',
-    './redesign/data.js?v=polska-v20', './redesign/tokens.css?v=polska-v20',
-    './redesign/B-companion.css?v=polska-v20',
-    './redesign/dist/B-companion.js?v=polska-v20',
+    './manifest.json', './pwa-register.js?v=polska-v21', './redesign/pwa-core.js?v=polska-v21',
+    './redesign/data.js?v=polska-v21', './redesign/tokens.css?v=polska-v21',
+    './redesign/B-companion.css?v=polska-v21',
+    './redesign/dist/B-companion.js?v=polska-v21',
   ]) assert.match(sw, new RegExp(asset.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
-  // 收緊：每次升版把字元類往上帶一格，舊版號一律不得殘留（v20 不在 v1[0-9] 內）。
-  assert.doesNotMatch(sw, /polska-v1[0-9]/);
+  // 收緊：每次升版把字元類往上帶一格，舊版號一律不得殘留（v1[0-9] 涵蓋 v10-v19，
+  // 另外併入 v20，因為 v21 的上一版就是它，最容易殘留）。
+  assert.doesNotMatch(sw, /polska-v(1[0-9]|20)/);
 });
 
-test('八張城市照片都進了 precache 且版本已升 v20', () => {
-  assert.match(sw, /CACHE_VERSION = 'polska-v20'/);
+test('八張城市照片都進了 precache 且版本已升 v21', () => {
+  assert.match(sw, /CACHE_VERSION = 'polska-v21'/);
   for (const city of ['warszawa', 'krakow', 'wroclaw', 'poznan']) {
     assert.match(sw, new RegExp(`\\./assets/photos/${city}-hero\\.webp`));
     assert.match(sw, new RegExp(`\\./assets/photos/${city}-thumb\\.webp`));
   }
-  assert.doesNotMatch(sw, /polska-v19/);
+  // 不內嵌任何舊版號字面量：只要不是目前版號 v21 的 polska-vNN 都算殘留，
+  // 每次升版自動概化，不必手動把字元類往上帶一格，grep 對使用者才有驗證意義。
+  assert.doesNotMatch(sw, /polska-v(?!21)\d+/);
+});
+
+/* caches.addAll 是原子操作：只要 index.html 或 mobile.html 裡任何一個帶版本號的
+   資產參照，跟 sw.js 的 PRECACHE_URLS 版號不同步，離線時該資產就抓不到快取，
+   而目前 176 個測試全綠也驗不出這種局部退版——這條測試專門補這個洞。 */
+test('雙入口每個帶版本號的資產都與 SW 預快取清單完全一致', () => {
+  const block = sw.match(/const PRECACHE_URLS = \[([\s\S]*?)\];/);
+  assert.ok(block, '找不到 PRECACHE_URLS 陣列');
+  const pre = new Set(
+    [...block[1].matchAll(/'([^']+)'/g)].map((m) => m[1].replace(/^\.\//, '')),
+  );
+  for (const [page, content] of [['index.html', html], ['mobile.html', mobileHtml]]) {
+    const refs = [...content.matchAll(/(?:src|href)="([^"]*\?v=[^"]+)"/g)];
+    assert.ok(refs.length > 0, `${page} 沒有找到任何帶版本號的資產參照，疑似解析失敗`);
+    for (const [, ref] of refs) {
+      assert.ok(pre.has(ref), `${page} 的 ${ref} 不在 SW 預快取清單裡，離線會抓不到`);
+    }
+  }
 });
 
 test('Service Worker 註冊抽離為三種 PWA 事件', () => {
   const register = fs.readFileSync('pwa-register.js', 'utf8');
-  assert.match(html, /<script src="pwa-register\.js\?v=polska-v20"><\/script>/);
+  assert.match(html, /<script src="pwa-register\.js\?v=polska-v21"><\/script>/);
   assert.doesNotMatch(html, /navigator\.serviceWorker\.register/);
   for (const eventName of ['pwa-ready', 'pwa-update-ready', 'pwa-error']) {
     assert.match(register, new RegExp(eventName));

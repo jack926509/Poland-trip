@@ -12,7 +12,7 @@
 
 `desktop.html` 與 `app-preview.html` 僅保留舊書籤相容轉址；`mobile.html` 是正式手機 PWA 應用殼。
 
-Service Worker 使用 `polska-v19`，同時預快取桌機根殼與手機殼。離線開啟 `/mobile.html` 會回手機旅伴，開啟根網址則回桌機／響應式共用入口；更新仍需由使用者確認後才切換。
+Service Worker 使用 `polska-v21`，同時預快取桌機根殼與手機殼。離線開啟 `/mobile.html` 會回手機旅伴，開啟根網址則回桌機／響應式共用入口；更新仍需由使用者確認後才切換。
 
 ## 經典版原始碼封存
 

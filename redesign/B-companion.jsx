@@ -1144,6 +1144,12 @@ function B_Companion({ initialDay }) {
       : document.querySelector('.B-timeline')?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
     onTickets: () => document.getElementById('B-tickets')?.scrollIntoView({ behavior: 'smooth', block: 'center' }),
   };
+  // 2026-07-31 修正輪（C）：.B-now 的 aria-label 原本寫死「跳到目前進行中的行程」，
+  // 但畫面上看得見的標籤會隨 phase／previewingOtherDay 變成「Day 6 預覽 · 不是現在」
+  // 等其他文案，螢幕閱讀器唸出來的名稱因此跟畫面不符。nowStateLabel 把可見文案抽出來，
+  // 讓兩處只有一份文案；nowAriaLabel 另外決定無障礙名稱要不要跟著換。
+  const nowStateLabel = phase === 'before' ? '行程尚未開始 · 預覽' : phase === 'after' ? '行程已結束 · 回顧' : previewingOtherDay ? `Day ${d.n} 預覽 · 不是現在` : beforeStart ? '今日尚未開始' : afterEnd ? '今日已結束' : 'Now · 現在該做什麼';
+  const nowAriaLabel = phase === 'during' && !previewingOtherDay ? '跳到目前進行中的行程' : `跳到 Day ${d.n} 的行程`;
 
   return (
     // 2026-07-26 修正輪（A8-6）：離線點擊攔截原本掛在 <main> 的 onClickCapture，
@@ -1289,7 +1295,7 @@ function B_Companion({ initialDay }) {
           </aside>
         )}
 
-        {override != null && (
+        {override != null && d.n !== momentDay && (
           <button
             type="button"
             className="B-back-today"
@@ -1301,7 +1307,7 @@ function B_Companion({ initialDay }) {
         <button
           type="button"
           className="B-now"
-          aria-label="跳到目前進行中的行程"
+          aria-label={nowAriaLabel}
           onClick={() => {
             // 2026-07-26 修正輪（A1）：.B-step 全部在 data-tabsection="trip" 裡，
             // 手機上非當前分頁被 CSS display:none 隱藏；對沒有 layout box 的元素
@@ -1322,7 +1328,7 @@ function B_Companion({ initialDay }) {
             }
           }}>
           <div className="now-label">
-            {phase === 'before' ? '行程尚未開始 · 預覽' : phase === 'after' ? '行程已結束 · 回顧' : previewingOtherDay ? `Day ${d.n} 預覽 · 不是現在` : beforeStart ? '今日尚未開始' : afterEnd ? '今日已結束' : 'Now · 現在該做什麼'}
+            {nowStateLabel}
           </div>
           <span className="now-time">{now.t}</span>
           <div className="now-task">{now.label.replace(/^★\s*/, '')}</div>
