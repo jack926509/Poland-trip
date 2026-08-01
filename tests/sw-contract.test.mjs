@@ -5,6 +5,7 @@ import vm from 'node:vm';
 
 const sw = fs.readFileSync('sw.js', 'utf8');
 const html = fs.readFileSync('index.html', 'utf8');
+const mobileHtml = fs.readFileSync('mobile.html', 'utf8');
 const jsx = fs.readFileSync('redesign/B-companion.jsx', 'utf8');
 
 function loadFetchHandler({ fetchImpl, matchImpl }) {
@@ -214,10 +215,27 @@ test('八張城市照片都進了 precache 且版本已升 v21', () => {
     assert.match(sw, new RegExp(`\\./assets/photos/${city}-hero\\.webp`));
     assert.match(sw, new RegExp(`\\./assets/photos/${city}-thumb\\.webp`));
   }
-  // 用組字串而非直接內嵌字面量，避免這條「不得殘留上一版」的守護斷言本身
-  // 在原始碼裡留下上一版版號字樣，被驗收用的 grep -c 誤算成殘留。
-  const PREV_VERSION = 'polska-v' + '20';
-  assert.doesNotMatch(sw, new RegExp(PREV_VERSION));
+  // 不內嵌任何舊版號字面量：只要不是目前版號 v21 的 polska-vNN 都算殘留，
+  // 每次升版自動概化，不必手動把字元類往上帶一格，grep 對使用者才有驗證意義。
+  assert.doesNotMatch(sw, /polska-v(?!21)\d+/);
+});
+
+/* caches.addAll 是原子操作：只要 index.html 或 mobile.html 裡任何一個帶版本號的
+   資產參照，跟 sw.js 的 PRECACHE_URLS 版號不同步，離線時該資產就抓不到快取，
+   而目前 176 個測試全綠也驗不出這種局部退版——這條測試專門補這個洞。 */
+test('雙入口每個帶版本號的資產都與 SW 預快取清單完全一致', () => {
+  const block = sw.match(/const PRECACHE_URLS = \[([\s\S]*?)\];/);
+  assert.ok(block, '找不到 PRECACHE_URLS 陣列');
+  const pre = new Set(
+    [...block[1].matchAll(/'([^']+)'/g)].map((m) => m[1].replace(/^\.\//, '')),
+  );
+  for (const [page, content] of [['index.html', html], ['mobile.html', mobileHtml]]) {
+    const refs = [...content.matchAll(/(?:src|href)="([^"]*\?v=[^"]+)"/g)];
+    assert.ok(refs.length > 0, `${page} 沒有找到任何帶版本號的資產參照，疑似解析失敗`);
+    for (const [, ref] of refs) {
+      assert.ok(pre.has(ref), `${page} 的 ${ref} 不在 SW 預快取清單裡，離線會抓不到`);
+    }
+  }
 });
 
 test('Service Worker 註冊抽離為三種 PWA 事件', () => {
