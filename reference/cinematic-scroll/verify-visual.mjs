@@ -81,6 +81,35 @@ for (const y of [0, 650, 1100, 1620, 2200, 2700, 3200, 3700]) {
   await page.screenshot({ path: `${OUT_DIR}/scroll-${String(y).padStart(4, "0")}.png` });
 }
 
+// ===== 元素數量斷言（修正輪 2）：獨立於下面的逐 URL 資產檢查 =====
+// 逐 URL 檢查只認得「現在 DOM 上有的 <img src>」，若某個 <img> 元素整個被刪掉
+// （例如 Task 6 換圖時改錯、漏放一顆 pin），那個 URL 根本不會進清單，逐 URL
+// 檢查會靜默通過——這裡用「預期元素個數」堵住這個洞。兩道檢查各擋一種問題、
+// 都要過才算通過：這道擋「元素消失」，下面那道擋「路徑錯／HTTP 失敗」。
+//
+// 數字實際打開 docs/superpowers/specs/2026-08-01-mostar-source-spec.md §3 點過，
+// 不是憑印象：
+//   - .scene-img 共 7 個：sky-img／back-four／back-bazaar／splitframe-left／
+//     splitframe-right／bridge-img／frame-two-img（§3 DOM tree 逐行列出）。
+//   - .sight-pin 共 5 個：§3「5 × article.sight-card」，每張卡固定 1 個 pin
+//     （「Sight card internal order：kicker → pin → h3 → p」）。注意這是 DOM
+//     元素個數，不是圖示種類數——5 張卡只用 3 種不同的 icon URL（icon1/2/3
+//     循環），下面逐 URL 檢查那邊用 Set 去重後看到的是 3 種 URL，兩個數字
+//     的定義不同，此處要用 5，不能套用 3。
+const EXPECTED_ELEMENT_COUNTS = {
+  ".scene-img": 7,
+  ".sight-pin": 5,
+};
+const actualElementCounts = await page.evaluate((selectors) => Object.fromEntries(
+  selectors.map((s) => [s, document.querySelectorAll(s).length]),
+), Object.keys(EXPECTED_ELEMENT_COUNTS));
+for (const [selector, expectedCount] of Object.entries(EXPECTED_ELEMENT_COUNTS)) {
+  const actualCount = actualElementCounts[selector];
+  const ok = actualCount === expectedCount;
+  if (!ok) failed++;
+  console.log(`${ok ? "PASS" : "FAIL"}  元素數量 ${selector}  預期 ${expectedCount} 個、實際 ${actualCount} 個`);
+}
+
 // ===== 資產檢查：page.on('response') / requestfailed，判定「全部 HTTP 200」=====
 //
 // 具名白名單（僅此一個 URL，不是整類跨來源資產）：
@@ -93,9 +122,12 @@ const CORS_WHITELIST = new Set([
   "https://dcym8fthxf5uu.cloudfront.net/fonts/247a073c-29f5-4a89-aa3a-741020f346fc/OggText-Medium.woff2",
 ]);
 
-// 預期資產＝目前 DOM 上實際渲染出的 <img src>（涵蓋 7 張遠端場景圖與 3 顆遠端
-// pin icon；未來 Task 6 加入本地 webp 一樣會被 <img>/<source> 掃到，不用改本檔）
-// 加上規格指定的遠端字型 URL。
+// 預期資產＝目前 DOM 上實際渲染出的 <img src>，用 Set 去重成 URL 種類（涵蓋
+// 7 張遠端場景圖，以及 5 個 sight-pin 元素去重後的 3 種 icon URL），加上規格
+// 指定的遠端字型 URL。這裡只查 <img>；若未來改用 <picture>/<source> 提供多格
+// 式圖片，要同步把查詢改成同時涵蓋 <source>，否則新增的資產會漏檢。
+// 注意：這段只能擋「路徑錯／HTTP 失敗」，擋不了「元素整個消失」，後者由上面
+// 的元素數量斷言負責。
 const expectedImageUrls = await page.evaluate(() => [
   ...new Set([...document.querySelectorAll("img")].map((img) => img.src).filter(Boolean)),
 ]);
