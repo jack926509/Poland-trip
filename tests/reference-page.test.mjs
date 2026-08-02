@@ -146,12 +146,13 @@ test('內容層已換成波蘭，無波士尼亞殘留', () => {
 test('波蘭本地照片路徑正確且檔案存在', () => {
   const html = fs.readFileSync(`${BASE}/index.html`, 'utf8');
   const refs = [...html.matchAll(/\.\.\/\.\.\/assets\/photos\/[a-z-]+\.webp/g)].map((m) => m[0]);
-  // 5 張 .sight-pin 沿用來源規格「3 個唯一圖檔、A-B-C-A-B 重複」的既有結構
-  // （Task 2/3 已建立、Task 6 不動 DOM），故總出現次數是 6（5 pin + 1 frame-two），
-  // 唯一檔名只有 4 種（krakow-hero 作 frame-two + 3 張 thumb 作 pin）。
+  // 修正輪 1（Important 1）：5 張 .sight-pin 改為依卡片所屬城市各自配對正確縮圖
+  // （見 index.html 內 sight-pin 區塊的說明註解），故總出現次數仍是 6（5 pin + 1 frame-two），
+  // 但唯一檔名從舊版的 4 種（3 pin 重複 A-B-C-A-B + 1 frame-two-hero）變成 5 種
+  // （4 個城市各自的 thumb + 1 個 frame-two-hero）。
   assert.equal(refs.length, 6, '應有 6 處本地照片引用（1 frame-two + 5 個 sight-pin 元素）');
   const unique = [...new Set(refs)];
-  assert.equal(unique.length, 4, '應有 4 種本地照片檔名（1 frame-two-hero + 3 種 pin 縮圖，重複沿用來源規格 A-B-C-A-B 模式）');
+  assert.equal(unique.length, 5, '應有 5 種本地照片檔名（1 frame-two-hero + 4 個城市各自的 pin 縮圖）');
   for (const r of unique) {
     const real = r.replace('../../', '');
     assert.ok(fs.existsSync(real), `缺檔案 ${real}`);
@@ -174,7 +175,10 @@ test('sight-pin 含必要的 object-fit 偏離', () => {
 
 test('五張景點卡的地名皆取自 redesign/data.js 實際行程', () => {
   const html = fs.readFileSync(`${BASE}/index.html`, 'utf8');
-  for (const term of ['皇家城堡', 'Wawel 城堡', 'Kazimierz 猶太區', '百年廳', '教堂島']) {
-    assert.ok(html.includes(term), `景點卡應包含「${term}」`);
+  const dataJs = fs.readFileSync('redesign/data.js', 'utf8');
+  const names = [...html.matchAll(/<h3>([^<]+)<\/h3>/g)].map((m) => m[1]);
+  assert.equal(names.length, 5, '應有 5 張景點卡');
+  for (const name of names) {
+    assert.ok(dataJs.includes(name), `景點卡地名「${name}」未見於 redesign/data.js`);
   }
 });
