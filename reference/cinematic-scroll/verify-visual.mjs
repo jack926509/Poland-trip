@@ -100,9 +100,10 @@ for (const y of [0, 650, 1100, 1620, 2200, 2700, 3200, 3700]) {
 //     張卡），把 3 組（3×5）clone 塞回 .sights-track、取代原始的 5 張。
 //     這支腳本一律在頁面載入完成後才檢查 DOM，看到的永遠是 clone 後的狀態，
 //     所以斷言要配合寫 15，不能寫 5——寫 5 反而會在正常情況下恆假。注意這是
-//     DOM 元素個數，不是圖示種類數——5 張原始卡只用 3 種不同的 icon URL
-//     （icon1/2/3 循環，clone 後 15 張仍只用這 3 種），下面逐 URL 檢查那邊用
-//     Set 去重後看到的是 3 種 URL，兩個數字的定義不同，不能互相套用。
+//     DOM 元素個數，不是圖示種類數——5 張原始卡的 .sight-pin 縮圖依所屬城市
+//     配對（warszawa／krakow×2／wroclaw／poznan），去重後是 4 種不同的 icon
+//     URL，clone 後 15 張仍只用這 4 種，下面逐 URL 檢查那邊用 Set 去重後看到
+//     的是 4 種 URL，兩個數字的定義不同，不能互相套用。
 const EXPECTED_ELEMENT_COUNTS = {
   ".scene-img": 7,
   ".sight-pin": 15, // clone 後的結果，原始卡片只有 5 張
@@ -130,7 +131,7 @@ const CORS_WHITELIST = new Set([
 ]);
 
 // 預期資產＝目前 DOM 上實際渲染出的 <img src>，用 Set 去重成 URL 種類（涵蓋
-// 7 張遠端場景圖，以及 5 個 sight-pin 元素去重後的 3 種 icon URL），加上規格
+// 場景圖，以及 5 個 sight-pin 元素去重後的 4 種 icon URL），加上規格
 // 指定的遠端字型 URL。這裡只查 <img>；若未來改用 <picture>/<source> 提供多格
 // 式圖片，要同步把查詢改成同時涵蓋 <source>，否則新增的資產會漏檢。
 // 注意：這段只能擋「路徑錯／HTTP 失敗」，擋不了「元素整個消失」，後者由上面
