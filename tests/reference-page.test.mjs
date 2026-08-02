@@ -128,3 +128,53 @@ test('三個媒體查詢斷點齊備', () => {
   }
   assert.ok(css.includes('prefers-reduced-motion: reduce'), '缺少 prefers-reduced-motion 區塊');
 });
+
+// ===== Task 6: 內容層置換為波蘭 =====
+
+test('內容層已換成波蘭，無波士尼亞殘留', () => {
+  const html = fs.readFileSync(`${BASE}/index.html`, 'utf8');
+  for (const term of [
+    'Mostar', 'Stari Most', 'Kujundziluk', 'Neretva', 'Bosnia',
+    'Koski', 'Kajtaz', 'Bazaar Street', 'Old Bridge',
+  ]) {
+    assert.ok(!html.includes(term), `不應殘留波士尼亞名詞「${term}」`);
+  }
+  assert.match(html, /POLSKA/, '大標應為 POLSKA');
+  assert.match(html, /lang="zh-Hant"/, 'lang 應為 zh-Hant');
+});
+
+test('波蘭本地照片路徑正確且檔案存在', () => {
+  const html = fs.readFileSync(`${BASE}/index.html`, 'utf8');
+  const refs = [...html.matchAll(/\.\.\/\.\.\/assets\/photos\/[a-z-]+\.webp/g)].map((m) => m[0]);
+  // 5 張 .sight-pin 沿用來源規格「3 個唯一圖檔、A-B-C-A-B 重複」的既有結構
+  // （Task 2/3 已建立、Task 6 不動 DOM），故總出現次數是 6（5 pin + 1 frame-two），
+  // 唯一檔名只有 4 種（krakow-hero 作 frame-two + 3 張 thumb 作 pin）。
+  assert.equal(refs.length, 6, '應有 6 處本地照片引用（1 frame-two + 5 個 sight-pin 元素）');
+  const unique = [...new Set(refs)];
+  assert.equal(unique.length, 4, '應有 4 種本地照片檔名（1 frame-two-hero + 3 種 pin 縮圖，重複沿用來源規格 A-B-C-A-B 模式）');
+  for (const r of unique) {
+    const real = r.replace('../../', '');
+    assert.ok(fs.existsSync(real), `缺檔案 ${real}`);
+  }
+});
+
+test('中文與英文／數字之間有半形空格', () => {
+  const html = fs.readFileSync(`${BASE}/index.html`, 'utf8');
+  const text = html.replace(/<[^>]+>/g, ' ');
+  const bad = [...text.matchAll(/[一-鿿][A-Za-z0-9]|[A-Za-z0-9][一-鿿]/g)];
+  assert.equal(bad.length, 0, `中英文間缺半形空格：${bad.map((m) => m[0]).join('、')}`);
+});
+
+test('sight-pin 含必要的 object-fit 偏離', () => {
+  const css = fs.readFileSync(`${BASE}/styles.css`, 'utf8');
+  const rule = css.slice(css.indexOf('.sight-pin'), css.indexOf('.sight-pin') + 400);
+  assert.match(rule, /object-fit:\s*cover/);
+  assert.match(rule, /設計文件 §3\.5/, '偏離處須有理由註記');
+});
+
+test('五張景點卡的地名皆取自 redesign/data.js 實際行程', () => {
+  const html = fs.readFileSync(`${BASE}/index.html`, 'utf8');
+  for (const term of ['皇家城堡', 'Wawel 城堡', 'Kazimierz 猶太區', '百年廳', '教堂島']) {
+    assert.ok(html.includes(term), `景點卡應包含「${term}」`);
+  }
+});

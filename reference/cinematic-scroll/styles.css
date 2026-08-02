@@ -296,7 +296,8 @@ button { border: 0; font: inherit; }
   width: 67.2px;
   height: 67.2px;
   pointer-events: none;
-  /* 全案唯一允許的樣式偏離：專案縮圖是矩形 webp，直接套規格的正方尺寸會被壓扁，
+  /* 唯一允許偏離（設計文件 §3.5）：來源規格假設 pin 為正方去背圖，
+     本專案 thumb 為矩形 webp，不加 object-fit 會被壓扁，
      故加 object-fit: cover 與 border-radius: 12px。 */
   object-fit: cover;
   border-radius: 12px;
