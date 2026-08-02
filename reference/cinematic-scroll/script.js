@@ -149,11 +149,68 @@ window.addEventListener("pointermove", (e) => {
 prevButton.addEventListener("click", () => moveSightSlider(-1));
 nextButton.addEventListener("click", () => moveSightSlider(1));
 
-/* setupSightSlider / updateSightSlider / moveSightSlider：無限輪播邏輯，Task 5 實作。
-   本 task 先放最小可執行版本避免 ReferenceError。 */
-function setupSightSlider() {}
-function updateSightSlider() {}
-function moveSightSlider() {}
+/* setupSightSlider / updateSightSlider / moveSightSlider / selectSightCard /
+   jumpSightSlider / normalizeSightSlider：無限輪播邏輯。
+   數值權威來源：docs/superpowers/specs/2026-08-01-mostar-source-spec.md §8
+   照抄規則：不得自行調整公式。 */
+function setupSightSlider() {
+  const originals = [...track.querySelectorAll(".sight-card")];
+  const clones = [];
+  for (let setIndex = 0; setIndex < 3; setIndex += 1) {
+    originals.forEach((card, cardIndex) => {
+      const clone = card.cloneNode(true);
+      clone.dataset.sightIndex = String(setIndex * originalSightCount + cardIndex);
+      clones.push(clone);
+    });
+  }
+  track.replaceChildren(...clones);
+  sightCards = clones;
+  activeSight = originalSightCount;
+
+  for (const card of sightCards) {
+    card.addEventListener("click", () => selectSightCard(card));
+    card.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      e.preventDefault();
+      selectSightCard(card);
+    });
+  }
+  track.addEventListener("transitionend", normalizeSightSlider);
+  updateSightSlider();
+}
+
+function updateSightSlider() {
+  if (!sightCards.length) return;
+  const cardWidth = sightCards[0].offsetWidth;
+  const gap = parseFloat(getComputedStyle(track).columnGap || "0");
+  root.style.setProperty("--sights-shift", `${-(cardWidth + gap) * activeSight}px`);
+  sightCards.forEach((card, i) => card.classList.toggle("is-active", i === activeSight));
+}
+
+function moveSightSlider(dir) {
+  activeSight += dir;
+  updateSightSlider();
+}
+
+function selectSightCard(card) {
+  const i = Number(card.dataset.sightIndex);
+  if (Number.isFinite(i)) activeSight = i;
+  updateSightSlider();
+}
+
+function jumpSightSlider(i) {
+  track.classList.add("is-jumping");
+  activeSight = i;
+  updateSightSlider();
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    track.classList.remove("is-jumping");
+  }));
+}
+
+function normalizeSightSlider() {
+  if (activeSight >= originalSightCount * 2) jumpSightSlider(activeSight - originalSightCount);
+  else if (activeSight < originalSightCount) jumpSightSlider(activeSight + originalSightCount);
+}
 
 setupSightSlider();
 requestTick();

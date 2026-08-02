@@ -87,18 +87,25 @@ for (const y of [0, 650, 1100, 1620, 2200, 2700, 3200, 3700]) {
 // 檢查會靜默通過——這裡用「預期元素個數」堵住這個洞。兩道檢查各擋一種問題、
 // 都要過才算通過：這道擋「元素消失」，下面那道擋「路徑錯／HTTP 失敗」。
 //
-// 數字實際打開 docs/superpowers/specs/2026-08-01-mostar-source-spec.md §3 點過，
+// 數字實際打開 docs/superpowers/specs/2026-08-01-mostar-source-spec.md §3 §8 點過，
 // 不是憑印象：
 //   - .scene-img 共 7 個：sky-img／back-four／back-bazaar／splitframe-left／
 //     splitframe-right／bridge-img／frame-two-img（§3 DOM tree 逐行列出）。
-//   - .sight-pin 共 5 個：§3「5 × article.sight-card」，每張卡固定 1 個 pin
-//     （「Sight card internal order：kicker → pin → h3 → p」）。注意這是 DOM
-//     元素個數，不是圖示種類數——5 張卡只用 3 種不同的 icon URL（icon1/2/3
-//     循環），下面逐 URL 檢查那邊用 Set 去重後看到的是 3 種 URL，兩個數字
-//     的定義不同，此處要用 5，不能套用 3。
+//     .scene-img 不在 .sights-track 底下，不受 Task 5 的輪播 clone 影響，數字
+//     維持 7 不變。
+//   - .sight-pin 這裡寫 15，不是 5。原始卡片確實只有 5 張（§3「5 ×
+//     article.sight-card」，每張卡固定 1 個 pin），但 Task 5 的
+//     `setupSightSlider()` 在 script.js 隨頁面 `defer` 載入時就會同步跑
+//     （已實測：`networkidle` 之前、DOMContentLoaded 當下 DOM 上已經是 15
+//     張卡），把 3 組（3×5）clone 塞回 .sights-track、取代原始的 5 張。
+//     這支腳本一律在頁面載入完成後才檢查 DOM，看到的永遠是 clone 後的狀態，
+//     所以斷言要配合寫 15，不能寫 5——寫 5 反而會在正常情況下恆假。注意這是
+//     DOM 元素個數，不是圖示種類數——5 張原始卡只用 3 種不同的 icon URL
+//     （icon1/2/3 循環，clone 後 15 張仍只用這 3 種），下面逐 URL 檢查那邊用
+//     Set 去重後看到的是 3 種 URL，兩個數字的定義不同，不能互相套用。
 const EXPECTED_ELEMENT_COUNTS = {
   ".scene-img": 7,
-  ".sight-pin": 5,
+  ".sight-pin": 15, // clone 後的結果，原始卡片只有 5 張
 };
 const actualElementCounts = await page.evaluate((selectors) => Object.fromEntries(
   selectors.map((s) => [s, document.querySelectorAll(s).length]),
@@ -196,6 +203,62 @@ failed += nonFontErrors.length ? 1 : 0;
 if (errors.length && !nonFontErrors.length) {
   console.log("PASS  主控台 error 僅為白名單字型 CORS 訊息，不計入失敗");
 }
+
+// ===== 輪播互動驗證（Task 5）=====
+// 逐次記錄可見卡片，而非只憑「看起來正常」判定：讀 --sights-shift 位移量、
+// 讀 .is-active 卡片的 data-sight-index，確認正規化把 activeSight 收回中段
+// [originalSightCount, originalSightCount*2)，也就是 [5,10)。
+//
+// 這裡切回「無偏好」動態效果（實測驗證，不是憑印象）：本頁 newPage() 一開始
+// 用 reducedMotion:"reduce" 是為了讓前面的 --mx/--my/--back-scale 等連續動畫
+// 公式數值可預測（見檔案開頭註解）。但 styles.css §6 的
+// `@media (prefers-reduced-motion: reduce) { ... .sights-track { transition:
+// none } }` 是來源規格 §6 原文照抄（非本頁自創），會讓 .sights-track 的
+// transitionDuration 變成 0s——`normalizeSightSlider()` 掛在 .sights-track 的
+// `transitionend` 事件上（§8 原文），該事件在 transition:none 時永遠不會觸發。
+// 實測過：沿用 reduce 情境連按 8 次 → 不會正規化，activeSight 線性累加到 13
+// （超出 [5,10)）；切成 no-preference 後 transitionDuration 變回 0.64s，同樣
+// 操作正確正規化到 8。這是測試環境的取捨（要嘛測「動畫公式在減少動態下的
+// 數值」、要嘛測「無限輪播的正規化邏輯」，兩者互斥於同一個 reduced-motion
+// 設定），不是 script.js 或 styles.css 的邏輯錯誤，也沒有更動 clone/正規化
+// 演算法本身。前面所有依賴 reduce 的檢查都已跑完，這裡切換不影響它們。
+await page.emulateMedia({ reducedMotion: "no-preference" });
+
+await scrollTo(3700);
+await page.waitForTimeout(600);
+
+const cardCount = await page.locator(".sight-card").count();
+check("clone 後卡片總數", String(cardCount), "15");
+
+const shiftBefore = await readVar("--sights-shift");
+for (let i = 0; i < 8; i += 1) {
+  await page.locator(".sight-next").click({ force: true });
+  await page.waitForTimeout(750);
+}
+const shiftAfterNext = await readVar("--sights-shift");
+console.log(`按 → 8 次後 --sights-shift：${shiftBefore} → ${shiftAfterNext}`);
+
+const idxAfterNext = await page.evaluate(() => {
+  const el = document.querySelector(".sight-card.is-active");
+  return el ? el.dataset.sightIndex : "none";
+});
+const inMiddle = Number(idxAfterNext) >= 5 && Number(idxAfterNext) < 10;
+console.log(`${inMiddle ? "PASS" : "FAIL"}  正規化後 activeSight 應回到中段 [5,10)，實得 ${idxAfterNext}`);
+if (!inMiddle) failed++;
+
+for (let i = 0; i < 8; i += 1) {
+  await page.locator(".sight-prev").click({ force: true });
+  await page.waitForTimeout(750);
+}
+const idxAfterPrev = await page.evaluate(() => {
+  const el = document.querySelector(".sight-card.is-active");
+  return el ? el.dataset.sightIndex : "none";
+});
+const backInMiddle = Number(idxAfterPrev) >= 5 && Number(idxAfterPrev) < 10;
+console.log(`${backInMiddle ? "PASS" : "FAIL"}  按 ← 8 次後仍在中段，實得 ${idxAfterPrev}`);
+if (!backInMiddle) failed++;
+
+await page.screenshot({ path: `${OUT_DIR}/slider-after-loop.png` });
 
 await browser.close();
 console.log(failed ? `\n❌ 失敗 ${failed} 項` : "\n✅ 全數通過");
