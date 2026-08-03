@@ -1,5 +1,7 @@
 // 手動視覺／公式驗證腳本。刻意不納入 verify.sh：
-// 需下載約 25 MB 遠端資產，放進 CI 會讓部署不穩。
+// 需連到第三方網站下載遠端資產（瀏覽器實際約 2.2 MB；若換算成未經 WebP
+// 協商的原始 PNG 檔則約 32 MB，一般瀏覽不會下載到，僅供對照），
+// 放進 CI 會讓部署不穩。
 //
 // 用法（見計劃「前置環境」節）：
 //   python3 -m http.server 8765 &
@@ -184,7 +186,6 @@ for (const url of expectedAssetUrls) {
 console.log(`資產請求 ${expectedAssetUrls.length} 項，HTTP 正常 ${assetOk} 項`);
 for (const w of warnings) console.log(w);
 
-console.log(errors.length ? `FAIL  主控台 error ${errors.length} 則：${errors.join(" | ")}` : "PASS  主控台無 error");
 // 白名單資產（字型）請求失敗時，Chromium 通常會連帶印出一則含網址的 CORS 訊息，
 // 以及一則不含網址的通用「Failed to load resource: net::ERR_FAILED」訊息。
 // 用「可歸因額度」把這些訊息與白名單失敗筆數對應起來，只有超出額度、或與白名單
@@ -201,8 +202,16 @@ const nonFontErrors = errors.filter((e) => {
   return true;
 });
 failed += nonFontErrors.length ? 1 : 0;
-if (errors.length && !nonFontErrors.length) {
+
+// 判定邏輯不變（白名單以外的 error 一律計入失敗），但延後到 nonFontErrors
+// 算完才印，且只印一則結論——避免先印一行誤導性的 FAIL、下一行才補 PASS，
+// 讓非工程師誤以為壞了。
+if (nonFontErrors.length) {
+  console.log(`FAIL  主控台 error ${nonFontErrors.length} 則：${nonFontErrors.join(" | ")}`);
+} else if (errors.length) {
   console.log("PASS  主控台 error 僅為白名單字型 CORS 訊息，不計入失敗");
+} else {
+  console.log("PASS  主控台無 error");
 }
 
 // ===== 輪播互動驗證（Task 5）=====

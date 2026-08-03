@@ -84,7 +84,7 @@ z-index、DOM 來源順序、媒體查詢斷點**：
 | 7 | `.intro-copy p` | Mostar 敘述 | 依 `TRIP.meta.route` / `.style` 改寫的一句話 |
 | 8 | `.hero-tags` 三顆藥丸 | Old Bridge / Neretva River / UNESCO old city | `8 天 4 城` / `2026.10.24–10.31` / `UNESCO 老城` |
 | 9 | 5 張 `.sight-card` | Mostar 五景點 | 波蘭五景點，取自 `data.js` 實際行程（kicker / h3 / p / aria-label 全換） |
-| 10 | 3 個 `.sight-pin` 圖示 | 遠端 cutout PNG | `assets/photos/{warszawa,krakow,wroclaw}-thumb.webp` |
+| 10 | 4 個 `.sight-pin` 圖示 | 遠端 cutout PNG | `assets/photos/{warszawa,krakow,wroclaw,poznan}-thumb.webp` |
 | 11 | `.story-panel-bridge` | 橋的文案 + `1566` / `2005` | 華沙老城主題文案 + 兩組年份事實 |
 | 12 | `.story-panel-bazaar` | 市集文案 + `Open old town notes` | 克拉科夫舊城主題文案 + `開啟舊城筆記` |
 
@@ -147,10 +147,10 @@ reference/cinematic-scroll/
 |---|---|
 | 0 | `POLSKA` 大標完整、intro 段落與三顆藥丸可見 |
 | 650 | 大標已淡出（`--title-opacity` ≈ 0），intro 已下沉淡出 |
-| 1100 | 橋變寬、splitframe 左右分開中、模糊與藍色遮罩上升 |
-| 1620 | 橋已上飛消失、華沙面板可見 |
-| 2200 | 華沙面板退場中 |
-| 2700 | 克拉科夫面板可見、`開啟舊城筆記` 藥丸可見 |
+| 1100 | 橋已變寬到最大（105vw）、splitframe 已完全左右分開、模糊與藍色遮罩上升到高點、**華沙面板已可見** |
+| 1620 | 橋與 splitframe 已被藍色遮罩覆蓋淡出、模糊降回低點、**華沙面板已消失**（克拉科夫面板尚未出現） |
+| 2200 | 模糊與藍色遮罩再次上升到高點、**克拉科夫面板可見**、`開啟舊城筆記` 藥丸可見 |
+| 2700 | 華沙與克拉科夫**兩塊故事面板皆已消失** |
 | 3200 | 景點卡滑入中 |
 | 3700 | 五張卡與左右圓鈕就位、圓鈕可點 |
 
@@ -167,7 +167,8 @@ reference/cinematic-scroll/
 
 - **6 張遠端場景圖**（`frame-two` 已換本地，見 §3.3 第 6 項）
   \+ 1 個遠端字型
-  \+ **4 張本地 webp**（`krakow-hero` 作 frame-two；3 張 thumb 作 pin），
+  \+ **5 張本地 webp**（`krakow-hero` 作 frame-two；4 張 thumb 作 pin，
+  含 `poznan-thumb`），
   以 `performance.getEntriesByType('resource')` 確認**全部** HTTP 200 且非零位元組。
 - 主控台無 error 等級訊息。
 
@@ -193,9 +194,13 @@ story-panel 的年份事實（如 UNESCO 登錄年份）**必須查證後才寫�
 
 ## 6. 已知限制（先揭露，非做完才說）
 
-1. **頁面總重約 32.3 MB**（6 張遠端場景 PNG 合計約 32.2 MB、本地圖約 79 KB，
-   2026-08-03 實測）。單是天空 PNG 就 8.3 MB、橋 2.8 MB。
-   這是來源規格決定的，不是實作缺陷。慢速網路首次載入會很久。
+1. **瀏覽器實際載入約 2.27 MB**（6 張遠端場景圖合計約 2.19 MB、本地圖約 79 KB，
+   2026-08-03 用瀏覽器實測）。圖檔所在的 CDN 會依瀏覽器送出的 `Accept` header
+   自動回傳輕量的 WebP 格式，例如天空圖瀏覽器實際只拿到約 103 KB、橋圖約 206 KB。
+   **若換算成原始 PNG 檔（不經 WebP 協商，例如用不帶 `Accept` 的工具直接抓檔），
+   合計約 32.3 MB**（6 張場景 PNG 約 32.2 MB，天空 PNG 8.3 MB、橋 PNG 2.8 MB），
+   一般瀏覽不會下載到，僅供對照。這是來源規格決定的，不是實作缺陷。
+   慢速網路首次載入仍會稍等，但遠不到 32 MB。
 2. **遠端資產不受控**。`raft-blast-61784561.figma.site` 是第三方網站的資產，
    對方改版即失效。2026-08-01 實測全部 HTTP 200，但**不保證未來可用**。
    本頁定位為短期參考素材，不適合當長期資產。
