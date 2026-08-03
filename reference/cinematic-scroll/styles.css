@@ -419,7 +419,7 @@ button { border: 0; font: inherit; }
   transform-origin: 79% 52%;
 }
 
-/* ===== §5 第二幕特寫（z-index 5，原規格為 Mostar 河景，此處已換成克拉科夫市集廣場）===== */
+/* ===== §5 第二幕特寫（z-index 5，原規格為 Mostar 河景，此處已換成華沙老城廣場）===== */
 .frame-two-img {
   z-index: 5;
   filter: none !important;

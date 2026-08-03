@@ -80,7 +80,7 @@ z-index、DOM 來源順序、媒體查詢斷點**：
 | 3 | `.site-logo` | `Bosnia and Herzegovina` | `Poland · POLSKA 2026` |
 | 4 | `.site-nav` 四項 | Intro / Bridge / Bazaar / Routes | Intro / Warszawa / Kraków / Routes（**錨點 id 維持 `#cinema` `#bridge` `#bazaar` `#routes` 不變**，避免動到 CSS 選擇器） |
 | 5 | `.hero-title` | `MOSTAR` | `POLSKA` |
-| 6 | `.frame-two-img` | 遠端河景特寫 PNG | `assets/photos/krakow-hero.webp`（相對路徑引用）。理由：此層為全幅置中淡入，不依賴透明邊緣。 |
+| 6 | `.frame-two-img` | 遠端河景特寫 PNG | `assets/photos/warszawa-hero.webp`（相對路徑引用）。理由：此層為全幅置中淡入，不依賴透明邊緣；且與同一捲動區間（`frame2`）驅動的華沙老城故事面板（§3.3 第 11 項）同時顯示，需為同一座城市。 |
 | 7 | `.intro-copy p` | Mostar 敘述 | 依 `TRIP.meta.route` / `.style` 改寫的一句話 |
 | 8 | `.hero-tags` 三顆藥丸 | Old Bridge / Neretva River / UNESCO old city | `8 天 4 城` / `2026.10.24–10.31` / `UNESCO 老城` |
 | 9 | 5 張 `.sight-card` | Mostar 五景點 | 波蘭五景點，取自 `data.js` 實際行程（kicker / h3 / p / aria-label 全換） |
@@ -167,7 +167,7 @@ reference/cinematic-scroll/
 
 - **6 張遠端場景圖**（`frame-two` 已換本地，見 §3.3 第 6 項）
   \+ 1 個遠端字型
-  \+ **5 張本地 webp**（`krakow-hero` 作 frame-two；4 張 thumb 作 pin，
+  \+ **5 張本地 webp**（`warszawa-hero` 作 frame-two；4 張 thumb 作 pin，
   含 `poznan-thumb`），
   以 `performance.getEntriesByType('resource')` 確認**全部** HTTP 200 且非零位元組。
 - 主控台無 error 等級訊息。
