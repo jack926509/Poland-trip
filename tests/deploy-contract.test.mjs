@@ -41,7 +41,7 @@ test('prepare-site 從空目錄組出唯一 PWA allowlist', () => {
     ]) assert.equal(fs.existsSync(path.join(output, file)), true, `缺少 ${file}`);
 
     for (const forbidden of [
-      'archive', 'tests', 'docs', '.github', '.superpowers', 'prepare-site.sh',
+      'archive', 'reference', 'tests', 'docs', '.github', '.superpowers', 'prepare-site.sh',
       'redesign/A-magazine.jsx', 'redesign/C-app.jsx', 'redesign/ios-frame.jsx',
       'redesign/dist/A-magazine.js', 'redesign/dist/C-app.js', 'redesign/dist/ios-frame.js',
     ]) assert.equal(fs.existsSync(path.join(output, forbidden)), false, `不應公開 ${forbidden}`);
