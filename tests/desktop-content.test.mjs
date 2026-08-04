@@ -52,9 +52,9 @@ test('門票與預約章節顯示票價、期限與官方連結', () => {
   const { renderBookings } = loadDesktop();
   const html = renderBookings(trip);
   assert.match(html, /皇家城堡/);
-  assert.match(html, /PLN 60 · 週三免費/);
-  assert.match(html, /出發前 60\+ 天/);
-  assert.match(html, /機票確認 \+ 各城住宿/);
+  assert.match(html, /PLN 50 \/ 40 \/ 100 分級 · 週三免費/);
+  assert.match(html, /❗現在就訂（最急）/);
+  assert.match(html, /Auschwitz 英文官方導覽/);
   assert.match(html, /https:\/\/visit\.auschwitz\.org\//);
   assert.doesNotMatch(html, /\[object Object\]/);
 });
@@ -77,9 +77,9 @@ test('每日行程保留警告、必訂、備案細節與實務節點', () => {
   const trip = loadTrip();
   const { renderDay } = loadDesktop();
   const html = renderDay(trip, 2);
-  assert.match(html, /辛德勒 17:30 為週日最後入場時段/);
+  assert.match(html, /辛德勒工廠週日最後入場為 18:30/);
   assert.match(html, /華沙 → 克拉科夫火車/);
-  assert.match(html, /改至下午較早時段/);
+  assert.match(html, /往前壓到下午較早時段/);
   assert.match(html, /mhk\.pl\/en 開放預約後立即下單/);
   assert.match(html, /Kraków Główny 主月台/);
 });
