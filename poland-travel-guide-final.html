@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POLSKA · 波蘭四城時刻表 · 2026（定版）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<style>
+  :root{
+    --bg:#F4EFE3; --panel:#FBF8F0; --board:#FCFAF3;
+    --amber:#A6741A; --amber-bright:#E8A81E; --amber-dim:#B79448; --amber-soft:rgba(232,168,30,.16);
+    --red:#CE2E1E; --ink:#1a1714; --muted:#7a736a;
+    --line:rgba(26,23,20,.18); --line-soft:rgba(26,23,20,.09);
+    --disp:'Anton','Noto Sans TC',sans-serif;
+    --mono:'IBM Plex Mono','Noto Sans TC',monospace;
+    --body:'Noto Sans TC',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--body); line-height:1.7; font-size:16px; position:relative;}
+  body::before{content:""; position:fixed; inset:0; pointer-events:none; z-index:1;
+    background:repeating-linear-gradient(0deg,rgba(26,23,20,.028) 0px,rgba(26,23,20,.028) 1px,transparent 2px,transparent 4px); opacity:.7;}
+  body::after{content:""; position:fixed; inset:0; pointer-events:none; z-index:1;
+    background:radial-gradient(120% 80% at 50% -10%,rgba(232,168,30,.12),transparent 60%);}
+  a{color:var(--amber)} a:hover{color:var(--red)}
+
+  header.board{max-width:1120px; margin:0 auto; padding:44px 26px 26px; position:relative; z-index:2}
+  .board-top{display:flex; justify-content:space-between; align-items:center; font-family:var(--mono); font-size:12px;
+    letter-spacing:.24em; text-transform:uppercase; color:var(--amber); border-bottom:1px solid var(--line); padding-bottom:12px; margin-bottom:26px;}
+  .board-top .blink{color:var(--red); animation:blink 1.4s steps(1) infinite}
+  @keyframes blink{50%{opacity:.25}}
+  h1.title{font-family:var(--disp); font-weight:400; font-size:clamp(46px,11vw,120px); line-height:.86; margin:0;
+    letter-spacing:.01em; text-transform:uppercase; color:var(--ink);}
+  h1.title .sub{display:block; font-family:var(--disp); color:var(--amber); font-size:clamp(20px,4.4vw,44px); letter-spacing:.06em; margin-top:6px;}
+  .flightrow{margin-top:28px; display:grid; gap:1px; background:var(--line-soft); border:1px solid var(--line-soft); font-family:var(--mono); font-size:13px;}
+  .flightrow .cell{background:var(--board); padding:12px 16px; display:flex; gap:12px; align-items:baseline}
+  .flightrow .k{color:var(--amber); letter-spacing:.14em; text-transform:uppercase; font-size:11px; min-width:74px}
+  .flightrow .v{color:var(--ink)} .flightrow .v b{color:var(--amber)}
+  @media(min-width:680px){.flightrow{grid-template-columns:1fr 1fr 1fr}}
+  .srcnote{margin-top:16px; font-family:var(--mono); font-size:11.5px; color:var(--muted); border-left:2px solid var(--red);
+    padding-left:12px; max-width:720px; line-height:1.6;}
+
+  nav.tabs{position:sticky; top:0; z-index:30; background:rgba(244,239,227,.94); backdrop-filter:blur(6px);
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  nav.tabs .inner{max-width:1120px; margin:0 auto; padding:0 18px; display:flex; gap:0; overflow-x:auto; scrollbar-width:none;}
+  nav.tabs .inner::-webkit-scrollbar{display:none}
+  nav.tabs a{flex:0 0 auto; padding:13px 18px; font-family:var(--mono); font-weight:500; font-size:12.5px;
+    letter-spacing:.12em; text-transform:uppercase; color:var(--muted); border-right:1px solid var(--line-soft);}
+  nav.tabs a:hover{color:var(--ink)} nav.tabs a.active{color:#231a06; background:var(--amber-bright)}
+
+  main{max-width:1120px; margin:0 auto; padding:0 26px 90px; position:relative; z-index:2}
+  section{padding:56px 0 10px; scroll-margin-top:58px}
+  section+section{border-top:1px solid var(--line-soft)}
+  .sec-head{display:flex; align-items:flex-start; gap:18px; margin-bottom:8px}
+  .sec-num{font-family:var(--disp); font-size:clamp(40px,7vw,72px); line-height:.8; color:transparent; -webkit-text-stroke:1.5px rgba(166,116,26,.5);}
+  .sec-title h2{font-family:var(--disp); font-weight:400; font-size:clamp(30px,5.4vw,54px); margin:0; line-height:.92; text-transform:uppercase; letter-spacing:.01em; color:var(--ink);}
+  .sec-title .pl{display:block; font-family:var(--mono); font-size:13px; letter-spacing:.28em; text-transform:uppercase; color:var(--amber); margin-top:8px;}
+  .lede{font-family:var(--body); font-size:15px; color:var(--muted); margin:14px 0 26px; max-width:760px}
+
+  h3{font-family:var(--mono); font-weight:600; font-size:13px; letter-spacing:.22em; text-transform:uppercase; color:var(--amber);
+    margin:36px 0 10px; display:flex; align-items:center; gap:12px;}
+  h3::after{content:""; flex:1; height:1px; background:var(--line)}
+
+  table{width:100%; border-collapse:collapse; margin:0 0 10px; font-size:14px}
+  thead th{text-align:left; font-family:var(--mono); font-weight:600; font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--amber); padding:8px 14px 8px 0; border-bottom:1px solid var(--line); white-space:nowrap;}
+  tbody td{padding:12px 14px 12px 0; border-bottom:1px solid var(--line-soft); vertical-align:top}
+  tbody tr{transition:background .12s} tbody tr:hover{background:var(--amber-soft)}
+  td.name{font-family:var(--mono); font-weight:600; color:var(--ink); min-width:130px; letter-spacing:.01em}
+  td.tag{white-space:nowrap}
+  .pill{display:inline-block; font-family:var(--mono); font-size:10.5px; font-weight:600; padding:2px 9px; letter-spacing:.08em; text-transform:uppercase; line-height:1.6; border-radius:2px;}
+  .pill.new{background:var(--red); color:#fff}
+  .pill.star{background:#fff; color:var(--amber); border:1px solid var(--amber)}
+  .pill.star.star2{background:var(--amber-bright); color:#231a06; border-color:var(--amber-bright)}
+  .pill.bib{background:var(--amber-bright); color:#231a06}
+  .pill.free{background:#22703f; color:#eafaef}
+  .pill.book{background:transparent; color:var(--amber); border:1px solid var(--amber-dim)}
+  .price{font-family:var(--mono); font-weight:600; color:var(--red); white-space:nowrap}
+  .rating{font-family:var(--mono); font-weight:600; color:#1a7a3c; font-size:11px; white-space:nowrap}
+  .map-embed{margin:14px 0 22px; border:1px solid var(--line); border-top:2px solid var(--amber-bright); background:var(--panel); padding:10px}
+  .map-embed iframe{display:block; filter:sepia(8%) saturate(92%)}
+  .map-caption{margin:8px 2px 0; font-family:var(--mono); font-size:11.5px; color:var(--muted)}
+  .leaflet-map{width:100%; height:380px; filter:sepia(6%) saturate(94%)}
+  .leaflet-popup-content-wrapper{border-radius:2px; font-family:var(--body)}
+  .leaflet-popup-content b{font-family:var(--mono); color:var(--amber)}
+  .map-legend{background:rgba(251,248,240,.95); border:1px solid var(--line); border-radius:2px; padding:8px 10px; font-family:var(--mono); font-size:11px; line-height:1.9; color:var(--ink); box-shadow:0 1px 4px rgba(0,0,0,.15)}
+  .map-legend div{display:flex; align-items:center; gap:6px}
+  .map-legend span{display:inline-block; width:10px; height:10px; border-radius:50%; flex-shrink:0}
+
+  .note{background:var(--panel); border:1px solid var(--line); border-left:3px solid var(--amber-bright); padding:14px 18px; margin:18px 0; font-size:13.5px; color:var(--ink);}
+  .note.warn{border-left-color:var(--red)} .note b{color:var(--amber)} .note code{font-family:var(--mono); color:var(--amber); font-size:12.5px}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(238px,1fr)); gap:12px; margin-top:10px}
+  .card{background:var(--panel); border:1px solid var(--line-soft); border-top:2px solid var(--amber-bright); padding:16px 18px; transition:border-color .15s,transform .15s,box-shadow .15s;}
+  .card:hover{border-color:var(--line); transform:translateY(-2px); box-shadow:0 6px 18px rgba(26,23,20,.08)}
+  .card h4{font-family:var(--mono); font-weight:600; font-size:14px; margin:0 0 7px; color:var(--ink); letter-spacing:.02em}
+  .card p{margin:0; font-size:13px; color:var(--muted)} .card .pl-word{color:var(--amber); font-style:normal}
+
+  ul.check{list-style:none; padding:0; margin:10px 0; font-size:14px}
+  ul.check li{padding:11px 0 11px 30px; border-bottom:1px solid var(--line-soft); position:relative}
+  ul.check li::before{content:"▸"; position:absolute; left:2px; top:11px; color:var(--red)} ul.check li b{color:var(--amber)}
+
+  .fare{width:100%; border-collapse:collapse; font-family:var(--mono); font-size:13px; margin-top:6px}
+  .fare th{text-align:left; font-size:10.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--amber); border-bottom:1px solid var(--line); padding:8px 12px 8px 0}
+  .fare td{padding:9px 12px 9px 0; border-bottom:1px solid var(--line-soft)}
+  .fare td:first-child{color:var(--ink); font-weight:600}
+  .fare .n{color:var(--red); font-weight:600; white-space:nowrap}
+  .official-link{font-family:var(--mono); font-size:10.5px; color:var(--amber); border:1px solid var(--amber-dim); border-radius:20px; padding:1px 7px; margin-left:6px; white-space:nowrap}
+  .official-link:hover{background:var(--amber-bright); color:#231a06}
+
+  footer{max-width:1120px; margin:0 auto; padding:28px 26px 60px; position:relative; z-index:2; color:var(--muted); font-family:var(--mono); font-size:11.5px; letter-spacing:.04em; border-top:1px solid var(--line);}
+  footer .kicker{color:var(--amber); letter-spacing:.24em; text-transform:uppercase; margin-bottom:10px}
+
+  td.name a,.fare td a{color:inherit; text-decoration:none; border-bottom:1px dotted var(--amber-dim)}
+  td.name a:hover,.fare td a:hover{color:var(--red); border-bottom-color:var(--red)}
+  @media (max-width:620px){header.board{padding:34px 18px 20px} main{padding:0 18px 70px} .sec-num{display:none} td.tag{white-space:normal}}
+</style>
+</head>
+<body>
+
+<header class="board">
+  <div class="board-top">
+    <span>● POLSKA RAIL &amp; CITY GUIDE · 定版</span>
+    <span><a href="./" style="color:inherit">📱 開啟互動旅伴 App →</a></span>
+  </div>
+  <h1 class="title">POLSKA<span class="sub">波蘭四城 · 時刻表 2026</span></h1>
+
+  <div class="flightrow">
+    <div class="cell"><span class="k">Depart</span><span class="v"><b>23 OCT</b> 2026 · 台北起飛</span></div>
+    <div class="cell"><span class="k">Poland</span><span class="v"><b>24 OCT – 31 OCT</b> 波蘭境內行程</span></div>
+    <div class="cell"><span class="k">Return</span><span class="v"><b>01 NOV</b> 2026 · 台北落地</span></div>
+    <div class="cell"><span class="k">Nights</span><span class="v">7 晚 · 波蘭 8 天</span></div>
+    <div class="cell"><span class="k">Route</span><span class="v">WAW → KRK → WRO → POZ → WAW</span></div>
+    <div class="cell"><span class="k">Rail</span><span class="v">PKP Intercity</span></div>
+    <div class="cell"><span class="k">Updated</span><span class="v">2026-08-05</span></div>
+  </div>
+  <p class="srcnote">SOURCES — 官方網站／米其林指南 ＞ 旅遊媒體 ＞ 社群。票價於 2026-08 查證官方頁面；標「以官網為準」者為動態定價。已排除小紅書等中國平台。米其林為 2026 波蘭指南（2026-05-27 頒獎）。點景點名／店名可開 Google Maps。</p>
+</header>
+
+<nav class="tabs">
+  <div class="inner">
+    <a href="#warsaw">01 華沙</a>
+    <a href="#krakow">02 克拉科夫</a>
+    <a href="#wroclaw">03 樂斯拉夫</a>
+    <a href="#poznan">04 波茲南</a>
+    <a href="#michelin">05 米其林</a>
+    <a href="#fares">06 門票速查</a>
+    <a href="#transit">07 交通</a>
+    <a href="#souvenir">08 伴手禮</a>
+    <a href="#store">09 超商</a>
+    <a href="#notes">10 提醒</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ============ WARSAW ============ -->
+  <section id="warsaw">
+    <div class="sec-head"><span class="sec-num">01</span><div class="sec-title"><h2>華沙</h2><span class="pl">Warszawa · WAW</span></div></div>
+    <p class="lede">重生之城。舊城區與蘇聯風、摩天樓並存；近年新景點集中於此，美食場景已非「只是去克拉科夫前的中繼站」。</p>
+    <div class="map-embed">
+      <div id="leaflet-warsaw" class="leaflet-map"></div>
+      <p class="map-caption">📍 拖曳縮放檢視相對位置；點圖釘看名稱與備註，點名稱連結可開精確 Google Maps。</p>
+    </div>
+
+    <h3>景點 · Sights</h3>
+    <table>
+      <thead><tr><th>景點</th><th>類型</th><th>票價 / 備註</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=MSN%20%E7%95%B6%E4%BB%A3%E7%BE%8E%E8%A1%93%E9%A4%A8%20Warszawa" target="_blank" rel="noopener">MSN 當代美術館</a></td><td class="tag"><span class="pill new">2024 新開</span></td><td>Plac Defilad · <span class="price">Gallery A 免費</span> · 18:00 後晚間票 PLN 30</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Neon%20%E9%9C%93%E8%99%B9%E5%8D%9A%E7%89%A9%E9%A4%A8%20Warszawa" target="_blank" rel="noopener">Neon 霓虹博物館</a></td><td class="tag"><span class="pill new">遷址</span></td><td><span class="price">PLN 25 / 優待 18</span> · 已遷入科學文化宮 4 樓（Marszałkowska 入口），可與觀景台一起看</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Kolejkowo%20Warszawa" target="_blank" rel="noopener">Kolejkowo Warszawa</a></td><td class="tag"><span class="pill new">2025 新開</span></td><td>微縮模型館 · 2025-04 開幕 · 適合親子</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E6%B5%B7%E5%A0%B1%E5%8D%9A%E7%89%A9%E9%A4%A8%20Wilan%C3%B3w%20Warszawa" target="_blank" rel="noopener">海報博物館 Wilanów</a></td><td class="tag"><span class="pill new">2026 重啟</span></td><td>2026-03 全新形式 · 常設「Polish Posters. Collection」</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Muzeum%20Historii%20Polski%20Cytadela%20Warszawa" target="_blank" rel="noopener">波蘭歷史博物館 · Cytadela</a></td><td class="tag"><span class="pill new">2026 新館群</span></td><td>城堡區五館聚落（波蘭歷史／軍事／卡廷）· 華沙最大新展區 · 以官網為準</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=E.Wedel%20Chocolate%20Warszawa" target="_blank" rel="noopener">E.Wedel 巧克力體驗館</a></td><td class="tag"><span class="pill new">2026 新開</span></td><td>老牌 Wedel 巧克力工廠新體驗展 · 伴手禮一站購足 · 以官網為準</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=2313057209867159998" target="_blank" rel="noopener">皇家城堡</a></td><td class="tag"><span class="rating">★4.7（59,094）</span> UNESCO</td><td><b>分路線售票</b>：博物館/王室路線 <span class="price">60/45</span> · 城堡路線 95/75 · 宮殿路線 30/20 · 金票(全區) 110/90 · 週三免費(縮短版)</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=12215511195580548645" target="_blank" rel="noopener">華沙起義博物館</a></td><td class="tag"><span class="rating">★4.7（39,247）</span> 歷史</td><td><span class="price">PLN 35 / 優待 30</span> · 熱門建議預約 · 週二休</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=16292574584610500784" target="_blank" rel="noopener">POLIN 猶太史博物館</a></td><td class="tag"><span class="rating">★4.6（21,056）</span> 歷史</td><td><span class="price">PLN 45 / 優待 35</span> · 週四免費 · <b>週二休</b>（非週一）</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=14044892037721828802" target="_blank" rel="noopener">科學文化宮觀景台</a></td><td class="tag"><span class="rating">★4.6（86,217）</span> 地標</td><td><span class="price">PLN 30 / 優待 25</span> · 237m 全城最高</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=%C5%81azienki%20%E5%85%AC%E5%9C%92%20Warszawa" target="_blank" rel="noopener">Łazienki 公園</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Wilan%C3%B3w%20%E5%AE%AE%20Warszawa" target="_blank" rel="noopener">Wilanów 宮</a></td><td class="tag">皇家之路</td><td>公園免費 · 宮殿另購票</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E8%95%AD%E9%82%A6%E5%8D%9A%E7%89%A9%E9%A4%A8%20Warszawa" target="_blank" rel="noopener">蕭邦博物館</a></td><td class="tag"><span class="pill new">閉館</span></td><td><b>2026 整年閉館</b>（整修）</td></tr>
+      </tbody>
+    </table>
+
+    <h3>美食 · Food</h3>
+    <table>
+      <thead><tr><th>店家</th><th>等級</th><th>重點 / 招牌</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=8029724309073713102" target="_blank" rel="noopener">Alon Omakase</a></td><td class="tag"><span class="rating">★4.8（134）</span> <span class="pill star">★</span> <span class="pill new">新</span></td><td>2026 新一星 · <b>招牌：Edomae 握壽司 omakase</b>，以頂級松露搭配見長 · 位少需早訂</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=4624148008162643045" target="_blank" rel="noopener">NUTA</a></td><td class="tag"><span class="rating">★4.8（505）</span> <span class="pill star">★</span></td><td><b>招牌：主廚 Andrea Camastra 創意套餐</b>，義式底蘊融合亞洲香料，劇場式上菜 · 提前 3–5 週</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=10117754456971759897" target="_blank" rel="noopener">hub.praga</a></td><td class="tag"><span class="rating">★4.9（391）</span> <span class="pill star">★</span></td><td><b>招牌：Skrei 鱈魚配蘿蔔、海鮮冷盤、牛小排+螯蝦「海陸雙拼」</b> · Praga 區一星 · Day 7 順路升級</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Rozbrat%2020%20Warszawa" target="_blank" rel="noopener">Rozbrat 20</a></td><td class="tag"><span class="pill star">★</span></td><td><b>招牌：多層次現代歐陸套餐</b>（逾百種食材組合出的一致風味）· 提前 3–5 週 · 需信用卡 +12.5% 服務費</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=15993615675406452524" target="_blank" rel="noopener">WANDAL</a></td><td class="tag"><span class="rating">★4.5（506）</span> <span class="pill bib">Bib</span> <span class="pill new">新</span></td><td>米其林 2026「年度開幕」· <b>招牌：顛覆式當代波蘭菜</b></td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=AHAAN%20Warszawa" target="_blank" rel="noopener">AHAAN</a></td><td class="tag"><span class="pill bib">Bib</span> <span class="pill new">新</span></td><td><b>招牌：泰式咖哩＋道地街頭辣度</b> · 泰國菜</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Ceviche%20Bar%20Warszawa" target="_blank" rel="noopener">Ceviche Bar</a></td><td class="tag"><span class="pill bib">Bib</span></td><td><b>招牌：秘魯風 ceviche 生醃海鮮</b> · 南美料理</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Koneser%20Grill%20Warszawa" target="_blank" rel="noopener">Koneser Grill</a></td><td class="tag"><span class="pill bib">Bib</span></td><td><b>招牌：炭火牛排與燒烤</b> · Praga 區排隊牛排館</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=kontakt%20Warszawa" target="_blank" rel="noopener">kontakt</a></td><td class="tag"><span class="pill bib">Bib</span></td><td><b>招牌：地中海風味時蔬與海鮮小盤</b></td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Le%20Braci%20Warszawa" target="_blank" rel="noopener">Le Braci</a></td><td class="tag"><span class="pill bib">Bib</span></td><td><b>招牌：義式手工麵食＋炭烤</b> · 義式小酒館</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Wyraj%20Warszawa" target="_blank" rel="noopener">Wyraj</a></td><td class="tag"><span class="pill bib">Bib</span></td><td><b>招牌：時令波蘭傳統家常菜重製</b></td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Blisko%20Bar%20Warszawa" target="_blank" rel="noopener">Blisko Bar</a></td><td class="tag"><span class="pill bib">Bib</span> <span class="pill new">新</span></td><td><b>招牌：自然酒配精緻小酒館菜</b></td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Kieliszki%20na%20Pr%C3%B3%C5%BCnej%20Warszawa" target="_blank" rel="noopener">Kieliszki na Próżnej</a></td><td class="tag"><span class="pill bib">Bib</span></td><td><b>招牌：酒杯小酌配歐陸小盤</b> · 酒吧型小酒館</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=WIN%20wine%20bar%20%26amp%3B%20shop%20Warszawa" target="_blank" rel="noopener">WIN wine bar &amp; shop</a></td><td class="tag"><span class="pill bib">Bib</span> <span class="pill new">新</span></td><td><b>招牌：季節小盤配自然酒</b> · 酒鋪型餐酒館</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=5270464504046978357" target="_blank" rel="noopener">Zagoździński</a></td><td class="tag"><span class="rating">★4.7（1,238）</span> 甜點</td><td><b>招牌：pączki 玫瑰餡甜甜圈</b> · 1925 至今排隊名店（Górczewska）</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Go%C5%9Bciniec%20Warszawa" target="_blank" rel="noopener">Gościniec</a> / <a href="https://www.google.com/maps/search/?api=1&amp;query=Zapiecek%20Warszawa" target="_blank" rel="noopener">Zapiecek</a> / <a href="https://www.google.com/maps/search/?api=1&amp;query=u%20Kresowiaka%20Warszawa" target="_blank" rel="noopener">u Kresowiaka</a></td><td class="tag">餃子</td><td><b>招牌：手工 pierogi 餃子</b>（肉餡／馬鈴薯起司／藍莓）· 名店（Nowy Świat / Koszykowa）</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=14427558643223382901" target="_blank" rel="noopener">Bar Mleczny Rusałka</a></td><td class="tag"><span class="rating">★4.3（2,501）</span> 牛奶吧</td><td><b>招牌：傳統家常套餐（湯＋主菜）</b> · Praga · 一餐 25 PLN 內</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Sapko%20Kebab%20Warszawa" target="_blank" rel="noopener">Sapko Kebab</a></td><td class="tag"><span class="rating">★4.6（高 則）</span> 街食</td><td><b>招牌：土耳其 kebab</b>，肉香四溢、份量足，在地口碑名店</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=OKIENKO%20Warszawa" target="_blank" rel="noopener">OKIENKO</a></td><td class="tag"><span class="rating">★4.5（2,154 則）</span> 街食</td><td><b>招牌：比利時薯條配多款自製沾醬</b> · 窗口式外帶</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Co%C5%9B%20Na%20Z%C4%85bkowskiej%20Warszawa" target="_blank" rel="noopener">Coś Na Ząbkowskiej</a></td><td class="tag"><span class="rating">★4.6（577 則）</span> 在地</td><td>Praga 藝術區（Ząbkowska 9）· <b>招牌：波蘭家常菜現代詮釋</b></td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Hala%20Koszyki%20Warszawa" target="_blank" rel="noopener">Hala Koszyki</a></td><td class="tag">美食廣場</td><td>免訂位 · 多攤集合，可一次吃到多國小吃</td></tr>
+      </tbody>
+    </table>
+<div class="note">甜點可帶回：wuzetka（W-Z 蛋糕）、sernik 起司蛋糕、szarlotka 蘋果派、kremówka。傳統餐廳點一杯冰 Żubrówka 一飲而盡是在地習慣。<b>評分</b>標註取自 Google／Tripadvisor 公開評論，僅供參考。</div>
+  </section>
+
+  <!-- ============ KRAKOW ============ -->
+  <section id="krakow">
+    <div class="sec-head"><span class="sec-num">02</span><div class="sec-title"><h2>克拉科夫</h2><span class="pl">Kraków · KRK</span></div></div>
+    <p class="lede">前皇都，中世紀街廓保存極佳。景點以經典為主；美食是全波蘭唯一二星所在地，街食文化濃厚。</p>
+    <div class="map-embed">
+      <div id="leaflet-krakow" class="leaflet-map"></div>
+      <p class="map-caption">📍 拖曳縮放檢視相對位置；點圖釘看名稱與備註，點名稱連結可開精確 Google Maps。</p>
+    </div>
+
+    <h3>景點 · Sights</h3>
+    <table>
+      <thead><tr><th>景點</th><th>類型</th><th>票價 / 備註</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=12446225081720350104" target="_blank" rel="noopener">Wawel 皇家城堡群</a></td><td class="tag"><span class="rating">★4.7（166,020）</span> <span class="pill book">逐展售票</span></td><td><b>各展分開售票</b>：王冠寶庫 <span class="price">47 / 優待 35</span>（含皇家花園）· 單展多為 30–47 zł · 全區聯票「Wawel dla pasjonatów」<span class="price">199 / 149</span> · 週一 10–16 部分展區限量免費 · <b>11/1、11/11 部分展區閉館</b></td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=14107513768635600179" target="_blank" rel="noopener">中央市集廣場</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=%E7%B4%A1%E7%B9%94%E6%9C%83%E9%A4%A8%20Krak%C3%B3w" target="_blank" rel="noopener">紡織會館</a></td><td class="tag"><span class="rating">★4.8（187,948）</span> 地標</td><td>歐洲最大中世紀廣場（Rynek Główny）· 廣場免費</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=5623518211080575812" target="_blank" rel="noopener">Kazimierz 猶太區</a></td><td class="tag"><span class="rating">★4.4（5,589）</span> 街區</td><td>猶太會堂、餐酒館、街食聚集</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=3670197855150446585" target="_blank" rel="noopener">辛德勒工廠博物館</a></td><td class="tag"><span class="rating">★4.5（25,993）</span> <span class="pill book">需訂</span></td><td><span class="price">PLN 60 / 優待 45</span> · ul. Lipowa 4 · 週一 10–15、週二–日 9–20、每月第一個週二休 · <b>11/1、11/3、11/11 閉館</b></td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=10891192289792865301" target="_blank" rel="noopener">維利奇卡鹽礦</a></td><td class="tag"><span class="rating">★4.6（36,491）</span> <span class="pill book">需票</span></td><td>UNESCO · Kinga 鹽教堂 · 恆溫 17–18°C · 英語團 <span class="price">143 / 優待 121</span>（含導覽）· 11/1 閉館 · 官網 bilety.kopalnia.pl</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E5%A5%A7%E6%96%AF%E5%A8%81%E8%BE%9B-%E6%AF%94%E5%85%8B%E7%91%99%20Krak%C3%B3w" target="_blank" rel="noopener">奧斯威辛-比克瑙</a></td><td class="tag"><span class="pill book">需訂</span></td><td>日歸 · 入場免費須線上預約（2026/3 起僅線上、現場不售）· 10–11 月上午強制跟導覽 <span class="price">約 130–150</span>（優待 120）· 免費自由參觀僅下午（11 月 14:00 起）· 提前 2–3 週訂</td></tr>
+      </tbody>
+    </table>
+
+    <h3>美食 · Food</h3>
+    <table>
+      <thead><tr><th>店家</th><th>等級</th><th>重點 / 招牌</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=8570908113421134699" target="_blank" rel="noopener">Bottiglieria 1881</a></td><td class="tag"><span class="rating">★4.6（1,056）</span> <span class="pill star star2">★★</span></td><td><b>全波蘭唯一二星</b>(Kazimierz) · <b>招牌：波蘭×北歐兩套 tasting</b> · 逾 500 款酒</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=7193800786272583343" target="_blank" rel="noopener">Folga</a></td><td class="tag"><span class="rating">★4.6（1,441）</span> <span class="pill bib">Bib</span></td><td><b>招牌：當代創意料理小盤</b> · 高CP</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=14914780693072191645" target="_blank" rel="noopener">MOLÁM</a></td><td class="tag"><span class="rating">★4.6（4,600）</span> <span class="pill bib">Bib</span></td><td><b>招牌：泰式烤全雞配糯米飯、khao soi 咖哩麵</b> · 道地泰式風味</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=6279990201826816109" target="_blank" rel="noopener">NOAH</a></td><td class="tag"><span class="rating">★4.7（1,150）</span> <span class="pill bib">Bib</span></td><td><b>招牌：以色列烤羊肉串配 pitta 餅</b> · 平價實惠</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=861978380086701482" target="_blank" rel="noopener">Bufet KRK</a></td><td class="tag"><span class="rating">★4.6（1,071）</span> <span class="pill bib">Bib</span> <span class="pill new">新</span></td><td><b>二星 Bottiglieria 1881 的平價副牌</b> · <b>招牌：自製黑血腸（kaszanka）與炭烤精選肉品</b> · 訂不到二星的最佳替代</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=10025714057570046192" target="_blank" rel="noopener">Nat Bistro</a></td><td class="tag"><span class="rating">★4.8（415）</span> <span class="pill bib">Bib</span> <span class="pill new">新</span></td><td><b>招牌：牛肉塔塔、鴨胸配時令蔬果</b> · 自然酒</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=obwarzanek%20%E9%BA%BB%E8%8A%B1%E5%9C%88%20Krak%C3%B3w" target="_blank" rel="noopener">obwarzanek 麻花圈</a></td><td class="tag">街食</td><td>PGI · 僅克拉科夫產 · 約 3 PLN · 藍色街車（Rynek 周邊、Tunel）</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Plac%20Nowy%20zapiekanka%20Krak%C3%B3w" target="_blank" rel="noopener">zapiekanka</a></td><td class="tag">街食</td><td>Plac Nowy 圓亭攤（Kazimierz）· 夜宵經典（招牌 Endzior）</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/place/?q=place_id:ChIJOwi62GpbFkcRoi0KiVCj1dk" target="_blank" rel="noopener">Mirror Bistro</a></td><td class="tag"><span class="rating">★4.7（7,485）</span> 餃子</td><td><b>招牌：手工 pierogi 十種內餡任選＋白羅宋湯</b> · Kazimierz 高人氣早午餐</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=10705718930784059170" target="_blank" rel="noopener">Pierogi Szwedzkie Svensson</a></td><td class="tag"><span class="rating">★4.4（236）</span> 餃子</td><td>Długa 58 · <b>招牌：大顆創意餡料餃子</b></td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=7513589258053856766" target="_blank" rel="noopener">Bar Smak</a></td><td class="tag"><span class="rating">★4.6（3,014）</span> 在地口碑</td><td>舊城（每天大排長龍）· <b>招牌：手工 pierogi＋馬鈴薯煎餅</b>，份量大、道地家常味</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=1317891001987072687" target="_blank" rel="noopener">Hamsa</a></td><td class="tag"><span class="rating">★4.5（6,453）</span> 在地口碑</td><td>Kazimierz（Szeroka 2）· <b>招牌：中東鷹嘴豆泥 hummus、falafel</b></td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Bar%20Mleczny%20%E7%89%9B%E5%A5%B6%E5%90%A7%20Krak%C3%B3w" target="_blank" rel="noopener">Bar Mleczny 牛奶吧</a></td><td class="tag">牛奶吧</td><td>舊城／Kazimierz 多家 · <b>招牌：家常湯品與馬鈴薯煎餅</b> · 一餐 25 PLN 內</td></tr>
+      </tbody>
+    </table>
+<div class="note"><b>評分</b>標註取自 Google／Tripadvisor 公開評論，僅供參考，出發前可再查最新狀態。</div>
+  </section>
+
+  <!-- ============ WROCLAW ============ -->
+  <section id="wroclaw">
+    <div class="sec-head"><span class="sec-num">03</span><div class="sec-title"><h2>樂斯拉夫</h2><span class="pl">Wrocław · WRO</span></div></div>
+    <p class="lede">波蘭第三大城、百橋之都。小矮人尋寶是招牌；2026 一次拿下兩顆新米其林星，被指南點名為「美食值得專程」。</p>
+    <div class="map-embed">
+      <div id="leaflet-wroclaw" class="leaflet-map"></div>
+      <p class="map-caption">📍 拖曳縮放檢視相對位置；點圖釘看名稱與備註，點名稱連結可開精確 Google Maps。</p>
+    </div>
+
+    <h3>景點 · Sights</h3>
+    <table>
+      <thead><tr><th>景點</th><th>類型</th><th>票價 / 備註</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=10632303817405446655" target="_blank" rel="noopener">小矮人 Krasnale 尋寶</a></td><td class="tag"><span class="rating">★4.9（91）</span> <span class="pill free">免費</span></td><td>全城 1000+ 尊小銅像 · Rynek／Plac Solny／Świdnicka 密度最高</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E4%B8%AD%E5%A4%AE%E5%B8%82%E9%9B%86%E5%BB%A3%E5%A0%B4%20Wroc%C5%82aw" target="_blank" rel="noopener">中央市集廣場</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=%E5%B8%82%E6%94%BF%E5%BB%B3%E5%A1%94%20Wroc%C5%82aw" target="_blank" rel="noopener">市政廳塔</a></td><td class="tag">地標</td><td>彩色山牆屋 · 觀景塔</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=3827887123396229836" target="_blank" rel="noopener">大教堂島 Ostrów Tumski</a></td><td class="tag"><span class="rating">★4.9（3,270）</span> 古城</td><td>全城最古老城區</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Afrykarium%20Wroc%C5%82aw" target="_blank" rel="noopener">Afrykarium</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=%E5%8B%95%E7%89%A9%E5%9C%92%20Wroc%C5%82aw" target="_blank" rel="noopener">動物園</a></td><td class="tag"><span class="pill book">熱門</span></td><td><span class="price">PLN 60 / 優待 50</span> · 波蘭最多人造訪付費景點 · 全球唯一非洲主題水族館 · 線上購票</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Panorama%20Rac%C5%82awicka%20Wroc%C5%82aw" target="_blank" rel="noopener">Panorama Racławicka</a></td><td class="tag">全景畫</td><td><span class="price">PLN 50 / 優待 35</span> · 圓形巨幅戰役畫 · <b>週一休</b></td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=10763621538599936407" target="_blank" rel="noopener">百年廳 Hala Stulecia</a></td><td class="tag"><span class="rating">★4.7（15,074）</span> UNESCO</td><td><span class="price">PLN 25 / 優待 20</span>（多媒體常設展）· 每日開放 10:00–18:00 · 圓頂偶因活動關閉，行前 3–5 天查 halastulecia.pl 確認 · 近多媒體噴泉 Pergola</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Hydropolis%20%E6%B0%B4%E7%9F%A5%E8%AD%98%E4%B8%AD%E5%BF%83%20Wroc%C5%82aw" target="_blank" rel="noopener">Hydropolis 水知識中心</a></td><td class="tag">室內</td><td><span class="price">PLN 45（週末 47）/ 優待 36</span> · 雨備好選擇</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Kolejkowo%20%E5%BE%AE%E7%B8%AE%E9%A4%A8%20Wroc%C5%82aw" target="_blank" rel="noopener">Kolejkowo 微縮館</a></td><td class="tag">室內</td><td><span class="price">PLN 55 / 優待 45</span> · Sky Tower 1 樓</td></tr>
+      </tbody>
+    </table>
+
+    <h3>美食 · Food</h3>
+    <table>
+      <thead><tr><th>店家</th><th>等級</th><th>重點 / 招牌</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=9335659011047272773" target="_blank" rel="noopener">BABA</a></td><td class="tag"><span class="rating">★4.6（965）</span> <span class="pill star">★</span> <span class="pill new">新</span></td><td>2025 Bib 升 2026 一星 · 主廚 Beata Śniechowska · <b>招牌：「Petit Bonbon」創意餃子、招牌肉卷（meatloaf）</b></td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=9490447263206449328" target="_blank" rel="noopener">Most</a></td><td class="tag"><span class="rating">★4.7（479）</span> <span class="pill star">★</span> <span class="pill new">新</span></td><td>2026 新一星 · <b>招牌：南瓜餡餃子配松露、鱈魚配醃紫洋蔥菇菌醬</b></td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=10589009865057440004" target="_blank" rel="noopener">IDA kuchnia i wino</a></td><td class="tag"><span class="rating">★4.8（2,002）</span> <span class="pill bib">Bib</span></td><td><b>招牌：現代版 kopytka 馬鈴薯疙瘩、pierogi、żurek 酸湯</b> · 149 PLN 含酒套餐，高CP</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Tarasowa%20Wroc%C5%82aw" target="_blank" rel="noopener">Tarasowa</a></td><td class="tag"><span class="pill bib">Bib</span></td><td><b>招牌：Złotnicka 豬肉、Zielenica 鱒魚卵</b> · 百年廳畔露台景觀</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Pijalni%20Wroc%C5%82aw" target="_blank" rel="noopener">Pijalni</a></td><td class="tag"><span class="pill bib">Bib</span> <span class="pill new">新</span></td><td><b>招牌：柴火慢烤季節料理</b> · 重味道、不花俏、自然酒選擇多</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Restauracja%20Wroc%C5%82awska%20Wroc%C5%82aw" target="_blank" rel="noopener">Restauracja Wrocławska</a></td><td class="tag">在地</td><td>戰前風味 · <b>招牌：bigos 獵人燉菜、Silesian 餃</b></td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Piwnica%20%C5%9Awidnicka%20Wroc%C5%82aw" target="_blank" rel="noopener">Piwnica Świdnicka</a></td><td class="tag">歷史</td><td>市政廳地窖 · 歐洲最古老餐廳之一（1273）· <b>招牌：傳統燉肉與啤酒</b></td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=9100083269168988599" target="_blank" rel="noopener">Miś SC</a></td><td class="tag"><span class="rating">★4.4（7,028）</span> 牛奶吧</td><td><b>樂斯拉夫最有名的牛奶吧</b>，<b>招牌：pierogi、家常湯品</b>，價格實惠、天天排隊</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Bar%20Witek%20Wroc%C5%82aw" target="_blank" rel="noopener">Bar Witek</a></td><td class="tag"><span class="rating">★4.0（23 則）</span> 街食</td><td><b>招牌：zapiekanka 烤餅</b> · 樂斯拉夫在地地標，門口有專屬小矮人雕像</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Ze%20Smakiem%20Pierogarnia%20Wroc%C5%82aw" target="_blank" rel="noopener">Ze Smakiem Pierogarnia</a></td><td class="tag">餃子</td><td>舊城西側 · <b>招牌：手工 pierogi</b>，在地公認最道地之一</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=jagodzianka%20%E8%97%8D%E8%8E%93%E5%8C%85%20Wroc%C5%82aw" target="_blank" rel="noopener">jagodzianka 藍莓包</a></td><td class="tag">甜點</td><td>在地麵包店 · <b>招牌：夏季限定藍莓酵母麵包</b></td></tr>
+      </tbody>
+    </table>
+<div class="note"><b>評分</b>標註取自 Google／Tripadvisor 公開評論，僅供參考，出發前可再查最新狀態。</div>
+  </section>
+
+  <!-- ============ POZNAN ============ -->
+  <section id="poznan">
+    <div class="sec-head"><span class="sec-num">04</span><div class="sec-title"><h2>波茲南</h2><span class="pl">Poznań · POZ</span></div></div>
+    <p class="lede">波蘭建國搖籃（966 年受洗地）。舊市集廣場 2024 中重修完工，是近年最佳造訪時機；聖馬丁可頌是專屬名物。</p>
+    <div class="map-embed">
+      <div id="leaflet-poznan" class="leaflet-map"></div>
+      <p class="map-caption">📍 拖曳縮放檢視相對位置；點圖釘看名稱與備註，點名稱連結可開精確 Google Maps。</p>
+    </div>
+
+    <h3>景點 · Sights</h3>
+    <table>
+      <thead><tr><th>景點</th><th>類型</th><th>票價 / 備註</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E8%88%8A%E5%B8%82%E9%9B%86%E5%BB%A3%E5%A0%B4%20Stary%20Rynek%20Pozna%C5%84" target="_blank" rel="noopener">舊市集廣場 Stary Rynek</a></td><td class="tag"><span class="pill new">2024 重修</span></td><td>鋪面與無障礙全面翻新 · 彩色商人屋 · 四座神話噴泉 · 免費</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E5%B8%82%E6%94%BF%E5%BB%B3%E6%AD%A3%E5%8D%88%E5%B1%B1%E7%BE%8A%E9%90%98%20Pozna%C5%84" target="_blank" rel="noopener">市政廳正午山羊鐘</a></td><td class="tag"><span class="pill free">免費</span></td><td>每日正午兩隻機械山羊頂角 12 次（部分資料另有 15:00 場，現場再確認）</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=402526412385617111" target="_blank" rel="noopener">可頌博物館 Rogalowe Muzeum</a></td><td class="tag"><span class="rating">★4.8（6,115）</span> 特色</td><td><span class="price">PLN 39 / 優待 35 起</span>（場次制展演）· 市政廳對面 · 週日–五 11:00–15:30、週六 11:00–17:00</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E5%8F%A4%E5%B8%82%E6%94%BF%E5%BB%B3%E5%8D%9A%E7%89%A9%E9%A4%A8%20Pozna%C5%84" target="_blank" rel="noopener">古市政廳博物館</a></td><td class="tag">歷史</td><td><b style="color:var(--red)">2026/7/1–2027/11/30 整修閉館</b>，行程期間無法入內，僅能外觀</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E5%B8%9D%E7%8E%8B%E5%9F%8E%E5%A0%A1%20Zamek%20Cesarski%20Pozna%C5%84" target="_blank" rel="noopener">帝王城堡 Zamek Cesarski</a></td><td class="tag">地標</td><td>CK Zamek 文化中心，<span class="price">多為免費入場</span>，特展/導覽另計，每日 10:00–21:00</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E5%A4%A7%E6%95%99%E5%A0%82%E5%B3%B6%20Ostr%C3%B3w%20Tumski%20Pozna%C5%84" target="_blank" rel="noopener">大教堂島 Ostrów Tumski</a></td><td class="tag">古城</td><td>波蘭建國搖籃</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=10703456143872687277" target="_blank" rel="noopener">Palmiarnia 棕櫚屋</a></td><td class="tag"><span class="rating">★4.7（21,152）</span> 室內</td><td><span class="price">PLN 19 / 優待 15</span> · 歐洲最大棕櫚屋之一 · 內有波蘭首座公共水族館</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=%E8%80%83%E5%8F%A4%E5%8D%9A%E7%89%A9%E9%A4%A8%20Pozna%C5%84" target="_blank" rel="noopener">考古博物館</a></td><td class="tag">室內</td><td><span class="price">PLN 10 / 優待 6</span> · <b>週二免費</b>（非週六）· 埃及展</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Stary%20Browar%20Pozna%C5%84" target="_blank" rel="noopener">Stary Browar</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Malta%20%E6%B9%96%20Pozna%C5%84" target="_blank" rel="noopener">Malta 湖</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Citadel%20%E5%85%AC%E5%9C%92%20Pozna%C5%84" target="_blank" rel="noopener">Citadel 公園</a></td><td class="tag">戶外／購物</td><td>Śródka 有壁畫街拍點</td></tr>
+      </tbody>
+    </table>
+
+    <h3>美食 · Food</h3>
+    <table>
+      <thead><tr><th>店家</th><th>等級</th><th>重點 / 招牌</th></tr></thead>
+      <tbody>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=2998937238608160974" target="_blank" rel="noopener">Muga</a></td><td class="tag"><span class="rating">★4.7（869）</span> <span class="pill star">★</span></td><td>波茲南首家、目前唯一一星 · 法系 · <b>招牌：時令 10–12 道套餐</b>（如烤鴿配無花果）· 套餐 390–540 PLN</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Froma%C5%BCeria%20Pozna%C5%84" target="_blank" rel="noopener">Fromażeria</a></td><td class="tag"><span class="pill bib">Bib</span></td><td><b>招牌：起司主題料理</b>，融合波蘭與地中海／黎凡特香料風味</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Posto%20Pozna%C5%84" target="_blank" rel="noopener">Posto</a></td><td class="tag"><span class="pill bib">Bib</span></td><td>穀倉改建空間 · <b>招牌：czernina 鴨血湯、蝦仁干貝燉飯、法式肉派</b></td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=SPOT.%20Pozna%C5%84" target="_blank" rel="noopener">SPOT.</a></td><td class="tag"><span class="pill bib">Bib</span></td><td><b>招牌：當代創意料理小盤</b></td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=TU.REStAURANT%20Pozna%C5%84" target="_blank" rel="noopener">TU.REStAURANT</a></td><td class="tag"><span class="pill bib">Bib</span></td><td><b>招牌：現代歐陸料理融合南歐香料</b></td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=rogal%20%C5%9Bwi%C4%99tomarci%C5%84ski%20Pozna%C5%84" target="_blank" rel="noopener">rogal świętomarciński</a></td><td class="tag">名物</td><td>PGI 聖馬丁可頌 · 白罌粟籽餡 · 四季有售 · Rogalowe Muzeum、Wise Cafe（Mercure 內）公認名版本</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=17998777227118824033" target="_blank" rel="noopener">Na Winklu</a></td><td class="tag"><span class="rating">★4.8（3,222）</span> 餃子</td><td>Śródka 區河畔 · <b>招牌：烤製版大顆 pierogi</b>，外皮酥脆內餡多汁，在地人氣首選</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Pyra%20Bar%20Pozna%C5%84" target="_blank" rel="noopener">Pyra Bar</a></td><td class="tag">在地</td><td>馬鈴薯專門 · <b>招牌：pyry s bzikiem 起司烤馬鈴薯</b></td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Hy%C4%87ka%20Pozna%C5%84" target="_blank" rel="noopener">Hyćka</a></td><td class="tag">傳統</td><td>大波蘭菜 · <b>招牌：烤鴨配 pyzy 蒸糰</b>（Muga 主廚推薦）</td></tr>
+        <tr><td class="name"><a href="https://maps.google.com/?cid=8072844045178633315" target="_blank" rel="noopener">Szarlotta</a></td><td class="tag"><span class="rating">★4.5（2,798）</span> 在地口碑</td><td><b>招牌：鴨肉餃子（Duck Pierogi）</b>——當地公認波茲南最佳餃子之一</td></tr>
+        <tr><td class="name"><a href="https://www.google.com/maps/search/?api=1&amp;query=Restaurant%2062%20Pozna%C5%84" target="_blank" rel="noopener">Restaurant 62</a></td><td class="tag">傳統</td><td><b>招牌：鴨胸／鱘魚主菜、血湯配金箔</b> · 經典菜式創意重製</td></tr>
+      </tbody>
+    </table>
+<div class="note"><b>評分</b>標註取自 Google／Tripadvisor 公開評論，僅供參考，出發前可再查最新狀態。</div>
+  </section>
+
+  <!-- ============ MICHELIN ============ -->
+  <section id="michelin">
+    <div class="sec-head"><span class="sec-num">05</span><div class="sec-title"><h2>米其林 2026</h2><span class="pl">MICHELIN Guide Poland</span></div></div>
+    <p class="lede">2026 為波蘭首次全國版指南，共收錄 196 家：10 星級 ＋ 38 Bib Gourmand。以下為四城相關（★＝2026 新增）。</p>
+    <table>
+      <thead><tr><th>城市</th><th>星級</th><th>Bib Gourmand（高CP）</th></tr></thead>
+      <tbody>
+        <tr><td class="name">克拉科夫</td><td><span class="pill star star2">★★</span> <a href="https://www.google.com/maps/search/?api=1&amp;query=Bottiglieria%201881%20Krak%C3%B3w" target="_blank" rel="noopener">Bottiglieria 1881</a></td><td><a href="https://www.google.com/maps/search/?api=1&amp;query=Folga%20Krak%C3%B3w" target="_blank" rel="noopener">Folga</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=MOL%C3%81M%20Krak%C3%B3w" target="_blank" rel="noopener">MOLÁM</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=NOAH%20Krak%C3%B3w" target="_blank" rel="noopener">NOAH</a> · <b><a href="https://www.google.com/maps/search/?api=1&amp;query=Bufet%20KRK%20Krak%C3%B3w" target="_blank" rel="noopener">Bufet KRK</a></b> <span class="pill new">新</span> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Nat%20Bistro%20Krak%C3%B3w" target="_blank" rel="noopener">Nat Bistro</a> <span class="pill new">新</span></td></tr>
+        <tr><td class="name">華沙</td><td><span class="pill star">★</span> <a href="https://www.google.com/maps/search/?api=1&amp;query=Alon%20Omakase%20Warszawa" target="_blank" rel="noopener">Alon Omakase</a> <span class="pill new">新</span> · <a href="https://www.google.com/maps/search/?api=1&amp;query=hub.praga%20Warszawa" target="_blank" rel="noopener">hub.praga</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=NUTA%20Warszawa" target="_blank" rel="noopener">NUTA</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Rozbrat%2020%20Warszawa" target="_blank" rel="noopener">Rozbrat 20</a></td><td><a href="https://www.google.com/maps/search/?api=1&amp;query=Ceviche%20Bar%20Warszawa" target="_blank" rel="noopener">Ceviche Bar</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Kieliszki%20na%20Pr%C3%B3%C5%BCnej%20Warszawa" target="_blank" rel="noopener">Kieliszki na Próżnej</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Koneser%20Grill%20Warszawa" target="_blank" rel="noopener">Koneser Grill</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=kontakt%20Warszawa" target="_blank" rel="noopener">kontakt</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Le%20Braci%20Warszawa" target="_blank" rel="noopener">Le Braci</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Wyraj%20Warszawa" target="_blank" rel="noopener">Wyraj</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=AHAAN%20Warszawa" target="_blank" rel="noopener">AHAAN</a> <span class="pill new">新</span> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Blisko%20Bar%20Warszawa" target="_blank" rel="noopener">Blisko Bar</a> <span class="pill new">新</span> · <b><a href="https://www.google.com/maps/search/?api=1&amp;query=WANDAL%20Warszawa" target="_blank" rel="noopener">WANDAL</a></b> <span class="pill new">新</span> · <a href="https://www.google.com/maps/search/?api=1&amp;query=WIN%20wine%20bar%20Warszawa" target="_blank" rel="noopener">WIN</a> <span class="pill new">新</span></td></tr>
+        <tr><td class="name">樂斯拉夫</td><td><span class="pill star">★</span> <a href="https://www.google.com/maps/search/?api=1&amp;query=BABA%20Wroc%C5%82aw" target="_blank" rel="noopener">BABA</a> <span class="pill new">新</span> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Most%20Wroc%C5%82aw" target="_blank" rel="noopener">Most</a> <span class="pill new">新</span></td><td><a href="https://www.google.com/maps/search/?api=1&amp;query=IDA%20kuchnia%20i%20wino%20Wroc%C5%82aw" target="_blank" rel="noopener">IDA kuchnia i wino</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Tarasowa%20Wroc%C5%82aw" target="_blank" rel="noopener">Tarasowa</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Pijalni%20Wroc%C5%82aw" target="_blank" rel="noopener">Pijalni</a> <span class="pill new">新</span></td></tr>
+        <tr><td class="name">波茲南</td><td><span class="pill star">★</span> <a href="https://www.google.com/maps/search/?api=1&amp;query=Muga%20Pozna%C5%84" target="_blank" rel="noopener">Muga</a></td><td><a href="https://www.google.com/maps/search/?api=1&amp;query=Froma%C5%BCeria%20Pozna%C5%84" target="_blank" rel="noopener">Fromażeria</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=Posto%20Pozna%C5%84" target="_blank" rel="noopener">Posto</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=SPOT.%20Pozna%C5%84" target="_blank" rel="noopener">SPOT.</a> · <a href="https://www.google.com/maps/search/?api=1&amp;query=TU.REStAURANT%20Pozna%C5%84" target="_blank" rel="noopener">TU.REStAURANT</a></td></tr>
+      </tbody>
+    </table>
+    <div class="note warn"><b>訂位提醒：</b>二星 Bottiglieria 1881 與各一星建議出發前 <b>3–4 週</b>訂；華沙 splurge 級（NUTA、Rozbrat 20）需 3–5 週。想吃 Bottiglieria 團隊手藝但預算有限，改訂 <b>Bufet KRK</b>。</div>
+    <h3>訂位 &amp; 每人預算 · Booking</h3>
+    <table class="fare">
+      <thead><tr><th>餐廳</th><th>每人 PLN</th><th>訂位管道 / 備註</th></tr></thead>
+      <tbody>
+        <tr><td>⭐⭐ Bottiglieria 1881（克拉科夫）</td><td class="n">290 / 360</td><td>自家電話 +48 660 661 756 · ul. Bocheńska 5 · 平日另有單點，週末僅套餐</td></tr>
+        <tr><td>⭐ Alon Omakase（華沙）</td><td class="n">~1100</td><td>omakase.eu 線上 · 取消/減人照收全額 · Edomae 壽司</td></tr>
+        <tr><td>⭐ Most（樂斯拉夫）</td><td class="n">490</td><td>miedzy-mostami.pl · 僅週四–六 · 需訂金 · Księcia Witolda 1</td></tr>
+        <tr><td>⭐ Muga（波茲南）</td><td class="n">390–540</td><td>官網/電話 · 法系套餐</td></tr>
+        <tr><td>⭐ NUTA（華沙）</td><td class="n">€€€€</td><td>Michelin 線上/官網 · plac Trzech Krzyży（ETHOS）· 主廚 Andrea Camastra</td></tr>
+        <tr><td>⭐ Rozbrat 20（華沙）</td><td class="n">€€€€</td><td>rozbrat20.com.pl · 需信用卡 · +12.5% 服務費 · smart casual、12 歲以上</td></tr>
+        <tr><td>⭐ BABA（樂斯拉夫）</td><td class="n">€€</td><td>Michelin 免費線上 · Nożownicza 26 席 · 主廚 Beata Śniechowska</td></tr>
+        <tr><td>Bib · Bufet KRK（克拉科夫）</td><td class="n">€€</td><td>二星副牌 · 較好訂 · 訂不到二星的替代</td></tr>
+        <tr><td>Bib · IDA kuchnia i wino（樂斯拉夫）</td><td class="n">149</td><td>套餐含酒 · 全趟最高CP</td></tr>
+      </tbody>
+    </table>
+    <div class="note">價位為套餐每人（PLN）；€€€€ 為官方價位級距（華沙頂級套餐約 400–650）。二星與各一星建議出發前 <b>3–4 週</b>訂；<b>Alon Omakase 取消政策嚴格</b>，訂前確認人數。</div>
+  </section>
+
+  <!-- ============ FARES ============ -->
+  <section id="fares">
+    <div class="sec-head"><span class="sec-num">06</span><div class="sec-title"><h2>門票速查</h2><span class="pl">Ticket Prices · 2026</span></div></div>
+    <p class="lede">2026-08 查證官方頁面。標「~／以官網」者為動態／季節定價，出發前再確認一次。全票 / 優待（PLN）。</p>
+    <table class="fare">
+      <thead><tr><th>景點</th><th>全票</th><th>優待</th><th>備註</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E8%8F%AF%E6%B2%99%20%E7%9A%87%E5%AE%B6%E5%9F%8E%E5%A0%A1" target="_blank" rel="noopener">華沙 · 皇家城堡</a></td><td class="n">30–110</td><td class="n">20–90</td><td>分路線售票，見上方明細 · 週三免費 <a href="https://www.zamek-krolewski.pl/" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E8%8F%AF%E6%B2%99%20%E7%A7%91%E5%AD%B8%E6%96%87%E5%8C%96%E5%AE%AE%E8%A7%80%E6%99%AF%E5%8F%B0" target="_blank" rel="noopener">華沙 · 科學文化宮觀景台</a></td><td class="n">30</td><td class="n">25</td><td>已更新（原標 25） <a href="https://pkin.pl/" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E8%8F%AF%E6%B2%99%20Neon%20%E9%9C%93%E8%99%B9%E5%8D%9A%E7%89%A9%E9%A4%A8" target="_blank" rel="noopener">華沙 · Neon 霓虹博物館</a></td><td class="n">25</td><td class="n">18</td><td>科學文化宮 4 樓 <a href="https://www.neonmuzeum.org/" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E8%8F%AF%E6%B2%99%20MSN%20%E7%95%B6%E4%BB%A3%E7%BE%8E%E8%A1%93%E9%A4%A8" target="_blank" rel="noopener">華沙 · MSN 當代美術館</a></td><td class="n">免費</td><td class="n">—</td><td>Gallery A 免費 · 晚間票 30 <a href="https://artmuseum.pl/" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E8%8F%AF%E6%B2%99%20%E6%B3%A2%E8%98%AD%E6%AD%B7%E5%8F%B2%E5%8D%9A%E7%89%A9%E9%A4%A8%20Warszawa" target="_blank" rel="noopener">華沙 · 波蘭歷史博物館</a></td><td class="n">以官網</td><td class="n">—</td><td>2026 新館群（城堡區） <a href="https://muzhp.pl/" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E8%8F%AF%E6%B2%99%20E.Wedel%20Warszawa" target="_blank" rel="noopener">華沙 · E.Wedel 巧克力體驗館</a></td><td class="n">以官網</td><td class="n">—</td><td>2026 新開 <a href="https://fabrykaczekolady.pl/" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20Wawel%20%E7%8E%8B%E5%86%A0%E5%AF%B6%E5%BA%AB" target="_blank" rel="noopener">克拉科夫 · Wawel 王冠寶庫</a></td><td class="n">47</td><td class="n">35</td><td>含皇家花園 · 逐展售票 <a href="https://wawel.krakow.pl/" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20Wawel%20%E5%85%A8%E5%8D%80%E8%81%AF%E7%A5%A8" target="_blank" rel="noopener">克拉科夫 · Wawel 全區聯票</a></td><td class="n">199</td><td class="n">149</td><td>Wawel dla pasjonatów <a href="https://wawel.krakow.pl/" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20%E8%BE%9B%E5%BE%B7%E5%8B%92%E5%B7%A5%E5%BB%A0" target="_blank" rel="noopener">克拉科夫 · 辛德勒工廠</a></td><td class="n">60</td><td class="n">45</td><td>ul. Lipowa 4 <a href="https://muzeumkrakowa.pl/oddzialy/fabryka-emalia-oskara-schindlera" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20%E7%B6%AD%E5%88%A9%E5%A5%87%E5%8D%A1%E9%B9%BD%E7%A4%A6%20Wieliczka" target="_blank" rel="noopener">克拉科夫 · 維利奇卡鹽礦</a></td><td class="n">143</td><td class="n">121</td><td>英語團含導覽 · 11/1 休 <a href="https://www.kopalnia.pl/" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20%E5%A5%A7%E6%96%AF%E5%A8%81%E8%BE%9B%20O%C5%9Bwi%C4%99cim" target="_blank" rel="noopener">克拉科夫 · 奧斯威辛</a></td><td class="n">免費*</td><td class="n">—</td><td>*須線上預約 · 上午強制導覽 130–150 <a href="https://visit.auschwitz.org/" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20Afrykarium%EF%BC%8F%E5%8B%95%E7%89%A9%E5%9C%92" target="_blank" rel="noopener">樂斯拉夫 · Afrykarium／動物園</a></td><td class="n">~60</td><td class="n">50</td><td>線上購票 · 動態定價 <a href="https://zoo.wroclaw.pl/" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20Panorama%20Rac%C5%82awicka" target="_blank" rel="noopener">樂斯拉夫 · Panorama Racławicka</a></td><td class="n">50</td><td class="n">—</td><td> <a href="https://mnwr.pl/" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20%E7%99%BE%E5%B9%B4%E5%BB%B3" target="_blank" rel="noopener">樂斯拉夫 · 百年廳</a></td><td class="n">25</td><td class="n">20</td><td>每日開放 · 圓頂偶因活動關閉，行前查官網 <a href="https://www.halastulecia.pl/" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20Hydropolis" target="_blank" rel="noopener">樂斯拉夫 · Hydropolis</a></td><td class="n">45</td><td class="n">36</td><td>週末全票 47 <a href="https://hydropolis.pl/" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20Kolejkowo" target="_blank" rel="noopener">樂斯拉夫 · Kolejkowo</a></td><td class="n">55</td><td class="n">45</td><td>Sky Tower 1 樓 <a href="https://kolejkowo.pl/wroclaw" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20Palmiarnia%20%E6%A3%95%E6%AB%9A%E5%B1%8B" target="_blank" rel="noopener">波茲南 · Palmiarnia 棕櫚屋</a></td><td class="n">19</td><td class="n">15</td><td> <a href="http://www.palmiarnia.poznan.pl/" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20%E5%8F%AF%E9%A0%8C%E5%8D%9A%E7%89%A9%E9%A4%A8" target="_blank" rel="noopener">波茲南 · 可頌博物館</a></td><td class="n">39 起</td><td class="n">35 起</td><td>場次制，非自由參觀 <a href="https://rogalowemuzeum.pl/" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20%E5%B8%9D%E7%8E%8B%E5%9F%8E%E5%A0%A1" target="_blank" rel="noopener">波茲南 · 帝王城堡</a></td><td class="n">多免費</td><td class="n">—</td><td>CK Zamek 文化中心 <a href="https://ckzamek.pl/" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20%E5%8F%A4%E5%B8%82%E6%94%BF%E5%BB%B3%E5%8D%9A%E7%89%A9%E9%A4%A8" target="_blank" rel="noopener">波茲南 · 古市政廳博物館</a></td><td class="n" style="color:var(--red);font-weight:700">閉館中</td><td class="n">—</td><td>2026/7–2027/11 整修，行程期間不開放 <a href="https://mnp.art.pl/" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+        <tr><td><a href="https://www.google.com/maps/search/?api=1&amp;query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20%E8%80%83%E5%8F%A4%E5%8D%9A%E7%89%A9%E9%A4%A8" target="_blank" rel="noopener">波茲南 · 考古博物館</a></td><td class="n">10</td><td class="n">6</td><td>週二免費 <a href="https://www.muzarp.poznan.pl/" target="_blank" rel="noopener" class="official-link">官網 ↗</a></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ============ TRANSIT ============ -->
+  <section id="transit">
+    <div class="sec-head"><span class="sec-num">07</span><div class="sec-title"><h2>市內交通</h2><span class="pl">City Transit · Apps &amp; Passes · 2026</span></div></div>
+    <p class="lede">四城老城區多可步行；短程搭電車／巴士很方便。以下為 2026 官方單票價（全票，PLN）與推薦 App／購票方式。</p>
+
+    <h3>票價速查</h3>
+    <table class="fare">
+      <thead><tr><th>城市</th><th>短程</th><th>90 分</th><th>24 小時</th><th>備註</th></tr></thead>
+      <tbody>
+        <tr><td>華沙 ZTM</td><td class="n">20 分 3.40</td><td class="n">7</td><td class="n">15</td><td>涵蓋電車/巴士/地鐵/SKM · 第一區</td></tr>
+        <tr><td>克拉科夫 KMK</td><td class="n">15 分 4</td><td class="n">9</td><td class="n">20</td><td>2026/3 起新價 · 單次票 6</td></tr>
+        <tr><td>樂斯拉夫 MPK</td><td class="n">15 分 3.20</td><td class="n">7</td><td class="n">15</td><td>短程全國最便宜 · 單程票 4.60</td></tr>
+        <tr><td>波茲南 ZTM</td><td class="n">15 分 5</td><td class="n">9</td><td class="n">18</td><td>短程最貴 · 45 分 7（無中間檔）</td></tr>
+      </tbody>
+    </table>
+
+    <h3>機場 ↔ 市區</h3>
+    <table class="fare">
+      <thead><tr><th>路線</th><th>方式</th><th>票價</th><th>時間</th><th>備註</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="3">華沙蕭邦機場<br>→ 市中心</td><td>🚆 SKM/KM 火車</td><td class="n">4.40</td><td class="n">~25–30 分</td><td>買至少 75 分鐘票（涵蓋轉乘）· 06:00–23:00 · 到 Śródmieście/Centralna 站</td></tr>
+        <tr><td>🚌 175 路巴士</td><td class="n">4.40</td><td class="n">~30 分</td><td>04:58–23:58，每 15–20 分一班 · 直達市中心＋近舊城</td></tr>
+        <tr><td>🚕 計程車/Bolt</td><td class="n">30–35</td><td class="n">~20 分</td><td>機場內認明官方排班計程車，避免搭訕攬客</td></tr>
+        <tr><td rowspan="3">克拉科夫 Balice 機場<br>→ 市中心</td><td>🚆 SKA1 火車</td><td class="n">20</td><td class="n">17–18 分</td><td>唯一班次，直達方向 Wieliczka Rynek Kopalnia · 04:17 首班，約每 30 分一班到 22:17 · <b>此票價與市內單程票不同，另計</b></td></tr>
+        <tr><td>🚌 300 路巴士</td><td class="n">依區</td><td class="n">~30–40 分</td><td>10:00–20:00 每 15 分一班 · 到 Rondo Grunwaldzkie，靠近舊城 · <b>機場屬 I+II 區，需買對應區間票</b></td></tr>
+        <tr><td>🌙 902 夜間巴士</td><td class="n">依區</td><td class="n">~40–45 分</td><td>深夜/凌晨航班備案 · 到火車站東側</td></tr>
+      </tbody>
+    </table>
+    <div class="note">樂斯拉夫、波茲南本行程皆以火車往返，無需機場轉乘。</div>
+
+        <h3>推薦 App</h3>
+    <div class="grid">
+      <div class="card"><h4>📱 Jakdojade（首選）</h4><p>波蘭最普及的大眾運輸 App，四城都支援。可查即時時刻、規劃路線、<b>App 內直接買票並自動啟用</b>；上車前記得先在 App 內啟用電子票（未啟用視同無票，2026 罰款 PLN 133–266）。錢包儲值支援信用卡／Apple Pay。★4.4（157 萬則評論）。</p></div>
+      <div class="card"><h4>💳 車上機台感應卡（最簡單）</h4><p>不裝 App 也行：車上或站牌的售票機直接<b>感應信用卡／手機／手錶</b>，選好票種按「Kup i skasuj（購買並驗票）」即完成，系統自動綁定在該卡上，查票時感應同一張卡即可，免列印、免額外驗票步驟。支援 Visa/Mastercard 感應、Apple Pay、Google Pay、BLIK。</p></div>
+      <div class="card"><h4>🗺️ Google Maps</h4><p>路線規劃同樣好用、四城公車電車時刻都有收錄，適合已經很熟悉、只需要「怎麼走」的人；買票仍需搭配 Jakdojade 或現場機台。</p></div>
+      <div class="card"><h4>🚗 Bolt</h4><p>叫車 App，四城都有涵蓋。深夜、雨天或懶得等車時的備案，價格透明、免小費文化。</p></div>
+    </div>
+
+    <h3>幾日券怎麼選</h3>
+    <ul class="check">
+      <li><b>單程／15–20 分短票最省</b> — 老城區多在步行範圍，一天搭乘 3 趟以下用短票通常比 24h 票划算。</li>
+      <li><b>24 小時票</b> — 一天內要搭 4 趟以上（例如安排較遠景點來回）再考慮買，四城價格 15–20 PLN 不等，見上表。</li>
+      <li><b>多日券（48h／72h／7 日）</b> — 本行程每城只停留 1–2 晚，通常用不到；除非同一城市安排 3 天以上再評估。</li>
+      <li><b>觀光城市卡（Kraków Card 等）</b>——含景點門票＋交通，但需一天刷 3 個以上付費景點才划算；本行程景點分散在多天，多數情況下<b>單買門票 + 短程交通票更划算</b>，不特別建議加購。</li>
+    </ul>
+
+    <h3>實用路線與搭乘技巧</h3>
+    <ul class="check">
+      <li><b>克拉科夫舊城 → Kazimierz</b> — 搭電車 <b>6、8、10、13 路</b>直達猶太區入口，省下步行 20 分鐘。</li>
+      <li><b>華沙機場往舊城</b> — 175 路巴士坐到底站，步行 4–5 分鐘即達皇家之路／舊城區，比火車轉乘更省事。</li>
+      <li><b>夜間交通</b> — 四城電車多在 23:00–00:00 收班；深夜改搭夜間巴士（克拉科夫 <b>600 開頭</b>路線，如 601、662，取代電車路線）或 Bolt 叫車。</li>
+      <li><b>下車要按鈴</b> — 巴士（非電車）不會每站必停，要下車須按扶手上的「STOP」按鈕告知司機，否則可能直接開過站。</li>
+      <li><b>查票員抽查</b> — 便服查票員會不定時上車查票，出示手機票券或已感應的卡片即可；電子票務必記得「啟用」這一步，光買票沒啟用等同無票。</li>
+    </ul>
+    <div class="note">老城多在步行範圍，未必需要 24h 票；單程用 15–20 分短票最省。查票是隨機抽查，沒有票閘門，務必養成「上車先買票」習慣。</div>
+  </section>
+
+  <!-- ============ SOUVENIR ============ -->
+  <section id="souvenir">
+    <div class="sec-head"><span class="sec-num">08</span><div class="sec-title"><h2>伴手禮</h2><span class="pl">Pamiątki · Souvenirs</span></div></div>
+    <p class="lede">全波蘭通用品項，另附城市特色。食品選密封／真空包裝好帶；液體勿放手提行李。</p>
+    <div class="grid">
+      <div class="card"><h4>波羅的海琥珀 <span class="pl-word">Bursztyn</span></h4><p>「波蘭黃金」；蜂蜜/威士忌色透明系，項鍊/手鍊/耳環。含昆蟲或罕見色澤較貴。各城珠寶店，認明 handmade。</p></div>
+      <div class="card"><h4>Bolesławiec 陶器</h4><p>深藍底配白色圓點花紋，手繪炻器，耐用實用。原產地在 Bolesławiec，各城有專賣店。</p></div>
+      <div class="card"><h4>伏特加 <span class="pl-word">Wódka</span>（不喝酒可略過）</h4><p>透明瓶身，Żubrówka 瓶內有一根綠色野牛草最好認；Wyborowa、Sobieski、Luksusowa、J.A. Baczewski 也常見。</p></div>
+      <div class="card"><h4>巧克力 · 糖果</h4><p>E. Wedel 老牌深棕包裝；Ptasie Mleczko 藍白紙盒，巧克力棉花糖；Krówki 奶油糖、Michałki、Kukułki 銀色包裝。</p></div>
+      <div class="card"><h4>Prince Polo 巧克力威化棒</h4><p>紅金配色長條包裝，波蘭國民零食，超商 3–5 PLN 隨手包；巧克力/花生/椰子多口味，適合當辦公室伴手禮。</p></div>
+      <div class="card"><h4>Delicje 果醬夾心餅</h4><p>橘黃色圓形包裝盒，Wedel 出品，海綿蛋糕夾杏桃果醬裹巧克力；茶點好搭檔，包裝精美適合送禮。</p></div>
+      <div class="card"><h4>Mieszanka Krakowska 克拉科夫綜合糖</h4><p>金黃色鐵盒印花包裝，Wawel 品牌經典什錦巧克力糖，克拉科夫限定款，適合當紀念品。</p></div>
+      <div class="card"><h4>Paluszki 鹹餅乾棒</h4><p>透明袋裝可見金黃色細長餅乾棒，原味／起司／罌粟籽口味，配啤酒或純吃皆宜。</p></div>
+      <div class="card"><h4>波蘭花草茶 · 蜂蜜</h4><p>Herbapol 綠色系花草茶包輕便好帶；miód lipowy 椴樹蜜呈琥珀金色，市集常見小罐裝。</p></div>
+      <div class="card"><h4>⚠️ Kabanosy 煙燻香腸乾</h4><p>深褐紅色細長條、真空包裝，波蘭超人氣肉乾零食，超商／超市都買得到。<b>當地吃很推薦，但台灣海關嚴禁肉類製品入境（防治非洲豬瘟），別帶回台灣</b>，出境前吃完或留在當地。</p></div>
+      <div class="card"><h4>Toruń 薑餅 <span class="pl-word">Pierniki</span></h4><p>深褐色心型/圓形餅乾，常見錫盒或印花紙盒裝，全波蘭知名甜點禮，密封包裝好帶。</p></div>
+      <div class="card"><h4>Nalewka 水果利口酒（不喝酒可略過）</h4><p>深紅寶石色澤，華沙傳統，櫻桃 wiśniówka 最有名，玻璃瓶身常見手寫標籤。</p></div>
+      <div class="card"><h4>oscypek 煙燻羊酪</h4><p>紡錘形、表面壓花紋、煙燻後呈金黃色，Tatra／Podhale 山區特產，認明產地標。</p></div>
+      <div class="card"><h4>城市特色</h4><p>波茲南專屬 <span class="pl-word">rogal świętomarciński</span> 金黃可頌，內餡白罌粟籽；克拉科夫 Wawel 巧克力＋現買 obwarzanek 麻花圈。</p></div>
+    </div>
+    <h3>精品購物 · Luxury</h3>
+    <table class="fare">
+      <thead><tr><th>店家</th><th>城市</th><th>備註</th></tr></thead>
+      <tbody>
+        <tr><td><a href="https://maps.google.com/?cid=6893272886103886879" target="_blank" rel="noopener">Vitkac</a></td><td>華沙</td><td>中東歐最大精品百貨，Gucci／Balenciaga／Saint Laurent／Burberry 等；週日休</td></tr>
+        <tr><td><a href="https://maps.google.com/?cid=2015234439722332980" target="_blank" rel="noopener">Chylak</a>（Le Petit Trou）</td><td>華沙</td><td>波蘭設計師精品包款，Koszykowa 街；Mokotowska 街區另有多家波蘭獨立設計師精品店可順路逛</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note"><b>去哪買：</b>克拉科夫 — <a href="https://www.google.com/maps/search/?api=1&amp;query=Stradomska%20Street%20pottery%20shops%20Krak%C3%B3w" target="_blank" rel="noopener">Bolesławiec 陶器</a> 集中在 Stradomska 街（如 23 號）；<a href="https://www.google.com/maps/search/?api=1&amp;query=S%26amp%3BA%20Amber%20Grodzka%20Krak%C3%B3w" target="_blank" rel="noopener">琥珀</a> 在 Grodzka 街（S&amp;A Amber 60／14 號）與 <a href="https://www.google.com/maps/search/?api=1&amp;query=Sukiennice%20Cloth%20Hall%20Krak%C3%B3w" target="_blank" rel="noopener">Sukiennice 布廊</a> 攤位；<a href="https://www.google.com/maps/search/?api=1&amp;query=Rzeczy%20Same%20Podg%C3%B3rze%20Krak%C3%B3w" target="_blank" rel="noopener">Rzeczy Same Podgórze</a>（Podgórze）選波蘭設計。華沙 — <a href="https://www.google.com/maps/search/?api=1&amp;query=Pijalnia%20Czekolady%20E.Wedel%20Szpitalna%20Warszawa" target="_blank" rel="noopener">E.Wedel 巧克力沙龍 Pijalnia Czekolady</a>（Szpitalna 8 旗艦）；<a href="https://www.google.com/maps/search/?api=1&amp;query=Cepelia%20Warszawa%20Warszawa" target="_blank" rel="noopener">Cepelia Warszawa</a> 民藝品牌店。琥珀認 handmade／產地標避免仿品。</div>
+  </section>
+
+  <!-- ============ STORE ============ -->
+  <section id="store">
+    <div class="sec-head"><span class="sec-num">09</span><div class="sec-title"><h2>超商</h2><span class="pl">Żabka &amp; co.</span></div></div>
+    <p class="lede">波蘭沒有 7-11。Żabka（青蛙，2026 已逾 1.2 萬家）是國民便利店，密度極高——市中心走幾步路常常就能看到一間，熱狗、咖啡、App、無人店都值得體驗。</p>
+    <div class="note"><b>週日救星：</b>2026 年 10 月整月大賣場週日不營業（含 10/25），11/1、11/11 亦全面禁售；但 <b>Żabka</b>、小店、加油站、藥局、麵包店、車站／機場店照常，週日補給靠它們。</div>
+
+    <h3>Żabka 怎麼逛</h3>
+    <div class="grid">
+      <div class="card"><h4>招牌熱狗</h4><p>紅白配色熱狗機台最好認，口味：klasyczna（經典）／kurczak（雞）／grillowana（烤腸）／czarna（黑麵包），可自選醬料。約 6–9 PLN，部分門市由「Robbie」機器人自動製作，40 秒出餐。</p></div>
+      <div class="card"><h4>💳 免辦 App 也能買</h4><p><b>不需要 Żappka 帳號</b>，直接用感應信用卡／Apple Pay／Google Pay 在機台或櫃檯結帳即可。App 只有在想集點、預先點餐、或要進 Żabka Nano 無人店時才用得到，觀光客可以完全跳過註冊。</p></div>
+      <div class="card"><h4>📱 App 進階功能</h4><p>想集點可下載 Żappka App（需門號收簡訊驗證，用台灣門號多半也收得到）；Żabka Nano 無人店用手機掃碼開門、自動結帳，全程免排隊。</p></div>
+      <div class="card"><h4>☕ 咖啡與熱食</h4><p>現煮咖啡約 5–8 PLN，比連鎖咖啡店便宜一半以上；另有微波即食餐 Szamamm、三明治 Tomcio Paluch、果汁 Wycisk，適合早餐或宵夜。</p></div>
+      <div class="card"><h4>🕐 營業時間</h4><p>多數門市 6:00–23:00 或更晚，車站／機場／市中心精華地段常有 24 小時店，深夜落地或早班火車前補給都方便。</p></div>
+      <div class="card"><h4>🧾 其他服務</h4><p>彩券、卡片存提現、繳費、包裹寄取（InPost 智能取件櫃常設在店外）；多數店員英文有限，觸控機台通常有英文介面可切換。</p></div>
+      <div class="card"><h4>其他選擇</h4><p>Biedronka（瓢蟲）折扣超市分店最多，適合買伴手禮零食；Lidl、Carrefour Express 也常見；Orlen 加油站熱狗也小有名氣。</p></div>
+    </div>
+  </section>
+
+  <!-- ============ NOTES ============ -->
+  <section id="notes">
+    <div class="sec-head"><span class="sec-num">10</span><div class="sec-title"><h2>行前提醒</h2><span class="pl">Uwaga · Pre-trip</span></div></div>
+    <p class="lede">與本行程日期直接相關的硬性限制與訂票節奏。</p>
+    <ul class="check">
+      <li><b>10/25（日）夏令時間結束</b> — 時鐘回撥一小時。10 月整月大賣場週日不營業（含當日）；Żabka／小店／加油站／藥局照常。</li>
+      <li><b>日照極短</b> — DST 後日落約 15:35–15:50，戶外行程請排在上午至午後。</li>
+      <li><b>10/31 諸聖節前日</b> — 克拉科夫／華沙人潮多；辛德勒工廠、Wawel 部分展區 <b>11/1、11/3、11/11 閉館</b>。回程 WAW 為 10/31 14:40，克拉科夫段多在月中應不受影響；若壓到 10/31–11/1 需按閉館日重排。</li>
+      <li><b>米其林訂位</b> — 二星＋各一星出發前 3–4 週訂；華沙 splurge 級 3–5 週。</li>
+      <li><b>PKP Super Promo</b> — 30 天窗口約 9/23 開（克拉科夫→樂斯拉夫等），開賣即搶。</li>
+      <li><b>火車實務</b> — IC/EIP 對號入座；Koleo App 可劃位購票；上車查票需出示票券（電子截圖亦可）；大件行李放車廂端行李架。</li>
+      <li><b>先訂清單</b> — 奧斯威辛（visit.auschwitz.org）、辛德勒工廠（mhk.pl/en）、米其林餐廳。</li>
+      <li><b>諸聖節燭海（11/1 Wszystkich Świętych）</b> — 波蘭最動人的傳統：墓園在 10/30–11/1 點滿蠟燭成燭海。你 10/30–31 在華沙，可傍晚到 <b>Powązki 老墓園</b>感受；11/1 為高峰但你當日午班機（14:40）離境。</li>
+    </ul>
+    <div class="note">資料為研究彙整，實際票價／時間以各官網為準；動物園採線上動態定價，出發前再確認一次即可。</div>
+  </section>
+
+</main>
+
+<footer>
+  <p class="kicker">POLSKA RAIL &amp; CITY GUIDE · jack926509/Poland-trip</p>
+  <p>資料彙整供自由行規劃參考；票價、營業時間與米其林名單以官方網站為準。米其林為 2026 波蘭指南。定版生成於 2026-08-05。</p>
+</footer>
+
+<script>
+  const links = [...document.querySelectorAll('nav.tabs a')];
+  const map = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const a = map.get(e.target.id);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+  document.querySelectorAll('main section').forEach(s => obs.observe(s));
+</script>
+
+
+<script>
+(function(){
+  var CITIES = {"warsaw": {"center": [52.235, 21.01], "zoom": 13, "points": [[52.247744, 21.014128, "皇家城堡", "景點", "https://maps.google.com/?cid=2313057209867159998", "sight"], [52.249496, 20.993481, "POLIN 猶太史博物館", "景點", "https://maps.google.com/?cid=16292574584610500784", "sight"], [52.232394, 20.981018, "華沙起義博物館", "景點", "https://maps.google.com/?cid=12215511195580548645", "sight"], [52.231838, 21.005995, "科學文化宮觀景台", "景點", "https://maps.google.com/?cid=14044892037721828802", "sight"], [52.188512, 20.991414, "Alon Omakase ★", "米其林一星", "https://maps.google.com/?cid=8029724309073713102", "star1"], [52.229002, 21.023323, "NUTA ★", "米其林一星", "https://maps.google.com/?cid=4624148008162643045", "star1"], [52.251114, 21.036166, "hub.praga ★", "米其林一星", "https://maps.google.com/?cid=10117754456971759897", "star1"], [52.229941, 20.989348, "WANDAL", "必比登", "https://maps.google.com/?cid=15993615675406452524", "bib"], [52.236622, 20.967709, "Zagoździński", "pączki 名店", "https://maps.google.com/?cid=5270464504046978357", "food"], [52.252402, 21.030581, "Bar Mleczny Rusałka", "牛奶吧", "https://maps.google.com/?cid=14427558643223382901", "food"], [52.233319699999996, 21.0149273, "Pijalnia Czekolady E.Wedel（巧克力）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJ--12WPTMHkcRgAvh-nOeA94", "shop"], [52.24935, 21.008785, "Żabka（舊城區）", "超商", "https://www.google.com/maps/place/?q=place_id:ChIJpTk0Ah_NHkcRNn4P8JcA_64", "store"], [52.2310334, 21.0187045, "Vitkac", "精品百貨", "https://maps.google.com/?cid=6893272886103886879", "luxury"], [52.2215267, 21.0204772, "Chylak（波蘭設計師包款）", "精品", "https://maps.google.com/?cid=2015234439722332980", "luxury"]]}, "krakow": {"center": [50.058, 19.94], "zoom": 13, "points": [[50.054112, 19.935423, "Wawel 皇家城堡", "景點", "https://maps.google.com/?cid=12446225081720350104", "sight"], [50.061897, 19.936756, "中央市集廣場", "景點", "https://maps.google.com/?cid=14107513768635600179", "sight"], [50.05146, 19.948594, "Kazimierz 猶太區", "景點", "https://maps.google.com/?cid=5623518211080575812", "sight"], [50.04743, 19.961574, "辛德勒工廠博物館", "景點", "https://maps.google.com/?cid=3670197855150446585", "sight"], [50.048617, 19.946137, "Bottiglieria 1881 ★★", "全波蘭唯一二星", "https://maps.google.com/?cid=8570908113421134699", "star2"], [50.051709, 19.949426, "Bufet KRK", "必比登", "https://maps.google.com/?cid=861978380086701482", "bib"], [50.051821, 19.945448, "Folga", "必比登", "https://maps.google.com/?cid=7193800786272583343", "bib"], [50.064873, 19.927661, "MOLÁM Thai", "必比登", "https://maps.google.com/?cid=14914780693072191645", "bib"], [50.051491, 19.944291, "NOAH", "必比登", "https://maps.google.com/?cid=6279990201826816109", "bib"], [50.049302, 19.943241, "Nat Bistro", "必比登", "https://maps.google.com/?cid=10025714057570046192", "bib"], [50.051871, 19.944621, "Plac Nowy (zapiekanka)", "街食", "https://maps.google.com/?cid=8198083026094069086", "food"], [50.053958, 19.944839, "Mirror Bistro", "★4.7 pierogi", "https://www.google.com/maps/place/?q=place_id:ChIJOwi62GpbFkcRoi0KiVCj1dk", "star1"], [50.07068, 19.936409, "Svensson Pierogi", "餃子", "https://maps.google.com/?cid=10705718930784059170", "sight"], [50.064037, 19.932167, "Bar Smak", "在地口碑", "https://maps.google.com/?cid=7513589258053856766", "food"], [50.053182, 19.947628, "Hamsa", "以色列 hummus", "https://maps.google.com/?cid=1317891001987072687", "sight"], [50.0527854, 19.9400151, "Ceramika Bolesławiecka（陶器）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJf581WqhbFkcR1_QG-8hJ4Vc", "shop"], [50.058364, 19.9382007, "World of Amber（琥珀）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJPxlI8hJbFkcR7vI2ebLVIDk", "shop"], [50.06171320000001, 19.9373488, "Sukiennice 布廊（伴手禮攤位）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJ3Q97Bw5bFkcRc3GzJiVsH9A", "shop"], [50.062638, 19.937729, "Żabka（Rynek Główny）", "超商", "https://www.google.com/maps/place/?q=place_id:ChIJN54SF4BbFkcRfqYQZ51JTN4", "store"]]}, "wroclaw": {"center": [51.111, 17.045], "zoom": 13, "points": [[51.110431, 17.030885, "中央市集廣場", "景點", "https://maps.google.com/?cid=10632303817405446655", "sight"], [51.114463, 17.046734, "大教堂島 Ostrów Tumski", "景點", "https://maps.google.com/?cid=3827887123396229836", "sight"], [51.104391, 17.07528, "Afrykarium 動物園", "景點", "https://maps.google.com/?cid=6359100319840704536", "sight"], [51.106953, 17.077329, "百年廳 Hala Stulecia", "UNESCO", "https://maps.google.com/?cid=10763621538599936407", "sight"], [51.11274, 17.031823, "BABA ★", "米其林一星", "https://maps.google.com/?cid=9335659011047272773", "star1"], [51.114762, 17.031129, "Most ★", "米其林一星", "https://maps.google.com/?cid=9490447263206449328", "star1"], [51.112463, 17.029103, "IDA kuchnia i wino", "必比登", "https://maps.google.com/?cid=10589009865057440004", "bib"], [51.112672, 17.034294, "Miś SC", "全城最有名牛奶吧", "https://maps.google.com/?cid=9100083269168988599", "food"], [51.1100658, 17.0302956, "Żabka（Rynek）", "超商", "https://www.google.com/maps/place/?q=place_id:ChIJo38OWDjDD0cREV-o0Qsuquo", "store"]]}, "poznan": {"center": [52.408, 16.935], "zoom": 13, "points": [[52.40885, 16.933775, "舊市集廣場 Stary Rynek", "景點", "https://maps.google.com/?cid=15713614103977572536", "sight"], [52.415606, 16.948656, "大教堂島 Ostrów Tumski", "景點", "https://maps.google.com/?cid=17624504241381771360", "sight"], [52.408485, 16.935041, "可頌博物館", "景點", "https://maps.google.com/?cid=402526412385617111", "sight"], [52.402018, 16.901852, "Palmiarnia 棕櫚屋", "景點", "https://maps.google.com/?cid=10703456143872687277", "sight"], [52.403967, 16.929146, "Muga ★", "波茲南唯一一星", "https://maps.google.com/?cid=2998937238608160974", "star1"], [52.411348, 16.952952, "Na Winklu", "★4.8 pierogi", "https://maps.google.com/?cid=17998777227118824033", "star1"], [52.407303, 16.934127, "Szarlotta", "鴨肉餃子名店", "https://maps.google.com/?cid=8072844045178633315", "food"], [52.407335, 16.934281, "Żabka（Stary Rynek）", "超商", "https://www.google.com/maps/place/?q=place_id:ChIJz0qhEFVbBEcRDDtONqAeGV4", "store"]]}};
+  function initMaps(){
+    Object.keys(CITIES).forEach(function(key){
+      var el = document.getElementById('leaflet-' + key);
+      if (!el || typeof L === 'undefined') return;
+      var c = CITIES[key];
+      var map = L.map(el, {scrollWheelZoom:false}).setView(c.center, c.zoom);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 19
+      }).addTo(map);
+      var COLORS = {
+        star2:  {fill:'#B8860B', line:'#3a2a06', label:'米其林二星'},
+        star1:  {fill:'#E8A81E', line:'#8a5a00', label:'米其林一星'},
+        bib:    {fill:'#2f6b3f', line:'#173a20', label:'必比登推介'},
+        food:   {fill:'#CE2E1E', line:'#7a1a10', label:'街食／小吃／牛奶吧'},
+        sight:  {fill:'#3b6ea5', line:'#1c3a58', label:'景點'},
+        shop:   {fill:'#8b5cf6', line:'#4c2f8f', label:'伴手禮店家'},
+        store:  {fill:'#0891b2', line:'#0c4a5e', label:'超商 Żabka'},
+        luxury: {fill:'#d6336c', line:'#7a1a3d', label:'精品購物'}
+      };
+      c.points.forEach(function(p){
+        var lat=p[0], lng=p[1], name=p[2], note=p[3], gurl=p[4], cat=p[5] || 'sight';
+        var col = COLORS[cat] || COLORS.sight;
+        var marker = L.circleMarker([lat,lng], {
+          radius: 8, weight: 2, color: col.line, fillColor: col.fill, fillOpacity: 0.9
+        }).addTo(map);
+        var popupHtml = '<b>' + name + '</b><br>' + note
+          + (gurl ? '<br><a href="' + gurl + '" target="_blank" rel="noopener" style="color:#CE2E1E;font-weight:600">在 Google Maps 開啟 →</a>' : '');
+        marker.bindPopup(popupHtml);
+      });
+      var legend = L.control({position:'bottomright'});
+      legend.onAdd = function(){
+        var div = L.DomUtil.create('div','map-legend');
+        var html = '';
+        Object.keys(COLORS).forEach(function(k){
+          var c2 = COLORS[k];
+          html += '<div><span style="background:' + c2.fill + ';border:1.5px solid ' + c2.line + '"></span>' + c2.label + '</div>';
+        });
+        div.innerHTML = html;
+        return div;
+      };
+      legend.addTo(map);
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMaps);
+  } else {
+    initMaps();
+  }
+})();
+</script>
+</body>
+</html>
