@@ -3,6 +3,7 @@
 - 撰寫日期：2026-08-06（台北時間）
 - 專案路徑：`~/Desktop/技術開發/Poland-trip`
 - 本次範圍：桌機網頁版（手機版與 PWA 另案討論）
+- **本規格書取代** `docs/superpowers/specs/2026-08-04-desktop-cinematic-redesign-design.md`（桌機電影感改版）。該方向已於本次討論中放棄，改走本文件的編輯誌感方向；該檔保留供查閱，但不再執行。
 
 ---
 
@@ -173,7 +174,15 @@ npm test          # 驗收：檢查頁數、必要元素、資料完整性
 
 ### 部署
 
-沿用現有管道：推送 `main` 後由 GitHub Actions 部署 GitHub Pages 與 Cloudflare Pages，正式站 `polandtrip.xiehnet.com`。既有的 `prepare-site.sh` allowlist 機制需配合新的 `dist/` 結構調整。
+沿用現有管道：推送 `main` 後由 GitHub Actions 部署，三個對外網址都會更新：
+
+- `polandtrip.xiehnet.com`（正式站）
+- `jack926509.github.io/Poland-trip`（GitHub Pages）
+- `poland-trip-7wm.pages.dev`（Cloudflare Pages）
+
+⚠️ 已知陷阱：**`poland-trip.pages.dev`（沒有 `-7wm`）是另一個無關的 app**，驗證部署結果時不要抓錯網址。
+
+`prepare-site.sh` 的 allowlist 是為舊結構逐檔寫死的（`prepare-site.sh:16-28` 明確列出 `redesign/`、`desktop/`、`B-companion.js` 等舊檔），改版時必須整段改寫成對應新的 `dist/` 結構，否則部署出去的會是舊檔案或空站。
 
 ## 8. 舊檔案處理
 
