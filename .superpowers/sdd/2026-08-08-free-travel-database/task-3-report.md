@@ -47,3 +47,10 @@ git diff --check
 - 狀態中文由集中式 `statusLabels` 在 build 邊界補入，首頁樣板沒有重複定義狀態文案。
 - 8 個連結均使用 GitHub Pages 相容的相對路徑，並指向資料庫既有或本次新增的條目 ID。
 - 沒有加入任何使用者私人值；`private` 僅存在資料層供後續流程辨識，未被首頁渲染。
+
+## Fix round 1 / 5
+
+- 移除 `task-3-brief.md` 結尾多餘空白行；`git diff --check` 與以 Task 2 修正提交 `5c36840` 為基準的 `git diff --check 5c36840` 均通過。主代理提交本輪修正後，可再用 `git diff --check 5c36840..HEAD` 驗證提交範圍。
+- 加強首頁準備度測試：逐一遍歷 `readinessItems`，確認首頁含每個 `entryId` 的完整 href，且資料庫頁含對應元素 ID，不再只計算 8 個連結。
+- RED 防護證明：暫時把景點票券的 `entryId` 改成不存在的 `documents-attraction-ticketz`，focused test 以「景點票券 的資料庫錨點不存在」失敗（27 passed、1 failed）；還原正確 ID 後 GREEN（28 passed、0 failed）。
+- 完整 `npm test`：build 21 頁、28 passed、0 failed；`git diff --check` 通過。

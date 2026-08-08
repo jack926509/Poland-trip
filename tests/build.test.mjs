@@ -179,6 +179,7 @@ test('首頁包含 8 天、4 城與全部實用頁入口', () => {
 
 test('首頁出發準備度顯示 8 類待辦、文字狀態與資料庫連結', () => {
   const html = read('index.html');
+  const database = read('practical/database.html');
   const labels = ['住宿', '城際車票', '景點票券', '航班行李', '旅平險', '網路離線', 'ETIAS', '緊急聯絡'];
 
   assert.ok(html.includes('出發準備度'));
@@ -187,6 +188,16 @@ test('首頁出發準備度顯示 8 類待辦、文字狀態與資料庫連結',
     assert.ok(html.includes(`狀態：${status}`), `首頁準備度缺少文字狀態 ${status}`);
   }
   assert.equal((html.match(/href="practical\/database\.html#entry-/g) || []).length, 8);
+  for (const item of readinessItems) {
+    assert.ok(
+      html.includes(`href="practical/database.html#entry-${item.entryId}"`),
+      `首頁缺少 ${item.title} 的資料庫連結`,
+    );
+    assert.ok(
+      database.includes(`id="entry-${item.entryId}"`),
+      `${item.title} 的資料庫錨點不存在`,
+    );
+  }
 
   const recheckPosition = html.indexOf('>ETIAS<');
   for (const label of ['住宿', '城際車票', '景點票券', '航班行李', '旅平險', '網路離線', '緊急聯絡']) {

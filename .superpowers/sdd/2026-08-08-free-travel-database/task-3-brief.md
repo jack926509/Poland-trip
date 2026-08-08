@@ -29,4 +29,3 @@ Show `pending` and `private-required` first, with status text and link to `pract
 
 Run: `npm test`
 Expected: PASS.
-
