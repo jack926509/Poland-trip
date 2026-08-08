@@ -202,7 +202,9 @@ npm test          # 驗收：檢查頁數、必要元素、資料完整性
 
 `poland-travel-guide-final.html` 在資料完整搬進 `src/data/` 且驗收通過後，也一併移入 `archive/` 作為原始來源存查。
 
-PWA 相關檔案（`manifest.json`、`sw.js`、圖示）**暫時保留原地不動**——手機版另案討論時再處理。
+### 2026-08-08 實作安全補充
+
+實作驗證時確認：若只歸檔舊 PWA 頁面、卻保留原本的 `sw.js` 與 `manifest.json`，曾安裝或造訪舊版的裝置仍可能從快取載入已封存介面。因此 `manifest.json` 與 `pwa-register.js` 一併歸檔；根目錄保留一支不攔截請求的退役版 `sw.js`，只清除 `polska-*` 舊快取後自行解除註冊。圖示保留為一般網站資產，新版不註冊 PWA。
 
 ## 9. 驗收條件（做完怎麼算數）
 

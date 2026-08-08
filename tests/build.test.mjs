@@ -63,7 +63,7 @@ test('所有本機連結都能解析，且沒有破壞 GitHub Pages 的根路徑
     assert.doesNotMatch(html, /(?:href|src)="\//, `${file} 含網站根路徑，GitHub Pages 子路徑會失效`);
     for (const match of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
       const target = match[1];
-      if (/^(?:https?:|mailto:|tel:|#)/.test(target)) continue;
+      if (/^(?:[a-z][a-z0-9+.-]*:|#)/i.test(target)) continue;
       if (target.includes("' + point[")) continue;
       const withoutFragment = target.split('#')[0];
       if (!withoutFragment) continue;
@@ -200,4 +200,14 @@ test('全站沒有常見簡體專用字', () => {
     }
   }
   assert.deepEqual(offenders, []);
+});
+
+test('舊 PWA 已安全退役，不再預快取被歸檔的介面', () => {
+  const worker = fs.readFileSync('sw.js', 'utf8');
+  assert.ok(worker.includes("key.startsWith('polska-')"), 'sw.js 未清除舊 polska 快取');
+  assert.ok(worker.includes('self.registration.unregister()'), 'sw.js 未解除舊註冊');
+  assert.ok(!worker.includes("addEventListener('fetch'"), '退役 worker 不應攔截新版請求');
+  for (const stalePath of ['mobile.html', 'redesign/', 'desktop/']) {
+    assert.ok(!worker.includes(stalePath), `sw.js 仍引用舊路徑 ${stalePath}`);
+  }
 });

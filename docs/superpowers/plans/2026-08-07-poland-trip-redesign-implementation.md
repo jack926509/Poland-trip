@@ -10,7 +10,7 @@
 
 ## Global Constraints
 
-- 本次範圍**僅桌機網頁版**；手機版與 PWA 不動、不移除、暫留原地。
+- 本次範圍**僅桌機網頁版**；不重做手機版與 PWA。為避免舊 Service Worker 繼續顯示被歸檔頁面，舊 PWA 註冊檔一併歸檔，根目錄只保留清除舊快取並自行解除註冊的退役 worker。
 - 20 頁輸出：1 首頁 + 8 每日頁 + 4 城市頁 + 7 實用資訊頁。
 - 不引入 React、esbuild、任何樣板引擎或建置工具；`package.json` 不得有 `dependencies`，只能有 `devDependencies`（若有）與 `scripts`。
 - 任何頁面內容不得寫死在模板裡；所有內容一律來自 `src/data/*.js`。
@@ -1916,7 +1916,9 @@ git commit -m "test: 建立自動驗收測試，涵蓋 spec 第 9 節機械檢�
 - Move: `poland-travel-guide-final.html` → `archive/poland-travel-guide-final.html`（**最後一步**，確認資料已完整搬進 `src/data/` 且 Task 16 測試全綠後才做）
 - Modify: `prepare-site.sh`（整段改寫）
 - Modify: `verify.sh`（整段改寫）
-- Keep in place（不動）：`manifest.json`、`sw.js`、`apple-touch-icon.png`、`icon-192.png`、`icon-512.png`、`og-image.svg`、`robots.txt`、`sitemap.xml`、`pwa-register.js` 若被 `manifest.json`/`sw.js` 引用則保留（PWA 相關檔案本次不動）
+- Move: `manifest.json`、`pwa-register.js` → `archive/`（新版不註冊 PWA）
+- Replace: `sw.js`（改成不攔截請求的退役 worker，只清除 `polska-*` 舊快取並自行解除註冊）
+- Keep in place: `apple-touch-icon.png`、`icon-192.png`、`icon-512.png`、`og-image.svg`、`robots.txt`、`sitemap.xml`
 
 **Interfaces:**
 - Consumes: `dist/` 目錄結構（Task 15 的輸出）
@@ -1950,7 +1952,7 @@ git add archive/appUXUI archive/codex-staging
 
 - [ ] **Step 2: 把 `dist/` 內容提升為專案根目錄的部署來源，改寫 `prepare-site.sh`**
 
-新網站是純靜態 `dist/`，`prepare-site.sh` 不再需要組裝多個舊目錄，直接把 `npm run build` 的產出複製到輸出目錄，並保留 PWA 相關檔案（本次不動的那些）：
+新網站是純靜態 `dist/`，`prepare-site.sh` 不再需要組裝多個舊目錄，直接把 `npm run build` 的產出複製到輸出目錄。另部署退役版 `sw.js`，讓曾造訪舊版的瀏覽器清除舊快取；不再部署 manifest 或 PWA 註冊程式：
 
 ```bash
 #!/bin/bash
@@ -1973,7 +1975,7 @@ npm run build
 cp -R dist/. "$output/"
 
 cp \
-  manifest.json sw.js pwa-register.js \
+  sw.js \
   apple-touch-icon.png icon-192.png icon-512.png \
   og-image.svg robots.txt sitemap.xml \
   "$output/"

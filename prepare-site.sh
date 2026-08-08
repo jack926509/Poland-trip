@@ -13,21 +13,12 @@ if find "$output" -mindepth 1 -print -quit | grep -q .; then
   exit 1
 fi
 
-mkdir -p "$output/redesign/dist" "$output/vendor" "$output/desktop" "$output/assets/photos"
+npm run build
 
+cp -R dist/. "$output/"
 cp \
-  index.html manifest.json sw.js pwa-register.js \
-  mobile.html desktop.html app-preview.html legacy-redirect.js \
-  apple-touch-icon.png icon-192.png icon-512.png \
+  sw.js apple-touch-icon.png icon-192.png icon-512.png \
   og-image.svg robots.txt sitemap.xml \
   "$output/"
-
-cp \
-  redesign/B-companion.css redesign/data.js redesign/pwa-core.js redesign/tokens.css \
-  "$output/redesign/"
-cp redesign/dist/B-companion.js "$output/redesign/dist/"
-cp vendor/react.production.min.js vendor/react-dom.production.min.js "$output/vendor/"
-cp desktop/desktop.css desktop/desktop-app.js desktop/chapters.js "$output/desktop/"
-cp assets/photos/*.webp "$output/assets/photos/"
 
 echo "✅ Pages 公開輸出已組裝：$output"
