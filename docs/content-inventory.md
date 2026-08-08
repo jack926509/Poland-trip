@@ -44,7 +44,7 @@
 用途：四城總覽卡（用於城市選單／封面）。
 欄位：`key, name, pl, tag, nights, totalNights(僅WAW/KRK有), stayNote(僅WAW/KRK有), vibe, highlights[](每筆4個字串), photo{hero,thumb}`
 
-### 4. `photoSpots`（陣列，**11 筆**）
+### 4. `photoSpots`（陣列，**10 筆**）
 用途：攝影點清單，標記各城最佳拍照時段與光線。
 欄位：`id, cityKey, day, name, bestTime, light`
 
