@@ -18,7 +18,7 @@
 - 全站輸出禁止簡體字；中文與英文/數字之間需有半形空格（沿用來源資料既有排版即可，不用額外處理）。
 - 舊檔案一律移入 `archive/`，用 `git mv` 保留歷史，不得 `rm` 刪除。
 - 部署對外網址：`polandtrip.xiehnet.com`、`jack926509.github.io/Poland-trip`、`poland-trip-7wm.pages.dev`；`poland-trip.pages.dev`（無 `-7wm`）是不相關的別的 app，驗證時嚴禁誤用。
-- `npm run build` 產生 `dist/`；`npm test` 跑 `node --test tests/`，兩者都要留下真實指令輸出作為驗收證據。
+- `npm run build` 產生 `dist/`；`npm test` 跑 `node --test tests/*.test.mjs`（Node.js 24 不接受以測試目錄作為位置參數），兩者都要留下真實指令輸出作為驗收證據。
 
 ---
 
@@ -1892,7 +1892,7 @@ test('全站無簡體字（常見簡體專用字元黑名單檢查）', () => {
 - [ ] **Step 2: 執行測試確認全綠**
 
 ```bash
-node build.mjs && node --test tests/
+node build.mjs && node --test tests/*.test.mjs
 ```
 
 Expected: 所有 test case 顯示 `# pass`，`# fail 0`。若「全站無簡體字」測試因黑名單字元誤判正體字既有用法而失敗（例如某些字元剛好也是正體字合法用字），檢視實際命中內容，若確認是誤判，從 `SIMPLIFIED_ONLY` 陣列移除該字元並記錄原因，不得略過測試不管。
