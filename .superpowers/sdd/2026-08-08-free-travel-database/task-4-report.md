@@ -30,3 +30,10 @@
 
 - 未修改 ledger；`progress.md` 的現有變動由根任務管理，本任務沒有寫入。
 - 未碰觸 `.agents/`、`.claude/`、`skills-lock.json`，也未自行提交。
+
+## Fix round 1
+
+- 審查發現 Day 3 原用的 `Więźniów Oświęcimia 20` 是 Auschwitz I 通訊地址，不是旅客應抵達的新訪客服務中心。
+- 先加回歸測試，要求 Day 3 資料與產出 HTML 皆含門牌 `55`、不得含門牌 `20`，並確認測試如預期 RED。
+- 地點名稱改為「Auschwitz I 訪客服務中心／入口」，顯示地址與 Google Maps query 一併改為 `Więźniów Oświęcimia 55, 32-600 Oświęcim`。
+- Focused 回歸測試於重新 build 後 1/1 通過。

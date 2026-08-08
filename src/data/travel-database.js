@@ -249,7 +249,7 @@ export const dayOperations = {
     note: '長時間導覽日，保留補水、保暖與醫療聯絡卡。',
     addresses: [
       address('Kraków MDA 客運站', 'Bosacka 18, 31-505 Kraków', 'MDA Bus Station Krakow, Bosacka 18, Krakow', '實際業者與月台待 10/26 班表確定。'),
-      address('Auschwitz I', 'Więźniów Oświęcimia 20, 32-600 Oświęcim', 'Auschwitz I, Wiezniow Oswiecimia 20, Oswiecim'),
+      address('Auschwitz I 訪客服務中心／入口', 'Więźniów Oświęcimia 55, 32-600 Oświęcim', 'Auschwitz I Visitor Service Center, Wiezniow Oswiecimia 55, Oswiecim'),
       address('Auschwitz II–Birkenau', 'Ofiar Faszyzmu 12, 32-600 Brzezinka', 'Auschwitz II Birkenau, Ofiar Faszyzmu 12, Brzezinka'),
       accommodationAddress('Kraków'),
     ],

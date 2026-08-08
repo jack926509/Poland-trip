@@ -241,6 +241,18 @@ test('Day 1–8 都有現場導航、當日警示與晚間準備', () => {
   assert.ok(read('day-01.html').includes('待住宿／分店確定後填入'));
 });
 
+test('Day 3 導航指向 Auschwitz I 訪客入口而非通訊地址', () => {
+  const operation = JSON.stringify(dayOperations[3]);
+  const html = read('day-03.html');
+
+  for (const content of [operation, html]) {
+    assert.ok(content.includes('Więźniów Oświęcimia 55'), '缺少 Auschwitz I 訪客入口門牌 55');
+    assert.ok(!content.includes('Więźniów Oświęcimia 20'), '仍使用 Auschwitz I 通訊地址門牌 20');
+  }
+  assert.ok(html.includes('Auschwitz I 訪客服務中心／入口'));
+  assert.ok(html.includes('Wiezniow%20Oswiecimia%2055'));
+});
+
 test('Day 8 退稅與報到已合併，不再出現獨立 11:30 時段', () => {
   const html = read('day-08.html');
   assert.ok(!html.includes('11:30'), 'Day 8 仍有舊的獨立 11:30 時段');
