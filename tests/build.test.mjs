@@ -177,6 +177,23 @@ test('首頁包含 8 天、4 城與全部實用頁入口', () => {
   );
 });
 
+test('首頁出發準備度顯示 8 類待辦、文字狀態與資料庫連結', () => {
+  const html = read('index.html');
+  const labels = ['住宿', '城際車票', '景點票券', '航班行李', '旅平險', '網路離線', 'ETIAS', '緊急聯絡'];
+
+  assert.ok(html.includes('出發準備度'));
+  for (const label of labels) assert.ok(html.includes(`>${label}<`), `首頁準備度缺少 ${label}`);
+  for (const status of ['待確認', '需填私人資料', '出發前重查']) {
+    assert.ok(html.includes(`狀態：${status}`), `首頁準備度缺少文字狀態 ${status}`);
+  }
+  assert.equal((html.match(/href="practical\/database\.html#entry-/g) || []).length, 8);
+
+  const recheckPosition = html.indexOf('>ETIAS<');
+  for (const label of ['住宿', '城際車票', '景點票券', '航班行李', '旅平險', '網路離線', '緊急聯絡']) {
+    assert.ok(html.indexOf(`>${label}<`) < recheckPosition, `${label} 應排在出發前重查項目前`);
+  }
+});
+
 test('8 個每日頁的日期與標題和資料層一致', async () => {
   const { days } = await import('../src/data/trip.js');
   for (const day of days) {

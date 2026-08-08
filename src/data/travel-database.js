@@ -154,6 +154,13 @@ export const databaseEntries = [
     offlineNote: '列印或離線保存住宿、回程票、保險與完整行程；不要公開證件號碼與付款證明。', private: true,
   },
   {
+    id: 'documents-attraction-tickets', section: 'documents', category: '景點票券', cityKey: null,
+    title: '景點票券與入場時段',
+    summary: '須預約景點的購票狀態、參觀日期、入場時段與同行人數尚待逐項確認；公開版只顯示進度，不保存票券條碼、姓名或付款資料。',
+    status: 'pending', sourceUrl: null, verifiedAt: null, recheckAt: '2026-09-24',
+    offlineNote: '完成購票後把票券 PDF、官方地址、集合點與取消規則存入私人離線包。', private: true,
+  },
+  {
     id: 'accommodation-confirmations', section: 'accommodation', category: '住宿訂單', cityKey: null,
     title: '7 晚住宿確認',
     summary: '住宿名稱、完整地址、日期、入住退房、聯絡方式與寄放行李確認都尚待填入；公開版僅顯示完成狀態，不公開訂房代碼、姓名或付款證明。',
@@ -163,14 +170,14 @@ export const databaseEntries = [
 ];
 
 export const readinessItems = [
-  { id: 'passport-etias', title: '護照效期與 ETIAS', priority: 'P0', status: 'recheck', entryId: 'entry-etias-and-passport', private: false },
-  { id: 'flight-ticket', title: '電子機票與行李直掛', priority: 'P0', status: 'private-required', entryId: 'aviation-baggage-and-connection', private: true },
-  { id: 'rail-tickets', title: '城際車票與座位', priority: 'P0', status: 'pending', entryId: 'rail-ticket-and-delay-rights', private: false },
-  { id: 'accommodation', title: '7 晚住宿與寄放確認', priority: 'P0', status: 'private-required', entryId: 'accommodation-confirmations', private: true },
-  { id: 'offline-pack', title: '地圖、票券與文件離線包', priority: 'P1', status: 'pending', entryId: 'connectivity-prepaid-registration', private: false },
-  { id: 'insurance', title: '保險與緊急聯絡', priority: 'P0', status: 'private-required', entryId: 'medical-insurance-and-emergency', private: true },
-  { id: 'calendar', title: '週日與特別營運重查', priority: 'P1', status: 'recheck', entryId: 'calendar-sunday-and-all-saints', private: false },
-  { id: 'tax-free', title: 'TAX FREE 文件準備', priority: 'P1', status: 'pending', entryId: 'tax-free-vat-refund', private: false },
+  { id: 'accommodation', title: '住宿', detail: '確認 7 晚訂單、完整地址與寄放安排', priority: 'P0', status: 'private-required', entryId: 'accommodation-confirmations', private: true },
+  { id: 'rail-tickets', title: '城際車票', detail: '確認車次、車廂、座位與轉乘保障', priority: 'P0', status: 'pending', entryId: 'rail-ticket-and-delay-rights', private: false },
+  { id: 'attraction-tickets', title: '景點票券', detail: '確認日期、入場時段與離線票券', priority: 'P0', status: 'pending', entryId: 'documents-attraction-tickets', private: true },
+  { id: 'flight-ticket', title: '航班行李', detail: '核對電子機票、行李額度與是否直掛', priority: 'P0', status: 'private-required', entryId: 'aviation-baggage-and-connection', private: true },
+  { id: 'insurance', title: '旅平險', detail: '保存保單與海外救援聯絡方式', priority: 'P0', status: 'private-required', entryId: 'medical-insurance-and-emergency', private: true },
+  { id: 'offline-pack', title: '網路離線', detail: '準備 SIM／eSIM、離線地圖與文件包', priority: 'P1', status: 'pending', entryId: 'connectivity-prepaid-registration', private: false },
+  { id: 'passport-etias', title: 'ETIAS', detail: '依官方啟用進度重查入境資格', priority: 'P0', status: 'recheck', entryId: 'entry-etias-and-passport', private: false },
+  { id: 'emergency-contact', title: '緊急聯絡', detail: '完成旅外登錄並讓聯絡人持有行程', priority: 'P0', status: 'private-required', entryId: 'documents-travel-registration', private: true },
 ];
 
 export const dayOperations = {

@@ -53,6 +53,10 @@ function build() {
     days: trip.days,
     flights: trip.flights,
     cities: cities.cities,
+    readinessItems: travelDatabase.readinessItems.map(item => ({
+      ...item,
+      statusText: travelDatabase.statusLabels[item.status] || item.status,
+    })),
   }));
 
   for (const day of trip.days) {

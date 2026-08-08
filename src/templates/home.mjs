@@ -18,8 +18,21 @@ function renderFlight(direction, legs) {
   </article>`;
 }
 
-export function renderHome({ meta, days, flights, cities }) {
+export function renderHome({ meta, days, flights, cities, readinessItems }) {
   const mustBookCount = days.reduce((total, day) => total + day.mustBook.length, 0);
+  const readinessStatusOrder = { pending: 0, 'private-required': 0, recheck: 1, verified: 2 };
+  const readinessCards = [...readinessItems]
+    .sort((left, right) => readinessStatusOrder[left.status] - readinessStatusOrder[right.status])
+    .map(item => {
+      const statusClass = item.status === 'private-required' ? 'private' : item.status;
+      return `
+        <a class="card card-link" href="practical/database.html#entry-${item.entryId}">
+          <span class="status-${statusClass}">狀態：${item.statusText}</span>
+          <h3>${item.title}</h3>
+          <p>${item.detail}</p>
+          <span>查看處理方式 →</span>
+        </a>`;
+    }).join('');
   const dayRows = days.map(day => `
     <tr>
       <td class="number">Day ${String(day.n).padStart(2, '0')}</td>
@@ -59,6 +72,12 @@ export function renderHome({ meta, days, flights, cities }) {
     <div class="route-strip" aria-label="旅程路線">
       ${['華沙', '克拉科夫', '樂斯拉夫', '波茲南', '華沙'].map(city => `<span class="route-stop">${city}</span>`).join('')}
     </div>
+
+    <section class="section" id="readiness">
+      <div class="section-heading"><span class="section-num">00 / Readiness</span><h2>出發準備度</h2></div>
+      <p class="lead">尚未完成與需填私人資料的項目排在前面；本站只顯示進度，不公開訂位、證件、保單或付款內容。</p>
+      <div class="grid">${readinessCards}</div>
+    </section>
 
     <section class="section" id="days">
       <div class="section-heading"><span class="section-num">01 / Itinerary</span><h2>8 天行程總覽</h2></div>
