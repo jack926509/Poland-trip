@@ -24,7 +24,19 @@
 
 ## 驗證結果
 
-- `npm test`：33／33 通過。
+- `npm test`：34／34 通過。
 - `env -u NODE_OPTIONS ./verify.sh`：通過，最後一行為 `✅ POLSKA 新版靜態網站自動驗收完成`。
 - `git diff --check`：通過，無輸出。
 - 未修改或加入 `.agents/`、`.claude/`、`skills-lock.json`，未自行提交。
+
+## 審查修正 Round 1
+
+- 日期驗證由格式檢查加強為 UTC round-trip 真實曆日檢查；負向測試確認 `2026-02-30` 與非閏年的 `2025-02-29` 都會被攔截。
+- section、entry、readiness ID 限制為 `/^[a-z0-9]+(?:-[a-z0-9]+)*$/` 穩定 slug；負向測試分別涵蓋空白、`%20` 與 `#`。
+- SOS 代表處的 `tel:+48668027574` 操作連結已放入同一個 `.database-card` article；測試以代表處 article 起訖界線確認 DOM 結構。
+- Day 1–8 schema 已分欄驗證：
+  - `addresses` 每項必須是物件，且具有非空 `name`、`address` 與 HTTPS `url`。
+  - `navigation` 每項必須是物件，且具有非空 `mode`、`route`、`action`。
+  - `dailyAlerts`、`nightChecklist` 每項必須是非空字串。
+  - `entryIds` 必須是非空陣列，且全部指向既有 entry。
+- Round 1 TDD RED：新增測試後共有 3 組失敗，分別是不存在日期未攔截、每日操作缺欄未攔截、SOS 電話不在代表處卡片內；修正後 34／34 通過。

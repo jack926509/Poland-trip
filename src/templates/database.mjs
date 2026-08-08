@@ -40,7 +40,7 @@ function formatDate(value) {
   return escapeHtml(value || '未設定');
 }
 
-function renderCard(entry, statusLabels) {
+function renderCard(entry, statusLabels, { representativePhone = false } = {}) {
   const statusText = escapeHtml(statusLabels[entry.status] || entry.status);
   const statusClass = entry.status === 'private-required' ? 'private' : entry.status;
   const safeStatusClass = ['verified', 'recheck', 'pending', 'private'].includes(statusClass)
@@ -50,6 +50,9 @@ function renderCard(entry, statusLabels) {
   const source = safeSourceUrl
     ? `<a href="${safeSourceUrl}" target="_blank" rel="noopener noreferrer">開啟官方來源 →</a>`
     : entry.sourceUrl ? '尚無安全的 HTTPS 官方來源' : '尚無官方來源';
+  const actionHtml = representativePhone
+    ? '<p class="database-card-action"><a href="tel:+48668027574">撥打急難救助電話 +48 668 027 574</a></p>'
+    : '';
   return `
     <article class="database-card" id="entry-${escapeHtml(entry.id)}">
       <div class="database-card-header">
@@ -64,18 +67,22 @@ function renderCard(entry, statusLabels) {
         <div><dt>重查日期</dt><dd>${formatDate(entry.recheckAt)}</dd></div>
         <div><dt>官方來源</dt><dd>${source}</dd></div>
       </dl>
+      ${actionHtml}
     </article>`;
 }
 
 function renderSos(entries, statusLabels) {
   const representative = entries.find(entry => entry.id === 'emergency-taiwan-representative');
   const medical = entries.find(entry => entry.id === 'medical-insurance-and-emergency');
+  const representativeCard = representative
+    ? renderCard(representative, statusLabels, { representativePhone: true })
+    : '';
   return `
     <section class="sos-section" aria-labelledby="sos-heading">
       <div class="section-heading"><span class="section-num">SOS</span><h2 id="sos-heading">SOS 離線急救卡</h2></div>
       <p class="lead">危及生命先撥 <a href="tel:112">112</a> 或 <a href="tel:999">999</a>；其餘狀況依下列卡片處理，並保留可離線查看的聯絡資料。</p>
       <div class="sos-grid">
-        ${representative ? `${renderCard(representative, statusLabels)}<p><a href="tel:+48668027574">撥打急難救助電話 +48 668 027 574</a></p>` : ''}
+        ${representativeCard}
         ${medical ? renderCard(medical, statusLabels) : ''}
       </div>
     </section>`;

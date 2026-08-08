@@ -370,6 +370,7 @@ export const dayOperations = {
 };
 
 const isoDatePattern = /^\d{4}-\d{2}-\d{2}$/;
+const stableSlugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const forbiddenPublicContent = [
   'Al. Jerozolimskie 179',
   'Więźniów Oświęcimia 20',
@@ -390,8 +391,25 @@ function isHttpsUrl(value) {
 function assertDate(value, field, id, required) {
   if (value == null && !required) return;
   if (typeof value !== 'string' || !isoDatePattern.test(value)) {
-    throw new Error(`${id} 的 ${field} 必須是 YYYY-MM-DD${required ? '' : ' 或 null'}`);
+    throw new Error(`${id} 的 ${field} 必須是真實曆日 YYYY-MM-DD${required ? '' : ' 或 null'}`);
   }
+  const [year, month, day] = value.split('-').map(Number);
+  const parsed = new Date(0);
+  parsed.setUTCHours(0, 0, 0, 0);
+  parsed.setUTCFullYear(year, month - 1, day);
+  if (parsed.getUTCFullYear() !== year || parsed.getUTCMonth() !== month - 1 || parsed.getUTCDate() !== day) {
+    throw new Error(`${id} 的 ${field} 必須是真實曆日 YYYY-MM-DD`);
+  }
+}
+
+function assertStableSlug(value, field) {
+  if (typeof value !== 'string' || !stableSlugPattern.test(value)) {
+    throw new Error(`${field} 必須是穩定 slug：${value ?? ''}`);
+  }
+}
+
+function assertNonEmptyText(value, field) {
+  if (typeof value !== 'string' || value.trim() === '') throw new Error(`${field} 必須是非空字串`);
 }
 
 /**
@@ -401,7 +419,8 @@ function assertDate(value, field, id, required) {
 export function validateTravelDatabase({ entries, sections, readiness, operations, labels }) {
   const sectionIds = new Set();
   for (const section of sections) {
-    if (!section.id || sectionIds.has(section.id)) throw new Error(`資料庫 section ID 重複或空白：${section.id ?? ''}`);
+    assertStableSlug(section.id, '資料庫 section ID');
+    if (sectionIds.has(section.id)) throw new Error(`資料庫 section ID 重複：${section.id}`);
     sectionIds.add(section.id);
   }
 
@@ -409,7 +428,8 @@ export function validateTravelDatabase({ entries, sections, readiness, operation
   const entriesById = new Map();
   const sectionCounts = new Map(sections.map(section => [section.id, 0]));
   for (const entry of entries) {
-    if (!entry.id || entryIds.has(entry.id)) throw new Error(`資料庫 entry ID 重複或空白：${entry.id ?? ''}`);
+    assertStableSlug(entry.id, '資料庫 entry ID');
+    if (entryIds.has(entry.id)) throw new Error(`資料庫 entry ID 重複：${entry.id}`);
     entryIds.add(entry.id);
     entriesById.set(entry.id, entry);
 
@@ -435,7 +455,8 @@ export function validateTravelDatabase({ entries, sections, readiness, operation
 
   const readinessIds = new Set();
   for (const item of readiness) {
-    if (!item.id || readinessIds.has(item.id)) throw new Error(`readiness ID 重複或空白：${item.id ?? ''}`);
+    assertStableSlug(item.id, 'readiness ID');
+    if (readinessIds.has(item.id)) throw new Error(`readiness ID 重複：${item.id}`);
     readinessIds.add(item.id);
     const entry = entriesById.get(item.entryId);
     if (!entry) throw new Error(`${item.id} 指向不存在的 entry：${item.entryId}`);
@@ -445,21 +466,43 @@ export function validateTravelDatabase({ entries, sections, readiness, operation
   for (let day = 1; day <= 8; day += 1) {
     const operation = operations[day];
     if (!operation) throw new Error(`Day ${day} 缺少每日操作資料`);
-    for (const field of ['addresses', 'navigation', 'dailyAlerts', 'nightChecklist']) {
+    if (!Array.isArray(operation.addresses) || operation.addresses.length === 0) {
+      throw new Error(`Day ${day} 的 addresses 必須是非空陣列`);
+    }
+    for (const [index, item] of operation.addresses.entries()) {
+      if (typeof item !== 'object' || item === null || Array.isArray(item)) {
+        throw new Error(`Day ${day} 的 addresses[${index}] 必須是物件`);
+      }
+      assertNonEmptyText(item.name, `Day ${day} 的 addresses[${index}].name`);
+      assertNonEmptyText(item.address, `Day ${day} 的 addresses[${index}].address`);
+      if (!isHttpsUrl(item.url)) throw new Error(`Day ${day} 的 addresses[${index}].url 必須使用 HTTPS`);
+    }
+
+    if (!Array.isArray(operation.navigation) || operation.navigation.length === 0) {
+      throw new Error(`Day ${day} 的 navigation 必須是非空陣列`);
+    }
+    for (const [index, item] of operation.navigation.entries()) {
+      if (typeof item !== 'object' || item === null || Array.isArray(item)) {
+        throw new Error(`Day ${day} 的 navigation[${index}] 必須是物件`);
+      }
+      for (const field of ['mode', 'route', 'action']) {
+        assertNonEmptyText(item[field], `Day ${day} 的 navigation[${index}].${field}`);
+      }
+    }
+
+    for (const field of ['dailyAlerts', 'nightChecklist']) {
       if (!Array.isArray(operation[field]) || operation[field].length === 0) {
         throw new Error(`Day ${day} 的 ${field} 必須是非空陣列`);
       }
-      for (const item of operation[field]) {
-        if (typeof item === 'object' && item !== null) {
-          for (const key of ['url', 'link']) {
-            if (item[key] != null && !isHttpsUrl(item[key])) {
-              throw new Error(`Day ${day} 的 ${field}.${key} 必須使用 HTTPS`);
-            }
-          }
-        }
+      for (const [index, item] of operation[field].entries()) {
+        assertNonEmptyText(item, `Day ${day} 的 ${field}[${index}]`);
       }
     }
-    for (const entryId of operation.entryIds || []) {
+
+    if (!Array.isArray(operation.entryIds) || operation.entryIds.length === 0) {
+      throw new Error(`Day ${day} 的 entryIds 必須是非空陣列`);
+    }
+    for (const entryId of operation.entryIds) {
       if (!entriesById.has(entryId)) throw new Error(`Day ${day} 指向不存在的 entry：${entryId}`);
     }
   }

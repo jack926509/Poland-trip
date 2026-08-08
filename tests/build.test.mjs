@@ -82,6 +82,81 @@ test('自由行資料庫的狀態、來源、日期與關聯資料符合完整�
     }),
     /未知狀態/,
   );
+
+  for (const invalidDate of ['2026-02-30', '2025-02-29']) {
+    assert.throws(
+      () => validateTravelDatabase({
+        entries: [{ ...databaseEntries[0], verifiedAt: invalidDate }, ...databaseEntries.slice(1)],
+        sections: databaseSections,
+        readiness: readinessItems,
+        operations: dayOperations,
+        labels: statusLabels,
+      }),
+      /真實曆日/,
+      `未攔截不存在的日期 ${invalidDate}`,
+    );
+  }
+
+  const invalidSlugCases = [
+    {
+      name: 'section 空白',
+      sections: [{ ...databaseSections[0], id: 'bad id' }, ...databaseSections.slice(1)],
+      entries: databaseEntries,
+      readiness: readinessItems,
+    },
+    {
+      name: 'entry 含 %20',
+      sections: databaseSections,
+      entries: [{ ...databaseEntries[0], id: 'bad%20id' }, ...databaseEntries.slice(1)],
+      readiness: readinessItems,
+    },
+    {
+      name: 'readiness 含 #',
+      sections: databaseSections,
+      entries: databaseEntries,
+      readiness: [{ ...readinessItems[0], id: 'bad#id' }, ...readinessItems.slice(1)],
+    },
+  ];
+  for (const invalid of invalidSlugCases) {
+    assert.throws(
+      () => validateTravelDatabase({
+        entries: invalid.entries,
+        sections: invalid.sections,
+        readiness: invalid.readiness,
+        operations: dayOperations,
+        labels: statusLabels,
+      }),
+      /穩定 slug/,
+      `未攔截 ${invalid.name}`,
+    );
+  }
+});
+
+test('每日操作資料會攔截缺欄、空字串與錯誤型別', () => {
+  const invalidOperations = [
+    { field: 'addresses', value: [{ name: '', address: '地址', url: 'https://example.com' }] },
+    { field: 'navigation', value: [{ mode: '步行', route: 'A → B' }] },
+    { field: 'dailyAlerts', value: [''] },
+    { field: 'nightChecklist', value: [{}] },
+    { field: 'entryIds', value: [] },
+  ];
+
+  for (const invalid of invalidOperations) {
+    assert.throws(
+      () => validateTravelDatabase({
+        entries: databaseEntries,
+        sections: databaseSections,
+        readiness: readinessItems,
+        operations: {
+          ...dayOperations,
+          1: { ...dayOperations[1], [invalid.field]: invalid.value },
+        },
+        labels: statusLabels,
+      }),
+      /Day 1/,
+      `未攔截每日操作欄位 ${invalid.field}`,
+    );
+  }
 });
 
 test('資料庫模板會跳脫資料文字並拒絕非 HTTPS 官方來源', () => {
@@ -150,6 +225,13 @@ test('自由行資料庫頁提供 SOS、主題索引與緊急聯絡資訊', () =
     assert.ok(html.includes(heading), `資料庫頁缺少 ${heading}`);
   }
   assert.ok(html.includes('tel:+48668027574'));
+  const representativeStart = html.indexOf('id="entry-emergency-taiwan-representative"');
+  const representativeEnd = html.indexOf('</article>', representativeStart);
+  assert.ok(representativeStart >= 0 && representativeEnd > representativeStart, '找不到代表處 SOS 卡片界線');
+  assert.ok(
+    html.slice(representativeStart, representativeEnd).includes('href="tel:+48668027574"'),
+    '急難電話連結必須位於代表處 SOS 卡片內',
+  );
 });
 
 test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
