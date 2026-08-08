@@ -16,3 +16,12 @@
 - 第一次 `npm test` 在資料契約改變後出現 3 個失敗：城市代碼舊預期、SOS 舊卡片界線、首頁連結數量舊預期。
 - 更新契約測試後，37 項全部通過；後續又新增公開規則／本次狀態分離測試。
 - 本報告不宣稱瀏覽器視覺驗收已通過；瀏覽器 BLOCKED 紀錄保持原狀，由主工作階段另行處理。
+
+## 最終複審修正 Round 2
+
+- 未確認步驟改為逐日人工明列；新增行程若未綁定可靠地址或人工理由，validator 會失敗，不再由正規表示式自動兜底。
+- Day 4 的 Sukiennice 與 Kazimierz 已接回可靠地址；Day 6 的帝王城堡與 Stary Browar 分別列出地址、入口與官網。
+- 華沙老城市場廣場改用獨立的 `Rynek Starego Miasta, 00-272 Warszawa`，不再誤綁皇家城堡 `plac Zamkowy 4`。
+- SOS 代表處卡補辦公電話與地址地圖；首頁 readiness 資料改為 HTML escape。
+- 每筆資料新增 `checkedAt` 盤查日，並加嚴 entry/readiness 必填欄位、型別及 priority 驗證。
+- Round 2 完成後 `npm test` 為 40／40 通過。

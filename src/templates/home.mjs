@@ -7,6 +7,15 @@ const cityFileKeys = {
   POZ: 'poznan',
 };
 
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
 function renderFlight(direction, legs) {
   const actualLegs = legs.filter(leg => !leg.layover);
   return `<article class="card card-accent">
@@ -35,18 +44,18 @@ export function renderHome({ meta, days, flights, cities, readinessItems, databa
     ['下一張要買的票', nextTicket?.title || '目前無待購票', nextTicket],
     ['ETIAS 狀態', etias?.statusText || '無資料', etias],
     ['離線包狀態', offlinePack?.statusText || '無資料', offlinePack],
-  ].map(([label, value, item]) => `<a class="card card-link readiness-summary-card" href="${item ? `practical/database.html#entry-${item.entryId}` : 'practical/database.html'}"><span class="eyebrow">${label}</span><h3>${value}</h3><span>查看處理方式 →</span></a>`).join('');
+  ].map(([label, value, item]) => `<a class="card card-link readiness-summary-card" href="${item ? `practical/database.html#entry-${escapeHtml(item.entryId)}` : 'practical/database.html'}"><span class="eyebrow">${escapeHtml(label)}</span><h3>${escapeHtml(value)}</h3><span>查看處理方式 →</span></a>`).join('');
   const readinessStatusOrder = { pending: 0, 'private-required': 0, recheck: 1, verified: 2 };
   const readinessCards = [...readinessItems]
     .sort((left, right) => readinessStatusOrder[left.status] - readinessStatusOrder[right.status])
     .map(item => {
       const statusClass = item.status === 'private-required' ? 'private' : item.status;
       return `
-        <a class="card card-link" href="practical/database.html#entry-${item.entryId}">
-          <span class="status-${statusClass}">狀態：${item.statusText}</span>
-          <h3>${item.title}</h3>
-          <p>${item.detail}</p>
-          <p><b>確認期限：</b>${entriesById.get(item.entryId)?.recheckAt || '無固定日期'}</p>
+        <a class="card card-link" href="practical/database.html#entry-${escapeHtml(item.entryId)}">
+          <span class="status-${statusClass}">狀態：${escapeHtml(item.statusText)}</span>
+          <h3>${escapeHtml(item.title)}</h3>
+          <p>${escapeHtml(item.detail)}</p>
+          <p><b>確認期限：</b>${escapeHtml(entriesById.get(item.entryId)?.recheckAt || '無固定日期')}</p>
           <span>查看處理方式 →</span>
         </a>`;
     }).join('');

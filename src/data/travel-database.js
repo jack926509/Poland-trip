@@ -185,6 +185,9 @@ export const databaseEntries = [
   },
 ];
 
+// `checkedAt` 表示本次盤查日期；它不等同「已查證」，pending/private-required 仍維持原狀態。
+for (const entry of databaseEntries) entry.checkedAt = '2026-08-08';
+
 export const readinessItems = [
   { id: 'accommodation', title: '住宿', detail: '確認 7 晚訂單、完整地址與寄放安排', priority: 'P0', status: 'private-required', entryId: 'accommodation-confirmations', private: true },
   { id: 'rail-tickets', title: '城際車票', detail: '確認車次、車廂、座位與轉乘保障', priority: 'P0', status: 'pending', entryId: 'rail-trip-tickets', private: false },
@@ -216,6 +219,7 @@ const officialPlaceUrls = {
   '華沙蕭邦機場': 'https://www.lotnisko-chopina.pl/en/index.html',
   'Warszawa Centralna': 'https://portalpasazera.pl/en/KatalogStacji',
   '華沙皇家城堡': 'https://egzamin.zamek-krolewski.pl/en/strona/opening-hours-and-ticket-prices/2801-opening-hours-and-ticket-prices-may-2-2026',
+  '華沙老城市場廣場': 'https://go2warsaw.pl/en/old-town/',
   'Krakowskie Przedmieście': 'https://warsawtour.pl/en/royal-route/',
   'Kraków Główny': 'https://portalpasazera.pl/en/KatalogStacji',
   '瓦維爾大教堂': 'https://www.katedra-wawelska.pl/en/katedra-wawelska/zaplanuj-wizyte/',
@@ -237,6 +241,7 @@ const officialPlaceUrls = {
   '波茲南主教座堂': 'https://www.katedra.archpoznan.pl/',
   '波茲南市政廳': 'https://www.msu.mnp.art.pl/profile/wizyta-ratusz-muzeum-poznania',
   '帝王城堡': 'https://ckzamek.pl/podstrony/6071-zwiedzanie-zamku/',
+  'Stary Browar': 'https://starybrowar5050.com/en/contact/',
   'POLIN 波蘭猶太人歷史博物館': 'https://polin.pl/en',
   '華沙起義博物館': 'https://www.1944.pl/en',
   '駐波蘭台北代表處': 'https://www.mofa.gov.tw/CountryInfo.aspx?CASN=1&n=164&s=124&sms=33&tabs=08617EE9DB3C61E3',
@@ -246,6 +251,7 @@ const entranceNotesByName = {
   '華沙蕭邦機場': '抵達後依 Arrivals 與 SKM／Railway Station 標示前往航廈下方車站；回程依電子機票確認報到區。',
   'Warszawa Centralna': '由已確認住宿方向選最近入口；進站後以大廳電子牌確認月台，不預先假定入口或月台。',
   '華沙皇家城堡': '主要訪客入口在 plac Zamkowy 4；依票券時段與現場安檢標示入場。',
+  '華沙老城市場廣場': '公共廣場，導航至 Rynek Starego Miasta；與 plac Zamkowy 的皇家城堡廣場是不同地點。',
   'Krakowskie Przedmieście': '公共街道，從城堡廣場沿皇家大道步行，無需入場。',
   'Kraków Główny': '依 Galeria Krakowska／車站大廳指標進站，月台以當日電子牌為準。',
   '瓦維爾大教堂': '登上 Wawel Hill 後依 Cathedral 指標前往大教堂入口，避開禮拜動線。',
@@ -267,6 +273,7 @@ const entranceNotesByName = {
   '波茲南主教座堂': '由 Ostrów Tumski 17 正門進入；禮拜期間以現場開放區域為準。',
   '波茲南市政廳': '本次只在 Stary Rynek 1 外觀區看 12:00 山羊鐘樓秀，博物館整修閉館。',
   '帝王城堡': '由 Święty Marcin 80/82 依 CK Zamek 訪客標示進入。',
+  'Stary Browar': '由 Półwiejska 42 商場入口進入；與帝王城堡是兩個不同站點。',
   'POLIN 波蘭猶太人歷史博物館': '由 Mordechaja Anielewicza 6 主入口依票券與安檢標示進入。',
   '華沙起義博物館': '由 Grzybowska 79 訪客入口依已購時段進場。',
   '駐波蘭台北代表處': '僅作緊急聯絡備援；一般領務先於辦公時間電話確認。',
@@ -275,7 +282,8 @@ const entranceNotesByName = {
 const addressStepLabels = {
   '華沙蕭邦機場': ['抵蕭邦機場', '抵 Chopin 第一航廈', '退稅文件 + 報到 + 安檢', '★ QR 260 起飛'],
   'Warszawa Centralna': ['退房 → Warszawa Centralna', '抵華沙中央車站'],
-  '華沙皇家城堡': ['★ 老城廣場', '★ 皇家城堡', '老城廣場夜燈漫步'],
+  '華沙皇家城堡': ['★ 皇家城堡'],
+  '華沙老城市場廣場': ['★ 老城廣場', '老城廣場夜燈漫步', '早餐 + 老城散步'],
   'Krakowskie Przedmieście': ['Krakowskie Przedmieście'],
   'Kraków Główny': ['抵 Kraków Główny', '火車回 Kraków Główny', '旅館取行李 → Bolt 到 Kraków Główny'],
   '瓦維爾大教堂': ['★ 瓦維爾大教堂'],
@@ -284,9 +292,10 @@ const addressStepLabels = {
   '中央廣場 Rynek Główny': ['★ 中央廣場 + 聖瑪利亞', '★ 中央廣場 + 紡織會館'],
   '聖瑪利亞聖殿': ['★ 中央廣場 + 聖瑪利亞'],
   '紡織會館 Sukiennice': ['紡織會館 Sukiennice 快速一覽', '紡織會館 Sukiennice 採購收尾', '★ 中央廣場 + 紡織會館'],
-  'Plac Nowy': ['★ Kazimierz Plac Nowy zapiekanka 晚餐'],
+  'Plac Nowy': ['★ Kazimierz Plac Nowy zapiekanka 晚餐', '★ Kazimierz 白天散步'],
   'Auschwitz I 訪客服務中心／入口': ['抵 Auschwitz I', '★ 英文官方導覽', '導覽結束'],
   '維利奇卡鹽礦': ['★ Wieliczka 鹽礦 Tourist Route 英文團'],
+  'Wrocław Główny': ['抵 Wrocław Główny'],
   '拉茨瓦維採全景畫': ['★ 拉茨瓦維採全景畫'],
   '百年廳': ['★ 百年廳 (UNESCO)'],
   '樂斯拉夫中央廣場': ['★ 中央廣場 + 紡織會館'],
@@ -294,6 +303,7 @@ const addressStepLabels = {
   '波茲南主教座堂': ['★ 教堂島 Ostrów Tumski'],
   '波茲南市政廳': ['廣場卡正面位置', '★ 山羊鐘樓秀'],
   '帝王城堡': ['帝王城堡 / Stary Browar'],
+  'Stary Browar': ['帝王城堡 / Stary Browar'],
   'POLIN 波蘭猶太人歷史博物館': ['★ POLIN 猶太博物館'],
   '華沙起義博物館': ['★ 華沙起義博物館'],
 };
@@ -318,6 +328,7 @@ export const dayOperations = {
       address('華沙蕭邦機場', 'Żwirki i Wigury 1, 00-906 Warszawa', 'Warsaw Chopin Airport, Żwirki i Wigury 1, Warszawa', '抵達後依航站現場標示前往 SKM 月台。'),
       address('Warszawa Centralna', 'al. Jerozolimskie 54, 00-024 Warszawa', 'Warszawa Centralna, al. Jerozolimskie 54, Warszawa'),
       address('華沙皇家城堡', 'plac Zamkowy 4, 00-277 Warszawa', 'Royal Castle Warsaw, plac Zamkowy 4, Warszawa'),
+      address('華沙老城市場廣場', 'Rynek Starego Miasta, 00-272 Warszawa', 'Rynek Starego Miasta, Warszawa'),
       address('Krakowskie Przedmieście', 'Krakowskie Przedmieście, Warszawa', 'Krakowskie Przedmiescie, Warszawa'),
       accommodationAddress('Warszawa'),
     ],
@@ -385,6 +396,7 @@ export const dayOperations = {
       address('Kraków Główny', 'plac Jana Nowaka-Jeziorańskiego 3, 31-154 Kraków', 'Krakow Glowny, plac Jana Nowaka-Jezioranskiego 3, Krakow'),
       address('維利奇卡鹽礦', 'Daniłowicza 10, 32-020 Wieliczka', 'Wieliczka Salt Mine, Danilowicza 10, Wieliczka'),
       address('Plac Nowy', 'Plac Nowy, 31-056 Kraków', 'Plac Nowy, Krakow'),
+      address('紡織會館 Sukiennice', 'Rynek Główny 3, 31-042 Kraków', 'Sukiennice, Rynek Glowny 3, Krakow'),
       address('Wrocław Główny', 'Piłsudskiego 105, 50-085 Wrocław', 'Wroclaw Glowny, Pilsudskiego 105, Wroclaw'),
       accommodationAddress('Wrocław'),
     ],
@@ -430,6 +442,7 @@ export const dayOperations = {
       address('波茲南主教座堂', 'Ostrów Tumski 17, 61-109 Poznań', 'Poznan Cathedral, Ostrow Tumski 17, Poznan'),
       address('波茲南市政廳', 'Stary Rynek 1, 61-768 Poznań', 'Poznan Town Hall, Stary Rynek 1, Poznan', '博物館整修閉館，此地點用於 12:00 山羊鐘樓秀外觀。'),
       address('帝王城堡', 'Święty Marcin 80/82, 61-809 Poznań', 'Zamek Culture Centre, Swiety Marcin 80 82, Poznan'),
+      address('Stary Browar', 'Półwiejska 42, 61-888 Poznań', 'Stary Browar, Polwiejska 42, Poznan'),
       address('Warszawa Centralna', 'al. Jerozolimskie 54, 00-024 Warszawa', 'Warszawa Centralna, al. Jerozolimskie 54, Warszawa'),
       accommodationAddress('Warszawa'),
     ],
@@ -449,6 +462,7 @@ export const dayOperations = {
     note: '諸聖節前夕，逐店確認晚餐與交通；離線備妥 SOS 卡。',
     addresses: [
       address('華沙皇家城堡', 'plac Zamkowy 4, 00-277 Warszawa', 'Royal Castle Warsaw, plac Zamkowy 4, Warszawa'),
+      address('華沙老城市場廣場', 'Rynek Starego Miasta, 00-272 Warszawa', 'Rynek Starego Miasta, Warszawa'),
       address('POLIN 波蘭猶太人歷史博物館', 'Mordechaja Anielewicza 6, 00-157 Warszawa', 'POLIN Museum, Mordechaja Anielewicza 6, Warszawa'),
       address('華沙起義博物館', 'Grzybowska 79, 00-844 Warszawa', 'Warsaw Rising Museum, Grzybowska 79, Warszawa'),
       accommodationAddress('Warszawa'),
@@ -469,6 +483,7 @@ export const dayOperations = {
     note: '離開 EU 前處理退稅；託運商品若需查驗，先完成海關程序。',
     addresses: [
       accommodationAddress('Warszawa'),
+      address('華沙老城市場廣場', 'Rynek Starego Miasta, 00-272 Warszawa', 'Rynek Starego Miasta, Warszawa'),
       address('Warszawa Centralna', 'al. Jerozolimskie 54, 00-024 Warszawa', 'Warszawa Centralna, al. Jerozolimskie 54, Warszawa'),
       address('華沙蕭邦機場', 'Żwirki i Wigury 1, 00-906 Warszawa', 'Warsaw Chopin Airport, Żwirki i Wigury 1, Warszawa'),
       address('駐波蘭台北代表處', '30th Floor, ul. Emilii Plater 53, 00-113 Warszawa', 'Taipei Representative Office in Poland, Emilii Plater 53, Warszawa', '僅供緊急狀況備援，不列為一般行程站點。'),
@@ -485,23 +500,55 @@ export const dayOperations = {
   },
 };
 
-// 每個時間表步驟都必須有可靠地址對應，或明確列為待現場／私人資料確認。
-// 這裡由單一行程資料源產生未解決清單，避免日後新增步驟卻漏掉現場資訊。
+// 未確認步驟必須人工明列；新增行程若沒有可靠地址或這份清單，validator 會直接失敗。
+const dynamicTransitReason = '班次、月台或上下車點為動態資料，依已購票與當日電子牌確認。';
+const privateStayReason = '住宿名稱、入口或寄放點屬私人訂單，待確認後寫入離線包。';
+const flexibleStopReason = '未選定可靠分店或為彈性活動，不預填地址。';
+const unresolvedStepReasons = {
+  1: {
+    'SKM S2/S3 目標班次': dynamicTransitReason,
+    '旅館 Check-in': privateStayReason,
+    'Pierogi 晚餐': flexibleStopReason,
+    '早睡倒時差': '休息安排不需要導航地址。',
+  },
+  2: {
+    '華沙 → 克拉科夫直達車': dynamicTransitReason,
+    '電車 50 / 24 到 Plac Bohaterów Getta': dynamicTransitReason,
+  },
+  3: {
+    '克拉科夫 → 奧斯威辛巴士': dynamicTransitReason,
+    '巴士返克拉科夫': dynamicTransitReason,
+    '抵 Kraków · 休息': privateStayReason,
+    '安靜晚餐沉澱情緒': flexibleStopReason,
+  },
+  4: {
+    '早餐 + 退房': privateStayReason,
+    '火車到 Wieliczka Rynek-Kopalnia': dynamicTransitReason,
+    'Wieliczka 鎮中心午餐': flexibleStopReason,
+    '自由活動或補拍照、找地方喝咖啡': flexibleStopReason,
+    'IC 直達車': dynamicTransitReason,
+  },
+  5: {
+    '糖果屋雙屋 + 教堂塔樓': '教堂塔樓入口與開放狀態須依當日官方公告確認。',
+    '取行李 → Wrocław Główny': privateStayReason,
+    'IC 直達車': dynamicTransitReason,
+  },
+  6: {
+    '★ 聖馬丁牛角麵包 (PGI)': '尚未選定可靠分店，待分店與營業時間確認後補入。',
+    '波茲南 → 華沙直達車': dynamicTransitReason,
+  },
+  7: {
+    '午餐（老城 → POLIN 路上）': flexibleStopReason,
+    '老城最後晚餐': flexibleStopReason,
+  },
+  8: {
+    'SKM S2/S3 目標班次': dynamicTransitReason,
+  },
+};
+
 for (const day of itineraryDays) {
-  const operation = dayOperations[day.n];
-  const coveredLabels = new Set(operation.addresses.filter(item => item.reliable).flatMap(item => item.stepLabels));
-  operation.unresolvedSteps = day.steps
-    .filter(step => !coveredLabels.has(step.label))
-    .map(step => ({
-      label: step.label,
-      reason: /Check-in|旅館|退房|取行李/.test(step.label)
-        ? '住宿名稱、入口或寄放點屬私人訂單，待確認後寫入離線包。'
-        : /車|巴士|SKM|電車|抵 Kraków|抵 Wrocław|抵華沙/.test(step.label)
-          ? '班次、月台或上下車點為動態資料，依已購票與當日電子牌確認。'
-          : /餐|早餐|咖啡|自由|休息|早睡|散步|採購/.test(step.label)
-            ? '未選定可靠分店或為彈性活動，不預填地址。'
-            : '此步驟的正確入口或集合點尚待官方票券與當日現場確認。',
-    }));
+  dayOperations[day.n].unresolvedSteps = Object.entries(unresolvedStepReasons[day.n] || {})
+    .map(([label, reason]) => ({ label, reason }));
 }
 
 const isoDatePattern = /^\d{4}-\d{2}-\d{2}$/;
@@ -570,6 +617,12 @@ export function validateTravelDatabase({ entries, sections, readiness, operation
     entryIds.add(entry.id);
     entriesById.set(entry.id, entry);
 
+    for (const field of ['title', 'summary', 'offlineNote']) {
+      assertNonEmptyText(entry[field], `${entry.id} 的 ${field}`);
+    }
+    if (typeof entry.private !== 'boolean') throw new Error(`${entry.id} 的 private 必須是 boolean`);
+    assertDate(entry.checkedAt, 'checkedAt', entry.id, true);
+
     if (!Object.hasOwn(labels, entry.status)) throw new Error(`${entry.id} 使用未知狀態：${entry.status}`);
     if (!allowedCategories.has(entry.category)) throw new Error(`${entry.id} 使用未知 category：${entry.category}`);
     if (!allowedCityKeys.has(entry.cityKey)) throw new Error(`${entry.id} 使用未知 cityKey：${entry.cityKey}`);
@@ -597,6 +650,9 @@ export function validateTravelDatabase({ entries, sections, readiness, operation
     assertStableSlug(item.id, 'readiness ID');
     if (readinessIds.has(item.id)) throw new Error(`readiness ID 重複：${item.id}`);
     readinessIds.add(item.id);
+    for (const field of ['title', 'detail']) assertNonEmptyText(item[field], `${item.id} 的 ${field}`);
+    if (!['P0', 'P1'].includes(item.priority)) throw new Error(`${item.id} 使用未知 priority：${item.priority}`);
+    if (typeof item.private !== 'boolean') throw new Error(`${item.id} 的 private 必須是 boolean`);
     const entry = entriesById.get(item.entryId);
     if (!entry) throw new Error(`${item.id} 指向不存在的 entry：${item.entryId}`);
     if (item.status !== entry.status) throw new Error(`${item.id} 的狀態與 ${item.entryId} 不一致`);
@@ -657,6 +713,11 @@ export function validateTravelDatabase({ entries, sections, readiness, operation
       assertNonEmptyText(item.reason, `Day ${day} 的 unresolvedSteps.reason`);
       return item.label;
     }));
+    const itineraryLabels = new Set(itineraryDays.find(item => item.n === day).steps.map(step => step.label));
+    for (const label of unresolvedLabels) {
+      if (!itineraryLabels.has(label)) throw new Error(`Day ${day} unresolvedSteps 含不存在步驟：${label}`);
+      if (coveredLabels.has(label)) throw new Error(`Day ${day} 步驟同時標為可靠與未確認：${label}`);
+    }
     for (const step of itineraryDays.find(item => item.n === day).steps) {
       if (!coveredLabels.has(step.label) && !unresolvedLabels.has(step.label)) {
         throw new Error(`Day ${day} 行程步驟未覆蓋：${step.label}`);

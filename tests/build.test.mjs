@@ -18,6 +18,7 @@ import {
   validateTravelDatabase,
 } from '../src/data/travel-database.js';
 import { renderDatabase } from '../src/templates/database.mjs';
+import { renderHome } from '../src/templates/home.mjs';
 
 const distDir = path.resolve('dist');
 const expectedFiles = [
@@ -158,6 +159,22 @@ test('自由行資料庫的狀態、來源、日期與關聯資料符合完整�
       `未攔截 ${invalid.name}`,
     );
   }
+
+  for (const invalidEntry of [
+    { ...databaseEntries[0], title: '' },
+    { ...databaseEntries[0], checkedAt: '2026-02-30' },
+    { ...databaseEntries[0], private: 'false' },
+  ]) {
+    assert.throws(() => validateTravelDatabase({
+      entries: [invalidEntry, ...databaseEntries.slice(1)], sections: databaseSections,
+      readiness: readinessItems, operations: dayOperations, labels: statusLabels,
+    }));
+  }
+  assert.throws(() => validateTravelDatabase({
+    entries: databaseEntries, sections: databaseSections,
+    readiness: [{ ...readinessItems[0], priority: 'P2' }, ...readinessItems.slice(1)],
+    operations: dayOperations, labels: statusLabels,
+  }), /未知 priority/);
 });
 
 test('每日操作資料會攔截缺欄、空字串與錯誤型別', () => {
@@ -200,6 +217,10 @@ test('8 天每個行程步驟都有可靠地址或明確待確認原因', () => 
       assert.match(place.officialUrl, /^https:\/\//, `Day ${day.n} ${place.name} 缺 HTTPS 官網`);
     }
   }
+  assert.ok(!dayOperations[4].unresolvedSteps.some(item => item.label.includes('Sukiennice')));
+  assert.ok(!dayOperations[4].unresolvedSteps.some(item => item.label === '★ Kazimierz 白天散步'));
+  assert.ok(dayOperations[6].addresses.some(item => item.name === '帝王城堡' && item.stepLabels.includes('帝王城堡 / Stary Browar')));
+  assert.ok(dayOperations[6].addresses.some(item => item.name === 'Stary Browar' && item.stepLabels.includes('帝王城堡 / Stary Browar')));
 });
 
 test('已排定的主要公共地點使用正確地址與官方入口資料', () => {
@@ -209,6 +230,8 @@ test('已排定的主要公共地點使用正確地址與官方入口資料', ()
     [2, '紡織會館 Sukiennice', 'Rynek Główny 3, 31-042 Kraków'],
     [2, 'Plac Nowy', 'Plac Nowy, 31-056 Kraków'],
     [5, '樂斯拉夫中央廣場', 'Rynek, 50-101 Wrocław'],
+    [6, 'Stary Browar', 'Półwiejska 42, 61-888 Poznań'],
+    [7, '華沙老城市場廣場', 'Rynek Starego Miasta, 00-272 Warszawa'],
   ];
   for (const [day, name, expectedAddress] of requiredPlaces) {
     const place = dayOperations[day].addresses.find(item => item.name === name);
@@ -218,6 +241,22 @@ test('已排定的主要公共地點使用正確地址與官方入口資料', ()
     assert.ok(place?.entranceNote, `Day ${day} ${name} 缺入口說明`);
   }
   assert.ok(!JSON.stringify(dayOperations).includes('Rynek Główny, 31-422 Kraków'));
+  const oldTown = dayOperations[1].addresses.find(item => item.name === '華沙老城市場廣場');
+  const castle = dayOperations[1].addresses.find(item => item.name === '華沙皇家城堡');
+  assert.ok(oldTown.stepLabels.includes('★ 老城廣場'));
+  assert.ok(!castle.stepLabels.includes('★ 老城廣場'));
+});
+
+test('首頁準備度會跳脫資料文字', () => {
+  const unsafeEntry = { ...databaseEntries[0], id: 'unsafe-entry', recheckAt: '2026-09-01' };
+  const html = renderHome({
+    meta: { edition: 'test', route: 'test', dateRange: 'test', days: 0, nights: 0, style: 'test' },
+    days: [], flights: { out: [], back: [] }, cities: [], databaseEntries: [unsafeEntry],
+    readinessItems: [{ id: 'unsafe', entryId: 'unsafe-entry', priority: 'P0', status: 'pending', statusText: '<script>x()</script>', title: '<img src=x>', detail: 'A & B', private: false }],
+  });
+  assert.doesNotMatch(html, /<script>|<img src=x>/);
+  assert.ok(html.includes('&lt;script&gt;x()&lt;/script&gt;'));
+  assert.ok(html.includes('A &amp; B'));
 });
 
 test('資料庫模板會跳脫資料文字並拒絕非 HTTPS 官方來源', () => {
@@ -286,7 +325,10 @@ test('自由行資料庫頁提供 SOS、主題索引與緊急聯絡資訊', () =
     assert.ok(html.includes(heading), `資料庫頁缺少 ${heading}`);
   }
   assert.ok(html.includes('tel:+48668027574'));
+  assert.ok(html.includes('tel:+48222130060'));
   assert.ok(html.includes('tel:+886800085095'));
+  assert.ok(html.includes('Taipei%20Representative%20Office%20in%20Poland'));
+  assert.ok(html.includes('盤查日期'));
   assert.ok(html.includes('保險海外救援'));
   assert.ok(html.includes('需填私人資料'));
   for (const title of ['護照遺失', '緊急就醫', '行李未到', '轉機失接', '卡片遺失']) assert.ok(html.includes(`<h3>${title}</h3>`));

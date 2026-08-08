@@ -69,6 +69,7 @@ function renderCard(entry, statusLabels, { representativePhone = false } = {}) {
       <p>${escapeHtml(entry.summary)}</p>
       <p><b>離線備註：</b>${escapeHtml(entry.offlineNote)}</p>
       <dl class="source-meta">
+        <div><dt>盤查日期</dt><dd>${formatDate(entry.checkedAt)}</dd></div>
         <div><dt>查證日期</dt><dd>${formatDate(entry.verifiedAt)}</dd></div>
         <div><dt>重查日期</dt><dd>${formatDate(entry.recheckAt)}</dd></div>
         <div><dt>官方來源</dt><dd>${source}</dd></div>
@@ -94,7 +95,7 @@ function renderSos(entries, statusLabels) {
       <div class="sos-grid" id="sos-contacts">
         <article class="database-card"><h3>112 緊急報案</h3><p>歐盟通用緊急電話。</p><p class="database-card-action"><a href="tel:112">撥打 112</a></p></article>
         <article class="database-card"><h3>999 醫療急救</h3><p>波蘭醫療緊急電話。</p><p class="database-card-action"><a href="tel:999">撥打 999</a></p></article>
-        <article class="database-card"><h3>駐波蘭台北代表處</h3><p>30th Floor, Ul. Emilii Plater 53, 00-113 Warsaw, Poland</p><p class="database-card-action"><a href="tel:+48668027574">急難救助 +48 668 027 574</a></p></article>
+        <article class="database-card"><h3>駐波蘭台北代表處</h3><p>30th Floor, Ul. Emilii Plater 53, 00-113 Warsaw, Poland</p><p><a href="https://www.google.com/maps/search/?api=1&amp;query=Taipei%20Representative%20Office%20in%20Poland%2C%20Emilii%20Plater%2053%2C%20Warsaw" target="_blank" rel="noopener noreferrer">開啟地址地圖 ↗</a></p><p class="database-card-action"><a href="tel:+48222130060">辦公室 +48 22 213 0060</a><br><a href="tel:+48668027574">急難救助 +48 668 027 574</a></p></article>
         <article class="database-card"><h3>外交部 24 小時緊急聯絡中心</h3><p>海外緊急聯絡，以台灣國碼格式撥打。</p><p class="database-card-action"><a href="tel:+886800085095">+886 800 085 095</a></p></article>
         <article class="database-card"><h3>保險海外救援</h3><p><span class="status-private">狀態：${escapeHtml(medicalStatus)}</span></p><p>請在私人離線包填入保險公司與救援電話；不放入公開網站。</p></article>
       </div>
