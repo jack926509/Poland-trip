@@ -495,6 +495,110 @@ summary:focus-visible {
   color: var(--ink-soft);
 }
 
+.status-verified,
+.status-recheck,
+.status-pending,
+.status-private {
+  display: inline-block;
+  padding: 0.14rem 0.48rem;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+}
+
+.status-verified {
+  background: #eaf4ed;
+  color: var(--green);
+}
+
+.status-recheck {
+  border: 1px solid #c69a48;
+  background: #fff4d8;
+  color: var(--yellow);
+}
+
+.status-pending {
+  border: 1px solid var(--accent);
+  color: var(--accent-dark);
+}
+
+.status-private {
+  background: var(--paper-deep);
+  color: var(--ink-soft);
+}
+
+.database-index {
+  margin: 2.5rem 0 4.5rem;
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+  background: var(--paper-light);
+}
+
+.database-index h2 {
+  margin-bottom: 1rem;
+  font-size: 1.35rem;
+}
+
+.database-index ol {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem 2rem;
+  margin: 0;
+  padding-left: 1.35rem;
+}
+
+.database-card {
+  min-width: 0;
+  padding: 1.35rem;
+  border: 1px solid var(--line);
+  background: var(--paper-light);
+  box-shadow: var(--shadow-paper);
+}
+
+.database-card h3 {
+  margin: 0.55rem 0 0.85rem;
+}
+
+.database-card-header {
+  display: flex;
+  gap: 0.75rem;
+  align-items: start;
+  justify-content: space-between;
+}
+
+.database-card-header .eyebrow {
+  margin: 0;
+}
+
+.sos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.2rem;
+}
+
+.source-meta {
+  margin: 1.25rem 0 0;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+.source-meta > div {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 0.75rem;
+  margin-top: 0.35rem;
+}
+
+.source-meta dt,
+.source-meta dd {
+  margin: 0;
+}
+
 .callout-risk,
 .callout-note,
 .callout-good {
@@ -623,8 +727,13 @@ summary:focus-visible {
   }
 
   .hero,
-  .grid-wide {
+  .grid-wide,
+  .sos-grid {
     grid-template-columns: 1fr;
+  }
+
+  .database-index ol {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .hero-aside {
@@ -662,6 +771,15 @@ summary:focus-visible {
 
   .map-container {
     height: 420px;
+  }
+
+  .database-index ol {
+    grid-template-columns: 1fr;
+  }
+
+  .database-card-header {
+    align-items: start;
+    flex-direction: column;
   }
 
   .footer-inner {

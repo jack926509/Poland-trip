@@ -9,6 +9,7 @@ import * as tickets from './src/data/tickets.js';
 import * as transit from './src/data/transit.js';
 import * as shopping from './src/data/shopping.js';
 import * as essentials from './src/data/essentials.js';
+import * as travelDatabase from './src/data/travel-database.js';
 
 import { renderHome } from './src/templates/home.mjs';
 import { renderDay } from './src/templates/day.mjs';
@@ -22,6 +23,7 @@ import {
   renderEssentials,
   renderNotes,
 } from './src/templates/practical.mjs';
+import { renderDatabase } from './src/templates/database.mjs';
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 const distDir = path.join(projectRoot, 'dist');
@@ -116,10 +118,15 @@ function build() {
   writeHtml('practical/notes.html', renderNotes({
     preDepartureNotes: essentials.preDepartureNotes,
   }));
+  writeHtml('practical/database.html', renderDatabase({
+    entries: travelDatabase.databaseEntries,
+    sections: travelDatabase.databaseSections,
+    statusLabels: travelDatabase.statusLabels,
+  }));
 
   const htmlCount = fs.readdirSync(distDir).filter(name => name.endsWith('.html')).length
     + fs.readdirSync(path.join(distDir, 'practical')).filter(name => name.endsWith('.html')).length;
-  if (htmlCount !== 20) throw new Error(`預期產生 20 頁，實際為 ${htmlCount} 頁`);
+  if (htmlCount !== 21) throw new Error(`預期產生 21 頁，實際為 ${htmlCount} 頁`);
   console.log(`build 完成：${htmlCount} 頁已產生至 dist/`);
 }
 

@@ -26,6 +26,7 @@ const expectedFiles = [
   'practical/shopping.html',
   'practical/essentials.html',
   'practical/notes.html',
+  'practical/database.html',
 ];
 
 function walk(directory) {
@@ -68,9 +69,18 @@ test('克拉科夫與樂斯拉夫飲水資訊各自保有官方來源', () => {
   assert.equal(wroclawWater?.sourceUrl, 'https://www.mpwik.wroc.pl/csr-2/pij-kranowke/');
 });
 
-test('dist 正好產出規格要求的 20 個 HTML', () => {
+test('dist 正好產出規格要求的 21 個 HTML', () => {
   assert.deepEqual(htmlFiles(), [...expectedFiles].sort());
   assert.ok(fs.existsSync(path.join(distDir, 'assets/main.css')), '缺少 assets/main.css');
+});
+
+test('自由行資料庫頁提供 SOS、主題索引與緊急聯絡資訊', () => {
+  assert.equal(htmlFiles().length, 21);
+  const html = read('practical/database.html');
+  for (const heading of ['SOS 離線急救卡', '出入境與 ETIAS', '航班與行李', '醫療與保險', '退稅 TAX FREE']) {
+    assert.ok(html.includes(heading), `資料庫頁缺少 ${heading}`);
+  }
+  assert.ok(html.includes('tel:+48668027574'));
 });
 
 test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
