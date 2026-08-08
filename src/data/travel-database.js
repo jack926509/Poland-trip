@@ -126,10 +126,17 @@ export const databaseEntries = [
     offlineNote: '每天保留少走路版：叫車或低地板交通，並在出發前確認電梯與協助狀態。', private: false,
   },
   {
-    id: 'daily-basics-water-and-power', section: 'daily-basics', category: '飲水與充電', cityKey: null,
-    title: '飲水、插座與每日離線包',
-    summary: '克拉科夫與樂斯拉夫城市供水符合飲用標準；若住宿告知建物管線有問題，或水色、氣味異常，則不要飲用並詢問櫃檯。裝置是否可用 230V 要看充電器 INPUT。',
+    id: 'daily-basics-krakow-water', section: 'daily-basics', category: '飲水與充電', cityKey: 'krakow',
+    title: '克拉科夫飲水與每日離線包',
+    summary: '克拉科夫城市供水符合波蘭與 EU 飲用標準，可直接飲用而無須煮沸；若住宿告知建物管線有問題，或水色、氣味異常，則不要飲用並詢問櫃檯。裝置是否可用 230V 要看充電器 INPUT。',
     status: 'verified', sourceUrl: 'https://wodociagi.krakow.pl/en/water-quality/facts-and-myths-about-tap-water', verifiedAt: '2026-08-08', recheckAt: null,
+    offlineNote: '每日晚間充電、下載隔日票券與地圖，並截圖月台及集合點。', private: false,
+  },
+  {
+    id: 'daily-basics-wroclaw-water', section: 'daily-basics', category: '飲水與充電', cityKey: 'wroclaw',
+    title: '樂斯拉夫飲水與每日離線包',
+    summary: '樂斯拉夫城市供水受持續監測，符合波蘭、EU 及 WHO 標準；若住宿告知建物管線有問題，或水色、氣味異常，則不要飲用並詢問櫃檯。裝置是否可用 230V 要看充電器 INPUT。',
+    status: 'verified', sourceUrl: 'https://www.mpwik.wroc.pl/csr-2/pij-kranowke/', verifiedAt: '2026-08-08', recheckAt: null,
     offlineNote: '每日晚間充電、下載隔日票券與地圖，並截圖月台及集合點。', private: false,
   },
   {
@@ -169,9 +176,9 @@ export const readinessItems = [
 export const dayOperations = {
   1: { cityKey: 'warsaw', entryIds: ['connectivity-prepaid-registration', 'aviation-missing-baggage', 'accommodation-confirmations'], note: '抵達後啟用網路、確認住宿地址與行李狀態。' },
   2: { cityKey: 'krakow', entryIds: ['rail-ticket-and-delay-rights', 'calendar-sunday-and-all-saints', 'accommodation-confirmations'], note: '非營業週日；火車班次與餐廳營業當日確認。' },
-  3: { cityKey: 'krakow', entryIds: ['dining-reservation-and-backup', 'medical-insurance-and-emergency'], note: '長時間導覽日，保留補水、保暖與醫療聯絡卡。' },
+  3: { cityKey: 'krakow', entryIds: ['dining-reservation-and-backup', 'medical-insurance-and-emergency', 'daily-basics-krakow-water'], note: '長時間導覽日，保留補水、保暖與醫療聯絡卡。' },
   4: { cityKey: 'wroclaw', entryIds: ['luggage-storage-transition', 'rail-ticket-and-delay-rights', 'accessibility-station-assistance'], note: '退房後先確認行李寄放，再依實際 PKP 班次轉場。' },
-  5: { cityKey: 'poznan', entryIds: ['luggage-storage-transition', 'rail-ticket-and-delay-rights', 'daily-basics-water-and-power'], note: '高強度轉場日；晚間先充電並下載隔日資料。' },
+  5: { cityKey: 'poznan', entryIds: ['luggage-storage-transition', 'rail-ticket-and-delay-rights', 'daily-basics-wroclaw-water'], note: '高強度轉場日；晚間先充電並下載隔日資料。' },
   6: { cityKey: 'warsaw', entryIds: ['luggage-storage-transition', 'rail-ticket-and-delay-rights', 'dining-reservation-and-backup'], note: '城際火車與華沙住宿均以離線地址備援。' },
   7: { cityKey: 'warsaw', entryIds: ['calendar-sunday-and-all-saints', 'dining-reservation-and-backup', 'emergency-taiwan-representative'], note: '諸聖節前夕，逐店確認晚餐與交通；離線備妥 SOS 卡。' },
   8: { cityKey: 'warsaw', entryIds: ['tax-free-vat-refund', 'aviation-baggage-and-connection', 'documents-travel-registration'], note: '離開 EU 前處理退稅；託運商品若需查驗，先完成海關程序。' },

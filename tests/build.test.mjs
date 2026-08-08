@@ -58,6 +58,16 @@ test('駐波蘭代表處使用外交部 2026-08-08 查證的正確館址', () =>
   assert.equal(safety.embassy[0][1], '30th Floor, Ul. Emilii Plater 53, 00-113 Warsaw, Poland');
 });
 
+test('克拉科夫與樂斯拉夫飲水資訊各自保有官方來源', () => {
+  const krakowWater = databaseEntries.find(item => item.id === 'daily-basics-krakow-water');
+  const wroclawWater = databaseEntries.find(item => item.id === 'daily-basics-wroclaw-water');
+
+  assert.equal(krakowWater?.cityKey, 'krakow');
+  assert.equal(krakowWater?.sourceUrl, 'https://wodociagi.krakow.pl/en/water-quality/facts-and-myths-about-tap-water');
+  assert.equal(wroclawWater?.cityKey, 'wroclaw');
+  assert.equal(wroclawWater?.sourceUrl, 'https://www.mpwik.wroc.pl/csr-2/pij-kranowke/');
+});
+
 test('dist 正好產出規格要求的 20 個 HTML', () => {
   assert.deepEqual(htmlFiles(), [...expectedFiles].sort());
   assert.ok(fs.existsSync(path.join(distDir, 'assets/main.css')), '缺少 assets/main.css');
