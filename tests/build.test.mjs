@@ -218,6 +218,29 @@ test('8 個每日頁的日期與標題和資料層一致', async () => {
   }
 });
 
+test('Day 1–8 都有現場導航、當日警示與晚間準備', () => {
+  for (let day = 1; day <= 8; day += 1) {
+    const operation = dayOperations[day];
+    assert.ok(operation, `Day ${day} 缺少每日操作資料`);
+    assert.ok(operation.addresses.length >= 3, `Day ${day} 地址不足`);
+    assert.ok(operation.navigation.length >= 2, `Day ${day} 導航步驟不足`);
+    assert.ok(operation.dailyAlerts.length >= 1, `Day ${day} 缺少當日警示`);
+    assert.ok(operation.nightChecklist.length >= 4, `Day ${day} 晚間準備少於 4 項`);
+    for (const address of operation.addresses) {
+      assert.match(address.url, /^https:\/\//, `Day ${day} 含非 HTTPS 導航連結`);
+    }
+
+    const html = read(`day-${String(day).padStart(2, '0')}.html`);
+    for (const heading of ['今天怎麼走', '晚間準備']) {
+      assert.ok(html.includes(heading), `Day ${day} 缺少 ${heading}`);
+    }
+    assert.ok(html.includes('target="_blank" rel="noopener noreferrer"'), `Day ${day} 外部連結缺少安全屬性`);
+  }
+  assert.ok(read('day-02.html').includes('非營業週日'));
+  assert.ok(read('day-08.html').includes('離開 EU'));
+  assert.ok(read('day-01.html').includes('待住宿／分店確定後填入'));
+});
+
 test('Day 8 退稅與報到已合併，不再出現獨立 11:30 時段', () => {
   const html = read('day-08.html');
   assert.ok(!html.includes('11:30'), 'Day 8 仍有舊的獨立 11:30 時段');

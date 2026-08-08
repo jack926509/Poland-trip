@@ -61,7 +61,10 @@ function build() {
 
   for (const day of trip.days) {
     const photoSpotsForDay = cities.photoSpots.filter(spot => spot.day === day.n);
-    writeHtml(`day-${String(day.n).padStart(2, '0')}.html`, renderDay(day, photoSpotsForDay));
+    writeHtml(
+      `day-${String(day.n).padStart(2, '0')}.html`,
+      renderDay(day, photoSpotsForDay, travelDatabase.dayOperations[day.n]),
+    );
   }
 
   for (const [fileKey, { key, mapKey }] of Object.entries(cityMap)) {

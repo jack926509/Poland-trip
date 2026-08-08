@@ -4,7 +4,82 @@ function renderList(items, renderItem) {
   return items?.length ? `<ul class="check-list">${items.map(renderItem).join('')}</ul>` : '';
 }
 
-export function renderDay(day, photoSpotsForDay = []) {
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function safeHttpsUrl(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' ? escapeHtml(url.href) : null;
+  } catch {
+    return null;
+  }
+}
+
+function renderOperation(operation) {
+  if (!operation) return '';
+
+  const addresses = operation.addresses?.map(item => {
+    const safeUrl = safeHttpsUrl(item.url);
+    return `
+      <li class="operation-address">
+        <div><b>${escapeHtml(item.name)}</b><span>${escapeHtml(item.address)}</span></div>
+        ${item.note ? `<p>${escapeHtml(item.note)}</p>` : ''}
+        ${safeUrl ? `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(item.name)} 導航">開啟導航 ↗</a>` : ''}
+      </li>`;
+  }).join('') || '<li>這一天尚無地址資料。</li>';
+
+  const navigation = operation.navigation?.map(item => `
+    <li>
+      <span class="operation-mode">${escapeHtml(item.mode)}</span>
+      <b>${escapeHtml(item.route)}</b>
+      <p>${escapeHtml(item.action)}</p>
+    </li>`).join('') || '<li>這一天尚無移動步驟。</li>';
+
+  const alerts = operation.dailyAlerts?.map(item => `<li>${escapeHtml(item)}</li>`).join('') || '<li>這一天尚無特別警示。</li>';
+
+  return `
+    <section class="section operation-section" aria-labelledby="operation-heading">
+      <div class="section-heading"><span class="section-num">On the ground</span><h2 id="operation-heading">今天怎麼走</h2></div>
+      <p class="lead">${escapeHtml(operation.note)}</p>
+      <div class="grid-wide operation-grid">
+        <article class="card">
+          <span class="eyebrow">Address book</span>
+          <h3>現場地址</h3>
+          <ul class="operation-addresses">${addresses}</ul>
+        </article>
+        <article class="card">
+          <span class="eyebrow">Route</span>
+          <h3>移動步驟</h3>
+          <ol class="operation-routes">${navigation}</ol>
+        </article>
+      </div>
+      <div class="callout-risk operation-alerts">
+        <span class="tag-red">今日注意</span>
+        <ul class="check-list">${alerts}</ul>
+      </div>
+    </section>`;
+}
+
+function renderNightChecklist(operation) {
+  if (!operation?.nightChecklist?.length) return '';
+  return `
+    <section class="section night-checklist" aria-labelledby="night-checklist-heading">
+      <div class="section-heading"><span class="section-num">Before sleep</span><h2 id="night-checklist-heading">晚間準備</h2></div>
+      <div class="card card-accent">
+        <p class="lead">現在完成，明天出門就不用在網路不穩時臨時找資料。</p>
+        <ul class="night-checks">${operation.nightChecklist.map(item => `<li>${escapeHtml(item)}</li>`).join('')}</ul>
+      </div>
+    </section>`;
+}
+
+export function renderDay(day, photoSpotsForDay = [], operation = null) {
   const stepsHtml = day.steps.map(step => `
     <tr>
       <td class="number"><b>${step.t}</b></td>
@@ -116,6 +191,7 @@ export function renderDay(day, photoSpotsForDay = []) {
     ${mustBookHtml}
     ${warnHtml}
     ${constraintHtml}
+    ${renderOperation(operation)}
 
     <section class="section">
       <div class="section-heading"><span class="section-num">Schedule</span><h2>當日時間表</h2></div>
@@ -132,6 +208,7 @@ export function renderDay(day, photoSpotsForDay = []) {
     ${extendHtml}
     ${backupHtml}
     ${practicalHtml}
+    ${renderNightChecklist(operation)}
     ${photoHtml}
 
     <nav class="section-heading" aria-label="每日行程翻頁">${previous}${next}</nav>`;

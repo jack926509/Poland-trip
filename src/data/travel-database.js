@@ -180,13 +180,191 @@ export const readinessItems = [
   { id: 'emergency-contact', title: '緊急聯絡', detail: '完成旅外登錄並讓聯絡人持有行程', priority: 'P0', status: 'private-required', entryId: 'documents-travel-registration', private: true },
 ];
 
+const standardNightChecklist = [
+  '手機、行動電源、相機與耳機充電',
+  '將隔日火車／景點票券 PDF 存到離線資料夾',
+  '截圖隔日集合點、車站入口與月台查詢頁',
+  '重查隔日天氣、場館營運與市區交通異動',
+];
+
+const accommodationAddress = city => ({
+  name: `${city} 住宿`,
+  address: '待住宿／分店確定後填入',
+  url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${city} Poland`)}`,
+  note: '公開版不填未確定的旅館名與訂單資料。',
+});
+
+const address = (name, street, query, note = '') => ({
+  name,
+  address: street,
+  url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`,
+  note,
+});
+
 export const dayOperations = {
-  1: { cityKey: 'warsaw', entryIds: ['connectivity-prepaid-registration', 'aviation-missing-baggage', 'accommodation-confirmations'], note: '抵達後啟用網路、確認住宿地址與行李狀態。' },
-  2: { cityKey: 'krakow', entryIds: ['rail-ticket-and-delay-rights', 'calendar-sunday-and-all-saints', 'accommodation-confirmations'], note: '非營業週日；火車班次與餐廳營業當日確認。' },
-  3: { cityKey: 'krakow', entryIds: ['dining-reservation-and-backup', 'medical-insurance-and-emergency', 'daily-basics-krakow-water'], note: '長時間導覽日，保留補水、保暖與醫療聯絡卡。' },
-  4: { cityKey: 'wroclaw', entryIds: ['luggage-storage-transition', 'rail-ticket-and-delay-rights', 'accessibility-station-assistance'], note: '退房後先確認行李寄放，再依實際 PKP 班次轉場。' },
-  5: { cityKey: 'poznan', entryIds: ['luggage-storage-transition', 'rail-ticket-and-delay-rights', 'daily-basics-wroclaw-water'], note: '高強度轉場日；晚間先充電並下載隔日資料。' },
-  6: { cityKey: 'warsaw', entryIds: ['luggage-storage-transition', 'rail-ticket-and-delay-rights', 'dining-reservation-and-backup'], note: '城際火車與華沙住宿均以離線地址備援。' },
-  7: { cityKey: 'warsaw', entryIds: ['calendar-sunday-and-all-saints', 'dining-reservation-and-backup', 'emergency-taiwan-representative'], note: '諸聖節前夕，逐店確認晚餐與交通；離線備妥 SOS 卡。' },
-  8: { cityKey: 'warsaw', entryIds: ['tax-free-vat-refund', 'aviation-baggage-and-connection', 'documents-travel-registration'], note: '離開 EU 前處理退稅；託運商品若需查驗，先完成海關程序。' },
+  1: {
+    cityKey: 'warsaw',
+    entryIds: ['connectivity-prepaid-registration', 'aviation-missing-baggage', 'accommodation-confirmations'],
+    note: '抵達後啟用網路、確認住宿地址與行李狀態。',
+    addresses: [
+      address('華沙蕭邦機場', 'Żwirki i Wigury 1, 00-906 Warszawa', 'Warsaw Chopin Airport, Żwirki i Wigury 1, Warszawa', '抵達後依航站現場標示前往 SKM 月台。'),
+      address('Warszawa Centralna', 'al. Jerozolimskie 54, 00-024 Warszawa', 'Warszawa Centralna, al. Jerozolimskie 54, Warszawa'),
+      address('華沙皇家城堡', 'plac Zamkowy 4, 00-277 Warszawa', 'Royal Castle Warsaw, plac Zamkowy 4, Warszawa'),
+      accommodationAddress('Warszawa'),
+    ],
+    navigation: [
+      { mode: 'SKM', route: '蕭邦機場 → 華沙市中心', action: '抵達後查 WTP 即時班次與月台，使用第 1 區 75 分鐘票。' },
+      { mode: '步行／市內交通', route: '住宿 → 老城廣場', action: '先以已確認的住宿地址建立路線；若拖行李不直接去老城。' },
+    ],
+    dailyAlerts: [
+      '抵達日不排室內票券；若入境或行李延誤，直接壓縮老城散步。',
+      '離開行李提領區前確認託運行李已到；未到先申報 PIR。',
+    ],
+    nightChecklist: [...standardNightChecklist, '確認 10/25 華沙 → 克拉科夫車票、車站入口與下車後的行李寄放方案'],
+  },
+  2: {
+    cityKey: 'krakow',
+    entryIds: ['rail-ticket-and-delay-rights', 'calendar-sunday-and-all-saints', 'accommodation-confirmations'],
+    note: '非營業週日；火車班次與餐廳營業當日確認。',
+    addresses: [
+      address('Warszawa Centralna', 'al. Jerozolimskie 54, 00-024 Warszawa', 'Warszawa Centralna, al. Jerozolimskie 54, Warszawa'),
+      address('Kraków Główny', 'plac Jana Nowaka-Jeziorańskiego 3, 31-154 Kraków', 'Krakow Glowny, plac Jana Nowaka-Jezioranskiego 3, Krakow'),
+      address('瓦維爾大教堂', 'Wawel 3, 31-001 Kraków', 'Wawel Cathedral, Wawel 3, Krakow'),
+      address('辛德勒工廠', 'Lipowa 4, 30-702 Kraków', 'Oskar Schindler Enamel Factory, Lipowa 4, Krakow'),
+      accommodationAddress('Kraków'),
+    ],
+    navigation: [
+      { mode: 'PKP', route: '華沙 → 克拉科夫', action: '只依已購票上的車次、車廂與座位進站；月台當日查 Passenger Portal 與站內電子牌。' },
+      { mode: '步行／市內交通', route: 'Kraków Główny → Wawel → 辛德勒工廠', action: '取行李後先寄放；Wawel 到 Podgórze 的電車路線當日用 Jakdojade 重查改道。' },
+    ],
+    dailyAlerts: [
+      '10/25 為非營業週日，多數一般商店關閉；餐廳與例外店家仍逐店確認。',
+      '華沙至克拉科夫班次在完成購票前都是目標，不把 09:00 當成已確定發車。',
+    ],
+    nightChecklist: [...standardNightChecklist, '確認 Auschwitz 官方導覽姓名、入場時段、行李限制與往返車票狀態'],
+  },
+  3: {
+    cityKey: 'krakow',
+    entryIds: ['dining-reservation-and-backup', 'medical-insurance-and-emergency', 'daily-basics-krakow-water'],
+    note: '長時間導覽日，保留補水、保暖與醫療聯絡卡。',
+    addresses: [
+      address('Kraków MDA 客運站', 'Bosacka 18, 31-505 Kraków', 'MDA Bus Station Krakow, Bosacka 18, Krakow', '實際業者與月台待 10/26 班表確定。'),
+      address('Auschwitz I', 'Więźniów Oświęcimia 20, 32-600 Oświęcim', 'Auschwitz I, Wiezniow Oswiecimia 20, Oswiecim'),
+      address('Auschwitz II–Birkenau', 'Ofiar Faszyzmu 12, 32-600 Brzezinka', 'Auschwitz II Birkenau, Ofiar Faszyzmu 12, Brzezinka'),
+      accommodationAddress('Kraków'),
+    ],
+    navigation: [
+      { mode: '巴士／火車', route: '克拉科夫 ↔ Oświęcim', action: '以 09:00 前抵達為目標；業者、發車站、月台、票價與回程都等 10/26 班表再定。' },
+      { mode: '導覽接駁', route: 'Auschwitz I → Birkenau', action: '參加官方導覽時依當日工作人員指示搭接駁車，不自行跳過集合點。' },
+    ],
+    dailyAlerts: [
+      '所有入場證必須事先線上取得；至少提前 30 分鐘抵達安檢。',
+      '行程內容沉重且戶外時間長，帶水、防雨保暖層，晚間不再加排高強度活動。',
+    ],
+    nightChecklist: [...standardNightChecklist, '確認鹽礦英文團票券、Kraków Główny 去程交通與退房寄行李安排'],
+  },
+  4: {
+    cityKey: 'wroclaw',
+    entryIds: ['luggage-storage-transition', 'rail-ticket-and-delay-rights', 'accessibility-station-assistance'],
+    note: '退房後先確認行李寄放，再依實際 PKP 班次轉場。',
+    addresses: [
+      address('Kraków Główny', 'plac Jana Nowaka-Jeziorańskiego 3, 31-154 Kraków', 'Krakow Glowny, plac Jana Nowaka-Jezioranskiego 3, Krakow'),
+      address('維利奇卡鹽礦', 'Daniłowicza 10, 32-020 Wieliczka', 'Wieliczka Salt Mine, Danilowicza 10, Wieliczka'),
+      address('Wrocław Główny', 'Piłsudskiego 105, 50-085 Wrocław', 'Wroclaw Glowny, Pilsudskiego 105, Wroclaw'),
+      accommodationAddress('Wrocław'),
+    ],
+    navigation: [
+      { mode: 'KMŁ', route: 'Kraków Główny ↔ Wieliczka Rynek-Kopalnia', action: '以當日時刻表與售票頁為準；下車後步行前往 Daniłowicza 立坑入口。' },
+      { mode: 'PKP', route: 'Kraków Główny → Wrocław Główny', action: '目標 19:30 只是規劃錨點；開賣後依已購直達班次重排取行李與進站時間。' },
+    ],
+    dailyAlerts: [
+      '鹽礦全程階梯多、地下約 17–18°C；穿好走防滑鞋並攜薄外套。',
+      '克拉科夫→樂斯拉夫完成購票前，不延長 Kazimierz 活動到壓縮進站緩衝。',
+    ],
+    nightChecklist: [...standardNightChecklist, '抵達樂斯拉夫後確認隔日 Panorama 時段票、行李寄放與往波茲南的已購車票'],
+  },
+  5: {
+    cityKey: 'poznan',
+    entryIds: ['luggage-storage-transition', 'rail-ticket-and-delay-rights', 'daily-basics-wroclaw-water'],
+    note: '高強度轉場日；晚間先充電並下載隔日資料。',
+    addresses: [
+      address('Wrocław Główny', 'Piłsudskiego 105, 50-085 Wrocław', 'Wroclaw Glowny, Pilsudskiego 105, Wroclaw'),
+      address('拉茨瓦維採全景畫', 'Jana Ewangelisty Purkyniego 11, 50-155 Wrocław', 'Panorama Raclawicka, Purkyniego 11, Wroclaw'),
+      address('百年廳', 'Wystawowa 1, 51-618 Wrocław', 'Centennial Hall, Wystawowa 1, Wroclaw'),
+      address('樂斯拉夫主教座堂', 'plac Katedralny 18, 50-329 Wrocław', 'Wroclaw Cathedral, plac Katedralny 18, Wroclaw'),
+      address('Poznań Główny', 'Dworcowa 2, 61-801 Poznań', 'Poznan Glowny, Dworcowa 2, Poznan'),
+      accommodationAddress('Poznań'),
+    ],
+    navigation: [
+      { mode: '步行／市內交通', route: '老城 → Panorama → 百年廳 → 座堂島', action: '百年廳跨區移動當日用 Jakdojade 選取實際電車；預留從座堂島回車站取行李的時間。' },
+      { mode: 'PKP', route: 'Wrocław Główny → Poznań Główny', action: '目標 19:00 不是已確定班次；依已購票券的車次與月台行動。' },
+    ],
+    dailyAlerts: [
+      '百年廳 10/28 圓頂展廳不開放，只排外觀與周邊；出發前仍重查當日公告。',
+      '點燈人沒有對外保證的出發分鐘；日落前到座堂島等待，不把 16:45 當成確定時刻。',
+    ],
+    nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票'],
+  },
+  6: {
+    cityKey: 'warsaw',
+    entryIds: ['luggage-storage-transition', 'rail-ticket-and-delay-rights', 'dining-reservation-and-backup'],
+    note: '城際火車與華沙住宿均以離線地址備援。',
+    addresses: [
+      address('Poznań Główny', 'Dworcowa 2, 61-801 Poznań', 'Poznan Glowny, Dworcowa 2, Poznan'),
+      address('波茲南主教座堂', 'Ostrów Tumski 17, 61-109 Poznań', 'Poznan Cathedral, Ostrow Tumski 17, Poznan'),
+      address('波茲南市政廳', 'Stary Rynek 1, 61-768 Poznań', 'Poznan Town Hall, Stary Rynek 1, Poznan', '博物館整修閉館，此地點用於 12:00 山羊鐘樓秀外觀。'),
+      address('帝王城堡', 'Święty Marcin 80/82, 61-809 Poznań', 'Zamek Culture Centre, Swiety Marcin 80 82, Poznan'),
+      address('Warszawa Centralna', 'al. Jerozolimskie 54, 00-024 Warszawa', 'Warszawa Centralna, al. Jerozolimskie 54, Warszawa'),
+      accommodationAddress('Warszawa'),
+    ],
+    navigation: [
+      { mode: '步行／市內交通', route: '教堂島 → 舊城市場 → 帝王城堡 → Poznań Główny', action: '11:45 前到市政廳正面；全程依當日交通與步行時間保留取行李緩衝。' },
+      { mode: 'PKP', route: 'Poznań Główny → Warszawa Centralna', action: '目標 17:30 只作為排程上限；實際車次、座位與月台依已購票及當日電子牌。' },
+    ],
+    dailyAlerts: [
+      '市政廳博物館整修閉館；主行程只看官方確認的 12:00 山羊鐘樓秀。',
+      '聖馬丁牛角麵包尚未選定分店；待分店與營業確定後再導航，不預填地址。',
+    ],
+    nightChecklist: [...standardNightChecklist, '確認 Day 7 三館已購時段、入場地址與晚餐訂位狀態'],
+  },
+  7: {
+    cityKey: 'warsaw',
+    entryIds: ['calendar-sunday-and-all-saints', 'dining-reservation-and-backup', 'emergency-taiwan-representative'],
+    note: '諸聖節前夕，逐店確認晚餐與交通；離線備妥 SOS 卡。',
+    addresses: [
+      address('華沙皇家城堡', 'plac Zamkowy 4, 00-277 Warszawa', 'Royal Castle Warsaw, plac Zamkowy 4, Warszawa'),
+      address('POLIN 波蘭猶太人歷史博物館', 'Mordechaja Anielewicza 6, 00-157 Warszawa', 'POLIN Museum, Mordechaja Anielewicza 6, Warszawa'),
+      address('華沙起義博物館', 'Grzybowska 79, 00-844 Warszawa', 'Warsaw Rising Museum, Grzybowska 79, Warszawa'),
+      accommodationAddress('Warszawa'),
+    ],
+    navigation: [
+      { mode: '步行／市內交通', route: '皇家城堡 → POLIN → 華沙起義博物館', action: '以已購入場時段倒推離館時間；館際移動當日用 Jakdojade 重算。' },
+      { mode: '步行／餐廳', route: '起義博物館 → 華沙晚餐', action: '晚餐地址待訂位／分店確定後填入；不以備選店名臆測導航。' },
+    ],
+    dailyAlerts: [
+      '三館內容量大；保留已購時段，不為追完所有展區壓縮館際移動。',
+      '10/31 為諸聖節前夕，今晚重查明日市區交通、機場與店家特別營運。',
+    ],
+    nightChecklist: [...standardNightChecklist, '整理 TAX FREE 商品與文件，確認需海關查驗的託運品不先交運', '確認 QR 260 報到、行李額度、機場交通與護照收納位置'],
+  },
+  8: {
+    cityKey: 'warsaw',
+    entryIds: ['tax-free-vat-refund', 'aviation-baggage-and-connection', 'documents-travel-registration'],
+    note: '離開 EU 前處理退稅；託運商品若需查驗，先完成海關程序。',
+    addresses: [
+      accommodationAddress('Warszawa'),
+      address('Warszawa Centralna', 'al. Jerozolimskie 54, 00-024 Warszawa', 'Warszawa Centralna, al. Jerozolimskie 54, Warszawa'),
+      address('華沙蕭邦機場', 'Żwirki i Wigury 1, 00-906 Warszawa', 'Warsaw Chopin Airport, Żwirki i Wigury 1, Warszawa'),
+      address('駐波蘭台北代表處', '30th Floor, ul. Emilii Plater 53, 00-113 Warszawa', 'Taipei Representative Office in Poland, Emilii Plater 53, Warszawa', '僅供緊急狀況備援，不列為一般行程站點。'),
+    ],
+    navigation: [
+      { mode: 'SKM', route: '華沙市中心 → 蕭邦機場', action: '當日查 WTP 即時發車、月台與改道；如要退稅或託運商品查驗，比一般報到更早抵達。' },
+      { mode: '航空／出境', route: 'WAW → DOH → HKG → TPE', action: '依電子機票與報到櫃檯確認行李直掛終點與轉機程序；每段登機牌離線保存。' },
+    ],
+    dailyAlerts: [
+      '離開 EU：如有 TAX FREE，先完成必要的出口確認與商品查驗，再交付託運行李。',
+      '10/31 為諸聖節前夕；市區交通與機場營運以當日公告為準，不用平日末班資料倒推。',
+    ],
+    nightChecklist: [...standardNightChecklist, '抵台後確認行李已全數取得，保留登機牌、TAX FREE 與必要收據至程序結束'],
+  },
 };
