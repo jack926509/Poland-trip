@@ -208,8 +208,8 @@ export const days = [
   {
     n: 7, date: '10/30 (五)', city: '華沙',
     title: 'POLIN + 起義 + 皇家城堡',
-    headline: '華沙告別日 · 三大博物館',
-    tag: 'Capital',
+    headline: '三館連看 · 老城最後晚餐',
+    tag: 'Museums',
     intensity: '高',
     hardConstraints: ['POLIN、起義博物館、皇家城堡皆需控制停留上限', '❗皇家城堡 10 月冬季可能 17:00 就閉館，須先確認再定順序', '晚餐建議預約'],
     mustBook: ['❗尚未訂 · POLIN 波蘭猶太人歷史博物館', '❗尚未訂 · 華沙起義博物館', '❗尚未訂 · 皇家城堡（先確認開放時間）', '❗尚未訂 · 華沙最後晚餐'],
