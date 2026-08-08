@@ -33,7 +33,7 @@ src/data/dining.js               # 新增：michelinSummary、michelinReservatio
 src/data/tickets.js              # 新增：fares（21 列速查表）、ticketsByCity（data.js 17 項）
 src/data/transit.js              # 新增：transitFares、airportTransit、recommendedApps、passChecklist、usefulRoutes、practical×6
 src/data/shopping.js             # 新增：souvenirCards×14、luxuryShopping×2、shopping×7、zabkaCards×7
-src/data/essentials.js           # 新增：phrases×12、packingDefault、about×9、safety、preDepartureNotes×9
+src/data/essentials.js           # 新增：phrases×12、packingDefault、about×8、safety、preDepartureNotes×9
 src/templates/layout.mjs         # 新增：共用外殼（<head>、nav、footer）
 src/templates/home.mjs           # 新增：首頁
 src/templates/day.mjs            # 新增：8 個每日頁共用的渲染函式
@@ -874,12 +874,12 @@ git commit -m "feat: 建立 shopping.js 資料層"
 
 **Files:**
 - Create: `src/data/essentials.js`
-- 來源：`redesign/data.js:599-613`（phrases 12 筆）、`:614-620`（packingDefault）、`:621-631`（about 9 筆）、`:481-502`（safety）、`poland-travel-guide-final.html:527-535`（notes 9 項 checklist）
+- 來源：`redesign/data.js:599-613`（phrases 12 筆）、`:614-620`（packingDefault）、`:621-631`（about 8 筆）、`:481-502`（safety）、`poland-travel-guide-final.html:527-535`（notes 8 項 checklist，另依校正表補入百年廳提醒，共輸出 9 筆）
 
 **Interfaces:**
-- Produces: `export const phrases`（12 筆三元陣列）、`export const packingDefault`（物件，4 分類）、`export const about`（9 筆二元陣列）、`export const safety`（物件 `{emergency[], embassy[], tips[]}`）、`export const preDepartureNotes`（9 筆字串，已套用校正表 1-4／1-5／3-3）
+- Produces: `export const phrases`（12 筆三元陣列）、`export const packingDefault`（物件，4 分類）、`export const about`（8 筆二元陣列）、`export const safety`（物件 `{emergency[], embassy[], tips[]}`）、`export const preDepartureNotes`（9 筆字串，已套用校正表 1-4／1-5／3-3）
 
-- [ ] **Step 1: 轉錄 `phrases`（12 筆，`redesign/data.js:599-613` 原樣轉錄，三元陣列 `[中文, 波蘭語, 音譯]`，其中 3 筆音譯為空字串）**
+- [ ] **Step 1: 轉錄 `phrases`（12 筆，`redesign/data.js:599-613` 原樣轉錄，三元陣列 `[中文, 波蘭語, 音譯]`，其中 4 筆音譯為空字串）**
 
 ```js
 export const phrases = [
@@ -895,7 +895,7 @@ export const packingDefault = {
 };
 ```
 
-- [ ] **Step 3: 轉錄 `about`（9 筆，`:621-631` 原樣轉錄，二元陣列 `[標籤, 內容]`）**
+- [ ] **Step 3: 轉錄 `about`（8 筆，`:621-631` 原樣轉錄，二元陣列 `[標籤, 內容]`）**
 
 ```js
 export const about = [
@@ -954,7 +954,7 @@ node --check src/data/essentials.js
 node -e "
 import('./src/data/essentials.js').then(m => {
   console.assert(m.phrases.length===12,'phrases 12');
-  console.assert(m.about.length===9,'about 9');
+  console.assert(m.about.length===8,'about 8');
   console.assert(m.preDepartureNotes.length===9,'preDepartureNotes 9');
   const joined = m.preDepartureNotes.join(' ');
   console.assert(!joined.includes('15:35') && !joined.includes('15:50'), 'no wrong sunset time');
