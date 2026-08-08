@@ -86,7 +86,7 @@
 欄位：`city, en, items[]`；`items[]` 子欄位 `tag, name, note, book, map(選填)`
 筆數：華沙 11、克拉科夫 10、樂斯拉夫 8、波茲南 6。
 
-### 13. `foodBackup`(陣列，**4 筆**，依城市分組，共 33 個備案餐廳項目)
+### 13. `foodBackup`(陣列，**4 筆**，依城市分組，共 32 個備案餐廳項目)
 用途：主餐廳客滿時的備案清單。
 欄位同 `cityFood`：`city, en, items[]`（子欄位 `tag, name, note, book, map選填`）
 筆數：華沙 10、克拉科夫 10、樂斯拉夫 6、波茲南 7。

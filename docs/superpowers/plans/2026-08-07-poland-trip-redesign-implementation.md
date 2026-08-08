@@ -492,7 +492,7 @@ git commit -m "feat: 建立 cities.js 資料層並套用校正表 3-1/3-2/拍照
 
 **Files:**
 - Create: `src/data/dining.js`
-- 來源：`poland-travel-guide-final.html:353-378`（michelin section 05：總表 4 列 + 訂位表 9 列）、`:186-217`／`:236-262`／`:280-291`／`:322-336`（4 城美食表，各 21/13/11/11 列，位於各城 section 的 `<h3>美食 · Food</h3>` 之後）、`redesign/data.js:377-391`（foods 12 筆）、`:392-437`（cityFood 4 城共 35 筆）、`:438-480`（foodBackup 4 城共 33 筆）
+- 來源：`poland-travel-guide-final.html:353-378`（michelin section 05：總表 4 列 + 訂位表 9 列）、`:186-217`／`:236-262`／`:280-291`／`:322-336`（4 城美食表，各 21/13/11/11 列，位於各城 section 的 `<h3>美食 · Food</h3>` 之後）、`redesign/data.js:377-391`（foods 12 筆）、`:392-437`（cityFood 4 城共 35 筆）、`:438-480`（foodBackup 4 城共 32 筆）
 
 **Interfaces:**
 - Produces:
@@ -539,7 +539,7 @@ export const cityDining = {
 };
 ```
 
-- [ ] **Step 3: 轉錄 `cityFood`（4 城共 35 筆，`redesign/data.js:392-437` 原樣轉錄）與 `foodBackup`（4 城共 33 筆，`:438-480` 原樣轉錄）**
+- [ ] **Step 3: 轉錄 `cityFood`（4 城共 35 筆，`redesign/data.js:392-437` 原樣轉錄）與 `foodBackup`（4 城共 32 筆，`:438-480` 原樣轉錄）**
 
 兩者結構相同：`{city, en, items:[{tag, name, note, book, map?}]}`，這兩個集合校正表未列出衝突，原樣轉錄即可。
 
