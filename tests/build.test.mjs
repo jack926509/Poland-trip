@@ -9,7 +9,15 @@ import { shopping, souvenirCards, souvenirShops, luxuryShopping, zabkaCards } fr
 import { fares, ticketsByCity } from '../src/data/tickets.js';
 import { airportTransit, passChecklist, practical, recommendedApps, transitFares, usefulRoutes } from '../src/data/transit.js';
 import { bookingTiers, days, flights, reservations, stay, trains } from '../src/data/trip.js';
-import { databaseEntries, readinessItems, dayOperations } from '../src/data/travel-database.js';
+import {
+  databaseEntries,
+  databaseSections,
+  dayOperations,
+  readinessItems,
+  statusLabels,
+  validateTravelDatabase,
+} from '../src/data/travel-database.js';
+import { renderDatabase } from '../src/templates/database.mjs';
 
 const distDir = path.resolve('dist');
 const expectedFiles = [
@@ -53,6 +61,67 @@ test('自由行資料庫遵守統一資料契約且不含私人館址', () => {
   assert.equal(readinessItems.length, 8);
   assert.deepEqual(Object.keys(dayOperations).map(Number), [1, 2, 3, 4, 5, 6, 7, 8]);
   assert.ok(!JSON.stringify({ databaseEntries, readinessItems, dayOperations }).includes('Al. Jerozolimskie 179'));
+});
+
+test('自由行資料庫的狀態、來源、日期與關聯資料符合完整性契約', () => {
+  assert.doesNotThrow(() => validateTravelDatabase({
+    entries: databaseEntries,
+    sections: databaseSections,
+    readiness: readinessItems,
+    operations: dayOperations,
+    labels: statusLabels,
+  }));
+
+  assert.throws(
+    () => validateTravelDatabase({
+      entries: [{ ...databaseEntries[0], status: '未定義狀態' }, ...databaseEntries.slice(1)],
+      sections: databaseSections,
+      readiness: readinessItems,
+      operations: dayOperations,
+      labels: statusLabels,
+    }),
+    /未知狀態/,
+  );
+});
+
+test('資料庫模板會跳脫資料文字並拒絕非 HTTPS 官方來源', () => {
+  const html = renderDatabase({
+    entries: [{
+      id: 'unsafe-entry',
+      section: 'unsafe-section',
+      category: '<script>category()</script>',
+      cityKey: null,
+      title: '<img src=x onerror=alert(1)>',
+      summary: '<script>summary()</script>',
+      status: 'pending',
+      sourceUrl: 'javascript:alert(1)',
+      verifiedAt: null,
+      recheckAt: '2026-10-01',
+      offlineNote: 'A & B',
+      private: false,
+    }],
+    sections: [{ id: 'unsafe-section', label: '<b>危險標題</b>' }],
+    statusLabels,
+  });
+
+  assert.doesNotMatch(html, /<script>|<img src=x|javascript:/);
+  assert.ok(html.includes('&lt;script&gt;summary()&lt;/script&gt;'));
+  assert.ok(html.includes('&lt;b&gt;危險標題&lt;/b&gt;'));
+  assert.ok(html.includes('A &amp; B'));
+  assert.ok(html.includes('尚無安全的 HTTPS 官方來源'));
+});
+
+test('產出不含舊館址、舊 Auschwitz 入口或敏感資料欄位標籤', () => {
+  const rendered = expectedFiles.map(read).join('\n');
+  for (const forbidden of [
+    'Al. Jerozolimskie 179',
+    'Więźniów Oświęcimia 20',
+    '護照號：',
+    '完整卡號：',
+    '保單號：',
+  ]) {
+    assert.ok(!rendered.includes(forbidden), `產出仍含禁止內容：${forbidden}`);
+  }
 });
 
 test('駐波蘭代表處使用外交部 2026-08-08 查證的正確館址', () => {

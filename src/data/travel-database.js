@@ -368,3 +368,114 @@ export const dayOperations = {
     nightChecklist: [...standardNightChecklist, '抵台後確認行李已全數取得，保留登機牌、TAX FREE 與必要收據至程序結束'],
   },
 };
+
+const isoDatePattern = /^\d{4}-\d{2}-\d{2}$/;
+const forbiddenPublicContent = [
+  'Al. Jerozolimskie 179',
+  'Więźniów Oświęcimia 20',
+  '護照號：',
+  '完整卡號：',
+  '保單號：',
+];
+
+function isHttpsUrl(value) {
+  if (typeof value !== 'string' || !value.startsWith('https://')) return false;
+  try {
+    return new URL(value).protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
+function assertDate(value, field, id, required) {
+  if (value == null && !required) return;
+  if (typeof value !== 'string' || !isoDatePattern.test(value)) {
+    throw new Error(`${id} 的 ${field} 必須是 YYYY-MM-DD${required ? '' : ' 或 null'}`);
+  }
+}
+
+/**
+ * 驗證自由行資料庫的公開資料契約。
+ * 可由測試注入資料，亦在模組載入時檢查正式資料，避免錯誤進入產出頁面。
+ */
+export function validateTravelDatabase({ entries, sections, readiness, operations, labels }) {
+  const sectionIds = new Set();
+  for (const section of sections) {
+    if (!section.id || sectionIds.has(section.id)) throw new Error(`資料庫 section ID 重複或空白：${section.id ?? ''}`);
+    sectionIds.add(section.id);
+  }
+
+  const entryIds = new Set();
+  const entriesById = new Map();
+  const sectionCounts = new Map(sections.map(section => [section.id, 0]));
+  for (const entry of entries) {
+    if (!entry.id || entryIds.has(entry.id)) throw new Error(`資料庫 entry ID 重複或空白：${entry.id ?? ''}`);
+    entryIds.add(entry.id);
+    entriesById.set(entry.id, entry);
+
+    if (!Object.hasOwn(labels, entry.status)) throw new Error(`${entry.id} 使用未知狀態：${entry.status}`);
+    if (!sectionIds.has(entry.section)) throw new Error(`${entry.id} 指向不存在的 section：${entry.section}`);
+    sectionCounts.set(entry.section, sectionCounts.get(entry.section) + 1);
+
+    if (entry.sourceUrl != null && !isHttpsUrl(entry.sourceUrl)) {
+      throw new Error(`${entry.id} 的 sourceUrl 必須使用 HTTPS`);
+    }
+    if (entry.status === 'verified' && !isHttpsUrl(entry.sourceUrl)) {
+      throw new Error(`${entry.id} 已查證但缺少 HTTPS 官方來源`);
+    }
+
+    const verificationRequired = entry.status === 'verified' || entry.status === 'recheck';
+    assertDate(entry.verifiedAt, 'verifiedAt', entry.id, verificationRequired);
+    assertDate(entry.recheckAt, 'recheckAt', entry.id, entry.status === 'recheck');
+  }
+
+  for (const [sectionId, count] of sectionCounts) {
+    if (count === 0) throw new Error(`資料庫 section 沒有任何資料：${sectionId}`);
+  }
+
+  const readinessIds = new Set();
+  for (const item of readiness) {
+    if (!item.id || readinessIds.has(item.id)) throw new Error(`readiness ID 重複或空白：${item.id ?? ''}`);
+    readinessIds.add(item.id);
+    const entry = entriesById.get(item.entryId);
+    if (!entry) throw new Error(`${item.id} 指向不存在的 entry：${item.entryId}`);
+    if (item.status !== entry.status) throw new Error(`${item.id} 的狀態與 ${item.entryId} 不一致`);
+  }
+
+  for (let day = 1; day <= 8; day += 1) {
+    const operation = operations[day];
+    if (!operation) throw new Error(`Day ${day} 缺少每日操作資料`);
+    for (const field of ['addresses', 'navigation', 'dailyAlerts', 'nightChecklist']) {
+      if (!Array.isArray(operation[field]) || operation[field].length === 0) {
+        throw new Error(`Day ${day} 的 ${field} 必須是非空陣列`);
+      }
+      for (const item of operation[field]) {
+        if (typeof item === 'object' && item !== null) {
+          for (const key of ['url', 'link']) {
+            if (item[key] != null && !isHttpsUrl(item[key])) {
+              throw new Error(`Day ${day} 的 ${field}.${key} 必須使用 HTTPS`);
+            }
+          }
+        }
+      }
+    }
+    for (const entryId of operation.entryIds || []) {
+      if (!entriesById.has(entryId)) throw new Error(`Day ${day} 指向不存在的 entry：${entryId}`);
+    }
+  }
+
+  const serialized = JSON.stringify({ entries, sections, readiness, operations });
+  for (const forbidden of forbiddenPublicContent) {
+    if (serialized.includes(forbidden)) throw new Error(`公開資料含禁止內容：${forbidden}`);
+  }
+
+  return true;
+}
+
+validateTravelDatabase({
+  entries: databaseEntries,
+  sections: databaseSections,
+  readiness: readinessItems,
+  operations: dayOperations,
+  labels: statusLabels,
+});

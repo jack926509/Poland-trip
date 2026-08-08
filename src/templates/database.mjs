@@ -18,25 +18,47 @@ const displaySectionLabels = {
   accommodation: '住宿',
 };
 
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function safeHttpsUrl(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' ? escapeHtml(url.href) : null;
+  } catch {
+    return null;
+  }
+}
+
 function formatDate(value) {
-  return value || '未設定';
+  return escapeHtml(value || '未設定');
 }
 
 function renderCard(entry, statusLabels) {
-  const statusText = statusLabels[entry.status] || entry.status;
+  const statusText = escapeHtml(statusLabels[entry.status] || entry.status);
   const statusClass = entry.status === 'private-required' ? 'private' : entry.status;
-  const source = entry.sourceUrl
-    ? `<a href="${entry.sourceUrl}" target="_blank" rel="noopener">開啟官方來源 →</a>`
-    : '尚無官方來源';
+  const safeStatusClass = ['verified', 'recheck', 'pending', 'private'].includes(statusClass)
+    ? statusClass
+    : 'pending';
+  const safeSourceUrl = safeHttpsUrl(entry.sourceUrl);
+  const source = safeSourceUrl
+    ? `<a href="${safeSourceUrl}" target="_blank" rel="noopener noreferrer">開啟官方來源 →</a>`
+    : entry.sourceUrl ? '尚無安全的 HTTPS 官方來源' : '尚無官方來源';
   return `
-    <article class="database-card" id="entry-${entry.id}">
+    <article class="database-card" id="entry-${escapeHtml(entry.id)}">
       <div class="database-card-header">
-        <p class="eyebrow">${entry.category}</p>
-        <span class="status-${statusClass}">狀態：${statusText}</span>
+        <p class="eyebrow">${escapeHtml(entry.category)}</p>
+        <span class="status-${safeStatusClass}">狀態：${statusText}</span>
       </div>
-      <h3>${entry.title}</h3>
-      <p>${entry.summary}</p>
-      <p><b>離線備註：</b>${entry.offlineNote}</p>
+      <h3>${escapeHtml(entry.title)}</h3>
+      <p>${escapeHtml(entry.summary)}</p>
+      <p><b>離線備註：</b>${escapeHtml(entry.offlineNote)}</p>
       <dl class="source-meta">
         <div><dt>查證日期</dt><dd>${formatDate(entry.verifiedAt)}</dd></div>
         <div><dt>重查日期</dt><dd>${formatDate(entry.recheckAt)}</dd></div>
@@ -53,7 +75,7 @@ function renderSos(entries, statusLabels) {
       <div class="section-heading"><span class="section-num">SOS</span><h2 id="sos-heading">SOS 離線急救卡</h2></div>
       <p class="lead">危及生命先撥 <a href="tel:112">112</a> 或 <a href="tel:999">999</a>；其餘狀況依下列卡片處理，並保留可離線查看的聯絡資料。</p>
       <div class="sos-grid">
-        ${representative ? renderCard(representative, statusLabels).replace('+48 668 027 574', '<a href="tel:+48668027574">+48 668 027 574</a>') : ''}
+        ${representative ? `${renderCard(representative, statusLabels)}<p><a href="tel:+48668027574">撥打急難救助電話 +48 668 027 574</a></p>` : ''}
         ${medical ? renderCard(medical, statusLabels) : ''}
       </div>
     </section>`;
@@ -61,16 +83,16 @@ function renderSos(entries, statusLabels) {
 
 export function renderDatabase({ entries, sections, statusLabels }) {
   const index = sections.map(section => {
-    const label = displaySectionLabels[section.id] || section.label;
-    return `<li><a href="#section-${section.id}">${label}</a></li>`;
+    const label = escapeHtml(displaySectionLabels[section.id] || section.label);
+    return `<li><a href="#section-${escapeHtml(section.id)}">${label}</a></li>`;
   }).join('');
   const sectionCards = sections.map(section => {
-    const label = displaySectionLabels[section.id] || section.label;
+    const label = escapeHtml(displaySectionLabels[section.id] || section.label);
     const cards = entries.filter(entry => entry.section === section.id)
       .map(entry => renderCard(entry, statusLabels)).join('');
     return `
-      <section class="section" id="section-${section.id}" aria-labelledby="heading-${section.id}">
-        <div class="section-heading"><span class="section-num">資料庫</span><h2 id="heading-${section.id}">${label}</h2></div>
+      <section class="section" id="section-${escapeHtml(section.id)}" aria-labelledby="heading-${escapeHtml(section.id)}">
+        <div class="section-heading"><span class="section-num">資料庫</span><h2 id="heading-${escapeHtml(section.id)}">${label}</h2></div>
         <div class="grid-wide">${cards || '<p>尚無資料。</p>'}</div>
       </section>`;
   }).join('');

@@ -10,3 +10,5 @@
 - Task 2: complete — 21-page build, SOS-first database page, shared navigation and homepage toolkit entry; tests 27/27.
 - Task 3: fix round 1/5 (2 addressed, 0 open; commits `805c146`, `b16e8d7`).
 - Task 3: complete — homepage readiness dashboard with 8 linked, status-labelled categories; tests 28/28.
+- Task 4: fix round 1/5 (1 addressed, 0 open; commits `cbbf407`, `eb0af75`).
+- Task 4: complete — Day 1–8 verified operation cards, navigation, alerts and nightly checks; tests 30/30.
