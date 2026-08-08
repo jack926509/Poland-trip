@@ -1,10 +1,10 @@
 # 波蘭旅遊資料內容盤點
 
 來源檔案：
-- A. `/Users/xieh/Desktop/技術開發/Poland-trip/redesign/data.js`（631 行）
-- B. `/Users/xieh/Desktop/技術開發/Poland-trip/poland-travel-guide-final.html`（618 行）
+- A. `/Users/xieh/Desktop/技術開發/Poland-trip/archive/redesign/data.js`（631 行，舊資料封存）
+- B. `/Users/xieh/Desktop/技術開發/Poland-trip/archive/poland-travel-guide-final.html`（618 行，新版爬蟲來源封存）
 
-驗證指令：`grep -c '<section id=' poland-travel-guide-final.html` → **10**（與 nav.tabs 的 10 個分頁連結一致）
+驗證指令：`grep -c '<section id=' archive/poland-travel-guide-final.html` → **10**（與 nav.tabs 的 10 個分頁連結一致）
 
 ---
 
@@ -89,7 +89,7 @@
 ### 13. `foodBackup`(陣列，**4 筆**，依城市分組，共 32 個備案餐廳項目)
 用途：主餐廳客滿時的備案清單。
 欄位同 `cityFood`：`city, en, items[]`（子欄位 `tag, name, note, book, map選填`）
-筆數：華沙 10、克拉科夫 10、樂斯拉夫 6、波茲南 7。
+筆數：華沙 9、克拉科夫 10、樂斯拉夫 6、波茲南 7。
 
 ### 14. `safety`（物件，非陣列）
 用途：緊急聯絡與安全提醒。
@@ -227,7 +227,7 @@
 | 容器 id | 對應城市 | center 座標 | zoom | 圖釘數 |
 |---|---|---|---|---|
 | `leaflet-warsaw` | 華沙 Warszawa | `[52.235, 21.01]` | 13 | 14 |
-| `leaflet-krakow` | 克拉科夫 Kraków | `[50.058, 19.94]` | 13 | 20 |
+| `leaflet-krakow` | 克拉科夫 Kraków | `[50.058, 19.94]` | 13 | 19 |
 | `leaflet-wroclaw` | 樂斯拉夫 Wrocław | `[51.111, 17.045]` | 13 | 9 |
 | `leaflet-poznan` | 波茲南 Poznań | `[52.408, 16.935]` | 13 | 8 |
 

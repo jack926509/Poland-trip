@@ -2,6 +2,13 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { test } from 'node:test';
+import { cities, cityStories, photoSpots, photoCredits, mapPins, attractions } from '../src/data/cities.js';
+import { cityDining, cityFood, foodBackup, foods, michelinSummary, michelinReservations } from '../src/data/dining.js';
+import { about, packingDefault, phrases, preDepartureNotes, safety } from '../src/data/essentials.js';
+import { shopping, souvenirCards, souvenirShops, luxuryShopping, zabkaCards } from '../src/data/shopping.js';
+import { fares, ticketsByCity } from '../src/data/tickets.js';
+import { airportTransit, passChecklist, practical, recommendedApps, transitFares, usefulRoutes } from '../src/data/transit.js';
+import { bookingTiers, days, flights, reservations, stay, trains } from '../src/data/trip.js';
 
 const distDir = path.resolve('dist');
 const expectedFiles = [
@@ -41,6 +48,51 @@ function htmlFiles() {
 test('dist 正好產出規格要求的 20 個 HTML', () => {
   assert.deepEqual(htmlFiles(), [...expectedFiles].sort());
   assert.ok(fs.existsSync(path.join(distDir, 'assets/main.css')), '缺少 assets/main.css');
+});
+
+test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
+  assert.equal(days.length, 8);
+  assert.equal(cities.length, 4);
+  assert.equal(cityStories.length, 4);
+  assert.equal(photoSpots.length, 10);
+  assert.equal(photoCredits.length, 8);
+  assert.deepEqual(Object.fromEntries(Object.entries(mapPins).map(([city, data]) => [city, data.points.length])), {
+    warsaw: 14, krakow: 19, wroclaw: 9, poznan: 8,
+  });
+  assert.deepEqual(Object.fromEntries(Object.entries(attractions).map(([city, items]) => [city, items.length])), {
+    warsaw: 12, krakow: 6, wroclaw: 8, poznan: 9,
+  });
+
+  assert.equal(trains.length, 5);
+  assert.deepEqual(bookingTiers.map(tier => tier.items.length), [6, 6, 4]);
+  assert.deepEqual({ out: flights.out.length, back: flights.back.length }, { out: 5, back: 5 });
+  assert.equal(stay.length, 4);
+  assert.equal(reservations.length, 8);
+
+  assert.equal(michelinSummary.length, 4);
+  assert.equal(michelinReservations.length, 9);
+  assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
+    warsaw: 21, krakow: 13, wroclaw: 11, poznan: 11,
+  });
+  assert.deepEqual(cityFood.map(group => group.items.length), [11, 10, 8, 6]);
+  assert.deepEqual(foodBackup.map(group => group.items.length), [9, 10, 6, 7]);
+  assert.equal(foods.length, 12);
+
+  assert.equal(fares.length, 21);
+  assert.deepEqual(ticketsByCity.map(group => group.items.length), [6, 6, 2, 3]);
+  assert.deepEqual([
+    transitFares.length, airportTransit.length, recommendedApps.length,
+    passChecklist.length, usefulRoutes.length, practical.length,
+  ], [4, 6, 4, 4, 5, 6]);
+  assert.deepEqual([
+    souvenirCards.length, luxuryShopping.length, souvenirShops.length,
+    shopping.length, zabkaCards.length,
+  ], [14, 2, 7, 7, 7]);
+  assert.deepEqual([
+    phrases.length, about.length, preDepartureNotes.length,
+    safety.emergency.length, safety.embassy.length, safety.tips.length,
+  ], [12, 8, 9, 5, 4, 4]);
+  assert.deepEqual(Object.values(packingDefault).map(items => items.length), [5, 5, 5, 4]);
 });
 
 test('每頁都有完整文件外殼、導覽、主要內容與頁尾', () => {
