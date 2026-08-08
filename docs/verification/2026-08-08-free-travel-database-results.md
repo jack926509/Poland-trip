@@ -2,7 +2,7 @@
 
 ## 結論
 
-- 自動建置、測試、連結與資料契約驗證通過：共產生 21 個 HTML，34 項測試全數通過。
+- 自動建置、測試、連結與資料契約驗證通過：共產生 21 個 HTML，40 項測試全數通過。
 - `verify.sh` 通過，`git diff --check` 無輸出。
 - 6 個指定頁面由本機靜態伺服器回傳 HTTP 200。
 - 真實瀏覽器視覺驗收：**BLOCKED**。指定的 browser-client 找不到任何可控制的瀏覽器，因此本次不能宣稱桌面、390×844、console 或水平溢位檢查通過，也沒有產生新的瀏覽器截圖。
@@ -15,13 +15,13 @@
 npm test
 ```
 
-結果：成功；`build 完成：21 頁已產生至 dist/`，共 34 項測試，34 pass、0 fail。
+結果：成功；`build 完成：21 頁已產生至 dist/`，共 40 項測試，40 pass、0 fail。
 
 ```sh
 env -u NODE_OPTIONS ./verify.sh
 ```
 
-結果：成功；重新產生 21 頁，34 項測試全數通過，結尾為 `✅ POLSKA 新版靜態網站自動驗收完成`。
+結果：成功；重新產生 21 頁，40 項測試全數通過，結尾為 `✅ POLSKA 新版靜態網站自動驗收完成`。
 
 ```sh
 git diff --check
@@ -46,10 +46,10 @@ done
 實際輸出：
 
 ```text
-index.html 200 15027
-practical/database.html 200 30235
-day-02.html 200 15092
-day-07.html 200 13924
+index.html 200 16535
+practical/database.html 200 41592
+day-02.html 200 19642
+day-07.html 200 15671
 practical/essentials.html 200 8786
 practical/booking.html 200 13469
 ```
@@ -58,10 +58,10 @@ practical/booking.html 200 13469
 
 | 頁面 | HTTP | bytes |
 | --- | ---: | ---: |
-| `index.html` | 200 | 15027 |
-| `practical/database.html` | 200 | 30235 |
-| `day-02.html` | 200 | 15092 |
-| `day-07.html` | 200 | 13924 |
+| `index.html` | 200 | 16535 |
+| `practical/database.html` | 200 | 41592 |
+| `day-02.html` | 200 | 19642 |
+| `day-07.html` | 200 | 15671 |
 | `practical/essentials.html` | 200 | 8786 |
 | `practical/booking.html` | 200 | 13469 |
 
