@@ -25,9 +25,7 @@ for (const secretLabel of ['護照號：', '完整卡號：', '保單號：']) a
 
 Run: `npm test`
 Expected: PASS, 0 failures.
-
 - [ ] **Step 3: Run repository verification**
 
 Run: `env -u NODE_OPTIONS ./verify.sh`
 Expected: final line `✅ POLSKA 新版靜態網站自動驗收完成`.
-

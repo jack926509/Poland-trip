@@ -27,4 +27,3 @@ Record build count, test count, browser pages, viewport results, console results
 - [ ] **Step 5: Final diff review**
 
 Run: `git status --short` and `git diff --stat`. Confirm `.agents/`, `.claude/`, and `skills-lock.json` remain untouched and unstaged.
-

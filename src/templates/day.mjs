@@ -31,7 +31,9 @@ function renderOperation(operation) {
       <li class="operation-address">
         <div><b>${escapeHtml(item.name)}</b><span>${escapeHtml(item.address)}</span></div>
         ${item.note ? `<p>${escapeHtml(item.note)}</p>` : ''}
+        ${item.entranceNote ? `<p><b>入口：</b>${escapeHtml(item.entranceNote)}</p>` : ''}
         ${safeUrl ? `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(item.name)} 導航">開啟導航 ↗</a>` : ''}
+        ${safeHttpsUrl(item.officialUrl) ? ` · <a href="${safeHttpsUrl(item.officialUrl)}" target="_blank" rel="noopener noreferrer">官網 ↗</a>` : ''}
       </li>`;
   }).join('') || '<li>這一天尚無地址資料。</li>';
 
@@ -43,6 +45,7 @@ function renderOperation(operation) {
     </li>`).join('') || '<li>這一天尚無移動步驟。</li>';
 
   const alerts = operation.dailyAlerts?.map(item => `<li>${escapeHtml(item)}</li>`).join('') || '<li>這一天尚無特別警示。</li>';
+  const unresolved = operation.unresolvedSteps?.map(item => `<li><b>${escapeHtml(item.label)}</b><p>${escapeHtml(item.reason)}</p></li>`).join('') || '<li>本日所有步驟都已有可靠地址。</li>';
 
   return `
     <section class="section operation-section" aria-labelledby="operation-heading">
@@ -64,6 +67,7 @@ function renderOperation(operation) {
         <span class="tag-red">今日注意</span>
         <ul class="check-list">${alerts}</ul>
       </div>
+      <details class="card operation-unresolved"><summary><b>待班次／住宿／分店確認的步驟</b></summary><ul class="check-list">${unresolved}</ul></details>
     </section>`;
 }
 

@@ -57,6 +57,7 @@ function build() {
       ...item,
       statusText: travelDatabase.statusLabels[item.status] || item.status,
     })),
+    databaseEntries: travelDatabase.databaseEntries,
   }));
 
   for (const day of trip.days) {

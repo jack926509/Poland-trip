@@ -18,8 +18,24 @@ function renderFlight(direction, legs) {
   </article>`;
 }
 
-export function renderHome({ meta, days, flights, cities, readinessItems }) {
+export function renderHome({ meta, days, flights, cities, readinessItems, databaseEntries }) {
   const mustBookCount = days.reduce((total, day) => total + day.mustBook.length, 0);
+  const entriesById = new Map(databaseEntries.map(entry => [entry.id, entry]));
+  const p0Incomplete = readinessItems.filter(item => item.priority === 'P0' && item.status !== 'verified');
+  const datedItems = readinessItems
+    .map(item => ({ item, deadline: entriesById.get(item.entryId)?.recheckAt }))
+    .filter(item => item.deadline)
+    .sort((left, right) => left.deadline.localeCompare(right.deadline));
+  const nextTicket = readinessItems.find(item => item.status === 'pending' && item.title.includes('票'));
+  const etias = readinessItems.find(item => item.id === 'passport-etias');
+  const offlinePack = readinessItems.find(item => item.id === 'offline-pack');
+  const summaryCards = [
+    ['P0 未完成', `${p0Incomplete.length} 項`, p0Incomplete[0]],
+    ['最近確認期限', datedItems[0]?.deadline || '尚無日期', datedItems[0]?.item],
+    ['下一張要買的票', nextTicket?.title || '目前無待購票', nextTicket],
+    ['ETIAS 狀態', etias?.statusText || '無資料', etias],
+    ['離線包狀態', offlinePack?.statusText || '無資料', offlinePack],
+  ].map(([label, value, item]) => `<a class="card card-link readiness-summary-card" href="${item ? `practical/database.html#entry-${item.entryId}` : 'practical/database.html'}"><span class="eyebrow">${label}</span><h3>${value}</h3><span>查看處理方式 →</span></a>`).join('');
   const readinessStatusOrder = { pending: 0, 'private-required': 0, recheck: 1, verified: 2 };
   const readinessCards = [...readinessItems]
     .sort((left, right) => readinessStatusOrder[left.status] - readinessStatusOrder[right.status])
@@ -30,6 +46,7 @@ export function renderHome({ meta, days, flights, cities, readinessItems }) {
           <span class="status-${statusClass}">狀態：${item.statusText}</span>
           <h3>${item.title}</h3>
           <p>${item.detail}</p>
+          <p><b>確認期限：</b>${entriesById.get(item.entryId)?.recheckAt || '無固定日期'}</p>
           <span>查看處理方式 →</span>
         </a>`;
     }).join('');
@@ -76,6 +93,7 @@ export function renderHome({ meta, days, flights, cities, readinessItems }) {
     <section class="section" id="readiness">
       <div class="section-heading"><span class="section-num">00 / Readiness</span><h2>出發準備度</h2></div>
       <p class="lead">尚未完成與需填私人資料的項目排在前面；本站只顯示進度，不公開訂位、證件、保單或付款內容。</p>
+      <div class="grid readiness-summary">${summaryCards}</div>
       <div class="grid">${readinessCards}</div>
     </section>
 

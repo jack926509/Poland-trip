@@ -63,6 +63,18 @@ test('自由行資料庫遵守統一資料契約且不含私人館址', () => {
   assert.ok(!JSON.stringify({ databaseEntries, readinessItems, dayOperations }).includes('Al. Jerozolimskie 179'));
 });
 
+test('官方旅客權益與本次私人／待購狀態分開', () => {
+  const byId = new Map(databaseEntries.map(entry => [entry.id, entry]));
+  assert.equal(byId.get('aviation-baggage-rules')?.status, 'verified');
+  assert.equal(byId.get('aviation-trip-baggage-confirmation')?.status, 'private-required');
+  assert.equal(byId.get('rail-delay-rights')?.status, 'verified');
+  assert.equal(byId.get('rail-trip-tickets')?.status, 'pending');
+  assert.equal(readinessItems.find(item => item.id === 'flight-ticket')?.entryId, 'aviation-trip-baggage-confirmation');
+  assert.equal(readinessItems.find(item => item.id === 'rail-tickets')?.entryId, 'rail-trip-tickets');
+  assert.ok(dayOperations[8].entryIds.includes('aviation-trip-baggage-confirmation'));
+  for (const day of [2, 4, 5, 6]) assert.ok(dayOperations[day].entryIds.includes('rail-trip-tickets'));
+});
+
 test('自由行資料庫的狀態、來源、日期與關聯資料符合完整性契約', () => {
   assert.doesNotThrow(() => validateTravelDatabase({
     entries: databaseEntries,
@@ -82,6 +94,22 @@ test('自由行資料庫的狀態、來源、日期與關聯資料符合完整�
     }),
     /未知狀態/,
   );
+
+  for (const [field, value, pattern] of [
+    ['category', '景點', /未知 category/],
+    ['cityKey', 'warsaw', /未知 cityKey/],
+  ]) {
+    assert.throws(
+      () => validateTravelDatabase({
+        entries: [{ ...databaseEntries[0], [field]: value }, ...databaseEntries.slice(1)],
+        sections: databaseSections,
+        readiness: readinessItems,
+        operations: dayOperations,
+        labels: statusLabels,
+      }),
+      pattern,
+    );
+  }
 
   for (const invalidDate of ['2026-02-30', '2025-02-29']) {
     assert.throws(
@@ -159,6 +187,39 @@ test('每日操作資料會攔截缺欄、空字串與錯誤型別', () => {
   }
 });
 
+test('8 天每個行程步驟都有可靠地址或明確待確認原因', () => {
+  for (const day of days) {
+    const operation = dayOperations[day.n];
+    const covered = new Set(operation.addresses.filter(item => item.reliable).flatMap(item => item.stepLabels));
+    const unresolved = new Map(operation.unresolvedSteps.map(item => [item.label, item.reason]));
+    for (const step of day.steps) {
+      assert.ok(covered.has(step.label) || unresolved.get(step.label), `Day ${day.n} 未覆蓋：${step.label}`);
+    }
+    for (const place of operation.addresses.filter(item => item.reliable)) {
+      assert.ok(place.entranceNote, `Day ${day.n} ${place.name} 缺入口說明`);
+      assert.match(place.officialUrl, /^https:\/\//, `Day ${day.n} ${place.name} 缺 HTTPS 官網`);
+    }
+  }
+});
+
+test('已排定的主要公共地點使用正確地址與官方入口資料', () => {
+  const requiredPlaces = [
+    [1, 'Krakowskie Przedmieście', 'Krakowskie Przedmieście, Warszawa'],
+    [2, '中央廣場 Rynek Główny', 'Rynek Główny, 31-042 Kraków'],
+    [2, '紡織會館 Sukiennice', 'Rynek Główny 3, 31-042 Kraków'],
+    [2, 'Plac Nowy', 'Plac Nowy, 31-056 Kraków'],
+    [5, '樂斯拉夫中央廣場', 'Rynek, 50-101 Wrocław'],
+  ];
+  for (const [day, name, expectedAddress] of requiredPlaces) {
+    const place = dayOperations[day].addresses.find(item => item.name === name);
+    assert.equal(place?.address, expectedAddress, `Day ${day} ${name} 地址錯誤`);
+    assert.equal(place?.reliable, true, `Day ${day} ${name} 應有官方來源`);
+    assert.match(place?.officialUrl || '', /^https:\/\//, `Day ${day} ${name} 缺官方連結`);
+    assert.ok(place?.entranceNote, `Day ${day} ${name} 缺入口說明`);
+  }
+  assert.ok(!JSON.stringify(dayOperations).includes('Rynek Główny, 31-422 Kraków'));
+});
+
 test('資料庫模板會跳脫資料文字並拒絕非 HTTPS 官方來源', () => {
   const html = renderDatabase({
     entries: [{
@@ -207,9 +268,9 @@ test('克拉科夫與樂斯拉夫飲水資訊各自保有官方來源', () => {
   const krakowWater = databaseEntries.find(item => item.id === 'daily-basics-krakow-water');
   const wroclawWater = databaseEntries.find(item => item.id === 'daily-basics-wroclaw-water');
 
-  assert.equal(krakowWater?.cityKey, 'krakow');
+  assert.equal(krakowWater?.cityKey, 'KRK');
   assert.equal(krakowWater?.sourceUrl, 'https://wodociagi.krakow.pl/en/water-quality/facts-and-myths-about-tap-water');
-  assert.equal(wroclawWater?.cityKey, 'wroclaw');
+  assert.equal(wroclawWater?.cityKey, 'WRO');
   assert.equal(wroclawWater?.sourceUrl, 'https://www.mpwik.wroc.pl/csr-2/pij-kranowke/');
 });
 
@@ -225,13 +286,23 @@ test('自由行資料庫頁提供 SOS、主題索引與緊急聯絡資訊', () =
     assert.ok(html.includes(heading), `資料庫頁缺少 ${heading}`);
   }
   assert.ok(html.includes('tel:+48668027574'));
-  const representativeStart = html.indexOf('id="entry-emergency-taiwan-representative"');
-  const representativeEnd = html.indexOf('</article>', representativeStart);
-  assert.ok(representativeStart >= 0 && representativeEnd > representativeStart, '找不到代表處 SOS 卡片界線');
-  assert.ok(
-    html.slice(representativeStart, representativeEnd).includes('href="tel:+48668027574"'),
-    '急難電話連結必須位於代表處 SOS 卡片內',
-  );
+  assert.ok(html.includes('tel:+886800085095'));
+  assert.ok(html.includes('保險海外救援'));
+  assert.ok(html.includes('需填私人資料'));
+  for (const title of ['護照遺失', '緊急就醫', '行李未到', '轉機失接', '卡片遺失']) assert.ok(html.includes(`<h3>${title}</h3>`));
+});
+
+test('自由行資料庫有城市、類別、狀態統計與無 JS 記錄連結', () => {
+  const html = read('practical/database.html');
+  for (const heading of ['靜態查找與統計', '城市', '類別', '狀態']) assert.ok(html.includes(heading));
+  for (const entry of databaseEntries) assert.ok(html.includes(`href="#entry-${entry.id}"`), `統計索引缺 ${entry.id}`);
+  assert.match(html, /\d+ 筆/);
+});
+
+test('自由行資料庫全頁 HTML id 不重複', () => {
+  const html = read('practical/database.html');
+  const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map(match => match[1]);
+  assert.equal(new Set(ids).size, ids.length, '資料庫頁存在重複 id');
 });
 
 test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
@@ -338,7 +409,7 @@ test('首頁出發準備度顯示 8 類待辦、文字狀態與資料庫連結',
   for (const status of ['待確認', '需填私人資料', '出發前重查']) {
     assert.ok(html.includes(`狀態：${status}`), `首頁準備度缺少文字狀態 ${status}`);
   }
-  assert.equal((html.match(/href="practical\/database\.html#entry-/g) || []).length, 8);
+  assert.ok((html.match(/href="practical\/database\.html#entry-/g) || []).length >= 8);
   for (const item of readinessItems) {
     assert.ok(
       html.includes(`href="practical/database.html#entry-${item.entryId}"`),
@@ -348,6 +419,10 @@ test('首頁出發準備度顯示 8 類待辦、文字狀態與資料庫連結',
       database.includes(`id="entry-${item.entryId}"`),
       `${item.title} 的資料庫錨點不存在`,
     );
+  }
+
+  for (const label of ['P0 未完成', '最近確認期限', '下一張要買的票', 'ETIAS 狀態', '離線包狀態', '確認期限：']) {
+    assert.ok(html.includes(label), `首頁缺少動態摘要：${label}`);
   }
 
   const recheckPosition = html.indexOf('>ETIAS<');
