@@ -35,7 +35,26 @@ git diff --check
 python3 -m http.server 8913 --directory dist
 ```
 
-指定頁面以 `curl -fsS -o /dev/null -w '%{http_code} %{size_download}'` 讀取結果：
+指定頁面的完整重現命令：
+
+```sh
+for path in index.html practical/database.html day-02.html day-07.html practical/essentials.html practical/booking.html; do
+  curl -fsS -o /dev/null -w "${path} %{http_code} %{size_download}\n" "http://127.0.0.1:8913/${path}"
+done
+```
+
+實際輸出：
+
+```text
+index.html 200 15027
+practical/database.html 200 30235
+day-02.html 200 15092
+day-07.html 200 13924
+practical/essentials.html 200 8786
+practical/booking.html 200 13469
+```
+
+整理如下：
 
 | 頁面 | HTTP | bytes |
 | --- | ---: | ---: |
@@ -109,4 +128,24 @@ await agent.browsers.list()
 
 ## 工作樹範圍
 
-`.agents/`、`.claude/`、`skills-lock.json` 仍是既有未追蹤項目，本 Task 未修改、未加入暫存區。
+驗收文件與 Task 6 報告提交於 `d19ffcb` 後，執行：
+
+```sh
+git status --short
+```
+
+實際輸出：
+
+```text
+?? .agents/
+?? .claude/
+?? skills-lock.json
+```
+
+執行：
+
+```sh
+git diff --stat
+```
+
+結果無輸出，代表當時沒有未提交的 tracked file 差異；工作樹只剩上述 3 個既有 untracked 項目。`.agents/`、`.claude/`、`skills-lock.json` 未被加入暫存區。

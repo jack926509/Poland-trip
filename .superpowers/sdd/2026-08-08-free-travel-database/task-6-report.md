@@ -21,4 +21,16 @@
 
 ## 保護範圍
 
-未修改或暫存 `.agents/`、`.claude/`、`skills-lock.json`，未修改 progress ledger，未提交。
+未修改或暫存 `.agents/`、`.claude/`、`skills-lock.json`。
+
+## 提交與 ledger 狀態
+
+- 本報告與驗收文件已於 commit `d19ffcb` 提交。
+- 該 commit 同時包含協調者先前完成的 Task 5 progress ledger 更新；不是 Task 6 實作者新增的完成標記。
+- Task 6 因 Browser 實例不可用，progress ledger 目前仍未標記 complete。
+
+## Fix round 1
+
+- 修正先前「未修改 ledger／未提交」的不正確敘述，改為 `d19ffcb` 的實際提交內容與 Task 6 未完成狀態。
+- 驗收文件補上 6 個 URL 的完整 `curl` 重現命令、原始輸出，以及提交後的 `git status --short`、`git diff --stat` 命令與實際結果。
+- Browser 視覺驗收維持 **BLOCKED**，未誤標通過。
