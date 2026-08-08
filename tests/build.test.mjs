@@ -168,9 +168,13 @@ test('首頁包含 8 天、4 城與全部實用頁入口', () => {
   for (const city of ['warszawa', 'krakow', 'wroclaw', 'poznan']) {
     assert.ok(html.includes(`city-${city}.html`), `首頁缺少 ${city}`);
   }
-  for (const page of ['booking', 'dining', 'tickets', 'transit', 'shopping', 'notes']) {
+  for (const page of ['booking', 'dining', 'tickets', 'transit', 'shopping', 'notes', 'database']) {
     assert.ok(html.includes(`practical/${page}.html`), `首頁缺少 practical/${page}`);
   }
+  assert.ok(
+    html.includes('<a class="card card-link" href="practical/database.html"><h3>自由行資料庫</h3>'),
+    '首頁規劃工具缺少自由行資料庫卡片',
+  );
 });
 
 test('8 個每日頁的日期與標題和資料層一致', async () => {

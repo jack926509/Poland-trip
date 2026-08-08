@@ -49,3 +49,31 @@ fail 0
 ## Commit
 
 未建立。嘗試僅 stage `build.mjs`、`src/templates/database.mjs`、`src/templates/layout.mjs`、`src/styles/main.css`、`tests/build.test.mjs` 時，Git 無法建立 `.git/index.lock`，回報 `Operation not permitted`。工作檔案均未 stage；請主代理在可寫入 Git metadata 的環境建立 commit。
+
+## Review fix round：首頁 toolkit 入口
+
+### RED
+
+審查發現首頁雖然因共用導覽已含資料庫連結，但「規劃工具」格線沒有資料庫卡片。先擴充首頁測試的頁面清單加入 `database`；這個初版測試意外通過，暴露出它只驗證整頁連結、沒有鎖定 toolkit。隨即加上首頁卡片的精確契約：
+
+```text
+首頁規劃工具缺少自由行資料庫卡片
+```
+
+以 `node build.mjs && node --test --test-name-pattern='首頁包含 8 天、4 城與全部實用頁入口' tests/build.test.mjs` 確認為 RED。
+
+### GREEN
+
+- 修改 `src/templates/home.mjs`，於規劃工具格線加入「自由行資料庫」卡片，連至 `practical/database.html`。
+- 修改 `tests/build.test.mjs`，驗證首頁有實際 toolkit 卡片，而非僅因導覽列而出現連結。
+
+聚焦測試通過（1/1）；再跑 `npm test`，27/27 通過並產生 21 頁；`git diff --check` 通過。
+
+### 自審
+
+- 卡片使用與既有 toolkit 相同的 `card card-link` 結構，沒有引入額外樣式或行為。
+- 原本「首頁入口待後續工作」的說明已失效，本 round 已完整補正。
+
+### Commit
+
+未建立。嘗試僅 stage `src/templates/home.mjs`、`tests/build.test.mjs` 時，Git 同樣無法建立 `.git/index.lock`，回報 `Operation not permitted`。請主代理建立 commit；交接報告不納入 commit。

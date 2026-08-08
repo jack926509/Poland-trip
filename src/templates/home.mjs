@@ -94,6 +94,7 @@ export function renderHome({ meta, days, flights, cities }) {
         <a class="card card-link" href="practical/transit.html"><h3>市內交通</h3><p>四城票價、機場接駁與購票方式。</p><span>查看 →</span></a>
         <a class="card card-link" href="practical/shopping.html"><h3>伴手禮與購物</h3><p>14 種伴手禮、實際店家與 Żabka。</p><span>查看 →</span></a>
         <a class="card card-link" href="practical/notes.html"><h3>出發前提醒</h3><p>夏令時間、日落、閉館與訂票節奏。</p><span>查看 →</span></a>
+        <a class="card card-link" href="practical/database.html"><h3>自由行資料庫</h3><p>SOS、行前重查與各主題官方資料集中管理。</p><span>查看 →</span></a>
       </div>
     </section>`;
 
