@@ -12,6 +12,19 @@ export const cities = [
   {key:'POZ', name:'波茲南', pl:'Poznań', tag:'CRADLE', nights:1, vibe:'波蘭文明發源 × 山羊報時', highlights:['教堂島 Ostrów Tumski','12:00 山羊鐘樓秀','聖馬丁牛角麵包 PGI','帝王城堡'], photo:{hero:'assets/photos/poznan-hero.webp',thumb:'assets/photos/poznan-thumb.webp'}},
 ];
 
+export const cityNotices = {
+  warsaw: [
+    {status:'待確認', level:'risk', text:'Day 7 皇家城堡排在傍晚，但 10 月冬季時段可能 17:00 即閉館；需先上 zamek-krolewski.pl 確認，再決定當天三館順序。'},
+  ],
+  krakow: [
+    {status:'待確認', level:'risk', text:'辛德勒工廠 10 月週日實際最後入場時間兩份資料對不上。本行程排 17:30 入場仍有緩衝，但建議行前上 muzeumkrakowa.pl 再確認一次。'},
+  ],
+  wroclaw: [
+    {status:'已確認限制', level:'risk', text:'百年廳 10/28（本行程當天）圓頂展廳不開放；主行程只排外觀與周邊，行前 3–5 天仍建議查 halastulecia.pl 是否有其他臨時異動。'},
+  ],
+  poznan: [],
+};
+
 export const cityStories = [
   {
     city:'華沙', en:'Warszawa',
