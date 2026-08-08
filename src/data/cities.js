@@ -14,10 +14,10 @@ export const cities = [
 
 export const cityNotices = {
   warsaw: [
-    {status:'待確認', level:'risk', text:'Day 7 皇家城堡排在傍晚，但 10 月冬季時段可能 17:00 即閉館；需先上 zamek-krolewski.pl 確認，再決定當天三館順序。'},
+    {status:'已改行程', level:'note', text:'皇家城堡官方確認二–日 10:00–18:00、最後入場 17:00；Day 7 已由原本錯誤的 17:00 改成 10:00 第一站。'},
   ],
   krakow: [
-    {status:'待確認', level:'risk', text:'辛德勒工廠 10 月週日實際最後入場時間兩份資料對不上。本行程排 17:30 入場仍有緩衝，但建議行前上 muzeumkrakowa.pl 再確認一次。'},
+    {status:'已查證', level:'note', text:'辛德勒工廠週二至週日 09:00–20:00，最後入場為閉館前 90 分鐘；Day 2 的週日 17:30 時段可行，但仍須先取得官方時段票。'},
   ],
   wroclaw: [
     {status:'已確認限制', level:'risk', text:'百年廳 10/28（本行程當天）圓頂展廳不開放；主行程只排外觀與周邊，行前 3–5 天仍建議查 halastulecia.pl 是否有其他臨時異動。'},
@@ -64,7 +64,7 @@ export const cityStories = [
     history:'這座城市 1945 年前叫 Breslau，是德國第六大城。戰後國界西移，德裔居民被遷出，取而代之的是被蘇聯劃走的東部城市利沃夫（Lwów）的波蘭移民——整座城市的人口被「換血」。拉茨瓦維採全景畫正是從利沃夫一起搬來的鎮城之寶，Karczma Lwowska 餐廳的名字也是這段記憶。',
     stories:[
       {title:'小矮人是反抗軍', text:'城裡 600+ 尊銅製小矮人（krasnale）不是行銷噱頭：1980 年代反共團體「橙色替代」（Pomarańczowa Alternatywa）以塗鴉小矮人與荒誕街頭劇嘲諷政權——警察逮捕一個扮小矮人的人有多可笑，體制就有多可笑。2005 年起城市以銅像致敬這段歷史，每一尊都有名字與職業。'},
-      {title:'每晚的點燈儀式', text:'日落時分，披斗篷、持長桿的點燈人會逐一點亮 Ostrów Tumski 的約 100 盞瓦斯燈——歐洲僅存的日常點燈儀式之一。10/28 日落約 16:34、點燈人約 16:45 起開工，Day 5 已把座堂島排到 16:15–17:15，看完點燈再去搭 19:00 的車。'},
+      {title:'每晚的點燈儀式', text:'日落時分，披斗篷、持長桿的點燈人會逐一點亮 Ostrów Tumski 的瓦斯燈。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，Day 5 以 16:15–17:15 在座堂島等候與散步規劃。'},
       {title:'混凝土的世界遺產', text:'百年廳（Hala Stulecia，1913）落成時擁有世界最大跨距的鋼筋混凝土圓頂，直接影響了現代主義建築的走向，2006 年列入 UNESCO——在古蹟之城看一座「未來古蹟」。'},
     ],
     onSite:[
@@ -207,41 +207,41 @@ export const pinCategoryLegend = {
 // mapUrl 取該列第一個連結的 href（主要地標）。
 export const attractions = {
   warsaw: [
-    {name:'MSN 當代美術館', tag:'2024 新開', priceNote:'Plac Defilad · Gallery A 免費 · 18:00 後晚間票 PLN 30', mapUrl:'https://www.google.com/maps/search/?api=1&query=MSN%20%E7%95%B6%E4%BB%A3%E7%BE%8E%E8%A1%93%E9%A4%A8%20Warszawa'},
+    {name:'MSN 當代美術館', tag:'美術館', priceNote:'Plac Defilad · 展覽 40／30 · 18:00 後 25／15 · Gallery A 免費 · 週一休', mapUrl:'https://www.google.com/maps/search/?api=1&query=MSN%20%E7%95%B6%E4%BB%A3%E7%BE%8E%E8%A1%93%E9%A4%A8%20Warszawa'},
     {name:'Neon 霓虹博物館', tag:'遷址', priceNote:'PLN 25 / 優待 18 · 已遷入科學文化宮 4 樓（Marszałkowska 入口），可與觀景台一起看', mapUrl:'https://www.google.com/maps/search/?api=1&query=Neon%20%E9%9C%93%E8%99%B9%E5%8D%9A%E7%89%A9%E9%A4%A8%20Warszawa'},
     {name:'Kolejkowo Warszawa', tag:'2025 新開', priceNote:'微縮模型館 · 2025-04 開幕 · 適合親子', mapUrl:'https://www.google.com/maps/search/?api=1&query=Kolejkowo%20Warszawa'},
     {name:'海報博物館 Wilanów', tag:'2026 重啟', priceNote:'2026-03 全新形式 · 常設「Polish Posters. Collection」', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E6%B5%B7%E5%A0%B1%E5%8D%9A%E7%89%A9%E9%A4%A8%20Wilan%C3%B3w%20Warszawa'},
-    {name:'波蘭歷史博物館 · Cytadela', tag:'2026 新館群', priceNote:'城堡區五館聚落（波蘭歷史／軍事／卡廷）· 華沙最大新展區 · 以官網為準', mapUrl:'https://www.google.com/maps/search/?api=1&query=Muzeum%20Historii%20Polski%20Cytadela%20Warszawa'},
-    {name:'E.Wedel 巧克力體驗館', tag:'2026 新開', priceNote:'老牌 Wedel 巧克力工廠新體驗展 · 伴手禮一站購足 · 以官網為準', mapUrl:'https://www.google.com/maps/search/?api=1&query=E.Wedel%20Chocolate%20Warszawa'},
-    {name:'皇家城堡', tag:'★4.7（59,094） UNESCO', priceNote:'分路線售票：博物館/王室路線 60/45 · 城堡路線 95/75 · 宮殿路線 30/20 · 金票(全區) 110/90 · 週三免費(縮短版)', mapUrl:'https://maps.google.com/?cid=2313057209867159998'},
-    {name:'華沙起義博物館', tag:'★4.7（39,247） 歷史', priceNote:'PLN 35 / 優待 30 · 熱門建議預約 · 週二休', mapUrl:'https://maps.google.com/?cid=12215511195580548645'},
-    {name:'POLIN 猶太史博物館', tag:'★4.6（21,056） 歷史', priceNote:'PLN 45 / 優待 35 · 週四免費 · 週二休（非週一）', mapUrl:'https://maps.google.com/?cid=16292574584610500784'},
-    {name:'科學文化宮觀景台', tag:'★4.6（86,217） 地標', priceNote:'PLN 30 / 優待 25 · 237m 全城最高', mapUrl:'https://maps.google.com/?cid=14044892037721828802'},
+    {name:'波蘭歷史博物館 · Cytadela', tag:'2023 新館', priceNote:'新總部 2023 開館；常設展仍在建置，先查當期臨展與入場資訊', mapUrl:'https://www.google.com/maps/search/?api=1&query=Muzeum%20Historii%20Polski%20Cytadela%20Warszawa'},
+    {name:'E.Wedel 巧克力工廠博物館', tag:'2024 開館', priceNote:'每日 10:00–20:00 · 最後一團 18:15 · 導覽約 90 分 · 票價依官方場次', mapUrl:'https://www.google.com/maps/search/?api=1&query=E.Wedel%20Chocolate%20Warszawa'},
+    {name:'皇家城堡', tag:'UNESCO 舊城核心', priceNote:'二–日 10:00–18:00，最後入場 17:00 · Castle Route 95／75 · 其他路線 30–110', mapUrl:'https://maps.google.com/?cid=2313057209867159998'},
+    {name:'華沙起義博物館', tag:'歷史', priceNote:'PLN 35／30 · 週四個人免費 · 可售時段以官方票頁為準', mapUrl:'https://maps.google.com/?cid=12215511195580548645'},
+    {name:'POLIN 猶太史博物館', tag:'歷史', priceNote:'PLN 45 · 週四免費 · 週二休；週五 10:00–18:00，主展最後入場 16:00', mapUrl:'https://maps.google.com/?cid=16292574584610500784'},
+    {name:'科學文化宮觀景台', tag:'地標', priceNote:'PLN 30／25 · 售票資訊每日 10:00–20:00；季節性夜間開放不套用到 10 月', mapUrl:'https://maps.google.com/?cid=14044892037721828802'},
     {name:'Łazienki 公園 · Wilanów 宮', tag:'皇家之路', priceNote:'公園免費 · 宮殿另購票', mapUrl:'https://www.google.com/maps/search/?api=1&query=%C5%81azienki%20%E5%85%AC%E5%9C%92%20Warszawa'},
     {name:'蕭邦博物館', tag:'閉館', priceNote:'2026 整年閉館（整修）', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%95%AD%E9%82%A6%E5%8D%9A%E7%89%A9%E9%A4%A8%20Warszawa'},
   ],
   krakow: [
-    {name:'Wawel 皇家城堡群', tag:'★4.7（166,020） 逐展售票', priceNote:'各展分開售票：王冠寶庫 47 / 優待 35（含皇家花園）· 單展多為 30–47 zł · 全區聯票「Wawel dla pasjonatów」199 / 149 · 週一 10–16 部分展區限量免費 · 11/1、11/11 部分展區閉館', mapUrl:'https://maps.google.com/?cid=12446225081720350104'},
+    {name:'Wawel 皇家城堡群', tag:'逐展售票', priceNote:'二–日 09:00–17:00 · 城堡一、二樓完整路線 95／71，最後入場 15:00 · 王冠寶庫 47／35', mapUrl:'https://maps.google.com/?cid=12446225081720350104'},
     {name:'中央市集廣場 · 紡織會館', tag:'★4.8（187,948） 地標', priceNote:'歐洲最大中世紀廣場（Rynek Główny）· 廣場免費', mapUrl:'https://maps.google.com/?cid=14107513768635600179'},
     {name:'Kazimierz 猶太區', tag:'★4.4（5,589） 街區', priceNote:'猶太會堂、餐酒館、街食聚集', mapUrl:'https://maps.google.com/?cid=5623518211080575812'},
-    {name:'辛德勒工廠博物館', tag:'★4.5（25,993） 需訂', priceNote:'PLN 60 / 優待 45 · ul. Lipowa 4 · 週一 10–15、週二–日 9–20、每月第一個週二休 · 11/1、11/3、11/11 閉館', mapUrl:'https://maps.google.com/?cid=3670197855150446585'},
+    {name:'辛德勒工廠博物館', tag:'需訂', priceNote:'PLN 60／45 · ul. Lipowa 4 · 週一 10:00–15:00、週二–日 09:00–20:00、每月第一個週二休 · 最後入場為閉館前 90 分鐘', mapUrl:'https://maps.google.com/?cid=3670197855150446585'},
     {name:'維利奇卡鹽礦', tag:'★4.6（36,491） 需票', priceNote:'UNESCO · Kinga 鹽教堂 · 恆溫 17–18°C · 英語團 143 / 優待 121（含導覽）· 11/1 閉館 · 官網 bilety.kopalnia.pl', mapUrl:'https://maps.google.com/?cid=10891192289792865301'},
-    {name:'奧斯威辛-比克瑙', tag:'需訂', priceNote:'日歸 · 入場免費須線上預約（2026/3 起僅線上、現場不售）· 10–11 月上午強制跟導覽 約 130–150（優待 120）· 免費自由參觀僅下午（11 月 14:00 起）· 提前 2–3 週訂', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E5%A5%A7%E6%96%AF%E5%A8%81%E8%BE%9B-%E6%AF%94%E5%85%8B%E7%91%99%20Krak%C3%B3w'},
+    {name:'奧斯威辛-比克瑙', tag:'只限線上取得入場證', priceNote:'10 月 07:30–16:00 僅官方導覽；16:00 後才可預約免費自導 · 英文團 08:30–14:30 每小時 · 票價看官方訂票頁', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E5%A5%A7%E6%96%AF%E5%A8%81%E8%BE%9B-%E6%AF%94%E5%85%8B%E7%91%99%20Krak%C3%B3w'},
   ],
   wroclaw: [
     {name:'小矮人 Krasnale 尋寶', tag:'★4.9（91） 免費', priceNote:'全城 1000+ 尊小銅像 · Rynek／Plac Solny／Świdnicka 密度最高', mapUrl:'https://maps.google.com/?cid=10632303817405446655'},
     {name:'中央市集廣場 · 市政廳塔', tag:'地標', priceNote:'彩色山牆屋 · 觀景塔', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E4%B8%AD%E5%A4%AE%E5%B8%82%E9%9B%86%E5%BB%A3%E5%A0%B4%20Wroc%C5%82aw'},
     {name:'大教堂島 Ostrów Tumski', tag:'★4.9（3,270） 古城', priceNote:'全城最古老城區', mapUrl:'https://maps.google.com/?cid=3827887123396229836'},
     {name:'Afrykarium · 動物園', tag:'熱門', priceNote:'PLN 60 / 優待 50 · 波蘭最多人造訪付費景點 · 全球唯一非洲主題水族館 · 線上購票', mapUrl:'https://www.google.com/maps/search/?api=1&query=Afrykarium%20Wroc%C5%82aw'},
-    {name:'Panorama Racławicka', tag:'全景畫', priceNote:'PLN 50 / 優待 35 · 圓形巨幅戰役畫 · 週一休', mapUrl:'https://www.google.com/maps/search/?api=1&query=Panorama%20Rac%C5%82awicka%20Wroc%C5%82aw'},
-    {name:'百年廳 Hala Stulecia', tag:'★4.7（15,074） UNESCO', priceNote:'PLN 25 / 優待 20（多媒體常設展）· 每日開放 10:00–18:00 · 圓頂偶因活動關閉，行前 3–5 天查 halastulecia.pl 確認 · 近多媒體噴泉 Pergola', mapUrl:'https://maps.google.com/?cid=10763621538599936407'},
+    {name:'Panorama Racławicka', tag:'全景畫', priceNote:'10 月每日 08:30–19:00 · PLN 50／35 · 每場 30 分，門票指定日期與場次', mapUrl:'https://www.google.com/maps/search/?api=1&query=Panorama%20Rac%C5%82awicka%20Wroc%C5%82aw'},
+    {name:'百年廳 Hala Stulecia', tag:'UNESCO', priceNote:'Visitor Centre 四–十月二–日 10:00–18:00，25／20 · 含廳內 30／25，廳內依活動日曆開放', mapUrl:'https://maps.google.com/?cid=10763621538599936407'},
     {name:'Hydropolis 水知識中心', tag:'室內', priceNote:'PLN 45（週末 47）/ 優待 36 · 雨備好選擇', mapUrl:'https://www.google.com/maps/search/?api=1&query=Hydropolis%20%E6%B0%B4%E7%9F%A5%E8%AD%98%E4%B8%AD%E5%BF%83%20Wroc%C5%82aw'},
-    {name:'Kolejkowo 微縮館', tag:'室內', priceNote:'PLN 55 / 優待 45 · Sky Tower 1 樓', mapUrl:'https://www.google.com/maps/search/?api=1&query=Kolejkowo%20%E5%BE%AE%E7%B8%AE%E9%A4%A8%20Wroc%C5%82aw'},
+    {name:'Kolejkowo 微縮館', tag:'室內', priceNote:'PLN 50／40 · Sky Tower 1 樓 · 每日 10:00 起，關門時間查指定日期', mapUrl:'https://www.google.com/maps/search/?api=1&query=Kolejkowo%20%E5%BE%AE%E7%B8%AE%E9%A4%A8%20Wroc%C5%82aw'},
   ],
   poznan: [
     {name:'舊市集廣場 Stary Rynek', tag:'2024 重修', priceNote:'鋪面與無障礙全面翻新 · 彩色商人屋 · 四座神話噴泉 · 免費', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%88%8A%E5%B8%82%E9%9B%86%E5%BB%A3%E5%A0%B4%20Stary%20Rynek%20Pozna%C5%84'},
-    {name:'市政廳正午山羊鐘', tag:'免費', priceNote:'每日正午兩隻機械山羊頂角 12 次（部分資料另有 15:00 場，現場再確認）', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E5%B8%82%E6%94%BF%E5%BB%B3%E6%AD%A3%E5%8D%88%E5%B1%B1%E7%BE%8A%E9%90%98%20Pozna%C5%84'},
-    {name:'可頌博物館 Rogalowe Muzeum', tag:'★4.8（6,115） 特色', priceNote:'PLN 39 / 優待 35 起（場次制展演）· 市政廳對面 · 週日–五 11:00–15:30、週六 11:00–17:00', mapUrl:'https://maps.google.com/?cid=402526412385617111'},
+    {name:'市政廳正午山羊鐘', tag:'免費', priceNote:'官方確認每日 12:00，兩隻機械山羊頂角 12 次；不將非官方的 15:00 說法寫入行程', mapUrl:'https://www.google.com/maps/search/?api=1&query=Pozna%C5%84%20Town%20Hall%20Stary%20Rynek'},
+    {name:'可頌博物館 Rogalowe Muzeum', tag:'場次制展演', priceNote:'一般秀 41／37；含山羊鐘秀 47／43；英文場 47 · 通常約 1 個月前釋票', mapUrl:'https://maps.google.com/?cid=402526412385617111'},
     {name:'古市政廳博物館', tag:'歷史', priceNote:'2026/7/1–2027/11/30 整修閉館，行程期間無法入內，僅能外觀', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E5%8F%A4%E5%B8%82%E6%94%BF%E5%BB%B3%E5%8D%9A%E7%89%A9%E9%A4%A8%20Pozna%C5%84'},
     {name:'帝王城堡 Zamek Cesarski', tag:'地標', priceNote:'CK Zamek 文化中心，多為免費入場，特展/導覽另計，每日 10:00–21:00', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E5%B8%9D%E7%8E%8B%E5%9F%8E%E5%A0%A1%20Zamek%20Cesarski%20Pozna%C5%84'},
     {name:'大教堂島 Ostrów Tumski', tag:'古城', priceNote:'波蘭建國搖籃', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E6%95%99%E5%A0%82%E5%B3%B6%20Ostr%C3%B3w%20Tumski%20Pozna%C5%84'},

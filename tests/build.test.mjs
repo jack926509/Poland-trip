@@ -3,12 +3,13 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { test } from 'node:test';
 import { cities, cityStories, photoSpots, photoCredits, mapPins, attractions } from '../src/data/cities.js';
-import { cityDining, cityFood, foodBackup, foods, michelinSummary, michelinReservations } from '../src/data/dining.js';
+import { cityDining, cityFood, foodBackup, foods, michelinSummary, michelinReservations, verifiedRestaurantHours } from '../src/data/dining.js';
 import { about, packingDefault, phrases, preDepartureNotes, safety } from '../src/data/essentials.js';
 import { shopping, souvenirCards, souvenirShops, luxuryShopping, zabkaCards } from '../src/data/shopping.js';
 import { fares, ticketsByCity } from '../src/data/tickets.js';
 import { airportTransit, passChecklist, practical, recommendedApps, transitFares, usefulRoutes } from '../src/data/transit.js';
 import { bookingTiers, days, flights, reservations, stay, trains } from '../src/data/trip.js';
+import { databaseEntries, readinessItems, dayOperations } from '../src/data/travel-database.js';
 
 const distDir = path.resolve('dist');
 const expectedFiles = [
@@ -45,6 +46,18 @@ function htmlFiles() {
     .sort();
 }
 
+test('自由行資料庫遵守統一資料契約且不含私人館址', () => {
+  assert.ok(databaseEntries.length >= 15);
+  assert.deepEqual(new Set(databaseEntries.map(item => item.status)), new Set(['verified', 'recheck', 'pending', 'private-required']));
+  assert.equal(readinessItems.length, 8);
+  assert.deepEqual(Object.keys(dayOperations).map(Number), [1, 2, 3, 4, 5, 6, 7, 8]);
+  assert.ok(!JSON.stringify({ databaseEntries, readinessItems, dayOperations }).includes('Al. Jerozolimskie 179'));
+});
+
+test('駐波蘭代表處使用外交部 2026-08-08 查證的正確館址', () => {
+  assert.equal(safety.embassy[0][1], '30th Floor, Ul. Emilii Plater 53, 00-113 Warsaw, Poland');
+});
+
 test('dist 正好產出規格要求的 20 個 HTML', () => {
   assert.deepEqual(htmlFiles(), [...expectedFiles].sort());
   assert.ok(fs.existsSync(path.join(distDir, 'assets/main.css')), '缺少 assets/main.css');
@@ -71,6 +84,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
 
   assert.equal(michelinSummary.length, 4);
   assert.equal(michelinReservations.length, 9);
+  assert.equal(verifiedRestaurantHours.length, 4);
   assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
     warsaw: 21, krakow: 13, wroclaw: 11, poznan: 11,
   });
@@ -196,7 +210,7 @@ test('高風險校正：霓虹博物館已搬到科學文化宮', () => {
 
 test('高風險校正：波茲南古市政廳整修閉館，不再顯示可購買 PLN 10', () => {
   const html = read('practical/tickets.html');
-  assert.ok(html.includes('2026/7–2027/11 整修'));
+  assert.ok(html.includes('2027 年底至 2028 年初'));
   assert.ok(html.includes('閉館中'));
   assert.doesNotMatch(html, /古市政廳博物館[\s\S]{0,160}<td class="number">10<\/td>/);
 });
@@ -208,19 +222,69 @@ test('高風險校正：百年廳 10/28 圓頂關閉在 Day 5 與城市頁都看
   }
 });
 
-test('高風險校正：皇家城堡與辛德勒工廠保留待確認', () => {
-  assert.ok(read('day-07.html').includes('待確認'), 'Day 7 缺少皇家城堡待確認');
-  assert.ok(read('city-warszawa.html').includes('待確認'), '華沙城市頁缺少皇家城堡待確認');
-  assert.ok(read('city-krakow.html').includes('待確認'), '克拉科夫城市頁缺少辛德勒待確認');
+test('高風險校正：皇家城堡與辛德勒工廠已依官方時間修正', () => {
+  assert.ok(read('day-07.html').includes('皇家城堡已由官方確認'));
+  assert.ok(read('city-warszawa.html').includes('已改行程'));
+  assert.ok(read('city-krakow.html').includes('已查證'));
+  assert.doesNotMatch(read('day-07.html'), /17:00[^<]{0,80}皇家城堡內部/);
 });
 
-test('門票頁含 21 筆新資料、Panorama 優待 35 與 Auschwitz 待確認', async () => {
+test('Day 7 改為早上皇家城堡，並保留 POLIN 至起義博物館的移動時間', () => {
+  const day = days.find(item => item.n === 7);
+  assert.equal(day.steps[0].t, '10:00');
+  assert.ok(day.steps[0].label.includes('皇家城堡'));
+  assert.equal(day.steps.find(item => item.label.startsWith('★ POLIN')).dur, '2 h');
+  assert.doesNotMatch(read('day-07.html'), /17:00[^<]{0,80}皇家城堡/);
+});
+
+test('尚未開賣的長途交通與天氣不假裝成已確認', () => {
+  for (const train of trains) {
+    assert.equal(train.status, '尚未確認班次');
+    assert.match(train.price, /待/);
+  }
+  for (const day of days) {
+    assert.equal(day.weather, '尚無可靠預報；出發前 7–10 天更新');
+  }
+  const allDays = Array.from({ length: 8 }, (_, index) => read(`day-${String(index + 1).padStart(2, '0')}.html`)).join('\n');
+  assert.ok(!allDays.includes('22:54'));
+  assert.ok(!allDays.includes('30 天無限'));
+  assert.ok(!allDays.includes('價差 ≤'));
+});
+
+test('舊票價與過時場館資料已從產出頁面移除', () => {
+  const html = expectedFiles.map(read).join('\n');
+  for (const stale of ['199／149', 'PLN 32', '55／45', '2026 新開的 E.Wedel']) {
+    assert.ok(!html.includes(stale), `仍出現舊資料：${stale}`);
+  }
+  assert.ok(html.includes('城堡一、二樓完整路線 95／71'));
+  assert.ok(html.includes('Kolejkowo') && html.includes('50／40'));
+});
+
+test('餐廳頁只把可追到店家來源的營業時間列為已查', () => {
+  const html = read('practical/dining.html');
+  for (const restaurant of verifiedRestaurantHours) {
+    assert.ok(html.includes(restaurant.name));
+    assert.ok(html.includes(restaurant.hours));
+    assert.ok(html.includes(restaurant.url));
+  }
+  assert.ok(html.includes('營業時間查證於 2026-08-08'));
+});
+
+test('城市頁不再將 Google 星等與評論數當成固定資料', () => {
+  for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
+    const html = read(file);
+    assert.doesNotMatch(html, /★\d(?:\.\d)?（[^）]+）/, `${file} 仍顯示動態星等`);
+    assert.ok(html.includes('動態 Google 星等已移除'));
+  }
+});
+
+test('門票頁含 21 筆新資料、Panorama 優待 35 與 Auschwitz 線上票規則', async () => {
   const { fares } = await import('../src/data/tickets.js');
   assert.equal(fares.length, 21);
   const panorama = fares.find(item => item.name.includes('Panorama'));
   assert.equal(panorama.discountPrice, '35');
   const html = read('practical/tickets.html');
-  assert.ok(html.includes('Auschwitz') && html.includes('待確認'));
+  assert.ok(html.includes('奧斯威辛') && html.includes('所有入場證只在線上提供'));
 });
 
 test('全站不出現把日落寫成 15:35–15:50 的錯誤敘述', () => {

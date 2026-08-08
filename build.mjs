@@ -85,6 +85,7 @@ function build() {
   writeHtml('practical/dining.html', renderDining({
     michelinSummary: dining.michelinSummary,
     michelinReservations: dining.michelinReservations,
+    verifiedRestaurantHours: dining.verifiedRestaurantHours,
   }));
   writeHtml('practical/tickets.html', renderTickets({
     fares: tickets.fares,

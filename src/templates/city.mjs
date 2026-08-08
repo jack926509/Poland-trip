@@ -13,6 +13,22 @@ function renderNotice(notice) {
   </div>`;
 }
 
+function stableTier(tier) {
+  // Google 星等與評論數是動態快照，不應在離線行程網站偽裝成固定事實。
+  return tier.replace(/★\d(?:\.\d)?（[^）]+）\s*/g, '').trim();
+}
+
+function stableMapUrl(attraction) {
+  if (attraction.name.startsWith('奧斯威辛')) {
+    return 'https://www.google.com/maps/search/?api=1&query=Memorial%20and%20Museum%20Auschwitz-Birkenau%20O%C5%9Bwi%C4%99cim';
+  }
+  return attraction.mapUrl;
+}
+
+function stableMapDescription(description) {
+  return description.replace(/★\d(?:\.\d)?(?:\s*\([^)]*\)|\s*（[^）]*）)?\s*/g, '').trim();
+}
+
 export function renderCity({
   city,
   cityKey,
@@ -28,15 +44,15 @@ export function renderCity({
 }) {
   const attractionRows = attractionsForCity.map(attraction => `
     <tr>
-      <td><a href="${attraction.mapUrl}" target="_blank" rel="noopener">${attraction.name}</a></td>
-      <td>${attraction.tag}</td>
+      <td><a href="${stableMapUrl(attraction)}" target="_blank" rel="noopener">${attraction.name}</a></td>
+      <td>${stableTier(attraction.tag)}</td>
       <td>${attraction.priceNote}</td>
     </tr>`).join('');
 
   const diningRows = dining.map(restaurant => `
     <tr>
       <td><a href="${restaurant.mapUrl}" target="_blank" rel="noopener">${restaurant.name}</a></td>
-      <td>${restaurant.tier}</td>
+      <td>${stableTier(restaurant.tier)}</td>
       <td>${restaurant.highlight}</td>
     </tr>`).join('');
 
@@ -117,7 +133,8 @@ export function renderCity({
           fillOpacity: 0.92
         }).addTo(map);
         var link = point[4] ? '<br><a href="' + point[4] + '" target="_blank" rel="noopener">在 Google Maps 開啟 →</a>' : '';
-        marker.bindPopup('<b>' + point[2] + '</b><br>' + point[3] + link);
+        var stableDescription = point[3].replace(/★\d(?:\.\d)?(?:\s*\([^)]*\)|\s*（[^）]*）)?\s*/g, '').trim();
+        marker.bindPopup('<b>' + point[2] + '</b><br>' + stableDescription + link);
       });
     }());
     </script>`;
@@ -157,6 +174,7 @@ export function renderCity({
 
     <section class="section">
       <div class="section-heading"><span class="section-num">Dining</span><h2>2026 餐廳情報</h2></div>
+      <div class="callout-note"><b>資料界線：</b>這是新爬蟲的探索清單，頁面只保留店名、菜系特色與 2026 米其林身分；動態 Google 星等已移除。營業時間只以「餐廳」實用頁中的已查分店為準。</div>
       <div class="table-wrap"><table class="table-editorial">
         <thead><tr><th>店家</th><th>等級</th><th>重點招牌</th></tr></thead>
         <tbody>${diningRows}</tbody>

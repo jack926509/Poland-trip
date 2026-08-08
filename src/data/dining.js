@@ -119,6 +119,43 @@ export const michelinReservations = [
   }
 ];
 
+// 僅收錄能由店家官網直接確認、且和本行程實際用餐有關的分店。
+// 營業時間查證日：2026-08-08；餐廳仍可能臨時包場或調整，訂位頁優先。
+export const verifiedRestaurantHours = [
+  {
+    city: '華沙',
+    name: 'U Fukiera',
+    address: 'Rynek Starego Miasta 27',
+    hours: '週一–四 12:00–23:00；週五–六 12:00–23:30；週日 12:00–23:00',
+    feature: '歷史老城波蘭料理；官網菜單可確認 żurek、餃子、鯡魚與韃靼牛肉。',
+    url: 'https://www.ufukiera.pl/kontakt/',
+  },
+  {
+    city: '華沙',
+    name: 'Polka',
+    address: 'Świętojańska 2（皇家城堡旁）',
+    hours: '每日 12:00–22:00',
+    feature: '傳統波蘭料理，位置最適合接皇家城堡；不是 U Fukiera 的同一間店。',
+    url: 'https://warszawa.restauracjapolka.pl/about-us',
+  },
+  {
+    city: '華沙',
+    name: 'E.Wedel Pijalnia',
+    address: 'Krakowskie Przedmieście 45',
+    hours: '週一–四 10:00–22:00；週五–六 10:00–23:00；週日 10:00–22:00',
+    feature: 'E.Wedel 巧克力飲品與甜點；已鎖定分店，避免套用商場分店的週日休店規則。',
+    url: 'https://wedelpijalnie.pl/lokale',
+  },
+  {
+    city: '樂斯拉夫',
+    name: 'Konspira',
+    address: 'Plac Solny 11',
+    hours: '週一–四 13:00–23:45；週五–日 12:00–23:45；廚房至 23:00',
+    feature: '傳統波蘭料理與 1980 年代反共地下運動主題空間；週五至日不接受一般訂位，依到店順序。',
+    url: 'https://restauracjakonspira.pl/menu',
+  },
+];
+
 export const cityDining = {
   "warsaw": [
     {

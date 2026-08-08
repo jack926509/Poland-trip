@@ -32,10 +32,10 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
   const reservationRows = reservations.map(item => `<tr><td><b>${item.when}</b></td><td>${item.what}</td></tr>`).join('');
   const trainRows = trains.map(train => `
     <tr>
-      <td><b>${train.seg}</b>${train.leg ? `<br><span class="timeline-note">${train.leg}</span>` : ''}</td>
+      <td><b>${train.seg}</b>${train.leg ? `<br><span class="timeline-note">${train.leg}</span>` : ''}${train.status ? `<br><span class="tag-todo">${train.status}</span>` : ''}</td>
       <td class="number">${train.date}</td><td>${train.type}</td>
       <td class="number">${train.dep} → ${train.arr}</td>
-      <td class="number">${train.dur}</td><td class="number">PLN ${train.price}</td>
+      <td class="number">${train.dur}</td><td class="number">${/^\d/.test(train.price) ? `PLN ${train.price}` : train.price}</td>
     </tr>`).join('');
   const stayHtml = stay.map(item => `
     <article class="card">
@@ -54,6 +54,7 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
     </section>
     <section class="section">
       <div class="section-heading"><span class="section-num">Rail</span><h2>城際交通</h2></div>
+      <div class="callout-risk"><span class="tag-todo">尚未開賣／確認</span><p>下表是行程銜接所需的目標時段，不是已核實班次。只有在 PKP Intercity／KOLEO 顯示 2026-10-25 至 10-29 的實際車次並完成購票後，才可視為成立。</p></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>路段</th><th>日期</th><th>車種</th><th>時刻</th><th>時長</th><th>票價</th></tr></thead><tbody>${trainRows}</tbody></table></div>
     </section>
     <section class="section">
@@ -69,7 +70,7 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
   return renderPracticalLayout('訂票與交通', 'Booking plan', '先看最急的票，再核對火車、航班與住宿區域。尚未確認的時段保留原樣，不用猜。', content);
 }
 
-export function renderDining({ michelinSummary, michelinReservations }) {
+export function renderDining({ michelinSummary, michelinReservations, verifiedRestaurantHours = [] }) {
   const summaryRows = michelinSummary.map(item => `
     <tr>
       <td><b>${item.city}</b></td><td class="number">${item.stars}</td>
@@ -78,17 +79,23 @@ export function renderDining({ michelinSummary, michelinReservations }) {
     </tr>`).join('');
   const reservationRows = michelinReservations.map(item => `
     <tr><td><b>${item.restaurant}</b></td><td class="number">${item.perPerson}</td><td>${item.channel}</td></tr>`).join('');
+  const hoursRows = verifiedRestaurantHours.map(item => `
+    <tr><td>${item.city}</td><td><a href="${item.url}" target="_blank" rel="noopener"><b>${item.name}</b></a><br>${item.address}</td><td>${item.hours}</td><td>${item.feature}</td></tr>`).join('');
   const content = `
-    <div class="callout-note"><b>訂位節奏：</b>二星與一星建議出發前 3–4 週；華沙高價位餐廳抓 3–5 週。</div>
+    <div class="callout-note"><b>資料界線：</b>米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不再把它們當成固定資料。營業時間查證於 2026-08-08，訂位前仍看店家公告。</div>
     <section>
       <div class="section-heading"><span class="section-num">Guide</span><h2>2026 米其林總表</h2></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>星級</th><th>星級餐廳</th><th>Bib Gourmand</th></tr></thead><tbody>${summaryRows}</tbody></table></div>
     </section>
     <section class="section">
+      <div class="section-heading"><span class="section-num">Hours</span><h2>行程餐廳營業時間</h2></div>
+      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>餐廳／地址</th><th>店家公告時間</th><th>特色與限制</th></tr></thead><tbody>${hoursRows}</tbody></table></div>
+    </section>
+    <section class="section">
       <div class="section-heading"><span class="section-num">Reserve</span><h2>訂位與每人預算</h2></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>餐廳</th><th>每人 PLN</th><th>訂位管道／備註</th></tr></thead><tbody>${reservationRows}</tbody></table></div>
     </section>`;
-  return renderPracticalLayout('米其林與餐廳', 'Michelin 2026', '先決定哪一餐值得升級，再用城市頁的主餐廳與備案補齊其他餐次。', content);
+  return renderPracticalLayout('米其林與餐廳', 'Michelin 2026', '已把 2026 米其林名單與本行程實際餐廳分開；營業時間只寫能追到店家來源的分店。', content);
 }
 
 export function renderTickets({ fares, ticketsByCity, notices = [] }) {
