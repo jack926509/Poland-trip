@@ -40,7 +40,7 @@ export const days = [
     ],
     eat: ['Pierogi @ Zapiecek', 'Wedel 熱巧克力 @ E. Wedel Pijalnia'],
     backup: [
-      {label:'下雨備案', where:'科學文化宮 30F 觀景台', why:'PLN 25 · 室內 + 360° 城景，老城廣場走路 12 分'},
+      {label:'下雨備案', where:'科學文化宮 30F 觀景台', why:'PLN 30／優待 25 · 室內 + 360° 城景，老城廣場走路 12 分'},
       {label:'時差太累', where:'Łazienki 公園溫室', why:'室內展館 + 蕭邦像，免費，傍晚前可走'},
     ],
     practical: [
@@ -102,7 +102,7 @@ export const days = [
     steps: [
       {t:'07:30', label:'Lajkonik 巴士', sub:'MDA D9 / D10 月台', cost:'PLN 15', dur:'1h30'},
       {t:'09:00', label:'抵 Auschwitz I', sub:'安檢、寄包、領耳機', dur:'30 min'},
-      {t:'10:00', label:'★ 英文官方導覽', sub:'一館 + 比克瑙 · 3.5h', cost:'PLN 150', dur:'3.5 h'},
+      {t:'10:00', label:'★ 英文官方導覽', sub:'一館 + 比克瑙 · 3.5h', cost:'約 130–150（優待 120）', dur:'3.5 h'},
       {t:'13:30', label:'導覽結束'},
       {t:'14:30', label:'巴士返克拉科夫', cost:'PLN 15', dur:'1h30'},
       {t:'16:00', label:'抵 Kraków · 休息'},
@@ -191,11 +191,11 @@ export const days = [
     weather: '11° / 5°',
     train: {type:'EIP', from:'POZ', to:'WAW', dep:'17:30', arr:'19:50', dur:'2h20', price:'PLN 90–150'},
     steps: [
-      {t:'09:00', label:'★ 教堂島 Ostrów Tumski', sub:'梅什科一世受洗地', cost:'PLN 16', dur:'1.5 h'},
+      {t:'09:00', label:'★ 教堂島 Ostrów Tumski', sub:'梅什科一世受洗地', cost:'未收費', dur:'1.5 h'},
       {t:'11:00', label:'廣場卡正面位置', dur:'45 min · 提早卡位'},
-      {t:'12:00', label:'★ 山羊鐘樓秀', sub:'每天中午限定', cost:'免費', dur:'5 min'},
+      {t:'12:00', label:'★ 山羊鐘樓秀', sub:'正午一場，部分資料另有 15:00 場（現場再確認）', cost:'免費', dur:'5 min'},
       {t:'12:15', label:'★ 聖馬丁牛角麵包 (PGI)', sub:'Cukiernia Kandulski', cost:'PLN 12–18', dur:'15 min'},
-      {t:'14:00', label:'帝王城堡 / Stary Browar', cost:'PLN 16', dur:'2 h'},
+      {t:'14:00', label:'帝王城堡 / Stary Browar', cost:'多為免費，特展另計', dur:'2 h'},
       {t:'17:30', label:'EIP 出發', cost:'PLN 90–150', dur:'2h20'},
       {t:'19:50', label:'抵華沙中央車站'},
     ],
