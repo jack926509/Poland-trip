@@ -12,3 +12,5 @@
 - Task 3: complete — homepage readiness dashboard with 8 linked, status-labelled categories; tests 28/28.
 - Task 4: fix round 1/5 (1 addressed, 0 open; commits `cbbf407`, `eb0af75`).
 - Task 4: complete — Day 1–8 verified operation cards, navigation, alerts and nightly checks; tests 30/30.
+- Task 5: fix round 1/5 (4 addressed, 0 open; commits `e9ce455`, `77e7f4b`).
+- Task 5: complete — build-time data contracts, safe database rendering and forbidden-content gates; tests 34/34 and `verify.sh` passed.
