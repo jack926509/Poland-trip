@@ -51,3 +51,7 @@ export const ticketsByCity = [
     ['古市政廳博物館', '❗2026/7–2027/11 整修閉館，行程期間無法入內（見 fares）'],
   ]},
 ];
+
+export const ticketNotices = [
+  {status:'待確認', text:'Auschwitz 訂票開放時間兩份資料差距很大（一說參觀日前 90 天、一說提前 2–3 週）。官方頁面目前已可訂本次日期，仍建議直接以 visit.auschwitz.org 顯示狀態為準。', url:'https://visit.auschwitz.org/'},
+];
