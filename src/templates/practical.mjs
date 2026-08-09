@@ -82,7 +82,7 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
   const hoursRows = verifiedRestaurantHours.map(item => `
     <tr><td>${item.city}</td><td><a href="${item.url}" target="_blank" rel="noopener"><b>${item.name}</b></a><br>${item.address}</td><td>${item.hours}</td><td>${item.feature}</td></tr>`).join('');
   const content = `
-    <div class="callout-note"><b>資料界線：</b>米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不再把它們當成固定資料。營業時間查證於 2026-08-08，訂位前仍看店家公告。</div>
+    <div class="callout-note"><b>資料界線：</b>米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不再把它們當成固定資料。營業時間查證於 2026-08-09，訂位前仍看店家公告。</div>
     <section>
       <div class="section-heading"><span class="section-num">Guide</span><h2>2026 米其林總表</h2></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>星級</th><th>星級餐廳</th><th>Bib Gourmand</th></tr></thead><tbody>${summaryRows}</tbody></table></div>

@@ -73,7 +73,7 @@ function standalonePageId(relativePath) {
   return `page-${relativePath.replace(/\.html$/, '').replace(/[^a-z0-9]+/gi, '-')}`;
 }
 
-function bundlePage(relativePath) {
+function bundlePage(relativePath, label, pageIndex) {
   const html = fs.readFileSync(path.join(distDir, relativePath), 'utf8');
   const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i);
   if (!main) throw new Error(`無法從 ${relativePath} 取得主要內容`);
@@ -102,7 +102,19 @@ function bundlePage(relativePath) {
       `aria-describedby="${ids.split(/\s+/).map(id => `${currentPageId}--${id}`).join(' ')}"`
     ));
 
-  return `<section class="standalone-page" id="${currentPageId}" data-source="${relativePath}">\n${content}\n</section>`;
+  const previous = standalonePages[pageIndex - 1];
+  const next = standalonePages[pageIndex + 1];
+  const controls = `<nav class="standalone-page-controls" aria-label="${label} 章節切換">
+    ${previous ? `<a href="#${standalonePageId(previous[0])}">← ${previous[1]}</a>` : '<span aria-hidden="true"></span>'}
+    <span>第 ${pageIndex + 1} / ${standalonePages.length} 頁</span>
+    ${next ? `<a href="#${standalonePageId(next[0])}">${next[1]} →</a>` : '<span aria-hidden="true"></span>'}
+  </nav>`;
+
+  return `<section class="standalone-page" id="${currentPageId}" data-source="${relativePath}">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>${label}</strong></header>
+${content}
+${controls}
+</section>`;
 }
 
 function buildStandalone() {
@@ -118,7 +130,9 @@ function buildStandalone() {
         </div>
       </details>`;
   }).join('\n      ');
-  const bundledPages = standalonePages.map(([relativePath]) => bundlePage(relativePath)).join('\n');
+  const bundledPages = standalonePages
+    .map(([relativePath, label], pageIndex) => bundlePage(relativePath, label, pageIndex))
+    .join('\n');
   const html = `<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -200,8 +214,46 @@ ${mainCss}
     .standalone-menu-panel a:focus-visible { background: #f6f1e8; color: #2b2723; }
     .standalone-page {
       display: block;
+      min-height: calc(100dvh - 5rem);
+      padding-block: 1rem 3rem;
       scroll-margin-top: 5rem;
-      border-bottom: 4px double rgba(43, 39, 35, .2);
+      border-bottom: 1px solid rgba(43, 39, 35, .25);
+    }
+    .standalone-page-ribbon {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      width: min(1180px, calc(100% - 2rem));
+      margin: 0 auto 1.5rem;
+      padding: .75rem 0;
+      color: #7e2c1a;
+      border-block: 2px solid #2b2723;
+      font-size: .75rem;
+      font-weight: 700;
+    }
+    .standalone-page-ribbon span { letter-spacing: .08em; }
+    .standalone-page-ribbon strong { color: #2b2723; font-family: "Playfair Display", serif; font-size: 1.1rem; }
+    .standalone-page-controls {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 1rem;
+      width: min(1180px, calc(100% - 2rem));
+      margin: 3rem auto 0;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(43, 39, 35, .25);
+      font-size: .9rem;
+    }
+    .standalone-page-controls a { color: #7e2c1a; font-weight: 700; text-decoration: none; }
+    .standalone-page-controls a:last-child { text-align: right; }
+    .standalone-page-controls a:hover,
+    .standalone-page-controls a:focus-visible { text-decoration: underline; }
+    .standalone-page-controls span { color: #6a625b; font-size: .78rem; }
+    .standalone-page-controls span:last-child { text-align: right; }
+    .standalone-page[hidden] { display: none; }
+    .standalone-page:not([hidden]) {
+      animation: none;
     }
     .standalone-page > .hero,
     .standalone-page > .section,
@@ -232,11 +284,16 @@ ${mainCss}
       }
       .standalone-menu:last-child .standalone-menu-panel { right: .75rem; left: .75rem; }
       .standalone-page { scroll-margin-top: 7.5rem; }
+      .standalone-page-ribbon { align-items: flex-start; flex-direction: column; gap: .25rem; }
+      .standalone-page-controls { grid-template-columns: 1fr 1fr; }
+      .standalone-page-controls > span { display: none; }
     }
     @media print {
       .standalone-nav { display: none; }
-      .standalone-page { break-before: page; border: 0; }
+      .standalone-page,
+      .standalone-page[hidden] { display: block !important; break-before: page; border: 0; }
       .standalone-page:first-of-type { break-before: auto; }
+      .standalone-page-controls { display: none; }
     }
   </style>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -257,12 +314,37 @@ ${bundledPages}
     </div>
   </footer>
   <script>
-    document.querySelector('.standalone-nav').addEventListener('click', function (event) {
-      if (!event.target.closest('a[href^="#"]')) return;
-      document.querySelectorAll('.standalone-menu[open]').forEach(function (menu) {
-        menu.removeAttribute('open');
+    (function () {
+      var pages = Array.from(document.querySelectorAll('.standalone-page'));
+      var defaultPageId = 'page-index';
+
+      function showStandalonePage(targetId) {
+        var target = document.getElementById(targetId);
+        var activePage = target ? target.closest('.standalone-page') : document.getElementById(defaultPageId);
+        var activePageId = activePage ? activePage.id : defaultPageId;
+        pages.forEach(function (page) {
+          page.hidden = page.id !== activePageId;
+        });
+        window.requestAnimationFrame(function () {
+          var activeTarget = document.getElementById(targetId) || document.getElementById(activePageId);
+          if (activeTarget) activeTarget.scrollIntoView({ block: 'start' });
+          window.dispatchEvent(new Event('resize'));
+        });
+      }
+
+      function activateStandaloneHash() {
+        showStandalonePage(decodeURIComponent(window.location.hash.slice(1)) || defaultPageId);
+      }
+
+      document.querySelector('.standalone-nav').addEventListener('click', function (event) {
+        if (!event.target.closest('a[href^="#"]')) return;
+        document.querySelectorAll('.standalone-menu[open]').forEach(function (menu) {
+          menu.removeAttribute('open');
+        });
       });
-    });
+      window.addEventListener('hashchange', activateStandaloneHash);
+      activateStandaloneHash();
+    }());
   </script>
 </body>
 </html>`;

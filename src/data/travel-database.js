@@ -428,7 +428,7 @@ export const dayOperations = {
       { mode: 'PKP', route: 'Wrocław Główny → Poznań Główny', action: '目標 19:00 不是已確定班次；依已購票券的車次與月台行動。' },
     ],
     dailyAlerts: [
-      '百年廳 10/28 圓頂展廳不開放，只排外觀與周邊；出發前仍重查當日公告。',
+      '百年廳 10/28 的內部參觀狀態須以官方 availability calendar 確認；未確認前只排外觀與周邊。',
       '點燈人沒有對外保證的出發分鐘；日落前到座堂島等待，不把 16:45 當成確定時刻。',
     ],
     nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票'],

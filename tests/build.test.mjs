@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { test } from 'node:test';
-import { cities, cityStories, photoSpots, photoCredits, mapPins, attractions } from '../src/data/cities.js';
+import { cities, cityStories, photoSpots, photoCredits, mapPins, attractions, cityNotices } from '../src/data/cities.js';
 import { cityDining, cityFood, foodBackup, foods, michelinSummary, michelinReservations, verifiedRestaurantHours } from '../src/data/dining.js';
 import { about, packingDefault, phrases, preDepartureNotes, safety } from '../src/data/essentials.js';
 import { shopping, souvenirCards, souvenirShops, luxuryShopping, zabkaCards } from '../src/data/shopping.js';
@@ -351,6 +351,28 @@ test('單檔版將過長導覽收納成三組原生下拉選單', () => {
   assert.equal((html.match(/class="standalone-home"/g) || []).length, 1);
 });
 
+test('單檔版以章節切換取代整頁上下查找，並保留前後頁導航', () => {
+  const html = fs.readFileSync(standalonePath, 'utf8');
+
+  assert.equal((html.match(/class="standalone-page-controls"/g) || []).length, expectedFiles.length);
+  assert.equal((html.match(/class="standalone-page-ribbon"/g) || []).length, expectedFiles.length);
+  assert.match(html, /function showStandalonePage\(targetId\)/);
+  assert.match(html, /window\.addEventListener\('hashchange', activateStandaloneHash\)/);
+  assert.match(html, /page\.hidden = page\.id !== activePageId/);
+  assert.match(html, /@media print[\s\S]*\.standalone-page\[hidden\][\s\S]*display: block !important;/);
+});
+
+test('2026-08-09 官方盤查會移除未能證實的場次、價格與閉館敘述', () => {
+  const publicData = JSON.stringify({ days, fares, ticketsByCity, attractions, cityNotices, bookingTiers, reservations });
+
+  for (const unsupportedClaim of ['圓頂展廳不開放', 'PLN 143 · 優待 121', '英文場 47', '多為免費', '約 3 個月前開放']) {
+    assert.ok(!publicData.includes(unsupportedClaim), `不應保留未證實敘述：${unsupportedClaim}`);
+  }
+  assert.ok(days[1].mustBook.some(item => item.includes('可立即查／購')));
+  assert.equal(days[6].steps.find(step => step.label === '★ POLIN 猶太博物館')?.cost, '依官方售票頁');
+  assert.ok(cityNotices.wroclaw.some(item => item.text.includes('availability calendar')));
+});
+
 test('自由行資料庫頁提供 SOS、主題索引與緊急聯絡資訊', () => {
   assert.equal(htmlFiles().length, 21);
   const html = read('practical/database.html');
@@ -603,10 +625,11 @@ test('高風險校正：波茲南古市政廳整修閉館，不再顯示可購�
   assert.doesNotMatch(html, /古市政廳博物館[\s\S]{0,160}<td class="number">10<\/td>/);
 });
 
-test('高風險校正：百年廳 10/28 圓頂關閉在 Day 5 與城市頁都看得到', () => {
+test('高風險校正：百年廳 10/28 改由官方 availability calendar 確認', () => {
   for (const file of ['day-05.html', 'city-wroclaw.html']) {
     const html = read(file);
-    assert.ok(html.includes('10/28') && html.includes('圓頂展廳不開放'), `${file} 缺少百年廳警示`);
+    assert.ok(html.includes('10/28') && html.includes('availability calendar'), `${file} 缺少百年廳可售狀態確認提示`);
+    assert.ok(!html.includes('圓頂展廳不開放'), `${file} 不應保留未證實閉館敘述`);
   }
 });
 
@@ -655,7 +678,7 @@ test('餐廳頁只把可追到店家來源的營業時間列為已查', () => {
     assert.ok(html.includes(restaurant.hours));
     assert.ok(html.includes(restaurant.url));
   }
-  assert.ok(html.includes('營業時間查證於 2026-08-08'));
+  assert.ok(html.includes('營業時間查證於 2026-08-09'));
 });
 
 test('城市頁不再將 Google 星等與評論數當成固定資料', () => {

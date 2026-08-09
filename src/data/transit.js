@@ -1,13 +1,13 @@
 export const transitFares = [
-  {city:'華沙 WTP', short:'20 分 3.40', min90:'75 分 4.40（第 1 區）／90 分 7（第 1+2 區）', hour24:'15（第 1 區）', note:'電車／巴士／地鐵／SKM；機場在第 1 區'},
+  {city:'華沙 WTP', short:'抵達日確認', min90:'第 1 區時間票（抵達日依官方價目確認）', hour24:'抵達日確認', note:'電車／巴士／地鐵／SKM；機場在第 1 區，票價以 WTP 官方價目與售票機為準'},
   {city:'克拉科夫 KMK', short:'15 分 4', min90:'90 分 9', hour24:'20（第 I 區）／25（I+II+III）', note:'2026-03-02 起；30 分或單趟票 6'},
-  {city:'樂斯拉夫 MPK', short:'15 分 3.20', min90:'90 分 7', hour24:'15', note:'單趟不轉乘票 4.60；時間票可轉乘'},
+  {city:'樂斯拉夫 MPK', short:'15 分 3.20', min90:'90 分 7', hour24:'15', note:'30 分 4.00、60 分 5.20；時間票可轉乘'},
   {city:'波茲南 ZTM', short:'15 分 5', min90:'90 分 9', hour24:'18（A 區）／24（全區）', note:'45 分 7；時間票可轉乘'},
 ];
 
 export const airportTransit = [
-  {route:'華沙蕭邦機場 → 市中心', method:'🚆 SKM S2／S3 或 KM', price:'4.40', time:'約 25–30 分', note:'75 分鐘第 1 區票，可在有效時間內轉乘；實際月台與班次當日查 WTP'},
-  {route:'華沙蕭邦機場 → 市中心', method:'🚌 175 路巴士', price:'4.40', time:'約 30–45 分', note:'75 分鐘第 1 區票；塞車時火車較穩，當日站位與班次查 WTP'},
+  {route:'華沙蕭邦機場 → 市中心', method:'🚆 SKM S2／S3 或 KM', price:'抵達日確認', time:'約 25–30 分', note:'使用第 1 區時間票；實際票價、月台與班次當日查 WTP'},
+  {route:'華沙蕭邦機場 → 市中心', method:'🚌 175 路巴士', price:'抵達日確認', time:'約 30–45 分', note:'使用第 1 區時間票；塞車時火車較穩，當日站位、班次與票價查 WTP'},
   {route:'華沙蕭邦機場 → 市中心', method:'🚕 計程車／Bolt', price:'依跳錶／App 報價', time:'依路況', note:'機場內認明官方排班計程車，避免搭訕攬客'},
   {route:'克拉科夫 Balice 機場 → 市中心', method:'🚆 SKA1 火車', price:'20', time:'約 20 分', note:'Kraków Airport → Kraków Główny；行李免費，班次以 KMŁ 當日日曆為準'},
   {route:'克拉科夫 Balice 機場 → 市中心', method:'🚌 300／209', price:'6（30 分或單趟）', time:'約 45 分', note:'機場官方列為市郊路線；上車後立即驗票，班次查官方時刻表'},

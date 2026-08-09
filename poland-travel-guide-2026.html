@@ -961,8 +961,46 @@ summary:focus-visible {
     .standalone-menu-panel a:focus-visible { background: #f6f1e8; color: #2b2723; }
     .standalone-page {
       display: block;
+      min-height: calc(100dvh - 5rem);
+      padding-block: 1rem 3rem;
       scroll-margin-top: 5rem;
-      border-bottom: 4px double rgba(43, 39, 35, .2);
+      border-bottom: 1px solid rgba(43, 39, 35, .25);
+    }
+    .standalone-page-ribbon {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      width: min(1180px, calc(100% - 2rem));
+      margin: 0 auto 1.5rem;
+      padding: .75rem 0;
+      color: #7e2c1a;
+      border-block: 2px solid #2b2723;
+      font-size: .75rem;
+      font-weight: 700;
+    }
+    .standalone-page-ribbon span { letter-spacing: .08em; }
+    .standalone-page-ribbon strong { color: #2b2723; font-family: "Playfair Display", serif; font-size: 1.1rem; }
+    .standalone-page-controls {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 1rem;
+      width: min(1180px, calc(100% - 2rem));
+      margin: 3rem auto 0;
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(43, 39, 35, .25);
+      font-size: .9rem;
+    }
+    .standalone-page-controls a { color: #7e2c1a; font-weight: 700; text-decoration: none; }
+    .standalone-page-controls a:last-child { text-align: right; }
+    .standalone-page-controls a:hover,
+    .standalone-page-controls a:focus-visible { text-decoration: underline; }
+    .standalone-page-controls span { color: #6a625b; font-size: .78rem; }
+    .standalone-page-controls span:last-child { text-align: right; }
+    .standalone-page[hidden] { display: none; }
+    .standalone-page:not([hidden]) {
+      animation: none;
     }
     .standalone-page > .hero,
     .standalone-page > .section,
@@ -993,11 +1031,16 @@ summary:focus-visible {
       }
       .standalone-menu:last-child .standalone-menu-panel { right: .75rem; left: .75rem; }
       .standalone-page { scroll-margin-top: 7.5rem; }
+      .standalone-page-ribbon { align-items: flex-start; flex-direction: column; gap: .25rem; }
+      .standalone-page-controls { grid-template-columns: 1fr 1fr; }
+      .standalone-page-controls > span { display: none; }
     }
     @media print {
       .standalone-nav { display: none; }
-      .standalone-page { break-before: page; border: 0; }
+      .standalone-page,
+      .standalone-page[hidden] { display: block !important; break-before: page; border: 0; }
       .standalone-page:first-of-type { break-before: auto; }
+      .standalone-page-controls { display: none; }
     }
   </style>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -1044,6 +1087,7 @@ summary:focus-visible {
   </nav>
   <main id="standalone-content">
 <section class="standalone-page" id="page-index" data-source="index.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>旅程首頁</strong></header>
 
     
     <header class="hero">
@@ -1271,8 +1315,14 @@ summary:focus-visible {
       </div>
     </section>
   
+<nav class="standalone-page-controls" aria-label="旅程首頁 章節切換">
+    <span aria-hidden="true"></span>
+    <span>第 1 / 21 頁</span>
+    <a href="#page-day-01">Day 1 →</a>
+  </nav>
 </section>
 <section class="standalone-page" id="page-day-01" data-source="day-01.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 1</strong></header>
 
     
     <header class="hero">
@@ -1396,8 +1446,8 @@ summary:focus-visible {
     </tr>
     <tr>
       <td class="number"><b>14:45</b></td>
-      <td><b>SKM S2/S3 目標班次</b><br><span class="timeline-note">75 分鐘第 1 區票 4.40 PLN · 約 25–30 分；抵達後查 WTP 即時月台</span></td>
-      <td class="number">PLN 4.40</td>
+      <td><b>SKM S2/S3 目標班次</b><br><span class="timeline-note">第 1 區時間票 · 約 25–30 分；抵達後查 WTP 即時月台與票價</span></td>
+      <td class="number">抵達日確認</td>
       <td class="number">25–30 min</td>
     </tr>
     <tr>
@@ -1489,8 +1539,14 @@ summary:focus-visible {
 
     <nav class="section-heading" aria-label="每日行程翻頁"><span></span><a href="#page-day-02">Day 2 →</a></nav>
   
+<nav class="standalone-page-controls" aria-label="Day 1 章節切換">
+    <a href="#page-index">← 旅程首頁</a>
+    <span>第 2 / 21 頁</span>
+    <a href="#page-day-02">Day 2 →</a>
+  </nav>
 </section>
 <section class="standalone-page" id="page-day-02" data-source="day-02.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 2</strong></header>
 
     
     <header class="hero">
@@ -1513,12 +1569,12 @@ summary:focus-visible {
     <div class="callout-risk">
       <span class="tag-todo">尚未完成 2 項</span>
       <h3>這一天要先處理</h3>
-      <ul class="check-list"><li>❗尚未訂 · 華沙 → 克拉科夫火車</li><li>❗尚未訂 · 辛德勒工廠 17:30 時段票</li></ul>
+      <ul class="check-list"><li>❗尚未訂 · 華沙 → 克拉科夫火車</li><li>✅ 可立即查／購 · 辛德勒工廠 17:30 時段票</li></ul>
     </div>
     
     <div class="callout-risk">
       <span class="tag-red">重要風險</span>
-      <p>❗瓦維爾城堡與辛德勒工廠皆尚未訂票。官方 2026 資料：瓦維爾大教堂週日 12:30–17:00；城堡完整路線 95／71 PLN、最後入場 15:00；辛德勒工廠週二至週日 09:00–20:00、最後入場為閉館前 90 分鐘，17:30 可行。10/25 為非營業週日，多數一般商店關閉；餐廳等法定例外是否營業仍以店家公告為準。</p>
+      <p>❗瓦維爾城堡尚未訂票；辛德勒工廠個人網路票在參觀日前 90 天 09:00 開放，10/25 已可在官方售票頁查／購。瓦維爾大教堂週日 12:30–17:00；城堡完整路線 95／71 PLN、最後入場 15:00；辛德勒工廠週二至週日 09:00–20:00、最後入場 18:30，17:30 屬可行時段。10/25 為非營業週日，多數一般商店關閉；餐廳等法定例外是否營業仍以店家公告為準。</p>
     </div>
     
     <div class="grid-wide">
@@ -1763,8 +1819,14 @@ summary:focus-visible {
 
     <nav class="section-heading" aria-label="每日行程翻頁"><a href="#page-day-01">← Day 1</a><a href="#page-day-03">Day 3 →</a></nav>
   
+<nav class="standalone-page-controls" aria-label="Day 2 章節切換">
+    <a href="#page-day-01">← Day 1</a>
+    <span>第 3 / 21 頁</span>
+    <a href="#page-day-03">Day 3 →</a>
+  </nav>
 </section>
 <section class="standalone-page" id="page-day-03" data-source="day-03.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 3</strong></header>
 
     
     <header class="hero">
@@ -1787,12 +1849,12 @@ summary:focus-visible {
     <div class="callout-risk">
       <span class="tag-todo">尚未完成 1 項</span>
       <h3>這一天要先處理</h3>
-      <ul class="check-list"><li>❗尚未訂 · Auschwitz 官方英文導覽（訂票窗口已開，最急）</li></ul>
+      <ul class="check-list"><li>❗需查／購 · Auschwitz 官方英文導覽（指定場次庫存以官方系統為準）</li></ul>
     </div>
     
     <div class="callout-risk">
       <span class="tag-red">重要風險</span>
-      <p>❗最急一項。自 2026/3/1 起所有入場證只在 visit.auschwitz.org 線上提供，現場不發票；10 月 07:30–16:00 僅能參加官方導覽，英文團 08:30–14:30 每小時一團。10:00 場須依官方日曆實際庫存下單，並提前至少 30 分鐘抵達安檢。</p>
+      <p>❗最急一項。所有入場證只在 visit.auschwitz.org 線上提供，入口不售票；10 月入場時間為 07:30–17:00。10:00 英文導覽的庫存與票價只能依官方預約系統確認，並提前至少 30 分鐘抵達安檢。</p>
     </div>
     
     <div class="grid-wide">
@@ -1960,8 +2022,14 @@ summary:focus-visible {
 
     <nav class="section-heading" aria-label="每日行程翻頁"><a href="#page-day-02">← Day 2</a><a href="#page-day-04">Day 4 →</a></nav>
   
+<nav class="standalone-page-controls" aria-label="Day 3 章節切換">
+    <a href="#page-day-02">← Day 2</a>
+    <span>第 4 / 21 頁</span>
+    <a href="#page-day-04">Day 4 →</a>
+  </nav>
 </section>
 <section class="standalone-page" id="page-day-04" data-source="day-04.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 4</strong></header>
 
     
     <header class="hero">
@@ -1989,7 +2057,7 @@ summary:focus-visible {
     
     <div class="callout-risk">
       <span class="tag-red">重要風險</span>
-      <p>❗鹽礦與城際火車皆尚未訂。鹽礦外語團 143／121 PLN，售票櫃台與最後一團至 17:00；10:00 場次依官方訂票日曆。克拉科夫 → 樂斯拉夫的 19:30 目前只是規劃目標，不是已確認時刻；PKP 開賣後須依 10/27 實際直達班次重排。</p>
+      <p>❗鹽礦與城際火車皆尚未訂。鹽礦官方通用頁僅列票價「從 131 PLN」；10/27 英文場、實際票價與庫存必須在官方日期選擇器確認。克拉科夫 → 樂斯拉夫的 19:30 目前只是規劃目標，不是已確認時刻；PKP 開賣後須依 10/27 實際直達班次重排。</p>
     </div>
     
     <div class="grid-wide">
@@ -2100,7 +2168,7 @@ summary:focus-visible {
     <tr>
       <td class="number"><b>10:00</b></td>
       <td><b>★ Wieliczka 鹽礦 Tourist Route 英文團</b><br><span class="timeline-note">3.5 km · 135m 深 · St. Kinga 鹽教堂</span></td>
-      <td class="number">PLN 143 · 優待 121</td>
+      <td class="number">依 10/27 官方日期選擇器</td>
       <td class="number">2–3 h</td>
     </tr>
     <tr>
@@ -2218,8 +2286,14 @@ summary:focus-visible {
 
     <nav class="section-heading" aria-label="每日行程翻頁"><a href="#page-day-03">← Day 3</a><a href="#page-day-05">Day 5 →</a></nav>
   
+<nav class="standalone-page-controls" aria-label="Day 4 章節切換">
+    <a href="#page-day-03">← Day 3</a>
+    <span>第 5 / 21 頁</span>
+    <a href="#page-day-05">Day 5 →</a>
+  </nav>
 </section>
 <section class="standalone-page" id="page-day-05" data-source="day-05.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 5</strong></header>
 
     
     <header class="hero">
@@ -2247,7 +2321,7 @@ summary:focus-visible {
     
     <div class="callout-risk">
       <span class="tag-red">重要風險</span>
-      <p>❗此日兩項皆尚未訂票。⚠️ 百年廳官方預約日曆顯示 10/28（正好是本日）圓頂展廳不開放，已把行程改為外觀與周邊，出發前請再上 halastulecia.pl 確認一次。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，因此安排 16:15–17:15 在座堂島等候，不再把 16:45 寫成確定時刻。</p>
+      <p>❗此日兩項皆尚未訂票。百年廳的 10/28 內部參觀狀態須以官方 availability calendar 確認，未確認前不販售或保證室內行程。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，因此安排 16:15–17:15 在座堂島等候，不再把 16:45 寫成確定時刻。</p>
     </div>
     
     <div class="grid-wide">
@@ -2339,7 +2413,7 @@ summary:focus-visible {
       </div>
       <div class="callout-risk operation-alerts">
         <span class="tag-red">今日注意</span>
-        <ul class="check-list"><li>百年廳 10/28 圓頂展廳不開放，只排外觀與周邊；出發前仍重查當日公告。</li><li>點燈人沒有對外保證的出發分鐘；日落前到座堂島等待，不把 16:45 當成確定時刻。</li></ul>
+        <ul class="check-list"><li>百年廳 10/28 的內部參觀狀態須以官方 availability calendar 確認；未確認前只排外觀與周邊。</li><li>點燈人沒有對外保證的出發分鐘；日落前到座堂島等待，不把 16:45 當成確定時刻。</li></ul>
       </div>
       <details class="card operation-unresolved"><summary><b>待班次／住宿／分店確認的步驟</b></summary><ul class="check-list"><li><b>糖果屋雙屋 + 教堂塔樓</b><p>教堂塔樓入口與開放狀態須依當日官方公告確認。</p></li><li><b>取行李 → Wrocław Główny</b><p>住宿名稱、入口或寄放點屬私人訂單，待確認後寫入離線包。</p></li><li><b>IC 直達車</b><p>班次、月台或上下車點為動態資料，依已購票與當日電子牌確認。</p></li></ul></details>
     </section>
@@ -2370,7 +2444,7 @@ summary:focus-visible {
     </tr>
     <tr>
       <td class="number"><b>13:30</b></td>
-      <td><b>★ 百年廳 (UNESCO)</b><br><span class="timeline-note">❗10/28 圓頂展廳不開放，改看外觀＋周邊噴泉與日本花園</span></td>
+      <td><b>★ 百年廳 (UNESCO)</b><br><span class="timeline-note">先以官方 availability calendar 確認 10/28 是否可參觀內部；未確認前以外觀、噴泉與日本花園規劃</span></td>
       <td class="number">外觀免費</td>
       <td class="number">1 h</td>
     </tr>
@@ -2426,9 +2500,9 @@ summary:focus-visible {
           <p>若日落後遇雨遮蔽煤氣燈，回廣場喝熱酒（PLN 12）</p>
         </article>
         <article class="card">
-          <span class="eyebrow">百年廳當日不開放的替代</span>
+          <span class="eyebrow">百年廳未開放內部時的替代</span>
           <h3>Panorama 全景畫後直接回老城，多留時間給小矮人與座堂島</h3>
-          <p>圓頂展廳 10/28 關閉，省下的 1.5 h 可補足點燈前的空檔</p>
+          <p>若 official availability calendar 顯示內部不可參觀，省下的時間可補足點燈前空檔</p>
         </article>
       </div>
     </section>
@@ -2460,8 +2534,14 @@ summary:focus-visible {
 
     <nav class="section-heading" aria-label="每日行程翻頁"><a href="#page-day-04">← Day 4</a><a href="#page-day-06">Day 6 →</a></nav>
   
+<nav class="standalone-page-controls" aria-label="Day 5 章節切換">
+    <a href="#page-day-04">← Day 4</a>
+    <span>第 6 / 21 頁</span>
+    <a href="#page-day-06">Day 6 →</a>
+  </nav>
 </section>
 <section class="standalone-page" id="page-day-06" data-source="day-06.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 6</strong></header>
 
     
     <header class="hero">
@@ -2614,8 +2694,8 @@ summary:focus-visible {
     </tr>
     <tr>
       <td class="number"><b>14:00</b></td>
-      <td><b>帝王城堡 / Stary Browar</b></td>
-      <td class="number">多為免費，特展另計</td>
+      <td><b>帝王城堡 / Stary Browar</b><br><span class="timeline-note">帝王城堡室內展覽依當日公告；可借語音導覽 10 PLN</span></td>
+      <td class="number">依當日展覽／導覽</td>
       <td class="number">2 h</td>
     </tr>
     <tr>
@@ -2655,8 +2735,8 @@ summary:focus-visible {
       <div class="grid">
         <article class="card">
           <span class="eyebrow">雨天想看山羊鐘</span>
-          <h3>可頌博物館 11:00／14:00 山羊鐘秀場</h3>
-          <p>PLN 47／43，英文場 47；10/29 是否有英文場須等官方售票日曆，不能臨時保證</p>
+          <h3>可頌博物館官方售票頁</h3>
+          <p>週四英語場、價格與庫存都須依 10/29 官方售票系統確認；未確認前改以 Stary Browar 或帝王城堡為室內備案</p>
         </article>
         <article class="card">
           <span class="eyebrow">雨天備案</span>
@@ -2693,8 +2773,14 @@ summary:focus-visible {
 
     <nav class="section-heading" aria-label="每日行程翻頁"><a href="#page-day-05">← Day 5</a><a href="#page-day-07">Day 7 →</a></nav>
   
+<nav class="standalone-page-controls" aria-label="Day 6 章節切換">
+    <a href="#page-day-05">← Day 5</a>
+    <span>第 7 / 21 頁</span>
+    <a href="#page-day-07">Day 7 →</a>
+  </nav>
 </section>
 <section class="standalone-page" id="page-day-07" data-source="day-07.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 7</strong></header>
 
     
     <header class="hero">
@@ -2826,7 +2912,7 @@ summary:focus-visible {
     <tr>
       <td class="number"><b>13:15</b></td>
       <td><b>★ POLIN 猶太博物館</b><br><span class="timeline-note">週五 10:00–18:00；主展最晚 16:00 入場</span></td>
-      <td class="number">PLN 45</td>
+      <td class="number">依官方售票頁</td>
       <td class="number">2 h</td>
     </tr>
     <tr>
@@ -2901,8 +2987,14 @@ summary:focus-visible {
 
     <nav class="section-heading" aria-label="每日行程翻頁"><a href="#page-day-06">← Day 6</a><a href="#page-day-08">Day 8 →</a></nav>
   
+<nav class="standalone-page-controls" aria-label="Day 7 章節切換">
+    <a href="#page-day-06">← Day 6</a>
+    <span>第 8 / 21 頁</span>
+    <a href="#page-day-08">Day 8 →</a>
+  </nav>
 </section>
 <section class="standalone-page" id="page-day-08" data-source="day-08.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 8</strong></header>
 
     
     <header class="hero">
@@ -3025,8 +3117,8 @@ summary:focus-visible {
     </tr>
     <tr>
       <td class="number"><b>10:30</b></td>
-      <td><b>SKM S2/S3 目標班次</b><br><span class="timeline-note">75 分鐘第 1 區票；當日查 WTP 月台與發車時間</span></td>
-      <td class="number">PLN 4.40</td>
+      <td><b>SKM S2/S3 目標班次</b><br><span class="timeline-note">第 1 區時間票；當日查 WTP 月台、發車時間與票價</span></td>
+      <td class="number">當日確認</td>
       <td class="number">約 25–30 min</td>
     </tr>
     <tr>
@@ -3083,8 +3175,14 @@ summary:focus-visible {
 
     <nav class="section-heading" aria-label="每日行程翻頁"><a href="#page-day-07">← Day 7</a><a href="#page-index">回到總覽 →</a></nav>
   
+<nav class="standalone-page-controls" aria-label="Day 8 章節切換">
+    <a href="#page-day-07">← Day 7</a>
+    <span>第 9 / 21 頁</span>
+    <a href="#page-city-warszawa">華沙 →</a>
+  </nav>
 </section>
 <section class="standalone-page" id="page-city-warszawa" data-source="city-warszawa.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>華沙</strong></header>
 
     
     <header class="hero">
@@ -3180,7 +3278,7 @@ summary:focus-visible {
     <tr>
       <td><a href="https://maps.google.com/?cid=16292574584610500784" target="_blank" rel="noopener">POLIN 猶太史博物館</a></td>
       <td>歷史</td>
-      <td>PLN 45 · 週四免費 · 週二休；週五 10:00–18:00，主展最後入場 16:00</td>
+      <td>週二休；週五 10:00–18:00，主展最後入場 16:00 · 票價與庫存看官方售票頁</td>
     </tr>
     <tr>
       <td><a href="https://maps.google.com/?cid=14044892037721828802" target="_blank" rel="noopener">科學文化宮觀景台</a></td>
@@ -3495,8 +3593,14 @@ summary:focus-visible {
     }());
     </script>
   
+<nav class="standalone-page-controls" aria-label="華沙 章節切換">
+    <a href="#page-day-08">← Day 8</a>
+    <span>第 10 / 21 頁</span>
+    <a href="#page-city-krakow">克拉科夫 →</a>
+  </nav>
 </section>
 <section class="standalone-page" id="page-city-krakow" data-source="city-krakow.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>克拉科夫</strong></header>
 
     
     <header class="hero">
@@ -3572,12 +3676,12 @@ summary:focus-visible {
     <tr>
       <td><a href="https://maps.google.com/?cid=10891192289792865301" target="_blank" rel="noopener">維利奇卡鹽礦</a></td>
       <td>需票</td>
-      <td>UNESCO · Kinga 鹽教堂 · 恆溫 17–18°C · 英語團 143 / 優待 121（含導覽）· 11/1 閉館 · 官網 bilety.kopalnia.pl</td>
+      <td>UNESCO · Kinga 鹽教堂 · 恆溫 17–18°C · 10/27 英語團、價格與庫存看官方日期選擇器</td>
     </tr>
     <tr>
       <td><a href="https://www.google.com/maps/search/?api=1&query=Memorial%20and%20Museum%20Auschwitz-Birkenau%20O%C5%9Bwi%C4%99cim" target="_blank" rel="noopener">奧斯威辛-比克瑙</a></td>
       <td>只限線上取得入場證</td>
-      <td>10 月 07:30–16:00 僅官方導覽；16:00 後才可預約免費自導 · 英文團 08:30–14:30 每小時 · 票價看官方訂票頁</td>
+      <td>10 月 07:30–17:00 · 入口不售票 · 英文導覽指定場次與票價看官方預約系統</td>
     </tr></tbody>
       </table></div>
     </section>
@@ -3837,8 +3941,14 @@ summary:focus-visible {
     }());
     </script>
   
+<nav class="standalone-page-controls" aria-label="克拉科夫 章節切換">
+    <a href="#page-city-warszawa">← 華沙</a>
+    <span>第 11 / 21 頁</span>
+    <a href="#page-city-wroclaw">樂斯拉夫 →</a>
+  </nav>
 </section>
 <section class="standalone-page" id="page-city-wroclaw" data-source="city-wroclaw.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>樂斯拉夫</strong></header>
 
     
     <header class="hero">
@@ -3854,8 +3964,8 @@ summary:focus-visible {
     </header>
 
     <div class="callout-risk">
-    <span class="tag-red">已確認限制</span>
-    <p>百年廳 10/28（本行程當天）圓頂展廳不開放；主行程只排外觀與周邊，行前 3–5 天仍建議查 halastulecia.pl 是否有其他臨時異動。</p>
+    <span class="tag-red">指定日重查</span>
+    <p>百年廳 10/28 的內部參觀狀態需以官方 availability calendar 確認；未確認前主行程只排外觀與周邊。</p>
   </div>
 
     <section>
@@ -4138,8 +4248,14 @@ summary:focus-visible {
     }());
     </script>
   
+<nav class="standalone-page-controls" aria-label="樂斯拉夫 章節切換">
+    <a href="#page-city-krakow">← 克拉科夫</a>
+    <span>第 12 / 21 頁</span>
+    <a href="#page-city-poznan">波茲南 →</a>
+  </nav>
 </section>
 <section class="standalone-page" id="page-city-poznan" data-source="city-poznan.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>波茲南</strong></header>
 
     
     <header class="hero">
@@ -4202,7 +4318,7 @@ summary:focus-visible {
     <tr>
       <td><a href="https://maps.google.com/?cid=402526412385617111" target="_blank" rel="noopener">可頌博物館 Rogalowe Muzeum</a></td>
       <td>場次制展演</td>
-      <td>一般秀 41／37；含山羊鐘秀 47／43；英文場 47 · 通常約 1 個月前釋票</td>
+      <td>10/29 週四英語場、價格與庫存看官方售票頁；不要以週末固定英文場預設</td>
     </tr>
     <tr>
       <td><a href="https://www.google.com/maps/search/?api=1&query=%E5%8F%A4%E5%B8%82%E6%94%BF%E5%BB%B3%E5%8D%9A%E7%89%A9%E9%A4%A8%20Pozna%C5%84" target="_blank" rel="noopener">古市政廳博物館</a></td>
@@ -4212,7 +4328,7 @@ summary:focus-visible {
     <tr>
       <td><a href="https://www.google.com/maps/search/?api=1&query=%E5%B8%9D%E7%8E%8B%E5%9F%8E%E5%A0%A1%20Zamek%20Cesarski%20Pozna%C5%84" target="_blank" rel="noopener">帝王城堡 Zamek Cesarski</a></td>
       <td>地標</td>
-      <td>CK Zamek 文化中心，多為免費入場，特展/導覽另計，每日 10:00–21:00</td>
+      <td>CK Zamek 文化中心；室內展覽依當日公告，語音導覽 10 PLN（12:00–20:00，19:00 前借用）</td>
     </tr>
     <tr>
       <td><a href="https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E6%95%99%E5%A0%82%E5%B3%B6%20Ostr%C3%B3w%20Tumski%20Pozna%C5%84" target="_blank" rel="noopener">大教堂島 Ostrów Tumski</a></td>
@@ -4435,8 +4551,14 @@ summary:focus-visible {
     }());
     </script>
   
+<nav class="standalone-page-controls" aria-label="波茲南 章節切換">
+    <a href="#page-city-wroclaw">← 樂斯拉夫</a>
+    <span>第 13 / 21 頁</span>
+    <a href="#page-practical-booking">訂票與交通 →</a>
+  </nav>
 </section>
 <section class="standalone-page" id="page-practical-booking" data-source="practical/booking.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>訂票與交通</strong></header>
 
     
     <header class="hero">
@@ -4453,14 +4575,14 @@ summary:focus-visible {
     <article class="card card-accent">
       <span class="eyebrow">Priority 1</span>
       <h3>第一優先</h3>
-      <p>❗全部尚未訂 · Auschwitz 訂票窗口已開，最急</p>
-      <ul class="link-list"><li><a href="https://visit.auschwitz.org/" target="_blank" rel="noopener">Auschwitz 官方英文導覽（窗口已開，且已無現場票） →</a></li><li><a href="https://www.wieliczka-saltmine.com/" target="_blank" rel="noopener">Wieliczka 鹽礦英文團（現在即可訂） →</a></li><li><a href="https://www.intercity.pl/en/" target="_blank" rel="noopener">華沙 → 克拉科夫火車 →</a></li><li><a href="https://www.intercity.pl/en/" target="_blank" rel="noopener">克拉科夫 → 樂斯拉夫火車 →</a></li><li><a href="https://www.intercity.pl/en/" target="_blank" rel="noopener">樂斯拉夫 → 波茲南火車 →</a></li><li><a href="https://www.intercity.pl/en/" target="_blank" rel="noopener">波茲南 → 華沙火車 →</a></li></ul>
+      <p>❗全部尚未訂 · 先以官方售票系統確認指定日期與庫存</p>
+      <ul class="link-list"><li><a href="https://visit.auschwitz.org/" target="_blank" rel="noopener">Auschwitz 官方英文導覽（僅線上入場證；指定場次庫存以系統為準） →</a></li><li><a href="https://www.wieliczka-saltmine.com/" target="_blank" rel="noopener">Wieliczka 鹽礦英文團（現在即可訂） →</a></li><li><a href="https://www.intercity.pl/en/" target="_blank" rel="noopener">華沙 → 克拉科夫火車 →</a></li><li><a href="https://www.intercity.pl/en/" target="_blank" rel="noopener">克拉科夫 → 樂斯拉夫火車 →</a></li><li><a href="https://www.intercity.pl/en/" target="_blank" rel="noopener">樂斯拉夫 → 波茲南火車 →</a></li><li><a href="https://www.intercity.pl/en/" target="_blank" rel="noopener">波茲南 → 華沙火車 →</a></li></ul>
     </article>
     <article class="card ">
       <span class="eyebrow">Priority 2</span>
       <h3>第二優先</h3>
-      <p>❗全部尚未訂 · 建議先買或預約</p>
-      <ul class="link-list"><li><a href="https://mhk.pl/branches/oskar-schindlers-enamel-factory" target="_blank" rel="noopener">辛德勒工廠（週日最後入場 18:30） →</a></li><li><a href="https://polin.pl/en" target="_blank" rel="noopener">POLIN 波蘭猶太人歷史博物館 →</a></li><li><a href="https://www.1944.pl/en" target="_blank" rel="noopener">華沙起義博物館 →</a></li><li><a href="https://www.zamek-krolewski.pl/en" target="_blank" rel="noopener">皇家城堡（已查證二至日 10:00–18:00，末入 17:00） →</a></li><li><a href="https://rogalowemuzeum.pl/en/" target="_blank" rel="noopener">牛角麵包博物館（僅雨天備案需要） →</a></li><li><a href="https://mnwr.pl/en/category/branches/panorama-raclawicka/" target="_blank" rel="noopener">拉茨瓦維採全景畫 →</a></li></ul>
+      <p>❗全部尚未訂 · 辛德勒工廠現已可查／購，其餘依官方售票頁</p>
+      <ul class="link-list"><li><a href="https://muzeumkrakowa.pl/en/branches/oskar-schindlers-enamel-factory" target="_blank" rel="noopener">辛德勒工廠（10/25 已進個人網路票 90 天窗口；最後入場 18:30） →</a></li><li><a href="https://polin.pl/en" target="_blank" rel="noopener">POLIN 波蘭猶太人歷史博物館 →</a></li><li><a href="https://www.1944.pl/en" target="_blank" rel="noopener">華沙起義博物館 →</a></li><li><a href="https://www.zamek-krolewski.pl/en" target="_blank" rel="noopener">皇家城堡（已查證二至日 10:00–18:00，末入 17:00） →</a></li><li><a href="https://rogalowemuzeum.pl/en/" target="_blank" rel="noopener">牛角麵包博物館（僅雨天備案需要） →</a></li><li><a href="https://mnwr.pl/en/category/branches/panorama-raclawicka/" target="_blank" rel="noopener">拉茨瓦維採全景畫 →</a></li></ul>
     </article>
     <article class="card ">
       <span class="eyebrow">Priority 3</span>
@@ -4471,7 +4593,7 @@ summary:focus-visible {
     </section>
     <section class="section">
       <div class="section-heading"><span class="section-num">Timeline</span><h2>什麼時候處理</h2></div>
-      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>事項</th></tr></thead><tbody><tr><td><b>❗現在就訂（最急）</b></td><td>Auschwitz 英文官方導覽 — 官方於參觀日前 90 天開放訂位，10/26 的窗口已開；且自 2026/3/1 起取消現場售票，沒訂到就進不去（visit.auschwitz.org）</td></tr><tr><td><b>❗現在就訂</b></td><td>Wieliczka 鹽礦英文 Tourist Route 10:00 場 — 約 3 個月前開放，英文場名額少，現在下單最穩（PLN 143 / 優待 121，wieliczka-saltmine.com）</td></tr><tr><td><b>現在可訂</b></td><td>皇家城堡 — 已查證二至日 10:00–18:00、最後入場 17:00；Day 7 已改為 10:00 第一站（zamek-krolewski.pl）</td></tr><tr><td><b>現在可先訂</b></td><td>米其林與熱門餐廳：Bottiglieria 1881（二星，最搶）、BABA / Most（樂斯拉夫僅停留一晚零彈性）、WANDAL、Pod Aniołami（TheFork / OpenTable / 餐廳官網）</td></tr><tr><td><b>火車票：開賣即搶</b></td><td>PKP Intercity 四段（WAW→KRK、KRK→WRO、WRO→POZ、POZ→WAW）尚未開賣。開賣不是「逐班發車前 30 天」而是整批放行，實際日期需自行盯 intercity.pl；Super Promo 便宜票開賣當天就會被掃光，建議先在 intercity.pl 或 Koleo 設好提醒</td></tr><tr><td><b>出發前 4–6 週</b></td><td>POLIN 猶太博物館 + 華沙起義博物館 + 辛德勒工廠 10/25 (日) 場次（週日最後入場 18:30，mhk.pl/en）</td></tr><tr><td><b>出發前 1 週</b></td><td>把上述所有票價、特別閉館與開放時間再確認一次 — 本清單資料查證日為 2026-08-08，臨時活動與維修仍可能變動</td></tr><tr><td><b>抵達當日</b></td><td>隔日 Wawel 國家廳室現場票（限額制，售完只能改廷院）</td></tr></tbody></table></div>
+      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>事項</th></tr></thead><tbody><tr><td><b>❗現在就查／訂（最急）</b></td><td>Auschwitz 英文官方導覽 — 所有入場證僅能在線上取得，10/26 的指定場次庫存與價格以 visit.auschwitz.org 為準，入口不售票。</td></tr><tr><td><b>❗現在就查／訂</b></td><td>Wieliczka 鹽礦英文 Tourist Route 10:00 場 — 10/27 英文場、實際票價與庫存以官方日期選擇器為準；不要用舊價格或開賣週期取代訂票結果。</td></tr><tr><td><b>現在可訂</b></td><td>皇家城堡 — 已查證二至日 10:00–18:00、最後入場 17:00；Day 7 已改為 10:00 第一站（zamek-krolewski.pl）</td></tr><tr><td><b>現在可先訂</b></td><td>米其林與熱門餐廳：Bottiglieria 1881（二星，最搶）、BABA / Most（樂斯拉夫僅停留一晚零彈性）、WANDAL、Pod Aniołami（TheFork / OpenTable / 餐廳官網）</td></tr><tr><td><b>火車票：開賣即搶</b></td><td>PKP Intercity 四段（WAW→KRK、KRK→WRO、WRO→POZ、POZ→WAW）尚未開賣。開賣不是「逐班發車前 30 天」而是整批放行，實際日期需自行盯 intercity.pl；Super Promo 便宜票開賣當天就會被掃光，建議先在 intercity.pl 或 Koleo 設好提醒</td></tr><tr><td><b>現在可查／訂</b></td><td>辛德勒工廠 10/25 場次已進個人網路票 90 天窗口；POLIN、華沙起義博物館與皇家城堡均以官方售票頁顯示的指定日庫存為準。</td></tr><tr><td><b>出發前 1 週</b></td><td>把上述所有票價、特別閉館與開放時間再確認一次 — 本清單資料查證日為 2026-08-09，臨時活動與維修仍可能變動</td></tr><tr><td><b>抵達當日</b></td><td>隔日 Wawel 國家廳室現場票（限額制，售完只能改廷院）</td></tr></tbody></table></div>
     </section>
     <section class="section">
       <div class="section-heading"><span class="section-num">Rail</span><h2>城際交通</h2></div>
@@ -4540,8 +4662,14 @@ summary:focus-visible {
     </article></div>
     </section>
   
+<nav class="standalone-page-controls" aria-label="訂票與交通 章節切換">
+    <a href="#page-city-poznan">← 波茲南</a>
+    <span>第 14 / 21 頁</span>
+    <a href="#page-practical-dining">餐廳 →</a>
+  </nav>
 </section>
 <section class="standalone-page" id="page-practical-dining" data-source="practical/dining.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>餐廳</strong></header>
 
     
     <header class="hero">
@@ -4552,7 +4680,7 @@ summary:focus-visible {
       </div>
     </header>
     
-    <div class="callout-note"><b>資料界線：</b>米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不再把它們當成固定資料。營業時間查證於 2026-08-08，訂位前仍看店家公告。</div>
+    <div class="callout-note"><b>資料界線：</b>米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不再把它們當成固定資料。營業時間查證於 2026-08-09，訂位前仍看店家公告。</div>
     <section>
       <div class="section-heading"><span class="section-num">Guide</span><h2>2026 米其林總表</h2></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>星級</th><th>星級餐廳</th><th>Bib Gourmand</th></tr></thead><tbody>
@@ -4599,8 +4727,14 @@ summary:focus-visible {
     <tr><td><b>Bib · IDA kuchnia i wino（樂斯拉夫）</b></td><td class="number">149</td><td>套餐含酒 · 全趟最高CP</td></tr></tbody></table></div>
     </section>
   
+<nav class="standalone-page-controls" aria-label="餐廳 章節切換">
+    <a href="#page-practical-booking">← 訂票與交通</a>
+    <span>第 15 / 21 頁</span>
+    <a href="#page-practical-tickets">門票 →</a>
+  </nav>
 </section>
 <section class="standalone-page" id="page-practical-tickets" data-source="practical/tickets.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>門票</strong></header>
 
     
     <header class="hero">
@@ -4663,8 +4797,8 @@ summary:focus-visible {
     </tr>
     <tr>
       <td><a href="https://www.google.com/maps/search/?api=1&query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20%E7%B6%AD%E5%88%A9%E5%A5%87%E5%8D%A1%E9%B9%BD%E7%A4%A6%20Wieliczka" target="_blank" rel="noopener"><b>克拉科夫 · 維利奇卡鹽礦</b></a></td>
-      <td class="number">143</td><td class="number">121</td>
-      <td>英語團含導覽 · 11/1 休<br><a href="https://www.kopalnia.pl/" target="_blank" rel="noopener">官網確認 →</a></td>
+      <td class="number">日期選擇器</td><td class="number">日期選擇器</td>
+      <td>英語導覽的 10/27 實際票價、場次與庫存以官網日期選擇器為準；通用頁僅列 from 131 PLN<br><a href="https://www.wieliczka-saltmine.com/individual-tourist/useful-information/ticket-prices-and-visiting-hours" target="_blank" rel="noopener">官網確認 →</a></td>
     </tr>
     <tr>
       <td><a href="https://www.google.com/maps/search/?api=1&query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20%E5%A5%A7%E6%96%AF%E5%A8%81%E8%BE%9B%20O%C5%9Bwi%C4%99cim" target="_blank" rel="noopener"><b>克拉科夫 · 奧斯威辛</b></a></td>
@@ -4703,8 +4837,8 @@ summary:focus-visible {
     </tr>
     <tr>
       <td><a href="https://www.google.com/maps/search/?api=1&query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20%E5%8F%AF%E9%A0%8C%E5%8D%9A%E7%89%A9%E9%A4%A8" target="_blank" rel="noopener"><b>波茲南 · 可頌博物館</b></a></td>
-      <td class="number">41／47</td><td class="number">37／43</td>
-      <td>一般秀／含山羊鐘秀；英文場 47。場次制，通常約 1 個月前釋票<br><a href="https://rogalowemuzeum.pl/indywidualni/" target="_blank" rel="noopener">官網確認 →</a></td>
+      <td class="number">官方售票頁</td><td class="number">官方售票頁</td>
+      <td>週四英語場、價格與庫存依 10/29 官方售票頁確認；不要以週末固定英文場或舊價格預設<br><a href="https://rogalowemuzeum.pl/en/buy-ticket/" target="_blank" rel="noopener">官網確認 →</a></td>
     </tr>
     <tr>
       <td><a href="https://www.google.com/maps/search/?api=1&query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20%E5%B8%9D%E7%8E%8B%E5%9F%8E%E5%A0%A1" target="_blank" rel="noopener"><b>波茲南 · 帝王城堡</b></a></td>
@@ -4728,11 +4862,11 @@ summary:focus-visible {
       <div class="grid-wide">
     <article class="card">
       <h3>華沙</h3>
-      <ul class="check-list"><li><b>皇家城堡</b>：PLN 50 / 40 / 100 分級 · 週三免費（新版分路線售票見 fares）</li><li><b>POLIN 猶太歷史</b>：PLN 45 · 週四免費</li><li><b>華沙起義博物館</b>：PLN 35 · discount 30</li><li><b>蕭邦博物館</b>：2026 整年閉館</li><li><b>科學文化宮觀景台</b>：PLN 25（新版見 fares：30/優待 25）</li><li><b>MSN 現代藝術博物館</b>：展覽 40／30 · 18:00 後 25／15 · Gallery A 免費</li></ul>
+      <ul class="check-list"><li><b>皇家城堡</b>：PLN 50 / 40 / 100 分級 · 週三免費（新版分路線售票見 fares）</li><li><b>POLIN 猶太歷史</b>：週五 10:00–18:00；票價與指定日庫存看官方售票頁</li><li><b>華沙起義博物館</b>：PLN 35 · discount 30</li><li><b>蕭邦博物館</b>：2026 整年閉館</li><li><b>科學文化宮觀景台</b>：PLN 25（新版見 fares：30/優待 25）</li><li><b>MSN 現代藝術博物館</b>：展覽 40／30 · 18:00 後 25／15 · Gallery A 免費</li></ul>
     </article>
     <article class="card">
       <h3>克拉科夫</h3>
-      <ul class="check-list"><li><b>瓦維爾城堡完整路線</b>：PLN 95／71 · 最後入場 15:00</li><li><b>辛德勒工廠</b>：PLN 60 · 優待 45（以官網為準）</li><li><b>聖瑪麗教堂登塔</b>：PLN 20</li><li><b>奧斯威辛 Educator 導覽</b>：依官方訂票頁當日場次；10 月上午必須跟團</li><li><b>維利奇卡鹽礦</b>：PLN 143 · 優待 121</li><li><b>地下市集博物館</b>：PLN 45／35</li></ul>
+      <ul class="check-list"><li><b>瓦維爾城堡完整路線</b>：PLN 95／71 · 最後入場 15:00</li><li><b>辛德勒工廠</b>：PLN 60 · 優待 45（以官網為準）</li><li><b>聖瑪麗教堂登塔</b>：PLN 20</li><li><b>奧斯威辛 Educator 導覽</b>：依官方訂票頁當日場次；10 月上午必須跟團</li><li><b>維利奇卡鹽礦</b>：10/27 英文場、實際票價與庫存看官方日期選擇器</li><li><b>地下市集博物館</b>：PLN 45／35</li></ul>
     </article>
     <article class="card">
       <h3>樂斯拉夫</h3>
@@ -4740,12 +4874,18 @@ summary:focus-visible {
     </article>
     <article class="card">
       <h3>波茲南</h3>
-      <ul class="check-list"><li><b>牛角麵包博物館</b>：PLN 41／37；含山羊鐘秀 47／43；英文場 47</li><li><b>帝王城堡</b>：PLN 16（新版見 fares：多為免費）</li><li><b>古市政廳博物館</b>：整修閉館；預計 2027 年底至 2028 年初全面重開</li></ul>
+      <ul class="check-list"><li><b>牛角麵包博物館</b>：10/29 週四英語場、價格與庫存看官方售票頁</li><li><b>帝王城堡</b>：展覽依當日公告；語音導覽 10 PLN（12:00–20:00，19:00 前借用）</li><li><b>古市政廳博物館</b>：整修閉館；預計 2027 年底至 2028 年初全面重開</li></ul>
     </article></div>
     </section>
   
+<nav class="standalone-page-controls" aria-label="門票 章節切換">
+    <a href="#page-practical-dining">← 餐廳</a>
+    <span>第 16 / 21 頁</span>
+    <a href="#page-practical-transit">市內交通 →</a>
+  </nav>
 </section>
 <section class="standalone-page" id="page-practical-transit" data-source="practical/transit.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>市內交通</strong></header>
 
     
     <header class="hero">
@@ -4758,19 +4898,25 @@ summary:focus-visible {
     
     <section>
       <div class="section-heading"><span class="section-num">Fares</span><h2>四城市內票價</h2></div>
-      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>短程</th><th>90 分</th><th>24 小時</th><th>備註</th></tr></thead><tbody><tr><td><b>華沙 WTP</b></td><td>20 分 3.40</td><td>75 分 4.40（第 1 區）／90 分 7（第 1+2 區）</td><td>15（第 1 區）</td><td>電車／巴士／地鐵／SKM；機場在第 1 區</td></tr><tr><td><b>克拉科夫 KMK</b></td><td>15 分 4</td><td>90 分 9</td><td>20（第 I 區）／25（I+II+III）</td><td>2026-03-02 起；30 分或單趟票 6</td></tr><tr><td><b>樂斯拉夫 MPK</b></td><td>15 分 3.20</td><td>90 分 7</td><td>15</td><td>單趟不轉乘票 4.60；時間票可轉乘</td></tr><tr><td><b>波茲南 ZTM</b></td><td>15 分 5</td><td>90 分 9</td><td>18（A 區）／24（全區）</td><td>45 分 7；時間票可轉乘</td></tr></tbody></table></div>
+      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>短程</th><th>90 分</th><th>24 小時</th><th>備註</th></tr></thead><tbody><tr><td><b>華沙 WTP</b></td><td>抵達日確認</td><td>第 1 區時間票（抵達日依官方價目確認）</td><td>抵達日確認</td><td>電車／巴士／地鐵／SKM；機場在第 1 區，票價以 WTP 官方價目與售票機為準</td></tr><tr><td><b>克拉科夫 KMK</b></td><td>15 分 4</td><td>90 分 9</td><td>20（第 I 區）／25（I+II+III）</td><td>2026-03-02 起；30 分或單趟票 6</td></tr><tr><td><b>樂斯拉夫 MPK</b></td><td>15 分 3.20</td><td>90 分 7</td><td>15</td><td>30 分 4.00、60 分 5.20；時間票可轉乘</td></tr><tr><td><b>波茲南 ZTM</b></td><td>15 分 5</td><td>90 分 9</td><td>18（A 區）／24（全區）</td><td>45 分 7；時間票可轉乘</td></tr></tbody></table></div>
     </section>
     <section class="section">
       <div class="section-heading"><span class="section-num">Airport</span><h2>機場到市區</h2></div>
-      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>路線</th><th>方式</th><th>票價</th><th>時間</th><th>備註</th></tr></thead><tbody><tr><td><b>華沙蕭邦機場 → 市中心</b></td><td>🚆 SKM S2／S3 或 KM</td><td class="number">4.40</td><td class="number">約 25–30 分</td><td>75 分鐘第 1 區票，可在有效時間內轉乘；實際月台與班次當日查 WTP</td></tr><tr><td><b>華沙蕭邦機場 → 市中心</b></td><td>🚌 175 路巴士</td><td class="number">4.40</td><td class="number">約 30–45 分</td><td>75 分鐘第 1 區票；塞車時火車較穩，當日站位與班次查 WTP</td></tr><tr><td><b>華沙蕭邦機場 → 市中心</b></td><td>🚕 計程車／Bolt</td><td class="number">依跳錶／App 報價</td><td class="number">依路況</td><td>機場內認明官方排班計程車，避免搭訕攬客</td></tr><tr><td><b>克拉科夫 Balice 機場 → 市中心</b></td><td>🚆 SKA1 火車</td><td class="number">20</td><td class="number">約 20 分</td><td>Kraków Airport → Kraków Główny；行李免費，班次以 KMŁ 當日日曆為準</td></tr><tr><td><b>克拉科夫 Balice 機場 → 市中心</b></td><td>🚌 300／209</td><td class="number">6（30 分或單趟）</td><td class="number">約 45 分</td><td>機場官方列為市郊路線；上車後立即驗票，班次查官方時刻表</td></tr><tr><td><b>克拉科夫 Balice 機場 → 市中心</b></td><td>🌙 902 夜間巴士</td><td class="number">6（30 分或單趟）</td><td class="number">約 45 分</td><td>夜間備案；上車後立即驗票，班次查官方時刻表</td></tr></tbody></table></div>
+      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>路線</th><th>方式</th><th>票價</th><th>時間</th><th>備註</th></tr></thead><tbody><tr><td><b>華沙蕭邦機場 → 市中心</b></td><td>🚆 SKM S2／S3 或 KM</td><td class="number">抵達日確認</td><td class="number">約 25–30 分</td><td>使用第 1 區時間票；實際票價、月台與班次當日查 WTP</td></tr><tr><td><b>華沙蕭邦機場 → 市中心</b></td><td>🚌 175 路巴士</td><td class="number">抵達日確認</td><td class="number">約 30–45 分</td><td>使用第 1 區時間票；塞車時火車較穩，當日站位、班次與票價查 WTP</td></tr><tr><td><b>華沙蕭邦機場 → 市中心</b></td><td>🚕 計程車／Bolt</td><td class="number">依跳錶／App 報價</td><td class="number">依路況</td><td>機場內認明官方排班計程車，避免搭訕攬客</td></tr><tr><td><b>克拉科夫 Balice 機場 → 市中心</b></td><td>🚆 SKA1 火車</td><td class="number">20</td><td class="number">約 20 分</td><td>Kraków Airport → Kraków Główny；行李免費，班次以 KMŁ 當日日曆為準</td></tr><tr><td><b>克拉科夫 Balice 機場 → 市中心</b></td><td>🚌 300／209</td><td class="number">6（30 分或單趟）</td><td class="number">約 45 分</td><td>機場官方列為市郊路線；上車後立即驗票，班次查官方時刻表</td></tr><tr><td><b>克拉科夫 Balice 機場 → 市中心</b></td><td>🌙 902 夜間巴士</td><td class="number">6（30 分或單趟）</td><td class="number">約 45 分</td><td>夜間備案；上車後立即驗票，班次查官方時刻表</td></tr></tbody></table></div>
     </section>
     <section class="section"><div class="section-heading"><span class="section-num">Apps</span><h2>推薦工具</h2></div><div class="grid-wide"><article class="card"><h3>📱 Jakdojade（首選）</h3><p>四城都可規劃路線，部分城市可直接買票。App 票仍須依畫面指示啟用或掃描車內 QR；各城罰款不同，不在本站寫會變動的固定金額。</p></article><article class="card"><h3>💳 車上售票機</h3><p>多數車輛可刷卡購票，但操作與票券是否自動啟用依城市和機型不同。畫面若要求「Validate／Skasuj」必須完成；查票時保留原付款卡或裝置。</p></article><article class="card"><h3>🗺️ Google Maps</h3><p>路線規劃同樣好用、四城公車電車時刻都有收錄，適合已經很熟悉、只需要「怎麼走」的人；買票仍需搭配 Jakdojade 或現場機台。</p></article><article class="card"><h3>🚗 Bolt</h3><p>叫車 App，四城都有涵蓋。深夜、雨天或懶得等車時的備案，價格透明、免小費文化。</p></article></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Passes</span><h2>票券怎麼選</h2></div><ul class="check-list"><li>單程／15–20 分短票最省——老城區多在步行範圍，一天搭乘 3 趟以下用短票通常比 24 小時票划算。</li><li>24 小時票——先用該城短票價格估算；通常一天搭 4–5 趟以上才值得考慮，並確認所需區域。</li><li>多日券（48 小時／72 小時／7 日）——本行程每城只停留 1–2 晚，通常用不到；除非同一城市安排 3 天以上再評估。</li><li>觀光城市卡（Kraków Card 等）——含景點門票＋交通，但需一天刷 3 個以上付費景點才划算；本行程景點分散在多天，多數情況下單買門票＋短程交通票更划算，不特別建議加購。</li></ul></section>
     <section class="section"><div class="section-heading"><span class="section-num">Tips</span><h2>實用路線與搭車技巧</h2></div><ul class="check-list"><li>克拉科夫舊城 → Kazimierz——路線可能因工程改道，出發時用 Jakdojade 查當下可搭電車，不硬記車號。</li><li>華沙機場往市中心——有大件行李優先 SKM；175 巴士較少轉乘但受路況影響，目的地靠老城時再比較。</li><li>夜間交通——深夜班次與改道最容易變動，直接查 Jakdojade／各城市官方旅運規劃；叫車只作備案。</li><li>下車要按鈴——巴士（非電車）不會每站必停，要下車須按扶手上的「STOP」按鈕告知司機，否則可能直接開過站。</li><li>查票員抽查——便服查票員會不定時上車查票，出示手機票券或已感應的卡片即可；電子票務必記得「啟用」這一步，光買票沒啟用等同無票。</li></ul></section>
     <section class="section"><div class="section-heading"><span class="section-num">Ground rules</span><h2>其他實用資訊</h2></div><div class="grid"><article class="card"><span class="eyebrow">寄物</span><h3>火車站 Locker</h3><p>四座主要車站通常有寄物櫃，但尺寸、空位與費率會變；抵站依現場標示，不預寫固定價。</p></article><article class="card"><span class="eyebrow">換錢</span><h3>Kantor 民間匯兌</h3><p>機場與觀光區匯率可能較差。交易前比較買入、賣出價與實際可得 PLN；「0% 手續費」不代表匯率划算。</p></article><article class="card"><span class="eyebrow">SIM 卡</span><h3>Play / Plus / Orange</h3><p>預付卡需依波蘭規定實名登記；方案和通路會變，抵達後以電信商官網／門市為準，不保證超商能完成所有開卡程序。</p></article><article class="card"><span class="eyebrow">付款</span><h3>信用卡 + 少量現金</h3><p>刷卡普及，但教堂、小攤或機器故障仍可能需現金；刷卡選 PLN 計價，避免商戶動態換匯。</p></article><article class="card"><span class="eyebrow">退稅</span><h3>Tax Free</h3><p>只限有 Tax Free 資格的店家與符合規定的旅客；最低消費、退稅額與機場流程以波蘭稅務及退稅單據為準，不把估算退款率當保證。</p></article><article class="card"><span class="eyebrow">交通票</span><h3>短票 vs 24 h 票</h3><p>四城票制不同，請按上表逐城計算；Jakdojade 查市內路線，KOLEO／PKP Intercity 查鐵路。</p></article></div></section>
   
+<nav class="standalone-page-controls" aria-label="市內交通 章節切換">
+    <a href="#page-practical-tickets">← 門票</a>
+    <span>第 17 / 21 頁</span>
+    <a href="#page-practical-shopping">購物 →</a>
+  </nav>
 </section>
 <section class="standalone-page" id="page-practical-shopping" data-source="practical/shopping.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>購物</strong></header>
 
     
     <header class="hero">
@@ -4787,8 +4933,14 @@ summary:focus-visible {
     <section class="section"><div class="section-heading"><span class="section-num">Luxury</span><h2>精品購物</h2></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>店家</th><th>城市</th><th>備註</th></tr></thead><tbody><tr><td><a href="https://maps.google.com/?cid=6893272886103886879" target="_blank" rel="noopener"><b>Vitkac</b></a></td><td>華沙</td><td>中東歐最大精品百貨，Gucci／Balenciaga／Saint Laurent／Burberry 等；週日休</td></tr><tr><td><a href="https://maps.google.com/?cid=2015234439722332980" target="_blank" rel="noopener"><b>Chylak（Le Petit Trou）</b></a></td><td>華沙</td><td>波蘭設計師精品包款，Koszykowa 街；Mokotowska 街區另有多家波蘭獨立設計師精品店可順路逛</td></tr></tbody></table></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Żabka</span><h2>超商怎麼逛</h2></div><div class="grid"><article class="card"><h3>招牌熱狗</h3><p>紅白配色熱狗機台最好認，口味：klasyczna（經典）／kurczak（雞）／grillowana（烤腸）／czarna（黑麵包），可自選醬料。約 6–9 PLN，部分門市由「Robbie」機器人自動製作，40 秒出餐。</p></article><article class="card"><h3>💳 免辦 App 也能買</h3><p>不需要 Żappka 帳號，直接用感應信用卡／Apple Pay／Google Pay 在機台或櫃檯結帳即可。App 只有在想集點、預先點餐、或要進 Żabka Nano 無人店時才用得到，觀光客可以完全跳過註冊。</p></article><article class="card"><h3>📱 App 進階功能</h3><p>想集點可下載 Żappka App（需門號收簡訊驗證，用台灣門號多半也收得到）；Żabka Nano 無人店用手機掃碼開門、自動結帳，全程免排隊。</p></article><article class="card"><h3>☕ 咖啡與熱食</h3><p>現煮咖啡約 5–8 PLN，比連鎖咖啡店便宜一半以上；另有微波即食餐 Szamamm、三明治 Tomcio Paluch、果汁 Wycisk，適合早餐或宵夜。</p></article><article class="card"><h3>🕐 營業時間</h3><p>多數門市 6:00–23:00 或更晚，車站／機場／市中心精華地段常有 24 小時店，深夜落地或早班火車前補給都方便。</p></article><article class="card"><h3>🧾 其他服務</h3><p>彩券、卡片存提現、繳費、包裹寄取（InPost 智能取件櫃常設在店外）；多數店員英文有限，觸控機台通常有英文介面可切換。</p></article><article class="card"><h3>其他選擇</h3><p>Biedronka（瓢蟲）折扣超市分店最多，適合買伴手禮零食；Lidl、Carrefour Express 也常見；Orlen 加油站熱狗也小有名氣。</p></article></div></section>
   
+<nav class="standalone-page-controls" aria-label="購物 章節切換">
+    <a href="#page-practical-transit">← 市內交通</a>
+    <span>第 18 / 21 頁</span>
+    <a href="#page-practical-essentials">安全須知 →</a>
+  </nav>
 </section>
 <section class="standalone-page" id="page-practical-essentials" data-source="practical/essentials.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>安全須知</strong></header>
 
     
     <header class="hero">
@@ -4805,8 +4957,14 @@ summary:focus-visible {
     <section class="section"><div class="section-heading"><span class="section-num">SOS</span><h2>緊急聯絡</h2></div><div class="grid-wide"><div class="table-wrap"><table class="table-editorial"><thead><tr><th>單位</th><th>電話</th></tr></thead><tbody><tr><td>歐洲通用緊急</td><td class="number"><b>112</b></td></tr><tr><td>警察 Policja</td><td class="number"><b>997</b></td></tr><tr><td>消防 Straż Pożarna</td><td class="number"><b>998</b></td></tr><tr><td>救護 Pogotowie</td><td class="number"><b>999</b></td></tr><tr><td>市政警察</td><td class="number"><b>986</b></td></tr></tbody></table></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>駐波蘭代表處</th><th>資訊</th></tr></thead><tbody><tr><td>駐波蘭台北代表處</td><td><b>30th Floor, Ul. Emilii Plater 53, 00-113 Warsaw, Poland</b></td></tr><tr><td>辦公室電話</td><td><b>+48 22 213 0060</b></td></tr><tr><td>急難救助專線</td><td><b>+48 668 027 574</b></td></tr><tr><td>外交部 24h 專線</td><td><b>+886 800 085 095</b></td></tr></tbody></table></div></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Safety</span><h2>安全與禮儀</h2></div><div class="grid-wide"><article class="card"><h3>觀光陷阱</h3><p>拒絕未先講明價格的拍照、手環或攬客服務；機場與車站只走官方排班或 App 叫車；換匯前先看清買入／賣出價與手續費。</p></article><article class="card"><h3>禮儀</h3><p>進教堂脫帽；Auschwitz 禁笑鬧自拍；勿把波蘭當俄國；餐廳小費約 10%</p></article><article class="card"><h3>治安</h3><p>火車站、車廂與 Rynek 等人潮區注意扒竊；護照、手機與錢包分開收，背包在人多處移到身前。</p></article><article class="card"><h3>就醫</h3><p>自來水可生飲；Apteka 藥局普及；建議投保涵蓋緊急醫療的旅平險</p></article></div></section>
   
+<nav class="standalone-page-controls" aria-label="安全須知 章節切換">
+    <a href="#page-practical-shopping">← 購物</a>
+    <span>第 19 / 21 頁</span>
+    <a href="#page-practical-notes">行前提醒 →</a>
+  </nav>
 </section>
 <section class="standalone-page" id="page-practical-notes" data-source="practical/notes.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>行前提醒</strong></header>
 
     
     <header class="hero">
@@ -4818,8 +4976,14 @@ summary:focus-visible {
     </header>
     <div class="grid-wide"><article class="card card-accent"><span class="section-num">01</span><p>10/25（日）夏令時間結束——03:00 回撥為 02:00。當日不是營業週日，多數一般商店不得營業；加油站、值班藥局與符合法定例外的店可開，但不能假設每間 Żabka／小店都營業。</p></article><article class="card card-accent"><span class="section-num">02</span><p>日照比想像中長——行程期間（10/26–10/31）實際日落約 16:05–16:30（樂斯拉夫 10/28 約 16:29），不是先前資料所列的過早時間；戶外行程可安排到接近日落前收尾，Day 5 樂斯拉夫點燈儀式約 16:45 起、時間上是來得及的。</p></article><article class="card card-accent"><span class="section-num">03</span><p>10/31 諸聖節前日——克拉科夫／華沙人潮多；辛德勒工廠、Wawel 部分展區 11/1、11/11 閉館（Wawel 自身公告的閉館日，不含 11/3）。你的回程班機是 10/31 14:40 起飛（WAW → DOH），不是 11/1，這些閉館日都在你離境之後，對本趟無實質影響。</p></article><article class="card "><span class="section-num">04</span><p>米其林訂位——二星＋各一星出發前 3–4 週訂；華沙 splurge 級 3–5 週。</p></article><article class="card "><span class="section-num">05</span><p>PKP 城際車票——目前網站內的時間都是銜接目標，不是已確認班次；等 10/25–10/29 實際班表進入 PKP／KOLEO 售票系統後再買，不預寫固定開賣日。</p></article><article class="card "><span class="section-num">06</span><p>火車實務——IC／EIP 對號入座；Koleo App 可劃位購票；上車查票需出示票券（電子截圖亦可）；大件行李放車廂端行李架。</p></article><article class="card "><span class="section-num">07</span><p>先訂清單——奧斯威辛（visit.auschwitz.org）、辛德勒工廠（muzeumkrakowa.pl）、米其林餐廳。</p></article><article class="card "><span class="section-num">08</span><p>諸聖節燭海（11/1 Wszystkich Świętych）——波蘭最動人的傳統：墓園在 10/30–11/1 點滿蠟燭成燭海。你 10/30–31 在華沙，可傍晚到 Powązki 老墓園感受；11/1 當天是燭海最盛的高峰日，但你已在 10/31 14:40 搭機離境，只能感受前一晚的氣氛。</p></article><article class="card card-accent"><span class="section-num">09</span><p>樂斯拉夫百年廳圓頂展廳——10/28（本行程當天）確定不開放（已查證官方預約日曆），行前 3–5 天仍建議上 halastulecia.pl 再確認一次是否有其他臨時異動。</p></article></div>
   
+<nav class="standalone-page-controls" aria-label="行前提醒 章節切換">
+    <a href="#page-practical-essentials">← 安全須知</a>
+    <span>第 20 / 21 頁</span>
+    <a href="#page-practical-database">自由行資料庫 →</a>
+  </nav>
 </section>
 <section class="standalone-page" id="page-practical-database" data-source="practical/database.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>自由行資料庫</strong></header>
 
     
     <header class="hero">
@@ -5269,6 +5433,11 @@ summary:focus-visible {
     </article></div>
       </section>
   
+<nav class="standalone-page-controls" aria-label="自由行資料庫 章節切換">
+    <a href="#page-practical-notes">← 行前提醒</a>
+    <span>第 21 / 21 頁</span>
+    <span aria-hidden="true"></span>
+  </nav>
 </section>
   </main>
   <footer class="footer">
@@ -5278,12 +5447,37 @@ summary:focus-visible {
     </div>
   </footer>
   <script>
-    document.querySelector('.standalone-nav').addEventListener('click', function (event) {
-      if (!event.target.closest('a[href^="#"]')) return;
-      document.querySelectorAll('.standalone-menu[open]').forEach(function (menu) {
-        menu.removeAttribute('open');
+    (function () {
+      var pages = Array.from(document.querySelectorAll('.standalone-page'));
+      var defaultPageId = 'page-index';
+
+      function showStandalonePage(targetId) {
+        var target = document.getElementById(targetId);
+        var activePage = target ? target.closest('.standalone-page') : document.getElementById(defaultPageId);
+        var activePageId = activePage ? activePage.id : defaultPageId;
+        pages.forEach(function (page) {
+          page.hidden = page.id !== activePageId;
+        });
+        window.requestAnimationFrame(function () {
+          var activeTarget = document.getElementById(targetId) || document.getElementById(activePageId);
+          if (activeTarget) activeTarget.scrollIntoView({ block: 'start' });
+          window.dispatchEvent(new Event('resize'));
+        });
+      }
+
+      function activateStandaloneHash() {
+        showStandalonePage(decodeURIComponent(window.location.hash.slice(1)) || defaultPageId);
+      }
+
+      document.querySelector('.standalone-nav').addEventListener('click', function (event) {
+        if (!event.target.closest('a[href^="#"]')) return;
+        document.querySelectorAll('.standalone-menu[open]').forEach(function (menu) {
+          menu.removeAttribute('open');
+        });
       });
-    });
+      window.addEventListener('hashchange', activateStandaloneHash);
+      activateStandaloneHash();
+    }());
   </script>
 </body>
 </html>
