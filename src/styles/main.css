@@ -724,6 +724,7 @@ summary:focus-visible {
   border: 1px solid var(--line-strong);
   background: #ded8cd;
   box-shadow: var(--shadow-paper);
+  touch-action: pan-y !important;
 }
 
 .map-caption {

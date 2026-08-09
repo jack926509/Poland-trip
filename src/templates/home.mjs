@@ -27,7 +27,7 @@ function renderFlight(direction, legs) {
   </article>`;
 }
 
-export function renderHome({ meta, days, flights, cities, readinessItems, databaseEntries }) {
+export function renderHome({ meta, days, flights, cities, readinessItems, databaseEntries, todoGroups = [] }) {
   const mustBookCount = days.reduce((total, day) => total + day.mustBook.length, 0);
   const entriesById = new Map(databaseEntries.map(entry => [entry.id, entry]));
   const p0Incomplete = readinessItems.filter(item => item.priority === 'P0' && item.status !== 'verified');
@@ -35,16 +35,21 @@ export function renderHome({ meta, days, flights, cities, readinessItems, databa
     .map(item => ({ item, deadline: entriesById.get(item.entryId)?.recheckAt }))
     .filter(item => item.deadline)
     .sort((left, right) => left.deadline.localeCompare(right.deadline));
-  const nextTicket = readinessItems.find(item => item.status === 'pending' && item.title.includes('票'));
+  const attractionTodos = todoGroups.find(group => group.id === 'attractions');
+  const nextTicket = attractionTodos?.items.find(item => item.status === '現可查／購')
+    || attractionTodos?.items.find(item => item.status === '需查／購' || item.status === '尚未訂');
   const etias = readinessItems.find(item => item.id === 'passport-etias');
   const offlinePack = readinessItems.find(item => item.id === 'offline-pack');
+  const readinessHref = item => item
+    ? `practical/database.html#entry-${escapeHtml(item.entryId)}`
+    : 'practical/database.html';
   const summaryCards = [
-    ['P0 未完成', `${p0Incomplete.length} 項`, p0Incomplete[0]],
-    ['最近確認期限', datedItems[0]?.deadline || '尚無日期', datedItems[0]?.item],
-    ['下一張要買的票', nextTicket?.title || '目前無待購票', nextTicket],
-    ['ETIAS 狀態', etias?.statusText || '無資料', etias],
-    ['離線包狀態', offlinePack?.statusText || '無資料', offlinePack],
-  ].map(([label, value, item]) => `<a class="card card-link readiness-summary-card" href="${item ? `practical/database.html#entry-${escapeHtml(item.entryId)}` : 'practical/database.html'}"><span class="eyebrow">${escapeHtml(label)}</span><h3>${escapeHtml(value)}</h3><span>查看處理方式 →</span></a>`).join('');
+    ['P0 未完成', `${p0Incomplete.length} 項`, readinessHref(p0Incomplete[0])],
+    ['最近確認期限', datedItems[0]?.deadline || '尚無日期', readinessHref(datedItems[0]?.item)],
+    ['下一張要買的票', nextTicket?.name || '目前無待購票', nextTicket ? 'practical/todos.html#todo-attractions' : 'practical/todos.html'],
+    ['ETIAS 狀態', etias?.statusText || '無資料', readinessHref(etias)],
+    ['離線包狀態', offlinePack?.statusText || '無資料', readinessHref(offlinePack)],
+  ].map(([label, value, href]) => `<a class="card card-link readiness-summary-card" href="${href}"><span class="eyebrow">${escapeHtml(label)}</span><h3>${escapeHtml(value)}</h3><span>查看處理方式 →</span></a>`).join('');
   const readinessStatusOrder = { pending: 0, 'private-required': 0, recheck: 1, verified: 2 };
   const readinessCards = [...readinessItems]
     .sort((left, right) => readinessStatusOrder[left.status] - readinessStatusOrder[right.status])

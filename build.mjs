@@ -368,6 +368,7 @@ function build() {
       statusText: travelDatabase.statusLabels[item.status] || item.status,
     })),
     databaseEntries: travelDatabase.databaseEntries,
+    todoGroups: trip.todoGroups,
   }));
 
   for (const day of trip.days) {

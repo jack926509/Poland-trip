@@ -373,6 +373,30 @@ test('單檔版以章節切換取代整頁上下查找，並保留前後頁導�
   assert.match(html, /@media print[\s\S]*\.standalone-page\[hidden\][\s\S]*display: block !important;/);
 });
 
+test('單檔版城市地圖以穩定資料屬性初始化，不受章節 id 改寫影響', () => {
+  const html = fs.readFileSync(standalonePath, 'utf8');
+
+  for (const cityKey of ['warsaw', 'krakow', 'wroclaw', 'poznan']) {
+    assert.match(html, new RegExp(`data-map-key="${cityKey}"`), `缺少 ${cityKey} 地圖識別`);
+    assert.doesNotMatch(
+      html,
+      new RegExp(`getElementById\\('map-${cityKey}'\\)`),
+      `${cityKey} 地圖仍依賴會被單檔打包改寫的 DOM id`,
+    );
+  }
+  assert.match(html, /document\.currentScript/);
+  assert.match(html, /closest\('\.standalone-page'\)/);
+});
+
+test('正式頁面保留垂直滑動，地圖與寬表格不會鎖住整頁', () => {
+  const css = fs.readFileSync(path.join(distDir, 'assets/main.css'), 'utf8');
+
+  assert.doesNotMatch(css, /(?:html|body)\s*\{[^}]*overflow-y\s*:\s*hidden/s);
+  assert.match(css, /\.map-container\s*\{[^}]*touch-action\s*:\s*pan-y\s*!important/s);
+  assert.match(css, /\.table-wrap\s*\{[^}]*overflow-x\s*:\s*auto/s);
+  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav\s*\{[^}]*position\s*:\s*static/s);
+});
+
 test('2026-08-09 官方盤查會移除未能證實的場次、價格與閉館敘述', () => {
   const publicData = JSON.stringify({ days, fares, ticketsByCity, attractions, cityNotices, bookingTiers, reservations });
 
@@ -547,11 +571,27 @@ test('首頁出發準備度顯示 8 類待辦、文字狀態與資料庫連結',
   for (const label of ['P0 未完成', '最近確認期限', '下一張要買的票', 'ETIAS 狀態', '離線包狀態', '確認期限：']) {
     assert.ok(html.includes(label), `首頁缺少動態摘要：${label}`);
   }
+  assert.match(html, /下一張要買的票[\s\S]*辛德勒工廠 17:30/);
+  assert.ok(
+    html.includes('href="practical/todos.html#todo-attractions"'),
+    '下一張票應連到景點待辦，而非尚未開賣的火車票資料',
+  );
 
   const recheckPosition = html.indexOf('>ETIAS<');
   for (const label of ['住宿', '城際車票', '景點票券', '航班行李', '旅平險', '網路離線', '緊急聯絡']) {
     assert.ok(html.indexOf(`>${label}<`) < recheckPosition, `${label} 應排在出發前重查項目前`);
   }
+});
+
+test('高風險行程文字與餐廳候選不會誤導現場判斷', () => {
+  const dayFive = days.find(day => day.n === 5);
+  const luggageStep = dayFive.steps.find(step => step.label.includes('取行李'));
+  const warsawDining = cityDining.warsaw;
+
+  assert.match(luggageStep.sub, /距目標發車 1\.5 h/);
+  assert.match(luggageStep.sub, /抵站後約 1 h/);
+  assert.ok(!warsawDining.some(item => item.name.includes('/')), '餐廳候選不可把多個品牌合併成一筆');
+  assert.ok(warsawDining.some(item => item.name === 'Gościniec（探索候選）'));
 });
 
 test('8 個每日頁的日期與標題和資料層一致', async () => {

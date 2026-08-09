@@ -115,7 +115,9 @@ export function renderCity({
     (function () {
       var mapData = ${JSON.stringify(mapData)};
       var colors = ${JSON.stringify(legend)};
-      var element = document.getElementById('map-${cityKey}');
+      var script = document.currentScript;
+      var scope = script ? script.closest('.standalone-page') : null;
+      var element = (scope || document).querySelector('[data-map-key="${cityKey}"]');
       if (!element || typeof L === 'undefined') return;
       var map = L.map(element, { scrollWheelZoom: false }).setView(mapData.center, mapData.zoom);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -156,8 +158,8 @@ export function renderCity({
 
     <section>
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
-      <p class="lead">拖曳、縮放並點選圖釘查看說明；圖釘中的連結可直接開啟 Google Maps。</p>
-      <div id="map-${cityKey}" class="map-container" aria-label="${city.name}互動地圖"></div>
+      <p class="lead">拖曳、縮放並點選圖釘查看說明；手機上下滑動會優先捲動頁面，圖釘連結可直接開啟 Google Maps。</p>
+      <div id="map-${cityKey}" class="map-container" data-map-key="${cityKey}" aria-label="${city.name}互動地圖"></div>
       <div class="map-legend" aria-label="地圖圖例">${legendHtml}</div>
       <p class="map-caption">地圖底圖 © OpenStreetMap contributors</p>
     </section>

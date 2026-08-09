@@ -164,7 +164,7 @@ export const days = [
       {t:'11:30', label:'★ 拉茨瓦維採全景畫', sub:'30 分鐘導覽', cost:'PLN 50', dur:'1 h'},
       {t:'13:30', label:'★ 百年廳 (UNESCO)', sub:'先以官方 availability calendar 確認 10/28 是否可參觀內部；未確認前以外觀、噴泉與日本花園規劃', cost:'外觀免費', dur:'1 h'},
       {t:'16:15', label:'★ 座堂島煤氣燈', sub:'日落約 16:34；點燈人無固定公開出發分鐘，在島上等候與散步', cost:'免費', dur:'1 h'},
-      {t:'17:30', label:'取行李 → Wrocław Główny', sub:'看完點燈再走，仍有 1.5 h 緩衝', dur:'30 min'},
+      {t:'17:30', label:'取行李 → Wrocław Główny', sub:'距目標發車 1.5 h；扣除約 30 分鐘移動後，抵站後約 1 h 緩衝', dur:'30 min'},
       {t:'目標 19:00', label:'IC 直達車', sub:'實際班次待 PKP 開賣', cost:'待開賣', dur:'約 2h20'},
     ],
     eat: ['Śląskie kluski @ Konspira', 'Browar Stu Mostów 精釀'],

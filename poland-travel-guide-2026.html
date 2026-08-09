@@ -737,6 +737,7 @@ summary:focus-visible {
   border: 1px solid var(--line-strong);
   background: #ded8cd;
   box-shadow: var(--shadow-paper);
+  touch-action: pan-y !important;
 }
 
 .map-caption {
@@ -1112,7 +1113,7 @@ summary:focus-visible {
     <section class="section" id="page-index--readiness">
       <div class="section-heading"><span class="section-num">00 / Readiness</span><h2>出發準備度</h2></div>
       <p class="lead">尚未完成與需填私人資料的項目排在前面；本站只顯示進度，不公開訂位、證件、保單或付款內容。</p>
-      <div class="grid readiness-summary"><a class="card card-link readiness-summary-card" href="#page-practical-database--entry-accommodation-confirmations"><span class="eyebrow">P0 未完成</span><h3>7 項</h3><span>查看處理方式 →</span></a><a class="card card-link readiness-summary-card" href="#page-practical-database--entry-rail-trip-tickets"><span class="eyebrow">最近確認期限</span><h3>2026-09-23</h3><span>查看處理方式 →</span></a><a class="card card-link readiness-summary-card" href="#page-practical-database--entry-rail-trip-tickets"><span class="eyebrow">下一張要買的票</span><h3>城際車票</h3><span>查看處理方式 →</span></a><a class="card card-link readiness-summary-card" href="#page-practical-database--entry-entry-etias-and-passport"><span class="eyebrow">ETIAS 狀態</span><h3>出發前重查</h3><span>查看處理方式 →</span></a><a class="card card-link readiness-summary-card" href="#page-practical-database--entry-connectivity-prepaid-registration"><span class="eyebrow">離線包狀態</span><h3>待確認</h3><span>查看處理方式 →</span></a></div>
+      <div class="grid readiness-summary"><a class="card card-link readiness-summary-card" href="#page-practical-database--entry-accommodation-confirmations"><span class="eyebrow">P0 未完成</span><h3>7 項</h3><span>查看處理方式 →</span></a><a class="card card-link readiness-summary-card" href="#page-practical-database--entry-rail-trip-tickets"><span class="eyebrow">最近確認期限</span><h3>2026-09-23</h3><span>查看處理方式 →</span></a><a class="card card-link readiness-summary-card" href="#page-practical-todos--todo-attractions"><span class="eyebrow">下一張要買的票</span><h3>辛德勒工廠 17:30</h3><span>查看處理方式 →</span></a><a class="card card-link readiness-summary-card" href="#page-practical-database--entry-entry-etias-and-passport"><span class="eyebrow">ETIAS 狀態</span><h3>出發前重查</h3><span>查看處理方式 →</span></a><a class="card card-link readiness-summary-card" href="#page-practical-database--entry-connectivity-prepaid-registration"><span class="eyebrow">離線包狀態</span><h3>待確認</h3><span>查看處理方式 →</span></a></div>
       <div class="grid">
         <a class="card card-link" href="#page-practical-database--entry-accommodation-confirmations">
           <span class="status-private">狀態：需填私人資料</span>
@@ -2440,7 +2441,7 @@ summary:focus-visible {
     </tr>
     <tr>
       <td class="number"><b>17:30</b></td>
-      <td><b>取行李 → Wrocław Główny</b><br><span class="timeline-note">看完點燈再走，仍有 1.5 h 緩衝</span></td>
+      <td><b>取行李 → Wrocław Główny</b><br><span class="timeline-note">距目標發車 1.5 h；扣除約 30 分鐘移動後，抵站後約 1 h 緩衝</span></td>
       <td class="number">—</td>
       <td class="number">30 min</td>
     </tr>
@@ -3176,8 +3177,8 @@ summary:focus-visible {
 
     <section>
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
-      <p class="lead">拖曳、縮放並點選圖釘查看說明；圖釘中的連結可直接開啟 Google Maps。</p>
-      <div id="page-city-warszawa--map-warsaw" class="map-container" aria-label="華沙互動地圖"></div>
+      <p class="lead">拖曳、縮放並點選圖釘查看說明；手機上下滑動會優先捲動頁面，圖釘連結可直接開啟 Google Maps。</p>
+      <div id="page-city-warszawa--map-warsaw" class="map-container" data-map-key="warsaw" aria-label="華沙互動地圖"></div>
       <div class="map-legend" aria-label="地圖圖例">
     <div><span style="background:#B8860B;border:1.5px solid #3a2a06"></span>米其林二星</div>
     <div><span style="background:#E8A81E;border:1.5px solid #8a5a00"></span>米其林一星</div>
@@ -3352,9 +3353,9 @@ summary:focus-visible {
       <td>招牌：pączki 玫瑰餡甜甜圈 · 1925 至今排隊名店（Górczewska）</td>
     </tr>
     <tr>
-      <td><a href="https://www.google.com/maps/search/?api=1&query=Go%C5%9Bciniec%20Warszawa" target="_blank" rel="noopener">Gościniec / Zapiecek / u Kresowiaka</a></td>
+      <td><a href="https://www.google.com/maps/search/?api=1&query=Go%C5%9Bciniec%20Warszawa" target="_blank" rel="noopener">Gościniec（探索候選）</a></td>
       <td>餃子</td>
-      <td>招牌：手工 pierogi 餃子（肉餡／馬鈴薯起司／藍莓）· 名店（Nowy Świat / Koszykowa）</td>
+      <td>招牌：手工 pierogi 餃子（肉餡／馬鈴薯起司／藍莓）· 指定分店、營業時間與訂位狀態須在出發前查證</td>
     </tr>
     <tr>
       <td><a href="https://maps.google.com/?cid=14427558643223382901" target="_blank" rel="noopener">Bar Mleczny Rusałka</a></td>
@@ -3541,7 +3542,9 @@ summary:focus-visible {
     (function () {
       var mapData = {"center":[52.235,21.01],"zoom":13,"points":[[52.247744,21.014128,"皇家城堡","景點","https://maps.google.com/?cid=2313057209867159998","sight"],[52.249496,20.993481,"POLIN 猶太史博物館","景點","https://maps.google.com/?cid=16292574584610500784","sight"],[52.232394,20.981018,"華沙起義博物館","景點","https://maps.google.com/?cid=12215511195580548645","sight"],[52.231838,21.005995,"科學文化宮觀景台","景點","https://maps.google.com/?cid=14044892037721828802","sight"],[52.188512,20.991414,"Alon Omakase ★","米其林一星","https://maps.google.com/?cid=8029724309073713102","star1"],[52.229002,21.023323,"NUTA ★","米其林一星","https://maps.google.com/?cid=4624148008162643045","star1"],[52.251114,21.036166,"hub.praga ★","米其林一星","https://maps.google.com/?cid=10117754456971759897","star1"],[52.229941,20.989348,"WANDAL","必比登","https://maps.google.com/?cid=15993615675406452524","bib"],[52.236622,20.967709,"Zagoździński","pączki 名店","https://maps.google.com/?cid=5270464504046978357","food"],[52.252402,21.030581,"Bar Mleczny Rusałka","牛奶吧","https://maps.google.com/?cid=14427558643223382901","food"],[52.2333197,21.0149273,"Pijalnia Czekolady E.Wedel（巧克力）","伴手禮","https://www.google.com/maps/place/?q=place_id:ChIJ--12WPTMHkcRgAvh-nOeA94","shop"],[52.24935,21.008785,"Żabka（舊城區）","超商","https://www.google.com/maps/place/?q=place_id:ChIJpTk0Ah_NHkcRNn4P8JcA_64","store"],[52.2310334,21.0187045,"Vitkac","精品百貨","https://maps.google.com/?cid=6893272886103886879","luxury"],[52.2215267,21.0204772,"Chylak（波蘭設計師包款）","精品","https://maps.google.com/?cid=2015234439722332980","luxury"]]};
       var colors = {"star2":{"fill":"#B8860B","line":"#3a2a06","label":"米其林二星"},"star1":{"fill":"#E8A81E","line":"#8a5a00","label":"米其林一星"},"bib":{"fill":"#2f6b3f","line":"#173a20","label":"必比登推介"},"food":{"fill":"#CE2E1E","line":"#7a1a10","label":"街食／小吃／牛奶吧"},"sight":{"fill":"#3b6ea5","line":"#1c3a58","label":"景點"},"shop":{"fill":"#8b5cf6","line":"#4c2f8f","label":"伴手禮店家"},"store":{"fill":"#0891b2","line":"#0c4a5e","label":"超商 Żabka"},"luxury":{"fill":"#d6336c","line":"#7a1a3d","label":"精品購物"}};
-      var element = document.getElementById('map-warsaw');
+      var script = document.currentScript;
+      var scope = script ? script.closest('.standalone-page') : null;
+      var element = (scope || document).querySelector('[data-map-key="warsaw"]');
       if (!element || typeof L === 'undefined') return;
       var map = L.map(element, { scrollWheelZoom: false }).setView(mapData.center, mapData.zoom);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -3591,8 +3594,8 @@ summary:focus-visible {
 
     <section>
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
-      <p class="lead">拖曳、縮放並點選圖釘查看說明；圖釘中的連結可直接開啟 Google Maps。</p>
-      <div id="page-city-krakow--map-krakow" class="map-container" aria-label="克拉科夫互動地圖"></div>
+      <p class="lead">拖曳、縮放並點選圖釘查看說明；手機上下滑動會優先捲動頁面，圖釘連結可直接開啟 Google Maps。</p>
+      <div id="page-city-krakow--map-krakow" class="map-container" data-map-key="krakow" aria-label="克拉科夫互動地圖"></div>
       <div class="map-legend" aria-label="地圖圖例">
     <div><span style="background:#B8860B;border:1.5px solid #3a2a06"></span>米其林二星</div>
     <div><span style="background:#E8A81E;border:1.5px solid #8a5a00"></span>米其林一星</div>
@@ -3886,7 +3889,9 @@ summary:focus-visible {
     (function () {
       var mapData = {"center":[50.058,19.94],"zoom":13,"points":[[50.054112,19.935423,"Wawel 皇家城堡","景點","https://maps.google.com/?cid=12446225081720350104","sight"],[50.061897,19.936756,"中央市集廣場","景點","https://maps.google.com/?cid=14107513768635600179","sight"],[50.05146,19.948594,"Kazimierz 猶太區","景點","https://maps.google.com/?cid=5623518211080575812","sight"],[50.04743,19.961574,"辛德勒工廠博物館","景點","https://maps.google.com/?cid=3670197855150446585","sight"],[50.048617,19.946137,"Bottiglieria 1881 ★★","全波蘭唯一二星","https://maps.google.com/?cid=8570908113421134699","star2"],[50.051709,19.949426,"Bufet KRK","必比登","https://maps.google.com/?cid=861978380086701482","bib"],[50.051821,19.945448,"Folga","必比登","https://maps.google.com/?cid=7193800786272583343","bib"],[50.064873,19.927661,"MOLÁM Thai","必比登","https://maps.google.com/?cid=14914780693072191645","bib"],[50.051491,19.944291,"NOAH","必比登","https://maps.google.com/?cid=6279990201826816109","bib"],[50.049302,19.943241,"Nat Bistro","必比登","https://maps.google.com/?cid=10025714057570046192","bib"],[50.051871,19.944621,"Plac Nowy (zapiekanka)","街食","https://maps.google.com/?cid=8198083026094069086","food"],[50.053958,19.944839,"Mirror Bistro","pierogi","https://www.google.com/maps/place/?q=place_id:ChIJOwi62GpbFkcRoi0KiVCj1dk","food"],[50.07068,19.936409,"Svensson Pierogi","餃子","https://maps.google.com/?cid=10705718930784059170","food"],[50.064037,19.932167,"Bar Smak","在地口碑","https://maps.google.com/?cid=7513589258053856766","food"],[50.053182,19.947628,"Hamsa","以色列 hummus","https://maps.google.com/?cid=1317891001987072687","food"],[50.0527854,19.9400151,"Ceramika Bolesławiecka（陶器）","伴手禮","https://www.google.com/maps/place/?q=place_id:ChIJf581WqhbFkcR1_QG-8hJ4Vc","shop"],[50.058364,19.9382007,"World of Amber（琥珀）","伴手禮","https://www.google.com/maps/place/?q=place_id:ChIJPxlI8hJbFkcR7vI2ebLVIDk","shop"],[50.06171320000001,19.9373488,"Sukiennice 布廊（伴手禮攤位）","伴手禮","https://www.google.com/maps/place/?q=place_id:ChIJ3Q97Bw5bFkcRc3GzJiVsH9A","shop"],[50.062638,19.937729,"Żabka（Rynek Główny）","超商","https://www.google.com/maps/place/?q=place_id:ChIJN54SF4BbFkcRfqYQZ51JTN4","store"]]};
       var colors = {"star2":{"fill":"#B8860B","line":"#3a2a06","label":"米其林二星"},"star1":{"fill":"#E8A81E","line":"#8a5a00","label":"米其林一星"},"bib":{"fill":"#2f6b3f","line":"#173a20","label":"必比登推介"},"food":{"fill":"#CE2E1E","line":"#7a1a10","label":"街食／小吃／牛奶吧"},"sight":{"fill":"#3b6ea5","line":"#1c3a58","label":"景點"},"shop":{"fill":"#8b5cf6","line":"#4c2f8f","label":"伴手禮店家"},"store":{"fill":"#0891b2","line":"#0c4a5e","label":"超商 Żabka"},"luxury":{"fill":"#d6336c","line":"#7a1a3d","label":"精品購物"}};
-      var element = document.getElementById('map-krakow');
+      var script = document.currentScript;
+      var scope = script ? script.closest('.standalone-page') : null;
+      var element = (scope || document).querySelector('[data-map-key="krakow"]');
       if (!element || typeof L === 'undefined') return;
       var map = L.map(element, { scrollWheelZoom: false }).setView(mapData.center, mapData.zoom);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -3936,8 +3941,8 @@ summary:focus-visible {
 
     <section>
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
-      <p class="lead">拖曳、縮放並點選圖釘查看說明；圖釘中的連結可直接開啟 Google Maps。</p>
-      <div id="page-city-wroclaw--map-wroclaw" class="map-container" aria-label="樂斯拉夫互動地圖"></div>
+      <p class="lead">拖曳、縮放並點選圖釘查看說明；手機上下滑動會優先捲動頁面，圖釘連結可直接開啟 Google Maps。</p>
+      <div id="page-city-wroclaw--map-wroclaw" class="map-container" data-map-key="wroclaw" aria-label="樂斯拉夫互動地圖"></div>
       <div class="map-legend" aria-label="地圖圖例">
     <div><span style="background:#B8860B;border:1.5px solid #3a2a06"></span>米其林二星</div>
     <div><span style="background:#E8A81E;border:1.5px solid #8a5a00"></span>米其林一星</div>
@@ -4190,7 +4195,9 @@ summary:focus-visible {
     (function () {
       var mapData = {"center":[51.111,17.045],"zoom":13,"points":[[51.110431,17.030885,"中央市集廣場","景點","https://maps.google.com/?cid=10632303817405446655","sight"],[51.114463,17.046734,"大教堂島 Ostrów Tumski","景點","https://maps.google.com/?cid=3827887123396229836","sight"],[51.104391,17.07528,"Afrykarium 動物園","景點","https://maps.google.com/?cid=6359100319840704536","sight"],[51.106953,17.077329,"百年廳 Hala Stulecia","UNESCO","https://maps.google.com/?cid=10763621538599936407","sight"],[51.11274,17.031823,"BABA ★","米其林一星","https://maps.google.com/?cid=9335659011047272773","star1"],[51.114762,17.031129,"Most ★","米其林一星","https://maps.google.com/?cid=9490447263206449328","star1"],[51.112463,17.029103,"IDA kuchnia i wino","必比登","https://maps.google.com/?cid=10589009865057440004","bib"],[51.112672,17.034294,"Miś SC","全城最有名牛奶吧","https://maps.google.com/?cid=9100083269168988599","food"],[51.1100658,17.0302956,"Żabka（Rynek）","超商","https://www.google.com/maps/place/?q=place_id:ChIJo38OWDjDD0cREV-o0Qsuquo","store"]]};
       var colors = {"star2":{"fill":"#B8860B","line":"#3a2a06","label":"米其林二星"},"star1":{"fill":"#E8A81E","line":"#8a5a00","label":"米其林一星"},"bib":{"fill":"#2f6b3f","line":"#173a20","label":"必比登推介"},"food":{"fill":"#CE2E1E","line":"#7a1a10","label":"街食／小吃／牛奶吧"},"sight":{"fill":"#3b6ea5","line":"#1c3a58","label":"景點"},"shop":{"fill":"#8b5cf6","line":"#4c2f8f","label":"伴手禮店家"},"store":{"fill":"#0891b2","line":"#0c4a5e","label":"超商 Żabka"},"luxury":{"fill":"#d6336c","line":"#7a1a3d","label":"精品購物"}};
-      var element = document.getElementById('map-wroclaw');
+      var script = document.currentScript;
+      var scope = script ? script.closest('.standalone-page') : null;
+      var element = (scope || document).querySelector('[data-map-key="wroclaw"]');
       if (!element || typeof L === 'undefined') return;
       var map = L.map(element, { scrollWheelZoom: false }).setView(mapData.center, mapData.zoom);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -4237,8 +4244,8 @@ summary:focus-visible {
 
     <section>
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
-      <p class="lead">拖曳、縮放並點選圖釘查看說明；圖釘中的連結可直接開啟 Google Maps。</p>
-      <div id="page-city-poznan--map-poznan" class="map-container" aria-label="波茲南互動地圖"></div>
+      <p class="lead">拖曳、縮放並點選圖釘查看說明；手機上下滑動會優先捲動頁面，圖釘連結可直接開啟 Google Maps。</p>
+      <div id="page-city-poznan--map-poznan" class="map-container" data-map-key="poznan" aria-label="波茲南互動地圖"></div>
       <div class="map-legend" aria-label="地圖圖例">
     <div><span style="background:#B8860B;border:1.5px solid #3a2a06"></span>米其林二星</div>
     <div><span style="background:#E8A81E;border:1.5px solid #8a5a00"></span>米其林一星</div>
@@ -4490,7 +4497,9 @@ summary:focus-visible {
     (function () {
       var mapData = {"center":[52.408,16.935],"zoom":13,"points":[[52.40885,16.933775,"舊市集廣場 Stary Rynek","景點","https://maps.google.com/?cid=15713614103977572536","sight"],[52.415606,16.948656,"大教堂島 Ostrów Tumski","景點","https://maps.google.com/?cid=17624504241381771360","sight"],[52.408485,16.935041,"可頌博物館","景點","https://maps.google.com/?cid=402526412385617111","sight"],[52.402018,16.901852,"Palmiarnia 棕櫚屋","景點","https://maps.google.com/?cid=10703456143872687277","sight"],[52.403967,16.929146,"Muga ★","波茲南唯一一星","https://maps.google.com/?cid=2998937238608160974","star1"],[52.411348,16.952952,"Na Winklu","pierogi","https://maps.google.com/?cid=17998777227118824033","food"],[52.407303,16.934127,"Szarlotta","鴨肉餃子名店","https://maps.google.com/?cid=8072844045178633315","food"],[52.407335,16.934281,"Żabka（Stary Rynek）","超商","https://www.google.com/maps/place/?q=place_id:ChIJz0qhEFVbBEcRDDtONqAeGV4","store"]]};
       var colors = {"star2":{"fill":"#B8860B","line":"#3a2a06","label":"米其林二星"},"star1":{"fill":"#E8A81E","line":"#8a5a00","label":"米其林一星"},"bib":{"fill":"#2f6b3f","line":"#173a20","label":"必比登推介"},"food":{"fill":"#CE2E1E","line":"#7a1a10","label":"街食／小吃／牛奶吧"},"sight":{"fill":"#3b6ea5","line":"#1c3a58","label":"景點"},"shop":{"fill":"#8b5cf6","line":"#4c2f8f","label":"伴手禮店家"},"store":{"fill":"#0891b2","line":"#0c4a5e","label":"超商 Żabka"},"luxury":{"fill":"#d6336c","line":"#7a1a3d","label":"精品購物"}};
-      var element = document.getElementById('map-poznan');
+      var script = document.currentScript;
+      var scope = script ? script.closest('.standalone-page') : null;
+      var element = (scope || document).querySelector('[data-map-key="poznan"]');
       if (!element || typeof L === 'undefined') return;
       var map = L.map(element, { scrollWheelZoom: false }).setView(mapData.center, mapData.zoom);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
