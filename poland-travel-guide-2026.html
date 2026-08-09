@@ -903,24 +903,62 @@ summary:focus-visible {
       top: 0;
       z-index: 1000;
       display: flex;
+      align-items: center;
       gap: .5rem;
       padding: .75rem max(1rem, calc((100vw - 1180px) / 2));
-      overflow-x: auto;
       background: rgba(43, 39, 35, .97);
       border-bottom: 1px solid rgba(255, 255, 255, .15);
-      scrollbar-width: thin;
     }
-    .standalone-nav a {
-      flex: 0 0 auto;
+    .standalone-home,
+    .standalone-menu > summary {
       padding: .45rem .7rem;
       color: #f6f1e8;
       border: 1px solid rgba(255, 255, 255, .22);
       border-radius: 999px;
       font-size: .82rem;
+      font-weight: 700;
+      line-height: 1.4;
       text-decoration: none;
+      white-space: nowrap;
     }
-    .standalone-nav a:hover,
-    .standalone-nav a:focus-visible { background: #f6f1e8; color: #2b2723; }
+    .standalone-home:hover,
+    .standalone-home:focus-visible,
+    .standalone-menu > summary:hover,
+    .standalone-menu > summary:focus-visible,
+    .standalone-menu[open] > summary { background: #f6f1e8; color: #2b2723; }
+    .standalone-menu { position: relative; }
+    .standalone-menu > summary { cursor: pointer; list-style: none; }
+    .standalone-menu > summary::-webkit-details-marker { display: none; }
+    .standalone-menu > summary::after { margin-left: .45rem; content: '▾'; }
+    .standalone-menu[open] > summary::after { content: '▴'; }
+    .standalone-menu-panel {
+      position: absolute;
+      top: calc(100% + .65rem);
+      left: 0;
+      z-index: 100;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(8.5rem, 1fr));
+      gap: .35rem;
+      width: max-content;
+      min-width: 18rem;
+      max-width: min(32rem, calc(100vw - 2rem));
+      padding: .65rem;
+      background: #2b2723;
+      border: 1px solid rgba(255, 255, 255, .22);
+      border-radius: .75rem;
+      box-shadow: 0 .75rem 1.5rem rgba(0, 0, 0, .2);
+    }
+    .standalone-menu:last-child .standalone-menu-panel { right: 0; left: auto; }
+    .standalone-menu-panel a {
+      padding: .6rem .7rem;
+      color: #f6f1e8;
+      border-radius: .45rem;
+      font-size: .86rem;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .standalone-menu-panel a:hover,
+    .standalone-menu-panel a:focus-visible { background: #f6f1e8; color: #2b2723; }
     .standalone-page {
       display: block;
       scroll-margin-top: 5rem;
@@ -935,8 +973,26 @@ summary:focus-visible {
     .standalone-page > .hero { padding-top: 4rem; }
     .standalone-page > nav.section-heading { padding-bottom: 3rem; }
     @media (max-width: 640px) {
-      .standalone-nav { padding-inline: .75rem; }
-      .standalone-page { scroll-margin-top: 4.25rem; }
+      .standalone-nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding-inline: .75rem;
+      }
+      .standalone-home,
+      .standalone-menu > summary { display: block; text-align: center; }
+      .standalone-menu { position: static; min-width: 0; }
+      .standalone-menu-panel {
+        top: calc(100% - .15rem);
+        right: .75rem;
+        left: .75rem;
+        width: auto;
+        min-width: 0;
+        max-width: none;
+        max-height: 65dvh;
+        overflow-y: auto;
+      }
+      .standalone-menu:last-child .standalone-menu-panel { right: .75rem; left: .75rem; }
+      .standalone-page { scroll-margin-top: 7.5rem; }
     }
     @media print {
       .standalone-nav { display: none; }
@@ -949,27 +1005,42 @@ summary:focus-visible {
 <body>
   <a class="skip-link" href="#page-index">跳至旅程首頁</a>
   <nav class="standalone-nav" aria-label="單檔版目錄">
-      <a href="#page-index">旅程首頁</a>
-      <a href="#page-day-01">Day 1</a>
-      <a href="#page-day-02">Day 2</a>
-      <a href="#page-day-03">Day 3</a>
-      <a href="#page-day-04">Day 4</a>
-      <a href="#page-day-05">Day 5</a>
-      <a href="#page-day-06">Day 6</a>
-      <a href="#page-day-07">Day 7</a>
-      <a href="#page-day-08">Day 8</a>
-      <a href="#page-city-warszawa">華沙</a>
-      <a href="#page-city-krakow">克拉科夫</a>
-      <a href="#page-city-wroclaw">樂斯拉夫</a>
-      <a href="#page-city-poznan">波茲南</a>
-      <a href="#page-practical-booking">訂票與交通</a>
-      <a href="#page-practical-dining">餐廳</a>
-      <a href="#page-practical-tickets">門票</a>
-      <a href="#page-practical-transit">市內交通</a>
-      <a href="#page-practical-shopping">購物</a>
-      <a href="#page-practical-essentials">安全須知</a>
-      <a href="#page-practical-notes">行前提醒</a>
-      <a href="#page-practical-database">自由行資料庫</a>
+      <a class="standalone-home" href="#page-index">旅程首頁</a>
+      <details class="standalone-menu" name="standalone-primary-nav" data-group="days">
+        <summary>每日行程</summary>
+        <div class="standalone-menu-panel">
+          <a href="#page-day-01">Day 1</a>
+          <a href="#page-day-02">Day 2</a>
+          <a href="#page-day-03">Day 3</a>
+          <a href="#page-day-04">Day 4</a>
+          <a href="#page-day-05">Day 5</a>
+          <a href="#page-day-06">Day 6</a>
+          <a href="#page-day-07">Day 7</a>
+          <a href="#page-day-08">Day 8</a>
+        </div>
+      </details>
+      <details class="standalone-menu" name="standalone-primary-nav" data-group="cities">
+        <summary>城市指南</summary>
+        <div class="standalone-menu-panel">
+          <a href="#page-city-warszawa">華沙</a>
+          <a href="#page-city-krakow">克拉科夫</a>
+          <a href="#page-city-wroclaw">樂斯拉夫</a>
+          <a href="#page-city-poznan">波茲南</a>
+        </div>
+      </details>
+      <details class="standalone-menu" name="standalone-primary-nav" data-group="practical">
+        <summary>實用資訊</summary>
+        <div class="standalone-menu-panel">
+          <a href="#page-practical-booking">訂票與交通</a>
+          <a href="#page-practical-dining">餐廳</a>
+          <a href="#page-practical-tickets">門票</a>
+          <a href="#page-practical-transit">市內交通</a>
+          <a href="#page-practical-shopping">購物</a>
+          <a href="#page-practical-essentials">安全須知</a>
+          <a href="#page-practical-notes">行前提醒</a>
+          <a href="#page-practical-database">自由行資料庫</a>
+        </div>
+      </details>
   </nav>
   <main id="standalone-content">
 <section class="standalone-page" id="page-index" data-source="index.html">
@@ -5206,5 +5277,13 @@ summary:focus-visible {
       <p>票價、開放時間與交通資料查證於 2026-08-08；尚未開賣或會變動的項目已明確標示，實際以官網與已購票券為準。</p>
     </div>
   </footer>
+  <script>
+    document.querySelector('.standalone-nav').addEventListener('click', function (event) {
+      if (!event.target.closest('a[href^="#"]')) return;
+      document.querySelectorAll('.standalone-menu[open]').forEach(function (menu) {
+        menu.removeAttribute('open');
+      });
+    });
+  </script>
 </body>
 </html>

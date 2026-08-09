@@ -47,6 +47,11 @@ const standalonePages = [
   ['practical/notes.html', '行前提醒'],
   ['practical/database.html', '自由行資料庫'],
 ];
+const standaloneNavGroups = [
+  { key: 'days', label: '每日行程', pages: standalonePages.slice(1, 9) },
+  { key: 'cities', label: '城市指南', pages: standalonePages.slice(9, 13) },
+  { key: 'practical', label: '實用資訊', pages: standalonePages.slice(13) },
+];
 const cityMap = {
   warszawa: { key: 'WAW', mapKey: 'warsaw' },
   krakow: { key: 'KRK', mapKey: 'krakow' },
@@ -102,9 +107,17 @@ function bundlePage(relativePath) {
 
 function buildStandalone() {
   const mainCss = fs.readFileSync(path.join(distDir, 'assets/main.css'), 'utf8');
-  const navLinks = standalonePages
-    .map(([relativePath, label]) => `<a href="#${standalonePageId(relativePath)}">${label}</a>`)
-    .join('\n      ');
+  const navMenus = standaloneNavGroups.map(group => {
+    const links = group.pages
+      .map(([relativePath, label]) => `<a href="#${standalonePageId(relativePath)}">${label}</a>`)
+      .join('\n          ');
+    return `<details class="standalone-menu" name="standalone-primary-nav" data-group="${group.key}">
+        <summary>${group.label}</summary>
+        <div class="standalone-menu-panel">
+          ${links}
+        </div>
+      </details>`;
+  }).join('\n      ');
   const bundledPages = standalonePages.map(([relativePath]) => bundlePage(relativePath)).join('\n');
   const html = `<!DOCTYPE html>
 <html lang="zh-Hant">
@@ -129,24 +142,62 @@ ${mainCss}
       top: 0;
       z-index: 1000;
       display: flex;
+      align-items: center;
       gap: .5rem;
       padding: .75rem max(1rem, calc((100vw - 1180px) / 2));
-      overflow-x: auto;
       background: rgba(43, 39, 35, .97);
       border-bottom: 1px solid rgba(255, 255, 255, .15);
-      scrollbar-width: thin;
     }
-    .standalone-nav a {
-      flex: 0 0 auto;
+    .standalone-home,
+    .standalone-menu > summary {
       padding: .45rem .7rem;
       color: #f6f1e8;
       border: 1px solid rgba(255, 255, 255, .22);
       border-radius: 999px;
       font-size: .82rem;
+      font-weight: 700;
+      line-height: 1.4;
       text-decoration: none;
+      white-space: nowrap;
     }
-    .standalone-nav a:hover,
-    .standalone-nav a:focus-visible { background: #f6f1e8; color: #2b2723; }
+    .standalone-home:hover,
+    .standalone-home:focus-visible,
+    .standalone-menu > summary:hover,
+    .standalone-menu > summary:focus-visible,
+    .standalone-menu[open] > summary { background: #f6f1e8; color: #2b2723; }
+    .standalone-menu { position: relative; }
+    .standalone-menu > summary { cursor: pointer; list-style: none; }
+    .standalone-menu > summary::-webkit-details-marker { display: none; }
+    .standalone-menu > summary::after { margin-left: .45rem; content: '▾'; }
+    .standalone-menu[open] > summary::after { content: '▴'; }
+    .standalone-menu-panel {
+      position: absolute;
+      top: calc(100% + .65rem);
+      left: 0;
+      z-index: 100;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(8.5rem, 1fr));
+      gap: .35rem;
+      width: max-content;
+      min-width: 18rem;
+      max-width: min(32rem, calc(100vw - 2rem));
+      padding: .65rem;
+      background: #2b2723;
+      border: 1px solid rgba(255, 255, 255, .22);
+      border-radius: .75rem;
+      box-shadow: 0 .75rem 1.5rem rgba(0, 0, 0, .2);
+    }
+    .standalone-menu:last-child .standalone-menu-panel { right: 0; left: auto; }
+    .standalone-menu-panel a {
+      padding: .6rem .7rem;
+      color: #f6f1e8;
+      border-radius: .45rem;
+      font-size: .86rem;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .standalone-menu-panel a:hover,
+    .standalone-menu-panel a:focus-visible { background: #f6f1e8; color: #2b2723; }
     .standalone-page {
       display: block;
       scroll-margin-top: 5rem;
@@ -161,8 +212,26 @@ ${mainCss}
     .standalone-page > .hero { padding-top: 4rem; }
     .standalone-page > nav.section-heading { padding-bottom: 3rem; }
     @media (max-width: 640px) {
-      .standalone-nav { padding-inline: .75rem; }
-      .standalone-page { scroll-margin-top: 4.25rem; }
+      .standalone-nav {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding-inline: .75rem;
+      }
+      .standalone-home,
+      .standalone-menu > summary { display: block; text-align: center; }
+      .standalone-menu { position: static; min-width: 0; }
+      .standalone-menu-panel {
+        top: calc(100% - .15rem);
+        right: .75rem;
+        left: .75rem;
+        width: auto;
+        min-width: 0;
+        max-width: none;
+        max-height: 65dvh;
+        overflow-y: auto;
+      }
+      .standalone-menu:last-child .standalone-menu-panel { right: .75rem; left: .75rem; }
+      .standalone-page { scroll-margin-top: 7.5rem; }
     }
     @media print {
       .standalone-nav { display: none; }
@@ -175,7 +244,8 @@ ${mainCss}
 <body>
   <a class="skip-link" href="#page-index">跳至旅程首頁</a>
   <nav class="standalone-nav" aria-label="單檔版目錄">
-      ${navLinks}
+      <a class="standalone-home" href="#page-index">旅程首頁</a>
+      ${navMenus}
   </nav>
   <main id="standalone-content">
 ${bundledPages}
@@ -186,6 +256,14 @@ ${bundledPages}
       <p>票價、開放時間與交通資料查證於 2026-08-08；尚未開賣或會變動的項目已明確標示，實際以官網與已購票券為準。</p>
     </div>
   </footer>
+  <script>
+    document.querySelector('.standalone-nav').addEventListener('click', function (event) {
+      if (!event.target.closest('a[href^="#"]')) return;
+      document.querySelectorAll('.standalone-menu[open]').forEach(function (menu) {
+        menu.removeAttribute('open');
+      });
+    });
+  </script>
 </body>
 </html>`;
 

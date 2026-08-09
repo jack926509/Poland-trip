@@ -336,6 +336,21 @@ test('單檔旅遊指南封裝全部 21 頁且不依賴本機 CSS 或其他 HTML
   assert.ok(html.includes('href="#page-day-01"'));
 });
 
+test('單檔版將過長導覽收納成三組原生下拉選單', () => {
+  const html = fs.readFileSync(standalonePath, 'utf8');
+  const menus = [...html.matchAll(/<details class="standalone-menu"[^>]*data-group="([^"]+)"/g)]
+    .map(match => match[1]);
+
+  assert.deepEqual(menus, ['days', 'cities', 'practical']);
+  for (const label of ['每日行程', '城市指南', '實用資訊']) {
+    assert.ok(html.includes(`<summary>${label}</summary>`), `缺少 ${label} 下拉選單`);
+  }
+  assert.match(html, /data-group="days"[\s\S]*href="#page-day-01"[\s\S]*href="#page-day-08"/);
+  assert.match(html, /data-group="cities"[\s\S]*href="#page-city-warszawa"[\s\S]*href="#page-city-poznan"/);
+  assert.match(html, /data-group="practical"[\s\S]*href="#page-practical-booking"[\s\S]*href="#page-practical-database"/);
+  assert.equal((html.match(/class="standalone-home"/g) || []).length, 1);
+});
+
 test('自由行資料庫頁提供 SOS、主題索引與緊急聯絡資訊', () => {
   assert.equal(htmlFiles().length, 21);
   const html = read('practical/database.html');
