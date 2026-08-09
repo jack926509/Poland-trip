@@ -21,6 +21,7 @@ import { renderDatabase } from '../src/templates/database.mjs';
 import { renderHome } from '../src/templates/home.mjs';
 
 const distDir = path.resolve('dist');
+const standalonePath = path.resolve('poland-travel-guide-2026.html');
 const expectedFiles = [
   'index.html',
   ...Array.from({ length: 8 }, (_, index) => `day-${String(index + 1).padStart(2, '0')}.html`),
@@ -316,6 +317,23 @@ test('克拉科夫與樂斯拉夫飲水資訊各自保有官方來源', () => {
 test('dist 正好產出規格要求的 21 個 HTML', () => {
   assert.deepEqual(htmlFiles(), [...expectedFiles].sort());
   assert.ok(fs.existsSync(path.join(distDir, 'assets/main.css')), '缺少 assets/main.css');
+});
+
+test('單檔旅遊指南封裝全部 21 頁且不依賴本機 CSS 或其他 HTML', () => {
+  assert.ok(fs.existsSync(standalonePath), '缺少 poland-travel-guide-2026.html');
+  const html = fs.readFileSync(standalonePath, 'utf8');
+
+  for (const relativePath of expectedFiles) {
+    const pageId = `page-${relativePath.replace(/\.html$/, '').replace(/[^a-z0-9]+/gi, '-')}`;
+    assert.ok(html.includes(`id="${pageId}"`), `單檔版缺少 ${relativePath}`);
+  }
+
+  assert.ok(html.includes('<style data-bundled="main.css">'));
+  assert.ok(!html.includes('href="assets/main.css"'));
+  assert.ok(!html.includes('href="practical/database.html'));
+  assert.ok(!html.includes('href="day-01.html'));
+  assert.ok(html.includes('href="#page-practical-database"'));
+  assert.ok(html.includes('href="#page-day-01"'));
 });
 
 test('自由行資料庫頁提供 SOS、主題索引與緊急聯絡資訊', () => {
