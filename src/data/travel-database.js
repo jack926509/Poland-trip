@@ -218,7 +218,7 @@ const accommodationAddress = city => ({
 const officialPlaceUrls = {
   '華沙蕭邦機場': 'https://www.lotnisko-chopina.pl/en/index.html',
   'Warszawa Centralna': 'https://portalpasazera.pl/en/KatalogStacji',
-  '華沙皇家城堡': 'https://egzamin.zamek-krolewski.pl/en/strona/opening-hours-and-ticket-prices/2801-opening-hours-and-ticket-prices-may-2-2026',
+  '華沙皇家城堡': 'https://www.zamek-krolewski.pl/en/strona/opening-hours-and-ticket-prices/2801-opening-hours-and-ticket-prices-may-2-2026',
   '華沙老城市場廣場': 'https://go2warsaw.pl/en/old-town/',
   'Krakowskie Przedmieście': 'https://warsawtour.pl/en/royal-route/',
   'Kraków Główny': 'https://portalpasazera.pl/en/KatalogStacji',
@@ -373,13 +373,13 @@ export const dayOperations = {
     entryIds: ['dining-reservation-and-backup', 'medical-insurance-and-emergency', 'daily-basics-krakow-water'],
     note: '長時間導覽日，保留補水、保暖與醫療聯絡卡。',
     addresses: [
-      address('Kraków MDA 客運站', 'Bosacka 18, 31-505 Kraków', 'MDA Bus Station Krakow, Bosacka 18, Krakow', '實際業者與月台待 10/26 班表確定。'),
+      address('Kraków MDA 客運站', 'Bosacka 18, 31-505 Kraków', 'MDA Bus Station Krakow, Bosacka 18, Krakow', 'Lajkonik 現行去程由地下 D10 發車；10/26 指定日仍須依售票頁確認。'),
       address('Auschwitz I 訪客服務中心／入口', 'Więźniów Oświęcimia 55, 32-600 Oświęcim', 'Auschwitz I Visitor Service Center, Wiezniow Oswiecimia 55, Oswiecim'),
       address('Auschwitz II–Birkenau', 'Ofiar Faszyzmu 12, 32-600 Brzezinka', 'Auschwitz II Birkenau, Ofiar Faszyzmu 12, Brzezinka'),
       accommodationAddress('Kraków'),
     ],
     navigation: [
-      { mode: '巴士／火車', route: '克拉科夫 ↔ Oświęcim', action: '以 09:00 前抵達為目標；業者、發車站、月台、票價與回程都等 10/26 班表再定。' },
+      { mode: 'Lajkonik 巴士', route: 'Kraków MDA ↔ Muzeum Auschwitz', action: '現行班表參考 07:10 → 08:35、15:30 → 16:55；10/26 指定日與票價仍須由業者售票頁確認。' },
       { mode: '導覽接駁', route: 'Auschwitz I → Birkenau', action: '參加官方導覽時依當日工作人員指示搭接駁車，不自行跳過集合點。' },
     ],
     dailyAlerts: [
@@ -516,9 +516,9 @@ const unresolvedStepReasons = {
     '電車 50 / 24 到 Plac Bohaterów Getta': dynamicTransitReason,
   },
   3: {
-    '克拉科夫 → 奧斯威辛巴士': dynamicTransitReason,
-    '巴士返克拉科夫': dynamicTransitReason,
-    '抵 Kraków · 休息': privateStayReason,
+    'Lajkonik · 克拉科夫 → 奧斯威辛': dynamicTransitReason,
+    'Lajkonik 巴士返克拉科夫': dynamicTransitReason,
+    '抵 Kraków MDA · 休息': privateStayReason,
     '安靜晚餐沉澱情緒': flexibleStopReason,
   },
   4: {

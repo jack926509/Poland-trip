@@ -8,7 +8,17 @@ import { about, packingDefault, phrases, preDepartureNotes, safety } from '../sr
 import { shopping, souvenirCards, souvenirShops, luxuryShopping, zabkaCards } from '../src/data/shopping.js';
 import { fares, ticketsByCity } from '../src/data/tickets.js';
 import { airportTransit, passChecklist, practical, recommendedApps, transitFares, usefulRoutes } from '../src/data/transit.js';
-import { bookingTiers, days, flights, reservations, stay, todoGroups, trains } from '../src/data/trip.js';
+import {
+  bookingTiers,
+  days,
+  flights,
+  railOfficialLinks,
+  railPurchaseSteps,
+  reservations,
+  stay,
+  todoGroups,
+  trains,
+} from '../src/data/trip.js';
 import {
   databaseEntries,
   databaseSections,
@@ -666,7 +676,7 @@ test('Day 7 改為早上皇家城堡，並保留 POLIN 至起義博物館的移�
 
 test('尚未開賣的長途交通與天氣不假裝成已確認', () => {
   for (const train of trains) {
-    assert.equal(train.status, '尚未確認班次');
+    assert.match(train.status, /尚未確認/);
     assert.match(train.price, /待/);
   }
   for (const day of days) {
@@ -676,6 +686,52 @@ test('尚未開賣的長途交通與天氣不假裝成已確認', () => {
   assert.ok(!allDays.includes('22:54'));
   assert.ok(!allDays.includes('30 天無限'));
   assert.ok(!allDays.includes('價差 ≤'));
+});
+
+test('城際交通提供官方購票、官方時刻表與可操作的購票教學', () => {
+  assert.ok(railOfficialLinks.some(item => item.url === 'https://ebilet.intercity.pl/'));
+  assert.ok(railOfficialLinks.some(item => item.url === 'https://portalpasazera.pl/en/'));
+  assert.ok(railOfficialLinks.some(item => item.url.includes('lajkonikbus.eu')));
+  assert.ok(railPurchaseSteps.length >= 5);
+  const html = read('practical/booking.html');
+  for (const item of railOfficialLinks) {
+    assert.ok(html.includes(item.url));
+  }
+  for (const step of railPurchaseSteps) {
+    assert.ok(html.includes(step.title));
+  }
+  assert.ok(html.includes('Warszawa Centralna'));
+  assert.ok(html.includes('Kraków Główny'));
+  assert.ok(html.includes('Wrocław Główny'));
+  assert.ok(html.includes('Poznań Główny'));
+});
+
+test('Auschwitz 巴士使用現行 Lajkonik 參考班表，且明示指定日尚未確認', () => {
+  const day3 = days.find(day => day.n === 3);
+  const bus = trains.find(item => item.date === '10/26');
+  assert.ok(day3.steps.some(step => step.t === '參考 07:10'));
+  assert.ok(day3.steps.some(step => step.t === '參考 15:30'));
+  assert.match(day3.warn, /不是 10\/26 已確認班次/);
+  assert.equal(bus.status, '指定日尚未確認');
+});
+
+test('餐飲、景點與地圖資料不保存無日期的動態 Google 星等', () => {
+  const dynamicRating = /★\d(?:\.\d)?/;
+  assert.doesNotMatch(JSON.stringify(cityDining), dynamicRating);
+  assert.doesNotMatch(JSON.stringify(attractions), dynamicRating);
+  assert.doesNotMatch(JSON.stringify(mapPins), dynamicRating);
+});
+
+test('逐日移動不保留已知不可行備案或重疊時刻', () => {
+  const day3 = days.find(item => item.n === 3);
+  assert.ok(day3.backup.every(item => !item.where.includes('MOCAK')));
+  assert.ok(day3.backup.some(item => item.why.includes('MOCAK 週一休館')));
+  assert.ok(day3.backup.some(item => item.where.includes('Galicia Jewish Museum')));
+
+  const day8 = days.find(item => item.n === 8);
+  const day8Times = day8.steps.map(item => item.t);
+  assert.equal(day8Times.filter(time => time === '10:30').length, 1);
+  assert.ok(day8.steps.some(item => item.label.includes('退房') && item.t === '09:45'));
 });
 
 test('舊票價與過時場館資料已從產出頁面移除', () => {

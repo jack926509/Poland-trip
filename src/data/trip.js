@@ -93,25 +93,21 @@ export const days = [
     mustBook: ['❗需查／購 · Auschwitz 官方英文導覽（指定場次庫存以官方系統為準）'],
     compressible: ['回克拉科夫後晚餐形式', '晚間自由活動'],
     weather: '尚無可靠預報；出發前 7–10 天更新',
-    // leg：這一筆是「去程」——07:30 離開克拉科夫、09:00 抵達奧斯威辛。
-    // trains 陣列裡的 'KRK ⇄ Auschwitz' 是同一天同一班巴士的「往返全程」，
-    // 07:30 出發、14:30 回到克拉科夫。兩筆時間都是對的，指的是不同區段，
-    // 所以兩筆都要保留，靠 leg 標籤讓畫面看得出各自在講哪一段。
-    // 票價統一寫法：單程 15、來回共 30。
-    train: {type:'BUS', leg:'去程目標', from:'KRK', to:'Oświęcim', dep:'約 07:30', arr:'09:00 前', dur:'約 1h30', price:'待業者發布 10/26 班表'},
+    // Lajkonik 現行班表可作規劃參考，但 10/26 指定日仍須等業者售票頁確認。
+    train: {type:'BUS · Lajkonik', leg:'指定日待複查', from:'Kraków MDA', to:'Muzeum Auschwitz', dep:'參考 07:10', arr:'參考 08:35', dur:'約 1h25', price:'待業者開放 10/26 售票'},
     steps: [
-      {t:'約 07:30', label:'克拉科夫 → 奧斯威辛巴士', sub:'目標 09:00 前抵達；業者、月台與票價待 10/26 班表', cost:'待確認', dur:'約 1h30'},
-      {t:'09:00', label:'抵 Auschwitz I', sub:'安檢、寄包、領耳機', dur:'30 min'},
+      {t:'參考 07:10', label:'Lajkonik · 克拉科夫 → 奧斯威辛', sub:'Kraków MDA 地下 D10 → Muzeum Auschwitz；現行班表參考，10/26 指定日須再確認', cost:'待確認', dur:'約 1h25'},
+      {t:'參考 08:35', label:'抵 Auschwitz I', sub:'預留約 85 分鐘完成寄物、安檢、領耳機與提前報到', dur:'約 1h25'},
       {t:'10:00', label:'★ 英文官方導覽', sub:'一館 + 比克瑙 · 約 3.5 h；票價依官方訂票頁', cost:'依官方訂票頁', dur:'3.5 h'},
       {t:'13:30', label:'導覽結束'},
-      {t:'約 14:30', label:'巴士返克拉科夫', cost:'待確認', dur:'約 1h30'},
-      {t:'約 16:00', label:'抵 Kraków · 休息'},
+      {t:'參考 15:30', label:'Lajkonik 巴士返克拉科夫', sub:'13:45 班次緩衝過短，不採用；10/26 指定日仍須再確認', cost:'待確認', dur:'約 1h25'},
+      {t:'參考 16:55', label:'抵 Kraków MDA · 休息'},
       {t:'18:00', label:'安靜晚餐沉澱情緒', cost:'PLN 60–100'},
     ],
-    warn: '❗最急一項。所有入場證只在 visit.auschwitz.org 線上提供，入口不售票；10 月入場時間為 07:30–17:00。10:00 英文導覽的庫存與票價只能依官方預約系統確認，並提前至少 30 分鐘抵達安檢。',
+    warn: '❗最急一項。所有入場證只在 visit.auschwitz.org 線上提供，入口不售票；10 月入場時間為 07:30–17:00。Lajkonik 07:10 去、15:30 回是 2026-08-09 查得的現行班表參考，不是 10/26 已確認班次，付款前必須再查。',
     backup: [
       {label:'戶外為主 · 必備雨具', where:'比克瑙營區戶外 80%', why:'導覽風雨無阻，請穿防水鞋 + 帶折傘'},
-      {label:'若無導覽額度', where:'MOCAK 當代藝術博物館 + Galicia Jewish Museum', why:'PLN 28 + PLN 25，兩館同 Podgórze 區，半天室內，主題延伸 WWII 與猶太歷史'},
+      {label:'若無導覽額度', where:'Galicia Jewish Museum + Kazimierz 室內行程', why:'Galicia Jewish Museum 每日 10:00–18:00、全票 35 PLN；MOCAK 週一休館，10/26 不列入備案。出發前仍須重查臨時閉館。'},
     ],
   },
   {
@@ -248,7 +244,7 @@ export const days = [
     weather: '尚無可靠預報；出發前 7–10 天更新',
     steps: [
       {t:'08:00', label:'早餐 + 老城散步', cost:'PLN 40', dur:'1.5 h'},
-      {t:'10:30', label:'退房 → Warszawa Centralna', dur:'10 min'},
+      {t:'09:45', label:'退房 → Warszawa Centralna', sub:'住宿地址確定後重算步行或叫車時間；先預留到站與找月台緩衝', dur:'30–45 min'},
       {t:'10:30', label:'SKM S2/S3 目標班次', sub:'第 1 區時間票；當日查 WTP 月台、發車時間與票價', cost:'當日確認', dur:'約 25–30 min'},
       {t:'11:00', label:'抵 Chopin 第一航廈'},
       {t:'11:15', label:'退稅文件 + 報到 + 安檢', sub:'如有 TAX FREE 商品，依機場與電子文件指示辦理；託運商品須在交運前備妥供海關查驗', dur:'預留至少 60–90 min'},
@@ -287,12 +283,60 @@ export const stay = [
 
 export const trains = [
   {seg:'WAW → KRK', date:'10/25', type:'EIP', dep:'目標 09:00', arr:'約 11:25', dur:'約 2h25', price:'待開賣', status:'尚未確認班次'},
-  // arr 14:30 是「回到克拉科夫」的時刻（往返全程），不是抵達奧斯威辛的時刻；
-  // 抵達奧斯威辛 09:00 記在 days[2].train（leg:'去程 · 抵奧斯威辛'）。
-  {seg:'KRK ⇄ Auschwitz', date:'10/26', type:'BUS', leg:'往返規劃', dep:'目標 07:30', arr:'目標 16:00 前回抵', dur:'單程約 1h30', price:'待業者開放 10/26 班表', status:'尚未確認班次'},
+  {seg:'Kraków MDA ⇄ Muzeum Auschwitz', date:'10/26', type:'BUS · Lajkonik', leg:'現行班表參考', dep:'參考 07:10', arr:'參考 16:55 回抵', dur:'單程約 1h25', price:'待業者開放 10/26 售票', status:'指定日尚未確認'},
   {seg:'KRK → WRO', date:'10/27', type:'IC', dep:'目標 19:30', arr:'約 22:20', dur:'約 2h50', price:'待開賣', status:'尚未確認班次'},
   {seg:'WRO → POZ', date:'10/28', type:'IC', dep:'目標 19:00', arr:'約 21:20', dur:'約 2h20', price:'待開賣', status:'尚未確認班次'},
   {seg:'POZ → WAW', date:'10/29', type:'EIP', dep:'目標 17:30', arr:'約 19:50', dur:'約 2h20', price:'待開賣', status:'尚未確認班次'},
+];
+
+export const railOfficialLinks = [
+  {
+    name: 'PKP Intercity 官方購票',
+    url: 'https://ebilet.intercity.pl/',
+    note: '購買 EIP、EIC、IC、TLK 長途列車票；本行程四段城際車以此為主要購票入口。',
+  },
+  {
+    name: 'Passenger Portal 官方時刻表',
+    url: 'https://portalpasazera.pl/en/',
+    note: '查全波蘭列車班次、停靠站、即時延誤與月台；月台仍以當日站內電子牌為準。',
+  },
+  {
+    name: 'PKP Intercity 官方 App（iPhone／iPad）',
+    url: 'https://apps.apple.com/pl/app/pkp-intercity-kupuj-bilety/id1500848669',
+    note: '可購買 PKP Intercity 各車種、選位並離線開啟已購票券。',
+  },
+  {
+    name: 'Lajkonik · Auschwitz 巴士班表與購票',
+    url: 'https://www.lajkonikbus.eu/krakow-oswiecim.html',
+    note: '查 Kraków MDA → Muzeum Auschwitz；回程請由同站切換 Oświęcim → Kraków，10/26 指定日付款前再核對。',
+  },
+];
+
+export const railPurchaseSteps = [
+  {
+    title: '先用官方時刻表找直達班次',
+    detail: '在 Passenger Portal 輸入出發站、抵達站、日期與目標時間，勾選 Direct connections。四段依序使用 Warszawa Centralna、Kraków Główny、Wrocław Główny、Poznań Główny。',
+  },
+  {
+    title: '進 PKP Intercity 官方購票頁重查',
+    detail: '用相同站名與日期搜尋；通常最早約 30 天前開放，10/25、27、28、29 的提醒日分別是 9/25、9/27、9/28、9/29，但不是保證開賣日。只有購票頁顯示可選車次與價格時才算可售。',
+  },
+  {
+    title: '選車種、艙等與正確優惠資格',
+    detail: '優先選直達 EIP／EIC／IC／TLK，依實際抵達時間與預算決定。沒有符合波蘭法定優惠資格就選一般成人票，不自行套用學生或年齡折扣。',
+  },
+  {
+    title: '確認座位與旅客資料再付款',
+    detail: '依系統畫面選 2 等座、座位偏好與同行人數；付款前核對日期、起訖站、車次、發到時間、車廂與座位。',
+  },
+  {
+    title: '下載 PDF 並保存離線副本',
+    detail: '付款成功後立即下載票券 PDF，另存到手機離線資料夾；每一段都記錄車次、車廂、座位與取消／改票條件。',
+  },
+  {
+    title: '搭車前再查月台與異動',
+    detail: '前一晚與到站後用 Passenger Portal 查看延誤或改道，進站仍以電子看板為準；至少提早 20–30 分鐘抵達大站。',
+  },
 ];
 
 export const bookingTiers = [
@@ -365,8 +409,8 @@ export const reservations = [
   {when:'❗現在就查／訂', what:'Wieliczka 鹽礦英文 Tourist Route 10:00 場 — 10/27 英文場、實際票價與庫存以官方日期選擇器為準；不要用舊價格或開賣週期取代訂票結果。'},
   {when:'現在可訂', what:'皇家城堡 — 已查證二至日 10:00–18:00、最後入場 17:00；Day 7 已改為 10:00 第一站（zamek-krolewski.pl）'},
   {when:'現在可先訂', what:'米其林與熱門餐廳：Bottiglieria 1881（二星，最搶）、BABA / Most（樂斯拉夫僅停留一晚零彈性）、WANDAL、Pod Aniołami（TheFork / OpenTable / 餐廳官網）'},
-  {when:'火車票：開賣即搶', what:'PKP Intercity 四段（WAW→KRK、KRK→WRO、WRO→POZ、POZ→WAW）尚未開賣。開賣不是「逐班發車前 30 天」而是整批放行，實際日期需自行盯 intercity.pl；Super Promo 便宜票開賣當天就會被掃光，建議先在 intercity.pl 或 Koleo 設好提醒'},
+  {when:'火車票：開賣即處理', what:'PKP Intercity 四段（WAW→KRK、KRK→WRO、WRO→POZ、POZ→WAW）尚未確認可售班次。官方未提供可套用本次日期的固定開賣承諾；請持續查看 bilet.intercity.pl 與 Passenger Portal，實際顯示可售後再更新時刻與票價。'},
   {when:'現在可查／訂', what:'辛德勒工廠 10/25 場次已進個人網路票 90 天窗口；POLIN、華沙起義博物館與皇家城堡均以官方售票頁顯示的指定日庫存為準。'},
   {when:'出發前 1 週', what:'把上述所有票價、特別閉館與開放時間再確認一次 — 本清單資料查證日為 2026-08-09，臨時活動與維修仍可能變動'},
-  {when:'抵達當日', what:'隔日 Wawel 國家廳室現場票（限額制，售完只能改廷院）'},
+  {when:'抵達當日', what:'隔日 Wawel 國家廳室現場票（限額制，售完只能改庭院）'},
 ];

@@ -20,7 +20,7 @@ function renderFlightTable(legs) {
   </table></div>`;
 }
 
-export function renderBooking({ flights, trains, stay, bookingTiers, reservations }) {
+export function renderBooking({ flights, trains, stay, bookingTiers, reservations, railOfficialLinks = [], railPurchaseSteps = [] }) {
   const tiersHtml = bookingTiers.map((tier, index) => `
     <article class="card ${index === 0 ? 'card-accent' : ''}">
       <span class="eyebrow">Priority ${index + 1}</span>
@@ -37,6 +37,15 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
       <td class="number">${train.dep} → ${train.arr}</td>
       <td class="number">${train.dur}</td><td class="number">${/^\d/.test(train.price) ? `PLN ${train.price}` : train.price}</td>
     </tr>`).join('');
+  const railLinkCards = railOfficialLinks.map(item => `
+    <a class="card card-link" href="${item.url}" target="_blank" rel="noopener">
+      <h3>${item.name}</h3><p>${item.note}</p><span>開啟官網 →</span>
+    </a>`).join('');
+  const railStepCards = railPurchaseSteps.map((item, index) => `
+    <article class="card">
+      <span class="section-num">${String(index + 1).padStart(2, '0')}</span>
+      <h3>${item.title}</h3><p>${item.detail}</p>
+    </article>`).join('');
   const stayHtml = stay.map(item => `
     <article class="card">
       <span class="eyebrow">${item.en}</span><h3>${item.city}</h3>
@@ -56,6 +65,15 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
       <div class="section-heading"><span class="section-num">Rail</span><h2>城際交通</h2></div>
       <div class="callout-risk"><span class="tag-todo">尚未開賣／確認</span><p>下表是行程銜接所需的目標時段，不是已核實班次。只有在 PKP Intercity／KOLEO 顯示 2026-10-25 至 10-29 的實際車次並完成購票後，才可視為成立。</p></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>路段</th><th>日期</th><th>車種</th><th>時刻</th><th>時長</th><th>票價</th></tr></thead><tbody>${trainRows}</tbody></table></div>
+    </section>
+    <section class="section">
+      <div class="section-heading"><span class="section-num">Official</span><h2>官方購票與時刻表</h2></div>
+      <p class="lead">Passenger Portal 用來查班次與異動；PKP Intercity 官方售票頁用來確認可售價格、車廂與座位。兩者用途不同，建議都保留。</p>
+      <div class="grid">${railLinkCards}</div>
+    </section>
+    <section class="section">
+      <div class="section-heading"><span class="section-num">How to</span><h2>網路購票教學</h2></div>
+      <div class="grid-wide">${railStepCards}</div>
     </section>
     <section class="section">
       <div class="section-heading"><span class="section-num">Flights</span><h2>航班</h2></div>

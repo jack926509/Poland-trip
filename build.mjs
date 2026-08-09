@@ -401,6 +401,8 @@ function build() {
     stay: trip.stay,
     bookingTiers: trip.bookingTiers,
     reservations: trip.reservations,
+    railOfficialLinks: trip.railOfficialLinks,
+    railPurchaseSteps: trip.railPurchaseSteps,
   }));
   writeHtml('practical/todos.html', renderTodos({
     todoGroups: trip.todoGroups,

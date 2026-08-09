@@ -160,19 +160,19 @@ export const cityDining = {
   "warsaw": [
     {
       "name": "Alon Omakase",
-      "tier": "★4.8（134） ★ 新",
+      "tier": "★ · 2026 新",
       "highlight": "2026 新一星 · 招牌：Edomae 握壽司 omakase，以頂級松露搭配見長 · 位少需早訂",
       "mapUrl": "https://maps.google.com/?cid=8029724309073713102"
     },
     {
       "name": "NUTA",
-      "tier": "★4.8（505） ★",
+      "tier": "★",
       "highlight": "招牌：主廚 Andrea Camastra 創意套餐，義式底蘊融合亞洲香料，劇場式上菜 · 提前 3–5 週",
       "mapUrl": "https://maps.google.com/?cid=4624148008162643045"
     },
     {
       "name": "hub.praga",
-      "tier": "★4.9（391） ★",
+      "tier": "★",
       "highlight": "招牌：Skrei 鱈魚配蘿蔔、海鮮冷盤、牛小排+螯蝦「海陸雙拼」 · Praga 區一星 · Day 7 順路升級",
       "mapUrl": "https://maps.google.com/?cid=10117754456971759897"
     },
@@ -184,7 +184,7 @@ export const cityDining = {
     },
     {
       "name": "WANDAL",
-      "tier": "★4.5（506） Bib 新",
+      "tier": "Bib · 2026 新",
       "highlight": "米其林 2026「年度開幕」· 招牌：顛覆式當代波蘭菜",
       "mapUrl": "https://maps.google.com/?cid=15993615675406452524"
     },
@@ -244,7 +244,7 @@ export const cityDining = {
     },
     {
       "name": "Zagoździński",
-      "tier": "★4.7（1,238） 甜點",
+      "tier": "甜點",
       "highlight": "招牌：pączki 玫瑰餡甜甜圈 · 1925 至今排隊名店（Górczewska）",
       "mapUrl": "https://maps.google.com/?cid=5270464504046978357"
     },
@@ -256,25 +256,25 @@ export const cityDining = {
     },
     {
       "name": "Bar Mleczny Rusałka",
-      "tier": "★4.3（2,501） 牛奶吧",
+      "tier": "牛奶吧",
       "highlight": "招牌：傳統家常套餐（湯＋主菜） · Praga · 一餐 25 PLN 內",
       "mapUrl": "https://maps.google.com/?cid=14427558643223382901"
     },
     {
       "name": "Sapko Kebab",
-      "tier": "★4.6（高 則） 街食",
+      "tier": "街食",
       "highlight": "招牌：土耳其 kebab，肉香四溢、份量足，在地口碑名店",
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=Sapko%20Kebab%20Warszawa"
     },
     {
       "name": "OKIENKO",
-      "tier": "★4.5（2,154 則） 街食",
+      "tier": "街食",
       "highlight": "招牌：比利時薯條配多款自製沾醬 · 窗口式外帶",
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=OKIENKO%20Warszawa"
     },
     {
       "name": "Coś Na Ząbkowskiej",
-      "tier": "★4.6（577 則） 在地",
+      "tier": "在地",
       "highlight": "Praga 藝術區（Ząbkowska 9）· 招牌：波蘭家常菜現代詮釋",
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=Co%C5%9B%20Na%20Z%C4%85bkowskiej%20Warszawa"
     },
@@ -288,37 +288,37 @@ export const cityDining = {
   "krakow": [
     {
       "name": "Bottiglieria 1881",
-      "tier": "★4.6（1,056） ★★",
+      "tier": "★★",
       "highlight": "全波蘭唯一二星(Kazimierz) · 招牌：波蘭×北歐兩套 tasting · 逾 500 款酒",
       "mapUrl": "https://maps.google.com/?cid=8570908113421134699"
     },
     {
       "name": "Folga",
-      "tier": "★4.6（1,441） Bib",
+      "tier": "Bib",
       "highlight": "招牌：當代創意料理小盤 · 高CP",
       "mapUrl": "https://maps.google.com/?cid=7193800786272583343"
     },
     {
       "name": "MOLÁM",
-      "tier": "★4.6（4,600） Bib",
+      "tier": "Bib",
       "highlight": "招牌：泰式烤全雞配糯米飯、khao soi 咖哩麵 · 道地泰式風味",
       "mapUrl": "https://maps.google.com/?cid=14914780693072191645"
     },
     {
       "name": "NOAH",
-      "tier": "★4.7（1,150） Bib",
+      "tier": "Bib",
       "highlight": "招牌：以色列烤羊肉串配 pitta 餅 · 平價實惠",
       "mapUrl": "https://maps.google.com/?cid=6279990201826816109"
     },
     {
       "name": "Bufet KRK",
-      "tier": "★4.6（1,071） Bib 新",
+      "tier": "Bib · 2026 新",
       "highlight": "二星 Bottiglieria 1881 的平價副牌 · 招牌：自製黑血腸（kaszanka）與炭烤精選肉品 · 訂不到二星的最佳替代",
       "mapUrl": "https://maps.google.com/?cid=861978380086701482"
     },
     {
       "name": "Nat Bistro",
-      "tier": "★4.8（415） Bib 新",
+      "tier": "Bib · 2026 新",
       "highlight": "招牌：牛肉塔塔、鴨胸配時令蔬果 · 自然酒",
       "mapUrl": "https://maps.google.com/?cid=10025714057570046192"
     },
@@ -336,25 +336,25 @@ export const cityDining = {
     },
     {
       "name": "Mirror Bistro",
-      "tier": "★4.7（7,485） 餃子",
+      "tier": "餃子",
       "highlight": "招牌：手工 pierogi 十種內餡任選＋白羅宋湯 · Kazimierz 高人氣早午餐",
       "mapUrl": "https://www.google.com/maps/place/?q=place_id:ChIJOwi62GpbFkcRoi0KiVCj1dk"
     },
     {
       "name": "Pierogi Szwedzkie Svensson",
-      "tier": "★4.4（236） 餃子",
+      "tier": "餃子",
       "highlight": "Długa 58 · 招牌：大顆創意餡料餃子",
       "mapUrl": "https://maps.google.com/?cid=10705718930784059170"
     },
     {
       "name": "Bar Smak",
-      "tier": "★4.6（3,014） 在地口碑",
+      "tier": "在地候選",
       "highlight": "舊城（每天大排長龍）· 招牌：手工 pierogi＋馬鈴薯煎餅，份量大、道地家常味",
       "mapUrl": "https://maps.google.com/?cid=7513589258053856766"
     },
     {
       "name": "Hamsa",
-      "tier": "★4.5（6,453） 在地口碑",
+      "tier": "在地候選",
       "highlight": "Kazimierz（Szeroka 2）· 招牌：中東鷹嘴豆泥 hummus、falafel",
       "mapUrl": "https://maps.google.com/?cid=1317891001987072687"
     },
@@ -368,19 +368,19 @@ export const cityDining = {
   "wroclaw": [
     {
       "name": "BABA",
-      "tier": "★4.6（965） ★ 新",
+      "tier": "★ · 2026 新",
       "highlight": "2025 Bib 升 2026 一星 · 主廚 Beata Śniechowska · 招牌：「Petit Bonbon」創意餃子、招牌肉卷（meatloaf）",
       "mapUrl": "https://maps.google.com/?cid=9335659011047272773"
     },
     {
       "name": "Most",
-      "tier": "★4.7（479） ★ 新",
+      "tier": "★ · 2026 新",
       "highlight": "2026 新一星 · 招牌：南瓜餡餃子配松露、鱈魚配醃紫洋蔥菇菌醬",
       "mapUrl": "https://maps.google.com/?cid=9490447263206449328"
     },
     {
       "name": "IDA kuchnia i wino",
-      "tier": "★4.8（2,002） Bib",
+      "tier": "Bib",
       "highlight": "招牌：現代版 kopytka 馬鈴薯疙瘩、pierogi、żurek 酸湯 · 149 PLN 含酒套餐，高CP",
       "mapUrl": "https://maps.google.com/?cid=10589009865057440004"
     },
@@ -410,13 +410,13 @@ export const cityDining = {
     },
     {
       "name": "Miś SC",
-      "tier": "★4.4（7,028） 牛奶吧",
+      "tier": "牛奶吧",
       "highlight": "樂斯拉夫最有名的牛奶吧，招牌：pierogi、家常湯品，價格實惠、天天排隊",
       "mapUrl": "https://maps.google.com/?cid=9100083269168988599"
     },
     {
       "name": "Bar Witek",
-      "tier": "★4.0（23 則） 街食",
+      "tier": "街食",
       "highlight": "招牌：zapiekanka 烤餅 · 樂斯拉夫在地地標，門口有專屬小矮人雕像",
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=Bar%20Witek%20Wroc%C5%82aw"
     },
@@ -436,7 +436,7 @@ export const cityDining = {
   "poznan": [
     {
       "name": "Muga",
-      "tier": "★4.7（869） ★",
+      "tier": "★",
       "highlight": "波茲南首家、目前唯一一星 · 法系 · 招牌：時令 10–12 道套餐（如烤鴿配無花果）· 套餐 390–540 PLN",
       "mapUrl": "https://maps.google.com/?cid=2998937238608160974"
     },
@@ -472,7 +472,7 @@ export const cityDining = {
     },
     {
       "name": "Na Winklu",
-      "tier": "★4.8（3,222） 餃子",
+      "tier": "餃子",
       "highlight": "Śródka 區河畔 · 招牌：烤製版大顆 pierogi，外皮酥脆內餡多汁，在地人氣首選",
       "mapUrl": "https://maps.google.com/?cid=17998777227118824033"
     },
@@ -490,7 +490,7 @@ export const cityDining = {
     },
     {
       "name": "Szarlotta",
-      "tier": "★4.5（2,798） 在地口碑",
+      "tier": "在地候選",
       "highlight": "招牌：鴨肉餃子（Duck Pierogi）——當地公認波茲南最佳餃子之一",
       "mapUrl": "https://maps.google.com/?cid=8072844045178633315"
     },
