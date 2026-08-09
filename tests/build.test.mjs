@@ -8,7 +8,7 @@ import { about, packingDefault, phrases, preDepartureNotes, safety } from '../sr
 import { shopping, souvenirCards, souvenirShops, luxuryShopping, zabkaCards } from '../src/data/shopping.js';
 import { fares, ticketsByCity } from '../src/data/tickets.js';
 import { airportTransit, passChecklist, practical, recommendedApps, transitFares, usefulRoutes } from '../src/data/transit.js';
-import { bookingTiers, days, flights, reservations, stay, trains } from '../src/data/trip.js';
+import { bookingTiers, days, flights, reservations, stay, todoGroups, trains } from '../src/data/trip.js';
 import {
   databaseEntries,
   databaseSections,
@@ -29,6 +29,7 @@ const expectedFiles = [
   'city-krakow.html',
   'city-wroclaw.html',
   'city-poznan.html',
+  'practical/todos.html',
   'practical/booking.html',
   'practical/dining.html',
   'practical/tickets.html',
@@ -314,12 +315,12 @@ test('克拉科夫與樂斯拉夫飲水資訊各自保有官方來源', () => {
   assert.equal(wroclawWater?.sourceUrl, 'https://www.mpwik.wroc.pl/csr-2/pij-kranowke/');
 });
 
-test('dist 正好產出規格要求的 21 個 HTML', () => {
+test('dist 正好產出規格要求的 22 個 HTML', () => {
   assert.deepEqual(htmlFiles(), [...expectedFiles].sort());
   assert.ok(fs.existsSync(path.join(distDir, 'assets/main.css')), '缺少 assets/main.css');
 });
 
-test('單檔旅遊指南封裝全部 21 頁且不依賴本機 CSS 或其他 HTML', () => {
+test('單檔旅遊指南封裝全部 22 頁且不依賴本機 CSS 或其他 HTML', () => {
   assert.ok(fs.existsSync(standalonePath), '缺少 poland-travel-guide-2026.html');
   const html = fs.readFileSync(standalonePath, 'utf8');
 
@@ -373,8 +374,23 @@ test('2026-08-09 官方盤查會移除未能證實的場次、價格與閉館敘
   assert.ok(cityNotices.wroclaw.some(item => item.text.includes('availability calendar')));
 });
 
+test('待辦事項頁將 13 項依四類整理，並在實用資訊導覽可進入', () => {
+  assert.deepEqual(todoGroups.map(group => [group.id, group.items.length]), [
+    ['rail', 4], ['attractions', 7], ['dining', 1], ['rainy-day', 1],
+  ]);
+  assert.equal(todoGroups.flatMap(group => group.items).length, 13);
+
+  const html = read('practical/todos.html');
+  for (const label of ['城際交通', '主要景點', '餐飲訂位', '雨天備案']) {
+    assert.ok(html.includes(label), `待辦頁缺少分類：${label}`);
+  }
+  assert.ok(html.includes('辛德勒工廠 17:30'));
+  assert.ok(read('practical/booking.html').includes('practical/todos.html'));
+  assert.ok(fs.readFileSync(standalonePath, 'utf8').includes('href="#page-practical-todos"'));
+});
+
 test('自由行資料庫頁提供 SOS、主題索引與緊急聯絡資訊', () => {
-  assert.equal(htmlFiles().length, 21);
+  assert.equal(htmlFiles().length, 22);
   const html = read('practical/database.html');
   for (const heading of ['SOS 離線急救卡', '出入境與 ETIAS', '航班與行李', '醫療與保險', '退稅 TAX FREE']) {
     assert.ok(html.includes(heading), `資料庫頁缺少 ${heading}`);

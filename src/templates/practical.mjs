@@ -10,7 +10,7 @@ function renderPracticalLayout(title, eyebrow, intro, content) {
       </div>
     </header>
     ${content}`;
-  return renderLayout({ title, activeNav: 'practical', bodyHtml, pathPrefix: '../' });
+  return renderLayout({ title, activeNav: 'practical', bodyHtml: bodyHtml.trim(), pathPrefix: '../' });
 }
 
 function renderFlightTable(legs) {
@@ -68,6 +68,28 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
     </section>`;
 
   return renderPracticalLayout('訂票與交通', 'Booking plan', '先看最急的票，再核對火車、航班與住宿區域。尚未確認的時段保留原樣，不用猜。', content);
+}
+
+export function renderTodos({ todoGroups }) {
+  const total = todoGroups.flatMap(group => group.items).length;
+  const groupsHtml = todoGroups.map((group, index) => {
+    const rows = group.items.map(item => `<tr>
+      <td class="number"><b>${item.date}</b></td>
+      <td><b>${item.name}</b><br><span class="tag-todo">${item.status}</span></td>
+      <td>${item.action}${item.url ? `<br><a href="${item.url}" target="_blank" rel="noopener">開啟處理頁 →</a>` : ''}</td>
+    </tr>`).join('');
+    return `<section class="section" id="todo-${group.id}">
+      <div class="section-heading"><span class="section-num">${group.eyebrow}</span><h2>${group.title}</h2></div>
+      <p class="lead">${group.intro}</p>
+      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>日期</th><th>事項／狀態</th><th>下一步</th></tr></thead><tbody>${rows}</tbody></table></div>
+    </section>`;
+  }).join('');
+
+  const content = `
+    <div class="callout-risk"><span class="tag-todo">${total} 項待辦</span><p>按「要買什麼」而非逐日行程整理。完成後請將票券與訂位資訊離線保存；未開賣項目仍以官方系統實際可售狀態為準。</p></div>
+    ${groupsHtml}`.trim();
+
+  return renderPracticalLayout('待辦事項', 'Action list', '城際交通、景點、餐飲與雨天備案集中在一頁。先處理有日期與指定場次的票，再處理彈性訂位。', content);
 }
 
 export function renderDining({ michelinSummary, michelinReservations, verifiedRestaurantHours = [] }) {

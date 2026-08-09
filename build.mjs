@@ -16,6 +16,7 @@ import { renderDay } from './src/templates/day.mjs';
 import { renderCity } from './src/templates/city.mjs';
 import {
   renderBooking,
+  renderTodos,
   renderDining,
   renderTickets,
   renderTransit,
@@ -38,6 +39,7 @@ const standalonePages = [
   ['city-krakow.html', '克拉科夫'],
   ['city-wroclaw.html', '樂斯拉夫'],
   ['city-poznan.html', '波茲南'],
+  ['practical/todos.html', '待辦事項'],
   ['practical/booking.html', '訂票與交通'],
   ['practical/dining.html', '餐廳'],
   ['practical/tickets.html', '門票'],
@@ -100,7 +102,7 @@ function bundlePage(relativePath, label, pageIndex) {
     ))
     .replace(/\baria-describedby="([^"]+)"/g, (_, ids) => (
       `aria-describedby="${ids.split(/\s+/).map(id => `${currentPageId}--${id}`).join(' ')}"`
-    ));
+    )).trim();
 
   const previous = standalonePages[pageIndex - 1];
   const next = standalonePages[pageIndex + 1];
@@ -310,7 +312,7 @@ ${bundledPages}
   <footer class="footer">
     <div class="footer-inner">
       <p>POLSKA 波蘭行 · 2026/10/24–10/31 · 單檔完整版</p>
-      <p>票價、開放時間與交通資料查證於 2026-08-08；尚未開賣或會變動的項目已明確標示，實際以官網與已購票券為準。</p>
+      <p>票價、開放時間與交通資料查證於 2026-08-09；尚未開賣或會變動的項目已明確標示，實際以官網與已購票券為準。</p>
     </div>
   </footer>
   <script>
@@ -400,6 +402,9 @@ function build() {
     bookingTiers: trip.bookingTiers,
     reservations: trip.reservations,
   }));
+  writeHtml('practical/todos.html', renderTodos({
+    todoGroups: trip.todoGroups,
+  }));
   writeHtml('practical/dining.html', renderDining({
     michelinSummary: dining.michelinSummary,
     michelinReservations: dining.michelinReservations,
@@ -444,7 +449,7 @@ function build() {
 
   const htmlCount = fs.readdirSync(distDir).filter(name => name.endsWith('.html')).length
     + fs.readdirSync(path.join(distDir, 'practical')).filter(name => name.endsWith('.html')).length;
-  if (htmlCount !== 21) throw new Error(`預期產生 21 頁，實際為 ${htmlCount} 頁`);
+  if (htmlCount !== 22) throw new Error(`預期產生 22 頁，實際為 ${htmlCount} 頁`);
   console.log(`build 完成：${htmlCount} 頁已產生至 dist/，另產生 poland-travel-guide-2026.html 單檔版`);
 }
 

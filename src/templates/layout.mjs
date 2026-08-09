@@ -44,6 +44,7 @@ export function renderLayout({ title, activeNav, bodyHtml, extraHead = '', pathP
     <div class="nav-dropdown">
       <a href="${path('index.html#practical')}"${current(activeNav, 'practical')}>實用資訊 ▾</a>
       <ul>
+        <li><a href="${path('practical/todos.html')}">待辦事項</a></li>
         <li><a href="${path('practical/booking.html')}">訂票與交通</a></li>
         <li><a href="${path('practical/dining.html')}">米其林與餐廳</a></li>
         <li><a href="${path('practical/tickets.html')}">門票速查</a></li>
