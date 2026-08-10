@@ -86,10 +86,10 @@ function renderNightChecklist(operation) {
 export function renderDay(day, photoSpotsForDay = [], operation = null) {
   const stepsHtml = day.steps.map(step => `
     <tr>
-      <td class="number"><b>${step.t}</b></td>
-      <td><b>${step.label}</b>${step.sub ? `<br><span class="timeline-note">${step.sub}</span>` : ''}</td>
-      <td class="number">${step.cost || '—'}</td>
-      <td class="number">${step.dur || '—'}</td>
+      <td class="number" data-label="時間"><b>${step.t}</b></td>
+      <td data-label="行程"><b>${step.label}</b>${step.sub ? `<br><span class="timeline-note">${step.sub}</span>` : ''}</td>
+      <td class="number" data-label="花費">${step.cost || '—'}</td>
+      <td class="number" data-label="時長">${step.dur || '—'}</td>
     </tr>`).join('');
 
   const trainHtml = day.train ? `
@@ -199,8 +199,8 @@ export function renderDay(day, photoSpotsForDay = [], operation = null) {
 
     <section class="section">
       <div class="section-heading"><span class="section-num">Schedule</span><h2>當日時間表</h2></div>
-      <div class="table-wrap">
-        <table class="table-editorial">
+      <div class="table-wrap table-wrap-cards">
+        <table class="table-editorial table-schedule">
           <thead><tr><th>時間</th><th>行程</th><th>花費</th><th>時長</th></tr></thead>
           <tbody>${stepsHtml}</tbody>
         </table>
