@@ -48,8 +48,10 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
     </article>`).join('');
   const stayHtml = stay.map(item => `
     <article class="card">
-      <span class="eyebrow">${item.en}</span><h3>${item.city}</h3>
-      <p><b>${item.pick}</b></p><p>${item.note}</p><p class="timeline-note">${item.tip}</p>
+      <span class="eyebrow">${item.status} · ${item.city}</span><h3>${item.name}</h3>
+      <p><b>${item.checkIn}${item.checkInTime ? ` ${item.checkInTime}` : ''} → ${item.checkOut}${item.checkOutTime ? ` ${item.checkOutTime}` : ''}</b> · ${item.nights} 晚 · ${item.rooms} 間房</p>
+      <p>${item.address}</p><p class="timeline-note">${item.note}</p>
+      <a href="${item.officialUrl}" target="_blank" rel="noopener">飯店官網 →</a>
     </article>`).join('');
 
   const content = `
@@ -81,11 +83,11 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
       <h3>回程</h3>${renderFlightTable(flights.back)}
     </section>
     <section class="section">
-      <div class="section-heading"><span class="section-num">Stay</span><h2>住宿選區</h2></div>
+      <div class="section-heading"><span class="section-num">Stay</span><h2>已確認住宿</h2></div>
       <div class="grid-wide">${stayHtml}</div>
     </section>`;
 
-  return renderPracticalLayout('訂票與交通', 'Booking plan', '先看最急的票，再核對火車、航班與住宿區域。尚未確認的時段保留原樣，不用猜。', content);
+  return renderPracticalLayout('訂票與交通', 'Booking plan', '先看最急的票，再核對火車、航班與已確認住宿。尚未確認的時段保留原樣，不用猜。', content);
 }
 
 export function renderTodos({ todoGroups }) {
