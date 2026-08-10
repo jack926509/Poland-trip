@@ -136,6 +136,8 @@ export const mapPins = {
       [52.24935, 21.008785, "Żabka（舊城區）", "超商", "https://www.google.com/maps/place/?q=place_id:ChIJpTk0Ah_NHkcRNn4P8JcA_64", "store"],
       [52.2310334, 21.0187045, "Vitkac", "精品百貨", "https://maps.google.com/?cid=6893272886103886879", "luxury"],
       [52.2215267, 21.0204772, "Chylak（波蘭設計師包款）", "精品", "https://maps.google.com/?cid=2015234439722332980", "luxury"],
+      [52.214645, 20.968169, "ibis budget Warszawa Reduta", "已確認住宿 · 官網現稱 ibis budget Warszawa West Station", "https://www.google.com/maps/search/?api=1&query=ibis%20budget%20Warszawa%20Reduta%2C%20ul.%20Bitwy%20Warszawskiej%2016%20A%2C%20Warszawa", "hotel"],
+      [52.22901, 21.01099, "Hotel Metropol", "已確認住宿 · 10/29–10/31", "https://www.google.com/maps/search/?api=1&query=Hotel%20Metropol%2C%20ul.%20Marsza%C5%82kowska%2099a%2C%20Warszawa", "hotel"],
     ],
   },
   krakow: {
@@ -160,6 +162,7 @@ export const mapPins = {
       [50.058364, 19.9382007, "World of Amber（琥珀）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJPxlI8hJbFkcR7vI2ebLVIDk", "shop"],
       [50.06171320000001, 19.9373488, "Sukiennice 布廊（伴手禮攤位）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJ3Q97Bw5bFkcRc3GzJiVsH9A", "shop"],
       [50.062638, 19.937729, "Żabka（Rynek Główny）", "超商", "https://www.google.com/maps/place/?q=place_id:ChIJN54SF4BbFkcRfqYQZ51JTN4", "store"],
+      [50.07075, 19.946163, "ibis budget Krakow Stare Miasto", "已確認住宿 · 10/25–10/27", "https://www.google.com/maps/search/?api=1&query=ibis%20budget%20Krakow%20Stare%20Miasto%2C%20ul.%20Pawia%2011%2C%20Krak%C3%B3w", "hotel"],
     ],
   },
   wroclaw: {
@@ -174,6 +177,7 @@ export const mapPins = {
       [51.112463, 17.029103, "IDA kuchnia i wino", "必比登", "https://maps.google.com/?cid=10589009865057440004", "bib"],
       [51.112672, 17.034294, "Miś SC", "全城最有名牛奶吧", "https://maps.google.com/?cid=9100083269168988599", "food"],
       [51.1100658, 17.0302956, "Żabka（Rynek）", "超商", "https://www.google.com/maps/place/?q=place_id:ChIJo38OWDjDD0cREV-o0Qsuquo", "store"],
+      [51.10013, 17.03569, "Piast", "已確認住宿 · 完整門牌待飯店第一方確認", "https://www.google.com/maps/search/?api=1&query=Hotel%20Piast%20Wroc%C5%82aw", "hotel"],
     ],
   },
   poznan: {
@@ -187,6 +191,7 @@ export const mapPins = {
       [52.411348, 16.952952, "Na Winklu", "pierogi", "https://maps.google.com/?cid=17998777227118824033", "food"],
       [52.407303, 16.934127, "Szarlotta", "鴨肉餃子名店", "https://maps.google.com/?cid=8072844045178633315", "food"],
       [52.407335, 16.934281, "Żabka（Stary Rynek）", "超商", "https://www.google.com/maps/place/?q=place_id:ChIJz0qhEFVbBEcRDDtONqAeGV4", "store"],
+      [52.403903, 16.915609, "Poznan Apartments Towarowa", "已確認住宿 · Towarowa 37/201 官方接待處", "https://www.google.com/maps/search/?api=1&query=Poznan%20Apartments%20Towarowa%2C%20Towarowa%2037%2F201%2C%20Pozna%C5%84", "hotel"],
     ],
   },
 };
@@ -200,6 +205,7 @@ export const pinCategoryLegend = {
   shop:   {fill:'#8b5cf6', line:'#4c2f8f', label:'伴手禮店家'},
   store:  {fill:'#0891b2', line:'#0c4a5e', label:'超商 Żabka'},
   luxury: {fill:'#d6336c', line:'#7a1a3d', label:'精品購物'},
+  hotel:  {fill:'#6d597a', line:'#3d2f46', label:'已確認住宿'},
 };
 
 // attractions：逐列轉錄自 poland-travel-guide-final.html 各城「景點 · Sights」表格。

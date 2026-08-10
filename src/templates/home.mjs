@@ -27,38 +27,21 @@ function renderFlight(direction, legs) {
   </article>`;
 }
 
-export function renderHome({ meta, days, flights, cities, readinessItems, databaseEntries }) {
-  const mustBookCount = days.reduce((total, day) => total + day.mustBook.length, 0);
-  const entriesById = new Map(databaseEntries.map(entry => [entry.id, entry]));
-  const p0Incomplete = readinessItems.filter(item => item.priority === 'P0' && item.status !== 'verified');
-  const datedItems = readinessItems
-    .map(item => ({ item, deadline: entriesById.get(item.entryId)?.recheckAt }))
-    .filter(item => item.deadline)
-    .sort((left, right) => left.deadline.localeCompare(right.deadline));
-  const nextTicket = readinessItems.find(item => item.status === 'pending' && item.title.includes('票'));
-  const etias = readinessItems.find(item => item.id === 'passport-etias');
-  const offlinePack = readinessItems.find(item => item.id === 'offline-pack');
-  const summaryCards = [
-    ['P0 未完成', `${p0Incomplete.length} 項`, p0Incomplete[0]],
-    ['最近確認期限', datedItems[0]?.deadline || '尚無日期', datedItems[0]?.item],
-    ['下一張要買的票', nextTicket?.title || '目前無待購票', nextTicket],
-    ['ETIAS 狀態', etias?.statusText || '無資料', etias],
-    ['離線包狀態', offlinePack?.statusText || '無資料', offlinePack],
-  ].map(([label, value, item]) => `<a class="card card-link readiness-summary-card" href="${item ? `practical/database.html#entry-${escapeHtml(item.entryId)}` : 'practical/database.html'}"><span class="eyebrow">${escapeHtml(label)}</span><h3>${escapeHtml(value)}</h3><span>查看處理方式 →</span></a>`).join('');
-  const readinessStatusOrder = { pending: 0, 'private-required': 0, recheck: 1, verified: 2 };
-  const readinessCards = [...readinessItems]
-    .sort((left, right) => readinessStatusOrder[left.status] - readinessStatusOrder[right.status])
-    .map(item => {
-      const statusClass = item.status === 'private-required' ? 'private' : item.status;
-      return `
-        <a class="card card-link" href="practical/database.html#entry-${escapeHtml(item.entryId)}">
-          <span class="status-${statusClass}">狀態：${escapeHtml(item.statusText)}</span>
-          <h3>${escapeHtml(item.title)}</h3>
-          <p>${escapeHtml(item.detail)}</p>
-          <p><b>確認期限：</b>${escapeHtml(entriesById.get(item.entryId)?.recheckAt || '無固定日期')}</p>
-          <span>查看處理方式 →</span>
-        </a>`;
-    }).join('');
+export function renderHome({ meta, days, flights, cities, todoGroups = [] }) {
+  const todoCount = todoGroups.reduce((total, group) => total + group.items.length, 0);
+  const todoCards = todoGroups.map(group => `
+    <article class="card">
+      <span class="eyebrow">${escapeHtml(group.eyebrow)}</span>
+      <h3>${escapeHtml(group.title)}</h3>
+      <p>${escapeHtml(group.intro)}</p>
+      <ul class="check-list">
+        ${group.items.map(item => `<li>
+          <span class="eyebrow">${escapeHtml(item.date)} · ${escapeHtml(item.status)}</span><br>
+          <b>${escapeHtml(item.name)}</b>
+        </li>`).join('')}
+      </ul>
+      <a href="practical/todos.html#todo-${escapeHtml(group.id)}">查看下一步與處理連結 →</a>
+    </article>`).join('');
   const dayRows = days.map(day => `
     <tr>
       <td class="number">Day ${String(day.n).padStart(2, '0')}</td>
@@ -89,8 +72,7 @@ export function renderHome({ meta, days, flights, cities, readinessItems, databa
         <dl class="meta-list">
           <div><dt>日期</dt><dd>${meta.dateRange}</dd></div>
           <div><dt>天數</dt><dd>${meta.days} 天 ${meta.nights} 夜</dd></div>
-          <div><dt>步調</dt><dd>${meta.style}</dd></div>
-          <div><dt>待處理</dt><dd><span class="tag-todo">${mustBookCount} 項尚未訂</span></dd></div>
+          <div><dt>待處理</dt><dd><a href="#todos"><span class="tag-todo">${todoCount} 項待辦</span></a></dd></div>
         </dl>
       </aside>
     </header>
@@ -99,11 +81,11 @@ export function renderHome({ meta, days, flights, cities, readinessItems, databa
       ${['華沙', '克拉科夫', '樂斯拉夫', '波茲南', '華沙'].map(city => `<span class="route-stop">${city}</span>`).join('')}
     </div>
 
-    <section class="section" id="readiness">
-      <div class="section-heading"><span class="section-num">00 / Readiness</span><h2>出發準備度</h2></div>
-      <p class="lead">尚未完成與需填私人資料的項目排在前面；本站只顯示進度，不公開訂位、證件、保單或付款內容。</p>
-      <div class="grid readiness-summary">${summaryCards}</div>
-      <div class="grid">${readinessCards}</div>
+    <section class="section" id="todos">
+      <div class="section-heading section-heading-simple"><h2>待辦事項</h2></div>
+      <p class="lead">共 ${todoCount} 項：4 段城際交通、7 個主要景點、1 個餐飲訂位與 1 個雨天備案。下方直接列出所有項目，詳細處理方式集中在待辦頁。</p>
+      <div class="grid">${todoCards}</div>
+      <p><a href="practical/todos.html">開啟完整待辦事項 →</a></p>
     </section>
 
     <section class="section" id="days">

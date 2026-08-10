@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { test } from 'node:test';
-import { cities, cityStories, photoSpots, photoCredits, mapPins, attractions, cityNotices } from '../src/data/cities.js';
+import { cities, cityStories, photoSpots, photoCredits, mapPins, pinCategoryLegend, attractions, cityNotices } from '../src/data/cities.js';
 import { cityDining, cityFood, foodBackup, foods, michelinSummary, michelinReservations, verifiedRestaurantHours } from '../src/data/dining.js';
 import { about, packingDefault, phrases, preDepartureNotes, safety } from '../src/data/essentials.js';
 import { shopping, souvenirCards, souvenirShops, luxuryShopping, zabkaCards } from '../src/data/shopping.js';
@@ -86,6 +86,25 @@ test('官方旅客權益與本次私人／待購狀態分開', () => {
   assert.equal(readinessItems.find(item => item.id === 'rail-tickets')?.entryId, 'rail-trip-tickets');
   assert.ok(dayOperations[8].entryIds.includes('aviation-trip-baggage-confirmation'));
   for (const day of [2, 4, 5, 6]) assert.ok(dayOperations[day].entryIds.includes('rail-trip-tickets'));
+});
+
+test('5 筆已確認住宿完整涵蓋 7 晚並保留官方地址', () => {
+  assert.deepEqual(stay.map(item => [item.name, item.checkIn, item.checkOut, item.nights]), [
+    ['ibis budget Warszawa Reduta', '2026-10-24', '2026-10-25', 1],
+    ['ibis budget Krakow Stare Miasto', '2026-10-25', '2026-10-27', 2],
+    ['Piast', '2026-10-27', '2026-10-28', 1],
+    ['Poznan Apartments Towarowa', '2026-10-28', '2026-10-29', 1],
+    ['Hotel Metropol', '2026-10-29', '2026-10-31', 2],
+  ]);
+  assert.equal(stay.reduce((total, item) => total + item.nights, 0), 7);
+  for (const booking of stay) {
+    assert.match(booking.officialUrl, /^https:\/\//);
+    assert.equal(booking.status, '已確認');
+    assert.equal(booking.rooms, 1);
+  }
+  assert.equal(stay.filter(item => item.addressVerified).length, 4);
+  assert.equal(stay.find(item => item.name === 'Piast')?.address, '完整地址待飯店第一方確認');
+  for (const booking of stay.filter(item => item.addressVerified)) assert.match(booking.address, /\d/);
 });
 
 test('自由行資料庫的狀態、來源、日期與關聯資料符合完整性契約', () => {
@@ -259,16 +278,18 @@ test('已排定的主要公共地點使用正確地址與官方入口資料', ()
   assert.ok(!castle.stepLabels.includes('★ 老城廣場'));
 });
 
-test('首頁準備度會跳脫資料文字', () => {
-  const unsafeEntry = { ...databaseEntries[0], id: 'unsafe-entry', recheckAt: '2026-09-01' };
+test('首頁待辦事項會跳脫資料文字', () => {
   const html = renderHome({
     meta: { edition: 'test', route: 'test', dateRange: 'test', days: 0, nights: 0, style: 'test' },
-    days: [], flights: { out: [], back: [] }, cities: [], databaseEntries: [unsafeEntry],
-    readinessItems: [{ id: 'unsafe', entryId: 'unsafe-entry', priority: 'P0', status: 'pending', statusText: '<script>x()</script>', title: '<img src=x>', detail: 'A & B', private: false }],
+    days: [], flights: { out: [], back: [] }, cities: [],
+    todoGroups: [{ id: 'unsafe', title: '<script>x()</script>', eyebrow: 'A & B', intro: '<img src=x>', items: [
+      { date: '10/25', name: '<b>危險項目</b>', status: '待處理', action: '下一步', url: null },
+    ] }],
   });
   assert.doesNotMatch(html, /<script>|<img src=x>/);
   assert.ok(html.includes('&lt;script&gt;x()&lt;/script&gt;'));
   assert.ok(html.includes('A &amp; B'));
+  assert.ok(html.includes('&lt;b&gt;危險項目&lt;/b&gt;'));
 });
 
 test('資料庫模板會跳脫資料文字並拒絕非 HTTPS 官方來源', () => {
@@ -373,6 +394,30 @@ test('單檔版以章節切換取代整頁上下查找，並保留前後頁導�
   assert.match(html, /@media print[\s\S]*\.standalone-page\[hidden\][\s\S]*display: block !important;/);
 });
 
+test('單檔版城市地圖以穩定資料屬性初始化，不受章節 id 改寫影響', () => {
+  const html = fs.readFileSync(standalonePath, 'utf8');
+
+  for (const cityKey of ['warsaw', 'krakow', 'wroclaw', 'poznan']) {
+    assert.match(html, new RegExp(`data-map-key="${cityKey}"`), `缺少 ${cityKey} 地圖識別`);
+    assert.doesNotMatch(
+      html,
+      new RegExp(`getElementById\\('map-${cityKey}'\\)`),
+      `${cityKey} 地圖仍依賴會被單檔打包改寫的 DOM id`,
+    );
+  }
+  assert.match(html, /document\.currentScript/);
+  assert.match(html, /closest\('\.standalone-page'\)/);
+});
+
+test('正式頁面保留垂直滑動，地圖與寬表格不會鎖住整頁', () => {
+  const css = fs.readFileSync(path.join(distDir, 'assets/main.css'), 'utf8');
+
+  assert.doesNotMatch(css, /(?:html|body)\s*\{[^}]*overflow-y\s*:\s*hidden/s);
+  assert.match(css, /\.map-container\s*\{[^}]*touch-action\s*:\s*pan-y\s*!important/s);
+  assert.match(css, /\.table-wrap\s*\{[^}]*overflow-x\s*:\s*auto/s);
+  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav\s*\{[^}]*position\s*:\s*static/s);
+});
+
 test('2026-08-09 官方盤查會移除未能證實的場次、價格與閉館敘述', () => {
   const publicData = JSON.stringify({ days, fares, ticketsByCity, attractions, cityNotices, bookingTiers, reservations });
 
@@ -435,7 +480,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.equal(photoSpots.length, 10);
   assert.equal(photoCredits.length, 8);
   assert.deepEqual(Object.fromEntries(Object.entries(mapPins).map(([city, data]) => [city, data.points.length])), {
-    warsaw: 14, krakow: 19, wroclaw: 9, poznan: 8,
+    warsaw: 16, krakow: 20, wroclaw: 10, poznan: 9,
   });
   assert.deepEqual(Object.fromEntries(Object.entries(attractions).map(([city, items]) => [city, items.length])), {
     warsaw: 12, krakow: 6, wroclaw: 8, poznan: 9,
@@ -444,7 +489,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.equal(trains.length, 5);
   assert.deepEqual(bookingTiers.map(tier => tier.items.length), [6, 6, 4]);
   assert.deepEqual({ out: flights.out.length, back: flights.back.length }, { out: 5, back: 5 });
-  assert.equal(stay.length, 4);
+  assert.equal(stay.length, 5);
   assert.equal(reservations.length, 8);
 
   assert.equal(michelinSummary.length, 4);
@@ -522,36 +567,31 @@ test('首頁包含 8 天、4 城與全部實用頁入口', () => {
   );
 });
 
-test('首頁出發準備度顯示 8 類待辦、文字狀態與資料庫連結', () => {
+test('首頁移除出發準備度與步調，直接列出 13 項待辦', () => {
   const html = read('index.html');
-  const database = read('practical/database.html');
-  const labels = ['住宿', '城際車票', '景點票券', '航班行李', '旅平險', '網路離線', 'ETIAS', '緊急聯絡'];
 
-  assert.ok(html.includes('出發準備度'));
-  for (const label of labels) assert.ok(html.includes(`>${label}<`), `首頁準備度缺少 ${label}`);
-  for (const status of ['待確認', '需填私人資料', '出發前重查']) {
-    assert.ok(html.includes(`狀態：${status}`), `首頁準備度缺少文字狀態 ${status}`);
+  assert.ok(!html.includes('出發準備度'));
+  assert.ok(!html.includes('00 / Readiness'));
+  assert.ok(!html.includes('高效率城市探索 · 腳程快 · 重點景點完整走完'));
+  assert.ok(!html.includes('13 項尚未訂'));
+  assert.ok(html.includes('13 項待辦'));
+  for (const group of todoGroups) {
+    assert.ok(html.includes(`>${group.title}<`), `首頁缺少待辦分類：${group.title}`);
+    for (const item of group.items) assert.ok(html.includes(`>${item.name}<`), `首頁缺少待辦：${item.name}`);
   }
-  assert.ok((html.match(/href="practical\/database\.html#entry-/g) || []).length >= 8);
-  for (const item of readinessItems) {
-    assert.ok(
-      html.includes(`href="practical/database.html#entry-${item.entryId}"`),
-      `首頁缺少 ${item.title} 的資料庫連結`,
-    );
-    assert.ok(
-      database.includes(`id="entry-${item.entryId}"`),
-      `${item.title} 的資料庫錨點不存在`,
-    );
-  }
+  assert.ok(html.includes('href="#todos"'));
+  assert.ok(html.includes('href="practical/todos.html"'));
+});
 
-  for (const label of ['P0 未完成', '最近確認期限', '下一張要買的票', 'ETIAS 狀態', '離線包狀態', '確認期限：']) {
-    assert.ok(html.includes(label), `首頁缺少動態摘要：${label}`);
-  }
+test('高風險行程文字與餐廳候選不會誤導現場判斷', () => {
+  const dayFive = days.find(day => day.n === 5);
+  const luggageStep = dayFive.steps.find(step => step.label.includes('取行李'));
+  const warsawDining = cityDining.warsaw;
 
-  const recheckPosition = html.indexOf('>ETIAS<');
-  for (const label of ['住宿', '城際車票', '景點票券', '航班行李', '旅平險', '網路離線', '緊急聯絡']) {
-    assert.ok(html.indexOf(`>${label}<`) < recheckPosition, `${label} 應排在出發前重查項目前`);
-  }
+  assert.match(luggageStep.sub, /距目標發車 1\.5 h/);
+  assert.match(luggageStep.sub, /抵站後約 1 h/);
+  assert.ok(!warsawDining.some(item => item.name.includes('/')), '餐廳候選不可把多個品牌合併成一筆');
+  assert.ok(warsawDining.some(item => item.name === 'Gościniec（探索候選）'));
 });
 
 test('8 個每日頁的日期與標題和資料層一致', async () => {
@@ -587,7 +627,8 @@ test('Day 1–8 都有現場導航、當日警示與晚間準備', () => {
   }
   assert.ok(read('day-02.html').includes('非營業週日'));
   assert.ok(read('day-08.html').includes('離開 EU'));
-  assert.ok(read('day-01.html').includes('待住宿／分店確定後填入'));
+  assert.ok(read('day-01.html').includes('ibis budget Warszawa Reduta'));
+  assert.ok(!read('day-01.html').includes('待住宿／分店確定後填入'));
 });
 
 test('Day 3 導航指向 Auschwitz I 訪客入口而非通訊地址', () => {
@@ -608,12 +649,28 @@ test('Day 8 退稅與報到已合併，不再出現獨立 11:30 時段', () => {
   assert.ok(html.includes('退稅') && html.includes('報到'), 'Day 8 缺少合併後的退稅／報到內容');
 });
 
-test('4 個城市頁含正確 Leaflet 圖釘數，合計 50', () => {
+test('5 筆已確認住宿皆出現在對應城市地圖，Piast 保留門牌待確認提示', () => {
+  const hotelPins = Object.values(mapPins)
+    .flatMap(city => city.points)
+    .filter(point => point[5] === 'hotel');
+
+  assert.equal(pinCategoryLegend.hotel?.label, '已確認住宿');
+  assert.deepEqual(hotelPins.map(point => point[2]), [
+    'ibis budget Warszawa Reduta',
+    'Hotel Metropol',
+    'ibis budget Krakow Stare Miasto',
+    'Piast',
+    'Poznan Apartments Towarowa',
+  ]);
+  assert.match(hotelPins.find(point => point[2] === 'Piast')?.[3] ?? '', /完整門牌待飯店第一方確認/);
+});
+
+test('4 個城市頁含正確 Leaflet 圖釘數，合計 55', () => {
   const expected = {
-    'city-warszawa.html': 14,
-    'city-krakow.html': 19,
-    'city-wroclaw.html': 9,
-    'city-poznan.html': 8,
+    'city-warszawa.html': 16,
+    'city-krakow.html': 20,
+    'city-wroclaw.html': 10,
+    'city-poznan.html': 9,
   };
   let total = 0;
   for (const [file, count] of Object.entries(expected)) {
@@ -626,7 +683,7 @@ test('4 個城市頁含正確 Leaflet 圖釘數，合計 50', () => {
     assert.equal(points, count, `${file} 圖釘數錯誤`);
     total += points;
   }
-  assert.equal(total, 50);
+  assert.equal(total, 55);
 });
 
 test('城市頁完整呈現故事、景點、主餐廳、備案與拍照資訊', () => {

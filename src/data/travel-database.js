@@ -1,4 +1,4 @@
-import { days as itineraryDays } from './trip.js';
+import { days as itineraryDays, stay } from './trip.js';
 
 // 自由行資料庫：公開事實與私人待填狀態分開，供後續首頁、每日操作卡與 SOS 頁共用。
 // 私人項目只記錄完成狀態，絕不放入訂位代碼、護照、保單或付款資料。
@@ -178,18 +178,19 @@ export const databaseEntries = [
   },
   {
     id: 'accommodation-confirmations', section: 'accommodation', category: 'practical', cityKey: 'ROUTE',
-    title: '7 晚住宿確認',
-    summary: '住宿名稱、完整地址、日期、入住退房、聯絡方式與寄放行李確認都尚待填入；公開版僅顯示完成狀態，不公開訂房代碼、姓名或付款證明。',
+    title: '7 晚住宿已確認',
+    summary: '5 筆訂單共 7 晚皆已確認：華沙 ibis budget Warszawa Reduta、克拉科夫 ibis budget Krakow Stare Miasto、樂斯拉夫 Piast、波茲南 Poznan Apartments Towarowa、華沙 Hotel Metropol。公開版不保存訂房代碼、姓名或付款證明。',
     status: 'private-required', sourceUrl: null, verifiedAt: null, recheckAt: '2026-10-10',
-    offlineNote: '離線保存每張住宿確認與純文字地址；華沙、克拉科夫、樂斯拉夫、波茲南各自備妥導航。', private: true,
+    offlineNote: '公開版已放飯店官網地址；另將 5 張訂房確認存入私人離線包，並向各住宿確認寄放行李與晚到方式。', private: true,
   },
 ];
 
 // `checkedAt` 表示本次盤查日期；它不等同「已查證」，pending/private-required 仍維持原狀態。
 for (const entry of databaseEntries) entry.checkedAt = '2026-08-08';
+databaseEntries.find(entry => entry.id === 'accommodation-confirmations').checkedAt = '2026-08-10';
 
 export const readinessItems = [
-  { id: 'accommodation', title: '住宿', detail: '確認 7 晚訂單、完整地址與寄放安排', priority: 'P0', status: 'private-required', entryId: 'accommodation-confirmations', private: true },
+  { id: 'accommodation', title: '住宿', detail: '5 筆／7 晚訂單已確認；出發前補齊私人離線備份與寄放安排', priority: 'P0', status: 'private-required', entryId: 'accommodation-confirmations', private: true },
   { id: 'rail-tickets', title: '城際車票', detail: '確認車次、車廂、座位與轉乘保障', priority: 'P0', status: 'pending', entryId: 'rail-trip-tickets', private: false },
   { id: 'attraction-tickets', title: '景點票券', detail: '確認日期、入場時段與離線票券', priority: 'P0', status: 'pending', entryId: 'documents-attraction-tickets', private: true },
   { id: 'flight-ticket', title: '航班行李', detail: '核對電子機票、行李額度與是否直掛', priority: 'P0', status: 'private-required', entryId: 'aviation-trip-baggage-confirmation', private: true },
@@ -206,14 +207,25 @@ const standardNightChecklist = [
   '重查隔日天氣、場館營運與市區交通異動',
 ];
 
-const accommodationAddress = city => ({
-  name: `${city} 住宿`,
-  address: '待住宿／分店確定後填入',
-  url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${city} Poland`)}`,
-  note: '公開版不填未確定的旅館名與訂單資料。',
-  reliable: false,
-  stepLabels: [],
-});
+const stayById = new Map(stay.map(item => [item.id, item]));
+const accommodationAddress = (id, stepLabels = []) => {
+  const booking = stayById.get(id);
+  if (!booking) throw new Error(`找不到住宿資料：${id}`);
+  return {
+    name: booking.name,
+    address: booking.address,
+    url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(booking.addressVerified ? `${booking.name}, ${booking.address}` : `${booking.name}, ${booking.city}`)}`,
+    note: booking.note,
+    reliable: booking.addressVerified,
+    entranceNote: !booking.addressVerified
+      ? '完整門牌尚待飯店第一方或私人訂房確認核對。'
+      : id === 'poznan-towarowa'
+      ? '先到 Towarowa 37/201 接待處取鑰匙；實際公寓門牌依私人訂房確認。'
+      : '抵達後由飯店主入口前往接待櫃檯，訂房代碼僅保留於私人離線資料。',
+    officialUrl: booking.officialUrl,
+    stepLabels: booking.addressVerified ? stepLabels : [],
+  };
+};
 
 const officialPlaceUrls = {
   '華沙蕭邦機場': 'https://www.lotnisko-chopina.pl/en/index.html',
@@ -330,7 +342,7 @@ export const dayOperations = {
       address('華沙皇家城堡', 'plac Zamkowy 4, 00-277 Warszawa', 'Royal Castle Warsaw, plac Zamkowy 4, Warszawa'),
       address('華沙老城市場廣場', 'Rynek Starego Miasta, 00-272 Warszawa', 'Rynek Starego Miasta, Warszawa'),
       address('Krakowskie Przedmieście', 'Krakowskie Przedmieście, Warszawa', 'Krakowskie Przedmiescie, Warszawa'),
-      accommodationAddress('Warszawa'),
+      accommodationAddress('warsaw-reduta', ['旅館 Check-in']),
     ],
     navigation: [
       { mode: 'SKM', route: '蕭邦機場 → 華沙市中心', action: '抵達後查 WTP 即時班次與月台，使用第 1 區 75 分鐘票。' },
@@ -356,7 +368,7 @@ export const dayOperations = {
       address('紡織會館 Sukiennice', 'Rynek Główny 3, 31-042 Kraków', 'Sukiennice, Rynek Glowny 3, Krakow'),
       address('辛德勒工廠', 'Lipowa 4, 30-702 Kraków', 'Oskar Schindler Enamel Factory, Lipowa 4, Krakow'),
       address('Plac Nowy', 'Plac Nowy, 31-056 Kraków', 'Plac Nowy, Krakow'),
-      accommodationAddress('Kraków'),
+      accommodationAddress('krakow-stare-miasto'),
     ],
     navigation: [
       { mode: 'PKP', route: '華沙 → 克拉科夫', action: '只依已購票上的車次、車廂與座位進站；月台當日查 Passenger Portal 與站內電子牌。' },
@@ -376,7 +388,7 @@ export const dayOperations = {
       address('Kraków MDA 客運站', 'Bosacka 18, 31-505 Kraków', 'MDA Bus Station Krakow, Bosacka 18, Krakow', 'Lajkonik 現行去程由地下 D10 發車；10/26 指定日仍須依售票頁確認。'),
       address('Auschwitz I 訪客服務中心／入口', 'Więźniów Oświęcimia 55, 32-600 Oświęcim', 'Auschwitz I Visitor Service Center, Wiezniow Oswiecimia 55, Oswiecim'),
       address('Auschwitz II–Birkenau', 'Ofiar Faszyzmu 12, 32-600 Brzezinka', 'Auschwitz II Birkenau, Ofiar Faszyzmu 12, Brzezinka'),
-      accommodationAddress('Kraków'),
+      accommodationAddress('krakow-stare-miasto'),
     ],
     navigation: [
       { mode: 'Lajkonik 巴士', route: 'Kraków MDA ↔ Muzeum Auschwitz', action: '現行班表參考 07:10 → 08:35、15:30 → 16:55；10/26 指定日與票價仍須由業者售票頁確認。' },
@@ -398,7 +410,8 @@ export const dayOperations = {
       address('Plac Nowy', 'Plac Nowy, 31-056 Kraków', 'Plac Nowy, Krakow'),
       address('紡織會館 Sukiennice', 'Rynek Główny 3, 31-042 Kraków', 'Sukiennice, Rynek Glowny 3, Krakow'),
       address('Wrocław Główny', 'Piłsudskiego 105, 50-085 Wrocław', 'Wroclaw Glowny, Pilsudskiego 105, Wroclaw'),
-      accommodationAddress('Wrocław'),
+      accommodationAddress('krakow-stare-miasto', ['早餐 + 退房', '旅館取行李 → Bolt 到 Kraków Główny']),
+      accommodationAddress('wroclaw-piast'),
     ],
     navigation: [
       { mode: 'KMŁ', route: 'Kraków Główny ↔ Wieliczka Rynek-Kopalnia', action: '以當日時刻表與售票頁為準；下車後步行前往 Daniłowicza 立坑入口。' },
@@ -421,7 +434,8 @@ export const dayOperations = {
       address('樂斯拉夫中央廣場', 'Rynek, 50-101 Wrocław', 'Rynek, Wroclaw'),
       address('樂斯拉夫主教座堂', 'plac Katedralny 18, 50-329 Wrocław', 'Wroclaw Cathedral, plac Katedralny 18, Wroclaw'),
       address('Poznań Główny', 'Dworcowa 2, 61-801 Poznań', 'Poznan Glowny, Dworcowa 2, Poznan'),
-      accommodationAddress('Poznań'),
+      accommodationAddress('wroclaw-piast'),
+      accommodationAddress('poznan-towarowa'),
     ],
     navigation: [
       { mode: '步行／市內交通', route: '老城 → Panorama → 百年廳 → 座堂島', action: '百年廳跨區移動當日用 Jakdojade 選取實際電車；預留從座堂島回車站取行李的時間。' },
@@ -444,7 +458,8 @@ export const dayOperations = {
       address('帝王城堡', 'Święty Marcin 80/82, 61-809 Poznań', 'Zamek Culture Centre, Swiety Marcin 80 82, Poznan'),
       address('Stary Browar', 'Półwiejska 42, 61-888 Poznań', 'Stary Browar, Polwiejska 42, Poznan'),
       address('Warszawa Centralna', 'al. Jerozolimskie 54, 00-024 Warszawa', 'Warszawa Centralna, al. Jerozolimskie 54, Warszawa'),
-      accommodationAddress('Warszawa'),
+      accommodationAddress('poznan-towarowa'),
+      accommodationAddress('warsaw-metropol'),
     ],
     navigation: [
       { mode: '步行／市內交通', route: '教堂島 → 舊城市場 → 帝王城堡 → Poznań Główny', action: '11:45 前到市政廳正面；全程依當日交通與步行時間保留取行李緩衝。' },
@@ -465,7 +480,7 @@ export const dayOperations = {
       address('華沙老城市場廣場', 'Rynek Starego Miasta, 00-272 Warszawa', 'Rynek Starego Miasta, Warszawa'),
       address('POLIN 波蘭猶太人歷史博物館', 'Mordechaja Anielewicza 6, 00-157 Warszawa', 'POLIN Museum, Mordechaja Anielewicza 6, Warszawa'),
       address('華沙起義博物館', 'Grzybowska 79, 00-844 Warszawa', 'Warsaw Rising Museum, Grzybowska 79, Warszawa'),
-      accommodationAddress('Warszawa'),
+      accommodationAddress('warsaw-metropol'),
     ],
     navigation: [
       { mode: '步行／市內交通', route: '皇家城堡 → POLIN → 華沙起義博物館', action: '以已購入場時段倒推離館時間；館際移動當日用 Jakdojade 重算。' },
@@ -482,7 +497,7 @@ export const dayOperations = {
     entryIds: ['tax-free-vat-refund', 'aviation-trip-baggage-confirmation', 'documents-travel-registration'],
     note: '離開 EU 前處理退稅；託運商品若需查驗，先完成海關程序。',
     addresses: [
-      accommodationAddress('Warszawa'),
+      accommodationAddress('warsaw-metropol'),
       address('華沙老城市場廣場', 'Rynek Starego Miasta, 00-272 Warszawa', 'Rynek Starego Miasta, Warszawa'),
       address('Warszawa Centralna', 'al. Jerozolimskie 54, 00-024 Warszawa', 'Warszawa Centralna, al. Jerozolimskie 54, Warszawa'),
       address('華沙蕭邦機場', 'Żwirki i Wigury 1, 00-906 Warszawa', 'Warsaw Chopin Airport, Żwirki i Wigury 1, Warszawa'),
@@ -502,12 +517,10 @@ export const dayOperations = {
 
 // 未確認步驟必須人工明列；新增行程若沒有可靠地址或這份清單，validator 會直接失敗。
 const dynamicTransitReason = '班次、月台或上下車點為動態資料，依已購票與當日電子牌確認。';
-const privateStayReason = '住宿名稱、入口或寄放點屬私人訂單，待確認後寫入離線包。';
 const flexibleStopReason = '未選定可靠分店或為彈性活動，不預填地址。';
 const unresolvedStepReasons = {
   1: {
     'SKM S2/S3 目標班次': dynamicTransitReason,
-    '旅館 Check-in': privateStayReason,
     'Pierogi 晚餐': flexibleStopReason,
     '早睡倒時差': '休息安排不需要導航地址。',
   },
@@ -518,11 +531,10 @@ const unresolvedStepReasons = {
   3: {
     'Lajkonik · 克拉科夫 → 奧斯威辛': dynamicTransitReason,
     'Lajkonik 巴士返克拉科夫': dynamicTransitReason,
-    '抵 Kraków MDA · 休息': privateStayReason,
+    '抵 Kraków MDA · 休息': '抵達後的休息地點保持彈性，不需要固定導航地址。',
     '安靜晚餐沉澱情緒': flexibleStopReason,
   },
   4: {
-    '早餐 + 退房': privateStayReason,
     '火車到 Wieliczka Rynek-Kopalnia': dynamicTransitReason,
     'Wieliczka 鎮中心午餐': flexibleStopReason,
     '自由活動或補拍照、找地方喝咖啡': flexibleStopReason,
@@ -530,7 +542,7 @@ const unresolvedStepReasons = {
   },
   5: {
     '糖果屋雙屋 + 教堂塔樓': '教堂塔樓入口與開放狀態須依當日官方公告確認。',
-    '取行李 → Wrocław Główny': privateStayReason,
+    '取行李 → Wrocław Główny': 'Piast 住宿已確認，但完整門牌尚待飯店第一方或私人訂房確認核對。',
     'IC 直達車': dynamicTransitReason,
   },
   6: {

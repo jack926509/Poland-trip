@@ -291,6 +291,7 @@ summary:focus-visible {
 
 .section {
   margin-top: 5rem;
+  scroll-margin-top: 6rem;
 }
 
 .section-heading {
@@ -304,6 +305,10 @@ summary:focus-visible {
 
 .section-heading h2 {
   margin: 0;
+}
+
+.section-heading-simple {
+  grid-template-columns: 1fr;
 }
 
 .lead {
@@ -724,6 +729,7 @@ summary:focus-visible {
   border: 1px solid var(--line-strong);
   background: #ded8cd;
   box-shadow: var(--shadow-paper);
+  touch-action: pan-y !important;
 }
 
 .map-caption {

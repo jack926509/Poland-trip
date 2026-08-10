@@ -13,7 +13,6 @@ export const meta = {
   nights: 7, days: 8,
   cities: ['Warszawa', 'Kraków', 'Wrocław', 'Poznań'],
   route: '華沙 → 克拉科夫 → 樂斯拉夫 → 波茲南 → 華沙',
-  style: '高效率城市探索 · 腳程快 · 重點景點完整走完',
   highestRiskDays: ['Day 5 樂斯拉夫全景點 + 晚轉場', 'Day 7 三館連看'],
   flights: '國泰 + 卡達 + 長榮聯運',
 };
@@ -164,7 +163,7 @@ export const days = [
       {t:'11:30', label:'★ 拉茨瓦維採全景畫', sub:'30 分鐘導覽', cost:'PLN 50', dur:'1 h'},
       {t:'13:30', label:'★ 百年廳 (UNESCO)', sub:'先以官方 availability calendar 確認 10/28 是否可參觀內部；未確認前以外觀、噴泉與日本花園規劃', cost:'外觀免費', dur:'1 h'},
       {t:'16:15', label:'★ 座堂島煤氣燈', sub:'日落約 16:34；點燈人無固定公開出發分鐘，在島上等候與散步', cost:'免費', dur:'1 h'},
-      {t:'17:30', label:'取行李 → Wrocław Główny', sub:'看完點燈再走，仍有 1.5 h 緩衝', dur:'30 min'},
+      {t:'17:30', label:'取行李 → Wrocław Główny', sub:'距目標發車 1.5 h；扣除約 30 分鐘移動後，抵站後約 1 h 緩衝', dur:'30 min'},
       {t:'目標 19:00', label:'IC 直達車', sub:'實際班次待 PKP 開賣', cost:'待開賣', dur:'約 2h20'},
     ],
     eat: ['Śląskie kluski @ Konspira', 'Browar Stu Mostów 精釀'],
@@ -244,7 +243,7 @@ export const days = [
     weather: '尚無可靠預報；出發前 7–10 天更新',
     steps: [
       {t:'08:00', label:'早餐 + 老城散步', cost:'PLN 40', dur:'1.5 h'},
-      {t:'09:45', label:'退房 → Warszawa Centralna', sub:'住宿地址確定後重算步行或叫車時間；先預留到站與找月台緩衝', dur:'30–45 min'},
+      {t:'09:45', label:'退房 → Warszawa Centralna', sub:'由 Hotel Metropol 出發；依行李狀況步行或叫車，當日再用導航重算並預留找月台緩衝', dur:'30–45 min'},
       {t:'10:30', label:'SKM S2/S3 目標班次', sub:'第 1 區時間票；當日查 WTP 月台、發車時間與票價', cost:'當日確認', dur:'約 25–30 min'},
       {t:'11:00', label:'抵 Chopin 第一航廈'},
       {t:'11:15', label:'退稅文件 + 報到 + 安檢', sub:'如有 TAX FREE 商品，依機場與電子文件指示辦理；託運商品須在交運前備妥供海關查驗', dur:'預留至少 60–90 min'},
@@ -275,10 +274,41 @@ export const flights = {
 };
 
 export const stay = [
-  {city:'華沙', en:'Warszawa', pick:'Śródmieście Północne / Powiśle', note:'Śródmieście 交通最便利、地鐵 1/2 線交會；老城氣氛佳但晚上冷清；Praga 河東岸藝術替代區。', tip:'兼顧便利與在地感'},
-  {city:'克拉科夫', en:'Kraków', pick:'Kazimierz 或 Stradom', note:'老城 5 分鐘步行可達景點但週末喧鬧；Kazimierz 餐酒密集文青氛圍；Podgórze 安靜在地。', tip:'想睡好覺住 Kazimierz；想熱鬧住老城正中'},
-  {city:'樂斯拉夫', en:'Wrocław', pick:'Stare Miasto', note:'城本來就不大，住老城最合理。', tip:'老城是首選，無須考慮其他區'},
-  {city:'波茲南', en:'Poznań', pick:'Stary Rynek 周邊', note:'廣場周邊步行可達山羊鐘樓秀、教堂島；Stary Browar 商圈消費低。', tip:'四城物價最低'},
+  {
+    id:'warsaw-reduta', city:'華沙', en:'Warszawa', name:'ibis budget Warszawa Reduta',
+    officialName:'ibis budget Warszawa West Station', checkIn:'2026-10-24', checkOut:'2026-10-25', nights:1,
+    address:'ul. Bitwy Warszawskiej 16 A, 02-366 Warszawa', addressVerified:true, rooms:1, status:'已確認',
+    officialUrl:'https://all.accor.com/hotel/7148/index.pl.shtml',
+    note:'訂單仍使用 Reduta 舊名；Accor 官網目前改稱 Warszawa West Station，為同一地址。',
+  },
+  {
+    id:'krakow-stare-miasto', city:'克拉科夫', en:'Kraków', name:'ibis budget Krakow Stare Miasto',
+    checkIn:'2026-10-25', checkOut:'2026-10-27', nights:2,
+    address:'ul. Pawia 11, 31-154 Kraków', addressVerified:true, rooms:1, status:'已確認',
+    officialUrl:'https://all.accor.com/hotel/7165/index.en.shtml',
+    note:'位於 Kraków Główny 與 Galeria Krakowska 旁。',
+  },
+  {
+    id:'wroclaw-piast', city:'樂斯拉夫', en:'Wrocław', name:'Piast',
+    checkIn:'2026-10-27', checkOut:'2026-10-28', checkInTime:'14:00', checkOutTime:'12:00', nights:1,
+    address:'完整地址待飯店第一方確認', addressVerified:false, rooms:1, status:'已確認',
+    officialUrl:'https://piastwroclaw.pl/',
+    note:'住宿訂單已確認；飯店官網目前未正常顯示完整地址，出發前須用訂房確認或直接向飯店核對。',
+  },
+  {
+    id:'poznan-towarowa', city:'波茲南', en:'Poznań', name:'Poznan Apartments Towarowa',
+    checkIn:'2026-10-28', checkOut:'2026-10-29', checkInTime:'15:00', checkOutTime:'11:00', nights:1,
+    address:'Towarowa 37/201, 61-896 Poznań', addressVerified:true, rooms:1, status:'已確認',
+    officialUrl:'https://www.poznanapartments.com/kontakt',
+    note:'此處為官方接待與取鑰匙地址；實際公寓門牌以私人訂房確認為準。',
+  },
+  {
+    id:'warsaw-metropol', city:'華沙', en:'Warszawa', name:'Hotel Metropol',
+    checkIn:'2026-10-29', checkOut:'2026-10-31', nights:2,
+    address:'ul. Marszałkowska 99a, 00-693 Warszawa', addressVerified:true, rooms:1, status:'已確認',
+    officialUrl:'https://www.hotelmetropol.com.pl/pl/',
+    note:'位於 Metro Centrum 附近，步行可達 Warszawa Centralna。',
+  },
 ];
 
 export const trains = [

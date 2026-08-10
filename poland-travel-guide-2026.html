@@ -304,6 +304,7 @@ summary:focus-visible {
 
 .section {
   margin-top: 5rem;
+  scroll-margin-top: 6rem;
 }
 
 .section-heading {
@@ -317,6 +318,10 @@ summary:focus-visible {
 
 .section-heading h2 {
   margin: 0;
+}
+
+.section-heading-simple {
+  grid-template-columns: 1fr;
 }
 
 .lead {
@@ -737,6 +742,7 @@ summary:focus-visible {
   border: 1px solid var(--line-strong);
   background: #ded8cd;
   box-shadow: var(--shadow-paper);
+  touch-action: pan-y !important;
 }
 
 .map-caption {
@@ -1099,8 +1105,7 @@ summary:focus-visible {
         <dl class="meta-list">
           <div><dt>日期</dt><dd>2026 / 10 / 24 — 10 / 31</dd></div>
           <div><dt>天數</dt><dd>8 天 7 夜</dd></div>
-          <div><dt>步調</dt><dd>高效率城市探索 · 腳程快 · 重點景點完整走完</dd></div>
-          <div><dt>待處理</dt><dd><span class="tag-todo">13 項尚未訂</span></dd></div>
+          <div><dt>待處理</dt><dd><a href="#page-index--todos"><span class="tag-todo">13 項待辦</span></a></dd></div>
         </dl>
       </aside>
     </header>
@@ -1109,67 +1114,86 @@ summary:focus-visible {
       <span class="route-stop">華沙</span><span class="route-stop">克拉科夫</span><span class="route-stop">樂斯拉夫</span><span class="route-stop">波茲南</span><span class="route-stop">華沙</span>
     </div>
 
-    <section class="section" id="page-index--readiness">
-      <div class="section-heading"><span class="section-num">00 / Readiness</span><h2>出發準備度</h2></div>
-      <p class="lead">尚未完成與需填私人資料的項目排在前面；本站只顯示進度，不公開訂位、證件、保單或付款內容。</p>
-      <div class="grid readiness-summary"><a class="card card-link readiness-summary-card" href="#page-practical-database--entry-accommodation-confirmations"><span class="eyebrow">P0 未完成</span><h3>7 項</h3><span>查看處理方式 →</span></a><a class="card card-link readiness-summary-card" href="#page-practical-database--entry-rail-trip-tickets"><span class="eyebrow">最近確認期限</span><h3>2026-09-23</h3><span>查看處理方式 →</span></a><a class="card card-link readiness-summary-card" href="#page-practical-database--entry-rail-trip-tickets"><span class="eyebrow">下一張要買的票</span><h3>城際車票</h3><span>查看處理方式 →</span></a><a class="card card-link readiness-summary-card" href="#page-practical-database--entry-entry-etias-and-passport"><span class="eyebrow">ETIAS 狀態</span><h3>出發前重查</h3><span>查看處理方式 →</span></a><a class="card card-link readiness-summary-card" href="#page-practical-database--entry-connectivity-prepaid-registration"><span class="eyebrow">離線包狀態</span><h3>待確認</h3><span>查看處理方式 →</span></a></div>
+    <section class="section" id="page-index--todos">
+      <div class="section-heading section-heading-simple"><h2>待辦事項</h2></div>
+      <p class="lead">共 13 項：4 段城際交通、7 個主要景點、1 個餐飲訂位與 1 個雨天備案。下方直接列出所有項目，詳細處理方式集中在待辦頁。</p>
       <div class="grid">
-        <a class="card card-link" href="#page-practical-database--entry-accommodation-confirmations">
-          <span class="status-private">狀態：需填私人資料</span>
-          <h3>住宿</h3>
-          <p>確認 7 晚訂單、完整地址與寄放安排</p>
-          <p><b>確認期限：</b>2026-10-10</p>
-          <span>查看處理方式 →</span>
-        </a>
-        <a class="card card-link" href="#page-practical-database--entry-rail-trip-tickets">
-          <span class="status-pending">狀態：待確認</span>
-          <h3>城際車票</h3>
-          <p>確認車次、車廂、座位與轉乘保障</p>
-          <p><b>確認期限：</b>2026-09-23</p>
-          <span>查看處理方式 →</span>
-        </a>
-        <a class="card card-link" href="#page-practical-database--entry-documents-attraction-tickets">
-          <span class="status-pending">狀態：待確認</span>
-          <h3>景點票券</h3>
-          <p>確認日期、入場時段與離線票券</p>
-          <p><b>確認期限：</b>2026-09-24</p>
-          <span>查看處理方式 →</span>
-        </a>
-        <a class="card card-link" href="#page-practical-database--entry-aviation-trip-baggage-confirmation">
-          <span class="status-private">狀態：需填私人資料</span>
-          <h3>航班行李</h3>
-          <p>核對電子機票、行李額度與是否直掛</p>
-          <p><b>確認期限：</b>2026-10-22</p>
-          <span>查看處理方式 →</span>
-        </a>
-        <a class="card card-link" href="#page-practical-database--entry-medical-insurance-and-emergency">
-          <span class="status-private">狀態：需填私人資料</span>
-          <h3>旅平險</h3>
-          <p>保存保單與海外救援聯絡方式</p>
-          <p><b>確認期限：</b>2026-10-21</p>
-          <span>查看處理方式 →</span>
-        </a>
-        <a class="card card-link" href="#page-practical-database--entry-connectivity-prepaid-registration">
-          <span class="status-pending">狀態：待確認</span>
-          <h3>網路離線</h3>
-          <p>準備 SIM／eSIM、離線地圖與文件包</p>
-          <p><b>確認期限：</b>2026-10-24</p>
-          <span>查看處理方式 →</span>
-        </a>
-        <a class="card card-link" href="#page-practical-database--entry-documents-travel-registration">
-          <span class="status-private">狀態：需填私人資料</span>
-          <h3>緊急聯絡</h3>
-          <p>完成旅外登錄並讓聯絡人持有行程</p>
-          <p><b>確認期限：</b>2026-10-21</p>
-          <span>查看處理方式 →</span>
-        </a>
-        <a class="card card-link" href="#page-practical-database--entry-entry-etias-and-passport">
-          <span class="status-recheck">狀態：出發前重查</span>
-          <h3>ETIAS</h3>
-          <p>依官方啟用進度重查入境資格</p>
-          <p><b>確認期限：</b>2026-09-24</p>
-          <span>查看處理方式 →</span>
-        </a></div>
+    <article class="card">
+      <span class="eyebrow">Rail · 4 項</span>
+      <h3>城際交通</h3>
+      <p>四段都是行程銜接目標，尚未開賣或完成購票前，不把規劃時刻當成已確認班次。</p>
+      <ul class="check-list">
+        <li>
+          <span class="eyebrow">10/25 · 尚未開賣／確認</span><br>
+          <b>華沙 → 克拉科夫火車</b>
+        </li><li>
+          <span class="eyebrow">10/27 · 尚未開賣／確認</span><br>
+          <b>克拉科夫 → 樂斯拉夫火車</b>
+        </li><li>
+          <span class="eyebrow">10/28 · 尚未開賣／確認</span><br>
+          <b>樂斯拉夫 → 波茲南火車</b>
+        </li><li>
+          <span class="eyebrow">10/29 · 尚未開賣／確認</span><br>
+          <b>波茲南 → 華沙火車</b>
+        </li>
+      </ul>
+      <a href="#page-practical-todos--todo-rail">查看下一步與處理連結 →</a>
+    </article>
+    <article class="card">
+      <span class="eyebrow">Tickets · 7 項</span>
+      <h3>主要景點</h3>
+      <p>指定日期的場次與庫存會變動；付款完成後請下載離線票券並核對入場時間。</p>
+      <ul class="check-list">
+        <li>
+          <span class="eyebrow">10/25 · 現可查／購</span><br>
+          <b>辛德勒工廠 17:30</b>
+        </li><li>
+          <span class="eyebrow">10/26 · 需查／購</span><br>
+          <b>Auschwitz 英文官方導覽</b>
+        </li><li>
+          <span class="eyebrow">10/27 · 需查／購</span><br>
+          <b>Wieliczka 鹽礦英文團</b>
+        </li><li>
+          <span class="eyebrow">10/28 · 尚未訂</span><br>
+          <b>拉茨瓦維採全景畫</b>
+        </li><li>
+          <span class="eyebrow">10/30 · 尚未訂</span><br>
+          <b>華沙皇家城堡 10:00</b>
+        </li><li>
+          <span class="eyebrow">10/30 · 尚未訂</span><br>
+          <b>POLIN 猶太人歷史博物館 13:00</b>
+        </li><li>
+          <span class="eyebrow">10/30 · 尚未訂</span><br>
+          <b>華沙起義博物館 16:00</b>
+        </li>
+      </ul>
+      <a href="#page-practical-todos--todo-attractions">查看下一步與處理連結 →</a>
+    </article>
+    <article class="card">
+      <span class="eyebrow">Dining · 1 項</span>
+      <h3>餐飲訂位</h3>
+      <p>餐廳營業與臨時包場以店家訂位頁公告為準。</p>
+      <ul class="check-list">
+        <li>
+          <span class="eyebrow">10/30 · 尚未訂位</span><br>
+          <b>華沙最後晚餐</b>
+        </li>
+      </ul>
+      <a href="#page-practical-todos--todo-dining">查看下一步與處理連結 →</a>
+    </article>
+    <article class="card">
+      <span class="eyebrow">Backup · 1 項</span>
+      <h3>雨天備案</h3>
+      <p>天氣不影響主行程時不必購買。</p>
+      <ul class="check-list">
+        <li>
+          <span class="eyebrow">10/29 · 僅雨天需要</span><br>
+          <b>波茲南牛角麵包博物館場次</b>
+        </li>
+      </ul>
+      <a href="#page-practical-todos--todo-rainy-day">查看下一步與處理連結 →</a>
+    </article></div>
+      <p><a href="#page-practical-todos">開啟完整待辦事項 →</a></p>
     </section>
 
     <section class="section" id="page-index--days">
@@ -1398,11 +1422,11 @@ summary:focus-visible {
          · <a href="https://warsawtour.pl/en/royal-route/" target="_blank" rel="noopener noreferrer">官網 ↗</a>
       </li>
       <li class="operation-address">
-        <div><b>Warszawa 住宿</b><span>待住宿／分店確定後填入</span></div>
-        <p>公開版不填未確定的旅館名與訂單資料。</p>
-        
-        <a href="https://www.google.com/maps/search/?api=1&amp;query=Warszawa%20Poland" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 Warszawa 住宿 導航">開啟導航 ↗</a>
-        
+        <div><b>ibis budget Warszawa Reduta</b><span>ul. Bitwy Warszawskiej 16 A, 02-366 Warszawa</span></div>
+        <p>訂單仍使用 Reduta 舊名；Accor 官網目前改稱 Warszawa West Station，為同一地址。</p>
+        <p><b>入口：</b>抵達後由飯店主入口前往接待櫃檯，訂房代碼僅保留於私人離線資料。</p>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=ibis%20budget%20Warszawa%20Reduta%2C%20ul.%20Bitwy%20Warszawskiej%2016%20A%2C%2002-366%20Warszawa" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ibis budget Warszawa Reduta 導航">開啟導航 ↗</a>
+         · <a href="https://all.accor.com/hotel/7148/index.pl.shtml" target="_blank" rel="noopener noreferrer">官網 ↗</a>
       </li></ul>
         </article>
         <article class="card">
@@ -1425,7 +1449,7 @@ summary:focus-visible {
         <span class="tag-red">今日注意</span>
         <ul class="check-list"><li>抵達日不排室內票券；若入境或行李延誤，直接壓縮老城散步。</li><li>離開行李提領區前確認託運行李已到；未到先申報 PIR。</li></ul>
       </div>
-      <details class="card operation-unresolved"><summary><b>待班次／住宿／分店確認的步驟</b></summary><ul class="check-list"><li><b>SKM S2/S3 目標班次</b><p>班次、月台或上下車點為動態資料，依已購票與當日電子牌確認。</p></li><li><b>旅館 Check-in</b><p>住宿名稱、入口或寄放點屬私人訂單，待確認後寫入離線包。</p></li><li><b>Pierogi 晚餐</b><p>未選定可靠分店或為彈性活動，不預填地址。</p></li><li><b>早睡倒時差</b><p>休息安排不需要導航地址。</p></li></ul></details>
+      <details class="card operation-unresolved"><summary><b>待班次／住宿／分店確認的步驟</b></summary><ul class="check-list"><li><b>SKM S2/S3 目標班次</b><p>班次、月台或上下車點為動態資料，依已購票與當日電子牌確認。</p></li><li><b>Pierogi 晚餐</b><p>未選定可靠分店或為彈性活動，不預填地址。</p></li><li><b>早睡倒時差</b><p>休息安排不需要導航地址。</p></li></ul></details>
     </section>
 
     <section class="section">
@@ -1655,11 +1679,11 @@ summary:focus-visible {
          · <a href="https://krakow.travel/655-krakow-plac-nowy" target="_blank" rel="noopener noreferrer">官網 ↗</a>
       </li>
       <li class="operation-address">
-        <div><b>Kraków 住宿</b><span>待住宿／分店確定後填入</span></div>
-        <p>公開版不填未確定的旅館名與訂單資料。</p>
-        
-        <a href="https://www.google.com/maps/search/?api=1&amp;query=Krak%C3%B3w%20Poland" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 Kraków 住宿 導航">開啟導航 ↗</a>
-        
+        <div><b>ibis budget Krakow Stare Miasto</b><span>ul. Pawia 11, 31-154 Kraków</span></div>
+        <p>位於 Kraków Główny 與 Galeria Krakowska 旁。</p>
+        <p><b>入口：</b>抵達後由飯店主入口前往接待櫃檯，訂房代碼僅保留於私人離線資料。</p>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=ibis%20budget%20Krakow%20Stare%20Miasto%2C%20ul.%20Pawia%2011%2C%2031-154%20Krak%C3%B3w" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ibis budget Krakow Stare Miasto 導航">開啟導航 ↗</a>
+         · <a href="https://all.accor.com/hotel/7165/index.en.shtml" target="_blank" rel="noopener noreferrer">官網 ↗</a>
       </li></ul>
         </article>
         <article class="card">
@@ -1890,11 +1914,11 @@ summary:focus-visible {
          · <a href="https://www.auschwitz.org/en/visiting/" target="_blank" rel="noopener noreferrer">官網 ↗</a>
       </li>
       <li class="operation-address">
-        <div><b>Kraków 住宿</b><span>待住宿／分店確定後填入</span></div>
-        <p>公開版不填未確定的旅館名與訂單資料。</p>
-        
-        <a href="https://www.google.com/maps/search/?api=1&amp;query=Krak%C3%B3w%20Poland" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 Kraków 住宿 導航">開啟導航 ↗</a>
-        
+        <div><b>ibis budget Krakow Stare Miasto</b><span>ul. Pawia 11, 31-154 Kraków</span></div>
+        <p>位於 Kraków Główny 與 Galeria Krakowska 旁。</p>
+        <p><b>入口：</b>抵達後由飯店主入口前往接待櫃檯，訂房代碼僅保留於私人離線資料。</p>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=ibis%20budget%20Krakow%20Stare%20Miasto%2C%20ul.%20Pawia%2011%2C%2031-154%20Krak%C3%B3w" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ibis budget Krakow Stare Miasto 導航">開啟導航 ↗</a>
+         · <a href="https://all.accor.com/hotel/7165/index.en.shtml" target="_blank" rel="noopener noreferrer">官網 ↗</a>
       </li></ul>
         </article>
         <article class="card">
@@ -1917,7 +1941,7 @@ summary:focus-visible {
         <span class="tag-red">今日注意</span>
         <ul class="check-list"><li>所有入場證必須事先線上取得；至少提前 30 分鐘抵達安檢。</li><li>行程內容沉重且戶外時間長，帶水、防雨保暖層，晚間不再加排高強度活動。</li></ul>
       </div>
-      <details class="card operation-unresolved"><summary><b>待班次／住宿／分店確認的步驟</b></summary><ul class="check-list"><li><b>Lajkonik · 克拉科夫 → 奧斯威辛</b><p>班次、月台或上下車點為動態資料，依已購票與當日電子牌確認。</p></li><li><b>Lajkonik 巴士返克拉科夫</b><p>班次、月台或上下車點為動態資料，依已購票與當日電子牌確認。</p></li><li><b>抵 Kraków MDA · 休息</b><p>住宿名稱、入口或寄放點屬私人訂單，待確認後寫入離線包。</p></li><li><b>安靜晚餐沉澱情緒</b><p>未選定可靠分店或為彈性活動，不預填地址。</p></li></ul></details>
+      <details class="card operation-unresolved"><summary><b>待班次／住宿／分店確認的步驟</b></summary><ul class="check-list"><li><b>Lajkonik · 克拉科夫 → 奧斯威辛</b><p>班次、月台或上下車點為動態資料，依已購票與當日電子牌確認。</p></li><li><b>Lajkonik 巴士返克拉科夫</b><p>班次、月台或上下車點為動態資料，依已購票與當日電子牌確認。</p></li><li><b>抵 Kraków MDA · 休息</b><p>抵達後的休息地點保持彈性，不需要固定導航地址。</p></li><li><b>安靜晚餐沉澱情緒</b><p>未選定可靠分店或為彈性活動，不預填地址。</p></li></ul></details>
     </section>
 
     <section class="section">
@@ -2104,11 +2128,18 @@ summary:focus-visible {
          · <a href="https://portalpasazera.pl/en/KatalogStacji" target="_blank" rel="noopener noreferrer">官網 ↗</a>
       </li>
       <li class="operation-address">
-        <div><b>Wrocław 住宿</b><span>待住宿／分店確定後填入</span></div>
-        <p>公開版不填未確定的旅館名與訂單資料。</p>
-        
-        <a href="https://www.google.com/maps/search/?api=1&amp;query=Wroc%C5%82aw%20Poland" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 Wrocław 住宿 導航">開啟導航 ↗</a>
-        
+        <div><b>ibis budget Krakow Stare Miasto</b><span>ul. Pawia 11, 31-154 Kraków</span></div>
+        <p>位於 Kraków Główny 與 Galeria Krakowska 旁。</p>
+        <p><b>入口：</b>抵達後由飯店主入口前往接待櫃檯，訂房代碼僅保留於私人離線資料。</p>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=ibis%20budget%20Krakow%20Stare%20Miasto%2C%20ul.%20Pawia%2011%2C%2031-154%20Krak%C3%B3w" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ibis budget Krakow Stare Miasto 導航">開啟導航 ↗</a>
+         · <a href="https://all.accor.com/hotel/7165/index.en.shtml" target="_blank" rel="noopener noreferrer">官網 ↗</a>
+      </li>
+      <li class="operation-address">
+        <div><b>Piast</b><span>完整地址待飯店第一方確認</span></div>
+        <p>住宿訂單已確認；飯店官網目前未正常顯示完整地址，出發前須用訂房確認或直接向飯店核對。</p>
+        <p><b>入口：</b>完整門牌尚待飯店第一方或私人訂房確認核對。</p>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=Piast%2C%20%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 Piast 導航">開啟導航 ↗</a>
+         · <a href="https://piastwroclaw.pl/" target="_blank" rel="noopener noreferrer">官網 ↗</a>
       </li></ul>
         </article>
         <article class="card">
@@ -2131,7 +2162,7 @@ summary:focus-visible {
         <span class="tag-red">今日注意</span>
         <ul class="check-list"><li>鹽礦全程階梯多、地下約 17–18°C；穿好走防滑鞋並攜薄外套。</li><li>克拉科夫→樂斯拉夫完成購票前，不延長 Kazimierz 活動到壓縮進站緩衝。</li></ul>
       </div>
-      <details class="card operation-unresolved"><summary><b>待班次／住宿／分店確認的步驟</b></summary><ul class="check-list"><li><b>早餐 + 退房</b><p>住宿名稱、入口或寄放點屬私人訂單，待確認後寫入離線包。</p></li><li><b>火車到 Wieliczka Rynek-Kopalnia</b><p>班次、月台或上下車點為動態資料，依已購票與當日電子牌確認。</p></li><li><b>Wieliczka 鎮中心午餐</b><p>未選定可靠分店或為彈性活動，不預填地址。</p></li><li><b>自由活動或補拍照、找地方喝咖啡</b><p>未選定可靠分店或為彈性活動，不預填地址。</p></li><li><b>IC 直達車</b><p>班次、月台或上下車點為動態資料，依已購票與當日電子牌確認。</p></li></ul></details>
+      <details class="card operation-unresolved"><summary><b>待班次／住宿／分店確認的步驟</b></summary><ul class="check-list"><li><b>火車到 Wieliczka Rynek-Kopalnia</b><p>班次、月台或上下車點為動態資料，依已購票與當日電子牌確認。</p></li><li><b>Wieliczka 鎮中心午餐</b><p>未選定可靠分店或為彈性活動，不預填地址。</p></li><li><b>自由活動或補拍照、找地方喝咖啡</b><p>未選定可靠分店或為彈性活動，不預填地址。</p></li><li><b>IC 直達車</b><p>班次、月台或上下車點為動態資料，依已購票與當日電子牌確認。</p></li></ul></details>
     </section>
 
     <section class="section">
@@ -2372,11 +2403,18 @@ summary:focus-visible {
          · <a href="https://portalpasazera.pl/en/KatalogStacji" target="_blank" rel="noopener noreferrer">官網 ↗</a>
       </li>
       <li class="operation-address">
-        <div><b>Poznań 住宿</b><span>待住宿／分店確定後填入</span></div>
-        <p>公開版不填未確定的旅館名與訂單資料。</p>
-        
-        <a href="https://www.google.com/maps/search/?api=1&amp;query=Pozna%C5%84%20Poland" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 Poznań 住宿 導航">開啟導航 ↗</a>
-        
+        <div><b>Piast</b><span>完整地址待飯店第一方確認</span></div>
+        <p>住宿訂單已確認；飯店官網目前未正常顯示完整地址，出發前須用訂房確認或直接向飯店核對。</p>
+        <p><b>入口：</b>完整門牌尚待飯店第一方或私人訂房確認核對。</p>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=Piast%2C%20%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 Piast 導航">開啟導航 ↗</a>
+         · <a href="https://piastwroclaw.pl/" target="_blank" rel="noopener noreferrer">官網 ↗</a>
+      </li>
+      <li class="operation-address">
+        <div><b>Poznan Apartments Towarowa</b><span>Towarowa 37/201, 61-896 Poznań</span></div>
+        <p>此處為官方接待與取鑰匙地址；實際公寓門牌以私人訂房確認為準。</p>
+        <p><b>入口：</b>先到 Towarowa 37/201 接待處取鑰匙；實際公寓門牌依私人訂房確認。</p>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=Poznan%20Apartments%20Towarowa%2C%20Towarowa%2037%2F201%2C%2061-896%20Pozna%C5%84" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 Poznan Apartments Towarowa 導航">開啟導航 ↗</a>
+         · <a href="https://www.poznanapartments.com/kontakt" target="_blank" rel="noopener noreferrer">官網 ↗</a>
       </li></ul>
         </article>
         <article class="card">
@@ -2399,7 +2437,7 @@ summary:focus-visible {
         <span class="tag-red">今日注意</span>
         <ul class="check-list"><li>百年廳 10/28 的內部參觀狀態須以官方 availability calendar 確認；未確認前只排外觀與周邊。</li><li>點燈人沒有對外保證的出發分鐘；日落前到座堂島等待，不把 16:45 當成確定時刻。</li></ul>
       </div>
-      <details class="card operation-unresolved"><summary><b>待班次／住宿／分店確認的步驟</b></summary><ul class="check-list"><li><b>糖果屋雙屋 + 教堂塔樓</b><p>教堂塔樓入口與開放狀態須依當日官方公告確認。</p></li><li><b>取行李 → Wrocław Główny</b><p>住宿名稱、入口或寄放點屬私人訂單，待確認後寫入離線包。</p></li><li><b>IC 直達車</b><p>班次、月台或上下車點為動態資料，依已購票與當日電子牌確認。</p></li></ul></details>
+      <details class="card operation-unresolved"><summary><b>待班次／住宿／分店確認的步驟</b></summary><ul class="check-list"><li><b>糖果屋雙屋 + 教堂塔樓</b><p>教堂塔樓入口與開放狀態須依當日官方公告確認。</p></li><li><b>取行李 → Wrocław Główny</b><p>Piast 住宿已確認，但完整門牌尚待飯店第一方或私人訂房確認核對。</p></li><li><b>IC 直達車</b><p>班次、月台或上下車點為動態資料，依已購票與當日電子牌確認。</p></li></ul></details>
     </section>
 
     <section class="section">
@@ -2440,7 +2478,7 @@ summary:focus-visible {
     </tr>
     <tr>
       <td class="number"><b>17:30</b></td>
-      <td><b>取行李 → Wrocław Główny</b><br><span class="timeline-note">看完點燈再走，仍有 1.5 h 緩衝</span></td>
+      <td><b>取行李 → Wrocław Główny</b><br><span class="timeline-note">距目標發車 1.5 h；扣除約 30 分鐘移動後，抵站後約 1 h 緩衝</span></td>
       <td class="number">—</td>
       <td class="number">30 min</td>
     </tr>
@@ -2613,11 +2651,18 @@ summary:focus-visible {
          · <a href="https://portalpasazera.pl/en/KatalogStacji" target="_blank" rel="noopener noreferrer">官網 ↗</a>
       </li>
       <li class="operation-address">
-        <div><b>Warszawa 住宿</b><span>待住宿／分店確定後填入</span></div>
-        <p>公開版不填未確定的旅館名與訂單資料。</p>
-        
-        <a href="https://www.google.com/maps/search/?api=1&amp;query=Warszawa%20Poland" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 Warszawa 住宿 導航">開啟導航 ↗</a>
-        
+        <div><b>Poznan Apartments Towarowa</b><span>Towarowa 37/201, 61-896 Poznań</span></div>
+        <p>此處為官方接待與取鑰匙地址；實際公寓門牌以私人訂房確認為準。</p>
+        <p><b>入口：</b>先到 Towarowa 37/201 接待處取鑰匙；實際公寓門牌依私人訂房確認。</p>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=Poznan%20Apartments%20Towarowa%2C%20Towarowa%2037%2F201%2C%2061-896%20Pozna%C5%84" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 Poznan Apartments Towarowa 導航">開啟導航 ↗</a>
+         · <a href="https://www.poznanapartments.com/kontakt" target="_blank" rel="noopener noreferrer">官網 ↗</a>
+      </li>
+      <li class="operation-address">
+        <div><b>Hotel Metropol</b><span>ul. Marszałkowska 99a, 00-693 Warszawa</span></div>
+        <p>位於 Metro Centrum 附近，步行可達 Warszawa Centralna。</p>
+        <p><b>入口：</b>抵達後由飯店主入口前往接待櫃檯，訂房代碼僅保留於私人離線資料。</p>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=Hotel%20Metropol%2C%20ul.%20Marsza%C5%82kowska%2099a%2C%2000-693%20Warszawa" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 Hotel Metropol 導航">開啟導航 ↗</a>
+         · <a href="https://www.hotelmetropol.com.pl/pl/" target="_blank" rel="noopener noreferrer">官網 ↗</a>
       </li></ul>
         </article>
         <article class="card">
@@ -2839,11 +2884,11 @@ summary:focus-visible {
          · <a href="https://www.1944.pl/en" target="_blank" rel="noopener noreferrer">官網 ↗</a>
       </li>
       <li class="operation-address">
-        <div><b>Warszawa 住宿</b><span>待住宿／分店確定後填入</span></div>
-        <p>公開版不填未確定的旅館名與訂單資料。</p>
-        
-        <a href="https://www.google.com/maps/search/?api=1&amp;query=Warszawa%20Poland" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 Warszawa 住宿 導航">開啟導航 ↗</a>
-        
+        <div><b>Hotel Metropol</b><span>ul. Marszałkowska 99a, 00-693 Warszawa</span></div>
+        <p>位於 Metro Centrum 附近，步行可達 Warszawa Centralna。</p>
+        <p><b>入口：</b>抵達後由飯店主入口前往接待櫃檯，訂房代碼僅保留於私人離線資料。</p>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=Hotel%20Metropol%2C%20ul.%20Marsza%C5%82kowska%2099a%2C%2000-693%20Warszawa" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 Hotel Metropol 導航">開啟導航 ↗</a>
+         · <a href="https://www.hotelmetropol.com.pl/pl/" target="_blank" rel="noopener noreferrer">官網 ↗</a>
       </li></ul>
         </article>
         <article class="card">
@@ -3014,11 +3059,11 @@ summary:focus-visible {
           <h3>現場地址</h3>
           <ul class="operation-addresses">
       <li class="operation-address">
-        <div><b>Warszawa 住宿</b><span>待住宿／分店確定後填入</span></div>
-        <p>公開版不填未確定的旅館名與訂單資料。</p>
-        
-        <a href="https://www.google.com/maps/search/?api=1&amp;query=Warszawa%20Poland" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 Warszawa 住宿 導航">開啟導航 ↗</a>
-        
+        <div><b>Hotel Metropol</b><span>ul. Marszałkowska 99a, 00-693 Warszawa</span></div>
+        <p>位於 Metro Centrum 附近，步行可達 Warszawa Centralna。</p>
+        <p><b>入口：</b>抵達後由飯店主入口前往接待櫃檯，訂房代碼僅保留於私人離線資料。</p>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=Hotel%20Metropol%2C%20ul.%20Marsza%C5%82kowska%2099a%2C%2000-693%20Warszawa" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 Hotel Metropol 導航">開啟導航 ↗</a>
+         · <a href="https://www.hotelmetropol.com.pl/pl/" target="_blank" rel="noopener noreferrer">官網 ↗</a>
       </li>
       <li class="operation-address">
         <div><b>華沙老城市場廣場</b><span>Rynek Starego Miasta, 00-272 Warszawa</span></div>
@@ -3086,7 +3131,7 @@ summary:focus-visible {
     </tr>
     <tr>
       <td class="number"><b>09:45</b></td>
-      <td><b>退房 → Warszawa Centralna</b><br><span class="timeline-note">住宿地址確定後重算步行或叫車時間；先預留到站與找月台緩衝</span></td>
+      <td><b>退房 → Warszawa Centralna</b><br><span class="timeline-note">由 Hotel Metropol 出發；依行李狀況步行或叫車，當日再用導航重算並預留找月台緩衝</span></td>
       <td class="number">—</td>
       <td class="number">30–45 min</td>
     </tr>
@@ -3176,8 +3221,8 @@ summary:focus-visible {
 
     <section>
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
-      <p class="lead">拖曳、縮放並點選圖釘查看說明；圖釘中的連結可直接開啟 Google Maps。</p>
-      <div id="page-city-warszawa--map-warsaw" class="map-container" aria-label="華沙互動地圖"></div>
+      <p class="lead">拖曳、縮放並點選圖釘查看說明；手機上下滑動會優先捲動頁面，圖釘連結可直接開啟 Google Maps。</p>
+      <div id="page-city-warszawa--map-warsaw" class="map-container" data-map-key="warsaw" aria-label="華沙互動地圖"></div>
       <div class="map-legend" aria-label="地圖圖例">
     <div><span style="background:#B8860B;border:1.5px solid #3a2a06"></span>米其林二星</div>
     <div><span style="background:#E8A81E;border:1.5px solid #8a5a00"></span>米其林一星</div>
@@ -3186,7 +3231,8 @@ summary:focus-visible {
     <div><span style="background:#3b6ea5;border:1.5px solid #1c3a58"></span>景點</div>
     <div><span style="background:#8b5cf6;border:1.5px solid #4c2f8f"></span>伴手禮店家</div>
     <div><span style="background:#0891b2;border:1.5px solid #0c4a5e"></span>超商 Żabka</div>
-    <div><span style="background:#d6336c;border:1.5px solid #7a1a3d"></span>精品購物</div></div>
+    <div><span style="background:#d6336c;border:1.5px solid #7a1a3d"></span>精品購物</div>
+    <div><span style="background:#6d597a;border:1.5px solid #3d2f46"></span>已確認住宿</div></div>
       <p class="map-caption">地圖底圖 © OpenStreetMap contributors</p>
     </section>
 
@@ -3352,9 +3398,9 @@ summary:focus-visible {
       <td>招牌：pączki 玫瑰餡甜甜圈 · 1925 至今排隊名店（Górczewska）</td>
     </tr>
     <tr>
-      <td><a href="https://www.google.com/maps/search/?api=1&query=Go%C5%9Bciniec%20Warszawa" target="_blank" rel="noopener">Gościniec / Zapiecek / u Kresowiaka</a></td>
+      <td><a href="https://www.google.com/maps/search/?api=1&query=Go%C5%9Bciniec%20Warszawa" target="_blank" rel="noopener">Gościniec（探索候選）</a></td>
       <td>餃子</td>
-      <td>招牌：手工 pierogi 餃子（肉餡／馬鈴薯起司／藍莓）· 名店（Nowy Świat / Koszykowa）</td>
+      <td>招牌：手工 pierogi 餃子（肉餡／馬鈴薯起司／藍莓）· 指定分店、營業時間與訂位狀態須在出發前查證</td>
     </tr>
     <tr>
       <td><a href="https://maps.google.com/?cid=14427558643223382901" target="_blank" rel="noopener">Bar Mleczny Rusałka</a></td>
@@ -3539,9 +3585,11 @@ summary:focus-visible {
     </section>
     <script>
     (function () {
-      var mapData = {"center":[52.235,21.01],"zoom":13,"points":[[52.247744,21.014128,"皇家城堡","景點","https://maps.google.com/?cid=2313057209867159998","sight"],[52.249496,20.993481,"POLIN 猶太史博物館","景點","https://maps.google.com/?cid=16292574584610500784","sight"],[52.232394,20.981018,"華沙起義博物館","景點","https://maps.google.com/?cid=12215511195580548645","sight"],[52.231838,21.005995,"科學文化宮觀景台","景點","https://maps.google.com/?cid=14044892037721828802","sight"],[52.188512,20.991414,"Alon Omakase ★","米其林一星","https://maps.google.com/?cid=8029724309073713102","star1"],[52.229002,21.023323,"NUTA ★","米其林一星","https://maps.google.com/?cid=4624148008162643045","star1"],[52.251114,21.036166,"hub.praga ★","米其林一星","https://maps.google.com/?cid=10117754456971759897","star1"],[52.229941,20.989348,"WANDAL","必比登","https://maps.google.com/?cid=15993615675406452524","bib"],[52.236622,20.967709,"Zagoździński","pączki 名店","https://maps.google.com/?cid=5270464504046978357","food"],[52.252402,21.030581,"Bar Mleczny Rusałka","牛奶吧","https://maps.google.com/?cid=14427558643223382901","food"],[52.2333197,21.0149273,"Pijalnia Czekolady E.Wedel（巧克力）","伴手禮","https://www.google.com/maps/place/?q=place_id:ChIJ--12WPTMHkcRgAvh-nOeA94","shop"],[52.24935,21.008785,"Żabka（舊城區）","超商","https://www.google.com/maps/place/?q=place_id:ChIJpTk0Ah_NHkcRNn4P8JcA_64","store"],[52.2310334,21.0187045,"Vitkac","精品百貨","https://maps.google.com/?cid=6893272886103886879","luxury"],[52.2215267,21.0204772,"Chylak（波蘭設計師包款）","精品","https://maps.google.com/?cid=2015234439722332980","luxury"]]};
-      var colors = {"star2":{"fill":"#B8860B","line":"#3a2a06","label":"米其林二星"},"star1":{"fill":"#E8A81E","line":"#8a5a00","label":"米其林一星"},"bib":{"fill":"#2f6b3f","line":"#173a20","label":"必比登推介"},"food":{"fill":"#CE2E1E","line":"#7a1a10","label":"街食／小吃／牛奶吧"},"sight":{"fill":"#3b6ea5","line":"#1c3a58","label":"景點"},"shop":{"fill":"#8b5cf6","line":"#4c2f8f","label":"伴手禮店家"},"store":{"fill":"#0891b2","line":"#0c4a5e","label":"超商 Żabka"},"luxury":{"fill":"#d6336c","line":"#7a1a3d","label":"精品購物"}};
-      var element = document.getElementById('map-warsaw');
+      var mapData = {"center":[52.235,21.01],"zoom":13,"points":[[52.247744,21.014128,"皇家城堡","景點","https://maps.google.com/?cid=2313057209867159998","sight"],[52.249496,20.993481,"POLIN 猶太史博物館","景點","https://maps.google.com/?cid=16292574584610500784","sight"],[52.232394,20.981018,"華沙起義博物館","景點","https://maps.google.com/?cid=12215511195580548645","sight"],[52.231838,21.005995,"科學文化宮觀景台","景點","https://maps.google.com/?cid=14044892037721828802","sight"],[52.188512,20.991414,"Alon Omakase ★","米其林一星","https://maps.google.com/?cid=8029724309073713102","star1"],[52.229002,21.023323,"NUTA ★","米其林一星","https://maps.google.com/?cid=4624148008162643045","star1"],[52.251114,21.036166,"hub.praga ★","米其林一星","https://maps.google.com/?cid=10117754456971759897","star1"],[52.229941,20.989348,"WANDAL","必比登","https://maps.google.com/?cid=15993615675406452524","bib"],[52.236622,20.967709,"Zagoździński","pączki 名店","https://maps.google.com/?cid=5270464504046978357","food"],[52.252402,21.030581,"Bar Mleczny Rusałka","牛奶吧","https://maps.google.com/?cid=14427558643223382901","food"],[52.2333197,21.0149273,"Pijalnia Czekolady E.Wedel（巧克力）","伴手禮","https://www.google.com/maps/place/?q=place_id:ChIJ--12WPTMHkcRgAvh-nOeA94","shop"],[52.24935,21.008785,"Żabka（舊城區）","超商","https://www.google.com/maps/place/?q=place_id:ChIJpTk0Ah_NHkcRNn4P8JcA_64","store"],[52.2310334,21.0187045,"Vitkac","精品百貨","https://maps.google.com/?cid=6893272886103886879","luxury"],[52.2215267,21.0204772,"Chylak（波蘭設計師包款）","精品","https://maps.google.com/?cid=2015234439722332980","luxury"],[52.214645,20.968169,"ibis budget Warszawa Reduta","已確認住宿 · 官網現稱 ibis budget Warszawa West Station","https://www.google.com/maps/search/?api=1&query=ibis%20budget%20Warszawa%20Reduta%2C%20ul.%20Bitwy%20Warszawskiej%2016%20A%2C%20Warszawa","hotel"],[52.22901,21.01099,"Hotel Metropol","已確認住宿 · 10/29–10/31","https://www.google.com/maps/search/?api=1&query=Hotel%20Metropol%2C%20ul.%20Marsza%C5%82kowska%2099a%2C%20Warszawa","hotel"]]};
+      var colors = {"star2":{"fill":"#B8860B","line":"#3a2a06","label":"米其林二星"},"star1":{"fill":"#E8A81E","line":"#8a5a00","label":"米其林一星"},"bib":{"fill":"#2f6b3f","line":"#173a20","label":"必比登推介"},"food":{"fill":"#CE2E1E","line":"#7a1a10","label":"街食／小吃／牛奶吧"},"sight":{"fill":"#3b6ea5","line":"#1c3a58","label":"景點"},"shop":{"fill":"#8b5cf6","line":"#4c2f8f","label":"伴手禮店家"},"store":{"fill":"#0891b2","line":"#0c4a5e","label":"超商 Żabka"},"luxury":{"fill":"#d6336c","line":"#7a1a3d","label":"精品購物"},"hotel":{"fill":"#6d597a","line":"#3d2f46","label":"已確認住宿"}};
+      var script = document.currentScript;
+      var scope = script ? script.closest('.standalone-page') : null;
+      var element = (scope || document).querySelector('[data-map-key="warsaw"]');
       if (!element || typeof L === 'undefined') return;
       var map = L.map(element, { scrollWheelZoom: false }).setView(mapData.center, mapData.zoom);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -3591,8 +3639,8 @@ summary:focus-visible {
 
     <section>
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
-      <p class="lead">拖曳、縮放並點選圖釘查看說明；圖釘中的連結可直接開啟 Google Maps。</p>
-      <div id="page-city-krakow--map-krakow" class="map-container" aria-label="克拉科夫互動地圖"></div>
+      <p class="lead">拖曳、縮放並點選圖釘查看說明；手機上下滑動會優先捲動頁面，圖釘連結可直接開啟 Google Maps。</p>
+      <div id="page-city-krakow--map-krakow" class="map-container" data-map-key="krakow" aria-label="克拉科夫互動地圖"></div>
       <div class="map-legend" aria-label="地圖圖例">
     <div><span style="background:#B8860B;border:1.5px solid #3a2a06"></span>米其林二星</div>
     <div><span style="background:#E8A81E;border:1.5px solid #8a5a00"></span>米其林一星</div>
@@ -3601,7 +3649,8 @@ summary:focus-visible {
     <div><span style="background:#3b6ea5;border:1.5px solid #1c3a58"></span>景點</div>
     <div><span style="background:#8b5cf6;border:1.5px solid #4c2f8f"></span>伴手禮店家</div>
     <div><span style="background:#0891b2;border:1.5px solid #0c4a5e"></span>超商 Żabka</div>
-    <div><span style="background:#d6336c;border:1.5px solid #7a1a3d"></span>精品購物</div></div>
+    <div><span style="background:#d6336c;border:1.5px solid #7a1a3d"></span>精品購物</div>
+    <div><span style="background:#6d597a;border:1.5px solid #3d2f46"></span>已確認住宿</div></div>
       <p class="map-caption">地圖底圖 © OpenStreetMap contributors</p>
     </section>
 
@@ -3884,9 +3933,11 @@ summary:focus-visible {
     </section>
     <script>
     (function () {
-      var mapData = {"center":[50.058,19.94],"zoom":13,"points":[[50.054112,19.935423,"Wawel 皇家城堡","景點","https://maps.google.com/?cid=12446225081720350104","sight"],[50.061897,19.936756,"中央市集廣場","景點","https://maps.google.com/?cid=14107513768635600179","sight"],[50.05146,19.948594,"Kazimierz 猶太區","景點","https://maps.google.com/?cid=5623518211080575812","sight"],[50.04743,19.961574,"辛德勒工廠博物館","景點","https://maps.google.com/?cid=3670197855150446585","sight"],[50.048617,19.946137,"Bottiglieria 1881 ★★","全波蘭唯一二星","https://maps.google.com/?cid=8570908113421134699","star2"],[50.051709,19.949426,"Bufet KRK","必比登","https://maps.google.com/?cid=861978380086701482","bib"],[50.051821,19.945448,"Folga","必比登","https://maps.google.com/?cid=7193800786272583343","bib"],[50.064873,19.927661,"MOLÁM Thai","必比登","https://maps.google.com/?cid=14914780693072191645","bib"],[50.051491,19.944291,"NOAH","必比登","https://maps.google.com/?cid=6279990201826816109","bib"],[50.049302,19.943241,"Nat Bistro","必比登","https://maps.google.com/?cid=10025714057570046192","bib"],[50.051871,19.944621,"Plac Nowy (zapiekanka)","街食","https://maps.google.com/?cid=8198083026094069086","food"],[50.053958,19.944839,"Mirror Bistro","pierogi","https://www.google.com/maps/place/?q=place_id:ChIJOwi62GpbFkcRoi0KiVCj1dk","food"],[50.07068,19.936409,"Svensson Pierogi","餃子","https://maps.google.com/?cid=10705718930784059170","food"],[50.064037,19.932167,"Bar Smak","在地口碑","https://maps.google.com/?cid=7513589258053856766","food"],[50.053182,19.947628,"Hamsa","以色列 hummus","https://maps.google.com/?cid=1317891001987072687","food"],[50.0527854,19.9400151,"Ceramika Bolesławiecka（陶器）","伴手禮","https://www.google.com/maps/place/?q=place_id:ChIJf581WqhbFkcR1_QG-8hJ4Vc","shop"],[50.058364,19.9382007,"World of Amber（琥珀）","伴手禮","https://www.google.com/maps/place/?q=place_id:ChIJPxlI8hJbFkcR7vI2ebLVIDk","shop"],[50.06171320000001,19.9373488,"Sukiennice 布廊（伴手禮攤位）","伴手禮","https://www.google.com/maps/place/?q=place_id:ChIJ3Q97Bw5bFkcRc3GzJiVsH9A","shop"],[50.062638,19.937729,"Żabka（Rynek Główny）","超商","https://www.google.com/maps/place/?q=place_id:ChIJN54SF4BbFkcRfqYQZ51JTN4","store"]]};
-      var colors = {"star2":{"fill":"#B8860B","line":"#3a2a06","label":"米其林二星"},"star1":{"fill":"#E8A81E","line":"#8a5a00","label":"米其林一星"},"bib":{"fill":"#2f6b3f","line":"#173a20","label":"必比登推介"},"food":{"fill":"#CE2E1E","line":"#7a1a10","label":"街食／小吃／牛奶吧"},"sight":{"fill":"#3b6ea5","line":"#1c3a58","label":"景點"},"shop":{"fill":"#8b5cf6","line":"#4c2f8f","label":"伴手禮店家"},"store":{"fill":"#0891b2","line":"#0c4a5e","label":"超商 Żabka"},"luxury":{"fill":"#d6336c","line":"#7a1a3d","label":"精品購物"}};
-      var element = document.getElementById('map-krakow');
+      var mapData = {"center":[50.058,19.94],"zoom":13,"points":[[50.054112,19.935423,"Wawel 皇家城堡","景點","https://maps.google.com/?cid=12446225081720350104","sight"],[50.061897,19.936756,"中央市集廣場","景點","https://maps.google.com/?cid=14107513768635600179","sight"],[50.05146,19.948594,"Kazimierz 猶太區","景點","https://maps.google.com/?cid=5623518211080575812","sight"],[50.04743,19.961574,"辛德勒工廠博物館","景點","https://maps.google.com/?cid=3670197855150446585","sight"],[50.048617,19.946137,"Bottiglieria 1881 ★★","全波蘭唯一二星","https://maps.google.com/?cid=8570908113421134699","star2"],[50.051709,19.949426,"Bufet KRK","必比登","https://maps.google.com/?cid=861978380086701482","bib"],[50.051821,19.945448,"Folga","必比登","https://maps.google.com/?cid=7193800786272583343","bib"],[50.064873,19.927661,"MOLÁM Thai","必比登","https://maps.google.com/?cid=14914780693072191645","bib"],[50.051491,19.944291,"NOAH","必比登","https://maps.google.com/?cid=6279990201826816109","bib"],[50.049302,19.943241,"Nat Bistro","必比登","https://maps.google.com/?cid=10025714057570046192","bib"],[50.051871,19.944621,"Plac Nowy (zapiekanka)","街食","https://maps.google.com/?cid=8198083026094069086","food"],[50.053958,19.944839,"Mirror Bistro","pierogi","https://www.google.com/maps/place/?q=place_id:ChIJOwi62GpbFkcRoi0KiVCj1dk","food"],[50.07068,19.936409,"Svensson Pierogi","餃子","https://maps.google.com/?cid=10705718930784059170","food"],[50.064037,19.932167,"Bar Smak","在地口碑","https://maps.google.com/?cid=7513589258053856766","food"],[50.053182,19.947628,"Hamsa","以色列 hummus","https://maps.google.com/?cid=1317891001987072687","food"],[50.0527854,19.9400151,"Ceramika Bolesławiecka（陶器）","伴手禮","https://www.google.com/maps/place/?q=place_id:ChIJf581WqhbFkcR1_QG-8hJ4Vc","shop"],[50.058364,19.9382007,"World of Amber（琥珀）","伴手禮","https://www.google.com/maps/place/?q=place_id:ChIJPxlI8hJbFkcR7vI2ebLVIDk","shop"],[50.06171320000001,19.9373488,"Sukiennice 布廊（伴手禮攤位）","伴手禮","https://www.google.com/maps/place/?q=place_id:ChIJ3Q97Bw5bFkcRc3GzJiVsH9A","shop"],[50.062638,19.937729,"Żabka（Rynek Główny）","超商","https://www.google.com/maps/place/?q=place_id:ChIJN54SF4BbFkcRfqYQZ51JTN4","store"],[50.07075,19.946163,"ibis budget Krakow Stare Miasto","已確認住宿 · 10/25–10/27","https://www.google.com/maps/search/?api=1&query=ibis%20budget%20Krakow%20Stare%20Miasto%2C%20ul.%20Pawia%2011%2C%20Krak%C3%B3w","hotel"]]};
+      var colors = {"star2":{"fill":"#B8860B","line":"#3a2a06","label":"米其林二星"},"star1":{"fill":"#E8A81E","line":"#8a5a00","label":"米其林一星"},"bib":{"fill":"#2f6b3f","line":"#173a20","label":"必比登推介"},"food":{"fill":"#CE2E1E","line":"#7a1a10","label":"街食／小吃／牛奶吧"},"sight":{"fill":"#3b6ea5","line":"#1c3a58","label":"景點"},"shop":{"fill":"#8b5cf6","line":"#4c2f8f","label":"伴手禮店家"},"store":{"fill":"#0891b2","line":"#0c4a5e","label":"超商 Żabka"},"luxury":{"fill":"#d6336c","line":"#7a1a3d","label":"精品購物"},"hotel":{"fill":"#6d597a","line":"#3d2f46","label":"已確認住宿"}};
+      var script = document.currentScript;
+      var scope = script ? script.closest('.standalone-page') : null;
+      var element = (scope || document).querySelector('[data-map-key="krakow"]');
       if (!element || typeof L === 'undefined') return;
       var map = L.map(element, { scrollWheelZoom: false }).setView(mapData.center, mapData.zoom);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -3936,8 +3987,8 @@ summary:focus-visible {
 
     <section>
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
-      <p class="lead">拖曳、縮放並點選圖釘查看說明；圖釘中的連結可直接開啟 Google Maps。</p>
-      <div id="page-city-wroclaw--map-wroclaw" class="map-container" aria-label="樂斯拉夫互動地圖"></div>
+      <p class="lead">拖曳、縮放並點選圖釘查看說明；手機上下滑動會優先捲動頁面，圖釘連結可直接開啟 Google Maps。</p>
+      <div id="page-city-wroclaw--map-wroclaw" class="map-container" data-map-key="wroclaw" aria-label="樂斯拉夫互動地圖"></div>
       <div class="map-legend" aria-label="地圖圖例">
     <div><span style="background:#B8860B;border:1.5px solid #3a2a06"></span>米其林二星</div>
     <div><span style="background:#E8A81E;border:1.5px solid #8a5a00"></span>米其林一星</div>
@@ -3946,7 +3997,8 @@ summary:focus-visible {
     <div><span style="background:#3b6ea5;border:1.5px solid #1c3a58"></span>景點</div>
     <div><span style="background:#8b5cf6;border:1.5px solid #4c2f8f"></span>伴手禮店家</div>
     <div><span style="background:#0891b2;border:1.5px solid #0c4a5e"></span>超商 Żabka</div>
-    <div><span style="background:#d6336c;border:1.5px solid #7a1a3d"></span>精品購物</div></div>
+    <div><span style="background:#d6336c;border:1.5px solid #7a1a3d"></span>精品購物</div>
+    <div><span style="background:#6d597a;border:1.5px solid #3d2f46"></span>已確認住宿</div></div>
       <p class="map-caption">地圖底圖 © OpenStreetMap contributors</p>
     </section>
 
@@ -4188,9 +4240,11 @@ summary:focus-visible {
     </section>
     <script>
     (function () {
-      var mapData = {"center":[51.111,17.045],"zoom":13,"points":[[51.110431,17.030885,"中央市集廣場","景點","https://maps.google.com/?cid=10632303817405446655","sight"],[51.114463,17.046734,"大教堂島 Ostrów Tumski","景點","https://maps.google.com/?cid=3827887123396229836","sight"],[51.104391,17.07528,"Afrykarium 動物園","景點","https://maps.google.com/?cid=6359100319840704536","sight"],[51.106953,17.077329,"百年廳 Hala Stulecia","UNESCO","https://maps.google.com/?cid=10763621538599936407","sight"],[51.11274,17.031823,"BABA ★","米其林一星","https://maps.google.com/?cid=9335659011047272773","star1"],[51.114762,17.031129,"Most ★","米其林一星","https://maps.google.com/?cid=9490447263206449328","star1"],[51.112463,17.029103,"IDA kuchnia i wino","必比登","https://maps.google.com/?cid=10589009865057440004","bib"],[51.112672,17.034294,"Miś SC","全城最有名牛奶吧","https://maps.google.com/?cid=9100083269168988599","food"],[51.1100658,17.0302956,"Żabka（Rynek）","超商","https://www.google.com/maps/place/?q=place_id:ChIJo38OWDjDD0cREV-o0Qsuquo","store"]]};
-      var colors = {"star2":{"fill":"#B8860B","line":"#3a2a06","label":"米其林二星"},"star1":{"fill":"#E8A81E","line":"#8a5a00","label":"米其林一星"},"bib":{"fill":"#2f6b3f","line":"#173a20","label":"必比登推介"},"food":{"fill":"#CE2E1E","line":"#7a1a10","label":"街食／小吃／牛奶吧"},"sight":{"fill":"#3b6ea5","line":"#1c3a58","label":"景點"},"shop":{"fill":"#8b5cf6","line":"#4c2f8f","label":"伴手禮店家"},"store":{"fill":"#0891b2","line":"#0c4a5e","label":"超商 Żabka"},"luxury":{"fill":"#d6336c","line":"#7a1a3d","label":"精品購物"}};
-      var element = document.getElementById('map-wroclaw');
+      var mapData = {"center":[51.111,17.045],"zoom":13,"points":[[51.110431,17.030885,"中央市集廣場","景點","https://maps.google.com/?cid=10632303817405446655","sight"],[51.114463,17.046734,"大教堂島 Ostrów Tumski","景點","https://maps.google.com/?cid=3827887123396229836","sight"],[51.104391,17.07528,"Afrykarium 動物園","景點","https://maps.google.com/?cid=6359100319840704536","sight"],[51.106953,17.077329,"百年廳 Hala Stulecia","UNESCO","https://maps.google.com/?cid=10763621538599936407","sight"],[51.11274,17.031823,"BABA ★","米其林一星","https://maps.google.com/?cid=9335659011047272773","star1"],[51.114762,17.031129,"Most ★","米其林一星","https://maps.google.com/?cid=9490447263206449328","star1"],[51.112463,17.029103,"IDA kuchnia i wino","必比登","https://maps.google.com/?cid=10589009865057440004","bib"],[51.112672,17.034294,"Miś SC","全城最有名牛奶吧","https://maps.google.com/?cid=9100083269168988599","food"],[51.1100658,17.0302956,"Żabka（Rynek）","超商","https://www.google.com/maps/place/?q=place_id:ChIJo38OWDjDD0cREV-o0Qsuquo","store"],[51.10013,17.03569,"Piast","已確認住宿 · 完整門牌待飯店第一方確認","https://www.google.com/maps/search/?api=1&query=Hotel%20Piast%20Wroc%C5%82aw","hotel"]]};
+      var colors = {"star2":{"fill":"#B8860B","line":"#3a2a06","label":"米其林二星"},"star1":{"fill":"#E8A81E","line":"#8a5a00","label":"米其林一星"},"bib":{"fill":"#2f6b3f","line":"#173a20","label":"必比登推介"},"food":{"fill":"#CE2E1E","line":"#7a1a10","label":"街食／小吃／牛奶吧"},"sight":{"fill":"#3b6ea5","line":"#1c3a58","label":"景點"},"shop":{"fill":"#8b5cf6","line":"#4c2f8f","label":"伴手禮店家"},"store":{"fill":"#0891b2","line":"#0c4a5e","label":"超商 Żabka"},"luxury":{"fill":"#d6336c","line":"#7a1a3d","label":"精品購物"},"hotel":{"fill":"#6d597a","line":"#3d2f46","label":"已確認住宿"}};
+      var script = document.currentScript;
+      var scope = script ? script.closest('.standalone-page') : null;
+      var element = (scope || document).querySelector('[data-map-key="wroclaw"]');
       if (!element || typeof L === 'undefined') return;
       var map = L.map(element, { scrollWheelZoom: false }).setView(mapData.center, mapData.zoom);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -4237,8 +4291,8 @@ summary:focus-visible {
 
     <section>
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
-      <p class="lead">拖曳、縮放並點選圖釘查看說明；圖釘中的連結可直接開啟 Google Maps。</p>
-      <div id="page-city-poznan--map-poznan" class="map-container" aria-label="波茲南互動地圖"></div>
+      <p class="lead">拖曳、縮放並點選圖釘查看說明；手機上下滑動會優先捲動頁面，圖釘連結可直接開啟 Google Maps。</p>
+      <div id="page-city-poznan--map-poznan" class="map-container" data-map-key="poznan" aria-label="波茲南互動地圖"></div>
       <div class="map-legend" aria-label="地圖圖例">
     <div><span style="background:#B8860B;border:1.5px solid #3a2a06"></span>米其林二星</div>
     <div><span style="background:#E8A81E;border:1.5px solid #8a5a00"></span>米其林一星</div>
@@ -4247,7 +4301,8 @@ summary:focus-visible {
     <div><span style="background:#3b6ea5;border:1.5px solid #1c3a58"></span>景點</div>
     <div><span style="background:#8b5cf6;border:1.5px solid #4c2f8f"></span>伴手禮店家</div>
     <div><span style="background:#0891b2;border:1.5px solid #0c4a5e"></span>超商 Żabka</div>
-    <div><span style="background:#d6336c;border:1.5px solid #7a1a3d"></span>精品購物</div></div>
+    <div><span style="background:#d6336c;border:1.5px solid #7a1a3d"></span>精品購物</div>
+    <div><span style="background:#6d597a;border:1.5px solid #3d2f46"></span>已確認住宿</div></div>
       <p class="map-caption">地圖底圖 © OpenStreetMap contributors</p>
     </section>
 
@@ -4488,9 +4543,11 @@ summary:focus-visible {
     </section>
     <script>
     (function () {
-      var mapData = {"center":[52.408,16.935],"zoom":13,"points":[[52.40885,16.933775,"舊市集廣場 Stary Rynek","景點","https://maps.google.com/?cid=15713614103977572536","sight"],[52.415606,16.948656,"大教堂島 Ostrów Tumski","景點","https://maps.google.com/?cid=17624504241381771360","sight"],[52.408485,16.935041,"可頌博物館","景點","https://maps.google.com/?cid=402526412385617111","sight"],[52.402018,16.901852,"Palmiarnia 棕櫚屋","景點","https://maps.google.com/?cid=10703456143872687277","sight"],[52.403967,16.929146,"Muga ★","波茲南唯一一星","https://maps.google.com/?cid=2998937238608160974","star1"],[52.411348,16.952952,"Na Winklu","pierogi","https://maps.google.com/?cid=17998777227118824033","food"],[52.407303,16.934127,"Szarlotta","鴨肉餃子名店","https://maps.google.com/?cid=8072844045178633315","food"],[52.407335,16.934281,"Żabka（Stary Rynek）","超商","https://www.google.com/maps/place/?q=place_id:ChIJz0qhEFVbBEcRDDtONqAeGV4","store"]]};
-      var colors = {"star2":{"fill":"#B8860B","line":"#3a2a06","label":"米其林二星"},"star1":{"fill":"#E8A81E","line":"#8a5a00","label":"米其林一星"},"bib":{"fill":"#2f6b3f","line":"#173a20","label":"必比登推介"},"food":{"fill":"#CE2E1E","line":"#7a1a10","label":"街食／小吃／牛奶吧"},"sight":{"fill":"#3b6ea5","line":"#1c3a58","label":"景點"},"shop":{"fill":"#8b5cf6","line":"#4c2f8f","label":"伴手禮店家"},"store":{"fill":"#0891b2","line":"#0c4a5e","label":"超商 Żabka"},"luxury":{"fill":"#d6336c","line":"#7a1a3d","label":"精品購物"}};
-      var element = document.getElementById('map-poznan');
+      var mapData = {"center":[52.408,16.935],"zoom":13,"points":[[52.40885,16.933775,"舊市集廣場 Stary Rynek","景點","https://maps.google.com/?cid=15713614103977572536","sight"],[52.415606,16.948656,"大教堂島 Ostrów Tumski","景點","https://maps.google.com/?cid=17624504241381771360","sight"],[52.408485,16.935041,"可頌博物館","景點","https://maps.google.com/?cid=402526412385617111","sight"],[52.402018,16.901852,"Palmiarnia 棕櫚屋","景點","https://maps.google.com/?cid=10703456143872687277","sight"],[52.403967,16.929146,"Muga ★","波茲南唯一一星","https://maps.google.com/?cid=2998937238608160974","star1"],[52.411348,16.952952,"Na Winklu","pierogi","https://maps.google.com/?cid=17998777227118824033","food"],[52.407303,16.934127,"Szarlotta","鴨肉餃子名店","https://maps.google.com/?cid=8072844045178633315","food"],[52.407335,16.934281,"Żabka（Stary Rynek）","超商","https://www.google.com/maps/place/?q=place_id:ChIJz0qhEFVbBEcRDDtONqAeGV4","store"],[52.403903,16.915609,"Poznan Apartments Towarowa","已確認住宿 · Towarowa 37/201 官方接待處","https://www.google.com/maps/search/?api=1&query=Poznan%20Apartments%20Towarowa%2C%20Towarowa%2037%2F201%2C%20Pozna%C5%84","hotel"]]};
+      var colors = {"star2":{"fill":"#B8860B","line":"#3a2a06","label":"米其林二星"},"star1":{"fill":"#E8A81E","line":"#8a5a00","label":"米其林一星"},"bib":{"fill":"#2f6b3f","line":"#173a20","label":"必比登推介"},"food":{"fill":"#CE2E1E","line":"#7a1a10","label":"街食／小吃／牛奶吧"},"sight":{"fill":"#3b6ea5","line":"#1c3a58","label":"景點"},"shop":{"fill":"#8b5cf6","line":"#4c2f8f","label":"伴手禮店家"},"store":{"fill":"#0891b2","line":"#0c4a5e","label":"超商 Żabka"},"luxury":{"fill":"#d6336c","line":"#7a1a3d","label":"精品購物"},"hotel":{"fill":"#6d597a","line":"#3d2f46","label":"已確認住宿"}};
+      var script = document.currentScript;
+      var scope = script ? script.closest('.standalone-page') : null;
+      var element = (scope || document).querySelector('[data-map-key="poznan"]');
       if (!element || typeof L === 'undefined') return;
       var map = L.map(element, { scrollWheelZoom: false }).setView(mapData.center, mapData.zoom);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -4610,7 +4667,7 @@ summary:focus-visible {
       <div class="hero-copy">
         <span class="section-num">Booking plan</span>
         <h1>訂票與交通</h1>
-        <p class="hero-dek">先看最急的票，再核對火車、航班與住宿區域。尚未確認的時段保留原樣，不用猜。</p>
+        <p class="hero-dek">先看最急的票，再核對火車、航班與已確認住宿。尚未確認的時段保留原樣，不用猜。</p>
       </div>
     </header>
     
@@ -4732,23 +4789,37 @@ summary:focus-visible {
   </table></div>
     </section>
     <section class="section">
-      <div class="section-heading"><span class="section-num">Stay</span><h2>住宿選區</h2></div>
+      <div class="section-heading"><span class="section-num">Stay</span><h2>已確認住宿</h2></div>
       <div class="grid-wide">
     <article class="card">
-      <span class="eyebrow">Warszawa</span><h3>華沙</h3>
-      <p><b>Śródmieście Północne / Powiśle</b></p><p>Śródmieście 交通最便利、地鐵 1/2 線交會；老城氣氛佳但晚上冷清；Praga 河東岸藝術替代區。</p><p class="timeline-note">兼顧便利與在地感</p>
+      <span class="eyebrow">已確認 · 華沙</span><h3>ibis budget Warszawa Reduta</h3>
+      <p><b>2026-10-24 → 2026-10-25</b> · 1 晚 · 1 間房</p>
+      <p>ul. Bitwy Warszawskiej 16 A, 02-366 Warszawa</p><p class="timeline-note">訂單仍使用 Reduta 舊名；Accor 官網目前改稱 Warszawa West Station，為同一地址。</p>
+      <a href="https://all.accor.com/hotel/7148/index.pl.shtml" target="_blank" rel="noopener">飯店官網 →</a>
     </article>
     <article class="card">
-      <span class="eyebrow">Kraków</span><h3>克拉科夫</h3>
-      <p><b>Kazimierz 或 Stradom</b></p><p>老城 5 分鐘步行可達景點但週末喧鬧；Kazimierz 餐酒密集文青氛圍；Podgórze 安靜在地。</p><p class="timeline-note">想睡好覺住 Kazimierz；想熱鬧住老城正中</p>
+      <span class="eyebrow">已確認 · 克拉科夫</span><h3>ibis budget Krakow Stare Miasto</h3>
+      <p><b>2026-10-25 → 2026-10-27</b> · 2 晚 · 1 間房</p>
+      <p>ul. Pawia 11, 31-154 Kraków</p><p class="timeline-note">位於 Kraków Główny 與 Galeria Krakowska 旁。</p>
+      <a href="https://all.accor.com/hotel/7165/index.en.shtml" target="_blank" rel="noopener">飯店官網 →</a>
     </article>
     <article class="card">
-      <span class="eyebrow">Wrocław</span><h3>樂斯拉夫</h3>
-      <p><b>Stare Miasto</b></p><p>城本來就不大，住老城最合理。</p><p class="timeline-note">老城是首選，無須考慮其他區</p>
+      <span class="eyebrow">已確認 · 樂斯拉夫</span><h3>Piast</h3>
+      <p><b>2026-10-27 14:00 → 2026-10-28 12:00</b> · 1 晚 · 1 間房</p>
+      <p>完整地址待飯店第一方確認</p><p class="timeline-note">住宿訂單已確認；飯店官網目前未正常顯示完整地址，出發前須用訂房確認或直接向飯店核對。</p>
+      <a href="https://piastwroclaw.pl/" target="_blank" rel="noopener">飯店官網 →</a>
     </article>
     <article class="card">
-      <span class="eyebrow">Poznań</span><h3>波茲南</h3>
-      <p><b>Stary Rynek 周邊</b></p><p>廣場周邊步行可達山羊鐘樓秀、教堂島；Stary Browar 商圈消費低。</p><p class="timeline-note">四城物價最低</p>
+      <span class="eyebrow">已確認 · 波茲南</span><h3>Poznan Apartments Towarowa</h3>
+      <p><b>2026-10-28 15:00 → 2026-10-29 11:00</b> · 1 晚 · 1 間房</p>
+      <p>Towarowa 37/201, 61-896 Poznań</p><p class="timeline-note">此處為官方接待與取鑰匙地址；實際公寓門牌以私人訂房確認為準。</p>
+      <a href="https://www.poznanapartments.com/kontakt" target="_blank" rel="noopener">飯店官網 →</a>
+    </article>
+    <article class="card">
+      <span class="eyebrow">已確認 · 華沙</span><h3>Hotel Metropol</h3>
+      <p><b>2026-10-29 → 2026-10-31</b> · 2 晚 · 1 間房</p>
+      <p>ul. Marszałkowska 99a, 00-693 Warszawa</p><p class="timeline-note">位於 Metro Centrum 附近，步行可達 Warszawa Centralna。</p>
+      <a href="https://www.hotelmetropol.com.pl/pl/" target="_blank" rel="noopener">飯店官網 →</a>
     </article></div>
     </section>
 <nav class="standalone-page-controls" aria-label="訂票與交通 章節切換">
@@ -5079,9 +5150,9 @@ summary:focus-visible {
       <div class="section-heading"><span class="section-num">Lookup</span><h2 id="page-practical-database--database-lookup-heading">靜態查找與統計</h2></div>
       <p class="lead">不需 JavaScript；依城市、類別或狀態直接跳到每筆記錄。目前共 22 筆。</p>
       <div class="grid-wide database-facets">
-        <section class="database-facet"><h3>城市</h3><ul><li id="page-practical-database--index-cityKey-WAW"><b>華沙</b> <span class="tag-muted">3 筆</span><ul><li><a href="#page-practical-database--entry-aviation-missing-baggage">行李未到處理</a></li><li><a href="#page-practical-database--entry-emergency-taiwan-representative">駐波蘭台北代表處</a></li><li><a href="#page-practical-database--entry-tax-free-vat-refund">TAX FREE 出口確認</a></li></ul></li><li id="page-practical-database--index-cityKey-KRK"><b>克拉科夫</b> <span class="tag-muted">1 筆</span><ul><li><a href="#page-practical-database--entry-daily-basics-krakow-water">克拉科夫飲水與每日離線包</a></li></ul></li><li id="page-practical-database--index-cityKey-WRO"><b>樂斯拉夫</b> <span class="tag-muted">1 筆</span><ul><li><a href="#page-practical-database--entry-daily-basics-wroclaw-water">樂斯拉夫飲水與每日離線包</a></li></ul></li><li id="page-practical-database--index-cityKey-PL"><b>波蘭全國</b> <span class="tag-muted">8 筆</span><ul><li><a href="#page-practical-database--entry-entry-etias-and-passport">護照與 ETIAS 動態閘門</a></li><li><a href="#page-practical-database--entry-rail-station-directory">車站即時資訊與設施</a></li><li><a href="#page-practical-database--entry-connectivity-prepaid-registration">波蘭預付 SIM 登記</a></li><li><a href="#page-practical-database--entry-money-pln-and-dcc">PLN 付款與拒絕 DCC</a></li><li><a href="#page-practical-database--entry-medical-insurance-and-emergency">旅平險與緊急就醫</a></li><li><a href="#page-practical-database--entry-emergency-lost-passport">國外遺失護照步驟</a></li><li><a href="#page-practical-database--entry-calendar-sunday-and-all-saints">非營業週日與諸聖節前夕</a></li><li><a href="#page-practical-database--entry-accessibility-station-assistance">車站無障礙與協助</a></li></ul></li><li id="page-practical-database--index-cityKey-ROUTE"><b>跨城／全程</b> <span class="tag-muted">9 筆</span><ul><li><a href="#page-practical-database--entry-aviation-baggage-rules">航空行李官方規則</a></li><li><a href="#page-practical-database--entry-aviation-trip-baggage-confirmation">本次行李額度與直掛確認</a></li><li><a href="#page-practical-database--entry-rail-delay-rights">鐵路延誤旅客權益</a></li><li><a href="#page-practical-database--entry-rail-trip-tickets">本次城際車票</a></li><li><a href="#page-practical-database--entry-luggage-storage-transition">轉場日行李寄放</a></li><li><a href="#page-practical-database--entry-dining-reservation-and-backup">餐廳訂位與當日營業</a></li><li><a href="#page-practical-database--entry-documents-travel-registration">入境文件包與旅外登錄</a></li><li><a href="#page-practical-database--entry-documents-attraction-tickets">景點票券與入場時段</a></li><li><a href="#page-practical-database--entry-accommodation-confirmations">7 晚住宿確認</a></li></ul></li></ul></section>
-        <section class="database-facet"><h3>類別</h3><ul><li id="page-practical-database--index-category-transit"><b>交通與轉場</b> <span class="tag-muted">5 筆</span><ul><li><a href="#page-practical-database--entry-aviation-baggage-rules">航空行李官方規則</a></li><li><a href="#page-practical-database--entry-aviation-trip-baggage-confirmation">本次行李額度與直掛確認</a></li><li><a href="#page-practical-database--entry-rail-delay-rights">鐵路延誤旅客權益</a></li><li><a href="#page-practical-database--entry-rail-trip-tickets">本次城際車票</a></li><li><a href="#page-practical-database--entry-rail-station-directory">車站即時資訊與設施</a></li></ul></li><li id="page-practical-database--index-category-dining"><b>餐飲</b> <span class="tag-muted">1 筆</span><ul><li><a href="#page-practical-database--entry-dining-reservation-and-backup">餐廳訂位與當日營業</a></li></ul></li><li id="page-practical-database--index-category-practical"><b>生活實用</b> <span class="tag-muted">8 筆</span><ul><li><a href="#page-practical-database--entry-connectivity-prepaid-registration">波蘭預付 SIM 登記</a></li><li><a href="#page-practical-database--entry-money-pln-and-dcc">PLN 付款與拒絕 DCC</a></li><li><a href="#page-practical-database--entry-luggage-storage-transition">轉場日行李寄放</a></li><li><a href="#page-practical-database--entry-calendar-sunday-and-all-saints">非營業週日與諸聖節前夕</a></li><li><a href="#page-practical-database--entry-accessibility-station-assistance">車站無障礙與協助</a></li><li><a href="#page-practical-database--entry-daily-basics-krakow-water">克拉科夫飲水與每日離線包</a></li><li><a href="#page-practical-database--entry-daily-basics-wroclaw-water">樂斯拉夫飲水與每日離線包</a></li><li><a href="#page-practical-database--entry-accommodation-confirmations">7 晚住宿確認</a></li></ul></li><li id="page-practical-database--index-category-safety"><b>安全與醫療</b> <span class="tag-muted">4 筆</span><ul><li><a href="#page-practical-database--entry-aviation-missing-baggage">行李未到處理</a></li><li><a href="#page-practical-database--entry-medical-insurance-and-emergency">旅平險與緊急就醫</a></li><li><a href="#page-practical-database--entry-emergency-taiwan-representative">駐波蘭台北代表處</a></li><li><a href="#page-practical-database--entry-emergency-lost-passport">國外遺失護照步驟</a></li></ul></li><li id="page-practical-database--index-category-document"><b>文件與資格</b> <span class="tag-muted">4 筆</span><ul><li><a href="#page-practical-database--entry-entry-etias-and-passport">護照與 ETIAS 動態閘門</a></li><li><a href="#page-practical-database--entry-tax-free-vat-refund">TAX FREE 出口確認</a></li><li><a href="#page-practical-database--entry-documents-travel-registration">入境文件包與旅外登錄</a></li><li><a href="#page-practical-database--entry-documents-attraction-tickets">景點票券與入場時段</a></li></ul></li></ul></section>
-        <section class="database-facet"><h3>狀態</h3><ul><li id="page-practical-database--index-status-verified"><b>已查證</b> <span class="tag-muted">9 筆</span><ul><li><a href="#page-practical-database--entry-aviation-baggage-rules">航空行李官方規則</a></li><li><a href="#page-practical-database--entry-aviation-missing-baggage">行李未到處理</a></li><li><a href="#page-practical-database--entry-rail-delay-rights">鐵路延誤旅客權益</a></li><li><a href="#page-practical-database--entry-money-pln-and-dcc">PLN 付款與拒絕 DCC</a></li><li><a href="#page-practical-database--entry-emergency-taiwan-representative">駐波蘭台北代表處</a></li><li><a href="#page-practical-database--entry-emergency-lost-passport">國外遺失護照步驟</a></li><li><a href="#page-practical-database--entry-tax-free-vat-refund">TAX FREE 出口確認</a></li><li><a href="#page-practical-database--entry-daily-basics-krakow-water">克拉科夫飲水與每日離線包</a></li><li><a href="#page-practical-database--entry-daily-basics-wroclaw-water">樂斯拉夫飲水與每日離線包</a></li></ul></li><li id="page-practical-database--index-status-recheck"><b>出發前重查</b> <span class="tag-muted">4 筆</span><ul><li><a href="#page-practical-database--entry-entry-etias-and-passport">護照與 ETIAS 動態閘門</a></li><li><a href="#page-practical-database--entry-rail-station-directory">車站即時資訊與設施</a></li><li><a href="#page-practical-database--entry-calendar-sunday-and-all-saints">非營業週日與諸聖節前夕</a></li><li><a href="#page-practical-database--entry-accessibility-station-assistance">車站無障礙與協助</a></li></ul></li><li id="page-practical-database--index-status-pending"><b>待確認</b> <span class="tag-muted">4 筆</span><ul><li><a href="#page-practical-database--entry-rail-trip-tickets">本次城際車票</a></li><li><a href="#page-practical-database--entry-connectivity-prepaid-registration">波蘭預付 SIM 登記</a></li><li><a href="#page-practical-database--entry-dining-reservation-and-backup">餐廳訂位與當日營業</a></li><li><a href="#page-practical-database--entry-documents-attraction-tickets">景點票券與入場時段</a></li></ul></li><li id="page-practical-database--index-status-private-required"><b>需填私人資料</b> <span class="tag-muted">5 筆</span><ul><li><a href="#page-practical-database--entry-aviation-trip-baggage-confirmation">本次行李額度與直掛確認</a></li><li><a href="#page-practical-database--entry-medical-insurance-and-emergency">旅平險與緊急就醫</a></li><li><a href="#page-practical-database--entry-luggage-storage-transition">轉場日行李寄放</a></li><li><a href="#page-practical-database--entry-documents-travel-registration">入境文件包與旅外登錄</a></li><li><a href="#page-practical-database--entry-accommodation-confirmations">7 晚住宿確認</a></li></ul></li></ul></section>
+        <section class="database-facet"><h3>城市</h3><ul><li id="page-practical-database--index-cityKey-WAW"><b>華沙</b> <span class="tag-muted">3 筆</span><ul><li><a href="#page-practical-database--entry-aviation-missing-baggage">行李未到處理</a></li><li><a href="#page-practical-database--entry-emergency-taiwan-representative">駐波蘭台北代表處</a></li><li><a href="#page-practical-database--entry-tax-free-vat-refund">TAX FREE 出口確認</a></li></ul></li><li id="page-practical-database--index-cityKey-KRK"><b>克拉科夫</b> <span class="tag-muted">1 筆</span><ul><li><a href="#page-practical-database--entry-daily-basics-krakow-water">克拉科夫飲水與每日離線包</a></li></ul></li><li id="page-practical-database--index-cityKey-WRO"><b>樂斯拉夫</b> <span class="tag-muted">1 筆</span><ul><li><a href="#page-practical-database--entry-daily-basics-wroclaw-water">樂斯拉夫飲水與每日離線包</a></li></ul></li><li id="page-practical-database--index-cityKey-PL"><b>波蘭全國</b> <span class="tag-muted">8 筆</span><ul><li><a href="#page-practical-database--entry-entry-etias-and-passport">護照與 ETIAS 動態閘門</a></li><li><a href="#page-practical-database--entry-rail-station-directory">車站即時資訊與設施</a></li><li><a href="#page-practical-database--entry-connectivity-prepaid-registration">波蘭預付 SIM 登記</a></li><li><a href="#page-practical-database--entry-money-pln-and-dcc">PLN 付款與拒絕 DCC</a></li><li><a href="#page-practical-database--entry-medical-insurance-and-emergency">旅平險與緊急就醫</a></li><li><a href="#page-practical-database--entry-emergency-lost-passport">國外遺失護照步驟</a></li><li><a href="#page-practical-database--entry-calendar-sunday-and-all-saints">非營業週日與諸聖節前夕</a></li><li><a href="#page-practical-database--entry-accessibility-station-assistance">車站無障礙與協助</a></li></ul></li><li id="page-practical-database--index-cityKey-ROUTE"><b>跨城／全程</b> <span class="tag-muted">9 筆</span><ul><li><a href="#page-practical-database--entry-aviation-baggage-rules">航空行李官方規則</a></li><li><a href="#page-practical-database--entry-aviation-trip-baggage-confirmation">本次行李額度與直掛確認</a></li><li><a href="#page-practical-database--entry-rail-delay-rights">鐵路延誤旅客權益</a></li><li><a href="#page-practical-database--entry-rail-trip-tickets">本次城際車票</a></li><li><a href="#page-practical-database--entry-luggage-storage-transition">轉場日行李寄放</a></li><li><a href="#page-practical-database--entry-dining-reservation-and-backup">餐廳訂位與當日營業</a></li><li><a href="#page-practical-database--entry-documents-travel-registration">入境文件包與旅外登錄</a></li><li><a href="#page-practical-database--entry-documents-attraction-tickets">景點票券與入場時段</a></li><li><a href="#page-practical-database--entry-accommodation-confirmations">7 晚住宿已確認</a></li></ul></li></ul></section>
+        <section class="database-facet"><h3>類別</h3><ul><li id="page-practical-database--index-category-transit"><b>交通與轉場</b> <span class="tag-muted">5 筆</span><ul><li><a href="#page-practical-database--entry-aviation-baggage-rules">航空行李官方規則</a></li><li><a href="#page-practical-database--entry-aviation-trip-baggage-confirmation">本次行李額度與直掛確認</a></li><li><a href="#page-practical-database--entry-rail-delay-rights">鐵路延誤旅客權益</a></li><li><a href="#page-practical-database--entry-rail-trip-tickets">本次城際車票</a></li><li><a href="#page-practical-database--entry-rail-station-directory">車站即時資訊與設施</a></li></ul></li><li id="page-practical-database--index-category-dining"><b>餐飲</b> <span class="tag-muted">1 筆</span><ul><li><a href="#page-practical-database--entry-dining-reservation-and-backup">餐廳訂位與當日營業</a></li></ul></li><li id="page-practical-database--index-category-practical"><b>生活實用</b> <span class="tag-muted">8 筆</span><ul><li><a href="#page-practical-database--entry-connectivity-prepaid-registration">波蘭預付 SIM 登記</a></li><li><a href="#page-practical-database--entry-money-pln-and-dcc">PLN 付款與拒絕 DCC</a></li><li><a href="#page-practical-database--entry-luggage-storage-transition">轉場日行李寄放</a></li><li><a href="#page-practical-database--entry-calendar-sunday-and-all-saints">非營業週日與諸聖節前夕</a></li><li><a href="#page-practical-database--entry-accessibility-station-assistance">車站無障礙與協助</a></li><li><a href="#page-practical-database--entry-daily-basics-krakow-water">克拉科夫飲水與每日離線包</a></li><li><a href="#page-practical-database--entry-daily-basics-wroclaw-water">樂斯拉夫飲水與每日離線包</a></li><li><a href="#page-practical-database--entry-accommodation-confirmations">7 晚住宿已確認</a></li></ul></li><li id="page-practical-database--index-category-safety"><b>安全與醫療</b> <span class="tag-muted">4 筆</span><ul><li><a href="#page-practical-database--entry-aviation-missing-baggage">行李未到處理</a></li><li><a href="#page-practical-database--entry-medical-insurance-and-emergency">旅平險與緊急就醫</a></li><li><a href="#page-practical-database--entry-emergency-taiwan-representative">駐波蘭台北代表處</a></li><li><a href="#page-practical-database--entry-emergency-lost-passport">國外遺失護照步驟</a></li></ul></li><li id="page-practical-database--index-category-document"><b>文件與資格</b> <span class="tag-muted">4 筆</span><ul><li><a href="#page-practical-database--entry-entry-etias-and-passport">護照與 ETIAS 動態閘門</a></li><li><a href="#page-practical-database--entry-tax-free-vat-refund">TAX FREE 出口確認</a></li><li><a href="#page-practical-database--entry-documents-travel-registration">入境文件包與旅外登錄</a></li><li><a href="#page-practical-database--entry-documents-attraction-tickets">景點票券與入場時段</a></li></ul></li></ul></section>
+        <section class="database-facet"><h3>狀態</h3><ul><li id="page-practical-database--index-status-verified"><b>已查證</b> <span class="tag-muted">9 筆</span><ul><li><a href="#page-practical-database--entry-aviation-baggage-rules">航空行李官方規則</a></li><li><a href="#page-practical-database--entry-aviation-missing-baggage">行李未到處理</a></li><li><a href="#page-practical-database--entry-rail-delay-rights">鐵路延誤旅客權益</a></li><li><a href="#page-practical-database--entry-money-pln-and-dcc">PLN 付款與拒絕 DCC</a></li><li><a href="#page-practical-database--entry-emergency-taiwan-representative">駐波蘭台北代表處</a></li><li><a href="#page-practical-database--entry-emergency-lost-passport">國外遺失護照步驟</a></li><li><a href="#page-practical-database--entry-tax-free-vat-refund">TAX FREE 出口確認</a></li><li><a href="#page-practical-database--entry-daily-basics-krakow-water">克拉科夫飲水與每日離線包</a></li><li><a href="#page-practical-database--entry-daily-basics-wroclaw-water">樂斯拉夫飲水與每日離線包</a></li></ul></li><li id="page-practical-database--index-status-recheck"><b>出發前重查</b> <span class="tag-muted">4 筆</span><ul><li><a href="#page-practical-database--entry-entry-etias-and-passport">護照與 ETIAS 動態閘門</a></li><li><a href="#page-practical-database--entry-rail-station-directory">車站即時資訊與設施</a></li><li><a href="#page-practical-database--entry-calendar-sunday-and-all-saints">非營業週日與諸聖節前夕</a></li><li><a href="#page-practical-database--entry-accessibility-station-assistance">車站無障礙與協助</a></li></ul></li><li id="page-practical-database--index-status-pending"><b>待確認</b> <span class="tag-muted">4 筆</span><ul><li><a href="#page-practical-database--entry-rail-trip-tickets">本次城際車票</a></li><li><a href="#page-practical-database--entry-connectivity-prepaid-registration">波蘭預付 SIM 登記</a></li><li><a href="#page-practical-database--entry-dining-reservation-and-backup">餐廳訂位與當日營業</a></li><li><a href="#page-practical-database--entry-documents-attraction-tickets">景點票券與入場時段</a></li></ul></li><li id="page-practical-database--index-status-private-required"><b>需填私人資料</b> <span class="tag-muted">5 筆</span><ul><li><a href="#page-practical-database--entry-aviation-trip-baggage-confirmation">本次行李額度與直掛確認</a></li><li><a href="#page-practical-database--entry-medical-insurance-and-emergency">旅平險與緊急就醫</a></li><li><a href="#page-practical-database--entry-luggage-storage-transition">轉場日行李寄放</a></li><li><a href="#page-practical-database--entry-documents-travel-registration">入境文件包與旅外登錄</a></li><li><a href="#page-practical-database--entry-accommodation-confirmations">7 晚住宿已確認</a></li></ul></li></ul></section>
       </div>
     </section>
     <nav class="database-index" aria-label="資料庫主題索引">
@@ -5489,11 +5560,11 @@ summary:focus-visible {
         <p class="eyebrow">生活實用 · 跨城／全程</p>
         <span class="status-private">狀態：需填私人資料</span>
       </div>
-      <h3>7 晚住宿確認</h3>
-      <p>住宿名稱、完整地址、日期、入住退房、聯絡方式與寄放行李確認都尚待填入；公開版僅顯示完成狀態，不公開訂房代碼、姓名或付款證明。</p>
-      <p><b>離線備註：</b>離線保存每張住宿確認與純文字地址；華沙、克拉科夫、樂斯拉夫、波茲南各自備妥導航。</p>
+      <h3>7 晚住宿已確認</h3>
+      <p>5 筆訂單共 7 晚皆已確認：華沙 ibis budget Warszawa Reduta、克拉科夫 ibis budget Krakow Stare Miasto、樂斯拉夫 Piast、波茲南 Poznan Apartments Towarowa、華沙 Hotel Metropol。公開版不保存訂房代碼、姓名或付款證明。</p>
+      <p><b>離線備註：</b>公開版已放飯店官網地址；另將 5 張訂房確認存入私人離線包，並向各住宿確認寄放行李與晚到方式。</p>
       <dl class="source-meta">
-        <div><dt>盤查日期</dt><dd>2026-08-08</dd></div>
+        <div><dt>盤查日期</dt><dd>2026-08-10</dd></div>
         <div><dt>查證日期</dt><dd>未設定</dd></div>
         <div><dt>重查日期</dt><dd>2026-10-10</dd></div>
         <div><dt>官方來源</dt><dd>尚無官方來源</dd></div>

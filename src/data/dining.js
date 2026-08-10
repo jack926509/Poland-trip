@@ -249,9 +249,9 @@ export const cityDining = {
       "mapUrl": "https://maps.google.com/?cid=5270464504046978357"
     },
     {
-      "name": "Gościniec / Zapiecek / u Kresowiaka",
+      "name": "Gościniec（探索候選）",
       "tier": "餃子",
-      "highlight": "招牌：手工 pierogi 餃子（肉餡／馬鈴薯起司／藍莓）· 名店（Nowy Świat / Koszykowa）",
+      "highlight": "招牌：手工 pierogi 餃子（肉餡／馬鈴薯起司／藍莓）· 指定分店、營業時間與訂位狀態須在出發前查證",
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=Go%C5%9Bciniec%20Warszawa"
     },
     {
