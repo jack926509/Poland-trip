@@ -44,12 +44,12 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [] }) {
     </article>`).join('');
   const dayRows = days.map(day => `
     <tr>
-      <td class="number">Day ${String(day.n).padStart(2, '0')}</td>
-      <td class="number">${day.date}</td>
-      <td>${day.city}</td>
-      <td><b>${day.title}</b><br><span class="timeline-note">${day.headline}</span></td>
-      <td>${day.mustBook.length ? `<span class="tag-todo">待訂 ${day.mustBook.length}</span>` : '<span class="tag-muted">無待訂</span>'}</td>
-      <td><a href="day-${String(day.n).padStart(2, '0')}.html">打開行程 →</a></td>
+      <td class="number" data-label="天數">Day ${String(day.n).padStart(2, '0')}</td>
+      <td class="number" data-label="日期">${day.date}</td>
+      <td data-label="城市">${day.city}</td>
+      <td data-label="主題"><b>${day.title}</b><br><span class="timeline-note">${day.headline}</span></td>
+      <td data-label="狀態">${day.mustBook.length ? `<span class="tag-todo">待訂 ${day.mustBook.length}</span>` : '<span class="tag-muted">無待訂</span>'}</td>
+      <td data-label="開啟"><a href="day-${String(day.n).padStart(2, '0')}.html">打開行程 →</a></td>
     </tr>`).join('');
 
   const cityCards = cities.map(city => `
@@ -91,8 +91,8 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [] }) {
     <section class="section" id="days">
       <div class="section-heading"><span class="section-num">01 / Itinerary</span><h2>8 天行程總覽</h2></div>
       <p class="lead">先看每天的轉場與待訂數量，再點進當天查看精確時間、備案和風險。</p>
-      <div class="table-wrap">
-        <table class="table-editorial">
+      <div class="table-wrap table-wrap-cards">
+        <table class="table-editorial table-itinerary">
           <thead><tr><th>天數</th><th>日期</th><th>城市</th><th>主題</th><th>狀態</th><th></th></tr></thead>
           <tbody>${dayRows}</tbody>
         </table>

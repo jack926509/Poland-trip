@@ -415,7 +415,7 @@ test('正式頁面保留垂直滑動，地圖與寬表格不會鎖住整頁', ()
   assert.doesNotMatch(css, /(?:html|body)\s*\{[^}]*overflow-y\s*:\s*hidden/s);
   assert.match(css, /\.map-container\s*\{[^}]*touch-action\s*:\s*pan-y\s*!important/s);
   assert.match(css, /\.table-wrap\s*\{[^}]*overflow-x\s*:\s*auto/s);
-  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav\s*\{[^}]*position\s*:\s*static/s);
+  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav\s*\{[^}]*position\s*:\s*relative/s);
 });
 
 test('2026-08-09 官方盤查會移除未能證實的場次、價格與閉館敘述', () => {
@@ -530,6 +530,33 @@ test('每頁都有完整文件外殼、導覽、主要內容與頁尾', () => {
     assert.match(html, /<footer class="footer">/, `${file} 缺少頁尾`);
     assert.doesNotMatch(html, />undefined<|\$\{undefined\}/, `${file} 出現 undefined`);
   }
+});
+
+test('手機導覽以原生可展開選單呈現，且選單層級高於內容', () => {
+  const html = read('index.html');
+  const css = fs.readFileSync(path.join(distDir, 'assets/main.css'), 'utf8');
+
+  assert.equal((html.match(/<details class="nav-dropdown/g) || []).length, 3);
+  assert.match(html, /<summary>每日行程<\/summary>/);
+  assert.match(html, /<li><a href="index\.html#days">行程總覽<\/a><\/li>/);
+  assert.match(css, /\.nav-dropdown\[open\]\s*>\s*ul\s*\{[^}]*display\s*:\s*block/s);
+  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav\s*\{[^}]*position\s*:\s*relative[^}]*z-index\s*:\s*100/s);
+  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav-dropdown\s*>\s*ul\s*\{[^}]*right\s*:\s*1\.25rem[^}]*left\s*:\s*1\.25rem/s);
+});
+
+test('手機行程總覽與時間表提供卡片欄位標籤，不依賴橫向捲動', () => {
+  const home = read('index.html');
+  const day = read('day-01.html');
+  const css = fs.readFileSync(path.join(distDir, 'assets/main.css'), 'utf8');
+
+  assert.match(home, /<table class="table-editorial table-itinerary">/);
+  assert.match(home, /data-label="主題"/);
+  assert.match(home, /data-label="開啟"/);
+  assert.match(day, /<table class="table-editorial table-schedule">/);
+  assert.match(day, /data-label="時間"/);
+  assert.match(day, /data-label="時長"/);
+  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.table-itinerary\s+thead,[\s\S]*\.table-schedule\s+thead\s*\{[^}]*display\s*:\s*none/s);
+  assert.match(css, /\.table-itinerary\s+td::before,[\s\S]*\.table-schedule\s+td::before\s*\{[^}]*content\s*:\s*attr\(data-label\)/s);
 });
 
 test('所有本機連結都能解析，且沒有破壞 GitHub Pages 的根路徑連結', () => {

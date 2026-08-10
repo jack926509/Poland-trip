@@ -28,22 +28,24 @@ export function renderLayout({ title, activeNav, bodyHtml, extraHead = '', pathP
   <a class="skip-link" href="#main-content">跳至主要內容</a>
   <nav class="nav" aria-label="主要導覽">
     <a class="nav-brand" href="${path('index.html')}"${current(activeNav, 'home')}>POLSKA</a>
-    <div class="nav-dropdown">
-      <a href="${path('index.html#days')}"${current(activeNav, 'days')}>每日行程 ▾</a>
-      <ul>${dayLinks}</ul>
-    </div>
-    <div class="nav-dropdown">
-      <a href="${path('index.html#cities')}"${current(activeNav, 'cities')}>城市指南 ▾</a>
+    <details class="nav-dropdown${activeNav === 'days' ? ' nav-dropdown-current' : ''}">
+      <summary>每日行程</summary>
+      <ul><li><a href="${path('index.html#days')}">行程總覽</a></li>${dayLinks}</ul>
+    </details>
+    <details class="nav-dropdown${activeNav === 'cities' ? ' nav-dropdown-current' : ''}">
+      <summary>城市指南</summary>
       <ul>
+        <li><a href="${path('index.html#cities')}">城市總覽</a></li>
         <li><a href="${path('city-warszawa.html')}">華沙 Warszawa</a></li>
         <li><a href="${path('city-krakow.html')}">克拉科夫 Kraków</a></li>
         <li><a href="${path('city-wroclaw.html')}">樂斯拉夫 Wrocław</a></li>
         <li><a href="${path('city-poznan.html')}">波茲南 Poznań</a></li>
       </ul>
-    </div>
-    <div class="nav-dropdown">
-      <a href="${path('index.html#practical')}"${current(activeNav, 'practical')}>實用資訊 ▾</a>
+    </details>
+    <details class="nav-dropdown${activeNav === 'practical' ? ' nav-dropdown-current' : ''}">
+      <summary>實用資訊</summary>
       <ul>
+        <li><a href="${path('index.html#practical')}">實用資訊總覽</a></li>
         <li><a href="${path('practical/todos.html')}">待辦事項</a></li>
         <li><a href="${path('practical/booking.html')}">訂票與交通</a></li>
         <li><a href="${path('practical/dining.html')}">米其林與餐廳</a></li>
@@ -54,7 +56,7 @@ export function renderLayout({ title, activeNav, bodyHtml, extraHead = '', pathP
         <li><a href="${path('practical/notes.html')}">行前提醒</a></li>
         <li><a href="${path('practical/database.html')}">自由行資料庫</a></li>
       </ul>
-    </div>
+    </details>
   </nav>
   <main class="page" id="main-content">
     ${bodyHtml}
