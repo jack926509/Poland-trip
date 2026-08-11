@@ -523,13 +523,13 @@ export const cityFood = [
       {
         "tag": "熱巧克力",
         "name": "E. Wedel Pijalnia",
-        "note": "蕭邦曾常去",
+        "note": "1851 年創立的華沙巧克力老牌，招牌是濃稠熱巧克力",
         "book": "queue"
       },
       {
-        "tag": "米其林必比登",
+        "tag": "老城經典",
         "name": "U Fukiera / Polka",
-        "note": "Żurek 麵包碗",
+        "note": "Żurek 麵包碗；兩家皆非米其林必比登名單，屬觀光區老牌波蘭餐廳",
         "book": "must"
       },
       {
@@ -725,7 +725,7 @@ export const cityFood = [
       {
         "tag": "PGI 牛角",
         "name": "Cukiernia Kandulski",
-        "note": "百年老店",
+        "note": "1983 年創立的波茲南家族烘焙坊，認明 PGI 證書",
         "book": "queue"
       },
       {

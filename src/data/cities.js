@@ -8,8 +8,8 @@
 export const cities = [
   {key:'WAW', name:'華沙', pl:'Warszawa', tag:'CAPITAL', nights:'1 + 2', totalNights:3, stayNote:'首晚倒時差 + 回程兩晚收尾', vibe:'鋼鐵摩天 × 重建老城', highlights:['POLIN 猶太博物館','起義博物館','皇家城堡','Krakowskie Przedmieście'], photo:{hero:'assets/photos/warszawa-hero.webp',thumb:'assets/photos/warszawa-thumb.webp'}},
   {key:'KRK', name:'克拉科夫', pl:'Kraków', tag:'OLD WORLD', nights:2, totalNights:2, stayNote:'兩晚承接老城、Auschwitz、鹽礦', vibe:'中世紀石板路 × 千年王城', highlights:['Wawel 城堡','中央市集 Rynek','Auschwitz 一日往返','Kazimierz 猶太區'], photo:{hero:'assets/photos/krakow-hero.webp',thumb:'assets/photos/krakow-thumb.webp'}},
-  {key:'WRO', name:'樂斯拉夫', pl:'Wrocław', tag:'700 DWARFS', nights:1, vibe:'700 小矮人 × 煤氣燈點燈', highlights:['百年廳 UNESCO','全景畫 Panorama','座堂島 Ostrów Tumski','糖果屋雙屋'], photo:{hero:'assets/photos/wroclaw-hero.webp',thumb:'assets/photos/wroclaw-thumb.webp'}},
-  {key:'POZ', name:'波茲南', pl:'Poznań', tag:'CRADLE', nights:1, vibe:'波蘭文明發源 × 山羊報時', highlights:['教堂島 Ostrów Tumski','12:00 山羊鐘樓秀','聖馬丁牛角麵包 PGI','帝王城堡'], photo:{hero:'assets/photos/poznan-hero.webp',thumb:'assets/photos/poznan-thumb.webp'}},
+  {key:'WRO', name:'樂斯拉夫', pl:'Wrocław', tag:'1000+ DWARFS', nights:1, totalNights:1, vibe:'千尊小矮人 × 煤氣燈點燈', highlights:['百年廳 UNESCO','全景畫 Panorama','座堂島 Ostrów Tumski','糖果屋雙屋'], photo:{hero:'assets/photos/wroclaw-hero.webp',thumb:'assets/photos/wroclaw-thumb.webp'}},
+  {key:'POZ', name:'波茲南', pl:'Poznań', tag:'CRADLE', nights:1, totalNights:1, vibe:'波蘭文明發源 × 山羊報時', highlights:['教堂島 Ostrów Tumski','12:00 山羊鐘樓秀','聖馬丁牛角麵包 PGI','帝王城堡'], photo:{hero:'assets/photos/poznan-hero.webp',thumb:'assets/photos/poznan-thumb.webp'}},
 ];
 
 export const cityNotices = {
@@ -63,7 +63,7 @@ export const cityStories = [
     geo:'奧得河（Odra）在此裂成多條支流，把城市切成 12 座島、以 100 多座橋相連——「波蘭威尼斯」。最老的核心 Ostrów Tumski（座堂島）是千年前的起點，至今保留全歐少數仍由點燈人每晚手工點燃的瓦斯街燈。',
     history:'這座城市 1945 年前叫 Breslau，是德國第六大城。戰後國界西移，德裔居民被遷出，取而代之的是被蘇聯劃走的東部城市利沃夫（Lwów）的波蘭移民——整座城市的人口被「換血」。拉茨瓦維採全景畫正是從利沃夫一起搬來的鎮城之寶，Karczma Lwowska 餐廳的名字也是這段記憶。',
     stories:[
-      {title:'小矮人是反抗軍', text:'城裡 600+ 尊銅製小矮人（krasnale）不是行銷噱頭：1980 年代反共團體「橙色替代」（Pomarańczowa Alternatywa）以塗鴉小矮人與荒誕街頭劇嘲諷政權——警察逮捕一個扮小矮人的人有多可笑，體制就有多可笑。2005 年起城市以銅像致敬這段歷史，每一尊都有名字與職業。'},
+      {title:'小矮人是反抗軍', text:'城裡逾 1,000 尊銅製小矮人（krasnale，2025-09 立起第 1,000 尊，2026 年市區約 1,040 尊）不是行銷噱頭：1980 年代反共團體「橙色替代」（Pomarańczowa Alternatywa）以塗鴉小矮人與荒誕街頭劇嘲諷政權——警察逮捕一個扮小矮人的人有多可笑，體制就有多可笑。2005 年起城市以銅像致敬這段歷史，每一尊都有名字與職業。'},
       {title:'每晚的點燈儀式', text:'日落時分，披斗篷、持長桿的點燈人會逐一點亮 Ostrów Tumski 的瓦斯燈。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，Day 5 以 16:15–17:15 在座堂島等候與散步規劃。'},
       {title:'混凝土的世界遺產', text:'百年廳（Hala Stulecia，1913）落成時擁有世界最大跨距的鋼筋混凝土圓頂，直接影響了現代主義建築的走向，2006 年列入 UNESCO——在古蹟之城看一座「未來古蹟」。'},
     ],
@@ -79,8 +79,8 @@ export const cityStories = [
     history:'波蘭國家的搖籃：966 年梅什科一世（Mieszko I）在此受洗，波蘭以此為建國元年；最早的君主就葬在波茲南座堂。近代史上同樣硬氣——1956 年 6 月的工人起義是共產波蘭第一場大規模反抗，比華沙、格但斯克都早。',
     stories:[
       {title:'兩隻山羊的贖罪', text:'1551 年市政廳新鐘落成宴上，學徒烤焦了鹿肉，情急偷了兩隻山羊代替；山羊逃上鐘塔，在全城面前頂起角來，逗笑了市長與賓客，因而獲赦。從此市政廳每天 12:00 由機械山羊互撞 12 下——Day 6 正午行程就是為它排的。'},
-      {title:'有身分證的麵包', text:'聖馬丁牛角麵包（rogal świętomarciński）受歐盟 PGI 保護：白罌粟籽餡、81 層酥皮、只有波茲南地區持證烘焙坊能做。傳統上 11/11 聖馬丁節當天全城吃掉數百噸——你早到兩週，平日仍買得到，認明店內 PGI 證書（Kandulski 是百年老字號）。'},
-      {title:'蕭邦睡過的飯店', text:'Stary Rynek 旁的 Hotel Bazar（1841）是波蘭民族運動的據點，蕭邦 1843 年在此下榻並演奏；1918 年鋼琴家帕德瑞夫斯基在此陽台演說，點燃了大波蘭起義。'},
+      {title:'有身分證的麵包', text:'聖馬丁牛角麵包（rogal świętomarciński）受歐盟 PGI 保護：白罌粟籽餡、81 層酥皮、只有波茲南地區持證烘焙坊能做。傳統上 11/11 聖馬丁節當天全城吃掉數百噸——你早到兩週，平日仍買得到，認明店內 PGI 證書（Kandulski 由 Wojciech Kandulski 於 1983 年創立，是波茲南最知名的家族烘焙坊之一）。'},
+      {title:'一場陽台演說點燃的起義', text:'Stary Rynek 旁的 Hotel Bazar（1841）是波蘭民族運動的據點：1918 年 12 月 26 日鋼琴家帕德瑞夫斯基在此陽台向群眾演說，隔日爆發大波蘭起義，最終讓這片土地回歸波蘭。（常見的「蕭邦曾在此下榻」說法不成立——蕭邦 1830 年 11 月離開波蘭後終生未再返國，Bazar 晚了 11 年才開幕。）'},
     ],
     onSite:[
       '11:45 前到 Stary Rynek 卡位看山羊（只演一次，錯過等明天）',
@@ -98,9 +98,9 @@ export const photoSpots = [
   {id:'krk-wawel', cityKey:'KRK', name:'Wawel 城堡河岸', day:2, bestTime:'15:40–16:30', light:'從 Dębnicki 橋往東拍，維斯瓦河面反光'},
   {id:'krk-kazimierz', cityKey:'KRK', name:'Kazimierz 猶太區街景', day:4, bestTime:'14:30–16:00', light:'午後柔和側光，適合窄巷與塗鴉（已對齊 Day4 實際行程 14:30–16:00）'},
   {id:'wro-rynek', cityKey:'WRO', name:'市政廳與彩色老屋', day:5, bestTime:'15:50–16:35', light:'西曬正打彩色立面，是全趟最上色的一刻'},
-  {id:'wro-dwarfs', cityKey:'WRO', name:'小矮人與座堂島煤氣燈', day:5, bestTime:'16:45–17:15', light:'日落約 16:29（行程期間約 16:05–16:30 區間），點燈人約 16:45 起逐盞點燈，需高感光度'},
-  {id:'poz-rynek', cityKey:'POZ', name:'舊市集廣場彩色立面', day:6, bestTime:'09:00–10:30', light:'上午柔和散射光，卡位等 12:00 山羊報時（已對齊 Day6 實際行程 09:00–10:30）'},
-  {id:'poz-tumski', cityKey:'POZ', name:'教堂島 Ostrów Tumski', day:6, bestTime:'15:40–16:20', light:'雙塔逆光剪影，或轉到橋上拍側光'},
+  {id:'wro-dwarfs', cityKey:'WRO', name:'小矮人與座堂島煤氣燈', day:5, bestTime:'16:15–17:15', light:'10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，日落前後在島上等候，暗處需高感光度（已對齊 Day5 實際行程 16:15–17:15）'},
+  {id:'poz-rynek', cityKey:'POZ', name:'舊市集廣場彩色立面', day:6, bestTime:'11:00–12:15', light:'接近正午的高角度光打亮市政廳東向立面與彩色商人屋；卡位同時等 12:00 山羊報時（已對齊 Day6 實際行程 11:00–12:15）'},
+  {id:'poz-tumski', cityKey:'POZ', name:'教堂島 Ostrów Tumski', day:6, bestTime:'09:00–10:30', light:'上午光從東側來，座堂西面雙塔為逆光；改從 Śródka 側或橋上取側光與河面倒影（已對齊 Day6 實際行程 09:00–10:30）'},
 ];
 
 // licenseUrl：CC 授權要求提供「授權條款本身」的 URI，不是照片來源頁（url 欄位）。
@@ -117,7 +117,8 @@ export const photoCredits = [
 ];
 
 // mapPins 已套用校正表 3-1（Mirror Bistro、Na Winklu 從 star1 改 food；Svensson Pierogi、Hamsa 從 sight 改 food）
-// 與 3-2（克拉科夫圖釘數確認為 19，非 20）的修正，直接來自 poland-travel-guide-final.html:565 的 CITIES 物件。
+// 的修正，直接來自 poland-travel-guide-final.html:565 的 CITIES 物件。
+// 校正表 3-2 記的「克拉科夫 19 個圖釘」是加入已確認住宿圖釘前的數字；現為 16／20／10／9，合計 55。
 export const mapPins = {
   warsaw: {
     center: [52.235, 21.01], zoom: 13,
