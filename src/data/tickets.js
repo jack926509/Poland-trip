@@ -1,6 +1,6 @@
 // 2026-08-08 逐項以景點官網查證；價格單位均為 PLN。
 export const fares = [
-  {name:'華沙 · 皇家城堡', fullPrice:'30–110', discountPrice:'20–90', note:'二–日 10:00–18:00，最後入場 17:00；路線票 30–110，週三限量免費路線', officialUrl:'https://www.zamek-krolewski.pl/en/strona/opening-hours-and-ticket-prices/2801-opening-hours-and-ticket-prices-may-2-2026', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20%E7%9A%87%E5%AE%B6%E5%9F%8E%E5%A0%A1'},
+  {name:'華沙 · 皇家城堡', fullPrice:'60／95', discountPrice:'45／75', note:'2026-08-11 官網查證：二–日 10:00–18:00、最後入場 17:00；Royal Route 60／45（約 60 分）、Castle Route 95／75（約 150 分，含語音導覽）；週三免費但只走限定路線、現場領票且數量有限，語音導覽另收 10', officialUrl:'https://www.zamek-krolewski.pl/en/strona/opening-hours-and-ticket-prices/2801-opening-hours-and-ticket-prices-may-2-2026', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20%E7%9A%87%E5%AE%B6%E5%9F%8E%E5%A0%A1'},
   {name:'華沙 · 科學文化宮觀景台', fullPrice:'30', discountPrice:'25', note:'已更新（原標 25）', officialUrl:'https://pkin.pl/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20%E7%A7%91%E5%AD%B8%E6%96%87%E5%8C%96%E5%AE%AE%E8%A7%80%E6%99%AF%E5%8F%B0'},
   {name:'華沙 · Neon 霓虹博物館', fullPrice:'25', discountPrice:'18', note:'科學文化宮 4 樓；一–四 11:00–18:00、五–六至 19:00、日 11:00–18:00', officialUrl:'https://www.neonmuzeum.org/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20Neon%20%E9%9C%93%E8%99%B9%E5%8D%9A%E7%89%A9%E9%A4%A8'},
   {name:'華沙 · MSN 當代美術館', fullPrice:'40', discountPrice:'30', note:'二–四／六 11:00–19:00、五至 20:00、日至 18:00；18:00 後 25／15，Gallery A 免費', officialUrl:'https://artmuseum.pl/en/visit', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20MSN%20%E7%95%B6%E4%BB%A3%E7%BE%8E%E8%A1%93%E9%A4%A8'},
@@ -26,9 +26,9 @@ export const fares = [
 // 舊版城市分組保留作快速對照，括號內指向上方較新的 fares 資料。
 export const ticketsByCity = [
   {city:'華沙', items:[
-    ['皇家城堡', 'PLN 50 / 40 / 100 分級 · 週三免費（新版分路線售票見 fares）'],
+    ['皇家城堡', 'Royal Route 60／45、Castle Route 95／75 · 週三限定路線免費（2026-08-11 官網查證）'],
     ['POLIN 猶太歷史', '週五 10:00–18:00；票價與指定日庫存看官方售票頁'],
-    ['華沙起義博物館', 'PLN 35 · discount 30'],
+    ['華沙起義博物館', 'PLN 35／30 · 免費日為週一（非週四）'],
     ['蕭邦博物館', '2026 整年閉館'],
     ['科學文化宮觀景台', 'PLN 25（新版見 fares：30/優待 25）'],
     ['MSN 現代藝術博物館', '展覽 40／30 · 18:00 後 25／15 · Gallery A 免費'],
@@ -36,7 +36,7 @@ export const ticketsByCity = [
   {city:'克拉科夫', items:[
     ['瓦維爾城堡完整路線', 'PLN 95／71 · 最後入場 15:00'],
     ['辛德勒工廠', 'PLN 60 · 優待 45（以官網為準）'],
-    ['聖瑪麗教堂登塔', 'PLN 20'],
+    ['聖瑪麗教堂登塔', 'PLN 20／15 · 只在 Mariacki 廣場 7 號當日現場售票、無法預約 · 入口在 Floriańska 街'],
     ['奧斯威辛 Educator 導覽', '依官方訂票頁當日場次；10 月上午必須跟團'],
     ['維利奇卡鹽礦', '10/27 英文場、實際票價與庫存看官方日期選擇器'],
     ['地下市集博物館', 'PLN 45／35'],
