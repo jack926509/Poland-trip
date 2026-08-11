@@ -63,7 +63,7 @@ export const cityStories = [
     geo:'奧得河（Odra）在此裂成多條支流，把城市切成 12 座島、以 100 多座橋相連——「波蘭威尼斯」。最老的核心 Ostrów Tumski（座堂島）是千年前的起點，至今保留全歐少數仍由點燈人每晚手工點燃的瓦斯街燈。',
     history:'這座城市 1945 年前叫 Breslau，是德國第六大城。戰後國界西移，德裔居民被遷出，取而代之的是被蘇聯劃走的東部城市利沃夫（Lwów）的波蘭移民——整座城市的人口被「換血」。拉茨瓦維採全景畫正是從利沃夫一起搬來的鎮城之寶，Karczma Lwowska 餐廳的名字也是這段記憶。',
     stories:[
-      {title:'小矮人是反抗軍', text:'城裡逾 1,000 尊銅製小矮人（krasnale，2025-09 立起第 1,000 尊，2026 年市區約 1,040 尊）不是行銷噱頭：1980 年代反共團體「橙色替代」（Pomarańczowa Alternatywa）以塗鴉小矮人與荒誕街頭劇嘲諷政權——警察逮捕一個扮小矮人的人有多可笑，體制就有多可笑。2005 年起城市以銅像致敬這段歷史，每一尊都有名字與職業。'},
+      {title:'小矮人是反抗軍', text:'城裡有逾 1,000 尊銅製小矮人（krasnale），但數量持續增加、無法精確統計。1980 年代反共團體「橙色替代」（Pomarańczowa Alternatywa）以塗鴉小矮人與荒誕街頭劇嘲諷政權——警察逮捕一個扮小矮人的人有多可笑，體制就有多可笑。2005 年起城市以銅像致敬這段歷史，每一尊都有名字與職業。'},
       {title:'每晚的點燈儀式', text:'日落時分，披斗篷、持長桿的點燈人會逐一點亮 Ostrów Tumski 的瓦斯燈。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，Day 5 以 16:15–17:15 在座堂島等候與散步規劃。'},
       {title:'混凝土的世界遺產', text:'百年廳（Hala Stulecia，1913）落成時擁有世界最大跨距的鋼筋混凝土圓頂，直接影響了現代主義建築的走向，2006 年列入 UNESCO——在古蹟之城看一座「未來古蹟」。'},
     ],
@@ -185,7 +185,7 @@ export const mapPins = {
     center: [52.408, 16.935], zoom: 13,
     points: [
       [52.40885, 16.933775, "舊市集廣場 Stary Rynek", "景點", "https://maps.google.com/?cid=15713614103977572536", "sight"],
-      [52.415606, 16.948656, "大教堂島 Ostrów Tumski", "景點", "https://maps.google.com/?cid=17624504241381771360", "sight"],
+      [52.411573, 16.948647, "大教堂島 Ostrów Tumski", "景點", "https://maps.google.com/?cid=17624504241381771360", "sight"],
       [52.408485, 16.935041, "可頌博物館", "景點", "https://maps.google.com/?cid=402526412385617111", "sight"],
       [52.402018, 16.901852, "Palmiarnia 棕櫚屋", "景點", "https://maps.google.com/?cid=10703456143872687277", "sight"],
       [52.403967, 16.929146, "Muga ★", "波茲南唯一一星", "https://maps.google.com/?cid=2998937238608160974", "star1"],
@@ -208,6 +208,57 @@ export const pinCategoryLegend = {
   luxury: {fill:'#d6336c', line:'#7a1a3d', label:'精品購物'},
   hotel:  {fill:'#6d597a', line:'#3d2f46', label:'已確認住宿'},
 };
+
+// 圖釘座標查證狀態：未驗證不代表錯誤，只代表尚未以可靠地址獨立比對。
+// coordinate-verified 的地址來源與座標來源均記錄於 docs/research/2026-08-11-map-pins-geocoding.md。
+const defaultMapPinCheck = {status:'unverified'};
+export const mapPinChecks = Object.fromEntries(
+  Object.entries(mapPins).map(([city, data]) => [
+    city,
+    Object.fromEntries(data.points.map((point) => [point[2], {...defaultMapPinCheck}])),
+  ]),
+);
+
+Object.assign(mapPinChecks.warsaw, {
+  '皇家城堡': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:80},
+  'POLIN 猶太史博物館': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:26},
+  '華沙起義博物館': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:41},
+  '科學文化宮觀景台': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:16},
+  'NUTA ★': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:86},
+  'WANDAL': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
+  'Zagoździński': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:22},
+  'Hotel Metropol': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:2},
+});
+Object.assign(mapPinChecks.krakow, {
+  'Bottiglieria 1881 ★★': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:9},
+  'ibis budget Krakow Stare Miasto': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:15},
+  '辛德勒工廠博物館': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:12},
+  'Bufet KRK': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:3},
+  'Folga': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
+  'MOLÁM Thai': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:13},
+  'NOAH': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:1},
+  'Nat Bistro': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:2},
+  'Plac Nowy (zapiekanka)': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:28},
+  'Mirror Bistro': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:3},
+});
+Object.assign(mapPinChecks.wroclaw, {
+  '中央市集廣場': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:73},
+  'Afrykarium 動物園': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:34},
+  '百年廳 Hala Stulecia': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:7},
+  'BABA ★': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:11},
+  'Miś SC': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:14},
+  'Piast': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:0},
+});
+Object.assign(mapPinChecks.poznan, {
+  '舊市集廣場 Stary Rynek': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:64},
+  '大教堂島 Ostrów Tumski': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:448, corrected:true},
+  '可頌博物館': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:12},
+  'Palmiarnia 棕櫚屋': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:48},
+  'Muga ★': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
+  'Na Winklu': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
+  'Szarlotta': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:10},
+  'Poznan Apartments Towarowa': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:25},
+});
 
 // attractions：逐列轉錄自 poland-travel-guide-final.html 各城「景點 · Sights」表格。
 // 名稱欄含多個連結時（如「Łazienki 公園 · Wilanów 宮」），name 保留完整可讀文字，
@@ -242,8 +293,8 @@ export const attractions = {
     {name:'Afrykarium · 動物園', tag:'熱門', priceNote:'PLN 60 / 優待 50 · 非洲主題水族館 · 線上購票', mapUrl:'https://www.google.com/maps/search/?api=1&query=Afrykarium%20Wroc%C5%82aw'},
     {name:'Panorama Racławicka', tag:'全景畫', priceNote:'4/1–10/31 每日 08:30–19:00 · PLN 50／35 · 每場 30 分，門票指定日期與場次 · 官方 2026 閉館日含 10/31 與 11/1（10/28 不在其列）· 票根 3 個月內可免費進國立博物館等三館', mapUrl:'https://www.google.com/maps/search/?api=1&query=Panorama%20Rac%C5%82awicka%20Wroc%C5%82aw'},
     {name:'百年廳 Hala Stulecia', tag:'UNESCO', priceNote:'Visitor Centre 四–十月二–日 10:00–18:00，25／20 · 含廳內 30／25，廳內依活動日曆開放', mapUrl:'https://maps.google.com/?cid=10763621538599936407'},
-    {name:'Hydropolis 水知識中心', tag:'室內', priceNote:'PLN 45（週末 47）/ 優待 36 · 雨備好選擇', mapUrl:'https://www.google.com/maps/search/?api=1&query=Hydropolis%20%E6%B0%B4%E7%9F%A5%E8%AD%98%E4%B8%AD%E5%BF%83%20Wroc%C5%82aw'},
-    {name:'Kolejkowo 微縮館', tag:'室內', priceNote:'PLN 50／40 · Sky Tower 1 樓 · 每日 10:00 起，關門時間查指定日期', mapUrl:'https://www.google.com/maps/search/?api=1&query=Kolejkowo%20%E5%BE%AE%E7%B8%AE%E9%A4%A8%20Wroc%C5%82aw'},
+    {name:'Hydropolis 水知識中心', tag:'室內', priceNote:'2026-08-11 官網查證：平日 45／36、週末／假日 47／38 PLN；入場與名額以指定日期售票頁為準', mapUrl:'https://www.google.com/maps/search/?api=1&query=Hydropolis%20%E6%B0%B4%E7%9F%A5%E8%AD%98%E4%B8%AD%E5%BF%83%20Wroc%C5%82aw'},
+    {name:'Kolejkowo 微縮館', tag:'室內', priceNote:'2026-08-11 官網查證：50／40 PLN · Sky Tower 1 樓 · 每日 10:00 起，關門時間查指定日期', mapUrl:'https://www.google.com/maps/search/?api=1&query=Kolejkowo%20%E5%BE%AE%E7%B8%AE%E9%A4%A8%20Wroc%C5%82aw'},
   ],
   poznan: [
     {name:'舊市集廣場 Stary Rynek', tag:'2024 重修', priceNote:'鋪面與無障礙全面翻新 · 彩色商人屋 · 四座神話噴泉 · 免費', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%88%8A%E5%B8%82%E9%9B%86%E5%BB%A3%E5%A0%B4%20Stary%20Rynek%20Pozna%C5%84'},
@@ -252,7 +303,7 @@ export const attractions = {
     {name:'古市政廳博物館', tag:'歷史', priceNote:'2026/7/1–2027/11/30 整修閉館，行程期間無法入內，僅能外觀', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E5%8F%A4%E5%B8%82%E6%94%BF%E5%BB%B3%E5%8D%9A%E7%89%A9%E9%A4%A8%20Pozna%C5%84'},
     {name:'帝王城堡 Zamek Cesarski', tag:'地標', priceNote:'CK Zamek 文化中心；室內展覽依當日公告，語音導覽 10 PLN（12:00–20:00，19:00 前借用）', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E5%B8%9D%E7%8E%8B%E5%9F%8E%E5%A0%A1%20Zamek%20Cesarski%20Pozna%C5%84'},
     {name:'大教堂島 Ostrów Tumski', tag:'古城', priceNote:'波蘭建國搖籃', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E6%95%99%E5%A0%82%E5%B3%B6%20Ostr%C3%B3w%20Tumski%20Pozna%C5%84'},
-    {name:'Palmiarnia 棕櫚屋', tag:'室內', priceNote:'PLN 19 / 優待 15 · 溫室植物與水族展示', mapUrl:'https://maps.google.com/?cid=10703456143872687277'},
+    {name:'Palmiarnia 棕櫚屋', tag:'室內', priceNote:'2026-08-11 官網查證：19／15 PLN · 週一休館；二–五 09:00–17:00（末入 16:00）、六日與假日 09:00–18:00（末入 17:00）', mapUrl:'https://maps.google.com/?cid=10703456143872687277'},
     {name:'考古博物館', tag:'室內', priceNote:'PLN 10 / 優待 6 · 週二免費（非週六）· 埃及展', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%80%83%E5%8F%A4%E5%8D%9A%E7%89%A9%E9%A4%A8%20Pozna%C5%84'},
     {name:'Stary Browar · Malta 湖 · Citadel 公園', tag:'戶外／購物', priceNote:'Śródka 有壁畫街拍點', mapUrl:'https://www.google.com/maps/search/?api=1&query=Stary%20Browar%20Pozna%C5%84'},
   ],

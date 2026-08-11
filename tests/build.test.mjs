@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { test } from 'node:test';
-import { cities, cityStories, photoSpots, photoCredits, mapPins, pinCategoryLegend, attractions, cityNotices } from '../src/data/cities.js';
+import { cities, cityStories, photoSpots, photoCredits, mapPins, mapPinChecks, pinCategoryLegend, attractions, cityNotices } from '../src/data/cities.js';
 import { cityDining, cityFood, foodBackup, foods, michelinSummary, michelinReservations, verifiedRestaurantHours } from '../src/data/dining.js';
 import { about, packingDefault, phrases, preDepartureNotes, safety } from '../src/data/essentials.js';
 import { shopping, souvenirCards, souvenirShops, luxuryShopping, zabkaCards } from '../src/data/shopping.js';
@@ -521,6 +521,23 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.deepEqual(Object.values(packingDefault).map(items => items.length), [5, 5, 5, 4]);
 });
 
+test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', () => {
+  const allPins = Object.entries(mapPins).flatMap(([city, data]) => data.points.map((point) => ({city, name:point[2]})));
+  assert.equal(allPins.length, 55);
+  for (const pin of allPins) {
+    assert.ok(mapPinChecks[pin.city]?.[pin.name], `${pin.city}/${pin.name} 缺少圖釘查證狀態`);
+  }
+
+  const cathedral = mapPins.poznan.points.find(point => point[2] === '大教堂島 Ostrów Tumski');
+  const cathedralCheck = mapPinChecks.poznan['大教堂島 Ostrów Tumski'];
+  assert.deepEqual(cathedral.slice(0, 2), [52.411573, 16.948647]);
+  assert.deepEqual(cathedralCheck, {
+    status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:448, corrected:true,
+  });
+  assert.equal(allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'coordinate-verified').length, 32);
+  assert.equal(allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'unverified').length, 23);
+});
+
 test('每頁都有完整文件外殼、導覽、主要內容與頁尾', () => {
   for (const file of expectedFiles) {
     const html = read(file);
@@ -833,6 +850,25 @@ test('舊票價與過時場館資料已從產出頁面移除', () => {
   }
   assert.ok(html.includes('城堡一、二樓完整路線 95／71'));
   assert.ok(html.includes('Kolejkowo') && html.includes('50／40'));
+});
+
+test('備案景點的票價與開放資訊使用 2026-08-11 官方查證結果', () => {
+  const hydropolis = fares.find(item => item.name === '樂斯拉夫 · Hydropolis');
+  const kolejkowo = fares.find(item => item.name === '樂斯拉夫 · Kolejkowo');
+  const palmiarnia = fares.find(item => item.name === '波茲南 · Palmiarnia 棕櫚屋');
+  const wroclawAttractions = attractions.wroclaw;
+  const poznanAttractions = attractions.poznan;
+
+  assert.match(hydropolis?.officialUrl ?? '', /bilety\.hydropolis\.pl/);
+  assert.match(hydropolis?.note ?? '', /47／38/);
+  assert.match(kolejkowo?.officialUrl ?? '', /kolejkowo\.pl\/wroclaw\/cennik/);
+  assert.doesNotMatch(kolejkowo?.note ?? '', /未由官網查證/);
+  assert.match(palmiarnia?.officialUrl ?? '', /^https:\/\/palmiarnia\.poznan\.pl/);
+  assert.match(palmiarnia?.note ?? '', /週一休館/);
+  assert.match(wroclawAttractions.find(item => item.name === 'Hydropolis 水知識中心')?.priceNote ?? '', /2026-08-11 官網查證/);
+  assert.match(wroclawAttractions.find(item => item.name === 'Kolejkowo 微縮館')?.priceNote ?? '', /2026-08-11 官網查證/);
+  assert.match(poznanAttractions.find(item => item.name === 'Palmiarnia 棕櫚屋')?.priceNote ?? '', /週一休館/);
+  assert.doesNotMatch(JSON.stringify(cityStories.find(story => story.city === '樂斯拉夫')), /1,040/);
 });
 
 test('餐廳頁只把可追到店家來源的營業時間列為已查', () => {

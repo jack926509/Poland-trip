@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "node build.mjs",
-    "test": "node build.mjs && node --test tests/*.test.mjs"
+    "test": "node build.mjs && node --test tests/*.test.mjs",
+    "audit:map-pins": "node tools/audit-map-pins.mjs"
   }
 }
