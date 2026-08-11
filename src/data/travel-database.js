@@ -45,10 +45,10 @@ export const databaseEntries = [
   },
   {
     id: 'aviation-trip-baggage-confirmation', section: 'aviation', category: 'transit', cityKey: 'ROUTE',
-    title: '本次行李額度與直掛確認',
-    summary: '本次電子機票的實際額度、是否直掛及 HKG、DOH 轉機程序，必須由旅客的訂單與航空公司確認。',
+    title: '本次航班時刻、行李額度與直掛確認',
+    summary: '本次電子機票的實際起降時刻、行李額度、是否直掛及 HKG、DOH 轉機程序，必須由旅客的訂單與航空公司確認。網站上的 QR 260 於 10/31 14:40 起飛屬冬季班表，與目前公開的夏季班表不同，Day 8 全天時間表都建立在這個時刻上，務必以電子機票核對。',
     status: 'private-required', sourceUrl: null, verifiedAt: null, recheckAt: '2026-10-22',
-    offlineNote: '離線保存電子機票；出發前 48 小時核對報到、航廈、座位、行李直掛與特殊餐。', private: true,
+    offlineNote: '離線保存電子機票；先核對五個航段的起降時刻與轉機時間是否與行程一致，再於出發前 48 小時核對報到、航廈、座位、行李直掛與特殊餐。', private: true,
   },
   {
     id: 'aviation-missing-baggage', section: 'aviation', category: 'safety', cityKey: 'WAW',
@@ -193,7 +193,7 @@ export const readinessItems = [
   { id: 'accommodation', title: '住宿', detail: '5 筆／7 晚訂單已確認；出發前補齊私人離線備份與寄放安排', priority: 'P0', status: 'private-required', entryId: 'accommodation-confirmations', private: true },
   { id: 'rail-tickets', title: '城際車票', detail: '確認車次、車廂、座位與轉乘保障', priority: 'P0', status: 'pending', entryId: 'rail-trip-tickets', private: false },
   { id: 'attraction-tickets', title: '景點票券', detail: '確認日期、入場時段與離線票券', priority: 'P0', status: 'pending', entryId: 'documents-attraction-tickets', private: true },
-  { id: 'flight-ticket', title: '航班行李', detail: '核對電子機票、行李額度與是否直掛', priority: 'P0', status: 'private-required', entryId: 'aviation-trip-baggage-confirmation', private: true },
+  { id: 'flight-ticket', title: '航班時刻與行李', detail: '核對電子機票的五段起降時刻、行李額度與是否直掛', priority: 'P0', status: 'private-required', entryId: 'aviation-trip-baggage-confirmation', private: true },
   { id: 'insurance', title: '旅平險', detail: '保存保單與海外救援聯絡方式', priority: 'P0', status: 'private-required', entryId: 'medical-insurance-and-emergency', private: true },
   { id: 'offline-pack', title: '網路離線', detail: '準備 SIM／eSIM、離線地圖與文件包', priority: 'P1', status: 'pending', entryId: 'connectivity-prepaid-registration', private: false },
   { id: 'passport-etias', title: 'ETIAS', detail: '依官方啟用進度重查入境資格', priority: 'P0', status: 'recheck', entryId: 'entry-etias-and-passport', private: false },
@@ -368,7 +368,7 @@ export const dayOperations = {
       address('紡織會館 Sukiennice', 'Rynek Główny 3, 31-042 Kraków', 'Sukiennice, Rynek Glowny 3, Krakow'),
       address('辛德勒工廠', 'Lipowa 4, 30-702 Kraków', 'Oskar Schindler Enamel Factory, Lipowa 4, Krakow'),
       address('Plac Nowy', 'Plac Nowy, 31-056 Kraków', 'Plac Nowy, Krakow'),
-      accommodationAddress('krakow-stare-miasto'),
+      accommodationAddress('krakow-stare-miasto', ['旅館寄放行李']),
     ],
     navigation: [
       { mode: 'PKP', route: '華沙 → 克拉科夫', action: '只依已購票上的車次、車廂與座位進站；月台當日查 Passenger Portal 與站內電子牌。' },
@@ -526,6 +526,7 @@ const unresolvedStepReasons = {
   },
   2: {
     '華沙 → 克拉科夫直達車': dynamicTransitReason,
+    '車站周邊午餐': flexibleStopReason,
     '電車 50 / 24 到 Plac Bohaterów Getta': dynamicTransitReason,
   },
   3: {

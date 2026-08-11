@@ -2,8 +2,8 @@
 // 來源：redesign/data.js:260-289（cities/photoSpots/photoCredits）、:534-598（cityStories）、
 //       poland-travel-guide-final.html:565（mapPins CITIES 圖釘物件，已套用校正表 3-1/3-2 修正）、
 //       poland-travel-guide-final.html 各城「景點 · Sights」表格（attractions）。
-// photoSpots 已套用校正表第 3 節拍照時段修正（waw-castle／krk-kazimierz／poz-rynek 的 bestTime，
-// 以及 wro-dwarfs 的日落時間敘述）。
+// photoSpots：2026-08-11 全部 10 筆逐一對齊 trip.js 的實際行程時段，並依重算後的日落時間
+// 重寫光線描述。校正表第 3 節原本要求「波茲南教堂島改上午」，當時誤套到 poz-rynek，已對調修正。
 
 export const cities = [
   {key:'WAW', name:'華沙', pl:'Warszawa', tag:'CAPITAL', nights:'1 + 2', totalNights:3, stayNote:'首晚倒時差 + 回程兩晚收尾', vibe:'鋼鐵摩天 × 重建老城', highlights:['POLIN 猶太博物館','起義博物館','皇家城堡','Krakowskie Przedmieście'], photo:{hero:'assets/photos/warszawa-hero.webp',thumb:'assets/photos/warszawa-thumb.webp'}},
@@ -44,7 +44,7 @@ export const cityStories = [
   },
   {
     city:'克拉科夫', en:'Kraków',
-    geo:'維斯瓦河上游，Wawel 城堡建在河畔一座石灰岩丘上——控制河運的天然要塞，也是波蘭王權 500 年的地理支點。老城以歐洲最大中世紀廣場 Rynek Główny（200m × 200m）為核心，街廓自 1257 年大蒙古劫掠後重劃至今未變。',
+    geo:'維斯瓦河上游，Wawel 城堡建在河畔一座石灰岩丘上——控制河運的天然要塞，也是波蘭王權 500 年的地理支點。老城以歐洲最大中世紀廣場 Rynek Główny（200m × 200m）為核心，街廓在 1241 年蒙古入侵劫掠後、依 1257 年建城特許狀重劃，至今未變。',
     history:'1038–1596 年的波蘭王都，歷代國王在 Wawel 加冕與安葬。二戰時因作為納粹總督府所在地而未被戰火摧毀，是波蘭極少數「原裝」的古城——你在克拉科夫摸到的石頭大多是真的中世紀石頭。Kazimierz 原是 1335 年卡齊米日大帝敕建的獨立城市，數百年來是歐洲猶太文化重鎮，戰前 6.5 萬猶太居民戰後僅存數千。',
     stories:[
       {title:'瓦維爾龍', text:'傳說 Wawel 山丘下的洞穴住著噴火龍，吃遍牲口少女。屠龍的不是騎士，而是鞋匠學徒 Skuba——他把硫磺塞進羊皮縫成假羊，龍吞下後渴到狂飲維斯瓦河水，最後爆掉。今日城堡下河畔有一座每隔幾分鐘真的噴火的龍雕像。'},
@@ -93,11 +93,11 @@ export const cityStories = [
 export const photoSpots = [
   {id:'waw-oldtown', cityKey:'WAW', name:'老城市集廣場', day:1, bestTime:'16:00–16:40', light:'日落前側光打在彩色立面，廣場人少'},
   {id:'waw-castle', cityKey:'WAW', name:'皇家城堡與美人魚', day:1, bestTime:'16:30–17:15', light:'順光；城堡紅牆在低角度陽光下最飽和（已對齊 Day1 實際行程 16:45–17:45）'},
-  {id:'waw-culture', cityKey:'WAW', name:'科學文化宮 30F 城景', day:7, bestTime:'16:10–17:00', light:'日落後藍調 20 分鐘，城市燈與天空同亮度'},
+  {id:'waw-culture', cityKey:'WAW', name:'科學文化宮 30F 城景', day:7, bestTime:'18:15–19:00', light:'10/30 華沙日落約 16:11，這個時段已是全黑純夜景，不是藍調時刻；想拍藍調得在 16:10–16:45，但 Day 7 那段時間排在起義博物館內。售票資訊至 20:00，晚間時段以當日公告為準（已對齊 Day7 起義博物館後、晚餐前的彈性時段）'},
   {id:'krk-rynek', cityKey:'KRK', name:'中央市集廣場與聖瑪利亞聖殿', day:2, bestTime:'16:00–16:45', light:'塔樓逆光，改拍東側迴廊反射光'},
-  {id:'krk-wawel', cityKey:'KRK', name:'Wawel 城堡河岸', day:2, bestTime:'15:40–16:30', light:'從 Dębnicki 橋往東拍，維斯瓦河面反光'},
+  {id:'krk-wawel', cityKey:'KRK', name:'Wawel 城堡河岸', day:2, bestTime:'12:30–13:00', light:'正午前後太陽在南方低角度，順光打在 Wawel 面河的南側城牆；從 Dębnicki 橋往東拍，帶維斯瓦河面反光（已對齊 Day2 午餐後前往大教堂途中的 10–15 分鐘繞路）'},
   {id:'krk-kazimierz', cityKey:'KRK', name:'Kazimierz 猶太區街景', day:4, bestTime:'14:30–16:00', light:'午後柔和側光，適合窄巷與塗鴉（已對齊 Day4 實際行程 14:30–16:00）'},
-  {id:'wro-rynek', cityKey:'WRO', name:'市政廳與彩色老屋', day:5, bestTime:'15:50–16:35', light:'西曬正打彩色立面，是全趟最上色的一刻'},
+  {id:'wro-rynek', cityKey:'WRO', name:'市政廳與彩色老屋', day:5, bestTime:'09:00–10:30', light:'上午光從東南方來，順光打在市政廳著名的東側哥德山牆；廣場東側那排彩色屋為西向、上午逆光，改拍西側與北側立面（已對齊 Day5 實際行程 09:00–10:30）'},
   {id:'wro-dwarfs', cityKey:'WRO', name:'小矮人與座堂島煤氣燈', day:5, bestTime:'16:15–17:15', light:'10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，日落前後在島上等候，暗處需高感光度（已對齊 Day5 實際行程 16:15–17:15）'},
   {id:'poz-rynek', cityKey:'POZ', name:'舊市集廣場彩色立面', day:6, bestTime:'11:00–12:15', light:'接近正午的高角度光打亮市政廳東向立面與彩色商人屋；卡位同時等 12:00 山羊報時（已對齊 Day6 實際行程 11:00–12:15）'},
   {id:'poz-tumski', cityKey:'POZ', name:'教堂島 Ostrów Tumski', day:6, bestTime:'09:00–10:30', light:'上午光從東側來，座堂西面雙塔為逆光；改從 Śródka 側或橋上取側光與河面倒影（已對齊 Day6 實際行程 09:00–10:30）'},

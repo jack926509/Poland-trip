@@ -34,7 +34,7 @@ export const days = [
       {t:'15:15', label:'旅館 Check-in', dur:'30 min'},
       {t:'16:45', label:'★ 老城廣場', sub:'皇家城堡 · 美人魚雕像', cost:'免費', dur:'1 h'},
       {t:'18:00', label:'Krakowskie Przedmieście', sub:'黃昏氛圍', cost:'免費', dur:'1 h'},
-      {t:'19:00', label:'Pierogi 晚餐', sub:'Zapiecek · Podwale 19', cost:'PLN 35–55'},
+      {t:'19:00', label:'Pierogi 晚餐', sub:'Zapiecek · Krakowskie Przedmieście 55（就在 18:00 散步那條街上）；出發前確認當日營業', cost:'PLN 35–55'},
       {t:'21:00', label:'早睡倒時差'},
     ],
     eat: ['Pierogi @ Zapiecek', 'Wedel 熱巧克力 @ E. Wedel Pijalnia'],
@@ -62,6 +62,8 @@ export const days = [
     steps: [
       {t:'約 09:00', label:'華沙 → 克拉科夫直達車', sub:'EIP／IC 皆可；班次、車種與餐飲服務待 PKP 開賣確認', cost:'待開賣', dur:'約 2h25'},
       {t:'約 11:25', label:'抵 Kraków Główny', dur:'10 min 拖行李'},
+      {t:'11:40', label:'旅館寄放行李', sub:'ibis budget Krakow Stare Miasto 在 Pawia 11，緊鄰車站；未到 Check-in 時間先寄行李', dur:'20 min'},
+      {t:'12:00', label:'車站周邊午餐', sub:'10/25 為非營業週日，先確認店家當日營業；用餐後步行約 25–30 分到 Wawel', cost:'PLN 40–60', dur:'30 min'},
       {t:'13:00', label:'★ 瓦維爾大教堂', sub:'週日 12:30–17:00；Cathedral Museum 週日不開', cost:'PLN 26／18', dur:'45 min'},
       {t:'14:00', label:'★ Wawel 城堡一、二樓完整路線', sub:'09:00–17:00 · 完整路線最後入場 15:00', cost:'PLN 95／71', dur:'2 h'},
       {t:'16:00', label:'★ 中央廣場 + 聖瑪利亞', sub:'整點 Hejnał 號角', cost:'PLN 20 (登塔)', dur:'45 min'},
@@ -163,7 +165,7 @@ export const days = [
       {t:'11:30', label:'★ 拉茨瓦維採全景畫', sub:'30 分鐘導覽', cost:'PLN 50', dur:'1 h'},
       {t:'13:30', label:'★ 百年廳 (UNESCO)', sub:'先以官方 availability calendar 確認 10/28 是否可參觀內部；未確認前以外觀、噴泉與日本花園規劃', cost:'外觀免費', dur:'1 h'},
       {t:'16:15', label:'★ 座堂島煤氣燈', sub:'日落約 16:34；點燈人無固定公開出發分鐘，在島上等候與散步', cost:'免費', dur:'1 h'},
-      {t:'17:30', label:'取行李 → Wrocław Główny', sub:'距目標發車 1.5 h；扣除約 30 分鐘移動後，抵站後約 1 h 緩衝', dur:'30 min'},
+      {t:'17:15', label:'取行李 → Wrocław Główny', sub:'座堂島 → 旅館約 25–30 分，取行李後再往車站；距目標發車 1h45，抵站後約 45–60 分鐘緩衝', dur:'約 1 h'},
       {t:'目標 19:00', label:'IC 直達車', sub:'實際班次待 PKP 開賣', cost:'待開賣', dur:'約 2h20'},
     ],
     eat: ['Śląskie kluski @ Konspira', 'Browar Stu Mostów 精釀'],
@@ -416,6 +418,13 @@ export const todoGroups = [
       {date:'10/30', name:'華沙皇家城堡 10:00', status:'尚未訂', action:'選擇 10:00 入場，並保留安檢與離館移動時間。', url:'https://www.zamek-krolewski.pl/en'},
       {date:'10/30', name:'POLIN 猶太人歷史博物館 13:15', status:'尚未訂', action:'依官方售票頁的指定日庫存選擇 13:15 左右時段（主展最後入場 16:00）。', url:'https://polin.pl/en'},
       {date:'10/30', name:'華沙起義博物館 16:00', status:'尚未訂', action:'依官方票頁可售時段確認，避免與前一館離館時間衝突。', url:'https://www.1944.pl/en'},
+    ],
+  },
+  {
+    id: 'venue-status', title: '場館開放狀態', eyebrow: 'Status · 1 項',
+    intro: '不需購票，但會決定當天走不走得成；未確認前主行程只排外觀與周邊。',
+    items: [
+      {date:'10/28', name:'百年廳 10/28 內部參觀狀態', status:'待官方日曆確認', action:'上 halastulecia.pl 的 availability calendar 查 10/28 圓頂展廳是否開放；2026-08-09 盤查時官方公開頁既無法證實關閉、也無法證實開放。行前 3–5 天再複查一次。', url:'https://halastulecia.pl/zwiedzanie/visitor-centre/'},
     ],
   },
   {

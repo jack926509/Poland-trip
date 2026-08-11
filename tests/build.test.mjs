@@ -429,14 +429,16 @@ test('2026-08-09 官方盤查會移除未能證實的場次、價格與閉館敘
   assert.ok(cityNotices.wroclaw.some(item => item.text.includes('availability calendar')));
 });
 
-test('待辦事項頁將 13 項依四類整理，並在實用資訊導覽可進入', () => {
+test('待辦事項頁將 14 項依五類整理，並在實用資訊導覽可進入', () => {
+  // 2026-08-11 新增 venue-status：百年廳 10/28 內部開放狀態不需購票，
+  // 但未確認就可能整段落空，必須是可勾稽的待辦而不只是頁面上的警語。
   assert.deepEqual(todoGroups.map(group => [group.id, group.items.length]), [
-    ['rail', 4], ['attractions', 7], ['dining', 1], ['rainy-day', 1],
+    ['rail', 4], ['attractions', 7], ['venue-status', 1], ['dining', 1], ['rainy-day', 1],
   ]);
-  assert.equal(todoGroups.flatMap(group => group.items).length, 13);
+  assert.equal(todoGroups.flatMap(group => group.items).length, 14);
 
   const html = read('practical/todos.html');
-  for (const label of ['城際交通', '主要景點', '餐飲訂位', '雨天備案']) {
+  for (const label of ['城際交通', '主要景點', '場館開放狀態', '餐飲訂位', '雨天備案']) {
     assert.ok(html.includes(label), `待辦頁缺少分類：${label}`);
   }
   assert.ok(html.includes('辛德勒工廠 17:30'));
@@ -599,14 +601,14 @@ test('首頁包含 8 天、4 城與全部實用頁入口', () => {
   );
 });
 
-test('首頁移除出發準備度與步調，直接列出 13 項待辦', () => {
+test('首頁移除出發準備度與步調，直接列出 14 項待辦', () => {
   const html = read('index.html');
 
   assert.ok(!html.includes('出發準備度'));
   assert.ok(!html.includes('00 / Readiness'));
   assert.ok(!html.includes('高效率城市探索 · 腳程快 · 重點景點完整走完'));
-  assert.ok(!html.includes('13 項尚未訂'));
-  assert.ok(html.includes('13 項待辦'));
+  assert.ok(!html.includes('14 項尚未訂'));
+  assert.ok(html.includes('14 項待辦'));
   for (const group of todoGroups) {
     assert.ok(html.includes(`>${group.title}<`), `首頁缺少待辦分類：${group.title}`);
     for (const item of group.items) assert.ok(html.includes(`>${item.name}<`), `首頁缺少待辦：${item.name}`);
@@ -620,8 +622,9 @@ test('高風險行程文字與餐廳候選不會誤導現場判斷', () => {
   const luggageStep = dayFive.steps.find(step => step.label.includes('取行李'));
   const warsawDining = cityDining.warsaw;
 
-  assert.match(luggageStep.sub, /距目標發車 1\.5 h/);
-  assert.match(luggageStep.sub, /抵站後約 1 h/);
+  assert.match(luggageStep.sub, /座堂島 → 旅館約 25–30 分/);
+  assert.match(luggageStep.sub, /距目標發車 1h45/);
+  assert.match(luggageStep.sub, /抵站後約 45–60 分鐘緩衝/);
   assert.ok(!warsawDining.some(item => item.name.includes('/')), '餐廳候選不可把多個品牌合併成一筆');
   assert.ok(warsawDining.some(item => item.name === 'Gościniec（探索候選）'));
 });

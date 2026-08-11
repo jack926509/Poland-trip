@@ -11,7 +11,7 @@ export const souvenirCards = [
   {title:'⚠️ Kabanosy 煙燻香腸乾', desc:'深褐紅色細長條、真空包裝，波蘭超人氣肉乾零食，超商／超市都買得到。當地吃很推薦，但台灣海關嚴禁肉類製品入境（防治非洲豬瘟），別帶回台灣，出境前吃完或留在當地。'},
   {title:'Toruń 薑餅 Pierniki', desc:'深褐色心型／圓形餅乾，常見錫盒或印花紙盒裝，全波蘭知名甜點禮，密封包裝好帶。'},
   {title:'Nalewka 水果利口酒（不喝酒可略過）', desc:'深紅寶石色澤，華沙傳統，櫻桃 wiśniówka 最有名，玻璃瓶身常見手寫標籤。'},
-  {title:'oscypek 煙燻羊酪', desc:'紡錘形、表面壓花紋、煙燻後呈金黃色，Tatra／Podhale 山區特產，認明產地標。'},
+  {title:'⚠️ oscypek 煙燻羊酪', desc:'紡錘形、表面壓花紋、煙燻後呈金黃色，Tatra／Podhale 山區特產，認明產地標。當地吃很推薦，但乳製品攜帶回台受《動物產品輸入檢疫》規範，出發前請查防檢署當期公告確認可攜品項、限量與是否需檢疫證明，不要當成一定能帶。'},
   {title:'城市特色', desc:'波茲南專屬 rogal świętomarciński 金黃可頌，內餡白罌粟籽；克拉科夫 Wawel 巧克力＋現買 obwarzanek 麻花圈。'},
 ];
 
@@ -37,7 +37,7 @@ export const shopping = [
   {tag:'巧克力', name:'E. Wedel', note:'1851 年華沙百年品牌'},
   {tag:'糖果', name:'Krówki', note:'波蘭奶油糖，超市到處有'},
   {tag:'剪紙', name:'Wycinanki', note:'庫亞瓦、洛維奇地區傳統'},
-  {tag:'起司', name:'Oscypek', note:'塔特拉山區代表性乳酪，可帶上飛機'},
+  {tag:'起司', name:'Oscypek', note:'塔特拉山區代表性乳酪；帶回台灣屬動物產品，須先查防檢署當期規定'},
 ];
 
 export const zabkaCards = [
