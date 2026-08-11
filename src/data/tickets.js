@@ -1,7 +1,7 @@
 // 2026-08-08 逐項以景點官網查證；價格單位均為 PLN。
 export const fares = [
   {name:'華沙 · 皇家城堡', fullPrice:'60／95', discountPrice:'45／75', note:'2026-08-11 官網查證：二–日 10:00–18:00、最後入場 17:00；Royal Route 60／45（約 60 分）、Castle Route 95／75（約 150 分，含語音導覽）；週三免費但只走限定路線、現場領票且數量有限，語音導覽另收 10', officialUrl:'https://www.zamek-krolewski.pl/en/strona/opening-hours-and-ticket-prices/2801-opening-hours-and-ticket-prices-may-2-2026', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20%E7%9A%87%E5%AE%B6%E5%9F%8E%E5%A0%A1'},
-  {name:'華沙 · 科學文化宮觀景台', fullPrice:'30', discountPrice:'25', note:'已更新（原標 25）', officialUrl:'https://pkin.pl/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20%E7%A7%91%E5%AD%B8%E6%96%87%E5%8C%96%E5%AE%AE%E8%A7%80%E6%99%AF%E5%8F%B0'},
+  {name:'華沙 · 科學文化宮觀景台', fullPrice:'30', discountPrice:'25', note:'2026-08-11 官網查證：每日 10:00–20:00；觀景台在 30 樓、114 m，電梯 19 秒；夜間場（20:00–24:00）只在週五六且只到 9 月底，10 月不適用；11/1 閉館', officialUrl:'https://pkin.pl/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20%E7%A7%91%E5%AD%B8%E6%96%87%E5%8C%96%E5%AE%AE%E8%A7%80%E6%99%AF%E5%8F%B0'},
   {name:'華沙 · Neon 霓虹博物館', fullPrice:'25', discountPrice:'18', note:'科學文化宮 4 樓；一–四 11:00–18:00、五–六至 19:00、日 11:00–18:00', officialUrl:'https://www.neonmuzeum.org/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20Neon%20%E9%9C%93%E8%99%B9%E5%8D%9A%E7%89%A9%E9%A4%A8'},
   {name:'華沙 · MSN 當代美術館', fullPrice:'40', discountPrice:'30', note:'二–四／六 11:00–19:00、五至 20:00、日至 18:00；18:00 後 25／15，Gallery A 免費', officialUrl:'https://artmuseum.pl/en/visit', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20MSN%20%E7%95%B6%E4%BB%A3%E7%BE%8E%E8%A1%93%E9%A4%A8'},
   {name:'華沙 · 波蘭歷史博物館', fullPrice:'以官網', discountPrice:'—', note:'華沙城堡區新館已於 2023 開館；常設展仍在建置，先查當期臨展', officialUrl:'https://muzhp.pl/en/about-museum', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20%E6%B3%A2%E8%98%AD%E6%AD%B7%E5%8F%B2%E5%8D%9A%E7%89%A9%E9%A4%A8%20Warszawa'},
@@ -15,8 +15,8 @@ export const fares = [
   {name:'樂斯拉夫 · Panorama Racławicka', fullPrice:'50', discountPrice:'35', note:'官網優待價已補上', officialUrl:'https://mnwr.pl/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20Panorama%20Rac%C5%82awicka'},
   {name:'樂斯拉夫 · 百年廳 Visitor Centre', fullPrice:'25', discountPrice:'20', note:'四–十月二–日 10:00–18:00；加看百年廳內部為 30／25，內部仍依活動日曆開放', officialUrl:'https://halastulecia.pl/zwiedzanie/visitor-centre/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20%E7%99%BE%E5%B9%B4%E5%BB%B3'},
   {name:'樂斯拉夫 · Hydropolis', fullPrice:'45', discountPrice:'36', note:'週末全票 47', officialUrl:'https://hydropolis.pl/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20Hydropolis'},
-  {name:'樂斯拉夫 · Kolejkowo', fullPrice:'50', discountPrice:'40', note:'Sky Tower 1 樓；每日 10:00 起，結束時間依官方日期日曆', officialUrl:'https://kolejkowo.pl/wroclaw/godziny-otwarcia', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20Kolejkowo'},
-  {name:'波茲南 · Palmiarnia 棕櫚屋', fullPrice:'19', discountPrice:'15', note:'', officialUrl:'http://www.palmiarnia.poznan.pl/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20Palmiarnia%20%E6%A3%95%E6%AB%9A%E5%B1%8B'},
+  {name:'樂斯拉夫 · Kolejkowo', fullPrice:'50', discountPrice:'40', note:'Sky Tower 1 樓（Powstańców Śląskich 95）· 全年 365 天開放含非營業週日，每日 10:00 起、關門時間依官方日期日曆（多為 18:00，週五六 19:00）· 參觀約 1.5 h · 票價未由官網查證', officialUrl:'https://kolejkowo.pl/wroclaw/godziny-otwarcia', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20Kolejkowo'},
+  {name:'波茲南 · Palmiarnia 棕櫚屋', fullPrice:'19', discountPrice:'15', note:'ul. Matejki 18（Park Wilsona 內）· 票價未由官網查證，以現場或官方售票頁為準', officialUrl:'http://www.palmiarnia.poznan.pl/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20Palmiarnia%20%E6%A3%95%E6%AB%9A%E5%B1%8B'},
   {name:'波茲南 · 可頌博物館', fullPrice:'官方售票頁', discountPrice:'官方售票頁', note:'週四英語場、價格與庫存依 10/29 官方售票頁確認；不要以週末固定英文場或舊價格預設', officialUrl:'https://rogalowemuzeum.pl/en/buy-ticket/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20%E5%8F%AF%E9%A0%8C%E5%8D%9A%E7%89%A9%E9%A4%A8'},
   {name:'波茲南 · 帝王城堡', fullPrice:'依展覽／導覽', discountPrice:'依展覽', note:'現為 CK ZAMEK 文化中心，不是固定票價的宮殿博物館；依當日活動與可參觀空間為準', officialUrl:'https://ckzamek.pl/podstrony/6071-zwiedzanie-zamku/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20%E5%B8%9D%E7%8E%8B%E5%9F%8E%E5%A0%A1'},
   {name:'波茲南 · 古市政廳博物館', fullPrice:'閉館中', discountPrice:'—', note:'整修中；官方預計 2027 年底至 2028 年初才全面重開', officialUrl:'https://www.msu.mnp.art.pl/profile/wizyta-ratusz-muzeum-poznania', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20%E5%8F%A4%E5%B8%82%E6%94%BF%E5%BB%B3%E5%8D%9A%E7%89%A9%E9%A4%A8'},
@@ -39,7 +39,7 @@ export const ticketsByCity = [
     ['聖瑪麗教堂登塔', 'PLN 20／15 · 只在 Mariacki 廣場 7 號當日現場售票、無法預約 · 入口在 Floriańska 街'],
     ['奧斯威辛 Educator 導覽', '依官方訂票頁當日場次；10 月上午必須跟團'],
     ['維利奇卡鹽礦', '10/27 英文場、實際票價與庫存看官方日期選擇器'],
-    ['地下市集博物館', 'PLN 45／35'],
+    ['地下市集博物館', 'PLN 45／35 · 末入為閉館前 75 分鐘 · 每週二免費（現場限量）· 每月第二個週一休'],
   ]},
   {city:'樂斯拉夫', items:[
     ['百年廳 Hala Stulecia', 'Visitor Centre 25／20；含廳內 30／25，內部依活動日曆'],
