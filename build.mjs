@@ -357,6 +357,7 @@ ${bundledPages}
 function build() {
   resetOutput();
   fs.copyFileSync(path.join(projectRoot, 'src/styles/main.css'), path.join(distDir, 'assets/main.css'));
+  fs.copyFileSync(path.join(projectRoot, 'src/scripts/nav.js'), path.join(distDir, 'assets/nav.js'));
 
   writeHtml('index.html', renderHome({
     meta: trip.meta,

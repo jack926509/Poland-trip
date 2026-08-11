@@ -535,10 +535,15 @@ test('每頁都有完整文件外殼、導覽、主要內容與頁尾', () => {
 test('手機導覽以原生可展開選單呈現，且選單層級高於內容', () => {
   const html = read('index.html');
   const css = fs.readFileSync(path.join(distDir, 'assets/main.css'), 'utf8');
+  const navScript = fs.readFileSync(path.join(distDir, 'assets/nav.js'), 'utf8');
 
   assert.equal((html.match(/<details class="nav-dropdown/g) || []).length, 3);
+  assert.equal((html.match(/<details class="nav-dropdown[^>]* name="primary-navigation">/g) || []).length, 3);
   assert.match(html, /<summary>每日行程<\/summary>/);
   assert.match(html, /<li><a href="index\.html#days">行程總覽<\/a><\/li>/);
+  assert.match(html, /<script src="assets\/nav\.js" defer><\/script>/);
+  assert.match(navScript, /menu\.addEventListener\('toggle',[\s\S]*other\.open = false/s);
+  assert.match(navScript, /menu\.addEventListener\('click',[\s\S]*menu\.open = false/s);
   assert.match(css, /\.nav-dropdown\[open\]\s*>\s*ul\s*\{[^}]*display\s*:\s*block/s);
   assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav\s*\{[^}]*position\s*:\s*relative[^}]*z-index\s*:\s*100/s);
   assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav-dropdown\s*>\s*ul\s*\{[^}]*right\s*:\s*1\.25rem[^}]*left\s*:\s*1\.25rem/s);

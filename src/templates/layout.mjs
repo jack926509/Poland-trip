@@ -28,11 +28,11 @@ export function renderLayout({ title, activeNav, bodyHtml, extraHead = '', pathP
   <a class="skip-link" href="#main-content">跳至主要內容</a>
   <nav class="nav" aria-label="主要導覽">
     <a class="nav-brand" href="${path('index.html')}"${current(activeNav, 'home')}>POLSKA</a>
-    <details class="nav-dropdown${activeNav === 'days' ? ' nav-dropdown-current' : ''}">
+    <details class="nav-dropdown${activeNav === 'days' ? ' nav-dropdown-current' : ''}" name="primary-navigation">
       <summary>每日行程</summary>
       <ul><li><a href="${path('index.html#days')}">行程總覽</a></li>${dayLinks}</ul>
     </details>
-    <details class="nav-dropdown${activeNav === 'cities' ? ' nav-dropdown-current' : ''}">
+    <details class="nav-dropdown${activeNav === 'cities' ? ' nav-dropdown-current' : ''}" name="primary-navigation">
       <summary>城市指南</summary>
       <ul>
         <li><a href="${path('index.html#cities')}">城市總覽</a></li>
@@ -42,7 +42,7 @@ export function renderLayout({ title, activeNav, bodyHtml, extraHead = '', pathP
         <li><a href="${path('city-poznan.html')}">波茲南 Poznań</a></li>
       </ul>
     </details>
-    <details class="nav-dropdown${activeNav === 'practical' ? ' nav-dropdown-current' : ''}">
+    <details class="nav-dropdown${activeNav === 'practical' ? ' nav-dropdown-current' : ''}" name="primary-navigation">
       <summary>實用資訊</summary>
       <ul>
         <li><a href="${path('index.html#practical')}">實用資訊總覽</a></li>
@@ -67,6 +67,7 @@ export function renderLayout({ title, activeNav, bodyHtml, extraHead = '', pathP
       <p>票價、開放時間與交通資料查證於 2026-08-09；尚未開賣或會變動的項目已明確標示，實際以官網與已購票券為準。</p>
     </div>
   </footer>
+  <script src="${path('assets/nav.js')}" defer></script>
 </body>
 </html>`;
 }
