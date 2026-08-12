@@ -1,6 +1,6 @@
 # 地圖圖釘座標查證紀錄
 
-- 查證日期：2026-08-11（Asia/Taipei）
+- 查證日期：2026-08-11、2026-08-12（Asia/Taipei）
 - 範圍：`src/data/cities.js` 的 55 筆 `mapPins`
 - 座標服務：Nominatim／OpenStreetMap，識別 User-Agent 為 `PolandTripDataAudit/1.0`，查詢間隔至少 1 秒。
 - 原則：地理編碼只用於將已知地址或明確店名轉為座標；不能取得可靠對應結果的圖釘維持 `unverified`，不憑目測改點。
@@ -9,8 +9,8 @@
 
 | 狀態 | 筆數 | 說明 |
 |---|---:|---|
-| `coordinate-verified` | 32 | 已取得可對應結果，並記錄現值差距。 |
-| `unverified` | 23 | 尚未完成第一方地址及座標的獨立比對；不視為正確。 |
+| `coordinate-verified` | 46 | 已取得可對應結果，並記錄現值差距。 |
+| `unverified` | 9 | 4 家 Żabka 依使用者決定不再逐店確認；其餘 5 筆沒有可安全視為門牌級的來源。 |
 
 ## 已完成座標比對
 
@@ -49,9 +49,30 @@
 | 波茲南 | Szarlotta | Bistro Szarlotta | 52.4072462, 16.9342333 | 10 m | 維持原座標。 |
 | 波茲南 | Poznan Apartments Towarowa | Towarowa 37/201 附近接待處 | 52.4040007, 16.9152789 | 25 m | 維持原座標；結果名稱為同址的 Capital Apartments，出發前仍以住宿確認單為準。 |
 
+## 2026-08-12 補充查證
+
+以下各筆先以場館或店家第一方頁面取得地址，再以 Nominatim／OpenStreetMap 查詢；數字是與 2026-08-12 前原圖釘的直線距離。除克拉科夫陶器店外，所有差距均低於 100 m，故保留原座標。
+
+| 城市 | 圖釘 | 第一方地址與來源 | Nominatim 座標 | 差距 | 處置 |
+|---|---|---|---|---:|---|
+| 華沙 | Alon Omakase ★ | Woronicza 33C lok. U4；[店家條款](https://omakase.eu/en/terms-conditions/) | 52.1884477, 20.9914154 | 7 m | 維持。 |
+| 華沙 | hub.praga ★ | Jagiellońska 22；[店家聯絡頁](https://hub-praga.pl/kontakt) | 52.2511343, 21.0361172 | 4 m | 維持。 |
+| 華沙 | Pijalnia Czekolady E.Wedel（巧克力） | Szpitalna 8；[Wedel 店點](https://wedelpijalnie.pl/lokale) | 52.2333391, 21.0148208 | 8 m | 維持。 |
+| 華沙 | Vitkac | Bracka 9；[Vitkac 聯絡頁](https://www.vitkac.com/us/lp/contact) | 52.2310149, 21.0185680 | 10 m | 維持。 |
+| 華沙 | Chylak（波蘭設計師包款） | Koszykowa 5；[Chylak 店點](https://chylak.com/pl/pl/retailers) | 52.2218013, 21.0200005 | 45 m | 維持。 |
+| 華沙 | ibis budget Warszawa Reduta | Bitwy Warszawskiej 16A；[Accor 飯店頁](https://all.accor.com/hotel/7148/index.en.shtml) | 52.2145926, 20.9676645 | 35 m | 維持。 |
+| 克拉科夫 | Wawel 皇家城堡 | Wawel 5；[城堡聯絡頁](https://wawel.krakow.pl/kontakt) | 50.0542052, 19.9361367 | 52 m | 維持。 |
+| 克拉科夫 | Bar Smak | Karmelicka 10；[店家頁](https://bar-smak-krakow.eatbu.com/) | 50.0640243, 19.9321602 | 1 m | 維持。 |
+| 克拉科夫 | Hamsa | Szeroka 2；[店家頁](https://hamsa.eatbu.com/?lang=pl) | 50.0531324, 19.9476916 | 7 m | 維持。 |
+| 克拉科夫 | Ceramika Bolesławiecka（陶器） | Kobalt，Grodzka 62；[陶器品牌經銷頁](https://kobalt.com.pl/gile) | 50.0552314, 19.9384705 | 293 m | 改為此官方列出的經銷店座標。 |
+| 克拉科夫 | World of Amber（琥珀） | Grodzka 38；[店家頁](https://worldofamber.pl/) | 50.0583170, 19.9381812 | 5 m | 維持。 |
+| 克拉科夫 | Sukiennice 布廊（伴手禮攤位） | Rynek Główny 1–3；[市府旅遊頁](https://krakow.travel/en/54-krakow-cloth-hall) | 50.0615174, 19.9371069 | 28 m | 維持；地理編碼結果為廣場代表點。 |
+| 樂斯拉夫 | Most ★ | Księcia Witolda 1；[餐廳頁](https://miedzy-mostami.pl/en/most-restaurant/) | 51.1147935, 17.0311032 | 4 m | 維持。 |
+| 樂斯拉夫 | IDA kuchnia i wino | Łazienna 4；[店家頁](https://idakuchniaiwino.pl/) | 51.1124135, 17.0293523 | 18 m | 維持。 |
+
 ## 後續處理
 
-1. 其餘 23 筆先取得第一方地址，再做同樣的座標比對。
-2. 差距超過 100 m 且地址、地理編碼結果可信時才修正。
-3. Rozbrat 20 沒有門牌級座標前不加入圖釘；街道中心座標不可視為驗證完成。
-4. 住宿旁 Żabka 未取得可靠座標前不調整或新增圖釘。
+1. Bar Mleczny Rusałka 的市府頁可見 Floriańska 14，但本輪無法讀取原頁確認；Svensson Pierogi 僅有 Długa 街等級資訊，兩者維持未驗證。
+2. 中央市集廣場、Kazimierz 猶太區與大教堂島 Ostrów Tumski 都是面狀景點，沒有單一門牌級錨點；維持未驗證，避免把代表點誤標成精確位置。
+3. 4 家 Żabka 分店依使用者決定排除逐店查證，維持未驗證即可。
+4. Rozbrat 20 沒有門牌級座標前不加入圖釘；街道中心座標不可視為驗證完成。

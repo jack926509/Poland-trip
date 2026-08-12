@@ -29,6 +29,7 @@ import {
 } from '../src/data/travel-database.js';
 import { renderDatabase } from '../src/templates/database.mjs';
 import { renderHome } from '../src/templates/home.mjs';
+import { auditMapPins } from '../tools/audit-map-pins.mjs';
 
 const distDir = path.resolve('dist');
 const standalonePath = path.resolve('poland-travel-guide-2026.html');
@@ -534,8 +535,55 @@ test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', ()
   assert.deepEqual(cathedralCheck, {
     status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:448, corrected:true,
   });
-  assert.equal(allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'coordinate-verified').length, 32);
-  assert.equal(allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'unverified').length, 23);
+  const verifiedPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'coordinate-verified');
+  const unverifiedPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'unverified');
+  assert.equal(verifiedPins.length, 46);
+  assert.deepEqual(
+    unverifiedPins.map(({name}) => name).sort(),
+    [
+      'Bar Mleczny Rusałka',
+      '中央市集廣場',
+      'Kazimierz 猶太區',
+      'Svensson Pierogi',
+      '大教堂島 Ostrów Tumski',
+      'Żabka（Rynek）',
+      'Żabka（Stary Rynek）',
+      'Żabka（舊城區）',
+      'Żabka（Rynek Główny）',
+    ].sort(),
+  );
+});
+
+test('圖釘稽核不會把缺漏或無效狀態誤算為已驗證', () => {
+  const samplePins = {
+    test: {
+      points: [
+        [25, 121, '已驗證', '景點', 'https://example.com/verified', 'sight'],
+        [25, 121, '待驗證', '景點', 'https://example.com/pending', 'sight'],
+        [25, 121, '無效狀態', '景點', 'https://example.com/invalid', 'sight'],
+        [25, 121, '缺少紀錄', '景點', 'https://example.com/missing', 'sight'],
+      ],
+    },
+  };
+  const sampleChecks = {
+    test: {
+      已驗證: {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'測試來源', distanceMeters:0},
+      待驗證: {status:'unverified'},
+      無效狀態: {status:'unknown'},
+    },
+  };
+
+  const result = auditMapPins(samplePins, sampleChecks, {sight:{label:'景點'}});
+  assert.deepEqual(
+    {total:result.total, verified:result.verified, pending:result.pending.length, invalid:result.invalid.length},
+    {total:4, verified:1, pending:1, invalid:2},
+  );
+  assert.equal(result.issues.length, 2);
+});
+
+test('完整驗收會執行圖釘資料稽核', () => {
+  const verifyScript = fs.readFileSync(path.resolve('verify.sh'), 'utf8');
+  assert.match(verifyScript, /npm run audit:map-pins/);
 });
 
 test('每頁都有完整文件外殼、導覽、主要內容與頁尾', () => {
@@ -845,14 +893,14 @@ test('逐日移動不保留已知不可行備案或重疊時刻', () => {
 
 test('舊票價與過時場館資料已從產出頁面移除', () => {
   const html = expectedFiles.map(read).join('\n');
-  for (const stale of ['199／149', 'PLN 32', '55／45', '2026 新開的 E.Wedel']) {
+  for (const stale of ['199／149', 'PLN 32', '50／40 PLN', '2026 新開的 E.Wedel']) {
     assert.ok(!html.includes(stale), `仍出現舊資料：${stale}`);
   }
   assert.ok(html.includes('城堡一、二樓完整路線 95／71'));
-  assert.ok(html.includes('Kolejkowo') && html.includes('50／40'));
+  assert.ok(html.includes('Kolejkowo') && html.includes('線上 39 起／現場 55 起'));
 });
 
-test('備案景點的票價與開放資訊使用 2026-08-11 官方查證結果', () => {
+test('備案景點的票價與開放資訊使用最新官方查證結果', () => {
   const hydropolis = fares.find(item => item.name === '樂斯拉夫 · Hydropolis');
   const kolejkowo = fares.find(item => item.name === '樂斯拉夫 · Kolejkowo');
   const palmiarnia = fares.find(item => item.name === '波茲南 · Palmiarnia 棕櫚屋');
@@ -861,12 +909,14 @@ test('備案景點的票價與開放資訊使用 2026-08-11 官方查證結果',
 
   assert.match(hydropolis?.officialUrl ?? '', /bilety\.hydropolis\.pl/);
   assert.match(hydropolis?.note ?? '', /47／38/);
-  assert.match(kolejkowo?.officialUrl ?? '', /kolejkowo\.pl\/wroclaw\/cennik/);
-  assert.doesNotMatch(kolejkowo?.note ?? '', /未由官網查證/);
+  assert.match(kolejkowo?.officialUrl ?? '', /kolejkowo\.pl\/wroclaw\/(?:cennik|en\/price-list)/);
+  assert.equal(kolejkowo?.fullPrice, '線上 39 起／現場 55 起');
+  assert.equal(kolejkowo?.discountPrice, '線上 33 起／現場 45 起');
+  assert.match(kolejkowo?.note ?? '', /2026-08-12 官網查證/);
   assert.match(palmiarnia?.officialUrl ?? '', /^https:\/\/palmiarnia\.poznan\.pl/);
   assert.match(palmiarnia?.note ?? '', /週一休館/);
   assert.match(wroclawAttractions.find(item => item.name === 'Hydropolis 水知識中心')?.priceNote ?? '', /2026-08-11 官網查證/);
-  assert.match(wroclawAttractions.find(item => item.name === 'Kolejkowo 微縮館')?.priceNote ?? '', /2026-08-11 官網查證/);
+  assert.match(wroclawAttractions.find(item => item.name === 'Kolejkowo 微縮館')?.priceNote ?? '', /2026-08-12 官網查證/);
   assert.match(poznanAttractions.find(item => item.name === 'Palmiarnia 棕櫚屋')?.priceNote ?? '', /週一休館/);
   assert.doesNotMatch(JSON.stringify(cityStories.find(story => story.city === '樂斯拉夫')), /1,040/);
 });
