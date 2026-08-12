@@ -3,6 +3,7 @@ set -euo pipefail
 cd "$(dirname "$0")"
 
 npm test
+npm run audit:map-pins
 node --check build.mjs
 node --check sw.js
 bash -n prepare-site.sh

@@ -159,7 +159,7 @@ export const mapPins = {
       [50.07068, 19.936409, "Svensson Pierogi", "餃子", "https://maps.google.com/?cid=10705718930784059170", "food"],
       [50.064037, 19.932167, "Bar Smak", "在地口碑", "https://maps.google.com/?cid=7513589258053856766", "food"],
       [50.053182, 19.947628, "Hamsa", "以色列 hummus", "https://maps.google.com/?cid=1317891001987072687", "food"],
-      [50.0527854, 19.9400151, "Ceramika Bolesławiecka（陶器）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJf581WqhbFkcR1_QG-8hJ4Vc", "shop"],
+      [50.055231, 19.938471, "Ceramika Bolesławiecka（陶器）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJf581WqhbFkcR1_QG-8hJ4Vc", "shop"],
       [50.058364, 19.9382007, "World of Amber（琥珀）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJPxlI8hJbFkcR7vI2ebLVIDk", "shop"],
       [50.06171320000001, 19.9373488, "Sukiennice 布廊（伴手禮攤位）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJ3Q97Bw5bFkcRc3GzJiVsH9A", "shop"],
       [50.062638, 19.937729, "Żabka（Rynek Główny）", "超商", "https://www.google.com/maps/place/?q=place_id:ChIJN54SF4BbFkcRfqYQZ51JTN4", "store"],
@@ -220,16 +220,23 @@ export const mapPinChecks = Object.fromEntries(
 );
 
 Object.assign(mapPinChecks.warsaw, {
+  'Alon Omakase ★': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:7},
   '皇家城堡': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:80},
   'POLIN 猶太史博物館': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:26},
   '華沙起義博物館': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:41},
   '科學文化宮觀景台': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:16},
+  'hub.praga ★': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
+  'Pijalnia Czekolady E.Wedel（巧克力）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:8},
+  'Vitkac': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:10},
+  'Chylak（波蘭設計師包款）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:45},
+  'ibis budget Warszawa Reduta': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:35},
   'NUTA ★': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:86},
   'WANDAL': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
   'Zagoździński': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:22},
   'Hotel Metropol': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:2},
 });
 Object.assign(mapPinChecks.krakow, {
+  'Wawel 皇家城堡': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:52},
   'Bottiglieria 1881 ★★': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:9},
   'ibis budget Krakow Stare Miasto': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:15},
   '辛德勒工廠博物館': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:12},
@@ -240,6 +247,11 @@ Object.assign(mapPinChecks.krakow, {
   'Nat Bistro': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:2},
   'Plac Nowy (zapiekanka)': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:28},
   'Mirror Bistro': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:3},
+  'Bar Smak': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:1},
+  'Hamsa': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:7},
+  'Ceramika Bolesławiecka（陶器）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:293, corrected:true},
+  'World of Amber（琥珀）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:5},
+  'Sukiennice 布廊（伴手禮攤位）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:28},
 });
 Object.assign(mapPinChecks.wroclaw, {
   '中央市集廣場': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:73},
@@ -248,6 +260,8 @@ Object.assign(mapPinChecks.wroclaw, {
   'BABA ★': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:11},
   'Miś SC': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:14},
   'Piast': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:0},
+  'Most ★': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
+  'IDA kuchnia i wino': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:18},
 });
 Object.assign(mapPinChecks.poznan, {
   '舊市集廣場 Stary Rynek': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:64},
@@ -294,7 +308,7 @@ export const attractions = {
     {name:'Panorama Racławicka', tag:'全景畫', priceNote:'4/1–10/31 每日 08:30–19:00 · PLN 50／35 · 每場 30 分，門票指定日期與場次 · 官方 2026 閉館日含 10/31 與 11/1（10/28 不在其列）· 票根 3 個月內可免費進國立博物館等三館', mapUrl:'https://www.google.com/maps/search/?api=1&query=Panorama%20Rac%C5%82awicka%20Wroc%C5%82aw'},
     {name:'百年廳 Hala Stulecia', tag:'UNESCO', priceNote:'Visitor Centre 四–十月二–日 10:00–18:00，25／20 · 含廳內 30／25，廳內依活動日曆開放', mapUrl:'https://maps.google.com/?cid=10763621538599936407'},
     {name:'Hydropolis 水知識中心', tag:'室內', priceNote:'2026-08-11 官網查證：平日 45／36、週末／假日 47／38 PLN；入場與名額以指定日期售票頁為準', mapUrl:'https://www.google.com/maps/search/?api=1&query=Hydropolis%20%E6%B0%B4%E7%9F%A5%E8%AD%98%E4%B8%AD%E5%BF%83%20Wroc%C5%82aw'},
-    {name:'Kolejkowo 微縮館', tag:'室內', priceNote:'2026-08-11 官網查證：50／40 PLN · Sky Tower 1 樓 · 每日 10:00 起，關門時間查指定日期', mapUrl:'https://www.google.com/maps/search/?api=1&query=Kolejkowo%20%E5%BE%AE%E7%B8%AE%E9%A4%A8%20Wroc%C5%82aw'},
+    {name:'Kolejkowo 微縮館', tag:'室內', priceNote:'2026-08-12 官網查證：一般票線上 39 PLN 起、現場 55 PLN 起；優待票線上 33 PLN 起、現場 45 PLN 起 · Sky Tower 1 樓 · 每日 10:00 起，關門時間查指定日期', mapUrl:'https://www.google.com/maps/search/?api=1&query=Kolejkowo%20%E5%BE%AE%E7%B8%AE%E9%A4%A8%20Wroc%C5%82aw'},
   ],
   poznan: [
     {name:'舊市集廣場 Stary Rynek', tag:'2024 重修', priceNote:'鋪面與無障礙全面翻新 · 彩色商人屋 · 四座神話噴泉 · 免費', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%88%8A%E5%B8%82%E9%9B%86%E5%BB%A3%E5%A0%B4%20Stary%20Rynek%20Pozna%C5%84'},
