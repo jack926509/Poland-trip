@@ -483,7 +483,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.equal(photoSpots.length, 10);
   assert.equal(photoCredits.length, 8);
   assert.deepEqual(Object.fromEntries(Object.entries(mapPins).map(([city, data]) => [city, data.points.length])), {
-    warsaw: 16, krakow: 20, wroclaw: 10, poznan: 9,
+    warsaw: 17, krakow: 20, wroclaw: 10, poznan: 9,
   });
   assert.deepEqual(Object.fromEntries(Object.entries(attractions).map(([city, items]) => [city, items.length])), {
     warsaw: 12, krakow: 6, wroclaw: 8, poznan: 9,
@@ -524,7 +524,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
 
 test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', () => {
   const allPins = Object.entries(mapPins).flatMap(([city, data]) => data.points.map((point) => ({city, name:point[2]})));
-  assert.equal(allPins.length, 55);
+  assert.equal(allPins.length, 56);
   for (const pin of allPins) {
     assert.ok(mapPinChecks[pin.city]?.[pin.name], `${pin.city}/${pin.name} 缺少圖釘查證狀態`);
   }
@@ -537,14 +537,12 @@ test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', ()
   });
   const verifiedPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'coordinate-verified');
   const unverifiedPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'unverified');
-  assert.equal(verifiedPins.length, 46);
+  assert.equal(verifiedPins.length, 49);
   assert.deepEqual(
     unverifiedPins.map(({name}) => name).sort(),
     [
-      'Bar Mleczny Rusałka',
       '中央市集廣場',
       'Kazimierz 猶太區',
-      'Svensson Pierogi',
       '大教堂島 Ostrów Tumski',
       'Żabka（Rynek）',
       'Żabka（Stary Rynek）',
@@ -765,9 +763,9 @@ test('5 筆已確認住宿皆出現在對應城市地圖，Piast 保留門牌待
   assert.match(hotelPins.find(point => point[2] === 'Piast')?.[3] ?? '', /完整門牌待飯店第一方確認/);
 });
 
-test('4 個城市頁含正確 Leaflet 圖釘數，合計 55', () => {
+test('4 個城市頁含正確 Leaflet 圖釘數，合計 56', () => {
   const expected = {
-    'city-warszawa.html': 16,
+    'city-warszawa.html': 17,
     'city-krakow.html': 20,
     'city-wroclaw.html': 10,
     'city-poznan.html': 9,
@@ -783,7 +781,7 @@ test('4 個城市頁含正確 Leaflet 圖釘數，合計 55', () => {
     assert.equal(points, count, `${file} 圖釘數錯誤`);
     total += points;
   }
-  assert.equal(total, 55);
+  assert.equal(total, 56);
 });
 
 test('城市頁完整呈現故事、景點、主餐廳、備案與拍照資訊', () => {

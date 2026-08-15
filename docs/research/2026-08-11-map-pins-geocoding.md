@@ -1,7 +1,7 @@
 # 地圖圖釘座標查證紀錄
 
-- 查證日期：2026-08-11、2026-08-12（Asia/Taipei）
-- 範圍：`src/data/cities.js` 的 55 筆 `mapPins`
+- 查證日期：2026-08-11、2026-08-12、2026-08-15（Asia/Taipei）
+- 範圍：`src/data/cities.js` 的 `mapPins`（2026-08-15 加入 Rozbrat 20 ★ 後為 56 筆）
 - 座標服務：Nominatim／OpenStreetMap，識別 User-Agent 為 `PolandTripDataAudit/1.0`，查詢間隔至少 1 秒。
 - 原則：地理編碼只用於將已知地址或明確店名轉為座標；不能取得可靠對應結果的圖釘維持 `unverified`，不憑目測改點。
 
@@ -9,8 +9,8 @@
 
 | 狀態 | 筆數 | 說明 |
 |---|---:|---|
-| `coordinate-verified` | 46 | 已取得可對應結果，並記錄現值差距。 |
-| `unverified` | 9 | 4 家 Żabka 依使用者決定不再逐店確認；其餘 5 筆沒有可安全視為門牌級的來源。 |
+| `coordinate-verified` | 49 | 已取得可對應結果，並記錄現值差距。 |
+| `unverified` | 7 | 4 家 Żabka 依使用者決定不再逐店確認；其餘 3 筆是面狀景點，本來就沒有門牌級錨點。 |
 
 ## 已完成座標比對
 
@@ -70,9 +70,19 @@
 | 樂斯拉夫 | Most ★ | Księcia Witolda 1；[餐廳頁](https://miedzy-mostami.pl/en/most-restaurant/) | 51.1147935, 17.0311032 | 4 m | 維持。 |
 | 樂斯拉夫 | IDA kuchnia i wino | Łazienna 4；[店家頁](https://idakuchniaiwino.pl/) | 51.1124135, 17.0293523 | 18 m | 維持。 |
 
+## 2026-08-15 補充查證（結案輪）
+
+前兩輪剩下的兩筆餐飲圖釘，本輪在可連通 Nominatim 的環境完成門牌級比對。
+
+| 城市 | 圖釘 | 門牌與來源 | Nominatim 座標 | 差距 | 處置 |
+|---|---|---|---|---:|---|
+| 華沙 | Bar Mleczny Rusałka | Floriańska 14, 03-707；多家波蘭商家名錄一致列出（[Panorama Firm](https://panoramafirm.pl/mazowieckie,,warszawa,praga_p%C3%B3%C5%82noc,floria%C5%84ska,14/rusalka_bar_mleczny_maria_sobolewska-pgcce_bpl.html)、[TerazOtwarte](https://teraz-otwarte.pl/warszawa/rusa%C5%82ka-bar-mleczny-161684)、[Targeo](https://mapa.targeo.pl/rusalka-florianska-14-03-707-warszawa~4803259/mleczny-bar/adres)），OSM 該門牌郵遞區號同為 03-707 | 52.2525818, 21.0305631 | 20 m | 維持原座標，改為 `coordinate-verified`。 |
+| 克拉科夫 | Svensson Pierogi | Długa 58, 31-146（`dining.js` 已記錄之門牌，OSM 有對應建物節點） | 50.0706916, 19.9363640 | 4 m | 維持原座標，改為 `coordinate-verified`。 |
+
+至此 52 筆非 Żabka 圖釘中，除 3 筆面狀景點外全部完成門牌級或錨點級比對。
+
 ## 後續處理
 
-1. Bar Mleczny Rusałka 的市府頁可見 Floriańska 14，但本輪無法讀取原頁確認；Svensson Pierogi 僅有 Długa 街等級資訊，兩者維持未驗證。
-2. 中央市集廣場、Kazimierz 猶太區與大教堂島 Ostrów Tumski 都是面狀景點，沒有單一門牌級錨點；維持未驗證，避免把代表點誤標成精確位置。
-3. 4 家 Żabka 分店依使用者決定排除逐店查證，維持未驗證即可。
-4. Rozbrat 20 沒有門牌級座標前不加入圖釘；街道中心座標不可視為驗證完成。
+1. 中央市集廣場、Kazimierz 猶太區與大教堂島 Ostrów Tumski 都是面狀景點，沒有單一門牌級錨點；維持未驗證，避免把代表點誤標成精確位置。
+2. 4 家 Żabka 分店依使用者決定排除逐店查證，維持未驗證即可。
+3. Rozbrat 20 已於 2026-08-15 取得門牌級座標並加入圖釘：OSM 餐廳節點 `52.2242001, 21.0350992`（Rozbrat 20, 00-447 Warszawa），分類 `star1`。與先前引用的街道中心估值 `52.226000, 21.034167` 相差 210 m，證實街道中心座標確實不可當成門牌位置使用。華沙圖釘數因此由 16 增為 17，全站合計 56。

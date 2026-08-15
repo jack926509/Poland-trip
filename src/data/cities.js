@@ -118,7 +118,8 @@ export const photoCredits = [
 
 // mapPins 已套用校正表 3-1（Mirror Bistro、Na Winklu 從 star1 改 food；Svensson Pierogi、Hamsa 從 sight 改 food）
 // 的修正，直接來自 poland-travel-guide-final.html:565 的 CITIES 物件。
-// 校正表 3-2 記的「克拉科夫 19 個圖釘」是加入已確認住宿圖釘前的數字；現為 16／20／10／9，合計 55。
+// 校正表 3-2 記的「克拉科夫 19 個圖釘」是加入已確認住宿圖釘前的數字；
+// 2026-08-15 補上 Rozbrat 20 ★（取得門牌級座標後才加入），現為 17／20／10／9，合計 56。
 export const mapPins = {
   warsaw: {
     center: [52.235, 21.01], zoom: 13,
@@ -130,6 +131,7 @@ export const mapPins = {
       [52.188512, 20.991414, "Alon Omakase ★", "米其林一星", "https://maps.google.com/?cid=8029724309073713102", "star1"],
       [52.229002, 21.023323, "NUTA ★", "米其林一星", "https://maps.google.com/?cid=4624148008162643045", "star1"],
       [52.251114, 21.036166, "hub.praga ★", "米其林一星", "https://maps.google.com/?cid=10117754456971759897", "star1"],
+      [52.2242001, 21.0350992, "Rozbrat 20 ★", "米其林一星", "https://www.google.com/maps/search/?api=1&query=Rozbrat%2020%20Warszawa", "star1"],
       [52.229941, 20.989348, "WANDAL", "必比登", "https://maps.google.com/?cid=15993615675406452524", "bib"],
       [52.236622, 20.967709, "Zagoździński", "pączki 名店", "https://maps.google.com/?cid=5270464504046978357", "food"],
       [52.252402, 21.030581, "Bar Mleczny Rusałka", "牛奶吧", "https://maps.google.com/?cid=14427558643223382901", "food"],
@@ -234,6 +236,8 @@ Object.assign(mapPinChecks.warsaw, {
   'WANDAL': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
   'Zagoździński': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:22},
   'Hotel Metropol': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:2},
+  'Bar Mleczny Rusałka': {status:'coordinate-verified', checkedAt:'2026-08-15', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:20},
+  'Rozbrat 20 ★': {status:'coordinate-verified', checkedAt:'2026-08-15', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:0},
 });
 Object.assign(mapPinChecks.krakow, {
   'Wawel 皇家城堡': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:52},
@@ -252,6 +256,7 @@ Object.assign(mapPinChecks.krakow, {
   'Ceramika Bolesławiecka（陶器）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:293, corrected:true},
   'World of Amber（琥珀）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:5},
   'Sukiennice 布廊（伴手禮攤位）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:28},
+  'Svensson Pierogi': {status:'coordinate-verified', checkedAt:'2026-08-15', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
 });
 Object.assign(mapPinChecks.wroclaw, {
   '中央市集廣場': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:73},
