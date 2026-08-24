@@ -97,8 +97,10 @@ function bundlePage(relativePath, label, pageIndex) {
 
   const content = main[1]
     .replace(/\s*<script src="https:\/\/unpkg\.com\/leaflet@1\.9\.4\/dist\/leaflet\.js"><\/script>/g, '')
+    .replace(/\s*<script src="\.\.\/assets\/database-filter\.js" defer><\/script>/g, '')
     .replace(/href="([^"]+)"/g, rewriteHref)
     .replace(/\bid="([^"]+)"/g, (_, id) => `id="${currentPageId}--${id}"`)
+    .replace(/\bfor="([^"]+)"/g, (_, id) => `for="${currentPageId}--${id}"`)
     .replace(/\baria-labelledby="([^"]+)"/g, (_, ids) => (
       `aria-labelledby="${ids.split(/\s+/).map(id => `${currentPageId}--${id}`).join(' ')}"`
     ))
@@ -123,6 +125,7 @@ ${controls}
 
 function buildStandalone() {
   const mainCss = fs.readFileSync(path.join(distDir, 'assets/main.css'), 'utf8');
+  const databaseFilterJs = fs.readFileSync(path.join(distDir, 'assets/database-filter.js'), 'utf8');
   const navMenus = standaloneNavGroups.map(group => {
     const links = group.pages
       .map(([relativePath, label]) => `<a href="#${standalonePageId(relativePath)}">${label}</a>`)
@@ -349,6 +352,7 @@ ${bundledPages}
       window.addEventListener('hashchange', activateStandaloneHash);
       activateStandaloneHash();
     }());
+${databaseFilterJs}
   </script>
 </body>
 </html>`;
@@ -360,6 +364,7 @@ function build() {
   resetOutput();
   fs.copyFileSync(path.join(projectRoot, 'src/styles/main.css'), path.join(distDir, 'assets/main.css'));
   fs.copyFileSync(path.join(projectRoot, 'src/scripts/nav.js'), path.join(distDir, 'assets/nav.js'));
+  fs.copyFileSync(path.join(projectRoot, 'src/scripts/database-filter.js'), path.join(distDir, 'assets/database-filter.js'));
 
   writeHtml('index.html', renderHome({
     meta: trip.meta,

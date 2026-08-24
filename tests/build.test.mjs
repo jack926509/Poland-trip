@@ -379,6 +379,7 @@ test('克拉科夫與樂斯拉夫飲水資訊各自保有官方來源', () => {
 test('dist 正好產出規格要求的 23 個 HTML', () => {
   assert.deepEqual(htmlFiles(), [...expectedFiles].sort());
   assert.ok(fs.existsSync(path.join(distDir, 'assets/main.css')), '缺少 assets/main.css');
+  assert.ok(fs.existsSync(path.join(distDir, 'assets/database-filter.js')), '缺少資料庫篩選程式');
 });
 
 test('單檔旅遊指南封裝全部 23 頁且不依賴本機 CSS 或其他 HTML', () => {
@@ -397,6 +398,10 @@ test('單檔旅遊指南封裝全部 23 頁且不依賴本機 CSS 或其他 HTML
   assert.ok(html.includes('href="#page-practical-database"'));
   assert.ok(html.includes('href="#page-practical-ops-dashboard"'));
   assert.ok(html.includes('href="#page-day-01"'));
+  assert.ok(html.includes('id="page-practical-database--db-query"'));
+  assert.ok(html.includes('for="page-practical-database--db-query"'));
+  assert.match(html, /function applyFilters\(\)/);
+  assert.doesNotMatch(html, /<script[^>]+src="\.\.\/assets\/database-filter\.js"/);
 });
 
 test('單檔版將過長導覽收納成三組原生下拉選單', () => {
