@@ -25,11 +25,15 @@ import {
   dayOperations,
   readinessItems,
   statusLabels,
+  normalizeSyncRow,
+  applyDashboardSync,
   validateTravelDatabase,
 } from '../src/data/travel-database.js';
 import { renderDatabase } from '../src/templates/database.mjs';
 import { renderHome } from '../src/templates/home.mjs';
+import { renderOpsDashboard } from '../src/templates/practical.mjs';
 import { auditMapPins } from '../tools/audit-map-pins.mjs';
+import { normalizeRows, normalizeStatus } from '../tools/sync-dashboard-overrides.mjs';
 
 const distDir = path.resolve('dist');
 const standalonePath = path.resolve('poland-travel-guide-2026.html');
@@ -48,6 +52,7 @@ const expectedFiles = [
   'practical/shopping.html',
   'practical/essentials.html',
   'practical/notes.html',
+  'practical/ops-dashboard.html',
   'practical/database.html',
 ];
 
@@ -75,6 +80,30 @@ test('自由行資料庫遵守統一資料契約且不含私人館址', () => {
   assert.equal(readinessItems.length, 8);
   assert.deepEqual(Object.keys(dayOperations).map(Number), [1, 2, 3, 4, 5, 6, 7, 8]);
   assert.ok(!JSON.stringify({ databaseEntries, readinessItems, dayOperations }).includes('Al. Jerozolimskie 179'));
+});
+
+test('dashboard 同步不會因缺少 private 欄位而把私人資料改為公開', () => {
+  const normalized = normalizeSyncRow({ id: 'private-entry', status: 'private-required' });
+  assert.equal(normalized.private, undefined);
+  const [merged] = applyDashboardSync([{
+    id: 'private-entry',
+    private: true,
+    status: 'private-required',
+  }], new Map([['private-entry', normalized]]));
+  assert.equal(merged.private, true);
+  const [privateMerged] = applyDashboardSync([{
+    id: 'private-entry', private: true, status: 'private-required', summary: '公開摘要', offlineNote: '公開離線提醒',
+  }], new Map([['private-entry', normalizeSyncRow({
+    id: 'private-entry', private: true, summary: '私人機密', offlineNote: '私人代碼',
+  })]]));
+  assert.equal(privateMerged.summary, '公開摘要');
+  assert.equal(privateMerged.offlineNote, '公開離線提醒');
+  assert.throws(() => normalizeSyncRow({ id: 'private-entry', private: '不確定' }), /無法辨識/);
+  assert.equal(normalizeStatus('待確認'), 'pending');
+  assert.equal(normalizeRows([
+    ['id', '狀態'],
+    ['private-entry', '待確認'],
+  ], new Set(['private-entry'])).out[0].status, 'pending');
 });
 
 test('官方旅客權益與本次私人／待購狀態分開', () => {
@@ -347,12 +376,12 @@ test('克拉科夫與樂斯拉夫飲水資訊各自保有官方來源', () => {
   assert.equal(wroclawWater?.sourceUrl, 'https://www.mpwik.wroc.pl/csr-2/pij-kranowke/');
 });
 
-test('dist 正好產出規格要求的 22 個 HTML', () => {
+test('dist 正好產出規格要求的 23 個 HTML', () => {
   assert.deepEqual(htmlFiles(), [...expectedFiles].sort());
   assert.ok(fs.existsSync(path.join(distDir, 'assets/main.css')), '缺少 assets/main.css');
 });
 
-test('單檔旅遊指南封裝全部 22 頁且不依賴本機 CSS 或其他 HTML', () => {
+test('單檔旅遊指南封裝全部 23 頁且不依賴本機 CSS 或其他 HTML', () => {
   assert.ok(fs.existsSync(standalonePath), '缺少 poland-travel-guide-2026.html');
   const html = fs.readFileSync(standalonePath, 'utf8');
 
@@ -366,6 +395,7 @@ test('單檔旅遊指南封裝全部 22 頁且不依賴本機 CSS 或其他 HTML
   assert.ok(!html.includes('href="practical/database.html'));
   assert.ok(!html.includes('href="day-01.html'));
   assert.ok(html.includes('href="#page-practical-database"'));
+  assert.ok(html.includes('href="#page-practical-ops-dashboard"'));
   assert.ok(html.includes('href="#page-day-01"'));
 });
 
@@ -448,7 +478,7 @@ test('待辦事項頁將 14 項依五類整理，並在實用資訊導覽可進�
 });
 
 test('自由行資料庫頁提供 SOS、主題索引與緊急聯絡資訊', () => {
-  assert.equal(htmlFiles().length, 22);
+  assert.equal(htmlFiles().length, 23);
   const html = read('practical/database.html');
   for (const heading of ['SOS 離線急救卡', '出入境與 ETIAS', '航班與行李', '醫療與保險', '退稅 TAX FREE']) {
     assert.ok(html.includes(heading), `資料庫頁缺少 ${heading}`);
@@ -461,6 +491,51 @@ test('自由行資料庫頁提供 SOS、主題索引與緊急聯絡資訊', () =
   assert.ok(html.includes('保險海外救援'));
   assert.ok(html.includes('需填私人資料'));
   for (const title of ['護照遺失', '緊急就醫', '行李未到', '轉機失接', '卡片遺失']) assert.ok(html.includes(`<h3>${title}</h3>`));
+});
+
+test('資料更新儀表板頁可視覺化同步狀態', () => {
+  const html = read('practical/ops-dashboard.html');
+  assert.ok(html.includes('資料更新儀表板'));
+  assert.ok(html.includes('資料品質面板'));
+  assert.ok(html.includes('最近同步紀錄'));
+  assert.ok(html.includes('今日更新量'));
+  assert.ok(html.includes('未完成項目'));
+  assert.ok(html.includes('逾期項目'));
+  assert.ok(html.includes('交接摘要與匯出'));
+  assert.ok(html.includes('匯出 JSON'));
+  assert.ok(html.includes('匯出 CSV'));
+  assert.ok(html.includes('id="export-handover-json"'));
+  assert.ok(html.includes('id="export-handover-csv"'));
+  assert.ok(html.includes('data-handover-export="json"'));
+  assert.ok(html.includes('data-handover-export="csv"'));
+  assert.ok(html.includes('欄位對應'));
+  assert.equal(htmlFiles().includes('practical/ops-dashboard.html'), true);
+});
+
+test('資料更新儀表板會排除私人同步內容並安全編碼外部文字', () => {
+  const html = renderOpsDashboard({
+    entries: [
+      { id: 'public-entry', title: '公開', status: 'pending', recheckAt: null, private: false },
+      { id: 'private-entry', title: '私人', status: 'private-required', recheckAt: '2026-01-01', private: true },
+    ],
+    statusLabels,
+    syncRows: [
+      { id: 'public-entry', status: 'pending', checkedAt: '2026-08-24', summary: '</script><script>alert(1)</script>', offlineNote: '公開備註' },
+      { id: 'private-entry', status: 'private-required', checkedAt: '2026-08-24', summary: '私人摘要', offlineNote: '私人機密', private: true },
+    ],
+    todoGroups: [],
+  });
+  assert.ok(!html.includes('</script><script>alert(1)</script>'));
+  assert.ok(!html.includes('私人摘要'));
+  assert.ok(!html.includes('私人機密'));
+  assert.ok(html.includes('&lt;/script&gt;&lt;script&gt;alert(1)&lt;/script&gt;'));
+});
+
+test('單檔版匯出按鈕使用不受 id 前綴影響的 data selector', () => {
+  const html = fs.readFileSync(standalonePath, 'utf8');
+  assert.ok(html.includes('id="page-practical-ops-dashboard--export-handover-json"'));
+  assert.ok(html.includes('data-handover-export="json"'));
+  assert.ok(html.includes("root.querySelector('[data-handover-export=\"json\"]')"));
 });
 
 test('自由行資料庫有城市、類別、狀態統計與無 JS 記錄連結', () => {

@@ -1,4 +1,10 @@
 import { days as itineraryDays, stay } from './trip.js';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const overridePath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'travel-database.sync.json');
+const syncMeta = readSyncOverrides();
 
 // 自由行資料庫：公開事實與私人待填狀態分開，供後續首頁、每日操作卡與 SOS 頁共用。
 // 私人項目只記錄完成狀態，絕不放入訂位代碼、護照、保單或付款資料。
@@ -28,7 +34,7 @@ export const databaseSections = [
   { id: 'accommodation', label: '住宿' },
 ];
 
-export const databaseEntries = [
+const databaseEntriesBase = [
   {
     id: 'entry-etias-and-passport', section: 'entry', category: 'document', cityKey: 'PL',
     title: '護照與 ETIAS 動態閘門',
@@ -185,9 +191,97 @@ export const databaseEntries = [
   },
 ];
 
+function readSyncOverrides() {
+  try {
+    if (!fs.existsSync(overridePath)) return { entries: new Map(), syncRows: [] };
+    const raw = fs.readFileSync(overridePath, 'utf8');
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return { entries: new Map(), syncRows: [] };
+
+    const entries = new Map();
+    const syncRows = [];
+    for (const row of parsed) {
+      if (!row || typeof row.id !== 'string' || !row.id.trim()) continue;
+      const normalized = normalizeSyncRow(row);
+      if (!normalized) continue;
+      entries.set(normalized.id, normalized);
+      syncRows.push(normalized);
+    }
+    return { entries, syncRows };
+  } catch (error) {
+    throw new Error(`無法讀取 dashboard 同步覆寫：${error.message}`);
+  }
+}
+
+export function normalizeSyncRow(row) {
+  const rowId = String(row.id).trim();
+  if (!rowId) return null;
+
+  const status = typeof row.status === 'string' ? row.status.trim() : null;
+  const hasPrivateValue = Object.hasOwn(row, 'private')
+    && row.private !== null
+    && String(row.private).trim() !== '';
+  const privateRaw = hasPrivateValue ? row.private : undefined;
+  const privateValue =
+    typeof privateRaw === 'boolean'
+      ? privateRaw
+      : String(privateRaw || '').trim().toLowerCase();
+
+  let privateFlag;
+  if (privateRaw !== undefined) {
+    if (typeof privateRaw === 'boolean') {
+      privateFlag = privateRaw;
+    } else if (['true', '1', 'y', 'yes', '是'].includes(privateValue)) {
+      privateFlag = true;
+    } else if (['false', '0', 'n', 'no', '否'].includes(privateValue)) {
+      privateFlag = false;
+    } else {
+      throw new Error(`${rowId} 的 private 值無法辨識`);
+    }
+  }
+
+  const parsed = {
+    id: rowId,
+    status: status || null,
+    sourceUrl: row.sourceUrl != null ? (String(row.sourceUrl).trim() || null) : null,
+    verifiedAt: row.verifiedAt != null ? (String(row.verifiedAt).trim() || null) : null,
+    recheckAt: row.recheckAt != null ? (String(row.recheckAt).trim() || null) : null,
+    checkedAt: row.checkedAt != null ? (String(row.checkedAt).trim() || null) : null,
+    summary: row.summary != null ? (String(row.summary).trim() || null) : null,
+    offlineNote: row.offlineNote != null ? (String(row.offlineNote).trim() || null) : null,
+    private: privateFlag,
+  };
+
+  return parsed;
+}
+
+export function applyDashboardSync(baseEntries, overrideEntries = syncMeta.entries) {
+  if (!overrideEntries.size) return baseEntries;
+  return baseEntries.map((entry) => {
+    const patch = overrideEntries.get(entry.id);
+    if (!patch) return entry;
+    const privateFlag = patch.private ?? entry.private;
+    return {
+      ...entry,
+      status: patch.status || entry.status,
+      private: privateFlag,
+      sourceUrl: patch.sourceUrl !== null ? patch.sourceUrl : entry.sourceUrl,
+      verifiedAt: patch.verifiedAt !== null ? patch.verifiedAt : entry.verifiedAt,
+      recheckAt: patch.recheckAt !== null ? patch.recheckAt : entry.recheckAt,
+      checkedAt: patch.checkedAt !== null ? patch.checkedAt : entry.checkedAt,
+      summary: privateFlag ? entry.summary : patch.summary || entry.summary,
+      offlineNote: privateFlag ? entry.offlineNote : patch.offlineNote || entry.offlineNote,
+    };
+  });
+}
+
+export const databaseEntries = applyDashboardSync(databaseEntriesBase);
+export const syncRows = syncMeta.syncRows;
+
 // `checkedAt` 表示本次盤查日期；它不等同「已查證」，pending/private-required 仍維持原狀態。
-for (const entry of databaseEntries) entry.checkedAt = '2026-08-08';
-databaseEntries.find(entry => entry.id === 'accommodation-confirmations').checkedAt = '2026-08-10';
+for (const entry of databaseEntries) {
+  entry.checkedAt ||= entry.id === 'accommodation-confirmations' ? '2026-08-10' : '2026-08-08';
+}
 
 export const readinessItems = [
   { id: 'accommodation', title: '住宿', detail: '5 筆／7 晚訂單已確認；出發前補齊私人離線備份與寄放安排', priority: 'P0', status: 'private-required', entryId: 'accommodation-confirmations', private: true },

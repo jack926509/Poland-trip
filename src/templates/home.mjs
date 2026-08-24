@@ -27,8 +27,12 @@ function renderFlight(direction, legs) {
   </article>`;
 }
 
-export function renderHome({ meta, days, flights, cities, todoGroups = [] }) {
+export function renderHome({ meta, days, flights, cities, todoGroups = [], databaseEntries = [] }) {
   const todoCount = todoGroups.reduce((total, group) => total + group.items.length, 0);
+  const syncItems = databaseEntries.length;
+  const pendingCount = databaseEntries.filter(entry => entry.status === 'pending').length;
+  const recheckCount = databaseEntries.filter(entry => entry.status === 'recheck').length;
+  const verifiedCount = databaseEntries.filter(entry => entry.status === 'verified').length;
   const todoCards = todoGroups.map(group => `
     <article class="card">
       <span class="eyebrow">${escapeHtml(group.eyebrow)}</span>
@@ -83,9 +87,31 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [] }) {
 
     <section class="section" id="todos">
       <div class="section-heading section-heading-simple"><h2>待辦事項</h2></div>
-      <p class="lead">共 ${todoCount} 項：4 段城際交通、7 個主要景點、1 個餐飲訂位與 1 個雨天備案。下方直接列出所有項目，詳細處理方式集中在待辦頁。</p>
+      <p class="lead">共 ${todoCount} 項：先處理有日期有時段的票務與景點，再做其餘備案。可直接點「待辦事項」更新狀態與備註。</p>
       <div class="grid">${todoCards}</div>
       <p><a href="practical/todos.html">開啟完整待辦事項 →</a></p>
+    </section>
+
+    <section class="section">
+      <div class="section-heading"><span class="section-num">Data Ops</span><h2>資料更新主軸</h2></div>
+      <p class="lead">這版網站把資料更新放在網站欄位上：每天更新後先反映到自由行資料庫，再由導覽、待辦與城市頁自動對應。當前共 ${syncItems} 筆資料、${verifiedCount} 筆已確認、${recheckCount} 筆待重查、${pendingCount} 筆待確認，會在資料庫頁面顯示目前狀態。</p>
+      <div class="grid">
+        <article class="card">
+          <span class="eyebrow">Day 1–8</span>
+          <h3>網站資料是主要來源</h3>
+          <p>先在網站資料檔維護 ID、狀態、官網來源、盤查日期與備註；Google Sheet dashboard 作為盤點、交換與人工複核介面。</p>
+        </article>
+        <article class="card">
+          <span class="eyebrow">Workflow</span>
+          <h3>更新完才是可對外資訊</h3>
+          <p>每次只改一批欄位，執行同步腳本後再重建頁面。<a href="practical/ops-dashboard.html">查看網站同步儀表板 →</a></p>
+        </article>
+        <article class="card">
+          <span class="eyebrow">Privacy</span>
+          <h3>公開版與私人版分離</h3>
+          <p>網站與公開匯出不展示訂位代碼、護照與保險資訊；敏感內容只保留在未發布的私人資料來源。</p>
+        </article>
+      </div>
     </section>
 
     <section class="section" id="days">

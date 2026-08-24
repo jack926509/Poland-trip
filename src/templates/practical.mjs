@@ -1,5 +1,21 @@
 import { renderLayout } from './layout.mjs';
 
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function serializeForInlineScript(value) {
+  return JSON.stringify(value)
+    .replaceAll('<', '\\u003c')
+    .replaceAll('\u2028', '\\u2028')
+    .replaceAll('\u2029', '\\u2029');
+}
+
 function renderPracticalLayout(title, eyebrow, intro, content) {
   const bodyHtml = `
     <header class="hero">
@@ -9,8 +25,37 @@ function renderPracticalLayout(title, eyebrow, intro, content) {
         <p class="hero-dek">${intro}</p>
       </div>
     </header>
-    ${content}`;
+    ${content.trim()}`;
   return renderLayout({ title, activeNav: 'practical', bodyHtml: bodyHtml.trim(), pathPrefix: '../' });
+}
+
+function getTaipeiToday() {
+  return new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Taipei' });
+}
+
+function toComparableDate(dateText) {
+  if (!dateText) return null;
+  const raw = String(dateText).trim();
+  if (!raw) return null;
+
+  const ymd = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (ymd) return `${ymd[1]}-${ymd[2]}-${ymd[3]}`;
+
+  const md = raw.match(/^(\d{1,2})\/(\d{1,2})$/);
+  if (!md) return null;
+
+  const month = Number(md[1]);
+  const day = Number(md[2]);
+  if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+  return `2026-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+}
+
+function isOpenTodoStatus(text) {
+  return /待|需|尚未|未|指定日/.test(String(text || ''));
+}
+
+function isOpenEntryStatus(status) {
+  return status === 'pending' || status === 'recheck' || status === 'private-required';
 }
 
 function renderFlightTable(legs) {
@@ -222,4 +267,196 @@ export function renderEssentials({ phrases, packingDefault, about, safety }) {
 export function renderNotes({ preDepartureNotes }) {
   const cards = preDepartureNotes.map((item, index) => `<article class="card ${index < 3 || index === 8 ? 'card-accent' : ''}"><span class="section-num">${String(index + 1).padStart(2, '0')}</span><p>${item}</p></article>`).join('');
   return renderPracticalLayout('行前提醒', 'Pre-trip', '這些限制直接對應 2026/10/24–10/31 的日期；先處理閉館、日落、夏令時間與訂票節奏。', `<div class="grid-wide">${cards}</div>`);
+}
+
+export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups }) {
+  const statusCount = Object.fromEntries(Object.keys(statusLabels).map(status => [status, 0]));
+  entries.forEach((entry) => {
+    if (statusCount[entry.status] === undefined) statusCount[entry.status] = 1;
+    else statusCount[entry.status] += 1;
+  });
+
+  const privateCount = entries.filter(item => item.private).length;
+  const privateEntryIds = new Set(entries.filter(item => item.private).map(item => item.id));
+  const publicSyncRows = (syncRows || []).filter(item => !item.private && !privateEntryIds.has(item.id));
+  const todoCount = todoGroups.reduce((sum, group) => sum + group.items.length, 0);
+  const openTodos = todoGroups
+    .flatMap(group => group.items.map(item => ({ group: group.eyebrow, ...item })))
+    .filter(item => isOpenTodoStatus(item.status));
+  const today = getTaipeiToday();
+  const todoOverdueCount = openTodos.filter(item => {
+    const parsed = toComparableDate(item.date);
+    return parsed !== null && parsed < today;
+  }).length;
+  const databaseOverdueCount = entries
+    .filter(entry => isOpenEntryStatus(entry.status))
+    .filter(entry => entry.recheckAt != null && toComparableDate(entry.recheckAt) !== null && toComparableDate(entry.recheckAt) < today)
+    .length;
+  const overdueCount = todoOverdueCount + databaseOverdueCount;
+
+  const checkedDates = [...new Set((syncRows || []).map(item => item.checkedAt).filter(Boolean))].sort();
+  const latestCheckedDate = checkedDates.at(-1);
+  const previousCheckedDate = checkedDates.at(-2);
+  const todaySyncCount = (syncRows || []).filter(item => item.checkedAt === today).length;
+  const latestSyncCount = latestCheckedDate ? (syncRows || []).filter(item => item.checkedAt === latestCheckedDate).length : 0;
+  const previousSyncCount = previousCheckedDate ? (syncRows || []).filter(item => item.checkedAt === previousCheckedDate).length : null;
+  const latestSyncDelta = previousSyncCount === null ? '—' : `${latestSyncCount - previousSyncCount}`;
+  const latestSyncRows = publicSyncRows.filter(item => item.checkedAt && item.checkedAt === latestCheckedDate);
+
+  const syncHistory = publicSyncRows
+    .slice()
+    .sort((a, b) => (b.checkedAt || '').localeCompare(a.checkedAt || ''))
+    .slice(0, 8)
+    .map(item => `<tr>
+      <td>${escapeHtml(item.id)}</td>
+      <td>${escapeHtml(statusLabels[item.status] || item.status || '—')}</td>
+      <td>${escapeHtml(item.checkedAt || '—')}</td>
+      <td>${escapeHtml(item.summary || '—')}</td>
+    </tr>`)
+    .join('');
+
+  const todoUrgent = todoGroups
+    .flatMap(group => group.items.map(item => ({ group: group.eyebrow, ...item })))
+    .filter(item => /未|需|待/.test(item.status))
+    .slice(0, 12)
+    .map(item => `<li><b>${escapeHtml(item.name)}</b>（${escapeHtml(item.group)}）— ${escapeHtml(item.status)}<br>${escapeHtml(item.action)}</li>`)
+    .join('');
+
+  const workflowSteps = [
+    ['1. 更新網站資料', '以 src/data 內的網站資料為主要來源，維護 id 對應欄位（status、sourceUrl、verifiedAt、recheckAt、summary、offlineNote、private）。'],
+    ['2. 匯入人工盤點', '需要整併 Google Sheet 時，執行 node tools/sync-dashboard-overrides.mjs --source dashboard-export.csv，將盤點差異轉成覆寫檔。'],
+    ['3. 重新建置', '建議直接執行 npm run build，驗證頁面匯出完成後再推送。'],
+    ['4. 驗證公開資料', '檢查自由行資料庫、待辦頁與公開匯出；私人內容不得寫入網站產物。'],
+  ].map((step) => `<article class="card"><span class="section-num">${step[0].split('.')[0]}</span><h3>${step[0]}</h3><p>${step[1]}</p></article>`).join('');
+
+  const handoverSummary = {
+    generatedAt: getTaipeiToday(),
+    metrics: {
+      totalEntries: entries.length,
+      verified: statusCount.verified || 0,
+      recheck: statusCount.recheck || 0,
+      pending: statusCount.pending || 0,
+      privateRequired: statusCount['private-required'] || 0,
+      privateCount,
+      todos: todoCount,
+      todoOpen: openTodos.length,
+      overdue: overdueCount,
+      overdueTodos: todoOverdueCount,
+      overdueEntries: databaseOverdueCount,
+      latestSyncDate: latestCheckedDate || '—',
+      latestSyncCount,
+      syncDelta: latestSyncDelta,
+    },
+    handoverAlerts: [
+      ...openTodos
+        .filter(item => toComparableDate(item.date) !== null && toComparableDate(item.date) < today)
+        .map(item => ({
+          type: 'todo-overdue',
+          key: `${item.group}-${item.name}`,
+          date: item.date,
+          status: item.status,
+          name: item.name,
+          action: item.action,
+        })),
+      ...entries
+        .filter(entry => !entry.private)
+        .filter(entry => isOpenEntryStatus(entry.status))
+        .filter(entry => entry.recheckAt != null && toComparableDate(entry.recheckAt) !== null && toComparableDate(entry.recheckAt) < today)
+        .map(entry => ({
+          type: 'entry-overdue',
+          key: entry.id,
+          date: entry.recheckAt || '',
+          status: entry.status,
+          name: entry.title,
+          action: entry.summary || '',
+        })),
+    ],
+    syncRows: latestSyncRows.map(item => ({
+      id: item.id,
+      status: item.status,
+      checkedAt: item.checkedAt,
+      summary: item.summary || '',
+      offlineNote: item.offlineNote || '',
+    })),
+  };
+
+  const handoverPayload = serializeForInlineScript(handoverSummary);
+  const csvRows = ['類型,關鍵字,日期,狀態,說明'];
+  for (const alert of handoverSummary.handoverAlerts) {
+    const note = String(alert.action).replaceAll('"', '""');
+    csvRows.push(`"${alert.type}","${String(alert.name).replaceAll('"', '""')}","${alert.date}","${alert.status}","${note}"`);
+  }
+  const handoverCsv = [...new Set(csvRows)].join('\\n');
+  const handoverCsvWithSync = [handoverCsv, '', `最近同步清單（${latestCheckedDate || '無'}）`, `"id","status","checkedAt","summary","offlineNote"`, ...latestSyncRows.map(item => [
+    `"${String(item.id).replaceAll('"', '""')}"`,
+    `"${String(item.status || '').replaceAll('"', '""')}"`,
+    `"${String(item.checkedAt || '').replaceAll('"', '""')}"`,
+    `"${String(item.summary || '').replaceAll('"', '""')}"`,
+    `"${String(item.offlineNote || '').replaceAll('"', '""')}"`,
+  ].join(','))].join('\\n');
+  const handoverCsvPayload = serializeForInlineScript(handoverCsvWithSync);
+
+  const content = `
+    <section>
+      <div class="section-heading"><span class="section-num">Data Health</span><h2>資料品質面板</h2></div>
+      <div class="grid">
+        <article class="card"><span class="eyebrow">今日更新量</span><h3>${todaySyncCount} 筆</h3><p>最近同步日：${latestCheckedDate || '—'}，該日 ${latestSyncCount} 筆，較前一次 ${latestSyncDelta}</p></article>
+        <article class="card"><span class="eyebrow">公開資料</span><h3>共 ${entries.length} 筆</h3><p>已確認：${statusCount.verified || 0}、重查：${statusCount.recheck || 0}、待確認：${statusCount.pending || 0}、待補資料：${statusCount['private-required'] || 0}</p></article>
+        <article class="card"><span class="eyebrow">私有欄位</span><h3>${privateCount} 筆</h3><p>保留為本次行程所需的敏感欄位，網站不對外展示。</p></article>
+        <article class="card"><span class="eyebrow">未完成項目</span><h3>${openTodos.length} / ${todoCount}</h3><p>含交通、景點、門票、餐飲與備案。建議在待辦頁更新後再同步 dashboard。</p></article>
+        <article class="card"><span class="eyebrow">逾期項目</span><h3>${overdueCount} 筆</h3><p>含 dashboard 重查到期 + 待辦日期到期但未完成。</p></article>
+      </div>
+      <div class="grid">
+        ${workflowSteps}
+      </div>
+    </section>
+    <section class="section">
+      <div class="section-heading"><span class="section-num">Sync</span><h2>最近同步紀錄（以 checkedAt 排序）</h2></div>
+      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>id</th><th>狀態</th><th>盤查日期</th><th>摘要</th></tr></thead><tbody>${syncHistory || '<tr><td colspan="4">尚未有 dashboard 同步紀錄</td></tr>'}</tbody></table></div>
+    </section>
+    <section class="section">
+      <div class="section-heading"><span class="section-num">Action list</span><h2>儀表板對齊優先清單</h2></div>
+      <ul class="check-list">${todoUrgent || '<li>目前待辦內容無需即時更新</li>'}</ul>
+    </section>
+    <section class="section">
+      <div class="section-heading"><span class="section-num">Handover</span><h2>交接摘要與匯出</h2></div>
+      <p>可直接輸出不含私人內容的「今日異常清單」與「最近同步清單」，給接手者交接時使用。</p>
+      <div class="grid">
+        <button id="export-handover-json" data-handover-export="json" type="button" class="tag-todo" style="cursor:pointer; border:none; padding: .55rem .8rem; border-radius:.55rem; display:inline-block; text-align:left;">匯出 JSON</button>
+        <button id="export-handover-csv" data-handover-export="csv" type="button" class="tag-todo" style="cursor:pointer; border:none; padding: .55rem .8rem; border-radius:.55rem; display:inline-block; text-align:left; margin-left:.5rem;">匯出 CSV</button>
+      </div>
+      <script>
+        (function() {
+          const handover = ${handoverPayload};
+          const csvText = ${handoverCsvPayload};
+          const root = document.currentScript.closest('.standalone-page') || document;
+          const exportText = (filename, text, type) => {
+            const blob = new Blob([text], { type });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            URL.revokeObjectURL(url);
+            a.remove();
+          };
+          root.querySelector('[data-handover-export="json"]').addEventListener('click', () => {
+            exportText('handover-' + handover.generatedAt + '.json', JSON.stringify(handover, null, 2), 'application/json;charset=utf-8');
+          });
+          root.querySelector('[data-handover-export="csv"]').addEventListener('click', () => {
+            exportText('handover-' + handover.generatedAt + '.csv', csvText, 'text/csv;charset=utf-8');
+          });
+        }());
+      </script>
+    </section>
+    <section class="section">
+      <div class="section-heading"><span class="section-num">Rule</span><h2>網站資料維護規則</h2></div>
+      <div class="callout-note"><b>欄位邏輯：</b>網站資料是主要來源，只處理已知欄位與資料庫 entry；需要新增欄位時先修改網站資料契約，再更新 dashboard 對照表、同步與驗證規則。</div>
+      <div class="grid"><article class="card"><p>欄位對應與資料規格已固定為 status、sourceUrl、verifiedAt、recheckAt、checkedAt、summary、offlineNote、private、id。</p><p>建議同步後檢查：待確認/重查比例、待辦 pending 是否下降。</p></article></div>
+    </section>
+  `;
+
+  return renderPracticalLayout('資料更新儀表板', 'Ops', '把 dashboard、待辦與網站三者同步；每次更新都先落在欄位、再看頁面。', content);
 }

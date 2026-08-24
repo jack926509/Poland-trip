@@ -1191,6 +1191,7 @@ summary:focus-visible {
           <a href="#page-practical-shopping">購物</a>
           <a href="#page-practical-essentials">安全須知</a>
           <a href="#page-practical-notes">行前提醒</a>
+          <a href="#page-practical-ops-dashboard">資料更新儀表板</a>
           <a href="#page-practical-database">自由行資料庫</a>
         </div>
       </details>
@@ -1219,7 +1220,7 @@ summary:focus-visible {
 
     <section class="section" id="page-index--todos">
       <div class="section-heading section-heading-simple"><h2>待辦事項</h2></div>
-      <p class="lead">共 14 項：4 段城際交通、7 個主要景點、1 個餐飲訂位與 1 個雨天備案。下方直接列出所有項目，詳細處理方式集中在待辦頁。</p>
+      <p class="lead">共 14 項：先處理有日期有時段的票務與景點，再做其餘備案。可直接點「待辦事項」更新狀態與備註。</p>
       <div class="grid">
     <article class="card">
       <span class="eyebrow">Rail · 4 項</span>
@@ -1309,6 +1310,28 @@ summary:focus-visible {
       <a href="#page-practical-todos--todo-rainy-day">查看下一步與處理連結 →</a>
     </article></div>
       <p><a href="#page-practical-todos">開啟完整待辦事項 →</a></p>
+    </section>
+
+    <section class="section">
+      <div class="section-heading"><span class="section-num">Data Ops</span><h2>資料更新主軸</h2></div>
+      <p class="lead">這版網站把資料更新放在網站欄位上：每天更新後先反映到自由行資料庫，再由導覽、待辦與城市頁自動對應。當前共 22 筆資料、9 筆已確認、4 筆待重查、4 筆待確認，會在資料庫頁面顯示目前狀態。</p>
+      <div class="grid">
+        <article class="card">
+          <span class="eyebrow">Day 1–8</span>
+          <h3>網站資料是主要來源</h3>
+          <p>先在網站資料檔維護 ID、狀態、官網來源、盤查日期與備註；Google Sheet dashboard 作為盤點、交換與人工複核介面。</p>
+        </article>
+        <article class="card">
+          <span class="eyebrow">Workflow</span>
+          <h3>更新完才是可對外資訊</h3>
+          <p>每次只改一批欄位，執行同步腳本後再重建頁面。<a href="#page-practical-ops-dashboard">查看網站同步儀表板 →</a></p>
+        </article>
+        <article class="card">
+          <span class="eyebrow">Privacy</span>
+          <h3>公開版與私人版分離</h3>
+          <p>網站與公開匯出不展示訂位代碼、護照與保險資訊；敏感內容只保留在未發布的私人資料來源。</p>
+        </article>
+      </div>
     </section>
 
     <section class="section" id="page-index--days">
@@ -1454,7 +1477,7 @@ summary:focus-visible {
     </section>
 <nav class="standalone-page-controls" aria-label="旅程首頁 章節切換">
     <span aria-hidden="true"></span>
-    <span>第 1 / 22 頁</span>
+    <span>第 1 / 23 頁</span>
     <a href="#page-day-01">Day 1 →</a>
   </nav>
 </section>
@@ -1675,7 +1698,7 @@ summary:focus-visible {
     <nav class="section-heading" aria-label="每日行程翻頁"><span></span><a href="#page-day-02">Day 2 →</a></nav>
 <nav class="standalone-page-controls" aria-label="Day 1 章節切換">
     <a href="#page-index">← 旅程首頁</a>
-    <span>第 2 / 22 頁</span>
+    <span>第 2 / 23 頁</span>
     <a href="#page-day-02">Day 2 →</a>
   </nav>
 </section>
@@ -1964,7 +1987,7 @@ summary:focus-visible {
     <nav class="section-heading" aria-label="每日行程翻頁"><a href="#page-day-01">← Day 1</a><a href="#page-day-03">Day 3 →</a></nav>
 <nav class="standalone-page-controls" aria-label="Day 2 章節切換">
     <a href="#page-day-01">← Day 1</a>
-    <span>第 3 / 22 頁</span>
+    <span>第 3 / 23 頁</span>
     <a href="#page-day-03">Day 3 →</a>
   </nav>
 </section>
@@ -2164,7 +2187,7 @@ summary:focus-visible {
     <nav class="section-heading" aria-label="每日行程翻頁"><a href="#page-day-02">← Day 2</a><a href="#page-day-04">Day 4 →</a></nav>
 <nav class="standalone-page-controls" aria-label="Day 3 章節切換">
     <a href="#page-day-02">← Day 2</a>
-    <span>第 4 / 22 頁</span>
+    <span>第 4 / 23 頁</span>
     <a href="#page-day-04">Day 4 →</a>
   </nav>
 </section>
@@ -2432,7 +2455,7 @@ summary:focus-visible {
     <nav class="section-heading" aria-label="每日行程翻頁"><a href="#page-day-03">← Day 3</a><a href="#page-day-05">Day 5 →</a></nav>
 <nav class="standalone-page-controls" aria-label="Day 4 章節切換">
     <a href="#page-day-03">← Day 3</a>
-    <span>第 5 / 22 頁</span>
+    <span>第 5 / 23 頁</span>
     <a href="#page-day-05">Day 5 →</a>
   </nav>
 </section>
@@ -2684,7 +2707,7 @@ summary:focus-visible {
     <nav class="section-heading" aria-label="每日行程翻頁"><a href="#page-day-04">← Day 4</a><a href="#page-day-06">Day 6 →</a></nav>
 <nav class="standalone-page-controls" aria-label="Day 5 章節切換">
     <a href="#page-day-04">← Day 4</a>
-    <span>第 6 / 22 頁</span>
+    <span>第 6 / 23 頁</span>
     <a href="#page-day-06">Day 6 →</a>
   </nav>
 </section>
@@ -2927,7 +2950,7 @@ summary:focus-visible {
     <nav class="section-heading" aria-label="每日行程翻頁"><a href="#page-day-05">← Day 5</a><a href="#page-day-07">Day 7 →</a></nav>
 <nav class="standalone-page-controls" aria-label="Day 6 章節切換">
     <a href="#page-day-05">← Day 5</a>
-    <span>第 7 / 22 頁</span>
+    <span>第 7 / 23 頁</span>
     <a href="#page-day-07">Day 7 →</a>
   </nav>
 </section>
@@ -3138,7 +3161,7 @@ summary:focus-visible {
     <nav class="section-heading" aria-label="每日行程翻頁"><a href="#page-day-06">← Day 6</a><a href="#page-day-08">Day 8 →</a></nav>
 <nav class="standalone-page-controls" aria-label="Day 7 章節切換">
     <a href="#page-day-06">← Day 6</a>
-    <span>第 8 / 22 頁</span>
+    <span>第 8 / 23 頁</span>
     <a href="#page-day-08">Day 8 →</a>
   </nav>
 </section>
@@ -3323,7 +3346,7 @@ summary:focus-visible {
     <nav class="section-heading" aria-label="每日行程翻頁"><a href="#page-day-07">← Day 7</a><a href="#page-index">回到總覽 →</a></nav>
 <nav class="standalone-page-controls" aria-label="Day 8 章節切換">
     <a href="#page-day-07">← Day 7</a>
-    <span>第 9 / 22 頁</span>
+    <span>第 9 / 23 頁</span>
     <a href="#page-city-warszawa">華沙 →</a>
   </nav>
 </section>
@@ -3741,7 +3764,7 @@ summary:focus-visible {
     </script>
 <nav class="standalone-page-controls" aria-label="華沙 章節切換">
     <a href="#page-day-08">← Day 8</a>
-    <span>第 10 / 22 頁</span>
+    <span>第 10 / 23 頁</span>
     <a href="#page-city-krakow">克拉科夫 →</a>
   </nav>
 </section>
@@ -4089,7 +4112,7 @@ summary:focus-visible {
     </script>
 <nav class="standalone-page-controls" aria-label="克拉科夫 章節切換">
     <a href="#page-city-warszawa">← 華沙</a>
-    <span>第 11 / 22 頁</span>
+    <span>第 11 / 23 頁</span>
     <a href="#page-city-wroclaw">樂斯拉夫 →</a>
   </nav>
 </section>
@@ -4396,7 +4419,7 @@ summary:focus-visible {
     </script>
 <nav class="standalone-page-controls" aria-label="樂斯拉夫 章節切換">
     <a href="#page-city-krakow">← 克拉科夫</a>
-    <span>第 12 / 22 頁</span>
+    <span>第 12 / 23 頁</span>
     <a href="#page-city-poznan">波茲南 →</a>
   </nav>
 </section>
@@ -4699,7 +4722,7 @@ summary:focus-visible {
     </script>
 <nav class="standalone-page-controls" aria-label="波茲南 章節切換">
     <a href="#page-city-wroclaw">← 樂斯拉夫</a>
-    <span>第 13 / 22 頁</span>
+    <span>第 13 / 23 頁</span>
     <a href="#page-practical-todos">待辦事項 →</a>
   </nav>
 </section>
@@ -4792,7 +4815,7 @@ summary:focus-visible {
     </section>
 <nav class="standalone-page-controls" aria-label="待辦事項 章節切換">
     <a href="#page-city-poznan">← 波茲南</a>
-    <span>第 14 / 22 頁</span>
+    <span>第 14 / 23 頁</span>
     <a href="#page-practical-booking">訂票與交通 →</a>
   </nav>
 </section>
@@ -4805,7 +4828,6 @@ summary:focus-visible {
         <p class="hero-dek">先看最急的票，再核對火車、航班與已確認住宿。尚未確認的時段保留原樣，不用猜。</p>
       </div>
     </header>
-    
     <section>
       <div class="section-heading"><span class="section-num">Do first</span><h2>訂票優先順序</h2></div>
       <div class="grid">
@@ -4959,7 +4981,7 @@ summary:focus-visible {
     </section>
 <nav class="standalone-page-controls" aria-label="訂票與交通 章節切換">
     <a href="#page-practical-todos">← 待辦事項</a>
-    <span>第 15 / 22 頁</span>
+    <span>第 15 / 23 頁</span>
     <a href="#page-practical-dining">餐廳 →</a>
   </nav>
 </section>
@@ -4972,7 +4994,6 @@ summary:focus-visible {
         <p class="hero-dek">已把 2026 米其林名單與本行程實際餐廳分開；營業時間只寫能追到店家來源的分店。</p>
       </div>
     </header>
-    
     <div class="callout-note"><b>資料界線：</b>米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不再把它們當成固定資料。營業時間查證於 2026-08-09，訂位前仍看店家公告。</div>
     <section>
       <div class="section-heading"><span class="section-num">Guide</span><h2>2026 米其林總表</h2></div>
@@ -5021,7 +5042,7 @@ summary:focus-visible {
     </section>
 <nav class="standalone-page-controls" aria-label="餐廳 章節切換">
     <a href="#page-practical-booking">← 訂票與交通</a>
-    <span>第 16 / 22 頁</span>
+    <span>第 16 / 23 頁</span>
     <a href="#page-practical-tickets">門票 →</a>
   </nav>
 </section>
@@ -5034,7 +5055,6 @@ summary:focus-visible {
         <p class="hero-dek">把景點價格、優待、閉館與官方連結放在同一頁，規劃預算時不必來回找。</p>
       </div>
     </header>
-    
     <div class="callout-risk"><span class="tag-todo">已查證</span><p>資料查證日為 2026-08-08。奧斯威辛自 2026-03-01 起所有入場證只在線上提供；本行程 10:00 入場必須購買官方導覽場次。 <a href="https://www.auschwitz.org/en/visiting/" target="_blank" rel="noopener">開啟官網 →</a></p></div><div class="callout-risk"><span class="tag-todo">開賣再確認</span><p>博物館活動、臨時閉館與可售場次仍可能調整；本站不把「查證過」誤寫成「已訂到」，購票時請以官方日曆為準。 <a href="https://visit.auschwitz.org/" target="_blank" rel="noopener">開啟官網 →</a></p></div>
     <section>
       <div class="section-heading"><span class="section-num">2026-08</span><h2>最新門票速查</h2></div>
@@ -5169,7 +5189,7 @@ summary:focus-visible {
     </section>
 <nav class="standalone-page-controls" aria-label="門票 章節切換">
     <a href="#page-practical-dining">← 餐廳</a>
-    <span>第 17 / 22 頁</span>
+    <span>第 17 / 23 頁</span>
     <a href="#page-practical-transit">市內交通 →</a>
   </nav>
 </section>
@@ -5182,7 +5202,6 @@ summary:focus-visible {
         <p class="hero-dek">四城大多可步行；需要搭車時，先查短程票與 Jakdojade，通常不必買多日券。</p>
       </div>
     </header>
-    
     <section>
       <div class="section-heading"><span class="section-num">Fares</span><h2>四城市內票價</h2></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>短程</th><th>90 分</th><th>24 小時</th><th>備註</th></tr></thead><tbody><tr><td><b>華沙 WTP</b></td><td>抵達日確認</td><td>第 1 區時間票（抵達日依官方價目確認）</td><td>抵達日確認</td><td>電車／巴士／地鐵／SKM；機場在第 1 區，票價以 WTP 官方價目與售票機為準</td></tr><tr><td><b>克拉科夫 KMK</b></td><td>15 分 4</td><td>90 分 9</td><td>20（第 I 區）／25（I+II+III）</td><td>2026-03-02 起；30 分或單趟票 6</td></tr><tr><td><b>樂斯拉夫 MPK</b></td><td>15 分 3.20</td><td>90 分 7</td><td>15</td><td>30 分 4.00、60 分 5.20；時間票可轉乘</td></tr><tr><td><b>波茲南 ZTM</b></td><td>15 分 5</td><td>90 分 9</td><td>18（A 區）／24（全區）</td><td>45 分 7；時間票可轉乘</td></tr></tbody></table></div>
@@ -5197,7 +5216,7 @@ summary:focus-visible {
     <section class="section"><div class="section-heading"><span class="section-num">Ground rules</span><h2>其他實用資訊</h2></div><div class="grid"><article class="card"><span class="eyebrow">寄物</span><h3>火車站 Locker</h3><p>四座主要車站通常有寄物櫃，但尺寸、空位與費率會變；抵站依現場標示，不預寫固定價。</p></article><article class="card"><span class="eyebrow">換錢</span><h3>Kantor 民間匯兌</h3><p>機場與觀光區匯率可能較差。交易前比較買入、賣出價與實際可得 PLN；「0% 手續費」不代表匯率划算。</p></article><article class="card"><span class="eyebrow">SIM 卡</span><h3>Play / Plus / Orange</h3><p>預付卡需依波蘭規定實名登記；方案和通路會變，抵達後以電信商官網／門市為準，不保證超商能完成所有開卡程序。</p></article><article class="card"><span class="eyebrow">付款</span><h3>信用卡 + 少量現金</h3><p>刷卡普及，但教堂、小攤或機器故障仍可能需現金；刷卡選 PLN 計價，避免商戶動態換匯。</p></article><article class="card"><span class="eyebrow">退稅</span><h3>Tax Free</h3><p>只限有 Tax Free 資格的店家與符合規定的旅客；最低消費、退稅額與機場流程以波蘭稅務及退稅單據為準，不把估算退款率當保證。</p></article><article class="card"><span class="eyebrow">交通票</span><h3>短票 vs 24 h 票</h3><p>四城票制不同，請按上表逐城計算；Jakdojade 查市內路線，KOLEO／PKP Intercity 查鐵路。</p></article></div></section>
 <nav class="standalone-page-controls" aria-label="市內交通 章節切換">
     <a href="#page-practical-tickets">← 門票</a>
-    <span>第 18 / 22 頁</span>
+    <span>第 18 / 23 頁</span>
     <a href="#page-practical-shopping">購物 →</a>
   </nav>
 </section>
@@ -5210,7 +5229,6 @@ summary:focus-visible {
         <p class="hero-dek">先決定要買什麼，再直接打開店家地圖；肉製品入境台灣限制也已標出。</p>
       </div>
     </header>
-    
     <section><div class="section-heading"><span class="section-num">Souvenirs</span><h2>14 種伴手禮</h2></div><div class="grid"><article class="card"><h3>波羅的海琥珀 Bursztyn</h3><p>「波蘭黃金」；蜂蜜／威士忌色透明系，項鍊／手鍊／耳環。含昆蟲或罕見色澤較貴。各城珠寶店，認明 handmade。</p></article><article class="card"><h3>Bolesławiec 陶器</h3><p>深藍底配白色圓點花紋，手繪炻器，耐用實用。原產地在 Bolesławiec，各城有專賣店。</p></article><article class="card"><h3>伏特加 Wódka（不喝酒可略過）</h3><p>透明瓶身，Żubrówka 瓶內有一根綠色野牛草最好認；Wyborowa、Sobieski、Luksusowa、J.A. Baczewski 也常見。</p></article><article class="card"><h3>巧克力 · 糖果</h3><p>E. Wedel 老牌深棕包裝；Ptasie Mleczko 藍白紙盒，巧克力棉花糖；Krówki 奶油糖、Michałki、Kukułki 銀色包裝。</p></article><article class="card"><h3>Prince Polo 巧克力威化棒</h3><p>紅金配色長條包裝，波蘭國民零食，超商 3–5 PLN 隨手包；巧克力／花生／椰子多口味，適合當辦公室伴手禮。</p></article><article class="card"><h3>Delicje 果醬夾心餅</h3><p>橘黃色圓形包裝盒，Wedel 出品，海綿蛋糕夾杏桃果醬裹巧克力；茶點好搭檔，包裝精美適合送禮。</p></article><article class="card"><h3>Mieszanka Krakowska 克拉科夫綜合糖</h3><p>金黃色鐵盒印花包裝，Wawel 品牌經典什錦巧克力糖，克拉科夫限定款，適合當紀念品。</p></article><article class="card"><h3>Paluszki 鹹餅乾棒</h3><p>透明袋裝可見金黃色細長餅乾棒，原味／起司／罌粟籽口味，配啤酒或純吃皆宜。</p></article><article class="card"><h3>波蘭花草茶 · 蜂蜜</h3><p>Herbapol 綠色系花草茶包輕便好帶；miód lipowy 椴樹蜜呈琥珀金色，市集常見小罐裝。</p></article><article class="card"><h3>⚠️ Kabanosy 煙燻香腸乾</h3><p>深褐紅色細長條、真空包裝，波蘭超人氣肉乾零食，超商／超市都買得到。當地吃很推薦，但台灣海關嚴禁肉類製品入境（防治非洲豬瘟），別帶回台灣，出境前吃完或留在當地。</p></article><article class="card"><h3>Toruń 薑餅 Pierniki</h3><p>深褐色心型／圓形餅乾，常見錫盒或印花紙盒裝，全波蘭知名甜點禮，密封包裝好帶。</p></article><article class="card"><h3>Nalewka 水果利口酒（不喝酒可略過）</h3><p>深紅寶石色澤，華沙傳統，櫻桃 wiśniówka 最有名，玻璃瓶身常見手寫標籤。</p></article><article class="card"><h3>⚠️ oscypek 煙燻羊酪</h3><p>紡錘形、表面壓花紋、煙燻後呈金黃色，Tatra／Podhale 山區特產，認明產地標。當地吃很推薦，但乳製品攜帶回台受《動物產品輸入檢疫》規範，出發前請查防檢署當期公告確認可攜品項、限量與是否需檢疫證明，不要當成一定能帶。</p></article><article class="card"><h3>城市特色</h3><p>波茲南專屬 rogal świętomarciński 金黃可頌，內餡白罌粟籽；克拉科夫 Wawel 巧克力＋現買 obwarzanek 麻花圈。</p></article></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Where to buy</span><h2>實際店家</h2></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>店家</th><th>備註</th></tr></thead><tbody><tr><td>克拉科夫</td><td><a href="https://www.google.com/maps/search/?api=1&query=Stradomska%20Street%20pottery%20shops%20Krak%C3%B3w" target="_blank" rel="noopener"><b>Stradomska 街 Bolesławiec 陶器店</b></a></td><td>陶器店集中在 Stradomska 街，如 23 號</td></tr><tr><td>克拉科夫</td><td><a href="https://www.google.com/maps/search/?api=1&query=S%26A%20Amber%20Grodzka%20Krak%C3%B3w" target="_blank" rel="noopener"><b>S&A Amber</b></a></td><td>Grodzka 街 60／14 號；認 handmade／產地標避免仿品</td></tr><tr><td>克拉科夫</td><td><a href="https://www.google.com/maps/place/?q=place_id:ChIJPxlI8hJbFkcR7vI2ebLVIDk" target="_blank" rel="noopener"><b>World of Amber</b></a></td><td>克拉科夫琥珀店備選</td></tr><tr><td>克拉科夫</td><td><a href="https://www.google.com/maps/search/?api=1&query=Sukiennice%20Cloth%20Hall%20Krak%C3%B3w" target="_blank" rel="noopener"><b>Sukiennice 布廊</b></a></td><td>廣場內伴手禮攤位集中</td></tr><tr><td>克拉科夫</td><td><a href="https://www.google.com/maps/search/?api=1&query=Rzeczy%20Same%20Podg%C3%B3rze%20Krak%C3%B3w" target="_blank" rel="noopener"><b>Rzeczy Same Podgórze</b></a></td><td>選購波蘭設計</td></tr><tr><td>華沙</td><td><a href="https://www.google.com/maps/search/?api=1&query=Pijalnia%20Czekolady%20E.Wedel%20Szpitalna%20Warszawa" target="_blank" rel="noopener"><b>E.Wedel 巧克力沙龍</b></a></td><td>Szpitalna 8 旗艦店</td></tr><tr><td>華沙</td><td><a href="https://www.google.com/maps/search/?api=1&query=Cepelia%20Warszawa" target="_blank" rel="noopener"><b>Cepelia Warszawa</b></a></td><td>波蘭民藝品牌店</td></tr></tbody></table></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Quick list</span><h2>傳統伴手禮備忘</h2></div><div class="grid"><article class="card"><span class="eyebrow">陶瓷</span><h3>Bolesławiec</h3><p>藍底白點手繪餐具，全球收藏家追捧</p></article><article class="card"><span class="eyebrow">琥珀</span><h3>波羅的海琥珀</h3><p>克拉科夫紡織會館或華沙老城；辨真偽：泡鹽水會浮、靜電可吸紙屑</p></article><article class="card"><span class="eyebrow">伏特加</span><h3>Żubrówka / Soplica</h3><p>野牛草 / 果味，伴手首選</p></article><article class="card"><span class="eyebrow">巧克力</span><h3>E. Wedel</h3><p>1851 年華沙百年品牌</p></article><article class="card"><span class="eyebrow">糖果</span><h3>Krówki</h3><p>波蘭奶油糖，超市到處有</p></article><article class="card"><span class="eyebrow">剪紙</span><h3>Wycinanki</h3><p>庫亞瓦、洛維奇地區傳統</p></article><article class="card"><span class="eyebrow">起司</span><h3>Oscypek</h3><p>塔特拉山區代表性乳酪；帶回台灣屬動物產品，須先查防檢署當期規定</p></article></div></section>
@@ -5218,7 +5236,7 @@ summary:focus-visible {
     <section class="section"><div class="section-heading"><span class="section-num">Żabka</span><h2>超商怎麼逛</h2></div><div class="grid"><article class="card"><h3>招牌熱狗</h3><p>紅白配色熱狗機台最好認，口味：klasyczna（經典）／kurczak（雞）／grillowana（烤腸）／czarna（黑麵包），可自選醬料。約 6–9 PLN，部分門市由「Robbie」機器人自動製作，40 秒出餐。</p></article><article class="card"><h3>💳 免辦 App 也能買</h3><p>不需要 Żappka 帳號，直接用感應信用卡／Apple Pay／Google Pay 在機台或櫃檯結帳即可。App 只有在想集點、預先點餐、或要進 Żabka Nano 無人店時才用得到，觀光客可以完全跳過註冊。</p></article><article class="card"><h3>📱 App 進階功能</h3><p>想集點可下載 Żappka App（需門號收簡訊驗證，用台灣門號多半也收得到）；Żabka Nano 無人店用手機掃碼開門、自動結帳，全程免排隊。</p></article><article class="card"><h3>☕ 咖啡與熱食</h3><p>現煮咖啡約 5–8 PLN，比連鎖咖啡店便宜一半以上；另有微波即食餐 Szamamm、三明治 Tomcio Paluch、果汁 Wycisk，適合早餐或宵夜。</p></article><article class="card"><h3>🕐 營業時間</h3><p>多數門市 6:00–23:00 或更晚，車站／機場／市中心精華地段常有 24 小時店，深夜落地或早班火車前補給都方便。</p></article><article class="card"><h3>🧾 其他服務</h3><p>彩券、卡片存提現、繳費、包裹寄取（InPost 智能取件櫃常設在店外）；多數店員英文有限，觸控機台通常有英文介面可切換。</p></article><article class="card"><h3>其他選擇</h3><p>Biedronka（瓢蟲）折扣超市分店最多，適合買伴手禮零食；Lidl、Carrefour Express 也常見；Orlen 加油站熱狗也小有名氣。</p></article></div></section>
 <nav class="standalone-page-controls" aria-label="購物 章節切換">
     <a href="#page-practical-transit">← 市內交通</a>
-    <span>第 19 / 22 頁</span>
+    <span>第 19 / 23 頁</span>
     <a href="#page-practical-essentials">安全須知 →</a>
   </nav>
 </section>
@@ -5231,7 +5249,6 @@ summary:focus-visible {
         <p class="hero-dek">語言、插座、打包、緊急電話與常見陷阱集中在這裡，出發前可快速複查。</p>
       </div>
     </header>
-    
     <section><div class="section-heading"><span class="section-num">Basics</span><h2>基本須知</h2></div><div class="grid"><article class="card"><span class="eyebrow">語言</span><p>波蘭語（觀光區英語通）</p></article><article class="card"><span class="eyebrow">電壓</span><p>230V · C/E/F 型插座</p></article><article class="card"><span class="eyebrow">時區</span><p>CET（夏令 CEST）</p></article><article class="card"><span class="eyebrow">匯率</span><p>每日浮動；付款與記帳以當日銀行／卡組織匯率為準</p></article><article class="card"><span class="eyebrow">物價水位</span><p>依城市與店型差異大，以實際菜單與訂票頁為準</p></article><article class="card"><span class="eyebrow">小費文化</span><p>餐廳 10%（非強制）</p></article><article class="card"><span class="eyebrow">台灣簽證</span><p>免申根簽 90 天</p></article><article class="card"><span class="eyebrow">ETIAS</span><p>截至 2026-08-08 官方系統尚未運作，也不收申請；但英文頁仍寫預計 2026 年第 4 季啟用。本行程正值第 4 季，不能先斷言不需要；出發前務必再查 EU 官方頁。</p></article></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Language</span><h2>常用波蘭語</h2></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>中文</th><th>波蘭語</th><th>音譯</th></tr></thead><tbody><tr><td>你好（非正式）</td><td><b>Cześć</b></td><td>chesh-ch</td></tr><tr><td>您好</td><td><b>Dzień dobry</b></td><td>jen dob-ri</td></tr><tr><td>晚安</td><td><b>Dobranoc</b></td><td>do-bra-nots</td></tr><tr><td>謝謝</td><td><b>Dziękuję</b></td><td>jen-koo-yeh</td></tr><tr><td>請 / 不客氣</td><td><b>Proszę</b></td><td>pro-sheh</td></tr><tr><td>是 / 否</td><td><b>Tak / Nie</b></td><td>—</td></tr><tr><td>對不起</td><td><b>Przepraszam</b></td><td>psheh-pra-sham</td></tr><tr><td>廁所在哪</td><td><b>Gdzie jest toaleta?</b></td><td>—</td></tr><tr><td>買單</td><td><b>Rachunek proszę</b></td><td>—</td></tr><tr><td>多少錢</td><td><b>Ile to kosztuje?</b></td><td>—</td></tr><tr><td>乾杯</td><td><b>Na zdrowie!</b></td><td>naz-dro-vyeh</td></tr><tr><td>真好吃</td><td><b>Smaczne!</b></td><td>smach-neh</td></tr></tbody></table></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Packing</span><h2>打包清單</h2></div><div class="grid-wide"><article class="card"><h3>證件與金錢</h3><ul class="check-list"><li>護照（離開申根區後至少 3 個月有效，且簽發未滿 10 年）</li><li>各票券訂位證明（列印或存離線）</li><li>信用卡</li><li>少量茲羅提現金</li><li>旅遊保險單</li></ul></article><article class="card"><h3>電子</h3><ul class="check-list"><li>手機</li><li>充電器</li><li>歐規轉接頭</li><li>行動電源</li><li>耳機</li></ul></article><article class="card"><h3>衣物（10 月波蘭）</h3><ul class="check-list"><li>保暖外套</li><li>毛帽手套</li><li>圍巾</li><li>雨具</li><li>好走的鞋</li></ul></article><article class="card"><h3>藥品盥洗</h3><ul class="check-list"><li>常備藥</li><li>暈車藥</li><li>牙刷牙膏</li><li>保養品</li></ul></article></div></section>
@@ -5239,7 +5256,7 @@ summary:focus-visible {
     <section class="section"><div class="section-heading"><span class="section-num">Safety</span><h2>安全與禮儀</h2></div><div class="grid-wide"><article class="card"><h3>觀光陷阱</h3><p>拒絕未先講明價格的拍照、手環或攬客服務；機場與車站只走官方排班或 App 叫車；換匯前先看清買入／賣出價與手續費。</p></article><article class="card"><h3>禮儀</h3><p>進教堂脫帽；Auschwitz 禁笑鬧自拍；勿把波蘭當俄國；餐廳小費約 10%</p></article><article class="card"><h3>治安</h3><p>火車站、車廂與 Rynek 等人潮區注意扒竊；護照、手機與錢包分開收，背包在人多處移到身前。</p></article><article class="card"><h3>就醫</h3><p>自來水可生飲；Apteka 藥局普及；建議投保涵蓋緊急醫療的旅平險</p></article></div></section>
 <nav class="standalone-page-controls" aria-label="安全須知 章節切換">
     <a href="#page-practical-shopping">← 購物</a>
-    <span>第 20 / 22 頁</span>
+    <span>第 20 / 23 頁</span>
     <a href="#page-practical-notes">行前提醒 →</a>
   </nav>
 </section>
@@ -5255,7 +5272,81 @@ summary:focus-visible {
     <div class="grid-wide"><article class="card card-accent"><span class="section-num">01</span><p>10/25（日）夏令時間結束——03:00 回撥為 02:00。當日不是營業週日，多數一般商店不得營業；加油站、值班藥局與符合法定例外的店可開，但不能假設每間 Żabka／小店都營業。</p></article><article class="card card-accent"><span class="section-num">02</span><p>日照比想像中長——夏令時間結束後（10/25–10/31）各城日落約 16:10–16:40（華沙 10/26 約 16:19、10/31 約 16:10；樂斯拉夫 10/28 約 16:34；波茲南 10/29 約 16:29），不是先前資料所列的過早時間；戶外行程可安排到接近日落前收尾。Day 5 座堂島點燈人沒有對外保證的固定出發分鐘，日落前到場等候即可。</p></article><article class="card card-accent"><span class="section-num">03</span><p>10/31 諸聖節前日——克拉科夫／華沙人潮多；辛德勒工廠、Wawel 部分展區 11/1、11/11 閉館（Wawel 自身公告的閉館日，不含 11/3）。你的回程班機是 10/31 14:40 起飛（WAW → DOH），不是 11/1，這些閉館日都在你離境之後，對本趟無實質影響。</p></article><article class="card "><span class="section-num">04</span><p>米其林訂位——二星＋各一星出發前 3–4 週訂；華沙 splurge 級 3–5 週。</p></article><article class="card "><span class="section-num">05</span><p>PKP 城際車票——目前網站內的時間都是銜接目標，不是已確認班次；等 10/25–10/29 實際班表進入 PKP／KOLEO 售票系統後再買，不預寫固定開賣日。</p></article><article class="card "><span class="section-num">06</span><p>火車實務——IC／EIP 對號入座；Koleo App 可劃位購票；上車查票需出示票券（電子截圖亦可）；大件行李放車廂端行李架。</p></article><article class="card "><span class="section-num">07</span><p>先訂清單——奧斯威辛（visit.auschwitz.org）、辛德勒工廠（muzeumkrakowa.pl）、米其林餐廳。</p></article><article class="card "><span class="section-num">08</span><p>諸聖節燭海（11/1 Wszystkich Świętych）——波蘭最動人的傳統：墓園在 10/30–11/1 點滿蠟燭成燭海。你 10/30–31 在華沙，可傍晚到 Powązki 老墓園感受；11/1 當天是燭海最盛的高峰日，但你已在 10/31 14:40 搭機離境，只能感受前一晚的氣氛。</p></article><article class="card card-accent"><span class="section-num">09</span><p>樂斯拉夫百年廳圓頂展廳——10/28（本行程當天）的內部參觀狀態須以官方 availability calendar 確認；2026-08-09 盤查時官方公開頁無法證實「確定關閉」，也無法證實可參觀，未確認前主行程只排外觀與周邊，行前 3–5 天再上 halastulecia.pl 複查。</p></article></div>
 <nav class="standalone-page-controls" aria-label="行前提醒 章節切換">
     <a href="#page-practical-essentials">← 安全須知</a>
-    <span>第 21 / 22 頁</span>
+    <span>第 21 / 23 頁</span>
+    <a href="#page-practical-ops-dashboard">資料更新儀表板 →</a>
+  </nav>
+</section>
+<section class="standalone-page" id="page-practical-ops-dashboard" data-source="practical/ops-dashboard.html">
+  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>資料更新儀表板</strong></header>
+<header class="hero">
+      <div class="hero-copy">
+        <span class="section-num">Ops</span>
+        <h1>資料更新儀表板</h1>
+        <p class="hero-dek">把 dashboard、待辦與網站三者同步；每次更新都先落在欄位、再看頁面。</p>
+      </div>
+    </header>
+    <section>
+      <div class="section-heading"><span class="section-num">Data Health</span><h2>資料品質面板</h2></div>
+      <div class="grid">
+        <article class="card"><span class="eyebrow">今日更新量</span><h3>0 筆</h3><p>最近同步日：—，該日 0 筆，較前一次 —</p></article>
+        <article class="card"><span class="eyebrow">公開資料</span><h3>共 22 筆</h3><p>已確認：9、重查：4、待確認：4、待補資料：5</p></article>
+        <article class="card"><span class="eyebrow">私有欄位</span><h3>6 筆</h3><p>保留為本次行程所需的敏感欄位，網站不對外展示。</p></article>
+        <article class="card"><span class="eyebrow">未完成項目</span><h3>13 / 14</h3><p>含交通、景點、門票、餐飲與備案。建議在待辦頁更新後再同步 dashboard。</p></article>
+        <article class="card"><span class="eyebrow">逾期項目</span><h3>0 筆</h3><p>含 dashboard 重查到期 + 待辦日期到期但未完成。</p></article>
+      </div>
+      <div class="grid">
+        <article class="card"><span class="section-num">1</span><h3>1. 更新網站資料</h3><p>以 src/data 內的網站資料為主要來源，維護 id 對應欄位（status、sourceUrl、verifiedAt、recheckAt、summary、offlineNote、private）。</p></article><article class="card"><span class="section-num">2</span><h3>2. 匯入人工盤點</h3><p>需要整併 Google Sheet 時，執行 node tools/sync-dashboard-overrides.mjs --source dashboard-export.csv，將盤點差異轉成覆寫檔。</p></article><article class="card"><span class="section-num">3</span><h3>3. 重新建置</h3><p>建議直接執行 npm run build，驗證頁面匯出完成後再推送。</p></article><article class="card"><span class="section-num">4</span><h3>4. 驗證公開資料</h3><p>檢查自由行資料庫、待辦頁與公開匯出；私人內容不得寫入網站產物。</p></article>
+      </div>
+    </section>
+    <section class="section">
+      <div class="section-heading"><span class="section-num">Sync</span><h2>最近同步紀錄（以 checkedAt 排序）</h2></div>
+      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>id</th><th>狀態</th><th>盤查日期</th><th>摘要</th></tr></thead><tbody><tr><td colspan="4">尚未有 dashboard 同步紀錄</td></tr></tbody></table></div>
+    </section>
+    <section class="section">
+      <div class="section-heading"><span class="section-num">Action list</span><h2>儀表板對齊優先清單</h2></div>
+      <ul class="check-list"><li><b>華沙 → 克拉科夫火車</b>（Rail · 4 項）— 尚未開賣／確認<br>在 PKP Intercity 顯示實際車次後，確認車廂、座位與轉乘保障。</li><li><b>克拉科夫 → 樂斯拉夫火車</b>（Rail · 4 項）— 尚未開賣／確認<br>依實際直達班次重排晚間抵達與住宿接駁。</li><li><b>樂斯拉夫 → 波茲南火車</b>（Rail · 4 項）— 尚未開賣／確認<br>確認發車時刻、月台與座位後更新當日轉場。</li><li><b>波茲南 → 華沙火車</b>（Rail · 4 項）— 尚未開賣／確認<br>確認抵達華沙時間，保留晚餐與入住緩衝。</li><li><b>Auschwitz 英文官方導覽</b>（Tickets · 7 項）— 需查／購<br>只能線上取得入場證；選擇官方系統提供的英文導覽場次。</li><li><b>Wieliczka 鹽礦英文團</b>（Tickets · 7 項）— 需查／購<br>在官方日期選擇器確認英文場、票價與庫存。</li><li><b>拉茨瓦維採全景畫</b>（Tickets · 7 項）— 尚未訂<br>以官方售票頁確認指定入場時段。</li><li><b>華沙皇家城堡 10:00</b>（Tickets · 7 項）— 尚未訂<br>選擇 10:00 入場，並保留安檢與離館移動時間。</li><li><b>POLIN 猶太人歷史博物館 13:15</b>（Tickets · 7 項）— 尚未訂<br>依官方售票頁的指定日庫存選擇 13:15 左右時段（主展最後入場 16:00）。</li><li><b>華沙起義博物館 16:00</b>（Tickets · 7 項）— 尚未訂<br>依官方票頁可售時段確認，避免與前一館離館時間衝突。</li><li><b>百年廳 10/28 內部參觀狀態</b>（Status · 1 項）— 待官方日曆確認<br>上 halastulecia.pl 的 availability calendar 查 10/28 圓頂展廳是否開放；2026-08-09 盤查時官方公開頁既無法證實關閉、也無法證實開放。行前 3–5 天再複查一次。</li><li><b>華沙最後晚餐</b>（Dining · 1 項）— 尚未訂位<br>先依當天落腳區域選定店家，再以店家官網或訂位頁完成預約。</li></ul>
+    </section>
+    <section class="section">
+      <div class="section-heading"><span class="section-num">Handover</span><h2>交接摘要與匯出</h2></div>
+      <p>可直接輸出不含私人內容的「今日異常清單」與「最近同步清單」，給接手者交接時使用。</p>
+      <div class="grid">
+        <button id="page-practical-ops-dashboard--export-handover-json" data-handover-export="json" type="button" class="tag-todo" style="cursor:pointer; border:none; padding: .55rem .8rem; border-radius:.55rem; display:inline-block; text-align:left;">匯出 JSON</button>
+        <button id="page-practical-ops-dashboard--export-handover-csv" data-handover-export="csv" type="button" class="tag-todo" style="cursor:pointer; border:none; padding: .55rem .8rem; border-radius:.55rem; display:inline-block; text-align:left; margin-left:.5rem;">匯出 CSV</button>
+      </div>
+      <script>
+        (function() {
+          const handover = {"generatedAt":"2026-08-24","metrics":{"totalEntries":22,"verified":9,"recheck":4,"pending":4,"privateRequired":5,"privateCount":6,"todos":14,"todoOpen":13,"overdue":0,"overdueTodos":0,"overdueEntries":0,"latestSyncDate":"—","latestSyncCount":0,"syncDelta":"—"},"handoverAlerts":[],"syncRows":[]};
+          const csvText = "類型,關鍵字,日期,狀態,說明\\n\\n最近同步清單（無）\\n\"id\",\"status\",\"checkedAt\",\"summary\",\"offlineNote\"";
+          const root = document.currentScript.closest('.standalone-page') || document;
+          const exportText = (filename, text, type) => {
+            const blob = new Blob([text], { type });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            URL.revokeObjectURL(url);
+            a.remove();
+          };
+          root.querySelector('[data-handover-export="json"]').addEventListener('click', () => {
+            exportText('handover-' + handover.generatedAt + '.json', JSON.stringify(handover, null, 2), 'application/json;charset=utf-8');
+          });
+          root.querySelector('[data-handover-export="csv"]').addEventListener('click', () => {
+            exportText('handover-' + handover.generatedAt + '.csv', csvText, 'text/csv;charset=utf-8');
+          });
+        }());
+      </script>
+    </section>
+    <section class="section">
+      <div class="section-heading"><span class="section-num">Rule</span><h2>網站資料維護規則</h2></div>
+      <div class="callout-note"><b>欄位邏輯：</b>網站資料是主要來源，只處理已知欄位與資料庫 entry；需要新增欄位時先修改網站資料契約，再更新 dashboard 對照表、同步與驗證規則。</div>
+      <div class="grid"><article class="card"><p>欄位對應與資料規格已固定為 status、sourceUrl、verifiedAt、recheckAt、checkedAt、summary、offlineNote、private、id。</p><p>建議同步後檢查：待確認/重查比例、待辦 pending 是否下降。</p></article></div>
+    </section>
+<nav class="standalone-page-controls" aria-label="資料更新儀表板 章節切換">
+    <a href="#page-practical-notes">← 行前提醒</a>
+    <span>第 22 / 23 頁</span>
     <a href="#page-practical-database">自由行資料庫 →</a>
   </nav>
 </section>
@@ -5708,8 +5799,8 @@ summary:focus-visible {
     </article></div>
       </section>
 <nav class="standalone-page-controls" aria-label="自由行資料庫 章節切換">
-    <a href="#page-practical-notes">← 行前提醒</a>
-    <span>第 22 / 22 頁</span>
+    <a href="#page-practical-ops-dashboard">← 資料更新儀表板</a>
+    <span>第 23 / 23 頁</span>
     <span aria-hidden="true"></span>
   </nav>
 </section>

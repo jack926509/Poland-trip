@@ -23,6 +23,7 @@ import {
   renderShopping,
   renderEssentials,
   renderNotes,
+  renderOpsDashboard,
 } from './src/templates/practical.mjs';
 import { renderDatabase } from './src/templates/database.mjs';
 
@@ -47,6 +48,7 @@ const standalonePages = [
   ['practical/shopping.html', '購物'],
   ['practical/essentials.html', '安全須知'],
   ['practical/notes.html', '行前提醒'],
+  ['practical/ops-dashboard.html', '資料更新儀表板'],
   ['practical/database.html', '自由行資料庫'],
 ];
 const standaloneNavGroups = [
@@ -365,6 +367,7 @@ function build() {
     flights: trip.flights,
     cities: cities.cities,
     todoGroups: trip.todoGroups,
+    databaseEntries: travelDatabase.databaseEntries,
   }));
 
   for (const day of trip.days) {
@@ -438,6 +441,12 @@ function build() {
   writeHtml('practical/notes.html', renderNotes({
     preDepartureNotes: essentials.preDepartureNotes,
   }));
+  writeHtml('practical/ops-dashboard.html', renderOpsDashboard({
+    entries: travelDatabase.databaseEntries,
+    statusLabels: travelDatabase.statusLabels,
+    syncRows: travelDatabase.syncRows,
+    todoGroups: trip.todoGroups,
+  }));
   writeHtml('practical/database.html', renderDatabase({
     entries: travelDatabase.databaseEntries,
     sections: travelDatabase.databaseSections,
@@ -448,7 +457,7 @@ function build() {
 
   const htmlCount = fs.readdirSync(distDir).filter(name => name.endsWith('.html')).length
     + fs.readdirSync(path.join(distDir, 'practical')).filter(name => name.endsWith('.html')).length;
-  if (htmlCount !== 22) throw new Error(`預期產生 22 頁，實際為 ${htmlCount} 頁`);
+  if (htmlCount !== 23) throw new Error(`預期產生 23 頁，實際為 ${htmlCount} 頁`);
   console.log(`build 完成：${htmlCount} 頁已產生至 dist/，另產生 poland-travel-guide-2026.html 單檔版`);
 }
 

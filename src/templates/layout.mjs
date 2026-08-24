@@ -54,6 +54,7 @@ export function renderLayout({ title, activeNav, bodyHtml, extraHead = '', pathP
         <li><a href="${path('practical/shopping.html')}">伴手禮與購物</a></li>
         <li><a href="${path('practical/essentials.html')}">安全與基本須知</a></li>
         <li><a href="${path('practical/notes.html')}">行前提醒</a></li>
+        <li><a href="${path('practical/ops-dashboard.html')}">資料更新儀表板</a></li>
         <li><a href="${path('practical/database.html')}">自由行資料庫</a></li>
       </ul>
     </details>
