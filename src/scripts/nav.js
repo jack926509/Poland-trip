@@ -13,4 +13,12 @@
       if (event.target.closest('a')) menu.open = false;
     });
   });
+
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+    const openMenu = [...menus].find(menu => menu.open);
+    if (!openMenu) return;
+    openMenu.open = false;
+    openMenu.querySelector('summary')?.focus();
+  });
 })();

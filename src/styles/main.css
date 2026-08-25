@@ -1603,7 +1603,7 @@ summary:focus-visible {
   }
 
   .journal-cover h1 {
-    font-size: clamp(4rem, 24vw, 6rem);
+    font-size: clamp(3.4rem, 19vw, 5.1rem);
   }
 
   .journal-cover-figure {

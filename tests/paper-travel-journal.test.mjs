@@ -77,3 +77,12 @@ test('單檔版使用旅行誌刊頭並完整封裝 23 個章節', () => {
   assert.doesNotMatch(standalone, /href="assets\/main\.css"/);
   assert.doesNotMatch(standalone, /src="\.\.\/assets\/database-filter\.js"/);
 });
+
+test('多頁與單檔導覽都支援 Escape 關閉選單', () => {
+  const navScript = fs.readFileSync(path.join(distDir, 'assets/nav.js'), 'utf8');
+  const standalone = fs.readFileSync(path.resolve('poland-travel-guide-2026.html'), 'utf8');
+  assert.match(navScript, /event\.key !== 'Escape'/);
+  assert.match(navScript, /openMenu\.open = false/);
+  assert.match(standalone, /event\.key !== 'Escape'/);
+  assert.match(standalone, /openMenu\.open = false/);
+});

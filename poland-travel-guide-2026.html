@@ -1616,7 +1616,7 @@ summary:focus-visible {
   }
 
   .journal-cover h1 {
-    font-size: clamp(4rem, 24vw, 6rem);
+    font-size: clamp(3.4rem, 19vw, 5.1rem);
   }
 
   .journal-cover-figure {
@@ -7015,6 +7015,13 @@ summary:focus-visible {
         document.querySelectorAll('.standalone-menu[open]').forEach(function (menu) {
           menu.removeAttribute('open');
         });
+      });
+      document.querySelector('.standalone-nav').addEventListener('keydown', function (event) {
+        if (event.key !== 'Escape') return;
+        var openMenu = document.querySelector('.standalone-menu[open]');
+        if (!openMenu) return;
+        openMenu.open = false;
+        openMenu.querySelector('summary').focus();
       });
       window.addEventListener('hashchange', activateStandaloneHash);
       activateStandaloneHash();

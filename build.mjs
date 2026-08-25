@@ -356,6 +356,13 @@ ${bundledPages}
           menu.removeAttribute('open');
         });
       });
+      document.querySelector('.standalone-nav').addEventListener('keydown', function (event) {
+        if (event.key !== 'Escape') return;
+        var openMenu = document.querySelector('.standalone-menu[open]');
+        if (!openMenu) return;
+        openMenu.open = false;
+        openMenu.querySelector('summary').focus();
+      });
       window.addEventListener('hashchange', activateStandaloneHash);
       activateStandaloneHash();
     }());
