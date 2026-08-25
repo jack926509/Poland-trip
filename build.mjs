@@ -172,6 +172,9 @@ ${mainCss}
     }
     .standalone-home,
     .standalone-menu > summary {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
       padding: .45rem .7rem;
       color: #f6f1e8;
       border: 1px solid rgba(255, 255, 255, .22);
@@ -211,6 +214,9 @@ ${mainCss}
     }
     .standalone-menu:last-child .standalone-menu-panel { right: 0; left: auto; }
     .standalone-menu-panel a {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
       padding: .6rem .7rem;
       color: #f6f1e8;
       border-radius: .45rem;
@@ -392,8 +398,11 @@ function build() {
 
   for (const day of trip.days) {
     const photoSpotsForDay = cities.photoSpots.filter(spot => spot.day === day.n);
-    const namedCities = cities.cities.filter(city => day.city.includes(city.name));
-    const journalCity = namedCities.at(-1) || cities.cities[0];
+    const journalCity = day.city
+      .split('→')
+      .reverse()
+      .map(stop => cities.cities.find(city => stop.includes(city.name)))
+      .find(Boolean) || cities.cities[0];
     writeHtml(
       `day-${String(day.n).padStart(2, '0')}.html`,
       renderDay(day, photoSpotsForDay, travelDatabase.dayOperations[day.n], journalCity),

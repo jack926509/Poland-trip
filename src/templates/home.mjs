@@ -66,7 +66,7 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
     <article class="journal-city-card">
       <a href="city-${cityFileKeys[city.key]}.html">
         <figure>
-          <img src="${escapeHtml(city.photo.thumb)}" alt="${escapeHtml(city.name)}城市風景" width="400" height="300" loading="lazy" decoding="async">
+          <img src="${escapeHtml(city.photo.hero)}" alt="${escapeHtml(city.name)}城市風景" width="1200" height="900" loading="lazy" decoding="async">
           <figcaption>${escapeHtml(city.tag)} · ${escapeHtml(city.pl)}</figcaption>
         </figure>
         <div>

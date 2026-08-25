@@ -34,6 +34,8 @@ test('首頁是旅行誌封面、8 日目錄與四城攝影章節', () => {
   assert.equal((home.match(/class="journal-day-entry"/g) || []).length, 8);
   assert.match(home, /class="journal-city-chapters"/);
   assert.equal((home.match(/class="journal-city-card"/g) || []).length, 4);
+  assert.equal((home.match(/src="assets\/photos\/(?:warszawa|krakow|wroclaw|poznan)-hero\.webp"/g) || []).length, 5);
+  assert.doesNotMatch(home, /src="assets\/photos\/[^"]+-thumb\.webp"/);
   assert.match(home, /class="journal-toolkit"/);
 });
 
@@ -45,6 +47,11 @@ test('每日頁有城市攝影章節且保留現場操作資訊', () => {
   assert.match(day, /class="journal-day-facts"/);
   assert.match(day, /class="table-editorial table-schedule"/);
   assert.match(day, /class="section operation-section"/);
+});
+
+test('跨城每日頁使用最右側已知目的地的城市照片', () => {
+  assert.match(read('day-06.html'), /src="assets\/photos\/warszawa-hero\.webp"/);
+  assert.match(read('day-08.html'), /src="assets\/photos\/warszawa-hero\.webp"/);
 });
 
 test('城市頁以授權照片開章且保留 Leaflet 地圖接口', () => {
@@ -76,6 +83,12 @@ test('單檔版使用旅行誌刊頭並完整封裝 23 個章節', () => {
   assert.match(standalone, /<style data-bundled="main\.css">/);
   assert.doesNotMatch(standalone, /href="assets\/main\.css"/);
   assert.doesNotMatch(standalone, /src="\.\.\/assets\/database-filter\.js"/);
+});
+
+test('單檔版導覽與下拉連結提供至少 44px 觸控高度', () => {
+  const standalone = fs.readFileSync(path.resolve('poland-travel-guide-2026.html'), 'utf8');
+  assert.match(standalone, /\.standalone-home,\s*\.standalone-menu > summary \{[^}]*min-height:\s*44px/);
+  assert.match(standalone, /\.standalone-menu-panel a \{[^}]*min-height:\s*44px/);
 });
 
 test('多頁與單檔導覽都支援 Escape 關閉選單', () => {
