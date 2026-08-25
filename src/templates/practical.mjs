@@ -16,17 +16,19 @@ function serializeForInlineScript(value) {
     .replaceAll('\u2029', '\\u2029');
 }
 
+function renderAppendixHeader({ kicker, title, dek }) {
+  return `<header class="journal-appendix-header">
+    <span class="section-num">${escapeHtml(kicker)}</span>
+    <h1>${escapeHtml(title)}</h1>
+    <p class="hero-dek">${escapeHtml(dek)}</p>
+  </header>`;
+}
+
 function renderPracticalLayout(title, eyebrow, intro, content) {
   const bodyHtml = `
-    <header class="hero">
-      <div class="hero-copy">
-        <span class="section-num">${eyebrow}</span>
-        <h1>${title}</h1>
-        <p class="hero-dek">${intro}</p>
-      </div>
-    </header>
+${renderAppendixHeader({ kicker: eyebrow, title, dek: intro })}
     ${content.trim()}`;
-  return renderLayout({ title, activeNav: 'practical', bodyHtml: bodyHtml.trim(), pathPrefix: '../' });
+  return renderLayout({ title, activeNav: 'practical', bodyHtml: bodyHtml.trim(), pathPrefix: '../', pageKind: 'practical' });
 }
 
 function getTaipeiToday() {

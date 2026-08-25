@@ -57,7 +57,7 @@ function normalizeSearchText(value) {
 function renderFilterOptions(label, name, values, labelFor) {
   return `<label class="database-filter">
       <span>${escapeHtml(label)}</span>
-      <select id="db-${name}" data-db-filter="${escapeHtml(name)}" data-db-filter-select="${escapeHtml(name)}">
+      <select id="db-${name}" data-db-${escapeHtml(name)} data-db-filter="${escapeHtml(name)}" data-db-filter-select="${escapeHtml(name)}">
         <option value="all">${name === 'status' ? '全部狀態' : name === 'city' ? '全部城市' : name === 'privacy' ? '全部公開性' : '全部類別'}</option>
         ${values.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(labelFor(value))}</option>`).join('')}
       </select>
@@ -174,12 +174,11 @@ export function renderDatabase({ entries, sections, statusLabels }) {
       </section>`;
   }).join('');
   const bodyHtml = `
-    <header class="hero">
-      <div class="hero-copy">
-        <span class="section-num">Travel database</span>
-        <h1>自由行資料庫</h1>
-        <p class="hero-dek">把可公開查證的資料、出發前重查事項與私人待填項目分開呈現；本站不公開訂位代碼、護照、保單或付款資料。</p>
-      </div>
+    <div class="journal-database">
+    <header class="journal-appendix-header">
+      <span class="section-num">Travel database</span>
+      <h1>自由行資料庫</h1>
+      <p class="hero-dek">把可公開查證的資料、出發前重查事項與私人待填項目分開呈現；本站不公開訂位代碼、護照、保單或付款資料。</p>
     </header>
     ${renderSos(entries, statusLabels)}
     <section class="section" aria-labelledby="database-lookup-heading">
@@ -189,7 +188,7 @@ export function renderDatabase({ entries, sections, statusLabels }) {
         <div class="database-toolbar-grid">
           <label class="database-filter" for="db-query">
             <span>關鍵字</span>
-            <input id="db-query" type="search" data-db-filter="query" data-db-filter-input="query" placeholder="輸入景點、文件、電話、地點..." aria-label="資料關鍵字查詢">
+            <input id="db-query" type="search" data-db-query data-db-filter="query" data-db-filter-input="query" placeholder="輸入景點、文件、電話、地點..." aria-label="資料關鍵字查詢">
           </label>
           ${renderFilterOptions('城市', 'city', cityOptions.map(([city]) => city), city => cityLabels[city])}
           ${renderFilterOptions('類別', 'category', categoryOptions, value => categoryLabels[value] || value)}
@@ -220,6 +219,7 @@ export function renderDatabase({ entries, sections, statusLabels }) {
       <ol>${index}</ol>
     </nav>
     ${sectionCards}
+    </div>
     <script src="../assets/database-filter.js" defer></script>`;
-  return renderLayout({ title: '自由行資料庫', activeNav: 'practical', bodyHtml, pathPrefix: '../' });
+  return renderLayout({ title: '自由行資料庫', activeNav: 'practical', bodyHtml, pathPrefix: '../', pageKind: 'practical' });
 }

@@ -56,3 +56,24 @@ test('城市頁以授權照片開章且保留 Leaflet 地圖接口', () => {
   assert.match(city, /data-map-key="wroclaw"/);
   assert.match(city, /class="map-container"/);
 });
+
+test('實用頁採旅行誌附錄版式且資料庫接口不變', () => {
+  const todos = read('practical/todos.html');
+  const database = read('practical/database.html');
+  assert.match(todos, /<body class="journal-site journal-practical">/);
+  assert.match(todos, /class="journal-appendix-header"/);
+  assert.match(database, /class="journal-database"/);
+  for (const selector of ['data-db-query', 'data-db-city', 'data-db-category', 'data-db-status', 'data-db-privacy', 'data-db-summary']) {
+    assert.ok(database.includes(selector), `資料庫缺少 ${selector}`);
+  }
+});
+
+test('單檔版使用旅行誌刊頭並完整封裝 23 個章節', () => {
+  const standalone = fs.readFileSync(path.resolve('poland-travel-guide-2026.html'), 'utf8');
+  assert.match(standalone, /<body class="journal-site journal-standalone">/);
+  assert.match(standalone, /POLSKA PAPER TRAVEL JOURNAL/);
+  assert.equal((standalone.match(/class="standalone-page"/g) || []).length, 23);
+  assert.match(standalone, /<style data-bundled="main\.css">/);
+  assert.doesNotMatch(standalone, /href="assets\/main\.css"/);
+  assert.doesNotMatch(standalone, /src="\.\.\/assets\/database-filter\.js"/);
+});

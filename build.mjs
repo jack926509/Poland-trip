@@ -118,7 +118,7 @@ function bundlePage(relativePath, label, pageIndex) {
   </nav>`;
 
   return `<section class="standalone-page" id="${currentPageId}" data-source="${relativePath}">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>${label}</strong></header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>${label}</strong></header>
 ${content}
 ${controls}
 </section>`;
@@ -264,6 +264,12 @@ ${mainCss}
       animation: none;
     }
     .standalone-page > .hero,
+    .standalone-page > .journal-cover,
+    .standalone-page > .journal-day-header,
+    .standalone-page > .journal-city-cover,
+    .standalone-page > .journal-appendix-header,
+    .standalone-page > .journal-database,
+    .standalone-page > .journal-status-strip,
     .standalone-page > .section,
     .standalone-page > .route-strip,
     .standalone-page > .grid-wide,
@@ -306,10 +312,10 @@ ${mainCss}
   </style>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
-<body>
+<body class="journal-site journal-standalone">
   <a class="skip-link" href="#page-index">跳至旅程首頁</a>
-  <nav class="standalone-nav" aria-label="單檔版目錄">
-      <a class="standalone-home" href="#page-index">旅程首頁</a>
+  <nav class="standalone-nav journal-masthead" aria-label="單檔版目錄">
+      <a class="standalone-home" href="#page-index">POLSKA PAPER TRAVEL JOURNAL</a>
       ${navMenus}
   </nav>
   <main id="standalone-content">

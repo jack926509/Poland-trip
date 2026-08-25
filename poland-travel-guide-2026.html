@@ -1318,6 +1318,54 @@ summary:focus-visible {
   min-height: 13rem;
 }
 
+.journal-appendix-header {
+  position: relative;
+  max-width: 62rem;
+  margin-bottom: 4rem;
+  padding: 2.5rem 0 2rem 8.5rem;
+  border-block: 1px solid var(--line-strong);
+}
+
+.journal-appendix-header::before {
+  position: absolute;
+  top: 2.75rem;
+  left: 0;
+  color: var(--plum);
+  content: 'APPENDIX';
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  writing-mode: vertical-rl;
+}
+
+.journal-appendix-header h1 {
+  max-width: 13ch;
+  font-size: clamp(3.5rem, 7.5vw, 7rem);
+}
+
+.journal-practical .page > .section,
+.journal-practical .page > section,
+.journal-practical .page > .grid-wide,
+.journal-practical .page > .callout-risk,
+.journal-practical .page > .callout-note,
+.journal-practical .page > .callout-good {
+  max-width: 68rem;
+}
+
+.journal-database {
+  max-width: none;
+}
+
+.journal-database .journal-appendix-header {
+  max-width: 68rem;
+}
+
+.journal-database .database-index {
+  border-right: 0;
+  border-left: 0;
+}
+
 .journal-day-header,
 .journal-city-cover {
   display: grid;
@@ -1494,6 +1542,10 @@ summary:focus-visible {
   .journal-city-cover-copy {
     border-top: 1px solid var(--line-strong);
     border-left: 0;
+  }
+
+  .journal-appendix-header {
+    padding-left: 6rem;
   }
 
   .database-index ol {
@@ -1689,6 +1741,29 @@ summary:focus-visible {
 
   .journal-day-facts > div:nth-child(-n + 2) {
     border-bottom: 1px solid var(--line);
+  }
+
+  .journal-appendix-header {
+    margin-bottom: 3rem;
+    padding: 1.5rem 0;
+  }
+
+  .journal-appendix-header::before {
+    position: static;
+    display: block;
+    margin-bottom: 1rem;
+    writing-mode: horizontal-tb;
+  }
+
+  .journal-appendix-header h1 {
+    font-size: clamp(3rem, 15vw, 4.8rem);
+  }
+
+  .database-filter input,
+  .database-filter select,
+  .database-toolbar-actions .btn,
+  .db-chip {
+    min-height: 44px;
   }
 
   .table-wrap-cards {
@@ -1925,6 +2000,12 @@ summary:focus-visible {
       animation: none;
     }
     .standalone-page > .hero,
+    .standalone-page > .journal-cover,
+    .standalone-page > .journal-day-header,
+    .standalone-page > .journal-city-cover,
+    .standalone-page > .journal-appendix-header,
+    .standalone-page > .journal-database,
+    .standalone-page > .journal-status-strip,
     .standalone-page > .section,
     .standalone-page > .route-strip,
     .standalone-page > .grid-wide,
@@ -1967,10 +2048,10 @@ summary:focus-visible {
   </style>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
-<body>
+<body class="journal-site journal-standalone">
   <a class="skip-link" href="#page-index">跳至旅程首頁</a>
-  <nav class="standalone-nav" aria-label="單檔版目錄">
-      <a class="standalone-home" href="#page-index">旅程首頁</a>
+  <nav class="standalone-nav journal-masthead" aria-label="單檔版目錄">
+      <a class="standalone-home" href="#page-index">POLSKA PAPER TRAVEL JOURNAL</a>
       <details class="standalone-menu" name="standalone-primary-nav" data-group="days">
         <summary>每日行程</summary>
         <div class="standalone-menu-panel">
@@ -2011,7 +2092,7 @@ summary:focus-visible {
   </nav>
   <main id="standalone-content">
 <section class="standalone-page" id="page-index" data-source="index.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>旅程首頁</strong></header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>旅程首頁</strong></header>
 <header class="journal-cover">
       <div class="journal-cover-copy">
         <span class="journal-kicker">2026 Poland Field Plan · PAPER TRAVEL JOURNAL</span>
@@ -2303,7 +2384,7 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-day-01" data-source="day-01.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 1</strong></header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>Day 1</strong></header>
 <header class="journal-day-header">
       <div class="journal-day-heading">
         <span class="section-num">Day 01 · 10/24 (六)</span>
@@ -2528,7 +2609,7 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-day-02" data-source="day-02.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 2</strong></header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>Day 2</strong></header>
 <header class="journal-day-header">
       <div class="journal-day-heading">
         <span class="section-num">Day 02 · 10/25 (日)</span>
@@ -2821,7 +2902,7 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-day-03" data-source="day-03.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 3</strong></header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>Day 3</strong></header>
 <header class="journal-day-header">
       <div class="journal-day-heading">
         <span class="section-num">Day 03 · 10/26 (一)</span>
@@ -3025,7 +3106,7 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-day-04" data-source="day-04.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 4</strong></header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>Day 4</strong></header>
 <header class="journal-day-header">
       <div class="journal-day-heading">
         <span class="section-num">Day 04 · 10/27 (二)</span>
@@ -3297,7 +3378,7 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-day-05" data-source="day-05.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 5</strong></header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>Day 5</strong></header>
 <header class="journal-day-header">
       <div class="journal-day-heading">
         <span class="section-num">Day 05 · 10/28 (三)</span>
@@ -3553,7 +3634,7 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-day-06" data-source="day-06.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 6</strong></header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>Day 6</strong></header>
 <header class="journal-day-header">
       <div class="journal-day-heading">
         <span class="section-num">Day 06 · 10/29 (四)</span>
@@ -3800,7 +3881,7 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-day-07" data-source="day-07.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 7</strong></header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>Day 7</strong></header>
 <header class="journal-day-header">
       <div class="journal-day-heading">
         <span class="section-num">Day 07 · 10/30 (五)</span>
@@ -4015,7 +4096,7 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-day-08" data-source="day-08.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 8</strong></header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>Day 8</strong></header>
 <header class="journal-day-header">
       <div class="journal-day-heading">
         <span class="section-num">Day 08 · 10/31 (六)</span>
@@ -4204,7 +4285,7 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-city-warszawa" data-source="city-warszawa.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>華沙</strong></header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>華沙</strong></header>
 <header class="journal-city-cover">
       <figure>
         <img src="assets/photos/warszawa-hero.webp" alt="華沙城市風景" width="1200" height="800" decoding="async">
@@ -4624,7 +4705,7 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-city-krakow" data-source="city-krakow.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>克拉科夫</strong></header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>克拉科夫</strong></header>
 <header class="journal-city-cover">
       <figure>
         <img src="assets/photos/krakow-hero.webp" alt="克拉科夫城市風景" width="1200" height="800" decoding="async">
@@ -4974,7 +5055,7 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-city-wroclaw" data-source="city-wroclaw.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>樂斯拉夫</strong></header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>樂斯拉夫</strong></header>
 <header class="journal-city-cover">
       <figure>
         <img src="assets/photos/wroclaw-hero.webp" alt="樂斯拉夫城市風景" width="1200" height="800" decoding="async">
@@ -5283,7 +5364,7 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-city-poznan" data-source="city-poznan.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>波茲南</strong></header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>波茲南</strong></header>
 <header class="journal-city-cover">
       <figure>
         <img src="assets/photos/poznan-hero.webp" alt="波茲南城市風景" width="1200" height="800" decoding="async">
@@ -5588,14 +5669,12 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-practical-todos" data-source="practical/todos.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>待辦事項</strong></header>
-<header class="hero">
-      <div class="hero-copy">
-        <span class="section-num">Action list</span>
-        <h1>待辦事項</h1>
-        <p class="hero-dek">城際交通、景點、餐飲與雨天備案集中在一頁。先處理有日期與指定場次的票，再處理彈性訂位。</p>
-      </div>
-    </header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>待辦事項</strong></header>
+<header class="journal-appendix-header">
+    <span class="section-num">Action list</span>
+    <h1>待辦事項</h1>
+    <p class="hero-dek">城際交通、景點、餐飲與雨天備案集中在一頁。先處理有日期與指定場次的票，再處理彈性訂位。</p>
+  </header>
     <div class="callout-risk"><span class="tag-todo">14 項待辦</span><p>按「要買什麼」而非逐日行程整理。完成後請將票券與訂位資訊離線保存；未開賣項目仍以官方系統實際可售狀態為準。</p></div>
     <section class="section" id="page-practical-todos--todo-rail">
       <div class="section-heading"><span class="section-num">Rail · 4 項</span><h2>城際交通</h2></div>
@@ -5681,14 +5760,12 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-practical-booking" data-source="practical/booking.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>訂票與交通</strong></header>
-<header class="hero">
-      <div class="hero-copy">
-        <span class="section-num">Booking plan</span>
-        <h1>訂票與交通</h1>
-        <p class="hero-dek">先看最急的票，再核對火車、航班與已確認住宿。尚未確認的時段保留原樣，不用猜。</p>
-      </div>
-    </header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>訂票與交通</strong></header>
+<header class="journal-appendix-header">
+    <span class="section-num">Booking plan</span>
+    <h1>訂票與交通</h1>
+    <p class="hero-dek">先看最急的票，再核對火車、航班與已確認住宿。尚未確認的時段保留原樣，不用猜。</p>
+  </header>
     <section>
       <div class="section-heading"><span class="section-num">Do first</span><h2>訂票優先順序</h2></div>
       <div class="grid">
@@ -5847,14 +5924,12 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-practical-dining" data-source="practical/dining.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>餐廳</strong></header>
-<header class="hero">
-      <div class="hero-copy">
-        <span class="section-num">Michelin 2026</span>
-        <h1>米其林與餐廳</h1>
-        <p class="hero-dek">已把 2026 米其林名單與本行程實際餐廳分開；營業時間只寫能追到店家來源的分店。</p>
-      </div>
-    </header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>餐廳</strong></header>
+<header class="journal-appendix-header">
+    <span class="section-num">Michelin 2026</span>
+    <h1>米其林與餐廳</h1>
+    <p class="hero-dek">已把 2026 米其林名單與本行程實際餐廳分開；營業時間只寫能追到店家來源的分店。</p>
+  </header>
     <div class="callout-note"><b>資料界線：</b>米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不再把它們當成固定資料。營業時間查證於 2026-08-09，訂位前仍看店家公告。</div>
     <section>
       <div class="section-heading"><span class="section-num">Guide</span><h2>2026 米其林總表</h2></div>
@@ -5908,14 +5983,12 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-practical-tickets" data-source="practical/tickets.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>門票</strong></header>
-<header class="hero">
-      <div class="hero-copy">
-        <span class="section-num">Tickets</span>
-        <h1>門票速查</h1>
-        <p class="hero-dek">把景點價格、優待、閉館與官方連結放在同一頁，規劃預算時不必來回找。</p>
-      </div>
-    </header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>門票</strong></header>
+<header class="journal-appendix-header">
+    <span class="section-num">Tickets</span>
+    <h1>門票速查</h1>
+    <p class="hero-dek">把景點價格、優待、閉館與官方連結放在同一頁，規劃預算時不必來回找。</p>
+  </header>
     <div class="callout-risk"><span class="tag-todo">已查證</span><p>資料查證日為 2026-08-08。奧斯威辛自 2026-03-01 起所有入場證只在線上提供；本行程 10:00 入場必須購買官方導覽場次。 <a href="https://www.auschwitz.org/en/visiting/" target="_blank" rel="noopener">開啟官網 →</a></p></div><div class="callout-risk"><span class="tag-todo">開賣再確認</span><p>博物館活動、臨時閉館與可售場次仍可能調整；本站不把「查證過」誤寫成「已訂到」，購票時請以官方日曆為準。 <a href="https://visit.auschwitz.org/" target="_blank" rel="noopener">開啟官網 →</a></p></div>
     <section>
       <div class="section-heading"><span class="section-num">2026-08</span><h2>最新門票速查</h2></div>
@@ -6055,14 +6128,12 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-practical-transit" data-source="practical/transit.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>市內交通</strong></header>
-<header class="hero">
-      <div class="hero-copy">
-        <span class="section-num">City transit</span>
-        <h1>市內交通</h1>
-        <p class="hero-dek">四城大多可步行；需要搭車時，先查短程票與 Jakdojade，通常不必買多日券。</p>
-      </div>
-    </header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>市內交通</strong></header>
+<header class="journal-appendix-header">
+    <span class="section-num">City transit</span>
+    <h1>市內交通</h1>
+    <p class="hero-dek">四城大多可步行；需要搭車時，先查短程票與 Jakdojade，通常不必買多日券。</p>
+  </header>
     <section>
       <div class="section-heading"><span class="section-num">Fares</span><h2>四城市內票價</h2></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>短程</th><th>90 分</th><th>24 小時</th><th>備註</th></tr></thead><tbody><tr><td><b>華沙 WTP</b></td><td>抵達日確認</td><td>第 1 區時間票（抵達日依官方價目確認）</td><td>抵達日確認</td><td>電車／巴士／地鐵／SKM；機場在第 1 區，票價以 WTP 官方價目與售票機為準</td></tr><tr><td><b>克拉科夫 KMK</b></td><td>15 分 4</td><td>90 分 9</td><td>20（第 I 區）／25（I+II+III）</td><td>2026-03-02 起；30 分或單趟票 6</td></tr><tr><td><b>樂斯拉夫 MPK</b></td><td>15 分 3.20</td><td>90 分 7</td><td>15</td><td>30 分 4.00、60 分 5.20；時間票可轉乘</td></tr><tr><td><b>波茲南 ZTM</b></td><td>15 分 5</td><td>90 分 9</td><td>18（A 區）／24（全區）</td><td>45 分 7；時間票可轉乘</td></tr></tbody></table></div>
@@ -6082,14 +6153,12 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-practical-shopping" data-source="practical/shopping.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>購物</strong></header>
-<header class="hero">
-      <div class="hero-copy">
-        <span class="section-num">Shopping</span>
-        <h1>伴手禮與購物</h1>
-        <p class="hero-dek">先決定要買什麼，再直接打開店家地圖；肉製品入境台灣限制也已標出。</p>
-      </div>
-    </header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>購物</strong></header>
+<header class="journal-appendix-header">
+    <span class="section-num">Shopping</span>
+    <h1>伴手禮與購物</h1>
+    <p class="hero-dek">先決定要買什麼，再直接打開店家地圖；肉製品入境台灣限制也已標出。</p>
+  </header>
     <section><div class="section-heading"><span class="section-num">Souvenirs</span><h2>14 種伴手禮</h2></div><div class="grid"><article class="card"><h3>波羅的海琥珀 Bursztyn</h3><p>「波蘭黃金」；蜂蜜／威士忌色透明系，項鍊／手鍊／耳環。含昆蟲或罕見色澤較貴。各城珠寶店，認明 handmade。</p></article><article class="card"><h3>Bolesławiec 陶器</h3><p>深藍底配白色圓點花紋，手繪炻器，耐用實用。原產地在 Bolesławiec，各城有專賣店。</p></article><article class="card"><h3>伏特加 Wódka（不喝酒可略過）</h3><p>透明瓶身，Żubrówka 瓶內有一根綠色野牛草最好認；Wyborowa、Sobieski、Luksusowa、J.A. Baczewski 也常見。</p></article><article class="card"><h3>巧克力 · 糖果</h3><p>E. Wedel 老牌深棕包裝；Ptasie Mleczko 藍白紙盒，巧克力棉花糖；Krówki 奶油糖、Michałki、Kukułki 銀色包裝。</p></article><article class="card"><h3>Prince Polo 巧克力威化棒</h3><p>紅金配色長條包裝，波蘭國民零食，超商 3–5 PLN 隨手包；巧克力／花生／椰子多口味，適合當辦公室伴手禮。</p></article><article class="card"><h3>Delicje 果醬夾心餅</h3><p>橘黃色圓形包裝盒，Wedel 出品，海綿蛋糕夾杏桃果醬裹巧克力；茶點好搭檔，包裝精美適合送禮。</p></article><article class="card"><h3>Mieszanka Krakowska 克拉科夫綜合糖</h3><p>金黃色鐵盒印花包裝，Wawel 品牌經典什錦巧克力糖，克拉科夫限定款，適合當紀念品。</p></article><article class="card"><h3>Paluszki 鹹餅乾棒</h3><p>透明袋裝可見金黃色細長餅乾棒，原味／起司／罌粟籽口味，配啤酒或純吃皆宜。</p></article><article class="card"><h3>波蘭花草茶 · 蜂蜜</h3><p>Herbapol 綠色系花草茶包輕便好帶；miód lipowy 椴樹蜜呈琥珀金色，市集常見小罐裝。</p></article><article class="card"><h3>⚠️ Kabanosy 煙燻香腸乾</h3><p>深褐紅色細長條、真空包裝，波蘭超人氣肉乾零食，超商／超市都買得到。當地吃很推薦，但台灣海關嚴禁肉類製品入境（防治非洲豬瘟），別帶回台灣，出境前吃完或留在當地。</p></article><article class="card"><h3>Toruń 薑餅 Pierniki</h3><p>深褐色心型／圓形餅乾，常見錫盒或印花紙盒裝，全波蘭知名甜點禮，密封包裝好帶。</p></article><article class="card"><h3>Nalewka 水果利口酒（不喝酒可略過）</h3><p>深紅寶石色澤，華沙傳統，櫻桃 wiśniówka 最有名，玻璃瓶身常見手寫標籤。</p></article><article class="card"><h3>⚠️ oscypek 煙燻羊酪</h3><p>紡錘形、表面壓花紋、煙燻後呈金黃色，Tatra／Podhale 山區特產，認明產地標。當地吃很推薦，但乳製品攜帶回台受《動物產品輸入檢疫》規範，出發前請查防檢署當期公告確認可攜品項、限量與是否需檢疫證明，不要當成一定能帶。</p></article><article class="card"><h3>城市特色</h3><p>波茲南專屬 rogal świętomarciński 金黃可頌，內餡白罌粟籽；克拉科夫 Wawel 巧克力＋現買 obwarzanek 麻花圈。</p></article></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Where to buy</span><h2>實際店家</h2></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>店家</th><th>備註</th></tr></thead><tbody><tr><td>克拉科夫</td><td><a href="https://www.google.com/maps/search/?api=1&query=Stradomska%20Street%20pottery%20shops%20Krak%C3%B3w" target="_blank" rel="noopener"><b>Stradomska 街 Bolesławiec 陶器店</b></a></td><td>陶器店集中在 Stradomska 街，如 23 號</td></tr><tr><td>克拉科夫</td><td><a href="https://www.google.com/maps/search/?api=1&query=S%26A%20Amber%20Grodzka%20Krak%C3%B3w" target="_blank" rel="noopener"><b>S&A Amber</b></a></td><td>Grodzka 街 60／14 號；認 handmade／產地標避免仿品</td></tr><tr><td>克拉科夫</td><td><a href="https://www.google.com/maps/place/?q=place_id:ChIJPxlI8hJbFkcR7vI2ebLVIDk" target="_blank" rel="noopener"><b>World of Amber</b></a></td><td>克拉科夫琥珀店備選</td></tr><tr><td>克拉科夫</td><td><a href="https://www.google.com/maps/search/?api=1&query=Sukiennice%20Cloth%20Hall%20Krak%C3%B3w" target="_blank" rel="noopener"><b>Sukiennice 布廊</b></a></td><td>廣場內伴手禮攤位集中</td></tr><tr><td>克拉科夫</td><td><a href="https://www.google.com/maps/search/?api=1&query=Rzeczy%20Same%20Podg%C3%B3rze%20Krak%C3%B3w" target="_blank" rel="noopener"><b>Rzeczy Same Podgórze</b></a></td><td>選購波蘭設計</td></tr><tr><td>華沙</td><td><a href="https://www.google.com/maps/search/?api=1&query=Pijalnia%20Czekolady%20E.Wedel%20Szpitalna%20Warszawa" target="_blank" rel="noopener"><b>E.Wedel 巧克力沙龍</b></a></td><td>Szpitalna 8 旗艦店</td></tr><tr><td>華沙</td><td><a href="https://www.google.com/maps/search/?api=1&query=Cepelia%20Warszawa" target="_blank" rel="noopener"><b>Cepelia Warszawa</b></a></td><td>波蘭民藝品牌店</td></tr></tbody></table></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Quick list</span><h2>傳統伴手禮備忘</h2></div><div class="grid"><article class="card"><span class="eyebrow">陶瓷</span><h3>Bolesławiec</h3><p>藍底白點手繪餐具，全球收藏家追捧</p></article><article class="card"><span class="eyebrow">琥珀</span><h3>波羅的海琥珀</h3><p>克拉科夫紡織會館或華沙老城；辨真偽：泡鹽水會浮、靜電可吸紙屑</p></article><article class="card"><span class="eyebrow">伏特加</span><h3>Żubrówka / Soplica</h3><p>野牛草 / 果味，伴手首選</p></article><article class="card"><span class="eyebrow">巧克力</span><h3>E. Wedel</h3><p>1851 年華沙百年品牌</p></article><article class="card"><span class="eyebrow">糖果</span><h3>Krówki</h3><p>波蘭奶油糖，超市到處有</p></article><article class="card"><span class="eyebrow">剪紙</span><h3>Wycinanki</h3><p>庫亞瓦、洛維奇地區傳統</p></article><article class="card"><span class="eyebrow">起司</span><h3>Oscypek</h3><p>塔特拉山區代表性乳酪；帶回台灣屬動物產品，須先查防檢署當期規定</p></article></div></section>
@@ -6102,14 +6171,12 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-practical-essentials" data-source="practical/essentials.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>安全須知</strong></header>
-<header class="hero">
-      <div class="hero-copy">
-        <span class="section-num">Essentials</span>
-        <h1>安全與基本須知</h1>
-        <p class="hero-dek">語言、插座、打包、緊急電話與常見陷阱集中在這裡，出發前可快速複查。</p>
-      </div>
-    </header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>安全須知</strong></header>
+<header class="journal-appendix-header">
+    <span class="section-num">Essentials</span>
+    <h1>安全與基本須知</h1>
+    <p class="hero-dek">語言、插座、打包、緊急電話與常見陷阱集中在這裡，出發前可快速複查。</p>
+  </header>
     <section><div class="section-heading"><span class="section-num">Basics</span><h2>基本須知</h2></div><div class="grid"><article class="card"><span class="eyebrow">語言</span><p>波蘭語（觀光區英語通）</p></article><article class="card"><span class="eyebrow">電壓</span><p>230V · C/E/F 型插座</p></article><article class="card"><span class="eyebrow">時區</span><p>CET（夏令 CEST）</p></article><article class="card"><span class="eyebrow">匯率</span><p>每日浮動；付款與記帳以當日銀行／卡組織匯率為準</p></article><article class="card"><span class="eyebrow">物價水位</span><p>依城市與店型差異大，以實際菜單與訂票頁為準</p></article><article class="card"><span class="eyebrow">小費文化</span><p>餐廳 10%（非強制）</p></article><article class="card"><span class="eyebrow">台灣簽證</span><p>免申根簽 90 天</p></article><article class="card"><span class="eyebrow">ETIAS</span><p>截至 2026-08-08 官方系統尚未運作，也不收申請；但英文頁仍寫預計 2026 年第 4 季啟用。本行程正值第 4 季，不能先斷言不需要；出發前務必再查 EU 官方頁。</p></article></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Language</span><h2>常用波蘭語</h2></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>中文</th><th>波蘭語</th><th>音譯</th></tr></thead><tbody><tr><td>你好（非正式）</td><td><b>Cześć</b></td><td>chesh-ch</td></tr><tr><td>您好</td><td><b>Dzień dobry</b></td><td>jen dob-ri</td></tr><tr><td>晚安</td><td><b>Dobranoc</b></td><td>do-bra-nots</td></tr><tr><td>謝謝</td><td><b>Dziękuję</b></td><td>jen-koo-yeh</td></tr><tr><td>請 / 不客氣</td><td><b>Proszę</b></td><td>pro-sheh</td></tr><tr><td>是 / 否</td><td><b>Tak / Nie</b></td><td>—</td></tr><tr><td>對不起</td><td><b>Przepraszam</b></td><td>psheh-pra-sham</td></tr><tr><td>廁所在哪</td><td><b>Gdzie jest toaleta?</b></td><td>—</td></tr><tr><td>買單</td><td><b>Rachunek proszę</b></td><td>—</td></tr><tr><td>多少錢</td><td><b>Ile to kosztuje?</b></td><td>—</td></tr><tr><td>乾杯</td><td><b>Na zdrowie!</b></td><td>naz-dro-vyeh</td></tr><tr><td>真好吃</td><td><b>Smaczne!</b></td><td>smach-neh</td></tr></tbody></table></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Packing</span><h2>打包清單</h2></div><div class="grid-wide"><article class="card"><h3>證件與金錢</h3><ul class="check-list"><li>護照（離開申根區後至少 3 個月有效，且簽發未滿 10 年）</li><li>各票券訂位證明（列印或存離線）</li><li>信用卡</li><li>少量茲羅提現金</li><li>旅遊保險單</li></ul></article><article class="card"><h3>電子</h3><ul class="check-list"><li>手機</li><li>充電器</li><li>歐規轉接頭</li><li>行動電源</li><li>耳機</li></ul></article><article class="card"><h3>衣物（10 月波蘭）</h3><ul class="check-list"><li>保暖外套</li><li>毛帽手套</li><li>圍巾</li><li>雨具</li><li>好走的鞋</li></ul></article><article class="card"><h3>藥品盥洗</h3><ul class="check-list"><li>常備藥</li><li>暈車藥</li><li>牙刷牙膏</li><li>保養品</li></ul></article></div></section>
@@ -6122,14 +6189,12 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-practical-notes" data-source="practical/notes.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>行前提醒</strong></header>
-<header class="hero">
-      <div class="hero-copy">
-        <span class="section-num">Pre-trip</span>
-        <h1>行前提醒</h1>
-        <p class="hero-dek">這些限制直接對應 2026/10/24–10/31 的日期；先處理閉館、日落、夏令時間與訂票節奏。</p>
-      </div>
-    </header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>行前提醒</strong></header>
+<header class="journal-appendix-header">
+    <span class="section-num">Pre-trip</span>
+    <h1>行前提醒</h1>
+    <p class="hero-dek">這些限制直接對應 2026/10/24–10/31 的日期；先處理閉館、日落、夏令時間與訂票節奏。</p>
+  </header>
     <div class="grid-wide"><article class="card card-accent"><span class="section-num">01</span><p>10/25（日）夏令時間結束——03:00 回撥為 02:00。當日不是營業週日，多數一般商店不得營業；加油站、值班藥局與符合法定例外的店可開，但不能假設每間 Żabka／小店都營業。</p></article><article class="card card-accent"><span class="section-num">02</span><p>日照比想像中長——夏令時間結束後（10/25–10/31）各城日落約 16:10–16:40（華沙 10/26 約 16:19、10/31 約 16:10；樂斯拉夫 10/28 約 16:34；波茲南 10/29 約 16:29），不是先前資料所列的過早時間；戶外行程可安排到接近日落前收尾。Day 5 座堂島點燈人沒有對外保證的固定出發分鐘，日落前到場等候即可。</p></article><article class="card card-accent"><span class="section-num">03</span><p>10/31 諸聖節前日——克拉科夫／華沙人潮多；辛德勒工廠、Wawel 部分展區 11/1、11/11 閉館（Wawel 自身公告的閉館日，不含 11/3）。你的回程班機是 10/31 14:40 起飛（WAW → DOH），不是 11/1，這些閉館日都在你離境之後，對本趟無實質影響。</p></article><article class="card "><span class="section-num">04</span><p>米其林訂位——二星＋各一星出發前 3–4 週訂；華沙 splurge 級 3–5 週。</p></article><article class="card "><span class="section-num">05</span><p>PKP 城際車票——目前網站內的時間都是銜接目標，不是已確認班次；等 10/25–10/29 實際班表進入 PKP／KOLEO 售票系統後再買，不預寫固定開賣日。</p></article><article class="card "><span class="section-num">06</span><p>火車實務——IC／EIP 對號入座；Koleo App 可劃位購票；上車查票需出示票券（電子截圖亦可）；大件行李放車廂端行李架。</p></article><article class="card "><span class="section-num">07</span><p>先訂清單——奧斯威辛（visit.auschwitz.org）、辛德勒工廠（muzeumkrakowa.pl）、米其林餐廳。</p></article><article class="card "><span class="section-num">08</span><p>諸聖節燭海（11/1 Wszystkich Świętych）——波蘭最動人的傳統：墓園在 10/30–11/1 點滿蠟燭成燭海。你 10/30–31 在華沙，可傍晚到 Powązki 老墓園感受；11/1 當天是燭海最盛的高峰日，但你已在 10/31 14:40 搭機離境，只能感受前一晚的氣氛。</p></article><article class="card card-accent"><span class="section-num">09</span><p>樂斯拉夫百年廳圓頂展廳——10/28（本行程當天）的內部參觀狀態須以官方 availability calendar 確認；2026-08-09 盤查時官方公開頁無法證實「確定關閉」，也無法證實可參觀，未確認前主行程只排外觀與周邊，行前 3–5 天再上 halastulecia.pl 複查。</p></article></div>
 <nav class="standalone-page-controls" aria-label="行前提醒 章節切換">
     <a href="#page-practical-essentials">← 安全須知</a>
@@ -6138,14 +6203,12 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-practical-ops-dashboard" data-source="practical/ops-dashboard.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>資料更新儀表板</strong></header>
-<header class="hero">
-      <div class="hero-copy">
-        <span class="section-num">Ops</span>
-        <h1>資料更新儀表板</h1>
-        <p class="hero-dek">把 dashboard、待辦與網站三者同步；每次更新都先落在欄位、再看頁面。</p>
-      </div>
-    </header>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>資料更新儀表板</strong></header>
+<header class="journal-appendix-header">
+    <span class="section-num">Ops</span>
+    <h1>資料更新儀表板</h1>
+    <p class="hero-dek">把 dashboard、待辦與網站三者同步；每次更新都先落在欄位、再看頁面。</p>
+  </header>
     <section>
       <div class="section-heading"><span class="section-num">Data Health</span><h2>資料品質面板</h2></div>
       <div class="grid">
@@ -6212,13 +6275,12 @@ summary:focus-visible {
   </nav>
 </section>
 <section class="standalone-page" id="page-practical-database" data-source="practical/database.html">
-  <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>自由行資料庫</strong></header>
-<header class="hero">
-      <div class="hero-copy">
-        <span class="section-num">Travel database</span>
-        <h1>自由行資料庫</h1>
-        <p class="hero-dek">把可公開查證的資料、出發前重查事項與私人待填項目分開呈現；本站不公開訂位代碼、護照、保單或付款資料。</p>
-      </div>
+  <header class="standalone-page-ribbon"><span>POLSKA PAPER TRAVEL JOURNAL</span><strong>自由行資料庫</strong></header>
+<div class="journal-database">
+    <header class="journal-appendix-header">
+      <span class="section-num">Travel database</span>
+      <h1>自由行資料庫</h1>
+      <p class="hero-dek">把可公開查證的資料、出發前重查事項與私人待填項目分開呈現；本站不公開訂位代碼、護照、保單或付款資料。</p>
     </header>
     
     <section class="sos-section" aria-labelledby="page-practical-database--sos-heading">
@@ -6240,32 +6302,32 @@ summary:focus-visible {
         <div class="database-toolbar-grid">
           <label class="database-filter" for="page-practical-database--db-query">
             <span>關鍵字</span>
-            <input id="page-practical-database--db-query" type="search" data-db-filter="query" data-db-filter-input="query" placeholder="輸入景點、文件、電話、地點..." aria-label="資料關鍵字查詢">
+            <input id="page-practical-database--db-query" type="search" data-db-query data-db-filter="query" data-db-filter-input="query" placeholder="輸入景點、文件、電話、地點..." aria-label="資料關鍵字查詢">
           </label>
           <label class="database-filter">
       <span>城市</span>
-      <select id="page-practical-database--db-city" data-db-filter="city" data-db-filter-select="city">
+      <select id="page-practical-database--db-city" data-db-city data-db-filter="city" data-db-filter-select="city">
         <option value="all">全部城市</option>
         <option value="WAW">華沙</option><option value="KRK">克拉科夫</option><option value="WRO">樂斯拉夫</option><option value="PL">波蘭全國</option><option value="ROUTE">跨城／全程</option>
       </select>
     </label>
           <label class="database-filter">
       <span>類別</span>
-      <select id="page-practical-database--db-category" data-db-filter="category" data-db-filter-select="category">
+      <select id="page-practical-database--db-category" data-db-category data-db-filter="category" data-db-filter-select="category">
         <option value="all">全部類別</option>
         <option value="document">文件與資格</option><option value="transit">交通與轉場</option><option value="safety">安全與醫療</option><option value="practical">生活實用</option><option value="dining">餐飲</option>
       </select>
     </label>
           <label class="database-filter">
       <span>狀態</span>
-      <select id="page-practical-database--db-status" data-db-filter="status" data-db-filter-select="status">
+      <select id="page-practical-database--db-status" data-db-status data-db-filter="status" data-db-filter-select="status">
         <option value="all">全部狀態</option>
         <option value="verified">已查證</option><option value="recheck">出發前重查</option><option value="pending">待確認</option><option value="private-required">需填私人資料</option>
       </select>
     </label>
           <label class="database-filter">
       <span>公開性</span>
-      <select id="page-practical-database--db-privacy" data-db-filter="privacy" data-db-filter-select="privacy">
+      <select id="page-practical-database--db-privacy" data-db-privacy data-db-filter="privacy" data-db-filter-select="privacy">
         <option value="all">全部公開性</option>
         <option value="public">一般公開</option><option value="private">待填私人資料</option>
       </select>
@@ -6911,6 +6973,7 @@ summary:focus-visible {
       
     </article></div>
       </section>
+    </div>
 <nav class="standalone-page-controls" aria-label="自由行資料庫 章節切換">
     <a href="#page-practical-ops-dashboard">← 資料更新儀表板</a>
     <span>第 23 / 23 頁</span>
