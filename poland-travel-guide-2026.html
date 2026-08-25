@@ -1318,6 +1318,137 @@ summary:focus-visible {
   min-height: 13rem;
 }
 
+.journal-day-header,
+.journal-city-cover {
+  display: grid;
+  grid-template-columns: minmax(20rem, 0.82fr) minmax(0, 1.18fr);
+  min-height: 34rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--line-strong);
+  background: var(--paper-light);
+  box-shadow: var(--shadow-paper);
+}
+
+.journal-day-heading,
+.journal-city-cover-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-width: 0;
+  padding: clamp(2rem, 5vw, 4.5rem);
+}
+
+.journal-day-heading {
+  background: var(--plum);
+  color: var(--paper-light);
+}
+
+.journal-day-heading .section-num {
+  color: var(--paper-deep);
+}
+
+.journal-day-heading h1,
+.journal-city-cover-copy h1 {
+  margin-block: 1.25rem;
+  font-size: clamp(3.2rem, 6.4vw, 6.4rem);
+}
+
+.journal-day-heading .hero-dek {
+  color: var(--paper-deep);
+}
+
+.journal-day-cover,
+.journal-city-cover figure {
+  position: relative;
+  min-width: 0;
+  min-height: 34rem;
+  margin: 0;
+  overflow: hidden;
+  background: var(--paper-deep);
+}
+
+.journal-day-cover img,
+.journal-city-cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.journal-day-cover figcaption,
+.journal-city-cover figcaption {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  max-width: calc(100% - 2rem);
+  padding: 0.45rem 0.65rem;
+  background: var(--paper-light);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+
+.journal-day-cover-fallback {
+  display: grid;
+  min-height: 34rem;
+  place-items: center;
+  background: var(--paper-deep);
+  color: var(--plum-soft);
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 7rem);
+}
+
+.journal-day-facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0 0 3rem;
+  border-block: 1px solid var(--line-strong);
+}
+
+.journal-day-facts > div {
+  min-width: 0;
+  padding: 1rem 1.25rem;
+  border-right: 1px solid var(--line);
+}
+
+.journal-day-facts > div:last-child {
+  border-right: 0;
+}
+
+.journal-day-facts dt {
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.journal-day-facts dd {
+  margin: 0.25rem 0 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.journal-city-cover {
+  grid-template-columns: minmax(0, 1.2fr) minmax(20rem, 0.8fr);
+}
+
+.journal-city-cover-copy {
+  border-left: 1px solid var(--line-strong);
+}
+
+.journal-city-cover-copy .check-list {
+  margin-bottom: 0;
+}
+
+.journal-city-story > .section:first-child {
+  margin-top: 3rem;
+}
+
+.journal-city-map {
+  border-top-color: var(--plum);
+}
+
 @media (max-width: 920px) {
   .nav {
     padding-inline: 1.25rem;
@@ -1347,6 +1478,22 @@ summary:focus-visible {
 
   .journal-city-card > a {
     grid-template-columns: minmax(0, 1fr) minmax(13rem, 0.75fr);
+  }
+
+  .journal-day-header,
+  .journal-city-cover {
+    grid-template-columns: 1fr;
+  }
+
+  .journal-day-cover,
+  .journal-day-cover-fallback,
+  .journal-city-cover figure {
+    min-height: 26rem;
+  }
+
+  .journal-city-cover-copy {
+    border-top: 1px solid var(--line-strong);
+    border-left: 0;
   }
 
   .database-index ol {
@@ -1495,6 +1642,53 @@ summary:focus-visible {
 
   .journal-city-card > a > div {
     min-height: 12rem;
+  }
+
+  .journal-day-header,
+  .journal-city-cover {
+    min-height: 0;
+  }
+
+  .journal-day-heading,
+  .journal-city-cover-copy {
+    padding: 1.5rem;
+  }
+
+  .journal-day-heading {
+    min-height: 24rem;
+  }
+
+  .journal-day-heading h1,
+  .journal-city-cover-copy h1 {
+    font-size: clamp(3rem, 15vw, 4.8rem);
+  }
+
+  .journal-day-cover,
+  .journal-day-cover-fallback,
+  .journal-city-cover figure {
+    min-height: 0;
+  }
+
+  .journal-day-cover img,
+  .journal-city-cover img {
+    aspect-ratio: 4 / 3;
+    height: auto;
+  }
+
+  .journal-day-cover-fallback {
+    min-height: 18rem;
+  }
+
+  .journal-day-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .journal-day-facts > div:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .journal-day-facts > div:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--line);
   }
 
   .table-wrap-cards {
@@ -2110,21 +2304,25 @@ summary:focus-visible {
 </section>
 <section class="standalone-page" id="page-day-01" data-source="day-01.html">
   <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 1</strong></header>
-<header class="hero">
-      <div class="hero-copy">
+<header class="journal-day-header">
+      <div class="journal-day-heading">
         <span class="section-num">Day 01 · 10/24 (六)</span>
         <h1>抵達華沙 · 老城傍晚漫步</h1>
         <p class="hero-dek">13:30 抵蕭邦機場，SKM 進城，老城散步、倒時差</p>
       </div>
-      <aside class="hero-aside">
-        <dl class="meta-list">
-          <div><dt>城市</dt><dd>華沙</dd></div>
-          <div><dt>強度</dt><dd>低</dd></div>
-          <div><dt>天氣參考</dt><dd>尚無可靠預報；出發前 7–10 天更新</dd></div>
-          <div><dt>類型</dt><dd>Arrival</dd></div>
-        </dl>
-      </aside>
+
+      <figure class="journal-day-cover">
+        <img src="assets/photos/warszawa-hero.webp" alt="華沙城市風景" width="1200" height="800" decoding="async">
+        <figcaption>Warszawa · 鋼鐵摩天 × 重建老城</figcaption>
+      </figure>
     </header>
+
+    <dl class="journal-day-facts">
+      <div><dt>城市</dt><dd>華沙</dd></div>
+      <div><dt>強度</dt><dd>低</dd></div>
+      <div><dt>天氣參考</dt><dd>尚無可靠預報；出發前 7–10 天更新</dd></div>
+      <div><dt>類型</dt><dd>Arrival</dd></div>
+    </dl>
 
     
     <div class="callout-good"><b>這一天沒有待訂項目。</b></div>
@@ -2331,21 +2529,25 @@ summary:focus-visible {
 </section>
 <section class="standalone-page" id="page-day-02" data-source="day-02.html">
   <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 2</strong></header>
-<header class="hero">
-      <div class="hero-copy">
+<header class="journal-day-header">
+      <div class="journal-day-heading">
         <span class="section-num">Day 02 · 10/25 (日)</span>
         <h1>Wawel + 老城 + 辛德勒工廠 + Kazimierz 晚餐</h1>
         <p class="hero-dek">目標抓早班直達車；實際車次待 PKP 開賣</p>
       </div>
-      <aside class="hero-aside">
-        <dl class="meta-list">
-          <div><dt>城市</dt><dd>華沙 → 克拉科夫</dd></div>
-          <div><dt>強度</dt><dd>高</dd></div>
-          <div><dt>天氣參考</dt><dd>尚無可靠預報；出發前 7–10 天更新</dd></div>
-          <div><dt>類型</dt><dd>Transit</dd></div>
-        </dl>
-      </aside>
+
+      <figure class="journal-day-cover">
+        <img src="assets/photos/krakow-hero.webp" alt="克拉科夫城市風景" width="1200" height="800" decoding="async">
+        <figcaption>Kraków · 中世紀石板路 × 千年王城</figcaption>
+      </figure>
     </header>
+
+    <dl class="journal-day-facts">
+      <div><dt>城市</dt><dd>華沙 → 克拉科夫</dd></div>
+      <div><dt>強度</dt><dd>高</dd></div>
+      <div><dt>天氣參考</dt><dd>尚無可靠預報；出發前 7–10 天更新</dd></div>
+      <div><dt>類型</dt><dd>Transit</dd></div>
+    </dl>
 
     
     <div class="callout-risk">
@@ -2620,21 +2822,25 @@ summary:focus-visible {
 </section>
 <section class="standalone-page" id="page-day-03" data-source="day-03.html">
   <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 3</strong></header>
-<header class="hero">
-      <div class="hero-copy">
+<header class="journal-day-header">
+      <div class="journal-day-heading">
         <span class="section-num">Day 03 · 10/26 (一)</span>
         <h1>Auschwitz-Birkenau · 一日往返</h1>
         <p class="hero-dek">波蘭最沉重也最重要的一天</p>
       </div>
-      <aside class="hero-aside">
-        <dl class="meta-list">
-          <div><dt>城市</dt><dd>克拉科夫</dd></div>
-          <div><dt>強度</dt><dd>中高</dd></div>
-          <div><dt>天氣參考</dt><dd>尚無可靠預報；出發前 7–10 天更新</dd></div>
-          <div><dt>類型</dt><dd>Memorial</dd></div>
-        </dl>
-      </aside>
+
+      <figure class="journal-day-cover">
+        <img src="assets/photos/krakow-hero.webp" alt="克拉科夫城市風景" width="1200" height="800" decoding="async">
+        <figcaption>Kraków · 中世紀石板路 × 千年王城</figcaption>
+      </figure>
     </header>
+
+    <dl class="journal-day-facts">
+      <div><dt>城市</dt><dd>克拉科夫</dd></div>
+      <div><dt>強度</dt><dd>中高</dd></div>
+      <div><dt>天氣參考</dt><dd>尚無可靠預報；出發前 7–10 天更新</dd></div>
+      <div><dt>類型</dt><dd>Memorial</dd></div>
+    </dl>
 
     
     <div class="callout-risk">
@@ -2820,21 +3026,25 @@ summary:focus-visible {
 </section>
 <section class="standalone-page" id="page-day-04" data-source="day-04.html">
   <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 4</strong></header>
-<header class="hero">
-      <div class="hero-copy">
+<header class="journal-day-header">
+      <div class="journal-day-heading">
         <span class="section-num">Day 04 · 10/27 (二)</span>
         <h1>Wieliczka 鹽礦 + Kazimierz 白天 · 傍晚轉場</h1>
         <p class="hero-dek">目標 19:30 左右直達車；待 PKP 開賣</p>
       </div>
-      <aside class="hero-aside">
-        <dl class="meta-list">
-          <div><dt>城市</dt><dd>克拉科夫 → 樂斯拉夫</dd></div>
-          <div><dt>強度</dt><dd>高</dd></div>
-          <div><dt>天氣參考</dt><dd>尚無可靠預報；出發前 7–10 天更新</dd></div>
-          <div><dt>類型</dt><dd>Transit</dd></div>
-        </dl>
-      </aside>
+
+      <figure class="journal-day-cover">
+        <img src="assets/photos/wroclaw-hero.webp" alt="樂斯拉夫城市風景" width="1200" height="800" decoding="async">
+        <figcaption>Wrocław · 千尊小矮人 × 煤氣燈點燈</figcaption>
+      </figure>
     </header>
+
+    <dl class="journal-day-facts">
+      <div><dt>城市</dt><dd>克拉科夫 → 樂斯拉夫</dd></div>
+      <div><dt>強度</dt><dd>高</dd></div>
+      <div><dt>天氣參考</dt><dd>尚無可靠預報；出發前 7–10 天更新</dd></div>
+      <div><dt>類型</dt><dd>Transit</dd></div>
+    </dl>
 
     
     <div class="callout-risk">
@@ -3088,21 +3298,25 @@ summary:focus-visible {
 </section>
 <section class="standalone-page" id="page-day-05" data-source="day-05.html">
   <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 5</strong></header>
-<header class="hero">
-      <div class="hero-copy">
+<header class="journal-day-header">
+      <div class="journal-day-heading">
         <span class="section-num">Day 05 · 10/28 (三)</span>
         <h1>小矮人尋寶 + 點燈儀式 + 晚轉場</h1>
         <p class="hero-dek">目標 19:00 左右直達車；待 PKP 開賣</p>
       </div>
-      <aside class="hero-aside">
-        <dl class="meta-list">
-          <div><dt>城市</dt><dd>樂斯拉夫 → 波茲南</dd></div>
-          <div><dt>強度</dt><dd>很高</dd></div>
-          <div><dt>天氣參考</dt><dd>尚無可靠預報；出發前 7–10 天更新</dd></div>
-          <div><dt>類型</dt><dd>Transit</dd></div>
-        </dl>
-      </aside>
+
+      <figure class="journal-day-cover">
+        <img src="assets/photos/poznan-hero.webp" alt="波茲南城市風景" width="1200" height="800" decoding="async">
+        <figcaption>Poznań · 波蘭文明發源 × 山羊報時</figcaption>
+      </figure>
     </header>
+
+    <dl class="journal-day-facts">
+      <div><dt>城市</dt><dd>樂斯拉夫 → 波茲南</dd></div>
+      <div><dt>強度</dt><dd>很高</dd></div>
+      <div><dt>天氣參考</dt><dd>尚無可靠預報；出發前 7–10 天更新</dd></div>
+      <div><dt>類型</dt><dd>Transit</dd></div>
+    </dl>
 
     
     <div class="callout-risk">
@@ -3340,21 +3554,25 @@ summary:focus-visible {
 </section>
 <section class="standalone-page" id="page-day-06" data-source="day-06.html">
   <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 6</strong></header>
-<header class="hero">
-      <div class="hero-copy">
+<header class="journal-day-header">
+      <div class="journal-day-heading">
         <span class="section-num">Day 06 · 10/29 (四)</span>
         <h1>山羊鐘樓秀 + 聖馬丁牛角麵包</h1>
         <p class="hero-dek">目標 17:30 左右直達車；待 PKP 開賣</p>
       </div>
-      <aside class="hero-aside">
-        <dl class="meta-list">
-          <div><dt>城市</dt><dd>波茲南 → 華沙</dd></div>
-          <div><dt>強度</dt><dd>中高</dd></div>
-          <div><dt>天氣參考</dt><dd>尚無可靠預報；出發前 7–10 天更新</dd></div>
-          <div><dt>類型</dt><dd>Transit</dd></div>
-        </dl>
-      </aside>
+
+      <figure class="journal-day-cover">
+        <img src="assets/photos/poznan-hero.webp" alt="波茲南城市風景" width="1200" height="800" decoding="async">
+        <figcaption>Poznań · 波蘭文明發源 × 山羊報時</figcaption>
+      </figure>
     </header>
+
+    <dl class="journal-day-facts">
+      <div><dt>城市</dt><dd>波茲南 → 華沙</dd></div>
+      <div><dt>強度</dt><dd>中高</dd></div>
+      <div><dt>天氣參考</dt><dd>尚無可靠預報；出發前 7–10 天更新</dd></div>
+      <div><dt>類型</dt><dd>Transit</dd></div>
+    </dl>
 
     
     <div class="callout-risk">
@@ -3583,21 +3801,25 @@ summary:focus-visible {
 </section>
 <section class="standalone-page" id="page-day-07" data-source="day-07.html">
   <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 7</strong></header>
-<header class="hero">
-      <div class="hero-copy">
+<header class="journal-day-header">
+      <div class="journal-day-heading">
         <span class="section-num">Day 07 · 10/30 (五)</span>
         <h1>皇家城堡 + POLIN + 起義博物館</h1>
         <p class="hero-dek">依閉館時間重排：最早先看皇家城堡</p>
       </div>
-      <aside class="hero-aside">
-        <dl class="meta-list">
-          <div><dt>城市</dt><dd>華沙</dd></div>
-          <div><dt>強度</dt><dd>高</dd></div>
-          <div><dt>天氣參考</dt><dd>尚無可靠預報；出發前 7–10 天更新</dd></div>
-          <div><dt>類型</dt><dd>Museums</dd></div>
-        </dl>
-      </aside>
+
+      <figure class="journal-day-cover">
+        <img src="assets/photos/warszawa-hero.webp" alt="華沙城市風景" width="1200" height="800" decoding="async">
+        <figcaption>Warszawa · 鋼鐵摩天 × 重建老城</figcaption>
+      </figure>
     </header>
+
+    <dl class="journal-day-facts">
+      <div><dt>城市</dt><dd>華沙</dd></div>
+      <div><dt>強度</dt><dd>高</dd></div>
+      <div><dt>天氣參考</dt><dd>尚無可靠預報；出發前 7–10 天更新</dd></div>
+      <div><dt>類型</dt><dd>Museums</dd></div>
+    </dl>
 
     
     <div class="callout-risk">
@@ -3794,21 +4016,25 @@ summary:focus-visible {
 </section>
 <section class="standalone-page" id="page-day-08" data-source="day-08.html">
   <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>Day 8</strong></header>
-<header class="hero">
-      <div class="hero-copy">
+<header class="journal-day-header">
+      <div class="journal-day-heading">
         <span class="section-num">Day 08 · 10/31 (六)</span>
         <h1>機場日 · 14:40 QR 260 起飛</h1>
         <p class="hero-dek">從容收尾 · SKM 機場線 20 分鐘</p>
       </div>
-      <aside class="hero-aside">
-        <dl class="meta-list">
-          <div><dt>城市</dt><dd>華沙 → 多哈</dd></div>
-          <div><dt>強度</dt><dd>低</dd></div>
-          <div><dt>天氣參考</dt><dd>尚無可靠預報；出發前 7–10 天更新</dd></div>
-          <div><dt>類型</dt><dd>Departure</dd></div>
-        </dl>
-      </aside>
+
+      <figure class="journal-day-cover">
+        <img src="assets/photos/warszawa-hero.webp" alt="華沙城市風景" width="1200" height="800" decoding="async">
+        <figcaption>Warszawa · 鋼鐵摩天 × 重建老城</figcaption>
+      </figure>
     </header>
+
+    <dl class="journal-day-facts">
+      <div><dt>城市</dt><dd>華沙 → 多哈</dd></div>
+      <div><dt>強度</dt><dd>低</dd></div>
+      <div><dt>天氣參考</dt><dd>尚無可靠預報；出發前 7–10 天更新</dd></div>
+      <div><dt>類型</dt><dd>Departure</dd></div>
+    </dl>
 
     
     <div class="callout-good"><b>這一天沒有待訂項目。</b></div>
@@ -3979,16 +4205,18 @@ summary:focus-visible {
 </section>
 <section class="standalone-page" id="page-city-warszawa" data-source="city-warszawa.html">
   <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>華沙</strong></header>
-<header class="hero">
-      <div class="hero-copy">
+<header class="journal-city-cover">
+      <figure>
+        <img src="assets/photos/warszawa-hero.webp" alt="華沙城市風景" width="1200" height="800" decoding="async">
+        <figcaption>Warszawa · CAPITAL</figcaption>
+      </figure>
+      <div class="journal-city-cover-copy">
         <span class="section-num">CAPITAL · Warszawa</span>
         <h1>華沙</h1>
         <p class="hero-dek">鋼鐵摩天 × 重建老城</p>
-      </div>
-      <aside class="hero-aside">
         <span class="eyebrow">這趟重點</span>
         <ul class="check-list"><li>POLIN 猶太博物館</li><li>起義博物館</li><li>皇家城堡</li><li>Krakowskie Przedmieście</li></ul>
-      </aside>
+      </div>
     </header>
 
     <div class="callout-note">
@@ -3996,7 +4224,19 @@ summary:focus-visible {
     <p>皇家城堡官方確認二–日 10:00–18:00、最後入場 17:00；Day 7 已由原本錯誤的 17:00 改成 10:00 第一站。</p>
   </div>
 
-    <section>
+    <div class="journal-city-story">
+    <section class="section">
+      <div class="section-heading"><span class="section-num">Context</span><h2>先理解這座城</h2></div>
+      <div class="grid-wide">
+        <article class="card"><span class="eyebrow">地理</span><p>維斯瓦河（Wisła）中游西岸，波蘭地理與交通的十字路口。左岸（西）是重建的老城與現代市中心，右岸 Praga 區因 1944 年已被蘇軍佔領而躲過摧毀，保留了戰前原始街景——今日的藝術替代區。</p></article>
+        <article class="card"><span class="eyebrow">歷史</span><p>二戰中被系統性夷平的城市：1944 華沙起義失敗後，希特勒下令逐街爆破，市區約 85% 化為瓦礫。戰後波蘭人依 18 世紀宮廷畫家 Bellotto（Canaletto）的城市風景畫逐磚重建老城，1980 年以「非典型完整重建案例」列入 UNESCO——你走的老城廣場每一面牆都不到 80 歲，卻承載 700 年的記憶。</p></article>
+      </div>
+      <div class="grid"><article class="card"><h3>美人魚與雙城傳說</h3><p>華沙市徽是持劍舉盾的美人魚 Syrenka。傳說她與哥本哈根小美人魚是姊妹，一路游進維斯瓦河，被漁民所救後誓言守護此城——所以華沙美人魚是戰鬥形態，哥本哈根那隻是憂鬱形態。</p></article><article class="card"><h3>蕭邦的心臟</h3><p>蕭邦客死巴黎，遺體葬於拉雪茲神父公墓，但遵其遺願，姊姊將他的心臟帶回華沙，封存在聖十字教堂（Krakowskie Przedmieście 上，Day 1 傍晚散步會經過）的柱子裡。二戰期間曾被納粹取走，戰後歸位。</p></article><article class="card"><h3>一份不受歡迎的禮物</h3><p>科學文化宮是 1955 年史達林「贈送」的蘇聯式摩天樓，華沙人曾說最棒的觀景點就是它的 30 樓——因為那是全城唯一看不到它的地方。如今旁邊蓋起純白的 MSN 現代美術館（2024 開幕、NYT 2026 必訪 No.2），新舊對峙本身就是展品。</p></article><article class="card"><h3>居禮夫人是華沙人</h3><p>瑪麗亞·斯克沃多夫斯卡（Maria Skłodowska-Curie）1867 年生於新城區 Freta 街 16 號，是史上唯一在兩個不同科學領域拿諾貝爾獎的人。老城散步腳程內就有她的出生地博物館。</p></article></div>
+      <h3>到現場別漏看</h3>
+      <ul class="check-list"><li>老城廣場地面找「重建前 vs 重建後」對照銅牌</li><li>聖十字教堂左側第二根柱：蕭邦心臟安放處</li><li>Praga 區（Day 7 已排）注意牆上戰前彈孔與原始磚面——左岸看不到的真跡</li></ul>
+    </section></div>
+
+    <section class="section journal-city-map">
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
       <p class="lead">拖曳、縮放並點選圖釘查看說明；手機上下滑動會優先捲動頁面，圖釘連結可直接開啟 Google Maps。</p>
       <div id="page-city-warszawa--map-warsaw" class="map-container" data-map-key="warsaw" aria-label="華沙互動地圖"></div>
@@ -4011,18 +4251,6 @@ summary:focus-visible {
     <div><span style="background:#d6336c;border:1.5px solid #7a1a3d"></span>精品購物</div>
     <div><span style="background:#6d597a;border:1.5px solid #3d2f46"></span>已確認住宿</div></div>
       <p class="map-caption">地圖底圖 © OpenStreetMap contributors</p>
-    </section>
-
-    
-    <section class="section">
-      <div class="section-heading"><span class="section-num">Context</span><h2>先理解這座城</h2></div>
-      <div class="grid-wide">
-        <article class="card"><span class="eyebrow">地理</span><p>維斯瓦河（Wisła）中游西岸，波蘭地理與交通的十字路口。左岸（西）是重建的老城與現代市中心，右岸 Praga 區因 1944 年已被蘇軍佔領而躲過摧毀，保留了戰前原始街景——今日的藝術替代區。</p></article>
-        <article class="card"><span class="eyebrow">歷史</span><p>二戰中被系統性夷平的城市：1944 華沙起義失敗後，希特勒下令逐街爆破，市區約 85% 化為瓦礫。戰後波蘭人依 18 世紀宮廷畫家 Bellotto（Canaletto）的城市風景畫逐磚重建老城，1980 年以「非典型完整重建案例」列入 UNESCO——你走的老城廣場每一面牆都不到 80 歲，卻承載 700 年的記憶。</p></article>
-      </div>
-      <div class="grid"><article class="card"><h3>美人魚與雙城傳說</h3><p>華沙市徽是持劍舉盾的美人魚 Syrenka。傳說她與哥本哈根小美人魚是姊妹，一路游進維斯瓦河，被漁民所救後誓言守護此城——所以華沙美人魚是戰鬥形態，哥本哈根那隻是憂鬱形態。</p></article><article class="card"><h3>蕭邦的心臟</h3><p>蕭邦客死巴黎，遺體葬於拉雪茲神父公墓，但遵其遺願，姊姊將他的心臟帶回華沙，封存在聖十字教堂（Krakowskie Przedmieście 上，Day 1 傍晚散步會經過）的柱子裡。二戰期間曾被納粹取走，戰後歸位。</p></article><article class="card"><h3>一份不受歡迎的禮物</h3><p>科學文化宮是 1955 年史達林「贈送」的蘇聯式摩天樓，華沙人曾說最棒的觀景點就是它的 30 樓——因為那是全城唯一看不到它的地方。如今旁邊蓋起純白的 MSN 現代美術館（2024 開幕、NYT 2026 必訪 No.2），新舊對峙本身就是展品。</p></article><article class="card"><h3>居禮夫人是華沙人</h3><p>瑪麗亞·斯克沃多夫斯卡（Maria Skłodowska-Curie）1867 年生於新城區 Freta 街 16 號，是史上唯一在兩個不同科學領域拿諾貝爾獎的人。老城散步腳程內就有她的出生地博物館。</p></article></div>
-      <h3>到現場別漏看</h3>
-      <ul class="check-list"><li>老城廣場地面找「重建前 vs 重建後」對照銅牌</li><li>聖十字教堂左側第二根柱：蕭邦心臟安放處</li><li>Praga 區（Day 7 已排）注意牆上戰前彈孔與原始磚面——左岸看不到的真跡</li></ul>
     </section>
 
     <section class="section">
@@ -4397,16 +4625,18 @@ summary:focus-visible {
 </section>
 <section class="standalone-page" id="page-city-krakow" data-source="city-krakow.html">
   <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>克拉科夫</strong></header>
-<header class="hero">
-      <div class="hero-copy">
+<header class="journal-city-cover">
+      <figure>
+        <img src="assets/photos/krakow-hero.webp" alt="克拉科夫城市風景" width="1200" height="800" decoding="async">
+        <figcaption>Kraków · OLD WORLD</figcaption>
+      </figure>
+      <div class="journal-city-cover-copy">
         <span class="section-num">OLD WORLD · Kraków</span>
         <h1>克拉科夫</h1>
         <p class="hero-dek">中世紀石板路 × 千年王城</p>
-      </div>
-      <aside class="hero-aside">
         <span class="eyebrow">這趟重點</span>
         <ul class="check-list"><li>Wawel 城堡</li><li>中央市集 Rynek</li><li>Auschwitz 一日往返</li><li>Kazimierz 猶太區</li></ul>
-      </aside>
+      </div>
     </header>
 
     <div class="callout-note">
@@ -4414,7 +4644,19 @@ summary:focus-visible {
     <p>辛德勒工廠週二至週日 09:00–20:00，最後入場為閉館前 90 分鐘；Day 2 的週日 17:30 時段可行，但仍須先取得官方時段票。</p>
   </div>
 
-    <section>
+    <div class="journal-city-story">
+    <section class="section">
+      <div class="section-heading"><span class="section-num">Context</span><h2>先理解這座城</h2></div>
+      <div class="grid-wide">
+        <article class="card"><span class="eyebrow">地理</span><p>維斯瓦河上游，Wawel 城堡建在河畔一座石灰岩丘上——控制河運的天然要塞，也是波蘭王權 500 年的地理支點。老城以歐洲最大中世紀廣場 Rynek Główny（200m × 200m）為核心，街廓在 1241 年蒙古入侵劫掠後、依 1257 年建城特許狀重劃，至今未變。</p></article>
+        <article class="card"><span class="eyebrow">歷史</span><p>1038–1596 年的波蘭王都，歷代國王在 Wawel 加冕與安葬。二戰時因作為納粹總督府所在地而未被戰火摧毀，是波蘭極少數「原裝」的古城——你在克拉科夫摸到的石頭大多是真的中世紀石頭。Kazimierz 原是 1335 年卡齊米日大帝敕建的獨立城市，數百年來是歐洲猶太文化重鎮，戰前 6.5 萬猶太居民戰後僅存數千。</p></article>
+      </div>
+      <div class="grid"><article class="card"><h3>瓦維爾龍</h3><p>傳說 Wawel 山丘下的洞穴住著噴火龍，吃遍牲口少女。屠龍的不是騎士，而是鞋匠學徒 Skuba——他把硫磺塞進羊皮縫成假羊，龍吞下後渴到狂飲維斯瓦河水，最後爆掉。今日城堡下河畔有一座每隔幾分鐘真的噴火的龍雕像。</p></article><article class="card"><h3>斷在半空的號角</h3><p>聖瑪利亞教堂塔頂每小時整點吹奏 Hejnał 號角，旋律永遠在同一個音戛然而止——紀念 1241 年蒙古來襲時，吹號示警的哨兵喉嚨中箭、樂聲中斷的傳說。這是全世界少數「以未完成為完成」的城市儀式，Day 2 16:00 廣場行程剛好對到整點。</p></article><article class="card"><h3>廣場底下還有一個廣場</h3><p>Rynek 地面下 4 公尺是 13 世紀的街面。2005–2010 年考古挖掘後原地做成 Rynek Underground 博物館（Day 2 雨備）——你腳下踩的其實是中世紀商路的天花板。</p></article><article class="card"><h3>兩顆星的城市</h3><p>2026 米其林把全波蘭唯一二星留給了這裡的 Bottiglieria 1881（連四年），發布典禮也選在克拉科夫 ICE 會議中心舉行——波蘭美食之都的地位官方蓋章。</p></article></div>
+      <h3>到現場別漏看</h3>
+      <ul class="check-list"><li>整點在廣場任一角落停下來等 Hejnał，注意最後一個音的戛然而止</li><li>紡織會館二樓迴廊看廣場全景（免費），一樓攤位留到 10/27 採買</li><li>Kazimierz Szeroka 街：《辛德勒的名單》多場戲的實景地</li></ul>
+    </section></div>
+
+    <section class="section journal-city-map">
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
       <p class="lead">拖曳、縮放並點選圖釘查看說明；手機上下滑動會優先捲動頁面，圖釘連結可直接開啟 Google Maps。</p>
       <div id="page-city-krakow--map-krakow" class="map-container" data-map-key="krakow" aria-label="克拉科夫互動地圖"></div>
@@ -4429,18 +4671,6 @@ summary:focus-visible {
     <div><span style="background:#d6336c;border:1.5px solid #7a1a3d"></span>精品購物</div>
     <div><span style="background:#6d597a;border:1.5px solid #3d2f46"></span>已確認住宿</div></div>
       <p class="map-caption">地圖底圖 © OpenStreetMap contributors</p>
-    </section>
-
-    
-    <section class="section">
-      <div class="section-heading"><span class="section-num">Context</span><h2>先理解這座城</h2></div>
-      <div class="grid-wide">
-        <article class="card"><span class="eyebrow">地理</span><p>維斯瓦河上游，Wawel 城堡建在河畔一座石灰岩丘上——控制河運的天然要塞，也是波蘭王權 500 年的地理支點。老城以歐洲最大中世紀廣場 Rynek Główny（200m × 200m）為核心，街廓在 1241 年蒙古入侵劫掠後、依 1257 年建城特許狀重劃，至今未變。</p></article>
-        <article class="card"><span class="eyebrow">歷史</span><p>1038–1596 年的波蘭王都，歷代國王在 Wawel 加冕與安葬。二戰時因作為納粹總督府所在地而未被戰火摧毀，是波蘭極少數「原裝」的古城——你在克拉科夫摸到的石頭大多是真的中世紀石頭。Kazimierz 原是 1335 年卡齊米日大帝敕建的獨立城市，數百年來是歐洲猶太文化重鎮，戰前 6.5 萬猶太居民戰後僅存數千。</p></article>
-      </div>
-      <div class="grid"><article class="card"><h3>瓦維爾龍</h3><p>傳說 Wawel 山丘下的洞穴住著噴火龍，吃遍牲口少女。屠龍的不是騎士，而是鞋匠學徒 Skuba——他把硫磺塞進羊皮縫成假羊，龍吞下後渴到狂飲維斯瓦河水，最後爆掉。今日城堡下河畔有一座每隔幾分鐘真的噴火的龍雕像。</p></article><article class="card"><h3>斷在半空的號角</h3><p>聖瑪利亞教堂塔頂每小時整點吹奏 Hejnał 號角，旋律永遠在同一個音戛然而止——紀念 1241 年蒙古來襲時，吹號示警的哨兵喉嚨中箭、樂聲中斷的傳說。這是全世界少數「以未完成為完成」的城市儀式，Day 2 16:00 廣場行程剛好對到整點。</p></article><article class="card"><h3>廣場底下還有一個廣場</h3><p>Rynek 地面下 4 公尺是 13 世紀的街面。2005–2010 年考古挖掘後原地做成 Rynek Underground 博物館（Day 2 雨備）——你腳下踩的其實是中世紀商路的天花板。</p></article><article class="card"><h3>兩顆星的城市</h3><p>2026 米其林把全波蘭唯一二星留給了這裡的 Bottiglieria 1881（連四年），發布典禮也選在克拉科夫 ICE 會議中心舉行——波蘭美食之都的地位官方蓋章。</p></article></div>
-      <h3>到現場別漏看</h3>
-      <ul class="check-list"><li>整點在廣場任一角落停下來等 Hejnał，注意最後一個音的戛然而止</li><li>紡織會館二樓迴廊看廣場全景（免費），一樓攤位留到 10/27 採買</li><li>Kazimierz Szeroka 街：《辛德勒的名單》多場戲的實景地</li></ul>
     </section>
 
     <section class="section">
@@ -4745,16 +4975,18 @@ summary:focus-visible {
 </section>
 <section class="standalone-page" id="page-city-wroclaw" data-source="city-wroclaw.html">
   <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>樂斯拉夫</strong></header>
-<header class="hero">
-      <div class="hero-copy">
+<header class="journal-city-cover">
+      <figure>
+        <img src="assets/photos/wroclaw-hero.webp" alt="樂斯拉夫城市風景" width="1200" height="800" decoding="async">
+        <figcaption>Wrocław · 1000+ DWARFS</figcaption>
+      </figure>
+      <div class="journal-city-cover-copy">
         <span class="section-num">1000+ DWARFS · Wrocław</span>
         <h1>樂斯拉夫</h1>
         <p class="hero-dek">千尊小矮人 × 煤氣燈點燈</p>
-      </div>
-      <aside class="hero-aside">
         <span class="eyebrow">這趟重點</span>
         <ul class="check-list"><li>百年廳 UNESCO</li><li>全景畫 Panorama</li><li>座堂島 Ostrów Tumski</li><li>糖果屋雙屋</li></ul>
-      </aside>
+      </div>
     </header>
 
     <div class="callout-risk">
@@ -4762,7 +4994,19 @@ summary:focus-visible {
     <p>百年廳 10/28 的內部參觀狀態需以官方 availability calendar 確認；未確認前主行程只排外觀與周邊。</p>
   </div>
 
-    <section>
+    <div class="journal-city-story">
+    <section class="section">
+      <div class="section-heading"><span class="section-num">Context</span><h2>先理解這座城</h2></div>
+      <div class="grid-wide">
+        <article class="card"><span class="eyebrow">地理</span><p>奧得河（Odra）在此裂成多條支流，把城市切成 12 座島、以 100 多座橋相連——「波蘭威尼斯」。最老的核心 Ostrów Tumski（座堂島）是千年前的起點，至今保留全歐少數仍由點燈人每晚手工點燃的瓦斯街燈。</p></article>
+        <article class="card"><span class="eyebrow">歷史</span><p>這座城市 1945 年前叫 Breslau，是德國第六大城。戰後國界西移，德裔居民被遷出，取而代之的是被蘇聯劃走的東部城市利沃夫（Lwów）的波蘭移民——整座城市的人口被「換血」。拉茨瓦維採全景畫正是從利沃夫一起搬來的鎮城之寶，Karczma Lwowska 餐廳的名字也是這段記憶。</p></article>
+      </div>
+      <div class="grid"><article class="card"><h3>小矮人是反抗軍</h3><p>城裡有逾 1,000 尊銅製小矮人（krasnale），但數量持續增加、無法精確統計。1980 年代反共團體「橙色替代」（Pomarańczowa Alternatywa）以塗鴉小矮人與荒誕街頭劇嘲諷政權——警察逮捕一個扮小矮人的人有多可笑，體制就有多可笑。2005 年起城市以銅像致敬這段歷史，每一尊都有名字與職業。</p></article><article class="card"><h3>每晚的點燈儀式</h3><p>日落時分，披斗篷、持長桿的點燈人會逐一點亮 Ostrów Tumski 的瓦斯燈。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，Day 5 以 16:15–17:15 在座堂島等候與散步規劃。</p></article><article class="card"><h3>混凝土的世界遺產</h3><p>百年廳（Hala Stulecia，1913）落成時擁有世界最大跨距的鋼筋混凝土圓頂，直接影響了現代主義建築的走向，2006 年列入 UNESCO——在古蹟之城看一座「未來古蹟」。</p></article></div>
+      <h3>到現場別漏看</h3>
+      <ul class="check-list"><li>廣場周邊開始數小矮人：郵差、消防員、睡在門邊的、推保險箱的——App「Krasnale Wrocław」有地圖</li><li>座堂島橋上的情人鎖與瓦斯燈：日落前 15 分鐘卡位</li><li>注意市政廳南面的天文鐘與哥德山牆——二戰倖存的原件</li></ul>
+    </section></div>
+
+    <section class="section journal-city-map">
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
       <p class="lead">拖曳、縮放並點選圖釘查看說明；手機上下滑動會優先捲動頁面，圖釘連結可直接開啟 Google Maps。</p>
       <div id="page-city-wroclaw--map-wroclaw" class="map-container" data-map-key="wroclaw" aria-label="樂斯拉夫互動地圖"></div>
@@ -4777,18 +5021,6 @@ summary:focus-visible {
     <div><span style="background:#d6336c;border:1.5px solid #7a1a3d"></span>精品購物</div>
     <div><span style="background:#6d597a;border:1.5px solid #3d2f46"></span>已確認住宿</div></div>
       <p class="map-caption">地圖底圖 © OpenStreetMap contributors</p>
-    </section>
-
-    
-    <section class="section">
-      <div class="section-heading"><span class="section-num">Context</span><h2>先理解這座城</h2></div>
-      <div class="grid-wide">
-        <article class="card"><span class="eyebrow">地理</span><p>奧得河（Odra）在此裂成多條支流，把城市切成 12 座島、以 100 多座橋相連——「波蘭威尼斯」。最老的核心 Ostrów Tumski（座堂島）是千年前的起點，至今保留全歐少數仍由點燈人每晚手工點燃的瓦斯街燈。</p></article>
-        <article class="card"><span class="eyebrow">歷史</span><p>這座城市 1945 年前叫 Breslau，是德國第六大城。戰後國界西移，德裔居民被遷出，取而代之的是被蘇聯劃走的東部城市利沃夫（Lwów）的波蘭移民——整座城市的人口被「換血」。拉茨瓦維採全景畫正是從利沃夫一起搬來的鎮城之寶，Karczma Lwowska 餐廳的名字也是這段記憶。</p></article>
-      </div>
-      <div class="grid"><article class="card"><h3>小矮人是反抗軍</h3><p>城裡有逾 1,000 尊銅製小矮人（krasnale），但數量持續增加、無法精確統計。1980 年代反共團體「橙色替代」（Pomarańczowa Alternatywa）以塗鴉小矮人與荒誕街頭劇嘲諷政權——警察逮捕一個扮小矮人的人有多可笑，體制就有多可笑。2005 年起城市以銅像致敬這段歷史，每一尊都有名字與職業。</p></article><article class="card"><h3>每晚的點燈儀式</h3><p>日落時分，披斗篷、持長桿的點燈人會逐一點亮 Ostrów Tumski 的瓦斯燈。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，Day 5 以 16:15–17:15 在座堂島等候與散步規劃。</p></article><article class="card"><h3>混凝土的世界遺產</h3><p>百年廳（Hala Stulecia，1913）落成時擁有世界最大跨距的鋼筋混凝土圓頂，直接影響了現代主義建築的走向，2006 年列入 UNESCO——在古蹟之城看一座「未來古蹟」。</p></article></div>
-      <h3>到現場別漏看</h3>
-      <ul class="check-list"><li>廣場周邊開始數小矮人：郵差、消防員、睡在門邊的、推保險箱的——App「Krasnale Wrocław」有地圖</li><li>座堂島橋上的情人鎖與瓦斯燈：日落前 15 分鐘卡位</li><li>注意市政廳南面的天文鐘與哥德山牆——二戰倖存的原件</li></ul>
     </section>
 
     <section class="section">
@@ -5052,21 +5284,35 @@ summary:focus-visible {
 </section>
 <section class="standalone-page" id="page-city-poznan" data-source="city-poznan.html">
   <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>波茲南</strong></header>
-<header class="hero">
-      <div class="hero-copy">
+<header class="journal-city-cover">
+      <figure>
+        <img src="assets/photos/poznan-hero.webp" alt="波茲南城市風景" width="1200" height="800" decoding="async">
+        <figcaption>Poznań · CRADLE</figcaption>
+      </figure>
+      <div class="journal-city-cover-copy">
         <span class="section-num">CRADLE · Poznań</span>
         <h1>波茲南</h1>
         <p class="hero-dek">波蘭文明發源 × 山羊報時</p>
-      </div>
-      <aside class="hero-aside">
         <span class="eyebrow">這趟重點</span>
         <ul class="check-list"><li>教堂島 Ostrów Tumski</li><li>12:00 山羊鐘樓秀</li><li>聖馬丁牛角麵包 PGI</li><li>帝王城堡</li></ul>
-      </aside>
+      </div>
     </header>
 
     
 
-    <section>
+    <div class="journal-city-story">
+    <section class="section">
+      <div class="section-heading"><span class="section-num">Context</span><h2>先理解這座城</h2></div>
+      <div class="grid-wide">
+        <article class="card"><span class="eyebrow">地理</span><p>瓦爾塔河（Warta）畔，位居柏林—華沙軸線正中，千年來吃盡東西貿易紅利，至今仍是波蘭的會展之都。城市原點在河中沙洲 Ostrów Tumski（與樂斯拉夫的座堂島同名不同地）。</p></article>
+        <article class="card"><span class="eyebrow">歷史</span><p>波蘭國家的搖籃：966 年梅什科一世（Mieszko I）在此受洗，波蘭以此為建國元年；最早的君主就葬在波茲南座堂。近代史上同樣硬氣——1956 年 6 月的工人起義是共產波蘭第一場大規模反抗，比華沙、格但斯克都早。</p></article>
+      </div>
+      <div class="grid"><article class="card"><h3>兩隻山羊的贖罪</h3><p>1551 年市政廳新鐘落成宴上，學徒烤焦了鹿肉，情急偷了兩隻山羊代替；山羊逃上鐘塔，在全城面前頂起角來，逗笑了市長與賓客，因而獲赦。從此市政廳每天 12:00 由機械山羊互撞 12 下——Day 6 正午行程就是為它排的。</p></article><article class="card"><h3>有身分證的麵包</h3><p>聖馬丁牛角麵包（rogal świętomarciński）受歐盟 PGI 保護：白罌粟籽餡、81 層酥皮、只有波茲南地區持證烘焙坊能做。傳統上 11/11 聖馬丁節當天全城吃掉數百噸——你早到兩週，平日仍買得到，認明店內 PGI 證書（Kandulski 由 Wojciech Kandulski 於 1983 年創立，是波茲南最知名的家族烘焙坊之一）。</p></article><article class="card"><h3>一場陽台演說點燃的起義</h3><p>Stary Rynek 旁的 Hotel Bazar（1841）是波蘭民族運動的據點：1918 年 12 月 26 日鋼琴家帕德瑞夫斯基在此陽台向群眾演說，隔日爆發大波蘭起義，最終讓這片土地回歸波蘭。（常見的「蕭邦曾在此下榻」說法不成立——蕭邦 1830 年 11 月離開波蘭後終生未再返國，Bazar 晚了 11 年才開幕。）</p></article></div>
+      <h3>到現場別漏看</h3>
+      <ul class="check-list"><li>11:45 前到 Stary Rynek 卡位看山羊（只演一次，錯過等明天）</li><li>市政廳文藝復興立面：波蘭最美的市政廳之一，1550s 義大利建築師 di Quadro 之作</li><li>牛角麵包博物館的示範秀會請觀眾上台擀麵——坐前排</li></ul>
+    </section></div>
+
+    <section class="section journal-city-map">
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
       <p class="lead">拖曳、縮放並點選圖釘查看說明；手機上下滑動會優先捲動頁面，圖釘連結可直接開啟 Google Maps。</p>
       <div id="page-city-poznan--map-poznan" class="map-container" data-map-key="poznan" aria-label="波茲南互動地圖"></div>
@@ -5081,18 +5327,6 @@ summary:focus-visible {
     <div><span style="background:#d6336c;border:1.5px solid #7a1a3d"></span>精品購物</div>
     <div><span style="background:#6d597a;border:1.5px solid #3d2f46"></span>已確認住宿</div></div>
       <p class="map-caption">地圖底圖 © OpenStreetMap contributors</p>
-    </section>
-
-    
-    <section class="section">
-      <div class="section-heading"><span class="section-num">Context</span><h2>先理解這座城</h2></div>
-      <div class="grid-wide">
-        <article class="card"><span class="eyebrow">地理</span><p>瓦爾塔河（Warta）畔，位居柏林—華沙軸線正中，千年來吃盡東西貿易紅利，至今仍是波蘭的會展之都。城市原點在河中沙洲 Ostrów Tumski（與樂斯拉夫的座堂島同名不同地）。</p></article>
-        <article class="card"><span class="eyebrow">歷史</span><p>波蘭國家的搖籃：966 年梅什科一世（Mieszko I）在此受洗，波蘭以此為建國元年；最早的君主就葬在波茲南座堂。近代史上同樣硬氣——1956 年 6 月的工人起義是共產波蘭第一場大規模反抗，比華沙、格但斯克都早。</p></article>
-      </div>
-      <div class="grid"><article class="card"><h3>兩隻山羊的贖罪</h3><p>1551 年市政廳新鐘落成宴上，學徒烤焦了鹿肉，情急偷了兩隻山羊代替；山羊逃上鐘塔，在全城面前頂起角來，逗笑了市長與賓客，因而獲赦。從此市政廳每天 12:00 由機械山羊互撞 12 下——Day 6 正午行程就是為它排的。</p></article><article class="card"><h3>有身分證的麵包</h3><p>聖馬丁牛角麵包（rogal świętomarciński）受歐盟 PGI 保護：白罌粟籽餡、81 層酥皮、只有波茲南地區持證烘焙坊能做。傳統上 11/11 聖馬丁節當天全城吃掉數百噸——你早到兩週，平日仍買得到，認明店內 PGI 證書（Kandulski 由 Wojciech Kandulski 於 1983 年創立，是波茲南最知名的家族烘焙坊之一）。</p></article><article class="card"><h3>一場陽台演說點燃的起義</h3><p>Stary Rynek 旁的 Hotel Bazar（1841）是波蘭民族運動的據點：1918 年 12 月 26 日鋼琴家帕德瑞夫斯基在此陽台向群眾演說，隔日爆發大波蘭起義，最終讓這片土地回歸波蘭。（常見的「蕭邦曾在此下榻」說法不成立——蕭邦 1830 年 11 月離開波蘭後終生未再返國，Bazar 晚了 11 年才開幕。）</p></article></div>
-      <h3>到現場別漏看</h3>
-      <ul class="check-list"><li>11:45 前到 Stary Rynek 卡位看山羊（只演一次，錯過等明天）</li><li>市政廳文藝復興立面：波蘭最美的市政廳之一，1550s 義大利建築師 di Quadro 之作</li><li>牛角麵包博物館的示範秀會請觀眾上台擀麵——坐前排</li></ul>
     </section>
 
     <section class="section">

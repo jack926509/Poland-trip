@@ -379,9 +379,11 @@ function build() {
 
   for (const day of trip.days) {
     const photoSpotsForDay = cities.photoSpots.filter(spot => spot.day === day.n);
+    const namedCities = cities.cities.filter(city => day.city.includes(city.name));
+    const journalCity = namedCities.at(-1) || cities.cities[0];
     writeHtml(
       `day-${String(day.n).padStart(2, '0')}.html`,
-      renderDay(day, photoSpotsForDay, travelDatabase.dayOperations[day.n]),
+      renderDay(day, photoSpotsForDay, travelDatabase.dayOperations[day.n], journalCity),
     );
   }
 

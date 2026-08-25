@@ -36,3 +36,23 @@ test('首頁是旅行誌封面、8 日目錄與四城攝影章節', () => {
   assert.equal((home.match(/class="journal-city-card"/g) || []).length, 4);
   assert.match(home, /class="journal-toolkit"/);
 });
+
+test('每日頁有城市攝影章節且保留現場操作資訊', () => {
+  const day = read('day-02.html');
+  assert.match(day, /<body class="journal-site journal-day">/);
+  assert.match(day, /class="journal-day-cover"/);
+  assert.match(day, /src="assets\/photos\/krakow-hero\.webp"/);
+  assert.match(day, /class="journal-day-facts"/);
+  assert.match(day, /class="table-editorial table-schedule"/);
+  assert.match(day, /class="section operation-section"/);
+});
+
+test('城市頁以授權照片開章且保留 Leaflet 地圖接口', () => {
+  const city = read('city-wroclaw.html');
+  assert.match(city, /<body class="journal-site journal-city">/);
+  assert.match(city, /class="journal-city-cover"/);
+  assert.match(city, /src="assets\/photos\/wroclaw-hero\.webp"/);
+  assert.match(city, /alt="樂斯拉夫城市風景"/);
+  assert.match(city, /data-map-key="wroclaw"/);
+  assert.match(city, /class="map-container"/);
+});

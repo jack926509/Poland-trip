@@ -142,29 +142,31 @@ export function renderCity({
     </script>`;
 
   const bodyHtml = `
-    <header class="hero">
-      <div class="hero-copy">
+    <header class="journal-city-cover">
+      <figure>
+        <img src="${city.photo.hero}" alt="${city.name}城市風景" width="1200" height="800" decoding="async">
+        <figcaption>${city.pl} · ${city.tag}</figcaption>
+      </figure>
+      <div class="journal-city-cover-copy">
         <span class="section-num">${city.tag} · ${city.pl}</span>
         <h1>${city.name}</h1>
         <p class="hero-dek">${city.vibe}</p>
-      </div>
-      <aside class="hero-aside">
         <span class="eyebrow">這趟重點</span>
         <ul class="check-list">${city.highlights.map(item => `<li>${item}</li>`).join('')}</ul>
-      </aside>
+      </div>
     </header>
 
     ${notices.map(renderNotice).join('')}
 
-    <section>
+    <div class="journal-city-story">${storyHtml}</div>
+
+    <section class="section journal-city-map">
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
       <p class="lead">拖曳、縮放並點選圖釘查看說明；手機上下滑動會優先捲動頁面，圖釘連結可直接開啟 Google Maps。</p>
       <div id="map-${cityKey}" class="map-container" data-map-key="${cityKey}" aria-label="${city.name}互動地圖"></div>
       <div class="map-legend" aria-label="地圖圖例">${legendHtml}</div>
       <p class="map-caption">地圖底圖 © OpenStreetMap contributors</p>
     </section>
-
-    ${storyHtml}
 
     <section class="section">
       <div class="section-heading"><span class="section-num">Sights</span><h2>景點清單</h2></div>
@@ -189,5 +191,5 @@ export function renderCity({
     ${mapScript}`;
 
   const extraHead = '<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">';
-  return renderLayout({ title: `${city.name}城市指南`, activeNav: 'cities', bodyHtml, extraHead });
+  return renderLayout({ title: `${city.name}城市指南`, activeNav: 'cities', bodyHtml, extraHead, pageKind: 'city' });
 }

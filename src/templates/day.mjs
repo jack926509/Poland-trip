@@ -83,7 +83,7 @@ function renderNightChecklist(operation) {
     </section>`;
 }
 
-export function renderDay(day, photoSpotsForDay = [], operation = null) {
+export function renderDay(day, photoSpotsForDay = [], operation = null, city = null) {
   const stepsHtml = day.steps.map(step => `
     <tr>
       <td class="number" data-label="時間"><b>${step.t}</b></td>
@@ -174,23 +174,28 @@ export function renderDay(day, photoSpotsForDay = [], operation = null) {
 
   const previous = day.n > 1 ? `<a href="day-${String(day.n - 1).padStart(2, '0')}.html">← Day ${day.n - 1}</a>` : '<span></span>';
   const next = day.n < 8 ? `<a href="day-${String(day.n + 1).padStart(2, '0')}.html">Day ${day.n + 1} →</a>` : '<a href="index.html">回到總覽 →</a>';
+  const coverHtml = city?.photo?.hero ? `
+      <figure class="journal-day-cover">
+        <img src="${escapeHtml(city.photo.hero)}" alt="${escapeHtml(city.name)}城市風景" width="1200" height="800" decoding="async">
+        <figcaption>${escapeHtml(city.pl)} · ${escapeHtml(city.vibe)}</figcaption>
+      </figure>` : '<div class="journal-day-cover-fallback" aria-hidden="true">POLSKA</div>';
 
   const bodyHtml = `
-    <header class="hero">
-      <div class="hero-copy">
-        <span class="section-num">Day ${String(day.n).padStart(2, '0')} · ${day.date}</span>
-        <h1>${day.title}</h1>
-        <p class="hero-dek">${day.headline}</p>
+    <header class="journal-day-header">
+      <div class="journal-day-heading">
+        <span class="section-num">Day ${String(day.n).padStart(2, '0')} · ${escapeHtml(day.date)}</span>
+        <h1>${escapeHtml(day.title)}</h1>
+        <p class="hero-dek">${escapeHtml(day.headline)}</p>
       </div>
-      <aside class="hero-aside">
-        <dl class="meta-list">
-          <div><dt>城市</dt><dd>${day.city}</dd></div>
-          <div><dt>強度</dt><dd>${day.intensity}</dd></div>
-          <div><dt>天氣參考</dt><dd>${day.weather}</dd></div>
-          <div><dt>類型</dt><dd>${day.tag}</dd></div>
-        </dl>
-      </aside>
+${coverHtml}
     </header>
+
+    <dl class="journal-day-facts">
+      <div><dt>城市</dt><dd>${escapeHtml(day.city)}</dd></div>
+      <div><dt>強度</dt><dd>${escapeHtml(day.intensity)}</dd></div>
+      <div><dt>天氣參考</dt><dd>${escapeHtml(day.weather)}</dd></div>
+      <div><dt>類型</dt><dd>${escapeHtml(day.tag)}</dd></div>
+    </dl>
 
     ${mustBookHtml}
     ${warnHtml}
@@ -217,5 +222,5 @@ export function renderDay(day, photoSpotsForDay = [], operation = null) {
 
     <nav class="section-heading" aria-label="每日行程翻頁">${previous}${next}</nav>`;
 
-  return renderLayout({ title: `Day ${day.n} ${day.title}`, activeNav: 'days', bodyHtml });
+  return renderLayout({ title: `Day ${day.n} ${day.title}`, activeNav: 'days', bodyHtml, pageKind: 'day' });
 }

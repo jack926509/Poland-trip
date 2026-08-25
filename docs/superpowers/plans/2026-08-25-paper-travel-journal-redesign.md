@@ -288,7 +288,7 @@ git commit -m "feat: 將首頁改為紙上旅行誌目錄"
 **Interfaces:**
 - Consumes: `renderDay(day, photoSpotsForDay, operation, city)`，其中 `city.photo.hero` 為既有圖片路徑
 - Produces: `.journal-day-cover`、`.journal-day-facts`、`.journal-city-cover`、`.journal-city-story`
-- Preserves: `.table-schedule`、`.operation-section`、`.city-map`、地圖 `data-map-key`、Leaflet 初始化腳本
+- Preserves: `.table-schedule`、`.operation-section`、`.map-container`、地圖 `data-map-key`、Leaflet 初始化腳本
 
 - [ ] **Step 1: 寫入每日與城市章節失敗測試**
 
@@ -310,7 +310,7 @@ test('城市頁以授權照片開章且保留 Leaflet 地圖接口', () => {
   assert.match(city, /src="assets\/photos\/wroclaw-hero\.webp"/);
   assert.match(city, /alt="樂斯拉夫城市風景"/);
   assert.match(city, /data-map-key="wroclaw"/);
-  assert.match(city, /class="city-map"/);
+  assert.match(city, /class="map-container"/);
 });
 ```
 
@@ -352,7 +352,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
 
 - [ ] **Step 6: 建立章節 CSS 並保護地圖操作**
 
-`.journal-day-cover`、`.journal-city-cover` 使用圖片與漸層疊字；正文不放在低對比圖片區。手機下圖片 `aspect-ratio: 4 / 3`、facts 單欄或 2×2；`.city-map` 保留既有最小高度與觸控行為，頁面本身不得設定 `overflow-y: hidden`。
+`.journal-day-cover`、`.journal-city-cover` 使用圖片與漸層疊字；正文不放在低對比圖片區。手機下圖片 `aspect-ratio: 4 / 3`、facts 單欄或 2×2；`.map-container` 保留既有最小高度與觸控行為，頁面本身不得設定 `overflow-y: hidden`。
 
 - [ ] **Step 7: 執行每日、城市、圖釘與連結回歸**
 

@@ -1305,6 +1305,137 @@ summary:focus-visible {
   min-height: 13rem;
 }
 
+.journal-day-header,
+.journal-city-cover {
+  display: grid;
+  grid-template-columns: minmax(20rem, 0.82fr) minmax(0, 1.18fr);
+  min-height: 34rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--line-strong);
+  background: var(--paper-light);
+  box-shadow: var(--shadow-paper);
+}
+
+.journal-day-heading,
+.journal-city-cover-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-width: 0;
+  padding: clamp(2rem, 5vw, 4.5rem);
+}
+
+.journal-day-heading {
+  background: var(--plum);
+  color: var(--paper-light);
+}
+
+.journal-day-heading .section-num {
+  color: var(--paper-deep);
+}
+
+.journal-day-heading h1,
+.journal-city-cover-copy h1 {
+  margin-block: 1.25rem;
+  font-size: clamp(3.2rem, 6.4vw, 6.4rem);
+}
+
+.journal-day-heading .hero-dek {
+  color: var(--paper-deep);
+}
+
+.journal-day-cover,
+.journal-city-cover figure {
+  position: relative;
+  min-width: 0;
+  min-height: 34rem;
+  margin: 0;
+  overflow: hidden;
+  background: var(--paper-deep);
+}
+
+.journal-day-cover img,
+.journal-city-cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.journal-day-cover figcaption,
+.journal-city-cover figcaption {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  max-width: calc(100% - 2rem);
+  padding: 0.45rem 0.65rem;
+  background: var(--paper-light);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+
+.journal-day-cover-fallback {
+  display: grid;
+  min-height: 34rem;
+  place-items: center;
+  background: var(--paper-deep);
+  color: var(--plum-soft);
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 7rem);
+}
+
+.journal-day-facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0 0 3rem;
+  border-block: 1px solid var(--line-strong);
+}
+
+.journal-day-facts > div {
+  min-width: 0;
+  padding: 1rem 1.25rem;
+  border-right: 1px solid var(--line);
+}
+
+.journal-day-facts > div:last-child {
+  border-right: 0;
+}
+
+.journal-day-facts dt {
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.journal-day-facts dd {
+  margin: 0.25rem 0 0;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.journal-city-cover {
+  grid-template-columns: minmax(0, 1.2fr) minmax(20rem, 0.8fr);
+}
+
+.journal-city-cover-copy {
+  border-left: 1px solid var(--line-strong);
+}
+
+.journal-city-cover-copy .check-list {
+  margin-bottom: 0;
+}
+
+.journal-city-story > .section:first-child {
+  margin-top: 3rem;
+}
+
+.journal-city-map {
+  border-top-color: var(--plum);
+}
+
 @media (max-width: 920px) {
   .nav {
     padding-inline: 1.25rem;
@@ -1334,6 +1465,22 @@ summary:focus-visible {
 
   .journal-city-card > a {
     grid-template-columns: minmax(0, 1fr) minmax(13rem, 0.75fr);
+  }
+
+  .journal-day-header,
+  .journal-city-cover {
+    grid-template-columns: 1fr;
+  }
+
+  .journal-day-cover,
+  .journal-day-cover-fallback,
+  .journal-city-cover figure {
+    min-height: 26rem;
+  }
+
+  .journal-city-cover-copy {
+    border-top: 1px solid var(--line-strong);
+    border-left: 0;
   }
 
   .database-index ol {
@@ -1482,6 +1629,53 @@ summary:focus-visible {
 
   .journal-city-card > a > div {
     min-height: 12rem;
+  }
+
+  .journal-day-header,
+  .journal-city-cover {
+    min-height: 0;
+  }
+
+  .journal-day-heading,
+  .journal-city-cover-copy {
+    padding: 1.5rem;
+  }
+
+  .journal-day-heading {
+    min-height: 24rem;
+  }
+
+  .journal-day-heading h1,
+  .journal-city-cover-copy h1 {
+    font-size: clamp(3rem, 15vw, 4.8rem);
+  }
+
+  .journal-day-cover,
+  .journal-day-cover-fallback,
+  .journal-city-cover figure {
+    min-height: 0;
+  }
+
+  .journal-day-cover img,
+  .journal-city-cover img {
+    aspect-ratio: 4 / 3;
+    height: auto;
+  }
+
+  .journal-day-cover-fallback {
+    min-height: 18rem;
+  }
+
+  .journal-day-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .journal-day-facts > div:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .journal-day-facts > div:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--line);
   }
 
   .table-wrap-cards {
