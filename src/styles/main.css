@@ -994,6 +994,317 @@ summary:focus-visible {
   margin: 0;
 }
 
+.journal-cover {
+  display: grid;
+  grid-template-columns: minmax(18rem, 5fr) minmax(0, 7fr);
+  min-height: 34rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--line-strong);
+  background: var(--paper-light);
+  box-shadow: var(--shadow-paper);
+}
+
+.journal-cover-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  padding: clamp(2rem, 5vw, 4.5rem);
+  background: var(--plum);
+  color: var(--paper-light);
+}
+
+.journal-kicker {
+  color: var(--paper-deep);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.journal-cover h1 {
+  max-width: none;
+  font-size: clamp(4rem, 9vw, 8.5rem);
+  line-height: 0.82;
+}
+
+.journal-cover-route {
+  max-width: 28ch;
+  margin: auto 0 1.75rem;
+  color: var(--paper-deep);
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2vw, 1.6rem);
+}
+
+.journal-cover-meta {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgb(255 250 241 / 45%);
+}
+
+.journal-cover-meta > div {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  gap: 1rem;
+}
+
+.journal-cover-meta dt,
+.journal-cover-meta dd {
+  margin: 0;
+}
+
+.journal-cover-meta dt {
+  color: var(--paper-deep);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.journal-cover-meta dd {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.journal-cover-figure {
+  position: relative;
+  min-width: 0;
+  margin: 0;
+  background: var(--paper-deep);
+}
+
+.journal-cover-fallback::before {
+  position: absolute;
+  inset: 1.5rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  color: var(--plum-soft);
+  content: 'POLSKA · 2026';
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 5rem);
+}
+
+.journal-cover-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.journal-cover-figure figcaption {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  max-width: calc(100% - 2rem);
+  padding: 0.45rem 0.65rem;
+  background: var(--paper-light);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.journal-route {
+  margin-block: 0 1.5rem;
+  padding-inline: 0.25rem;
+}
+
+.journal-status-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border-block: 1px solid var(--line-strong);
+}
+
+.journal-status-strip > * {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+  min-height: 72px;
+  padding: 0.8rem 1rem;
+  border-right: 1px solid var(--line);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.journal-status-strip > *:last-child {
+  border-right: 0;
+}
+
+.journal-status-strip strong {
+  color: var(--plum);
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.journal-status-strip span span,
+.journal-status-strip a span {
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+
+.journal-status-strip a:hover,
+.journal-status-strip a:focus-visible {
+  background: var(--paper-light);
+  color: var(--accent-dark);
+}
+
+.journal-itinerary {
+  margin: 2rem 0 0;
+  padding: 0;
+  border-top: 2px solid var(--ink);
+  list-style: none;
+}
+
+.journal-day-entry {
+  border-bottom: 1px solid var(--line);
+}
+
+.journal-day-entry > a {
+  display: grid;
+  grid-template-columns: 4rem 7rem minmax(0, 1fr) auto;
+  gap: 1.25rem;
+  align-items: center;
+  min-height: 86px;
+  padding: 1rem 0.75rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.journal-day-entry > a:hover,
+.journal-day-entry > a:focus-visible {
+  background: var(--paper-light);
+}
+
+.journal-day-number {
+  color: var(--plum);
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.journal-day-date {
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.journal-day-copy {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.journal-day-copy b {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+}
+
+.journal-day-copy small {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.journal-city-chapters,
+.journal-notes-grid,
+.journal-flight-grid,
+.journal-toolkit {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.journal-city-card {
+  min-width: 0;
+  border: 1px solid var(--line);
+  background: var(--paper-light);
+}
+
+.journal-city-card > a {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(13rem, 0.85fr);
+  min-height: 15rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.journal-city-card figure {
+  position: relative;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.journal-city-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.journal-city-card figcaption {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.35rem 0.55rem;
+  background: var(--paper-light);
+  color: var(--plum);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.journal-city-card > a > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+}
+
+.journal-city-card h3,
+.journal-note-card h3,
+.journal-flight h3 {
+  margin: 0 0 0.65rem;
+}
+
+.journal-city-card span,
+.journal-text-link {
+  margin-top: auto;
+  color: var(--accent-dark);
+  font-weight: 700;
+}
+
+.journal-city-card > a:hover,
+.journal-city-card > a:focus-visible {
+  background: var(--paper-deep);
+}
+
+.journal-note-card,
+.journal-flight {
+  min-width: 0;
+  padding: 1.4rem;
+  border-top: 3px solid var(--plum);
+  background: var(--paper-light);
+}
+
+.journal-note-card .check-list {
+  font-size: 0.92rem;
+}
+
+.journal-flight-grid,
+.journal-toolkit {
+  align-items: stretch;
+}
+
+.journal-toolkit .card {
+  min-height: 13rem;
+}
+
 @media (max-width: 920px) {
   .nav {
     padding-inline: 1.25rem;
@@ -1010,8 +1321,19 @@ summary:focus-visible {
 
   .hero,
   .grid-wide,
-  .sos-grid {
+  .sos-grid,
+  .journal-cover,
+  .journal-city-chapters,
+  .journal-notes-grid {
     grid-template-columns: 1fr;
+  }
+
+  .journal-cover-figure {
+    min-height: 26rem;
+  }
+
+  .journal-city-card > a {
+    grid-template-columns: minmax(0, 1fr) minmax(13rem, 0.75fr);
   }
 
   .database-index ol {
@@ -1070,6 +1392,96 @@ summary:focus-visible {
 
   h1 {
     font-size: clamp(2.65rem, 13vw, 3.5rem);
+  }
+
+  .journal-cover {
+    min-height: 0;
+  }
+
+  .journal-cover-copy {
+    min-height: 24rem;
+    padding: 1.5rem;
+  }
+
+  .journal-cover h1 {
+    font-size: clamp(4rem, 24vw, 6rem);
+  }
+
+  .journal-cover-figure {
+    min-height: 0;
+  }
+
+  .journal-cover-photo {
+    aspect-ratio: 4 / 3;
+    height: auto;
+  }
+
+  .journal-status-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .journal-status-strip > * {
+    min-height: 64px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .journal-status-strip > *:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .journal-status-strip > *:last-child {
+    grid-column: 1 / -1;
+    border-bottom: 0;
+  }
+
+  .journal-day-entry > a {
+    grid-template-columns: 3.2rem minmax(0, 1fr) auto;
+    gap: 0.7rem;
+    min-height: 76px;
+    padding-inline: 0.25rem;
+  }
+
+  .journal-day-number {
+    font-size: 2rem;
+  }
+
+  .journal-day-date {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .journal-day-copy {
+    grid-column: 2 / -1;
+  }
+
+  .journal-day-copy small {
+    font-size: 0.82rem;
+  }
+
+  .journal-day-entry .tag-todo,
+  .journal-day-entry .tag-muted {
+    grid-column: 3;
+    grid-row: 2;
+    white-space: nowrap;
+  }
+
+  .journal-city-chapters,
+  .journal-notes-grid,
+  .journal-flight-grid,
+  .journal-toolkit {
+    grid-template-columns: 1fr;
+  }
+
+  .journal-city-card > a {
+    grid-template-columns: 1fr;
+  }
+
+  .journal-city-card figure {
+    aspect-ratio: 4 / 3;
+  }
+
+  .journal-city-card > a > div {
+    min-height: 12rem;
   }
 
   .table-wrap-cards {

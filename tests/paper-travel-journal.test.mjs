@@ -24,3 +24,15 @@ test('旅行誌視覺契約包含紙色、墨紫、觸控與 reduced motion', ()
   assert.match(source, /@media\s*\(prefers-reduced-motion:\s*reduce\)/);
   assert.match(source, /scroll-behavior:\s*auto/);
 });
+
+test('首頁是旅行誌封面、8 日目錄與四城攝影章節', () => {
+  const home = read('index.html');
+  assert.match(home, /<header class="journal-cover">/);
+  assert.match(home, /class="journal-cover-photo"[^>]*src="assets\/photos\/warszawa-hero\.webp"/);
+  assert.match(home, /alt="華沙城市風景"/);
+  assert.match(home, /<ol class="journal-itinerary"/);
+  assert.equal((home.match(/class="journal-day-entry"/g) || []).length, 8);
+  assert.match(home, /class="journal-city-chapters"/);
+  assert.equal((home.match(/class="journal-city-card"/g) || []).length, 4);
+  assert.match(home, /class="journal-toolkit"/);
+});

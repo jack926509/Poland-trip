@@ -694,19 +694,15 @@ test('手機導覽以原生可展開選單呈現，且選單層級高於內容',
   assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav-dropdown\s*>\s*ul\s*\{[^}]*right\s*:\s*1\.25rem[^}]*left\s*:\s*1\.25rem/s);
 });
 
-test('手機行程總覽與時間表提供卡片欄位標籤，不依賴橫向捲動', () => {
-  const home = read('index.html');
+test('手機每日時間表提供卡片欄位標籤，不依賴橫向捲動', () => {
   const day = read('day-01.html');
   const css = fs.readFileSync(path.join(distDir, 'assets/main.css'), 'utf8');
 
-  assert.match(home, /<table class="table-editorial table-itinerary">/);
-  assert.match(home, /data-label="主題"/);
-  assert.match(home, /data-label="開啟"/);
   assert.match(day, /<table class="table-editorial table-schedule">/);
   assert.match(day, /data-label="時間"/);
   assert.match(day, /data-label="時長"/);
-  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.table-itinerary\s+thead,[\s\S]*\.table-schedule\s+thead\s*\{[^}]*display\s*:\s*none/s);
-  assert.match(css, /\.table-itinerary\s+td::before,[\s\S]*\.table-schedule\s+td::before\s*\{[^}]*content\s*:\s*attr\(data-label\)/s);
+  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.table-schedule\s+thead\s*\{[^}]*display\s*:\s*none/s);
+  assert.match(css, /\.table-schedule\s+td::before\s*\{[^}]*content\s*:\s*attr\(data-label\)/s);
 });
 
 test('所有本機連結都能解析，且沒有破壞 GitHub Pages 的根路徑連結', () => {

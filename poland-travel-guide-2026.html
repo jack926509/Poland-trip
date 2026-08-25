@@ -1007,6 +1007,317 @@ summary:focus-visible {
   margin: 0;
 }
 
+.journal-cover {
+  display: grid;
+  grid-template-columns: minmax(18rem, 5fr) minmax(0, 7fr);
+  min-height: 34rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--line-strong);
+  background: var(--paper-light);
+  box-shadow: var(--shadow-paper);
+}
+
+.journal-cover-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  padding: clamp(2rem, 5vw, 4.5rem);
+  background: var(--plum);
+  color: var(--paper-light);
+}
+
+.journal-kicker {
+  color: var(--paper-deep);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.journal-cover h1 {
+  max-width: none;
+  font-size: clamp(4rem, 9vw, 8.5rem);
+  line-height: 0.82;
+}
+
+.journal-cover-route {
+  max-width: 28ch;
+  margin: auto 0 1.75rem;
+  color: var(--paper-deep);
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2vw, 1.6rem);
+}
+
+.journal-cover-meta {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgb(255 250 241 / 45%);
+}
+
+.journal-cover-meta > div {
+  display: grid;
+  grid-template-columns: 4rem 1fr;
+  gap: 1rem;
+}
+
+.journal-cover-meta dt,
+.journal-cover-meta dd {
+  margin: 0;
+}
+
+.journal-cover-meta dt {
+  color: var(--paper-deep);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.journal-cover-meta dd {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.journal-cover-figure {
+  position: relative;
+  min-width: 0;
+  margin: 0;
+  background: var(--paper-deep);
+}
+
+.journal-cover-fallback::before {
+  position: absolute;
+  inset: 1.5rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  color: var(--plum-soft);
+  content: 'POLSKA · 2026';
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 5rem);
+}
+
+.journal-cover-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.journal-cover-figure figcaption {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  max-width: calc(100% - 2rem);
+  padding: 0.45rem 0.65rem;
+  background: var(--paper-light);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.journal-route {
+  margin-block: 0 1.5rem;
+  padding-inline: 0.25rem;
+}
+
+.journal-status-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border-block: 1px solid var(--line-strong);
+}
+
+.journal-status-strip > * {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+  min-height: 72px;
+  padding: 0.8rem 1rem;
+  border-right: 1px solid var(--line);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.journal-status-strip > *:last-child {
+  border-right: 0;
+}
+
+.journal-status-strip strong {
+  color: var(--plum);
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.journal-status-strip span span,
+.journal-status-strip a span {
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+
+.journal-status-strip a:hover,
+.journal-status-strip a:focus-visible {
+  background: var(--paper-light);
+  color: var(--accent-dark);
+}
+
+.journal-itinerary {
+  margin: 2rem 0 0;
+  padding: 0;
+  border-top: 2px solid var(--ink);
+  list-style: none;
+}
+
+.journal-day-entry {
+  border-bottom: 1px solid var(--line);
+}
+
+.journal-day-entry > a {
+  display: grid;
+  grid-template-columns: 4rem 7rem minmax(0, 1fr) auto;
+  gap: 1.25rem;
+  align-items: center;
+  min-height: 86px;
+  padding: 1rem 0.75rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.journal-day-entry > a:hover,
+.journal-day-entry > a:focus-visible {
+  background: var(--paper-light);
+}
+
+.journal-day-number {
+  color: var(--plum);
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.journal-day-date {
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.journal-day-copy {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.journal-day-copy b {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+}
+
+.journal-day-copy small {
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+}
+
+.journal-city-chapters,
+.journal-notes-grid,
+.journal-flight-grid,
+.journal-toolkit {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin-top: 2rem;
+}
+
+.journal-city-card {
+  min-width: 0;
+  border: 1px solid var(--line);
+  background: var(--paper-light);
+}
+
+.journal-city-card > a {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(13rem, 0.85fr);
+  min-height: 15rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.journal-city-card figure {
+  position: relative;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.journal-city-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.journal-city-card figcaption {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.35rem 0.55rem;
+  background: var(--paper-light);
+  color: var(--plum);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.journal-city-card > a > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+}
+
+.journal-city-card h3,
+.journal-note-card h3,
+.journal-flight h3 {
+  margin: 0 0 0.65rem;
+}
+
+.journal-city-card span,
+.journal-text-link {
+  margin-top: auto;
+  color: var(--accent-dark);
+  font-weight: 700;
+}
+
+.journal-city-card > a:hover,
+.journal-city-card > a:focus-visible {
+  background: var(--paper-deep);
+}
+
+.journal-note-card,
+.journal-flight {
+  min-width: 0;
+  padding: 1.4rem;
+  border-top: 3px solid var(--plum);
+  background: var(--paper-light);
+}
+
+.journal-note-card .check-list {
+  font-size: 0.92rem;
+}
+
+.journal-flight-grid,
+.journal-toolkit {
+  align-items: stretch;
+}
+
+.journal-toolkit .card {
+  min-height: 13rem;
+}
+
 @media (max-width: 920px) {
   .nav {
     padding-inline: 1.25rem;
@@ -1023,8 +1334,19 @@ summary:focus-visible {
 
   .hero,
   .grid-wide,
-  .sos-grid {
+  .sos-grid,
+  .journal-cover,
+  .journal-city-chapters,
+  .journal-notes-grid {
     grid-template-columns: 1fr;
+  }
+
+  .journal-cover-figure {
+    min-height: 26rem;
+  }
+
+  .journal-city-card > a {
+    grid-template-columns: minmax(0, 1fr) minmax(13rem, 0.75fr);
   }
 
   .database-index ol {
@@ -1083,6 +1405,96 @@ summary:focus-visible {
 
   h1 {
     font-size: clamp(2.65rem, 13vw, 3.5rem);
+  }
+
+  .journal-cover {
+    min-height: 0;
+  }
+
+  .journal-cover-copy {
+    min-height: 24rem;
+    padding: 1.5rem;
+  }
+
+  .journal-cover h1 {
+    font-size: clamp(4rem, 24vw, 6rem);
+  }
+
+  .journal-cover-figure {
+    min-height: 0;
+  }
+
+  .journal-cover-photo {
+    aspect-ratio: 4 / 3;
+    height: auto;
+  }
+
+  .journal-status-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .journal-status-strip > * {
+    min-height: 64px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .journal-status-strip > *:nth-child(2n) {
+    border-right: 0;
+  }
+
+  .journal-status-strip > *:last-child {
+    grid-column: 1 / -1;
+    border-bottom: 0;
+  }
+
+  .journal-day-entry > a {
+    grid-template-columns: 3.2rem minmax(0, 1fr) auto;
+    gap: 0.7rem;
+    min-height: 76px;
+    padding-inline: 0.25rem;
+  }
+
+  .journal-day-number {
+    font-size: 2rem;
+  }
+
+  .journal-day-date {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .journal-day-copy {
+    grid-column: 2 / -1;
+  }
+
+  .journal-day-copy small {
+    font-size: 0.82rem;
+  }
+
+  .journal-day-entry .tag-todo,
+  .journal-day-entry .tag-muted {
+    grid-column: 3;
+    grid-row: 2;
+    white-space: nowrap;
+  }
+
+  .journal-city-chapters,
+  .journal-notes-grid,
+  .journal-flight-grid,
+  .journal-toolkit {
+    grid-template-columns: 1fr;
+  }
+
+  .journal-city-card > a {
+    grid-template-columns: 1fr;
+  }
+
+  .journal-city-card figure {
+    aspect-ratio: 4 / 3;
+  }
+
+  .journal-city-card > a > div {
+    min-height: 12rem;
   }
 
   .table-wrap-cards {
@@ -1406,30 +1818,168 @@ summary:focus-visible {
   <main id="standalone-content">
 <section class="standalone-page" id="page-index" data-source="index.html">
   <header class="standalone-page-ribbon"><span>POLSKA FIELD GUIDE</span><strong>旅程首頁</strong></header>
-<header class="hero">
-      <div class="hero-copy">
-        <span class="section-num">2026 Poland Field Plan</span>
-        <h1>四城旅程<br>一頁掌握</h1>
-        <p class="hero-dek">華沙 → 克拉科夫 → 樂斯拉夫 → 波茲南 → 華沙。逐日時間表、交通、門票、餐廳與互動地圖都已整理成可直接拿來規劃的頁面。</p>
-      </div>
-      <aside class="hero-aside">
-        <dl class="meta-list">
+<header class="journal-cover">
+      <div class="journal-cover-copy">
+        <span class="journal-kicker">2026 Poland Field Plan · PAPER TRAVEL JOURNAL</span>
+        <h1>POLSKA</h1>
+        <p class="journal-cover-route">華沙 → 克拉科夫 → 樂斯拉夫 → 波茲南 → 華沙</p>
+        <dl class="journal-cover-meta">
           <div><dt>日期</dt><dd>2026 / 10 / 24 — 10 / 31</dd></div>
-          <div><dt>天數</dt><dd>8 天 7 夜</dd></div>
-          <div><dt>待處理</dt><dd><a href="#page-index--todos"><span class="tag-todo">14 項待辦</span></a></dd></div>
+          <div><dt>旅程</dt><dd>8 天 7 夜</dd></div>
         </dl>
-      </aside>
+      </div>
+
+      <figure class="journal-cover-figure">
+        <img class="journal-cover-photo" src="assets/photos/warszawa-hero.webp" alt="華沙城市風景" width="1200" height="800" decoding="async">
+        <figcaption>Warszawa · 鋼鐵摩天 × 重建老城</figcaption>
+      </figure>
     </header>
 
-    <div class="route-strip" aria-label="旅程路線">
+    <div class="route-strip journal-route" aria-label="旅程路線">
       <span class="route-stop">華沙</span><span class="route-stop">克拉科夫</span><span class="route-stop">樂斯拉夫</span><span class="route-stop">波茲南</span><span class="route-stop">華沙</span>
     </div>
 
-    <section class="section" id="page-index--todos">
-      <div class="section-heading section-heading-simple"><h2>待辦事項</h2></div>
-      <p class="lead">共 14 項：先處理有日期有時段的票務與景點，再做其餘備案。可直接點「待辦事項」更新狀態與備註。</p>
-      <div class="grid">
-    <article class="card">
+    <aside class="journal-status-strip" aria-label="旅程準備狀態">
+      <a href="#page-index--todos" aria-label="14 項待辦"><strong>14</strong><span>項待辦</span></a>
+      <span><strong>9</strong><span>已確認</span></span>
+      <span><strong>4</strong><span>待重查</span></span>
+      <span><strong>4</strong><span>待確認</span></span>
+      <a href="#page-practical-database"><strong>22</strong><span>筆資料</span></a>
+    </aside>
+
+    <section class="section" id="page-index--days">
+      <div class="section-heading"><span class="section-num">01 / Contents</span><h2>八日旅程目錄</h2></div>
+      <p class="lead">從城市轉場到現場提醒，每一天都是一個可獨立翻閱的章節。</p>
+      <ol class="journal-itinerary">
+    <li class="journal-day-entry">
+      <a href="#page-day-01">
+        <span class="journal-day-number">01</span>
+        <span class="journal-day-date">10/24 (六)</span>
+        <span class="journal-day-copy"><b>抵達華沙 · 老城傍晚漫步</b><small>華沙 · 13:30 抵蕭邦機場，SKM 進城，老城散步、倒時差</small></span>
+        <span class="tag-muted">無待訂</span>
+      </a>
+    </li>
+    <li class="journal-day-entry">
+      <a href="#page-day-02">
+        <span class="journal-day-number">02</span>
+        <span class="journal-day-date">10/25 (日)</span>
+        <span class="journal-day-copy"><b>Wawel + 老城 + 辛德勒工廠 + Kazimierz 晚餐</b><small>華沙 → 克拉科夫 · 目標抓早班直達車；實際車次待 PKP 開賣</small></span>
+        <span class="tag-todo">待訂 2</span>
+      </a>
+    </li>
+    <li class="journal-day-entry">
+      <a href="#page-day-03">
+        <span class="journal-day-number">03</span>
+        <span class="journal-day-date">10/26 (一)</span>
+        <span class="journal-day-copy"><b>Auschwitz-Birkenau · 一日往返</b><small>克拉科夫 · 波蘭最沉重也最重要的一天</small></span>
+        <span class="tag-todo">待訂 1</span>
+      </a>
+    </li>
+    <li class="journal-day-entry">
+      <a href="#page-day-04">
+        <span class="journal-day-number">04</span>
+        <span class="journal-day-date">10/27 (二)</span>
+        <span class="journal-day-copy"><b>Wieliczka 鹽礦 + Kazimierz 白天 · 傍晚轉場</b><small>克拉科夫 → 樂斯拉夫 · 目標 19:30 左右直達車；待 PKP 開賣</small></span>
+        <span class="tag-todo">待訂 2</span>
+      </a>
+    </li>
+    <li class="journal-day-entry">
+      <a href="#page-day-05">
+        <span class="journal-day-number">05</span>
+        <span class="journal-day-date">10/28 (三)</span>
+        <span class="journal-day-copy"><b>小矮人尋寶 + 點燈儀式 + 晚轉場</b><small>樂斯拉夫 → 波茲南 · 目標 19:00 左右直達車；待 PKP 開賣</small></span>
+        <span class="tag-todo">待訂 2</span>
+      </a>
+    </li>
+    <li class="journal-day-entry">
+      <a href="#page-day-06">
+        <span class="journal-day-number">06</span>
+        <span class="journal-day-date">10/29 (四)</span>
+        <span class="journal-day-copy"><b>山羊鐘樓秀 + 聖馬丁牛角麵包</b><small>波茲南 → 華沙 · 目標 17:30 左右直達車；待 PKP 開賣</small></span>
+        <span class="tag-todo">待訂 2</span>
+      </a>
+    </li>
+    <li class="journal-day-entry">
+      <a href="#page-day-07">
+        <span class="journal-day-number">07</span>
+        <span class="journal-day-date">10/30 (五)</span>
+        <span class="journal-day-copy"><b>皇家城堡 + POLIN + 起義博物館</b><small>華沙 · 依閉館時間重排：最早先看皇家城堡</small></span>
+        <span class="tag-todo">待訂 4</span>
+      </a>
+    </li>
+    <li class="journal-day-entry">
+      <a href="#page-day-08">
+        <span class="journal-day-number">08</span>
+        <span class="journal-day-date">10/31 (六)</span>
+        <span class="journal-day-copy"><b>機場日 · 14:40 QR 260 起飛</b><small>華沙 → 多哈 · 從容收尾 · SKM 機場線 20 分鐘</small></span>
+        <span class="tag-muted">無待訂</span>
+      </a>
+    </li></ol>
+    </section>
+
+    <section class="section" id="page-index--cities">
+      <div class="section-heading"><span class="section-num">02 / City stories</span><h2>四城攝影章節</h2></div>
+      <p class="lead">先讀城市氣質，再打開地圖、景點、餐廳與拍照時間。</p>
+      <div class="journal-city-chapters">
+    <article class="journal-city-card">
+      <a href="#page-city-warszawa">
+        <figure>
+          <img src="assets/photos/warszawa-thumb.webp" alt="華沙城市風景" width="400" height="300" loading="lazy" decoding="async">
+          <figcaption>CAPITAL · Warszawa</figcaption>
+        </figure>
+        <div>
+          <h3>華沙</h3>
+          <p>鋼鐵摩天 × 重建老城</p>
+          <span>打開城市地圖與指南 →</span>
+        </div>
+      </a>
+    </article>
+    <article class="journal-city-card">
+      <a href="#page-city-krakow">
+        <figure>
+          <img src="assets/photos/krakow-thumb.webp" alt="克拉科夫城市風景" width="400" height="300" loading="lazy" decoding="async">
+          <figcaption>OLD WORLD · Kraków</figcaption>
+        </figure>
+        <div>
+          <h3>克拉科夫</h3>
+          <p>中世紀石板路 × 千年王城</p>
+          <span>打開城市地圖與指南 →</span>
+        </div>
+      </a>
+    </article>
+    <article class="journal-city-card">
+      <a href="#page-city-wroclaw">
+        <figure>
+          <img src="assets/photos/wroclaw-thumb.webp" alt="樂斯拉夫城市風景" width="400" height="300" loading="lazy" decoding="async">
+          <figcaption>1000+ DWARFS · Wrocław</figcaption>
+        </figure>
+        <div>
+          <h3>樂斯拉夫</h3>
+          <p>千尊小矮人 × 煤氣燈點燈</p>
+          <span>打開城市地圖與指南 →</span>
+        </div>
+      </a>
+    </article>
+    <article class="journal-city-card">
+      <a href="#page-city-poznan">
+        <figure>
+          <img src="assets/photos/poznan-thumb.webp" alt="波茲南城市風景" width="400" height="300" loading="lazy" decoding="async">
+          <figcaption>CRADLE · Poznań</figcaption>
+        </figure>
+        <div>
+          <h3>波茲南</h3>
+          <p>波蘭文明發源 × 山羊報時</p>
+          <span>打開城市地圖與指南 →</span>
+        </div>
+      </a>
+    </article></div>
+    </section>
+
+    <section class="section journal-todo-notes" id="page-index--todos">
+      <div class="section-heading"><span class="section-num">03 / Field notes</span><h2>出發前待辦</h2></div>
+      <p class="lead">共 14 項。先處理有日期與時段的票務，再完成交通、餐飲及備案。</p>
+      <div class="journal-notes-grid">
+    <article class="journal-note-card">
       <span class="eyebrow">Rail · 4 項</span>
       <h3>城際交通</h3>
       <p>四段都是行程銜接目標，尚未開賣或完成購票前，不把規劃時刻當成已確認班次。</p>
@@ -1450,7 +2000,7 @@ summary:focus-visible {
       </ul>
       <a href="#page-practical-todos--todo-rail">查看下一步與處理連結 →</a>
     </article>
-    <article class="card">
+    <article class="journal-note-card">
       <span class="eyebrow">Tickets · 7 項</span>
       <h3>主要景點</h3>
       <p>指定日期的場次與庫存會變動；付款完成後請下載離線票券並核對入場時間。</p>
@@ -1480,7 +2030,7 @@ summary:focus-visible {
       </ul>
       <a href="#page-practical-todos--todo-attractions">查看下一步與處理連結 →</a>
     </article>
-    <article class="card">
+    <article class="journal-note-card">
       <span class="eyebrow">Status · 1 項</span>
       <h3>場館開放狀態</h3>
       <p>不需購票，但會決定當天走不走得成；未確認前主行程只排外觀與周邊。</p>
@@ -1492,7 +2042,7 @@ summary:focus-visible {
       </ul>
       <a href="#page-practical-todos--todo-venue-status">查看下一步與處理連結 →</a>
     </article>
-    <article class="card">
+    <article class="journal-note-card">
       <span class="eyebrow">Dining · 1 項</span>
       <h3>餐飲訂位</h3>
       <p>餐廳營業與臨時包場以店家訂位頁公告為準。</p>
@@ -1504,7 +2054,7 @@ summary:focus-visible {
       </ul>
       <a href="#page-practical-todos--todo-dining">查看下一步與處理連結 →</a>
     </article>
-    <article class="card">
+    <article class="journal-note-card">
       <span class="eyebrow">Backup · 1 項</span>
       <h3>雨天備案</h3>
       <p>天氣不影響主行程時不必購買。</p>
@@ -1516,151 +2066,20 @@ summary:focus-visible {
       </ul>
       <a href="#page-practical-todos--todo-rainy-day">查看下一步與處理連結 →</a>
     </article></div>
-      <p><a href="#page-practical-todos">開啟完整待辦事項 →</a></p>
+      <p><a class="journal-text-link" href="#page-practical-todos">開啟完整待辦事項 →</a></p>
     </section>
 
     <section class="section">
-      <div class="section-heading"><span class="section-num">Data Ops</span><h2>資料更新主軸</h2></div>
-      <p class="lead">這版網站把資料更新放在網站欄位上：每天更新後先反映到自由行資料庫，再由導覽、待辦與城市頁自動對應。當前共 22 筆資料、9 筆已確認、4 筆待重查、4 筆待確認，會在資料庫頁面顯示目前狀態。</p>
-      <div class="grid">
-        <article class="card">
-          <span class="eyebrow">Day 1–8</span>
-          <h3>網站資料是主要來源</h3>
-          <p>先在網站資料檔維護 ID、狀態、官網來源、盤查日期與備註；Google Sheet dashboard 作為盤點、交換與人工複核介面。</p>
-        </article>
-        <article class="card">
-          <span class="eyebrow">Workflow</span>
-          <h3>更新完才是可對外資訊</h3>
-          <p>每次只改一批欄位，執行同步腳本後再重建頁面。<a href="#page-practical-ops-dashboard">查看網站同步儀表板 →</a></p>
-        </article>
-        <article class="card">
-          <span class="eyebrow">Privacy</span>
-          <h3>公開版與私人版分離</h3>
-          <p>網站與公開匯出不展示訂位代碼、護照與保險資訊；敏感內容只保留在未發布的私人資料來源。</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section" id="page-index--days">
-      <div class="section-heading"><span class="section-num">01 / Itinerary</span><h2>8 天行程總覽</h2></div>
-      <p class="lead">先看每天的轉場與待訂數量，再點進當天查看精確時間、備案和風險。</p>
-      <div class="table-wrap table-wrap-cards">
-        <table class="table-editorial table-itinerary">
-          <thead><tr><th>天數</th><th>日期</th><th>城市</th><th>主題</th><th>狀態</th><th></th></tr></thead>
-          <tbody>
-    <tr>
-      <td class="number" data-label="天數">Day 01</td>
-      <td class="number" data-label="日期">10/24 (六)</td>
-      <td data-label="城市">華沙</td>
-      <td data-label="主題"><b>抵達華沙 · 老城傍晚漫步</b><br><span class="timeline-note">13:30 抵蕭邦機場，SKM 進城，老城散步、倒時差</span></td>
-      <td data-label="狀態"><span class="tag-muted">無待訂</span></td>
-      <td data-label="開啟"><a href="#page-day-01">打開行程 →</a></td>
-    </tr>
-    <tr>
-      <td class="number" data-label="天數">Day 02</td>
-      <td class="number" data-label="日期">10/25 (日)</td>
-      <td data-label="城市">華沙 → 克拉科夫</td>
-      <td data-label="主題"><b>Wawel + 老城 + 辛德勒工廠 + Kazimierz 晚餐</b><br><span class="timeline-note">目標抓早班直達車；實際車次待 PKP 開賣</span></td>
-      <td data-label="狀態"><span class="tag-todo">待訂 2</span></td>
-      <td data-label="開啟"><a href="#page-day-02">打開行程 →</a></td>
-    </tr>
-    <tr>
-      <td class="number" data-label="天數">Day 03</td>
-      <td class="number" data-label="日期">10/26 (一)</td>
-      <td data-label="城市">克拉科夫</td>
-      <td data-label="主題"><b>Auschwitz-Birkenau · 一日往返</b><br><span class="timeline-note">波蘭最沉重也最重要的一天</span></td>
-      <td data-label="狀態"><span class="tag-todo">待訂 1</span></td>
-      <td data-label="開啟"><a href="#page-day-03">打開行程 →</a></td>
-    </tr>
-    <tr>
-      <td class="number" data-label="天數">Day 04</td>
-      <td class="number" data-label="日期">10/27 (二)</td>
-      <td data-label="城市">克拉科夫 → 樂斯拉夫</td>
-      <td data-label="主題"><b>Wieliczka 鹽礦 + Kazimierz 白天 · 傍晚轉場</b><br><span class="timeline-note">目標 19:30 左右直達車；待 PKP 開賣</span></td>
-      <td data-label="狀態"><span class="tag-todo">待訂 2</span></td>
-      <td data-label="開啟"><a href="#page-day-04">打開行程 →</a></td>
-    </tr>
-    <tr>
-      <td class="number" data-label="天數">Day 05</td>
-      <td class="number" data-label="日期">10/28 (三)</td>
-      <td data-label="城市">樂斯拉夫 → 波茲南</td>
-      <td data-label="主題"><b>小矮人尋寶 + 點燈儀式 + 晚轉場</b><br><span class="timeline-note">目標 19:00 左右直達車；待 PKP 開賣</span></td>
-      <td data-label="狀態"><span class="tag-todo">待訂 2</span></td>
-      <td data-label="開啟"><a href="#page-day-05">打開行程 →</a></td>
-    </tr>
-    <tr>
-      <td class="number" data-label="天數">Day 06</td>
-      <td class="number" data-label="日期">10/29 (四)</td>
-      <td data-label="城市">波茲南 → 華沙</td>
-      <td data-label="主題"><b>山羊鐘樓秀 + 聖馬丁牛角麵包</b><br><span class="timeline-note">目標 17:30 左右直達車；待 PKP 開賣</span></td>
-      <td data-label="狀態"><span class="tag-todo">待訂 2</span></td>
-      <td data-label="開啟"><a href="#page-day-06">打開行程 →</a></td>
-    </tr>
-    <tr>
-      <td class="number" data-label="天數">Day 07</td>
-      <td class="number" data-label="日期">10/30 (五)</td>
-      <td data-label="城市">華沙</td>
-      <td data-label="主題"><b>皇家城堡 + POLIN + 起義博物館</b><br><span class="timeline-note">依閉館時間重排：最早先看皇家城堡</span></td>
-      <td data-label="狀態"><span class="tag-todo">待訂 4</span></td>
-      <td data-label="開啟"><a href="#page-day-07">打開行程 →</a></td>
-    </tr>
-    <tr>
-      <td class="number" data-label="天數">Day 08</td>
-      <td class="number" data-label="日期">10/31 (六)</td>
-      <td data-label="城市">華沙 → 多哈</td>
-      <td data-label="主題"><b>機場日 · 14:40 QR 260 起飛</b><br><span class="timeline-note">從容收尾 · SKM 機場線 20 分鐘</span></td>
-      <td data-label="狀態"><span class="tag-muted">無待訂</span></td>
-      <td data-label="開啟"><a href="#page-day-08">打開行程 →</a></td>
-    </tr></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="section" id="page-index--cities">
-      <div class="section-heading"><span class="section-num">02 / Cities</span><h2>4 個城市</h2></div>
-      <p class="lead">每個城市頁都有真實比例互動地圖、景點、餐廳、備案與拍照時間。</p>
-      <div class="grid-wide">
-    <a class="card card-link" href="#page-city-warszawa">
-      <span class="eyebrow">CAPITAL</span>
-      <h3>華沙</h3>
-      <p class="lead">Warszawa · 鋼鐵摩天 × 重建老城</p>
-      <p>POLIN 猶太博物館 · 起義博物館 · 皇家城堡 · Krakowskie Przedmieście</p>
-      <span>打開城市地圖與指南 →</span>
-    </a>
-    <a class="card card-link" href="#page-city-krakow">
-      <span class="eyebrow">OLD WORLD</span>
-      <h3>克拉科夫</h3>
-      <p class="lead">Kraków · 中世紀石板路 × 千年王城</p>
-      <p>Wawel 城堡 · 中央市集 Rynek · Auschwitz 一日往返 · Kazimierz 猶太區</p>
-      <span>打開城市地圖與指南 →</span>
-    </a>
-    <a class="card card-link" href="#page-city-wroclaw">
-      <span class="eyebrow">1000+ DWARFS</span>
-      <h3>樂斯拉夫</h3>
-      <p class="lead">Wrocław · 千尊小矮人 × 煤氣燈點燈</p>
-      <p>百年廳 UNESCO · 全景畫 Panorama · 座堂島 Ostrów Tumski · 糖果屋雙屋</p>
-      <span>打開城市地圖與指南 →</span>
-    </a>
-    <a class="card card-link" href="#page-city-poznan">
-      <span class="eyebrow">CRADLE</span>
-      <h3>波茲南</h3>
-      <p class="lead">Poznań · 波蘭文明發源 × 山羊報時</p>
-      <p>教堂島 Ostrów Tumski · 12:00 山羊鐘樓秀 · 聖馬丁牛角麵包 PGI · 帝王城堡</p>
-      <span>打開城市地圖與指南 →</span>
-    </a></div>
-    </section>
-
-    <section class="section">
-      <div class="section-heading"><span class="section-num">03 / Flights</span><h2>航班摘要</h2></div>
-      <div class="grid-wide">
-        <article class="card card-accent">
+      <div class="section-heading"><span class="section-num">04 / Flights</span><h2>往返航班</h2></div>
+      <div class="journal-flight-grid">
+        <article class="journal-flight">
     <span class="eyebrow">去程</span>
     <h3>CX 479 · QR 815 · QR 259</h3>
     <ul class="link-list">
       <li><b>TPE → HKG</b>　10/23 五 21:05 → 23:05 · 2h00m</li><li><b>轉機</b>　2h20m</li><li><b>HKG → DOH</b>　10/24 六 01:25 → 04:50 · 8h25m</li><li><b>轉機</b>　3h40m</li><li><b>DOH → WAW</b>　10/24 六 08:30 → 13:30 · 6h00m</li>
     </ul>
   </article>
-        <article class="card card-accent">
+        <article class="journal-flight">
     <span class="eyebrow">回程</span>
     <h3>QR 260 · QR 818 · BR 872</h3>
     <ul class="link-list">
@@ -1671,8 +2090,8 @@ summary:focus-visible {
     </section>
 
     <section class="section" id="page-index--practical">
-      <div class="section-heading"><span class="section-num">04 / Toolkit</span><h2>規劃工具</h2></div>
-      <div class="grid">
+      <div class="section-heading"><span class="section-num">05 / Appendix</span><h2>旅行附錄</h2></div>
+      <div class="journal-toolkit">
         <a class="card card-link" href="#page-practical-booking"><h3>訂票與交通</h3><p>航班、火車、住宿與分級訂票清單。</p><span>查看 →</span></a>
         <a class="card card-link" href="#page-practical-dining"><h3>米其林與餐廳</h3><p>2026 星級、必比登、訂位管道與預算。</p><span>查看 →</span></a>
         <a class="card card-link" href="#page-practical-tickets"><h3>門票速查</h3><p>21 個景點全票、優待與官網。</p><span>查看 →</span></a>

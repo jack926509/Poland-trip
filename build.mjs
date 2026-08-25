@@ -67,6 +67,7 @@ function resetOutput() {
   fs.rmSync(distDir, { recursive: true, force: true });
   fs.mkdirSync(path.join(distDir, 'practical'), { recursive: true });
   fs.mkdirSync(path.join(distDir, 'assets'), { recursive: true });
+  fs.mkdirSync(path.join(distDir, 'assets', 'photos'), { recursive: true });
 }
 
 function writeHtml(relativePath, html) {
@@ -365,6 +366,7 @@ function build() {
   fs.copyFileSync(path.join(projectRoot, 'src/styles/main.css'), path.join(distDir, 'assets/main.css'));
   fs.copyFileSync(path.join(projectRoot, 'src/scripts/nav.js'), path.join(distDir, 'assets/nav.js'));
   fs.copyFileSync(path.join(projectRoot, 'src/scripts/database-filter.js'), path.join(distDir, 'assets/database-filter.js'));
+  fs.cpSync(path.join(projectRoot, 'assets', 'photos'), path.join(distDir, 'assets', 'photos'), { recursive: true });
 
   writeHtml('index.html', renderHome({
     meta: trip.meta,
