@@ -28,6 +28,7 @@
 **Files:**
 - Create: `tests/paper-travel-journal.test.mjs`
 - Modify: `src/templates/layout.mjs:5-74`
+- Modify: `src/templates/home.mjs:156`
 - Modify: `src/styles/main.css:1-389`
 
 **Interfaces:**
@@ -104,6 +105,7 @@ export function renderLayout({
 ```
 
 `pageKind` 只允許呼叫端傳入固定字串 `home`、`day`、`city`、`practical`；不接受外部輸入。
+Task 1 同時將首頁既有 `renderLayout` 呼叫加上 `pageKind: 'home'`，只建立外框類型，不提前改首頁內容結構。
 
 - [ ] **Step 4: 建立正式色票與共用紙本元件**
 

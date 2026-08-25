@@ -2,7 +2,14 @@ function current(activeNav, key) {
   return activeNav === key ? ' aria-current="page"' : '';
 }
 
-export function renderLayout({ title, activeNav, bodyHtml, extraHead = '', pathPrefix = '' }) {
+export function renderLayout({
+  title,
+  activeNav,
+  bodyHtml,
+  extraHead = '',
+  pathPrefix = '',
+  pageKind = 'practical',
+}) {
   const path = file => `${pathPrefix}${file}`;
   const dayLinks = Array.from({ length: 8 }, (_, index) => {
     const day = index + 1;
@@ -24,10 +31,14 @@ export function renderLayout({ title, activeNav, bodyHtml, extraHead = '', pathP
   <link rel="stylesheet" href="${path('assets/main.css')}">
   ${extraHead}
 </head>
-<body>
+<body class="journal-site journal-${pageKind}">
   <a class="skip-link" href="#main-content">跳至主要內容</a>
-  <nav class="nav" aria-label="主要導覽">
-    <a class="nav-brand" href="${path('index.html')}"${current(activeNav, 'home')}>POLSKA</a>
+  <nav class="nav journal-masthead" aria-label="主要導覽">
+    <a class="nav-brand" href="${path('index.html')}"${current(activeNav, 'home')}>
+      <span>POLSKA</span>
+      <small>Paper Travel Journal</small>
+    </a>
+    <span class="journal-edition" aria-hidden="true">VOL. 2026 · 08 DAYS</span>
     <details class="nav-dropdown${activeNav === 'days' ? ' nav-dropdown-current' : ''}" name="primary-navigation">
       <summary>每日行程</summary>
       <ul><li><a href="${path('index.html#days')}">行程總覽</a></li>${dayLinks}</ul>

@@ -153,5 +153,5 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
       </div>
     </section>`;
 
-  return renderLayout({ title: '首頁', activeNav: 'home', bodyHtml });
+  return renderLayout({ title: '首頁', activeNav: 'home', bodyHtml, pageKind: 'home' });
 }

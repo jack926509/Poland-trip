@@ -670,7 +670,7 @@ test('每頁都有完整文件外殼、導覽、主要內容與頁尾', () => {
     assert.match(html, /^<!DOCTYPE html>/, `${file} 缺少 doctype`);
     assert.match(html, /<html lang="zh-Hant">/, `${file} 語系錯誤`);
     assert.match(html, /<title>[^<]+<\/title>/, `${file} 缺少 title`);
-    assert.match(html, /<nav class="nav"/, `${file} 缺少導覽`);
+    assert.match(html, /<nav class="[^"]*\bnav\b[^"]*"/, `${file} 缺少導覽`);
     assert.match(html, /<main class="page" id="main-content">/, `${file} 缺少主要內容`);
     assert.match(html, /<footer class="footer">/, `${file} 缺少頁尾`);
     assert.doesNotMatch(html, />undefined<|\$\{undefined\}/, `${file} 出現 undefined`);
