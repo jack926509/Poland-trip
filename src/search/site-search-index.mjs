@@ -16,10 +16,16 @@ const typeLabels = {
 
 export function normalizeText(value) {
   return String(value || '')
-    .normalize('NFKC')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/ł/gi, 'l')
     .toLocaleLowerCase('zh-Hant')
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+function canonicalName(value) {
+  return normalizeText(value).replace(/[^a-z0-9\u3400-\u9fff]+/g, '');
 }
 
 function slug(value) {
@@ -77,7 +83,7 @@ function restaurantRecords(data, lookup) {
   function add({ cityRef, name, detail, mapUrl = '', keywords = [] }) {
     const city = lookup.get(cityRef);
     if (!city || !name) return;
-    const key = `${city.key}|${normalizeText(name)}`;
+    const key = `${city.key}|${canonicalName(name)}`;
     const existing = restaurants.get(key);
     if (existing) {
       const details = new Set([existing.summary, detail].filter(Boolean));
@@ -203,6 +209,20 @@ export function buildTravelSearchRecords(data) {
   records.push(...restaurantRecords(data, lookup));
 
   for (const day of data.days || []) {
+    const publicTrain = day.train && [
+      day.train.type,
+      day.train.leg,
+      day.train.from,
+      day.train.to,
+      day.train.dep,
+      day.train.arr,
+      day.train.dur,
+      day.train.price,
+    ];
+    const publicSteps = day.steps?.map(step => [step.t, step.label, step.sub, step.cost, step.dur]);
+    const publicPractical = day.practical?.map(item => (
+      typeof item === 'string' ? item : [item.tag, item.name, item.note]
+    ));
     records.push(createRecord({
       id: `itinerary-day-${day.n}`,
       type: 'itinerary',
@@ -212,10 +232,10 @@ export function buildTravelSearchRecords(data) {
       href: `day-${String(day.n).padStart(2, '0')}.html`,
       keywords: [
         day.tag,
-        day.train && Object.values(day.train),
-        day.steps?.flatMap(step => Object.values(step)),
+        publicTrain,
+        publicSteps,
         day.eat,
-        day.practical?.flatMap(item => Object.values(item)),
+        publicPractical,
       ],
     }));
   }
@@ -239,6 +259,8 @@ function mainText(html) {
   const main = String(html || '').match(/<main\b[^>]*>([\s\S]*?)<\/main>/i);
   if (!main) return '';
   return normalizeText(decodeEntities(main[1]
+    .replace(/<article\b[^>]*\bdata-privacy=["']private["'][^>]*>[\s\S]*?<\/article>/gi, ' ')
+    .replace(/<([a-z][a-z0-9]*)\b[^>]*\bdata-search-private(?:=["'][^"']*["'])?[^>]*>[\s\S]*?<\/\1>/gi, ' ')
     .replace(/<(script|style|template)\b[^>]*>[\s\S]*?<\/\1>/gi, ' ')
     .replace(/<[^>]+>/g, ' ')));
 }

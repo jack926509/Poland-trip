@@ -458,7 +458,7 @@ summary:focus-visible {
 .site-search-result-copy small,
 .site-search-result-copy > span {
   color: var(--ink-soft);
-  font-size: 0.78rem;
+  font-size: 1rem;
   line-height: 1.45;
   overflow-wrap: anywhere;
 }
@@ -479,7 +479,7 @@ summary:focus-visible {
   border-left: 1px solid var(--line);
   color: var(--green);
   font-family: var(--font-mono);
-  font-size: 0.74rem;
+  font-size: 1rem;
   font-weight: 700;
   text-decoration: none;
   white-space: nowrap;
@@ -620,6 +620,16 @@ summary:focus-visible {
 
 .section-heading-simple {
   grid-template-columns: 1fr;
+}
+
+nav.section-heading > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+nav.section-heading > a:last-child {
+  justify-content: flex-end;
 }
 
 .lead {
@@ -1426,7 +1436,7 @@ summary:focus-visible {
 .journal-day-date {
   color: var(--ink-soft);
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: 1rem;
   font-variant-numeric: tabular-nums;
 }
 
@@ -1443,7 +1453,7 @@ summary:focus-visible {
 
 .journal-day-copy small {
   color: var(--ink-soft);
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .journal-city-chapters,
@@ -1942,7 +1952,7 @@ summary:focus-visible {
   }
 
   .journal-day-copy small {
-    font-size: 0.82rem;
+    font-size: 1rem;
   }
 
   .journal-day-entry .tag-todo,

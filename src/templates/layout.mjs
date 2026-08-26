@@ -17,11 +17,11 @@ export function renderSiteSearch({
         <label for="site-search-input">搜尋整個旅遊網站</label>
         <div class="site-search-input-row">
           <span class="site-search-icon" aria-hidden="true">⌕</span>
-          <input id="site-search-input" type="search" inputmode="search" autocomplete="off" spellcheck="false" placeholder="火車、餐廳、景點、城市特色" aria-controls="site-search-results" aria-describedby="site-search-help" aria-expanded="false">
+          <input id="site-search-input" type="search" inputmode="search" autocomplete="off" spellcheck="false" placeholder="火車、餐廳、景點、城市特色" aria-controls="site-search-results" aria-describedby="site-search-help">
           <button class="site-search-clear" type="button" data-search-clear hidden>清除</button>
         </div>
       </div>
-      <div class="site-search-quick-row" aria-label="快捷分類">
+      <div class="site-search-quick-row" role="group" aria-label="快捷分類">
         <span id="site-search-help">快速找：</span>
         <button type="button" data-search-category="train" aria-pressed="false">🚆 火車</button>
         <button type="button" data-search-category="restaurant" aria-pressed="false">🍽️ 餐廳</button>

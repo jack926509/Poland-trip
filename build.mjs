@@ -282,8 +282,8 @@ ${mainCss}
       border-top: 1px solid rgba(43, 39, 35, .25);
       font-size: .9rem;
     }
-    .standalone-page-controls a { color: #7e2c1a; font-weight: 700; text-decoration: none; }
-    .standalone-page-controls a:last-child { text-align: right; }
+    .standalone-page-controls a { display: flex; align-items: center; min-height: 44px; color: #7e2c1a; font-weight: 700; text-decoration: none; }
+    .standalone-page-controls a:last-child { justify-content: flex-end; text-align: right; }
     .standalone-page-controls a:hover,
     .standalone-page-controls a:focus-visible { text-decoration: underline; }
     .standalone-page-controls span { color: #6a625b; font-size: .78rem; }

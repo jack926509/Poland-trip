@@ -1,6 +1,8 @@
 export function normalizeSearchValue(value) {
   return String(value || '')
-    .normalize('NFKC')
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/ł/gi, 'l')
     .toLocaleLowerCase('zh-Hant')
     .replace(/\s+/g, ' ')
     .trim();
@@ -15,7 +17,7 @@ function recordScore(record, query) {
   if (!tokens.every(token => bag.includes(token))) return Number.POSITIVE_INFINITY;
   if (title === query) return 0;
   if (title.startsWith(query)) return 1;
-  if (title.includes(query)) return 2;
+  if (title.includes(query) || tokens.every(token => title.includes(token))) return 2;
   if (meta.includes(query)) return 3;
   return 4;
 }
@@ -100,7 +102,6 @@ function initialize(root) {
       const query = normalizeSearchValue(input.value);
       const isActive = Boolean(query || activeCategory);
       clearButton.hidden = !isActive;
-      input.setAttribute('aria-expanded', String(isActive));
       categoryButtons.forEach(button => {
         button.setAttribute('aria-pressed', String(button.dataset.searchCategory === activeCategory));
       });
@@ -133,11 +134,11 @@ function initialize(root) {
     }
 
     input.addEventListener('input', render);
-    input.addEventListener('keydown', event => {
+    root.addEventListener('keydown', event => {
       if (event.key !== 'Escape') return;
       event.preventDefault();
       reset();
-      input.blur();
+      input.focus();
     });
     clearButton?.addEventListener('click', () => {
       reset();

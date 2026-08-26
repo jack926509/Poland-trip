@@ -15,6 +15,20 @@ test('標題完全命中排在一般關鍵詞命中前', () => {
   assert.deepEqual(selected.map(record => record.id), ['exact']);
 });
 
+test('多詞標題命中排在只命中一般關鍵詞的結果前', () => {
+  const selected = selectSearchRecords([
+    { id: 'generic', type: 'page', title: '交通總覽', meta: '', searchText: '華沙 克拉科夫 火車' },
+    { id: 'route', type: 'train', title: '華沙 → 克拉科夫', meta: '', searchText: '華沙 克拉科夫 火車' },
+  ], { query: '華沙 克拉科夫' });
+
+  assert.deepEqual(selected.map(record => record.id), ['route', 'generic']);
+});
+
+test('沒有輸入波蘭文變音符號仍能找到城市', () => {
+  const selected = selectSearchRecords(records, { query: 'Wroclaw' });
+  assert.deepEqual(selected.map(record => record.id), ['city']);
+});
+
 test('多個關鍵字必須全部命中', () => {
   const selected = selectSearchRecords(records, { query: '華沙 EIP' });
   assert.deepEqual(selected.map(record => record.id), ['train']);

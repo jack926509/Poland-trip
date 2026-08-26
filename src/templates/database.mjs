@@ -148,7 +148,7 @@ function renderFacetIndex(title, prefix, values, entries, labelFor) {
   const groups = values.map(value => {
     const matches = entries.filter(entry => entry[prefix] === value);
     if (!matches.length) return '';
-    return `<li id="index-${prefix}-${escapeHtml(value)}"><b>${escapeHtml(labelFor(value))}</b> <span class="tag-muted">${matches.length} 筆</span><ul>${matches.map(entry => `<li><a href="#entry-${escapeHtml(entry.id)}">${escapeHtml(entry.title)}</a></li>`).join('')}</ul></li>`;
+    return `<li id="index-${prefix}-${escapeHtml(value)}"><b>${escapeHtml(labelFor(value))}</b> <span class="tag-muted">${matches.length} 筆</span><ul>${matches.map(entry => `<li${entry.private ? ' data-search-private' : ''}><a href="#entry-${escapeHtml(entry.id)}">${escapeHtml(entry.title)}</a></li>`).join('')}</ul></li>`;
   }).join('');
   return `<section class="database-facet"><h3>${escapeHtml(title)}</h3><ul>${groups}</ul></section>`;
 }
