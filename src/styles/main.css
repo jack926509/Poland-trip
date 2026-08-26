@@ -847,8 +847,8 @@ nav.section-heading > a:last-child {
 }
 
 .btn-ghost {
-  min-height: 2.4rem;
-  padding: 0 0.9rem;
+  min-height: 44px;
+  padding: 0 1rem;
   border: 1px solid var(--ink-soft);
   border-radius: 999px;
   color: var(--ink);
@@ -916,8 +916,8 @@ details.card > summary {
 .db-chip {
   display: inline-flex;
   align-items: center;
-  min-height: 2rem;
-  padding: 0.25rem 0.72rem;
+  min-height: 44px;
+  padding: 0.25rem 0.9rem;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
   background: transparent;
@@ -1147,10 +1147,11 @@ details.card > summary {
 }
 
 .map-container .leaflet-control-attribution {
-  padding: 0.3rem 0.5rem;
+  padding: 0.45rem 0.6rem;
   background: rgb(255 255 255 / 92%);
   color: #33302c;
-  font-size: 0.72rem;
+  font-size: 0.75rem;
+  line-height: 1.9;
 }
 
 .map-container .leaflet-control-attribution a {
@@ -2016,9 +2017,7 @@ details.card > summary {
   }
 
   .database-filter input,
-  .database-filter select,
-  .database-toolbar-actions .btn,
-  .db-chip {
+  .database-filter select {
     min-height: 44px;
   }
 
