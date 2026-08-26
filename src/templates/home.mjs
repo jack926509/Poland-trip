@@ -36,7 +36,7 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
   const coverCity = cities[0];
   const coverFigure = coverCity?.photo?.hero ? `
       <figure class="journal-cover-figure">
-        <img class="journal-cover-photo" src="${escapeHtml(coverCity.photo.hero)}" alt="${escapeHtml(coverCity.name)}城市風景" width="1200" height="800" decoding="async">
+        <img class="journal-cover-photo" src="${escapeHtml(coverCity.photo.hero)}" alt="${escapeHtml(coverCity.name)}城市風景" width="1200" height="800" decoding="async" fetchpriority="high">
         <figcaption>${escapeHtml(coverCity.pl)} · ${escapeHtml(coverCity.vibe)}</figcaption>
       </figure>` : '<div class="journal-cover-figure journal-cover-fallback" aria-hidden="true"></div>';
   const todoCards = todoGroups.map(group => `

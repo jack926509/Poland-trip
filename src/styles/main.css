@@ -259,35 +259,6 @@ img {
   white-space: nowrap;
 }
 
-.journal-rule {
-  border: 0;
-  border-top: 1px solid var(--line-strong);
-}
-
-.journal-caption {
-  color: var(--ink-soft);
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-}
-
-.journal-info-strip {
-  padding-block: 1rem;
-  border-block: 1px solid var(--line-strong);
-}
-
-.journal-stamp {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0.35rem 0.75rem;
-  border: 1px solid currentColor;
-  color: var(--plum-ink);
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  font-weight: 700;
-  transform: rotate(-2deg);
-}
-
 .nav > a:not(.nav-brand),
 .nav-dropdown > summary {
   display: inline-flex;
@@ -638,36 +609,6 @@ img {
   padding: 4.5rem 3rem 6rem;
 }
 
-.hero {
-  position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1.65fr) minmax(260px, 0.65fr);
-  gap: 3rem;
-  align-items: end;
-  margin-bottom: 4.5rem;
-  padding: 2rem 0 3.2rem;
-  border-bottom: 3px solid var(--ink);
-}
-
-.hero::after {
-  position: absolute;
-  right: 0;
-  bottom: -3px;
-  width: 20%;
-  height: 3px;
-  background: var(--accent);
-  content: '';
-}
-
-.hero-copy {
-  min-width: 0;
-}
-
-.hero-aside {
-  padding-left: 1.5rem;
-  border-left: 1px solid var(--line-strong);
-}
-
 .hero-dek {
   max-width: 62ch;
   margin: 1.4rem 0 0;
@@ -689,31 +630,6 @@ img {
 .section-num {
   display: block;
   margin-bottom: 0.75rem;
-}
-
-.meta-list {
-  margin: 0;
-}
-
-.meta-list > div {
-  display: grid;
-  grid-template-columns: 7rem 1fr;
-  gap: 1rem;
-  padding: 0.65rem 0;
-  border-bottom: 1px solid var(--line);
-}
-
-.meta-list dt,
-.meta-list dd {
-  margin: 0;
-}
-
-.meta-list dt {
-  color: var(--ink-soft);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
 }
 
 .section {
@@ -1906,7 +1822,6 @@ nav.section-heading > a:last-child {
     padding-inline: 1.5rem;
   }
 
-  .hero,
   .grid-wide,
   .sos-grid,
   .journal-cover,
@@ -1956,11 +1871,6 @@ nav.section-heading > a:last-child {
     grid-column: auto;
   }
 
-  .hero-aside {
-    padding: 1.25rem 0 0;
-    border-top: 1px solid var(--line-strong);
-    border-left: 0;
-  }
 }
 
 @media (max-width: 700px) {

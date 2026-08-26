@@ -117,7 +117,9 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
     </div>` : '';
 
   const constraintHtml = `
-    <div class="grid-wide">
+    <section class="section">
+      <div class="section-heading"><span class="section-num">Priorities</span><h2>時間彈性</h2></div>
+      <div class="grid-wide">
       <article class="card">
         <span class="eyebrow">不能延誤</span>
         <h3>硬性時間</h3>
@@ -128,7 +130,8 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
         <h3>可以壓縮</h3>
         ${renderList(day.compressible, item => `<li>${item}</li>`)}
       </article>
-    </div>`;
+      </div>
+    </section>`;
 
   const eatHtml = day.eat?.length ? `
     <section class="section">
@@ -176,7 +179,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   const next = day.n < 8 ? `<a href="day-${String(day.n + 1).padStart(2, '0')}.html">Day ${day.n + 1} →</a>` : '<a href="index.html">回到總覽 →</a>';
   const coverHtml = city?.photo?.hero ? `
       <figure class="journal-day-cover">
-        <img src="${escapeHtml(city.photo.hero)}" alt="${escapeHtml(city.name)}城市風景" width="1200" height="800" decoding="async">
+        <img src="${escapeHtml(city.photo.hero)}" alt="${escapeHtml(city.name)}城市風景" width="1200" height="800" decoding="async" fetchpriority="high">
         <figcaption>${escapeHtml(city.pl)} · ${escapeHtml(city.vibe)}</figcaption>
       </figure>` : '<div class="journal-day-cover-fallback" aria-hidden="true">POLSKA</div>';
 

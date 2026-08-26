@@ -144,7 +144,7 @@ export function renderCity({
   const bodyHtml = `
     <header class="journal-city-cover">
       <figure>
-        <img src="${city.photo.hero}" alt="${city.name}城市風景" width="1200" height="800" decoding="async">
+        <img src="${city.photo.hero}" alt="${city.name}城市風景" width="1200" height="800" decoding="async" fetchpriority="high">
         <figcaption>${city.pl} · ${city.tag}</figcaption>
       </figure>
       <div class="journal-city-cover-copy">

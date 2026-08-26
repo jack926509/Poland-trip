@@ -2,6 +2,12 @@ function current(activeNav, key) {
   return activeNav === key ? ' aria-current="page"' : '';
 }
 
+// 目前所在的章節群組：視覺上已用 .nav-dropdown-current 標示，
+// 這裡補上 aria-current 讓螢幕閱讀器也聽得到「目前位置」。
+function currentGroup(activeNav, key) {
+  return activeNav === key ? ' aria-current="true"' : '';
+}
+
 export const searchIndexPlaceholder = '__SITE_SEARCH_INDEX__';
 
 export function renderSiteSearch({
@@ -84,11 +90,11 @@ export function renderLayout({
     </a>
     <span class="journal-edition" aria-hidden="true">VOL. 2026 · 08 DAYS</span>
     <details class="nav-dropdown${activeNav === 'days' ? ' nav-dropdown-current' : ''}" name="primary-navigation">
-      <summary>每日行程</summary>
+      <summary${currentGroup(activeNav, 'days')}>每日行程</summary>
       <ul><li><a href="${path('index.html#days')}">行程總覽</a></li>${dayLinks}</ul>
     </details>
     <details class="nav-dropdown${activeNav === 'cities' ? ' nav-dropdown-current' : ''}" name="primary-navigation">
-      <summary>城市指南</summary>
+      <summary${currentGroup(activeNav, 'cities')}>城市指南</summary>
       <ul>
         <li><a href="${path('index.html#cities')}">城市總覽</a></li>
         <li><a href="${path('city-warszawa.html')}">華沙 Warszawa</a></li>
@@ -98,7 +104,7 @@ export function renderLayout({
       </ul>
     </details>
     <details class="nav-dropdown${activeNav === 'practical' ? ' nav-dropdown-current' : ''}" name="primary-navigation">
-      <summary>實用資訊</summary>
+      <summary${currentGroup(activeNav, 'practical')}>實用資訊</summary>
       <ul>
         <li><a href="${path('index.html#practical')}">實用資訊總覽</a></li>
         <li><a href="${path('practical/todos.html')}">待辦事項</a></li>
