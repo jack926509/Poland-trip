@@ -424,8 +424,8 @@ export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups
       <div class="section-heading"><span class="section-num">Handover</span><h2>交接摘要與匯出</h2></div>
       <p>可直接輸出不含私人內容的「今日異常清單」與「最近同步清單」，給接手者交接時使用。</p>
       <div class="grid">
-        <button id="export-handover-json" data-handover-export="json" type="button" class="tag-todo" style="cursor:pointer; border:none; padding: .55rem .8rem; border-radius:.55rem; display:inline-block; text-align:left;">匯出 JSON</button>
-        <button id="export-handover-csv" data-handover-export="csv" type="button" class="tag-todo" style="cursor:pointer; border:none; padding: .55rem .8rem; border-radius:.55rem; display:inline-block; text-align:left; margin-left:.5rem;">匯出 CSV</button>
+        <button id="export-handover-json" data-handover-export="json" type="button" class="btn-export">匯出 JSON</button>
+        <button id="export-handover-csv" data-handover-export="csv" type="button" class="btn-export">匯出 CSV</button>
       </div>
       <script>
         (function() {

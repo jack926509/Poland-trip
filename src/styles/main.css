@@ -1043,6 +1043,39 @@ nav.section-heading > a:last-child {
   color: var(--accent-dark);
 }
 
+.btn-export {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid var(--accent);
+  border-radius: 0.55rem;
+  background: transparent;
+  color: var(--accent-dark);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.btn-export:hover,
+.btn-export:focus-visible {
+  background: var(--accent-pale);
+}
+
+.btn-export + .btn-export {
+  margin-left: 0.5rem;
+}
+
+/* 卡片內的可展開清單也要有 44px 觸控高度 */
+.card > summary,
+details.card > summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  cursor: pointer;
+}
+
 .database-result-summary {
   margin: 0;
   font-family: var(--font-mono);
@@ -1225,6 +1258,18 @@ nav.section-heading > a:last-child {
   background: var(--map-ground);
   box-shadow: var(--shadow-paper);
   touch-action: pan-y !important;
+}
+
+.map-fallback {
+  display: grid;
+  height: 100%;
+  margin: 0;
+  padding: 1.5rem;
+  place-content: center;
+  color: var(--ink);
+  font-size: 0.92rem;
+  text-align: center;
+  text-wrap: balance;
 }
 
 .map-caption {
@@ -1583,7 +1628,8 @@ nav.section-heading > a:last-child {
 .journal-text-link,
 .journal-note-card > a,
 .journal-toolkit .card-link span,
-.journal-city-card span {
+.journal-city-card span,
+.card > a:last-child:not(.card-link) {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
