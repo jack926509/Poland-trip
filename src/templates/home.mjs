@@ -36,7 +36,7 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
   const coverCity = cities[0];
   const coverFigure = coverCity?.photo?.hero ? `
       <figure class="journal-cover-figure">
-        <img class="journal-cover-photo" src="${escapeHtml(coverCity.photo.hero)}" alt="${escapeHtml(coverCity.name)}城市風景" width="1200" height="800" decoding="async">
+        <img class="journal-cover-photo" src="${escapeHtml(coverCity.photo.hero)}" alt="${escapeHtml(coverCity.name)}城市風景" width="1200" height="800" decoding="async" fetchpriority="high">
         <figcaption>${escapeHtml(coverCity.pl)} · ${escapeHtml(coverCity.vibe)}</figcaption>
       </figure>` : '<div class="journal-cover-figure journal-cover-fallback" aria-hidden="true"></div>';
   const todoCards = todoGroups.map(group => `
@@ -138,7 +138,6 @@ ${coverFigure}
         <a class="card card-link" href="practical/tickets.html"><h3>門票速查</h3><p>21 個景點全票、優待與官網。</p><span>查看 →</span></a>
         <a class="card card-link" href="practical/transit.html"><h3>市內交通</h3><p>四城票價、機場接駁與購票方式。</p><span>查看 →</span></a>
         <a class="card card-link" href="practical/shopping.html"><h3>伴手禮與購物</h3><p>14 種伴手禮、實際店家與 Żabka。</p><span>查看 →</span></a>
-        <a class="card card-link" href="practical/database.html#database-lookup-heading"><h3>資料索引搜尋</h3><p>從 ${syncItems} 筆條目裡以關鍵字、城市、類別快速定位官方資訊。</p><span>查看 →</span></a>
         <a class="card card-link" href="practical/notes.html"><h3>出發前提醒</h3><p>夏令時間、日落、閉館與訂票節奏。</p><span>查看 →</span></a>
         <a class="card card-link" href="practical/database.html"><h3>自由行資料庫</h3><p>SOS、行前重查與各主題官方資料集中管理。</p><span>查看 →</span></a>
       </div>

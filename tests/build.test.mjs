@@ -379,7 +379,8 @@ test('克拉科夫與樂斯拉夫飲水資訊各自保有官方來源', () => {
 test('dist 正好產出規格要求的 23 個 HTML', () => {
   assert.deepEqual(htmlFiles(), [...expectedFiles].sort());
   assert.ok(fs.existsSync(path.join(distDir, 'assets/main.css')), '缺少 assets/main.css');
-  assert.ok(fs.existsSync(path.join(distDir, 'assets/database-filter.js')), '缺少資料庫篩選程式');
+  // 查找／篩選功能已整批移除，不應再輸出篩選程式
+  assert.ok(!fs.existsSync(path.join(distDir, 'assets/database-filter.js')), '不應再輸出資料庫篩選程式');
 });
 
 test('單檔旅遊指南封裝全部 23 頁且不依賴本機 CSS 或其他 HTML', () => {
@@ -398,9 +399,9 @@ test('單檔旅遊指南封裝全部 23 頁且不依賴本機 CSS 或其他 HTML
   assert.ok(html.includes('href="#page-practical-database"'));
   assert.ok(html.includes('href="#page-practical-ops-dashboard"'));
   assert.ok(html.includes('href="#page-day-01"'));
-  assert.ok(html.includes('id="page-practical-database--db-query"'));
-  assert.ok(html.includes('for="page-practical-database--db-query"'));
-  assert.match(html, /function applyFilters\(\)/);
+  // 資料庫查找區塊已移除，單檔版不應再帶入篩選欄位或篩選程式
+  assert.doesNotMatch(html, /data-db-(?:query|city|category|status|privacy|quick|clear|summary)/);
+  assert.doesNotMatch(html, /function applyFilters\(\)/);
   assert.doesNotMatch(html, /<script[^>]+src="\.\.\/assets\/database-filter\.js"/);
 });
 
@@ -424,13 +425,15 @@ test('單檔版以章節切換取代整頁上下查找，並保留前後頁導�
 
   assert.equal((html.match(/class="standalone-page-controls"/g) || []).length, expectedFiles.length);
   assert.equal((html.match(/class="standalone-page-ribbon"/g) || []).length, expectedFiles.length);
-  assert.match(html, /function showStandalonePage\(targetId\)/);
+  assert.match(html, /function showStandalonePage\(targetId, shouldScroll\)/);
+  // 直接開啟檔案（沒有 hash）時不自動捲動，維持在文件頂端
+  assert.match(html, /showStandalonePage\(hash \|\| defaultPageId, Boolean\(hash\)\)/);
   assert.match(html, /window\.addEventListener\('hashchange', activateStandaloneHash\)/);
   assert.match(html, /page\.hidden = page\.id !== activePageId/);
   assert.match(
     html,
     /requestAnimationFrame\(function \(\) \{\s*window\.requestAnimationFrame\(function \(\) \{/,
-    '單檔版必須等瀏覽器完成 hash 預設導航與版面更新後，再捲到搜尋結果小節',
+    '單檔版必須等瀏覽器完成 hash 預設導航與版面更新後，再捲到目標小節',
   );
   assert.match(html, /@media print[\s\S]*\.standalone-page\[hidden\][\s\S]*display: block !important;/);
 });
@@ -456,7 +459,10 @@ test('正式頁面保留垂直滑動，地圖與寬表格不會鎖住整頁', ()
   assert.doesNotMatch(css, /(?:html|body)\s*\{[^}]*overflow-y\s*:\s*hidden/s);
   assert.match(css, /\.map-container\s*\{[^}]*touch-action\s*:\s*pan-y\s*!important/s);
   assert.match(css, /\.table-wrap\s*\{[^}]*overflow-x\s*:\s*auto/s);
-  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav\s*\{[^}]*position\s*:\s*relative/s);
+  // 手機導覽列必須自建堆疊脈絡（relative 或 sticky 皆可），
+  // 但不得改用 fixed／overflow 鎖住整頁捲動。
+  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav\s*\{[^}]*position\s*:\s*(?:relative|sticky)/s);
+  assert.doesNotMatch(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav\s*\{[^}]*position\s*:\s*fixed/s);
 });
 
 test('2026-08-09 官方盤查會移除未能證實的場次、價格與閉館敘述', () => {
@@ -548,11 +554,18 @@ test('單檔版匯出按鈕使用不受 id 前綴影響的 data selector', () =>
   assert.ok(html.includes("root.querySelector('[data-handover-export=\"json\"]')"));
 });
 
-test('自由行資料庫有城市、類別、狀態統計與無 JS 記錄連結', () => {
+test('自由行資料庫以主題索引導覽，每筆條目都保有可連結錨點', () => {
   const html = read('practical/database.html');
-  for (const heading of ['靜態查找與統計', '城市', '類別', '狀態']) assert.ok(html.includes(heading));
-  for (const entry of databaseEntries) assert.ok(html.includes(`href="#entry-${entry.id}"`), `統計索引缺 ${entry.id}`);
-  assert.match(html, /\d+ 筆/);
+
+  // 查找／統計區塊已移除，改由主題索引導覽
+  assert.ok(html.includes('資料庫主題索引'), '缺少主題索引');
+  assert.doesNotMatch(html, /靜態查找與統計/);
+  assert.doesNotMatch(html, /database-toolbar|db-chip|database-facet/);
+
+  // 條目錨點必須保留，既有深連結才不會失效
+  for (const entry of databaseEntries) {
+    assert.ok(html.includes(`id="entry-${entry.id}"`), `缺少條目錨點 ${entry.id}`);
+  }
 });
 
 test('自由行資料庫全頁 HTML id 不重複', () => {
@@ -695,8 +708,9 @@ test('手機導覽以原生可展開選單呈現，且選單層級高於內容',
   assert.match(navScript, /menu\.addEventListener\('toggle',[\s\S]*other\.open = false/s);
   assert.match(navScript, /menu\.addEventListener\('click',[\s\S]*menu\.open = false/s);
   assert.match(css, /\.nav-dropdown\[open\]\s*>\s*ul\s*\{[^}]*display\s*:\s*block/s);
-  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav\s*\{[^}]*position\s*:\s*relative[^}]*z-index\s*:\s*100/s);
-  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav-dropdown\s*>\s*ul\s*\{[^}]*right\s*:\s*1\.25rem[^}]*left\s*:\s*1\.25rem/s);
+  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav\s*\{[^}]*position\s*:\s*(?:relative|sticky)[^}]*z-index\s*:\s*100[^}]*isolation\s*:\s*isolate/s);
+  // 面板貼齊導覽列左右內距，滿版展開而不是被裁在角落
+  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav-dropdown\s*>\s*ul\s*\{[^}]*right\s*:\s*0\.9rem[^}]*left\s*:\s*0\.9rem/s);
 });
 
 test('手機每日時間表提供卡片欄位標籤，不依賴橫向捲動', () => {
@@ -856,7 +870,9 @@ test('4 個城市頁含正確 Leaflet 圖釘數，合計 56', () => {
   for (const [file, count] of Object.entries(expected)) {
     const html = read(file);
     assert.match(html, /class="map-container"/, `${file} 缺少地圖容器`);
-    assert.match(html, /leaflet@1\.9\.4/, `${file} 缺少 Leaflet 1.9.4`);
+    // Leaflet 已改為自行 host（離線可用），頁面引用本地路徑，版本改由 vendor 檔案把關
+    assert.match(html, /src="assets\/leaflet\/leaflet\.js"/, `${file} 缺少本地 Leaflet`);
+    assert.doesNotMatch(html, /unpkg\.com/, `${file} 不應再依賴 unpkg`);
     const match = html.match(/var mapData = (\{.*?\});/s);
     assert.ok(match, `${file} 缺少 mapData`);
     const points = JSON.parse(match[1]).points.length;
@@ -1062,12 +1078,34 @@ test('全站沒有常見簡體專用字', () => {
   assert.deepEqual(offenders, []);
 });
 
-test('舊 PWA 已安全退役，不再預快取被歸檔的介面', () => {
+test('service worker 提供離線快取，且不預快取被歸檔的介面', () => {
   const worker = fs.readFileSync('sw.js', 'utf8');
+
+  // 仍要清掉舊版 polska-v* 快取，但自己保留
   assert.ok(worker.includes("key.startsWith('polska-')"), 'sw.js 未清除舊 polska 快取');
-  assert.ok(worker.includes('self.registration.unregister()'), 'sw.js 未解除舊註冊');
-  assert.ok(!worker.includes("addEventListener('fetch'"), '退役 worker 不應攔截新版請求');
+  assert.ok(worker.includes('!key.startsWith(VERSION)'), 'sw.js 不應連自己的快取一起刪除');
+  assert.ok(worker.includes("addEventListener('fetch'"), 'sw.js 需攔截請求才能離線可用');
+  assert.ok(!worker.includes('self.registration.unregister()'), '正式 worker 不應自我解除註冊');
+
+  // 23 頁與離線必要資源都要在預快取清單裡
+  for (const file of expectedFiles) {
+    assert.ok(worker.includes(`./${file}`), `sw.js 預快取缺少 ${file}`);
+  }
+  for (const asset of ['./assets/main.css', './assets/nav.js', './assets/leaflet/leaflet.js']) {
+    assert.ok(worker.includes(asset), `sw.js 預快取缺少 ${asset}`);
+  }
+
   for (const stalePath of ['mobile.html', 'redesign/', 'desktop/']) {
     assert.ok(!worker.includes(stalePath), `sw.js 仍引用舊路徑 ${stalePath}`);
   }
+});
+
+test('每頁都註冊 service worker，且 sw.js 一起輸出到站台根目錄', () => {
+  const navScript = fs.readFileSync(path.join(distDir, 'assets/nav.js'), 'utf8');
+  assert.match(navScript, /navigator\.serviceWorker\.register/);
+  // 由 nav.js 自身位置推導，首頁與 practical/ 子目錄共用同一支
+  assert.match(navScript, /new URL\('\.\.\/sw\.js', selfScript\.src\)/);
+  assert.ok(fs.existsSync(path.join(distDir, 'sw.js')), 'dist/sw.js 未輸出');
+  assert.ok(fs.existsSync(path.join(distDir, 'assets/leaflet/leaflet.js')), 'dist 缺少本地 Leaflet');
+  assert.ok(fs.existsSync(path.join(distDir, 'assets/leaflet/leaflet.css')), 'dist 缺少本地 Leaflet CSS');
 });

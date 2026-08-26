@@ -32,6 +32,7 @@ function stableMapDescription(description) {
 export function renderCity({
   city,
   cityKey,
+  cityFile,
   mapData,
   legend,
   attractionsForCity,
@@ -110,7 +111,7 @@ export function renderCity({
     <div><span style="background:${item.fill};border:1.5px solid ${item.line}"></span>${item.label}</div>`).join('');
 
   const mapScript = `
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="assets/leaflet/leaflet.js"></script>
     <script>
     (function () {
       var mapData = ${JSON.stringify(mapData)};
@@ -119,6 +120,7 @@ export function renderCity({
       var scope = script ? script.closest('.standalone-page') : null;
       var element = (scope || document).querySelector('[data-map-key="${cityKey}"]');
       if (!element || typeof L === 'undefined') return;
+      element.textContent = '';
       var map = L.map(element, { scrollWheelZoom: false }).setView(mapData.center, mapData.zoom);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors',
@@ -144,7 +146,7 @@ export function renderCity({
   const bodyHtml = `
     <header class="journal-city-cover">
       <figure>
-        <img src="${city.photo.hero}" alt="${city.name}城市風景" width="1200" height="800" decoding="async">
+        <img src="${city.photo.hero}" alt="${city.name}城市風景" width="1200" height="800" decoding="async" fetchpriority="high">
         <figcaption>${city.pl} · ${city.tag}</figcaption>
       </figure>
       <div class="journal-city-cover-copy">
@@ -163,7 +165,7 @@ export function renderCity({
     <section class="section journal-city-map">
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
       <p class="lead">拖曳、縮放並點選圖釘查看說明；手機上下滑動會優先捲動頁面，圖釘連結可直接開啟 Google Maps。</p>
-      <div id="map-${cityKey}" class="map-container" data-map-key="${cityKey}" aria-label="${city.name}互動地圖"></div>
+      <div id="map-${cityKey}" class="map-container" data-map-key="${cityKey}" role="region" aria-label="${city.name}互動地圖"><p class="map-fallback">地圖需要網路連線才能載入。離線或載入失敗時，請改用下方景點清單中的 Google Maps 連結。</p></div>
       <div class="map-legend" aria-label="地圖圖例">${legendHtml}</div>
       <p class="map-caption">地圖底圖 © OpenStreetMap contributors</p>
     </section>
@@ -190,6 +192,14 @@ export function renderCity({
     ${photoHtml}
     ${mapScript}`;
 
-  const extraHead = '<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">';
-  return renderLayout({ title: `${city.name}城市指南`, activeNav: 'cities', bodyHtml, extraHead, pageKind: 'city' });
+  // Leaflet 改為自行 host：不依賴 unpkg，離線快取後地圖程式本身也能用
+  const extraHead = '<link rel="stylesheet" href="assets/leaflet/leaflet.css">';
+  return renderLayout({
+    title: `${city.name}城市指南`,
+    activeNav: 'cities',
+    bodyHtml,
+    extraHead,
+    pageKind: 'city',
+    currentPage: `city-${cityFile}.html`,
+  });
 }
