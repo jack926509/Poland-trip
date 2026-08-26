@@ -362,7 +362,7 @@ ${bundledPages}
       var pages = Array.from(document.querySelectorAll('.standalone-page'));
       var defaultPageId = 'page-index';
 
-      function showStandalonePage(targetId) {
+      function showStandalonePage(targetId, shouldScroll) {
         var target = document.getElementById(targetId);
         var activePage = target ? target.closest('.standalone-page') : document.getElementById(defaultPageId);
         var activePageId = activePage ? activePage.id : defaultPageId;
@@ -371,15 +371,19 @@ ${bundledPages}
         });
         window.requestAnimationFrame(function () {
           window.requestAnimationFrame(function () {
-            var activeTarget = document.getElementById(targetId) || document.getElementById(activePageId);
-            if (activeTarget) activeTarget.scrollIntoView({ block: 'start' });
+            if (shouldScroll) {
+              var activeTarget = document.getElementById(targetId) || document.getElementById(activePageId);
+              if (activeTarget) activeTarget.scrollIntoView({ block: 'start' });
+            }
             window.dispatchEvent(new Event('resize'));
           });
         });
       }
 
       function activateStandaloneHash() {
-        showStandalonePage(decodeURIComponent(window.location.hash.slice(1)) || defaultPageId);
+        // 沒有 hash 就是剛打開檔案：留在文件頂端，別把搜尋列捲進固定導覽列底下
+        var hash = decodeURIComponent(window.location.hash.slice(1));
+        showStandalonePage(hash || defaultPageId, Boolean(hash));
       }
 
       document.querySelector('.standalone-nav').addEventListener('click', function (event) {

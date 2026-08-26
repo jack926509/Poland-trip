@@ -1,4 +1,5 @@
 :root {
+  /* — 紙墨基色（旅行誌視覺契約） — */
   --paper: #f4eddf;
   --paper-deep: #e7dcc9;
   --paper-light: #fffaf1;
@@ -6,6 +7,8 @@
   --ink-soft: #675e58;
   --plum: #493747;
   --plum-soft: #735c70;
+  /* 墨紫當「文字」用時需要另一支：深色模式的 --plum 是版面底色，不能拿來寫字 */
+  --plum-ink: #493747;
   --accent: #a84b32;
   --accent-dark: #783521;
   --accent-pale: #f3dfd5;
@@ -14,11 +17,78 @@
   --red: #a33a32;
   --yellow: #805819;
   --green: #356248;
-  --font-display: 'Playfair Display', 'Noto Sans TC', serif;
-  --font-body: 'Noto Sans TC', sans-serif;
-  --font-mono: 'Inter', 'Noto Sans TC', sans-serif;
+
+  /* — 反白文字（永遠壓在深色版面上，不隨主題翻轉） — */
+  --on-dark: #fffaf1;
+  --on-dark-soft: #e7dcc9;
+  --on-accent: #fffaf1;
+
+  /* — 由基色推導的面／狀態色，深色模式只需覆寫這一層 — */
+  --surface-card: rgb(255 253 248 / 82%);
+  --surface-table: rgb(255 253 248 / 48%);
+  --surface-row-hover: rgb(168 75 50 / 7%);
+  --surface-warn: #fff4d8;
+  --surface-warn-line: #c69a48;
+  --surface-danger: #fbeae8;
+  --surface-note: #fbefe7;
+  --surface-good: #eaf4ed;
+  --surface-good-hover: #e4eee7;
+  --surface-empty: #fffaee;
+  --map-ground: #ded8cd;
+  --map-panel: rgb(251 248 240 / 95%);
+  --hairline-on-dark: rgb(255 250 241 / 45%);
+  --link-underline: rgb(143 55 27 / 38%);
+
+  /* — 字型：Playfair 只負責拉丁字，中文一律回退到已載入的 Noto Sans TC — */
+  --font-display: 'Playfair Display', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', serif;
+  --font-body: 'Noto Sans TC', 'PingFang TC', 'Hiragino Sans CNS', 'Microsoft JhengHei', system-ui, sans-serif;
+  --font-mono: 'Inter', system-ui, 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+
   --content-width: 1180px;
   --shadow-paper: 0 18px 44px rgb(44 37 34 / 10%);
+  --shadow-nav: 0 8px 24px rgb(43 38 32 / 6%);
+  --focus-ring: 3px solid rgb(168 75 50 / 55%);
+  --nav-height: 72px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* 夜讀模式：同一本旅行誌，換成暖色書桌燈下的紙 */
+    --paper: #191411;
+    --paper-deep: #221b17;
+    --paper-light: #241d19;
+    --ink: #ece2d5;
+    --ink-soft: #b0a496;
+    --plum: #3d2f3c;
+    --plum-soft: #c0a6bc;
+    --plum-ink: #d3b8ce;
+    --accent: #e08a6b;
+    --accent-dark: #f0a98d;
+    --accent-pale: #3a2620;
+    --line: #3a302a;
+    --line-strong: #6c5f55;
+    --red: #ef9b91;
+    --yellow: #d9b163;
+    --green: #86c3a1;
+
+    --surface-card: rgb(255 246 232 / 4%);
+    --surface-table: rgb(255 246 232 / 3%);
+    --surface-row-hover: rgb(224 138 107 / 10%);
+    --surface-warn: rgb(217 177 99 / 14%);
+    --surface-warn-line: rgb(217 177 99 / 55%);
+    --surface-danger: rgb(239 155 145 / 13%);
+    --surface-note: rgb(224 138 107 / 13%);
+    --surface-good: rgb(134 195 161 / 13%);
+    --surface-good-hover: rgb(134 195 161 / 20%);
+    --surface-empty: rgb(217 177 99 / 10%);
+    --map-ground: #2b241f;
+    --map-panel: rgb(36 29 25 / 95%);
+    --link-underline: rgb(240 169 141 / 45%);
+
+    --shadow-paper: 0 18px 44px rgb(0 0 0 / 45%);
+    --shadow-nav: 0 8px 24px rgb(0 0 0 / 35%);
+    --focus-ring: 3px solid rgb(240 169 141 / 60%);
+  }
 }
 
 * {
@@ -26,7 +96,7 @@
 }
 
 html {
-  color-scheme: light;
+  color-scheme: light dark;
   scroll-behavior: smooth;
 }
 
@@ -47,25 +117,28 @@ h4 {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 700;
-  line-height: 1.12;
+  /* 中文標題不能沿用拉丁字的緊排與極小行高，否則會擠成一團 */
+  line-height: 1.24;
+  line-break: strict;
+  overflow-wrap: break-word;
   text-wrap: balance;
 }
 
 h1 {
-  max-width: 16ch;
-  font-size: clamp(3rem, 6.6vw, 6.8rem);
-  letter-spacing: -0.055em;
+  max-width: 20ch;
+  font-size: clamp(2.35rem, 4.6vw, 4rem);
+  letter-spacing: -0.01em;
 }
 
 h2 {
-  margin-bottom: 1.25rem;
-  font-size: clamp(2rem, 4vw, 3.5rem);
-  letter-spacing: -0.035em;
+  margin-bottom: 1.1rem;
+  font-size: clamp(1.6rem, 2.6vw, 2.35rem);
+  letter-spacing: -0.005em;
 }
 
 h3 {
   margin: 2.4rem 0 1rem;
-  font-size: clamp(1.35rem, 2vw, 1.8rem);
+  font-size: clamp(1.2rem, 1.5vw, 1.45rem);
 }
 
 h4 {
@@ -87,7 +160,7 @@ dd {
 
 a {
   color: var(--accent-dark);
-  text-decoration-color: rgb(143 55 27 / 38%);
+  text-decoration-color: var(--link-underline);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
 }
@@ -99,9 +172,17 @@ a:hover {
 
 a:focus-visible,
 button:focus-visible,
-summary:focus-visible {
-  outline: 3px solid rgb(193 85 44 / 42%);
-  outline-offset: 4px;
+summary:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+img {
+  max-width: 100%;
 }
 
 .skip-link {
@@ -111,7 +192,7 @@ summary:focus-visible {
   left: 1rem;
   padding: 0.65rem 1rem;
   background: var(--ink);
-  color: var(--paper-light);
+  color: var(--paper);
   font-family: var(--font-mono);
   transform: translateY(-180%);
 }
@@ -128,14 +209,24 @@ summary:focus-visible {
   align-items: center;
   min-height: 72px;
   padding: 0 3rem;
+  gap: 0.15rem;
   border-bottom: 1px solid var(--line);
-  background: var(--paper);
-  box-shadow: 0 8px 24px rgb(43 38 32 / 4%);
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  box-shadow: var(--shadow-nav);
+  backdrop-filter: blur(10px);
+}
+
+@supports not (backdrop-filter: blur(4px)) {
+  .nav {
+    background: var(--paper);
+  }
 }
 
 .nav-brand {
   display: grid;
+  align-content: center;
   gap: 0.05rem;
+  min-height: 44px;
   margin-right: auto;
   color: var(--ink);
   font-family: var(--font-display);
@@ -190,14 +281,14 @@ summary:focus-visible {
   min-height: 44px;
   padding: 0.35rem 0.75rem;
   border: 1px solid currentColor;
-  color: var(--plum);
+  color: var(--plum-ink);
   font-family: var(--font-mono);
   font-size: 0.74rem;
   font-weight: 700;
   transform: rotate(-2deg);
 }
 
-.nav > a,
+.nav > a:not(.nav-brand),
 .nav-dropdown > summary {
   display: inline-flex;
   align-items: center;
@@ -217,6 +308,10 @@ summary:focus-visible {
   text-decoration: none;
 }
 
+.nav-brand:hover {
+  color: var(--accent);
+}
+
 .nav-dropdown > summary::-webkit-details-marker {
   display: none;
 }
@@ -231,7 +326,7 @@ summary:focus-visible {
   transform: rotate(180deg);
 }
 
-.nav > a:hover,
+.nav > a:not(.nav-brand):hover,
 .nav-dropdown > summary:hover,
 .nav-dropdown > summary:focus-visible,
 .nav-dropdown-current > summary {
@@ -275,32 +370,44 @@ summary:focus-visible {
 .nav-dropdown > ul a:hover,
 .nav-dropdown > ul a:focus-visible {
   background: var(--accent);
-  color: var(--paper-light);
+  color: var(--on-accent);
 }
 
-.site-search-shell {
+.site-search-region {
   border-bottom: 1px solid var(--line-strong);
   background: var(--paper-deep);
 }
 
+/* 桌機維持常駐搜尋列；手機由 nav.js 收合成一列入口，把首屏還給內容 */
+.site-search-toggle {
+  display: none;
+}
+
 .site-search-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem 1.75rem;
+  align-items: center;
   width: min(100%, var(--content-width));
   margin: 0 auto;
-  padding: 1rem 3rem 1.1rem;
+  padding: 0.75rem 3rem 0.8rem;
 }
 
 .site-search-form-row {
   display: grid;
-  grid-template-columns: minmax(10rem, 0.34fr) minmax(18rem, 1fr);
-  gap: 1rem;
+  grid-template-columns: auto minmax(12rem, 1fr);
+  gap: 0.9rem;
   align-items: center;
+  min-width: 0;
 }
 
 .site-search-form-row > label {
-  color: var(--plum);
-  font-family: var(--font-display);
-  font-size: 1.05rem;
+  color: var(--plum-ink);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
   font-weight: 700;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
 }
 
 .site-search-input-row {
@@ -313,7 +420,7 @@ summary:focus-visible {
 }
 
 .site-search-input-row:focus-within {
-  outline: 3px solid rgb(193 85 44 / 30%);
+  outline: var(--focus-ring);
   outline-offset: 2px;
 }
 
@@ -349,7 +456,7 @@ summary:focus-visible {
   padding: 0 0.9rem;
   border: 0;
   background: var(--accent);
-  color: var(--paper-light);
+  color: var(--on-accent);
   font-family: var(--font-mono);
   font-size: 0.78rem;
   font-weight: 700;
@@ -361,7 +468,6 @@ summary:focus-visible {
   flex-wrap: wrap;
   gap: 0.5rem;
   align-items: center;
-  margin-top: 0.75rem;
 }
 
 .site-search-quick-row > span,
@@ -389,19 +495,27 @@ summary:focus-visible {
 .site-search-quick-row button[aria-pressed="true"] {
   border-color: var(--plum);
   background: var(--plum);
-  color: var(--paper-light);
+  color: var(--on-dark);
 }
 
 .site-search-summary {
+  grid-column: 1 / -1;
   min-height: 1.25rem;
-  margin: 0.55rem 0 0;
+  margin: 0.15rem 0 0;
   font-variant-numeric: tabular-nums;
 }
 
+/* 沒有查詢時不佔高度，但保留在無障礙樹裡讓 aria-live 仍能播報 */
+.site-search-summary:empty {
+  min-height: 0;
+  margin: 0;
+}
+
 .site-search-results {
+  grid-column: 1 / -1;
   display: grid;
   gap: 0.55rem;
-  margin: 0.25rem 0 0;
+  margin: 0.25rem 0 0.35rem;
   padding: 0;
   list-style: none;
 }
@@ -487,11 +601,12 @@ summary:focus-visible {
 
 .site-search-map-link:hover,
 .site-search-map-link:focus-visible {
-  background: #e4eee7;
+  background: var(--surface-good-hover);
   color: var(--green);
 }
 
 .site-search-empty {
+  grid-column: 1 / -1;
   display: flex;
   justify-content: space-between;
   gap: 1rem;
@@ -504,6 +619,7 @@ summary:focus-visible {
 
 .site-search-empty p,
 .site-search-noscript {
+  grid-column: 1 / -1;
   margin: 0;
   color: var(--ink-soft);
   font-size: 0.86rem;
@@ -602,7 +718,11 @@ summary:focus-visible {
 
 .section {
   margin-top: 5rem;
-  scroll-margin-top: 6rem;
+  scroll-margin-top: calc(var(--nav-height) + 1.5rem);
+}
+
+:target {
+  scroll-margin-top: calc(var(--nav-height) + 1.5rem);
 }
 
 .section-heading {
@@ -656,7 +776,7 @@ nav.section-heading > a:last-child {
   padding: 1.35rem 1.45rem;
   border: 1px solid var(--line);
   border-radius: 2px;
-  background: rgb(255 253 248 / 82%);
+  background: var(--surface-card);
 }
 
 .card-accent {
@@ -680,11 +800,25 @@ nav.section-heading > a:last-child {
   transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
 }
 
-.card-link:hover {
+.card-link:hover,
+.card-link:focus-visible {
   border-color: var(--accent);
   color: inherit;
   box-shadow: var(--shadow-paper);
   transform: translateY(-3px);
+}
+
+.card-link:active {
+  transform: translateY(-1px);
+}
+
+.journal-day-entry > a,
+.journal-city-card > a,
+.journal-status-strip a,
+.site-search-result-main,
+.db-chip,
+.btn-ghost {
+  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
 }
 
 .route-strip {
@@ -754,7 +888,7 @@ nav.section-heading > a:last-child {
 .table-editorial {
   width: 100%;
   border-collapse: collapse;
-  background: rgb(255 253 248 / 48%);
+  background: var(--surface-table);
 }
 
 .table-editorial th,
@@ -774,7 +908,7 @@ nav.section-heading > a:last-child {
 }
 
 .table-editorial tbody tr:hover {
-  background: rgb(193 85 44 / 6%);
+  background: var(--surface-row-hover);
 }
 
 .table-editorial .number {
@@ -801,12 +935,12 @@ nav.section-heading > a:last-child {
 
 .tag-red {
   background: var(--red);
-  color: #fff;
+  color: var(--paper);
 }
 
 .tag-yellow {
-  border: 1px solid #c69a48;
-  background: #fff4d8;
+  border: 1px solid var(--surface-warn-line);
+  background: var(--surface-warn);
   color: var(--yellow);
 }
 
@@ -836,13 +970,13 @@ nav.section-heading > a:last-child {
 }
 
 .status-verified {
-  background: #eaf4ed;
+  background: var(--surface-good);
   color: var(--green);
 }
 
 .status-recheck {
-  border: 1px solid #c69a48;
-  background: #fff4d8;
+  border: 1px solid var(--surface-warn-line);
+  background: var(--surface-warn);
   color: var(--yellow);
 }
 
@@ -1035,7 +1169,7 @@ nav.section-heading > a:last-child {
   padding: 0.85rem 1rem;
   border: 1px solid var(--line);
   border-radius: 2px;
-  background: #fffaee;
+  background: var(--surface-empty);
   color: var(--yellow);
 }
 
@@ -1060,17 +1194,17 @@ nav.section-heading > a:last-child {
 
 .callout-risk {
   border-color: var(--red);
-  background: #fbeae8;
+  background: var(--surface-danger);
 }
 
 .callout-note {
   border-color: var(--accent);
-  background: #fbefe7;
+  background: var(--surface-note);
 }
 
 .callout-good {
   border-color: var(--green);
-  background: #eaf4ed;
+  background: var(--surface-good);
 }
 
 .callout-risk > :last-child,
@@ -1141,7 +1275,7 @@ nav.section-heading > a:last-child {
   margin-right: 0.5rem;
   padding: 0.18rem 0.45rem;
   background: var(--ink);
-  color: var(--paper-light);
+  color: var(--paper);
   font-family: var(--font-mono);
   font-size: 0.7rem;
   letter-spacing: 0.04em;
@@ -1172,7 +1306,7 @@ nav.section-heading > a:last-child {
   height: 520px;
   margin: 1.5rem 0;
   border: 1px solid var(--line-strong);
-  background: #ded8cd;
+  background: var(--map-ground);
   box-shadow: var(--shadow-paper);
   touch-action: pan-y !important;
 }
@@ -1187,7 +1321,7 @@ nav.section-heading > a:last-child {
   padding: 8px 10px;
   border: 1px solid var(--line);
   border-radius: 2px;
-  background: rgb(251 248 240 / 95%);
+  background: var(--map-panel);
   box-shadow: 0 1px 4px rgb(0 0 0 / 15%);
   color: var(--ink);
   font-family: var(--font-mono);
@@ -1243,8 +1377,8 @@ nav.section-heading > a:last-child {
 
 .journal-cover {
   display: grid;
-  grid-template-columns: minmax(18rem, 5fr) minmax(0, 7fr);
-  min-height: 34rem;
+  grid-template-columns: minmax(19rem, 5.4fr) minmax(0, 6.6fr);
+  min-height: 30rem;
   margin-bottom: 1.5rem;
   border: 1px solid var(--line-strong);
   background: var(--paper-light);
@@ -1252,17 +1386,18 @@ nav.section-heading > a:last-child {
 }
 
 .journal-cover-copy {
+  container-type: inline-size;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   min-width: 0;
-  padding: clamp(2rem, 5vw, 4.5rem);
+  padding: clamp(1.75rem, 4vw, 3.75rem);
   background: var(--plum);
-  color: var(--paper-light);
+  color: var(--on-dark);
 }
 
 .journal-kicker {
-  color: var(--paper-deep);
+  color: var(--on-dark-soft);
   font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 700;
@@ -1271,14 +1406,16 @@ nav.section-heading > a:last-child {
 
 .journal-cover h1 {
   max-width: none;
-  font-size: clamp(4rem, 9vw, 8.5rem);
-  line-height: 0.82;
+  /* 以容器寬度封頂：字體回退成較寬的襯線字時 POLSKA 也不會溢出紫版 */
+  font-size: min(clamp(3rem, 8vw, 6.5rem), 19cqi);
+  letter-spacing: -0.045em;
+  line-height: 0.86;
 }
 
 .journal-cover-route {
   max-width: 28ch;
   margin: auto 0 1.75rem;
-  color: var(--paper-deep);
+  color: var(--on-dark-soft);
   font-family: var(--font-display);
   font-size: clamp(1.15rem, 2vw, 1.6rem);
 }
@@ -1288,7 +1425,7 @@ nav.section-heading > a:last-child {
   gap: 0.55rem;
   margin: 0;
   padding-top: 1.25rem;
-  border-top: 1px solid rgb(255 250 241 / 45%);
+  border-top: 1px solid var(--hairline-on-dark);
 }
 
 .journal-cover-meta > div {
@@ -1303,7 +1440,7 @@ nav.section-heading > a:last-child {
 }
 
 .journal-cover-meta dt {
-  color: var(--paper-deep);
+  color: var(--on-dark-soft);
   font-family: var(--font-mono);
   font-size: 0.72rem;
 }
@@ -1378,7 +1515,7 @@ nav.section-heading > a:last-child {
 }
 
 .journal-status-strip strong {
-  color: var(--plum);
+  color: var(--plum-ink);
   font-family: var(--font-display);
   font-size: 1.45rem;
   font-variant-numeric: tabular-nums;
@@ -1426,7 +1563,7 @@ nav.section-heading > a:last-child {
 }
 
 .journal-day-number {
-  color: var(--plum);
+  color: var(--plum-ink);
   font-family: var(--font-display);
   font-size: 2.5rem;
   font-variant-numeric: tabular-nums;
@@ -1500,7 +1637,7 @@ nav.section-heading > a:last-child {
   left: 0.75rem;
   padding: 0.35rem 0.55rem;
   background: var(--paper-light);
-  color: var(--plum);
+  color: var(--plum-ink);
   font-family: var(--font-mono);
   font-size: 0.68rem;
   font-weight: 700;
@@ -1524,6 +1661,16 @@ nav.section-heading > a:last-child {
   margin-top: auto;
   color: var(--accent-dark);
   font-weight: 700;
+}
+
+/* 章節結尾的文字連結也要有 44px 可點擊高度 */
+.journal-text-link,
+.journal-note-card > a,
+.journal-toolkit .card-link span,
+.journal-city-card span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 
 .journal-city-card > a:hover,
@@ -1564,7 +1711,7 @@ nav.section-heading > a:last-child {
   position: absolute;
   top: 2.75rem;
   left: 0;
-  color: var(--plum);
+  color: var(--plum-ink);
   content: 'APPENDIX';
   font-family: var(--font-mono);
   font-size: 0.7rem;
@@ -1574,8 +1721,8 @@ nav.section-heading > a:last-child {
 }
 
 .journal-appendix-header h1 {
-  max-width: 13ch;
-  font-size: clamp(3.5rem, 7.5vw, 7rem);
+  max-width: 16ch;
+  font-size: clamp(2.2rem, 4.4vw, 3.6rem);
 }
 
 .journal-practical .page > .section,
@@ -1603,8 +1750,8 @@ nav.section-heading > a:last-child {
 .journal-day-header,
 .journal-city-cover {
   display: grid;
-  grid-template-columns: minmax(20rem, 0.82fr) minmax(0, 1.18fr);
-  min-height: 34rem;
+  grid-template-columns: minmax(21rem, 0.92fr) minmax(0, 1.08fr);
+  min-height: 30rem;
   margin-bottom: 1.5rem;
   border: 1px solid var(--line-strong);
   background: var(--paper-light);
@@ -1613,37 +1760,40 @@ nav.section-heading > a:last-child {
 
 .journal-day-heading,
 .journal-city-cover-copy {
+  container-type: inline-size;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   min-width: 0;
-  padding: clamp(2rem, 5vw, 4.5rem);
+  padding: clamp(1.75rem, 4vw, 3.75rem);
 }
 
 .journal-day-heading {
   background: var(--plum);
-  color: var(--paper-light);
+  color: var(--on-dark);
 }
 
 .journal-day-heading .section-num {
-  color: var(--paper-deep);
+  color: var(--on-dark-soft);
 }
 
 .journal-day-heading h1,
 .journal-city-cover-copy h1 {
-  margin-block: 1.25rem;
-  font-size: clamp(3.2rem, 6.4vw, 6.4rem);
+  margin-block: 1.1rem;
+  /* 中文一個字就是一個全形，靠容器單位把每行控制在 6–8 字 */
+  font-size: min(clamp(2.1rem, 4.2vw, 3.4rem), 14cqi);
+  line-height: 1.2;
 }
 
 .journal-day-heading .hero-dek {
-  color: var(--paper-deep);
+  color: var(--on-dark-soft);
 }
 
 .journal-day-cover,
 .journal-city-cover figure {
   position: relative;
   min-width: 0;
-  min-height: 34rem;
+  min-height: 30rem;
   margin: 0;
   overflow: hidden;
   background: var(--paper-deep);
@@ -1672,7 +1822,7 @@ nav.section-heading > a:last-child {
 
 .journal-day-cover-fallback {
   display: grid;
-  min-height: 34rem;
+  min-height: 30rem;
   place-items: center;
   background: var(--paper-deep);
   color: var(--plum-soft);
@@ -1712,11 +1862,22 @@ nav.section-heading > a:last-child {
 }
 
 .journal-city-cover {
-  grid-template-columns: minmax(0, 1.2fr) minmax(20rem, 0.8fr);
+  grid-template-columns: minmax(0, 1.08fr) minmax(21rem, 0.92fr);
 }
 
 .journal-city-cover-copy {
   border-left: 1px solid var(--line-strong);
+}
+
+.journal-city-cover-copy .hero-dek {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.journal-city-cover-copy .eyebrow {
+  display: block;
+  margin-bottom: 0.65rem;
 }
 
 .journal-city-cover-copy .check-list {
@@ -1803,16 +1964,45 @@ nav.section-heading > a:last-child {
 }
 
 @media (max-width: 700px) {
+  :root {
+    --nav-height: 56px;
+  }
+
   .nav {
-    position: relative;
+    /* sticky 與 relative 一樣建立堆疊脈絡（選單仍蓋在內容之上），
+       但捲動時導覽列不會消失，手機上不必回到頂端才能換章節 */
+    position: sticky;
     z-index: 100;
     isolation: isolate;
-    flex-wrap: wrap;
-    padding-block: 0.7rem;
+    flex-wrap: nowrap;
+    gap: 0;
+    min-height: var(--nav-height);
+    padding-inline: 0.9rem;
   }
 
   .nav-brand {
-    width: 100%;
+    font-size: 1.05rem;
+    letter-spacing: 0.06em;
+  }
+
+  .nav-brand small {
+    display: none;
+  }
+
+  .nav > a:not(.nav-brand),
+  .nav-dropdown > summary {
+    padding-inline: 0.42rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  .nav-brand {
+    white-space: nowrap;
+  }
+
+  .nav-dropdown > summary::after {
+    margin-left: 0.15rem;
   }
 
   .journal-edition {
@@ -1825,20 +2015,72 @@ nav.section-heading > a:last-child {
 
   .nav-dropdown > ul {
     top: 100%;
-    right: 1.25rem;
-    left: 1.25rem;
+    right: 0.9rem;
+    left: 0.9rem;
     min-width: 0;
-    max-height: min(32rem, calc(100dvh - 7rem));
+    max-height: min(32rem, calc(100dvh - var(--nav-height) - 1.5rem));
     overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .site-search-toggle {
+    display: flex;
+    gap: 0.55rem;
+    align-items: center;
+    min-height: 48px;
+    padding: 0.55rem 1.25rem;
+    color: var(--ink);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.86rem;
+    font-weight: 700;
+    list-style: none;
+  }
+
+  .site-search-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .site-search-toggle > span {
+    color: var(--accent-dark);
+    font-size: 1.2rem;
+  }
+
+  .site-search-toggle::after {
+    margin-left: auto;
+    color: var(--ink-soft);
+    content: '▾';
+  }
+
+  .site-search-shell[open] > .site-search-toggle {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .site-search-shell[open] > .site-search-toggle::after {
+    content: '▴';
   }
 
   .site-search-inner {
-    padding: 0.9rem 1.25rem 1rem;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem 0.9rem;
   }
 
   .site-search-form-row {
     grid-template-columns: 1fr;
-    gap: 0.45rem;
+    gap: 0.35rem;
+  }
+
+  /* 收合列的標題已經說明用途，欄位標籤只留給輔助技術，避免同一句話出現兩次 */
+  .site-search-form-row > label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   .site-search-form-row > label {
@@ -1888,7 +2130,7 @@ nav.section-heading > a:last-child {
   }
 
   h1 {
-    font-size: clamp(2.65rem, 13vw, 3.5rem);
+    font-size: clamp(1.95rem, 8.5vw, 2.6rem);
   }
 
   .journal-cover {
@@ -1896,12 +2138,12 @@ nav.section-heading > a:last-child {
   }
 
   .journal-cover-copy {
-    min-height: 24rem;
+    min-height: 19rem;
     padding: 1.5rem;
   }
 
   .journal-cover h1 {
-    font-size: clamp(3.4rem, 19vw, 5.1rem);
+    font-size: min(clamp(2.9rem, 16vw, 4.4rem), 26cqi);
   }
 
   .journal-cover-figure {
@@ -1992,12 +2234,12 @@ nav.section-heading > a:last-child {
   }
 
   .journal-day-heading {
-    min-height: 24rem;
+    min-height: 17rem;
   }
 
   .journal-day-heading h1,
   .journal-city-cover-copy h1 {
-    font-size: clamp(3rem, 15vw, 4.8rem);
+    font-size: min(clamp(1.9rem, 8.5vw, 2.6rem), 15cqi);
   }
 
   .journal-day-cover,
@@ -2041,7 +2283,7 @@ nav.section-heading > a:last-child {
   }
 
   .journal-appendix-header h1 {
-    font-size: clamp(3rem, 15vw, 4.8rem);
+    font-size: clamp(1.9rem, 8.5vw, 2.6rem);
   }
 
   .database-filter input,
@@ -2173,5 +2415,77 @@ nav.section-heading > a:last-child {
     animation-iteration-count: 1 !important;
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  :root {
+    --paper: #fff;
+    --paper-deep: #fff;
+    --paper-light: #fff;
+    --ink: #000;
+    --ink-soft: #333;
+    --surface-card: transparent;
+    --surface-table: transparent;
+    --shadow-paper: none;
+    --shadow-nav: none;
+  }
+
+  .nav,
+  .site-search-region,
+  .skip-link,
+  .database-toolbar,
+  .database-chip-row,
+  .map-container {
+    display: none !important;
+  }
+
+  body {
+    font-size: 11pt;
+    line-height: 1.55;
+  }
+
+  .page {
+    width: 100%;
+    min-height: 0;
+    padding: 0;
+  }
+
+  .journal-cover,
+  .journal-day-header,
+  .journal-city-cover,
+  .journal-day-cover,
+  .card,
+  .database-card,
+  .journal-note-card,
+  .timeline > li,
+  .table-editorial tr {
+    break-inside: avoid;
+  }
+
+  .section {
+    margin-top: 2rem;
+    break-before: auto;
+  }
+
+  a[href^="http"]::after {
+    color: #444;
+    content: ' (' attr(href) ')';
+    font-size: 0.75em;
+    word-break: break-all;
+  }
+
+  .journal-cover-copy,
+  .journal-day-heading {
+    background: #fff;
+    color: #000;
+  }
+
+  .journal-kicker,
+  .journal-cover-route,
+  .journal-cover-meta dt,
+  .journal-day-heading .section-num,
+  .journal-day-heading .hero-dek {
+    color: #333;
   }
 }

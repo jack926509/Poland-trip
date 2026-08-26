@@ -424,7 +424,9 @@ test('單檔版以章節切換取代整頁上下查找，並保留前後頁導�
 
   assert.equal((html.match(/class="standalone-page-controls"/g) || []).length, expectedFiles.length);
   assert.equal((html.match(/class="standalone-page-ribbon"/g) || []).length, expectedFiles.length);
-  assert.match(html, /function showStandalonePage\(targetId\)/);
+  assert.match(html, /function showStandalonePage\(targetId, shouldScroll\)/);
+  // 直接開啟檔案（沒有 hash）時不自動捲動，搜尋列才不會被固定導覽列蓋住
+  assert.match(html, /showStandalonePage\(hash \|\| defaultPageId, Boolean\(hash\)\)/);
   assert.match(html, /window\.addEventListener\('hashchange', activateStandaloneHash\)/);
   assert.match(html, /page\.hidden = page\.id !== activePageId/);
   assert.match(
@@ -456,7 +458,10 @@ test('正式頁面保留垂直滑動，地圖與寬表格不會鎖住整頁', ()
   assert.doesNotMatch(css, /(?:html|body)\s*\{[^}]*overflow-y\s*:\s*hidden/s);
   assert.match(css, /\.map-container\s*\{[^}]*touch-action\s*:\s*pan-y\s*!important/s);
   assert.match(css, /\.table-wrap\s*\{[^}]*overflow-x\s*:\s*auto/s);
-  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav\s*\{[^}]*position\s*:\s*relative/s);
+  // 手機導覽列必須自建堆疊脈絡（relative 或 sticky 皆可），
+  // 但不得改用 fixed／overflow 鎖住整頁捲動。
+  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav\s*\{[^}]*position\s*:\s*(?:relative|sticky)/s);
+  assert.doesNotMatch(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav\s*\{[^}]*position\s*:\s*fixed/s);
 });
 
 test('2026-08-09 官方盤查會移除未能證實的場次、價格與閉館敘述', () => {
@@ -695,8 +700,9 @@ test('手機導覽以原生可展開選單呈現，且選單層級高於內容',
   assert.match(navScript, /menu\.addEventListener\('toggle',[\s\S]*other\.open = false/s);
   assert.match(navScript, /menu\.addEventListener\('click',[\s\S]*menu\.open = false/s);
   assert.match(css, /\.nav-dropdown\[open\]\s*>\s*ul\s*\{[^}]*display\s*:\s*block/s);
-  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav\s*\{[^}]*position\s*:\s*relative[^}]*z-index\s*:\s*100/s);
-  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav-dropdown\s*>\s*ul\s*\{[^}]*right\s*:\s*1\.25rem[^}]*left\s*:\s*1\.25rem/s);
+  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav\s*\{[^}]*position\s*:\s*(?:relative|sticky)[^}]*z-index\s*:\s*100[^}]*isolation\s*:\s*isolate/s);
+  // 面板貼齊導覽列左右內距，滿版展開而不是被裁在角落
+  assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav-dropdown\s*>\s*ul\s*\{[^}]*right\s*:\s*0\.9rem[^}]*left\s*:\s*0\.9rem/s);
 });
 
 test('手機每日時間表提供卡片欄位標籤，不依賴橫向捲動', () => {

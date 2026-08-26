@@ -11,7 +11,9 @@ export function renderSiteSearch({
 } = {}) {
   const path = file => `${pathPrefix}${file}`;
   const fallbackHref = databaseHref || path('practical/database.html');
-  return `<section class="site-search-shell" data-site-search data-search-path-prefix="${pathPrefix}" aria-label="全站旅遊搜尋">
+  return `<section class="site-search-region" aria-label="全站旅遊搜尋">
+    <details class="site-search-shell" data-site-search data-search-path-prefix="${pathPrefix}" open>
+    <summary class="site-search-toggle"><span aria-hidden="true">⌕</span>搜尋整個旅遊網站</summary>
     <div class="site-search-inner">
       <div class="site-search-form-row">
         <label for="site-search-input">搜尋整個旅遊網站</label>
@@ -37,6 +39,7 @@ export function renderSiteSearch({
       <noscript><p class="site-search-noscript">瀏覽器未開啟 JavaScript，請改用 <a href="${fallbackHref}">自由行資料庫</a>。</p></noscript>
       <script type="application/json" data-site-search-index>${searchIndexJson}</script>
     </div>
+    </details>
   </section>`;
 }
 
@@ -61,6 +64,9 @@ export function renderLayout({
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="2026 波蘭四城 8 天旅遊規劃：逐日行程、城市地圖、交通、門票與餐廳。">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f4eddf" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#191411" media="(prefers-color-scheme: dark)">
   <title>${title} · POLSKA 波蘭行</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%232b2723'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-size='38' font-family='serif' font-weight='700' fill='%23f6f1e8'%3EP%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
