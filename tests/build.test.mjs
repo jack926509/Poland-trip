@@ -427,6 +427,11 @@ test('單檔版以章節切換取代整頁上下查找，並保留前後頁導�
   assert.match(html, /function showStandalonePage\(targetId\)/);
   assert.match(html, /window\.addEventListener\('hashchange', activateStandaloneHash\)/);
   assert.match(html, /page\.hidden = page\.id !== activePageId/);
+  assert.match(
+    html,
+    /requestAnimationFrame\(function \(\) \{\s*window\.requestAnimationFrame\(function \(\) \{/,
+    '單檔版必須等瀏覽器完成 hash 預設導航與版面更新後，再捲到搜尋結果小節',
+  );
   assert.match(html, /@media print[\s\S]*\.standalone-page\[hidden\][\s\S]*display: block !important;/);
 });
 
@@ -819,8 +824,9 @@ test('Day 3 導航指向 Auschwitz I 訪客入口而非通訊地址', () => {
 
 test('Day 8 退稅與報到已合併，不再出現獨立 11:30 時段', () => {
   const html = read('day-08.html');
-  assert.ok(!html.includes('11:30'), 'Day 8 仍有舊的獨立 11:30 時段');
-  assert.ok(html.includes('退稅') && html.includes('報到'), 'Day 8 缺少合併後的退稅／報到內容');
+  const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i)?.[1] || '';
+  assert.ok(!main.includes('11:30'), 'Day 8 仍有舊的獨立 11:30 時段');
+  assert.ok(main.includes('退稅') && main.includes('報到'), 'Day 8 缺少合併後的退稅／報到內容');
 });
 
 test('5 筆已確認住宿皆出現在對應城市地圖，Piast 保留門牌待確認提示', () => {

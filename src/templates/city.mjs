@@ -176,7 +176,7 @@ export function renderCity({
       </table></div>
     </section>
 
-    <section class="section">
+    <section class="section" id="city-dining">
       <div class="section-heading"><span class="section-num">Dining</span><h2>2026 餐廳情報</h2></div>
       <div class="callout-note"><b>資料界線：</b>這是新爬蟲的探索清單，頁面只保留店名、菜系特色與 2026 米其林身分；動態 Google 星等已移除。營業時間只以「餐廳」實用頁中的已查分店為準。</div>
       <div class="table-wrap"><table class="table-editorial">

@@ -2,6 +2,44 @@ function current(activeNav, key) {
   return activeNav === key ? ' aria-current="page"' : '';
 }
 
+export const searchIndexPlaceholder = '__SITE_SEARCH_INDEX__';
+
+export function renderSiteSearch({
+  pathPrefix = '',
+  searchIndexJson = searchIndexPlaceholder,
+  databaseHref = '',
+} = {}) {
+  const path = file => `${pathPrefix}${file}`;
+  const fallbackHref = databaseHref || path('practical/database.html');
+  return `<section class="site-search-shell" data-site-search data-search-path-prefix="${pathPrefix}" aria-label="全站旅遊搜尋">
+    <div class="site-search-inner">
+      <div class="site-search-form-row">
+        <label for="site-search-input">搜尋整個旅遊網站</label>
+        <div class="site-search-input-row">
+          <span class="site-search-icon" aria-hidden="true">⌕</span>
+          <input id="site-search-input" type="search" inputmode="search" autocomplete="off" spellcheck="false" placeholder="火車、餐廳、景點、城市特色" aria-controls="site-search-results" aria-describedby="site-search-help" aria-expanded="false">
+          <button class="site-search-clear" type="button" data-search-clear hidden>清除</button>
+        </div>
+      </div>
+      <div class="site-search-quick-row" aria-label="快捷分類">
+        <span id="site-search-help">快速找：</span>
+        <button type="button" data-search-category="train" aria-pressed="false">🚆 火車</button>
+        <button type="button" data-search-category="restaurant" aria-pressed="false">🍽️ 餐廳</button>
+        <button type="button" data-search-category="map" aria-pressed="false">🗺️ 地圖</button>
+        <button type="button" data-search-category="city" aria-pressed="false">✶ 城市</button>
+      </div>
+      <p class="site-search-summary" data-search-summary aria-live="polite"></p>
+      <ol class="site-search-results" id="site-search-results" data-search-results hidden></ol>
+      <div class="site-search-empty" data-search-empty hidden>
+        <p><b>找不到相符資料</b><br>試試城市名、店名或「火車」「地圖」等類型。</p>
+        <button type="button" data-search-reset>清除條件</button>
+      </div>
+      <noscript><p class="site-search-noscript">瀏覽器未開啟 JavaScript，請改用 <a href="${fallbackHref}">自由行資料庫</a>。</p></noscript>
+      <script type="application/json" data-site-search-index>${searchIndexJson}</script>
+    </div>
+  </section>`;
+}
+
 export function renderLayout({
   title,
   activeNav,
@@ -70,6 +108,7 @@ export function renderLayout({
       </ul>
     </details>
   </nav>
+  ${renderSiteSearch({ pathPrefix })}
   <main class="page" id="main-content">
     ${bodyHtml}
   </main>
@@ -80,6 +119,7 @@ export function renderLayout({
     </div>
   </footer>
   <script src="${path('assets/nav.js')}" defer></script>
+  <script type="module" src="${path('assets/site-search.js')}"></script>
 </body>
 </html>`;
 }

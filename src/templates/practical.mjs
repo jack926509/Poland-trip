@@ -110,7 +110,7 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
       <div class="section-heading"><span class="section-num">Timeline</span><h2>什麼時候處理</h2></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>事項</th></tr></thead><tbody>${reservationRows}</tbody></table></div>
     </section>
-    <section class="section">
+    <section class="section" id="rail-itinerary">
       <div class="section-heading"><span class="section-num">Rail</span><h2>城際交通</h2></div>
       <div class="callout-risk"><span class="tag-todo">尚未開賣／確認</span><p>下表是行程銜接所需的目標時段，不是已核實班次。只有在 PKP Intercity／KOLEO 顯示 2026-10-25 至 10-29 的實際車次並完成購票後，才可視為成立。</p></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>路段</th><th>日期</th><th>車種</th><th>時刻</th><th>時長</th><th>票價</th></tr></thead><tbody>${trainRows}</tbody></table></div>
