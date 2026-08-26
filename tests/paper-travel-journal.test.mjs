@@ -70,9 +70,11 @@ test('實用頁採旅行誌附錄版式且資料庫接口不變', () => {
   assert.match(todos, /<body class="journal-site journal-practical">/);
   assert.match(todos, /class="journal-appendix-header"/);
   assert.match(database, /class="journal-database"/);
+  // 查找／篩選介面已整批移除，資料庫頁只保留主題索引與靜態卡片
   for (const selector of ['data-db-query', 'data-db-city', 'data-db-category', 'data-db-status', 'data-db-privacy', 'data-db-summary']) {
-    assert.ok(database.includes(selector), `資料庫缺少 ${selector}`);
+    assert.ok(!database.includes(selector), `資料庫不應再有 ${selector}`);
   }
+  assert.match(database, /class="database-index"/);
 });
 
 test('單檔版使用旅行誌刊頭並完整封裝 23 個章節', () => {
@@ -83,6 +85,7 @@ test('單檔版使用旅行誌刊頭並完整封裝 23 個章節', () => {
   assert.match(standalone, /<style data-bundled="main\.css">/);
   assert.doesNotMatch(standalone, /href="assets\/main\.css"/);
   assert.doesNotMatch(standalone, /src="\.\.\/assets\/database-filter\.js"/);
+  assert.doesNotMatch(standalone, /data-db-query/);
 });
 
 test('單檔版導覽與下拉連結提供至少 44px 觸控高度', () => {

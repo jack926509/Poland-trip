@@ -379,7 +379,8 @@ test('克拉科夫與樂斯拉夫飲水資訊各自保有官方來源', () => {
 test('dist 正好產出規格要求的 23 個 HTML', () => {
   assert.deepEqual(htmlFiles(), [...expectedFiles].sort());
   assert.ok(fs.existsSync(path.join(distDir, 'assets/main.css')), '缺少 assets/main.css');
-  assert.ok(fs.existsSync(path.join(distDir, 'assets/database-filter.js')), '缺少資料庫篩選程式');
+  // 查找／篩選功能已整批移除，不應再輸出篩選程式
+  assert.ok(!fs.existsSync(path.join(distDir, 'assets/database-filter.js')), '不應再輸出資料庫篩選程式');
 });
 
 test('單檔旅遊指南封裝全部 23 頁且不依賴本機 CSS 或其他 HTML', () => {
@@ -398,9 +399,9 @@ test('單檔旅遊指南封裝全部 23 頁且不依賴本機 CSS 或其他 HTML
   assert.ok(html.includes('href="#page-practical-database"'));
   assert.ok(html.includes('href="#page-practical-ops-dashboard"'));
   assert.ok(html.includes('href="#page-day-01"'));
-  assert.ok(html.includes('id="page-practical-database--db-query"'));
-  assert.ok(html.includes('for="page-practical-database--db-query"'));
-  assert.match(html, /function applyFilters\(\)/);
+  // 資料庫查找區塊已移除，單檔版不應再帶入篩選欄位或篩選程式
+  assert.doesNotMatch(html, /data-db-(?:query|city|category|status|privacy|quick|clear|summary)/);
+  assert.doesNotMatch(html, /function applyFilters\(\)/);
   assert.doesNotMatch(html, /<script[^>]+src="\.\.\/assets\/database-filter\.js"/);
 });
 
@@ -553,11 +554,18 @@ test('單檔版匯出按鈕使用不受 id 前綴影響的 data selector', () =>
   assert.ok(html.includes("root.querySelector('[data-handover-export=\"json\"]')"));
 });
 
-test('自由行資料庫有城市、類別、狀態統計與無 JS 記錄連結', () => {
+test('自由行資料庫以主題索引導覽，每筆條目都保有可連結錨點', () => {
   const html = read('practical/database.html');
-  for (const heading of ['靜態查找與統計', '城市', '類別', '狀態']) assert.ok(html.includes(heading));
-  for (const entry of databaseEntries) assert.ok(html.includes(`href="#entry-${entry.id}"`), `統計索引缺 ${entry.id}`);
-  assert.match(html, /\d+ 筆/);
+
+  // 查找／統計區塊已移除，改由主題索引導覽
+  assert.ok(html.includes('資料庫主題索引'), '缺少主題索引');
+  assert.doesNotMatch(html, /靜態查找與統計/);
+  assert.doesNotMatch(html, /database-toolbar|db-chip|database-facet/);
+
+  // 條目錨點必須保留，既有深連結才不會失效
+  for (const entry of databaseEntries) {
+    assert.ok(html.includes(`id="entry-${entry.id}"`), `缺少條目錨點 ${entry.id}`);
+  }
 });
 
 test('自由行資料庫全頁 HTML id 不重複', () => {

@@ -1234,9 +1234,7 @@ nav.section-heading > a:last-child {
 
 .journal-day-entry > a,
 .journal-city-card > a,
-.journal-status-strip a,
-.db-chip,
-.btn-ghost {
+.journal-status-strip a {
   transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
 }
 
@@ -1478,74 +1476,6 @@ nav.section-heading > a:last-child {
   margin: 0;
 }
 
-.database-toolbar {
-  display: grid;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.database-toolbar-grid {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 0.8rem;
-}
-
-.database-toolbar-grid .database-filter:first-child {
-  grid-column: span 2;
-}
-
-.database-filter {
-  display: grid;
-  gap: 0.4rem;
-}
-
-.database-filter span {
-  font-family: var(--font-mono);
-  font-size: 0.76rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-}
-
-.database-filter input,
-.database-filter select {
-  min-height: 2.6rem;
-  padding: 0.42rem 0.65rem;
-  border: 1px solid var(--line-strong);
-  border-radius: 0.28rem;
-  background: var(--paper-light);
-  color: var(--ink);
-  font: inherit;
-}
-
-.database-toolbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  flex-wrap: wrap;
-}
-
-.btn-ghost {
-  min-height: 44px;
-  padding: 0 1rem;
-  border: 1px solid var(--ink-soft);
-  border-radius: 999px;
-  color: var(--ink);
-  background: transparent;
-  cursor: pointer;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.btn-ghost:hover,
-.btn-ghost:focus-visible {
-  border-color: var(--accent);
-  color: var(--accent-dark);
-}
-
 .btn-export {
   display: inline-flex;
   align-items: center;
@@ -1579,60 +1509,10 @@ details.card > summary {
   cursor: pointer;
 }
 
-.database-result-summary {
-  margin: 0;
-  font-family: var(--font-mono);
-  color: var(--ink-soft);
-}
-
-.database-chip-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 0.6rem 0 1rem;
-}
-
-.db-chip {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0.25rem 0.9rem;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--ink-soft);
-  cursor: pointer;
-  font-family: var(--font-mono);
-  font-size: 0.76rem;
-  text-decoration: none;
-  transition: all 160ms ease;
-}
-
-.db-chip:hover,
-.db-chip:focus-visible,
-.db-chip.is-active {
-  border-color: var(--accent);
-  color: var(--accent-dark);
-  background: var(--accent-pale);
-}
-
-.database-empty {
-  margin-bottom: 0.95rem;
-  padding: 0.85rem 1rem;
-  border: 1px solid var(--line);
-  border-radius: 2px;
-  background: var(--surface-empty);
-  color: var(--yellow);
-}
-
 .database-section-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.25rem;
-}
-
-.database-card-hidden {
-  display: none;
 }
 
 .callout-risk,
@@ -2442,13 +2322,8 @@ details.card > summary {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .database-toolbar-grid,
   .database-section-grid {
     grid-template-columns: 1fr;
-  }
-
-  .database-toolbar-grid .database-filter:first-child {
-    grid-column: auto;
   }
 
 }
@@ -2695,11 +2570,6 @@ details.card > summary {
     font-size: clamp(1.9rem, 8.5vw, 2.6rem);
   }
 
-  .database-filter input,
-  .database-filter select {
-    min-height: 44px;
-  }
-
   .table-wrap-cards {
     overflow-x: visible;
   }
@@ -2781,19 +2651,6 @@ details.card > summary {
     grid-template-columns: 1fr;
   }
 
-  .database-toolbar-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .database-toolbar-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .database-result-summary {
-    order: -1;
-  }
-
   .database-card-header {
     align-items: start;
     flex-direction: column;
@@ -2842,8 +2699,6 @@ details.card > summary {
   .nav,
   .chapter-index,
   .skip-link,
-  .database-toolbar,
-  .database-chip-row,
   .map-container {
     display: none !important;
   }
@@ -3392,7 +3247,6 @@ details.card > summary {
         <a class="card card-link" href="#page-practical-tickets"><h3>門票速查</h3><p>21 個景點全票、優待與官網。</p><span>查看 →</span></a>
         <a class="card card-link" href="#page-practical-transit"><h3>市內交通</h3><p>四城票價、機場接駁與購票方式。</p><span>查看 →</span></a>
         <a class="card card-link" href="#page-practical-shopping"><h3>伴手禮與購物</h3><p>14 種伴手禮、實際店家與 Żabka。</p><span>查看 →</span></a>
-        <a class="card card-link" href="#page-practical-database--database-lookup-heading"><h3>資料索引搜尋</h3><p>從 22 筆條目裡以關鍵字、城市、類別快速定位官方資訊。</p><span>查看 →</span></a>
         <a class="card card-link" href="#page-practical-notes"><h3>出發前提醒</h3><p>夏令時間、日落、閉館與訂票節奏。</p><span>查看 →</span></a>
         <a class="card card-link" href="#page-practical-database"><h3>自由行資料庫</h3><p>SOS、行前重查與各主題官方資料集中管理。</p><span>查看 →</span></a>
       </div>
@@ -7415,63 +7269,6 @@ details.card > summary {
       </div>
       <div class="grid-wide sos-flows"><article class="card" id="page-practical-database--sos-flow-passport"><h3>護照遺失</h3><ol><li>立即報警取得報案證明。</li><li>聯絡駐波蘭台北代表處。</li><li>攜護照影本與證件照辦理補發；急於返台時詢問入國證明書。</li></ol></article><article class="card" id="page-practical-database--sos-flow-medical"><h3>緊急就醫</h3><ol><li>危及生命先撥 112 或 999。</li><li>告知姓名、位置、症狀與回撥電話。</li><li>聯絡保險救援，保留診斷、處方、收據與付款證明。</li></ol></article><article class="card" id="page-practical-database--sos-flow-baggage"><h3>行李未到</h3><ol><li>不要離開行李提領區。</li><li>向最後承運航空的 baggage service 申報並取得 PIR。</li><li>保留行李牌、PIR、生活必需品收據與配送聯絡資料。</li></ol></article><article class="card" id="page-practical-database--sos-flow-connection"><h3>轉機失接</h3><ol><li>在管制區內先找承運航空轉機櫃檯。</li><li>出示所有登機牌與行李牌，要求確認改簽、行李去向與餐宿安排。</li><li>若無櫃檯，使用官方 App／電話，並保留延誤及支出證明。</li></ol></article><article class="card" id="page-practical-database--sos-flow-card"><h3>卡片遺失</h3><ol><li>立即在發卡銀行 App 暫停卡片，或撥打卡片背面的海外報失電話。</li><li>查看未授權交易並向銀行申報。</li><li>改用分開收納的備用卡；完整卡號不放在公開網站。</li></ol></article></div>
     </section>
-    <section class="section" aria-labelledby="page-practical-database--database-lookup-heading">
-      <div class="section-heading"><span class="section-num">Lookup</span><h2 id="page-practical-database--database-lookup-heading">靜態查找與統計</h2></div>
-      <p class="lead">先用城市、類別、狀態與關鍵字快速定位；每筆資料都保留「來源、盤查日期」與「離線備註」，結果可實時縮小。</p>
-      <div class="database-toolbar">
-        <div class="database-toolbar-grid">
-          <label class="database-filter" for="page-practical-database--db-query">
-            <span>關鍵字</span>
-            <input id="page-practical-database--db-query" type="search" data-db-query data-db-filter="query" data-db-filter-input="query" placeholder="輸入景點、文件、電話、地點..." aria-label="資料關鍵字查詢">
-          </label>
-          <label class="database-filter">
-      <span>城市</span>
-      <select id="page-practical-database--db-city" data-db-city data-db-filter="city" data-db-filter-select="city">
-        <option value="all">全部城市</option>
-        <option value="WAW">華沙</option><option value="KRK">克拉科夫</option><option value="WRO">樂斯拉夫</option><option value="PL">波蘭全國</option><option value="ROUTE">跨城／全程</option>
-      </select>
-    </label>
-          <label class="database-filter">
-      <span>類別</span>
-      <select id="page-practical-database--db-category" data-db-category data-db-filter="category" data-db-filter-select="category">
-        <option value="all">全部類別</option>
-        <option value="document">文件與資格</option><option value="transit">交通與轉場</option><option value="safety">安全與醫療</option><option value="practical">生活實用</option><option value="dining">餐飲</option>
-      </select>
-    </label>
-          <label class="database-filter">
-      <span>狀態</span>
-      <select id="page-practical-database--db-status" data-db-status data-db-filter="status" data-db-filter-select="status">
-        <option value="all">全部狀態</option>
-        <option value="verified">已查證</option><option value="recheck">出發前重查</option><option value="pending">待確認</option><option value="private-required">需填私人資料</option>
-      </select>
-    </label>
-          <label class="database-filter">
-      <span>公開性</span>
-      <select id="page-practical-database--db-privacy" data-db-privacy data-db-filter="privacy" data-db-filter-select="privacy">
-        <option value="all">全部公開性</option>
-        <option value="public">一般公開</option><option value="private">待填私人資料</option>
-      </select>
-    </label>
-        </div>
-        <div class="database-toolbar-actions">
-          <button type="button" id="page-practical-database--db-clear" data-db-clear="filters" class="btn btn-ghost">清除條件</button>
-          <p class="database-result-summary" id="page-practical-database--database-result-summary" data-db-summary aria-live="polite">目前 22 筆</p>
-        </div>
-      </div>
-      <div class="database-chip-row" aria-label="快速篩選">
-        <button class="db-chip" type="button" data-db-quick="city:PL" aria-pressed="false">全國通用</button>
-        <button class="db-chip" type="button" data-db-quick="status:recheck" aria-pressed="false">待重查</button>
-        <button class="db-chip" type="button" data-db-quick="status:pending" aria-pressed="false">待確認</button>
-        <button class="db-chip" type="button" data-db-quick="privacy:public" aria-pressed="false">公開版</button>
-        <button class="db-chip" type="button" data-db-quick="privacy:private" aria-pressed="false">私人待補</button>
-      </div>
-      <p id="page-practical-database--database-empty" class="database-empty" data-db-empty aria-live="polite" hidden>目前條件沒有符合資料。可試試「清除條件」或縮小到單一城市。</p>
-      <div class="grid-wide database-facets">
-        <section class="database-facet"><h3>城市</h3><ul><li id="page-practical-database--index-cityKey-WAW"><b>華沙</b> <span class="tag-muted">3 筆</span><ul><li><a href="#page-practical-database--entry-aviation-missing-baggage">行李未到處理</a></li><li><a href="#page-practical-database--entry-emergency-taiwan-representative">駐波蘭台北代表處</a></li><li><a href="#page-practical-database--entry-tax-free-vat-refund">TAX FREE 出口確認</a></li></ul></li><li id="page-practical-database--index-cityKey-KRK"><b>克拉科夫</b> <span class="tag-muted">1 筆</span><ul><li><a href="#page-practical-database--entry-daily-basics-krakow-water">克拉科夫飲水與每日離線包</a></li></ul></li><li id="page-practical-database--index-cityKey-WRO"><b>樂斯拉夫</b> <span class="tag-muted">1 筆</span><ul><li><a href="#page-practical-database--entry-daily-basics-wroclaw-water">樂斯拉夫飲水與每日離線包</a></li></ul></li><li id="page-practical-database--index-cityKey-PL"><b>波蘭全國</b> <span class="tag-muted">8 筆</span><ul><li><a href="#page-practical-database--entry-entry-etias-and-passport">護照與 ETIAS 動態閘門</a></li><li><a href="#page-practical-database--entry-rail-station-directory">車站即時資訊與設施</a></li><li><a href="#page-practical-database--entry-connectivity-prepaid-registration">波蘭預付 SIM 登記</a></li><li><a href="#page-practical-database--entry-money-pln-and-dcc">PLN 付款與拒絕 DCC</a></li><li data-search-private><a href="#page-practical-database--entry-medical-insurance-and-emergency">旅平險與緊急就醫</a></li><li><a href="#page-practical-database--entry-emergency-lost-passport">國外遺失護照步驟</a></li><li><a href="#page-practical-database--entry-calendar-sunday-and-all-saints">非營業週日與諸聖節前夕</a></li><li><a href="#page-practical-database--entry-accessibility-station-assistance">車站無障礙與協助</a></li></ul></li><li id="page-practical-database--index-cityKey-ROUTE"><b>跨城／全程</b> <span class="tag-muted">9 筆</span><ul><li><a href="#page-practical-database--entry-aviation-baggage-rules">航空行李官方規則</a></li><li data-search-private><a href="#page-practical-database--entry-aviation-trip-baggage-confirmation">本次航班時刻、行李額度與直掛確認</a></li><li><a href="#page-practical-database--entry-rail-delay-rights">鐵路延誤旅客權益</a></li><li><a href="#page-practical-database--entry-rail-trip-tickets">本次城際車票</a></li><li data-search-private><a href="#page-practical-database--entry-luggage-storage-transition">轉場日行李寄放</a></li><li><a href="#page-practical-database--entry-dining-reservation-and-backup">餐廳訂位與當日營業</a></li><li data-search-private><a href="#page-practical-database--entry-documents-travel-registration">入境文件包與旅外登錄</a></li><li data-search-private><a href="#page-practical-database--entry-documents-attraction-tickets">景點票券與入場時段</a></li><li data-search-private><a href="#page-practical-database--entry-accommodation-confirmations">7 晚住宿已確認</a></li></ul></li></ul></section>
-        <section class="database-facet"><h3>類別</h3><ul><li id="page-practical-database--index-category-transit"><b>交通與轉場</b> <span class="tag-muted">5 筆</span><ul><li><a href="#page-practical-database--entry-aviation-baggage-rules">航空行李官方規則</a></li><li data-search-private><a href="#page-practical-database--entry-aviation-trip-baggage-confirmation">本次航班時刻、行李額度與直掛確認</a></li><li><a href="#page-practical-database--entry-rail-delay-rights">鐵路延誤旅客權益</a></li><li><a href="#page-practical-database--entry-rail-trip-tickets">本次城際車票</a></li><li><a href="#page-practical-database--entry-rail-station-directory">車站即時資訊與設施</a></li></ul></li><li id="page-practical-database--index-category-dining"><b>餐飲</b> <span class="tag-muted">1 筆</span><ul><li><a href="#page-practical-database--entry-dining-reservation-and-backup">餐廳訂位與當日營業</a></li></ul></li><li id="page-practical-database--index-category-practical"><b>生活實用</b> <span class="tag-muted">8 筆</span><ul><li><a href="#page-practical-database--entry-connectivity-prepaid-registration">波蘭預付 SIM 登記</a></li><li><a href="#page-practical-database--entry-money-pln-and-dcc">PLN 付款與拒絕 DCC</a></li><li data-search-private><a href="#page-practical-database--entry-luggage-storage-transition">轉場日行李寄放</a></li><li><a href="#page-practical-database--entry-calendar-sunday-and-all-saints">非營業週日與諸聖節前夕</a></li><li><a href="#page-practical-database--entry-accessibility-station-assistance">車站無障礙與協助</a></li><li><a href="#page-practical-database--entry-daily-basics-krakow-water">克拉科夫飲水與每日離線包</a></li><li><a href="#page-practical-database--entry-daily-basics-wroclaw-water">樂斯拉夫飲水與每日離線包</a></li><li data-search-private><a href="#page-practical-database--entry-accommodation-confirmations">7 晚住宿已確認</a></li></ul></li><li id="page-practical-database--index-category-safety"><b>安全與醫療</b> <span class="tag-muted">4 筆</span><ul><li><a href="#page-practical-database--entry-aviation-missing-baggage">行李未到處理</a></li><li data-search-private><a href="#page-practical-database--entry-medical-insurance-and-emergency">旅平險與緊急就醫</a></li><li><a href="#page-practical-database--entry-emergency-taiwan-representative">駐波蘭台北代表處</a></li><li><a href="#page-practical-database--entry-emergency-lost-passport">國外遺失護照步驟</a></li></ul></li><li id="page-practical-database--index-category-document"><b>文件與資格</b> <span class="tag-muted">4 筆</span><ul><li><a href="#page-practical-database--entry-entry-etias-and-passport">護照與 ETIAS 動態閘門</a></li><li><a href="#page-practical-database--entry-tax-free-vat-refund">TAX FREE 出口確認</a></li><li data-search-private><a href="#page-practical-database--entry-documents-travel-registration">入境文件包與旅外登錄</a></li><li data-search-private><a href="#page-practical-database--entry-documents-attraction-tickets">景點票券與入場時段</a></li></ul></li></ul></section>
-        <section class="database-facet"><h3>狀態</h3><ul><li id="page-practical-database--index-status-verified"><b>已查證</b> <span class="tag-muted">9 筆</span><ul><li><a href="#page-practical-database--entry-aviation-baggage-rules">航空行李官方規則</a></li><li><a href="#page-practical-database--entry-aviation-missing-baggage">行李未到處理</a></li><li><a href="#page-practical-database--entry-rail-delay-rights">鐵路延誤旅客權益</a></li><li><a href="#page-practical-database--entry-money-pln-and-dcc">PLN 付款與拒絕 DCC</a></li><li><a href="#page-practical-database--entry-emergency-taiwan-representative">駐波蘭台北代表處</a></li><li><a href="#page-practical-database--entry-emergency-lost-passport">國外遺失護照步驟</a></li><li><a href="#page-practical-database--entry-tax-free-vat-refund">TAX FREE 出口確認</a></li><li><a href="#page-practical-database--entry-daily-basics-krakow-water">克拉科夫飲水與每日離線包</a></li><li><a href="#page-practical-database--entry-daily-basics-wroclaw-water">樂斯拉夫飲水與每日離線包</a></li></ul></li><li id="page-practical-database--index-status-recheck"><b>出發前重查</b> <span class="tag-muted">4 筆</span><ul><li><a href="#page-practical-database--entry-entry-etias-and-passport">護照與 ETIAS 動態閘門</a></li><li><a href="#page-practical-database--entry-rail-station-directory">車站即時資訊與設施</a></li><li><a href="#page-practical-database--entry-calendar-sunday-and-all-saints">非營業週日與諸聖節前夕</a></li><li><a href="#page-practical-database--entry-accessibility-station-assistance">車站無障礙與協助</a></li></ul></li><li id="page-practical-database--index-status-pending"><b>待確認</b> <span class="tag-muted">4 筆</span><ul><li><a href="#page-practical-database--entry-rail-trip-tickets">本次城際車票</a></li><li><a href="#page-practical-database--entry-connectivity-prepaid-registration">波蘭預付 SIM 登記</a></li><li><a href="#page-practical-database--entry-dining-reservation-and-backup">餐廳訂位與當日營業</a></li><li data-search-private><a href="#page-practical-database--entry-documents-attraction-tickets">景點票券與入場時段</a></li></ul></li><li id="page-practical-database--index-status-private-required"><b>需填私人資料</b> <span class="tag-muted">5 筆</span><ul><li data-search-private><a href="#page-practical-database--entry-aviation-trip-baggage-confirmation">本次航班時刻、行李額度與直掛確認</a></li><li data-search-private><a href="#page-practical-database--entry-medical-insurance-and-emergency">旅平險與緊急就醫</a></li><li data-search-private><a href="#page-practical-database--entry-luggage-storage-transition">轉場日行李寄放</a></li><li data-search-private><a href="#page-practical-database--entry-documents-travel-registration">入境文件包與旅外登錄</a></li><li data-search-private><a href="#page-practical-database--entry-accommodation-confirmations">7 晚住宿已確認</a></li></ul></li></ul></section>
-      </div>
-    </section>
     <nav class="database-index" aria-label="資料庫主題索引">
       <h2>主題索引</h2>
       <ol><li><a href="#page-practical-database--section-entry">出入境與 ETIAS</a></li><li><a href="#page-practical-database--section-aviation">航班與行李</a></li><li><a href="#page-practical-database--section-rail">鐵路與轉乘</a></li><li><a href="#page-practical-database--section-connectivity">網路與離線</a></li><li><a href="#page-practical-database--section-money">付款與現金</a></li><li><a href="#page-practical-database--section-medical">醫療與保險</a></li><li><a href="#page-practical-database--section-emergency">緊急與護照</a></li><li><a href="#page-practical-database--section-luggage">行李寄放</a></li><li><a href="#page-practical-database--section-calendar">日曆與營業</a></li><li><a href="#page-practical-database--section-tax-free">退稅 TAX FREE</a></li><li><a href="#page-practical-database--section-accessibility">無障礙與體力</a></li><li><a href="#page-practical-database--section-daily-basics">每日基本需求</a></li><li><a href="#page-practical-database--section-dining">用餐</a></li><li><a href="#page-practical-database--section-documents">旅程文件</a></li><li><a href="#page-practical-database--section-accommodation">住宿</a></li></ol>
@@ -8152,109 +7949,6 @@ details.card > summary {
       window.addEventListener('hashchange', activateStandaloneHash);
       activateStandaloneHash();
     }());
-(() => {
-  const filterCity = document.querySelector('[data-db-filter-select="city"]');
-  const filterCategory = document.querySelector('[data-db-filter-select="category"]');
-  const filterStatus = document.querySelector('[data-db-filter-select="status"]');
-  const filterPrivacy = document.querySelector('[data-db-filter-select="privacy"]');
-  const queryInput = document.querySelector('[data-db-filter-input="query"]');
-  const clearButton = document.querySelector('[data-db-clear="filters"]');
-  const summary = document.querySelector('[data-db-summary]');
-  const quicks = document.querySelectorAll('[data-db-quick]');
-  const emptyMessage = document.querySelector('[data-db-empty]');
-  const cards = Array.from(document.querySelectorAll('[data-db-card]'));
-  const sections = Array.from(document.querySelectorAll('[data-db-section]'));
-
-  if (!cards.length) return;
-
-  function normalize(value) {
-    return String(value || '').toLowerCase().trim();
-  }
-
-  function hasText(card, needle) {
-    if (!needle) return true;
-    const bag = card.getAttribute('data-search') || '';
-    return bag.includes(needle);
-  }
-
-  function matchesFilter(card, filters) {
-    if (filters.city !== 'all' && card.dataset.city !== filters.city) return false;
-    if (filters.category !== 'all' && card.dataset.category !== filters.category) return false;
-    if (filters.status !== 'all' && card.dataset.status !== filters.status) return false;
-    if (filters.privacy !== 'all' && card.dataset.privacy !== filters.privacy) return false;
-    return hasText(card, filters.query);
-  }
-
-  function applyFilters() {
-    const filters = {
-      city: filterCity ? filterCity.value : 'all',
-      category: filterCategory ? filterCategory.value : 'all',
-      status: filterStatus ? filterStatus.value : 'all',
-      privacy: filterPrivacy ? filterPrivacy.value : 'all',
-      query: normalize(queryInput ? queryInput.value : ''),
-    };
-    const filterKeys = ['city', 'category', 'status', 'privacy'];
-    let visibleCount = 0;
-
-    cards.forEach(card => {
-      const visible = matchesFilter(card, filters);
-      card.hidden = !visible;
-      card.classList.toggle('database-card-hidden', !visible);
-      if (visible) visibleCount += 1;
-    });
-
-    sections.forEach(section => {
-      const sectionCards = Array.from(section.querySelectorAll('[data-db-card]'));
-      const sectionContainer = section.closest('section');
-      if (sectionContainer) sectionContainer.hidden = !sectionCards.some(card => !card.hidden);
-    });
-
-    if (summary) summary.textContent = `目前 ${visibleCount} / ${cards.length} 筆`;
-    if (emptyMessage) emptyMessage.hidden = visibleCount > 0;
-    quicks.forEach(quick => {
-      const [filterKey, filterValue] = (quick.getAttribute('data-db-quick') || '').split(':');
-      const active = !filters.query
-        && filters[filterKey] === filterValue
-        && filterKeys.every(key => key === filterKey || filters[key] === 'all');
-      quick.classList.toggle('is-active', active);
-      quick.setAttribute('aria-pressed', String(active));
-    });
-  }
-
-  function resetFilters() {
-    if (filterCity) filterCity.value = 'all';
-    if (filterCategory) filterCategory.value = 'all';
-    if (filterStatus) filterStatus.value = 'all';
-    if (filterPrivacy) filterPrivacy.value = 'all';
-    if (queryInput) queryInput.value = '';
-  }
-
-  [filterCity, filterCategory, filterStatus, filterPrivacy].forEach(filter => {
-    if (filter) filter.addEventListener('change', applyFilters);
-  });
-  if (queryInput) queryInput.addEventListener('input', applyFilters);
-  if (clearButton) {
-    clearButton.addEventListener('click', () => {
-      resetFilters();
-      applyFilters();
-    });
-  }
-
-  quicks.forEach(quick => {
-    quick.addEventListener('click', () => {
-      const [filterKey, filterValue] = (quick.getAttribute('data-db-quick') || '').split(':');
-      resetFilters();
-      if (filterCity && filterKey === 'city') filterCity.value = filterValue || 'all';
-      if (filterCategory && filterKey === 'category') filterCategory.value = filterValue || 'all';
-      if (filterStatus && filterKey === 'status') filterStatus.value = filterValue || 'all';
-      if (filterPrivacy && filterKey === 'privacy') filterPrivacy.value = filterValue || 'all';
-      applyFilters();
-    });
-  });
-
-  applyFilters();
-})();
-
   </script>
 </body>
 </html>

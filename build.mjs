@@ -98,7 +98,6 @@ function bundlePage(relativePath, label, pageIndex) {
 
   const content = main[1]
     .replace(/\s*<script src="assets\/leaflet\/leaflet\.js"><\/script>/g, '')
-    .replace(/\s*<script src="\.\.\/assets\/database-filter\.js" defer><\/script>/g, '')
     .replace(/href="([^"]+)"/g, rewriteHref)
     .replace(/\bid="([^"]+)"/g, (_, id) => `id="${currentPageId}--${id}"`)
     .replace(/\bfor="([^"]+)"/g, (_, id) => `for="${currentPageId}--${id}"`)
@@ -129,7 +128,6 @@ function buildStandalone() {
   // 單檔版把 Leaflet 一併內嵌，離線帶著一個檔案就能用（僅圖磚仍需連線）
   const leafletCss = fs.readFileSync(path.join(distDir, 'assets/leaflet/leaflet.css'), 'utf8');
   const leafletJs = fs.readFileSync(path.join(distDir, 'assets/leaflet/leaflet.js'), 'utf8');
-  const databaseFilterJs = fs.readFileSync(path.join(distDir, 'assets/database-filter.js'), 'utf8');
   const navMenus = standaloneNavGroups.map(group => {
     const links = group.pages
       .map(([relativePath, label]) => `<a href="#${standalonePageId(relativePath)}">${label}</a>`)
@@ -388,7 +386,6 @@ ${bundledPages}
       window.addEventListener('hashchange', activateStandaloneHash);
       activateStandaloneHash();
     }());
-${databaseFilterJs}
   </script>
 </body>
 </html>`;
@@ -400,7 +397,6 @@ function build() {
   resetOutput();
   fs.copyFileSync(path.join(projectRoot, 'src/styles/main.css'), path.join(distDir, 'assets/main.css'));
   fs.copyFileSync(path.join(projectRoot, 'src/scripts/nav.js'), path.join(distDir, 'assets/nav.js'));
-  fs.copyFileSync(path.join(projectRoot, 'src/scripts/database-filter.js'), path.join(distDir, 'assets/database-filter.js'));
   fs.cpSync(path.join(projectRoot, 'assets', 'photos'), path.join(distDir, 'assets', 'photos'), { recursive: true });
   fs.cpSync(path.join(projectRoot, 'vendor', 'leaflet'), path.join(distDir, 'assets', 'leaflet'), { recursive: true });
   fs.copyFileSync(path.join(projectRoot, 'sw.js'), path.join(distDir, 'sw.js'));

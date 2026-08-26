@@ -555,9 +555,7 @@ nav.section-heading > a:last-child {
 
 .journal-day-entry > a,
 .journal-city-card > a,
-.journal-status-strip a,
-.db-chip,
-.btn-ghost {
+.journal-status-strip a {
   transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
 }
 
@@ -799,74 +797,6 @@ nav.section-heading > a:last-child {
   margin: 0;
 }
 
-.database-toolbar {
-  display: grid;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.database-toolbar-grid {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 0.8rem;
-}
-
-.database-toolbar-grid .database-filter:first-child {
-  grid-column: span 2;
-}
-
-.database-filter {
-  display: grid;
-  gap: 0.4rem;
-}
-
-.database-filter span {
-  font-family: var(--font-mono);
-  font-size: 0.76rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-}
-
-.database-filter input,
-.database-filter select {
-  min-height: 2.6rem;
-  padding: 0.42rem 0.65rem;
-  border: 1px solid var(--line-strong);
-  border-radius: 0.28rem;
-  background: var(--paper-light);
-  color: var(--ink);
-  font: inherit;
-}
-
-.database-toolbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  flex-wrap: wrap;
-}
-
-.btn-ghost {
-  min-height: 44px;
-  padding: 0 1rem;
-  border: 1px solid var(--ink-soft);
-  border-radius: 999px;
-  color: var(--ink);
-  background: transparent;
-  cursor: pointer;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.btn-ghost:hover,
-.btn-ghost:focus-visible {
-  border-color: var(--accent);
-  color: var(--accent-dark);
-}
-
 .btn-export {
   display: inline-flex;
   align-items: center;
@@ -900,60 +830,10 @@ details.card > summary {
   cursor: pointer;
 }
 
-.database-result-summary {
-  margin: 0;
-  font-family: var(--font-mono);
-  color: var(--ink-soft);
-}
-
-.database-chip-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin: 0.6rem 0 1rem;
-}
-
-.db-chip {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  padding: 0.25rem 0.9rem;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--ink-soft);
-  cursor: pointer;
-  font-family: var(--font-mono);
-  font-size: 0.76rem;
-  text-decoration: none;
-  transition: all 160ms ease;
-}
-
-.db-chip:hover,
-.db-chip:focus-visible,
-.db-chip.is-active {
-  border-color: var(--accent);
-  color: var(--accent-dark);
-  background: var(--accent-pale);
-}
-
-.database-empty {
-  margin-bottom: 0.95rem;
-  padding: 0.85rem 1rem;
-  border: 1px solid var(--line);
-  border-radius: 2px;
-  background: var(--surface-empty);
-  color: var(--yellow);
-}
-
 .database-section-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.25rem;
-}
-
-.database-card-hidden {
-  display: none;
 }
 
 .callout-risk,
@@ -1763,13 +1643,8 @@ details.card > summary {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .database-toolbar-grid,
   .database-section-grid {
     grid-template-columns: 1fr;
-  }
-
-  .database-toolbar-grid .database-filter:first-child {
-    grid-column: auto;
   }
 
 }
@@ -2016,11 +1891,6 @@ details.card > summary {
     font-size: clamp(1.9rem, 8.5vw, 2.6rem);
   }
 
-  .database-filter input,
-  .database-filter select {
-    min-height: 44px;
-  }
-
   .table-wrap-cards {
     overflow-x: visible;
   }
@@ -2102,19 +1972,6 @@ details.card > summary {
     grid-template-columns: 1fr;
   }
 
-  .database-toolbar-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .database-toolbar-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .database-result-summary {
-    order: -1;
-  }
-
   .database-card-header {
     align-items: start;
     flex-direction: column;
@@ -2163,8 +2020,6 @@ details.card > summary {
   .nav,
   .chapter-index,
   .skip-link,
-  .database-toolbar,
-  .database-chip-row,
   .map-container {
     display: none !important;
   }
