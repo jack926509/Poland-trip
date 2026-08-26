@@ -425,14 +425,14 @@ test('單檔版以章節切換取代整頁上下查找，並保留前後頁導�
   assert.equal((html.match(/class="standalone-page-controls"/g) || []).length, expectedFiles.length);
   assert.equal((html.match(/class="standalone-page-ribbon"/g) || []).length, expectedFiles.length);
   assert.match(html, /function showStandalonePage\(targetId, shouldScroll\)/);
-  // 直接開啟檔案（沒有 hash）時不自動捲動，搜尋列才不會被固定導覽列蓋住
+  // 直接開啟檔案（沒有 hash）時不自動捲動，維持在文件頂端
   assert.match(html, /showStandalonePage\(hash \|\| defaultPageId, Boolean\(hash\)\)/);
   assert.match(html, /window\.addEventListener\('hashchange', activateStandaloneHash\)/);
   assert.match(html, /page\.hidden = page\.id !== activePageId/);
   assert.match(
     html,
     /requestAnimationFrame\(function \(\) \{\s*window\.requestAnimationFrame\(function \(\) \{/,
-    '單檔版必須等瀏覽器完成 hash 預設導航與版面更新後，再捲到搜尋結果小節',
+    '單檔版必須等瀏覽器完成 hash 預設導航與版面更新後，再捲到目標小節',
   );
   assert.match(html, /@media print[\s\S]*\.standalone-page\[hidden\][\s\S]*display: block !important;/);
 });
@@ -862,7 +862,9 @@ test('4 個城市頁含正確 Leaflet 圖釘數，合計 56', () => {
   for (const [file, count] of Object.entries(expected)) {
     const html = read(file);
     assert.match(html, /class="map-container"/, `${file} 缺少地圖容器`);
-    assert.match(html, /leaflet@1\.9\.4/, `${file} 缺少 Leaflet 1.9.4`);
+    // Leaflet 已改為自行 host（離線可用），頁面引用本地路徑，版本改由 vendor 檔案把關
+    assert.match(html, /src="assets\/leaflet\/leaflet\.js"/, `${file} 缺少本地 Leaflet`);
+    assert.doesNotMatch(html, /unpkg\.com/, `${file} 不應再依賴 unpkg`);
     const match = html.match(/var mapData = (\{.*?\});/s);
     assert.ok(match, `${file} 缺少 mapData`);
     const points = JSON.parse(match[1]).points.length;
@@ -1068,12 +1070,34 @@ test('全站沒有常見簡體專用字', () => {
   assert.deepEqual(offenders, []);
 });
 
-test('舊 PWA 已安全退役，不再預快取被歸檔的介面', () => {
+test('service worker 提供離線快取，且不預快取被歸檔的介面', () => {
   const worker = fs.readFileSync('sw.js', 'utf8');
+
+  // 仍要清掉舊版 polska-v* 快取，但自己保留
   assert.ok(worker.includes("key.startsWith('polska-')"), 'sw.js 未清除舊 polska 快取');
-  assert.ok(worker.includes('self.registration.unregister()'), 'sw.js 未解除舊註冊');
-  assert.ok(!worker.includes("addEventListener('fetch'"), '退役 worker 不應攔截新版請求');
+  assert.ok(worker.includes('!key.startsWith(VERSION)'), 'sw.js 不應連自己的快取一起刪除');
+  assert.ok(worker.includes("addEventListener('fetch'"), 'sw.js 需攔截請求才能離線可用');
+  assert.ok(!worker.includes('self.registration.unregister()'), '正式 worker 不應自我解除註冊');
+
+  // 23 頁與離線必要資源都要在預快取清單裡
+  for (const file of expectedFiles) {
+    assert.ok(worker.includes(`./${file}`), `sw.js 預快取缺少 ${file}`);
+  }
+  for (const asset of ['./assets/main.css', './assets/nav.js', './assets/leaflet/leaflet.js']) {
+    assert.ok(worker.includes(asset), `sw.js 預快取缺少 ${asset}`);
+  }
+
   for (const stalePath of ['mobile.html', 'redesign/', 'desktop/']) {
     assert.ok(!worker.includes(stalePath), `sw.js 仍引用舊路徑 ${stalePath}`);
   }
+});
+
+test('每頁都註冊 service worker，且 sw.js 一起輸出到站台根目錄', () => {
+  const navScript = fs.readFileSync(path.join(distDir, 'assets/nav.js'), 'utf8');
+  assert.match(navScript, /navigator\.serviceWorker\.register/);
+  // 由 nav.js 自身位置推導，首頁與 practical/ 子目錄共用同一支
+  assert.match(navScript, /new URL\('\.\.\/sw\.js', selfScript\.src\)/);
+  assert.ok(fs.existsSync(path.join(distDir, 'sw.js')), 'dist/sw.js 未輸出');
+  assert.ok(fs.existsSync(path.join(distDir, 'assets/leaflet/leaflet.js')), 'dist 缺少本地 Leaflet');
+  assert.ok(fs.existsSync(path.join(distDir, 'assets/leaflet/leaflet.css')), 'dist 缺少本地 Leaflet CSS');
 });

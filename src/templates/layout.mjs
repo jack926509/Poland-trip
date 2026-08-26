@@ -8,45 +8,82 @@ function currentGroup(activeNav, key) {
   return activeNav === key ? ' aria-current="true"' : '';
 }
 
-export const searchIndexPlaceholder = '__SITE_SEARCH_INDEX__';
+const CITY_LINKS = [
+  ['city-warszawa.html', '華沙 Warszawa'],
+  ['city-krakow.html', '克拉科夫 Kraków'],
+  ['city-wroclaw.html', '樂斯拉夫 Wrocław'],
+  ['city-poznan.html', '波茲南 Poznań'],
+];
 
-export function renderSiteSearch({
-  pathPrefix = '',
-  searchIndexJson = searchIndexPlaceholder,
-  databaseHref = '',
-} = {}) {
-  const path = file => `${pathPrefix}${file}`;
-  const fallbackHref = databaseHref || path('practical/database.html');
-  return `<section class="site-search-region" aria-label="全站旅遊搜尋">
-    <details class="site-search-shell" data-site-search data-search-path-prefix="${pathPrefix}" open>
-    <summary class="site-search-toggle"><span aria-hidden="true">⌕</span>搜尋整個旅遊網站</summary>
-    <div class="site-search-inner">
-      <div class="site-search-form-row">
-        <label for="site-search-input">搜尋整個旅遊網站</label>
-        <div class="site-search-input-row">
-          <span class="site-search-icon" aria-hidden="true">⌕</span>
-          <input id="site-search-input" type="search" inputmode="search" autocomplete="off" spellcheck="false" placeholder="火車、餐廳、景點、城市特色" aria-controls="site-search-results" aria-describedby="site-search-help">
-          <button class="site-search-clear" type="button" data-search-clear hidden>清除</button>
-        </div>
-      </div>
-      <div class="site-search-quick-row" role="group" aria-label="快捷分類">
-        <span id="site-search-help">快速找：</span>
-        <button type="button" data-search-category="train" aria-pressed="false">🚆 火車</button>
-        <button type="button" data-search-category="restaurant" aria-pressed="false">🍽️ 餐廳</button>
-        <button type="button" data-search-category="map" aria-pressed="false">🗺️ 地圖</button>
-        <button type="button" data-search-category="city" aria-pressed="false">✶ 城市</button>
-      </div>
-      <p class="site-search-summary" data-search-summary aria-live="polite"></p>
-      <ol class="site-search-results" id="site-search-results" data-search-results hidden></ol>
-      <div class="site-search-empty" data-search-empty hidden>
-        <p><b>找不到相符資料</b><br>試試城市名、店名或「火車」「地圖」等類型。</p>
-        <button type="button" data-search-reset>清除條件</button>
-      </div>
-      <noscript><p class="site-search-noscript">瀏覽器未開啟 JavaScript，請改用 <a href="${fallbackHref}">自由行資料庫</a>。</p></noscript>
-      <script type="application/json" data-site-search-index>${searchIndexJson}</script>
-    </div>
-    </details>
-  </section>`;
+const PRACTICAL_LINKS = [
+  ['practical/todos.html', '待辦事項'],
+  ['practical/booking.html', '訂票與交通'],
+  ['practical/dining.html', '米其林與餐廳'],
+  ['practical/tickets.html', '門票速查'],
+  ['practical/transit.html', '市內交通'],
+  ['practical/shopping.html', '伴手禮與購物'],
+  ['practical/essentials.html', '安全與基本須知'],
+  ['practical/notes.html', '行前提醒'],
+  ['practical/ops-dashboard.html', '資料更新儀表板'],
+  ['practical/database.html', '自由行資料庫'],
+];
+
+const DAY_LINKS = Array.from({ length: 8 }, (_, index) => {
+  const day = index + 1;
+  return [`day-${String(day).padStart(2, '0')}.html`, `Day ${day}`];
+});
+
+function escapeAttr(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
+}
+
+// 長頁面（每日 5~6 螢幕、城市 8 螢幕）需要跳章節的入口。
+// 這裡直接掃描組好的 bodyHtml，替沒有 id 的 .section 補上 id 並產生索引，
+// 不必在每個頁面樣板各寫一份。
+function buildChapterIndex(bodyHtml) {
+  const sectionPattern = /<section class="section([^"]*)"([^>]*)>/g;
+  const items = [];
+  let counter = 0;
+
+  const rewritten = bodyHtml.replace(sectionPattern, (match, extraClass, attrs) => {
+    counter += 1;
+    const existingId = /\bid="([^"]+)"/.exec(attrs)?.[1];
+    const id = existingId || `sec-${counter}`;
+    items.push({ id, index: counter });
+    return existingId ? match : `<section class="section${extraClass}" id="${id}"${attrs}>`;
+  });
+
+  // 逐段補上標題文字：section-num 當眉標，h2 當章節名
+  const blocks = rewritten.split('<section class="section');
+  items.forEach((item, position) => {
+    const block = blocks[position + 1] || '';
+    item.num = /<span class="section-num">([^<]*)<\/span>/.exec(block)?.[1]?.trim() || '';
+    item.title = /<h2[^>]*>([\s\S]*?)<\/h2>/.exec(block)?.[1]?.replace(/<[^>]+>/g, '').trim() || '';
+  });
+
+  const usable = items.filter(item => item.title);
+  if (usable.length < 3) return { bodyHtml, indexHtml: '' };
+
+  const links = usable.map(item => `<li><a href="#${escapeAttr(item.id)}">${
+    item.num ? `<span>${item.num}</span>` : ''
+  }${item.title}</a></li>`).join('');
+
+  const indexHtml = `<nav class="chapter-index" aria-labelledby="chapter-index-label">
+      <p class="chapter-index-label" id="chapter-index-label">本頁章節</p>
+      <ol>${links}</ol>
+    </nav>`;
+
+  // 放在第一個 .section 之前：每日／城市頁在封面之後，附錄頁在大標之後
+  const firstSection = rewritten.indexOf('<section class="section');
+  const withIndex = firstSection === -1
+    ? rewritten
+    : `${rewritten.slice(0, firstSection)}${indexHtml}\n    ${rewritten.slice(firstSection)}`;
+
+  return { bodyHtml: withIndex, indexHtml };
 }
 
 export function renderLayout({
@@ -56,13 +93,21 @@ export function renderLayout({
   extraHead = '',
   pathPrefix = '',
   pageKind = 'practical',
+  currentPage = '',
+  chapterIndex = true,
 }) {
   const path = file => `${pathPrefix}${file}`;
-  const dayLinks = Array.from({ length: 8 }, (_, index) => {
-    const day = index + 1;
-    const file = `day-${String(day).padStart(2, '0')}.html`;
-    return `<li><a href="${path(file)}">Day ${day}</a></li>`;
-  }).join('');
+  // 首頁本身就是目錄，資料庫頁已有自己的主題索引，兩者不再重複產生
+  const useChapterIndex = chapterIndex && pageKind !== 'home' && !bodyHtml.includes('database-index');
+  const pageBody = useChapterIndex ? buildChapterIndex(bodyHtml).bodyHtml : bodyHtml;
+  // 標出「你正在看這一頁」：視覺上加點，輔助技術則聽到 current page
+  const navLink = ([file, label]) => {
+    const isCurrent = currentPage === file;
+    return `<li><a href="${path(file)}"${isCurrent ? ' aria-current="page" class="nav-link-current"' : ''}>${label}</a></li>`;
+  };
+  const dayLinks = DAY_LINKS.map(navLink).join('');
+  const cityLinks = CITY_LINKS.map(navLink).join('');
+  const practicalLinks = PRACTICAL_LINKS.map(navLink).join('');
 
   return `<!DOCTYPE html>
 <html lang="zh-Hant">
@@ -98,34 +143,15 @@ export function renderLayout({
     </details>
     <details class="nav-dropdown${activeNav === 'cities' ? ' nav-dropdown-current' : ''}" name="primary-navigation">
       <summary${currentGroup(activeNav, 'cities')}>城市指南</summary>
-      <ul>
-        <li><a href="${path('index.html#cities')}">城市總覽</a></li>
-        <li><a href="${path('city-warszawa.html')}">華沙 Warszawa</a></li>
-        <li><a href="${path('city-krakow.html')}">克拉科夫 Kraków</a></li>
-        <li><a href="${path('city-wroclaw.html')}">樂斯拉夫 Wrocław</a></li>
-        <li><a href="${path('city-poznan.html')}">波茲南 Poznań</a></li>
-      </ul>
+      <ul><li><a href="${path('index.html#cities')}">城市總覽</a></li>${cityLinks}</ul>
     </details>
     <details class="nav-dropdown${activeNav === 'practical' ? ' nav-dropdown-current' : ''}" name="primary-navigation">
       <summary${currentGroup(activeNav, 'practical')}>實用資訊</summary>
-      <ul>
-        <li><a href="${path('index.html#practical')}">實用資訊總覽</a></li>
-        <li><a href="${path('practical/todos.html')}">待辦事項</a></li>
-        <li><a href="${path('practical/booking.html')}">訂票與交通</a></li>
-        <li><a href="${path('practical/dining.html')}">米其林與餐廳</a></li>
-        <li><a href="${path('practical/tickets.html')}">門票速查</a></li>
-        <li><a href="${path('practical/transit.html')}">市內交通</a></li>
-        <li><a href="${path('practical/shopping.html')}">伴手禮與購物</a></li>
-        <li><a href="${path('practical/essentials.html')}">安全與基本須知</a></li>
-        <li><a href="${path('practical/notes.html')}">行前提醒</a></li>
-        <li><a href="${path('practical/ops-dashboard.html')}">資料更新儀表板</a></li>
-        <li><a href="${path('practical/database.html')}">自由行資料庫</a></li>
-      </ul>
+      <ul><li><a href="${path('index.html#practical')}">實用資訊總覽</a></li>${practicalLinks}</ul>
     </details>
   </nav>
-  ${renderSiteSearch({ pathPrefix })}
   <main class="page" id="main-content">
-    ${bodyHtml}
+    ${pageBody}
   </main>
   <footer class="footer">
     <div class="footer-inner">
@@ -134,7 +160,6 @@ export function renderLayout({
     </div>
   </footer>
   <script src="${path('assets/nav.js')}" defer></script>
-  <script type="module" src="${path('assets/site-search.js')}"></script>
 </body>
 </html>`;
 }

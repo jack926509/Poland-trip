@@ -344,264 +344,29 @@ img {
   color: var(--on-accent);
 }
 
-.site-search-region {
-  border-bottom: 1px solid var(--line-strong);
-  background: var(--paper-deep);
+/* 目前所在頁：左側色條 + 粗體，一眼看出自己在第幾天／哪座城市 */
+.nav-dropdown > ul a.nav-link-current {
+  border-left: 3px solid var(--accent);
+  padding-left: calc(1.2rem - 3px);
+  background: var(--accent-pale);
+  color: var(--accent-dark);
+  font-weight: 700;
+}
+
+.nav-dropdown > ul a.nav-link-current::after {
+  margin-left: auto;
+  content: '●';
+  font-size: 0.6rem;
+}
+
+.nav-dropdown > ul a.nav-link-current:hover,
+.nav-dropdown > ul a.nav-link-current:focus-visible {
+  background: var(--accent);
+  color: var(--on-accent);
 }
 
 /* 桌機維持常駐搜尋列；手機由 nav.js 收合成一列入口，把首屏還給內容 */
-.site-search-toggle {
-  display: none;
-}
-
-.site-search-inner {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.5rem 1.75rem;
-  align-items: center;
-  width: min(100%, var(--content-width));
-  margin: 0 auto;
-  padding: 0.75rem 3rem 0.8rem;
-}
-
-.site-search-form-row {
-  display: grid;
-  grid-template-columns: auto minmax(12rem, 1fr);
-  gap: 0.9rem;
-  align-items: center;
-  min-width: 0;
-}
-
-.site-search-form-row > label {
-  color: var(--plum-ink);
-  font-family: var(--font-mono);
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  white-space: nowrap;
-}
-
-.site-search-input-row {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  min-height: 48px;
-  border: 1.5px solid var(--ink);
-  background: var(--paper-light);
-}
-
-.site-search-input-row:focus-within {
-  outline: var(--focus-ring);
-  outline-offset: 2px;
-}
-
-.site-search-icon {
-  padding-left: 0.85rem;
-  color: var(--accent-dark);
-  font-family: var(--font-mono);
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-.site-search-input-row input {
-  width: 100%;
-  min-width: 0;
-  min-height: 48px;
-  padding: 0.55rem 0.75rem;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  color: var(--ink);
-  font-family: var(--font-body);
-  font-size: 1rem;
-}
-
-.site-search-input-row input::placeholder {
-  color: var(--ink-soft);
-  opacity: 0.82;
-}
-
-.site-search-clear,
-.site-search-empty button {
-  min-height: 44px;
-  padding: 0 0.9rem;
-  border: 0;
-  background: var(--accent);
-  color: var(--on-accent);
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.site-search-quick-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.site-search-quick-row > span,
-.site-search-summary {
-  color: var(--ink-soft);
-  font-family: var(--font-mono);
-  font-size: 0.76rem;
-}
-
-.site-search-quick-row button {
-  min-height: 44px;
-  padding: 0.45rem 0.8rem;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--ink);
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.site-search-quick-row button:hover,
-.site-search-quick-row button:focus-visible,
-.site-search-quick-row button[aria-pressed="true"] {
-  border-color: var(--plum);
-  background: var(--plum);
-  color: var(--on-dark);
-}
-
-.site-search-summary {
-  grid-column: 1 / -1;
-  min-height: 1.25rem;
-  margin: 0.15rem 0 0;
-  font-variant-numeric: tabular-nums;
-}
-
 /* 沒有查詢時不佔高度，但保留在無障礙樹裡讓 aria-live 仍能播報 */
-.site-search-summary:empty {
-  min-height: 0;
-  margin: 0;
-}
-
-.site-search-results {
-  grid-column: 1 / -1;
-  display: grid;
-  gap: 0.55rem;
-  margin: 0.25rem 0 0.35rem;
-  padding: 0;
-  list-style: none;
-}
-
-.site-search-result {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: stretch;
-  border: 1px solid var(--line);
-  background: var(--paper-light);
-}
-
-.site-search-result-main {
-  display: grid;
-  grid-template-columns: 4.5rem minmax(0, 1fr);
-  gap: 0.8rem;
-  align-items: start;
-  min-height: 64px;
-  padding: 0.75rem;
-  color: var(--ink);
-  text-decoration: none;
-}
-
-.site-search-result-main:hover,
-.site-search-result-main:focus-visible {
-  background: var(--accent-pale);
-  color: var(--ink);
-}
-
-.site-search-result-type {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 28px;
-  padding: 0.2rem 0.45rem;
-  border: 1px solid var(--accent);
-  color: var(--accent-dark);
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 700;
-}
-
-.site-search-result-copy {
-  display: grid;
-  gap: 0.15rem;
-  min-width: 0;
-}
-
-.site-search-result-copy strong {
-  font-family: var(--font-display);
-  line-height: 1.3;
-}
-
-.site-search-result-copy small,
-.site-search-result-copy > span {
-  color: var(--ink-soft);
-  font-size: 1rem;
-  line-height: 1.45;
-  overflow-wrap: anywhere;
-}
-
-.site-search-result-copy > span {
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-.site-search-map-link {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 44px;
-  padding: 0.65rem 0.85rem;
-  border-left: 1px solid var(--line);
-  color: var(--green);
-  font-family: var(--font-mono);
-  font-size: 1rem;
-  font-weight: 700;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.site-search-map-link:hover,
-.site-search-map-link:focus-visible {
-  background: var(--surface-good-hover);
-  color: var(--green);
-}
-
-.site-search-empty {
-  grid-column: 1 / -1;
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  align-items: center;
-  margin-top: 0.4rem;
-  padding: 0.85rem 1rem;
-  border: 1px solid var(--line);
-  background: var(--paper-light);
-}
-
-.site-search-empty p,
-.site-search-noscript {
-  grid-column: 1 / -1;
-  margin: 0;
-  color: var(--ink-soft);
-  font-size: 0.86rem;
-}
-
-.site-search-results[hidden],
-.site-search-empty[hidden],
-.site-search-clear[hidden] {
-  display: none;
-}
-
 .page {
   width: min(100%, var(--content-width));
   min-height: 70vh;
@@ -630,6 +395,66 @@ img {
 .section-num {
   display: block;
   margin-bottom: 0.75rem;
+}
+
+.chapter-index {
+  margin: 2.5rem 0 1rem;
+  padding: 1.1rem 0 1.2rem;
+  border-block: 1px solid var(--line-strong);
+}
+
+.chapter-index-label {
+  margin: 0 0 0.75rem;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.chapter-index ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chapter-index a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--line);
+  background: var(--paper-light);
+  color: var(--ink);
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.chapter-index a > span {
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.chapter-index a:hover,
+.chapter-index a:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent-pale);
+  color: var(--accent-dark);
+}
+
+.chapter-index a:hover > span,
+.chapter-index a:focus-visible > span {
+  color: var(--accent-dark);
 }
 
 .section {
@@ -731,7 +556,6 @@ nav.section-heading > a:last-child {
 .journal-day-entry > a,
 .journal-city-card > a,
 .journal-status-strip a,
-.site-search-result-main,
 .db-chip,
 .btn-ghost {
   transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
@@ -1302,6 +1126,36 @@ details.card > summary {
   width: 10px;
   height: 10px;
   border-radius: 50%;
+}
+
+/* Leaflet 內建控制項的觸控尺寸與對比偏小，這裡以本站標準覆寫。
+   選擇器帶上 .map-container 提高權重（leaflet.css 在 main.css 之後載入），
+   顏色一律寫死深色：Leaflet 控制項底色是固定白色，不能用會隨主題翻轉的 token。 */
+.map-container .leaflet-bar a,
+.map-container.leaflet-touch .leaflet-bar a {
+  width: 44px;
+  height: 44px;
+  line-height: 44px;
+  color: #2c2522;
+  font-size: 1.15rem;
+}
+
+.map-container .leaflet-bar a:hover,
+.map-container .leaflet-bar a:focus {
+  background-color: #f4eddf;
+  color: #783521;
+}
+
+.map-container .leaflet-control-attribution {
+  padding: 0.3rem 0.5rem;
+  background: rgb(255 255 255 / 92%);
+  color: #33302c;
+  font-size: 0.72rem;
+}
+
+.map-container .leaflet-control-attribution a {
+  color: #6b2f14;
+  text-decoration: underline;
 }
 
 .leaflet-popup-content-wrapper,
@@ -1979,108 +1833,7 @@ details.card > summary {
     overscroll-behavior: contain;
   }
 
-  .site-search-toggle {
-    display: flex;
-    gap: 0.55rem;
-    align-items: center;
-    min-height: 48px;
-    padding: 0.55rem 1.25rem;
-    color: var(--ink);
-    cursor: pointer;
-    font-family: var(--font-mono);
-    font-size: 0.86rem;
-    font-weight: 700;
-    list-style: none;
-  }
-
-  .site-search-toggle::-webkit-details-marker {
-    display: none;
-  }
-
-  .site-search-toggle > span {
-    color: var(--accent-dark);
-    font-size: 1.2rem;
-  }
-
-  .site-search-toggle::after {
-    margin-left: auto;
-    color: var(--ink-soft);
-    content: '▾';
-  }
-
-  .site-search-shell[open] > .site-search-toggle {
-    border-bottom: 1px solid var(--line);
-  }
-
-  .site-search-shell[open] > .site-search-toggle::after {
-    content: '▴';
-  }
-
-  .site-search-inner {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-    padding: 0.75rem 1.25rem 0.9rem;
-  }
-
-  .site-search-form-row {
-    grid-template-columns: 1fr;
-    gap: 0.35rem;
-  }
-
   /* 收合列的標題已經說明用途，欄位標籤只留給輔助技術，避免同一句話出現兩次 */
-  .site-search-form-row > label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    padding: 0;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
-  .site-search-form-row > label {
-    font-size: 1rem;
-  }
-
-  .site-search-input-row input {
-    font-size: 16px;
-  }
-
-  .site-search-quick-row {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .site-search-quick-row > span {
-    grid-column: 1 / -1;
-  }
-
-  .site-search-quick-row button {
-    width: 100%;
-  }
-
-  .site-search-result {
-    grid-template-columns: 1fr;
-  }
-
-  .site-search-result-main {
-    grid-template-columns: 3.8rem minmax(0, 1fr);
-    gap: 0.65rem;
-  }
-
-  .site-search-map-link {
-    justify-content: flex-start;
-    padding-inline: 4.45rem 0.75rem;
-    border-top: 1px solid var(--line);
-    border-left: 0;
-  }
-
-  .site-search-empty {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
   .page {
     padding-top: 2.5rem;
   }
@@ -2165,6 +1918,26 @@ details.card > summary {
   .journal-flight-grid,
   .journal-toolkit {
     grid-template-columns: 1fr;
+  }
+
+  .chapter-index {
+    margin-top: 1.75rem;
+  }
+
+  .chapter-index ol {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+
+  .chapter-index a {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.1rem;
+    justify-content: center;
+    width: 100%;
+    padding: 0.5rem 0.7rem;
+    font-size: 0.9rem;
   }
 
   .journal-city-card > a {
@@ -2387,8 +2160,9 @@ details.card > summary {
     --shadow-nav: none;
   }
 
+  /* 列印／存 PDF 時不需要的介面元素（移除搜尋列時這條規則被一併刪掉，已補回） */
   .nav,
-  .site-search-region,
+  .chapter-index,
   .skip-link,
   .database-toolbar,
   .database-chip-row,

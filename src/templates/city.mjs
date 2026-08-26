@@ -32,6 +32,7 @@ function stableMapDescription(description) {
 export function renderCity({
   city,
   cityKey,
+  cityFile,
   mapData,
   legend,
   attractionsForCity,
@@ -110,7 +111,7 @@ export function renderCity({
     <div><span style="background:${item.fill};border:1.5px solid ${item.line}"></span>${item.label}</div>`).join('');
 
   const mapScript = `
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="assets/leaflet/leaflet.js"></script>
     <script>
     (function () {
       var mapData = ${JSON.stringify(mapData)};
@@ -191,8 +192,14 @@ export function renderCity({
     ${photoHtml}
     ${mapScript}`;
 
-  // 同樣改為非阻斷：unpkg 連不上時城市頁仍能正常顯示，只是地圖區塊落到 fallback 文字
-  const extraHead = '<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" media="print" onload="this.media=\'all\';this.onload=null">'
-    + '<noscript><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"></noscript>';
-  return renderLayout({ title: `${city.name}城市指南`, activeNav: 'cities', bodyHtml, extraHead, pageKind: 'city' });
+  // Leaflet 改為自行 host：不依賴 unpkg，離線快取後地圖程式本身也能用
+  const extraHead = '<link rel="stylesheet" href="assets/leaflet/leaflet.css">';
+  return renderLayout({
+    title: `${city.name}城市指南`,
+    activeNav: 'cities',
+    bodyHtml,
+    extraHead,
+    pageKind: 'city',
+    currentPage: `city-${cityFile}.html`,
+  });
 }

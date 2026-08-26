@@ -24,11 +24,18 @@ function renderAppendixHeader({ kicker, title, dek }) {
   </header>`;
 }
 
-function renderPracticalLayout(title, eyebrow, intro, content) {
+function renderPracticalLayout(title, eyebrow, intro, content, file) {
   const bodyHtml = `
 ${renderAppendixHeader({ kicker: eyebrow, title, dek: intro })}
     ${content.trim()}`;
-  return renderLayout({ title, activeNav: 'practical', bodyHtml: bodyHtml.trim(), pathPrefix: '../', pageKind: 'practical' });
+  return renderLayout({
+    title,
+    activeNav: 'practical',
+    bodyHtml: bodyHtml.trim(),
+    pathPrefix: '../',
+    pageKind: 'practical',
+    currentPage: file,
+  });
 }
 
 function getTaipeiToday() {
@@ -134,7 +141,7 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
       <div class="grid-wide">${stayHtml}</div>
     </section>`;
 
-  return renderPracticalLayout('訂票與交通', 'Booking plan', '先看最急的票，再核對火車、航班與已確認住宿。尚未確認的時段保留原樣，不用猜。', content);
+  return renderPracticalLayout('訂票與交通', 'Booking plan', '先看最急的票，再核對火車、航班與已確認住宿。尚未確認的時段保留原樣，不用猜。', content, 'practical/booking.html');
 }
 
 export function renderTodos({ todoGroups }) {
@@ -156,7 +163,7 @@ export function renderTodos({ todoGroups }) {
     <div class="callout-risk"><span class="tag-todo">${total} 項待辦</span><p>按「要買什麼」而非逐日行程整理。完成後請將票券與訂位資訊離線保存；未開賣項目仍以官方系統實際可售狀態為準。</p></div>
     ${groupsHtml}`.trim();
 
-  return renderPracticalLayout('待辦事項', 'Action list', '城際交通、景點、餐飲與雨天備案集中在一頁。先處理有日期與指定場次的票，再處理彈性訂位。', content);
+  return renderPracticalLayout('待辦事項', 'Action list', '城際交通、景點、餐飲與雨天備案集中在一頁。先處理有日期與指定場次的票，再處理彈性訂位。', content, 'practical/todos.html');
 }
 
 export function renderDining({ michelinSummary, michelinReservations, verifiedRestaurantHours = [] }) {
@@ -184,7 +191,7 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
       <div class="section-heading"><span class="section-num">Reserve</span><h2>訂位與每人預算</h2></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>餐廳</th><th>每人 PLN</th><th>訂位管道／備註</th></tr></thead><tbody>${reservationRows}</tbody></table></div>
     </section>`;
-  return renderPracticalLayout('米其林與餐廳', 'Michelin 2026', '已把 2026 米其林名單與本行程實際餐廳分開；營業時間只寫能追到店家來源的分店。', content);
+  return renderPracticalLayout('米其林與餐廳', 'Michelin 2026', '已把 2026 米其林名單與本行程實際餐廳分開；營業時間只寫能追到店家來源的分店。', content, 'practical/dining.html');
 }
 
 export function renderTickets({ fares, ticketsByCity, notices = [] }) {
@@ -211,7 +218,7 @@ export function renderTickets({ fares, ticketsByCity, notices = [] }) {
       <p class="lead">這組是行程原本的城市分組備忘；若與上表不同，以「最新門票速查」與官網為準。</p>
       <div class="grid-wide">${quickCards}</div>
     </section>`;
-  return renderPracticalLayout('門票速查', 'Tickets', '把景點價格、優待、閉館與官方連結放在同一頁，規劃預算時不必來回找。', content);
+  return renderPracticalLayout('門票速查', 'Tickets', '把景點價格、優待、閉館與官方連結放在同一頁，規劃預算時不必來回找。', content, 'practical/tickets.html');
 }
 
 export function renderTransit({ transitFares, airportTransit, recommendedApps, passChecklist, usefulRoutes, practical = [] }) {
@@ -232,7 +239,7 @@ export function renderTransit({ transitFares, airportTransit, recommendedApps, p
     <section class="section"><div class="section-heading"><span class="section-num">Passes</span><h2>票券怎麼選</h2></div><ul class="check-list">${passChecklist.map(item => `<li>${item}</li>`).join('')}</ul></section>
     <section class="section"><div class="section-heading"><span class="section-num">Tips</span><h2>實用路線與搭車技巧</h2></div><ul class="check-list">${usefulRoutes.map(item => `<li>${item}</li>`).join('')}</ul></section>
     ${practical.length ? `<section class="section"><div class="section-heading"><span class="section-num">Ground rules</span><h2>其他實用資訊</h2></div><div class="grid">${practicalCards}</div></section>` : ''}`;
-  return renderPracticalLayout('市內交通', 'City transit', '四城大多可步行；需要搭車時，先查短程票與 Jakdojade，通常不必買多日券。', content);
+  return renderPracticalLayout('市內交通', 'City transit', '四城大多可步行；需要搭車時，先查短程票與 Jakdojade，通常不必買多日券。', content, 'practical/transit.html');
 }
 
 export function renderShopping({ souvenirCards, luxuryShopping, souvenirShops = [], shopping = [], zabkaCards }) {
@@ -247,7 +254,7 @@ export function renderShopping({ souvenirCards, luxuryShopping, souvenirShops = 
     <section class="section"><div class="section-heading"><span class="section-num">Quick list</span><h2>傳統伴手禮備忘</h2></div><div class="grid">${legacyCards}</div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Luxury</span><h2>精品購物</h2></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>店家</th><th>城市</th><th>備註</th></tr></thead><tbody>${luxuryRows}</tbody></table></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Żabka</span><h2>超商怎麼逛</h2></div><div class="grid">${zabkaHtml}</div></section>`;
-  return renderPracticalLayout('伴手禮與購物', 'Shopping', '先決定要買什麼，再直接打開店家地圖；肉製品入境台灣限制也已標出。', content);
+  return renderPracticalLayout('伴手禮與購物', 'Shopping', '先決定要買什麼，再直接打開店家地圖；肉製品入境台灣限制也已標出。', content, 'practical/shopping.html');
 }
 
 export function renderEssentials({ phrases, packingDefault, about, safety }) {
@@ -263,12 +270,12 @@ export function renderEssentials({ phrases, packingDefault, about, safety }) {
     <section class="section"><div class="section-heading"><span class="section-num">Packing</span><h2>打包清單</h2></div><div class="grid-wide">${packingHtml}</div></section>
     <section class="section"><div class="section-heading"><span class="section-num">SOS</span><h2>緊急聯絡</h2></div><div class="grid-wide"><div class="table-wrap"><table class="table-editorial"><thead><tr><th>單位</th><th>電話</th></tr></thead><tbody>${emergencyRows}</tbody></table></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>駐波蘭代表處</th><th>資訊</th></tr></thead><tbody>${embassyRows}</tbody></table></div></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Safety</span><h2>安全與禮儀</h2></div><div class="grid-wide">${safetyCards}</div></section>`;
-  return renderPracticalLayout('安全與基本須知', 'Essentials', '語言、插座、打包、緊急電話與常見陷阱集中在這裡，出發前可快速複查。', content);
+  return renderPracticalLayout('安全與基本須知', 'Essentials', '語言、插座、打包、緊急電話與常見陷阱集中在這裡，出發前可快速複查。', content, 'practical/essentials.html');
 }
 
 export function renderNotes({ preDepartureNotes }) {
   const cards = preDepartureNotes.map((item, index) => `<article class="card ${index < 3 || index === 8 ? 'card-accent' : ''}"><span class="section-num">${String(index + 1).padStart(2, '0')}</span><p>${item}</p></article>`).join('');
-  return renderPracticalLayout('行前提醒', 'Pre-trip', '這些限制直接對應 2026/10/24–10/31 的日期；先處理閉館、日落、夏令時間與訂票節奏。', `<div class="grid-wide">${cards}</div>`);
+  return renderPracticalLayout('行前提醒', 'Pre-trip', '這些限制直接對應 2026/10/24–10/31 的日期；先處理閉館、日落、夏令時間與訂票節奏。', `<div class="grid-wide">${cards}</div>`, 'practical/notes.html');
 }
 
 export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups }) {
@@ -460,5 +467,5 @@ export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups
     </section>
   `;
 
-  return renderPracticalLayout('資料更新儀表板', 'Ops', '把 dashboard、待辦與網站三者同步；每次更新都先落在欄位、再看頁面。', content);
+  return renderPracticalLayout('資料更新儀表板', 'Ops', '把 dashboard、待辦與網站三者同步；每次更新都先落在欄位、再看頁面。', content, 'practical/ops-dashboard.html');
 }

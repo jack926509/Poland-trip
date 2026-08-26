@@ -225,5 +225,11 @@ ${coverHtml}
 
     <nav class="section-heading" aria-label="每日行程翻頁">${previous}${next}</nav>`;
 
-  return renderLayout({ title: `Day ${day.n} ${day.title}`, activeNav: 'days', bodyHtml, pageKind: 'day' });
+  return renderLayout({
+    title: `Day ${day.n} ${day.title}`,
+    activeNav: 'days',
+    bodyHtml,
+    pageKind: 'day',
+    currentPage: `day-${String(day.n).padStart(2, '0')}.html`,
+  });
 }

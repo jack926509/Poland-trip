@@ -1,4 +1,8 @@
 (() => {
+  // 先抓自己的位置：nav.js 固定在 <站台根>/assets/nav.js，
+  // 由它推出 sw.js 路徑，首頁與 practical/ 子目錄都適用
+  const selfScript = document.currentScript;
+
   const menus = document.querySelectorAll('.nav-dropdown');
 
   menus.forEach(menu => {
@@ -14,17 +18,6 @@
     });
   });
 
-  // 手機首屏留給內容：把常駐搜尋列收成一列入口，沒有 JS 時維持展開
-  const search = document.querySelector('details.site-search-shell');
-  if (search && typeof window.matchMedia === 'function') {
-    const compact = window.matchMedia('(max-width: 700px)');
-    const syncSearch = () => {
-      if (compact.matches) search.open = false;
-    };
-    syncSearch();
-    compact.addEventListener('change', syncSearch);
-  }
-
   document.addEventListener('keydown', event => {
     if (event.key !== 'Escape') return;
     const openMenu = [...menus].find(menu => menu.open);
@@ -32,4 +25,13 @@
     openMenu.open = false;
     openMenu.querySelector('summary')?.focus();
   });
+
+  // 離線可用：註冊 service worker，行程、城市頁與地圖程式都會被快取
+  if ('serviceWorker' in navigator && selfScript && location.protocol.startsWith('http')) {
+    window.addEventListener('load', () => {
+      const swUrl = new URL('../sw.js', selfScript.src);
+      navigator.serviceWorker.register(swUrl, { scope: new URL('./', swUrl) })
+        .catch(() => { /* 註冊失敗不影響一般瀏覽 */ });
+    });
+  }
 })();

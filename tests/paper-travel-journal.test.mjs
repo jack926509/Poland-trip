@@ -93,10 +93,8 @@ test('單檔版導覽與下拉連結提供至少 44px 觸控高度', () => {
   assert.match(standalone, /\.standalone-page-controls a:last-child \{[^}]*justify-content:\s*flex-end/);
 });
 
-test('必要搜尋資訊與首頁行程摘要字級至少 16px', () => {
+test('首頁行程摘要字級至少 16px', () => {
   const source = css();
-  assert.match(source, /\.site-search-result-copy small,[\s\S]*font-size:\s*1rem/);
-  assert.match(source, /\.site-search-map-link\s*\{[^}]*font-size:\s*1rem/);
   assert.match(source, /\.journal-day-date\s*\{[^}]*font-size:\s*1rem/);
   assert.match(source, /\.journal-day-copy small\s*\{[^}]*font-size:\s*1rem/);
   assert.match(source, /nav\.section-heading\s*>\s*a\s*\{[^}]*min-height:\s*44px/);

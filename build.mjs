@@ -26,12 +26,6 @@ import {
   renderOpsDashboard,
 } from './src/templates/practical.mjs';
 import { renderDatabase } from './src/templates/database.mjs';
-import { renderSiteSearch, searchIndexPlaceholder } from './src/templates/layout.mjs';
-import {
-  buildPageSearchRecords,
-  buildTravelSearchRecords,
-  serializeSearchIndex,
-} from './src/search/site-search-index.mjs';
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 const distDir = path.join(projectRoot, 'dist');
@@ -103,7 +97,7 @@ function bundlePage(relativePath, label, pageIndex) {
   };
 
   const content = main[1]
-    .replace(/\s*<script src="https:\/\/unpkg\.com\/leaflet@1\.9\.4\/dist\/leaflet\.js"><\/script>/g, '')
+    .replace(/\s*<script src="assets\/leaflet\/leaflet\.js"><\/script>/g, '')
     .replace(/\s*<script src="\.\.\/assets\/database-filter\.js" defer><\/script>/g, '')
     .replace(/href="([^"]+)"/g, rewriteHref)
     .replace(/\bid="([^"]+)"/g, (_, id) => `id="${currentPageId}--${id}"`)
@@ -130,26 +124,12 @@ ${controls}
 </section>`;
 }
 
-function standaloneSearchHref(href) {
-  if (/^(?:[a-z]+:|\/\/|#)/i.test(href)) return href;
-  const [relativePath, fragment] = href.split('#');
-  if (!standalonePages.some(([page]) => page === relativePath)) return href;
-  const pageId = standalonePageId(relativePath);
-  return `#${pageId}${fragment ? `--${fragment}` : ''}`;
-}
-
-function buildStandalone(searchRecords) {
+function buildStandalone() {
   const mainCss = fs.readFileSync(path.join(distDir, 'assets/main.css'), 'utf8');
+  // 單檔版把 Leaflet 一併內嵌，離線帶著一個檔案就能用（僅圖磚仍需連線）
+  const leafletCss = fs.readFileSync(path.join(distDir, 'assets/leaflet/leaflet.css'), 'utf8');
+  const leafletJs = fs.readFileSync(path.join(distDir, 'assets/leaflet/leaflet.js'), 'utf8');
   const databaseFilterJs = fs.readFileSync(path.join(distDir, 'assets/database-filter.js'), 'utf8');
-  const siteSearchJs = fs.readFileSync(path.join(distDir, 'assets/site-search.js'), 'utf8');
-  const standaloneSearchRecords = searchRecords.map(record => ({
-    ...record,
-    href: standaloneSearchHref(record.href),
-  }));
-  const standaloneSearchHtml = renderSiteSearch({
-    searchIndexJson: serializeSearchIndex(standaloneSearchRecords),
-    databaseHref: '#page-practical-database',
-  });
   const navMenus = standaloneNavGroups.map(group => {
     const links = group.pages
       .map(([relativePath, label]) => `<a href="#${standalonePageId(relativePath)}">${label}</a>`)
@@ -178,8 +158,9 @@ function buildStandalone(searchRecords) {
        不會整頁空白等到逾時（實測阻斷式載入在 CDN 無回應時會空白 12.4 秒） -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null">
   <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"></noscript>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" media="print" onload="this.media='all';this.onload=null">
-  <noscript><link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"></noscript>
+  <style data-bundled="leaflet.css">
+${leafletCss}
+  </style>
   <style data-bundled="main.css">
 ${mainCss}
   </style>
@@ -343,7 +324,9 @@ ${mainCss}
       .standalone-page-controls { display: none; }
     }
   </style>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script data-bundled="leaflet.js">
+${leafletJs}
+  </script>
 </head>
 <body class="journal-site journal-standalone">
   <a class="skip-link" href="#page-index">跳至旅程首頁</a>
@@ -351,7 +334,6 @@ ${mainCss}
       <a class="standalone-home" href="#page-index">POLSKA PAPER TRAVEL JOURNAL</a>
       ${navMenus}
   </nav>
-  ${standaloneSearchHtml}
   <main id="standalone-content">
 ${bundledPages}
   </main>
@@ -408,45 +390,10 @@ ${bundledPages}
     }());
 ${databaseFilterJs}
   </script>
-  <script type="module" data-bundled="site-search.js">
-${siteSearchJs}
-  </script>
 </body>
 </html>`;
 
   fs.writeFileSync(standalonePath, html, 'utf8');
-}
-
-function buildSearchRecords() {
-  const travelRecords = buildTravelSearchRecords({
-    days: trip.days,
-    trains: trip.trains,
-    cities: cities.cities,
-    cityStories: cities.cityStories,
-    mapPins: cities.mapPins,
-    cityDining: dining.cityDining,
-    cityFood: dining.cityFood,
-    foodBackup: dining.foodBackup,
-    verifiedRestaurantHours: dining.verifiedRestaurantHours,
-  });
-  const pageRecords = buildPageSearchRecords(standalonePages.map(([relativePath, title]) => ({
-    relativePath,
-    title,
-    html: fs.readFileSync(path.join(distDir, relativePath), 'utf8'),
-  })));
-  return [...travelRecords, ...pageRecords];
-}
-
-function injectSearchIndex(searchRecords) {
-  const serialized = serializeSearchIndex(searchRecords);
-  for (const [relativePath] of standalonePages) {
-    const outputPath = path.join(distDir, relativePath);
-    const html = fs.readFileSync(outputPath, 'utf8');
-    if (!html.includes(searchIndexPlaceholder)) {
-      throw new Error(`${relativePath} 缺少搜尋索引佔位`);
-    }
-    fs.writeFileSync(outputPath, html.replace(searchIndexPlaceholder, serialized), 'utf8');
-  }
 }
 
 function build() {
@@ -454,8 +401,9 @@ function build() {
   fs.copyFileSync(path.join(projectRoot, 'src/styles/main.css'), path.join(distDir, 'assets/main.css'));
   fs.copyFileSync(path.join(projectRoot, 'src/scripts/nav.js'), path.join(distDir, 'assets/nav.js'));
   fs.copyFileSync(path.join(projectRoot, 'src/scripts/database-filter.js'), path.join(distDir, 'assets/database-filter.js'));
-  fs.copyFileSync(path.join(projectRoot, 'src/scripts/site-search.js'), path.join(distDir, 'assets/site-search.js'));
   fs.cpSync(path.join(projectRoot, 'assets', 'photos'), path.join(distDir, 'assets', 'photos'), { recursive: true });
+  fs.cpSync(path.join(projectRoot, 'vendor', 'leaflet'), path.join(distDir, 'assets', 'leaflet'), { recursive: true });
+  fs.copyFileSync(path.join(projectRoot, 'sw.js'), path.join(distDir, 'sw.js'));
 
   writeHtml('index.html', renderHome({
     meta: trip.meta,
@@ -484,6 +432,7 @@ function build() {
     writeHtml(`city-${fileKey}.html`, renderCity({
       city,
       cityKey: mapKey,
+      cityFile: fileKey,
       mapData: cities.mapPins[mapKey],
       legend: cities.pinCategoryLegend,
       attractionsForCity: cities.attractions[mapKey],
@@ -554,9 +503,7 @@ function build() {
     statusLabels: travelDatabase.statusLabels,
   }));
 
-  const searchRecords = buildSearchRecords();
-  injectSearchIndex(searchRecords);
-  buildStandalone(searchRecords);
+  buildStandalone();
 
   const htmlCount = fs.readdirSync(distDir).filter(name => name.endsWith('.html')).length
     + fs.readdirSync(path.join(distDir, 'practical')).filter(name => name.endsWith('.html')).length;

@@ -221,5 +221,12 @@ export function renderDatabase({ entries, sections, statusLabels }) {
     ${sectionCards}
     </div>
     <script src="../assets/database-filter.js" defer></script>`;
-  return renderLayout({ title: '自由行資料庫', activeNav: 'practical', bodyHtml, pathPrefix: '../', pageKind: 'practical' });
+  return renderLayout({
+    title: '自由行資料庫',
+    activeNav: 'practical',
+    bodyHtml,
+    pathPrefix: '../',
+    pageKind: 'practical',
+    currentPage: 'practical/database.html',
+  });
 }
