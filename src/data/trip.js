@@ -400,51 +400,54 @@ export const bookingTiers = [
   ]},
 ];
 
+// checkedAt：實際人工核對這筆狀態的 YYYY-MM-DD；不以建置日期代填。
+// recheckAt：下次查核期限 YYYY-MM-DD；null 時儀表板以行程日期判斷逾期。
+// 目前沒有逐筆查票日期證據，保留 null；只有取得訂票結果後才更新完成狀態。
 export const todoGroups = [
   {
     id: 'rail', title: '城際交通', eyebrow: 'Rail · 5 項',
     intro: '四段 PKP 與一組 Auschwitz 往返巴士都是行程銜接目標；尚未完成指定日確認或購票前，不把規劃時刻、車種或月台當成已確認。',
     items: [
-      {date:'10/25', name:'華沙 → 克拉科夫火車', status:'尚未開賣／確認', action:'在 PKP Intercity 顯示實際車次後，確認車廂、座位與轉乘保障。', url:'https://www.intercity.pl/en/'},
-      {date:'10/26', name:'Lajkonik 克拉科夫 ⇄ Auschwitz 巴士', status:'指定日尚未確認', action:'依已取得的 Auschwitz 導覽時段，在業者售票頁確認 10/26 去回班次、上下車點與票價。', url:'https://www.lajkonikbus.eu/krakow-oswiecim.html'},
-      {date:'10/27', name:'克拉科夫 → 樂斯拉夫火車', status:'尚未開賣／確認', action:'依實際直達班次重排晚間抵達與住宿接駁。', url:'https://www.intercity.pl/en/'},
-      {date:'10/28', name:'樂斯拉夫 → 波茲南火車', status:'尚未開賣／確認', action:'確認發車時刻、月台與座位後更新當日轉場。', url:'https://www.intercity.pl/en/'},
-      {date:'10/29', name:'波茲南 → 華沙火車', status:'尚未開賣／確認', action:'確認抵達華沙時間，保留晚餐與入住緩衝。', url:'https://www.intercity.pl/en/'},
+      {checkedAt:null, recheckAt:null, date:'10/25', name:'華沙 → 克拉科夫火車', status:'尚未開賣／確認', action:'在 PKP Intercity 顯示實際車次後，確認車廂、座位與轉乘保障。', url:'https://www.intercity.pl/en/'},
+      {checkedAt:null, recheckAt:null, date:'10/26', name:'Lajkonik 克拉科夫 ⇄ Auschwitz 巴士', status:'指定日尚未確認', action:'依已取得的 Auschwitz 導覽時段，在業者售票頁確認 10/26 去回班次、上下車點與票價。', url:'https://www.lajkonikbus.eu/krakow-oswiecim.html'},
+      {checkedAt:null, recheckAt:null, date:'10/27', name:'克拉科夫 → 樂斯拉夫火車', status:'尚未開賣／確認', action:'依實際直達班次重排晚間抵達與住宿接駁。', url:'https://www.intercity.pl/en/'},
+      {checkedAt:null, recheckAt:null, date:'10/28', name:'樂斯拉夫 → 波茲南火車', status:'尚未開賣／確認', action:'確認發車時刻、月台與座位後更新當日轉場。', url:'https://www.intercity.pl/en/'},
+      {checkedAt:null, recheckAt:null, date:'10/29', name:'波茲南 → 華沙火車', status:'尚未開賣／確認', action:'確認抵達華沙時間，保留晚餐與入住緩衝。', url:'https://www.intercity.pl/en/'},
     ],
   },
   {
     id: 'attractions', title: '主要景點', eyebrow: 'Tickets · 8 項',
     intro: '指定日期的場次與庫存會變動；付款完成後請下載離線票券並核對入場時間。',
     items: [
-      {date:'10/25', name:'Wawel 城堡 14:00', status:'尚未訂', action:'以官方售票頁確認 10/25 的 14:00 路線與庫存；未取得票前不假設可現場購買。', url:'https://wawel.krakow.pl/en/what-to-see'},
-      {date:'10/25', name:'辛德勒工廠 17:30', status:'現可查／購', action:'10/25 已進個人網路票 90 天窗口；以官方售票頁的可售時段為準。', url:'https://muzeumkrakowa.pl/en/branches/oskar-schindlers-enamel-factory'},
-      {date:'10/26', name:'Auschwitz 英文官方導覽', status:'需查／購', action:'只能線上取得入場證；選擇官方系統提供的英文導覽場次。', url:'https://visit.auschwitz.org/'},
-      {date:'10/27', name:'Wieliczka 鹽礦英文團', status:'需查／購', action:'在官方日期選擇器確認英文場、票價與庫存。', url:'https://www.wieliczka-saltmine.com/'},
-      {date:'10/28', name:'拉茨瓦維採全景畫', status:'尚未訂', action:'以官方售票頁確認指定入場時段。', url:'https://mnwr.pl/en/category/branches/panorama-raclawicka/'},
-      {date:'10/30', name:'華沙皇家城堡 10:00', status:'尚未訂', action:'選擇 10:00 入場，並保留安檢與離館移動時間。', url:'https://www.zamek-krolewski.pl/en'},
-      {date:'10/30', name:'POLIN 猶太人歷史博物館 13:15', status:'尚未訂', action:'依官方售票頁的指定日庫存選擇 13:15 左右時段（主展最後入場 16:00）。', url:'https://polin.pl/en'},
-      {date:'10/30', name:'華沙起義博物館 16:00', status:'尚未訂', action:'依官方票頁可售時段確認，避免與前一館離館時間衝突。', url:'https://www.1944.pl/en'},
+      {checkedAt:null, recheckAt:null, date:'10/25', name:'Wawel 城堡 14:00', status:'尚未訂', action:'以官方售票頁確認 10/25 的 14:00 路線與庫存；未取得票前不假設可現場購買。', url:'https://wawel.krakow.pl/en/what-to-see'},
+      {checkedAt:null, recheckAt:null, date:'10/25', name:'辛德勒工廠 17:30', status:'現可查／購', action:'10/25 已進個人網路票 90 天窗口；以官方售票頁的可售時段為準。', url:'https://muzeumkrakowa.pl/en/branches/oskar-schindlers-enamel-factory'},
+      {checkedAt:null, recheckAt:null, date:'10/26', name:'Auschwitz 英文官方導覽', status:'需查／購', action:'只能線上取得入場證；選擇官方系統提供的英文導覽場次。', url:'https://visit.auschwitz.org/'},
+      {checkedAt:null, recheckAt:null, date:'10/27', name:'Wieliczka 鹽礦英文團', status:'需查／購', action:'在官方日期選擇器確認英文場、票價與庫存。', url:'https://www.wieliczka-saltmine.com/'},
+      {checkedAt:null, recheckAt:null, date:'10/28', name:'拉茨瓦維採全景畫', status:'尚未訂', action:'以官方售票頁確認指定入場時段。', url:'https://mnwr.pl/en/category/branches/panorama-raclawicka/'},
+      {checkedAt:null, recheckAt:null, date:'10/30', name:'華沙皇家城堡 10:00', status:'尚未訂', action:'選擇 10:00 入場，並保留安檢與離館移動時間。', url:'https://www.zamek-krolewski.pl/en'},
+      {checkedAt:null, recheckAt:null, date:'10/30', name:'POLIN 猶太人歷史博物館 13:15', status:'尚未訂', action:'依官方售票頁的指定日庫存選擇 13:15 左右時段（主展最後入場 16:00）。', url:'https://polin.pl/en'},
+      {checkedAt:null, recheckAt:null, date:'10/30', name:'華沙起義博物館 16:00', status:'尚未訂', action:'依官方票頁可售時段確認，避免與前一館離館時間衝突。', url:'https://www.1944.pl/en'},
     ],
   },
   {
     id: 'venue-status', title: '場館開放狀態', eyebrow: 'Status · 1 項',
     intro: '不需購票，但會決定當天走不走得成；未確認前主行程只排外觀與周邊。',
     items: [
-      {date:'10/28', name:'百年廳 10/28 內部參觀狀態', status:'待官方日曆確認', action:'上 halastulecia.pl 的 availability calendar 查 10/28 圓頂展廳是否開放；2026-08-09 盤查時官方公開頁既無法證實關閉、也無法證實開放。行前 3–5 天再複查一次。', url:'https://halastulecia.pl/zwiedzanie/visitor-centre/'},
+      {checkedAt:null, recheckAt:null, date:'10/28', name:'百年廳 10/28 內部參觀狀態', status:'待官方日曆確認', action:'上 halastulecia.pl 的 availability calendar 查 10/28 圓頂展廳是否開放；2026-08-09 盤查時官方公開頁既無法證實關閉、也無法證實開放。行前 3–5 天再複查一次。', url:'https://halastulecia.pl/zwiedzanie/visitor-centre/'},
     ],
   },
   {
     id: 'dining', title: '餐飲訂位', eyebrow: 'Dining · 1 項',
     intro: '餐廳營業與臨時包場以店家訂位頁公告為準。',
     items: [
-      {date:'10/30', name:'華沙最後晚餐', status:'尚未訂位', action:'先依當天落腳區域選定店家，再以店家官網或訂位頁完成預約。', url:null},
+      {checkedAt:null, recheckAt:null, date:'10/30', name:'華沙最後晚餐', status:'尚未訂位', action:'先依當天落腳區域選定店家，再以店家官網或訂位頁完成預約。', url:null},
     ],
   },
   {
     id: 'rainy-day', title: '雨天備案', eyebrow: 'Backup · 1 項',
     intro: '天氣不影響主行程時不必購買。',
     items: [
-      {date:'10/29', name:'波茲南牛角麵包博物館場次', status:'僅雨天需要', action:'若雨勢影響老城散步，再以官方售票頁選擇合適場次。', url:'https://rogalowemuzeum.pl/en/'},
+      {checkedAt:null, recheckAt:null, date:'10/29', name:'波茲南牛角麵包博物館場次', status:'僅雨天需要', action:'若雨勢影響老城散步，再以官方售票頁選擇合適場次。', url:'https://rogalowemuzeum.pl/en/'},
     ],
   },
 ];

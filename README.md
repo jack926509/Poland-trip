@@ -39,3 +39,11 @@ env -u NODE_OPTIONS ./verify.sh
 Day 01／06／07／08 共用華沙同一張。若要補充照片，請沿用 CREDITS.md 記錄的流程
 （Wikimedia Commons 允許改作的授權 → 裁切 → 長邊 1200px → WebP），
 並把新檔案與授權資訊一併補進該表。
+
+## 儀表板與訂票狀態維護
+
+- 儀表板在開啟、每分鐘、切回頁面及匯出前，依台灣日期重新計算今日更新量和逾期數；離線時也可計算，但使用的是已載入的資料，沒有自動查票。
+- JSON 與 CSV 使用匯出當下的日期及相同統計；CSV 採 UTF-8 BOM、CRLF 換行，所有欄位皆處理引號。
+- `src/data/trip.js` 的 `todoGroups` 為人工訂票紀錄。查核後更新 `status`、`checkedAt`（實際查核日期）、`recheckAt`（下次查核期限）、`action` 與 `url`。缺少查核日期時顯示「未記錄，請重查」，不以建置或部署日期代填。
+- 「可查／購」仍計入未完成項目。只有收到訂票確認後才改為「已訂妥」或「已完成」，並核對 `days`、`trains`、`reservations` 與 `bookingTiers` 的相應行程；票號、訂位代碼與付款資料另存私人票券。
+- 資料庫 CSV 匯入只更新 `travel-database.js` 的對應條目，不會替使用者完成購票或自動更新 `todoGroups`。修改後執行 `env -u NODE_OPTIONS ./verify.sh`，再提交部署。
