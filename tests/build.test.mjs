@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import vm from 'node:vm';
 import { test } from 'node:test';
 import { cities, cityStories, photoSpots, photoCredits, mapPins, mapPinChecks, pinCategoryLegend, attractions, cityNotices } from '../src/data/cities.js';
 import { cityDining, cityFood, foodBackup, foods, michelinSummary, michelinReservations, verifiedRestaurantHours } from '../src/data/dining.js';
@@ -376,11 +377,13 @@ test('克拉科夫與樂斯拉夫飲水資訊各自保有官方來源', () => {
   assert.equal(wroclawWater?.sourceUrl, 'https://www.mpwik.wroc.pl/csr-2/pij-kranowke/');
 });
 
-test('dist 正好產出規格要求的 23 個 HTML', () => {
-  assert.deepEqual(htmlFiles(), [...expectedFiles].sort());
+test('dist 產出 23 個分頁與可直接部署的單檔版', () => {
+  assert.deepEqual(htmlFiles(), [...expectedFiles, 'poland-travel-guide-2026.html'].sort());
   assert.ok(fs.existsSync(path.join(distDir, 'assets/main.css')), '缺少 assets/main.css');
-  // 查找／篩選功能已整批移除，不應再輸出篩選程式
-  assert.ok(!fs.existsSync(path.join(distDir, 'assets/database-filter.js')), '不應再輸出資料庫篩選程式');
+  assert.ok(fs.existsSync(path.join(distDir, 'assets/database-filter.js')), '缺少資料庫篩選程式');
+  const deployedStandalone = path.join(distDir, 'poland-travel-guide-2026.html');
+  assert.ok(fs.existsSync(deployedStandalone), 'Pages 公開輸出缺少單檔版');
+  assert.equal(fs.readFileSync(deployedStandalone, 'utf8'), fs.readFileSync(standalonePath, 'utf8'));
 });
 
 test('單檔旅遊指南封裝全部 23 頁且不依賴本機 CSS 或其他 HTML', () => {
@@ -399,9 +402,11 @@ test('單檔旅遊指南封裝全部 23 頁且不依賴本機 CSS 或其他 HTML
   assert.ok(html.includes('href="#page-practical-database"'));
   assert.ok(html.includes('href="#page-practical-ops-dashboard"'));
   assert.ok(html.includes('href="#page-day-01"'));
-  // 資料庫查找區塊已移除，單檔版不應再帶入篩選欄位或篩選程式
-  assert.doesNotMatch(html, /data-db-(?:query|city|category|status|privacy|quick|clear|summary)/);
-  assert.doesNotMatch(html, /function applyFilters\(\)/);
+  assert.match(html, /data-db-filter-input="query"/);
+  assert.match(html, /data-db-query="[^"]*wroclaw/);
+  assert.match(html, /data-db-quick="status:recheck"/);
+  assert.match(html, /data-bundled="database-filter\.js"/);
+  assert.match(html, /function applyFilters\(\)/);
   assert.doesNotMatch(html, /<script[^>]+src="\.\.\/assets\/database-filter\.js"/);
 });
 
@@ -451,6 +456,9 @@ test('單檔版城市地圖以穩定資料屬性初始化，不受章節 id 改�
   }
   assert.match(html, /document\.currentScript/);
   assert.match(html, /closest\('\.standalone-page'\)/);
+  assert.match(html, /data-bundled="leaflet\.css"/);
+  assert.match(html, /data-bundled="leaflet\.js"/);
+  assert.doesNotMatch(html, /<script[^>]+src="assets\/leaflet\/leaflet\.js"/);
 });
 
 test('正式頁面保留垂直滑動，地圖與寬表格不會鎖住整頁', () => {
@@ -494,7 +502,7 @@ test('待辦事項頁將 16 項依五類整理，並在實用資訊導覽可進�
 });
 
 test('自由行資料庫頁提供 SOS、主題索引與緊急聯絡資訊', () => {
-  assert.equal(htmlFiles().length, 23);
+  assert.equal(htmlFiles().length, 24);
   const html = read('practical/database.html');
   for (const heading of ['SOS 離線急救卡', '出入境與 ETIAS', '航班與行李', '醫療與保險', '退稅 TAX FREE']) {
     assert.ok(html.includes(heading), `資料庫頁缺少 ${heading}`);
@@ -559,8 +567,9 @@ test('自由行資料庫以主題索引導覽，每筆條目都保有可連結�
 
   // 查找／統計區塊已移除，改由主題索引導覽
   assert.ok(html.includes('資料庫主題索引'), '缺少主題索引');
-  assert.doesNotMatch(html, /靜態查找與統計/);
-  assert.doesNotMatch(html, /database-toolbar|db-chip|database-facet/);
+  assert.match(html, /靜態查找與統計/);
+  assert.match(html, /class="database-toolbar"/);
+  assert.match(html, /class="db-chip"/);
 
   // 條目錨點必須保留，既有深連結才不會失效
   for (const entry of databaseEntries) {
@@ -1094,13 +1103,56 @@ test('service worker 提供離線快取，且不預快取被歸檔的介面', ()
   for (const file of expectedFiles) {
     assert.ok(worker.includes(`./${file}`), `sw.js 預快取缺少 ${file}`);
   }
-  for (const asset of ['./assets/main.css', './assets/nav.js', './assets/leaflet/leaflet.js']) {
+  for (const asset of ['./assets/main.css', './assets/nav.js', './assets/site-search.js', './assets/database-filter.js', './assets/leaflet/leaflet.js']) {
     assert.ok(worker.includes(asset), `sw.js 預快取缺少 ${asset}`);
   }
 
   for (const stalePath of ['mobile.html', 'redesign/', 'desktop/']) {
     assert.ok(!worker.includes(stalePath), `sw.js 仍引用舊路徑 ${stalePath}`);
   }
+});
+
+test('service worker 預快取失敗時不啟用殘缺新版', async () => {
+  const worker = fs.readFileSync('sw.js', 'utf8');
+  const handlers = new Map();
+  const failedRequest = new Error('模擬必要資源下載失敗');
+  let installPromise;
+  let skipWaitingCalls = 0;
+  const cache = {
+    add(url) {
+      return url === './day-01.html' ? Promise.reject(failedRequest) : Promise.resolve();
+    },
+    addAll() {
+      return Promise.reject(failedRequest);
+    },
+  };
+  const self = {
+    location: { origin: 'https://example.test' },
+    clients: { claim: async () => {} },
+    addEventListener(type, handler) {
+      handlers.set(type, handler);
+    },
+    async skipWaiting() {
+      skipWaitingCalls += 1;
+    },
+  };
+
+  vm.runInNewContext(worker, {
+    self,
+    caches: {
+      open: async () => cache,
+      keys: async () => [],
+      delete: async () => true,
+      match: async () => null,
+    },
+    fetch: async () => { throw new Error('測試不應執行 fetch'); },
+    URL,
+    Response,
+  });
+
+  handlers.get('install')({ waitUntil(promise) { installPromise = promise; } });
+  await assert.rejects(installPromise, /模擬必要資源下載失敗/);
+  assert.equal(skipWaitingCalls, 0, '預快取失敗時不得啟用新版 worker');
 });
 
 test('每頁都註冊 service worker，且 sw.js 一起輸出到站台根目錄', () => {

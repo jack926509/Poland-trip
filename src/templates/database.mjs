@@ -23,6 +23,15 @@ const categoryLabels = {
 };
 
 const cityLabels = { WAW: '華沙', KRK: '克拉科夫', WRO: '樂斯拉夫', POZ: '波茲南', PL: '波蘭全國', ROUTE: '跨城／全程' };
+const citySearchAliases = {
+  WAW: 'warsaw warszawa',
+  KRK: 'krakow kraków',
+  WRO: 'wroclaw wrocław',
+  POZ: 'poznan poznań',
+  PL: 'poland polska',
+  ROUTE: 'route multi-city',
+};
+const cityFilterOrder = ['WAW', 'KRK', 'WRO', 'POZ', 'PL', 'ROUTE'];
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -49,8 +58,24 @@ function formatDate(value) {
 function normalizeSearchText(value) {
   return String(value ?? '')
     .toLowerCase()
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .replace(/ł/g, 'l')
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+function renderFilterOptions(label, name, values, labelFor) {
+  const allLabel = name === 'status'
+    ? '全部狀態'
+    : name === 'city' ? '全部城市' : name === 'privacy' ? '全部公開性' : '全部類別';
+  return `<label class="database-filter">
+      <span>${escapeHtml(label)}</span>
+      <select id="db-${escapeHtml(name)}" data-db-filter-select="${escapeHtml(name)}">
+        <option value="all">${allLabel}</option>
+        ${values.map(value => `<option value="${escapeHtml(value)}">${escapeHtml(labelFor(value))}</option>`).join('')}
+      </select>
+    </label>`;
 }
 
 function renderStatusPill(status, statusLabels) {
@@ -75,6 +100,7 @@ function renderCard(entry, statusLabels, { representativePhone = false } = {}) {
     entry.offlineNote,
     categoryLabels[entry.category],
     cityLabels[entry.cityKey],
+    citySearchAliases[entry.cityKey],
     statusLabels[entry.status],
     entry.status === 'private-required' ? '需填私人資料' : '',
     entry.private ? 'private' : 'public',
@@ -94,7 +120,6 @@ function renderCard(entry, statusLabels, { representativePhone = false } = {}) {
       data-db-status="${escapeHtml(entry.status)}"
       data-db-privacy="${entry.private ? 'private' : 'public'}"
       data-section="${escapeHtml(entry.section)}"
-      data-db-summary="${escapeHtml(searchBlob)}"
       data-privacy="${entry.private ? 'private' : 'public'}"
       data-search="${escapeHtml(searchBlob)}">
       <div class="database-card-header">
@@ -140,6 +165,8 @@ function renderSos(entries, statusLabels) {
 }
 
 export function renderDatabase({ entries, sections, statusLabels }) {
+  const cityOptions = cityFilterOrder.filter(city => entries.some(entry => entry.cityKey === city));
+  const categoryOptions = Object.keys(categoryLabels).filter(category => entries.some(entry => entry.category === category));
   const index = sections.map(section => {
     const label = escapeHtml(displaySectionLabels[section.id] || section.label);
     return `<li><a href="#section-${escapeHtml(section.id)}">${label}</a></li>`;
@@ -162,12 +189,41 @@ export function renderDatabase({ entries, sections, statusLabels }) {
       <p class="hero-dek">把可公開查證的資料、出發前重查事項與私人待填項目分開呈現；本站不公開訂位代碼、護照、保單或付款資料。</p>
     </header>
     ${renderSos(entries, statusLabels)}
+    <section class="section" aria-labelledby="database-lookup-heading">
+      <div class="section-heading"><span class="section-num">Lookup</span><h2 id="database-lookup-heading">靜態查找與統計</h2></div>
+      <p class="lead">用城市、類別、狀態、公開性與關鍵字快速縮小資料；篩選只在目前裝置執行，不會傳送查詢內容。</p>
+      <div class="database-toolbar">
+        <div class="database-toolbar-grid">
+          <label class="database-filter" for="db-query">
+            <span>關鍵字</span>
+            <input id="db-query" type="search" data-db-filter-input="query" placeholder="輸入景點、文件、電話、地點..." aria-label="資料關鍵字查詢">
+          </label>
+          ${renderFilterOptions('城市', 'city', cityOptions, city => cityLabels[city])}
+          ${renderFilterOptions('類別', 'category', categoryOptions, category => categoryLabels[category] || category)}
+          ${renderFilterOptions('狀態', 'status', Object.keys(statusLabels), status => statusLabels[status])}
+          ${renderFilterOptions('公開性', 'privacy', ['public', 'private'], privacy => privacy === 'public' ? '一般公開' : '待填私人資料')}
+        </div>
+        <div class="database-toolbar-actions">
+          <button type="button" id="db-clear" data-db-clear="filters" class="btn btn-ghost">清除條件</button>
+          <p class="database-result-summary" id="database-result-summary" data-db-summary="results" aria-live="polite">目前 ${entries.length} / ${entries.length} 筆</p>
+        </div>
+      </div>
+      <div class="database-chip-row" aria-label="快速篩選">
+        <button class="db-chip" type="button" data-db-quick="city:PL" aria-pressed="false">全國通用</button>
+        <button class="db-chip" type="button" data-db-quick="status:recheck" aria-pressed="false">待重查</button>
+        <button class="db-chip" type="button" data-db-quick="status:pending" aria-pressed="false">待確認</button>
+        <button class="db-chip" type="button" data-db-quick="privacy:public" aria-pressed="false">公開版</button>
+        <button class="db-chip" type="button" data-db-quick="privacy:private" aria-pressed="false">私人待補</button>
+      </div>
+      <p id="database-empty" class="database-empty" data-db-empty aria-live="polite" hidden>目前條件沒有符合資料。可清除條件後再搜尋。</p>
+    </section>
     <nav class="database-index" aria-label="資料庫主題索引">
       <h2>主題索引</h2>
       <ol>${index}</ol>
     </nav>
     ${sectionCards}
-    </div>`;
+    </div>
+    <script src="../assets/database-filter.js" defer></script>`;
   return renderLayout({
     title: '自由行資料庫',
     activeNav: 'practical',

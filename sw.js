@@ -6,7 +6,7 @@
 //   - OSM 圖磚：stale-while-revalidate 的執行期快取，看過的區域離線仍在
 // 同時沿用舊版行為，清掉已封存的 polska-v* 快取。
 
-const VERSION = 'polska-journal-v2';
+const VERSION = 'polska-journal-v3';
 const SHELL = `${VERSION}-shell`;
 const RUNTIME = `${VERSION}-runtime`;
 const TILES = `${VERSION}-tiles`;
@@ -27,6 +27,8 @@ const PAGES = [
 const ASSETS = [
   './assets/main.css',
   './assets/nav.js',
+  './assets/site-search.js',
+  './assets/database-filter.js',
   './assets/leaflet/leaflet.css',
   './assets/leaflet/leaflet.js',
   './assets/photos/warszawa-hero.webp',
@@ -40,8 +42,8 @@ const PRECACHE = [...PAGES, ...ASSETS];
 self.addEventListener('install', event => {
   event.waitUntil((async () => {
     const cache = await caches.open(SHELL);
-    // 個別 add：任何一頁失敗都不該讓整個安裝失敗
-    await Promise.all(PRECACHE.map(url => cache.add(url).catch(() => null)));
+    // 必要檔案必須全部成功，才允許新版取代目前可用的離線快取。
+    await cache.addAll(PRECACHE);
     await self.skipWaiting();
   })());
 });

@@ -16,6 +16,21 @@ test('正式頁面使用紙上旅行誌外框且保留可及性入口', () => {
   assert.match(home, /<details class="nav-dropdown[^>]*name="primary-navigation">/);
 });
 
+test('長頁保留章節索引、目前頁面與目前導覽群組標示', () => {
+  const day = read('day-02.html');
+  assert.match(day, /class="chapter-index"/);
+  assert.match(day, /<a href="day-02\.html" aria-current="page" class="nav-link-current">Day 2<\/a>/);
+  assert.match(day, /<summary aria-current="true">每日行程<\/summary>/);
+});
+
+test('頁面保留深色模式中繼設定與非阻斷字型載入', () => {
+  const home = read('index.html');
+  assert.match(home, /<meta name="color-scheme" content="light dark">/);
+  assert.equal((home.match(/<meta name="theme-color"/g) || []).length, 2);
+  assert.match(home, /rel="stylesheet" media="print" onload="this\.media='all'/);
+  assert.match(home, /<noscript><link[^>]+fonts\.googleapis\.com[^>]+rel="stylesheet"><\/noscript>/);
+});
+
 test('旅行誌視覺契約包含紙色、墨紫、觸控與 reduced motion', () => {
   const source = css();
   assert.match(source, /--paper:\s*#f4eddf/i);
@@ -73,6 +88,10 @@ test('實用頁採旅行誌附錄版式且資料庫接口不變', () => {
   for (const selector of ['data-db-query', 'data-db-city', 'data-db-category', 'data-db-status', 'data-db-privacy', 'data-db-summary']) {
     assert.ok(database.includes(selector), `資料庫缺少 ${selector}`);
   }
+  assert.match(database, /data-db-filter-input="query"/);
+  assert.match(database, /data-db-filter-select="city"/);
+  assert.match(database, /data-db-clear="filters"/);
+  assert.match(database, /src="\.\.\/assets\/database-filter\.js"/);
 });
 
 test('單檔版使用旅行誌刊頭並完整封裝 23 個章節', () => {
@@ -81,6 +100,9 @@ test('單檔版使用旅行誌刊頭並完整封裝 23 個章節', () => {
   assert.match(standalone, /POLSKA PAPER TRAVEL JOURNAL/);
   assert.equal((standalone.match(/class="standalone-page"/g) || []).length, 23);
   assert.match(standalone, /<style data-bundled="main\.css">/);
+  assert.match(standalone, /<style data-bundled="leaflet\.css">/);
+  assert.match(standalone, /<script data-bundled="leaflet\.js">/);
+  assert.match(standalone, /<script data-bundled="database-filter\.js">/);
   assert.doesNotMatch(standalone, /href="assets\/main\.css"/);
   assert.doesNotMatch(standalone, /src="\.\.\/assets\/database-filter\.js"/);
 });

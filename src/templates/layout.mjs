@@ -2,6 +2,79 @@ function current(activeNav, key) {
   return activeNav === key ? ' aria-current="page"' : '';
 }
 
+function currentGroup(activeNav, key) {
+  return activeNav === key ? ' aria-current="true"' : '';
+}
+
+const CITY_LINKS = [
+  ['city-warszawa.html', '華沙 Warszawa'],
+  ['city-krakow.html', '克拉科夫 Kraków'],
+  ['city-wroclaw.html', '樂斯拉夫 Wrocław'],
+  ['city-poznan.html', '波茲南 Poznań'],
+];
+
+const PRACTICAL_LINKS = [
+  ['practical/todos.html', '待辦事項'],
+  ['practical/booking.html', '訂票與交通'],
+  ['practical/dining.html', '米其林與餐廳'],
+  ['practical/tickets.html', '門票速查'],
+  ['practical/transit.html', '市內交通'],
+  ['practical/shopping.html', '伴手禮與購物'],
+  ['practical/essentials.html', '安全與基本須知'],
+  ['practical/notes.html', '行前提醒'],
+  ['practical/ops-dashboard.html', '資料更新儀表板'],
+  ['practical/database.html', '自由行資料庫'],
+];
+
+const DAY_LINKS = Array.from({ length: 8 }, (_, index) => {
+  const day = index + 1;
+  return [`day-${String(day).padStart(2, '0')}.html`, `Day ${day}`];
+});
+
+function escapeAttr(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
+}
+
+function buildChapterIndex(bodyHtml) {
+  const sectionPattern = /<section class="section([^"]*)"([^>]*)>/g;
+  const items = [];
+  let counter = 0;
+
+  const rewritten = bodyHtml.replace(sectionPattern, (match, extraClass, attrs) => {
+    counter += 1;
+    const existingId = /\bid="([^"]+)"/.exec(attrs)?.[1];
+    const id = existingId || `sec-${counter}`;
+    items.push({ id });
+    return existingId ? match : `<section class="section${extraClass}" id="${id}"${attrs}>`;
+  });
+
+  const blocks = rewritten.split('<section class="section');
+  items.forEach((item, position) => {
+    const block = blocks[position + 1] || '';
+    item.num = /<span class="section-num">([^<]*)<\/span>/.exec(block)?.[1]?.trim() || '';
+    item.title = /<h2[^>]*>([\s\S]*?)<\/h2>/.exec(block)?.[1]?.replace(/<[^>]+>/g, '').trim() || '';
+  });
+
+  const usable = items.filter(item => item.title);
+  if (usable.length < 3) return bodyHtml;
+
+  const links = usable.map(item => `<li><a href="#${escapeAttr(item.id)}">${
+    item.num ? `<span>${item.num}</span>` : ''
+  }${item.title}</a></li>`).join('');
+  const indexHtml = `<nav class="chapter-index" aria-labelledby="chapter-index-label">
+      <p class="chapter-index-label" id="chapter-index-label">本頁章節</p>
+      <ol>${links}</ol>
+    </nav>`;
+  const firstSection = rewritten.indexOf('<section class="section');
+  return firstSection === -1
+    ? rewritten
+    : `${rewritten.slice(0, firstSection)}${indexHtml}\n    ${rewritten.slice(firstSection)}`;
+}
+
 export const searchIndexPlaceholder = '__SITE_SEARCH_INDEX__';
 
 export function renderSiteSearch({
@@ -47,13 +120,19 @@ export function renderLayout({
   extraHead = '',
   pathPrefix = '',
   pageKind = 'practical',
+  currentPage = '',
+  chapterIndex = true,
 }) {
   const path = file => `${pathPrefix}${file}`;
-  const dayLinks = Array.from({ length: 8 }, (_, index) => {
-    const day = index + 1;
-    const file = `day-${String(day).padStart(2, '0')}.html`;
-    return `<li><a href="${path(file)}">Day ${day}</a></li>`;
-  }).join('');
+  const useChapterIndex = chapterIndex && pageKind !== 'home' && !bodyHtml.includes('database-index');
+  const pageBody = useChapterIndex ? buildChapterIndex(bodyHtml) : bodyHtml;
+  const navLink = ([file, label]) => {
+    const isCurrent = currentPage === file;
+    return `<li><a href="${path(file)}"${isCurrent ? ' aria-current="page" class="nav-link-current"' : ''}>${label}</a></li>`;
+  };
+  const dayLinks = DAY_LINKS.map(navLink).join('');
+  const cityLinks = CITY_LINKS.map(navLink).join('');
+  const practicalLinks = PRACTICAL_LINKS.map(navLink).join('');
 
   return `<!DOCTYPE html>
 <html lang="zh-Hant">
@@ -61,11 +140,15 @@ export function renderLayout({
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="2026 波蘭四城 8 天旅遊規劃：逐日行程、城市地圖、交通、門票與餐廳。">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f4eddf" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#191411" media="(prefers-color-scheme: dark)">
   <title>${title} · POLSKA 波蘭行</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%232b2723'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-size='38' font-family='serif' font-weight='700' fill='%23f6f1e8'%3EP%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"></noscript>
   <link rel="stylesheet" href="${path('assets/main.css')}">
   ${extraHead}
 </head>
@@ -78,39 +161,21 @@ export function renderLayout({
     </a>
     <span class="journal-edition" aria-hidden="true">VOL. 2026 · 08 DAYS</span>
     <details class="nav-dropdown${activeNav === 'days' ? ' nav-dropdown-current' : ''}" name="primary-navigation">
-      <summary>每日行程</summary>
+      <summary${currentGroup(activeNav, 'days')}>每日行程</summary>
       <ul><li><a href="${path('index.html#days')}">行程總覽</a></li>${dayLinks}</ul>
     </details>
     <details class="nav-dropdown${activeNav === 'cities' ? ' nav-dropdown-current' : ''}" name="primary-navigation">
-      <summary>城市指南</summary>
-      <ul>
-        <li><a href="${path('index.html#cities')}">城市總覽</a></li>
-        <li><a href="${path('city-warszawa.html')}">華沙 Warszawa</a></li>
-        <li><a href="${path('city-krakow.html')}">克拉科夫 Kraków</a></li>
-        <li><a href="${path('city-wroclaw.html')}">樂斯拉夫 Wrocław</a></li>
-        <li><a href="${path('city-poznan.html')}">波茲南 Poznań</a></li>
-      </ul>
+      <summary${currentGroup(activeNav, 'cities')}>城市指南</summary>
+      <ul><li><a href="${path('index.html#cities')}">城市總覽</a></li>${cityLinks}</ul>
     </details>
     <details class="nav-dropdown${activeNav === 'practical' ? ' nav-dropdown-current' : ''}" name="primary-navigation">
-      <summary>實用資訊</summary>
-      <ul>
-        <li><a href="${path('index.html#practical')}">實用資訊總覽</a></li>
-        <li><a href="${path('practical/todos.html')}">待辦事項</a></li>
-        <li><a href="${path('practical/booking.html')}">訂票與交通</a></li>
-        <li><a href="${path('practical/dining.html')}">米其林與餐廳</a></li>
-        <li><a href="${path('practical/tickets.html')}">門票速查</a></li>
-        <li><a href="${path('practical/transit.html')}">市內交通</a></li>
-        <li><a href="${path('practical/shopping.html')}">伴手禮與購物</a></li>
-        <li><a href="${path('practical/essentials.html')}">安全與基本須知</a></li>
-        <li><a href="${path('practical/notes.html')}">行前提醒</a></li>
-        <li><a href="${path('practical/ops-dashboard.html')}">資料更新儀表板</a></li>
-        <li><a href="${path('practical/database.html')}">自由行資料庫</a></li>
-      </ul>
+      <summary${currentGroup(activeNav, 'practical')}>實用資訊</summary>
+      <ul><li><a href="${path('index.html#practical')}">實用資訊總覽</a></li>${practicalLinks}</ul>
     </details>
   </nav>
   ${renderSiteSearch({ pathPrefix })}
   <main class="page" id="main-content">
-    ${bodyHtml}
+    ${pageBody}
   </main>
   <footer class="footer">
     <div class="footer-inner">
