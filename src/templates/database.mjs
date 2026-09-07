@@ -85,10 +85,16 @@ function renderCard(entry, statusLabels, { representativePhone = false } = {}) {
       class="database-card"
       id="entry-${escapeHtml(entry.id)}"
       data-db-card="true"
+      data-db-query="${escapeHtml(searchBlob)}"
       data-city="${escapeHtml(entry.cityKey)}"
       data-category="${escapeHtml(entry.category)}"
       data-status="${escapeHtml(entry.status)}"
+      data-db-city="${escapeHtml(entry.cityKey)}"
+      data-db-category="${escapeHtml(entry.category)}"
+      data-db-status="${escapeHtml(entry.status)}"
+      data-db-privacy="${entry.private ? 'private' : 'public'}"
       data-section="${escapeHtml(entry.section)}"
+      data-db-summary="${escapeHtml(searchBlob)}"
       data-privacy="${entry.private ? 'private' : 'public'}"
       data-search="${escapeHtml(searchBlob)}">
       <div class="database-card-header">

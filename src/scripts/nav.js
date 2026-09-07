@@ -1,4 +1,5 @@
 (() => {
+  const selfScript = document.currentScript;
   const menus = document.querySelectorAll('.nav-dropdown');
   const nav = document.querySelector('.nav');
   const backdrop = document.createElement('button');
@@ -72,5 +73,9 @@
     markUnavailableMaps();
   } else {
     window.addEventListener('load', markUnavailableMaps, { once: true });
+  }
+
+  if ('serviceWorker' in navigator && selfScript) {
+    navigator.serviceWorker.register(new URL('../sw.js', selfScript.src)).catch(() => {});
   }
 })();

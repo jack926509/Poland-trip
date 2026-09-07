@@ -143,6 +143,9 @@ function bundlePage(relativePath, label, pageIndex) {
   const contentWithRewrittenLinks = main[1]
     .replace(/\s*<script src="https:\/\/unpkg\.com\/leaflet@1\.9\.4\/dist\/leaflet\.js"><\/script>/g, '')
     .replace(/\s*<script src="\.\.\/assets\/database-filter\.js" defer><\/script>/g, '')
+    .replace(/\s*<script src="assets\/leaflet\/leaflet\.js"><\/script>/g, '')
+    .replace(/\s*<link rel="stylesheet" href="assets\/leaflet\/leaflet\.css">/g, '')
+    .replace(/\s*data-db-(?:query|city|category|status|privacy|quick|summary)="[^"]*"/g, '')
     .replace(/href="([^"]+)"/g, rewriteHref);
   const content = rewriteStandaloneIdReferences(contentWithRewrittenLinks, currentPageId).trim();
 
@@ -171,7 +174,6 @@ function standaloneSearchHref(href) {
 
 function buildStandalone(searchRecords) {
   const mainCss = fs.readFileSync(path.join(distDir, 'assets/main.css'), 'utf8');
-  const databaseFilterJs = fs.readFileSync(path.join(distDir, 'assets/database-filter.js'), 'utf8');
   const siteSearchJs = fs.readFileSync(path.join(distDir, 'assets/site-search.js'), 'utf8');
   const standaloneSearchRecords = searchRecords.map(record => ({
     ...record,
@@ -206,7 +208,6 @@ function buildStandalone(searchRecords) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <style data-bundled="main.css">
 ${mainCss}
   </style>
@@ -378,7 +379,6 @@ ${mainCss}
       .standalone-page-controls { display: none; }
     }
   </style>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body class="journal-site journal-standalone">
   <a class="skip-link" href="#page-index">跳至旅程首頁</a>
@@ -401,7 +401,7 @@ ${bundledPages}
       var pages = Array.from(document.querySelectorAll('.standalone-page'));
       var defaultPageId = 'page-index';
 
-      function showStandalonePage(targetId) {
+      function showStandalonePage(targetId, shouldScroll) {
         var target = document.getElementById(targetId);
         var activePage = target ? target.closest('.standalone-page') : document.getElementById(defaultPageId);
         var activePageId = activePage ? activePage.id : defaultPageId;
@@ -411,14 +411,15 @@ ${bundledPages}
         window.requestAnimationFrame(function () {
           window.requestAnimationFrame(function () {
             var activeTarget = document.getElementById(targetId) || document.getElementById(activePageId);
-            if (activeTarget) activeTarget.scrollIntoView({ block: 'start' });
+            if (shouldScroll && activeTarget) activeTarget.scrollIntoView({ block: 'start' });
             window.dispatchEvent(new Event('resize'));
           });
         });
       }
 
       function activateStandaloneHash() {
-        showStandalonePage(decodeURIComponent(window.location.hash.slice(1)) || defaultPageId);
+        var hash = decodeURIComponent(window.location.hash.slice(1));
+        showStandalonePage(hash || defaultPageId, Boolean(hash));
       }
 
       document.querySelector('.standalone-nav').addEventListener('click', function (event) {
@@ -435,9 +436,8 @@ ${bundledPages}
         openMenu.querySelector('summary').focus();
       });
       window.addEventListener('hashchange', activateStandaloneHash);
-      activateStandaloneHash();
+    activateStandaloneHash();
     }());
-${databaseFilterJs}
   </script>
   <script type="module" data-bundled="site-search.js">
 ${siteSearchJs}
@@ -486,8 +486,9 @@ function buildIntoStaging(stagingRoot) {
   resetOutput();
   fs.copyFileSync(path.join(projectRoot, 'src/styles/main.css'), path.join(distDir, 'assets/main.css'));
   fs.copyFileSync(path.join(projectRoot, 'src/scripts/nav.js'), path.join(distDir, 'assets/nav.js'));
-  fs.copyFileSync(path.join(projectRoot, 'src/scripts/database-filter.js'), path.join(distDir, 'assets/database-filter.js'));
   fs.copyFileSync(path.join(projectRoot, 'src/scripts/site-search.js'), path.join(distDir, 'assets/site-search.js'));
+  fs.copyFileSync(path.join(projectRoot, 'sw.js'), path.join(distDir, 'sw.js'));
+  fs.cpSync(path.join(projectRoot, 'vendor', 'leaflet'), path.join(distDir, 'assets', 'leaflet'), { recursive: true });
   fs.cpSync(path.join(projectRoot, 'assets', 'photos'), path.join(distDir, 'assets', 'photos'), { recursive: true });
 
   writeHtml('index.html', renderHome({
