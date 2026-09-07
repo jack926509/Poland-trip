@@ -26,10 +26,18 @@ import {
   renderOpsDashboard,
 } from './src/templates/practical.mjs';
 import { renderDatabase } from './src/templates/database.mjs';
+import { renderSiteSearch, searchIndexPlaceholder } from './src/templates/layout.mjs';
+import {
+  buildPageSearchRecords,
+  buildTravelSearchRecords,
+  serializeSearchIndex,
+} from './src/search/site-search-index.mjs';
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
-const distDir = path.join(projectRoot, 'dist');
-const standalonePath = path.join(projectRoot, 'poland-travel-guide-2026.html');
+const publishedDistDir = path.join(projectRoot, 'dist');
+const publishedStandalonePath = path.join(projectRoot, 'poland-travel-guide-2026.html');
+let distDir;
+let standalonePath;
 const standalonePages = [
   ['index.html', '旅程首頁'],
   ...Array.from({ length: 8 }, (_, index) => [
@@ -78,6 +86,42 @@ function standalonePageId(relativePath) {
   return `page-${relativePath.replace(/\.html$/, '').replace(/[^a-z0-9]+/gi, '-')}`;
 }
 
+const standaloneIdReferenceAttributes = new Set([
+  'for',
+  'form',
+  'headers',
+  'list',
+  'aria-activedescendant',
+  'aria-controls',
+  'aria-describedby',
+  'aria-details',
+  'aria-errormessage',
+  'aria-flowto',
+  'aria-labelledby',
+  'aria-owns',
+]);
+
+function prefixIdReferenceList(value, pageId) {
+  return value.split(/(\s+)/).map(token => (
+    token.trim() ? `${pageId}--${token}` : token
+  )).join('');
+}
+
+export function rewriteStandaloneIdReferences(content, pageId) {
+  return content.replace(
+    /(\s)(id|for|form|headers|list|aria-activedescendant|aria-controls|aria-describedby|aria-details|aria-errormessage|aria-flowto|aria-labelledby|aria-owns)\s*=\s*(["'])(.*?)\3/gi,
+    (match, whitespace, attribute, quote, value) => {
+      if (!value.trim()) return match;
+      const rewritten = attribute.toLowerCase() === 'id'
+        ? `${pageId}--${value}`
+        : standaloneIdReferenceAttributes.has(attribute.toLowerCase())
+          ? prefixIdReferenceList(value, pageId)
+          : value;
+      return `${whitespace}${attribute}=${quote}${rewritten}${quote}`;
+    },
+  );
+}
+
 function bundlePage(relativePath, label, pageIndex) {
   const html = fs.readFileSync(path.join(distDir, relativePath), 'utf8');
   const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i);
@@ -96,17 +140,11 @@ function bundlePage(relativePath, label, pageIndex) {
     return `href="#${targetPageId}${fragment ? `--${fragment}` : ''}"`;
   };
 
-  const content = main[1]
-    .replace(/\s*<script src="assets\/leaflet\/leaflet\.js"><\/script>/g, '')
-    .replace(/href="([^"]+)"/g, rewriteHref)
-    .replace(/\bid="([^"]+)"/g, (_, id) => `id="${currentPageId}--${id}"`)
-    .replace(/\bfor="([^"]+)"/g, (_, id) => `for="${currentPageId}--${id}"`)
-    .replace(/\baria-labelledby="([^"]+)"/g, (_, ids) => (
-      `aria-labelledby="${ids.split(/\s+/).map(id => `${currentPageId}--${id}`).join(' ')}"`
-    ))
-    .replace(/\baria-describedby="([^"]+)"/g, (_, ids) => (
-      `aria-describedby="${ids.split(/\s+/).map(id => `${currentPageId}--${id}`).join(' ')}"`
-    )).trim();
+  const contentWithRewrittenLinks = main[1]
+    .replace(/\s*<script src="https:\/\/unpkg\.com\/leaflet@1\.9\.4\/dist\/leaflet\.js"><\/script>/g, '')
+    .replace(/\s*<script src="\.\.\/assets\/database-filter\.js" defer><\/script>/g, '')
+    .replace(/href="([^"]+)"/g, rewriteHref);
+  const content = rewriteStandaloneIdReferences(contentWithRewrittenLinks, currentPageId).trim();
 
   const previous = standalonePages[pageIndex - 1];
   const next = standalonePages[pageIndex + 1];
@@ -123,11 +161,26 @@ ${controls}
 </section>`;
 }
 
-function buildStandalone() {
+function standaloneSearchHref(href) {
+  if (/^(?:[a-z]+:|\/\/|#)/i.test(href)) return href;
+  const [relativePath, fragment] = href.split('#');
+  if (!standalonePages.some(([page]) => page === relativePath)) return href;
+  const pageId = standalonePageId(relativePath);
+  return `#${pageId}${fragment ? `--${fragment}` : ''}`;
+}
+
+function buildStandalone(searchRecords) {
   const mainCss = fs.readFileSync(path.join(distDir, 'assets/main.css'), 'utf8');
-  // 單檔版把 Leaflet 一併內嵌，離線帶著一個檔案就能用（僅圖磚仍需連線）
-  const leafletCss = fs.readFileSync(path.join(distDir, 'assets/leaflet/leaflet.css'), 'utf8');
-  const leafletJs = fs.readFileSync(path.join(distDir, 'assets/leaflet/leaflet.js'), 'utf8');
+  const databaseFilterJs = fs.readFileSync(path.join(distDir, 'assets/database-filter.js'), 'utf8');
+  const siteSearchJs = fs.readFileSync(path.join(distDir, 'assets/site-search.js'), 'utf8');
+  const standaloneSearchRecords = searchRecords.map(record => ({
+    ...record,
+    href: standaloneSearchHref(record.href),
+  }));
+  const standaloneSearchHtml = renderSiteSearch({
+    searchIndexJson: serializeSearchIndex(standaloneSearchRecords),
+    databaseHref: '#page-practical-database',
+  });
   const navMenus = standaloneNavGroups.map(group => {
     const links = group.pages
       .map(([relativePath, label]) => `<a href="#${standalonePageId(relativePath)}">${label}</a>`)
@@ -152,13 +205,8 @@ function buildStandalone() {
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%232b2723'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-size='38' font-family='serif' font-weight='700' fill='%23f6f1e8'%3EP%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- 字型改為非阻斷載入：字型 CDN 連不上時，內文立刻以系統中文字型顯示，
-       不會整頁空白等到逾時（實測阻斷式載入在 CDN 無回應時會空白 12.4 秒） -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null">
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"></noscript>
-  <style data-bundled="leaflet.css">
-${leafletCss}
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <style data-bundled="main.css">
 ${mainCss}
   </style>
@@ -297,6 +345,14 @@ ${mainCss}
       }
       .standalone-home,
       .standalone-menu > summary { display: block; text-align: center; }
+      .standalone-home {
+        min-width: 0;
+        padding-inline: .45rem;
+        font-size: .72rem;
+        line-height: 1.25;
+        white-space: normal;
+        overflow-wrap: anywhere;
+      }
       .standalone-menu { position: static; min-width: 0; }
       .standalone-menu-panel {
         top: calc(100% - .15rem);
@@ -322,9 +378,7 @@ ${mainCss}
       .standalone-page-controls { display: none; }
     }
   </style>
-  <script data-bundled="leaflet.js">
-${leafletJs}
-  </script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body class="journal-site journal-standalone">
   <a class="skip-link" href="#page-index">跳至旅程首頁</a>
@@ -332,6 +386,7 @@ ${leafletJs}
       <a class="standalone-home" href="#page-index">POLSKA PAPER TRAVEL JOURNAL</a>
       ${navMenus}
   </nav>
+  ${standaloneSearchHtml}
   <main id="standalone-content">
 ${bundledPages}
   </main>
@@ -346,7 +401,7 @@ ${bundledPages}
       var pages = Array.from(document.querySelectorAll('.standalone-page'));
       var defaultPageId = 'page-index';
 
-      function showStandalonePage(targetId, shouldScroll) {
+      function showStandalonePage(targetId) {
         var target = document.getElementById(targetId);
         var activePage = target ? target.closest('.standalone-page') : document.getElementById(defaultPageId);
         var activePageId = activePage ? activePage.id : defaultPageId;
@@ -355,19 +410,15 @@ ${bundledPages}
         });
         window.requestAnimationFrame(function () {
           window.requestAnimationFrame(function () {
-            if (shouldScroll) {
-              var activeTarget = document.getElementById(targetId) || document.getElementById(activePageId);
-              if (activeTarget) activeTarget.scrollIntoView({ block: 'start' });
-            }
+            var activeTarget = document.getElementById(targetId) || document.getElementById(activePageId);
+            if (activeTarget) activeTarget.scrollIntoView({ block: 'start' });
             window.dispatchEvent(new Event('resize'));
           });
         });
       }
 
       function activateStandaloneHash() {
-        // 沒有 hash 就是剛打開檔案：留在文件頂端，別把搜尋列捲進固定導覽列底下
-        var hash = decodeURIComponent(window.location.hash.slice(1));
-        showStandalonePage(hash || defaultPageId, Boolean(hash));
+        showStandalonePage(decodeURIComponent(window.location.hash.slice(1)) || defaultPageId);
       }
 
       document.querySelector('.standalone-nav').addEventListener('click', function (event) {
@@ -386,6 +437,10 @@ ${bundledPages}
       window.addEventListener('hashchange', activateStandaloneHash);
       activateStandaloneHash();
     }());
+${databaseFilterJs}
+  </script>
+  <script type="module" data-bundled="site-search.js">
+${siteSearchJs}
   </script>
 </body>
 </html>`;
@@ -393,13 +448,47 @@ ${bundledPages}
   fs.writeFileSync(standalonePath, html, 'utf8');
 }
 
-function build() {
+function buildSearchRecords() {
+  const travelRecords = buildTravelSearchRecords({
+    days: trip.days,
+    trains: trip.trains,
+    cities: cities.cities,
+    cityStories: cities.cityStories,
+    mapPins: cities.mapPins,
+    cityDining: dining.cityDining,
+    cityFood: dining.cityFood,
+    foodBackup: dining.foodBackup,
+    verifiedRestaurantHours: dining.verifiedRestaurantHours,
+  });
+  const pageRecords = buildPageSearchRecords(standalonePages.map(([relativePath, title]) => ({
+    relativePath,
+    title,
+    html: fs.readFileSync(path.join(distDir, relativePath), 'utf8'),
+  })));
+  return [...travelRecords, ...pageRecords];
+}
+
+function injectSearchIndex(searchRecords) {
+  const serialized = serializeSearchIndex(searchRecords);
+  for (const [relativePath] of standalonePages) {
+    const outputPath = path.join(distDir, relativePath);
+    const html = fs.readFileSync(outputPath, 'utf8');
+    if (!html.includes(searchIndexPlaceholder)) {
+      throw new Error(`${relativePath} 缺少搜尋索引佔位`);
+    }
+    fs.writeFileSync(outputPath, html.replace(searchIndexPlaceholder, serialized), 'utf8');
+  }
+}
+
+function buildIntoStaging(stagingRoot) {
+  distDir = path.join(stagingRoot, 'dist');
+  standalonePath = path.join(stagingRoot, 'poland-travel-guide-2026.html');
   resetOutput();
   fs.copyFileSync(path.join(projectRoot, 'src/styles/main.css'), path.join(distDir, 'assets/main.css'));
   fs.copyFileSync(path.join(projectRoot, 'src/scripts/nav.js'), path.join(distDir, 'assets/nav.js'));
+  fs.copyFileSync(path.join(projectRoot, 'src/scripts/database-filter.js'), path.join(distDir, 'assets/database-filter.js'));
+  fs.copyFileSync(path.join(projectRoot, 'src/scripts/site-search.js'), path.join(distDir, 'assets/site-search.js'));
   fs.cpSync(path.join(projectRoot, 'assets', 'photos'), path.join(distDir, 'assets', 'photos'), { recursive: true });
-  fs.cpSync(path.join(projectRoot, 'vendor', 'leaflet'), path.join(distDir, 'assets', 'leaflet'), { recursive: true });
-  fs.copyFileSync(path.join(projectRoot, 'sw.js'), path.join(distDir, 'sw.js'));
 
   writeHtml('index.html', renderHome({
     meta: trip.meta,
@@ -428,7 +517,6 @@ function build() {
     writeHtml(`city-${fileKey}.html`, renderCity({
       city,
       cityKey: mapKey,
-      cityFile: fileKey,
       mapData: cities.mapPins[mapKey],
       legend: cities.pinCategoryLegend,
       attractionsForCity: cities.attractions[mapKey],
@@ -499,12 +587,89 @@ function build() {
     statusLabels: travelDatabase.statusLabels,
   }));
 
-  buildStandalone();
+  const searchRecords = buildSearchRecords();
+  injectSearchIndex(searchRecords);
+  buildStandalone(searchRecords);
 
   const htmlCount = fs.readdirSync(distDir).filter(name => name.endsWith('.html')).length
     + fs.readdirSync(path.join(distDir, 'practical')).filter(name => name.endsWith('.html')).length;
   if (htmlCount !== 23) throw new Error(`預期產生 23 頁，實際為 ${htmlCount} 頁`);
-  console.log(`build 完成：${htmlCount} 頁已產生至 dist/，另產生 poland-travel-guide-2026.html 單檔版`);
+  return {
+    htmlCount,
+    stagedDistDir: distDir,
+    stagedStandalonePath: standalonePath,
+  };
 }
 
-build();
+export function replacePublishedOutputs({
+  stagingRoot,
+  stagedDistDir,
+  stagedStandalonePath,
+  targetDistDir,
+  targetStandalonePath,
+}, { renameSync = fs.renameSync } = {}) {
+  if (!fs.statSync(stagedDistDir).isDirectory()) {
+    throw new Error('staging dist 不是目錄');
+  }
+  if (!fs.statSync(stagedStandalonePath).isFile()) {
+    throw new Error('staging 單檔版不是檔案');
+  }
+
+  const previousDistDir = path.join(stagingRoot, 'previous-dist');
+  const previousStandalonePath = path.join(stagingRoot, 'previous-standalone.html');
+  let previousDistMoved = false;
+  let previousStandaloneMoved = false;
+  let stagedDistPublished = false;
+  let stagedStandalonePublished = false;
+
+  try {
+    if (fs.existsSync(targetDistDir)) {
+      renameSync(targetDistDir, previousDistDir);
+      previousDistMoved = true;
+    }
+    if (fs.existsSync(targetStandalonePath)) {
+      renameSync(targetStandalonePath, previousStandalonePath);
+      previousStandaloneMoved = true;
+    }
+
+    renameSync(stagedDistDir, targetDistDir);
+    stagedDistPublished = true;
+    renameSync(stagedStandalonePath, targetStandalonePath);
+    stagedStandalonePublished = true;
+  } catch (error) {
+    if (stagedStandalonePublished && fs.existsSync(targetStandalonePath)) {
+      fs.rmSync(targetStandalonePath, { force: true });
+    }
+    if (stagedDistPublished && fs.existsSync(targetDistDir)) {
+      fs.rmSync(targetDistDir, { recursive: true, force: true });
+    }
+    if (previousStandaloneMoved && fs.existsSync(previousStandalonePath)) {
+      renameSync(previousStandalonePath, targetStandalonePath);
+    }
+    if (previousDistMoved && fs.existsSync(previousDistDir)) {
+      renameSync(previousDistDir, targetDistDir);
+    }
+    throw error;
+  }
+}
+
+export function build() {
+  const stagingRoot = fs.mkdtempSync(path.join(projectRoot, '.build-staging-'));
+  try {
+    const staged = buildIntoStaging(stagingRoot);
+    replacePublishedOutputs({
+      stagingRoot,
+      stagedDistDir: staged.stagedDistDir,
+      stagedStandalonePath: staged.stagedStandalonePath,
+      targetDistDir: publishedDistDir,
+      targetStandalonePath: publishedStandalonePath,
+    });
+    console.log(`build 完成：${staged.htmlCount} 頁已產生至 dist/，另產生 poland-travel-guide-2026.html 單檔版`);
+  } finally {
+    fs.rmSync(stagingRoot, { recursive: true, force: true });
+  }
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  build();
+}

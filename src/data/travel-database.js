@@ -410,8 +410,8 @@ const addressStepLabels = {
   '波茲南市政廳': ['廣場卡正面位置', '★ 山羊鐘樓秀'],
   '帝王城堡': ['帝王城堡 / Stary Browar'],
   'Stary Browar': ['帝王城堡 / Stary Browar'],
-  'POLIN 波蘭猶太人歷史博物館': ['★ POLIN 猶太博物館'],
-  '華沙起義博物館': ['★ 華沙起義博物館'],
+  'POLIN 波蘭猶太人歷史博物館': ['前往 POLIN + 安檢緩衝', '★ POLIN 猶太博物館'],
+  '華沙起義博物館': ['前往華沙起義博物館 + 安檢緩衝', '★ 華沙起義博物館'],
 };
 
 const address = (name, street, query, note = '') => ({
@@ -439,7 +439,7 @@ export const dayOperations = {
       accommodationAddress('warsaw-reduta', ['旅館 Check-in']),
     ],
     navigation: [
-      { mode: 'SKM', route: '蕭邦機場 → 華沙市中心', action: '抵達後查 WTP 即時班次與月台，使用第 1 區 75 分鐘票。' },
+      { mode: 'SKM', route: '蕭邦機場 → 華沙市中心', action: '抵達後查 WTP 即時班次、月台與官方票價，使用當日適用的第 1 區時間票。' },
       { mode: '步行／市內交通', route: '住宿 → 老城廣場', action: '先以已確認的住宿地址建立路線；若拖行李不直接去老城。' },
     ],
     dailyAlerts: [
@@ -577,11 +577,11 @@ export const dayOperations = {
       accommodationAddress('warsaw-metropol'),
     ],
     navigation: [
-      { mode: '步行／市內交通', route: '皇家城堡 → POLIN → 華沙起義博物館', action: '以已購入場時段倒推離館時間；館際移動當日用 Jakdojade 重算。' },
+      { mode: '步行／市內交通', route: '皇家城堡 → POLIN → 華沙起義博物館', action: '購票後以票面入場時段倒推離館時間；館際移動當日用 Jakdojade 重算。' },
       { mode: '步行／餐廳', route: '起義博物館 → 華沙晚餐', action: '晚餐地址待訂位／分店確定後填入；不以備選店名臆測導航。' },
     ],
     dailyAlerts: [
-      '三館內容量大；保留已購時段，不為追完所有展區壓縮館際移動。',
+      '三館內容量大；購票後保留票面時段，不為追完所有展區壓縮館際移動。',
       '10/31 為諸聖節前夕，今晚重查明日市區交通、機場與店家特別營運。',
     ],
     nightChecklist: [...standardNightChecklist, '整理 TAX FREE 商品與文件，確認需海關查驗的託運品不先交運', '確認 QR 260 報到、行李額度、機場交通與護照收納位置'],
@@ -633,12 +633,12 @@ const unresolvedStepReasons = {
     '火車到 Wieliczka Rynek-Kopalnia': dynamicTransitReason,
     'Wieliczka 鎮中心午餐': flexibleStopReason,
     '自由活動或補拍照、找地方喝咖啡': flexibleStopReason,
-    'IC 直達車': dynamicTransitReason,
+    '直達車': dynamicTransitReason,
   },
   5: {
     '糖果屋雙屋 + 教堂塔樓': '教堂塔樓入口與開放狀態須依當日官方公告確認。',
     '取行李 → Wrocław Główny': 'Piast 住宿已確認，但完整門牌尚待飯店第一方或私人訂房確認核對。',
-    'IC 直達車': dynamicTransitReason,
+    '直達車': dynamicTransitReason,
   },
   6: {
     '★ 聖馬丁牛角麵包 (PGI)': '尚未選定可靠分店，待分店與營業時間確認後補入。',

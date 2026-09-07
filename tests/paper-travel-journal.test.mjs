@@ -70,11 +70,9 @@ test('實用頁採旅行誌附錄版式且資料庫接口不變', () => {
   assert.match(todos, /<body class="journal-site journal-practical">/);
   assert.match(todos, /class="journal-appendix-header"/);
   assert.match(database, /class="journal-database"/);
-  // 查找／篩選介面已整批移除，資料庫頁只保留主題索引與靜態卡片
   for (const selector of ['data-db-query', 'data-db-city', 'data-db-category', 'data-db-status', 'data-db-privacy', 'data-db-summary']) {
-    assert.ok(!database.includes(selector), `資料庫不應再有 ${selector}`);
+    assert.ok(database.includes(selector), `資料庫缺少 ${selector}`);
   }
-  assert.match(database, /class="database-index"/);
 });
 
 test('單檔版使用旅行誌刊頭並完整封裝 23 個章節', () => {
@@ -85,7 +83,6 @@ test('單檔版使用旅行誌刊頭並完整封裝 23 個章節', () => {
   assert.match(standalone, /<style data-bundled="main\.css">/);
   assert.doesNotMatch(standalone, /href="assets\/main\.css"/);
   assert.doesNotMatch(standalone, /src="\.\.\/assets\/database-filter\.js"/);
-  assert.doesNotMatch(standalone, /data-db-query/);
 });
 
 test('單檔版導覽與下拉連結提供至少 44px 觸控高度', () => {
@@ -96,8 +93,24 @@ test('單檔版導覽與下拉連結提供至少 44px 觸控高度', () => {
   assert.match(standalone, /\.standalone-page-controls a:last-child \{[^}]*justify-content:\s*flex-end/);
 });
 
-test('首頁行程摘要字級至少 16px', () => {
+test('單檔版手機刊頭可在兩欄 grid cell 內換行且不再 nowrap 溢出', () => {
+  const standalone = fs.readFileSync(path.resolve('poland-travel-guide-2026.html'), 'utf8');
+  const mobileCss = standalone.match(/@media \(max-width: 640px\) \{([\s\S]*?)@media print/)?.[1];
+  assert.ok(mobileCss, '缺少單檔版 max-width: 640px 手機樣式');
+  assert.match(mobileCss, /\.standalone-nav \{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/);
+
+  const mobileHomeRule = mobileCss.match(/\.standalone-home \{([^}]*)\}/)?.[1];
+  assert.ok(mobileHomeRule, '缺少手機版 standalone-home 專用樣式');
+  assert.match(mobileHomeRule, /min-width:\s*0/);
+  assert.match(mobileHomeRule, /white-space:\s*normal/);
+  assert.match(mobileHomeRule, /overflow-wrap:\s*anywhere/);
+  assert.doesNotMatch(mobileHomeRule, /white-space:\s*nowrap/);
+});
+
+test('必要搜尋資訊與首頁行程摘要字級至少 16px', () => {
   const source = css();
+  assert.match(source, /\.site-search-result-copy small,[\s\S]*font-size:\s*1rem/);
+  assert.match(source, /\.site-search-map-link\s*\{[^}]*font-size:\s*1rem/);
   assert.match(source, /\.journal-day-date\s*\{[^}]*font-size:\s*1rem/);
   assert.match(source, /\.journal-day-copy small\s*\{[^}]*font-size:\s*1rem/);
   assert.match(source, /nav\.section-heading\s*>\s*a\s*\{[^}]*min-height:\s*44px/);
@@ -106,8 +119,10 @@ test('首頁行程摘要字級至少 16px', () => {
 test('多頁與單檔導覽都支援 Escape 關閉選單', () => {
   const navScript = fs.readFileSync(path.join(distDir, 'assets/nav.js'), 'utf8');
   const standalone = fs.readFileSync(path.resolve('poland-travel-guide-2026.html'), 'utf8');
-  assert.match(navScript, /event\.key !== 'Escape'/);
-  assert.match(navScript, /openMenu\.open = false/);
-  assert.match(standalone, /event\.key !== 'Escape'/);
-  assert.match(standalone, /openMenu\.open = false/);
+  assert.match(navScript, /const closeMenu = \(menu, restoreFocus = false\) => \{[^}]*menu\.open = false/s);
+  assert.match(navScript, /addEventListener\('click',[\s\S]*closeMenu\(menu\)/s);
+  assert.match(navScript, /event\.key !== 'Escape'[\s\S]*closeMenu\(getOpenMenu\(\), true\)/s);
+
+  assert.match(standalone, /addEventListener\('click',[\s\S]*menu\.removeAttribute\('open'\)/s);
+  assert.match(standalone, /event\.key !== 'Escape'[\s\S]*openMenu\.open = false/s);
 });

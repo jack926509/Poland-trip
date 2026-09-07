@@ -1,37 +1,76 @@
 (() => {
-  // 先抓自己的位置：nav.js 固定在 <站台根>/assets/nav.js，
-  // 由它推出 sw.js 路徑，首頁與 practical/ 子目錄都適用
-  const selfScript = document.currentScript;
-
   const menus = document.querySelectorAll('.nav-dropdown');
+  const nav = document.querySelector('.nav');
+  const backdrop = document.createElement('button');
+
+  backdrop.type = 'button';
+  backdrop.className = 'nav-backdrop';
+  backdrop.setAttribute('aria-label', '關閉導覽');
+  backdrop.tabIndex = -1;
+  backdrop.hidden = true;
+  document.body.append(backdrop);
+
+  const getOpenMenu = () => [...menus].find(menu => menu.open);
+  const syncBackdrop = () => {
+    backdrop.hidden = !getOpenMenu();
+  };
+
+  const closeMenu = (menu, restoreFocus = false) => {
+    if (!menu) return;
+    menu.open = false;
+    syncBackdrop();
+    if (restoreFocus) menu.querySelector('summary')?.focus();
+  };
 
   menus.forEach(menu => {
     menu.addEventListener('toggle', () => {
-      if (!menu.open) return;
-      menus.forEach(other => {
-        if (other !== menu) other.open = false;
-      });
+      if (menu.open) {
+        menus.forEach(other => {
+          if (other !== menu) other.open = false;
+        });
+      }
+      syncBackdrop();
     });
 
     menu.addEventListener('click', event => {
-      if (event.target.closest('a')) menu.open = false;
+      if (event.target.closest('a')) closeMenu(menu);
     });
+
+    menu.addEventListener('focusout', () => {
+      setTimeout(() => {
+        if (menu.open && !menu.contains(document.activeElement)) closeMenu(menu);
+      }, 0);
+    });
+  });
+
+  backdrop.addEventListener('pointerdown', event => {
+    event.preventDefault();
+    closeMenu(getOpenMenu(), true);
   });
 
   document.addEventListener('keydown', event => {
     if (event.key !== 'Escape') return;
-    const openMenu = [...menus].find(menu => menu.open);
-    if (!openMenu) return;
-    openMenu.open = false;
-    openMenu.querySelector('summary')?.focus();
+    closeMenu(getOpenMenu(), true);
   });
 
-  // 離線可用：註冊 service worker，行程、城市頁與地圖程式都會被快取
-  if ('serviceWorker' in navigator && selfScript && location.protocol.startsWith('http')) {
-    window.addEventListener('load', () => {
-      const swUrl = new URL('../sw.js', selfScript.src);
-      navigator.serviceWorker.register(swUrl, { scope: new URL('./', swUrl) })
-        .catch(() => { /* 註冊失敗不影響一般瀏覽 */ });
+  document.querySelectorAll('figure img').forEach(image => {
+    const markUnavailable = () => image.closest('figure')?.classList.add('media-unavailable');
+    image.addEventListener('error', markUnavailable, { once: true });
+    if (image.complete && image.naturalWidth === 0) markUnavailable();
+  });
+
+  const markUnavailableMaps = () => {
+    document.querySelectorAll('.map-container').forEach(map => {
+      if (map.querySelector('.leaflet-pane')) return;
+      map.classList.add('is-map-unavailable');
+      map.setAttribute('role', 'status');
+      map.textContent = '互動地圖目前無法載入，請改用下方景點清單與 Google Maps 連結。';
     });
+  };
+
+  if (document.readyState === 'complete') {
+    markUnavailableMaps();
+  } else {
+    window.addEventListener('load', markUnavailableMaps, { once: true });
   }
 })();

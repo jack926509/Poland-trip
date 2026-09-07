@@ -476,13 +476,13 @@ test('2026-08-09 官方盤查會移除未能證實的場次、價格與閉館敘
   assert.ok(cityNotices.wroclaw.some(item => item.text.includes('availability calendar')));
 });
 
-test('待辦事項頁將 14 項依五類整理，並在實用資訊導覽可進入', () => {
+test('待辦事項頁將 16 項依五類整理，並在實用資訊導覽可進入', () => {
   // 2026-08-11 新增 venue-status：百年廳 10/28 內部開放狀態不需購票，
   // 但未確認就可能整段落空，必須是可勾稽的待辦而不只是頁面上的警語。
   assert.deepEqual(todoGroups.map(group => [group.id, group.items.length]), [
-    ['rail', 4], ['attractions', 7], ['venue-status', 1], ['dining', 1], ['rainy-day', 1],
+    ['rail', 5], ['attractions', 8], ['venue-status', 1], ['dining', 1], ['rainy-day', 1],
   ]);
-  assert.equal(todoGroups.flatMap(group => group.items).length, 14);
+  assert.equal(todoGroups.flatMap(group => group.items).length, 16);
 
   const html = read('practical/todos.html');
   for (const label of ['城際交通', '主要景點', '場館開放狀態', '餐飲訂位', '雨天備案']) {
@@ -588,7 +588,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   });
 
   assert.equal(trains.length, 5);
-  assert.deepEqual(bookingTiers.map(tier => tier.items.length), [6, 6, 4]);
+  assert.deepEqual(bookingTiers.map(tier => tier.items.length), [7, 7, 4]);
   assert.deepEqual({ out: flights.out.length, back: flights.back.length }, { out: 5, back: 5 });
   assert.equal(stay.length, 5);
   assert.equal(reservations.length, 8);
@@ -612,7 +612,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.deepEqual([
     souvenirCards.length, luxuryShopping.length, souvenirShops.length,
     shopping.length, zabkaCards.length,
-  ], [14, 2, 7, 7, 7]);
+  ], [13, 2, 7, 7, 7]);
   assert.deepEqual([
     phrases.length, about.length, preDepartureNotes.length,
     safety.emergency.length, safety.embassy.length, safety.tips.length,
@@ -705,8 +705,9 @@ test('手機導覽以原生可展開選單呈現，且選單層級高於內容',
   assert.match(html, /<summary>每日行程<\/summary>/);
   assert.match(html, /<li><a href="index\.html#days">行程總覽<\/a><\/li>/);
   assert.match(html, /<script src="assets\/nav\.js" defer><\/script>/);
-  assert.match(navScript, /menu\.addEventListener\('toggle',[\s\S]*other\.open = false/s);
-  assert.match(navScript, /menu\.addEventListener\('click',[\s\S]*menu\.open = false/s);
+  assert.match(navScript, /const closeMenu = \(menu, restoreFocus = false\) => \{[^}]*menu\.open = false/s);
+  assert.match(navScript, /menu\.addEventListener\('click',[\s\S]*closeMenu\(menu\)/s);
+  assert.match(navScript, /event\.key !== 'Escape'[\s\S]*closeMenu\(getOpenMenu\(\), true\)/s);
   assert.match(css, /\.nav-dropdown\[open\]\s*>\s*ul\s*\{[^}]*display\s*:\s*block/s);
   assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.nav\s*\{[^}]*position\s*:\s*(?:relative|sticky)[^}]*z-index\s*:\s*100[^}]*isolation\s*:\s*isolate/s);
   // 面板貼齊導覽列左右內距，滿版展開而不是被裁在角落
@@ -759,14 +760,15 @@ test('首頁包含 8 天、4 城與全部實用頁入口', () => {
   );
 });
 
-test('首頁移除出發準備度與步調，直接列出 14 項待辦', () => {
+test('首頁移除出發準備度與步調，直接列出資料層待辦', () => {
   const html = read('index.html');
+  const todoCount = todoGroups.reduce((total, group) => total + group.items.length, 0);
 
   assert.ok(!html.includes('出發準備度'));
   assert.ok(!html.includes('00 / Readiness'));
   assert.ok(!html.includes('高效率城市探索 · 腳程快 · 重點景點完整走完'));
-  assert.ok(!html.includes('14 項尚未訂'));
-  assert.ok(html.includes('14 項待辦'));
+  assert.ok(!html.includes(`${todoCount} 項尚未訂`));
+  assert.ok(html.includes(`${todoCount} 項待辦`));
   for (const group of todoGroups) {
     assert.ok(html.includes(`>${group.title}<`), `首頁缺少待辦分類：${group.title}`);
     for (const item of group.items) assert.ok(html.includes(`>${item.name}<`), `首頁缺少待辦：${item.name}`);
@@ -1058,8 +1060,9 @@ test('全站不出現把日落寫成 15:35–15:50 的錯誤敘述', () => {
 });
 
 test('實用頁完整包含店家地圖、安全電話、打包與最新交通資料', () => {
-  assert.ok(read('practical/shopping.html').includes('World of Amber'));
-  assert.ok(read('practical/shopping.html').includes('Kabanosy'));
+  const shoppingHtml = read('practical/shopping.html');
+  assert.ok(shoppingHtml.includes('World of Amber'));
+  assert.ok(!shoppingHtml.includes('Kabanosy'));
   assert.ok(read('practical/essentials.html').includes('+48 668 027 574'));
   assert.ok(read('practical/essentials.html').includes('打包清單'));
   assert.ok(read('practical/transit.html').includes('Jakdojade'));

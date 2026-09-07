@@ -737,7 +737,7 @@ export const cityFood = [
       {
         "tag": "歷史名宅",
         "name": "Hotel Bazar",
-        "note": "蕭邦曾下榻",
+        "note": "1918 年帕德瑞夫斯基陽台演說與大波蘭起義的重要歷史地點",
         "book": "walk"
       },
       {

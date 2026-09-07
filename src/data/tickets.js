@@ -1,7 +1,7 @@
 // 2026-08-08 逐項以景點官網查證；價格單位均為 PLN。
 export const fares = [
   {name:'華沙 · 皇家城堡', fullPrice:'60／95', discountPrice:'45／75', note:'2026-08-11 官網查證：二–日 10:00–18:00、最後入場 17:00；Royal Route 60／45（約 60 分）、Castle Route 95／75（約 150 分，含語音導覽）；週三免費但只走限定路線、現場領票且數量有限，語音導覽另收 10', officialUrl:'https://www.zamek-krolewski.pl/en/strona/opening-hours-and-ticket-prices/2801-opening-hours-and-ticket-prices-may-2-2026', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20%E7%9A%87%E5%AE%B6%E5%9F%8E%E5%A0%A1'},
-  {name:'華沙 · 科學文化宮觀景台', fullPrice:'30', discountPrice:'25', note:'2026-08-11 官網查證：每日 10:00–20:00；觀景台在 30 樓、114 m，電梯 19 秒；夜間場（20:00–24:00）只在週五六且只到 9 月底，10 月不適用；11/1 閉館', officialUrl:'https://pkin.pl/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20%E7%A7%91%E5%AD%B8%E6%96%87%E5%8C%96%E5%AE%AE%E8%A7%80%E6%99%AF%E5%8F%B0'},
+  {name:'華沙 · 科學文化宮觀景台', fullPrice:'出發前重查', discountPrice:'出發前重查', note:'2026-08-11 官網曾查得 30／25 PLN；票價屬動態資訊，出發前以官方售票頁為準。每日 10:00–20:00；觀景台在 30 樓、114 m，電梯 19 秒；夜間場（20:00–24:00）只在週五六且只到 9 月底，10 月不適用；11/1 閉館', officialUrl:'https://pkin.pl/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20%E7%A7%91%E5%AD%B8%E6%96%87%E5%8C%96%E5%AE%AE%E8%A7%80%E6%99%AF%E5%8F%B0'},
   {name:'華沙 · Neon 霓虹博物館', fullPrice:'25', discountPrice:'18', note:'科學文化宮 4 樓；一–四 11:00–18:00、五–六至 19:00、日 11:00–18:00', officialUrl:'https://www.neonmuzeum.org/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20Neon%20%E9%9C%93%E8%99%B9%E5%8D%9A%E7%89%A9%E9%A4%A8'},
   {name:'華沙 · MSN 當代美術館', fullPrice:'40', discountPrice:'30', note:'二–四／六 11:00–19:00、五至 20:00、日至 18:00；18:00 後 25／15，Gallery A 免費', officialUrl:'https://artmuseum.pl/en/visit', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20MSN%20%E7%95%B6%E4%BB%A3%E7%BE%8E%E8%A1%93%E9%A4%A8'},
   {name:'華沙 · 波蘭歷史博物館', fullPrice:'以官網', discountPrice:'—', note:'華沙城堡區新館已於 2023 開館；常設展仍在建置，先查當期臨展', officialUrl:'https://muzhp.pl/en/about-museum', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20%E6%B3%A2%E8%98%AD%E6%AD%B7%E5%8F%B2%E5%8D%9A%E7%89%A9%E9%A4%A8%20Warszawa'},
@@ -30,7 +30,7 @@ export const ticketsByCity = [
     ['POLIN 猶太歷史', '週五 10:00–18:00；票價與指定日庫存看官方售票頁'],
     ['華沙起義博物館', 'PLN 35／30 · 免費日為週一（非週四）'],
     ['蕭邦博物館', '2026 整年閉館'],
-    ['科學文化宮觀景台', 'PLN 25（新版見 fares：30/優待 25）'],
+    ['科學文化宮觀景台', '票價出發前依官方售票頁重查（2026-08-11 曾查得 30／25 PLN）'],
     ['MSN 現代藝術博物館', '展覽 40／30 · 18:00 後 25／15 · Gallery A 免費'],
   ]},
   {city:'克拉科夫', items:[

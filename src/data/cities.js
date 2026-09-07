@@ -293,7 +293,7 @@ export const attractions = {
     {name:'皇家城堡', tag:'UNESCO 舊城核心', priceNote:'二–日 10:00–18:00，最後入場 17:00 · Castle Route 95／75（含語音導覽，約 150 分）· Royal Route 60／45（約 60 分）· 週三免費但限定路線、現場領票且數量有限', mapUrl:'https://maps.google.com/?cid=2313057209867159998'},
     {name:'華沙起義博物館', tag:'歷史', priceNote:'PLN 35／30 · 個人免費日為週一（官方公告，非週四）· 語音導覽 13／自備手機 10 · 可售時段以官方票頁為準', mapUrl:'https://maps.google.com/?cid=12215511195580548645'},
     {name:'POLIN 猶太史博物館', tag:'歷史', priceNote:'週二休；週五 10:00–18:00，主展最後入場 16:00 · 票價與庫存看官方售票頁', mapUrl:'https://maps.google.com/?cid=16292574584610500784'},
-    {name:'科學文化宮觀景台', tag:'地標', priceNote:'PLN 30／25 · 售票資訊每日 10:00–20:00；季節性夜間開放不套用到 10 月', mapUrl:'https://maps.google.com/?cid=14044892037721828802'},
+    {name:'科學文化宮觀景台', tag:'地標', priceNote:'票價出發前依官方售票頁重查（2026-08-11 曾查得 30／25 PLN）· 售票資訊每日 10:00–20:00；季節性夜間開放不套用到 10 月', mapUrl:'https://maps.google.com/?cid=14044892037721828802'},
     {name:'Łazienki 公園 · Wilanów 宮', tag:'皇家之路', priceNote:'公園免費 · 宮殿另購票', mapUrl:'https://www.google.com/maps/search/?api=1&query=%C5%81azienki%20%E5%85%AC%E5%9C%92%20Warszawa'},
     {name:'蕭邦博物館', tag:'閉館', priceNote:'2026 整年閉館（整修）', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%95%AD%E9%82%A6%E5%8D%9A%E7%89%A9%E9%A4%A8%20Warszawa'},
   ],
