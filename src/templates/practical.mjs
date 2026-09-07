@@ -1,4 +1,5 @@
 import { renderLayout } from './layout.mjs';
+import { getTaipeiToday, toComparableDate, isOpenTodoStatus, isOpenEntryStatus, calculateDashboard, dashboardCsv, initializeDashboard } from '../scripts/dashboard.js';
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -38,40 +39,15 @@ ${renderAppendixHeader({ kicker: eyebrow, title, dek: intro })}
   });
 }
 
-function getTaipeiToday() {
-  return new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Taipei' });
-}
-
-function toComparableDate(dateText) {
-  if (!dateText) return null;
-  const raw = String(dateText).trim();
-  if (!raw) return null;
-
-  const ymd = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/);
-  if (ymd) return `${ymd[1]}-${ymd[2]}-${ymd[3]}`;
-
-  const md = raw.match(/^(\d{1,2})\/(\d{1,2})$/);
-  if (!md) return null;
-
-  const month = Number(md[1]);
-  const day = Number(md[2]);
-  if (month < 1 || month > 12 || day < 1 || day > 31) return null;
-  return `2026-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-}
-
-function isOpenTodoStatus(text) {
-  return /待|需|尚未|未|指定日/.test(String(text || ''));
-}
-
-function isOpenEntryStatus(status) {
-  return status === 'pending' || status === 'recheck' || status === 'private-required';
-}
-
 function renderFlightTable(legs) {
   return `<div class="table-wrap"><table class="table-editorial">
     <thead><tr><th>航班</th><th>路段</th><th>日期／時間</th><th>時長</th></tr></thead>
     <tbody>${legs.map(leg => `<tr><td>${leg.code}</td><td>${leg.leg}</td><td>${leg.when}</td><td>${leg.dur || '—'}</td></tr>`).join('')}</tbody>
   </table></div>`;
+}
+
+function renderBookingNotice() {
+  return '<div class="callout-note"><b>訂票狀態由人工維護，未連線查詢即時庫存。</b><p>「可查／購」只表示可前往售票頁查詢，不代表有票或已訂妥。付款前請核對指定日期、場次與價格；各項最近查核日期列於<a href="../practical/todos.html">待辦事項</a>，未記錄日期的狀態請重新確認。</p></div>';
 }
 
 export function renderBooking({ flights, trains, stay, bookingTiers, reservations, railOfficialLinks = [], railPurchaseSteps = [] }) {
@@ -109,6 +85,7 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
     </article>`).join('');
 
   const content = `
+    ${renderBookingNotice()}
     <section>
       <div class="section-heading"><span class="section-num">Do first</span><h2>訂票優先順序</h2></div>
       <div class="grid">${tiersHtml}</div>
@@ -150,16 +127,18 @@ export function renderTodos({ todoGroups }) {
     const rows = group.items.map(item => `<tr>
       <td class="number"><b>${item.date}</b></td>
       <td><b>${item.name}</b><br><span class="tag-todo">${item.status}</span></td>
+      <td>${toComparableDate(item.checkedAt) ? `<time datetime="${toComparableDate(item.checkedAt)}">${toComparableDate(item.checkedAt)}</time>` : '未記錄，請重查'}${toComparableDate(item.recheckAt) ? `<br>下次查核：<time datetime="${toComparableDate(item.recheckAt)}">${toComparableDate(item.recheckAt)}</time>` : ''}</td>
       <td>${item.action}${item.url ? `<br><a href="${item.url}" target="_blank" rel="noopener">開啟處理頁 →</a>` : ''}</td>
     </tr>`).join('');
     return `<section class="section" id="todo-${group.id}">
       <div class="section-heading"><span class="section-num">${group.eyebrow}</span><h2>${group.title}</h2></div>
       <p class="lead">${group.intro}</p>
-      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>日期</th><th>事項／狀態</th><th>下一步</th></tr></thead><tbody>${rows}</tbody></table></div>
+      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>日期</th><th>事項／狀態</th><th>最近人工查核</th><th>下一步</th></tr></thead><tbody>${rows}</tbody></table></div>
     </section>`;
   }).join('');
 
   const content = `
+    ${renderBookingNotice()}
     <div class="callout-risk"><span class="tag-todo">${total} 項待辦</span><p>按「要買什麼」而非逐日行程整理。完成後請將票券與訂位資訊離線保存；未開賣項目仍以官方系統實際可售狀態為準。</p></div>
     ${groupsHtml}`.trim();
 
@@ -292,21 +271,9 @@ export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups
   const openTodos = todoGroups
     .flatMap(group => group.items.map(item => ({ group: group.eyebrow, ...item })))
     .filter(item => isOpenTodoStatus(item.status));
-  const today = getTaipeiToday();
-  const todoOverdueCount = openTodos.filter(item => {
-    const parsed = toComparableDate(item.date);
-    return parsed !== null && parsed < today;
-  }).length;
-  const databaseOverdueCount = entries
-    .filter(entry => isOpenEntryStatus(entry.status))
-    .filter(entry => entry.recheckAt != null && toComparableDate(entry.recheckAt) !== null && toComparableDate(entry.recheckAt) < today)
-    .length;
-  const overdueCount = todoOverdueCount + databaseOverdueCount;
-
   const checkedDates = [...new Set((syncRows || []).map(item => item.checkedAt).filter(Boolean))].sort();
   const latestCheckedDate = checkedDates.at(-1);
   const previousCheckedDate = checkedDates.at(-2);
-  const todaySyncCount = (syncRows || []).filter(item => item.checkedAt === today).length;
   const latestSyncCount = latestCheckedDate ? (syncRows || []).filter(item => item.checkedAt === latestCheckedDate).length : 0;
   const previousSyncCount = previousCheckedDate ? (syncRows || []).filter(item => item.checkedAt === previousCheckedDate).length : null;
   const latestSyncDelta = previousSyncCount === null ? '—' : `${latestSyncCount - previousSyncCount}`;
@@ -326,7 +293,7 @@ export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups
 
   const todoUrgent = todoGroups
     .flatMap(group => group.items.map(item => ({ group: group.eyebrow, ...item })))
-    .filter(item => /未|需|待/.test(item.status))
+    .filter(item => isOpenTodoStatus(item.status))
     .slice(0, 12)
     .map(item => `<li><b>${escapeHtml(item.name)}</b>（${escapeHtml(item.group)}）— ${escapeHtml(item.status)}<br>${escapeHtml(item.action)}</li>`)
     .join('');
@@ -338,8 +305,7 @@ export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups
     ['4. 驗證公開資料', '檢查自由行資料庫、待辦頁與公開匯出；私人內容不得寫入網站產物。'],
   ].map((step) => `<article class="card"><span class="section-num">${step[0].split('.')[0]}</span><h3>${step[0]}</h3><p>${step[1]}</p></article>`).join('');
 
-  const handoverSummary = {
-    generatedAt: getTaipeiToday(),
+  const dashboardInput = {
     metrics: {
       totalEntries: entries.length,
       verified: statusCount.verified || 0,
@@ -349,20 +315,16 @@ export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups
       privateCount,
       todos: todoCount,
       todoOpen: openTodos.length,
-      overdue: overdueCount,
-      overdueTodos: todoOverdueCount,
-      overdueEntries: databaseOverdueCount,
       latestSyncDate: latestCheckedDate || '—',
       latestSyncCount,
       syncDelta: latestSyncDelta,
     },
-    handoverAlerts: [
+    alertCandidates: [
       ...openTodos
-        .filter(item => toComparableDate(item.date) !== null && toComparableDate(item.date) < today)
         .map(item => ({
           type: 'todo-overdue',
           key: `${item.group}-${item.name}`,
-          date: item.date,
+          date: item.recheckAt || item.date,
           status: item.status,
           name: item.name,
           action: item.action,
@@ -370,7 +332,6 @@ export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups
       ...entries
         .filter(entry => !entry.private)
         .filter(entry => isOpenEntryStatus(entry.status))
-        .filter(entry => entry.recheckAt != null && toComparableDate(entry.recheckAt) !== null && toComparableDate(entry.recheckAt) < today)
         .map(entry => ({
           type: 'entry-overdue',
           key: entry.id,
@@ -380,6 +341,9 @@ export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups
           action: entry.summary || '',
         })),
     ],
+    // Only anonymous dates from private records are needed for aggregate counts.
+    privateDueDates: entries.filter(item => item.private && isOpenEntryStatus(item.status)).map(item => item.recheckAt || null),
+    syncDates: (syncRows || []).map(item => item.checkedAt || null),
     syncRows: latestSyncRows.map(item => ({
       id: item.id,
       status: item.status,
@@ -389,31 +353,23 @@ export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups
     })),
   };
 
-  const handoverPayload = serializeForInlineScript(handoverSummary);
-  const csvRows = ['類型,關鍵字,日期,狀態,說明'];
-  for (const alert of handoverSummary.handoverAlerts) {
-    const note = String(alert.action).replaceAll('"', '""');
-    csvRows.push(`"${alert.type}","${String(alert.name).replaceAll('"', '""')}","${alert.date}","${alert.status}","${note}"`);
-  }
-  const handoverCsv = [...new Set(csvRows)].join('\\n');
-  const handoverCsvWithSync = [handoverCsv, '', `最近同步清單（${latestCheckedDate || '無'}）`, `"id","status","checkedAt","summary","offlineNote"`, ...latestSyncRows.map(item => [
-    `"${String(item.id).replaceAll('"', '""')}"`,
-    `"${String(item.status || '').replaceAll('"', '""')}"`,
-    `"${String(item.checkedAt || '').replaceAll('"', '""')}"`,
-    `"${String(item.summary || '').replaceAll('"', '""')}"`,
-    `"${String(item.offlineNote || '').replaceAll('"', '""')}"`,
-  ].join(','))].join('\\n');
-  const handoverCsvPayload = serializeForInlineScript(handoverCsvWithSync);
+  const handover = calculateDashboard(dashboardInput);
+  const { todaySyncCount, overdue: overdueCount } = handover.metrics;
+  const dashboardPayload = serializeForInlineScript(dashboardInput);
+  const dashboardRuntime = [getTaipeiToday, toComparableDate, calculateDashboard, dashboardCsv, initializeDashboard]
+    .map(fn => fn.toString()).join('\n');
 
   const content = `
     <section>
       <div class="section-heading"><span class="section-num">Data Health</span><h2>資料品質面板</h2></div>
+      <p>統計日期（台灣時間）：<span data-dashboard-today>${handover.generatedAt}</span>。依目前載入的紀錄重新計算；訂票狀態仍須人工查核。</p>
+      <noscript><p>JavaScript 未啟用，以下為建置時的統計快照。</p></noscript>
       <div class="grid">
-        <article class="card"><span class="eyebrow">今日更新量</span><h3>${todaySyncCount} 筆</h3><p>最近同步日：${latestCheckedDate || '—'}，該日 ${latestSyncCount} 筆，較前一次 ${latestSyncDelta}</p></article>
+        <article class="card"><span class="eyebrow">今日更新量</span><h3 data-dashboard-today-count>${todaySyncCount} 筆</h3><p>最近同步日：${latestCheckedDate || '—'}，該日 ${latestSyncCount} 筆，較前一次 ${latestSyncDelta}</p></article>
         <article class="card"><span class="eyebrow">公開資料</span><h3>共 ${entries.length} 筆</h3><p>已確認：${statusCount.verified || 0}、重查：${statusCount.recheck || 0}、待確認：${statusCount.pending || 0}、待補資料：${statusCount['private-required'] || 0}</p></article>
         <article class="card"><span class="eyebrow">私有欄位</span><h3>${privateCount} 筆</h3><p>保留為本次行程所需的敏感欄位，網站不對外展示。</p></article>
         <article class="card"><span class="eyebrow">未完成項目</span><h3>${openTodos.length} / ${todoCount}</h3><p>含交通、景點、門票、餐飲與備案。建議在待辦頁更新後再同步 dashboard。</p></article>
-        <article class="card"><span class="eyebrow">逾期項目</span><h3>${overdueCount} 筆</h3><p>含 dashboard 重查到期 + 待辦日期到期但未完成。</p></article>
+        <article class="card"><span class="eyebrow">逾期項目</span><h3 data-dashboard-overdue>${overdueCount} 筆</h3><p>含 dashboard 重查到期 + 待辦日期到期但未完成。</p></article>
       </div>
       <div class="grid">
         ${workflowSteps}
@@ -436,27 +392,9 @@ export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups
       </div>
       <script>
         (function() {
-          const handover = ${handoverPayload};
-          const csvText = ${handoverCsvPayload};
+          ${dashboardRuntime}
           const root = document.currentScript.closest('.standalone-page') || document;
-          const exportText = (filename, text, type) => {
-            const blob = new Blob([text], { type });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click();
-            URL.revokeObjectURL(url);
-            a.remove();
-          };
-          root.querySelector('[data-handover-export="json"]').addEventListener('click', () => {
-            exportText('handover-' + handover.generatedAt + '.json', JSON.stringify(handover, null, 2), 'application/json;charset=utf-8');
-          });
-          root.querySelector('[data-handover-export="csv"]').addEventListener('click', () => {
-            exportText('handover-' + handover.generatedAt + '.csv', csvText, 'text/csv;charset=utf-8');
-          });
+          initializeDashboard(root, ${dashboardPayload});
         }());
       </script>
     </section>
