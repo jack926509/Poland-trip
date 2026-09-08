@@ -6,7 +6,7 @@ export const fares = [
   {name:'華沙 · MSN 當代美術館', fullPrice:'40', discountPrice:'30', note:'二–四／六 11:00–19:00、五至 20:00、日至 18:00；18:00 後 25／15，Gallery A 免費', officialUrl:'https://artmuseum.pl/en/visit', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20MSN%20%E7%95%B6%E4%BB%A3%E7%BE%8E%E8%A1%93%E9%A4%A8'},
   {name:'華沙 · 波蘭歷史博物館', fullPrice:'以官網', discountPrice:'—', note:'華沙城堡區新館已於 2023 開館；常設展仍在建置，先查當期臨展', officialUrl:'https://muzhp.pl/en/about-museum', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20%E6%B3%A2%E8%98%AD%E6%AD%B7%E5%8F%B2%E5%8D%9A%E7%89%A9%E9%A4%A8%20Warszawa'},
   {name:'華沙 · E.Wedel 巧克力工廠博物館', fullPrice:'依場次', discountPrice:'依場次', note:'2024 開館；每日 10:00–20:00，最後一團 18:15，導覽約 90 分', officialUrl:'https://fabrykaczekolady.pl/en/contact-us', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20E.Wedel%20Warszawa'},
-  {name:'克拉科夫 · Wawel 王冠寶庫', fullPrice:'47', discountPrice:'35', note:'含皇家花園 · 逐展售票', officialUrl:'https://wawel.krakow.pl/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20Wawel%20%E7%8E%8B%E5%86%A0%E5%AF%B6%E5%BA%AB'},
+  {name:'克拉科夫 · Wawel 王冠寶庫', fullPrice:'47', discountPrice:'35', note:'二–日 09:00–17:00，最後入場 16:20；皇家花園季節開放只到 10/4，10/25 票券不含花園', officialUrl:'https://wawel.krakow.pl/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20Wawel%20%E7%8E%8B%E5%86%A0%E5%AF%B6%E5%BA%AB'},
   {name:'克拉科夫 · Wawel 城堡一、二樓', fullPrice:'95', discountPrice:'71', note:'二–日 09:00–17:00；完整路線最後入場 15:00，約需 2 小時', officialUrl:'https://wawel.krakow.pl/en/what-to-see', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20Wawel%20%E5%9F%8E%E5%A0%A1'},
   {name:'克拉科夫 · 辛德勒工廠', fullPrice:'60', discountPrice:'45', note:'ul. Lipowa 4', officialUrl:'https://muzeumkrakowa.pl/oddzialy/fabryka-emalia-oskara-schindlera', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20%E8%BE%9B%E5%BE%B7%E5%8B%92%E5%B7%A5%E5%BB%A0'},
   {name:'克拉科夫 · 維利奇卡鹽礦', fullPrice:'日期選擇器', discountPrice:'日期選擇器', note:'英語導覽的 10/27 實際票價、場次與庫存以官網日期選擇器為準；通用頁僅列 from 131 PLN', officialUrl:'https://www.wieliczka-saltmine.com/individual-tourist/useful-information/ticket-prices-and-visiting-hours', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20%E7%B6%AD%E5%88%A9%E5%A5%87%E5%8D%A1%E9%B9%BD%E7%A4%A6%20Wieliczka'},
@@ -28,7 +28,7 @@ export const ticketsByCity = [
   {city:'華沙', items:[
     ['皇家城堡', 'Royal Route 60／45、Castle Route 95／75 · 週三限定路線免費（2026-08-11 官網查證）'],
     ['POLIN 猶太歷史', '週五 10:00–18:00；票價與指定日庫存看官方售票頁'],
-    ['華沙起義博物館', 'PLN 35／30 · 免費日為週一（非週四）'],
+    ['華沙起義博物館', 'PLN 35／30 · 官方目前列週四免費；10/30（五）不適用'],
     ['蕭邦博物館', '2026 整年閉館'],
     ['科學文化宮觀景台', '票價出發前依官方售票頁重查（2026-08-11 曾查得 30／25 PLN）'],
     ['MSN 現代藝術博物館', '展覽 40／30 · 18:00 後 25／15 · Gallery A 免費'],

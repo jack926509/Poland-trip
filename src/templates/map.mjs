@@ -11,6 +11,11 @@ export function renderInteractiveMap({ id, title, mapData, mapChecks = {}, legen
   return `<section class="section journal-city-map day-map-section" aria-labelledby="${id}-heading">
     <div class="section-heading"><span class="section-num">Map</span><h2 id="${id}-heading">${escapeHtml(title)}</h2></div>
     <p class="lead">${escapeHtml(note || '點選圖釘查看地點與導航；圖釘之間不代表步行路線，請依當下交通與 Google Maps 導航。')}</p>
+    <div class="map-toolbar" role="group" aria-label="${escapeHtml(title)}縮放控制">
+      <button type="button" data-map-action="zoom-in" aria-label="放大地圖">＋ 放大</button>
+      <button type="button" data-map-action="zoom-out" aria-label="縮小地圖">－ 縮小</button>
+      <button type="button" data-map-action="reset" aria-label="重設地圖範圍">重設範圍</button>
+    </div>
     <div id="${id}" class="map-container" data-trip-map="${id}" role="region" aria-label="${escapeHtml(title)}"><p class="map-fallback">地圖需要網路連線才能載入。離線或載入失敗時，請使用下方導航連結。</p></div>
     <div class="map-legend" aria-label="地圖圖例">${legendHtml}</div>
     ${unlocated}
@@ -30,7 +35,7 @@ export function renderInteractiveMap({ id, title, mapData, mapChecks = {}, legen
     container.textContent = '';
     var data = config.mapData;
     function safeUrl(value) { try { var url = new URL(value); return url.protocol === 'https:' ? url.href : ''; } catch (_) { return ''; } }
-    var map = L.map(container, { scrollWheelZoom: false }).setView(data.center, data.zoom || 13);
+    var map = L.map(container, { scrollWheelZoom: true, touchZoom: true, doubleClickZoom: true, zoomControl: true }).setView(data.center, data.zoom || 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
     var bounds = [];
     data.points.forEach(function (point) {
@@ -50,7 +55,20 @@ export function renderInteractiveMap({ id, title, mapData, mapChecks = {}, legen
       marker.bindPopup(popup);
       bounds.push([point[0], point[1]]);
     });
-    if (bounds.length > 1) map.fitBounds(bounds, { padding: [24, 24], maxZoom: 15 });
+    function resetView() {
+      if (bounds.length > 1) map.fitBounds(bounds, { padding: [32, 32], maxZoom: 15 });
+      else map.setView(data.center, data.zoom || 13);
+    }
+    resetView();
+    var toolbar = container.parentElement.querySelector('.map-toolbar');
+    if (toolbar) toolbar.addEventListener('click', function (event) {
+      var button = event.target.closest('[data-map-action]');
+      if (!button) return;
+      if (button.dataset.mapAction === 'zoom-in') map.zoomIn();
+      if (button.dataset.mapAction === 'zoom-out') map.zoomOut();
+      if (button.dataset.mapAction === 'reset') resetView();
+      container.focus({ preventScroll: true });
+    });
     function resizeWhenVisible() { if (container.offsetParent !== null) map.invalidateSize(false); }
     window.addEventListener('resize', resizeWhenVisible);
     window.addEventListener('hashchange', function () { requestAnimationFrame(resizeWhenVisible); });

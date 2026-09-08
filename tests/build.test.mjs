@@ -485,7 +485,8 @@ test('正式頁面保留垂直滑動，地圖與寬表格不會鎖住整頁', ()
   const css = fs.readFileSync(path.join(distDir, 'assets/main.css'), 'utf8');
 
   assert.doesNotMatch(css, /(?:html|body)\s*\{[^}]*overflow-y\s*:\s*hidden/s);
-  assert.match(css, /\.map-container\s*\{[^}]*touch-action\s*:\s*pan-y\s*!important/s);
+  assert.doesNotMatch(css, /\.map-container\s*\{[^}]*touch-action\s*:\s*pan-y\s*!important/s);
+  assert.match(css, /\.map-toolbar button\s*\{[^}]*min-height\s*:\s*44px/s);
   assert.match(css, /\.table-wrap\s*\{[^}]*overflow-x\s*:\s*auto/s);
   // 手機導覽列必須自建堆疊脈絡（relative 或 sticky 皆可），
   // 但不得改用 fixed／overflow 鎖住整頁捲動。
@@ -610,7 +611,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.equal(photoSpots.length, 10);
   assert.equal(photoCredits.length, 20);
   assert.deepEqual(Object.fromEntries(Object.entries(mapPins).map(([city, data]) => [city, data.points.length])), {
-    warsaw: 16, krakow: 19, wroclaw: 9, poznan: 8,
+    warsaw: 16, krakow: 21, wroclaw: 9, poznan: 8,
   });
   assert.deepEqual(Object.fromEntries(Object.entries(attractions).map(([city, items]) => [city, items.length])), {
     warsaw: 12, krakow: 6, wroclaw: 8, poznan: 9,
@@ -626,9 +627,9 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.equal(michelinReservations.length, 9);
   assert.equal(verifiedRestaurantHours.length, 4);
   assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
-    warsaw: 21, krakow: 13, wroclaw: 11, poznan: 11,
+    warsaw: 21, krakow: 15, wroclaw: 11, poznan: 11,
   });
-  assert.deepEqual(cityFood.map(group => group.items.length), [11, 10, 8, 6]);
+  assert.deepEqual(cityFood.map(group => group.items.length), [11, 12, 8, 6]);
   assert.deepEqual(foodBackup.map(group => group.items.length), [9, 10, 6, 7]);
   assert.equal(foods.length, 12);
 
@@ -651,7 +652,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
 
 test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', () => {
   const allPins = Object.entries(mapPins).flatMap(([city, data]) => data.points.map((point) => ({city, name:point[2]})));
-  assert.equal(allPins.length, 52);
+  assert.equal(allPins.length, 54);
   for (const pin of allPins) {
     assert.ok(mapPinChecks[pin.city]?.[pin.name], `${pin.city}/${pin.name} 缺少圖釘查證狀態`);
   }
@@ -664,7 +665,7 @@ test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', ()
   });
   const verifiedPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'coordinate-verified');
   const areaPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'area-reference');
-  assert.equal(verifiedPins.length, 49);
+  assert.equal(verifiedPins.length, 51);
   assert.deepEqual(
     areaPins.map(({name}) => name).sort(),
     [
@@ -886,10 +887,10 @@ test('5 筆已確認住宿皆出現在對應城市地圖，Piast 使用已核對
   assert.match(hotelPins.find(point => point[2] === 'Piast')?.[3] ?? '', /Piłsudskiego 98/);
 });
 
-test('4 個城市頁含正確 Leaflet 圖釘數，合計 52', () => {
+test('4 個城市頁含正確 Leaflet 圖釘數，合計 54', () => {
   const expected = {
     'city-warszawa.html': 16,
-    'city-krakow.html': 19,
+    'city-krakow.html': 21,
     'city-wroclaw.html': 9,
     'city-poznan.html': 8,
   };
@@ -906,7 +907,7 @@ test('4 個城市頁含正確 Leaflet 圖釘數，合計 52', () => {
     assert.equal(points, count, `${file} 圖釘數錯誤`);
     total += points;
   }
-  assert.equal(total, 52);
+  assert.equal(total, 54);
 });
 
 test('城市頁完整呈現故事、景點、主餐廳、備案與拍照資訊', () => {
@@ -951,7 +952,9 @@ test('Day 7 改為早上皇家城堡，並保留 POLIN 至起義博物館的移�
   assert.equal(day.steps[0].t, '10:00');
   assert.ok(day.steps[0].label.includes('皇家城堡'));
   assert.equal(day.steps.find(item => item.label.startsWith('★ POLIN')).dur, '2 h');
-  assert.doesNotMatch(read('day-07.html'), /17:00[^<]{0,80}皇家城堡/);
+  const html = read('day-07.html');
+  const main = html.slice(html.indexOf('<main'), html.indexOf('</main>'));
+  assert.doesNotMatch(main, /17:00[^<]{0,80}皇家城堡/);
 });
 
 test('尚未開賣的長途交通與天氣不假裝成已確認', () => {
@@ -1193,7 +1196,7 @@ test('每頁都註冊 service worker，且 sw.js 一起輸出到站台根目錄'
   assert.ok(fs.existsSync(path.join(distDir, 'assets/leaflet/leaflet.js')), 'dist 缺少本地 Leaflet');
   assert.ok(fs.existsSync(path.join(distDir, 'assets/leaflet/leaflet.css')), 'dist 缺少本地 Leaflet CSS');
 });
-test('8 個每日頁都有獨立行程地圖、單點導航與未定位提示', () => {
+test('8 個每日頁都有白天主城市地圖、單點導航與縮放控制', () => {
   for (let day = 1; day <= 8; day += 1) {
     const file = `day-${String(day).padStart(2, '0')}.html`;
     const html = read(file);
@@ -1201,7 +1204,10 @@ test('8 個每日頁都有獨立行程地圖、單點導航與未定位提示', 
     assert.match(html, /data-trip-map/, `${file} 缺少穩定地圖 selector`);
     assert.match(html, /assets\/leaflet\/leaflet\.css/, `${file} 缺少 Leaflet CSS`);
     assert.match(html, /Google Maps/, `${file} 缺少導航連結`);
-    assert.match(html, /已查證行程錨點|跨城區域概覽/, `${file} 缺少座標精度界線`);
+    assert.match(html, /白天主地圖/, `${file} 缺少白天城市範圍說明`);
+    assert.match(html, /data-map-action="zoom-in"/, `${file} 缺少放大控制`);
+    assert.match(html, /data-map-action="zoom-out"/, `${file} 缺少縮小控制`);
+    assert.match(html, /scrollWheelZoom:\s*true/, `${file} 未開啟滾輪縮放`);
     assert.doesNotMatch(html, /L\.polyline|routingControl|travelmode=walking[^"<]*map-day/, `${file} 不應把直線當成步行路線`);
   }
 });
@@ -1210,10 +1216,21 @@ test('Day 5 樂斯拉夫大教堂島保留範圍代表點標示', () => {
   const html = read('day-05.html');
   const config = JSON.parse(html.match(/<script type="application\/json" data-map-config>(.*?)<\/script>/s)[1]);
   assert.equal(config.mapChecks['大教堂島 Ostrów Tumski'].status, 'area-reference');
+  assert.match(config.mapData.note, /樂斯拉夫 Wrocław/);
+  assert.ok(config.mapData.points.some(point => point[2] === 'Wrocław Główny'));
+  assert.ok(config.mapData.points.some(point => point[2] === '日本花園 Ogród Japoński'));
+  assert.ok(config.mapData.points.every(point => !/Poznań|波茲南/.test(point[2])), 'Day 5 白天地圖不應混入晚間抵達的波茲南');
 });
 
-test('所有拍照建議都有城市限定的 Google Maps 搜尋連結', () => {
-  const pages = Array.from({ length: 8 }, (_, index) => read(`day-${String(index + 1).padStart(2, '0')}.html`)).join('\n');
-  const suggestions = (pages.match(/<span class="eyebrow">[^<]+<\/span>\s*<h3>[^<]+<\/h3>\s*<p>[^<]+<\/p>\s*<p><a href="https:\/\/www\.google\.com\/maps\/search\/\?api=1&amp;query=[^"]+Poland"/g) || []);
-  assert.equal(suggestions.length, 9);
+test('所有拍照建議都有精確站位、方向與座標導航', () => {
+  const pages = Array.from({ length: 8 }, (_, index) => {
+    const html = read(`day-${String(index + 1).padStart(2, '0')}.html`);
+    return html.slice(html.indexOf('<main'), html.indexOf('</main>'));
+  }).join('\n');
+  assert.equal((pages.match(/開啟拍照站位 ↗/g) || []).length, 9);
+  assert.equal((pages.match(/精確站位/g) || []).length, 9);
+  assert.equal((pages.match(/拍攝方向/g) || []).length, 9);
+  for (const spot of photoSpots.filter(item => item.day)) {
+    assert.match(spot.mapUrl, /^https:\/\/www\.google\.com\/maps\/search\/\?api=1&query=\d{2}\.\d+%2C\d{2}\.\d+$/);
+  }
 });

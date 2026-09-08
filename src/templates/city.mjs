@@ -104,8 +104,10 @@ export function renderCity({
         <article class="card">
           <span class="eyebrow">${spot.day ? `Day ${spot.day} · ` : ''}${spot.bestTime}</span>
           <h3>${spot.name}</h3>
-          <p>${spot.light}</p>
-          <p><a href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(`${spot.name}, ${city.pl}, Poland`)}" target="_blank" rel="noopener noreferrer">在 Google Maps 查看地點 ↗</a></p>
+          <p><b>精確站位：</b>${spot.viewpoint}</p>
+          <p><b>拍攝方向：</b>${spot.direction}</p>
+          <p><b>光線與構圖：</b>${spot.light}</p>
+          <p><a href="${spot.mapUrl}" target="_blank" rel="noopener noreferrer">開啟拍照站位 ↗</a></p>
         </article>`).join('')}
       </div>
     </section>` : '';
@@ -136,7 +138,7 @@ export function renderCity({
       var element = (scope || document).querySelector('[data-map-key="${cityKey}"]');
       if (!element || typeof L === 'undefined') return;
       element.textContent = '';
-      var map = L.map(element, { scrollWheelZoom: false }).setView(mapData.center, mapData.zoom);
+      var map = L.map(element, { scrollWheelZoom: true, touchZoom: true, doubleClickZoom: true, zoomControl: true }).setView(mapData.center, mapData.zoom);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors',
         maxZoom: 19
@@ -156,6 +158,15 @@ export function renderCity({
         var locationNote = check.status === 'area-reference' ? '<br><small>範圍代表點，請依實際目的地導航</small>' : '';
         var stableDescription = point[3].replace(/★\d(?:\.\d)?(?:\s*\([^)]*\)|\s*（[^）]*）)?\s*/g, '').trim();
         marker.bindPopup('<b>' + point[2] + '</b><br>' + stableDescription + locationNote + link);
+      });
+      var toolbar = element.parentElement.querySelector('.map-toolbar');
+      if (toolbar) toolbar.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-map-action]');
+        if (!button) return;
+        if (button.dataset.mapAction === 'zoom-in') map.zoomIn();
+        if (button.dataset.mapAction === 'zoom-out') map.zoomOut();
+        if (button.dataset.mapAction === 'reset') map.setView(mapData.center, mapData.zoom);
+        element.focus({ preventScroll: true });
       });
     }());
     </script>`;
@@ -184,8 +195,13 @@ export function renderCity({
 
     <section class="section journal-city-map">
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
-      <p class="lead">拖曳、縮放並點選圖釘查看說明；手機上下滑動會優先捲動頁面，圖釘連結可直接開啟 Google Maps。</p>
+      <p class="lead">拖曳、滾輪、雙擊或使用按鈕縮放；手機可用雙指縮放，點選圖釘可直接開啟 Google Maps。</p>
       <div class="callout-note"><b>座標狀態：</b>${mapCheckSummary.precise} 個門牌／場館錨點已比對${mapCheckSummary.area ? `，${mapCheckSummary.area} 個街區或島區採範圍代表點` : ''}。座標查證於 2026/08/11–15，本次發布複核於 2026/09/08；未確認分店的 Żabka 不放精確圖釘，抵達後請用即時地圖搜尋附近分店。</div>
+      <div class="map-toolbar" role="group" aria-label="${city.name}地圖縮放控制">
+        <button type="button" data-map-action="zoom-in">＋ 放大</button>
+        <button type="button" data-map-action="zoom-out">－ 縮小</button>
+        <button type="button" data-map-action="reset">重設範圍</button>
+      </div>
       <div id="map-${cityKey}" class="map-container" data-map-key="${cityKey}" role="region" aria-label="${city.name}互動地圖"><p class="map-fallback">地圖需要網路連線才能載入。離線或載入失敗時，請改用下方景點清單中的 Google Maps 連結。</p></div>
       <div class="map-legend" aria-label="地圖圖例">${legendHtml}</div>
       <p class="map-caption">地圖底圖 © OpenStreetMap contributors</p>
@@ -201,7 +217,7 @@ export function renderCity({
 
     <section class="section" id="city-dining">
       <div class="section-heading"><span class="section-num">Dining</span><h2>2026 餐廳情報</h2></div>
-      <div class="callout-note"><b>資料界線：</b>這是新爬蟲的探索清單，頁面只保留店名、菜系特色與 2026 米其林身分；動態 Google 星等已移除。營業時間只以「餐廳」實用頁中的已查分店為準。</div>
+      <div class="callout-note"><b>資料界線：</b>使用者指定店家已標成「使用者指定」並保留原始 Google Maps 連結；其餘探索清單只保留店名、菜系特色與 2026 米其林身分。動態 Google 星等已移除，營業時間與訂位仍以店家即時頁面為準。</div>
       <div class="table-wrap"><table class="table-editorial">
         <thead><tr><th>店家</th><th>等級</th><th>重點招牌</th></tr></thead>
         <tbody>${diningRows}</tbody>

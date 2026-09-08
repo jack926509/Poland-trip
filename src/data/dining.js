@@ -74,12 +74,12 @@ export const michelinSummary = [
 export const michelinReservations = [
   {
     "restaurant": "⭐⭐ Bottiglieria 1881（克拉科夫）",
-    "perPerson": "290 / 360",
+    "perPerson": "940 / 990",
     "channel": "自家電話 +48 660 661 756 · ul. Bocheńska 5 · 平日另有單點，週末僅套餐"
   },
   {
     "restaurant": "⭐ Alon Omakase（華沙）",
-    "perPerson": "~1100",
+    "perPerson": "1,250",
     "channel": "omakase.eu 線上 · 取消/減人照收全額 · Edomae 壽司"
   },
   {
@@ -89,22 +89,22 @@ export const michelinReservations = [
   },
   {
     "restaurant": "⭐ Muga（波茲南）",
-    "perPerson": "390–540",
-    "channel": "官網/電話 · 法系套餐"
+    "perPerson": "560 / 685",
+    "channel": "官網／電話 · 法系套餐；高階版本含魚子醬"
   },
   {
     "restaurant": "⭐ NUTA（華沙）",
-    "perPerson": "€€€€",
+    "perPerson": "595 / 795",
     "channel": "Michelin 線上/官網 · plac Trzech Krzyży（ETHOS）· 主廚 Andrea Camastra"
   },
   {
     "restaurant": "⭐ Rozbrat 20（華沙）",
-    "perPerson": "€€€€",
+    "perPerson": "590 / 690",
     "channel": "rozbrat20.com.pl · 需信用卡 · +12.5% 服務費 · smart casual、12 歲以上"
   },
   {
     "restaurant": "⭐ BABA（樂斯拉夫）",
-    "perPerson": "€€",
+    "perPerson": "主菜 82–179",
     "channel": "Michelin 免費線上 · Nożownicza 26 席 · 主廚 Beata Śniechowska"
   },
   {
@@ -114,7 +114,7 @@ export const michelinReservations = [
   },
   {
     "restaurant": "Bib · IDA kuchnia i wino（樂斯拉夫）",
-    "perPerson": "149",
+    "perPerson": "209",
     "channel": "套餐含酒 · 全趟最高CP"
   }
 ];
@@ -329,10 +329,22 @@ export const cityDining = {
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=obwarzanek%20%E9%BA%BB%E8%8A%B1%E5%9C%88%20Krak%C3%B3w"
     },
     {
-      "name": "zapiekanka",
-      "tier": "街食",
-      "highlight": "Plac Nowy 圓亭攤（Kazimierz）· 夜宵經典（招牌 Endzior）",
-      "mapUrl": "https://www.google.com/maps/search/?api=1&query=Plac%20Nowy%20zapiekanka%20Krak%C3%B3w"
+      "name": "Okrąglak（Plac Nowy 圓亭）",
+      "tier": "使用者指定 · 街食",
+      "highlight": "plac Nowy 4B · 圓亭四周聚集多家 zapiekanka 窗口；Day 2 晚餐可直接排在 Kazimierz 動線末段",
+      "mapUrl": "https://maps.app.goo.gl/2Nitej5cqG4VAcbp6?g_st=il"
+    },
+    {
+      "name": "Szalone Widelce",
+      "tier": "使用者指定 · 波蘭料理",
+      "highlight": "Szpitalna 40 · 位於老城東側，適合接中央市集廣場；營業時間與訂位以店家即時頁面為準",
+      "mapUrl": "https://maps.app.goo.gl/U3yMsjdSgM3Pwgqe9?g_st=il"
+    },
+    {
+      "name": "Bar Mleczny Pod Temidą",
+      "tier": "使用者指定 · 牛奶吧",
+      "highlight": "Grodzka 43 · 在中央廣場與 Wawel 之間，適合排平價早餐或午餐；現場排隊與營業時間依當日狀況",
+      "mapUrl": "https://maps.app.goo.gl/xCGDapoy56MBvg2y7?g_st=il"
     },
     {
       "name": "Mirror Bistro",
@@ -615,10 +627,24 @@ export const cityFood = [
       },
       {
         "tag": "Zapiekanka",
-        "name": "Plac Nowy 圓亭",
-        "note": "Endzior / Krzysiek",
+        "name": "Okrąglak（Plac Nowy 圓亭）",
+        "note": "plac Nowy 4B · 多家 zapiekanka 窗口；Day 2 晚餐順路",
         "book": "queue",
-        "map": "https://www.google.com/maps/search/?api=1&query=Plac+Nowy+Okraglak+Krakow"
+        "map": "https://maps.app.goo.gl/2Nitej5cqG4VAcbp6?g_st=il"
+      },
+      {
+        "tag": "波蘭料理",
+        "name": "Szalone Widelce",
+        "note": "Szpitalna 40 · 老城東側，可接中央市集廣場",
+        "book": "queue",
+        "map": "https://maps.app.goo.gl/U3yMsjdSgM3Pwgqe9?g_st=il"
+      },
+      {
+        "tag": "牛奶吧",
+        "name": "Bar Mleczny Pod Temidą",
+        "note": "Grodzka 43 · 中央廣場往 Wawel 的順路平價選擇",
+        "book": "queue",
+        "map": "https://maps.app.goo.gl/xCGDapoy56MBvg2y7?g_st=il"
       },
       {
         "tag": "米其林二星",

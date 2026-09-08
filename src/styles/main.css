@@ -1378,7 +1378,32 @@ nav.section-heading > a:last-child {
   border: 1px solid var(--line-strong);
   background: var(--surface-map);
   box-shadow: var(--shadow-paper);
-  touch-action: pan-y !important;
+}
+
+.map-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 1rem 0 -0.5rem;
+}
+
+.map-toolbar button {
+  min-width: 5.5rem;
+  min-height: 44px;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--paper-light);
+  color: var(--ink);
+  cursor: pointer;
+  font: 700 0.82rem/1 var(--font-mono);
+}
+
+.map-toolbar button:hover,
+.map-toolbar button:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent-pale);
+  color: var(--accent-dark);
 }
 
 /* Keep Leaflet's internal panes interactive without letting their global z-index cover sticky navigation. */

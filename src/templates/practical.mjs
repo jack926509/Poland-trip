@@ -169,7 +169,7 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
   const hoursRows = verifiedRestaurantHours.map(item => `
     <tr><td>${item.city}</td><td><a href="${item.url}" target="_blank" rel="noopener"><b>${item.name}</b></a><br>${item.address}</td><td>${item.hours}</td><td>${item.feature}</td></tr>`).join('');
   const content = `
-    <div class="callout-note"><b>資料界線：</b>米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不再把它們當成固定資料。營業時間查證於 2026-08-09，訂位前仍看店家公告。</div>
+    <div class="callout-note"><b>資料界線：</b>米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不把它們當成固定資料。高價餐廳預算已於 2026-09-08 對照旅程試算表更新；營業時間查證於 2026-08-09，訂位前仍看店家公告。</div>
     <section>
       <div class="section-heading"><span class="section-num">Guide</span><h2>2026 米其林總表</h2></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>星級</th><th>星級餐廳</th><th>Bib Gourmand</th></tr></thead><tbody>${summaryRows}</tbody></table></div>
@@ -200,8 +200,8 @@ export function renderTickets({ fares, ticketsByCity, notices = [] }) {
   const content = `
     ${notices.map(item => `<div class="callout-risk"><span class="tag-todo">${item.status}</span><p>${item.text} <a href="${item.url}" target="_blank" rel="noopener">開啟官網 →</a></p></div>`).join('')}
     <section>
-      <div class="section-heading"><span class="section-num">2026-08</span><h2>最新門票速查</h2></div>
-      <p class="lead">全票／優待皆為 PLN。動態票價與冬季開放時間，出發前仍以官網為準。</p>
+      <div class="section-heading"><span class="section-num">2026-09</span><h2>最新門票速查</h2></div>
+      <p class="lead">全票／優待皆為 PLN。2026/09/08 已再核對高風險條目；動態票價、指定日場次與臨時閉館，購票前仍以官網為準。</p>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>景點</th><th>全票</th><th>優待</th><th>備註</th></tr></thead><tbody>${fareRows}</tbody></table></div>
     </section>
     <section class="section">
@@ -213,11 +213,12 @@ export function renderTickets({ fares, ticketsByCity, notices = [] }) {
 }
 
 export function renderTransit({ transitFares, airportTransit, recommendedApps, passChecklist, usefulRoutes, practical = [] }) {
-  const fareRows = transitFares.map(item => `<tr><td><b>${item.city}</b></td><td>${item.short}</td><td>${item.min90}</td><td>${item.hour24}</td><td>${item.note}</td></tr>`).join('');
+  const fareRows = transitFares.map(item => `<tr><td><a href="${item.officialUrl}" target="_blank" rel="noopener"><b>${item.city}</b></a><br><small>查核 ${item.checkedAt}</small></td><td>${item.short}</td><td>${item.min90}</td><td>${item.hour24}</td><td>${item.note}</td></tr>`).join('');
   const airportRows = airportTransit.map(item => `<tr><td><b>${item.route}</b></td><td>${item.method}</td><td class="number">${item.price}</td><td class="number">${item.time}</td><td>${item.note}</td></tr>`).join('');
   const appCards = recommendedApps.map(item => `<article class="card"><h3>${item.name}</h3><p>${item.desc}</p></article>`).join('');
   const practicalCards = practical.map(item => `<article class="card"><span class="eyebrow">${item.tag}</span><h3>${item.name}</h3><p>${item.note}</p></article>`).join('');
   const content = `
+    <div class="callout-note"><b>2026/09/08 複核：</b>華沙、克拉科夫與波茲南票價已對照各城市官方價目；樂斯拉夫保留現行票價並明確標示出發前重查。班次、改道與售票機規則仍屬動態資料。</div>
     <section>
       <div class="section-heading"><span class="section-num">Fares</span><h2>四城市內票價</h2></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>短程</th><th>90 分</th><th>24 小時</th><th>備註</th></tr></thead><tbody>${fareRows}</tbody></table></div>
@@ -248,19 +249,22 @@ export function renderShopping({ souvenirCards, luxuryShopping, souvenirShops = 
   return renderPracticalLayout('伴手禮與購物', 'Shopping', '先決定要買什麼，再直接打開店家地圖；肉製品入境台灣限制也已標出。', content, 'practical/shopping.html');
 }
 
-export function renderEssentials({ phrases, packingDefault, about, safety }) {
+export function renderEssentials({ phrases, packingDefault, about, safety, sources = [] }) {
   const phraseRows = phrases.map(item => `<tr><td>${item[0]}</td><td><b>${item[1]}</b></td><td>${item[2] || '—'}</td></tr>`).join('');
   const aboutCards = about.map(item => `<article class="card"><span class="eyebrow">${item[0]}</span><p>${item[1]}</p></article>`).join('');
   const packingHtml = Object.entries(packingDefault).map(([category, items]) => `<article class="card"><h3>${category}</h3><ul class="check-list">${items.map(item => `<li>${item}</li>`).join('')}</ul></article>`).join('');
   const emergencyRows = safety.emergency.map(item => `<tr><td>${item[0]}</td><td class="number"><b>${item[1]}</b></td></tr>`).join('');
   const embassyRows = safety.embassy.map(item => `<tr><td>${item[0]}</td><td><b>${item[1]}</b></td></tr>`).join('');
   const safetyCards = safety.tips.map(item => `<article class="card"><h3>${item.label}</h3><p>${item.text}</p></article>`).join('');
+  const sourceRows = sources.map(item => `<tr><td><a href="${item.url}" target="_blank" rel="noopener"><b>${item.name}</b></a></td><td>${item.checkedAt}</td><td>${item.note}</td></tr>`).join('');
   const content = `
+    <div class="callout-note"><b>2026/09/08 複核：</b>ETIAS 目前仍未啟用；但 EU 官方仍以 2026 年第 4 季為啟用期，本行程 10/24 出發前必須再查一次。緊急電話、免簽條件與 TAX FREE 門檻皆保留官方來源。</div>
     <section><div class="section-heading"><span class="section-num">Basics</span><h2>基本須知</h2></div><div class="grid">${aboutCards}</div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Language</span><h2>常用波蘭語</h2></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>中文</th><th>波蘭語</th><th>音譯</th></tr></thead><tbody>${phraseRows}</tbody></table></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Packing</span><h2>打包清單</h2></div><div class="grid-wide">${packingHtml}</div></section>
     <section class="section"><div class="section-heading"><span class="section-num">SOS</span><h2>緊急聯絡</h2></div><div class="grid-wide"><div class="table-wrap"><table class="table-editorial"><thead><tr><th>單位</th><th>電話</th></tr></thead><tbody>${emergencyRows}</tbody></table></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>駐波蘭代表處</th><th>資訊</th></tr></thead><tbody>${embassyRows}</tbody></table></div></div></section>
-    <section class="section"><div class="section-heading"><span class="section-num">Safety</span><h2>安全與禮儀</h2></div><div class="grid-wide">${safetyCards}</div></section>`;
+    <section class="section"><div class="section-heading"><span class="section-num">Safety</span><h2>安全與禮儀</h2></div><div class="grid-wide">${safetyCards}</div></section>
+    <section class="section"><div class="section-heading"><span class="section-num">Sources</span><h2>官方查核來源</h2></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>項目</th><th>查核日期</th><th>目前結論</th></tr></thead><tbody>${sourceRows}</tbody></table></div></section>`;
   return renderPracticalLayout('安全與基本須知', 'Essentials', '語言、插座、打包、緊急電話與常見陷阱集中在這裡，出發前可快速複查。', content, 'practical/essentials.html');
 }
 

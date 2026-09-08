@@ -1,8 +1,8 @@
 export const transitFares = [
-  {city:'華沙 WTP', short:'抵達日確認', min90:'第 1 區時間票（抵達日依官方價目確認）', hour24:'抵達日確認', note:'電車／巴士／地鐵／SKM；機場在第 1 區，票價以 WTP 官方價目與售票機為準'},
-  {city:'克拉科夫 KMK', short:'15 分 4', min90:'90 分 9', hour24:'20（第 I 區）／25（I+II+III）', note:'2026-03-02 起；30 分或單趟票 6'},
-  {city:'樂斯拉夫 MPK', short:'15 分 3.20', min90:'90 分 7', hour24:'15', note:'30 分 4.00、60 分 5.20；時間票可轉乘'},
-  {city:'波茲南 ZTM', short:'15 分 5', min90:'90 分 9', hour24:'18（A 區）／24（全區）', note:'45 分 7；時間票可轉乘'},
+  {city:'華沙 WTP', short:'20 分 3.40', min90:'75 分 4.40（第 1 區）／90 分 7（第 1+2 區）', hour24:'15（第 1 區）／26（第 1+2 區）', note:'電車／巴士／地鐵／SKM；蕭邦機場在第 1 區', checkedAt:'2026-09-08', officialUrl:'https://www.wtp.waw.pl/ceny-i-rodzaje-biletow/'},
+  {city:'克拉科夫 KMK', short:'15 分 4', min90:'90 分 9', hour24:'20（第 I 區）／25（I+II+III）', note:'2026-03-02 起；30 分或單趟票 6，KMK+KMŁ 70 分聯票 10', checkedAt:'2026-09-08', officialUrl:'https://ztp.krakow.pl/en/kmk-public-transport/kmk-ticket-guide'},
+  {city:'樂斯拉夫 MPK', short:'15 分 3.20', min90:'90 分 7', hour24:'15', note:'30 分 4.00、60 分 5.20；時間票可轉乘，出發前仍重查官方價目', checkedAt:'2026-09-08', officialUrl:'https://www.wroclaw.pl/komunikacja/rodzaje-i-ceny-biletow'},
+  {city:'波茲南 ZTM', short:'15 分 5', min90:'90 分 9', hour24:'18（A 區）／24（全區）', note:'45 分 7；手機票須輸入車號或掃描車內 QR 啟用', checkedAt:'2026-09-08', officialUrl:'https://www.ztm.poznan.pl/wszystko-o-biletach/cennik-biletow/'},
 ];
 
 export const airportTransit = [
@@ -41,6 +41,6 @@ export const practical = [
   {tag:'換錢', name:'Kantor 民間匯兌', note:'機場與觀光區匯率可能較差。交易前比較買入、賣出價與實際可得 PLN；「0% 手續費」不代表匯率划算。'},
   {tag:'SIM 卡', name:'Play / Plus / Orange', note:'預付卡需依波蘭規定實名登記；方案和通路會變，抵達後以電信商官網／門市為準，不保證超商能完成所有開卡程序。'},
   {tag:'付款', name:'信用卡 + 少量現金', note:'刷卡普及，但教堂、小攤或機器故障仍可能需現金；刷卡選 PLN 計價，避免商戶動態換匯。'},
-  {tag:'退稅', name:'Tax Free', note:'只限有 Tax Free 資格的店家與符合規定的旅客；最低消費、退稅額與機場流程以波蘭稅務及退稅單據為準，不把估算退款率當保證。'},
+  {tag:'退稅', name:'Tax Free', note:'同一賣家、同一 TAX FREE 文件含稅至少 200 PLN；購買時索取電子文件與收據，離境時備妥未使用商品供海關確認。退款方式依店家或退稅業者，退款率不保證。'},
   {tag:'交通票', name:'短票 vs 24 h 票', note:'四城票制不同，請按上表逐城計算；Jakdojade 查市內路線，KOLEO／PKP Intercity 查鐵路。'},
 ];

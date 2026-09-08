@@ -173,8 +173,10 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
         <article class="card">
           <span class="eyebrow">${spot.bestTime}</span>
           <h3>${spot.name}</h3>
-          <p>${spot.light}</p>
-          <p><a href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(`${spot.name}, ${{WAW:'Warszawa',KRK:'Kraków',WRO:'Wrocław',POZ:'Poznań'}[spot.cityKey] || day.city}, Poland`)}" target="_blank" rel="noopener noreferrer">在 Google Maps 查看地點 ↗</a></p>
+          <p><b>精確站位：</b>${spot.viewpoint}</p>
+          <p><b>拍攝方向：</b>${spot.direction}</p>
+          <p><b>光線與構圖：</b>${spot.light}</p>
+          <p><a href="${spot.mapUrl}" target="_blank" rel="noopener noreferrer">開啟拍照站位 ↗</a></p>
         </article>`).join('')}
       </div>
     </section>` : '';
