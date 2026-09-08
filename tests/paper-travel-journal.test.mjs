@@ -184,6 +184,21 @@ test('地圖縮放鈕與主題索引達到 44px 觸控高度', () => {
   assert.match(source, /a\[href\^="tel:"\][\s\S]*?min-height:\s*44px/);
 });
 
+test('每日頁封面左欄縮小，且八天共用同一組樣式', () => {
+  const source = css();
+  assert.match(source, /\.journal-day-header \{\s*grid-template-columns:\s*minmax\(15rem, 0\.55fr\) minmax\(0, 1\.45fr\)/);
+
+  // 城市頁維持原比例，不受影響
+  assert.match(source, /\.journal-day-header,\s*\.journal-city-cover \{[^}]*grid-template-columns:\s*minmax\(20rem, 0\.82fr\)/);
+
+  // 八天都走同一個樣板，頁面本身不得帶行內欄寬
+  for (let day = 1; day <= 8; day += 1) {
+    const html = fs.readFileSync(path.join(distDir, `day-0${day}.html`), 'utf8');
+    assert.match(html, /<header class="journal-day-header">/);
+    assert.doesNotMatch(html, /journal-day-header"[^>]*style=/);
+  }
+});
+
 test('多頁與單檔導覽都支援 Escape 關閉選單', () => {
   const navScript = fs.readFileSync(path.join(distDir, 'assets/nav.js'), 'utf8');
   const standalone = fs.readFileSync(path.resolve('poland-travel-guide-2026.html'), 'utf8');
