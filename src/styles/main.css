@@ -4288,3 +4288,224 @@ nav.section-heading > a:hover {
   color: var(--ink-soft);
   font-size: 0.92rem;
 }
+
+/* ============================================================
+   2026-09-08 全站按鈕與版面複查修正
+   1. 搜尋快捷、資料庫篩選鈕原本 12–12.8px，低於 13px 可讀下限。
+   2. 住宿卡的「座標導航／飯店官網」是純文字連結（84×17），
+      改用與餐廳地圖同一組膠囊樣式，滿足 44px 觸控。
+   3. Leaflet 1.9 的裝飾旗標連結是 href="#" 且沒有文字，隱藏它，
+      OSM 版權文字仍保留。
+   ============================================================ */
+
+.action-links,
+.food-map-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+}
+
+.action-links a,
+.food-map-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.3rem 0.85rem;
+  border: 1px solid rgb(142 126 112 / 40%);
+  border-radius: 999px;
+  background: var(--paper-light);
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 160ms var(--ease), border-color 160ms var(--ease);
+}
+
+.action-links a:hover,
+.action-links a:focus-visible,
+.food-map-links a:hover,
+.food-map-links a:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent-pale);
+}
+
+.site-search-quick-row button {
+  padding-inline: 0.95rem;
+  font-size: 0.9rem;
+}
+
+.btn-ghost {
+  font-size: 0.85rem;
+}
+
+.db-chip {
+  padding-inline: 0.9rem;
+  font-size: 0.85rem;
+}
+
+.database-filter span {
+  font-size: 0.85rem;
+}
+
+.leaflet-attribution-flag {
+  display: none !important;
+}
+
+/* --- 中文大標的行高：line-height 1.12 是拉丁字設定，中文字身較滿，
+       字腳會壓到章節底線（實測「訂票優先順序」「四城攝影章節」）。 --- */
+h1,
+h2,
+h3 {
+  line-height: 1.24;
+}
+
+.journal-cover h1 {
+  line-height: 0.92;
+}
+
+.section-heading {
+  padding-bottom: 1.1rem;
+}
+
+/* --- 多欄表格：欄位太窄時，站名會斷成三行、狀態標籤被擠成圓球，
+       右側欄位還會被推出容器。給表格一個最小寬度，交給 .table-wrap
+       既有的水平捲動（含捲動陰影）處理，欄寬就不會互相壓縮。 --- */
+@media (min-width: 701px) {
+  .table-editorial {
+    min-width: 52rem;
+  }
+
+  .table-editorial td:first-child {
+    min-width: 11rem;
+  }
+}
+
+/* 標籤在窄欄位換行時，膠囊會變成不規則圓形；換行時改用小圓角並讓
+   文字正常斷行，圓點記號不跟著擠。 */
+.tag-red,
+.tag-yellow,
+.tag-todo,
+.tag-muted {
+  border-radius: var(--radius-sm);
+  padding: 0.2rem 0.6rem;
+}
+
+.tag-red::before,
+.tag-yellow::before,
+.tag-todo::before,
+.tag-muted::before {
+  flex: 0 0 auto;
+}
+
+/* --- .number 儲存格的 nowrap 是給時刻與價格用的；裡面的附註（timeline-note）
+       是整句中文，必須能換行，否則會把整列推出容器（實測票價欄被切掉）。 --- */
+.table-editorial .number .timeline-note {
+  display: block;
+  white-space: normal;
+}
+
+/* --- 整張卡片是連結時，末行的「查看／開啟官網 →」補上按鈕外框，
+       讓它看起來就是可點的目標（卡片本身仍整塊可點）。 --- */
+.card-link > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 0.3rem 0.85rem;
+  border: 1px solid rgb(142 126 112 / 40%);
+  border-radius: 999px;
+  background: var(--paper-light);
+}
+
+.card-link:hover > span,
+.card-link:focus-visible > span {
+  border-color: var(--accent);
+  background: var(--accent-pale);
+}
+
+.journal-toolkit .card-link,
+.card-link {
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- 搜尋列「清除」鈕：外框改成膠囊後，方角按鈕會凸出圓角外，
+       改為內縮的膠囊鈕，並讓結果分類標籤跟著統一成膠囊。 --- */
+.site-search-input-row {
+  padding-right: 0.35rem;
+}
+
+.site-search-clear,
+.site-search-empty button {
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
+
+.site-search-clear {
+  min-height: 40px;
+  padding-inline: 1rem;
+}
+
+.site-search-result-type {
+  border-radius: 999px;
+  font-size: 0.78rem;
+}
+
+.site-search-result-main {
+  transition: background-color 160ms var(--ease), border-color 160ms var(--ease);
+}
+
+/* --- 城市風景圖卡：兩張照片比例不同時，卡片高度會參差；
+       統一裁切成 16:10（直式照片維持完整不裁切）。 --- */
+.photo-gallery-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgb(142 126 112 / 26%);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-1), var(--shadow-inset-top);
+  overflow: hidden;
+}
+
+.photo-gallery-card img {
+  aspect-ratio: 16 / 10;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+  object-fit: cover;
+}
+
+.photo-gallery-portrait img {
+  aspect-ratio: 4 / 5;
+  object-fit: contain;
+}
+
+.photo-gallery-card figcaption {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1.15rem 1.25rem 1.25rem;
+}
+
+.photo-gallery-card figcaption small {
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+/* --- sticky 當日捷徑：半透明底會讓底下的標題透出來（實測手機捲動時
+       「當日時間表」浮在膠囊後面），改為幾乎不透明並加下緣陰影分層。 --- */
+.day-shortcuts {
+  background: rgb(247 241 230 / 97%);
+  box-shadow: 0 8px 18px rgb(60 45 34 / 7%);
+}
+
+@media (max-width: 700px) {
+  .day-shortcuts {
+    background: var(--paper);
+    box-shadow: 0 6px 14px rgb(60 45 34 / 10%);
+  }
+}

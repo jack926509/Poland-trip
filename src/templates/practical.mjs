@@ -89,7 +89,7 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
       <p><b>地址：</b>${escapeHtml(item.address)}${item.addressVerified ? '' : ' <span class="tag-todo">門牌待確認</span>'}</p>
       <p><b>座標：</b><span class="number">${coordinateLabel}</span>${coordinate ? `<br><span class="timeline-note">${escapeHtml(coordinate.status)} · ${escapeHtml(coordinate.checkedAt)}</span>` : ''}</p>
       <p class="timeline-note">${escapeHtml(item.note)}</p>
-      ${mapUrl ? `<a href="${mapUrl}" target="_blank" rel="noopener">座標導航 →</a> · ` : ''}<a href="${escapeHtml(item.officialUrl)}" target="_blank" rel="noopener">飯店官網 →</a>
+      <p class="action-links">${mapUrl ? `<a href="${mapUrl}" target="_blank" rel="noopener noreferrer">座標導航 →</a>` : ''}<a href="${escapeHtml(item.officialUrl)}" target="_blank" rel="noopener noreferrer">飯店官網 →</a></p>
     </article>`;
   }).join('');
 
