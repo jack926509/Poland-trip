@@ -4549,6 +4549,14 @@ h3 {
   display: none !important;
 }
 
+/* --- 刊頭品牌色條擋住「PAPER TRAVEL JOURNAL」的 P ---
+   2026-09-08 前一輪把色條放在 .nav-brand::before（left: 0），並給
+   .nav-brand 補 padding-left；但既有的 .nav > a.nav-brand（特異度 0,2,1）
+   把 padding-left 設回 0，色條就壓在文字上。這裡用同樣的選擇器留出空間。 */
+.nav > a.nav-brand {
+  padding-left: 1.5rem;
+}
+
   </style>
   <style data-bundled="leaflet.css">
 /* required styles */
