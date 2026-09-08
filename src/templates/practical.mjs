@@ -106,6 +106,8 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
     <section class="section" id="rail-itinerary">
       <div class="section-heading"><span class="section-num">Rail</span><h2>城際交通</h2></div>
       <div class="callout-risk"><span class="tag-todo">已選參考班次／尚未購票</span><p>下表是目前採用的規劃班次，不代表指定日期已核實或已出票。只有在 PKP Intercity／KOLEO 顯示 2026-10-25 至 10-29 的實際車次並完成購票後，才可視為成立。</p></div>
+      <p><b>三班評估：</b>10/27 IC 3600 能提早抵達樂斯拉夫；10/28 Baltic Express 260 候選車程僅 1 小時 19 分，最能保留白天遊玩；10/29 EIC 8104 在正午山羊秀與下午行程後出發，並適合加選一等艙體驗。若 10/25 已搭 EIP 一等艙，可依價差決定 10/29 是否再搭一等艙。</p>
+      <p><a href="https://www.intercity.pl/en/site/for-passengers/trains/about-eic.html" target="_blank" rel="noopener">PKP 官方 EIC 服務說明</a>列有一等艙飲品與點心；指定班次的編組、設備、餐飲與票價仍以購票頁為準。</p>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>路段</th><th>日期</th><th>車種</th><th>時刻</th><th>時長</th><th>票價</th></tr></thead><tbody>${trainRows}</tbody></table></div>
     </section>
     <section class="section">

@@ -301,8 +301,8 @@ test('8 天每個行程步驟都有可靠地址或明確待確認原因', () => 
   }
   assert.ok(!dayOperations[4].unresolvedSteps.some(item => item.label.includes('Sukiennice')));
   assert.ok(!dayOperations[4].unresolvedSteps.some(item => item.label === '★ Kazimierz 白天散步'));
-  assert.ok(dayOperations[6].addresses.some(item => item.name === '帝王城堡' && item.stepLabels.includes('帝王城堡 / Stary Browar')));
-  assert.ok(dayOperations[6].addresses.some(item => item.name === 'Stary Browar' && item.stepLabels.includes('帝王城堡 / Stary Browar')));
+  assert.ok(dayOperations[6].addresses.some(item => item.name === '牛角麵包博物館' && item.stepLabels.includes('★ 牛角麵包博物館')));
+  assert.ok(dayOperations[6].addresses.some(item => item.name === 'Stary Browar' && item.stepLabels.includes('Stary Browar')));
 });
 
 test('已排定的主要公共地點使用正確地址與官方入口資料', () => {

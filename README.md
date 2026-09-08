@@ -56,3 +56,20 @@ Day 01／06／07／08 共用華沙同一張。若要補充照片，請沿用 CRE
 - `src/data/trip.js` 的 `todoGroups` 為人工訂票紀錄。查核後更新 `status`、`checkedAt`（實際查核日期）、`recheckAt`（下次查核期限）、`action` 與 `url`。缺少查核日期時顯示「未記錄，請重查」，不以建置或部署日期代填。
 - 「可查／購」仍計入未完成項目。只有收到訂票確認後才改為「已訂妥」或「已完成」，並核對 `days`、`trains`、`reservations` 與 `bookingTiers` 的相應行程；票號、訂位代碼與付款資料另存私人票券。
 - 資料庫 CSV 匯入只更新 `travel-database.js` 的對應條目，不會替使用者完成購票或自動更新 `todoGroups`。修改後執行 `env -u NODE_OPTIONS ./verify.sh`，再提交部署。
+
+## 2026-09-08 行程與 UX/UI 檢視
+
+- 首頁增加 8 日日期捷徑；每日時間表提前，提供「時間表／地址與導航／訂票與提醒」直接入口。
+- 縮小每日封面與手機照片高度，放大常用標籤與觸控區域，保留旅行誌、深色模式及鍵盤導覽。
+- 對照提供的 8 天 7 晚規劃：Day 2 留足經 Kazimierz 步行到辛德勒工廠的時間；Wawel 改短路線。Day 6 將牛角麵包博物館列為主行程，週四英語場仍須確認。
+- 10/27 IC 3600 17:55–20:52、10/28 IC 260 19:10–20:29、10/29 EIC 8104 17:40–20:00 為使用者提供候選，尚未核實指定日運行、一等艙庫存與票價。每日頁、交通表與操作步驟同步更新，保留取行李和進站緩衝。
+- 修正克拉科夫住宿到鄰近車站不必要的叫車建議、華沙雨天備案距離、波茲南兩處景點「全程室內」的誤述，以及「PLN 待開賣」顯示。
+- 依使用者 2026-09-08 明確授權，完整行程、航班、住宿名稱／已知地址與地圖資料公開發布；未知地址仍標待確認，不以猜測補齊。
+- 沿用 `main` 推送觸發 Cloudflare Pages 與 GitHub Pages 的既有部署，並升級離線快取版本。
+
+本次查核的官方來源（不代表已取得指定日票券）：
+
+- [POLIN 開放時間](https://polin.pl/en/planning-your-visit/basic-information)：週五 10:00–18:00、主展最晚 16:00 入場，保留既有 Day 7 順序。
+- [辛德勒工廠](https://muzeumkrakowa.pl/en/branches/oskar-schindlers-enamel-factory)：週日 09:00–20:00，最後入場為閉館前 1.5 小時，保留 17:30 目標。
+- [牛角麵包博物館個人場](https://rogalowemuzeum.pl/indywidualni/)與[售票頁](https://rogalowemuzeum.pl/en/buy-ticket/)：不能把週末／暑期英語場套用到 10/29 週四。
+- [PKP EIC 服務](https://www.intercity.pl/en/site/for-passengers/trains/about-eic.html)：一等艙飲品及點心說明；指定班次仍須重查。

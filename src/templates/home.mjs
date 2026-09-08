@@ -28,7 +28,7 @@ function renderFlight(direction, legs) {
 }
 
 export function renderHome({ meta, days, flights, cities, todoGroups = [], databaseEntries = [] }) {
-  const todoCount = todoGroups.reduce((total, group) => total + group.items.length, 0);
+  const todoCount = todoGroups.reduce((total, group) => total + group.items.filter(item => !['已訂妥', '已完成'].includes(item.status)).length, 0);
   const syncItems = databaseEntries.length;
   const pendingCount = databaseEntries.filter(entry => entry.status === 'pending').length;
   const recheckCount = databaseEntries.filter(entry => entry.status === 'recheck').length;
@@ -78,6 +78,9 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
     </article>`).join('');
 
   const bodyHtml = `
+    <nav class="trip-day-picker" aria-label="快速選擇旅行日期">
+      ${days.map(day => `<a href="day-${String(day.n).padStart(2, '0')}.html"><b>${escapeHtml(day.date.split(' ')[0])}</b><span>Day ${day.n}</span></a>`).join('')}
+    </nav>
     <header class="journal-cover">
       <div class="journal-cover-copy">
         <span class="journal-kicker">${escapeHtml(meta.edition)} · PAPER TRAVEL JOURNAL</span>

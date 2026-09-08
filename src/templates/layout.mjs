@@ -180,7 +180,7 @@ export function renderLayout({
   <footer class="footer">
     <div class="footer-inner">
       <p>POLSKA 波蘭行 · 2026/10/24–10/31</p>
-      <p>票價、開放時間與交通資料查證於 2026-08-09；尚未開賣或會變動的項目已明確標示，實際以官網與已購票券為準。</p>
+      <p>行程與介面檢視：2026-09-08。各筆資料查核日期見待辦與資料庫；候選班次未訂妥，票價及開放時間以官方公告與已購票券為準。</p>
     </div>
   </footer>
   <script src="${path('assets/nav.js')}" defer></script>

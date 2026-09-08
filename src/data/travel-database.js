@@ -349,6 +349,7 @@ const officialPlaceUrls = {
   '波茲南市政廳': 'https://www.msu.mnp.art.pl/profile/wizyta-ratusz-muzeum-poznania',
   '帝王城堡': 'https://ckzamek.pl/podstrony/6071-zwiedzanie-zamku/',
   'Stary Browar': 'https://starybrowar5050.com/en/contact/',
+  '牛角麵包博物館': 'https://rogalowemuzeum.pl/en/',
   'POLIN 波蘭猶太人歷史博物館': 'https://polin.pl/en',
   '華沙起義博物館': 'https://www.1944.pl/en',
   '駐波蘭台北代表處': 'https://www.mofa.gov.tw/CountryInfo.aspx?CASN=1&n=164&s=124&sms=33&tabs=08617EE9DB3C61E3',
@@ -382,6 +383,7 @@ const entranceNotesByName = {
   '波茲南市政廳': '本次只在 Stary Rynek 1 外觀區看 12:00 山羊鐘樓秀，博物館整修閉館。',
   '帝王城堡': '由 Święty Marcin 80/82 依 CK Zamek 訪客標示進入。',
   'Stary Browar': '由 Półwiejska 42 商場入口進入；與帝王城堡是兩個不同站點。',
+  '牛角麵包博物館': '地址為 Stary Rynek 41/2，實際入口在 Klasztorna 23；請於場次開始前 10 分鐘報到。',
   'POLIN 波蘭猶太人歷史博物館': '由 Mordechaja Anielewicza 6 主入口依票券與安檢標示進入。',
   '華沙起義博物館': '由 Grzybowska 79 訪客入口依已購時段進場。',
   '駐波蘭台北代表處': '僅作緊急聯絡備援；一般領務先於辦公時間電話確認。',
@@ -396,7 +398,7 @@ const addressStepLabels = {
   'Krakowskie Przedmieście': ['Krakowskie Przedmieście'],
   'Kraków Główny': ['抵 Kraków Główny', '火車回 Kraków Główny'],
   '瓦維爾大教堂': ['★ 瓦維爾大教堂'],
-  '瓦維爾皇家城堡': ['★ Wawel 城堡一、二樓完整路線'],
+  '瓦維爾皇家城堡': ['★ Wawel 城堡短路線'],
   '辛德勒工廠': ['★ 辛德勒工廠'],
   '中央廣場 Rynek Główny': ['★ 中央廣場 + 聖瑪利亞', '★ 中央廣場 + 紡織會館'],
   '聖瑪利亞聖殿': ['★ 中央廣場 + 聖瑪利亞'],
@@ -412,8 +414,9 @@ const addressStepLabels = {
   'Poznań Główny': ['抵 Poznań Główny'],
   '波茲南主教座堂': ['★ 教堂島 Ostrów Tumski'],
   '波茲南市政廳': ['廣場卡正面位置', '★ 山羊鐘樓秀'],
-  '帝王城堡': ['帝王城堡 / Stary Browar'],
-  'Stary Browar': ['帝王城堡 / Stary Browar'],
+  '帝王城堡': [],
+  'Stary Browar': ['Stary Browar'],
+  '牛角麵包博物館': ['★ 牛角麵包博物館'],
   'POLIN 波蘭猶太人歷史博物館': ['前往 POLIN + 安檢緩衝', '★ POLIN 猶太博物館'],
   '華沙起義博物館': ['前往華沙起義博物館 + 安檢緩衝', '★ 華沙起義博物館'],
 };
@@ -471,7 +474,7 @@ export const dayOperations = {
     ],
     navigation: [
       { mode: 'PKP', route: 'Warszawa Zachodnia → Kraków Główny', action: '目前採 EIP 5300 參考 08:45–10:56；10/25 換表後核實仍停靠西站，完成購票後只依票面車次、車廂與座位進站。' },
-      { mode: '步行／市內交通', route: 'Kraków Główny → Wawel → 辛德勒工廠', action: '取行李後先寄放；Wawel 到 Podgórze 的電車路線當日用 Jakdojade 重查改道。' },
+      { mode: '步行／市內交通', route: 'Kraków Główny → Wawel → Kazimierz → Podgórze → 辛德勒工廠', action: '先寄放行李；15:45 由老城出發，沿 Kazimierz、Podgórze 步行，17:10 前到辛德勒工廠。若延誤則用 Jakdojade 查即時市內交通。' },
     ],
     dailyAlerts: [
       '10/25 為非營業週日，多數一般商店關閉；餐廳與例外店家仍逐店確認。',
@@ -554,6 +557,7 @@ export const dayOperations = {
       address('Poznań Główny', 'Dworcowa 2, 61-801 Poznań', 'Poznan Glowny, Dworcowa 2, Poznan'),
       address('波茲南主教座堂', 'Ostrów Tumski 17, 61-109 Poznań', 'Poznan Cathedral, Ostrow Tumski 17, Poznan'),
       address('波茲南市政廳', 'Stary Rynek 1, 61-768 Poznań', 'Poznan Town Hall, Stary Rynek 1, Poznan', '博物館整修閉館，此地點用於 12:00 山羊鐘樓秀外觀。'),
+      address('牛角麵包博物館', 'Stary Rynek 41/2, 61-772 Poznań', 'Klasztorna 23, 61-779 Poznan', '官方標示實際入口在 Klasztorna 23；10/29 英語場仍須從售票頁確認。'),
       address('帝王城堡', 'Święty Marcin 80/82, 61-809 Poznań', 'Zamek Culture Centre, Swiety Marcin 80 82, Poznan'),
       address('Stary Browar', 'Półwiejska 42, 61-888 Poznań', 'Stary Browar, Polwiejska 42, Poznan'),
       address('Warszawa Centralna', 'al. Jerozolimskie 54, 00-024 Warszawa', 'Warszawa Centralna, al. Jerozolimskie 54, Warszawa'),
@@ -561,7 +565,7 @@ export const dayOperations = {
       accommodationAddress('warsaw-metropol'),
     ],
     navigation: [
-      { mode: '步行／市內交通', route: '教堂島 → 舊城市場 → 帝王城堡 → Poznań Główny', action: '11:45 前到市政廳正面；全程依當日交通與步行時間保留取行李緩衝。' },
+      { mode: '步行／市內交通', route: '教堂島 → 舊城市場 → 牛角麵包博物館 → Stary Browar → Poznań Główny', action: '11:45 前到市政廳正面；博物館英語場依售票頁調整，16:00 開始取行李與前往車站。' },
       { mode: 'PKP', route: 'Poznań Główny → Warszawa Centralna', action: '目前採 EIC 8104 參考 17:40–約 20:00；17:05 前到站，指定日核實並購票後依票面班次行動。' },
     ],
     dailyAlerts: [
@@ -626,7 +630,7 @@ const unresolvedStepReasons = {
   2: {
     'EIP 5300 前往克拉科夫': dynamicTransitReason,
     '車站周邊午餐': flexibleStopReason,
-    '電車 50 / 24 到 Plac Bohaterów Getta': dynamicTransitReason,
+    '步行經 Kazimierz、Podgórze 前往辛德勒工廠': '步行沿途短停保持彈性；以辛德勒工廠入口地址為終點，17:10 前到場。',
   },
   3: {
     'Lajkonik · 克拉科夫 → 奧斯威辛': dynamicTransitReason,
@@ -645,6 +649,7 @@ const unresolvedStepReasons = {
     'Baltic Express 260 前往波茲南': dynamicTransitReason,
   },
   6: {
+    '取行李、前往 Poznań Główny': '公寓寄放與取行李地點須先向住宿確認，再前往車站。',
     '★ 聖馬丁牛角麵包 (PGI)': '尚未選定可靠分店，待分店與營業時間確認後補入。',
     'EIC 8104 前往華沙': dynamicTransitReason,
   },
