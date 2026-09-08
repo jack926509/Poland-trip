@@ -13,6 +13,7 @@ import {
   bookingTiers,
   days,
   flights,
+  meta,
   railOfficialLinks,
   railPurchaseSteps,
   reservations,
@@ -132,10 +133,29 @@ test('5 筆已確認住宿完整涵蓋 7 晚並保留官方地址', () => {
     assert.match(booking.officialUrl, /^https:\/\//);
     assert.equal(booking.status, '已確認');
     assert.equal(booking.rooms, 1);
+    assert.equal(typeof booking.coordinates?.lat, 'number');
+    assert.equal(typeof booking.coordinates?.lng, 'number');
+    assert.match(booking.coordinates?.checkedAt ?? '', /^2026-\d{2}-\d{2}$/);
   }
   assert.equal(stay.filter(item => item.addressVerified).length, 4);
   assert.equal(stay.find(item => item.name === 'Piast')?.address, '完整地址待飯店第一方確認');
   for (const booking of stay.filter(item => item.addressVerified)) assert.match(booking.address, /\d/);
+
+  const bookingPage = read('practical/booking.html');
+  for (const booking of stay) {
+    assert.ok(bookingPage.includes(booking.coordinates.lat.toFixed(6)));
+    assert.ok(bookingPage.includes(booking.coordinates.lng.toFixed(6)));
+  }
+});
+
+test('公開版涵蓋完整航空往返日期，六段航班均標示已購票', () => {
+  assert.equal(meta.travelStart, '2026-10-23');
+  assert.equal(meta.travelEnd, '2026-11-01');
+  assert.equal(meta.tripStart, '2026-10-24');
+  assert.equal(meta.tripEnd, '2026-10-31');
+  const actualFlights = [...flights.out, ...flights.back].filter(item => !item.layover);
+  assert.equal(actualFlights.length, 6);
+  assert.ok(actualFlights.every(item => item.status === '已購票'));
 });
 
 test('自由行資料庫的狀態、來源、日期與關聯資料符合完整性契約', () => {
@@ -792,8 +812,8 @@ test('高風險行程文字與餐廳候選不會誤導現場判斷', () => {
   const warsawDining = cityDining.warsaw;
 
   assert.match(luggageStep.sub, /座堂島 → 旅館約 25–30 分/);
-  assert.match(luggageStep.sub, /距目標發車 1h45/);
-  assert.match(luggageStep.sub, /抵站後約 45–60 分鐘緩衝/);
+  assert.match(luggageStep.sub, /距參考發車 1h55/);
+  assert.match(luggageStep.sub, /抵站後保留約 35 分鐘緩衝/);
   assert.ok(!warsawDining.some(item => item.name.includes('/')), '餐廳候選不可把多個品牌合併成一筆');
   assert.ok(warsawDining.some(item => item.name === 'Gościniec（探索候選）'));
 });
@@ -940,7 +960,7 @@ test('Day 7 改為早上皇家城堡，並保留 POLIN 至起義博物館的移�
 
 test('尚未開賣的長途交通與天氣不假裝成已確認', () => {
   for (const train of trains) {
-    assert.match(train.status, /尚未確認/);
+    assert.match(train.status, /尚未確認|尚未訂票/);
     assert.match(train.price, /待/);
   }
   for (const day of days) {
@@ -950,6 +970,19 @@ test('尚未開賣的長途交通與天氣不假裝成已確認', () => {
   assert.ok(!allDays.includes('22:54'));
   assert.ok(!allDays.includes('30 天無限'));
   assert.ok(!allDays.includes('價差 ≤'));
+});
+
+test('四段跨城火車使用採用班次，並保留指定日待確認狀態', () => {
+  assert.deepEqual(
+    trains.filter(item => item.type !== 'BUS · Lajkonik').map(item => [item.date, item.type, item.dep, item.arr]),
+    [
+      ['10/25', 'EIP 5300', '08:45', '10:56'],
+      ['10/27', 'IC 3600 Siemiradzki', '17:55', '20:52'],
+      ['10/28', 'Baltic Express 260', '19:10', '20:29'],
+      ['10/29', 'EIC 8104 Bolesław Prus', '17:40', '約 20:00'],
+    ],
+  );
+  assert.match(trains[0].note, /一等艙/);
 });
 
 test('城際交通提供官方購票、官方時刻表與可操作的購票教學', () => {

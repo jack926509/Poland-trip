@@ -41,8 +41,8 @@ ${renderAppendixHeader({ kicker: eyebrow, title, dek: intro })}
 
 function renderFlightTable(legs) {
   return `<div class="table-wrap"><table class="table-editorial">
-    <thead><tr><th>航班</th><th>路段</th><th>日期／時間</th><th>時長</th></tr></thead>
-    <tbody>${legs.map(leg => `<tr><td>${leg.code}</td><td>${leg.leg}</td><td>${leg.when}</td><td>${leg.dur || '—'}</td></tr>`).join('')}</tbody>
+    <thead><tr><th>航班</th><th>路段</th><th>日期／時間</th><th>時長</th><th>狀態</th></tr></thead>
+    <tbody>${legs.map(leg => `<tr><td>${leg.code}</td><td>${leg.leg}</td><td>${leg.when}</td><td>${leg.dur || '—'}</td><td>${leg.layover ? '轉機' : `<span class="tag-muted">${leg.status || '待確認'}</span>`}</td></tr>`).join('')}</tbody>
   </table></div>`;
 }
 
@@ -65,7 +65,7 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
       <td><b>${train.seg}</b>${train.leg ? `<br><span class="timeline-note">${train.leg}</span>` : ''}${train.status ? `<br><span class="tag-todo">${train.status}</span>` : ''}</td>
       <td class="number">${train.date}</td><td>${train.type}</td>
       <td class="number">${train.dep} → ${train.arr}</td>
-      <td class="number">${train.dur}</td><td class="number">${/^\d/.test(train.price) ? `PLN ${train.price}` : train.price}</td>
+      <td class="number">${train.dur}</td><td class="number">${/^\d/.test(train.price) ? `PLN ${train.price}` : train.price}${train.note ? `<br><span class="timeline-note">${train.note}</span>` : ''}</td>
     </tr>`).join('');
   const railLinkCards = railOfficialLinks.map(item => `
     <a class="card card-link" href="${item.url}" target="_blank" rel="noopener">
@@ -76,13 +76,22 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
       <span class="section-num">${String(index + 1).padStart(2, '0')}</span>
       <h3>${item.title}</h3><p>${item.detail}</p>
     </article>`).join('');
-  const stayHtml = stay.map(item => `
+  const stayHtml = stay.map(item => {
+    const coordinate = item.coordinates;
+    const coordinateLabel = coordinate ? `${coordinate.lat.toFixed(6)}, ${coordinate.lng.toFixed(6)}` : '尚未提供';
+    const mapUrl = coordinate
+      ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${coordinate.lat},${coordinate.lng}`)}`
+      : null;
+    return `
     <article class="card">
-      <span class="eyebrow">${item.status} · ${item.city}</span><h3>${item.name}</h3>
-      <p><b>${item.checkIn}${item.checkInTime ? ` ${item.checkInTime}` : ''} → ${item.checkOut}${item.checkOutTime ? ` ${item.checkOutTime}` : ''}</b> · ${item.nights} 晚 · ${item.rooms} 間房</p>
-      <p>${item.address}</p><p class="timeline-note">${item.note}</p>
-      <a href="${item.officialUrl}" target="_blank" rel="noopener">飯店官網 →</a>
-    </article>`).join('');
+      <span class="eyebrow">${escapeHtml(item.status)} · ${escapeHtml(item.city)}</span><h3>${escapeHtml(item.name)}</h3>
+      <p><b>${escapeHtml(item.checkIn)}${item.checkInTime ? ` ${escapeHtml(item.checkInTime)}` : ''} → ${escapeHtml(item.checkOut)}${item.checkOutTime ? ` ${escapeHtml(item.checkOutTime)}` : ''}</b> · ${item.nights} 晚 · ${item.rooms} 間房</p>
+      <p><b>地址：</b>${escapeHtml(item.address)}${item.addressVerified ? '' : ' <span class="tag-todo">門牌待確認</span>'}</p>
+      <p><b>座標：</b><span class="number">${coordinateLabel}</span>${coordinate ? `<br><span class="timeline-note">${escapeHtml(coordinate.status)} · ${escapeHtml(coordinate.checkedAt)}</span>` : ''}</p>
+      <p class="timeline-note">${escapeHtml(item.note)}</p>
+      ${mapUrl ? `<a href="${mapUrl}" target="_blank" rel="noopener">座標導航 →</a> · ` : ''}<a href="${escapeHtml(item.officialUrl)}" target="_blank" rel="noopener">飯店官網 →</a>
+    </article>`;
+  }).join('');
 
   const content = `
     ${renderBookingNotice()}
@@ -96,7 +105,7 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
     </section>
     <section class="section" id="rail-itinerary">
       <div class="section-heading"><span class="section-num">Rail</span><h2>城際交通</h2></div>
-      <div class="callout-risk"><span class="tag-todo">尚未開賣／確認</span><p>下表是行程銜接所需的目標時段，不是已核實班次。只有在 PKP Intercity／KOLEO 顯示 2026-10-25 至 10-29 的實際車次並完成購票後，才可視為成立。</p></div>
+      <div class="callout-risk"><span class="tag-todo">已選參考班次／尚未購票</span><p>下表是目前採用的規劃班次，不代表指定日期已核實或已出票。只有在 PKP Intercity／KOLEO 顯示 2026-10-25 至 10-29 的實際車次並完成購票後，才可視為成立。</p></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>路段</th><th>日期</th><th>車種</th><th>時刻</th><th>時長</th><th>票價</th></tr></thead><tbody>${trainRows}</tbody></table></div>
     </section>
     <section class="section">
@@ -115,6 +124,7 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
     </section>
     <section class="section">
       <div class="section-heading"><span class="section-num">Stay</span><h2>已確認住宿</h2></div>
+      <div class="callout-note"><b>公開資料範圍：</b><p>依旅客授權列出住宿名稱、入住日期、公開地址與地圖座標；不包含住客姓名、訂房代碼、付款資料或房號。Piast 門牌與 Towarowa 實際入住門牌仍以訂房確認為準。</p></div>
       <div class="grid-wide">${stayHtml}</div>
     </section>`;
 

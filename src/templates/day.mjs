@@ -92,13 +92,14 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
       <td class="number" data-label="時長">${step.dur || '—'}</td>
     </tr>`).join('');
 
+  const trainPrice = day.train?.price?.startsWith('PLN') ? day.train.price : day.train?.price;
   const trainHtml = day.train ? `
     <section class="section">
       <div class="section-heading"><span class="section-num">Transport</span><h2>當天交通</h2></div>
       <article class="card card-accent">
         <span class="eyebrow">${day.train.type}${day.train.leg ? ` · ${day.train.leg}` : ''}</span>
         <h3>${day.train.from || ''}${day.train.to ? ` → ${day.train.to}` : ''}</h3>
-        <p><b>${day.train.dep} → ${day.train.arr}</b> · ${day.train.dur} · ${day.train.price.startsWith('PLN') ? day.train.price : `PLN ${day.train.price}`}</p>
+        <p><b>${day.train.dep} → ${day.train.arr}</b> · ${day.train.dur} · ${escapeHtml(trainPrice)}</p>
       </article>
     </section>` : '';
 

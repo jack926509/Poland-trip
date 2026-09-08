@@ -324,6 +324,7 @@ const accommodationAddress = (id, stepLabels = []) => {
 const officialPlaceUrls = {
   '華沙蕭邦機場': 'https://www.lotnisko-chopina.pl/en/index.html',
   'Warszawa Centralna': 'https://portalpasazera.pl/en/KatalogStacji',
+  'Warszawa Zachodnia': 'https://portalpasazera.pl/en/KatalogStacji',
   '華沙皇家城堡': 'https://www.zamek-krolewski.pl/en/strona/opening-hours-and-ticket-prices/2801-opening-hours-and-ticket-prices-may-2-2026',
   '華沙老城市場廣場': 'https://go2warsaw.pl/en/old-town/',
   'Krakowskie Przedmieście': 'https://warsawtour.pl/en/royal-route/',
@@ -356,6 +357,7 @@ const officialPlaceUrls = {
 const entranceNotesByName = {
   '華沙蕭邦機場': '抵達後依 Arrivals 與 SKM／Railway Station 標示前往航廈下方車站；回程依電子機票確認報到區。',
   'Warszawa Centralna': '由已確認住宿方向選最近入口；進站後以大廳電子牌確認月台，不預先假定入口或月台。',
+  'Warszawa Zachodnia': '由 ibis budget Warszawa West Station 步行前往；進站後以電子牌確認 EIP 5300 的實際月台。',
   '華沙皇家城堡': '主要訪客入口在 plac Zamkowy 4；依票券時段與現場安檢標示入場。',
   '華沙老城市場廣場': '公共廣場，導航至 Rynek Starego Miasta；與 plac Zamkowy 的皇家城堡廣場是不同地點。',
   'Krakowskie Przedmieście': '公共街道，從城堡廣場沿皇家大道步行，無需入場。',
@@ -387,11 +389,12 @@ const entranceNotesByName = {
 
 const addressStepLabels = {
   '華沙蕭邦機場': ['抵蕭邦機場', '抵 Chopin 第一航廈', '退稅文件 + 報到 + 安檢', '★ QR 260 起飛'],
-  'Warszawa Centralna': ['退房 → Warszawa Centralna', '抵華沙中央車站'],
+  'Warszawa Centralna': ['退房 → Warszawa Centralna', '抵華沙中央車站', '抵 Warszawa Centralna'],
+  'Warszawa Zachodnia': ['退房後步行前往 Warszawa Zachodnia', '抵 Warszawa Zachodnia'],
   '華沙皇家城堡': ['★ 皇家城堡'],
   '華沙老城市場廣場': ['★ 老城廣場', '老城廣場夜燈漫步', '早餐 + 老城散步'],
   'Krakowskie Przedmieście': ['Krakowskie Przedmieście'],
-  'Kraków Główny': ['抵 Kraków Główny', '火車回 Kraków Główny', '旅館取行李 → Bolt 到 Kraków Główny'],
+  'Kraków Główny': ['抵 Kraków Główny', '火車回 Kraków Główny'],
   '瓦維爾大教堂': ['★ 瓦維爾大教堂'],
   '瓦維爾皇家城堡': ['★ Wawel 城堡一、二樓完整路線'],
   '辛德勒工廠': ['★ 辛德勒工廠'],
@@ -406,6 +409,7 @@ const addressStepLabels = {
   '百年廳': ['★ 百年廳 (UNESCO)'],
   '樂斯拉夫中央廣場': ['★ 中央廣場 + 紡織會館'],
   '樂斯拉夫主教座堂': ['★ 座堂島煤氣燈'],
+  'Poznań Główny': ['抵 Poznań Główny'],
   '波茲南主教座堂': ['★ 教堂島 Ostrów Tumski'],
   '波茲南市政廳': ['廣場卡正面位置', '★ 山羊鐘樓秀'],
   '帝王城堡': ['帝王城堡 / Stary Browar'],
@@ -453,7 +457,7 @@ export const dayOperations = {
     entryIds: ['rail-trip-tickets', 'calendar-sunday-and-all-saints', 'accommodation-confirmations'],
     note: '非營業週日；火車班次與餐廳營業當日確認。',
     addresses: [
-      address('Warszawa Centralna', 'al. Jerozolimskie 54, 00-024 Warszawa', 'Warszawa Centralna, al. Jerozolimskie 54, Warszawa'),
+      address('Warszawa Zachodnia', 'Aleje Jerozolimskie 142A, 02-305 Warszawa', 'Warszawa Zachodnia, Aleje Jerozolimskie 142A, Warszawa'),
       address('Kraków Główny', 'plac Jana Nowaka-Jeziorańskiego 3, 31-154 Kraków', 'Krakow Glowny, plac Jana Nowaka-Jezioranskiego 3, Krakow'),
       address('瓦維爾大教堂', 'Wawel 3, 31-001 Kraków', 'Wawel Cathedral, Wawel 3, Krakow'),
       address('瓦維爾皇家城堡', 'Wawel 5, 31-001 Kraków', 'Wawel Royal Castle, Wawel 5, Krakow'),
@@ -462,15 +466,16 @@ export const dayOperations = {
       address('紡織會館 Sukiennice', 'Rynek Główny 3, 31-042 Kraków', 'Sukiennice, Rynek Glowny 3, Krakow'),
       address('辛德勒工廠', 'Lipowa 4, 30-702 Kraków', 'Oskar Schindler Enamel Factory, Lipowa 4, Krakow'),
       address('Plac Nowy', 'Plac Nowy, 31-056 Kraków', 'Plac Nowy, Krakow'),
+      accommodationAddress('warsaw-reduta', ['退房後步行前往 Warszawa Zachodnia']),
       accommodationAddress('krakow-stare-miasto', ['旅館寄放行李']),
     ],
     navigation: [
-      { mode: 'PKP', route: '華沙 → 克拉科夫', action: '只依已購票上的車次、車廂與座位進站；月台當日查 Passenger Portal 與站內電子牌。' },
+      { mode: 'PKP', route: 'Warszawa Zachodnia → Kraków Główny', action: '目前採 EIP 5300 參考 08:45–10:56；10/25 換表後核實仍停靠西站，完成購票後只依票面車次、車廂與座位進站。' },
       { mode: '步行／市內交通', route: 'Kraków Główny → Wawel → 辛德勒工廠', action: '取行李後先寄放；Wawel 到 Podgórze 的電車路線當日用 Jakdojade 重查改道。' },
     ],
     dailyAlerts: [
       '10/25 為非營業週日，多數一般商店關閉；餐廳與例外店家仍逐店確認。',
-      '華沙至克拉科夫班次在完成購票前都是目標，不把 09:00 當成已確定發車。',
+      'EIP 5300 的 08:45–10:56 是參考班次；完成指定日核實與購票前，不把它當成已確定發車。',
     ],
     nightChecklist: [...standardNightChecklist, '確認 Auschwitz 官方導覽姓名、入場時段、行李限制與往返車票狀態'],
   },
@@ -504,12 +509,12 @@ export const dayOperations = {
       address('Plac Nowy', 'Plac Nowy, 31-056 Kraków', 'Plac Nowy, Krakow'),
       address('紡織會館 Sukiennice', 'Rynek Główny 3, 31-042 Kraków', 'Sukiennice, Rynek Glowny 3, Krakow'),
       address('Wrocław Główny', 'Piłsudskiego 105, 50-085 Wrocław', 'Wroclaw Glowny, Pilsudskiego 105, Wroclaw'),
-      accommodationAddress('krakow-stare-miasto', ['早餐 + 退房', '旅館取行李 → Bolt 到 Kraków Główny']),
+      accommodationAddress('krakow-stare-miasto', ['早餐 + 退房', '結束 Kazimierz 散步，回 ibis 取行李']),
       accommodationAddress('wroclaw-piast'),
     ],
     navigation: [
       { mode: 'KMŁ', route: 'Kraków Główny ↔ Wieliczka Rynek-Kopalnia', action: '以當日時刻表與售票頁為準；下車後步行前往 Daniłowicza 立坑入口。' },
-      { mode: 'PKP', route: 'Kraków Główny → Wrocław Główny', action: '目標 19:30 只是規劃錨點；開賣後依已購直達班次重排取行李與進站時間。' },
+      { mode: 'PKP', route: 'Kraków Główny → Wrocław Główny', action: '目前採 IC 3600 參考 17:55–20:52；17:20 前到站，指定日核實並購票後依票面班次行動。' },
     ],
     dailyAlerts: [
       '鹽礦全程階梯多、地下約 17–18°C；穿好走防滑鞋並攜薄外套。',
@@ -528,12 +533,12 @@ export const dayOperations = {
       address('樂斯拉夫中央廣場', 'Rynek, 50-101 Wrocław', 'Rynek, Wroclaw'),
       address('樂斯拉夫主教座堂', 'plac Katedralny 18, 50-329 Wrocław', 'Wroclaw Cathedral, plac Katedralny 18, Wroclaw'),
       address('Poznań Główny', 'Dworcowa 2, 61-801 Poznań', 'Poznan Glowny, Dworcowa 2, Poznan'),
-      accommodationAddress('wroclaw-piast'),
+      accommodationAddress('wroclaw-piast', ['座堂島結束後回 Piast 取行李']),
       accommodationAddress('poznan-towarowa'),
     ],
     navigation: [
       { mode: '步行／市內交通', route: '老城 → Panorama → 百年廳 → 座堂島', action: '百年廳跨區移動當日用 Jakdojade 選取實際電車；預留從座堂島回車站取行李的時間。' },
-      { mode: 'PKP', route: 'Wrocław Główny → Poznań Główny', action: '目標 19:00 不是已確定班次；依已購票券的車次與月台行動。' },
+      { mode: 'PKP', route: 'Wrocław Główny → Poznań Główny', action: '目前採 Baltic Express 260 參考 19:10–20:29；18:35 前到站，指定日核實並購票後依票面班次行動。' },
     ],
     dailyAlerts: [
       '百年廳 10/28 的內部參觀狀態須以官方 availability calendar 確認；未確認前只排外觀與周邊。',
@@ -557,7 +562,7 @@ export const dayOperations = {
     ],
     navigation: [
       { mode: '步行／市內交通', route: '教堂島 → 舊城市場 → 帝王城堡 → Poznań Główny', action: '11:45 前到市政廳正面；全程依當日交通與步行時間保留取行李緩衝。' },
-      { mode: 'PKP', route: 'Poznań Główny → Warszawa Centralna', action: '目標 17:30 只作為排程上限；實際車次、座位與月台依已購票及當日電子牌。' },
+      { mode: 'PKP', route: 'Poznań Główny → Warszawa Centralna', action: '目前採 EIC 8104 參考 17:40–約 20:00；17:05 前到站，指定日核實並購票後依票面班次行動。' },
     ],
     dailyAlerts: [
       '市政廳博物館整修閉館；主行程只看官方確認的 12:00 山羊鐘樓秀。',
@@ -619,7 +624,7 @@ const unresolvedStepReasons = {
     '早睡倒時差': '休息安排不需要導航地址。',
   },
   2: {
-    '華沙 → 克拉科夫直達車': dynamicTransitReason,
+    'EIP 5300 前往克拉科夫': dynamicTransitReason,
     '車站周邊午餐': flexibleStopReason,
     '電車 50 / 24 到 Plac Bohaterów Getta': dynamicTransitReason,
   },
@@ -632,17 +637,16 @@ const unresolvedStepReasons = {
   4: {
     '火車到 Wieliczka Rynek-Kopalnia': dynamicTransitReason,
     'Wieliczka 鎮中心午餐': flexibleStopReason,
-    '自由活動或補拍照、找地方喝咖啡': flexibleStopReason,
-    '直達車': dynamicTransitReason,
+    'IC 3600 前往樂斯拉夫': dynamicTransitReason,
   },
   5: {
     '糖果屋雙屋 + 教堂塔樓': '教堂塔樓入口與開放狀態須依當日官方公告確認。',
-    '取行李 → Wrocław Główny': 'Piast 住宿已確認，但完整門牌尚待飯店第一方或私人訂房確認核對。',
-    '直達車': dynamicTransitReason,
+    '座堂島結束後回 Piast 取行李': 'Piast 住宿已確認，但完整門牌尚待飯店第一方或私人訂房確認核對。',
+    'Baltic Express 260 前往波茲南': dynamicTransitReason,
   },
   6: {
     '★ 聖馬丁牛角麵包 (PGI)': '尚未選定可靠分店，待分店與營業時間確認後補入。',
-    '波茲南 → 華沙直達車': dynamicTransitReason,
+    'EIC 8104 前往華沙': dynamicTransitReason,
   },
   7: {
     '午餐（老城 → POLIN 路上）': flexibleStopReason,

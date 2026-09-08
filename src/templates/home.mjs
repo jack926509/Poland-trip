@@ -22,7 +22,7 @@ function renderFlight(direction, legs) {
     <span class="eyebrow">${escapeHtml(direction)}</span>
     <h3>${actualLegs.map(leg => escapeHtml(leg.code)).join(' · ')}</h3>
     <ul class="link-list">
-      ${legs.map(leg => `<li><b>${escapeHtml(leg.leg)}</b>　${escapeHtml(leg.when)}${leg.dur ? ` · ${escapeHtml(leg.dur)}` : ''}</li>`).join('')}
+      ${legs.map(leg => `<li><b>${escapeHtml(leg.leg)}</b>　${escapeHtml(leg.when)}${leg.dur ? ` · ${escapeHtml(leg.dur)}` : ''}${leg.status ? ` · <span class="tag-muted">${escapeHtml(leg.status)}</span>` : ''}</li>`).join('')}
     </ul>
   </article>`;
 }
@@ -84,7 +84,8 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
         <h1>POLSKA</h1>
         <p class="journal-cover-route">${escapeHtml(meta.route)}</p>
         <dl class="journal-cover-meta">
-          <div><dt>日期</dt><dd>${escapeHtml(meta.dateRange)}</dd></div>
+          <div><dt>航空往返</dt><dd>${escapeHtml(meta.flightDateRange || meta.dateRange)}</dd></div>
+          <div><dt>波蘭境內</dt><dd>${escapeHtml(meta.dateRange)}</dd></div>
           <div><dt>旅程</dt><dd>${meta.days} 天 ${meta.nights} 夜</dd></div>
         </dl>
       </div>
