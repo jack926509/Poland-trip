@@ -75,6 +75,39 @@ function buildChapterIndex(bodyHtml) {
     : `${rewritten.slice(0, firstSection)}${indexHtml}\n    ${rewritten.slice(firstSection)}`;
 }
 
+function stripTags(value) {
+  return String(value ?? '').replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * 手機把表格改成卡片時要靠 td 的 data-label 顯示欄位名。
+ * 每個表格都手寫一次太容易漏，所以在組版時用 thead 自動補上。
+ * 已經有 data-label 的沿用原值；含 colspan 的儲存格（例如「查無資料」整列）跳過。
+ */
+export function addTableCellLabels(html) {
+  return html.replace(/<table class="table-editorial([^"]*)"([^>]*)>([\s\S]*?)<\/table>/g,
+    (match, extraClass, attrs, inner) => {
+      const headRow = /<thead>[\s\S]*?<tr>([\s\S]*?)<\/tr>[\s\S]*?<\/thead>/.exec(inner)?.[1];
+      if (!headRow) return match;
+      const headers = Array.from(headRow.matchAll(/<th[^>]*>([\s\S]*?)<\/th>/g)).map(cell => stripTags(cell[1]));
+      if (!headers.length) return match;
+
+      const body = inner.replace(/<tbody>([\s\S]*?)<\/tbody>/, (bodyMatch, rows) =>
+        `<tbody>${rows.replace(/<tr([^>]*)>([\s\S]*?)<\/tr>/g, (rowMatch, rowAttrs, cells) => {
+          let column = -1;
+          const labelled = cells.replace(/<td([^>]*)>/g, (cellMatch, cellAttrs) => {
+            column += 1;
+            if (/\bcolspan=/.test(cellAttrs) || /\bdata-label=/.test(cellAttrs)) return cellMatch;
+            const label = headers[column];
+            return label ? `<td${cellAttrs} data-label="${escapeAttr(label)}">` : cellMatch;
+          });
+          return `<tr${rowAttrs}>${labelled}</tr>`;
+        })}</tbody>`);
+
+      return `<table class="table-editorial${extraClass}"${attrs}>${body}</table>`;
+    });
+}
+
 export const searchIndexPlaceholder = '__SITE_SEARCH_INDEX__';
 
 export function renderSiteSearch({
@@ -87,10 +120,10 @@ export function renderSiteSearch({
   return `<section class="site-search-shell" data-site-search data-search-path-prefix="${pathPrefix}" aria-label="全站旅遊搜尋">
     <div class="site-search-inner">
       <div class="site-search-form-row">
-        <label for="site-search-input">搜尋整個旅遊網站</label>
+        <label class="site-search-label" for="site-search-input">搜尋整個旅遊網站</label>
         <div class="site-search-input-row">
           <span class="site-search-icon" aria-hidden="true">⌕</span>
-          <input id="site-search-input" type="search" inputmode="search" autocomplete="off" spellcheck="false" placeholder="火車、餐廳、景點、城市特色" aria-controls="site-search-results" aria-describedby="site-search-help">
+          <input id="site-search-input" type="search" inputmode="search" autocomplete="off" spellcheck="false" placeholder="搜尋火車、餐廳、景點、城市" aria-controls="site-search-results" aria-describedby="site-search-help">
           <button class="site-search-clear" type="button" data-search-clear hidden>清除</button>
         </div>
       </div>
@@ -125,7 +158,7 @@ export function renderLayout({
 }) {
   const path = file => `${pathPrefix}${file}`;
   const useChapterIndex = chapterIndex && pageKind !== 'home' && !bodyHtml.includes('database-index');
-  const pageBody = useChapterIndex ? buildChapterIndex(bodyHtml) : bodyHtml;
+  const pageBody = addTableCellLabels(useChapterIndex ? buildChapterIndex(bodyHtml) : bodyHtml);
   const navLink = ([file, label]) => {
     const isCurrent = currentPage === file;
     return `<li><a href="${path(file)}"${isCurrent ? ' aria-current="page" class="nav-link-current"' : ''}>${label}</a></li>`;
@@ -140,9 +173,8 @@ export function renderLayout({
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="2026 波蘭四城 8 天旅遊規劃：逐日行程、城市地圖、交通、門票與餐廳。">
-  <meta name="color-scheme" content="light dark">
-  <meta name="theme-color" content="#f4eddf" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#191411" media="(prefers-color-scheme: dark)">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f4eddf">
   <title>${title} · POLSKA 波蘭行</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%232b2723'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-size='38' font-family='serif' font-weight='700' fill='%23f6f1e8'%3EP%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">

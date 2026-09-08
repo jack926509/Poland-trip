@@ -67,6 +67,52 @@ Day 01／06／07／08 共用華沙同一張。若要補充照片，請沿用 CRE
 - 依使用者 2026-09-08 明確授權，完整行程、航班、住宿名稱／已知地址與地圖資料公開發布；未知地址仍標待確認，不以猜測補齊。
 - 沿用 `main` 推送觸發 Cloudflare Pages 與 GitHub Pages 的既有部署，並升級離線快取版本。
 
+## 2026-09-08 UX/UI 版面優化（實測數據）
+
+以 390×844 手機與 1440×900 桌機實測 bounding box，修正四個量得出來的版面問題：
+
+- 全站搜尋列在手機佔掉首屏 386px（46%）。標題改由 placeholder 承擔、快捷分類改單行橫向捲動後降為 121px，首頁封面自 y=697 提前到 y=427。分類按鈕仍維持 44px 觸控高度，`aria-describedby` 目標只做視覺隱藏，螢幕閱讀器不受影響。
+- 桌機封面 `h1`「POLSKA」溢出欄位 183px（scrollWidth 490 / clientWidth 307）。字級改依欄寬計算（`container-type: inline-size` + `cqw`，另備 `vw` fallback），現已完整落在版面內。
+- 每日與城市封面圖被 `max-height: 23rem` 截斷，右欄留下 176px 空白。改為填滿欄位；手機仍保留原本 9rem 的壓縮高度。
+- `.nav > a` 的特異度高於 `.nav-brand`，刊頭一直被壓成單行 inline-flex。改用同級選擇器後恢復兩行左對齊。
+
+另外兩項操作性調整：
+
+- 每日頁的「時間表／地址與導航／訂票與提醒」移到封面正下方並改為吸附，路上捲到任何位置都能一按跳轉；`scroll-margin-top` 一併調整避免標題被遮住。手機 `#schedule` 由 y=1586 提前到 y=1336。
+- 「本頁章節」索引原本在每日頁被 `max-height: 8rem` 從字中間切斷，改為可換行的標籤列，不再裁切。
+
+深色模式、鍵盤焦點樣式與 `prefers-reduced-motion` 均已隨新樣式驗證；`env -u NODE_OPTIONS ./verify.sh` 全數通過（98 項測試）。
+
+## 2026-09-08 UX/UI 第二輪：移除深色模式與操作性調整
+
+**深色模式已完全移除**：`prefers-color-scheme` 區塊、`color-scheme: dark`，以及成對的
+`theme-color` meta 都不再輸出，`main.css`、單檔版與 23 頁 HTML 皆已驗證為零命中。
+站台固定使用原本的紙感淺色配色。
+
+手機與桌機操作性調整（同樣以實測 bounding box 為依據）：
+
+- **所有表格在手機改為卡片式呈現。** 原本只有每日時間表有這個處理，其餘 20 幾張表
+  維持橫向捲動：`practical/booking.html` 的表格在 390px 寬的畫面裡是 1210px，
+  首欄「現在就查／訂（最急）」被壓到一行一個字。欄名改由 `layout.mjs` 的
+  `addTableCellLabels()` 依 `<thead>` 自動補進每個 `<td>` 的 `data-label`，
+  不必逐張表手寫；含 `colspan` 的整列訊息會跳過。
+  過程中順帶修掉兩個會把整頁推寬的成因：`tbody` 的 grid track 沒指定會撐成
+  `max-content`，以及 `.number` 的 `white-space: nowrap` 讓整段備註不換行。
+  修正後 `booking` 的水平溢出由 169px 歸零。
+- **觸控目標補到 44px。** Leaflet 縮放鈕原為 30px（leaflet.css 在 main.css 之後載入，
+  且用 `.leaflet-touch` 前綴，特異度較高，需要更明確的選擇器才蓋得過）；
+  資料庫主題索引、電話連結與待辦頁的行動呼籲連結原本只有 17px。
+  句中的外部連結（Google Maps、官網）改用 `padding-block` 擴大點擊範圍，
+  不影響行內排版。
+- **日期捷徑會標出「今天」。** 依 `meta.timeZone`（Europe/Warsaw）比對當地日期，
+  命中時加上 `aria-current="date"` 與標記並捲進可視範圍；不在 10/24–10/31 區間內
+  就不顯示，也不影響無 JavaScript 的瀏覽。
+- **長頁面加上「回頂端」。** 自由行資料庫在手機高達 19000px，捲到底沒有回頭路；
+  按鈕在捲動超過 900px 後出現，並遵守 `prefers-reduced-motion`。
+- 首頁路線列在手機改為換行，不必左右滑。
+
+`env -u NODE_OPTIONS ./verify.sh` 全數通過（102 項測試，含本輪新增的 4 項迴歸測試）。
+
 本次查核的官方來源（不代表已取得指定日票券）：
 
 - [POLIN 開放時間](https://polin.pl/en/planning-your-visit/basic-information)：週五 10:00–18:00、主展最晚 16:00 入場，保留既有 Day 7 順序。

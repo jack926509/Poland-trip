@@ -1816,59 +1816,6 @@ figure.media-unavailable > img {
   border-top-color: var(--plum);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #191716;
-    --paper-deep: #25211f;
-    --paper-light: #302a27;
-    --ink: #f3eadf;
-    --ink-soft: #cbbfb4;
-    --plum: #d9bfd3;
-    --plum-soft: #c3a9bd;
-    --plum-surface: #594455;
-    --accent: #e68d6e;
-    --accent-dark: #f2aa90;
-    --accent-surface: #8f3e2a;
-    --accent-pale: #472d27;
-    --line: #554b45;
-    --line-strong: #8d7e73;
-    --red: #e18b82;
-    --yellow: #e7c47d;
-    --green: #92c9a6;
-    --focus-ring: rgb(242 170 144 / 72%);
-    --focus-ring-soft: rgb(242 170 144 / 52%);
-    --link-underline: rgb(242 170 144 / 55%);
-    --nav-shadow: 0 8px 24px rgb(0 0 0 / 24%);
-    --shadow-paper: 0 18px 44px rgb(0 0 0 / 34%);
-    --surface-card: rgb(48 42 39 / 92%);
-    --surface-table: rgb(48 42 39 / 62%);
-    --surface-hover: rgb(230 141 110 / 13%);
-    --surface-map-link: #263c31;
-    --surface-warning: #413621;
-    --surface-empty: #382f20;
-    --surface-danger: #432825;
-    --surface-note: #402c25;
-    --surface-success: #24382c;
-    --surface-map: #312d2a;
-    --surface-legend: rgb(48 42 39 / 96%);
-    --cover-rule: rgb(255 250 241 / 34%);
-    --nav-scrim: rgb(0 0 0 / 62%);
-  }
-
-  html {
-    color-scheme: dark;
-  }
-
-  .tag-red {
-    background: #8f3934;
-  }
-
-  .tag-yellow,
-  .status-recheck {
-    border-color: #9f7f45;
-  }
-}
-
 @media (max-width: 920px) {
   .nav {
     padding-inline: 1.25rem;
@@ -2377,4 +2324,513 @@ figure.media-unavailable > img {
   .site-search-quick-row { display: flex; flex-wrap: wrap; }
   .site-search-quick-row button { min-height: 44px; }
   .journal-day-facts { gap: .75rem; }
+}
+
+/* ============================================================
+   2026-09-08 UX/UI 優化
+   量測依據：390×844 手機與 1440×900 桌機實測 bounding box。
+   1. 搜尋列在手機吃掉 386px（46% 首屏），壓縮為單行輸入 + 橫向捲動分類。
+   2. 桌機封面 h1「POLSKA」溢出 183px，改用容器查詢定字級。
+   3. 每日／城市封面圖被 max-height 截斷，右欄留下 176px 空白。
+   4. 每日快速導覽提前並吸附，路上隨時可跳到時間表與導航。
+   ============================================================ */
+
+/* 刊頭標題固定兩行靠左：.nav > a 的特異度較高，這裡要用同級選擇器才蓋得過 */
+.nav > a.nav-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.1rem;
+  padding-left: 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: 0.08em;
+  text-align: left;
+}
+
+/* --- 封面標題：依欄寬而非視窗寬定字級，避免長字溢出 --- */
+.journal-cover h1 {
+  font-size: clamp(3rem, 7.2vw, 5.6rem);
+  overflow-wrap: anywhere;
+}
+
+@supports (width: 1cqw) {
+  .journal-cover-copy,
+  .journal-day-heading,
+  .journal-city-cover-copy {
+    container-type: inline-size;
+  }
+
+  .journal-cover h1 {
+    font-size: min(24cqw, 8.5rem);
+  }
+
+  .journal-city-cover-copy h1 {
+    font-size: min(15cqw, 6.4rem);
+  }
+}
+
+/* --- 每日／城市封面圖填滿整個欄位，不再留白 --- */
+.journal-day-cover,
+.journal-city-cover figure {
+  min-height: 0;
+  height: 100%;
+}
+
+.journal-day-cover img,
+.journal-city-cover img {
+  max-height: none;
+  height: 100%;
+}
+
+.journal-day-cover-fallback {
+  min-height: 0;
+  height: 100%;
+}
+
+/* --- 每日快速導覽：吸附在頂端，時間表／導航／訂票隨時一按 --- */
+.day-shortcuts {
+  position: sticky;
+  z-index: 40;
+  top: 72px;
+  margin: 0 -3rem 1.5rem;
+  padding: 0.5rem 3rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.journal-day .section,
+.journal-city .section,
+.journal-practical .section {
+  scroll-margin-top: 7rem;
+}
+
+@media (max-width: 920px) {
+  .journal-cover h1 {
+    font-size: clamp(3rem, 11vw, 6rem);
+  }
+
+  .day-shortcuts {
+    margin-inline: -1.5rem;
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (max-width: 700px) {
+  /* 搜尋列壓縮：標題交給 placeholder，分類改單行橫向捲動 */
+  .site-search-inner {
+    padding: 0.55rem 1.25rem 0.6rem;
+  }
+
+  .site-search-form-row {
+    gap: 0;
+  }
+
+  .site-search-label,
+  .site-search-quick-row > span {
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .site-search-quick-row {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+
+  .site-search-quick-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .site-search-quick-row button {
+    flex: 0 0 auto;
+    width: auto;
+    min-height: 44px;
+    padding-inline: 0.85rem;
+  }
+
+  .site-search-quick-row button:focus-visible {
+    outline-offset: -3px;
+  }
+
+  .site-search-summary:empty {
+    min-height: 0;
+    margin: 0;
+  }
+
+  /* 手機上主導覽不吸附，快速導覽貼齊視窗頂端 */
+  .day-shortcuts {
+    top: 0;
+    margin-inline: -1.5rem;
+    padding-inline: 1.5rem;
+    box-shadow: 0 6px 16px rgb(44 37 34 / 8%);
+  }
+
+  /* 保留原本手機封面高度，別讓填滿規則把圖片撐高 */
+  .journal-day-cover {
+    height: auto;
+  }
+
+  .journal-day-cover img {
+    height: 9rem;
+  }
+
+  .journal-day .section,
+  .journal-city .section,
+  .journal-practical .section {
+    scroll-margin-top: 4.5rem;
+  }
+
+  .nav {
+    padding-block: 0.5rem;
+  }
+}
+
+/* --- 本頁章節：改為可換行的標籤列，不再被 max-height 從字中間切斷 --- */
+.chapter-index {
+  margin-block: 1.5rem 2rem;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid var(--line);
+  background: var(--surface-card);
+}
+
+.chapter-index-label {
+  margin: 0 0 0.6rem;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.chapter-index ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chapter-index li {
+  display: flex;
+}
+
+.chapter-index ol a {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--paper-light);
+  color: var(--ink);
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.chapter-index ol a:hover,
+.chapter-index ol a:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent-pale);
+  color: var(--accent-dark);
+}
+
+.chapter-index ol a > span {
+  color: var(--plum-soft);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.journal-day .chapter-index ol {
+  max-height: none;
+  overflow: visible;
+}
+
+@media (max-width: 700px) {
+  .chapter-index {
+    padding: 0.75rem 0.85rem;
+  }
+
+  .chapter-index ol a {
+    font-size: 0.9rem;
+    padding-inline: 0.7rem;
+  }
+}
+
+/* ============================================================
+   2026-09-08 UX/UI 第二輪：手機與桌機操作性
+   1. 寬表格在手機只能橫向捲動且沒有提示，加上捲動陰影與凍結首欄。
+   2. 行動呼籲連結與電話連結只有 17px 高，改為可按的標籤。
+   3. Leaflet 縮放鈕 30px，低於 44px 觸控標準。
+   4. 路線列在手機改為換行，不必左右滑。
+   ============================================================ */
+
+/* --- 寬表格：捲動陰影（純 CSS，只在真的可捲時出現）+ 凍結首欄 --- */
+.table-wrap {
+  background:
+    linear-gradient(to right, var(--paper), rgb(244 237 223 / 0)) left center / 2rem 100% no-repeat local,
+    linear-gradient(to left, var(--paper), rgb(244 237 223 / 0)) right center / 2rem 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, rgb(44 37 34 / 20%), rgb(44 37 34 / 0)) left center / 0.75rem 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, rgb(44 37 34 / 20%), rgb(44 37 34 / 0)) right center / 0.75rem 100% no-repeat scroll;
+  overscroll-behavior-x: contain;
+}
+
+.table-wrap:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* --- 表格內連結給足觸控高度 --- */
+.table-editorial td a,
+.table-editorial th a {
+  display: inline-block;
+  padding-block: 0.55rem;
+}
+
+/* --- 行動呼籲連結改為可按標籤 --- */
+.journal-text-link,
+.journal-note-card > a:last-child,
+.card-link > span,
+a[href^="tel:"] {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 700;
+}
+
+.journal-text-link,
+.journal-note-card > a:last-child,
+a[href^="tel:"] {
+  gap: 0.35rem;
+  padding: 0.35rem 0.9rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--paper-light);
+  color: var(--accent-dark);
+  text-decoration: none;
+}
+
+.journal-text-link:hover,
+.journal-text-link:focus-visible,
+.journal-note-card > a:last-child:hover,
+.journal-note-card > a:last-child:focus-visible,
+a[href^="tel:"]:hover,
+a[href^="tel:"]:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent-pale);
+  color: var(--accent-dark);
+}
+
+/* 電話連結在表格內是主要動作，給它更明確的外觀 */
+.table-editorial a[href^="tel:"] {
+  padding-block: 0.35rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Leaflet 縮放鈕補到 44px --- */
+.leaflet-control-zoom a.leaflet-control-zoom-in,
+.leaflet-control-zoom a.leaflet-control-zoom-out {
+  width: 44px;
+  height: 44px;
+  font-size: 1.35rem;
+  line-height: 44px;
+}
+
+@media (max-width: 700px) {
+  /* 所有表格在手機都改成卡片：欄名由 data-label 自動帶入（見 layout.mjs），
+     不再出現一欄被壓到一行一個字，也不必左右滑。 */
+  .table-wrap {
+    overflow-x: visible;
+    background: none;
+  }
+
+  .table-editorial,
+  .table-editorial tbody,
+  .table-editorial tr,
+  .table-editorial td {
+    display: block;
+    width: 100%;
+  }
+
+  .table-editorial thead {
+    display: none;
+  }
+
+  .table-editorial tbody {
+    display: grid;
+    /* 沒有指定 track 時 auto 會撐成 max-content，長站名會把整頁推寬 */
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    padding: 1rem 0;
+  }
+
+  .table-editorial tr {
+    padding: 0.55rem 1rem;
+    border: 1px solid var(--line);
+    background: var(--paper-light);
+    box-shadow: var(--shadow-paper);
+  }
+
+  /* 欄名獨立成行。用兩欄 grid 會讓含多個子節點的儲存格把第二個節點
+     擠進 5rem 的欄名欄再溢出（實測 timeline-note 撐到 431px），所以改成堆疊。 */
+  .table-editorial td {
+    display: block;
+    padding: 0.5rem 0;
+    border-bottom: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .table-editorial td + td {
+    border-top: 1px solid var(--line);
+  }
+
+  /* 卡片版一列只有一欄，.number 的 nowrap 會讓整段備註不換行而撐寬版面 */
+  .table-editorial .number {
+    white-space: normal;
+  }
+
+  .table-editorial td[data-label]::before {
+    display: block;
+    margin-bottom: 0.15rem;
+    color: var(--ink-soft);
+    content: attr(data-label);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* 路線列改換行，不必左右滑 */
+  .route-strip {
+    flex-wrap: wrap;
+    gap: 0.35rem 0;
+    overflow-x: visible;
+    white-space: normal;
+  }
+}
+
+/* --- 日期捷徑標出「今天」（波蘭當地日期，由 nav.js 加上）--- */
+.trip-day-picker a.is-today {
+  border-color: var(--accent);
+  border-width: 2px;
+  background: var(--accent-pale);
+}
+
+.trip-day-picker a.is-today b {
+  color: var(--accent-dark);
+}
+
+.trip-day-today {
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: var(--accent-surface);
+  color: var(--paper-light);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+/* --- 回頂端：資料庫等頁面超過 19000px --- */
+.to-top {
+  position: fixed;
+  z-index: 80;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 48px;
+  padding: 0 1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--paper-light);
+  box-shadow: 0 8px 24px rgb(44 37 34 / 18%);
+  color: var(--ink);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.to-top[hidden] {
+  display: none;
+}
+
+.to-top:hover,
+.to-top:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent-pale);
+  color: var(--accent-dark);
+}
+
+.to-top span {
+  font-size: 1rem;
+}
+
+@media (max-width: 700px) {
+  .to-top {
+    right: 0.9rem;
+    bottom: 0.9rem;
+  }
+}
+
+@media print {
+  .to-top {
+    display: none;
+  }
+}
+
+/* --- Leaflet 縮放鈕：leaflet.css 在 main.css 之後載入且用 .leaflet-touch
+       前綴（特異度 0,3,1），這裡要更明確才蓋得過 --- */
+.leaflet-touch .leaflet-bar a.leaflet-control-zoom-in,
+.leaflet-touch .leaflet-bar a.leaflet-control-zoom-out {
+  width: 44px;
+  height: 44px;
+  font-size: 1.5rem;
+  line-height: 44px;
+}
+
+@media (max-width: 700px) {
+  /* 主題索引是導覽用清單，給它可按的高度 */
+  .database-index ol a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  /* 句中的外部動作連結（Google Maps、官網、購票頁）：
+     用 padding 擴大點擊範圍，不改變行內排版 */
+  main p a[target="_blank"],
+  main li > a[target="_blank"],
+  main dd > a[target="_blank"] {
+    padding-block: 0.55rem;
+  }
+}
+
+/* 每日頁的導航／官網連結原本是 39px，補到 44px */
+.operation-addresses a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }

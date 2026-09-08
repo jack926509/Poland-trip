@@ -25,8 +25,8 @@ test('長頁保留章節索引、目前頁面與目前導覽群組標示', () =>
 
 test('頁面保留深色模式中繼設定與非阻斷字型載入', () => {
   const home = read('index.html');
-  assert.match(home, /<meta name="color-scheme" content="light dark">/);
-  assert.equal((home.match(/<meta name="theme-color"/g) || []).length, 2);
+  assert.match(home, /<meta name="color-scheme" content="light">/);
+  assert.equal((home.match(/<meta name="theme-color"/g) || []).length, 1);
   assert.match(home, /rel="stylesheet" media="print" onload="this\.media='all'/);
   assert.match(home, /<noscript><link[^>]+fonts\.googleapis\.com[^>]+rel="stylesheet"><\/noscript>/);
 });
@@ -136,6 +136,52 @@ test('必要搜尋資訊與首頁行程摘要字級至少 16px', () => {
   assert.match(source, /\.journal-day-date\s*\{[^}]*font-size:\s*1rem/);
   assert.match(source, /\.journal-day-copy small\s*\{[^}]*font-size:\s*1rem/);
   assert.match(source, /nav\.section-heading\s*>\s*a\s*\{[^}]*min-height:\s*44px/);
+});
+
+test('深色模式樣式與 meta 已全數移除', () => {
+  const source = css();
+  const standalone = fs.readFileSync(path.resolve('poland-travel-guide-2026.html'), 'utf8');
+  const home = fs.readFileSync(path.join(distDir, 'index.html'), 'utf8');
+  assert.doesNotMatch(source, /prefers-color-scheme/);
+  assert.doesNotMatch(standalone, /prefers-color-scheme/);
+  assert.doesNotMatch(home, /prefers-color-scheme/);
+  assert.doesNotMatch(source, /color-scheme:\s*dark/);
+  assert.match(source, /color-scheme:\s*light/);
+});
+
+test('表格儲存格自動帶入 data-label 供手機卡片版顯示欄名', () => {
+  const booking = fs.readFileSync(path.join(distDir, 'practical/booking.html'), 'utf8');
+  assert.match(booking, /<td[^>]*data-label="路段"/);
+  assert.match(booking, /<td[^>]*data-label="票價"/);
+
+  // colspan 的整列訊息不該被硬塞欄名
+  const dashboard = fs.readFileSync(path.join(distDir, 'practical/ops-dashboard.html'), 'utf8');
+  assert.doesNotMatch(dashboard, /<td colspan="4"[^>]*data-label=/);
+
+  // 手機把每一欄堆疊顯示，並解除 .number 的 nowrap，避免整頁被撐寬
+  const source = css();
+  assert.match(source, /\.table-editorial td\[data-label\]::before \{[^}]*content:\s*attr\(data-label\)/);
+  assert.match(source, /\.table-editorial \.number \{\s*white-space:\s*normal/);
+  assert.match(source, /\.table-editorial tbody \{[^}]*grid-template-columns:\s*minmax\(0, 1fr\)/);
+});
+
+test('日期捷徑帶得出可比對的當地日期，並提供回頂端按鈕', () => {
+  const home = fs.readFileSync(path.join(distDir, 'index.html'), 'utf8');
+  assert.match(home, /data-trip-timezone="Europe\/Warsaw"/);
+  assert.match(home, /data-trip-date="2026-10-24"/);
+  assert.match(home, /data-trip-date="2026-10-31"/);
+
+  const navScript = fs.readFileSync(path.join(distDir, 'assets/nav.js'), 'utf8');
+  assert.match(navScript, /Intl\.DateTimeFormat\('en-CA'/);
+  assert.match(navScript, /classList\.add\('is-today'\)/);
+  assert.match(navScript, /className = 'to-top'/);
+});
+
+test('地圖縮放鈕與主題索引達到 44px 觸控高度', () => {
+  const source = css();
+  assert.match(source, /\.leaflet-touch \.leaflet-bar a\.leaflet-control-zoom-in[\s\S]*?height:\s*44px/);
+  assert.match(source, /\.database-index ol a \{[^}]*min-height:\s*44px/);
+  assert.match(source, /a\[href\^="tel:"\][\s\S]*?min-height:\s*44px/);
 });
 
 test('多頁與單檔導覽都支援 Escape 關閉選單', () => {
