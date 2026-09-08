@@ -124,16 +124,29 @@
   });
   document.body.append(toTop);
 
+  /**
+   * 長頁面（每日頁、資料庫）看不出還剩多少，刊頭下方加一條閱讀進度線。
+   * 純裝飾，讀屏軟體忽略；和回頂端共用同一個 rAF。
+   */
+  const progress = document.createElement('div');
+  progress.className = 'reading-progress';
+  progress.setAttribute('aria-hidden', 'true');
+  document.body.append(progress);
+
   let toTopFrame = 0;
-  const syncToTop = () => {
+  const syncScrollState = () => {
     toTopFrame = 0;
     toTop.hidden = window.scrollY < 900;
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const ratio = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+    progress.style.transform = `scaleX(${ratio})`;
   };
   window.addEventListener('scroll', () => {
     if (toTopFrame) return;
-    toTopFrame = requestAnimationFrame(syncToTop);
+    toTopFrame = requestAnimationFrame(syncScrollState);
   }, { passive: true });
-  syncToTop();
+  window.addEventListener('resize', syncScrollState, { passive: true });
+  syncScrollState();
 
   if ('serviceWorker' in navigator && selfScript) {
     navigator.serviceWorker.register(new URL('../sw.js', selfScript.src)).catch(() => {});
