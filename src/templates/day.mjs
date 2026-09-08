@@ -48,7 +48,7 @@ function renderOperation(operation) {
   const unresolved = operation.unresolvedSteps?.map(item => `<li><b>${escapeHtml(item.label)}</b><p>${escapeHtml(item.reason)}</p></li>`).join('') || '<li>本日所有步驟都已有可靠地址。</li>';
 
   return `
-    <section class="section operation-section" aria-labelledby="operation-heading">
+    <section class="section operation-section" id="directions" aria-labelledby="operation-heading">
       <div class="section-heading"><span class="section-num">On the ground</span><h2 id="operation-heading">今天怎麼走</h2></div>
       <p class="lead">${escapeHtml(operation.note)}</p>
       <div class="grid-wide operation-grid">
@@ -201,12 +201,11 @@ ${coverHtml}
       <div><dt>類型</dt><dd>${escapeHtml(day.tag)}</dd></div>
     </dl>
 
-    ${mustBookHtml}
-    ${warnHtml}
-    ${constraintHtml}
-    ${renderOperation(operation)}
+    <nav class="day-shortcuts" aria-label="當日快速導覽">
+      <a href="#schedule">時間表</a><a href="#directions">地址與導航</a><a href="#day-preparation">訂票與提醒</a>
+    </nav>
 
-    <section class="section">
+    <section class="section" id="schedule">
       <div class="section-heading"><span class="section-num">Schedule</span><h2>當日時間表</h2></div>
       <div class="table-wrap table-wrap-cards">
         <table class="table-editorial table-schedule">
@@ -217,6 +216,13 @@ ${coverHtml}
     </section>
 
     ${trainHtml}
+    <section class="section" id="day-preparation">
+      <div class="section-heading"><span class="section-num">Preparation</span><h2>訂票與提醒</h2></div>
+      ${mustBookHtml}
+      ${warnHtml}
+    </section>
+    ${constraintHtml}
+    ${renderOperation(operation)}
     ${eatHtml}
     ${extendHtml}
     ${backupHtml}
@@ -229,7 +235,7 @@ ${coverHtml}
   return renderLayout({
     title: `Day ${day.n} ${day.title}`,
     activeNav: 'days',
-    bodyHtml,
+    bodyHtml: bodyHtml.replace(/[ \t]+$/gm, ''),
     pageKind: 'day',
     currentPage: `day-${String(day.n).padStart(2, '0')}.html`,
   });

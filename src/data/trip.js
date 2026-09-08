@@ -58,7 +58,7 @@ export const days = [
     tag: 'Transit',
     intensity: '高',
     hardConstraints: ['08:10 前抵達 Warszawa Zachodnia；10/25 換表後須再次確認 EIP 5300 仍停靠西站', '辛德勒工廠 17:30 入場（最後入場 18:30）', '午餐與 Check-in 不能拖太久'],
-    mustBook: ['❗尚未訂 · 華沙 → 克拉科夫火車', '❗尚未訂 · Wawel 城堡 14:00 時段票', '可立即查／購 · 辛德勒工廠 17:30 時段票'],
+    mustBook: ['❗尚未訂 · 華沙 → 克拉科夫火車', '❗尚未訂 · Wawel 城堡短路線 14:00 左右時段票', '可立即查／購 · 辛德勒工廠 17:30 時段票'],
     compressible: ['聖瑪利亞教堂內部參觀', '紡織會館購物時間'],
     weather: '尚無可靠預報；出發前 7–10 天更新',
     train: {type:'EIP 5300 · 參考班次', leg:'指定日待確認／尚未訂票 · 一等艙建議', from:'Warszawa Zachodnia', to:'Kraków Główny', dep:'08:45', arr:'10:56', dur:'2h11', price:'票價待確認'},
@@ -70,15 +70,15 @@ export const days = [
       {t:'11:10', label:'旅館寄放行李', sub:'ibis budget Krakow Stare Miasto 在 Pawia 11，飯店官網標示距車站約 200 公尺', dur:'20 min'},
       {t:'11:30', label:'車站周邊午餐', sub:'10/25 為非營業週日，先確認店家當日營業；用餐後步行約 25–30 分到 Wawel', cost:'PLN 40–60', dur:'45 min'},
       {t:'13:00', label:'★ 瓦維爾大教堂', sub:'週日 12:30–17:00；Cathedral Museum 週日不開', cost:'PLN 26／18', dur:'45 min'},
-      {t:'14:00', label:'★ Wawel 城堡一、二樓完整路線', sub:'09:00–17:00 · 完整路線最後入場 15:00', cost:'PLN 95／71', dur:'2 h'},
-      {t:'16:00', label:'★ 中央廣場 + 聖瑪利亞', sub:'整點 Hejnał 號角。週日聖殿內部 14:00–18:00、登塔 13:00–17:30，各 20 PLN 分開計；塔票只在 Mariacki 廣場 7 號當日現場售票、無法預約，入口在 Floriańska 街', cost:'PLN 20 內部／20 登塔', dur:'45 min'},
-      {t:'16:45', label:'紡織會館 Sukiennice 快速一覽', sub:'採購留到 10/27', cost:'免費入場', dur:'15 min'},
-      {t:'17:00', label:'電車 50 / 24 到 Plac Bohaterów Getta', dur:'15 min'},
+      {t:'14:00', label:'★ Wawel 城堡短路線', sub:'選擇可於 15:00 前結束的展區；完整 2 小時路線會壓縮後續步行', cost:'依選定展區官網票價', dur:'1 h'},
+      {t:'15:00', label:'★ 中央廣場 + 聖瑪利亞', sub:'本次先看廣場與教堂外觀，登塔改為有餘裕才安排。整點 Hejnał 號角；塔票僅於 Mariacki 廣場 7 號當日現場售票', cost:'外觀免費', dur:'30 min（含由城堡步行）'},
+      {t:'15:30', label:'紡織會館 Sukiennice 快速一覽', sub:'採購留到 10/27', cost:'免費入場', dur:'15 min'},
+      {t:'15:45', label:'步行經 Kazimierz、Podgórze 前往辛德勒工廠', sub:'保留約 85 分鐘步行與沿途短停，17:10 前到入口；時間不足改用 Jakdojade 查當下交通', dur:'約 1 h 25 min'},
       {t:'17:30', label:'★ 辛德勒工廠', sub:'週日最後入場 18:30 · mhk.pl/en 預約', cost:'PLN 60 · 優待 45', dur:'2 h'},
       {t:'19:45', label:'★ Kazimierz Plac Nowy zapiekanka 晚餐', sub:'Endzior / Krzysiek', cost:'PLN 18–25'},
     ],
     eat: ['Obwarzanek 圓圈麵包 (PGI)', 'Zapiekanka @ Plac Nowy 圓亭', 'Klezmer-Hois 猶太料理'],
-    warn: '❗瓦維爾城堡尚未訂票；辛德勒工廠個人網路票在參觀日前 90 天 09:00 開放，10/25 已可在官方售票頁查／購。瓦維爾大教堂週日 12:30–17:00；城堡完整路線 95／71 PLN、最後入場 15:00；辛德勒工廠週二至週日 09:00–20:00、最後入場 18:30，17:30 屬可行時段。10/25 為非營業週日，多數一般商店關閉；餐廳等法定例外是否營業仍以店家公告為準。',
+    warn: '❗瓦維爾城堡尚未訂票；辛德勒工廠個人網路票在參觀日前 90 天 09:00 開放，10/25 已可在官方售票頁查／購。瓦維爾大教堂週日 12:30–17:00；城堡改走短路線並於 15:00 前離開，保留經 Kazimierz、Podgórze 步行到辛德勒工廠的時間。辛德勒工廠週二至週日 09:00–20:00、最後入場 18:30，17:30 屬可行時段。10/25 為非營業週日，多數一般商店關閉；餐廳等法定例外是否營業仍以店家公告為準。',
     backup: [
       {label:'辛德勒 17:30 滿場', where:'改訂 18:30 最後入場，或往前壓到下午較早時段（如 14:00）', why:'最後入場其實是 18:30，比原記錄多一小時可調度；mhk.pl/en 開放預約後立即下單'},
       {label:'雨天替代 Wawel', where:'地下市集博物館 Rynek Underground', why:'廣場下方歷史展（Rynek Główny 1），PLN 45／35，最後入場為閉館前 75 分鐘。官方 2026 閉館日不含 10/25；週日時間以官網當日為準。另註：每週二免費（免費日不可預約、現場限量、每人限領 5 張），每月第二個週一休館'},
@@ -189,7 +189,7 @@ export const days = [
     tag: 'Transit',
     intensity: '中高',
     hardConstraints: ['11:45 前抵達老城廣場卡位', '12:00 山羊鐘樓秀', '17:05 前抵 Poznań Główny；EIC 8104 指定日班次仍須確認'],
-    mustBook: ['❗尚未訂 · 波茲南 → 華沙火車', '牛角麵包博物館場次（僅雨天備案才需要，主行程走的是 Kandulski 烘焙坊）'],
+    mustBook: ['❗尚未訂 · 波茲南 → 華沙火車', '❗尚未訂 · 牛角麵包博物館（10/29 英語場待確認）'],
     compressible: ['Stary Browar 停留時間', '帝王城堡內部參觀'],
     weather: '尚無可靠預報；出發前 7–10 天更新',
     train: {type:'EIC 8104 Bolesław Prus · 參考班次', leg:'指定日待確認／尚未訂票 · 二等艙建議', from:'Poznań Główny', to:'Warszawa Centralna', dep:'17:40', arr:'約 20:00', dur:'約 2h20', price:'票價待確認'},
@@ -198,7 +198,9 @@ export const days = [
       {t:'11:00', label:'廣場卡正面位置', dur:'45 min · 提早卡位'},
       {t:'12:00', label:'★ 山羊鐘樓秀', sub:'官方固定正午登場，兩隻金屬山羊互頂 12 次', cost:'免費', dur:'5 min'},
       {t:'12:15', label:'★ 聖馬丁牛角麵包 (PGI)', sub:'Cukiernia Kandulski；出發前確認分店、當日營業與 PGI 證書', cost:'依門市標價', dur:'15 min'},
-      {t:'14:00', label:'帝王城堡 / Stary Browar', sub:'帝王城堡室內展覽依當日公告；可借語音導覽 10 PLN', cost:'依當日展覽／導覽', dur:'2 h'},
+      {t:'13:30–15:00 預留', label:'★ 牛角麵包博物館', sub:'10/29 週四英語場尚未確認；依官網可售場次調整，不能直接視為 13:30 開演', cost:'依官方售票頁', dur:'表演約 1 h'},
+      {t:'15:00', label:'Stary Browar', sub:'博物館若延後則縮短購物；沒有合適英語場時改逛帝王城堡', cost:'購物另計', dur:'1 h'},
+      {t:'16:00', label:'取行李、前往 Poznań Główny', sub:'先確認公寓行李寄放地點；17:05 前抵站', dur:'約 1 h'},
       {t:'17:05', label:'抵 Poznań Główny', sub:'確認月台、車廂與座位；拖行李保留進站緩衝', dur:'35 min 緩衝'},
       {t:'參考 17:40', label:'EIC 8104 前往華沙', sub:'指定日待確認／尚未訂票', cost:'票價待確認', dur:'約 2h20'},
       {t:'參考約 20:00', label:'抵 Warszawa Centralna', sub:'步行至 Hotel Metropol 約 500 公尺，拖行李預留 10–15 分鐘'},
@@ -206,7 +208,7 @@ export const days = [
     eat: ['Rogal Świętomarciński (PGI) ⭐', 'Pyry z gzikiem @ Pyra Bar'],
     backup: [
       {label:'雨天想看山羊鐘', where:'可頌博物館官方售票頁', why:'週四英語場、價格與庫存都須依 10/29 官方售票系統確認；未確認前改以 Stary Browar 或帝王城堡為室內備案'},
-      {label:'雨天備案', where:'Stary Browar 商場 + 帝王城堡內部', why:'兩處步行 10 分相連，全程室內可消磨 3 h'},
+      {label:'無合適英語場', where:'Stary Browar 商場 + 帝王城堡內部', why:'兩處各有室內空間，但館際移動需走戶外；下雨仍需雨具並預留交通時間'},
     ],
   },
   {
@@ -332,7 +334,7 @@ export const trains = [
   {seg:'Kraków MDA ⇄ Muzeum Auschwitz', date:'10/26', type:'BUS · Lajkonik', leg:'現行班表參考', dep:'參考 07:10', arr:'參考 16:55 回抵', dur:'單程約 1h25', price:'待業者開放 10/26 售票', status:'指定日尚未確認'},
   {seg:'Kraków Główny → Wrocław Główny', date:'10/27', type:'IC 3600 Siemiradzki', dep:'17:55', arr:'20:52', dur:'2h57', price:'票價待確認', status:'參考班次／尚未訂票', note:'二等艙建議；一等艙可選。17:20 前到站。'},
   {seg:'Wrocław Główny → Poznań Główny', date:'10/28', type:'Baltic Express 260', dep:'19:10', arr:'20:29', dur:'1h19', price:'票價待確認', status:'參考班次／尚未訂票', note:'二等艙建議。18:35 前到站。'},
-  {seg:'Poznań Główny → Warszawa Centralna', date:'10/29', type:'EIC 8104 Bolesław Prus', dep:'17:40', arr:'約 20:00', dur:'約 2h20', price:'票價待確認', status:'參考班次／尚未訂票', note:'二等艙建議。17:05 前到站。'},
+  {seg:'Poznań Główny → Warszawa Centralna', date:'10/29', type:'EIC 8104 Bolesław Prus', dep:'17:40', arr:'約 20:00', dur:'約 2h20', price:'票價待確認', status:'參考班次／尚未訂票', note:'適合體驗一等艙；若 10/25 已搭 EIP 一等艙，可依價差改選二等艙。17:05 前到站。'},
 ];
 
 export const railOfficialLinks = [
@@ -397,11 +399,11 @@ export const bookingTiers = [
   ]},
   {tier:'第二優先', note:'❗全部尚未訂 · 辛德勒工廠現已可查／購，其餘依官方售票頁', items:[
     {name:'辛德勒工廠（10/25 已進個人網路票 90 天窗口；最後入場 18:30）', url:'https://muzeumkrakowa.pl/en/branches/oskar-schindlers-enamel-factory'},
-    {name:'Wawel 城堡 14:00 時段票', url:'https://wawel.krakow.pl/en/what-to-see'},
+    {name:'Wawel 城堡短路線 14:00 左右時段票', url:'https://wawel.krakow.pl/en/what-to-see'},
     {name:'POLIN 波蘭猶太人歷史博物館', url:'https://polin.pl/en'},
     {name:'華沙起義博物館', url:'https://www.1944.pl/en'},
     {name:'皇家城堡（已查證二至日 10:00–18:00，末入 17:00）', url:'https://www.zamek-krolewski.pl/en'},
-    {name:'牛角麵包博物館（僅雨天備案需要）', url:'https://rogalowemuzeum.pl/en/'},
+    {name:'牛角麵包博物館（10/29 主行程，英語場待確認）', url:'https://rogalowemuzeum.pl/en/'},
     {name:'拉茨瓦維採全景畫', url:'https://mnwr.pl/en/category/branches/panorama-raclawicka/'},
   ]},
   {tier:'餐廳與備案', note:'❗全部尚未訂 · 旅行品質加分', items:[
@@ -431,7 +433,7 @@ export const todoGroups = [
     id: 'attractions', title: '主要景點', eyebrow: 'Tickets · 8 項',
     intro: '指定日期的場次與庫存會變動；付款完成後請下載離線票券並核對入場時間。',
     items: [
-      {checkedAt:null, recheckAt:null, date:'10/25', name:'Wawel 城堡 14:00', status:'尚未訂', action:'以官方售票頁確認 10/25 的 14:00 路線與庫存；未取得票前不假設可現場購買。', url:'https://wawel.krakow.pl/en/what-to-see'},
+      {checkedAt:null, recheckAt:null, date:'10/25', name:'Wawel 城堡 14:00', status:'尚未訂', action:'以官方售票頁選 10/25 14:00 左右、可於 15:00 前結束的短路線；完整 2 小時路線會壓縮步行時間。', url:'https://wawel.krakow.pl/en/what-to-see'},
       {checkedAt:null, recheckAt:null, date:'10/25', name:'辛德勒工廠 17:30', status:'現可查／購', action:'10/25 已進個人網路票 90 天窗口；以官方售票頁的可售時段為準。', url:'https://muzeumkrakowa.pl/en/branches/oskar-schindlers-enamel-factory'},
       {checkedAt:null, recheckAt:null, date:'10/26', name:'Auschwitz 英文官方導覽', status:'需查／購', action:'只能線上取得入場證；選擇官方系統提供的英文導覽場次。', url:'https://visit.auschwitz.org/'},
       {checkedAt:null, recheckAt:null, date:'10/27', name:'Wieliczka 鹽礦英文團', status:'需查／購', action:'在官方日期選擇器確認英文場、票價與庫存。', url:'https://www.wieliczka-saltmine.com/'},
@@ -459,7 +461,7 @@ export const todoGroups = [
     id: 'rainy-day', title: '雨天備案', eyebrow: 'Backup · 1 項',
     intro: '天氣不影響主行程時不必購買。',
     items: [
-      {checkedAt:null, recheckAt:null, date:'10/29', name:'波茲南牛角麵包博物館場次', status:'僅雨天需要', action:'若雨勢影響老城散步，再以官方售票頁選擇合適場次。', url:'https://rogalowemuzeum.pl/en/'},
+      {checkedAt:null, recheckAt:null, date:'10/29', name:'波茲南牛角麵包博物館場次', status:'尚未訂', action:'主行程預留 13:30–15:00；週四不保證有英語場，先查 10/29 官方售票頁，沒有合適場次再改室內備案。', url:'https://rogalowemuzeum.pl/en/'},
     ],
   },
 ];
