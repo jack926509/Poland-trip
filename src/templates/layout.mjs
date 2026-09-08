@@ -40,19 +40,21 @@ function escapeAttr(value) {
 }
 
 function buildChapterIndex(bodyHtml) {
-  const sectionPattern = /<section class="section([^"]*)"([^>]*)>/g;
+  // 實用資訊頁的第一塊常寫成沒有 class 的 <section>，只認 class="section" 會漏掉它，
+  // 索引就少一項也放錯位置。這裡把所有 <section> 都納入，有 h2 的才進索引。
+  const sectionPattern = /<section(?![^>]*\bclass="(?:site-search|standalone))([^>]*)>/g;
   const items = [];
   let counter = 0;
 
-  const rewritten = bodyHtml.replace(sectionPattern, (match, extraClass, attrs) => {
+  const rewritten = bodyHtml.replace(sectionPattern, (match, attrs) => {
     counter += 1;
     const existingId = /\bid="([^"]+)"/.exec(attrs)?.[1];
     const id = existingId || `sec-${counter}`;
     items.push({ id });
-    return existingId ? match : `<section class="section${extraClass}" id="${id}"${attrs}>`;
+    return existingId ? match : `<section${attrs} id="${id}">`;
   });
 
-  const blocks = rewritten.split('<section class="section');
+  const blocks = rewritten.split(/<section[ >]/);
   items.forEach((item, position) => {
     const block = blocks[position + 1] || '';
     item.num = /<span class="section-num">([^<]*)<\/span>/.exec(block)?.[1]?.trim() || '';
@@ -69,7 +71,7 @@ function buildChapterIndex(bodyHtml) {
       <p class="chapter-index-label" id="chapter-index-label">本頁章節</p>
       <ol>${links}</ol>
     </nav>`;
-  const firstSection = rewritten.indexOf('<section class="section');
+  const firstSection = rewritten.search(/<section[ >]/);
   return firstSection === -1
     ? rewritten
     : `${rewritten.slice(0, firstSection)}${indexHtml}\n    ${rewritten.slice(firstSection)}`;

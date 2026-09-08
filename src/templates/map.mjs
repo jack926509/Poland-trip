@@ -35,7 +35,7 @@ export function renderInteractiveMap({ id, title, mapData, mapChecks = {}, legen
     container.textContent = '';
     var data = config.mapData;
     function safeUrl(value) { try { var url = new URL(value); return url.protocol === 'https:' ? url.href : ''; } catch (_) { return ''; } }
-    var map = L.map(container, { scrollWheelZoom: true, touchZoom: true, doubleClickZoom: true, zoomControl: true }).setView(data.center, data.zoom || 13);
+    var map = L.map(container, { scrollWheelZoom: true, touchZoom: true, doubleClickZoom: true, zoomControl: false }).setView(data.center, data.zoom || 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
     var bounds = [];
     data.points.forEach(function (point) {
