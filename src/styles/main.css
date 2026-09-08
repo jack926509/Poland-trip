@@ -2834,3 +2834,33 @@ a[href^="tel:"]:focus-visible {
   align-items: center;
   min-height: 44px;
 }
+
+/* --- 每日頁封面：縮小左側紫框，讓照片吃到更多版面 ---
+   原本 0.82fr / 1.18fr（41%），改為 0.55fr / 1.45fr（27.5%）。
+   八天共用同一組樣式，不需逐頁調整；城市頁維持原比例。 */
+.journal-day-header {
+  grid-template-columns: minmax(15rem, 0.55fr) minmax(0, 1.45fr);
+}
+
+.journal-day-heading {
+  padding: clamp(1.5rem, 2.4vw, 2.25rem);
+}
+
+/* 只在雙欄版型下依欄寬定字級；920px 以下改單欄，沿用既有的手機字級 */
+@media (min-width: 921px) {
+  @supports (width: 1cqw) {
+    .journal-day-heading h1 {
+      font-size: clamp(1.6rem, 14cqw, 2.4rem);
+    }
+  }
+}
+
+@media (max-width: 920px) {
+  .journal-day-header {
+    grid-template-columns: 1fr;
+  }
+
+  .journal-day-heading {
+    padding: 1.75rem;
+  }
+}
