@@ -4509,3 +4509,27 @@ h3 {
     box-shadow: 0 6px 14px rgb(60 45 34 / 10%);
   }
 }
+
+/* --- 地圖圖例與說明 ---
+   1. 圖例 11px 太小，改 0.82rem；九個項目排成多欄，不必直排一長條。
+   2. .map-caption 原本用 margin-top: -0.75rem 貼齊方角圖例，
+      圖例改圓角卡片後會疊到框線上，改為正常間距。
+   3. Leaflet 1.9 的裝飾旗標用 display: inline !important，
+      leaflet.css 又在 main.css 之後載入，必須提高特異度才蓋得掉；
+      OSM 與 Leaflet 的版權文字保留不動。 */
+.map-legend {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: 0.15rem 1rem;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
+
+.map-caption {
+  margin-top: 0.6rem;
+}
+
+.leaflet-container .leaflet-attribution-flag {
+  display: none !important;
+}

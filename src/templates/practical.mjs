@@ -319,7 +319,12 @@ export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups
     ['2. 匯入人工盤點', '需要整併 Google Sheet 時，執行 node tools/sync-dashboard-overrides.mjs --source dashboard-export.csv，將盤點差異轉成覆寫檔。'],
     ['3. 重新建置', '建議直接執行 npm run build，驗證頁面匯出完成後再推送。'],
     ['4. 驗證公開資料', '檢查自由行資料庫、待辦頁與公開匯出；私人內容不得寫入網站產物。'],
-  ].map((step) => `<article class="card"><span class="section-num">${step[0].split('.')[0]}</span><h3>${step[0]}</h3><p>${step[1]}</p></article>`).join('');
+  ].map((step, index) => {
+    // 小標與標題原本都帶同一個數字（「1」＋「1. 更新網站資料」），看起來像重複編號。
+    // 數字留在小標，標題只留步驟名稱。
+    const title = step[0].replace(/^\d+\.\s*/, '');
+    return `<article class="card"><span class="section-num">Step ${String(index + 1).padStart(2, '0')}</span><h3>${title}</h3><p>${step[1]}</p></article>`;
+  }).join('');
 
   const dashboardInput = {
     metrics: {

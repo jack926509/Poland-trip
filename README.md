@@ -218,3 +218,19 @@ Day 01／06／07／08 共用華沙同一張。若要補充照片，請沿用 CRE
 無 44px 以下觸控目標（Leaflet 內建縮放控制項除外，已另行放大到 44px）。
 
 `env -u NODE_OPTIONS ./verify.sh` 全數通過（107 項測試）。
+
+## 2026-09-08 地圖控制項與儀表板步驟卡收尾
+
+- **地圖只留一組縮放控制**：原本 Leaflet 內建的 `+/−` 與自訂工具列
+  （＋放大／－縮小／重設範圍）同時出現。關閉 `zoomControl`，
+  只保留 44px 的自訂按鈕；滾輪、雙擊、雙指與鍵盤縮放不受影響。
+- **地圖圖例**：11px 提高到 0.82rem，九個項目改多欄網格，不再直排一長條；
+  `.map-caption` 原本用 `margin-top: -0.75rem` 貼齊方角圖例，改圓角卡片後
+  會壓到框線，改為正常間距。
+- **Leaflet 裝飾旗標**：上游用 `display: inline !important` 且 leaflet.css
+  在 main.css 之後載入，改用 `.leaflet-container .leaflet-attribution-flag`
+  提高特異度隱藏；OSM 與 Leaflet 版權文字保留。
+- **儀表板步驟卡**：小標與標題原本都帶同一個數字（「1」＋「1. 更新網站資料」），
+  數字留在小標（STEP 01），標題只留步驟名稱。
+
+`env -u NODE_OPTIONS ./verify.sh` 全數通過（107 項測試）。

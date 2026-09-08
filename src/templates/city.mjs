@@ -153,7 +153,7 @@ export function renderCity({
       var element = (scope || document).querySelector('[data-map-key="${cityKey}"]');
       if (!element || typeof L === 'undefined') return;
       element.textContent = '';
-      var map = L.map(element, { scrollWheelZoom: true, touchZoom: true, doubleClickZoom: true, zoomControl: true }).setView(mapData.center, mapData.zoom);
+      var map = L.map(element, { scrollWheelZoom: true, touchZoom: true, doubleClickZoom: true, zoomControl: false }).setView(mapData.center, mapData.zoom);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors',
         maxZoom: 19
