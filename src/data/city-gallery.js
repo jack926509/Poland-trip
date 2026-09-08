@@ -4,7 +4,7 @@ export const cityGallery = [
     "id": "warsaw-skyline",
     "cityKey": "WAW",
     "days": [],
-    "src": "assets/photos/warsaw-skyline.jpg",
+    "src": "assets/photos/warsaw-skyline.webp",
     "width": 960,
     "height": 576,
     "alt": "華沙天際線與文化科學宮",
@@ -20,7 +20,7 @@ export const cityGallery = [
     "id": "warsaw-lazienki-palace",
     "cityKey": "WAW",
     "days": [],
-    "src": "assets/photos/warsaw-lazienki-palace.jpg",
+    "src": "assets/photos/warsaw-lazienki-palace.webp",
     "width": 960,
     "height": 721,
     "alt": "Łazienki 水上宮與倒影",
@@ -38,7 +38,7 @@ export const cityGallery = [
     "days": [
       4
     ],
-    "src": "assets/photos/krakow-szeroka-street.jpg",
+    "src": "assets/photos/krakow-szeroka-street.webp",
     "width": 960,
     "height": 569,
     "alt": "Kazimierz 的 Szeroka 街",
@@ -56,7 +56,7 @@ export const cityGallery = [
     "days": [
       4
     ],
-    "src": "assets/photos/krakow-zapiekanki.jpg",
+    "src": "assets/photos/krakow-zapiekanki.webp",
     "width": 960,
     "height": 600,
     "alt": "Plac Nowy 街頭美食",
@@ -74,7 +74,7 @@ export const cityGallery = [
     "days": [
       5
     ],
-    "src": "assets/photos/wroclaw-dwarf-explorer.jpg",
+    "src": "assets/photos/wroclaw-dwarf-explorer.webp",
     "width": 960,
     "height": 1280,
     "alt": "街角的小矮人旅行者",
@@ -92,7 +92,7 @@ export const cityGallery = [
     "days": [
       5
     ],
-    "src": "assets/photos/wroclaw-centennial-hall.jpg",
+    "src": "assets/photos/wroclaw-centennial-hall.webp",
     "width": 960,
     "height": 634,
     "alt": "百年廳與噴泉夜景",
@@ -110,7 +110,7 @@ export const cityGallery = [
     "days": [
       6
     ],
-    "src": "assets/photos/poznan-cathedral-aerial.jpg",
+    "src": "assets/photos/poznan-cathedral-aerial.webp",
     "width": 960,
     "height": 640,
     "alt": "教堂島主教座堂空拍",
@@ -126,7 +126,7 @@ export const cityGallery = [
     "id": "poznan-imperial-castle-night",
     "cityKey": "POZ",
     "days": [],
-    "src": "assets/photos/poznan-imperial-castle-night.jpg",
+    "src": "assets/photos/poznan-imperial-castle-night.webp",
     "width": 960,
     "height": 720,
     "alt": "帝王城堡的夜間燈光",

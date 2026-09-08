@@ -10,12 +10,12 @@ import { cityGallery } from './city-gallery.js';
 export const cities = [
   {key:'WAW', name:'華沙', pl:'Warszawa', tag:'CAPITAL', nights:'1 + 2', totalNights:3, stayNote:'首晚倒時差 + 回程兩晚收尾', vibe:'鋼鐵摩天 × 重建老城', highlights:['POLIN 猶太博物館','起義博物館','皇家城堡','Krakowskie Przedmieście'], photo:{hero:'assets/photos/warszawa-hero.webp',thumb:'assets/photos/warszawa-thumb.webp'}},
   {key:'KRK', name:'克拉科夫', pl:'Kraków', tag:'OLD WORLD', nights:2, totalNights:2, stayNote:'兩晚承接老城、Auschwitz、鹽礦', vibe:'中世紀石板路 × 千年王城', highlights:['Wawel 城堡','中央市集 Rynek','Auschwitz 一日往返','Kazimierz 猶太區'], photo:{hero:'assets/photos/krakow-hero.webp',thumb:'assets/photos/krakow-thumb.webp'}},
-  {key:'WRO', name:'樂斯拉夫', pl:'Wrocław', tag:'1000+ DWARFS', nights:1, totalNights:1, vibe:'千尊小矮人 × 煤氣燈點燈', highlights:['百年廳 UNESCO','全景畫 Panorama','座堂島 Ostrów Tumski','糖果屋雙屋'], photo:{hero:'assets/photos/wroclaw-hero.webp',thumb:'assets/photos/wroclaw-thumb.webp',detail:'assets/photos/wroclaw-ostrow-tumski-night.jpg',detailAlt:'夜色中的樂斯拉夫座堂島與河岸燈光',detailCaption:'座堂島入夜後的河岸燈光 · Day 5 日落前後散步重點',detailHeight:853,detailAuthor:'Jg44.89',detailLicense:'CC BY 4.0',detailLicenseUrl:'https://creativecommons.org/licenses/by/4.0/',detailSource:'https://commons.wikimedia.org/wiki/File:Ostr%C3%B3w_Tumski_Wroc%C5%82aw.jpg'}},
-  {key:'POZ', name:'波茲南', pl:'Poznań', tag:'CRADLE', nights:1, totalNights:1, vibe:'波蘭文明發源 × 山羊報時', highlights:['教堂島 Ostrów Tumski','12:00 山羊鐘樓秀','聖馬丁牛角麵包 PGI','帝王城堡'], photo:{hero:'assets/photos/poznan-hero.webp',thumb:'assets/photos/poznan-thumb.webp',detail:'assets/photos/poznan-old-market.jpg',detailAlt:'波茲南舊市集廣場周圍的彩色老屋',detailCaption:'舊市集廣場周圍的彩色老屋 · Day 6 正午山羊報時周邊',detailHeight:960,detailAuthor:'Mariochom',detailLicense:'CC BY-SA 4.0',detailLicenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',detailSource:'https://commons.wikimedia.org/wiki/File:Pozna%C5%84-Old_Market_Square.jpg'}},
+  {key:'WRO', name:'樂斯拉夫', pl:'Wrocław', tag:'1000+ DWARFS', nights:1, totalNights:1, vibe:'千尊小矮人 × 煤氣燈點燈', highlights:['百年廳 UNESCO','全景畫 Panorama','座堂島 Ostrów Tumski','糖果屋雙屋'], photo:{hero:'assets/photos/wroclaw-hero.webp',thumb:'assets/photos/wroclaw-thumb.webp',detail:'assets/photos/wroclaw-ostrow-tumski-night.webp',detailAlt:'夜色中的樂斯拉夫座堂島與河岸燈光',detailCaption:'座堂島入夜後的河岸燈光 · Day 5 日落前後散步重點',detailHeight:853,detailAuthor:'Jg44.89',detailLicense:'CC BY 4.0',detailLicenseUrl:'https://creativecommons.org/licenses/by/4.0/',detailSource:'https://commons.wikimedia.org/wiki/File:Ostr%C3%B3w_Tumski_Wroc%C5%82aw.jpg'}},
+  {key:'POZ', name:'波茲南', pl:'Poznań', tag:'CRADLE', nights:1, totalNights:1, vibe:'波蘭文明發源 × 山羊報時', highlights:['教堂島 Ostrów Tumski','12:00 山羊鐘樓秀','聖馬丁牛角麵包 PGI','帝王城堡'], photo:{hero:'assets/photos/poznan-hero.webp',thumb:'assets/photos/poznan-thumb.webp',detail:'assets/photos/poznan-old-market.webp',detailAlt:'波茲南舊市集廣場周圍的彩色老屋',detailCaption:'舊市集廣場周圍的彩色老屋 · Day 6 正午山羊報時周邊',detailHeight:960,detailAuthor:'Mariochom',detailLicense:'CC BY-SA 4.0',detailLicenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',detailSource:'https://commons.wikimedia.org/wiki/File:Pozna%C5%84-Old_Market_Square.jpg'}},
 ];
 
 Object.assign(cities.find(city => city.key === 'WAW').photo, {
-  detail:'assets/photos/warsaw-royal-castle.jpg', detailHeight:848,
+  detail:'assets/photos/warsaw-royal-castle.webp', detailHeight:848,
   detailAlt:'華沙城堡廣場、皇家城堡與周圍彩色建築',
   detailCaption:'城堡廣場與皇家城堡 · Day 1 老城散步沿途',
   detailAuthor:'Steven Lek', detailLicense:'CC BY-SA 4.0',
@@ -23,7 +23,7 @@ Object.assign(cities.find(city => city.key === 'WAW').photo, {
   detailSource:'https://commons.wikimedia.org/wiki/File:Castle_Square_Warsaw_2018_2.jpg',
 });
 Object.assign(cities.find(city => city.key === 'KRK').photo, {
-  detail:'assets/photos/krakow-wawel.jpg', detailHeight:385,
+  detail:'assets/photos/krakow-wawel.webp', detailHeight:385,
   detailAlt:'從維斯瓦河對岸望向瓦維爾城堡與河岸全景',
   detailCaption:'維斯瓦河畔的 Wawel 城堡全景 · Day 2 王城散步重點',
   detailAuthor:'Ingo Mehling', detailLicense:'CC BY-SA 4.0',
@@ -128,8 +128,8 @@ export const photoSpots = [
 // 三個值皆為 Creative Commons 官方標準授權頁，逐一對應 license 欄位，不得自行更動。
 export const photoCredits = [
   ...cityGallery.map(photo => ({file:photo.src.split('/').at(-1), city:cities.find(city => city.key === photo.cityKey).name, author:photo.author, license:photo.license, licenseUrl:photo.licenseUrl, url:photo.sourceUrl})),
-  {file:'warsaw-royal-castle.jpg', city:'華沙', author:'Steven Lek', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Castle_Square_Warsaw_2018_2.jpg'},
-  {file:'krakow-wawel.jpg', city:'克拉科夫', author:'Ingo Mehling', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Krakow_-_Wawel_from_Vistula_-_4.jpg'},
+  {file:'warsaw-royal-castle.webp', city:'華沙', author:'Steven Lek', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Castle_Square_Warsaw_2018_2.jpg'},
+  {file:'krakow-wawel.webp', city:'克拉科夫', author:'Ingo Mehling', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Krakow_-_Wawel_from_Vistula_-_4.jpg'},
   {file:'warszawa-hero.webp', city:'華沙', author:'Rhododendrites', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Market_Square_Warsaw_(22594p).jpg'},
   {file:'warszawa-thumb.webp', city:'華沙', author:'Rhododendrites', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Market_Square_Warsaw_(22594p).jpg'},
   {file:'krakow-hero.webp', city:'克拉科夫', author:'Andrzej Otrębski', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Krakow_Rynek_Glowny_panorama_2.jpg'},
@@ -138,8 +138,8 @@ export const photoCredits = [
   {file:'wroclaw-thumb.webp', city:'樂斯拉夫', author:'Gerd Eichmann', license:'CC BY 4.0', licenseUrl:'https://creativecommons.org/licenses/by/4.0/', url:'https://commons.wikimedia.org/wiki/File:Breslau-Rynek-38-Panorama-2014-gje.jpg'},
   {file:'poznan-hero.webp', city:'波茲南', author:'Mateusz.woźniak', license:'CC BY-SA 3.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/3.0/', url:'https://commons.wikimedia.org/wiki/File:Poznan_stary_rynek_panorama.jpg'},
   {file:'poznan-thumb.webp', city:'波茲南', author:'Mateusz.woźniak', license:'CC BY-SA 3.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/3.0/', url:'https://commons.wikimedia.org/wiki/File:Poznan_stary_rynek_panorama.jpg'},
-  {file:'wroclaw-ostrow-tumski-night.jpg', city:'樂斯拉夫', author:'Jg44.89', license:'CC BY 4.0', licenseUrl:'https://creativecommons.org/licenses/by/4.0/', url:'https://commons.wikimedia.org/wiki/File:Ostr%C3%B3w_Tumski_Wroc%C5%82aw.jpg'},
-  {file:'poznan-old-market.jpg', city:'波茲南', author:'Mariochom', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Pozna%C5%84-Old_Market_Square.jpg'},
+  {file:'wroclaw-ostrow-tumski-night.webp', city:'樂斯拉夫', author:'Jg44.89', license:'CC BY 4.0', licenseUrl:'https://creativecommons.org/licenses/by/4.0/', url:'https://commons.wikimedia.org/wiki/File:Ostr%C3%B3w_Tumski_Wroc%C5%82aw.jpg'},
+  {file:'poznan-old-market.webp', city:'波茲南', author:'Mariochom', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Pozna%C5%84-Old_Market_Square.jpg'},
 ];
 
 // mapPins 已套用校正表 3-1（Mirror Bistro、Na Winklu 從 star1 改 food；Svensson Pierogi、Hamsa 從 sight 改 food）

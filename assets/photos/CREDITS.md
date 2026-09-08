@@ -12,15 +12,15 @@
 | wroclaw-thumb.webp | 樂斯拉夫 Wrocław（市政廳與彩色老屋 Rynek／Ratusz） | Gerd Eichmann | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Breslau-Rynek-38-Panorama-2014-gje.jpg |
 | poznan-hero.webp | 波茲南 Poznań（舊市集廣場彩色立面與舊市政廳 Stary Rynek／Ratusz） | Mateusz.woźniak | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Poznan_stary_rynek_panorama.jpg |
 | poznan-thumb.webp | 波茲南 Poznań（舊市集廣場彩色立面與舊市政廳 Stary Rynek／Ratusz） | Mateusz.woźniak | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Poznan_stary_rynek_panorama.jpg |
-| wroclaw-ostrow-tumski-night.jpg | 樂斯拉夫 Wrocław（座堂島夜景） | Jg44.89 | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Ostr%C3%B3w_Tumski_Wroc%C5%82aw.jpg |
-| poznan-old-market.jpg | 波茲南 Poznań（舊市集廣場彩色商人屋） | Mariochom | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Pozna%C5%84-Old_Market_Square.jpg |
+| wroclaw-ostrow-tumski-night.webp | 樂斯拉夫 Wrocław（座堂島夜景） | Jg44.89 | CC BY 4.0 | https://commons.wikimedia.org/wiki/File:Ostr%C3%B3w_Tumski_Wroc%C5%82aw.jpg |
+| poznan-old-market.webp | 波茲南 Poznań（舊市集廣場彩色商人屋） | Mariochom | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Pozna%C5%84-Old_Market_Square.jpg |
 
 ## 補充城市實景照片（2026-09-08）
 
 | 檔案 | 地點／作者 | 授權與來源 | 網站尺寸 |
 |---|---|---|---|
-| warsaw-royal-castle.jpg | 華沙城堡廣場／Steven Lek | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) · [Commons 原作](https://commons.wikimedia.org/wiki/File:Castle_Square_Warsaw_2018_2.jpg) | 1280 × 848 |
-| krakow-wawel.jpg | 維斯瓦河畔的 Wawel 城堡／Ingo Mehling | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) · [Commons 原作](https://commons.wikimedia.org/wiki/File:Krakow_-_Wawel_from_Vistula_-_4.jpg) | 1280 × 385 |
+| warsaw-royal-castle.webp | 華沙城堡廣場／Steven Lek | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) · [Commons 原作](https://commons.wikimedia.org/wiki/File:Castle_Square_Warsaw_2018_2.jpg) | 1280 × 848 |
+| krakow-wawel.webp | 維斯瓦河畔的 Wawel 城堡／Ingo Mehling | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) · [Commons 原作](https://commons.wikimedia.org/wiki/File:Krakow_-_Wawel_from_Vistula_-_4.jpg) | 1280 × 385 |
 
 使用 Wikimedia Commons 提供的 1280px 縮圖，未另行裁切或修圖；保留作者署名、來源及相同授權。照片供辨認景點，不代表旅行當日天氣或現場狀態。
 
@@ -30,14 +30,14 @@
 
 | 檔案 | 地點／作者 | 授權／來源 | 尺寸 |
 |---|---|---|---|
-| warsaw-skyline.jpg | 華沙天際線與文化科學宮／Quintin Soloviev | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) · [來源](https://commons.wikimedia.org/wiki/File:Skyline_of_Warsaw,_Poland_(cropped).jpg) | 960 × 576 |
-| warsaw-lazienki-palace.jpg | Łazienki 水上宮與倒影／Gnesener1900 | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) · [來源](https://commons.wikimedia.org/wiki/File:Palace_on_the_Water,_%C5%81azienki_Park,_Warsaw.jpg) | 960 × 721 |
-| krakow-szeroka-street.jpg | Kazimierz 的 Szeroka 街／Zygmunt Put Zetpe0202 | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) · [來源](https://commons.wikimedia.org/wiki/File:Szeroka_street,_Kazimierz,_Krakow,_Poland.jpg) | 960 × 569 |
-| krakow-zapiekanki.jpg | Plac Nowy 街頭美食／Kpalion | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) · [來源](https://commons.wikimedia.org/wiki/File:Zapiekanki,_Plac_Nowy,_Krak%C3%B3w.jpg) | 960 × 600 |
-| wroclaw-dwarf-explorer.jpg | 街角的小矮人旅行者／Biopresto | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) · [來源](https://commons.wikimedia.org/wiki/File:Podroznik_(Explorer)_Wroclaw_dwarf_01.jpg) | 960 × 1280 |
-| wroclaw-centennial-hall.jpg | 百年廳與噴泉夜景／Jar.ciurus | [CC BY-SA 3.0 pl](https://creativecommons.org/licenses/by-sa/3.0/pl/deed.en) · [來源](https://commons.wikimedia.org/wiki/File:Wroclaw-_Zespol_Hali_Stulecia_z_fontannami.jpg) | 960 × 634 |
-| poznan-cathedral-aerial.jpg | 教堂島主教座堂空拍／Aneta Pawska | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) · [來源](https://commons.wikimedia.org/wiki/File:Bazylika_archikatedralna_%C5%9Awi%C4%99tych_Aposto%C5%82%C3%B3w_Piotra_i_Paw%C5%82a_w_Poznaniu,_widok_z_drona.jpg) | 960 × 640 |
-| poznan-imperial-castle-night.jpg | 帝王城堡的夜間燈光／Radomil | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) · [來源](https://commons.wikimedia.org/wiki/File:Zamek_Cesarski_Pozna%C5%84_noc.JPG) | 960 × 720 |
+| warsaw-skyline.webp | 華沙天際線與文化科學宮／Quintin Soloviev | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) · [來源](https://commons.wikimedia.org/wiki/File:Skyline_of_Warsaw,_Poland_(cropped).jpg) | 960 × 576 |
+| warsaw-lazienki-palace.webp | Łazienki 水上宮與倒影／Gnesener1900 | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) · [來源](https://commons.wikimedia.org/wiki/File:Palace_on_the_Water,_%C5%81azienki_Park,_Warsaw.jpg) | 960 × 721 |
+| krakow-szeroka-street.webp | Kazimierz 的 Szeroka 街／Zygmunt Put Zetpe0202 | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) · [來源](https://commons.wikimedia.org/wiki/File:Szeroka_street,_Kazimierz,_Krakow,_Poland.jpg) | 960 × 569 |
+| krakow-zapiekanki.webp | Plac Nowy 街頭美食／Kpalion | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) · [來源](https://commons.wikimedia.org/wiki/File:Zapiekanki,_Plac_Nowy,_Krak%C3%B3w.jpg) | 960 × 600 |
+| wroclaw-dwarf-explorer.webp | 街角的小矮人旅行者／Biopresto | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) · [來源](https://commons.wikimedia.org/wiki/File:Podroznik_(Explorer)_Wroclaw_dwarf_01.jpg) | 960 × 1280 |
+| wroclaw-centennial-hall.webp | 百年廳與噴泉夜景／Jar.ciurus | [CC BY-SA 3.0 pl](https://creativecommons.org/licenses/by-sa/3.0/pl/deed.en) · [來源](https://commons.wikimedia.org/wiki/File:Wroclaw-_Zespol_Hali_Stulecia_z_fontannami.jpg) | 960 × 634 |
+| poznan-cathedral-aerial.webp | 教堂島主教座堂空拍／Aneta Pawska | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) · [來源](https://commons.wikimedia.org/wiki/File:Bazylika_archikatedralna_%C5%9Awi%C4%99tych_Aposto%C5%82%C3%B3w_Piotra_i_Paw%C5%82a_w_Poznaniu,_widok_z_drona.jpg) | 960 × 640 |
+| poznan-imperial-castle-night.webp | 帝王城堡的夜間燈光／Radomil | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/) · [來源](https://commons.wikimedia.org/wiki/File:Zamek_Cesarski_Pozna%C5%84_noc.JPG) | 960 × 720 |
 
 ## 授權分類
 
