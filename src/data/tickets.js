@@ -53,6 +53,6 @@ export const ticketsByCity = [
 ];
 
 export const ticketNotices = [
-  {status:'已查證', text:'資料查證日為 2026-08-08。奧斯威辛自 2026-03-01 起所有入場證只在線上提供；本行程 10:00 入場必須購買官方導覽場次。', url:'https://www.auschwitz.org/en/visiting/'},
-  {status:'開賣再確認', text:'博物館活動、臨時閉館與可售場次仍可能調整；本站不把「查證過」誤寫成「已訂到」，購票時請以官方日曆為準。', url:'https://visit.auschwitz.org/'},
+  {status:'線上入場證', level:'risk', text:'奧斯威辛自 2026-03-01 起所有入場證只在線上提供；本行程以 10:30 英文官方導覽為目標，尚未代表已購票。', url:'https://www.auschwitz.org/en/visiting/'},
+  {status:'開賣再確認', level:'reminder', text:'博物館活動、臨時閉館與可售場次仍可能調整；本站不把「查證過」誤寫成「已訂到」，購票時請以官方日曆為準。', url:'https://visit.auschwitz.org/'},
 ];

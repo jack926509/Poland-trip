@@ -1,7 +1,7 @@
 import { pathToFileURL } from 'node:url';
 import { mapPins, mapPinChecks, pinCategoryLegend } from '../src/data/cities.js';
 
-const supportedStatuses = new Set(['coordinate-verified', 'unverified']);
+const supportedStatuses = new Set(['coordinate-verified', 'area-reference', 'unverified']);
 
 export function auditMapPins(pins, checks, legend) {
   const issues = [];
@@ -9,6 +9,7 @@ export function auditMapPins(pins, checks, legend) {
   const invalid = [];
   let total = 0;
   let verified = 0;
+  let areaReferences = 0;
 
   for (const [city, data] of Object.entries(pins)) {
     const names = new Set();
@@ -34,13 +35,20 @@ export function auditMapPins(pins, checks, legend) {
         } else {
           verified += 1;
         }
+      } else if (check.status === 'area-reference') {
+        if (!check.checkedAt || !check.coordinateSource || !check.note) {
+          issues.push(`${tag} 的範圍代表點紀錄缺日期、來源或說明`);
+          invalid.push(tag);
+        } else {
+          areaReferences += 1;
+        }
       } else {
         pending.push(tag);
       }
     }
   }
 
-  return {total, verified, pending, invalid, issues};
+  return {total, verified, areaReferences, pending, invalid, issues};
 }
 
 function runCli() {
@@ -49,6 +57,7 @@ function runCli() {
 
   console.log(`圖釘總數：${result.total}`);
   console.log(`已驗證：${result.verified}`);
+  console.log(`範圍代表點：${result.areaReferences}`);
   console.log(`未驗證：${result.pending.length}`);
   console.log(`無效紀錄：${result.invalid.length}`);
   if (result.pending.length) console.log(`未驗證清單：${result.pending.join('、')}`);

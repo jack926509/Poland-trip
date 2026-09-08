@@ -5,12 +5,33 @@
 // photoSpots：2026-08-11 全部 10 筆逐一對齊 trip.js 的實際行程時段，並依重算後的日落時間
 // 重寫光線描述。校正表第 3 節原本要求「波茲南教堂島改上午」，當時誤套到 poz-rynek，已對調修正。
 
+import { cityGallery } from './city-gallery.js';
+
 export const cities = [
   {key:'WAW', name:'華沙', pl:'Warszawa', tag:'CAPITAL', nights:'1 + 2', totalNights:3, stayNote:'首晚倒時差 + 回程兩晚收尾', vibe:'鋼鐵摩天 × 重建老城', highlights:['POLIN 猶太博物館','起義博物館','皇家城堡','Krakowskie Przedmieście'], photo:{hero:'assets/photos/warszawa-hero.webp',thumb:'assets/photos/warszawa-thumb.webp'}},
   {key:'KRK', name:'克拉科夫', pl:'Kraków', tag:'OLD WORLD', nights:2, totalNights:2, stayNote:'兩晚承接老城、Auschwitz、鹽礦', vibe:'中世紀石板路 × 千年王城', highlights:['Wawel 城堡','中央市集 Rynek','Auschwitz 一日往返','Kazimierz 猶太區'], photo:{hero:'assets/photos/krakow-hero.webp',thumb:'assets/photos/krakow-thumb.webp'}},
-  {key:'WRO', name:'樂斯拉夫', pl:'Wrocław', tag:'1000+ DWARFS', nights:1, totalNights:1, vibe:'千尊小矮人 × 煤氣燈點燈', highlights:['百年廳 UNESCO','全景畫 Panorama','座堂島 Ostrów Tumski','糖果屋雙屋'], photo:{hero:'assets/photos/wroclaw-hero.webp',thumb:'assets/photos/wroclaw-thumb.webp'}},
-  {key:'POZ', name:'波茲南', pl:'Poznań', tag:'CRADLE', nights:1, totalNights:1, vibe:'波蘭文明發源 × 山羊報時', highlights:['教堂島 Ostrów Tumski','12:00 山羊鐘樓秀','聖馬丁牛角麵包 PGI','帝王城堡'], photo:{hero:'assets/photos/poznan-hero.webp',thumb:'assets/photos/poznan-thumb.webp'}},
+  {key:'WRO', name:'樂斯拉夫', pl:'Wrocław', tag:'1000+ DWARFS', nights:1, totalNights:1, vibe:'千尊小矮人 × 煤氣燈點燈', highlights:['百年廳 UNESCO','全景畫 Panorama','座堂島 Ostrów Tumski','糖果屋雙屋'], photo:{hero:'assets/photos/wroclaw-hero.webp',thumb:'assets/photos/wroclaw-thumb.webp',detail:'assets/photos/wroclaw-ostrow-tumski-night.jpg',detailAlt:'夜色中的樂斯拉夫座堂島與河岸燈光',detailCaption:'座堂島入夜後的河岸燈光 · Day 5 日落前後散步重點',detailHeight:853,detailAuthor:'Jg44.89',detailLicense:'CC BY 4.0',detailLicenseUrl:'https://creativecommons.org/licenses/by/4.0/',detailSource:'https://commons.wikimedia.org/wiki/File:Ostr%C3%B3w_Tumski_Wroc%C5%82aw.jpg'}},
+  {key:'POZ', name:'波茲南', pl:'Poznań', tag:'CRADLE', nights:1, totalNights:1, vibe:'波蘭文明發源 × 山羊報時', highlights:['教堂島 Ostrów Tumski','12:00 山羊鐘樓秀','聖馬丁牛角麵包 PGI','帝王城堡'], photo:{hero:'assets/photos/poznan-hero.webp',thumb:'assets/photos/poznan-thumb.webp',detail:'assets/photos/poznan-old-market.jpg',detailAlt:'波茲南舊市集廣場周圍的彩色老屋',detailCaption:'舊市集廣場周圍的彩色老屋 · Day 6 正午山羊報時周邊',detailHeight:960,detailAuthor:'Mariochom',detailLicense:'CC BY-SA 4.0',detailLicenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',detailSource:'https://commons.wikimedia.org/wiki/File:Pozna%C5%84-Old_Market_Square.jpg'}},
 ];
+
+Object.assign(cities.find(city => city.key === 'WAW').photo, {
+  detail:'assets/photos/warsaw-royal-castle.jpg', detailHeight:848,
+  detailAlt:'華沙城堡廣場、皇家城堡與周圍彩色建築',
+  detailCaption:'城堡廣場與皇家城堡 · Day 1 老城散步沿途',
+  detailAuthor:'Steven Lek', detailLicense:'CC BY-SA 4.0',
+  detailLicenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',
+  detailSource:'https://commons.wikimedia.org/wiki/File:Castle_Square_Warsaw_2018_2.jpg',
+});
+Object.assign(cities.find(city => city.key === 'KRK').photo, {
+  detail:'assets/photos/krakow-wawel.jpg', detailHeight:385,
+  detailAlt:'從維斯瓦河對岸望向瓦維爾城堡與河岸全景',
+  detailCaption:'維斯瓦河畔的 Wawel 城堡全景 · Day 2 王城散步重點',
+  detailAuthor:'Ingo Mehling', detailLicense:'CC BY-SA 4.0',
+  detailLicenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',
+  detailSource:'https://commons.wikimedia.org/wiki/File:Krakow_-_Wawel_from_Vistula_-_4.jpg',
+});
+
+for (const city of cities) city.gallery = cityGallery.filter(photo => photo.cityKey === city.key);
 
 export const cityNotices = {
   warsaw: [
@@ -93,7 +114,7 @@ export const cityStories = [
 export const photoSpots = [
   {id:'waw-oldtown', cityKey:'WAW', name:'老城市集廣場', day:1, bestTime:'16:00–16:40', light:'日落前側光打在彩色立面，廣場人少'},
   {id:'waw-castle', cityKey:'WAW', name:'皇家城堡與美人魚', day:1, bestTime:'16:30–17:15', light:'順光；城堡紅牆在低角度陽光下最飽和（已對齊 Day1 實際行程 16:45–17:45）'},
-  {id:'waw-culture', cityKey:'WAW', name:'科學文化宮 30F 城景', day:7, bestTime:'18:15–19:00', light:'10/30 華沙日落約 16:11，這個時段已是全黑純夜景，不是藍調時刻；想拍藍調得在 16:10–16:45，但 Day 7 那段時間排在起義博物館內。售票資訊至 20:00，晚間時段以當日公告為準（已對齊 Day7 起義博物館後、晚餐前的彈性時段）'},
+  {id:'waw-culture', cityKey:'WAW', name:'科學文化宮 30F 城景', day:null, bestTime:'城市延伸', light:'未排入每日行程。若自行加入，10 月底日落後為夜景；觀景台售票與開放時段以當日公告為準。'},
   {id:'krk-rynek', cityKey:'KRK', name:'中央市集廣場與聖瑪利亞聖殿', day:2, bestTime:'16:00–16:45', light:'塔樓逆光，改拍東側迴廊反射光'},
   {id:'krk-wawel', cityKey:'KRK', name:'Wawel 城堡河岸', day:2, bestTime:'12:30–13:00', light:'正午前後太陽在南方低角度，順光打在 Wawel 面河的南側城牆；從 Dębnicki 橋往東拍，帶維斯瓦河面反光（已對齊 Day2 午餐後前往大教堂途中的 10–15 分鐘繞路）'},
   {id:'krk-kazimierz', cityKey:'KRK', name:'Kazimierz 猶太區街景', day:4, bestTime:'14:30–16:00', light:'午後柔和側光，適合窄巷與塗鴉（已對齊 Day4 實際行程 14:30–16:00）'},
@@ -106,6 +127,9 @@ export const photoSpots = [
 // licenseUrl：CC 授權要求提供「授權條款本身」的 URI，不是照片來源頁（url 欄位）。
 // 三個值皆為 Creative Commons 官方標準授權頁，逐一對應 license 欄位，不得自行更動。
 export const photoCredits = [
+  ...cityGallery.map(photo => ({file:photo.src.split('/').at(-1), city:cities.find(city => city.key === photo.cityKey).name, author:photo.author, license:photo.license, licenseUrl:photo.licenseUrl, url:photo.sourceUrl})),
+  {file:'warsaw-royal-castle.jpg', city:'華沙', author:'Steven Lek', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Castle_Square_Warsaw_2018_2.jpg'},
+  {file:'krakow-wawel.jpg', city:'克拉科夫', author:'Ingo Mehling', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Krakow_-_Wawel_from_Vistula_-_4.jpg'},
   {file:'warszawa-hero.webp', city:'華沙', author:'Rhododendrites', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Market_Square_Warsaw_(22594p).jpg'},
   {file:'warszawa-thumb.webp', city:'華沙', author:'Rhododendrites', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Market_Square_Warsaw_(22594p).jpg'},
   {file:'krakow-hero.webp', city:'克拉科夫', author:'Andrzej Otrębski', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Krakow_Rynek_Glowny_panorama_2.jpg'},
@@ -114,12 +138,15 @@ export const photoCredits = [
   {file:'wroclaw-thumb.webp', city:'樂斯拉夫', author:'Gerd Eichmann', license:'CC BY 4.0', licenseUrl:'https://creativecommons.org/licenses/by/4.0/', url:'https://commons.wikimedia.org/wiki/File:Breslau-Rynek-38-Panorama-2014-gje.jpg'},
   {file:'poznan-hero.webp', city:'波茲南', author:'Mateusz.woźniak', license:'CC BY-SA 3.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/3.0/', url:'https://commons.wikimedia.org/wiki/File:Poznan_stary_rynek_panorama.jpg'},
   {file:'poznan-thumb.webp', city:'波茲南', author:'Mateusz.woźniak', license:'CC BY-SA 3.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/3.0/', url:'https://commons.wikimedia.org/wiki/File:Poznan_stary_rynek_panorama.jpg'},
+  {file:'wroclaw-ostrow-tumski-night.jpg', city:'樂斯拉夫', author:'Jg44.89', license:'CC BY 4.0', licenseUrl:'https://creativecommons.org/licenses/by/4.0/', url:'https://commons.wikimedia.org/wiki/File:Ostr%C3%B3w_Tumski_Wroc%C5%82aw.jpg'},
+  {file:'poznan-old-market.jpg', city:'波茲南', author:'Mariochom', license:'CC BY-SA 4.0', licenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/', url:'https://commons.wikimedia.org/wiki/File:Pozna%C5%84-Old_Market_Square.jpg'},
 ];
 
 // mapPins 已套用校正表 3-1（Mirror Bistro、Na Winklu 從 star1 改 food；Svensson Pierogi、Hamsa 從 sight 改 food）
 // 的修正，直接來自 poland-travel-guide-final.html:565 的 CITIES 物件。
 // 校正表 3-2 記的「克拉科夫 19 個圖釘」是加入已確認住宿圖釘前的數字；
-// 2026-08-15 補上 Rozbrat 20 ★（取得門牌級座標後才加入），現為 17／20／10／9，合計 56。
+// 2026-09-08 移除 4 個未逐店確認的 Żabka 精確圖釘；超商仍保留在購物資料，現場依即時搜尋選分店。
+// 地圖現為 16／19／9／8，合計 52；其中 49 個門牌／場館錨點、3 個面狀區域代表點。
 export const mapPins = {
   warsaw: {
     center: [52.235, 21.01], zoom: 13,
@@ -136,7 +163,6 @@ export const mapPins = {
       [52.236622, 20.967709, "Zagoździński", "pączki 名店", "https://maps.google.com/?cid=5270464504046978357", "food"],
       [52.252402, 21.030581, "Bar Mleczny Rusałka", "牛奶吧", "https://maps.google.com/?cid=14427558643223382901", "food"],
       [52.2333197, 21.0149273, "Pijalnia Czekolady E.Wedel（巧克力）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJ--12WPTMHkcRgAvh-nOeA94", "shop"],
-      [52.24935, 21.008785, "Żabka（舊城區）", "超商", "https://www.google.com/maps/place/?q=place_id:ChIJpTk0Ah_NHkcRNn4P8JcA_64", "store"],
       [52.2310334, 21.0187045, "Vitkac", "精品百貨", "https://maps.google.com/?cid=6893272886103886879", "luxury"],
       [52.2215267, 21.0204772, "Chylak（波蘭設計師包款）", "精品", "https://maps.google.com/?cid=2015234439722332980", "luxury"],
       [52.214645, 20.968169, "ibis budget Warszawa Reduta", "已確認住宿 · 官網現稱 ibis budget Warszawa West Station", "https://www.google.com/maps/search/?api=1&query=ibis%20budget%20Warszawa%20Reduta%2C%20ul.%20Bitwy%20Warszawskiej%2016%20A%2C%20Warszawa", "hotel"],
@@ -164,7 +190,6 @@ export const mapPins = {
       [50.055231, 19.938471, "Ceramika Bolesławiecka（陶器）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJf581WqhbFkcR1_QG-8hJ4Vc", "shop"],
       [50.058364, 19.9382007, "World of Amber（琥珀）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJPxlI8hJbFkcR7vI2ebLVIDk", "shop"],
       [50.06171320000001, 19.9373488, "Sukiennice 布廊（伴手禮攤位）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJ3Q97Bw5bFkcRc3GzJiVsH9A", "shop"],
-      [50.062638, 19.937729, "Żabka（Rynek Główny）", "超商", "https://www.google.com/maps/place/?q=place_id:ChIJN54SF4BbFkcRfqYQZ51JTN4", "store"],
       [50.07075, 19.946163, "ibis budget Krakow Stare Miasto", "已確認住宿 · 10/25–10/27", "https://www.google.com/maps/search/?api=1&query=ibis%20budget%20Krakow%20Stare%20Miasto%2C%20ul.%20Pawia%2011%2C%20Krak%C3%B3w", "hotel"],
     ],
   },
@@ -179,8 +204,7 @@ export const mapPins = {
       [51.114762, 17.031129, "Most ★", "米其林一星", "https://maps.google.com/?cid=9490447263206449328", "star1"],
       [51.112463, 17.029103, "IDA kuchnia i wino", "必比登", "https://maps.google.com/?cid=10589009865057440004", "bib"],
       [51.112672, 17.034294, "Miś SC", "全城最有名牛奶吧", "https://maps.google.com/?cid=9100083269168988599", "food"],
-      [51.1100658, 17.0302956, "Żabka（Rynek）", "超商", "https://www.google.com/maps/place/?q=place_id:ChIJo38OWDjDD0cREV-o0Qsuquo", "store"],
-      [51.10013, 17.03569, "Piast", "已確認住宿 · 完整門牌待飯店第一方確認", "https://www.google.com/maps/search/?api=1&query=Hotel%20Piast%20Wroc%C5%82aw", "hotel"],
+      [51.10013, 17.03569, "Piast", "已確認住宿 · Piłsudskiego 98", "https://www.google.com/maps/search/?api=1&query=Hotel%20Piast%2C%20Pi%C5%82sudskiego%2098%2C%20Wroc%C5%82aw", "hotel"],
     ],
   },
   poznan: {
@@ -193,7 +217,6 @@ export const mapPins = {
       [52.403967, 16.929146, "Muga ★", "波茲南唯一一星", "https://maps.google.com/?cid=2998937238608160974", "star1"],
       [52.411348, 16.952952, "Na Winklu", "pierogi", "https://maps.google.com/?cid=17998777227118824033", "food"],
       [52.407303, 16.934127, "Szarlotta", "鴨肉餃子名店", "https://maps.google.com/?cid=8072844045178633315", "food"],
-      [52.407335, 16.934281, "Żabka（Stary Rynek）", "超商", "https://www.google.com/maps/place/?q=place_id:ChIJz0qhEFVbBEcRDDtONqAeGV4", "store"],
       [52.403903, 16.915609, "Poznan Apartments Towarowa", "已確認住宿 · Towarowa 37/201 官方接待處", "https://www.google.com/maps/search/?api=1&query=Poznan%20Apartments%20Towarowa%2C%20Towarowa%2037%2F201%2C%20Pozna%C5%84", "hotel"],
     ],
   },
@@ -206,12 +229,11 @@ export const pinCategoryLegend = {
   food:   {fill:'#CE2E1E', line:'#7a1a10', label:'街食／小吃／牛奶吧'},
   sight:  {fill:'#3b6ea5', line:'#1c3a58', label:'景點'},
   shop:   {fill:'#8b5cf6', line:'#4c2f8f', label:'伴手禮店家'},
-  store:  {fill:'#0891b2', line:'#0c4a5e', label:'超商 Żabka'},
   luxury: {fill:'#d6336c', line:'#7a1a3d', label:'精品購物'},
   hotel:  {fill:'#6d597a', line:'#3d2f46', label:'已確認住宿'},
 };
 
-// 圖釘座標查證狀態：未驗證不代表錯誤，只代表尚未以可靠地址獨立比對。
+// 圖釘座標查證狀態：面狀街區以 area-reference 標示範圍代表點，不視為門牌級精確位置。
 // coordinate-verified 的地址來源與座標來源均記錄於 docs/research/2026-08-11-map-pins-geocoding.md。
 const defaultMapPinCheck = {status:'unverified'};
 export const mapPinChecks = Object.fromEntries(
@@ -257,6 +279,8 @@ Object.assign(mapPinChecks.krakow, {
   'World of Amber（琥珀）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:5},
   'Sukiennice 布廊（伴手禮攤位）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:28},
   'Svensson Pierogi': {status:'coordinate-verified', checkedAt:'2026-08-15', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
+  '中央市集廣場': {status:'area-reference', checkedAt:'2026-09-08', coordinateSource:'Google Maps 地標範圍／OpenStreetMap 面狀地物', note:'廣場範圍代表點，不是入口或門牌。'},
+  'Kazimierz 猶太區': {status:'area-reference', checkedAt:'2026-09-08', coordinateSource:'Google Maps 街區範圍／OpenStreetMap 面狀地物', note:'街區範圍代表點，請依當日目的地導航。'},
 });
 Object.assign(mapPinChecks.wroclaw, {
   '中央市集廣場': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:73},
@@ -267,6 +291,7 @@ Object.assign(mapPinChecks.wroclaw, {
   'Piast': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:0},
   'Most ★': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
   'IDA kuchnia i wino': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:18},
+  '大教堂島 Ostrów Tumski': {status:'area-reference', checkedAt:'2026-09-08', coordinateSource:'Google Maps 街區範圍／OpenStreetMap 面狀地物', note:'島區範圍代表點，不是單一入口。'},
 });
 Object.assign(mapPinChecks.poznan, {
   '舊市集廣場 Stary Rynek': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:64},

@@ -41,6 +41,13 @@ function createTextElement(tagName, className, text) {
   }
 
 export function initializeSiteSearch(root) {
+    if (typeof window !== 'undefined') {
+      const mobileQuery = window.matchMedia('(max-width: 700px)');
+      if (mobileQuery.matches) root.removeAttribute('open');
+      mobileQuery.addEventListener?.('change', event => {
+        if (!event.matches) root.setAttribute('open', '');
+      });
+    }
     const input = root.querySelector('input[type="search"]');
     const indexElement = root.querySelector('[data-site-search-index]');
     const resultsElement = root.querySelector('[data-search-results]');

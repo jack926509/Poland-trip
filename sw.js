@@ -6,7 +6,7 @@
 //   - OSM 圖磚：stale-while-revalidate 的執行期快取，看過的區域離線仍在
 // 同時沿用舊版行為，清掉已封存的 polska-v* 快取。
 
-const VERSION = 'polska-journal-v5';
+const VERSION = 'polska-journal-v9';
 const SHELL = `${VERSION}-shell`;
 const RUNTIME = `${VERSION}-runtime`;
 const TILES = `${VERSION}-tiles`;
@@ -35,6 +35,18 @@ const ASSETS = [
   './assets/photos/krakow-hero.webp',
   './assets/photos/wroclaw-hero.webp',
   './assets/photos/poznan-hero.webp',
+  './assets/photos/wroclaw-ostrow-tumski-night.jpg',
+  './assets/photos/poznan-old-market.jpg',
+  './assets/photos/warsaw-royal-castle.jpg',
+  './assets/photos/krakow-wawel.jpg',
+  './assets/photos/warsaw-skyline.jpg',
+  './assets/photos/warsaw-lazienki-palace.jpg',
+  './assets/photos/krakow-szeroka-street.jpg',
+  './assets/photos/krakow-zapiekanki.jpg',
+  './assets/photos/wroclaw-dwarf-explorer.jpg',
+  './assets/photos/wroclaw-centennial-hall.jpg',
+  './assets/photos/poznan-cathedral-aerial.jpg',
+  './assets/photos/poznan-imperial-castle-night.jpg',
 ];
 
 const PRECACHE = [...PAGES, ...ASSETS];

@@ -1,4 +1,5 @@
 import { renderLayout } from './layout.mjs';
+import { renderPhotoGallery } from './photo-gallery.mjs';
 
 const bookingLabels = {
   must: '建議預約',
@@ -8,7 +9,7 @@ const bookingLabels = {
 
 function renderNotice(notice) {
   return `<div class="${notice.level === 'risk' ? 'callout-risk' : 'callout-note'}">
-    <span class="${notice.status === '待確認' ? 'tag-todo' : 'tag-red'}">${notice.status}</span>
+    <span class="${notice.level === 'risk' ? 'tag-red' : 'tag-yellow'}">${notice.status}</span>
     <p>${notice.text}</p>
   </div>`;
 }
@@ -34,6 +35,7 @@ export function renderCity({
   cityKey,
   cityFile,
   mapData,
+  mapChecks = {},
   legend,
   attractionsForCity,
   dining,
@@ -100,21 +102,34 @@ export function renderCity({
       <div class="section-heading"><span class="section-num">Photo</span><h2>拍照建議</h2></div>
       <div class="grid">${photoSpotsForCity.map(spot => `
         <article class="card">
-          <span class="eyebrow">Day ${spot.day} · ${spot.bestTime}</span>
+          <span class="eyebrow">${spot.day ? `Day ${spot.day} · ` : ''}${spot.bestTime}</span>
           <h3>${spot.name}</h3>
           <p>${spot.light}</p>
+          <p><a href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(`${spot.name}, ${city.pl}, Poland`)}" target="_blank" rel="noopener noreferrer">在 Google Maps 查看地點 ↗</a></p>
         </article>`).join('')}
       </div>
     </section>` : '';
 
+  const cityDetailPhoto = city.photo?.detail ? `
+    <figure class="city-detail-photo">
+      <img src="${city.photo.detail}" alt="${city.photo.detailAlt}" width="1280" height="${city.photo.detailHeight}" loading="lazy" decoding="async">
+      <figcaption>${city.photo.detailCaption} · ${city.photo.detailAuthor} · <a href="${city.photo.detailSource}" target="_blank" rel="noopener noreferrer">圖片來源 ↗</a> · <a href="${city.photo.detailLicenseUrl}" target="_blank" rel="noopener noreferrer">${city.photo.detailLicense} 授權 ↗</a></figcaption>
+    </figure>` : '';
+
   const legendHtml = Object.entries(legend).map(([key, item]) => `
     <div><span style="background:${item.fill};border:1.5px solid ${item.line}"></span>${item.label}</div>`).join('');
+  const mapCheckSummary = Object.values(mapChecks).reduce((summary, check) => {
+    if (check.status === 'coordinate-verified') summary.precise += 1;
+    if (check.status === 'area-reference') summary.area += 1;
+    return summary;
+  }, {precise: 0, area: 0});
 
   const mapScript = `
     <script src="assets/leaflet/leaflet.js"></script>
     <script>
     (function () {
       var mapData = ${JSON.stringify(mapData)};
+      var mapChecks = ${JSON.stringify(mapChecks)};
       var colors = ${JSON.stringify(legend)};
       var script = document.currentScript;
       var scope = script ? script.closest('.standalone-page') : null;
@@ -137,8 +152,10 @@ export function renderCity({
           fillOpacity: 0.92
         }).addTo(map);
         var link = point[4] ? '<br><a href="' + point[4] + '" target="_blank" rel="noopener">在 Google Maps 開啟 →</a>' : '';
+        var check = mapChecks[point[2]] || {};
+        var locationNote = check.status === 'area-reference' ? '<br><small>範圍代表點，請依實際目的地導航</small>' : '';
         var stableDescription = point[3].replace(/★\d(?:\.\d)?(?:\s*\([^)]*\)|\s*（[^）]*）)?\s*/g, '').trim();
-        marker.bindPopup('<b>' + point[2] + '</b><br>' + stableDescription + link);
+        marker.bindPopup('<b>' + point[2] + '</b><br>' + stableDescription + locationNote + link);
       });
     }());
     </script>`;
@@ -162,9 +179,13 @@ export function renderCity({
 
     <div class="journal-city-story">${storyHtml}</div>
 
+    ${cityDetailPhoto}
+    ${renderPhotoGallery(city.gallery)}
+
     <section class="section journal-city-map">
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
       <p class="lead">拖曳、縮放並點選圖釘查看說明；手機上下滑動會優先捲動頁面，圖釘連結可直接開啟 Google Maps。</p>
+      <div class="callout-note"><b>座標狀態：</b>${mapCheckSummary.precise} 個門牌／場館錨點已比對${mapCheckSummary.area ? `，${mapCheckSummary.area} 個街區或島區採範圍代表點` : ''}。座標查證於 2026/08/11–15，本次發布複核於 2026/09/08；未確認分店的 Żabka 不放精確圖釘，抵達後請用即時地圖搜尋附近分店。</div>
       <div id="map-${cityKey}" class="map-container" data-map-key="${cityKey}" role="region" aria-label="${city.name}互動地圖"><p class="map-fallback">地圖需要網路連線才能載入。離線或載入失敗時，請改用下方景點清單中的 Google Maps 連結。</p></div>
       <div class="map-legend" aria-label="地圖圖例">${legendHtml}</div>
       <p class="map-caption">地圖底圖 © OpenStreetMap contributors</p>
