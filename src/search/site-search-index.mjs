@@ -7,6 +7,7 @@ const cityDefinitions = {
 
 const typeLabels = {
   train: '火車',
+  bus: '巴士',
   restaurant: '餐廳',
   map: '地圖',
   city: '城市',
@@ -156,14 +157,18 @@ export function buildTravelSearchRecords(data) {
   const records = [];
 
   for (const [index, train] of (data.trains || []).entries()) {
+    const isBus = /\bBUS\b/i.test(train.type || '');
+    const transportType = isBus ? 'bus' : 'train';
     records.push(createRecord({
-      id: `train-${index + 1}-${slug(train.seg)}`,
-      type: 'train',
+      id: `${transportType}-${index + 1}-${slug(train.seg)}`,
+      type: transportType,
       title: train.seg.replace(/WAW/g, '華沙').replace(/KRK/g, '克拉科夫').replace(/WRO/g, '樂斯拉夫').replace(/POZ/g, '波茲南'),
       meta: compact([train.date, `${train.dep} → ${train.arr}`]),
-      summary: compact([train.type, train.dur, train.status, train.price]),
+      summary: compact([train.trainNo, train.name, train.type, train.dur, train.status, train.price]),
       href: 'practical/booking.html#rail-itinerary',
-      keywords: [train.seg, '時刻表', '城際交通', 'PKP Intercity'],
+      keywords: isBus
+        ? [train.seg, '巴士 班次', '公車 客運', 'Lajkonik']
+        : [train.seg, '時刻表', '城際交通', 'PKP Intercity'],
     }));
   }
 

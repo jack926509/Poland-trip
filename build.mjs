@@ -33,6 +33,51 @@ import {
   serializeSearchIndex,
 } from './src/search/site-search-index.mjs';
 
+const dayPinNames = {
+  1: { warsaw: ['皇家城堡', 'ibis budget Warszawa Reduta'] },
+  2: { warsaw: ['ibis budget Warszawa Reduta'], krakow: ['Wawel 皇家城堡', '中央市集廣場', 'Kazimierz 猶太區', '辛德勒工廠博物館', 'Plac Nowy (zapiekanka)', 'ibis budget Krakow Stare Miasto'] },
+  3: { krakow: ['ibis budget Krakow Stare Miasto'] },
+  4: { krakow: ['Kazimierz 猶太區', 'Sukiennice 布廊（伴手禮攤位）', 'ibis budget Krakow Stare Miasto'], wroclaw: ['Piast'] },
+  5: { wroclaw: ['中央市集廣場', '大教堂島 Ostrów Tumski', '百年廳 Hala Stulecia', 'Piast'], poznan: ['Poznan Apartments Towarowa'] },
+  6: { poznan: ['舊市集廣場 Stary Rynek', '大教堂島 Ostrów Tumski', '可頌博物館', 'Poznan Apartments Towarowa'], warsaw: ['Hotel Metropol'] },
+  7: { warsaw: ['皇家城堡', 'POLIN 猶太史博物館', '華沙起義博物館', 'Hotel Metropol'] },
+  8: { warsaw: ['Hotel Metropol'] },
+};
+
+const daySupplementaryPins = {
+  1: [[52.1697086, 20.975785, 'Warszawa Lotnisko Chopina 機場鐵路站', 'PKP PLK 車站目錄座標 · 非航廈報到入口 · 2026/09/08 查核', 'https://www.google.com/maps/search/?api=1&query=Warszawa%20Lotnisko%20Chopina%20railway%20station%2C%20Warszawa%2C%20Poland', 'sight', 'https://portalpasazera.pl/en/KatalogStacji?stacja=Warszawa+Lotnisko+Chopina']],
+  3: [[50.029763, 19.204816, 'Auschwitz I 訪客服務中心／入口', '官方確認入口 · Więźniów Oświęcimia 55 · 2026/09/08 查核', 'https://www.google.com/maps/search/?api=1&query=Auschwitz%20Memorial%20Visitor%20Services%20Center%2C%2055%20Wi%C4%99%C5%BAni%C3%B3w%20O%C5%9Bwi%C4%99cimia%2C%20O%C5%9Bwi%C4%99cim%2C%20Poland', 'sight', 'https://www.auschwitz.org/en/museum/news/new-visitor-services-center-at-the-auschwitz-memorial-change-of-the-place-of-arrival-and-entrance-from-15-june%2C1614.html']],
+  4: [[49.98348, 20.05477, '維利奇卡鹽礦 Daniłowicz Shaft', '官方確認 Tourist Route 集合入口 · 2026/09/08 查核', 'https://www.google.com/maps/search/?api=1&query=Dani%C5%82owicz%20Shaft%2C%20Wieliczka%20Salt%20Mine%2C%20Poland', 'sight', 'https://www.wieliczka-saltmine.com/events/important-information/map-and-access']],
+  8: [[52.1697086, 20.975785, 'Warszawa Lotnisko Chopina 機場鐵路站', 'PKP PLK 車站目錄座標 · 非航廈報到入口 · 2026/09/08 查核', 'https://www.google.com/maps/search/?api=1&query=Warszawa%20Lotnisko%20Chopina%20railway%20station%2C%20Warszawa%2C%20Poland', 'sight', 'https://portalpasazera.pl/en/KatalogStacji?stacja=Warszawa+Lotnisko+Chopina']],
+};
+
+function makeDayMap(day, operation) {
+  const selections = dayPinNames[day.n];
+  const points = [];
+  const checks = {};
+  for (const [cityKey, names] of Object.entries(selections)) {
+    for (const point of cities.mapPins[cityKey].points.filter(item => names.includes(item[2]))) {
+      points.push(point);
+      checks[point[2]] = cities.mapPinChecks[cityKey][point[2]];
+    }
+  }
+  points.push(...(daySupplementaryPins[day.n] || []));
+  for (const point of daySupplementaryPins[day.n] || []) checks[point[2]] = { status: 'coordinate-verified', checkedAt: '2026-09-08', coordinateSource: point[6] };
+  const normalized = value => value.toLocaleLowerCase().replaceAll(/[^\p{L}\p{N}]/gu, '');
+  const locatedNames = points.map(point => normalized(point[2]));
+  const unlocated = (operation?.addresses || []).filter(address =>
+    !locatedNames.some(name => name.includes(normalized(address.name)) || normalized(address.name).includes(name)))
+    .map(address => ({ name: address.name, url: address.url }));
+  const cityCount = Object.keys(selections).length;
+  return {
+    center: points[0]?.slice(0, 2) || [52.1, 19.4], zoom: 13, points, unlocated,
+    checks,
+    note: cityCount > 1
+      ? '跨城區域概覽：只標示資料集中已查證的行程錨點；縮放後查看各城，圖釘位置不代表實際交通路線。'
+      : `區域概覽：本日 ${points.length} 個已查證行程錨點；未定位地點列在地圖下方，請用名稱導航。`,
+  };
+}
+
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 const publishedDistDir = path.join(projectRoot, 'dist');
 const publishedStandalonePath = path.join(projectRoot, 'poland-travel-guide-2026.html');
@@ -122,6 +167,21 @@ export function rewriteStandaloneIdReferences(content, pageId) {
   );
 }
 
+const standalonePhotoDataUris = new Map();
+
+function inlineStandalonePhotos(content) {
+  return content.replace(/src="(?:\.\.\/)?assets\/photos\/([^"/]+\.(?:webp|jpe?g|png))"/gi, (match, fileName) => {
+    if (!standalonePhotoDataUris.has(fileName)) {
+      const extension = path.extname(fileName).toLowerCase();
+      const mime = extension === '.webp' ? 'image/webp' : extension === '.png' ? 'image/png' : 'image/jpeg';
+      const photoPath = path.join(distDir, 'assets', 'photos', path.basename(fileName));
+      if (!fs.existsSync(photoPath)) throw new Error(`單檔版找不到照片：${fileName}`);
+      standalonePhotoDataUris.set(fileName, `data:${mime};base64,${fs.readFileSync(photoPath).toString('base64')}`);
+    }
+    return `src="${standalonePhotoDataUris.get(fileName)}"`;
+  });
+}
+
 function bundlePage(relativePath, label, pageIndex) {
   const html = fs.readFileSync(path.join(distDir, relativePath), 'utf8');
   const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i);
@@ -145,8 +205,9 @@ function bundlePage(relativePath, label, pageIndex) {
     .replace(/\s*<script src="\.\.\/assets\/database-filter\.js" defer><\/script>/g, '')
     .replace(/\s*<script src="assets\/leaflet\/leaflet\.js"><\/script>/g, '')
     .replace(/\s*<link rel="stylesheet" href="assets\/leaflet\/leaflet\.css">/g, '')
+    .replace(/\s*<nav class="mobile-quick-nav"[\s\S]*?<\/nav>/g, '')
     .replace(/href="([^"]+)"/g, rewriteHref);
-  const content = rewriteStandaloneIdReferences(contentWithRewrittenLinks, currentPageId).trim();
+  const content = inlineStandalonePhotos(rewriteStandaloneIdReferences(contentWithRewrittenLinks, currentPageId)).trim();
 
   const previous = standalonePages[pageIndex - 1];
   const next = standalonePages[pageIndex + 1];
@@ -172,6 +233,7 @@ function standaloneSearchHref(href) {
 }
 
 function buildStandalone(searchRecords) {
+  standalonePhotoDataUris.clear();
   const mainCss = fs.readFileSync(path.join(distDir, 'assets/main.css'), 'utf8');
   const leafletCss = fs.readFileSync(path.join(distDir, 'assets', 'leaflet', 'leaflet.css'), 'utf8');
   const leafletJs = fs.readFileSync(path.join(distDir, 'assets', 'leaflet', 'leaflet.js'), 'utf8');
@@ -185,6 +247,12 @@ function buildStandalone(searchRecords) {
     searchIndexJson: serializeSearchIndex(standaloneSearchRecords),
     databaseHref: '#page-practical-database',
   });
+  const standaloneMobileQuickNav = `<nav class="mobile-quick-nav" aria-label="旅途中快速導覽">
+    <a href="#page-index"><span aria-hidden="true">▣</span>行程</a>
+    <a href="#page-practical-booking--rail-itinerary"><span aria-hidden="true">▤</span>火車</a>
+    <a href="#page-index--cities"><span aria-hidden="true">⌖</span>地圖</a>
+    <a href="#page-practical-todos"><span aria-hidden="true">✓</span>待辦</a>
+  </nav>`;
   const navMenus = standaloneNavGroups.map(group => {
     const links = group.pages
       .map(([relativePath, label]) => `<a href="#${standalonePageId(relativePath)}">${label}</a>`)
@@ -211,8 +279,8 @@ function buildStandalone(searchRecords) {
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%232b2723'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-size='38' font-family='serif' font-weight='700' fill='%23f6f1e8'%3EP%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null">
-  <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"></noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Noto+Serif+TC:wght@600;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null">
+  <noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Noto+Serif+TC:wght@600;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"></noscript>
   <style data-bundled="main.css">
 ${mainCss}
   </style>
@@ -400,11 +468,12 @@ ${leafletJs}
   ${standaloneSearchHtml}
   <main id="standalone-content">
 ${bundledPages}
+${standaloneMobileQuickNav}
   </main>
   <footer class="footer">
     <div class="footer-inner">
       <p>POLSKA 波蘭行 · 2026/10/24–10/31 · 單檔完整版</p>
-      <p>票價、開放時間與交通資料查證於 2026-08-09；尚未開賣或會變動的項目已明確標示，實際以官網與已購票券為準。</p>
+      <p>各筆資料依頁面標示的查核日期與狀態管理；推薦班次不代表指定日已確認，實際以官網與已購票券為準。</p>
     </div>
   </footer>
   <script>
@@ -459,7 +528,8 @@ ${siteSearchJs}
 </body>
 </html>`;
 
-  fs.writeFileSync(standalonePath, html, 'utf8');
+  // 組合不同章節時可能帶入縮排空白；只清除行尾空白，不改動內容或換行結構。
+  fs.writeFileSync(standalonePath, html.replace(/[ \t]+$/gm, ''), 'utf8');
 }
 
 function buildSearchRecords() {
@@ -517,14 +587,18 @@ function buildIntoStaging(stagingRoot) {
 
   for (const day of trip.days) {
     const photoSpotsForDay = cities.photoSpots.filter(spot => spot.day === day.n);
+    const detailPhotoCity = [1, 2, 5, 6].includes(day.n)
+      ? cities.cities.find(item => item.key === photoSpotsForDay[0]?.cityKey)
+      : null;
     const journalCity = day.city
       .split('→')
       .reverse()
       .map(stop => cities.cities.find(city => stop.includes(city.name)))
       .find(Boolean) || cities.cities[0];
+    const dayMap = makeDayMap(day, travelDatabase.dayOperations[day.n]);
     writeHtml(
       `day-${String(day.n).padStart(2, '0')}.html`,
-      renderDay(day, photoSpotsForDay, travelDatabase.dayOperations[day.n], journalCity),
+      renderDay(day, photoSpotsForDay, travelDatabase.dayOperations[day.n], journalCity, detailPhotoCity, dayMap, dayMap.checks, cities.pinCategoryLegend, cities.cities.flatMap(city => city.gallery || []).filter(photo => photo.days?.includes(day.n))),
     );
   }
 
@@ -534,6 +608,7 @@ function buildIntoStaging(stagingRoot) {
       city,
       cityKey: mapKey,
       mapData: cities.mapPins[mapKey],
+      mapChecks: cities.mapPinChecks[mapKey],
       legend: cities.pinCategoryLegend,
       attractionsForCity: cities.attractions[mapKey],
       dining: dining.cityDining[mapKey],

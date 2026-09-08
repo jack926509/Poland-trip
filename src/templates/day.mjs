@@ -1,4 +1,6 @@
 import { renderLayout } from './layout.mjs';
+import { renderInteractiveMap } from './map.mjs';
+import { renderPhotoGallery } from './photo-gallery.mjs';
 
 function renderList(items, renderItem) {
   return items?.length ? `<ul class="check-list">${items.map(renderItem).join('')}</ul>` : '';
@@ -83,7 +85,7 @@ function renderNightChecklist(operation) {
     </section>`;
 }
 
-export function renderDay(day, photoSpotsForDay = [], operation = null, city = null) {
+export function renderDay(day, photoSpotsForDay = [], operation = null, city = null, detailPhotoCity = null, dayMap = null, mapChecks = {}, legend = {}, dayGallery = []) {
   const stepsHtml = day.steps.map(step => `
     <tr>
       <td class="number" data-label="時間"><b>${step.t}</b></td>
@@ -167,11 +169,12 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   const photoHtml = photoSpotsForDay.length ? `
     <section class="section">
       <div class="section-heading"><span class="section-num">Photo</span><h2>拍照建議</h2></div>
-      <div class="grid">${photoSpotsForDay.map(spot => `
+      <div class="photo-spot-grid">${photoSpotsForDay.map(spot => `
         <article class="card">
           <span class="eyebrow">${spot.bestTime}</span>
           <h3>${spot.name}</h3>
           <p>${spot.light}</p>
+          <p><a href="https://www.google.com/maps/search/?api=1&amp;query=${encodeURIComponent(`${spot.name}, ${{WAW:'Warszawa',KRK:'Kraków',WRO:'Wrocław',POZ:'Poznań'}[spot.cityKey] || day.city}, Poland`)}" target="_blank" rel="noopener noreferrer">在 Google Maps 查看地點 ↗</a></p>
         </article>`).join('')}
       </div>
     </section>` : '';
@@ -183,6 +186,11 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
         <img src="${escapeHtml(city.photo.hero)}" alt="${escapeHtml(city.name)}城市風景" width="1200" height="800" decoding="async" fetchpriority="high">
         <figcaption>${escapeHtml(city.pl)} · ${escapeHtml(city.vibe)}</figcaption>
       </figure>` : '<div class="journal-day-cover-fallback" aria-hidden="true">POLSKA</div>';
+  const detailPhotoHtml = detailPhotoCity?.photo?.detail ? `
+    <figure class="city-detail-photo day-detail-photo">
+      <img src="${escapeHtml(detailPhotoCity.photo.detail)}" alt="${escapeHtml(detailPhotoCity.photo.detailAlt)}" width="1280" height="${escapeHtml(detailPhotoCity.photo.detailHeight)}" loading="lazy" decoding="async">
+      <figcaption>${escapeHtml(detailPhotoCity.photo.detailCaption)} · ${escapeHtml(detailPhotoCity.photo.detailAuthor)} · <a href="${escapeHtml(detailPhotoCity.photo.detailSource)}" target="_blank" rel="noopener noreferrer">圖片來源 ↗</a> · <a href="${escapeHtml(detailPhotoCity.photo.detailLicenseUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(detailPhotoCity.photo.detailLicense)} 授權 ↗</a></figcaption>
+    </figure>` : '';
 
   const bodyHtml = `
     <header class="journal-day-header">
@@ -197,13 +205,6 @@ ${coverHtml}
     <nav class="day-shortcuts" aria-label="當日快速導覽">
       <a href="#schedule">時間表</a><a href="#directions">地址與導航</a><a href="#day-preparation">訂票與提醒</a>
     </nav>
-
-    <dl class="journal-day-facts">
-      <div><dt>城市</dt><dd>${escapeHtml(day.city)}</dd></div>
-      <div><dt>強度</dt><dd>${escapeHtml(day.intensity)}</dd></div>
-      <div><dt>天氣參考</dt><dd>${escapeHtml(day.weather)}</dd></div>
-      <div><dt>類型</dt><dd>${escapeHtml(day.tag)}</dd></div>
-    </dl>
 
     <section class="section" id="schedule">
       <div class="section-heading"><span class="section-num">Schedule</span><h2>當日時間表</h2></div>
@@ -222,12 +223,15 @@ ${coverHtml}
       ${warnHtml}
     </section>
     ${constraintHtml}
+    ${dayMap ? renderInteractiveMap({ id: `map-day-${day.n}`, title: `Day ${day.n} 行程地圖`, mapData: dayMap, mapChecks, legend, note: dayMap.note }) : ''}
     ${renderOperation(operation)}
     ${eatHtml}
     ${extendHtml}
     ${backupHtml}
     ${practicalHtml}
     ${renderNightChecklist(operation)}
+    ${detailPhotoHtml}
+    ${renderPhotoGallery(dayGallery.length ? dayGallery : (city?.gallery || []).filter(photo => photo.days?.includes(day.n)), '沿途風景')}
     ${photoHtml}
 
     <nav class="section-heading" aria-label="每日行程翻頁">${previous}${next}</nav>`;
@@ -238,5 +242,6 @@ ${coverHtml}
     bodyHtml: bodyHtml.replace(/[ \t]+$/gm, ''),
     pageKind: 'day',
     currentPage: `day-${String(day.n).padStart(2, '0')}.html`,
+    extraHead: dayMap ? '<link rel="stylesheet" href="assets/leaflet/leaflet.css">' : '',
   });
 }

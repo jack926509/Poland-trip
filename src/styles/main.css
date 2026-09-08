@@ -12,6 +12,7 @@
   --line: #d4c6b3;
   --line-strong: #8e7e70;
   --red: #a33a32;
+  --poland-red: #c8102e;
   --yellow: #805819;
   --green: #356248;
   --plum-surface: #493747;
@@ -33,7 +34,7 @@
   --surface-legend: rgb(251 248 240 / 95%);
   --cover-rule: rgb(255 250 241 / 45%);
   --nav-scrim: rgb(44 37 34 / 42%);
-  --font-display: 'Playfair Display', 'Noto Sans TC', serif;
+  --font-display: 'Playfair Display', 'Noto Serif TC', serif;
   --font-body: 'Noto Sans TC', sans-serif;
   --font-mono: 'Inter', 'Noto Sans TC', sans-serif;
   --content-width: 1180px;
@@ -319,6 +320,10 @@ summary:focus-visible {
   background: var(--paper-deep);
 }
 
+.site-search-toggle {
+  display: none;
+}
+
 .site-search-inner {
   width: min(100%, var(--content-width));
   margin: 0 auto;
@@ -497,6 +502,11 @@ summary:focus-visible {
   font-size: 1rem;
   line-height: 1.45;
   overflow-wrap: anywhere;
+}
+
+.site-search-result-copy small {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
 }
 
 .site-search-result-copy > span {
@@ -746,6 +756,25 @@ nav.section-heading > a:last-child {
   align-items: center;
   font-size: 0.82rem;
   font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.route-stop > span,
+.route-stop > small {
+  display: block;
+}
+
+.route-stop > small {
+  margin-left: .45rem;
+  color: var(--ink-soft);
+  font-size: .75rem;
+  font-weight: 500;
+}
+
+.route-stop:hover,
+.route-stop:focus-visible {
+  color: var(--poland-red);
 }
 
 .route-stop:not(:last-child)::after {
@@ -811,7 +840,7 @@ nav.section-heading > a:last-child {
 .table-editorial th {
   color: var(--ink-soft);
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -835,7 +864,7 @@ nav.section-heading > a:last-child {
   padding: 0.14rem 0.48rem;
   border-radius: 2px;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   line-height: 1.5;
@@ -877,6 +906,117 @@ nav.section-heading > a:last-child {
   letter-spacing: 0.04em;
   line-height: 1.5;
 }
+
+.rail-ticket {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(1.2rem, 3vw, 2rem);
+  border: 1px solid var(--line-strong);
+  border-left: 6px solid var(--poland-red);
+  background: var(--paper-light);
+  box-shadow: var(--shadow-paper);
+}
+
+.rail-ticket::after {
+  position: absolute;
+  right: -1px;
+  bottom: 1.35rem;
+  left: 0;
+  border-bottom: 2px dashed var(--line);
+  content: '';
+}
+
+.rail-ticket-heading,
+.rail-ticket-route,
+.rail-ticket-facts {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.rail-ticket-heading h3 {
+  margin: .2rem 0 0;
+}
+
+.rail-statuses {
+  text-align: right;
+}
+
+.rail-ticket-route {
+  margin: 1.5rem 0;
+}
+
+.rail-ticket-route > span {
+  display: grid;
+  gap: .25rem;
+  min-width: 0;
+}
+
+.rail-ticket-route > span:last-child {
+  text-align: right;
+}
+
+.rail-ticket-route small {
+  color: var(--ink-soft);
+  font-size: .9rem;
+}
+
+.rail-ticket-route strong {
+  color: var(--plum);
+  font-family: var(--font-mono);
+  font-size: clamp(1.9rem, 5vw, 3.8rem);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.rail-ticket-route i {
+  flex: 1;
+  border-bottom: 2px solid var(--poland-red);
+  color: transparent;
+}
+
+.rail-ticket-facts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  padding: 1rem 0 2rem;
+  border-top: 1px solid var(--line);
+}
+
+.rail-ticket-facts div { min-width: 0; }
+.rail-ticket-facts dt { color: var(--ink-soft); font-size: .8rem; }
+.rail-ticket-facts dd { margin: .15rem 0 0; font-weight: 700; }
+.rail-ticket-note { position: relative; z-index: 1; margin: 0; padding-top: 1.35rem; font-size: .9rem; }
+.rail-ticket-access { position: relative; z-index: 1; margin: .75rem 0 0; padding: .75rem .9rem; border-left: 3px solid var(--poland-red); background: rgb(255 255 255 / 45%); font-size: .95rem; }
+.city-detail-photo { margin: 2rem 0; border: 1px solid var(--line); background: var(--paper-light); box-shadow: var(--shadow-paper); }
+.city-detail-photo img { display: block; width: 100%; max-height: 34rem; object-fit: cover; }
+.city-detail-photo figcaption { padding: .7rem 1rem; color: var(--ink-soft); font-family: var(--font-mono); font-size: .9rem; }
+.day-detail-photo { margin-top: 0; }
+
+.city-date-stamp {
+  display: inline-grid;
+  width: fit-content;
+  padding: .55rem .75rem;
+  border: 2px solid currentColor;
+  color: var(--poland-red);
+  line-height: 1.25;
+  transform: rotate(-1deg);
+}
+
+.city-date-stamp b,
+.city-date-stamp i {
+  font-style: normal;
+}
+
+.city-date-stamp i {
+  margin-top: .2rem;
+  color: inherit;
+  font-size: .78rem;
+  letter-spacing: .04em;
+}
+
+.mobile-quick-nav { display: none; }
 
 .status-verified {
   background: var(--surface-success);
@@ -1099,6 +1239,7 @@ nav.section-heading > a:last-child {
 }
 
 .callout-risk,
+.callout-reminder,
 .callout-note,
 .callout-good {
   margin: 1.5rem 0;
@@ -1112,6 +1253,16 @@ nav.section-heading > a:last-child {
   background: var(--surface-danger);
 }
 
+.callout-reminder {
+  border-color: var(--yellow);
+  background: var(--surface-warning);
+}
+
+.callout-reminder summary,
+.callout-risk summary {
+  cursor: pointer;
+}
+
 .callout-note {
   border-color: var(--accent);
   background: var(--surface-note);
@@ -1123,6 +1274,7 @@ nav.section-heading > a:last-child {
 }
 
 .callout-risk > :last-child,
+.callout-reminder > :last-child,
 .callout-note > :last-child,
 .callout-good > :last-child {
   margin-bottom: 0;
@@ -1217,6 +1369,9 @@ nav.section-heading > a:last-child {
 }
 
 .map-container {
+  isolation: isolate;
+  position: relative;
+  z-index: 0;
   width: 100%;
   height: 520px;
   margin: 1.5rem 0;
@@ -1225,6 +1380,29 @@ nav.section-heading > a:last-child {
   box-shadow: var(--shadow-paper);
   touch-action: pan-y !important;
 }
+
+/* Keep Leaflet's internal panes interactive without letting their global z-index cover sticky navigation. */
+.map-container .leaflet-pane { z-index: 1; }
+.map-container .leaflet-tile-pane { z-index: 1; }
+.map-container .leaflet-overlay-pane { z-index: 2; }
+.map-container .leaflet-shadow-pane { z-index: 3; }
+.map-container .leaflet-marker-pane { z-index: 4; }
+.map-container .leaflet-tooltip-pane { z-index: 5; }
+.map-container .leaflet-popup-pane { z-index: 6; }
+.map-container .leaflet-control { z-index: 7; }
+
+.map-unlocated { margin-top: 1rem; padding: 1rem; border: 1px solid var(--line); background: var(--paper-light); }
+.map-unlocated ul { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; margin: .65rem 0; padding-left: 1.25rem; }
+.map-unlocated p { margin: 0; color: var(--ink-soft); font-size: .9rem; }
+.photo-spot-grid,
+.photo-gallery-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+.photo-gallery-card { margin: 0; border: 1px solid var(--line); background: var(--paper-light); box-shadow: var(--shadow-paper); }
+.photo-gallery-card img { display: block; width: 100%; height: auto; }
+.photo-gallery-card figcaption { padding: 1rem; }
+.photo-gallery-card h3,
+.photo-gallery-card p { margin-top: 0; }
+.photo-gallery-card small { color: var(--ink-soft); }
+.photo-gallery-portrait img { object-fit: contain; background: var(--paper-deep); }
 
 .map-caption {
   margin-top: -0.75rem;
@@ -1888,6 +2066,10 @@ figure.media-unavailable > img {
 }
 
 @media (max-width: 700px) {
+  .photo-spot-grid,
+  .photo-gallery-grid { grid-template-columns: 1fr; }
+  .map-unlocated ul { display: block; }
+  .map-unlocated li + li { margin-top: .55rem; }
   .nav {
     position: relative;
     z-index: 100;
@@ -1920,6 +2102,21 @@ figure.media-unavailable > img {
   .site-search-inner {
     padding: 0.9rem 1.25rem 1rem;
   }
+
+  .site-search-shell:not([open]) .site-search-inner { display: none; }
+
+  .site-search-toggle {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: .65rem 1.25rem;
+    color: var(--plum);
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .site-search-toggle::after { margin-left: auto; content: '＋'; }
+  .site-search-shell[open] .site-search-toggle::after { content: '－'; }
 
   .site-search-form-row {
     grid-template-columns: 1fr;
@@ -1970,6 +2167,7 @@ figure.media-unavailable > img {
 
   .page {
     padding-top: 2.5rem;
+    padding-bottom: 6rem;
   }
 
   h1 {
@@ -2112,6 +2310,40 @@ figure.media-unavailable > img {
   .journal-day-facts > div:nth-child(-n + 2) {
     border-bottom: 1px solid var(--line);
   }
+
+  .rail-ticket-heading,
+  .rail-ticket-route { align-items: flex-start; }
+  .rail-ticket-heading { flex-direction: column; }
+  .rail-statuses { text-align: left; }
+  .rail-ticket-route strong { font-size: clamp(1.65rem, 10vw, 2.7rem); }
+  .rail-ticket-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .9rem; }
+
+  .mobile-quick-nav {
+    position: fixed;
+    z-index: 900;
+    right: .75rem;
+    bottom: max(.75rem, env(safe-area-inset-bottom));
+    left: .75rem;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    padding: .35rem;
+    border: 1px solid rgb(255 255 255 / 24%);
+    border-radius: 14px;
+    background: rgb(44 37 34 / 96%);
+    box-shadow: 0 12px 30px rgb(44 37 34 / 24%);
+  }
+
+  .mobile-quick-nav a {
+    display: grid;
+    place-items: center;
+    min-height: 52px;
+    color: var(--paper-light);
+    font-size: .875rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .mobile-quick-nav a span { color: #fff; font-size: 1rem; }
 
   .journal-appendix-header {
     margin-bottom: 3rem;

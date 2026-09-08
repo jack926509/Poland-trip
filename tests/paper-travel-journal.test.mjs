@@ -23,6 +23,13 @@ test('長頁保留章節索引、目前頁面與目前導覽群組標示', () =>
   assert.match(day, /<summary aria-current="true">每日行程<\/summary>/);
 });
 
+test('手機快捷導覽在分頁存在一次，單檔版也只保留一份', () => {
+  assert.equal((read('day-04.html').match(/class="mobile-quick-nav"/g) || []).length, 0);
+  const standalone = fs.readFileSync(path.resolve('poland-travel-guide-2026.html'), 'utf8');
+  assert.equal((standalone.match(/class="mobile-quick-nav"/g) || []).length, 1);
+  assert.match(standalone, /href="#page-practical-booking--rail-itinerary"/);
+});
+
 test('頁面保留深色模式中繼設定與非阻斷字型載入', () => {
   const home = read('index.html');
   assert.match(home, /<meta name="color-scheme" content="light">/);
@@ -59,7 +66,8 @@ test('每日頁有城市攝影章節且保留現場操作資訊', () => {
   assert.match(day, /<body class="journal-site journal-day">/);
   assert.match(day, /class="journal-day-cover"/);
   assert.match(day, /src="assets\/photos\/krakow-hero\.webp"/);
-  assert.match(day, /class="journal-day-facts"/);
+  assert.doesNotMatch(day, /class="journal-day-facts"/);
+  assert.match(day, /data-trip-map/);
   assert.match(day, /class="table-editorial table-schedule"/);
   assert.match(day, /class="section operation-section"/);
 });

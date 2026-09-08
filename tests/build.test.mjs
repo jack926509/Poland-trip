@@ -608,9 +608,9 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.equal(cities.length, 4);
   assert.equal(cityStories.length, 4);
   assert.equal(photoSpots.length, 10);
-  assert.equal(photoCredits.length, 8);
+  assert.equal(photoCredits.length, 20);
   assert.deepEqual(Object.fromEntries(Object.entries(mapPins).map(([city, data]) => [city, data.points.length])), {
-    warsaw: 17, krakow: 20, wroclaw: 10, poznan: 9,
+    warsaw: 16, krakow: 19, wroclaw: 9, poznan: 8,
   });
   assert.deepEqual(Object.fromEntries(Object.entries(attractions).map(([city, items]) => [city, items.length])), {
     warsaw: 12, krakow: 6, wroclaw: 8, poznan: 9,
@@ -651,7 +651,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
 
 test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', () => {
   const allPins = Object.entries(mapPins).flatMap(([city, data]) => data.points.map((point) => ({city, name:point[2]})));
-  assert.equal(allPins.length, 56);
+  assert.equal(allPins.length, 52);
   for (const pin of allPins) {
     assert.ok(mapPinChecks[pin.city]?.[pin.name], `${pin.city}/${pin.name} 缺少圖釘查證狀態`);
   }
@@ -663,18 +663,14 @@ test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', ()
     status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:448, corrected:true,
   });
   const verifiedPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'coordinate-verified');
-  const unverifiedPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'unverified');
+  const areaPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'area-reference');
   assert.equal(verifiedPins.length, 49);
   assert.deepEqual(
-    unverifiedPins.map(({name}) => name).sort(),
+    areaPins.map(({name}) => name).sort(),
     [
       '中央市集廣場',
       'Kazimierz 猶太區',
       '大教堂島 Ostrów Tumski',
-      'Żabka（Rynek）',
-      'Żabka（Stary Rynek）',
-      'Żabka（舊城區）',
-      'Żabka（Rynek Główny）',
     ].sort(),
   );
 });
@@ -874,7 +870,7 @@ test('Day 8 退稅與報到已合併，不再出現獨立 11:30 時段', () => {
   assert.ok(main.includes('退稅') && main.includes('報到'), 'Day 8 缺少合併後的退稅／報到內容');
 });
 
-test('5 筆已確認住宿皆出現在對應城市地圖，Piast 保留門牌待確認提示', () => {
+test('5 筆已確認住宿皆出現在對應城市地圖，Piast 使用已核對門牌', () => {
   const hotelPins = Object.values(mapPins)
     .flatMap(city => city.points)
     .filter(point => point[5] === 'hotel');
@@ -887,15 +883,15 @@ test('5 筆已確認住宿皆出現在對應城市地圖，Piast 保留門牌待
     'Piast',
     'Poznan Apartments Towarowa',
   ]);
-  assert.match(hotelPins.find(point => point[2] === 'Piast')?.[3] ?? '', /完整門牌待飯店第一方確認/);
+  assert.match(hotelPins.find(point => point[2] === 'Piast')?.[3] ?? '', /Piłsudskiego 98/);
 });
 
-test('4 個城市頁含正確 Leaflet 圖釘數，合計 56', () => {
+test('4 個城市頁含正確 Leaflet 圖釘數，合計 52', () => {
   const expected = {
-    'city-warszawa.html': 17,
-    'city-krakow.html': 20,
-    'city-wroclaw.html': 10,
-    'city-poznan.html': 9,
+    'city-warszawa.html': 16,
+    'city-krakow.html': 19,
+    'city-wroclaw.html': 9,
+    'city-poznan.html': 8,
   };
   let total = 0;
   for (const [file, count] of Object.entries(expected)) {
@@ -910,7 +906,7 @@ test('4 個城市頁含正確 Leaflet 圖釘數，合計 56', () => {
     assert.equal(points, count, `${file} 圖釘數錯誤`);
     total += points;
   }
-  assert.equal(total, 56);
+  assert.equal(total, 52);
 });
 
 test('城市頁完整呈現故事、景點、主餐廳、備案與拍照資訊', () => {
@@ -1196,4 +1192,28 @@ test('每頁都註冊 service worker，且 sw.js 一起輸出到站台根目錄'
   assert.ok(fs.existsSync(path.join(distDir, 'sw.js')), 'dist/sw.js 未輸出');
   assert.ok(fs.existsSync(path.join(distDir, 'assets/leaflet/leaflet.js')), 'dist 缺少本地 Leaflet');
   assert.ok(fs.existsSync(path.join(distDir, 'assets/leaflet/leaflet.css')), 'dist 缺少本地 Leaflet CSS');
+});
+test('8 個每日頁都有獨立行程地圖、單點導航與未定位提示', () => {
+  for (let day = 1; day <= 8; day += 1) {
+    const file = `day-${String(day).padStart(2, '0')}.html`;
+    const html = read(file);
+    assert.match(html, new RegExp(`id="map-day-${day}"`), `${file} 缺少每日地圖`);
+    assert.match(html, /data-trip-map/, `${file} 缺少穩定地圖 selector`);
+    assert.match(html, /assets\/leaflet\/leaflet\.css/, `${file} 缺少 Leaflet CSS`);
+    assert.match(html, /Google Maps/, `${file} 缺少導航連結`);
+    assert.match(html, /已查證行程錨點|跨城區域概覽/, `${file} 缺少座標精度界線`);
+    assert.doesNotMatch(html, /L\.polyline|routingControl|travelmode=walking[^"<]*map-day/, `${file} 不應把直線當成步行路線`);
+  }
+});
+
+test('Day 5 樂斯拉夫大教堂島保留範圍代表點標示', () => {
+  const html = read('day-05.html');
+  const config = JSON.parse(html.match(/<script type="application\/json" data-map-config>(.*?)<\/script>/s)[1]);
+  assert.equal(config.mapChecks['大教堂島 Ostrów Tumski'].status, 'area-reference');
+});
+
+test('所有拍照建議都有城市限定的 Google Maps 搜尋連結', () => {
+  const pages = Array.from({ length: 8 }, (_, index) => read(`day-${String(index + 1).padStart(2, '0')}.html`)).join('\n');
+  const suggestions = (pages.match(/<span class="eyebrow">[^<]+<\/span>\s*<h3>[^<]+<\/h3>\s*<p>[^<]+<\/p>\s*<p><a href="https:\/\/www\.google\.com\/maps\/search\/\?api=1&amp;query=[^"]+Poland"/g) || []);
+  assert.equal(suggestions.length, 9);
 });
