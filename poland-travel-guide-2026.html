@@ -3137,6 +3137,1122 @@ a[href^="tel:"]:focus-visible {
   }
 }
 
+/* ============================================================
+   2026-09-08 UX/UI 第三輪：旅行誌視覺升級（Edition 03）
+   目標：維持「紙本旅行誌」語彙（紙色 #f4eddf、墨紫 #493747、淺色單一主題），
+   但把版面從「線框 + 平面色塊」升級為有材質、有層次、有節奏的雜誌感。
+   1. 加入紙紋、暖色光暈與陰影階層，卡片不再只有 1px 邊框。
+   2. 章節標題、目錄、城市章節、時間表重新編排，強化閱讀動線。
+   3. 所有互動元件補上一致的圓角、hover 位移與焦點樣式；
+      動效一律包在 prefers-reduced-motion: no-preference 內。
+   ============================================================ */
+
+:root {
+  /* 材質與層次 */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --shadow-1: 0 1px 2px rgb(60 45 34 / 6%), 0 2px 8px rgb(60 45 34 / 5%);
+  --shadow-2: 0 2px 4px rgb(60 45 34 / 6%), 0 10px 24px rgb(60 45 34 / 9%);
+  --shadow-3: 0 4px 10px rgb(60 45 34 / 8%), 0 22px 48px rgb(60 45 34 / 14%);
+  --shadow-inset-top: inset 0 1px 0 rgb(255 255 255 / 70%);
+  --ease: cubic-bezier(0.32, 0.72, 0.28, 1);
+
+  /* 補充色：金箔用於次要強調，避免整站只有磚紅一種重點色 */
+  --gold: #a9803a;
+  --gold-pale: #f0e3c8;
+  --plum-deep: #322436;
+  --ink-faint: #8d8078;
+
+  /* 紙紋：極輕的顆粒，讓大面積底色不死板 */
+  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+}
+
+body {
+  position: relative;
+  background:
+    radial-gradient(120% 60% at 12% -8%, rgb(255 252 245 / 92%), rgb(255 252 245 / 0) 62%),
+    radial-gradient(90% 55% at 100% 0%, rgb(240 227 200 / 55%), rgb(240 227 200 / 0) 60%),
+    var(--paper);
+  background-attachment: fixed;
+}
+
+body::before {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  background-image: var(--paper-grain);
+  content: '';
+  opacity: 0.035;
+  pointer-events: none;
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+::selection {
+  background: var(--accent-pale);
+  color: var(--accent-dark);
+}
+
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-xs);
+}
+
+/* --- 刊頭：半透明玻璃感 + 底部細金線 --- */
+.nav {
+  min-height: 76px;
+  padding-inline: clamp(1rem, 4vw, 3.25rem);
+  border-bottom: 1px solid rgb(142 126 112 / 26%);
+  background: rgb(248 242 231 / 88%);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 55%), 0 10px 30px rgb(60 45 34 / 5%);
+  backdrop-filter: saturate(1.25) blur(14px);
+}
+
+.nav::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--gold) 38%, rgb(169 128 58 / 0) 72%);
+  content: '';
+  opacity: 0.55;
+}
+
+.nav-brand {
+  position: relative;
+  gap: 0.15rem;
+  padding-left: 1.4rem;
+}
+
+.nav-brand::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 5px;
+  height: 2.1rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--poland-red), var(--accent-dark));
+  content: '';
+  transform: translateY(-50%);
+}
+
+.nav-brand small {
+  color: var(--ink-faint);
+  letter-spacing: 0.16em;
+}
+
+.journal-edition {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid rgb(142 126 112 / 35%);
+  border-radius: 999px;
+  color: var(--plum-soft);
+  letter-spacing: 0.1em;
+}
+
+.nav > a,
+.nav-dropdown > summary {
+  border-radius: 999px;
+  transition: background-color 180ms var(--ease), color 180ms var(--ease);
+}
+
+.nav > a:hover,
+.nav-dropdown > summary:hover,
+.nav-dropdown > summary:focus-visible,
+.nav-dropdown-current > summary {
+  background: rgb(168 75 50 / 9%);
+  color: var(--accent-dark);
+}
+
+.nav-dropdown > ul {
+  padding: 0.5rem;
+  border: 1px solid rgb(142 126 112 / 30%);
+  border-radius: var(--radius-md);
+  background: var(--paper-light);
+  box-shadow: var(--shadow-3);
+}
+
+.nav-dropdown > ul a {
+  border-radius: var(--radius-sm);
+}
+
+/* --- 全站搜尋：浮在紙面上的一張卡 --- */
+.site-search-shell {
+  border-bottom: 1px solid rgb(142 126 112 / 20%);
+  background: linear-gradient(180deg, rgb(233 222 201 / 75%), rgb(244 237 223 / 40%));
+}
+
+.site-search-input-row {
+  border: 1px solid rgb(142 126 112 / 38%);
+  border-radius: 999px;
+  background: var(--paper-light);
+  box-shadow: var(--shadow-1);
+  transition: box-shadow 180ms var(--ease), border-color 180ms var(--ease);
+}
+
+.site-search-input-row:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--focus-ring-soft), var(--shadow-2);
+}
+
+.site-search-quick-row button,
+.db-chip,
+.btn-ghost {
+  border-radius: 999px;
+  transition: background-color 160ms var(--ease), color 160ms var(--ease),
+    border-color 160ms var(--ease), transform 160ms var(--ease);
+}
+
+.site-search-quick-row button:hover,
+.db-chip:hover,
+.btn-ghost:hover {
+  transform: translateY(-1px);
+}
+
+.site-search-result-main,
+.site-search-map-link,
+.site-search-empty {
+  border-radius: var(--radius-md);
+}
+
+/* --- 章節標題：襯線大標 + 編號戳章 + 延伸細線 --- */
+.section-heading {
+  position: relative;
+  grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+  align-items: end;
+  padding-bottom: 1rem;
+  border-bottom: 0;
+}
+
+.section-heading::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--ink) 0%, rgb(142 126 112 / 45%) 22%, rgb(142 126 112 / 12%) 100%);
+  content: '';
+}
+
+.section-heading .section-num {
+  align-self: end;
+  margin-bottom: 0.55rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 2px solid var(--accent);
+  color: var(--accent-dark);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+}
+
+.section-heading h2 {
+  letter-spacing: -0.03em;
+}
+
+nav.section-heading {
+  margin-top: 4rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgb(142 126 112 / 30%);
+}
+
+nav.section-heading::after {
+  content: none;
+}
+
+nav.section-heading > a {
+  padding-inline: 1rem;
+  border: 1px solid rgb(142 126 112 / 40%);
+  border-radius: 999px;
+  background: var(--paper-light);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 160ms var(--ease), border-color 160ms var(--ease), transform 160ms var(--ease);
+}
+
+nav.section-heading > a:hover {
+  border-color: var(--accent);
+  background: var(--accent-pale);
+  transform: translateY(-1px);
+}
+
+/* --- 卡片：紙張質感、頂部高光、hover 微浮起 --- */
+.card,
+.journal-note-card,
+.journal-flight,
+.database-card,
+.chapter-index {
+  border: 1px solid rgb(142 126 112 / 26%);
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, rgb(255 253 248 / 96%), rgb(253 248 238 / 88%));
+  box-shadow: var(--shadow-1), var(--shadow-inset-top);
+}
+
+.card {
+  padding: 1.5rem 1.6rem;
+}
+
+.card-accent {
+  border-top: 1px solid rgb(142 126 112 / 26%);
+  overflow: hidden;
+}
+
+.card-accent::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  content: '';
+}
+
+.card-link {
+  border-radius: var(--radius-md);
+  transition: border-color 200ms var(--ease), transform 200ms var(--ease), box-shadow 200ms var(--ease);
+}
+
+.card-link:hover {
+  border-color: rgb(168 75 50 / 45%);
+  box-shadow: var(--shadow-3);
+  transform: translateY(-4px);
+}
+
+.card-link > span {
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* --- 標籤：小圓點 + 圓角膠囊 --- */
+.tag-red,
+.tag-yellow,
+.tag-todo,
+.tag-muted,
+.status-verified,
+.status-recheck,
+.status-pending,
+.status-private {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  line-height: 1.5;
+}
+
+.tag-red::before,
+.tag-yellow::before,
+.tag-todo::before,
+.tag-muted::before {
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 999px;
+  background: currentcolor;
+  content: '';
+  opacity: 0.75;
+}
+
+/* --- 提示框：左側色條 + 圖示 --- */
+.callout-risk,
+.callout-reminder,
+.callout-note,
+.callout-good {
+  position: relative;
+  padding: 1.25rem 1.4rem 1.25rem 3.1rem;
+  border: 1px solid rgb(142 126 112 / 22%);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-1);
+}
+
+.callout-risk::before,
+.callout-reminder::before,
+.callout-note::before,
+.callout-good::before {
+  position: absolute;
+  top: 1.15rem;
+  left: 1.15rem;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.callout-risk {
+  border-left-color: var(--red);
+}
+
+.callout-risk::before {
+  color: var(--red);
+  content: '!';
+}
+
+.callout-reminder {
+  border-left-color: var(--yellow);
+}
+
+.callout-reminder::before {
+  color: var(--yellow);
+  content: '★';
+}
+
+.callout-note {
+  border-left-color: var(--plum-soft);
+}
+
+.callout-note::before {
+  color: var(--plum-soft);
+  content: '›';
+}
+
+.callout-good {
+  border-left-color: var(--green);
+}
+
+.callout-good::before {
+  color: var(--green);
+  content: '✓';
+}
+
+/* --- 表格：加圓角框、斑馬紋與 hover 指示條 --- */
+.table-wrap {
+  border-top: 0;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-1);
+}
+
+.table-editorial {
+  border-radius: var(--radius-md);
+  background: rgb(255 253 248 / 72%);
+  overflow: hidden;
+}
+
+.table-editorial thead th {
+  border-bottom: 2px solid rgb(73 55 71 / 55%);
+  background: rgb(233 222 201 / 70%);
+  color: var(--plum);
+  font-weight: 700;
+}
+
+.table-editorial tbody tr {
+  transition: background-color 140ms var(--ease);
+}
+
+.table-editorial tbody tr:nth-child(even) {
+  background: rgb(233 222 201 / 26%);
+}
+
+.table-editorial tbody tr:hover {
+  background: var(--accent-pale);
+}
+
+/* --- 當日時間表：左側時間軌（手機改為卡片版，不畫軌道，
+       否則 td::before 會蓋掉 data-label 帶出的欄名）--- */
+@media (min-width: 701px) {
+  .table-schedule tbody td:first-child {
+    position: relative;
+    padding-left: 2.4rem;
+    color: var(--accent-dark);
+    font-weight: 700;
+  }
+
+  .table-schedule tbody td:first-child::before {
+    position: absolute;
+    top: 1.15rem;
+    left: 0.95rem;
+    width: 9px;
+    height: 9px;
+    border: 2px solid var(--accent);
+    border-radius: 999px;
+    background: var(--paper-light);
+    content: '';
+  }
+
+  .table-schedule tbody td:first-child::after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(0.95rem + 5px);
+    width: 3px;
+    border-radius: 999px;
+    background: rgb(168 75 50 / 22%);
+    content: '';
+  }
+
+  .table-schedule tbody tr:first-child td:first-child::after {
+    top: 1.15rem;
+  }
+
+  .table-schedule tbody tr:last-child td:first-child::after {
+    bottom: calc(100% - 1.6rem);
+  }
+}
+
+/* --- 封面（首頁 / 每日 / 城市）：圓角、漸層墨紫、照片壓暗 --- */
+.journal-cover,
+.journal-day-header,
+.journal-city-cover {
+  border: 0;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-3);
+  overflow: hidden;
+}
+
+.journal-cover-copy,
+.journal-day-heading {
+  position: relative;
+  background:
+    radial-gradient(120% 90% at 0% 0%, rgb(115 92 112 / 55%), rgb(115 92 112 / 0) 58%),
+    linear-gradient(165deg, var(--plum) 0%, var(--plum-deep) 100%);
+}
+
+.journal-cover-copy::after,
+.journal-day-heading::after {
+  position: absolute;
+  inset: 1rem;
+  border: 1px solid rgb(240 227 200 / 16%);
+  border-radius: var(--radius-md);
+  content: '';
+  pointer-events: none;
+}
+
+.journal-kicker,
+.journal-day-heading .section-num {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid rgb(240 227 200 / 30%);
+  border-radius: 999px;
+  color: var(--gold-pale);
+  letter-spacing: 0.14em;
+}
+
+.journal-day-heading .section-num {
+  margin-bottom: 0;
+  border-bottom: 1px solid rgb(240 227 200 / 30%);
+}
+
+.journal-cover h1 {
+  background: linear-gradient(180deg, #fffaf1 20%, #e6d7bb 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.journal-cover-route {
+  position: relative;
+  padding-top: 1.5rem;
+}
+
+.journal-cover-route::before {
+  position: absolute;
+  top: 0.5rem;
+  left: 0;
+  width: 3.5rem;
+  height: 2px;
+  background: var(--gold);
+  content: '';
+}
+
+.journal-cover-figure,
+.journal-day-cover,
+.journal-city-cover figure {
+  background: var(--plum-deep);
+}
+
+.journal-cover-figure::after,
+.journal-day-cover::after,
+.journal-city-cover figure::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(190deg, rgb(50 36 54 / 22%) 0%, rgb(50 36 54 / 0) 38%, rgb(50 36 54 / 34%) 100%);
+  content: '';
+  pointer-events: none;
+}
+
+.journal-cover-figure figcaption,
+.journal-day-cover figcaption,
+.journal-city-cover figcaption {
+  border-radius: 999px;
+  background: rgb(50 36 54 / 62%);
+  color: var(--paper-light);
+  backdrop-filter: blur(8px);
+  letter-spacing: 0.02em;
+}
+
+/* --- 準備狀態列：改為可點的統計磚 --- */
+.journal-status-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  border: 0;
+}
+
+.journal-status-strip > * {
+  align-content: center;
+  gap: 0.3rem;
+  padding: 1.1rem 1.2rem;
+  border: 1px solid rgb(142 126 112 / 24%);
+  border-radius: var(--radius-md);
+  background: linear-gradient(180deg, rgb(255 253 248 / 95%), rgb(250 243 231 / 80%));
+  box-shadow: var(--shadow-1), var(--shadow-inset-top);
+  transition: transform 180ms var(--ease), box-shadow 180ms var(--ease), border-color 180ms var(--ease);
+}
+
+.journal-status-strip > *:first-child {
+  border-color: rgb(168 75 50 / 40%);
+  background: linear-gradient(180deg, var(--accent-pale), rgb(243 223 213 / 55%));
+}
+
+.journal-status-strip strong {
+  font-size: 2rem;
+  letter-spacing: -0.02em;
+}
+
+.journal-status-strip span span,
+.journal-status-strip a span {
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.journal-status-strip a:hover,
+.journal-status-strip a:focus-visible {
+  border-color: var(--accent);
+  background: linear-gradient(180deg, var(--accent-pale), rgb(243 223 213 / 70%));
+  box-shadow: var(--shadow-2);
+  transform: translateY(-3px);
+}
+
+/* --- 旅程路線：站點做成膠囊 --- */
+.route-strip {
+  padding: 0.9rem 1rem;
+  border: 1px solid rgb(142 126 112 / 22%);
+  border-radius: 999px;
+  background: rgb(255 253 248 / 62%);
+}
+
+.route-stop {
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: rgb(73 55 71 / 8%);
+  color: var(--plum);
+}
+
+/* --- 八日目錄：翻頁式列表 --- */
+.journal-itinerary {
+  border-top: 0;
+}
+
+.journal-day-entry {
+  border-bottom: 1px solid rgb(142 126 112 / 24%);
+}
+
+.journal-day-entry > a {
+  position: relative;
+  border-radius: var(--radius-md);
+  transition: background-color 180ms var(--ease), transform 180ms var(--ease);
+}
+
+.journal-day-entry > a::before {
+  position: absolute;
+  top: 0.75rem;
+  bottom: 0.75rem;
+  left: 0;
+  width: 3px;
+  border-radius: 999px;
+  background: var(--accent);
+  content: '';
+  opacity: 0;
+  transition: opacity 180ms var(--ease);
+}
+
+.journal-day-entry > a:hover,
+.journal-day-entry > a:focus-visible {
+  background: linear-gradient(90deg, rgb(255 253 248 / 95%), rgb(255 253 248 / 55%));
+  transform: translateX(6px);
+}
+
+.journal-day-entry > a:hover::before,
+.journal-day-entry > a:focus-visible::before {
+  opacity: 1;
+}
+
+.journal-day-number {
+  display: inline-grid;
+  place-items: center;
+  width: 3.1rem;
+  height: 3.1rem;
+  border: 1px solid rgb(73 55 71 / 25%);
+  border-radius: 999px;
+  background: rgb(73 55 71 / 6%);
+  font-size: 1.5rem;
+}
+
+.journal-day-copy b {
+  font-size: 1.28rem;
+  letter-spacing: -0.01em;
+}
+
+/* --- 四城章節：整張照片卡 + 漸層字幕 --- */
+.journal-city-card {
+  border: 0;
+  border-radius: var(--radius-lg);
+  background: var(--plum-deep);
+  box-shadow: var(--shadow-2);
+  overflow: hidden;
+}
+
+.journal-city-card > a {
+  position: relative;
+  display: block;
+  min-height: 20rem;
+  color: var(--paper-light);
+}
+
+.journal-city-card figure {
+  position: absolute;
+  inset: 0;
+}
+
+.journal-city-card img {
+  transition: transform 600ms var(--ease);
+}
+
+.journal-city-card > a::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(50 36 54 / 12%) 0%, rgb(50 36 54 / 52%) 48%, rgb(38 27 40 / 93%) 100%);
+  content: '';
+}
+
+.journal-city-card figcaption {
+  z-index: 2;
+  border-radius: 999px;
+  background: rgb(50 36 54 / 58%);
+  color: var(--gold-pale);
+  letter-spacing: 0.1em;
+  backdrop-filter: blur(8px);
+}
+
+.journal-city-card > a > div {
+  position: relative;
+  z-index: 2;
+  gap: 0.35rem;
+  min-height: 20rem;
+  padding: 1.75rem;
+}
+
+.journal-city-card h3 {
+  font-size: clamp(1.6rem, 2.6vw, 2.15rem);
+}
+
+.journal-city-card p {
+  margin-bottom: 0.9rem;
+  color: rgb(244 237 223 / 88%);
+}
+
+.journal-city-card span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  align-self: flex-start;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid rgb(240 227 200 / 40%);
+  border-radius: 999px;
+  margin-top: 0.65rem;
+  color: var(--paper-light);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  transition: background-color 180ms var(--ease), border-color 180ms var(--ease);
+}
+
+.journal-city-card > a:hover,
+.journal-city-card > a:focus-visible {
+  background: transparent;
+}
+
+.journal-city-card > a:hover img,
+.journal-city-card > a:focus-visible img {
+  transform: scale(1.05);
+}
+
+.journal-city-card > a:hover span,
+.journal-city-card > a:focus-visible span {
+  border-color: var(--gold-pale);
+  background: rgb(240 227 200 / 18%);
+}
+
+/* --- 待辦與航班卡：頂部漸層條 --- */
+.journal-note-card,
+.journal-flight {
+  position: relative;
+  padding: 1.6rem;
+  border-top: 1px solid rgb(142 126 112 / 26%);
+  overflow: hidden;
+}
+
+.journal-note-card::before,
+.journal-flight::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--plum), var(--plum-soft));
+  content: '';
+}
+
+.journal-flight::before {
+  background: linear-gradient(90deg, var(--poland-red), var(--accent));
+}
+
+.journal-flight h3 {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+}
+
+/* --- 附錄工具箱：卡片配序號 --- */
+.journal-toolkit .card {
+  display: flex;
+  flex-direction: column;
+  min-height: 12rem;
+}
+
+.journal-toolkit .card h3 {
+  font-size: 1.35rem;
+}
+
+.journal-toolkit .card p {
+  color: var(--ink-soft);
+}
+
+.journal-toolkit .card span {
+  margin-top: auto;
+}
+
+/* --- 附錄刊頭 --- */
+.journal-appendix-header {
+  padding-block: 3rem 2.25rem;
+  border-block-color: rgb(142 126 112 / 30%);
+}
+
+/* --- 本頁章節索引 --- */
+.chapter-index {
+  padding: 1rem 1.15rem;
+}
+
+.chapter-index ol a {
+  border-radius: 999px;
+}
+
+/* --- 日期捷徑與當日捷徑：分段控制器 --- */
+.trip-day-picker,
+.day-shortcuts {
+  gap: 0.5rem;
+}
+
+.trip-day-picker a,
+.day-shortcuts a {
+  border: 1px solid rgb(142 126 112 / 30%);
+  border-radius: var(--radius-md);
+  background: rgb(255 253 248 / 78%);
+  box-shadow: var(--shadow-1);
+  transition: background-color 160ms var(--ease), border-color 160ms var(--ease),
+    transform 160ms var(--ease), box-shadow 160ms var(--ease);
+}
+
+.trip-day-picker a:hover,
+.day-shortcuts a:hover {
+  box-shadow: var(--shadow-2);
+  transform: translateY(-2px);
+}
+
+.day-shortcuts a {
+  border-radius: 999px;
+}
+
+/* --- 地圖 --- */
+.map-container {
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-1);
+}
+
+.map-toolbar button {
+  border-radius: 999px;
+}
+
+.map-legend {
+  border-radius: var(--radius-md);
+}
+
+/* --- 圖片：統一圓角 --- */
+.city-detail-photo img,
+.photo-gallery-card img {
+  border-radius: var(--radius-md);
+}
+
+/* --- 頁尾 --- */
+.footer {
+  border-top: 1px solid rgb(142 126 112 / 30%);
+  background: linear-gradient(180deg, rgb(233 222 201 / 70%), rgb(226 213 189 / 90%));
+}
+
+/* --- 回頂端 --- */
+.to-top {
+  border-color: rgb(142 126 112 / 40%);
+  box-shadow: var(--shadow-3);
+  transition: transform 160ms var(--ease), background-color 160ms var(--ease);
+}
+
+.to-top:hover {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 920px) {
+  .journal-status-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .journal-status-strip > *:first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 700px) {
+  .nav {
+    background: rgb(248 242 231 / 96%);
+  }
+
+  .section-heading {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.35rem;
+  }
+
+  .card {
+    padding: 1.15rem 1.15rem;
+  }
+
+  .journal-city-card > a,
+  .journal-city-card > a > div {
+    min-height: 17rem;
+  }
+
+  .journal-day-number {
+    align-self: start;
+    width: 2.6rem;
+    height: 2.6rem;
+    margin-top: 0.15rem;
+    font-size: 1.2rem;
+  }
+
+  .journal-status-strip {
+    gap: 0.6rem;
+  }
+
+  .journal-status-strip strong {
+    font-size: 1.6rem;
+  }
+
+  .callout-risk,
+  .callout-reminder,
+  .callout-note,
+  .callout-good {
+    padding-left: 2.75rem;
+  }
+}
+
+@media print {
+  body::before,
+  .journal-city-card > a::after {
+    display: none;
+  }
+}
+
+/* --- Edition 03 續：現場操作元件 --- */
+
+/* 當日捷徑固定在刊頭下方，長頁面隨時可跳章節 */
+.day-shortcuts {
+  position: sticky;
+  z-index: 60;
+  top: 0;
+  margin-inline: calc(clamp(0.5rem, 2vw, 1.25rem) * -1);
+  padding: 0.6rem clamp(0.5rem, 2vw, 1.25rem);
+  border-radius: var(--radius-lg);
+  background: rgb(248 242 231 / 92%);
+  backdrop-filter: blur(10px);
+}
+
+@media (min-width: 701px) {
+  .day-shortcuts {
+    top: 76px;
+  }
+}
+
+/* 地址簿與移動步驟：導航連結做成可按的小膠囊 */
+.operation-address a,
+.photo-spot-grid .card a {
+  padding: 0.25rem 0.75rem;
+  border: 1px solid rgb(142 126 112 / 40%);
+  border-radius: 999px;
+  background: var(--paper-light);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 160ms var(--ease), border-color 160ms var(--ease);
+}
+
+.operation-address a:hover,
+.photo-spot-grid .card a:hover {
+  border-color: var(--accent);
+  background: var(--accent-pale);
+}
+
+.operation-address,
+.operation-routes li,
+.night-checks li {
+  border-bottom-color: rgb(142 126 112 / 22%);
+}
+
+.operation-routes {
+  counter-reset: route-step;
+}
+
+.operation-routes li {
+  position: relative;
+  padding-left: 2.4rem;
+  counter-increment: route-step;
+}
+
+.operation-routes li::before {
+  position: absolute;
+  top: 1rem;
+  left: 0;
+  display: grid;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 1px solid rgb(73 55 71 / 30%);
+  border-radius: 999px;
+  background: rgb(73 55 71 / 7%);
+  color: var(--plum);
+  content: counter(route-step);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  place-items: center;
+}
+
+.operation-mode {
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  background: var(--plum);
+}
+
+.night-checks li::before {
+  border: 1.5px solid var(--line-strong);
+  border-radius: var(--radius-xs);
+  background: var(--paper-light);
+}
+
+/* 火車票券卡 */
+.rail-ticket {
+  border: 1px solid rgb(142 126 112 / 26%);
+  border-left: 6px solid var(--poland-red);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-2);
+}
+
+/* 拍照建議卡：加上相機小標 */
+.photo-spot-grid .card {
+  border-top: 3px solid var(--gold);
+}
+
+/* 資料庫卡片與工具列 */
+.database-toolbar {
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-1);
+}
+
+.database-filter input,
+.database-filter select {
+  border-radius: var(--radius-sm);
+}
+
+.database-card {
+  transition: box-shadow 200ms var(--ease), transform 200ms var(--ease);
+}
+
+.database-card:hover {
+  box-shadow: var(--shadow-2);
+  transform: translateY(-2px);
+}
+
+/* 城市頁封面內文欄改為淺色紙面 */
+.journal-city-cover-copy {
+  border-left: 0;
+  background: linear-gradient(180deg, rgb(255 253 248 / 96%), rgb(247 240 227 / 92%));
+}
+
+@media (max-width: 700px) {
+  .day-shortcuts {
+    margin-inline: 0;
+    border-radius: 0;
+  }
+
+  .operation-routes li {
+    padding-left: 2.2rem;
+  }
+}
+
+/* --- 閱讀進度線（nav.js 加上）--- */
+.reading-progress {
+  position: fixed;
+  z-index: 99;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--poland-red), var(--accent), var(--gold));
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+@media print {
+  .reading-progress {
+    display: none;
+  }
+}
+
+/* --- 清單記號與城市封面小標 --- */
+.check-list li::marker,
+.link-list li::marker,
+.journal-city-cover-copy li::marker {
+  color: var(--accent);
+}
+
+.journal-city-cover-copy .eyebrow {
+  display: block;
+  margin-top: 1.25rem;
+  margin-bottom: 0.4rem;
+}
+
   </style>
   <style data-bundled="leaflet.css">
 /* required styles */

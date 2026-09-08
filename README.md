@@ -139,3 +139,32 @@ Day 01／06／07／08 共用華沙同一張。若要補充照片，請沿用 CRE
 - [辛德勒工廠](https://muzeumkrakowa.pl/en/branches/oskar-schindlers-enamel-factory)：週日 09:00–20:00，最後入場為閉館前 1.5 小時，保留 17:30 目標。
 - [牛角麵包博物館個人場](https://rogalowemuzeum.pl/indywidualni/)與[售票頁](https://rogalowemuzeum.pl/en/buy-ticket/)：不能把週末／暑期英語場套用到 10/29 週四。
 - [PKP EIC 服務](https://www.intercity.pl/en/site/for-passengers/trains/about-eic.html)：一等艙飲品及點心說明；指定班次仍須重查。
+
+## 2026-09-08 UX/UI 第三輪：旅行誌視覺升級（Edition 03）
+
+維持既有語彙（紙色 `#f4eddf`、墨紫 `#493747`、單一淺色主題、23 頁資料驅動），
+把版面從「線框＋平面色塊」升級成有材質與層次的雜誌感。改動集中在
+`src/styles/main.css` 末段的 Edition 03 區塊與 `src/scripts/nav.js`，
+資料、路由、地圖與離線行為皆未更動。
+
+- **底色與材質**：全站加上暖色光暈與極輕紙紋（`body::before`，不透明度 0.035，
+  `pointer-events: none`，列印時隱藏）；卡片改為漸層紙面＋頂部高光＋三階陰影。
+- **刊頭**：半透明玻璃感（`backdrop-filter`）、底部紅金細線、品牌左側色條；
+  下拉選單改圓角浮層。長頁面加一條閱讀進度線（`.reading-progress`，
+  `aria-hidden`，與回頂端共用同一個 `requestAnimationFrame`）。
+- **章節標題**：編號改為底線戳章，標題後接漸層細線，層級更清楚。
+- **首頁**：封面改圓角＋墨紫漸層＋內框金線，照片加漸層壓暗；準備狀態列改成
+  5 塊可點統計磚（手機 2 欄、待辦磚跨欄）；八日目錄加圓形日碼、hover 位移與左側色條；
+  四城章節改成整張照片卡＋底部漸層字幕，hover 時照片微幅放大。
+- **每日頁**：當日捷徑改為 sticky（桌機貼在刊頭下 76px，手機貼齊頂端）；
+  桌機時間表左側加時間軌（圓點＋直線），手機仍維持卡片版——時間軌只在
+  `min-width: 701px` 生效，否則 `td::before` 會蓋掉 `data-label` 帶出的欄名。
+- **現場操作**：地址簿與拍照建議的導航連結改為膠囊按鈕，移動步驟加序號圓標，
+  提示框改成左側色條＋圖示（`!`／`★`／`›`／`✓`）。
+- **無障礙與觸控**：所有 44px 觸控高度、`data-label` 卡片表格、reduced-motion
+  與 `color-scheme: light` 契約不變；焦點樣式改為 2px 實線外框＋3px offset。
+- 未加入深色模式（既有測試明確禁止），也未使用捲動驅動動畫，避免內容在
+  不支援或截圖／列印情境下停在 opacity 0。
+
+離線快取版本升為 `polska-journal-v10`，讓既有安裝取得新樣式與腳本。
+`env -u NODE_OPTIONS ./verify.sh` 全數通過（107 項測試）。
