@@ -78,8 +78,12 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
     </article>`).join('');
 
   const bodyHtml = `
-    <nav class="trip-day-picker" aria-label="快速選擇旅行日期">
-      ${days.map(day => `<a href="day-${String(day.n).padStart(2, '0')}.html"><b>${escapeHtml(day.date.split(' ')[0])}</b><span>Day ${day.n}</span></a>`).join('')}
+    <nav class="trip-day-picker" aria-label="快速選擇旅行日期" data-trip-timezone="${escapeHtml(meta.timeZone)}">
+      ${days.map(day => {
+        const [month, date] = day.date.split(' ')[0].split('/');
+        const iso = `${meta.tripStart.slice(0, 4)}-${month.padStart(2, '0')}-${date.padStart(2, '0')}`;
+        return `<a href="day-${String(day.n).padStart(2, '0')}.html" data-trip-date="${escapeHtml(iso)}"><b>${escapeHtml(day.date.split(' ')[0])}</b><span>Day ${day.n}</span></a>`;
+      }).join('')}
     </nav>
     <header class="journal-cover">
       <div class="journal-cover-copy">

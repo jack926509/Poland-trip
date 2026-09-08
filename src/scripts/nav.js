@@ -75,6 +75,66 @@
     window.addEventListener('load', markUnavailableMaps, { once: true });
   }
 
+  /**
+   * 旅途中最常問的是「今天是第幾天」。日期捷徑用波蘭當地日期標出今天，
+   * 並把它捲進可視範圍；不在旅程區間內就什麼都不做。
+   */
+  const markToday = () => {
+    const picker = document.querySelector('.trip-day-picker[data-trip-timezone]');
+    if (!picker) return;
+
+    let today;
+    try {
+      today = new Intl.DateTimeFormat('en-CA', {
+        timeZone: picker.dataset.tripTimezone,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      }).format(new Date());
+    } catch {
+      return;
+    }
+
+    const current = picker.querySelector(`a[data-trip-date="${today}"]`);
+    if (!current) return;
+
+    current.classList.add('is-today');
+    current.setAttribute('aria-current', 'date');
+    const badge = document.createElement('em');
+    badge.className = 'trip-day-today';
+    badge.textContent = '今天';
+    current.append(badge);
+    current.scrollIntoView({ block: 'nearest', inline: 'center' });
+  };
+
+  markToday();
+
+  /**
+   * 資料庫等頁面超過 19000px，捲到底沒有回頭路。
+   */
+  const toTop = document.createElement('button');
+  toTop.type = 'button';
+  toTop.className = 'to-top';
+  toTop.hidden = true;
+  toTop.innerHTML = '<span aria-hidden="true">↑</span>回頂端';
+  toTop.addEventListener('click', () => {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    document.querySelector('.skip-link')?.focus({ preventScroll: true });
+  });
+  document.body.append(toTop);
+
+  let toTopFrame = 0;
+  const syncToTop = () => {
+    toTopFrame = 0;
+    toTop.hidden = window.scrollY < 900;
+  };
+  window.addEventListener('scroll', () => {
+    if (toTopFrame) return;
+    toTopFrame = requestAnimationFrame(syncToTop);
+  }, { passive: true });
+  syncToTop();
+
   if ('serviceWorker' in navigator && selfScript) {
     navigator.serviceWorker.register(new URL('../sw.js', selfScript.src)).catch(() => {});
   }
