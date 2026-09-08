@@ -40,7 +40,10 @@ export const days = [
       {t:'19:00', label:'Pierogi 晚餐', sub:'Zapiecek · Krakowskie Przedmieście 55（就在 18:00 散步那條街上）；出發前確認當日營業', cost:'PLN 35–55'},
       {t:'21:00', label:'早睡倒時差'},
     ],
-    eat: ['Pierogi @ Zapiecek', 'Wedel 熱巧克力 @ E. Wedel Pijalnia'],
+    eat: [
+      {text:'Pierogi @ Zapiecek', place:'Zapiecek（老城多家分店）', map:'https://www.google.com/maps/search/?api=1&query=Zapiecek+Polskie+Pierogarnie+Warszawa'},
+      {text:'Wedel 熱巧克力 @ E. Wedel Pijalnia', place:'Pijalnia Czekolady E.Wedel', map:'https://www.google.com/maps/search/?api=1&query=Pijalnia+Czekolady+E.Wedel+Warszawa'},
+    ],
     backup: [
       {label:'下雨備案', where:'科學文化宮 30F 觀景台', why:'票價出發前依官方售票頁重查 · 室內 + 360° 城景，老城廣場走路 12 分'},
       {label:'時差太累', where:'Łazienki 公園溫室', why:'室內展館 + 蕭邦像，免費，傍晚前可走'},
@@ -77,7 +80,11 @@ export const days = [
       {t:'17:30', label:'★ 辛德勒工廠', sub:'週日最後入場 18:30 · mhk.pl/en 預約', cost:'PLN 60 · 優待 45', dur:'2 h'},
       {t:'19:45', label:'★ Kazimierz Plac Nowy zapiekanka 晚餐', sub:'Endzior / Krzysiek', cost:'PLN 18–25'},
     ],
-    eat: ['Obwarzanek 圓圈麵包 (PGI)', 'Zapiekanka @ Plac Nowy 圓亭', 'Klezmer-Hois 猶太料理'],
+    eat: [
+      {text:'Obwarzanek 圓圈麵包 (PGI)', note:'老城與 Kazimierz 街邊推車皆有售，無固定店址'},
+      {text:'Zapiekanka @ Plac Nowy 圓亭', place:'Okrąglak, Plac Nowy', map:'https://www.google.com/maps/search/?api=1&query=Okraglak+Plac+Nowy+Krakow'},
+      {text:'Klezmer-Hois 猶太料理', place:'Klezmer-Hois（Kazimierz）', map:'https://www.google.com/maps/search/?api=1&query=Klezmer-Hois+Krakow'},
+    ],
     warn: '❗瓦維爾城堡尚未訂票；辛德勒工廠個人網路票在參觀日前 90 天 09:00 開放，10/25 已可在官方售票頁查／購。瓦維爾大教堂週日 12:30–17:00；城堡改走短路線並於 15:00 前離開，保留經 Kazimierz、Podgórze 步行到辛德勒工廠的時間。辛德勒工廠週二至週日 09:00–20:00、最後入場 18:30，17:30 屬可行時段。10/25 為非營業週日，多數一般商店關閉；餐廳等法定例外是否營業仍以店家公告為準。',
     backup: [
       {label:'辛德勒 17:30 滿場', where:'改訂 18:30 最後入場，或往前壓到下午較早時段（如 14:00）', why:'最後入場其實是 18:30，比原記錄多一小時可調度；mhk.pl/en 開放預約後立即下單'},
@@ -139,7 +146,11 @@ export const days = [
       {t:'參考 17:55', label:'IC 3600 前往樂斯拉夫', sub:'指定日待確認／尚未訂票', cost:'票價待確認', dur:'2h57'},
       {t:'參考 20:52', label:'抵 Wrocław Główny', sub:'步行至主站對面的 Hotel Piast，拖行李保守抓 5–10 分鐘'},
     ],
-    eat: ['鹽礦 125m 地下餐廳 Karczma Górnicza', 'Sernik @ Cukiernia Michałek', 'Pierożki u Vincenta（Kazimierz）'],
+    eat: [
+      {text:'鹽礦 125m 地下餐廳 Karczma Górnicza', place:'Karczma Górnicza（維利奇卡鹽礦內）', map:'https://www.google.com/maps/search/?api=1&query=Karczma+Gornicza+Kopalnia+Soli+Wieliczka'},
+      {text:'Sernik @ Cukiernia Michałek', place:'Cukiernia Michałek', map:'https://www.google.com/maps/search/?api=1&query=Cukiernia+Michalek+Krakow'},
+      {text:'Pierożki u Vincenta（Kazimierz）', place:'Pierożki u Vincenta', map:'https://www.google.com/maps/search/?api=1&query=Pierozki+u+Vincenta+Krakow'},
+    ],
     warn: '❗鹽礦與城際火車皆尚未訂。鹽礦英文場、實際票價與庫存須在官方日期選擇器確認；IC 3600 的 17:55–20:52 是目前採用的參考班次，不是已購票。若指定日班表不同，先保留 17:20 抵站與住宿接駁緩衝再重排。',
     backup: [
       {label:'鹽礦客滿或超時', where:'先查當日英文場與 PKP 實際班次再調整', why:'10/27 城際班表尚未確定，不能先假定末班車或緩衝時間'},
@@ -174,7 +185,10 @@ export const days = [
       {t:'參考 19:10', label:'Baltic Express 260 前往波茲南', sub:'指定日待確認／尚未訂票', cost:'票價待確認', dur:'1h19'},
       {t:'參考 20:29', label:'抵 Poznań Główny', sub:'先到 Towarowa 37/201 接待處取鑰匙；實際公寓門牌依訂房確認'},
     ],
-    eat: ['Śląskie kluski @ Konspira', 'Browar Stu Mostów 精釀'],
+    eat: [
+      {text:'Śląskie kluski @ Konspira', place:'Konspira（老城廣場旁）', map:'https://www.google.com/maps/search/?api=1&query=Konspira+Wroclaw'},
+      {text:'Browar Stu Mostów 精釀', place:'Browar Stu Mostów', map:'https://www.google.com/maps/search/?api=1&query=Browar+Stu+Mostow+Wroclaw'},
+    ],
     warn: '❗此日兩項皆尚未訂票。百年廳的 10/28 內部參觀狀態須以官方 availability calendar 確認，未確認前不販售或保證室內行程。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，因此安排 16:15–17:15 在座堂島等候，不再把 16:45 寫成確定時刻。',
     backup: [
       {label:'雨天備案', where:'Sky Tower 觀景台', why:'開放時間、票價與能見度以官方當日公告為準，不用舊票價規劃'},
@@ -205,7 +219,10 @@ export const days = [
       {t:'參考 17:40', label:'EIC 8104 前往華沙', sub:'指定日待確認／尚未訂票', cost:'票價待確認', dur:'約 2h20'},
       {t:'參考約 20:00', label:'抵 Warszawa Centralna', sub:'步行至 Hotel Metropol 約 500 公尺，拖行李預留 10–15 分鐘'},
     ],
-    eat: ['Rogal Świętomarciński (PGI) ⭐', 'Pyry z gzikiem @ Pyra Bar'],
+    eat: [
+      {text:'Rogal Świętomarciński (PGI) ⭐', note:'認證店家眾多，出發前依官方認證名單就近選擇'},
+      {text:'Pyry z gzikiem @ Pyra Bar', place:'Pyra Bar', map:'https://www.google.com/maps/search/?api=1&query=Pyra+Bar+Poznan'},
+    ],
     backup: [
       {label:'雨天想看山羊鐘', where:'可頌博物館官方售票頁', why:'週四英語場、價格與庫存都須依 10/29 官方售票系統確認；未確認前改以 Stary Browar 或帝王城堡為室內備案'},
       {label:'無合適英語場', where:'Stary Browar 商場 + 帝王城堡內部', why:'兩處各有室內空間，但館際移動需走戶外；下雨仍需雨具並預留交通時間'},
@@ -231,7 +248,10 @@ export const days = [
       {t:'19:30', label:'老城最後晚餐', sub:'U Fukiera / Polka', cost:'PLN 120–200', dur:'1.5 h'},
       {t:'21:00', label:'老城廣場夜燈漫步', sub:'自由收尾'},
     ],
-    eat: ['Żurek 酸黑麥湯 @ U Fukiera', 'Pączki @ A. Blikle 1869'],
+    eat: [
+      {text:'Żurek 酸黑麥湯 @ U Fukiera', place:'U Fukiera（老城廣場）', map:'https://www.google.com/maps/search/?api=1&query=U+Fukiera+Warszawa'},
+      {text:'Pączki @ A. Blikle 1869', place:'A.Blikle（Nowy Świat）', map:'https://www.google.com/maps/search/?api=1&query=A.Blikle+Nowy+Swiat+Warszawa'},
+    ],
     warn: '❗四項皆尚未訂。皇家城堡已由官方確認二–日 10:00–18:00、最後入場 17:00；本行程採約 60 分鐘 Royal Route，避免與午餐及館際移動重疊。POLIN 週五 10:00–18:00，主展最後入場為閉館前 2 小時。起義博物館票價 35／30，個人免費日為週一（非週四，官方公告）；10/30 是週五，照常收費，實際可售時段仍以官方票頁為準。蕭邦博物館 2026 整修資訊則須在出發前再核對官方公告。',
     extend: [
       {label:'Bulwary Wiślane 維斯瓦河畔', when:'21:00 後老城散步延伸', why:'河濱步道 + 沙灘酒吧，皇家城堡步行 10–15 分，適合晚餐後收尾散步，免費'},

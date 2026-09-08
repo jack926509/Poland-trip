@@ -7,6 +7,19 @@ const bookingLabels = {
   walk: '現場前往',
 };
 
+/**
+ * 餐廳卡片的地圖連結。單店用 item.map；一格寫兩家店（例如「U Fukiera / Polka」）
+ * 用 item.maps 各給一條，避免一條連結指錯店。
+ */
+function renderFoodMapLinks(item) {
+  const links = item.maps?.length
+    ? item.maps.map(entry => ({ label: `${entry.name} 地圖 →`, url: entry.url }))
+    : (item.map ? [{ label: 'Google Maps →', url: item.map }] : []);
+  if (!links.length) return '';
+  return `<p class="food-map-links">${links.map(link =>
+    `<a href="${link.url}" target="_blank" rel="noopener noreferrer">${link.label}</a>`).join('')}</p>`;
+}
+
 function renderNotice(notice) {
   return `<div class="${notice.level === 'risk' ? 'callout-risk' : 'callout-note'}">
     <span class="${notice.level === 'risk' ? 'tag-red' : 'tag-yellow'}">${notice.status}</span>
@@ -67,7 +80,8 @@ export function renderCity({
           <span class="eyebrow">${item.tag}</span>
           <h3>${item.name}</h3>
           <p>${item.note}</p>
-          <p><span class="${item.book === 'must' ? 'tag-todo' : 'tag-muted'}">${bookingLabels[item.book] || item.book}</span>${item.map ? ` <a href="${item.map}" target="_blank" rel="noopener">Google Maps →</a>` : ''}</p>
+          <p><span class="${item.book === 'must' ? 'tag-todo' : 'tag-muted'}">${bookingLabels[item.book] || item.book}</span></p>
+          ${renderFoodMapLinks(item)}
         </article>`).join('')}
       </div>
     </section>` : '';
@@ -80,7 +94,8 @@ export function renderCity({
           <span class="eyebrow">${item.tag}</span>
           <h3>${item.name}</h3>
           <p>${item.note}</p>
-          <p><span class="${item.book === 'must' ? 'tag-todo' : 'tag-muted'}">${bookingLabels[item.book] || item.book}</span>${item.map ? ` <a href="${item.map}" target="_blank" rel="noopener">Google Maps →</a>` : ''}</p>
+          <p><span class="${item.book === 'must' ? 'tag-todo' : 'tag-muted'}">${bookingLabels[item.book] || item.book}</span></p>
+          ${renderFoodMapLinks(item)}
         </article>`).join('')}
       </div>
     </section>` : '';

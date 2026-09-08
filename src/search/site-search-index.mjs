@@ -122,8 +122,8 @@ function restaurantRecords(data, lookup) {
         cityRef: group.city,
         name: item.name,
         detail: compact([item.tag, item.note]),
-        mapUrl: item.map,
-        keywords: [item.book],
+        mapUrl: item.map || item.maps?.[0]?.url,
+        keywords: [item.book, ...(item.maps?.map(entry => entry.name) || [])],
       });
     }
   }
@@ -134,8 +134,8 @@ function restaurantRecords(data, lookup) {
         cityRef: group.city,
         name: item.name,
         detail: compact([item.tag, item.note]),
-        mapUrl: item.map,
-        keywords: [item.book, '備案'],
+        mapUrl: item.map || item.maps?.[0]?.url,
+        keywords: [item.book, '備案', ...(item.maps?.map(entry => entry.name) || [])],
       });
     }
   }
@@ -239,7 +239,7 @@ export function buildTravelSearchRecords(data) {
         day.tag,
         publicTrain,
         publicSteps,
-        day.eat,
+        day.eat?.map(item => (typeof item === 'string' ? item : [item.text, item.place].filter(Boolean).join(' '))),
         publicPractical,
       ],
     }));
