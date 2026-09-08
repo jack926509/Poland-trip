@@ -67,6 +67,22 @@ Day 01／06／07／08 共用華沙同一張。若要補充照片，請沿用 CRE
 - 依使用者 2026-09-08 明確授權，完整行程、航班、住宿名稱／已知地址與地圖資料公開發布；未知地址仍標待確認，不以猜測補齊。
 - 沿用 `main` 推送觸發 Cloudflare Pages 與 GitHub Pages 的既有部署，並升級離線快取版本。
 
+## 2026-09-08 UX/UI 版面優化（實測數據）
+
+以 390×844 手機與 1440×900 桌機實測 bounding box，修正四個量得出來的版面問題：
+
+- 全站搜尋列在手機佔掉首屏 386px（46%）。標題改由 placeholder 承擔、快捷分類改單行橫向捲動後降為 121px，首頁封面自 y=697 提前到 y=427。分類按鈕仍維持 44px 觸控高度，`aria-describedby` 目標只做視覺隱藏，螢幕閱讀器不受影響。
+- 桌機封面 `h1`「POLSKA」溢出欄位 183px（scrollWidth 490 / clientWidth 307）。字級改依欄寬計算（`container-type: inline-size` + `cqw`，另備 `vw` fallback），現已完整落在版面內。
+- 每日與城市封面圖被 `max-height: 23rem` 截斷，右欄留下 176px 空白。改為填滿欄位；手機仍保留原本 9rem 的壓縮高度。
+- `.nav > a` 的特異度高於 `.nav-brand`，刊頭一直被壓成單行 inline-flex。改用同級選擇器後恢復兩行左對齊。
+
+另外兩項操作性調整：
+
+- 每日頁的「時間表／地址與導航／訂票與提醒」移到封面正下方並改為吸附，路上捲到任何位置都能一按跳轉；`scroll-margin-top` 一併調整避免標題被遮住。手機 `#schedule` 由 y=1586 提前到 y=1336。
+- 「本頁章節」索引原本在每日頁被 `max-height: 8rem` 從字中間切斷，改為可換行的標籤列，不再裁切。
+
+深色模式、鍵盤焦點樣式與 `prefers-reduced-motion` 均已隨新樣式驗證；`env -u NODE_OPTIONS ./verify.sh` 全數通過（98 項測試）。
+
 本次查核的官方來源（不代表已取得指定日票券）：
 
 - [POLIN 開放時間](https://polin.pl/en/planning-your-visit/basic-information)：週五 10:00–18:00、主展最晚 16:00 入場，保留既有 Day 7 順序。

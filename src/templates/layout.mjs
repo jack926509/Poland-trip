@@ -87,10 +87,10 @@ export function renderSiteSearch({
   return `<section class="site-search-shell" data-site-search data-search-path-prefix="${pathPrefix}" aria-label="全站旅遊搜尋">
     <div class="site-search-inner">
       <div class="site-search-form-row">
-        <label for="site-search-input">搜尋整個旅遊網站</label>
+        <label class="site-search-label" for="site-search-input">搜尋整個旅遊網站</label>
         <div class="site-search-input-row">
           <span class="site-search-icon" aria-hidden="true">⌕</span>
-          <input id="site-search-input" type="search" inputmode="search" autocomplete="off" spellcheck="false" placeholder="火車、餐廳、景點、城市特色" aria-controls="site-search-results" aria-describedby="site-search-help">
+          <input id="site-search-input" type="search" inputmode="search" autocomplete="off" spellcheck="false" placeholder="搜尋火車、餐廳、景點、城市" aria-controls="site-search-results" aria-describedby="site-search-help">
           <button class="site-search-clear" type="button" data-search-clear hidden>清除</button>
         </div>
       </div>

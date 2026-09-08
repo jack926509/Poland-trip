@@ -194,16 +194,16 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
 ${coverHtml}
     </header>
 
+    <nav class="day-shortcuts" aria-label="當日快速導覽">
+      <a href="#schedule">時間表</a><a href="#directions">地址與導航</a><a href="#day-preparation">訂票與提醒</a>
+    </nav>
+
     <dl class="journal-day-facts">
       <div><dt>城市</dt><dd>${escapeHtml(day.city)}</dd></div>
       <div><dt>強度</dt><dd>${escapeHtml(day.intensity)}</dd></div>
       <div><dt>天氣參考</dt><dd>${escapeHtml(day.weather)}</dd></div>
       <div><dt>類型</dt><dd>${escapeHtml(day.tag)}</dd></div>
     </dl>
-
-    <nav class="day-shortcuts" aria-label="當日快速導覽">
-      <a href="#schedule">時間表</a><a href="#directions">地址與導航</a><a href="#day-preparation">訂票與提醒</a>
-    </nav>
 
     <section class="section" id="schedule">
       <div class="section-heading"><span class="section-num">Schedule</span><h2>當日時間表</h2></div>

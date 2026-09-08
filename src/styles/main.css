@@ -2378,3 +2378,259 @@ figure.media-unavailable > img {
   .site-search-quick-row button { min-height: 44px; }
   .journal-day-facts { gap: .75rem; }
 }
+
+/* ============================================================
+   2026-09-08 UX/UI 優化
+   量測依據：390×844 手機與 1440×900 桌機實測 bounding box。
+   1. 搜尋列在手機吃掉 386px（46% 首屏），壓縮為單行輸入 + 橫向捲動分類。
+   2. 桌機封面 h1「POLSKA」溢出 183px，改用容器查詢定字級。
+   3. 每日／城市封面圖被 max-height 截斷，右欄留下 176px 空白。
+   4. 每日快速導覽提前並吸附，路上隨時可跳到時間表與導航。
+   ============================================================ */
+
+/* 刊頭標題固定兩行靠左：.nav > a 的特異度較高，這裡要用同級選擇器才蓋得過 */
+.nav > a.nav-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.1rem;
+  padding-left: 0;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  letter-spacing: 0.08em;
+  text-align: left;
+}
+
+/* --- 封面標題：依欄寬而非視窗寬定字級，避免長字溢出 --- */
+.journal-cover h1 {
+  font-size: clamp(3rem, 7.2vw, 5.6rem);
+  overflow-wrap: anywhere;
+}
+
+@supports (width: 1cqw) {
+  .journal-cover-copy,
+  .journal-day-heading,
+  .journal-city-cover-copy {
+    container-type: inline-size;
+  }
+
+  .journal-cover h1 {
+    font-size: min(24cqw, 8.5rem);
+  }
+
+  .journal-city-cover-copy h1 {
+    font-size: min(15cqw, 6.4rem);
+  }
+}
+
+/* --- 每日／城市封面圖填滿整個欄位，不再留白 --- */
+.journal-day-cover,
+.journal-city-cover figure {
+  min-height: 0;
+  height: 100%;
+}
+
+.journal-day-cover img,
+.journal-city-cover img {
+  max-height: none;
+  height: 100%;
+}
+
+.journal-day-cover-fallback {
+  min-height: 0;
+  height: 100%;
+}
+
+/* --- 每日快速導覽：吸附在頂端，時間表／導航／訂票隨時一按 --- */
+.day-shortcuts {
+  position: sticky;
+  z-index: 40;
+  top: 72px;
+  margin: 0 -3rem 1.5rem;
+  padding: 0.5rem 3rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+}
+
+.journal-day .section,
+.journal-city .section,
+.journal-practical .section {
+  scroll-margin-top: 7rem;
+}
+
+@media (max-width: 920px) {
+  .journal-cover h1 {
+    font-size: clamp(3rem, 11vw, 6rem);
+  }
+
+  .day-shortcuts {
+    margin-inline: -1.5rem;
+    padding-inline: 1.5rem;
+  }
+}
+
+@media (max-width: 700px) {
+  /* 搜尋列壓縮：標題交給 placeholder，分類改單行橫向捲動 */
+  .site-search-inner {
+    padding: 0.55rem 1.25rem 0.6rem;
+  }
+
+  .site-search-form-row {
+    gap: 0;
+  }
+
+  .site-search-label,
+  .site-search-quick-row > span {
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .site-search-quick-row {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+
+  .site-search-quick-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .site-search-quick-row button {
+    flex: 0 0 auto;
+    width: auto;
+    min-height: 44px;
+    padding-inline: 0.85rem;
+  }
+
+  .site-search-quick-row button:focus-visible {
+    outline-offset: -3px;
+  }
+
+  .site-search-summary:empty {
+    min-height: 0;
+    margin: 0;
+  }
+
+  /* 手機上主導覽不吸附，快速導覽貼齊視窗頂端 */
+  .day-shortcuts {
+    top: 0;
+    margin-inline: -1.5rem;
+    padding-inline: 1.5rem;
+    box-shadow: 0 6px 16px rgb(44 37 34 / 8%);
+  }
+
+  /* 保留原本手機封面高度，別讓填滿規則把圖片撐高 */
+  .journal-day-cover {
+    height: auto;
+  }
+
+  .journal-day-cover img {
+    height: 9rem;
+  }
+
+  .journal-day .section,
+  .journal-city .section,
+  .journal-practical .section {
+    scroll-margin-top: 4.5rem;
+  }
+
+  .nav {
+    padding-block: 0.5rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .day-shortcuts {
+    border-bottom-color: var(--line);
+    background: var(--paper);
+  }
+}
+
+/* --- 本頁章節：改為可換行的標籤列，不再被 max-height 從字中間切斷 --- */
+.chapter-index {
+  margin-block: 1.5rem 2rem;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid var(--line);
+  background: var(--surface-card);
+}
+
+.chapter-index-label {
+  margin: 0 0 0.6rem;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.chapter-index ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chapter-index li {
+  display: flex;
+}
+
+.chapter-index ol a {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--paper-light);
+  color: var(--ink);
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.chapter-index ol a:hover,
+.chapter-index ol a:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent-pale);
+  color: var(--accent-dark);
+}
+
+.chapter-index ol a > span {
+  color: var(--plum-soft);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.journal-day .chapter-index ol {
+  max-height: none;
+  overflow: visible;
+}
+
+@media (max-width: 700px) {
+  .chapter-index {
+    padding: 0.75rem 0.85rem;
+  }
+
+  .chapter-index ol a {
+    font-size: 0.9rem;
+    padding-inline: 0.7rem;
+  }
+}
