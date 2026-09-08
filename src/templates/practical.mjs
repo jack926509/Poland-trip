@@ -65,7 +65,9 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
       <td><b>${train.seg}</b>${train.leg ? `<br><span class="timeline-note">${train.leg}</span>` : ''}${train.status ? `<br><span class="tag-todo">${train.status}</span>` : ''}</td>
       <td class="number">${train.date}</td><td>${train.type}</td>
       <td class="number">${train.dep} → ${train.arr}</td>
-      <td class="number">${train.dur}</td><td class="number">${/^\d/.test(train.price) ? `PLN ${train.price}` : train.price}${train.note ? `<br><span class="timeline-note">${train.note}</span>` : ''}</td>
+      <td class="number">${train.dur}</td>
+      <td><b>${train.saleOpens ? `${escapeHtml(train.saleOpens)} 起預售` : '官方日期待確認'}</b>${train.saleCheckedAt ? `<br><span class="timeline-note">PKP Intercity 官方售票系統查核：${escapeHtml(train.saleCheckedAt)}</span>` : ''}</td>
+      <td class="number">${/^\d/.test(train.price) ? `PLN ${train.price}` : train.price}${train.note ? `<br><span class="timeline-note">${train.note}</span>` : ''}</td>
     </tr>`).join('');
   const railLinkCards = railOfficialLinks.map(item => `
     <a class="card card-link" href="${item.url}" target="_blank" rel="noopener">
@@ -105,10 +107,10 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
     </section>
     <section class="section" id="rail-itinerary">
       <div class="section-heading"><span class="section-num">Rail</span><h2>城際交通</h2></div>
-      <div class="callout-risk"><span class="tag-todo">已選參考班次／尚未購票</span><p>下表是目前採用的規劃班次，不代表指定日期已核實或已出票。只有在 PKP Intercity／KOLEO 顯示 2026-10-25 至 10-29 的實際車次並完成購票後，才可視為成立。</p></div>
+      <div class="callout-risk"><span class="tag-todo">班次已查核／尚未開賣</span><p>2026-09-08 已逐班核對 PKP Intercity 官方售票系統。下表列的是官方目前顯示的預售起始日；尚未到開賣日，也不代表已訂妥。開賣後仍須再次核對時間、價格、車廂與座位。</p></div>
       <p><b>三班評估：</b>10/27 IC 3600 能提早抵達樂斯拉夫；10/28 Baltic Express 260 候選車程僅 1 小時 19 分，最能保留白天遊玩；10/29 EIC 8104 在正午山羊秀與下午行程後出發，並適合加選一等艙體驗。若 10/25 已搭 EIP 一等艙，可依價差決定 10/29 是否再搭一等艙。</p>
       <p><a href="https://www.intercity.pl/en/site/for-passengers/trains/about-eic.html" target="_blank" rel="noopener">PKP 官方 EIC 服務說明</a>列有一等艙飲品與點心；指定班次的編組、設備、餐飲與票價仍以購票頁為準。</p>
-      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>路段</th><th>日期</th><th>車種</th><th>時刻</th><th>時長</th><th>票價</th></tr></thead><tbody>${trainRows}</tbody></table></div>
+      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>路段</th><th>日期</th><th>車種</th><th>時刻</th><th>時長</th><th>預售</th><th>票價</th></tr></thead><tbody>${trainRows}</tbody></table></div>
     </section>
     <section class="section">
       <div class="section-heading"><span class="section-num">Official</span><h2>官方購票與時刻表</h2></div>

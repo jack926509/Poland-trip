@@ -185,7 +185,7 @@ const databaseEntriesBase = [
   {
     id: 'accommodation-confirmations', section: 'accommodation', category: 'practical', cityKey: 'ROUTE',
     title: '7 晚住宿已確認',
-    summary: '5 筆訂單共 7 晚皆已確認：華沙 ibis budget Warszawa Reduta、克拉科夫 ibis budget Krakow Stare Miasto、樂斯拉夫 Piast、波茲南 Poznan Apartments Towarowa、華沙 Hotel Metropol。公開版不保存訂房代碼、姓名或付款證明。',
+    summary: '5 筆訂單共 7 晚皆已確認：華沙 Hotel Metropol 兩段住宿（10/24–10/25、10/29–10/31）、克拉科夫 ibis budget Krakow Stare Miasto、樂斯拉夫 Piast、波茲南 Poznan Apartments Towarowa。公開版不保存訂房代碼、姓名或付款證明。',
     status: 'private-required', sourceUrl: null, verifiedAt: null, recheckAt: '2026-10-10',
     offlineNote: '公開版已放飯店官網地址；另將 5 張訂房確認存入私人離線包，並向各住宿確認寄放行李與晚到方式。', private: true,
   },
@@ -358,7 +358,7 @@ const officialPlaceUrls = {
 const entranceNotesByName = {
   '華沙蕭邦機場': '抵達後依 Arrivals 與 SKM／Railway Station 標示前往航廈下方車站；回程依電子機票確認報到區。',
   'Warszawa Centralna': '由已確認住宿方向選最近入口；進站後以大廳電子牌確認月台，不預先假定入口或月台。',
-  'Warszawa Zachodnia': '由 ibis budget Warszawa West Station 步行前往；進站後以電子牌確認 EIP 5300 的實際月台。',
+  'Warszawa Zachodnia': '由 Hotel Metropol 叫車或使用 Jakdojade 查當日大眾運輸前往；進站後以電子牌確認 EIP 5300 的實際月台。',
   '華沙皇家城堡': '主要訪客入口在 plac Zamkowy 4；依票券時段與現場安檢標示入場。',
   '華沙老城市場廣場': '公共廣場，導航至 Rynek Starego Miasta；與 plac Zamkowy 的皇家城堡廣場是不同地點。',
   'Krakowskie Przedmieście': '公共街道，從城堡廣場沿皇家大道步行，無需入場。',
@@ -443,7 +443,7 @@ export const dayOperations = {
       address('華沙皇家城堡', 'plac Zamkowy 4, 00-277 Warszawa', 'Royal Castle Warsaw, plac Zamkowy 4, Warszawa'),
       address('華沙老城市場廣場', 'Rynek Starego Miasta, 00-272 Warszawa', 'Rynek Starego Miasta, Warszawa'),
       address('Krakowskie Przedmieście', 'Krakowskie Przedmieście, Warszawa', 'Krakowskie Przedmiescie, Warszawa'),
-      accommodationAddress('warsaw-reduta', ['旅館 Check-in']),
+      accommodationAddress('warsaw-metropol-arrival', ['Hotel Metropol Check-in']),
     ],
     navigation: [
       { mode: 'SKM', route: '蕭邦機場 → 華沙市中心', action: '抵達後查 WTP 即時班次、月台與官方票價，使用當日適用的第 1 區時間票。' },
@@ -469,16 +469,16 @@ export const dayOperations = {
       address('紡織會館 Sukiennice', 'Rynek Główny 3, 31-042 Kraków', 'Sukiennice, Rynek Glowny 3, Krakow'),
       address('辛德勒工廠', 'Lipowa 4, 30-702 Kraków', 'Oskar Schindler Enamel Factory, Lipowa 4, Krakow'),
       address('Plac Nowy', 'Plac Nowy, 31-056 Kraków', 'Plac Nowy, Krakow'),
-      accommodationAddress('warsaw-reduta', ['退房後步行前往 Warszawa Zachodnia']),
+      accommodationAddress('warsaw-metropol-arrival', ['退房後前往 Warszawa Zachodnia']),
       accommodationAddress('krakow-stare-miasto', ['旅館寄放行李']),
     ],
     navigation: [
-      { mode: 'PKP', route: 'Warszawa Zachodnia → Kraków Główny', action: '目前採 EIP 5300 參考 08:45–10:56；10/25 換表後核實仍停靠西站，完成購票後只依票面車次、車廂與座位進站。' },
+      { mode: 'PKP', route: 'Warszawa Zachodnia → Kraków Główny', action: '目前採 EIP 5300 參考 08:45–10:58；10/25 換表後核實仍停靠西站，完成購票後只依票面車次、車廂與座位進站。' },
       { mode: '步行／市內交通', route: 'Kraków Główny → Wawel → Kazimierz → Podgórze → 辛德勒工廠', action: '先寄放行李；15:45 由老城出發，沿 Kazimierz、Podgórze 步行，17:10 前到辛德勒工廠。若延誤則用 Jakdojade 查即時市內交通。' },
     ],
     dailyAlerts: [
       '10/25 為非營業週日，多數一般商店關閉；餐廳與例外店家仍逐店確認。',
-      'EIP 5300 的 08:45–10:56 是參考班次；完成指定日核實與購票前，不把它當成已確定發車。',
+      'EIP 5300 的 08:45–10:58 是參考班次；完成指定日核實與購票前，不把它當成已確定發車。',
     ],
     nightChecklist: [...standardNightChecklist, '確認 Auschwitz 官方導覽姓名、入場時段、行李限制與往返車票狀態'],
   },
@@ -566,7 +566,7 @@ export const dayOperations = {
     ],
     navigation: [
       { mode: '步行／市內交通', route: '教堂島 → 舊城市場 → 牛角麵包博物館 → Stary Browar → Poznań Główny', action: '11:45 前到市政廳正面；博物館英語場依售票頁調整，16:00 開始取行李與前往車站。' },
-      { mode: 'PKP', route: 'Poznań Główny → Warszawa Centralna', action: '目前採 EIC 8104 參考 17:40–約 20:00；17:05 前到站，指定日核實並購票後依票面班次行動。' },
+      { mode: 'PKP', route: 'Poznań Główny → Warszawa Centralna', action: '目前採 EIC 8104 參考 17:40–20:00；17:05 前到站，指定日核實並購票後依票面班次行動。' },
     ],
     dailyAlerts: [
       '市政廳博物館整修閉館；主行程只看官方確認的 12:00 山羊鐘樓秀。',

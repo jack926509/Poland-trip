@@ -120,14 +120,15 @@ test('官方旅客權益與本次私人／待購狀態分開', () => {
   for (const day of [2, 4, 5, 6]) assert.ok(dayOperations[day].entryIds.includes('rail-trip-tickets'));
 });
 
-test('5 筆已確認住宿完整涵蓋 7 晚並保留官方地址', () => {
+test('5 筆已確認住宿區段完整涵蓋 7 晚並保留官方地址', () => {
   assert.deepEqual(stay.map(item => [item.name, item.checkIn, item.checkOut, item.nights]), [
-    ['ibis budget Warszawa Reduta', '2026-10-24', '2026-10-25', 1],
+    ['Hotel Metropol', '2026-10-24', '2026-10-25', 1],
     ['ibis budget Krakow Stare Miasto', '2026-10-25', '2026-10-27', 2],
     ['Piast', '2026-10-27', '2026-10-28', 1],
     ['Poznan Apartments Towarowa', '2026-10-28', '2026-10-29', 1],
     ['Hotel Metropol', '2026-10-29', '2026-10-31', 2],
   ]);
+  assert.ok(!JSON.stringify(stay).includes('ibis budget Warszawa Reduta'));
   assert.equal(stay.reduce((total, item) => total + item.nights, 0), 7);
   for (const booking of stay) {
     assert.match(booking.officialUrl, /^https:\/\//);
@@ -611,7 +612,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.equal(photoSpots.length, 10);
   assert.equal(photoCredits.length, 20);
   assert.deepEqual(Object.fromEntries(Object.entries(mapPins).map(([city, data]) => [city, data.points.length])), {
-    warsaw: 16, krakow: 21, wroclaw: 9, poznan: 8,
+    warsaw: 15, krakow: 21, wroclaw: 9, poznan: 8,
   });
   assert.deepEqual(Object.fromEntries(Object.entries(attractions).map(([city, items]) => [city, items.length])), {
     warsaw: 12, krakow: 6, wroclaw: 8, poznan: 9,
@@ -652,7 +653,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
 
 test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', () => {
   const allPins = Object.entries(mapPins).flatMap(([city, data]) => data.points.map((point) => ({city, name:point[2]})));
-  assert.equal(allPins.length, 54);
+  assert.equal(allPins.length, 53);
   for (const pin of allPins) {
     assert.ok(mapPinChecks[pin.city]?.[pin.name], `${pin.city}/${pin.name} 缺少圖釘查證狀態`);
   }
@@ -665,7 +666,7 @@ test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', ()
   });
   const verifiedPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'coordinate-verified');
   const areaPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'area-reference');
-  assert.equal(verifiedPins.length, 51);
+  assert.equal(verifiedPins.length, 50);
   assert.deepEqual(
     areaPins.map(({name}) => name).sort(),
     [
@@ -848,7 +849,8 @@ test('Day 1–8 都有現場導航、當日警示與晚間準備', () => {
   }
   assert.ok(read('day-02.html').includes('非營業週日'));
   assert.ok(read('day-08.html').includes('離開 EU'));
-  assert.ok(read('day-01.html').includes('ibis budget Warszawa Reduta'));
+  assert.ok(read('day-01.html').includes('Hotel Metropol'));
+  assert.ok(!read('day-01.html').includes('ibis budget Warszawa Reduta'));
   assert.ok(!read('day-01.html').includes('待住宿／分店確定後填入'));
 });
 
@@ -871,14 +873,13 @@ test('Day 8 退稅與報到已合併，不再出現獨立 11:30 時段', () => {
   assert.ok(main.includes('退稅') && main.includes('報到'), 'Day 8 缺少合併後的退稅／報到內容');
 });
 
-test('5 筆已確認住宿皆出現在對應城市地圖，Piast 使用已核對門牌', () => {
+test('4 個已確認住宿地點皆出現在對應城市地圖，Piast 使用已核對門牌', () => {
   const hotelPins = Object.values(mapPins)
     .flatMap(city => city.points)
     .filter(point => point[5] === 'hotel');
 
   assert.equal(pinCategoryLegend.hotel?.label, '已確認住宿');
   assert.deepEqual(hotelPins.map(point => point[2]), [
-    'ibis budget Warszawa Reduta',
     'Hotel Metropol',
     'ibis budget Krakow Stare Miasto',
     'Piast',
@@ -887,9 +888,9 @@ test('5 筆已確認住宿皆出現在對應城市地圖，Piast 使用已核對
   assert.match(hotelPins.find(point => point[2] === 'Piast')?.[3] ?? '', /Piłsudskiego 98/);
 });
 
-test('4 個城市頁含正確 Leaflet 圖釘數，合計 54', () => {
+test('4 個城市頁含正確 Leaflet 圖釘數，合計 53', () => {
   const expected = {
-    'city-warszawa.html': 16,
+    'city-warszawa.html': 15,
     'city-krakow.html': 21,
     'city-wroclaw.html': 9,
     'city-poznan.html': 8,
@@ -907,7 +908,7 @@ test('4 個城市頁含正確 Leaflet 圖釘數，合計 54', () => {
     assert.equal(points, count, `${file} 圖釘數錯誤`);
     total += points;
   }
-  assert.equal(total, 54);
+  assert.equal(total, 53);
 });
 
 test('城市頁完整呈現故事、景點、主餐廳、備案與拍照資訊', () => {
@@ -975,10 +976,10 @@ test('四段跨城火車使用採用班次，並保留指定日待確認狀態',
   assert.deepEqual(
     trains.filter(item => item.type !== 'BUS · Lajkonik').map(item => [item.date, item.type, item.dep, item.arr]),
     [
-      ['10/25', 'EIP 5300', '08:45', '10:56'],
+    ['10/25', 'EIP 5300', '08:45', '10:58'],
       ['10/27', 'IC 3600 Siemiradzki', '17:55', '20:52'],
       ['10/28', 'Baltic Express 260', '19:10', '20:29'],
-      ['10/29', 'EIC 8104 Bolesław Prus', '17:40', '約 20:00'],
+    ['10/29', 'EIC 8104 Bolesław Prus', '17:40', '20:00'],
     ],
   );
   assert.match(trains[0].note, /一等艙/);

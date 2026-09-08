@@ -146,7 +146,7 @@ export const photoCredits = [
 // 的修正，直接來自 poland-travel-guide-final.html:565 的 CITIES 物件。
 // 校正表 3-2 記的「克拉科夫 19 個圖釘」是加入已確認住宿圖釘前的數字；
 // 2026-09-08 移除 4 個未逐店確認的 Żabka 精確圖釘；超商仍保留在購物資料，現場依即時搜尋選分店。
-// 地圖現為 16／21／9／8，合計 54；其中 51 個門牌／場館錨點、3 個面狀區域代表點。
+// 地圖現為 15／21／9／8，合計 53；其中 50 個門牌／場館錨點、3 個面狀區域代表點。
 export const mapPins = {
   warsaw: {
     center: [52.235, 21.01], zoom: 13,
@@ -165,8 +165,7 @@ export const mapPins = {
       [52.2333197, 21.0149273, "Pijalnia Czekolady E.Wedel（巧克力）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJ--12WPTMHkcRgAvh-nOeA94", "shop"],
       [52.2310334, 21.0187045, "Vitkac", "精品百貨", "https://maps.google.com/?cid=6893272886103886879", "luxury"],
       [52.2215267, 21.0204772, "Chylak（波蘭設計師包款）", "精品", "https://maps.google.com/?cid=2015234439722332980", "luxury"],
-      [52.214645, 20.968169, "ibis budget Warszawa Reduta", "已確認住宿 · 官網現稱 ibis budget Warszawa West Station", "https://www.google.com/maps/search/?api=1&query=ibis%20budget%20Warszawa%20Reduta%2C%20ul.%20Bitwy%20Warszawskiej%2016%20A%2C%20Warszawa", "hotel"],
-      [52.22901, 21.01099, "Hotel Metropol", "已確認住宿 · 10/29–10/31", "https://www.google.com/maps/search/?api=1&query=Hotel%20Metropol%2C%20ul.%20Marsza%C5%82kowska%2099a%2C%20Warszawa", "hotel"],
+      [52.22901, 21.01099, "Hotel Metropol", "已確認住宿 · 10/24–10/25、10/29–10/31", "https://www.google.com/maps/search/?api=1&query=Hotel%20Metropol%2C%20ul.%20Marsza%C5%82kowska%2099a%2C%20Warszawa", "hotel"],
     ],
   },
   krakow: {
@@ -256,7 +255,6 @@ Object.assign(mapPinChecks.warsaw, {
   'Pijalnia Czekolady E.Wedel（巧克力）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:8},
   'Vitkac': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:10},
   'Chylak（波蘭設計師包款）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:45},
-  'ibis budget Warszawa Reduta': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:35},
   'NUTA ★': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:86},
   'WANDAL': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
   'Zagoździński': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:22},
