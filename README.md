@@ -168,3 +168,22 @@ Day 01／06／07／08 共用華沙同一張。若要補充照片，請沿用 CRE
 
 離線快取版本升為 `polska-journal-v10`，讓既有安裝取得新樣式與腳本。
 `env -u NODE_OPTIONS ./verify.sh` 全數通過（107 項測試）。
+
+## 2026-09-08 餐廳地圖連結與章節膠囊對齊
+
+- **每日「順路必吃」**：`trip.js` 的 `eat` 由字串改為 `{text, place, map, note}`，
+  有明確店家的品項在卡片下方附 Google Maps 連結（膠囊按鈕，44px 觸控高度）。
+  沒有固定店址的 Obwarzanek（克拉科夫街邊推車）與 Rogal Świętomarciński
+  （多家認證烘焙坊）只寫說明，不硬給連結指向單一店家。
+  模板同時相容舊的字串寫法。
+- **城市頁主餐廳與備案餐廳**：`cityFood` 補上 25 筆缺少的地圖連結，備案餐廳原本
+  就已全數具備，現在四城的兩個區塊 100% 有連結。一格寫兩家店的項目
+  （U Fukiera / Polka、Starka / Szara Gęś、Hamsa / Klezmer-Hois、Pod Fredrą / Jadka）
+  改用 `maps: [{name, url}]`，各給一條，不讓一條連結指錯店。
+- 新增連結一律是 `https://www.google.com/maps/search/?api=1&query=店名+城市` 的
+  **搜尋連結**，不是查證過的座標圖釘；使用者原本指定的 `maps.app.goo.gl` 短連結
+  與既有 `cid` 連結都保持原樣。地圖圖釘稽核（54 點）不受影響。
+- **本頁章節膠囊**：英文小標與中文標題改為 baseline 對齊，觸控高度改由上下
+  padding 撐出，解決 0.72rem 英文與 0.95rem 中文置中時一高一低的問題。
+
+`env -u NODE_OPTIONS ./verify.sh` 全數通過（107 項測試）。

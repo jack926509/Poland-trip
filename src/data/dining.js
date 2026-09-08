@@ -524,37 +524,46 @@ export const cityFood = [
         "tag": "美食市集",
         "name": "Hala Koszyki",
         "note": "百年美食市集",
-        "book": "walk"
+        "book": "walk",
+        "map": "https://www.google.com/maps/search/?api=1&query=Hala+Koszyki+Warszawa"
       },
       {
         "tag": "Pierogi",
         "name": "Zapiecek",
         "note": "老城多家分店",
-        "book": "walk"
+        "book": "walk",
+        "map": "https://www.google.com/maps/search/?api=1&query=Zapiecek+Polskie+Pierogarnie+Warszawa"
       },
       {
         "tag": "熱巧克力",
         "name": "E. Wedel Pijalnia",
         "note": "1851 年創立的華沙巧克力老牌，招牌是濃稠熱巧克力",
-        "book": "queue"
+        "book": "queue",
+        "map": "https://www.google.com/maps/search/?api=1&query=Pijalnia+Czekolady+E.Wedel+Warszawa"
       },
       {
         "tag": "老城經典",
         "name": "U Fukiera / Polka",
         "note": "Żurek 麵包碗；兩家皆非米其林必比登名單，屬觀光區老牌波蘭餐廳",
-        "book": "must"
+        "book": "must",
+        "maps": [
+          { "name": "U Fukiera", "url": "https://www.google.com/maps/search/?api=1&query=U+Fukiera+Warszawa" },
+          { "name": "Polka", "url": "https://www.google.com/maps/search/?api=1&query=Restauracja+Polka+Warszawa" }
+        ]
       },
       {
         "tag": "牛奶吧",
         "name": "Bar Prasowy",
         "note": "套餐 PLN 25–35",
-        "book": "walk"
+        "book": "walk",
+        "map": "https://www.google.com/maps/search/?api=1&query=Bar+Prasowy+Warszawa"
       },
       {
         "tag": "Pączki",
         "name": "A. Blikle",
         "note": "1869 年老字號",
-        "book": "queue"
+        "book": "queue",
+        "map": "https://www.google.com/maps/search/?api=1&query=A.Blikle+Nowy+Swiat+Warszawa"
       },
       {
         "tag": "河畔酒吧",
@@ -574,13 +583,15 @@ export const cityFood = [
         "tag": "精釀啤酒",
         "name": "Warszawski Klub Piwoszy",
         "note": "老城周邊，適合最後一晚小酌",
-        "book": "walk"
+        "book": "walk",
+        "map": "https://www.google.com/maps/search/?api=1&query=Warszawski+Klub+Piwoszy+Warszawa"
       },
       {
         "tag": "伴手甜點",
         "name": "Cukiernia Pawełek",
         "note": "手工巧克力與糖果，適合最後採買",
-        "book": "walk"
+        "book": "walk",
+        "map": "https://www.google.com/maps/search/?api=1&query=Cukiernia+Pawelek+Warszawa"
       },
       {
         "tag": "年度開幕獎 2026",
@@ -599,31 +610,42 @@ export const cityFood = [
         "tag": "米其林必比登",
         "name": "Starka / Szara Gęś",
         "note": "Kazimierz 與廣場",
-        "book": "must"
+        "book": "must",
+        "maps": [
+          { "name": "Starka", "url": "https://www.google.com/maps/search/?api=1&query=Starka+Restauracja+Krakow" },
+          { "name": "Szara Gęś", "url": "https://www.google.com/maps/search/?api=1&query=Szara+Ges+w+Kuchni+Krakow" }
+        ]
       },
       {
         "tag": "地窖晚餐",
         "name": "Pod Aniołami",
         "note": "燭光氛圍",
-        "book": "must"
+        "book": "must",
+        "map": "https://www.google.com/maps/search/?api=1&query=Pod+Aniolami+Krakow"
       },
       {
         "tag": "文青早午餐",
         "name": "Charlotte",
         "note": "Plac Szczepański",
-        "book": "queue"
+        "book": "queue",
+        "map": "https://www.google.com/maps/search/?api=1&query=Charlotte+Krakow"
       },
       {
         "tag": "猶太料理",
         "name": "Hamsa / Klezmer-Hois",
         "note": "Kazimierz",
-        "book": "walk"
+        "book": "walk",
+        "maps": [
+          { "name": "Hamsa", "url": "https://www.google.com/maps/search/?api=1&query=Hamsa+Hummus+and+Happiness+Krakow" },
+          { "name": "Klezmer-Hois", "url": "https://www.google.com/maps/search/?api=1&query=Klezmer-Hois+Krakow" }
+        ]
       },
       {
         "tag": "Pierogi",
         "name": "Pierogarnia Krakowiacy",
         "note": "老城手工餃子",
-        "book": "walk"
+        "book": "walk",
+        "map": "https://www.google.com/maps/search/?api=1&query=Pierogarnia+Krakowiacy+Krakow"
       },
       {
         "tag": "Zapiekanka",
@@ -657,7 +679,8 @@ export const cityFood = [
         "tag": "Sernik",
         "name": "Cukiernia Michałek",
         "note": "百年甜點老店",
-        "book": "walk"
+        "book": "walk",
+        "map": "https://www.google.com/maps/search/?api=1&query=Cukiernia+Michalek+Krakow"
       },
       {
         "tag": "必比登 2026",
@@ -683,7 +706,8 @@ export const cityFood = [
         "tag": "西里西亞",
         "name": "Konspira",
         "note": "80 年代反共主題",
-        "book": "walk"
+        "book": "walk",
+        "map": "https://www.google.com/maps/search/?api=1&query=Konspira+Wroclaw"
       },
       {
         "tag": "Pierogi",
@@ -696,25 +720,32 @@ export const cityFood = [
         "tag": "融合料理",
         "name": "Karczma Lwowska",
         "note": "波蘭/烏克蘭",
-        "book": "walk"
+        "book": "walk",
+        "map": "https://www.google.com/maps/search/?api=1&query=Karczma+Lwowska+Wroclaw"
       },
       {
         "tag": "市場午餐",
         "name": "Hala Targowa",
         "note": "PLN 20–30",
-        "book": "walk"
+        "book": "walk",
+        "map": "https://www.google.com/maps/search/?api=1&query=Hala+Targowa+Wroclaw"
       },
       {
         "tag": "精釀啤酒",
         "name": "Browar Stu Mostów",
         "note": "旗艦廠",
-        "book": "walk"
+        "book": "walk",
+        "map": "https://www.google.com/maps/search/?api=1&query=Browar+Stu+Mostow+Wroclaw"
       },
       {
         "tag": "米其林必比登",
         "name": "Pod Fredrą / Jadka",
         "note": "廣場旁傳統",
-        "book": "must"
+        "book": "must",
+        "maps": [
+          { "name": "Pod Fredrą", "url": "https://www.google.com/maps/search/?api=1&query=Restauracja+Pod+Fredra+Wroclaw" },
+          { "name": "Jadka", "url": "https://www.google.com/maps/search/?api=1&query=Jadka+Wroclaw" }
+        ]
       },
       {
         "tag": "米其林一星 2026",
@@ -740,37 +771,43 @@ export const cityFood = [
         "tag": "Lech 啤酒",
         "name": "Stary Browar",
         "note": "古釀酒廠改造",
-        "book": "walk"
+        "book": "walk",
+        "map": "https://www.google.com/maps/search/?api=1&query=Stary+Browar+Poznan"
       },
       {
         "tag": "燒烤",
         "name": "Whiskey In The Jar",
         "note": "燒烤名店",
-        "book": "must"
+        "book": "must",
+        "map": "https://www.google.com/maps/search/?api=1&query=Whiskey+in+the+Jar+Poznan"
       },
       {
         "tag": "PGI 牛角",
         "name": "Cukiernia Kandulski",
         "note": "1983 年創立的波茲南家族烘焙坊，認明 PGI 證書",
-        "book": "queue"
+        "book": "queue",
+        "map": "https://www.google.com/maps/search/?api=1&query=Cukiernia+Kandulski+Poznan"
       },
       {
         "tag": "家常",
         "name": "Pyra Bar",
         "note": "馬鈴薯佐凝乳",
-        "book": "walk"
+        "book": "walk",
+        "map": "https://www.google.com/maps/search/?api=1&query=Pyra+Bar+Poznan"
       },
       {
         "tag": "歷史名宅",
         "name": "Hotel Bazar",
         "note": "1918 年帕德瑞夫斯基陽台演說與大波蘭起義的重要歷史地點",
-        "book": "walk"
+        "book": "walk",
+        "map": "https://www.google.com/maps/search/?api=1&query=Hotel+Bazar+Poznan"
       },
       {
         "tag": "重口味",
         "name": "Stary Maglownik",
         "note": "鴨血酸湯",
-        "book": "walk"
+        "book": "walk",
+        "map": "https://www.google.com/maps/search/?api=1&query=Stary+Maglownik+Poznan"
       }
     ]
   }

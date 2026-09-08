@@ -4237,3 +4237,54 @@ nav.section-heading > a:hover {
   margin-top: 1.25rem;
   margin-bottom: 0.4rem;
 }
+
+/* --- 本頁章節：英文小標與中文標題對齊同一條基線 ---
+   置中對齊時，0.72rem 的英文與 0.95rem 的中文中心相同但基線不同，
+   看起來一高一低；改成 baseline 對齊，並用上下 padding（而非 min-height）
+   撐出 44px 觸控高度，字才會同時對齊基線又置中於膠囊內。 */
+.chapter-index ol a {
+  align-items: baseline;
+  padding-block: 0.72rem;
+  line-height: 1.4;
+}
+
+.chapter-index ol a > span {
+  line-height: inherit;
+}
+
+/* --- 餐廳地圖連結（每日順路必吃、城市主餐廳與備案餐廳）--- */
+.food-map-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+}
+
+.food-map-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.3rem 0.85rem;
+  border: 1px solid rgb(142 126 112 / 40%);
+  border-radius: 999px;
+  background: var(--paper-light);
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 160ms var(--ease), border-color 160ms var(--ease);
+}
+
+.food-map-links a:hover,
+.food-map-links a:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent-pale);
+}
+
+.food-map-note {
+  margin-bottom: 0;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+}

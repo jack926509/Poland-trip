@@ -24,6 +24,19 @@ function safeHttpsUrl(value) {
   }
 }
 
+/**
+ * 順路必吃可以是字串（沒有指定店家）或 {text, place, map, note}。
+ * 有指定店家就附 Google Maps 連結；沒有固定店址的品項只留說明，不硬給連結。
+ */
+function renderEatCard(item) {
+  if (typeof item === 'string') return `<div class="card"><p>${item}</p></div>`;
+  const link = safeHttpsUrl(item.map)
+    ? `<p class="food-map-links"><a href="${safeHttpsUrl(item.map)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.place || item.text)} 地圖 →</a></p>`
+    : '';
+  const note = item.note ? `<p class="food-map-note">${escapeHtml(item.note)}</p>` : '';
+  return `<div class="card"><p>${escapeHtml(item.text)}</p>${note}${link}</div>`;
+}
+
 function renderOperation(operation) {
   if (!operation) return '';
 
@@ -139,7 +152,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   const eatHtml = day.eat?.length ? `
     <section class="section">
       <div class="section-heading"><span class="section-num">Food</span><h2>順路必吃</h2></div>
-      <div class="grid">${day.eat.map(item => `<div class="card"><p>${item}</p></div>`).join('')}</div>
+      <div class="grid">${day.eat.map(renderEatCard).join('')}</div>
     </section>` : '';
 
   const extendHtml = day.extend?.length ? `
