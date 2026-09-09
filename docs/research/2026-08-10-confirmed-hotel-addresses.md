@@ -1,5 +1,13 @@
 # 已確認住宿官方名稱與地址查核
 
+> **2026-09-09 更新：住宿有異動。** 10/24–10/25 的第一晚華沙住宿已由
+> `ibis budget Warszawa Reduta`（官方名 ibis budget Warszawa West Station，Bitwy Warszawskiej 16 A）
+> 改訂為 **Hotel Metropol**（ul. Marszałkowska 99a）。兩段華沙住宿現為同一家飯店：
+> 10/24–10/25 一晚、10/29–10/31 兩晚。下表第一列僅保留為歷史紀錄，**不再是本趟的有效住宿**；
+> 現行 5 筆／7 晚住宿以 `src/data/trip.js` 的 `stay` 為準。
+> 連帶影響已於同日處理：地圖圖釘移除西站飯店（華沙 15 點、全站 53 點）、
+> Day 2 上車站動線改由 Warszawa Centralna／Zachodnia 依票面決定、Day 8 退房動線與伴手禮採買點改以 Centrum 為中心。
+
 - 核對日期：2026-08-10（Asia/Taipei）
 - 適用行程：2026-10-24 至 2026-10-31
 - 範圍：使用者提供的 5 筆已確認住宿。

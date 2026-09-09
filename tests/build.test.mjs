@@ -643,7 +643,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.deepEqual([
     souvenirCards.length, luxuryShopping.length, souvenirShops.length,
     shopping.length, zabkaCards.length,
-  ], [13, 2, 7, 7, 7]);
+  ], [13, 2, 8, 7, 7]);
   assert.deepEqual([
     phrases.length, about.length, preDepartureNotes.length,
     safety.emergency.length, safety.embassy.length, safety.tips.length,

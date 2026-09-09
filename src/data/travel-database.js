@@ -356,9 +356,9 @@ const officialPlaceUrls = {
 };
 
 const entranceNotesByName = {
-  '華沙蕭邦機場': '抵達後依 Arrivals 與 SKM／Railway Station 標示前往航廈下方車站；回程依電子機票確認報到區。',
-  'Warszawa Centralna': '由已確認住宿方向選最近入口；進站後以大廳電子牌確認月台，不預先假定入口或月台。',
-  'Warszawa Zachodnia': '由 Hotel Metropol 叫車或使用 Jakdojade 查當日大眾運輸前往；進站後以電子牌確認 EIP 5300 的實際月台。',
+  '華沙蕭邦機場': '抵達後依 Arrivals 與 SKM／Railway Station 標示前往航廈下方車站；S2／S3 於 Warszawa Śródmieście 下車最接近 Hotel Metropol（出站即 Metro Centrum）。回程依電子機票確認報到區。',
+  'Warszawa Centralna': '由 Hotel Metropol 沿 Marszałkowska 步行約 500 公尺／8–10 分，選當時最近的入口；進站後以大廳電子牌確認月台，不預先假定入口或月台。',
+  'Warszawa Zachodnia': '僅在票面上車站為西站時才需前往：由 Hotel Metropol 步行至 Warszawa Centralna 後轉 SKM／KM 約 7–10 分，或用 Jakdojade 查當日大眾運輸；進站後以電子牌確認 EIP 5300 的實際月台。',
   '華沙皇家城堡': '主要訪客入口在 plac Zamkowy 4；依票券時段與現場安檢標示入場。',
   '華沙老城市場廣場': '公共廣場，導航至 Rynek Starego Miasta；與 plac Zamkowy 的皇家城堡廣場是不同地點。',
   'Krakowskie Przedmieście': '公共街道，從城堡廣場沿皇家大道步行，無需入場。',
@@ -392,7 +392,7 @@ const entranceNotesByName = {
 const addressStepLabels = {
   '華沙蕭邦機場': ['抵蕭邦機場', '抵 Chopin 第一航廈', '退稅文件 + 報到 + 安檢', '★ QR 260 起飛'],
   'Warszawa Centralna': ['退房 → Warszawa Centralna', '抵華沙中央車站', '抵 Warszawa Centralna'],
-  'Warszawa Zachodnia': ['退房後步行前往 Warszawa Zachodnia', '抵 Warszawa Zachodnia'],
+  'Warszawa Zachodnia': ['抵票面上車站'],
   '華沙皇家城堡': ['★ 皇家城堡'],
   '華沙老城市場廣場': ['★ 老城廣場', '老城廣場夜燈漫步', '早餐 + 老城散步'],
   'Krakowskie Przedmieście': ['Krakowskie Przedmieście'],
@@ -460,6 +460,7 @@ export const dayOperations = {
     entryIds: ['rail-trip-tickets', 'calendar-sunday-and-all-saints', 'accommodation-confirmations'],
     note: '非營業週日；火車班次與餐廳營業當日確認。',
     addresses: [
+      address('Warszawa Centralna', 'al. Jerozolimskie 54, 00-024 Warszawa', 'Warszawa Centralna, al. Jerozolimskie 54, Warszawa'),
       address('Warszawa Zachodnia', 'Aleje Jerozolimskie 142A, 02-305 Warszawa', 'Warszawa Zachodnia, Aleje Jerozolimskie 142A, Warszawa'),
       address('Kraków Główny', 'plac Jana Nowaka-Jeziorańskiego 3, 31-154 Kraków', 'Krakow Glowny, plac Jana Nowaka-Jezioranskiego 3, Krakow'),
       address('瓦維爾大教堂', 'Wawel 3, 31-001 Kraków', 'Wawel Cathedral, Wawel 3, Krakow'),
@@ -469,11 +470,11 @@ export const dayOperations = {
       address('紡織會館 Sukiennice', 'Rynek Główny 3, 31-042 Kraków', 'Sukiennice, Rynek Glowny 3, Krakow'),
       address('辛德勒工廠', 'Lipowa 4, 30-702 Kraków', 'Oskar Schindler Enamel Factory, Lipowa 4, Krakow'),
       address('Plac Nowy', 'Plac Nowy, 31-056 Kraków', 'Plac Nowy, Krakow'),
-      accommodationAddress('warsaw-metropol-arrival', ['退房後前往 Warszawa Zachodnia']),
+      accommodationAddress('warsaw-metropol-arrival', ['退房後前往上車站']),
       accommodationAddress('krakow-stare-miasto', ['旅館寄放行李']),
     ],
     navigation: [
-      { mode: 'PKP', route: 'Warszawa Zachodnia → Kraków Główny', action: '目前採 EIP 5300 參考 08:45–10:58；10/25 換表後核實仍停靠西站，完成購票後只依票面車次、車廂與座位進站。' },
+      { mode: 'PKP', route: '華沙 → Kraków Główny', action: '目前採 EIP 5300 參考 08:45–10:58。現行班表本車先停 Warszawa Centralna（約 08:40）再停 Zachodnia（約 08:45），住宿改 Hotel Metropol 後由 Centralna 上車只需步行約 500 公尺；10/25 換表後核實實際停靠站，完成購票後只依票面車次、上車站、車廂與座位進站。' },
       { mode: '步行／市內交通', route: 'Kraków Główny → Wawel → Kazimierz → Podgórze → 辛德勒工廠', action: '先寄放行李；15:45 由老城出發，沿 Kazimierz、Podgórze 步行，17:10 前到辛德勒工廠。若延誤則用 Jakdojade 查即時市內交通。' },
     ],
     dailyAlerts: [
@@ -652,6 +653,7 @@ const unresolvedStepReasons = {
     '取行李、前往 Poznań Główny': '公寓寄放與取行李地點須先向住宿確認，再前往車站。',
     '★ 聖馬丁牛角麵包 (PGI)': '尚未選定可靠分店，待分店與營業時間確認後補入。',
     'EIC 8104 前往華沙': dynamicTransitReason,
+    '放行李後晚餐': '晚班抵達後才選店；Złote Tarasy 與 Hala Koszyki 皆在飯店步行範圍，當日確認個別店家營業與訂位後再導航。',
   },
   7: {
     '午餐（老城 → POLIN 路上）': flexibleStopReason,

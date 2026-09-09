@@ -27,6 +27,7 @@ export const souvenirShops = [
   {city:'克拉科夫', name:'Rzeczy Same Podgórze', note:'選購波蘭設計', mapUrl:'https://www.google.com/maps/search/?api=1&query=Rzeczy%20Same%20Podg%C3%B3rze%20Krak%C3%B3w'},
   {city:'華沙', name:'E.Wedel 巧克力沙龍', note:'Szpitalna 8 旗艦店', mapUrl:'https://www.google.com/maps/search/?api=1&query=Pijalnia%20Czekolady%20E.Wedel%20Szpitalna%20Warszawa'},
   {city:'華沙', name:'Cepelia Warszawa', note:'波蘭民藝品牌店', mapUrl:'https://www.google.com/maps/search/?api=1&query=Cepelia%20Warszawa'},
+  {city:'華沙', name:'Złote Tarasy（中央車站對面）', note:'距 Hotel Metropol 步行約 500 公尺，一–六約 09:00–22:00、日至 21:00；Day 8 出發前補買巧克力、Prince Polo、伏特加最順路，價格也比機場店合理。實際營業時間與個別店家以商場官網當日公告為準', mapUrl:'https://www.google.com/maps/search/?api=1&query=Z%C5%82ote%20Tarasy%20Warszawa'},
 ];
 
 export const shopping = [
