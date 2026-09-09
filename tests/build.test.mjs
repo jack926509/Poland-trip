@@ -960,11 +960,15 @@ test('Day 7 改為早上皇家城堡，並保留 POLIN 至起義博物館的移�
 
 test('尚未開賣的長途交通與天氣不假裝成已確認', () => {
   for (const train of trains) {
-    assert.match(train.status, /尚未確認|尚未訂票/);
-    // 城際火車票價未開賣，仍寫「待確認」；Auschwitz 巴士已知公開票價區間，
-    // 但購票前一樣不能當成已訂，所以要求標明「約」與購票時再確認。
-    if (train.date === '10/26') assert.match(train.price, /^約 PLN .+（購票日確認）$/);
-    else assert.match(train.price, /待/);
+    // 城際火車票價未開賣，仍寫「待確認」；Auschwitz 巴士去程班次已在官方售票頁查得，
+    // 但購票前一樣不能當成已訂。
+    if (train.date === '10/26') {
+      assert.match(train.status, /尚未購票/);
+      assert.match(train.price, /購票日確認/);
+    } else {
+      assert.match(train.status, /尚未確認|尚未訂票/);
+      assert.match(train.price, /待/);
+    }
   }
   for (const day of days) {
     assert.equal(day.weather, '尚無可靠預報；出發前 7–10 天更新');
@@ -991,7 +995,7 @@ test('四段跨城火車使用採用班次，並保留指定日待確認狀態',
 test('城際交通提供官方購票、官方時刻表與可操作的購票教學', () => {
   assert.ok(railOfficialLinks.some(item => item.url === 'https://ebilet.intercity.pl/'));
   assert.ok(railOfficialLinks.some(item => item.url === 'https://portalpasazera.pl/en/'));
-  assert.ok(railOfficialLinks.some(item => item.url.includes('lajkonikbus.eu')));
+  assert.ok(railOfficialLinks.some(item => item.url.includes('lajkonikbus.pl')));
   assert.ok(railPurchaseSteps.length >= 5);
   const html = read('practical/booking.html');
   for (const item of railOfficialLinks) {
@@ -1013,11 +1017,13 @@ test('Auschwitz 導覽已訂 10:30，巴士依此回推且指定日仍未確認'
   assert.ok(day3.steps.some(step => step.t === '10:30' && step.label.includes('已訂妥')));
   assert.ok(day3.mustBook.some(item => item.includes('已訂妥') && item.includes('10:30')));
   assert.ok(day3.hardConstraints.some(item => item.includes('09:45')));
-  // 去程已選定 07:35，但必須同時標明尚未證實；回程改列選項且以 14:15 為門檻
-  const outbound = day3.steps.find(step => step.t.startsWith('07:35'));
-  assert.ok(outbound, '去程未採用 07:35');
-  assert.match(outbound.sub, /尚未由業者售票頁證實/);
-  assert.match(outbound.sub, /08:35/, '未寫明不可退到 08:35 的那班');
+  // 去程已由官方售票頁查得 10/26 實際班次 07:10 → 08:35
+  const outbound = day3.steps.find(step => step.t === '07:10');
+  assert.ok(outbound, '去程未採用官方售票頁查得的 07:10');
+  assert.match(outbound.sub, /lajkonikbus\.pl/, '未註明查證來源');
+  assert.match(outbound.sub, /08:25/, '未說明為何不採用 08:25 那班');
+  assert.match(outbound.cost, /25\.00/);
+  assert.ok(day3.steps.some(step => step.t === '08:35'), '缺少 08:35 抵達步驟');
   assert.ok(day3.steps.some(step => step.t === '14:15 後'));
   assert.ok(day3.returnOptions?.length >= 3, '回程選項不足');
   for (const option of day3.returnOptions) {
@@ -1026,14 +1032,20 @@ test('Auschwitz 導覽已訂 10:30，巴士依此回推且指定日仍未確認'
     }
     assert.match(option.url, /^https:\/\//);
   }
-  // 已確定趕不上的兩班必須明講
+  // 已確定趕不上的班次必須明講；07:35 這班並不存在
   assert.match(JSON.stringify(day3), /13:45/);
   assert.match(JSON.stringify(day3), /14:00/);
+  assert.ok(!day3.steps.some(step => step.t.includes('07:35')), '07:35 這班並不存在，不應排進行程');
+  assert.equal(day3.train.dep, '07:10');
+  assert.equal(day3.train.arr, '08:35');
   const day3Html = read('day-03.html');
   assert.ok(day3Html.includes('回程選項'));
   for (const option of day3.returnOptions) assert.ok(day3Html.includes(option.name), `Day 3 頁缺回程選項：${option.name}`);
-  assert.match(day3.warn, /不是 10\/26 已確認班次/);
-  assert.equal(bus.status, '指定日尚未確認');
+  // 去程已用官方售票頁核對；回程仍須自行反向查詢，警語要講清楚這條界線
+  assert.match(day3.warn, /官方售票頁 lajkonikbus\.pl 查得 10\/26 實際班次/);
+  assert.match(day3.warn, /尚未經官方售票頁核對/);
+  assert.match(bus.status, /尚未購票/);
+  assert.equal(bus.saleCheckedAt, '2026-09-09');
   // 已知會趕不上的班次必須明講不可採用
   assert.match(JSON.stringify(day3.steps), /08:35/);
 });
