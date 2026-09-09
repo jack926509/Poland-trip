@@ -145,8 +145,21 @@ function restaurantRecords(data, lookup) {
       cityRef: item.city,
       name: item.name,
       detail: compact([item.address, item.hours, item.feature]),
+      mapUrl: item.mapUrl,
       keywords: [item.url, '已查營業時間'],
     });
+  }
+
+  for (const [mapKey, items] of Object.entries(data.snacksAndCafes || {})) {
+    for (const item of items) {
+      add({
+        cityRef: mapKey,
+        name: item.name,
+        detail: compact([item.type, item.note, item.hours]),
+        mapUrl: item.map,
+        keywords: [item.type, '小吃', '咖啡廳', '牛奶吧'],
+      });
+    }
   }
 
   return [...restaurants.values()];

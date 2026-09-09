@@ -45,8 +45,8 @@ export const days = [
       {text:'Wedel 熱巧克力 @ E. Wedel Pijalnia', place:'Pijalnia Czekolady E.Wedel', map:'https://www.google.com/maps/search/?api=1&query=Pijalnia+Czekolady+E.Wedel+Warszawa'},
     ],
     backup: [
-      {label:'下雨備案', where:'科學文化宮 30F 觀景台', why:'票價出發前依官方售票頁重查 · 室內 + 360° 城景，老城廣場走路 12 分'},
-      {label:'時差太累', where:'Łazienki 公園溫室', why:'室內展館 + 蕭邦像，免費，傍晚前可走'},
+      {label:'下雨備案', where:'科學文化宮 30F 觀景台', why:'票價出發前依官方售票頁重查 · 室內 + 360° 城景，老城廣場走路 12 分', map:'https://www.google.com/maps/search/?api=1&query=Pa%C5%82ac%20Kultury%20i%20Nauki%2C%20plac%20Defilad%201%2C%20Warszawa'},
+      {label:'時差太累', where:'Łazienki 公園溫室', why:'室內展館 + 蕭邦像，免費，傍晚前可走', map:'https://www.google.com/maps/search/?api=1&query=%C5%81azienki%20Kr%C3%B3lewskie%2C%20Agrykola%201%2C%20Warszawa'},
     ],
     practical: [
       {tag:'寄物', name:'飯店櫃檯優先', note:'Hotel Metropol 櫃檯提供行李寄放，15:00 前抵達先寄物；車站寄物櫃只作備案，尺寸、空位與費率會變動'},
@@ -81,14 +81,14 @@ export const days = [
       {t:'19:45', label:'★ Kazimierz Plac Nowy zapiekanka 晚餐', sub:'Endzior / Krzysiek', cost:'PLN 18–25'},
     ],
     eat: [
-      {text:'Obwarzanek 圓圈麵包 (PGI)', note:'老城與 Kazimierz 街邊推車皆有售，無固定店址'},
+      {text:'Obwarzanek 圓圈麵包 (PGI)', place:'中央廣場周邊推車', note:'老城與 Kazimierz 街邊推車皆有售，無固定店址；地圖連到推車最密集的中央廣場一帶，認 PGI 標示', map:'https://www.google.com/maps/search/?api=1&query=obwarzanek+krakowski+Rynek+G%C5%82%C3%B3wny+Krak%C3%B3w'},
       {text:'Zapiekanka @ Plac Nowy 圓亭', place:'Okrąglak, Plac Nowy', map:'https://www.google.com/maps/search/?api=1&query=Okraglak+Plac+Nowy+Krakow'},
       {text:'Klezmer-Hois 猶太料理', place:'Klezmer-Hois（Kazimierz）', map:'https://www.google.com/maps/search/?api=1&query=Klezmer-Hois+Krakow'},
     ],
     warn: '❗瓦維爾城堡尚未訂票；辛德勒工廠個人網路票在參觀日前 90 天 09:00 開放，10/25 已可在官方售票頁查／購。瓦維爾大教堂週日 12:30–17:00；城堡改走短路線並於 15:00 前離開，保留經 Kazimierz、Podgórze 步行到辛德勒工廠的時間。辛德勒工廠週二至週日 09:00–20:00、最後入場 18:30，17:30 屬可行時段。10/25 為非營業週日，多數一般商店關閉；餐廳等法定例外是否營業仍以店家公告為準。',
     backup: [
       {label:'辛德勒 17:30 滿場', where:'改訂 18:30 最後入場，或往前壓到下午較早時段（如 14:00）', why:'最後入場其實是 18:30，比原記錄多一小時可調度；mhk.pl/en 開放預約後立即下單'},
-      {label:'雨天替代 Wawel', where:'地下市集博物館 Rynek Underground', why:'廣場下方歷史展（Rynek Główny 1），PLN 45／35，最後入場為閉館前 75 分鐘。官方 2026 閉館日不含 10/25；週日時間以官網當日為準。另註：每週二免費（免費日不可預約、現場限量、每人限領 5 張），每月第二個週一休館'},
+      {label:'雨天替代 Wawel', where:'地下市集博物館 Rynek Underground', map:'https://www.google.com/maps/search/?api=1&query=Rynek%20Underground%2C%20Rynek%20G%C5%82%C3%B3wny%201%2C%20Krak%C3%B3w', why:'廣場下方歷史展（Rynek Główny 1），PLN 45／35，最後入場為閉館前 75 分鐘。官方 2026 閉館日不含 10/25；週日時間以官網當日為準。另註：每週二免費（免費日不可預約、現場限量、每人限領 5 張），每月第二個週一休館'},
     ],
     practical: [
       {tag:'寄物', name:'Kraków Główny', note:'優先詢問旅館寄放；車站寄物設施的空位與費率以當日現場為準'},
@@ -99,28 +99,64 @@ export const days = [
   {
     n: 3, date: '10/26 (一)', city: '克拉科夫',
     title: 'Auschwitz-Birkenau · 一日往返',
-    headline: '波蘭最沉重也最重要的一天',
+    headline: '已訂妥 10:30 英文 educator 導覽（3 小時 45 分）；巴士依此重排',
     tag: 'Memorial',
     intensity: '中高',
-    hardConstraints: ['導覽開團前 30 分鐘抵達', '晚間不再加博物館或長距離步行'],
-    mustBook: ['❗需查／購 · Auschwitz 官方英文導覽（指定場次庫存以官方系統為準）', '❗指定日待確認 · Lajkonik 往返巴士'],
+    hardConstraints: ['09:45 前抵達 Muzeum Auschwitz（官方要求入場時段前 30 分鐘完成安檢）', '10:30 英文 educator 導覽已訂妥，遲到不予補場', '晚間不再加博物館或長距離步行'],
+    mustBook: ['✅ 已訂妥 · Auschwitz 官方英文導覽 10/26 10:30（個人 educator 導覽，約 3 小時 45 分，2 人）', '❗指定日待確認 · Lajkonik 往返巴士'],
     compressible: ['回克拉科夫後晚餐形式', '晚間自由活動'],
     weather: '尚無可靠預報；出發前 7–10 天更新',
-    // Lajkonik 現行班表可作規劃參考，但 10/26 指定日仍須等業者售票頁確認。
-    train: {type:'BUS · Lajkonik', leg:'指定日待複查', from:'Kraków MDA', to:'Muzeum Auschwitz', dep:'參考 07:10', arr:'參考 08:35', dur:'約 1h25', price:'待業者開放 10/26 售票'},
+    // 導覽已訂妥 10:30，巴士以「09:45 前抵達」回推。
+    // 2026-09-09 以公開班表資料點重算：現行班表 Kraków MDA 06:20 起約每小時一班，
+    // 已知資料點 08:35→約 10:00（太晚）、08:40、09:50；回程已知 08:20、11:30、13:45→15:10、14:00、16:30，末班約 18:15–19:15。
+    // 指定日班次仍須在業者售票頁確認，這裡只寫目標時段。
+    train: {type:'BUS · Lajkonik', leg:'目標班次／指定日待確認', from:'Kraków MDA（Bosacka 18）', to:'Oświęcim Muzeum Auschwitz', dep:'目標 08:00–08:15', arr:'目標 09:25–09:45', dur:'約 1h25', price:'約 PLN 22–25 單程（依售票頁）'},
     steps: [
-      {t:'參考 07:10', label:'Lajkonik · 克拉科夫 → 奧斯威辛', sub:'Kraków MDA 地下 D10 → Muzeum Auschwitz；現行班表參考，10/26 指定日須再確認', cost:'待確認', dur:'約 1h25'},
-      {t:'參考 08:35', label:'抵 Auschwitz I', sub:'預留約 85 分鐘完成寄物、安檢、領耳機與提前報到', dur:'約 1h25'},
-      {t:'10:00', label:'★ 英文官方導覽', sub:'一館 + 比克瑙 · 約 3.5 h；票價依官方訂票頁', cost:'依官方訂票頁', dur:'3.5 h'},
-      {t:'13:30', label:'導覽結束'},
-      {t:'參考 15:30', label:'Lajkonik 巴士返克拉科夫', sub:'13:45 班次緩衝過短，不採用；10/26 指定日仍須再確認', cost:'待確認', dur:'約 1h25'},
-      {t:'參考 16:55', label:'抵 Kraków MDA · 休息'},
+      {t:'07:15', label:'Kraków MDA 報到', sub:'Bosacka 18 巴士站（Kraków Główny 後方步行約 5 分）；月台以現場公告為準，現行班表常見 D9／D10', dur:'20 min 緩衝'},
+      {t:'07:35（首選）', label:'Lajkonik · 克拉科夫 → 奧斯威辛', sub:'車程約 1h25、票價約 PLN 22–25，約 09:00 抵達。⚠️ 07:35 這班尚未由業者售票頁證實存在，只查到「06:20 起約每小時一班」的通則；若當日沒有 07:35，就往前選 07:00 前後那班，絕不可改搭 08:35（約 10:00 才到，趕不上安檢）', cost:'約 PLN 22–25', dur:'約 1h25'},
+      {t:'約 09:00', label:'抵 Auschwitz I', sub:'下車處就在博物館停車場對面；先用免費寄物櫃放大件行李，再過安檢（機場式檢查，可能排隊）。距 10:30 入場約有 90 分鐘，足以吸收巴士誤點', dur:'90 min 緩衝'},
+      {t:'10:30', label:'★ 英文官方導覽（已訂妥）', sub:'個人 educator 導覽 · 一館 + 比克瑙 · 官方標示約 3 小時 45 分；入場憑電子入場證＋證件，兩者缺一不可', cost:'已付款', dur:'3h45'},
+      {t:'約 14:15', label:'導覽結束', sub:'比克瑙結束後依接駁巴士回一館，再走到停車站牌'},
+      {t:'14:15 後', label:'回程巴士返克拉科夫', sub:'依下方「回程選項」擇一；13:45 與 14:00 兩班在導覽結束前就開走，不可採用', cost:'約 PLN 20–29', dur:'約 1h–1h25'},
+      {t:'約 16:30–18:00', label:'抵 Kraków MDA · 休息'},
       {t:'18:00', label:'安靜晚餐沉澱情緒', cost:'PLN 60–100'},
     ],
-    warn: '❗最急一項。所有入場證只在 visit.auschwitz.org 線上提供，入口不售票；10 月入場時間為 07:30–17:00。Lajkonik 07:10 去、15:30 回是 2026-08-09 查得的現行班表參考，不是 10/26 已確認班次，付款前必須再查。',
+    eat: [
+      {text:'Pierogi 家常口味 @ Pierożki u Vincenta', place:'Pierożki u Vincenta（Kazimierz）', note:'Kazimierz 小店，份量與價位親民，適合當天不想再走遠的安靜晚餐；出發前確認當日營業', map:'https://www.google.com/maps/search/?api=1&query=Piero%C5%BCki%20u%20Vincenta%2C%20B%C5%82ogos%C5%82awionej%20Bronis%C5%82awy%2C%20Krak%C3%B3w'},
+      {text:'回程後的一杯咖啡 @ Karma Coffee Roasters', place:'Karma Coffee Roasters（Krupnicza）', note:'克拉科夫第一家精品咖啡店，公開資料列一–五 08:00–20:00、六日 10:00–19:00；巴士回到市區後可先坐下沉澱', map:'https://www.google.com/maps/search/?api=1&query=Karma%20Coffee%20Krupnicza%20Krak%C3%B3w'},
+    ],
+    warn: '✅ 導覽已訂妥：10/26 10:30 英文個人 educator 導覽（Zwiedzanie indywidualne z edukatorem），官方標示約 3 小時 45 分，2 人。官方明載「入場證需搭配身分證件」，請把電子入場證存離線並帶護照。⏳ 仍待處理的是巴士：官方要求入場時段前 30 分鐘到場完成安檢，因此必須在 09:45 前抵達，回程則要挑 14:15 之後的班次。去程已選定 07:35（約 09:00 抵，留 90 分鐘緩衝），但這個發車時間尚未由業者售票頁證實；若當日沒有 07:35 就往前選，不可退到 08:35。回程選項見下方「回程選項」。2026-09-09 查得的現行班表資料點——去程 Kraków MDA 06:20 起約每小時一班（已知 08:35 約 10:00 抵、08:40、09:50）；回程 Oświęcim Muzeum 已知 08:20、11:30、13:45（15:10 抵）、14:00、16:30，末班約 18:15–19:15，單程約 PLN 22–25。這些是第三方彙整的現行班表，不是 10/26 已確認班次，購票前務必在業者售票頁核對。',
+    // 2026-09-09 查得的回程選項。導覽約 14:15 結束，全部以「14:15 之後發車」為門檻。
+    // 第一方售票頁在本次環境無法連線，時刻皆為公開資料彙整，購票前必須逐項核對。
+    returnOptions: [
+      {
+        rank: '首選（待證實）', name: 'Lajkonik 15:00–16:00 之間的班次',
+        detail: '由 Oświęcim Muzeum 站牌直接發車，約 1h25 到 Kraków MDA，單程約 PLN 22–25。導覽 14:15 結束後有 45–105 分鐘可以走回站牌與休息，節奏最順。',
+        status: '⚠️ 尚未證實 10/26 這個時段有班次——公開資料只查到 13:45、14:00、16:30 三個下午資料點，中間是否有車必須到業者售票頁確認。',
+        url: 'https://www.lajkonikbus.eu/oswiecim-krakow.html',
+      },
+      {
+        rank: '確定可行（要久等）', name: 'Lajkonik 16:30 → 約 17:55 抵 Kraków MDA',
+        detail: '公開資料明確列出的班次，同樣由博物館站牌發車。缺點是導覽結束後要等約 2 小時 15 分。',
+        status: '✅ 現行班表有此班次；10/26 是否照開仍須核對。等待時間可用在訪客中心書店與紀念區。',
+        url: 'https://www.lajkonikbus.eu/oswiecim-krakow.html',
+      },
+      {
+        rank: '彈性備案', name: '火車 Oświęcim → Kraków Główny',
+        detail: '車程約 1 小時（區間車約 1h15），票價約 PLN 20–29，班次比巴士密。但 Oświęcim 火車站距博物館約 1.6 公里：步行約 20 分，或搭市區 0／2／3／8 路到「Muzeum I」約 4 分，4–10 月另有 M 線接駁。',
+        status: '⚠️ 現行鐵路班表只到 2026-10-25，你 10/26 出發時已換新表，時刻必須重查。',
+        url: 'https://portalpasazera.pl/en/',
+      },
+      {
+        rank: '其他業者', name: 'Przewóz Osób JS／GT TRANS／Lewański',
+        detail: '同樣行駛 Oświęcim ⇄ Kraków，班次可補 Lajkonik 的空檔；但多數停靠 Oświęcim 市區站而非博物館門口，需先確認上車點。',
+        status: '⚠️ 班表與上車點未逐家確認，請在 busy-krk.pl 或各業者頁面比對。',
+        url: 'https://www.busy-krk.pl/en/oswiecim-krakow/',
+      },
+    ],
     backup: [
-      {label:'戶外為主 · 必備雨具', where:'比克瑙營區戶外 80%', why:'導覽風雨無阻，請穿防水鞋 + 帶折傘'},
-      {label:'若無導覽額度', where:'Galicia Jewish Museum + Kazimierz 室內行程', why:'Galicia Jewish Museum 每日 10:00–18:00、全票 35 PLN；MOCAK 週一休館，10/26 不列入備案。出發前仍須重查臨時閉館。'},
+      {label:'戶外為主 · 必備雨具', where:'比克瑙營區戶外 80%', map:'https://www.google.com/maps/search/?api=1&query=Auschwitz%20II%20Birkenau%2C%20O%C5%9Bwi%C4%99cim', why:'導覽風雨無阻，請穿防水鞋 + 帶折傘'},
+      {label:'若無導覽額度', where:'Galicia Jewish Museum + Kazimierz 室內行程', map:'https://www.google.com/maps/search/?api=1&query=Galicia%20Jewish%20Museum%2C%20Dajwor%2018%2C%20Krak%C3%B3w', why:'Galicia Jewish Museum 每日 10:00–18:00、全票 35 PLN；MOCAK 週一休館，10/26 不列入備案。出發前仍須重查臨時閉館。'},
     ],
   },
   {
@@ -154,7 +190,7 @@ export const days = [
     warn: '❗鹽礦與城際火車皆尚未訂。鹽礦英文場、實際票價與庫存須在官方日期選擇器確認；IC 3600 的 17:55–20:52 是目前採用的參考班次，不是已購票。若指定日班表不同，先保留 17:20 抵站與住宿接駁緩衝再重排。',
     backup: [
       {label:'鹽礦客滿或超時', where:'先查當日英文場與 PKP 實際班次再調整', why:'10/27 城際班表尚未確定，不能先假定末班車或緩衝時間'},
-      {label:'雨天備案', where:'鹽礦本身就在地下 135m', why:'地下約 17–18°C、防雨遮陽最佳備案'},
+      {label:'雨天備案', where:'鹽礦本身就在地下 135m', map:'https://www.google.com/maps/search/?api=1&query=Kopalnia%20Soli%20Wieliczka%2C%20Dani%C5%82owicza%2010%2C%20Wieliczka', why:'地下約 17–18°C、防雨遮陽最佳備案'},
       {label:'想留更多 Kazimierz 時間', where:'PKP 班次確定後，才延伸散步或採購時間', why:'16:00 先收尾；不得壓縮取行李與 17:20 抵站緩衝'},
     ],
     practical: [
@@ -191,8 +227,8 @@ export const days = [
     ],
     warn: '❗此日兩項皆尚未訂票。百年廳的 10/28 內部參觀狀態須以官方 availability calendar 確認，未確認前不販售或保證室內行程。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，因此安排 16:15–17:15 在座堂島等候，不再把 16:45 寫成確定時刻。',
     backup: [
-      {label:'雨天備案', where:'Sky Tower 觀景台', why:'開放時間、票價與能見度以官方當日公告為準，不用舊票價規劃'},
-      {label:'點燈師看不到', where:'廣場連拱廊 + 紡織會館內部市集', why:'若日落後遇雨遮蔽煤氣燈，回廣場喝熱酒（PLN 12）'},
+      {label:'雨天備案', where:'Sky Tower 觀景台', map:'https://www.google.com/maps/search/?api=1&query=Sky%20Tower%2C%20Powsta%C5%84c%C3%B3w%20%C5%9Al%C4%85skich%2095%2C%20Wroc%C5%82aw', why:'開放時間、票價與能見度以官方當日公告為準，不用舊票價規劃'},
+      {label:'點燈師看不到', where:'廣場連拱廊 + 紡織會館內部市集', map:'https://www.google.com/maps/search/?api=1&query=Rynek%20Wroc%C5%82aw', why:'若日落後遇雨遮蔽煤氣燈，回廣場喝熱酒（PLN 12）'},
       {label:'百年廳未開放內部時的替代', where:'Panorama 全景畫後直接回老城，多留時間給小矮人與座堂島', why:'若 official availability calendar 顯示內部不可參觀，省下的時間可補足點燈前空檔'},
     ],
   },
@@ -221,13 +257,13 @@ export const days = [
       {t:'20:30', label:'放行李後晚餐', sub:'車站對面 Złote Tarasy（一–六約至 22:00、日至 21:00）最省時；想坐久一點可走約 10–15 分到 Hala Koszyki 美食大廳（公告營業至凌晨 1:00）。當日仍先確認個別店家營業與是否需訂位', cost:'PLN 60–120', dur:'1–1.5 h'},
     ],
     eat: [
-      {text:'Rogal Świętomarciński (PGI) ⭐', note:'認證店家眾多，出發前依官方認證名單就近選擇'},
+      {text:'Rogal Świętomarciński (PGI) ⭐', place:'Cukiernia Kandulski（示範分店）', note:'認證店家眾多，出發前依官方認證名單就近選擇；地圖先連到示範分店，選定分店後再改導航', map:'https://www.google.com/maps/search/?api=1&query=Cukiernia+Kandulski+Pozna%C5%84'},
       {text:'Pyry z gzikiem @ Pyra Bar', place:'Pyra Bar', map:'https://www.google.com/maps/search/?api=1&query=Pyra+Bar+Poznan'},
       {text:'晚間回華沙的宵夜備案', note:'Złote Tarasy 或 Hala Koszyki 皆為晚班抵達可行選項；Bib Gourmand 的 WANDAL 就在 Złote Tarasy，想吃需另行訂位', map:'https://www.google.com/maps/search/?api=1&query=Hala+Koszyki+Warszawa'},
     ],
     backup: [
-      {label:'雨天想看山羊鐘', where:'可頌博物館官方售票頁', why:'週四英語場、價格與庫存都須依 10/29 官方售票系統確認；未確認前改以 Stary Browar 或帝王城堡為室內備案'},
-      {label:'無合適英語場', where:'Stary Browar 商場 + 帝王城堡內部', why:'兩處各有室內空間，但館際移動需走戶外；下雨仍需雨具並預留交通時間'},
+      {label:'雨天想看山羊鐘', where:'可頌博物館官方售票頁', map:'https://www.google.com/maps/search/?api=1&query=Rogalowe%20Muzeum%20Poznania%2C%20Klasztorna%2023%2C%20Pozna%C5%84', why:'週四英語場、價格與庫存都須依 10/29 官方售票系統確認；未確認前改以 Stary Browar 或帝王城堡為室內備案'},
+      {label:'無合適英語場', where:'Stary Browar 商場 + 帝王城堡內部', map:'https://www.google.com/maps/search/?api=1&query=Stary%20Browar%2C%20P%C3%B3%C5%82wiejska%2042%2C%20Pozna%C5%84', why:'兩處各有室內空間，但館際移動需走戶外；下雨仍需雨具並預留交通時間'},
     ],
   },
   {
@@ -256,14 +292,14 @@ export const days = [
     ],
     warn: '❗四項皆尚未訂。皇家城堡已由官方確認二–日 10:00–18:00、最後入場 17:00；本行程採約 60 分鐘 Royal Route，避免與午餐及館際移動重疊。POLIN 週五 10:00–18:00，主展最後入場為閉館前 2 小時。起義博物館票價 35／30，個人免費日為週一（非週四，官方公告）；10/30 是週五，照常收費，實際可售時段仍以官方票頁為準。蕭邦博物館已由蕭邦研究所公告 2026 全年整修閉館、預計 2027 年 1 月重開，本趟不列入行程。',
     extend: [
-      {label:'Bulwary Wiślane 維斯瓦河畔', when:'21:00 後老城散步延伸', why:'河濱步道 + 沙灘酒吧，皇家城堡步行 10–15 分，適合晚餐後收尾散步，免費'},
-      {label:'Neon Museum 霓虹燈博物館', when:'若提前結束起義博物館可插入', why:'已遷入科學文化宮 4 樓（Marszałkowska 入口），共產時期霓虹招牌收藏，PLN 25／優待 18，可與觀景台一起看'},
-      {label:'Praga 區塗鴉與 Koneser 舊釀酒廠', when:'午餐後彈性時段', why:'起義博物館到皇家城堡之間若時間寬裕，可繞道河對岸 Praga 感受工業改造街區，步行或電車皆可'},
-      {label:'科學文化宮 30F 觀景台夜景版', when:'起義博物館後、晚餐前', why:'票價出發前依官方售票頁重查；一般售票資訊至 20:00，是否有晚間特別時段仍看當日公告'},
+      {label:'Bulwary Wiślane 維斯瓦河畔', when:'21:00 後老城散步延伸', map:'https://www.google.com/maps/search/?api=1&query=Bulwary%20Wi%C5%9Blane%2C%20Warszawa', why:'河濱步道 + 沙灘酒吧，皇家城堡步行 10–15 分，適合晚餐後收尾散步，免費'},
+      {label:'Neon Museum 霓虹燈博物館', when:'若提前結束起義博物館可插入', map:'https://www.google.com/maps/search/?api=1&query=Neon%20Muzeum%2C%20plac%20Defilad%201%2C%20Warszawa', why:'已遷入科學文化宮 4 樓（Marszałkowska 入口），共產時期霓虹招牌收藏，PLN 25／優待 18，可與觀景台一起看'},
+      {label:'Praga 區塗鴉與 Koneser 舊釀酒廠', when:'午餐後彈性時段', map:'https://www.google.com/maps/search/?api=1&query=Centrum%20Praskie%20Koneser%2C%20plac%20Konesera%202%2C%20Warszawa', why:'起義博物館到皇家城堡之間若時間寬裕，可繞道河對岸 Praga 感受工業改造街區，步行或電車皆可'},
+      {label:'科學文化宮 30F 觀景台夜景版', when:'起義博物館後、晚餐前', map:'https://www.google.com/maps/search/?api=1&query=Pa%C5%82ac%20Kultury%20i%20Nauki%2C%20plac%20Defilad%201%2C%20Warszawa', why:'票價出發前依官方售票頁重查；一般售票資訊至 20:00，是否有晚間特別時段仍看當日公告'},
     ],
     backup: [
       {label:'三館太累', where:'保留已訂時段，POLIN 與起義擇一深看', why:'兩館內容都沉重；不要犧牲已確認的皇家城堡上午時段'},
-      {label:'天氣轉壞', where:'科學文化宮 30 樓觀景台（室內）', why:'票價出發前依官方售票頁重查 · 45 min · 直通老城地鐵，雨天備案'},
+      {label:'天氣轉壞', where:'科學文化宮 30 樓觀景台（室內）', map:'https://www.google.com/maps/search/?api=1&query=Pa%C5%82ac%20Kultury%20i%20Nauki%2C%20plac%20Defilad%201%2C%20Warszawa', why:'票價出發前依官方售票頁重查 · 45 min · 直通老城地鐵，雨天備案'},
     ],
   },
   {
@@ -285,8 +321,8 @@ export const days = [
       {t:'14:40', label:'★ QR 260 起飛', sub:'WAW → DOH → HKG → TPE'},
     ],
     backup: [
-      {label:'班機提早 2 h', where:'蕭邦機場 1F Costa Coffee · 觀景窗', why:'退稅 + 安檢順可能 12:30 就過關，1F 貴賓區外有平價咖啡'},
-      {label:'紀念品最後採買', where:'先在飯店旁 Złote Tarasy 補齊，機場店只作最後備案', why:'Złote Tarasy 就在 Warszawa Centralna 對面、距 Hotel Metropol 約 500 公尺，一–六約 09:00 開門，退房前後順路可買；機場 1F 的 Wedel、Krówki 方便但價差約 +10–15%'},
+      {label:'班機提早 2 h', where:'蕭邦機場 1F Costa Coffee · 觀景窗', map:'https://www.google.com/maps/search/?api=1&query=Warsaw%20Chopin%20Airport%20Terminal%20A', why:'退稅 + 安檢順可能 12:30 就過關，1F 貴賓區外有平價咖啡'},
+      {label:'紀念品最後採買', where:'先在飯店旁 Złote Tarasy 補齊，機場店只作最後備案', map:'https://www.google.com/maps/search/?api=1&query=Z%C5%82ote%20Tarasy%2C%20Z%C5%82ota%2059%2C%20Warszawa', why:'Złote Tarasy 就在 Warszawa Centralna 對面、距 Hotel Metropol 約 500 公尺，一–六約 09:00 開門，退房前後順路可買；機場 1F 的 Wedel、Krówki 方便但價差約 +10–15%'},
     ],
   },
 ];
@@ -353,7 +389,7 @@ export const stay = [
 
 export const trains = [
   {seg:'Warszawa Zachodnia → Kraków Główny', date:'10/25', type:'EIP 5300', saleOpens:'2026-09-25', saleCheckedAt:'2026-09-08', dep:'08:45', arr:'10:58', dur:'2h13', price:'票價待確認', status:'參考班次／尚未訂票', note:'一等艙建議；本趟安排頭等艙體驗。現行班表本車先停 Warszawa Centralna（約 08:40）再停 Zachodnia；住宿改為 Hotel Metropol 後由 Centralna 上車只需步行 500 公尺，購票時優先比較 Centralna 出發的票價與座位。10/25 換表後仍須確認實際停靠站。'},
-  {seg:'Kraków MDA ⇄ Muzeum Auschwitz', date:'10/26', type:'BUS · Lajkonik', leg:'現行班表參考', dep:'參考 07:10', arr:'參考 16:55 回抵', dur:'單程約 1h25', price:'待業者開放 10/26 售票', status:'指定日尚未確認'},
+  {seg:'Kraków MDA ⇄ Oświęcim Muzeum Auschwitz', date:'10/26', type:'BUS · Lajkonik', leg:'依已訂妥的 10:30 導覽回推', dep:'去程選定 07:35（約 09:00 抵）', arr:'回程 14:15 之後，見 Day 3 回程選項', dur:'單程約 1h25', price:'約 PLN 22–25（購票日確認）', status:'指定日尚未確認', note:'導覽 10:30 開始、官方要求提前 30 分完成安檢，故須 09:45 前抵達。去程採 07:35，但公開資料只查到「06:20 起約每小時一班」的通則，未證實 07:35 確實存在；若當日沒有就往前選，不可退到 08:35（約 10:00 才到）。回程已知資料點：13:45（15:10 抵）與 14:00 都在導覽結束前開走、16:30 可搭但要等約 2h15，末班約 18:15–19:15。'},
   {seg:'Kraków Główny → Wrocław Główny', date:'10/27', type:'IC 3600 Siemiradzki', saleOpens:'2026-09-27', saleCheckedAt:'2026-09-08', dep:'17:55', arr:'20:52', dur:'2h57', price:'票價待確認', status:'參考班次／尚未訂票', note:'二等艙建議；一等艙可選。17:20 前到站。'},
   {seg:'Wrocław Główny → Poznań Główny', date:'10/28', type:'Baltic Express 260', saleOpens:'2026-09-28', saleCheckedAt:'2026-09-08', dep:'19:10', arr:'20:29', dur:'1h19', price:'票價待確認', status:'參考班次／尚未訂票', note:'二等艙建議。18:35 前到站。'},
   {seg:'Poznań Główny → Warszawa Centralna', date:'10/29', type:'EIC 8104 Bolesław Prus', saleOpens:'2026-09-25', saleCheckedAt:'2026-09-08', dep:'17:40', arr:'20:00', dur:'2h20', price:'票價待確認', status:'參考班次／尚未訂票', note:'適合體驗一等艙；若 10/25 已搭 EIP 一等艙，可依價差改選二等艙。17:05 前到站。'},
@@ -378,7 +414,7 @@ export const railOfficialLinks = [
   {
     name: 'Lajkonik · Auschwitz 巴士班表與購票',
     url: 'https://www.lajkonikbus.eu/krakow-oswiecim.html',
-    note: '查 Kraków MDA → Muzeum Auschwitz；回程請由同站切換 Oświęcim → Kraków，10/26 指定日付款前再核對。',
+    note: '查 Kraków MDA → Muzeum Auschwitz；回程請由同站切換 Oświęcim → Kraków。導覽已訂 10:30，去程須 09:45 前抵達、回程須 14:15 之後發車，10/26 指定日付款前再核對。',
   },
 ];
 
@@ -411,9 +447,9 @@ export const railPurchaseSteps = [
 
 export const bookingTiers = [
   {tier:'第一優先', note:'❗全部尚未訂 · 先以官方售票系統確認指定日期與庫存', items:[
-    {name:'Auschwitz 官方英文導覽（僅線上入場證；指定場次庫存以系統為準）', url:'https://visit.auschwitz.org/'},
+    {name:'Auschwitz 官方英文導覽（10/26 10:30 已訂妥）', url:'https://visit.auschwitz.org/'},
     {name:'Wieliczka 鹽礦英文團（現在即可訂）', url:'https://www.wieliczka-saltmine.com/'},
-    {name:'Lajkonik 往返巴士（10/26 指定日班次待確認）', url:'https://www.lajkonikbus.eu/krakow-oswiecim.html'},
+    {name:'Lajkonik 往返巴士（去程須 09:45 前抵達、回程須 14:15 後發車）', url:'https://www.lajkonikbus.eu/krakow-oswiecim.html'},
     {name:'華沙 → 克拉科夫火車', url:'https://www.intercity.pl/en/'},
     {name:'克拉科夫 → 樂斯拉夫火車', url:'https://www.intercity.pl/en/'},
     {name:'樂斯拉夫 → 波茲南火車', url:'https://www.intercity.pl/en/'},
@@ -442,10 +478,10 @@ export const bookingTiers = [
 export const todoGroups = [
   {
     id: 'rail', title: '城際交通', eyebrow: 'Rail · 5 項',
-    intro: '四段 PKP 已選定規劃班次，一組 Auschwitz 往返巴士採現行班表參考；尚未完成指定日確認或購票前，不把時刻、車種或月台當成已確認。',
+    intro: '四段 PKP 已選定規劃班次；Auschwitz 導覽已訂妥 10/26 10:30，往返巴士改依該時段回推目標班次。尚未完成指定日確認或購票前，不把時刻、車種或月台當成已確認。',
     items: [
       {checkedAt:null, recheckAt:null, date:'10/25', name:'EIP 5300｜華沙 → Kraków Główny', status:'參考班次／尚未訂票', action:'核對 10/25 換表後的實際停靠站，比較由 Warszawa Centralna（步行可達飯店）與 Zachodnia 上車的票價與座位，確認 08:45–10:58 後購票。', url:'https://www.intercity.pl/en/'},
-      {checkedAt:null, recheckAt:null, date:'10/26', name:'Lajkonik 克拉科夫 ⇄ Auschwitz 巴士', status:'指定日尚未確認', action:'依已取得的 Auschwitz 導覽時段，在業者售票頁確認 10/26 去回班次、上下車點與票價。', url:'https://www.lajkonikbus.eu/krakow-oswiecim.html'},
+      {checkedAt:'2026-09-09', recheckAt:'2026-10-12', date:'10/26', name:'Lajkonik 克拉科夫 ⇄ Auschwitz 巴士', status:'指定日尚未確認', action:'導覽已訂 10:30（約 3h45，約 14:15 結束）。① 先確認 10/26 是否真有 07:35 這班；有就訂，沒有就往前選，不可退到 08:35（約 10:00 才到）。② 回程確認 15:00–16:00 是否有車；沒有就訂 16:30，或改用火車／其他業者。③ 確認上下車點、票價（約 PLN 22–25）與是否需先訂位。', url:'https://www.lajkonikbus.eu/krakow-oswiecim.html'},
       {checkedAt:null, recheckAt:null, date:'10/27', name:'IC 3600｜Kraków Główny → Wrocław Główny', status:'參考班次／尚未訂票', action:'核實 17:55–20:52 指定日班表並購票；記錄車廂、座位與訂位憑證。', url:'https://www.intercity.pl/en/'},
       {checkedAt:null, recheckAt:null, date:'10/28', name:'Baltic Express 260｜Wrocław Główny → Poznań Główny', status:'參考班次／尚未訂票', action:'核實 19:10–20:29 指定日班表並購票；確認公寓晚間取鑰匙方式。', url:'https://www.intercity.pl/en/'},
       {checkedAt:null, recheckAt:null, date:'10/29', name:'EIC 8104｜Poznań Główny → Warszawa Centralna', status:'參考班次／尚未訂票', action:'核實 17:40–20:00 指定日班表並購票；抵站後步行至 Metropol 預留 10–15 分鐘。', url:'https://www.intercity.pl/en/'},
@@ -457,7 +493,7 @@ export const todoGroups = [
     items: [
       {checkedAt:null, recheckAt:null, date:'10/25', name:'Wawel 城堡 14:00', status:'尚未訂', action:'以官方售票頁選 10/25 14:00 左右、可於 15:00 前結束的短路線；完整 2 小時路線會壓縮步行時間。', url:'https://wawel.krakow.pl/en/what-to-see'},
       {checkedAt:null, recheckAt:null, date:'10/25', name:'辛德勒工廠 17:30', status:'現可查／購', action:'10/25 已進個人網路票 90 天窗口；以官方售票頁的可售時段為準。', url:'https://muzeumkrakowa.pl/en/branches/oskar-schindlers-enamel-factory'},
-      {checkedAt:null, recheckAt:null, date:'10/26', name:'Auschwitz 英文官方導覽', status:'需查／購', action:'只能線上取得入場證；選擇官方系統提供的英文導覽場次。', url:'https://visit.auschwitz.org/'},
+      {checkedAt:'2026-09-09', recheckAt:null, date:'10/26', name:'Auschwitz 英文官方導覽', status:'已訂妥', action:'10:30 個人 educator 導覽（英文），官方標示約 3 小時 45 分，2 人。電子入場證存離線，入場須同時出示證件。', url:'https://visit.auschwitz.org/'},
       {checkedAt:null, recheckAt:null, date:'10/27', name:'Wieliczka 鹽礦英文團', status:'需查／購', action:'在官方日期選擇器確認英文場、票價與庫存。', url:'https://www.wieliczka-saltmine.com/'},
       {checkedAt:null, recheckAt:null, date:'10/28', name:'拉茨瓦維採全景畫', status:'尚未訂', action:'以官方售票頁確認指定入場時段。', url:'https://mnwr.pl/en/category/branches/panorama-raclawicka/'},
       {checkedAt:null, recheckAt:null, date:'10/30', name:'華沙皇家城堡 10:00', status:'尚未訂', action:'選擇 10:00 入場，並保留安檢與離館移動時間。', url:'https://www.zamek-krolewski.pl/en'},
@@ -489,7 +525,7 @@ export const todoGroups = [
 ];
 
 export const reservations = [
-  {when:'❗現在就查／訂（最急）', what:'Auschwitz 英文官方導覽 — 所有入場證僅能在線上取得，10/26 的指定場次庫存與價格以 visit.auschwitz.org 為準，入口不售票。'},
+  {when:'✅ 已完成', what:'Auschwitz 英文官方導覽 — 10/26 10:30 個人 educator 導覽（約 3 小時 45 分，2 人）已訂妥。入場憑電子入場證＋證件，出發前存離線。'},
   {when:'❗現在就查／訂', what:'Wieliczka 鹽礦英文 Tourist Route 10:00 場 — 10/27 英文場、實際票價與庫存以官方日期選擇器為準；不要用舊價格或開賣週期取代訂票結果。'},
   {when:'現在可訂', what:'皇家城堡 — 已查證二至日 10:00–18:00、最後入場 17:00；Day 7 已改為 10:00 第一站（zamek-krolewski.pl）'},
   {when:'現在可先訂', what:'米其林與熱門餐廳：Bottiglieria 1881（二星，最搶）、BABA / Most（樂斯拉夫僅停留一晚零彈性）、WANDAL、Pod Aniołami（TheFork / OpenTable / 餐廳官網）'},

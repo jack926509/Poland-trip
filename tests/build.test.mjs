@@ -961,7 +961,10 @@ test('Day 7 改為早上皇家城堡，並保留 POLIN 至起義博物館的移�
 test('尚未開賣的長途交通與天氣不假裝成已確認', () => {
   for (const train of trains) {
     assert.match(train.status, /尚未確認|尚未訂票/);
-    assert.match(train.price, /待/);
+    // 城際火車票價未開賣，仍寫「待確認」；Auschwitz 巴士已知公開票價區間，
+    // 但購票前一樣不能當成已訂，所以要求標明「約」與購票時再確認。
+    if (train.date === '10/26') assert.match(train.price, /^約 PLN .+（購票日確認）$/);
+    else assert.match(train.price, /待/);
   }
   for (const day of days) {
     assert.equal(day.weather, '尚無可靠預報；出發前 7–10 天更新');
@@ -1003,13 +1006,36 @@ test('城際交通提供官方購票、官方時刻表與可操作的購票教�
   assert.ok(html.includes('Poznań Główny'));
 });
 
-test('Auschwitz 巴士使用現行 Lajkonik 參考班表，且明示指定日尚未確認', () => {
+test('Auschwitz 導覽已訂 10:30，巴士依此回推且指定日仍未確認', () => {
   const day3 = days.find(day => day.n === 3);
   const bus = trains.find(item => item.date === '10/26');
-  assert.ok(day3.steps.some(step => step.t === '參考 07:10'));
-  assert.ok(day3.steps.some(step => step.t === '參考 15:30'));
+  // 已訂妥的導覽時間必須出現在行程與必訂清單
+  assert.ok(day3.steps.some(step => step.t === '10:30' && step.label.includes('已訂妥')));
+  assert.ok(day3.mustBook.some(item => item.includes('已訂妥') && item.includes('10:30')));
+  assert.ok(day3.hardConstraints.some(item => item.includes('09:45')));
+  // 去程已選定 07:35，但必須同時標明尚未證實；回程改列選項且以 14:15 為門檻
+  const outbound = day3.steps.find(step => step.t.startsWith('07:35'));
+  assert.ok(outbound, '去程未採用 07:35');
+  assert.match(outbound.sub, /尚未由業者售票頁證實/);
+  assert.match(outbound.sub, /08:35/, '未寫明不可退到 08:35 的那班');
+  assert.ok(day3.steps.some(step => step.t === '14:15 後'));
+  assert.ok(day3.returnOptions?.length >= 3, '回程選項不足');
+  for (const option of day3.returnOptions) {
+    for (const field of ['rank', 'name', 'detail', 'status']) {
+      assert.ok(option[field]?.trim(), `回程選項缺 ${field}`);
+    }
+    assert.match(option.url, /^https:\/\//);
+  }
+  // 已確定趕不上的兩班必須明講
+  assert.match(JSON.stringify(day3), /13:45/);
+  assert.match(JSON.stringify(day3), /14:00/);
+  const day3Html = read('day-03.html');
+  assert.ok(day3Html.includes('回程選項'));
+  for (const option of day3.returnOptions) assert.ok(day3Html.includes(option.name), `Day 3 頁缺回程選項：${option.name}`);
   assert.match(day3.warn, /不是 10\/26 已確認班次/);
   assert.equal(bus.status, '指定日尚未確認');
+  // 已知會趕不上的班次必須明講不可採用
+  assert.match(JSON.stringify(day3.steps), /08:35/);
 });
 
 test('餐飲、景點與地圖資料不保存無日期的動態 Google 星等', () => {
@@ -1085,7 +1111,8 @@ test('門票頁含 21 筆新資料、Panorama 優待 35 與 Auschwitz 線上票�
   const panorama = fares.find(item => item.name.includes('Panorama'));
   assert.equal(panorama.discountPrice, '35');
   const html = read('practical/tickets.html');
-  assert.ok(html.includes('奧斯威辛') && html.includes('所有入場證只在線上提供'));
+  assert.ok(html.includes('奧斯威辛') && html.includes('入場證只在線上提供'));
+  assert.ok(html.includes('10:30 英文個人 educator 導覽'), '門票頁未反映已訂妥的導覽場次');
 });
 
 test('全站不出現把日落寫成 15:35–15:50 的錯誤敘述', () => {

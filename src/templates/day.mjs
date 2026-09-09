@@ -159,7 +159,22 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   const extendHtml = day.extend?.length ? `
     <section class="section">
       <div class="section-heading"><span class="section-num">Optional</span><h2>可插入的延伸選項</h2></div>
-      ${renderList(day.extend, item => `<li><b>${item.label}</b>${item.when ? `（${item.when}）` : ''}— ${item.why}</li>`)}
+      ${renderList(day.extend, item => `<li><b>${item.label}</b>${item.when ? `（${item.when}）` : ''}— ${item.why}${safeHttpsUrl(item.map) ? ` <a href="${safeHttpsUrl(item.map)}" target="_blank" rel="noopener noreferrer">Google Maps 定位 →</a>` : ''}</li>`)}
+    </section>` : '';
+
+  const returnOptionsHtml = day.returnOptions?.length ? `
+    <section class="section">
+      <div class="section-heading"><span class="section-num">Return</span><h2>回程選項</h2></div>
+      <p class="lead">導覽約 14:15 結束，以下全部以「14:15 之後發車」為門檻。第一方售票頁在查詢當下無法連線，時刻均為公開資料彙整，購票前請逐項核對。</p>
+      <div class="grid-wide">${day.returnOptions.map(item => `
+        <article class="card">
+          <span class="eyebrow">${escapeHtml(item.rank)}</span>
+          <h3>${escapeHtml(item.name)}</h3>
+          <p>${escapeHtml(item.detail)}</p>
+          <p class="timeline-note">${escapeHtml(item.status)}</p>
+          ${safeHttpsUrl(item.url) ? `<p class="action-links"><a href="${safeHttpsUrl(item.url)}" target="_blank" rel="noopener noreferrer">查班次與購票 →</a></p>` : ''}
+        </article>`).join('')}
+      </div>
     </section>` : '';
 
   const backupHtml = day.backup?.length ? `
@@ -170,6 +185,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
           <span class="eyebrow">${item.label}</span>
           <h3>${item.where}</h3>
           <p>${item.why}</p>
+          ${safeHttpsUrl(item.map) ? `<p class="food-map-links"><a href="${safeHttpsUrl(item.map)}" target="_blank" rel="noopener noreferrer">Google Maps 定位 →</a></p>` : ''}
         </article>`).join('')}
       </div>
     </section>` : '';
@@ -243,6 +259,7 @@ ${coverHtml}
     ${renderOperation(operation)}
     ${eatHtml}
     ${extendHtml}
+    ${returnOptionsHtml}
     ${backupHtml}
     ${practicalHtml}
     ${renderNightChecklist(operation)}

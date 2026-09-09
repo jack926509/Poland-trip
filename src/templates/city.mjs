@@ -54,6 +54,7 @@ export function renderCity({
   dining,
   cityFoodForCity,
   foodBackupForCity,
+  snacksAndCafesForCity = [],
   photoSpotsForCity,
   story,
   notices = [],
@@ -96,6 +97,21 @@ export function renderCity({
           <p>${item.note}</p>
           <p><span class="${item.book === 'must' ? 'tag-todo' : 'tag-muted'}">${bookingLabels[item.book] || item.book}</span></p>
           ${renderFoodMapLinks(item)}
+        </article>`).join('')}
+      </div>
+    </section>` : '';
+
+  const snacksHtml = snacksAndCafesForCity.length ? `
+    <section class="section">
+      <div class="section-heading"><span class="section-num">Snacks</span><h2>小吃 · 牛奶吧 · 咖啡廳</h2></div>
+      <p class="lead">銅板價的在地選擇與歇腳點，全部附 Google Maps 定位。營業時間屬動態資料，只列有公開來源的時間，出發前仍要重查。</p>
+      <div class="grid">${snacksAndCafesForCity.map(item => `
+        <article class="card">
+          <span class="eyebrow">${item.type}</span>
+          <h3>${item.name}</h3>
+          <p>${item.note}</p>
+          <p class="timeline-note"><b>營業時間：</b>${item.hours}</p>
+          <p class="food-map-links"><a href="${item.map}" target="_blank" rel="noopener noreferrer">Google Maps 定位 →</a></p>
         </article>`).join('')}
       </div>
     </section>` : '';
@@ -241,6 +257,7 @@ export function renderCity({
 
     ${primaryDiningHtml}
     ${backupHtml}
+    ${snacksHtml}
     ${photoHtml}
     ${mapScript}`;
 
