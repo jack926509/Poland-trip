@@ -1013,9 +1013,25 @@ test('Auschwitz 導覽已訂 10:30，巴士依此回推且指定日仍未確認'
   assert.ok(day3.steps.some(step => step.t === '10:30' && step.label.includes('已訂妥')));
   assert.ok(day3.mustBook.some(item => item.includes('已訂妥') && item.includes('10:30')));
   assert.ok(day3.hardConstraints.some(item => item.includes('09:45')));
-  // 巴士要以「09:45 前抵達」與「14:15 之後回程」為目標，且仍標示未確認
-  assert.ok(day3.steps.some(step => step.t.includes('08:00–08:15')));
-  assert.ok(day3.steps.some(step => step.t.includes('15:00–16:00')));
+  // 去程已選定 07:35，但必須同時標明尚未證實；回程改列選項且以 14:15 為門檻
+  const outbound = day3.steps.find(step => step.t.startsWith('07:35'));
+  assert.ok(outbound, '去程未採用 07:35');
+  assert.match(outbound.sub, /尚未由業者售票頁證實/);
+  assert.match(outbound.sub, /08:35/, '未寫明不可退到 08:35 的那班');
+  assert.ok(day3.steps.some(step => step.t === '14:15 後'));
+  assert.ok(day3.returnOptions?.length >= 3, '回程選項不足');
+  for (const option of day3.returnOptions) {
+    for (const field of ['rank', 'name', 'detail', 'status']) {
+      assert.ok(option[field]?.trim(), `回程選項缺 ${field}`);
+    }
+    assert.match(option.url, /^https:\/\//);
+  }
+  // 已確定趕不上的兩班必須明講
+  assert.match(JSON.stringify(day3), /13:45/);
+  assert.match(JSON.stringify(day3), /14:00/);
+  const day3Html = read('day-03.html');
+  assert.ok(day3Html.includes('回程選項'));
+  for (const option of day3.returnOptions) assert.ok(day3Html.includes(option.name), `Day 3 頁缺回程選項：${option.name}`);
   assert.match(day3.warn, /不是 10\/26 已確認班次/);
   assert.equal(bus.status, '指定日尚未確認');
   // 已知會趕不上的班次必須明講不可採用

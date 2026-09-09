@@ -636,7 +636,7 @@ const unresolvedStepReasons = {
   3: {
     'Kraków MDA 報到': '巴士站地址（Bosacka 18）已確認，但 10/26 的發車月台與班次仍待業者售票頁確認，現場再依電子看板找站位。',
     'Lajkonik · 克拉科夫 → 奧斯威辛': dynamicTransitReason,
-    'Lajkonik 巴士返克拉科夫': dynamicTransitReason,
+    '回程巴士返克拉科夫': '導覽 14:15 結束後才發車，實際班次依當日選定的回程選項；上車點與時刻在售票頁確認後再導航。',
     '抵 Kraków MDA · 休息': '抵達後的休息地點保持彈性，不需要固定導航地址。',
     '安靜晚餐沉澱情緒': flexibleStopReason,
   },
