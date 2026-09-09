@@ -77,3 +77,36 @@ test('城市頁輸出小吃與咖啡廳區塊並附定位連結', () => {
     }
   }
 });
+
+test('訂票頁的 Auschwitz 巴士區塊完整反映官方售票頁查得的資料', async () => {
+  const { auschwitzBus } = await import('../src/data/trip.js');
+  const html = readFileSync(new URL('../dist/practical/booking.html', import.meta.url), 'utf8');
+
+  // 官方網域必須是 .pl，不得殘留舊的 .eu
+  assert.equal(auschwitzBus.site, 'https://www.lajkonikbus.pl/');
+  assert.ok(!html.includes('lajkonikbus.eu'), '訂票頁仍殘留 lajkonikbus.eu');
+  assert.ok(html.includes('lajkonikbus.pl'));
+
+  // 去程：兩班都要列出，且採用／不採用與理由都要在頁面上
+  assert.equal(auschwitzBus.outbound.checkedAt, '2026-09-09');
+  assert.deepEqual(auschwitzBus.outbound.services.map(item => item.dep), ['07:10', '08:25']);
+  assert.deepEqual(auschwitzBus.outbound.services.map(item => item.decision), ['採用', '不採用']);
+  for (const service of auschwitzBus.outbound.services) {
+    for (const field of ['dep', 'arr', 'dur', 'bay', 'fare', 'why']) {
+      assert.ok(service[field]?.trim(), `去程班次缺 ${field}`);
+    }
+    assert.ok(html.includes(service.dep), `訂票頁缺去程 ${service.dep}`);
+    assert.ok(html.includes(service.why), `訂票頁缺 ${service.dep} 的判斷理由`);
+  }
+
+  // 回程：狀態必須誠實標為尚未查詢，並提供可照填的查詢參數
+  assert.equal(auschwitzBus.inbound.status, '尚未查詢');
+  assert.match(auschwitzBus.inbound.threshold, /14:15/);
+  for (const query of [auschwitzBus.outbound.query, auschwitzBus.inbound.query]) {
+    assert.equal(query.date, '2026-10-26');
+    for (const field of ['from', 'to']) assert.ok(query[field]?.trim());
+    assert.ok(html.includes(query.from) && html.includes(query.to));
+  }
+  assert.ok(html.includes('Auschwitz 往返巴士'), '訂票頁缺 Auschwitz 巴士區塊');
+  assert.ok(html.includes('Departure from'), '訂票頁缺可照填的查詢欄位');
+});

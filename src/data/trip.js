@@ -133,7 +133,7 @@ export const days = [
       {
         rank: '首選（待你查一次）', name: 'Lajkonik 15:00–16:00 之間的班次',
         detail: '由 Oświęcim Muzeum（Więźniów Oświęcimia 55）站牌直接發車，約 1h25 到 Kraków MDA，全票 25.00 zł／優待 22.00 zł。導覽 14:15 結束後有 45–105 分鐘走回站牌與休息，節奏最順。',
-        status: '⚠️ 去程已用官方售票頁確認過，回程尚未查。請在 lajkonikbus.pl 把 Departure 改 Oświęcim、Destination 改 Kraków、日期 2026-10-26 查一次即可確定。',
+        status: '⚠️ 去程已用官方售票頁確認過，回程尚未查。在 lajkonikbus.pl 把 Departure from 改 Oświęcim、Destination 改 Kraków、日期維持 2026-10-26 查一次即可確定；完整查詢參數見「訂票與交通」頁的 Auschwitz 巴士區塊。',
         url: 'https://www.lajkonikbus.pl/',
       },
       {
@@ -413,11 +413,42 @@ export const railOfficialLinks = [
     note: '可購買 PKP Intercity 各車種、選位並離線開啟已購票券。',
   },
   {
-    name: 'Lajkonik · Auschwitz 巴士班表與購票',
-    url: 'https://www.lajkonikbus.pl/krakow-oswiecim.html',
-    note: '查 Kraków MDA → Muzeum Auschwitz；回程請由同站切換 Oświęcim → Kraków。導覽已訂 10:30，去程須 09:45 前抵達、回程須 14:15 之後發車，10/26 指定日付款前再核對。',
+    name: 'Lajkonik 官方售票網站（lajkonikbus.pl）',
+    url: 'https://www.lajkonikbus.pl/',
+    note: '2026-09-09 由官方售票頁確認為現行網域（專案先前使用的舊網域已全面更新）。首頁即為查詢表單，可切換 English，另有 Where is my bus?（即時車輛位置）與 My Ticket（查已購票）。Auschwitz 往返請用下方「Auschwitz 巴士」區塊的查詢參數操作。',
   },
 ];
+
+// Lajkonik · Auschwitz 往返巴士。
+// 去程資料 2026-09-09 由官方售票頁 lajkonikbus.pl 查 2026-10-26 當日結果取得；
+// 回程尚未查詢，下方保留可直接照填的查詢參數。
+export const auschwitzBus = {
+  operator: 'LAJKONIK',
+  site: 'https://www.lajkonikbus.pl/',
+  siteNote: '首頁右上可切 English；表單四欄依序為 Departure from／Destination／Date of departure／Normal（人數），按 Search courses 查班次，每筆班次可直接 Buy ticket。另有 Where is my bus? 查即時車輛位置、My Ticket 查已購票券。',
+  fare: '全票 25.00 zł／優待 22.00 zł（每人，官方售票頁 2026-10-26 顯示值）',
+  stops: {
+    krakow: 'Kraków · ul. Bosacka 18, Dworzec Autobusowy（MDA，Kraków Główny 後方步行約 5 分；站位 D9／D10）',
+    oswiecim: 'Oświęcim · Więźniów Oświęcimia 55（Muzeum Auschwitz，下車處在博物館停車場對面）',
+  },
+  outbound: {
+    status: '已於官方售票頁查得／尚未購票',
+    checkedAt: '2026-09-09',
+    query: { from: 'Kraków', to: 'Oświęcim', date: '2026-10-26', passengers: 1 },
+    services: [
+      { dep: '07:10', arr: '08:35', dur: '1h25', bay: 'D10', fare: '25,00 zł', decision: '採用', why: '距 10:30 入場有 1 小時 55 分，足以吸收巴士誤點、寄物與安檢排隊。' },
+      { dep: '08:25', arr: '09:50', dur: '1h25', bay: 'D9', fare: '25,00 zł', decision: '不採用', why: '官方要求入場前 30 分鐘完成安檢（10:00 前到），此班只早 10 分鐘，誤點即錯過已付款導覽。' },
+    ],
+    note: '當日只有這兩班，沒有 07:35。班次與票價以購票當下的售票頁為準。',
+  },
+  inbound: {
+    status: '尚未查詢',
+    threshold: '導覽約 14:15 結束，必須挑 14:15 之後發車的班次',
+    query: { from: 'Oświęcim', to: 'Kraków', date: '2026-10-26', passengers: 1 },
+    knownPoints: '第三方彙整的現行下午班次資料點：13:45（15:10 抵）、14:00、16:30；末班約 18:15–19:15。13:45 與 14:00 都在導覽結束前開走，不可採用。這些尚未經官方售票頁核對。',
+    note: '在同一個查詢表單把 Departure from 改成 Oświęcim、Destination 改成 Kraków、日期維持 2026-10-26，即可看到當日回程班次。',
+  },
+};
 
 export const railPurchaseSteps = [
   {

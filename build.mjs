@@ -664,6 +664,7 @@ function buildIntoStaging(stagingRoot) {
     reservations: trip.reservations,
     railOfficialLinks: trip.railOfficialLinks,
     railPurchaseSteps: trip.railPurchaseSteps,
+    auschwitzBus: trip.auschwitzBus,
   }));
   writeHtml('practical/todos.html', renderTodos({
     todoGroups: trip.todoGroups,

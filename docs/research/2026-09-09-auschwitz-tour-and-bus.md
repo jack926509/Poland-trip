@@ -178,3 +178,44 @@
 截圖只涵蓋 Kraków → Oświęcim 方向。回程請在同一網站把
 **Departure from 改 Oświęcim、Destination 改 Kraków、Date of departure 設 2026-10-26** 再查一次，
 挑 **14:15 之後**發車的班次。Day 3 的「回程選項」四個方案維持不變，狀態已改為「待你查一次」。
+
+---
+
+## 追加（同日，第三次）：lajkonikbus.pl 接入網站
+
+使用者要求「使用 lajkonikbus.pl 新網頁查詢，並放入本專案網站中」。
+
+### 查詢：本環境仍做不到
+
+`lajkonikbus.pl` 在此環境同樣被 egress proxy 阻擋：
+
+```
+WebFetch → EGRESS_BLOCKED
+curl     → (56) CONNECT tunnel failed, response 403
+```
+
+因此去程資料仍以使用者提供的官方頁面截圖為唯一第一方來源，回程無法代查。
+
+### 放入網站：已完成
+
+新增 `auschwitzBus`（`src/data/trip.js`）與訂票頁的 **Auschwitz 往返巴士**區塊
+（`practical/booking.html#auschwitz-bus`），內容包含：
+
+| 區塊 | 內容 |
+| --- | --- |
+| 官方售票站 | lajkonikbus.pl 連結＋操作說明（English 切換、Departure from／Destination／Date of departure／Normal 四欄、Search courses、Buy ticket、Where is my bus?、My Ticket） |
+| 上下車點 | Kraków ul. Bosacka 18 Dworzec Autobusowy（MDA，站位 D9／D10）／Oświęcim Więźniów Oświęcimia 55（Muzeum Auschwitz） |
+| 票價 | 全票 25.00 zł／優待 22.00 zł（每人） |
+| 去程表格 | 07:10 → 08:35（1h25，D10，25,00 zł，**採用**）／08:25 → 09:50（1h25，D9，25,00 zł，**不採用**），各附理由 |
+| 回程區塊 | 狀態「尚未查詢」＋可照填的查詢參數＋第三方資料點＋「開啟 lajkonikbus.pl 查回程」按鈕 |
+
+站內所有 Lajkonik 連結已改指向 lajkonikbus.pl 首頁的查詢表單，舊網域無殘留
+（守門測試會擋住任何 `.eu` 復發）。
+
+### 使用者接下來要做的
+
+1. 開網站訂票頁的 Auschwitz 巴士區塊 → 點「開啟 lajkonikbus.pl 查回程」。
+2. 依頁面列出的參數填表：Departure from `Oświęcim`、Destination `Kraków`、
+   Date of departure `2026-10-26`、人數依實際。
+3. 挑 **14:15 之後**發車的班次下單；同時把去程 07:10 一併買掉。
+4. 把回程結果回報，即可填入 `auschwitzBus.inbound` 並把狀態改為已查得。

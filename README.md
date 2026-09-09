@@ -57,6 +57,28 @@ Day 01／06／07／08 共用華沙同一張。若要補充照片，請沿用 CRE
 - 「可查／購」仍計入未完成項目。只有收到訂票確認後才改為「已訂妥」或「已完成」，並核對 `days`、`trains`、`reservations` 與 `bookingTiers` 的相應行程；票號、訂位代碼與付款資料另存私人票券。
 - 資料庫 CSV 匯入只更新 `travel-database.js` 的對應條目，不會替使用者完成購票或自動更新 `todoGroups`。修改後執行 `env -u NODE_OPTIONS ./verify.sh`，再提交部署。
 
+## 2026-09-09 lajkonikbus.pl 接入網站
+
+- **訂票與交通頁新增「Auschwitz 往返巴士」區塊**（`practical/booking.html#auschwitz-bus`），
+  資料源為 `src/data/trip.js` 的 `auschwitzBus`：
+  - 官方售票站 lajkonikbus.pl 與操作說明（English 切換、四欄查詢表單、Buy ticket、
+    Where is my bus?、My Ticket）
+  - 上下車點門牌與站位（Bosacka 18／D9・D10；Więźniów Oświęcimia 55）
+  - 票價 25.00 zł 全票／22.00 zł 優待
+  - **去程表格**：07:10 → 08:35（D10，採用）與 08:25 → 09:50（D9，不採用），
+    每一班都寫明採用與否的理由
+  - **回程區塊**：狀態標為「尚未查詢」，並列出可直接照填的查詢參數
+    （Departure from: Oświęcim／Destination: Kraków／Date: 2026-10-26），
+    附「開啟 lajkonikbus.pl 查回程」按鈕
+- 站內所有 Lajkonik 連結改指向 lajkonikbus.pl 首頁查詢表單；舊網域已無殘留。
+- **本次仍無法自行查詢**：lajkonikbus.pl 在此環境被 egress proxy 阻擋
+  （`curl` 回 `CONNECT tunnel failed, 403`），去程資料來自使用者提供的官方頁面截圖，
+  回程需由使用者用網站上的查詢參數自行操作。
+- 新增 `tests/map-links.test.mjs` 守門測試：去程兩班、採用判斷與理由、
+  回程「尚未查詢」狀態與查詢參數，任何一項從頁面消失都會讓測試失敗。
+
+`npm test` 全數通過（116 項測試）。
+
 ## 2026-09-09 以官方售票頁核對，Auschwitz 去程定案 07:10
 
 - **官方網域更正**：現行售票網站是 **lajkonikbus.pl**，專案先前一直用的 `lajkonikbus.eu` 已全面改掉
