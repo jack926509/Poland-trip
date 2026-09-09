@@ -159,7 +159,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   const extendHtml = day.extend?.length ? `
     <section class="section">
       <div class="section-heading"><span class="section-num">Optional</span><h2>可插入的延伸選項</h2></div>
-      ${renderList(day.extend, item => `<li><b>${item.label}</b>${item.when ? `（${item.when}）` : ''}— ${item.why}</li>`)}
+      ${renderList(day.extend, item => `<li><b>${item.label}</b>${item.when ? `（${item.when}）` : ''}— ${item.why}${safeHttpsUrl(item.map) ? ` <a href="${safeHttpsUrl(item.map)}" target="_blank" rel="noopener noreferrer">Google Maps 定位 →</a>` : ''}</li>`)}
     </section>` : '';
 
   const backupHtml = day.backup?.length ? `
@@ -170,6 +170,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
           <span class="eyebrow">${item.label}</span>
           <h3>${item.where}</h3>
           <p>${item.why}</p>
+          ${safeHttpsUrl(item.map) ? `<p class="food-map-links"><a href="${safeHttpsUrl(item.map)}" target="_blank" rel="noopener noreferrer">Google Maps 定位 →</a></p>` : ''}
         </article>`).join('')}
       </div>
     </section>` : '';

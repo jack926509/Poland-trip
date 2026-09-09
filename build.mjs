@@ -577,6 +577,7 @@ function buildSearchRecords() {
     cityFood: dining.cityFood,
     foodBackup: dining.foodBackup,
     verifiedRestaurantHours: dining.verifiedRestaurantHours,
+    snacksAndCafes: dining.snacksAndCafes,
   });
   const pageRecords = buildPageSearchRecords(standalonePages.map(([relativePath, title]) => ({
     relativePath,
@@ -648,6 +649,7 @@ function buildIntoStaging(stagingRoot) {
       dining: dining.cityDining[mapKey],
       cityFoodForCity: dining.cityFood.find(group => group.city === city.name),
       foodBackupForCity: dining.foodBackup.find(group => group.city === city.name),
+      snacksAndCafesForCity: dining.snacksAndCafes[mapKey] || [],
       photoSpotsForCity: cities.photoSpots.filter(spot => spot.cityKey === key),
       story: cities.cityStories.find(item => item.city === city.name),
       notices: cities.cityNotices[mapKey],

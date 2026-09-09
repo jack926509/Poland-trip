@@ -57,6 +57,25 @@ Day 01／06／07／08 共用華沙同一張。若要補充照片，請沿用 CRE
 - 「可查／購」仍計入未完成項目。只有收到訂票確認後才改為「已訂妥」或「已完成」，並核對 `days`、`trains`、`reservations` 與 `bookingTiers` 的相應行程；票號、訂位代碼與付款資料另存私人票券。
 - 資料庫 CSV 匯入只更新 `travel-database.js` 的對應條目，不會替使用者完成購票或自動更新 `todoGroups`。修改後執行 `env -u NODE_OPTIONS ./verify.sh`，再提交部署。
 
+## 2026-09-09 定位連結全面補齊與小吃／咖啡廳新增
+
+- **順路必吃全數可導航**：8 天共 17 筆「順路必吃」現在每一筆都有 Google Maps 連結。
+  原本沒有固定店址的 Obwarzanek（克拉科夫推車）與 Rogal Świętomarciński（波茲南認證店）
+  改為連到推車聚集區與示範分店，並在說明中寫清楚「非固定店址／選定分店後改導航」。
+  Day 3 原本沒有必吃清單，補上 Kazimierz 晚餐與咖啡兩筆。
+- **定位覆蓋補完**：米其林訂位表 9 筆、已查營業時間表 4 筆原本只有官網連結，現在都加上
+  Google Maps 定位；每日「備案」與「延伸選項」中屬於具體地點的 17 筆也補上定位連結
+  （純排程建議如「改訂 18:30 最後入場」維持不加，因為那不是地點）。
+  景點 21 筆、城市餐廳 58 筆、主餐廳 37 筆、備案餐廳 32 筆、伴手禮店 8 筆原本即已全數有定位。
+- **新增小吃 · 牛奶吧 · 咖啡廳**：四城共 18 筆（華沙 5、克拉科夫 5、樂斯拉夫 4、波茲南 4），
+  含 Bar Mleczny Prasowy／Bambino、A. Blikle、Zagoździński、Hala Koszyki、
+  Bar Mleczny Pod Temidą、Endzior、Karma Coffee、Café Camelot、Bar Mleczny Miś、
+  Weranda Caffe 等，每筆都有定位與營業時間欄位（只寫查得到公開來源的時間，其餘標「依店家當日公告」）。
+  城市頁新增「小吃 · 牛奶吧 · 咖啡廳」區塊，並納入全站搜尋索引。
+- 新增 `tests/map-links.test.mjs` 五項守門測試，之後任何餐廳、景點或必吃資料少了定位都會讓測試失敗。
+
+`npm test` 全數通過（115 項測試）。
+
 ## 2026-09-09 五大分類複查（飯店／交通／美食／景點／伴手禮）
 
 - **飯店異動已全站查明**：10/24–10/25 第一晚華沙住宿由 ibis budget Warszawa Reduta 改為 Hotel Metropol，

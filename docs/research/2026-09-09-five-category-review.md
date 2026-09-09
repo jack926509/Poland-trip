@@ -71,3 +71,55 @@
 2. 四段城際車開賣後的實際票價、車廂與座位。
 3. Hotel Metropol 入住／退房時間與行李寄放，以訂房確認為最終依據。
 4. Złote Tarasy、Hala Koszyki 個別店家 10/29、10/31 當日營業時間。
+
+---
+
+## 追加（同日）：定位連結全面補齊與小吃／咖啡廳新增
+
+使用者追加三項要求，處理如下。
+
+### 1. 順路必吃要確實與 Google Maps 連結
+
+盤點 8 天的 `days[].eat`，原本 15 筆中有 2 筆沒有連結，因為它們刻意沒有固定店址：
+
+| 項目 | 原狀 | 處理 |
+| --- | --- | --- |
+| Obwarzanek 圓圈麵包（Day 2） | 街邊推車，無固定店址 | 連到推車最密集的中央廣場一帶，說明寫明非固定店址 |
+| Rogal Świętomarciński（Day 6） | 認證店家眾多、未選定分店 | 先連到示範分店 Cukiernia Kandulski，並註明選定分店後改導航 |
+
+另補上 Day 3（奧斯威辛日）原本完全沒有的必吃清單兩筆。現在 8 天共 **17 筆，全數有連結**。
+
+### 2. 所有景點、餐廳都要有定位
+
+盤點結果與處理：
+
+| 資料 | 筆數 | 原本缺定位 | 處理 |
+| --- | --- | --- | --- |
+| `fares`（景點票價） | 21 | 0 | — |
+| `cityDining`（城市餐廳） | 58 | 0 | — |
+| `cityFood`（主餐廳） | 37 | 0 | 4 筆「A / B」合併卡本來就用 `maps` 陣列各給一條 |
+| `foodBackup`（備案餐廳） | 32 | 0 | — |
+| `michelinReservations`（訂位表） | 9 | **9** | 全數補 `mapUrl`，訂位頁改成可點店名＋定位連結 |
+| `verifiedRestaurantHours`（已查時間） | 4 | **4** | 全數補 `mapUrl` |
+| `souvenirShops`／`luxuryShopping` | 8／2 | 0 | — |
+| 每日 `backup`／`extend` | 22 | **全部** | 屬於具體地點的 17 筆補上定位；5 筆純排程建議（例如「改訂 18:30 最後入場」）不加，因為那不是地點 |
+
+### 3. 新增小吃與咖啡廳推薦
+
+新增 `snacksAndCafes`（`src/data/dining.js`），四城共 18 筆：
+
+- **華沙 5**：Bar Mleczny Prasowy、Bar Mleczny Bambino、A. Blikle 1869、Cukiernia Zagoździński、Hala Koszyki
+- **克拉科夫 5**：Bar Mleczny Pod Temidą、Endzior（Plac Nowy 圓亭）、Karma Coffee Roasters、Café Camelot、Cukiernia Michałek
+- **樂斯拉夫 4**：Bar Mleczny Miś、Cukiernia Vincent、Konspira、Browar Stu Mostów
+- **波茲南 4**：Cukiernia Kandulski、Pyra Bar、Weranda Caffe、E.Wedel Pijalnia（Stary Rynek）
+
+每筆都有 `map` 定位與 `hours` 欄位。營業時間只寫查得到公開來源的（Bambino、Karma、Miś、Hala Koszyki），
+其餘一律標「依店家當日公告」，不以推測填時間。城市頁新增「小吃 · 牛奶吧 · 咖啡廳」區塊，
+並納入全站搜尋索引（可用「牛奶吧」「咖啡廳」「小吃」搜尋）。
+
+已知需要現場確認的點：Bar Mleczny Bambino 的門牌有 Hoża 19 與 Krucza 21 兩種公開說法，
+資料中已註明並用店名搜尋連結；Bar Mleczny Miś 週日公休，本行程 10/28（三）不受影響。
+
+### 守門測試
+
+新增 `tests/map-links.test.mjs`，五項測試涵蓋上述三件事，日後少了任何一個定位都會讓 `npm test` 失敗。

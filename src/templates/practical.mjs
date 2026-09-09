@@ -167,9 +167,9 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
       <td>${item.bibList.join(' · ') || '—'}</td>
     </tr>`).join('');
   const reservationRows = michelinReservations.map(item => `
-    <tr><td><b>${item.restaurant}</b></td><td class="number">${item.perPerson}</td><td>${item.channel}</td></tr>`).join('');
+    <tr><td>${item.mapUrl ? `<a href="${item.mapUrl}" target="_blank" rel="noopener"><b>${item.restaurant}</b></a>` : `<b>${item.restaurant}</b>`}</td><td class="number">${item.perPerson}</td><td>${item.channel}${item.mapUrl ? `<br><a href="${item.mapUrl}" target="_blank" rel="noopener">Google Maps 定位 →</a>` : ''}</td></tr>`).join('');
   const hoursRows = verifiedRestaurantHours.map(item => `
-    <tr><td>${item.city}</td><td><a href="${item.url}" target="_blank" rel="noopener"><b>${item.name}</b></a><br>${item.address}</td><td>${item.hours}</td><td>${item.feature}</td></tr>`).join('');
+    <tr><td>${item.city}</td><td><a href="${item.url}" target="_blank" rel="noopener"><b>${item.name}</b></a><br>${item.address}${item.mapUrl ? `<br><a href="${item.mapUrl}" target="_blank" rel="noopener">Google Maps 定位 →</a>` : ''}</td><td>${item.hours}</td><td>${item.feature}</td></tr>`).join('');
   const content = `
     <div class="callout-note"><b>資料界線：</b>米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不把它們當成固定資料。高價餐廳預算已於 2026-09-08 對照旅程試算表更新；營業時間查證於 2026-08-09，訂位前仍看店家公告。</div>
     <section>
