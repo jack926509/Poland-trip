@@ -37,7 +37,7 @@ export const ticketsByCity = [
     ['瓦維爾城堡完整路線', 'PLN 95／71 · 最後入場 15:00'],
     ['辛德勒工廠', 'PLN 60 · 優待 45（以官網為準）'],
     ['聖瑪麗教堂登塔', 'PLN 20／15 · 只在 Mariacki 廣場 7 號當日現場售票、無法預約 · 入口在 Floriańska 街'],
-    ['奧斯威辛 Educator 導覽', '依官方訂票頁當日場次；10 月上午必須跟團'],
+    ['奧斯威辛 Educator 導覽', '10/26 10:30 英文場已訂妥（約 3 小時 45 分，2 人）；10 月上午本來就必須跟團'],
     ['維利奇卡鹽礦', '10/27 英文場、實際票價與庫存看官方日期選擇器'],
     ['地下市集博物館', 'PLN 45／35 · 末入為閉館前 75 分鐘 · 每週二免費（現場限量）· 每月第二個週一休'],
   ]},
@@ -53,6 +53,6 @@ export const ticketsByCity = [
 ];
 
 export const ticketNotices = [
-  {status:'線上入場證', level:'risk', text:'奧斯威辛自 2026-03-01 起所有入場證只在線上提供；本行程以 10:30 英文官方導覽為目標，尚未代表已購票。', url:'https://www.auschwitz.org/en/visiting/'},
+  {status:'已訂妥', level:'reminder', text:'奧斯威辛 10/26 10:30 英文個人 educator 導覽（官方標示約 3 小時 45 分，2 人）已完成訂購。入場證只在線上提供，且官方載明須搭配身分證件；請把入場證存離線並隨身帶護照。', url:'https://www.auschwitz.org/en/visiting/'},
   {status:'開賣再確認', level:'reminder', text:'博物館活動、臨時閉館與可售場次仍可能調整；本站不把「查證過」誤寫成「已訂到」，購票時請以官方日曆為準。', url:'https://visit.auschwitz.org/'},
 ];

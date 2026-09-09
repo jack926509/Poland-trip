@@ -961,7 +961,10 @@ test('Day 7 改為早上皇家城堡，並保留 POLIN 至起義博物館的移�
 test('尚未開賣的長途交通與天氣不假裝成已確認', () => {
   for (const train of trains) {
     assert.match(train.status, /尚未確認|尚未訂票/);
-    assert.match(train.price, /待/);
+    // 城際火車票價未開賣，仍寫「待確認」；Auschwitz 巴士已知公開票價區間，
+    // 但購票前一樣不能當成已訂，所以要求標明「約」與購票時再確認。
+    if (train.date === '10/26') assert.match(train.price, /^約 PLN .+（購票日確認）$/);
+    else assert.match(train.price, /待/);
   }
   for (const day of days) {
     assert.equal(day.weather, '尚無可靠預報；出發前 7–10 天更新');
@@ -1003,13 +1006,20 @@ test('城際交通提供官方購票、官方時刻表與可操作的購票教�
   assert.ok(html.includes('Poznań Główny'));
 });
 
-test('Auschwitz 巴士使用現行 Lajkonik 參考班表，且明示指定日尚未確認', () => {
+test('Auschwitz 導覽已訂 10:30，巴士依此回推且指定日仍未確認', () => {
   const day3 = days.find(day => day.n === 3);
   const bus = trains.find(item => item.date === '10/26');
-  assert.ok(day3.steps.some(step => step.t === '參考 07:10'));
-  assert.ok(day3.steps.some(step => step.t === '參考 15:30'));
+  // 已訂妥的導覽時間必須出現在行程與必訂清單
+  assert.ok(day3.steps.some(step => step.t === '10:30' && step.label.includes('已訂妥')));
+  assert.ok(day3.mustBook.some(item => item.includes('已訂妥') && item.includes('10:30')));
+  assert.ok(day3.hardConstraints.some(item => item.includes('09:45')));
+  // 巴士要以「09:45 前抵達」與「14:15 之後回程」為目標，且仍標示未確認
+  assert.ok(day3.steps.some(step => step.t.includes('08:00–08:15')));
+  assert.ok(day3.steps.some(step => step.t.includes('15:00–16:00')));
   assert.match(day3.warn, /不是 10\/26 已確認班次/);
   assert.equal(bus.status, '指定日尚未確認');
+  // 已知會趕不上的班次必須明講不可採用
+  assert.match(JSON.stringify(day3.steps), /08:35/);
 });
 
 test('餐飲、景點與地圖資料不保存無日期的動態 Google 星等', () => {
@@ -1085,7 +1095,8 @@ test('門票頁含 21 筆新資料、Panorama 優待 35 與 Auschwitz 線上票�
   const panorama = fares.find(item => item.name.includes('Panorama'));
   assert.equal(panorama.discountPrice, '35');
   const html = read('practical/tickets.html');
-  assert.ok(html.includes('奧斯威辛') && html.includes('所有入場證只在線上提供'));
+  assert.ok(html.includes('奧斯威辛') && html.includes('入場證只在線上提供'));
+  assert.ok(html.includes('10:30 英文個人 educator 導覽'), '門票頁未反映已訂妥的導覽場次');
 });
 
 test('全站不出現把日落寫成 15:35–15:50 的錯誤敘述', () => {
