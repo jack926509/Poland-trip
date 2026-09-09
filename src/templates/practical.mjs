@@ -50,7 +50,7 @@ function renderBookingNotice() {
   return '<div class="callout-note"><b>訂票狀態由人工維護，未連線查詢即時庫存。</b><p>「可查／購」只表示可前往售票頁查詢，不代表有票或已訂妥。付款前請核對指定日期、場次與價格；各項最近查核日期列於<a href="../practical/todos.html">待辦事項</a>，未記錄日期的狀態請重新確認。</p></div>';
 }
 
-export function renderBooking({ flights, trains, stay, bookingTiers, reservations, railOfficialLinks = [], railPurchaseSteps = [] }) {
+export function renderBooking({ flights, trains, stay, bookingTiers, reservations, railOfficialLinks = [], railPurchaseSteps = [], auschwitzBus = null }) {
   const tiersHtml = bookingTiers.map((tier, index) => `
     <article class="card ${index === 0 ? 'card-accent' : ''}">
       <span class="eyebrow">Priority ${index + 1}</span>
@@ -95,6 +95,77 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
     </article>`;
   }).join('');
 
+  const queryRow = query => `
+    <ul class="check-list">
+      <li><b>Departure from</b>：${escapeHtml(query.from)}</li>
+      <li><b>Destination</b>：${escapeHtml(query.to)}</li>
+      <li><b>Date of departure</b>：${escapeHtml(query.date)}</li>
+      <li><b>Normal（人數）</b>：${escapeHtml(String(query.passengers))}（依實際人數調整）</li>
+    </ul>`;
+
+  const busHtml = auschwitzBus ? `
+    <section class="section" id="auschwitz-bus">
+      <div class="section-heading"><span class="section-num">Bus</span><h2>Auschwitz 往返巴士（${escapeHtml(auschwitzBus.operator)}）</h2></div>
+      <div class="callout-note">
+        <b>官方售票站：</b>
+        <p><a href="${escapeHtml(auschwitzBus.site)}" target="_blank" rel="noopener noreferrer">lajkonikbus.pl</a>
+        ${escapeHtml(auschwitzBus.siteNote)}</p>
+      </div>
+      ${auschwitzBus.tour ? `
+      <div class="callout-note">
+        <b>這一天的錨點 · 已訂妥的參觀場次：</b>
+        <p><b>${escapeHtml(auschwitzBus.tour.date)} ${escapeHtml(auschwitzBus.tour.time)}</b>　${escapeHtml(auschwitzBus.tour.name)}<br>
+        ${escapeHtml(auschwitzBus.tour.scope)}　·　${escapeHtml(auschwitzBus.tour.language)}　·　${escapeHtml(auschwitzBus.tour.duration)}　·　${escapeHtml(auschwitzBus.tour.people)}<br>
+        <b>最晚抵達：</b>${escapeHtml(auschwitzBus.tour.arriveBy)}　<b>預計結束：</b>${escapeHtml(auschwitzBus.tour.endsAt)}</p>
+        <p><b>入場規定：</b>${escapeHtml(auschwitzBus.tour.entryRule)}</p>
+        <p class="timeline-note">去程要趕在 ${escapeHtml(auschwitzBus.tour.arriveBy)} 前到、回程要等到 ${escapeHtml(auschwitzBus.tour.endsAt)} 之後，下面兩張表的採用與否都是照這兩條線判斷的。</p>
+        <p class="action-links"><a href="${escapeHtml(auschwitzBus.tour.officialUrl)}" target="_blank" rel="noopener noreferrer">Auschwitz 官方訂票系統 →</a></p>
+      </div>` : ''}
+      <div class="grid-wide">
+        <article class="card"><span class="eyebrow">上下車點</span>
+          <p><b>克拉科夫：</b>${escapeHtml(auschwitzBus.stops.krakow)}</p>
+          <p><b>奧斯威辛：</b>${escapeHtml(auschwitzBus.stops.oswiecim)}</p>
+          <p class="timeline-note"><b>票價：</b>${escapeHtml(auschwitzBus.fare)}</p>
+        </article>
+      </div>
+
+      <h3>去程 · ${escapeHtml(auschwitzBus.outbound.status)}（查核 ${escapeHtml(auschwitzBus.outbound.checkedAt)}）</h3>
+      <p class="lead">查詢參數：</p>
+      ${queryRow(auschwitzBus.outbound.query)}
+      <div class="table-wrap"><table class="table-editorial">
+        <thead><tr><th>發車</th><th>抵達</th><th>車程</th><th>站位</th><th>票價</th><th>判斷</th><th>理由</th></tr></thead>
+        <tbody>${auschwitzBus.outbound.services.map(item => `
+          <tr>
+            <td class="number"><b>${escapeHtml(item.dep)}</b></td>
+            <td class="number">${escapeHtml(item.arr)}</td>
+            <td class="number">${escapeHtml(item.dur)}</td>
+            <td class="number">${escapeHtml(item.bay)}</td>
+            <td class="number">${escapeHtml(item.fare)}</td>
+            <td><span class="${item.decision === '採用' ? 'tag-yellow' : 'tag-muted'}">${escapeHtml(item.decision)}</span></td>
+            <td>${escapeHtml(item.why)}</td>
+          </tr>`).join('')}</tbody>
+      </table></div>
+      <p class="timeline-note">${escapeHtml(auschwitzBus.outbound.note)}</p>
+
+      <h3>回程 · ${escapeHtml(auschwitzBus.inbound.status)}${auschwitzBus.inbound.checkedAt ? `（查核 ${escapeHtml(auschwitzBus.inbound.checkedAt)}）` : ''}</h3>
+      <p class="lead">門檻：${escapeHtml(auschwitzBus.inbound.threshold)}。查詢參數：</p>
+      ${queryRow(auschwitzBus.inbound.query)}
+      <div class="table-wrap"><table class="table-editorial">
+        <thead><tr><th>發車</th><th>抵達</th><th>車程</th><th>票價</th><th>判斷</th><th>理由</th></tr></thead>
+        <tbody>${auschwitzBus.inbound.services.map(item => `
+          <tr>
+            <td class="number"><b>${escapeHtml(item.dep)}</b></td>
+            <td class="number">${escapeHtml(item.arr)}</td>
+            <td class="number">${escapeHtml(item.dur)}</td>
+            <td class="number">${escapeHtml(item.fare)}</td>
+            <td><span class="${item.decision === '採用' ? 'tag-yellow' : 'tag-muted'}">${escapeHtml(item.decision)}</span></td>
+            <td>${escapeHtml(item.why)}</td>
+          </tr>`).join('')}</tbody>
+      </table></div>
+      <p class="timeline-note">${escapeHtml(auschwitzBus.inbound.note)}</p>
+      <p class="action-links"><a href="${escapeHtml(auschwitzBus.site)}" target="_blank" rel="noopener noreferrer">到 lajkonikbus.pl 買票 →</a></p>
+    </section>` : '';
+
   const content = `
     ${renderBookingNotice()}
     <section>
@@ -121,6 +192,7 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
       <div class="section-heading"><span class="section-num">How to</span><h2>網路購票教學</h2></div>
       <div class="grid-wide">${railStepCards}</div>
     </section>
+    ${busHtml}
     <section class="section">
       <div class="section-heading"><span class="section-num">Flights</span><h2>航班</h2></div>
       <h3>去程</h3>${renderFlightTable(flights.out)}

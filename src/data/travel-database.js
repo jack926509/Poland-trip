@@ -488,13 +488,13 @@ export const dayOperations = {
     entryIds: ['dining-reservation-and-backup', 'medical-insurance-and-emergency', 'daily-basics-krakow-water'],
     note: '長時間導覽日，保留補水、保暖與醫療聯絡卡。',
     addresses: [
-      address('Kraków MDA 客運站', 'Bosacka 18, 31-505 Kraków', 'MDA Bus Station Krakow, Bosacka 18, Krakow', 'Kraków Główny 後方步行約 5 分；現行班表常見由地下層 D9／D10 發車，10/26 月台與班次仍須依售票頁與現場公告確認。'),
+      address('Kraków MDA 客運站', 'Bosacka 18, 31-505 Kraków', 'MDA Bus Station Krakow, Bosacka 18, Krakow', 'Kraków Główny 後方步行約 5 分。官方售票頁顯示 10/26 的 07:10 班次由地下層 D10 發車（08:25 那班為 D9）；站位仍以當日電子看板為準。'),
       address('Auschwitz I 訪客服務中心／入口', 'Więźniów Oświęcimia 55, 32-600 Oświęcim', 'Auschwitz I Visitor Service Center, Wiezniow Oswiecimia 55, Oswiecim'),
       address('Auschwitz II–Birkenau', 'Ofiar Faszyzmu 12, 32-600 Brzezinka', 'Auschwitz II Birkenau, Ofiar Faszyzmu 12, Brzezinka'),
       accommodationAddress('krakow-stare-miasto'),
     ],
     navigation: [
-      { mode: 'Lajkonik 巴士', route: 'Kraków MDA ↔ Oświęcim Muzeum Auschwitz', action: '導覽已訂 10:30，需在 09:45 前抵達：去程挑 08:00–08:15 出發的班次（車程約 1h25，已知 08:35 班次約 10:00 才到，不可採用）。回程挑 14:15 之後的班次；已知 13:45 與 14:00 太早、16:30 太晚等待久，指定日班表與票價仍由業者售票頁確認。單程約 PLN 22–25。' },
+      { mode: 'Lajkonik 巴士', route: 'Kraków MDA ↔ Oświęcim Muzeum Auschwitz', action: '去程已於官方售票頁 lajkonikbus.pl 查得 10/26 班次：07:10 由 ul. Bosacka 18 的 D10 發車、08:35 抵 Więźniów Oświęcimia 55，1h25，全票 25.00 zł／優待 22.00 zł；當日另一班 08:25 → 09:50 只比 10:00 安檢截止早 10 分鐘，緩衝不足不採用。回程請在同站反向查 10/26 的 14:15 之後班次；13:45 與 14:00 都在導覽結束前開走。' },
       { mode: '導覽接駁', route: 'Auschwitz I → Birkenau', action: '參加官方導覽時依當日工作人員指示搭接駁車，不自行跳過集合點。' },
     ],
     dailyAlerts: [
@@ -634,7 +634,7 @@ const unresolvedStepReasons = {
     '步行經 Kazimierz、Podgórze 前往辛德勒工廠': '步行沿途短停保持彈性；以辛德勒工廠入口地址為終點，17:10 前到場。',
   },
   3: {
-    'Kraków MDA 報到': '巴士站地址（Bosacka 18）已確認，但 10/26 的發車月台與班次仍待業者售票頁確認，現場再依電子看板找站位。',
+    'Kraków MDA 報到': '巴士站地址（Bosacka 18）與 10/26 的 07:10 班次已在官方售票頁查得，售票頁標示由地下層 D10 發車；站位仍以當日電子看板為準，尚未購票。',
     'Lajkonik · 克拉科夫 → 奧斯威辛': dynamicTransitReason,
     '回程巴士返克拉科夫': '導覽 14:15 結束後才發車，實際班次依當日選定的回程選項；上車點與時刻在售票頁確認後再導航。',
     '抵 Kraków MDA · 休息': '抵達後的休息地點保持彈性，不需要固定導航地址。',
