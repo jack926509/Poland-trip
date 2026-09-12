@@ -36,7 +36,7 @@ export function renderJourney(days) {
           <g data-journey-train transform="translate(355 115)" aria-hidden="true"><circle r="19" fill="#faf5e9" stroke="#9a452e" stroke-width="2"/><text x="0" y="7" font-size="23" text-anchor="middle">🚆</text></g>
           <text x="24" y="418" class="map-country-note">路線示意 · 非實際鐵路軌跡</text>
         </svg>
-        <div class="story-map-caption"><div><small data-journey-current-day>DAY 01 / 08</small><strong data-journey-current-city>華沙 Warszawa</strong></div><span class="story-stamp" data-journey-stamp>抵達波蘭</span></div>
+        <div class="story-map-caption"><div><small data-journey-current-day>DAY 01 / 08</small><span class="story-city-label">白天遊覽</span><strong data-journey-current-city>華沙 Warszawa</strong><span class="story-destination" data-journey-destination>本日終點：華沙 Warszawa</span></div><span class="story-stamp" data-journey-stamp>抵達波蘭</span></div>
         <p class="story-map-hint">往下翻閱，或選擇上方日期。</p>
       </aside>
       <div class="story-chapters">${days.map((day, index) => {

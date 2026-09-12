@@ -24,9 +24,32 @@
 .story-day-link{display:flex;align-items:center;justify-content:space-between;min-height:48px;text-decoration:none!important;font-size:.95rem;font-weight:700;color:var(--story-ink)!important}.story-day-link span{font-size:1.4rem}.story-day-link:hover{text-decoration:underline!important}.story-quiet{padding-top:2rem}.story-quiet .story-highlights{border-color:#6f766d}
 .story-finale{text-align:center;margin:4rem 0 2rem;padding:3rem 1rem;border-top:2px solid var(--story-ink);border-bottom:1px solid #bfb29b}.story-finale p{font-size:1rem;line-height:1.9}.story-finale a{display:inline-block;padding:.7rem;color:var(--story-rust);font-weight:700;min-height:44px}
 .travel-story a:focus-visible,.travel-story button:focus-visible,.travel-story summary:focus-visible{outline:3px solid var(--story-rust);outline-offset:3px}
-.motion-paused *{transition:none!important;animation:none!important}.journey-cover-link{display:inline-block;align-self:flex-start;color:#fff7e7!important;border:1px solid #d8b999;padding:.7rem 1rem;margin-top:1rem;text-decoration:none!important;font-size:1rem;min-height:44px}
-@media(min-width:701px){.journal-home .journal-cover{min-height:0}.journal-home .journal-cover-copy{padding:2rem}.journal-home .journal-cover h1{font-size:clamp(3.5rem,7vw,6rem)}.journal-home .journal-cover-figure{min-height:0}.journal-home .journal-cover-photo{max-height:390px}}
+.travel-story.motion-paused *{transition:none!important;animation:none!important}.journey-cover-link{display:inline-block;align-self:flex-start;color:#fff7e7!important;border:1px solid #d8b999;padding:.7rem 1rem;margin-top:1rem;text-decoration:none!important;font-size:1rem;min-height:44px}
 @media(max-width:900px){.story-heading{display:block}.story-heading p{margin-top:1rem;white-space:normal}.story-columns{gap:1.8rem}.story-map-panel{padding:.8rem}.story-map-top{flex-wrap:wrap}.story-map-caption{gap:.4rem}.story-map-caption strong{font-size:1rem}.story-stamp{font-size:.8rem}}
 @media(max-width:700px){.travel-story{margin-top:2rem}.story-heading{margin-bottom:1rem}.story-heading h2{font-size:1.6rem}.story-day-nav{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:1.2rem}.story-day-nav a:nth-child(-n+4){border-bottom:1px solid #d2c8b7}.story-columns{display:block}.story-map-panel{top:4.4rem;z-index:5;transform:none;padding:.65rem .8rem;display:grid;grid-template-columns:110px minmax(0,1fr);gap:0 .8rem;box-shadow:0 4px 10px #4838201c;margin-bottom:1.3rem}.story-map{grid-column:1;grid-row:1/4;margin:0}.story-map-top{grid-column:2;font-size:.75rem;gap:.3rem}.story-map-top>span{display:none}.story-map-top button{font-size:.8rem;min-height:44px;padding:.3rem .5rem}.story-map-caption{grid-column:2;padding:.3rem 0 0;border:0}.story-map-caption strong{font-size:1rem}.story-stamp{display:none}.story-map-hint{grid-column:2;font-size:.75rem;margin:.2rem 0}.story-map-city text,.map-country,.map-country-note,.map-compass{display:none}.story-map-city circle{r:11}.story-map [data-journey-train]{transform-box:fill-box}.story-chapter{scroll-margin-top:15rem;padding-bottom:2rem;margin-bottom:1.5rem}.story-chapter h3{font-size:1.75rem;margin-top:1.2rem}.story-finale{margin-top:2rem;padding:2rem .3rem}.story-overline{letter-spacing:.09em}.story-details li{grid-template-columns:4.5rem minmax(0,1fr)}}
 @media(prefers-reduced-motion:reduce){.travel-story *{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 @media print{.story-map-panel{position:static;transform:none}.story-columns{display:block}.story-day-nav,.story-map-top button{display:none}.story-chapter{break-inside:avoid}.story-postcard{transform:none}}
+
+/* Keep the normal trip index first; the story is an optional disclosure. */
+.journey-shell{margin:2rem 0;border:1px solid #bcaf99;border-radius:0;background:transparent;scroll-margin-top:7rem}
+.journey-shell>summary{padding:1rem;min-height:48px;cursor:pointer;font-size:1.1rem;font-weight:700;color:#263c35}
+.journey-shell>summary span{font-size:.9rem;font-weight:400;margin-left:.6rem}
+.journey-shell>summary:focus-visible{outline:3px solid #99452f;outline-offset:3px}
+.journey-shell>.travel-story{margin:1rem;padding:0}
+.story-city-label{display:block;margin-top:.5rem;font-size:.85rem;color:#665d50}
+.story-destination{display:block;font-size:.85rem;line-height:1.7;margin-top:.5rem;color:#665d50}
+@media(max-width:700px),(max-height:500px){
+  .travel-story .story-map-panel{position:static;display:block;transform:none;z-index:auto;margin-bottom:1.5rem}
+  .travel-story .story-map{max-width:360px;margin:.5rem auto}
+  .travel-story .story-map-city text,.travel-story .map-country,.travel-story .map-country-note,.travel-story .map-compass{display:block}
+  .travel-story .story-map-city circle{r:7}
+  .travel-story .story-map-top{display:flex;flex-wrap:wrap;font-size:.9rem}
+  .travel-story .story-map-top>span{display:inline}
+  .travel-story .story-map-top button{font-size:.9rem;min-height:44px}
+  .travel-story .story-map-caption{display:flex}
+  .travel-story .story-map-hint{font-size:.9rem}
+  .travel-story .story-chapter{scroll-margin-top:8rem}
+  .travel-story .story-postcard{transform:none}
+  .travel-story .story-chapter:nth-child(even) .story-postcard{transform:none}
+  .journey-shell>summary span{display:block;margin:.4rem 0 0}
+}
