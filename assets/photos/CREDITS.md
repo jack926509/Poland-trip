@@ -60,3 +60,15 @@
 - 再用 Pillow（Python）等比縮放：hero 長邊 1200px，thumb 長邊 200px（同一裁切範圍，非重新取景）。
 - 輸出格式 WebP，quality 76–82（依實測位元組數自動遞減至達標），method=6。
 - 工具環境：本機無 cwebp／ImageMagick，改用 Python3 + Pillow 11.3.0（內建 libwebp）完成 WebP 編碼，畫質與體積皆達標，非降級妥協。
+
+## 章節海報插畫（2026-09-10）
+
+| 檔名 | 用途 | 來源 | 尺寸 |
+|---|---|---|---|
+| assets/og/polska-og.jpg | 社群分享預覽圖（首頁與非城市頁預設，POLSKA 總覽） | ChatGPT 生成插畫 | 1200 × 630 |
+| assets/og/warszawa-og.jpg | 華沙城市分頁社群分享預覽圖 | ChatGPT 生成插畫 | 1200 × 630 |
+| assets/og/krakow-og.jpg | 克拉科夫城市分頁社群分享預覽圖 | ChatGPT 生成插畫 | 1200 × 630 |
+| assets/og/wroclaw-og.jpg | 樂斯拉夫城市分頁社群分享預覽圖 | ChatGPT 生成插畫 | 1200 × 630 |
+| assets/og/poznan-og.jpg | 波茲南城市分頁社群分享預覽圖 | ChatGPT 生成插畫 | 1200 × 630 |
+
+以上 5 張為 ChatGPT 依網站「Paper Travel Journal」復古字體風格生成的插畫，非攝影作品，無第三方授權需求，亦非 Wikimedia Commons 素材。原始 PNG（各約 2.5 MB，1672×941px）存放於專案根目錄 `插畫/`，未加入版本控制；此處的 JPG 為先等比縮到寬 1200px、再從中央裁到 630px 高（Facebook／LINE／Telegram 分享預覽標準尺寸 1200×630）、quality 85 的網站用版本，僅供 Open Graph／Twitter Card 的 `og:image` 使用，不在畫面上顯示。

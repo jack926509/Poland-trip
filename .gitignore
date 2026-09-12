@@ -16,3 +16,6 @@ _site/
 
 # 產生的靜態網站輸出（部署時由 prepare-site.sh 重新 build）
 dist/
+
+# 海報插畫原始檔（ChatGPT 生成，未壓縮，不進 git）
+插畫/
