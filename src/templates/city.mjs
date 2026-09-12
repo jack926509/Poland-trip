@@ -270,5 +270,7 @@ export function renderCity({
     extraHead,
     pageKind: 'city',
     currentPage: `city-${cityFile}.html`,
+    ogImage: city.photo.og,
+    ogImageAlt: `${city.name}章節海報`,
   });
 }
