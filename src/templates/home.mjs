@@ -1,3 +1,4 @@
+import { renderJourney } from './journey.mjs';
 import { renderLayout } from './layout.mjs';
 
 const cityFileKeys = {
@@ -95,6 +96,7 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
           <div><dt>波蘭境內</dt><dd>${escapeHtml(meta.dateRange)}</dd></div>
           <div><dt>旅程</dt><dd>${meta.days} 天 ${meta.nights} 夜</dd></div>
         </dl>
+        <a class="journey-cover-link" href="#journey-heading">跟著火車，翻開旅程 ↓</a>
       </div>
 ${coverFigure}
     </header>
@@ -102,6 +104,8 @@ ${coverFigure}
     <div class="route-strip journal-route" aria-label="旅程路線">
       ${['華沙', '克拉科夫', '樂斯拉夫', '波茲南', '華沙'].map(city => `<span class="route-stop">${city}</span>`).join('')}
     </div>
+
+    ${renderJourney(days)}
 
     <aside class="journal-status-strip" aria-label="旅程準備狀態">
       <a href="#todos" aria-label="${todoCount} 項待辦"><strong>${todoCount}</strong><span>項待辦</span></a>
@@ -151,5 +155,5 @@ ${coverFigure}
       </div>
     </section>`;
 
-  return renderLayout({ title: '首頁', activeNav: 'home', bodyHtml, pageKind: 'home' });
+  return renderLayout({ title: '首頁', activeNav: 'home', bodyHtml, pageKind: 'home', extraHead: '<script src="assets/journey.js" defer></script>' });
 }

@@ -272,6 +272,7 @@ function buildStandalone(searchRecords) {
   const leafletCss = fs.readFileSync(path.join(distDir, 'assets', 'leaflet', 'leaflet.css'), 'utf8');
   const leafletJs = fs.readFileSync(path.join(distDir, 'assets', 'leaflet', 'leaflet.js'), 'utf8');
   const databaseFilterJs = fs.readFileSync(path.join(distDir, 'assets', 'database-filter.js'), 'utf8');
+  const journeyJs = fs.readFileSync(path.join(distDir, 'assets/journey.js'), 'utf8');
   const siteSearchJs = fs.readFileSync(path.join(distDir, 'assets/site-search.js'), 'utf8');
   const standaloneSearchRecords = searchRecords.map(record => ({
     ...record,
@@ -569,6 +570,9 @@ ${standaloneMobileQuickNav}
   <script data-bundled="database-filter.js">
 ${databaseFilterJs}
   </script>
+  <script data-bundled="journey.js">
+${journeyJs}
+  </script>
   <script type="module" data-bundled="site-search.js">
 ${siteSearchJs}
   </script>
@@ -616,7 +620,8 @@ function buildIntoStaging(stagingRoot) {
   distDir = path.join(stagingRoot, 'dist');
   standalonePath = path.join(stagingRoot, 'poland-travel-guide-2026.html');
   resetOutput();
-  fs.copyFileSync(path.join(projectRoot, 'src/styles/main.css'), path.join(distDir, 'assets/main.css'));
+  fs.writeFileSync(path.join(distDir, 'assets/main.css'), fs.readFileSync(path.join(projectRoot, 'src/styles/main.css'), 'utf8') + '\n' + fs.readFileSync(path.join(projectRoot, 'src/styles/journey.css'), 'utf8'));
+  fs.copyFileSync(path.join(projectRoot, 'src/scripts/journey.js'), path.join(distDir, 'assets/journey.js'));
   fs.copyFileSync(path.join(projectRoot, 'src/scripts/nav.js'), path.join(distDir, 'assets/nav.js'));
   fs.copyFileSync(path.join(projectRoot, 'src/scripts/database-filter.js'), path.join(distDir, 'assets/database-filter.js'));
   fs.copyFileSync(path.join(projectRoot, 'src/scripts/site-search.js'), path.join(distDir, 'assets/site-search.js'));
