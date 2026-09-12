@@ -1,0 +1,55 @@
+/* A railway notebook: ink, rust, squared paper and photographic postcards. */
+.travel-story{--story-ink:#263c35;--story-rust:#99452f;--story-paper:#faf5e9;color:var(--story-ink);margin:3.5rem 0 4rem}
+.story-heading{display:flex;justify-content:space-between;align-items:end;gap:1.5rem;border-top:2px solid var(--story-ink);padding-top:1.5rem;margin-bottom:1.8rem}
+.story-overline{font:700 .8rem/1.7 Inter,sans-serif;letter-spacing:.15em;color:var(--story-rust)}
+.story-heading h2,.story-finale h2{font-family:'Noto Serif TC','Songti TC',serif;font-size:clamp(1.6rem,2.6vw,2.5rem);line-height:1.5;letter-spacing:.035em;margin:.5rem 0 0}
+.story-heading p{font-size:.9rem;white-space:nowrap;margin:0 0 .4rem}
+.story-day-nav{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));border:1px solid #bcb09b;background:var(--story-paper);margin-bottom:2rem}
+.story-day-nav a{display:grid;justify-items:center;padding:.7rem .2rem;min-height:54px;font-size:1rem;line-height:1.6;color:var(--story-ink);text-decoration:none;border-right:1px solid #d2c8b7;transition:background .2s,color .2s}
+.story-day-nav a:last-child{border-right:0}.story-day-nav small{font-size:.75rem;letter-spacing:.08em}.story-day-nav a:hover,.story-day-nav a[aria-current]{background:var(--story-ink);color:#fff9ea}
+.story-columns{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(2rem,5vw,5rem);align-items:start}
+.story-map-panel{position:sticky;top:6rem;background:var(--story-paper);border:1px solid #bcaf99;padding:1.2rem;box-shadow:5px 6px 0 #ded4c0;transform:rotate(-.6deg)}
+.story-map-top{display:flex;align-items:center;justify-content:space-between;gap:.5rem;font-size:.85rem;font-weight:700;letter-spacing:.03em}
+.story-map-top button{font:inherit;font-size:.8rem;min-height:44px;padding:.4rem .65rem;color:var(--story-ink);background:transparent;border:1px solid #bcaf99;border-radius:0;cursor:pointer}.story-map-top button:disabled{cursor:default}
+.story-map{background-image:linear-gradient(#d8ccb766 1px,transparent 1px),linear-gradient(90deg,#d8ccb766 1px,transparent 1px);background-size:6.25% 6.82%;width:100%;height:auto;display:block;margin-top:.7rem;overflow:visible}.story-track{fill:none;stroke:#d6c9b1;stroke-width:7;stroke-linejoin:round}.story-track-dashes{fill:none;stroke:#faf5e9;stroke-width:3;stroke-dasharray:2 9}.story-travelled{fill:none;stroke:var(--story-rust);stroke-width:4;stroke-linejoin:round;stroke-dasharray:1000;stroke-dashoffset:1000}
+.story-map-city circle{fill:var(--story-paper);stroke:var(--story-ink);stroke-width:2}.story-map-city text{font-family:'Noto Sans TC',sans-serif;font-weight:700;font-size:17px;fill:var(--story-ink)}.story-map-city .map-latin{font:13px Inter,sans-serif}.story-map-city.is-current circle{fill:var(--story-rust);stroke:var(--story-rust)}.story-map-city.is-current text{fill:var(--story-rust)}
+.map-compass{font:14px Inter,sans-serif;fill:#665b49}.map-country{font:700 24px Georgia,serif;letter-spacing:4px;fill:#a79b85}.map-country-note{font:12px Inter,sans-serif;letter-spacing:1px;fill:#776b58}
+.story-map-caption{display:flex;align-items:center;justify-content:space-between;gap:1rem;border-top:1px solid #cabc9f;padding:1rem 0 .3rem}.story-map-caption small{font:700 .75rem Inter,sans-serif;letter-spacing:.13em}.story-map-caption strong{display:block;font-size:1.25rem;margin-top:.4rem}.story-stamp{font-family:serif;font-weight:700;border:3px double var(--story-rust);padding:.6rem .5rem;color:var(--story-rust);transform:rotate(-8deg);white-space:nowrap;font-size:.9rem}.story-map-hint{font-size:.85rem;color:#6d6659;margin:.6rem 0 0}
+.story-chapter{padding:1.2rem 0 3.5rem;margin-bottom:2rem;border-bottom:1px solid #bfb29b;scroll-margin-top:7rem;outline:none}.story-chapter:last-child{margin-bottom:0}.story-chapter:focus-visible{outline:3px solid var(--story-rust);outline-offset:8px}
+.story-chapter-date{display:flex;justify-content:space-between;gap:1rem;align-items:center;font:.9rem Inter,'Noto Sans TC',sans-serif;letter-spacing:.04em}.story-chapter-date>span{border:1px solid var(--story-rust);color:var(--story-rust);padding:.35rem .65rem;transform:rotate(-3deg);font-weight:700}
+.story-chapter h3{font-family:'Noto Serif TC','Songti TC',serif;font-size:clamp(1.65rem,2.6vw,2.5rem);line-height:1.45;margin:1.5rem 0 .7rem;color:var(--story-ink)}.story-chapter-note{font-size:1rem;line-height:1.9;color:#665d50;margin:0 0 1.5rem}
+.story-postcard{padding:.65rem .65rem 0;background:#fffdf5;border:1px solid #d2c7b5;margin:1.5rem .3rem 2rem;transform:rotate(1.5deg);box-shadow:0 7px 16px #48382018;transition:transform .7s ease}.story-postcard img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;display:block;filter:saturate(.85)}.story-postcard figcaption{font-family:Georgia,'Noto Sans TC',serif;font-size:.85rem;padding:.7rem .3rem;color:#655747;letter-spacing:.05em}.story-chapter:nth-child(even) .story-postcard{transform:rotate(-1.5deg)}.journey-ready .story-chapter.is-current .story-postcard{transform:rotate(0)}
+.story-highlights{border-left:3px solid var(--story-rust);padding:.2rem 0 .2rem 1rem;margin:1.5rem 0}.story-highlights h4{font-size:.9rem;color:var(--story-rust);margin:0 0 .4rem;letter-spacing:.12em}.story-highlights p{font-size:1.15rem;font-weight:700;line-height:1.8;margin:0}
+.story-details{border-top:1px dashed #bfb29b;border-bottom:1px dashed #bfb29b;background:transparent;margin:1rem 0}.story-details summary{min-height:48px;padding:.85rem 0;cursor:pointer;font-size:.95rem;font-weight:700}.story-details ol{list-style:none;padding:0;margin:0}.story-details li{display:grid;grid-template-columns:5rem minmax(0,1fr);gap:.7rem;border-top:1px solid #ded5c5;padding:.85rem 0;line-height:1.7;font-size:1rem}.story-details li>span{color:var(--story-rust);font-size:.85rem;font-weight:700}.story-details li p{margin:.3rem 0 0;font-size:.9rem;color:#665d50}.story-caution{font-size:.9rem;line-height:1.8;border-left:2px solid var(--story-rust);padding-left:1rem}
+.story-day-link{display:flex;align-items:center;justify-content:space-between;min-height:48px;text-decoration:none!important;font-size:.95rem;font-weight:700;color:var(--story-ink)!important}.story-day-link span{font-size:1.4rem}.story-day-link:hover{text-decoration:underline!important}.story-quiet{padding-top:2rem}.story-quiet .story-highlights{border-color:#6f766d}
+.story-finale{text-align:center;margin:4rem 0 2rem;padding:3rem 1rem;border-top:2px solid var(--story-ink);border-bottom:1px solid #bfb29b}.story-finale p{font-size:1rem;line-height:1.9}.story-finale a{display:inline-block;padding:.7rem;color:var(--story-rust);font-weight:700;min-height:44px}
+.travel-story a:focus-visible,.travel-story button:focus-visible,.travel-story summary:focus-visible{outline:3px solid var(--story-rust);outline-offset:3px}
+.travel-story.motion-paused *{transition:none!important;animation:none!important}.journey-cover-link{display:inline-block;align-self:flex-start;color:#fff7e7!important;border:1px solid #d8b999;padding:.7rem 1rem;margin-top:1rem;text-decoration:none!important;font-size:1rem;min-height:44px}
+@media(max-width:900px){.story-heading{display:block}.story-heading p{margin-top:1rem;white-space:normal}.story-columns{gap:1.8rem}.story-map-panel{padding:.8rem}.story-map-top{flex-wrap:wrap}.story-map-caption{gap:.4rem}.story-map-caption strong{font-size:1rem}.story-stamp{font-size:.8rem}}
+@media(max-width:700px){.travel-story{margin-top:2rem}.story-heading{margin-bottom:1rem}.story-heading h2{font-size:1.6rem}.story-day-nav{grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:1.2rem}.story-day-nav a:nth-child(-n+4){border-bottom:1px solid #d2c8b7}.story-columns{display:block}.story-map-panel{top:4.4rem;z-index:5;transform:none;padding:.65rem .8rem;display:grid;grid-template-columns:110px minmax(0,1fr);gap:0 .8rem;box-shadow:0 4px 10px #4838201c;margin-bottom:1.3rem}.story-map{grid-column:1;grid-row:1/4;margin:0}.story-map-top{grid-column:2;font-size:.75rem;gap:.3rem}.story-map-top>span{display:none}.story-map-top button{font-size:.8rem;min-height:44px;padding:.3rem .5rem}.story-map-caption{grid-column:2;padding:.3rem 0 0;border:0}.story-map-caption strong{font-size:1rem}.story-stamp{display:none}.story-map-hint{grid-column:2;font-size:.75rem;margin:.2rem 0}.story-map-city text,.map-country,.map-country-note,.map-compass{display:none}.story-map-city circle{r:11}.story-map [data-journey-train]{transform-box:fill-box}.story-chapter{scroll-margin-top:15rem;padding-bottom:2rem;margin-bottom:1.5rem}.story-chapter h3{font-size:1.75rem;margin-top:1.2rem}.story-finale{margin-top:2rem;padding:2rem .3rem}.story-overline{letter-spacing:.09em}.story-details li{grid-template-columns:4.5rem minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){.travel-story *{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+@media print{.story-map-panel{position:static;transform:none}.story-columns{display:block}.story-day-nav,.story-map-top button{display:none}.story-chapter{break-inside:avoid}.story-postcard{transform:none}}
+
+/* Keep the normal trip index first; the story is an optional disclosure. */
+.journey-shell{margin:2rem 0;border:1px solid #bcaf99;border-radius:0;background:transparent;scroll-margin-top:7rem}
+.journey-shell>summary{padding:1rem;min-height:48px;cursor:pointer;font-size:1.1rem;font-weight:700;color:#263c35}
+.journey-shell>summary span{font-size:.9rem;font-weight:400;margin-left:.6rem}
+.journey-shell>summary:focus-visible{outline:3px solid #99452f;outline-offset:3px}
+.journey-shell>.travel-story{margin:1rem;padding:0}
+.story-city-label{display:block;margin-top:.5rem;font-size:.85rem;color:#665d50}
+.story-destination{display:block;font-size:.85rem;line-height:1.7;margin-top:.5rem;color:#665d50}
+@media(max-width:700px),(max-height:500px){
+  .travel-story .story-map-panel{position:static;display:block;transform:none;z-index:auto;margin-bottom:1.5rem}
+  .travel-story .story-map{max-width:360px;margin:.5rem auto}
+  .travel-story .story-map-city text,.travel-story .map-country,.travel-story .map-country-note,.travel-story .map-compass{display:block}
+  .travel-story .story-map-city circle{r:7}
+  .travel-story .story-map-top{display:flex;flex-wrap:wrap;font-size:.9rem}
+  .travel-story .story-map-top>span{display:inline}
+  .travel-story .story-map-top button{font-size:.9rem;min-height:44px}
+  .travel-story .story-map-caption{display:flex}
+  .travel-story .story-map-hint{font-size:.9rem}
+  .travel-story .story-chapter{scroll-margin-top:8rem}
+  .travel-story .story-postcard{transform:none}
+  .travel-story .story-chapter:nth-child(even) .story-postcard{transform:none}
+  .journey-shell>summary span{display:block;margin:.4rem 0 0}
+}

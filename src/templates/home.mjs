@@ -1,3 +1,4 @@
+import { renderJourney } from './journey.mjs';
 import { renderLayout } from './layout.mjs';
 
 const cityFileKeys = {
@@ -95,6 +96,7 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
           <div><dt>波蘭境內</dt><dd>${escapeHtml(meta.dateRange)}</dd></div>
           <div><dt>旅程</dt><dd>${meta.days} 天 ${meta.nights} 夜</dd></div>
         </dl>
+        <a class="journey-cover-link" href="#journey-story" data-journey-open>跟著火車，翻開旅程 ↓</a>
       </div>
 ${coverFigure}
     </header>
@@ -116,6 +118,11 @@ ${coverFigure}
       <p class="lead">從城市轉場到現場提醒，每一天都是一個可獨立翻閱的章節。</p>
       <ol class="journal-itinerary">${dayEntries}</ol>
     </section>
+
+    <details class="journey-shell" id="journey-story" data-journey-shell>
+      <summary>展開動畫旅行手帳 <span>四城路線與八日故事</span></summary>
+      ${renderJourney(days)}
+    </details>
 
     <section class="section" id="cities">
       <div class="section-heading"><span class="section-num">02 / City stories</span><h2>四城攝影章節</h2></div>
@@ -151,5 +158,5 @@ ${coverFigure}
       </div>
     </section>`;
 
-  return renderLayout({ title: '首頁', activeNav: 'home', bodyHtml, pageKind: 'home' });
+  return renderLayout({ title: '首頁', activeNav: 'home', bodyHtml, pageKind: 'home', extraHead: '<script src="assets/journey.js" defer></script>' });
 }
