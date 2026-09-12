@@ -1,3 +1,4 @@
+import { dayDining } from '../data/day-dining.js';
 import { renderLayout } from './layout.mjs';
 import { renderInteractiveMap } from './map.mjs';
 import { renderPhotoGallery } from './photo-gallery.mjs';
@@ -37,8 +38,22 @@ function renderEatCard(item) {
   return `<div class="card"><p>${escapeHtml(item.text)}</p>${note}${link}</div>`;
 }
 
-function renderOperation(operation) {
-  if (!operation) return '';
+function renderDayFood(day) {
+  const restaurants = dayDining[day.n] || [];
+  return `<article class="card day-dining" id="day-food" aria-labelledby="day-food-heading">
+    <span class="eyebrow">Dining</span><h3 id="day-food-heading">當日餐廳候選</h3>
+    <p class="food-map-note">依當天動線擇一用餐；候選尚未訂位，出發前確認營業與最後點餐時間。</p>
+    <ul class="day-dining-list">${restaurants.map(item => `<li>
+      <span class="eyebrow">${escapeHtml(item.role)}</span><h4>${escapeHtml(item.name)}</h4>
+      <p class="food-map-note">${escapeHtml(item.address)}</p><p>${escapeHtml(item.note)}</p>
+      ${safeHttpsUrl(item.map) ? `<p class="food-map-links"><a href="${safeHttpsUrl(item.map)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.name)} 導航 ↗</a></p>` : ''}
+    </li>`).join('')}</ul>
+    ${day.eat?.length ? `<div class="day-eat"><h3>順路必吃</h3><div class="day-eat-list">${day.eat.map(renderEatCard).join('')}</div></div>` : ''}
+  </article>`;
+}
+
+function renderOperation(operation, day) {
+  if (!operation) return renderDayFood(day);
 
   const addresses = operation.addresses?.map(item => {
     const safeUrl = safeHttpsUrl(item.url);
@@ -72,11 +87,14 @@ function renderOperation(operation) {
           <h3>現場地址</h3>
           <ul class="operation-addresses">${addresses}</ul>
         </article>
+        <div class="operation-route-column">
         <article class="card">
           <span class="eyebrow">Route</span>
           <h3>移動步驟</h3>
           <ol class="operation-routes">${navigation}</ol>
         </article>
+        ${renderDayFood(day)}
+        </div>
       </div>
       <div class="callout-risk operation-alerts">
         <span class="tag-red">今日注意</span>
@@ -149,12 +167,6 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
       </article>
       </div>
     </section>`;
-
-  const eatHtml = day.eat?.length ? `
-    <section class="section">
-      <div class="section-heading"><span class="section-num">Food</span><h2>順路必吃</h2></div>
-      <div class="grid">${day.eat.map(renderEatCard).join('')}</div>
-    </section>` : '';
 
   const extendHtml = day.extend?.length ? `
     <section class="section">
@@ -256,8 +268,7 @@ ${coverHtml}
     </section>
     ${constraintHtml}
     ${dayMap ? renderInteractiveMap({ id: `map-day-${day.n}`, title: `Day ${day.n} 行程地圖`, mapData: dayMap, mapChecks, legend, note: dayMap.note }) : ''}
-    ${renderOperation(operation)}
-    ${eatHtml}
+    ${renderOperation(operation, day)}
     ${extendHtml}
     ${returnOptionsHtml}
     ${backupHtml}
