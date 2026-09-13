@@ -1,3 +1,4 @@
+import { mergeCityDining } from './city-dining.mjs';
 import { renderLayout } from './layout.mjs';
 import { renderPhotoGallery } from './photo-gallery.mjs';
 
@@ -66,24 +67,25 @@ export function renderCity({
       <td>${attraction.priceNote}</td>
     </tr>`).join('');
 
-  const diningRows = dining.map(restaurant => `
-    <tr>
-      <td><a href="${restaurant.mapUrl}" target="_blank" rel="noopener">${restaurant.name}</a></td>
-      <td>${stableTier(restaurant.tier)}</td>
-      <td>${restaurant.highlight}</td>
-    </tr>`).join('');
-
-  const primaryDiningHtml = cityFoodForCity?.items.length ? `
-    <section class="section">
-      <div class="section-heading"><span class="section-num">Shortlist</span><h2>行程主餐廳推薦</h2></div>
-      <div class="grid">${cityFoodForCity.items.map(item => `
-        <article class="card">
-          <span class="eyebrow">${item.tag}</span>
-          <h3>${item.name}</h3>
-          <p>${item.note}</p>
-          <p><span class="${item.book === 'must' ? 'tag-todo' : 'tag-muted'}">${bookingLabels[item.book] || item.book}</span></p>
-          ${renderFoodMapLinks(item)}
-        </article>`).join('')}
+  const mergedDining = mergeCityDining(cityKey, dining, cityFoodForCity?.items || []);
+  const renderDiningRow = item => `<tr class="${item.selected ? 'city-dining-selected' : ''}">
+    <th scope="row"><strong>${item.name}</strong>${item.selected ? '<span class="city-dining-choice">你的候選</span>' : ''}${item.address ? `<p class="food-map-note">${item.address}</p>` : ''}</th>
+    <td>${stableTier(item.tier || item.tag || '待補充')}</td>
+    <td>${item.notes.length ? item.notes.join('；') : '依店家當日菜單確認'}</td>
+    <td>${item.plan ? `<p>${item.plan}</p>` : '<p>依當天動線與胃口安排</p>'}<p class="food-map-note">${bookingLabels[item.book] || '營業與訂位請向店家確認'}</p></td>
+    <td>${renderFoodMapLinks(item)}</td>
+  </tr>`;
+  const primaryDiningHtml = mergedDining.length ? `
+    <section class="section" id="city-dining">
+      <div class="section-heading"><span class="section-num">Dining</span><h2>行程主餐廳推薦</h2></div>
+      <p class="lead" id="city-dining-description">你挑選的餐廳列在最上方，其餘選擇接續列出。營業、菜單與訂位以店家當日資訊為準。</p>
+      <p class="city-dining-scroll-hint">手機可左右滑動列表，查看完整欄位。</p>
+      <div class="table-wrap city-dining-table-wrap" role="region" aria-label="行程主餐廳推薦列表" tabindex="0">
+        <table class="table-editorial city-dining-table" aria-describedby="city-dining-description">
+          <caption>餐廳候選與用餐安排</caption>
+          <thead><tr><th scope="col">餐廳／地址</th><th scope="col">類型／評選標記</th><th scope="col">料理特色／推薦餐點</th><th scope="col">行程安排／訂位提醒</th><th scope="col">地圖導航</th></tr></thead>
+          <tbody>${mergedDining.map(renderDiningRow).join('')}</tbody>
+        </table>
       </div>
     </section>` : '';
 
@@ -243,15 +245,6 @@ export function renderCity({
       <div class="table-wrap"><table class="table-editorial">
         <thead><tr><th>景點</th><th>類型</th><th>票價／備註</th></tr></thead>
         <tbody>${attractionRows}</tbody>
-      </table></div>
-    </section>
-
-    <section class="section" id="city-dining">
-      <div class="section-heading"><span class="section-num">Dining</span><h2>2026 餐廳情報</h2></div>
-      <div class="callout-note"><b>資料界線：</b>使用者指定店家已標成「使用者指定」並保留原始 Google Maps 連結；其餘探索清單只保留店名、菜系特色與 2026 米其林身分。動態 Google 星等已移除，營業時間與訂位仍以店家即時頁面為準。</div>
-      <div class="table-wrap"><table class="table-editorial">
-        <thead><tr><th>店家</th><th>等級</th><th>重點招牌</th></tr></thead>
-        <tbody>${diningRows}</tbody>
       </table></div>
     </section>
 
