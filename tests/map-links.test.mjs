@@ -52,7 +52,7 @@ test('每日備案與延伸選項若是具體地點就要有定位', () => {
 
 test('小吃與咖啡廳推薦四城齊全且每筆都有定位', () => {
   assert.deepEqual(Object.keys(snacksAndCafes), ['warsaw', 'krakow', 'wroclaw', 'poznan']);
-  assert.deepEqual(Object.values(snacksAndCafes).map(list => list.length), [5, 5, 4, 4]);
+  assert.deepEqual(Object.values(snacksAndCafes).map(list => list.length), [5, 4, 4, 2]);
   for (const [city, list] of Object.entries(snacksAndCafes)) {
     for (const item of list) {
       assert.ok(isMapUrl(item.map), `${city}「${item.name}」缺定位`);

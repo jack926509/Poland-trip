@@ -628,10 +628,10 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.equal(michelinReservations.length, 9);
   assert.equal(verifiedRestaurantHours.length, 4);
   assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
-    warsaw: 21, krakow: 15, wroclaw: 11, poznan: 11,
+    warsaw: 17, krakow: 14, wroclaw: 11, poznan: 6,
   });
-  assert.deepEqual(cityFood.map(group => group.items.length), [11, 12, 8, 6]);
-  assert.deepEqual(foodBackup.map(group => group.items.length), [9, 10, 6, 7]);
+  assert.deepEqual(cityFood.map(group => group.items.length), [5, 8, 4, 2]);
+  assert.deepEqual(foodBackup.map(group => group.items.length), [11, 6, 5, 4]);
   assert.equal(foods.length, 12);
 
   assert.equal(fares.length, 21);

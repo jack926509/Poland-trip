@@ -37,12 +37,12 @@ export const days = [
       {t:'15:15', label:'Hotel Metropol Check-in', sub:'ul. Marszałkowska 99a；入住 15:00 起，提早到可先寄放行李再出門', dur:'30 min'},
       {t:'16:45', label:'★ 老城廣場', sub:'皇家城堡 · 美人魚雕像', cost:'免費', dur:'1 h'},
       {t:'18:00', label:'Krakowskie Przedmieście', sub:'黃昏氛圍', cost:'免費', dur:'1 h'},
-      {t:'19:00', label:'Pierogi 晚餐', sub:'Zapiecek · Krakowskie Przedmieście 55（就在 18:00 散步那條街上）；出發前確認當日營業', cost:'PLN 35–55'},
+      {t:'19:00', label:'波蘭地方料理晚餐', sub:'✦ Specjały Regionalne · Nowy Świat；出發前確認當日營業', cost:'PLN 35–55'},
       {t:'21:00', label:'早睡倒時差'},
     ],
     eat: [
-      {text:'Pierogi @ Zapiecek', place:'Zapiecek（老城多家分店）', map:'https://www.google.com/maps/search/?api=1&query=Zapiecek+Polskie+Pierogarnie+Warszawa'},
-      {text:'Wedel 熱巧克力 @ E. Wedel Pijalnia', place:'Pijalnia Czekolady E.Wedel', map:'https://www.google.com/maps/search/?api=1&query=Pijalnia+Czekolady+E.Wedel+Warszawa'},
+      {text:'晚餐 @ ✦ Specjały Regionalne', place:'✦ Specjały Regionalne（Nowy Świat）', note:'波蘭地方料理；一–四 12:00–22:00、五六 12:00–23:30、日 12:00–22:00', map:'https://www.google.com/maps/search/?api=1&query=Specjaly+Regionalne+Warsaw'},
+      {text:'甜點 @ ✦ Pijalnia Czekolady E.Wedel（Szpitalna 8）', place:'✦ Pijalnia Czekolady E.Wedel（Szpitalna 8）', note:'一–五 08:00–22:00、六 09:00–22:00、日 09:00–21:00', map:'https://www.google.com/maps/search/?api=1&query=Pijalnia+Czekolady+E.Wedel+Szpitalna+8+Warsaw'},
     ],
     backup: [
       {label:'下雨備案', where:'科學文化宮 30F 觀景台', why:'票價出發前依官方售票頁重查 · 室內 + 360° 城景，老城廣場走路 12 分', map:'https://www.google.com/maps/search/?api=1&query=Pa%C5%82ac%20Kultury%20i%20Nauki%2C%20plac%20Defilad%201%2C%20Warszawa'},
@@ -78,12 +78,12 @@ export const days = [
       {t:'15:30', label:'紡織會館 Sukiennice 快速一覽', sub:'採購留到 10/27', cost:'免費入場', dur:'15 min'},
       {t:'15:45', label:'步行經 Kazimierz、Podgórze 前往辛德勒工廠', sub:'保留約 85 分鐘步行與沿途短停，17:10 前到入口；時間不足改用 Jakdojade 查當下交通', dur:'約 1 h 25 min'},
       {t:'17:30', label:'★ 辛德勒工廠', sub:'週日最後入場 18:30 · mhk.pl/en 預約', cost:'PLN 60 · 優待 45', dur:'2 h'},
-      {t:'19:45', label:'★ Kazimierz Plac Nowy zapiekanka 晚餐', sub:'Endzior / Krzysiek', cost:'PLN 18–25'},
+      {t:'19:45', label:'★ Kazimierz Plac Nowy zapiekanka 晚餐', sub:'19:45 主餐先訂 ✦ NOAH（以色列烤羊肉串配 pitta 餅），飯後再走去圓亭吃 ✦ Endzior zapiekanka', cost:'PLN 60–100'},
     ],
     eat: [
-      {text:'Obwarzanek 圓圈麵包 (PGI)', place:'中央廣場周邊推車', note:'老城與 Kazimierz 街邊推車皆有售，無固定店址；地圖連到推車最密集的中央廣場一帶，認 PGI 標示', map:'https://www.google.com/maps/search/?api=1&query=obwarzanek+krakowski+Rynek+G%C5%82%C3%B3wny+Krak%C3%B3w'},
-      {text:'Zapiekanka @ Plac Nowy 圓亭', place:'Okrąglak, Plac Nowy', map:'https://www.google.com/maps/search/?api=1&query=Okraglak+Plac+Nowy+Krakow'},
-      {text:'Klezmer-Hois 猶太料理', place:'Klezmer-Hois（Kazimierz）', map:'https://www.google.com/maps/search/?api=1&query=Klezmer-Hois+Krakow'},
+      {text:'11:30 午餐 @ Bar Mleczny Pod Temidą', place:'Bar Mleczny Pod Temidą（Grodzka 43）', note:'中央廣場往 Wawel 路上的平價牛奶吧；官網每日 09:00–20:00，惟部分來源說週末公休，行前電話 12 422 08 74 確認', map:'https://maps.app.goo.gl/xCGDapoy56MBvg2y7?g_st=il'},
+      {text:'19:45 晚餐 @ ✦ NOAH', place:'✦ NOAH（Kazimierz）', note:'以色列烤羊肉串配 pitta 餅；日 13:00–21:30', map:'https://maps.google.com/?cid=6279990201826816109'},
+      {text:'zapiekanka 街食 @ ✦ Endzior', place:'✦ Endzior @ Okrąglak（Plac Nowy 圓亭）', note:'圓亭內 zapiekanka 名攤，長棍麵包烤蘑菇起司', map:'https://www.google.com/maps/search/?api=1&query=Endzior+Krakow'},
     ],
     warn: '❗瓦維爾城堡尚未訂票；辛德勒工廠個人網路票在參觀日前 90 天 09:00 開放，10/25 已可在官方售票頁查／購。瓦維爾大教堂週日 12:30–17:00；城堡改走短路線並於 15:00 前離開，保留經 Kazimierz、Podgórze 步行到辛德勒工廠的時間。辛德勒工廠週二至週日 09:00–20:00、最後入場 18:30，17:30 屬可行時段。10/25 為非營業週日，多數一般商店關閉；餐廳等法定例外是否營業仍以店家公告為準。',
     backup: [
@@ -122,7 +122,7 @@ export const days = [
       {t:'18:00', label:'安靜晚餐沉澱情緒', cost:'PLN 60–100'},
     ],
     eat: [
-      {text:'Pierogi 家常口味 @ Pierożki u Vincenta', place:'Pierożki u Vincenta（Kazimierz）', note:'Kazimierz 小店，份量與價位親民，適合當天不想再走遠的安靜晚餐；出發前確認當日營業', map:'https://www.google.com/maps/search/?api=1&query=Piero%C5%BCki%20u%20Vincenta%2C%20B%C5%82ogos%C5%82awionej%20Bronis%C5%82awy%2C%20Krak%C3%B3w'},
+      {text:'18:00 晚餐 @ ✦ Pod Aniołami', place:'✦ Pod Aniołami（地窖）', note:'地窖傳統波蘭菜，要訂位；官網每日 13:00–23:00，惟本項風險最高，行前電話 12 421 39 99 確認週一是否照常營業', map:'https://www.google.com/maps/search/?api=1&query=Pod+Aniolami+Krakow'},
       {text:'回程後的一杯咖啡 @ Karma Coffee Roasters', place:'Karma Coffee Roasters（Krupnicza）', note:'克拉科夫第一家精品咖啡店，公開資料列一–五 08:00–20:00、六日 10:00–19:00；巴士回到市區後可先坐下沉澱', map:'https://www.google.com/maps/search/?api=1&query=Karma%20Coffee%20Krupnicza%20Krak%C3%B3w'},
     ],
     warn: '✅ 導覽已訂妥：10/26 10:30 英文個人 educator 導覽（Zwiedzanie indywidualne z edukatorem），官方標示約 3 小時 45 分，2 人。官方明載「入場證需搭配身分證件」，請把電子入場證存離線並帶護照。🚌 巴士去回皆已查定、但尚未購票：官方要求入場時段前 30 分鐘到場完成安檢，因此必須在 10:00 前完成安檢；導覽約 14:15 結束，回程只能挑那之後的班次。去程已於 2026-09-09 在官方售票頁 lajkonikbus.pl 查得 10/26 實際班次並選定 **07:10 → 08:35**（D10 發車，1h25，全票 25.00 zł／優待 22.00 zł），抵達後距入場有 1 小時 55 分。當日另一班 08:25 → 09:50 只比 10:00 安檢截止早 10 分鐘，巴士一誤點就來不及，不採用；**沒有 07:35 這班**。回程同日查得 10/26 下午僅三班：14:00（導覽結束前開走，不可用）、**15:30 → 16:55（採用）**、16:30 → 17:55（備案），皆 25.00 zł、車程 1h25。去回兩程皆尚未購票，付款前仍以售票頁當下顯示為準。',
@@ -229,8 +229,10 @@ export const days = [
       {t:'參考 20:29', label:'抵 Poznań Główny', sub:'先到 Towarowa 37/201 接待處取鑰匙；實際公寓門牌依訂房確認'},
     ],
     eat: [
-      {text:'Śląskie kluski @ Konspira', place:'Konspira（老城廣場旁）', map:'https://www.google.com/maps/search/?api=1&query=Konspira+Wroclaw'},
-      {text:'Browar Stu Mostów 精釀', place:'Browar Stu Mostów', map:'https://www.google.com/maps/search/?api=1&query=Browar+Stu+Mostow+Wroclaw'},
+      {text:'午餐 @ ✦ Restauracja Wrocławska', place:'✦ Restauracja Wrocławska', note:'戰前風味，招牌 bigos 獵人燉菜；週三 12:00–22:00（多來源一致，非官網一手，行前電話確認）', map:'https://www.google.com/maps/search/?api=1&query=Restauracja%20Wroc%C5%82awska%20Wroc%C5%82aw'},
+      {text:'17:00 提早晚餐 @ ✦ IDA kuchnia i wino', place:'✦ IDA kuchnia i wino', note:'19:10 火車前的提早晚餐，含酒套餐高 CP；週三 12:00–22:00', map:'https://maps.google.com/?cid=10589009865057440004'},
+      {text:'咖啡 @ ✦ El Gato Specialty Coffee', place:'✦ El Gato Specialty Coffee（Odrzańska 8）', note:'一–五 09:00–18:00', map:'https://www.google.com/maps/search/?api=1&query=El+Gato+Specialty+Coffee+Odrzanska+8+Wroclaw'},
+      {text:'甜點 @ ✦ Dessert Boutique', place:'✦ Dessert Boutique', note:'二–五 12:00–19:00', map:'https://www.google.com/maps/search/?api=1&query=Dessert+Boutique+Cukiernia+Premium+Wroclaw'},
     ],
     warn: '❗此日兩項皆尚未訂票。百年廳的 10/28 內部參觀狀態須以官方 availability calendar 確認，未確認前不販售或保證室內行程。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，因此安排 16:15–17:15 在座堂島等候，不再把 16:45 寫成確定時刻。',
     backup: [
@@ -261,12 +263,12 @@ export const days = [
       {t:'17:05', label:'抵 Poznań Główny', sub:'確認月台、車廂與座位；拖行李保留進站緩衝', dur:'35 min 緩衝'},
       {t:'參考 17:40', label:'EIC 8104 前往華沙', sub:'指定日待確認／尚未訂票', cost:'票價待確認', dur:'2h20'},
       {t:'參考20:00', label:'抵 Warszawa Centralna', sub:'步行至 Hotel Metropol 約 500 公尺，拖行李預留 10–15 分鐘'},
-      {t:'20:30', label:'放行李後晚餐', sub:'車站對面 Złote Tarasy（一–六約至 22:00、日至 21:00）最省時；想坐久一點可走約 10–15 分到 Hala Koszyki 美食大廳（公告營業至凌晨 1:00）。當日仍先確認個別店家營業與是否需訂位', cost:'PLN 60–120', dur:'1–1.5 h'},
+      {t:'20:30', label:'放行李後晚餐', sub:'Hala Koszyki 美食大廳（公告營業至凌晨 1:00），距飯店步行約 10–15 分；若想更省時可改車站對面 Złote Tarasy（一–六約至 22:00、日至 21:00）。當日仍先確認個別店家營業與是否需訂位', cost:'PLN 60–120', dur:'1–1.5 h'},
     ],
     eat: [
-      {text:'Rogal Świętomarciński (PGI) ⭐', place:'Cukiernia Kandulski（示範分店）', note:'認證店家眾多，出發前依官方認證名單就近選擇；地圖先連到示範分店，選定分店後再改導航', map:'https://www.google.com/maps/search/?api=1&query=Cukiernia+Kandulski+Pozna%C5%84'},
-      {text:'Pyry z gzikiem @ Pyra Bar', place:'Pyra Bar', map:'https://www.google.com/maps/search/?api=1&query=Pyra+Bar+Poznan'},
-      {text:'晚間回華沙的宵夜備案', note:'Złote Tarasy 或 Hala Koszyki 皆為晚班抵達可行選項；Bib Gourmand 的 WANDAL 就在 Złote Tarasy，想吃需另行訂位', map:'https://www.google.com/maps/search/?api=1&query=Hala+Koszyki+Warszawa'},
+      {text:'12:15 聖馬丁牛角麵包 @ Cukiernia Kandulski', place:'Cukiernia Kandulski（示範分店）', note:'認證店家眾多，出發前依官方認證名單就近選擇；地圖先連到示範分店，選定分店後再改導航', map:'https://www.google.com/maps/search/?api=1&query=Cukiernia+Kandulski+Pozna%C5%84'},
+      {text:'12:30 快速午餐 @ ✦ Pyra Bar', place:'✦ Pyra Bar', note:'週四 11:00–21:00', map:'https://www.google.com/maps/search/?api=1&query=Pyra+Bar+Poznan'},
+      {text:'20:30 華沙宵夜 @ Hala Koszyki', place:'Hala Koszyki（美食大廳）', note:'公告營業至凌晨 1:00，距飯店步行約 10–15 分', map:'https://www.google.com/maps/search/?api=1&query=Hala+Koszyki+Warszawa'},
     ],
     backup: [
       {label:'雨天想看山羊鐘', where:'可頌博物館官方售票頁', map:'https://www.google.com/maps/search/?api=1&query=Rogalowe%20Muzeum%20Poznania%2C%20Klasztorna%2023%2C%20Pozna%C5%84', why:'週四英語場、價格與庫存都須依 10/29 官方售票系統確認；未確認前改以 Stary Browar 或帝王城堡為室內備案'},
@@ -285,17 +287,17 @@ export const days = [
     weather: '尚無可靠預報；出發前 7–10 天更新',
     steps: [
       {t:'10:00', label:'★ 皇家城堡', sub:'採 Royal Route，官方標示約 60 分；二–日 10:00–18:00、末入 17:00', cost:'票價出發前依官方售票頁重查', dur:'約 60 min'},
-      {t:'11:15', label:'午餐（老城 → POLIN 路上）', sub:'選當日有營業且可訂位的店', cost:'依餐廳', dur:'45 min'},
+      {t:'11:15', label:'午餐（老城 → POLIN 路上）', sub:'✦ Café Bristol（Krakowskie Przedmieście，Hotel Bristol 內）；選當日有營業且可訂位的店', cost:'依餐廳', dur:'45 min'},
       {t:'12:00', label:'前往 POLIN + 安檢緩衝', sub:'依當日交通重算，保留入館安檢與提早報到時間', dur:'1 h 15 min'},
       {t:'13:15', label:'★ POLIN 猶太博物館', sub:'週五 10:00–18:00；主展最晚 16:00 入場', cost:'依官方售票頁', dur:'2 h'},
       {t:'15:15', label:'前往華沙起義博物館 + 安檢緩衝', sub:'依當日交通重算，16:00 僅為規劃目標，以實際可售時段為準', dur:'45 min'},
       {t:'16:00', label:'★ 華沙起義博物館', sub:'35／30 PLN；以官方票頁 10/30 可售時段為準', cost:'PLN 35／30', dur:'2 h'},
-      {t:'19:30', label:'老城最後晚餐', sub:'U Fukiera / Polka', cost:'PLN 120–200', dur:'1.5 h'},
+      {t:'19:30', label:'老城最後晚餐', sub:'U Fukiera', cost:'PLN 120–200', dur:'1.5 h'},
       {t:'21:00', label:'老城廣場夜燈漫步', sub:'自由收尾'},
     ],
     eat: [
-      {text:'Żurek 酸黑麥湯 @ U Fukiera', place:'U Fukiera（老城廣場）', map:'https://www.google.com/maps/search/?api=1&query=U+Fukiera+Warszawa'},
-      {text:'Pączki @ A. Blikle 1869', place:'A.Blikle（Nowy Świat）', map:'https://www.google.com/maps/search/?api=1&query=A.Blikle+Nowy+Swiat+Warszawa'},
+      {text:'11:15 午餐 @ ✦ Café Bristol', place:'✦ Café Bristol', note:'城堡→POLIN 途中的輕食站；每日 08:00–20:00', map:'https://www.google.com/maps/search/?api=1&query=Cafe+Bristol+Warsaw'},
+      {text:'19:30 最後晚餐 @ U Fukiera', place:'U Fukiera（老城廣場）', note:'Żurek 酸黑麥湯', map:'https://www.google.com/maps/search/?api=1&query=U+Fukiera+Warszawa'},
     ],
     warn: '❗四項皆尚未訂。皇家城堡已由官方確認二–日 10:00–18:00、最後入場 17:00；本行程採約 60 分鐘 Royal Route，避免與午餐及館際移動重疊。POLIN 週五 10:00–18:00，主展最後入場為閉館前 2 小時。起義博物館票價 35／30，個人免費日為週一（非週四，官方公告）；10/30 是週五，照常收費，實際可售時段仍以官方票頁為準。蕭邦博物館已由蕭邦研究所公告 2026 全年整修閉館、預計 2027 年 1 月重開，本趟不列入行程。',
     extend: [
@@ -320,14 +322,18 @@ export const days = [
     compressible: ['飯店周邊散步', '最後採買'],
     weather: '尚無可靠預報；出發前 7–10 天更新',
     steps: [
-      {t:'08:00', label:'早餐 + 老城散步', cost:'PLN 40', dur:'1.5 h'},
+      {t:'08:00', label:'早餐 + 老城散步', sub:'✦ Café Bristol（Krakowskie Przedmieście，Hotel Bristol 內）；A. Blikle 09:00 才開門，不適合當早餐', cost:'PLN 40', dur:'1.5 h'},
       {t:'09:45', label:'退房 → Warszawa Centralna', sub:'由 Hotel Metropol 出發；依行李狀況步行或叫車，當日再用導航重算並預留找月台緩衝', dur:'30–45 min'},
       {t:'10:30', label:'SKM S2/S3 目標班次', sub:'第 1 區時間票；當日查 WTP 月台、發車時間與票價', cost:'當日確認', dur:'約 25–30 min'},
       {t:'11:00', label:'抵 Chopin 第一航廈'},
       {t:'11:15', label:'退稅文件 + 報到 + 安檢', sub:'如有 TAX FREE 商品，依機場與電子文件指示辦理；託運商品須在交運前備妥供海關查驗', dur:'預留至少 60–90 min'},
       {t:'14:40', label:'★ QR 260 起飛', sub:'WAW → DOH → HKG → TPE'},
     ],
+    eat: [
+      {text:'08:00 早餐 @ ✦ Café Bristol', place:'✦ Café Bristol（Krakowskie Przedmieście）', note:'每日 08:00–20:00；週六開門時間各來源不一致，行前電話 +48 22 551 18 28 確認', map:'https://www.google.com/maps/search/?api=1&query=Cafe+Bristol+Warsaw'},
+    ],
     backup: [
+      {label:'早餐備案', where:'Bar Mleczny Prasowy（Marszałkowska 10/16，旅館旁）', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Prasowy%2C%20Marsza%C5%82kowska%2010%2F16%2C%20Warszawa', why:'多數來源顯示每日 08:00–20:00，少數來源說 09:00 才開，行前電話 666 353 776 確認；若 ✦ Café Bristol 週六開門時間有異可改這裡'},
       {label:'班機提早 2 h', where:'蕭邦機場 1F Costa Coffee · 觀景窗', map:'https://www.google.com/maps/search/?api=1&query=Warsaw%20Chopin%20Airport%20Terminal%20A', why:'退稅 + 安檢順可能 12:30 就過關，1F 貴賓區外有平價咖啡'},
       {label:'紀念品最後採買', where:'先在飯店旁 Złote Tarasy 補齊，機場店只作最後備案', map:'https://www.google.com/maps/search/?api=1&query=Z%C5%82ote%20Tarasy%2C%20Z%C5%82ota%2059%2C%20Warszawa', why:'Złote Tarasy 就在 Warszawa Centralna 對面、距 Hotel Metropol 約 500 公尺，一–六約 09:00 開門，退房前後順路可買；機場 1F 的 Wedel、Krówki 方便但價差約 +10–15%'},
     ],
