@@ -4554,17 +4554,31 @@ h3 {
 .day-eat-list { display: grid; gap: .85rem; }
 .day-eat-list .card { padding: 1rem; box-shadow: none; }
 
-/* 城市餐飲：候選優先，既有情報集中在同一份卡片清單。 */
-.city-dining-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
-.city-restaurant { display: flex; flex-direction: column; min-width: 0; }
-.city-restaurant-selected { border-top: 3px solid var(--rust, #a94e32); }
-.city-restaurant-labels { display: flex; flex-wrap: wrap; gap: .5rem; }
-.city-restaurant h3 { margin-top: .8rem; overflow-wrap: anywhere; }
-.city-restaurant-facts { margin: .5rem 0 1rem; }
-.city-restaurant-facts > div { padding: .65rem 0; border-top: 1px solid var(--line); }
-.city-restaurant-facts dt { font-size: .875rem; font-weight: 700; color: var(--ink-soft); }
-.city-restaurant-facts dd { margin: .3rem 0 0; }
-.city-restaurant > .food-map-links { margin-top: auto; }
-.city-dining-more { margin-top: 1.5rem; }
-.city-dining-more > summary { cursor: pointer; padding: 1rem 0; font-weight: 700; }
-@media (max-width: 760px) { .city-dining-grid { grid-template-columns: 1fr; } }
+/* 城市餐飲列表：候選置頂，手機保留表頭與欄位對照。 */
+.city-dining-table-wrap { overflow-x: auto; }
+.city-dining-table { width: 100%; min-width: 1080px; table-layout: fixed; }
+.city-dining-table caption { text-align: left; padding: .65rem; font-weight: 700; }
+.city-dining-table th:nth-child(1) { width: 22%; }
+.city-dining-table th:nth-child(2) { width: 12%; }
+.city-dining-table th:nth-child(3) { width: 25%; }
+.city-dining-table th:nth-child(4) { width: 29%; }
+.city-dining-table th:nth-child(5) { width: 12%; }
+.city-dining-table tbody th { text-align: left; font-weight: 400; }
+.city-dining-table td, .city-dining-table tbody th { vertical-align: top; overflow-wrap: anywhere; }
+.city-dining-table p { margin: .35rem 0; }
+.city-dining-table .city-dining-selected { background: rgba(169, 78, 50, .045); }
+.city-dining-table .city-dining-selected th { border-left: 3px solid var(--rust, #a94e32); }
+.city-dining-choice { display: block; margin-top: .4rem; color: var(--rust, #a94e32); font-size: .875rem; font-weight: 700; }
+.city-dining-table .food-map-links a { white-space: normal; }
+.city-dining-scroll-hint { display: none; }
+@media (max-width: 1100px) { .city-dining-scroll-hint { display: block; font-size: .875rem; color: var(--ink-soft); } }
+/* 覆寫共用手機表格卡片化，餐廳列表保持真正表格與可見表頭。 */
+.city-dining-table { display: table; }
+.city-dining-table thead { display: table-header-group; }
+.city-dining-table tbody { display: table-row-group; padding: 0; }
+.city-dining-table tr { display: table-row; width: auto; padding: 0; box-shadow: none; }
+.city-dining-table td, .city-dining-table th { display: table-cell; padding: .85rem; border-bottom: 1px solid var(--line); }
+.city-dining-table td { width: auto; }
+.city-dining-table td::before { content: none; }
+.city-dining-table tbody th { font-family: inherit; font-size: 1rem; letter-spacing: normal; text-transform: none; color: var(--ink); }
+.city-dining-table thead th { font-size: .875rem; }

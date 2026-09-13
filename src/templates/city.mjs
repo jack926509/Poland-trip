@@ -68,25 +68,25 @@ export function renderCity({
     </tr>`).join('');
 
   const mergedDining = mergeCityDining(cityKey, dining, cityFoodForCity?.items || []);
-  const renderDiningCard = item => `<article class="card city-restaurant${item.selected ? ' city-restaurant-selected' : ''}">
-    <div class="city-restaurant-labels"><span class="${item.selected ? 'tag-red' : 'tag-muted'}">${item.selected ? '你的候選' : '延伸選擇'}</span>${(item.tier || item.tag) ? `<span class="tag-muted">${stableTier(item.tier || item.tag)}</span>` : ''}</div>
-    <h3>${item.name}</h3>
-    ${item.address ? `<p class="food-map-note">${item.address}</p>` : ''}
-    <dl class="city-restaurant-facts">
-      ${item.notes.length ? `<div><dt>料理與特色</dt><dd>${item.notes.join('；')}</dd></div>` : ''}
-      ${item.plan ? `<div><dt>這趟怎麼吃</dt><dd>${item.plan}</dd></div>` : ''}
-      <div><dt>用餐安排</dt><dd>${bookingLabels[item.book] || '營業與訂位請向店家確認'}</dd></div>
-    </dl>
-    ${renderFoodMapLinks(item)}
-  </article>`;
-  const selectedDining = mergedDining.filter(item => item.selected);
-  const otherDining = mergedDining.filter(item => !item.selected);
+  const renderDiningRow = item => `<tr class="${item.selected ? 'city-dining-selected' : ''}">
+    <th scope="row"><strong>${item.name}</strong>${item.selected ? '<span class="city-dining-choice">你的候選</span>' : ''}${item.address ? `<p class="food-map-note">${item.address}</p>` : ''}</th>
+    <td>${stableTier(item.tier || item.tag || '待補充')}</td>
+    <td>${item.notes.length ? item.notes.join('；') : '依店家當日菜單確認'}</td>
+    <td>${item.plan ? `<p>${item.plan}</p>` : '<p>依當天動線與胃口安排</p>'}<p class="food-map-note">${bookingLabels[item.book] || '營業與訂位請向店家確認'}</p></td>
+    <td>${renderFoodMapLinks(item)}</td>
+  </tr>`;
   const primaryDiningHtml = mergedDining.length ? `
     <section class="section" id="city-dining">
       <div class="section-heading"><span class="section-num">Dining</span><h2>行程主餐廳推薦</h2></div>
-      <p class="lead">先看你的候選，再依動線與胃口挑一餐。餐廳情報已整合在各店卡片，營業、菜單與訂位以店家當日資訊為準。</p>
-      <div class="city-dining-grid">${selectedDining.map(renderDiningCard).join('')}</div>
-      ${otherDining.length ? `<details class="city-dining-more"><summary>更多餐廳與地方小吃 · ${otherDining.length} 個選擇</summary><div class="city-dining-grid">${otherDining.map(renderDiningCard).join('')}</div></details>` : ''}
+      <p class="lead" id="city-dining-description">你挑選的餐廳列在最上方，其餘選擇接續列出。營業、菜單與訂位以店家當日資訊為準。</p>
+      <p class="city-dining-scroll-hint">手機可左右滑動列表，查看完整欄位。</p>
+      <div class="table-wrap city-dining-table-wrap" role="region" aria-label="行程主餐廳推薦列表" tabindex="0">
+        <table class="table-editorial city-dining-table" aria-describedby="city-dining-description">
+          <caption>餐廳候選與用餐安排</caption>
+          <thead><tr><th scope="col">餐廳／地址</th><th scope="col">類型／評選標記</th><th scope="col">料理特色／推薦餐點</th><th scope="col">行程安排／訂位提醒</th><th scope="col">地圖導航</th></tr></thead>
+          <tbody>${mergedDining.map(renderDiningRow).join('')}</tbody>
+        </table>
+      </div>
     </section>` : '';
 
   const backupHtml = foodBackupForCity?.items.length ? `
