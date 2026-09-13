@@ -4541,3 +4541,15 @@ h3 {
 .nav > a.nav-brand {
   padding-left: 1.5rem;
 }
+
+/* 每日餐飲接在右側移動步驟下方，與地址簿並排。 */
+.operation-grid { align-items: start; }
+.operation-route-column { display: grid; gap: 1.25rem; min-width: 0; }
+.day-dining { min-width: 0; }
+.day-dining-list { list-style: none; padding: 0; margin: 0; }
+.day-dining-list > li { padding: 1rem 0; border-top: 1px solid var(--line); }
+.day-dining-list h4 { margin: .35rem 0; font-size: 1.15rem; overflow-wrap: anywhere; }
+.day-dining-list p { margin: .4rem 0; }
+.day-eat { margin-top: 1rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+.day-eat-list { display: grid; gap: .85rem; }
+.day-eat-list .card { padding: 1rem; box-shadow: none; }
