@@ -914,7 +914,7 @@ test('4 個城市頁含正確 Leaflet 圖釘數，合計 53', () => {
 test('城市頁完整呈現故事、景點、主餐廳、備案與拍照資訊', () => {
   for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
     const html = read(file);
-    for (const heading of ['先理解這座城', '景點清單', '2026 餐廳情報', '行程主餐廳推薦', '備案餐廳', '拍照建議']) {
+    for (const heading of ['先理解這座城', '景點清單', '行程主餐廳推薦', '備案餐廳', '拍照建議']) {
       assert.ok(html.includes(heading), `${file} 缺少 ${heading}`);
     }
   }
@@ -1119,7 +1119,8 @@ test('城市頁不再將 Google 星等與評論數當成固定資料', () => {
   for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
     const html = read(file);
     assert.doesNotMatch(html, /★\d(?:\.\d)?（[^）]+）/, `${file} 仍顯示動態星等`);
-    assert.ok(html.includes('動態 Google 星等已移除'));
+    assert.ok(html.includes('id="city-dining"'));
+    assert.ok(!html.includes('<h2>2026 餐廳情報</h2>'));
   }
 });
 
@@ -1278,5 +1279,20 @@ test('所有拍照建議都有精確站位、方向與座標導航', () => {
   assert.equal((pages.match(/拍攝方向/g) || []).length, 9);
   for (const spot of photoSpots.filter(item => item.day)) {
     assert.match(spot.mapUrl, /^https:\/\/www\.google\.com\/maps\/search\/\?api=1&query=\d{2}\.\d+%2C\d{2}\.\d+$/);
+  }
+});
+
+
+test('城市推薦整合完整候選與既有情報，同店不重複', async () => {
+  const { mergeCityDining } = await import('../src/templates/city-dining.mjs');
+  const { cityDining, cityFood } = await import('../src/data/dining.js');
+  for (const [i, city] of ['warsaw', 'krakow', 'wroclaw', 'poznan'].entries()) {
+    const rows = mergeCityDining(city, cityDining[city], cityFood[i].items);
+    assert.equal(rows.filter(row => row.selected).length, [10, 5, 6, 3][i]);
+    assert.equal(new Set(rows.map(row => row.name.toLowerCase())).size, rows.length);
+    for (const original of cityDining[city]) {
+      assert.ok(rows.some(row => row.notes.includes(original.highlight)), `${city}: ${original.name} 情報遺失`);
+    }
+    assert.ok(rows.every(row => row.map || row.maps?.length));
   }
 });

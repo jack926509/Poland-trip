@@ -4553,3 +4553,18 @@ h3 {
 .day-eat { margin-top: 1rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
 .day-eat-list { display: grid; gap: .85rem; }
 .day-eat-list .card { padding: 1rem; box-shadow: none; }
+
+/* 城市餐飲：候選優先，既有情報集中在同一份卡片清單。 */
+.city-dining-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+.city-restaurant { display: flex; flex-direction: column; min-width: 0; }
+.city-restaurant-selected { border-top: 3px solid var(--rust, #a94e32); }
+.city-restaurant-labels { display: flex; flex-wrap: wrap; gap: .5rem; }
+.city-restaurant h3 { margin-top: .8rem; overflow-wrap: anywhere; }
+.city-restaurant-facts { margin: .5rem 0 1rem; }
+.city-restaurant-facts > div { padding: .65rem 0; border-top: 1px solid var(--line); }
+.city-restaurant-facts dt { font-size: .875rem; font-weight: 700; color: var(--ink-soft); }
+.city-restaurant-facts dd { margin: .3rem 0 0; }
+.city-restaurant > .food-map-links { margin-top: auto; }
+.city-dining-more { margin-top: 1.5rem; }
+.city-dining-more > summary { cursor: pointer; padding: 1rem 0; font-weight: 700; }
+@media (max-width: 760px) { .city-dining-grid { grid-template-columns: 1fr; } }
