@@ -146,3 +146,33 @@ test('手動期限不得晚於資料庫對同一主題已排定的重查日', ()
   assert.ok(manualEtias[0].date > etiasEntry.recheckAt, '最後確認應排在資料庫重查之後，而非取代它');
   assert.ok(manualEtias[0].basis.includes(etiasEntry.id), '最後確認的依據應指明與資料庫項目的關係');
 });
+
+test('由出發日回推的期限，算術與 basis 敘述一致', () => {
+  // basis 寫「出發前 N 週／天」卻算錯，看板就會給出比預期寬鬆或緊迫的日期。
+  // 這裡把每筆的回推天數寫死，讓敘述與日期綁在一起。
+  const offsets = {
+    'dining-michelin': 21,
+    'ticket-wieliczka': 21,
+    'ticket-schindler': 21,
+    'ticket-warsaw-trio': 14,
+    'ticket-croissant': 10,
+    'recheck-all': 7,
+    'venue-hala-stulecia': 3,
+    'etias-check-2': 3,
+  };
+  const depart = Date.parse(`${trip.meta.tripStart}T00:00:00Z`);
+  for (const [id, days] of Object.entries(offsets)) {
+    const deadline = trip.deadlines.find(item => item.id === id);
+    assert.ok(deadline, `找不到 ${id}`);
+    const actual = Math.round((depart - Date.parse(`${deadline.date}T00:00:00Z`)) / 86400000);
+    assert.equal(actual, days, `${id} 的日期距出發 ${actual} 天，basis 寫的是 ${days} 天`);
+  }
+});
+
+test('每筆手動期限都標明是照抄來源還是自行推算', () => {
+  for (const deadline of trip.deadlines) {
+    assert.ok(deadline.basis?.length > 10, `${deadline.id} 缺少 basis`);
+    assert.ok(deadline.action?.length > 10, `${deadline.id} 缺少可執行的 action`);
+    assert.ok(deadline.date <= trip.meta.tripStart, `${deadline.id} 的期限不該晚於出發日`);
+  }
+});

@@ -136,9 +136,9 @@ export function renderToday({ meta, days, stay, dayDining = {}, daylight = [], s
     <div data-today-cards>${cards}</div>
 
     <section class="section" data-today-outside hidden>
-      <div class="section-heading"><span class="section-num">Not yet</span><h2>還沒出發</h2></div>
+      <div class="section-heading"><span class="section-num">Off-trip</span><h2>不在旅程期間</h2></div>
       <p data-today-outside-note></p>
-      <p><a class="journal-text-link" href="${pathPrefix}practical/booking.html#countdown">看訂票與查核倒數 →</a>　<a class="journal-text-link" href="${pathPrefix}day-01.html">預覽 Day 1 →</a></p>
+      <p><a class="journal-text-link" href="${pathPrefix}practical/booking.html#countdown">看訂票與查核倒數 →</a>　<a class="journal-text-link" href="${pathPrefix}index.html#days">開啟八日行程目錄 →</a></p>
     </section>
 
     <section class="section">

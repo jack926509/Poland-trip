@@ -4775,23 +4775,28 @@ h3 {
 /* 倒數看板：急迫度只用左緣色條與底色標示，不改字色。
    類別與狀態欄已經用既有的 tag 樣式帶顏色，倒數欄再上色會讓整列變花，
    反而看不出哪幾列真的緊急。 */
-.countdown-table tbody tr {
-  border-left: 3px solid transparent;
+/* 桌機的列本身沒有邊框，只有急迫列加色條會讓那幾列的文字橫移 3px，
+   因此先給所有列一條透明的同寬邊。手機版的列是獨立卡片、本來就有 1px 外框，
+   套用這條透明邊會把卡片左緣的線抹掉，所以只在桌機寬度生效。 */
+@media (min-width: 701px) {
+  .countdown-table tbody tr {
+    border-left: 3px solid transparent;
+  }
 }
 
 .countdown-table tbody tr[data-urgency='overdue'],
 .countdown-table tbody tr[data-urgency='today'] {
-  border-left-color: var(--red);
+  border-left: 3px solid var(--red);
   background: var(--surface-danger);
 }
 
 .countdown-table tbody tr[data-urgency='soon'] {
-  border-left-color: var(--yellow);
+  border-left: 3px solid var(--yellow);
   background: var(--surface-warning);
 }
 
 .countdown-table tbody tr[data-urgency='done'] {
-  border-left-color: var(--green);
+  border-left: 3px solid var(--green);
 }
 
 .countdown-table [data-countdown-label] {

@@ -59,52 +59,67 @@ export const ticketNotices = [
 
 // 場館開放規則的結構化版本。
 //
-// 同樣的事實原本只寫在 fares[].note 的自由文字裡（「二–日 10:00–18:00、
-// 最後入場 17:00」），人看得懂，程式無法用來檢查行程有沒有排在末入場之後。
-// 這裡只把既有 note 已經查證過的內容轉成欄位，不新增未經查證的開放時間；
-// checkedAt 與 officialUrl 沿用該筆 fares 的查證紀錄。
+// 同樣的事實原本只寫在自由文字裡（fares[].note 的「二–日 10:00–18:00、
+// 最後入場 17:00」、trip.js 的 hardConstraints 等），人看得懂，程式無法用來
+// 檢查行程有沒有排在末入場之後。這裡只把站內既有、已查證的內容轉成欄位。
+//
+// 規則：**不新增站內沒有的事實**。沒有來源就留 null 或空陣列，讓稽核跳過，
+// 不要用常識補——稽核會把補上去的猜測當成查證過的規則。
+// sourceRef 記錄每筆的出處，checkedAt 只在來源本身帶日期時才填。
 //
 // closedWeekdays：0 = 週日 … 6 = 週六。
-// lastEntry：最後入場時刻；null 表示官方資料未列，稽核時跳過而不猜。
+// lastEntry：最後入場時刻；null 表示站內無此資料，稽核時跳過而不猜。
 export const venueHours = {
   'warsaw-royal-castle': {
     name: '華沙 · 皇家城堡', closedWeekdays: [1], opens: '10:00', closes: '18:00', lastEntry: '17:00',
-    checkedAt: '2026-08-11', officialUrl: 'https://www.zamek-krolewski.pl/en/strona/opening-hours-and-ticket-prices/2801-opening-hours-and-ticket-prices-may-2-2026',
-    note: '二–日 10:00–18:00、最後入場 17:00。',
+    checkedAt: '2026-08-11', sourceRef: "fares['華沙 · 皇家城堡'].note",
+    officialUrl: 'https://www.zamek-krolewski.pl/en/strona/opening-hours-and-ticket-prices/2801-opening-hours-and-ticket-prices-may-2-2026',
+    note: '二–日 10:00–18:00、最後入場 17:00（二–日開放即代表週一休）。',
   },
   'warsaw-polin': {
-    name: '華沙 · POLIN 猶太歷史博物館', closedWeekdays: [2], opens: '10:00', closes: '18:00', lastEntry: '16:00',
-    checkedAt: '2026-08-09', officialUrl: 'https://polin.pl/en',
-    note: '週五 10:00–18:00；主展最後入場為閉館前 2 小時。指定日開放時段仍以官方售票頁為準。',
+    // 站內只查得週五時段與「主展最後入場為閉館前 2 小時」，沒有每週公休日的記載。
+    // 實際上許多波蘭博物館週二休，但站內沒有來源，因此留空而不是憑印象補。
+    name: '華沙 · POLIN 猶太歷史博物館', closedWeekdays: [], opens: '10:00', closes: '18:00', lastEntry: '16:00',
+    checkedAt: null, sourceRef: "ticketsByCity 華沙『POLIN 猶太歷史』與 Day 7 warn",
+    officialUrl: 'https://polin.pl/en',
+    note: '週五 10:00–18:00，主展最後入場為閉館前 2 小時。每週公休日站內尚無查證資料，行前須另行確認。',
   },
   'warsaw-pkin-terrace': {
     name: '華沙 · 科學文化宮觀景台', closedWeekdays: [], opens: '10:00', closes: '20:00', lastEntry: null,
-    checkedAt: '2026-08-11', officialUrl: 'https://pkin.pl/',
+    checkedAt: '2026-08-11', sourceRef: "fares['華沙 · 科學文化宮觀景台'].note",
+    officialUrl: 'https://pkin.pl/',
     note: '每日 10:00–20:00；夜間場只在週五六且只到 9 月底，10 月不適用。',
   },
   'krakow-wawel-castle': {
-    name: '克拉科夫 · Wawel 城堡', closedWeekdays: [1], opens: '09:00', closes: '17:00', lastEntry: '15:00',
-    checkedAt: '2026-08-08', officialUrl: 'https://wawel.krakow.pl/en/what-to-see',
-    note: '二–日 09:00–17:00；完整路線最後入場 15:00、約需 2 小時。短路線較有彈性。',
+    name: '克拉科夫 · Wawel 城堡一、二樓', closedWeekdays: [1], opens: '09:00', closes: '17:00', lastEntry: '15:00',
+    checkedAt: null, sourceRef: "fares['克拉科夫 · Wawel 城堡一、二樓'].note",
+    officialUrl: 'https://wawel.krakow.pl/en/what-to-see',
+    note: '二–日 09:00–17:00；完整路線最後入場 15:00、約需 2 小時。本行程採短路線，較有彈性。',
   },
   'krakow-wawel-treasury': {
     name: '克拉科夫 · Wawel 王冠寶庫', closedWeekdays: [1], opens: '09:00', closes: '17:00', lastEntry: '16:20',
-    checkedAt: '2026-08-08', officialUrl: 'https://wawel.krakow.pl/',
+    checkedAt: null, sourceRef: "fares['克拉科夫 · Wawel 王冠寶庫'].note",
+    officialUrl: 'https://wawel.krakow.pl/',
     note: '二–日 09:00–17:00，最後入場 16:20。',
   },
   'krakow-schindler': {
+    // 站內的 18:30 出現在 Day 2 步驟（標為「週日最後入場」）與訂票優先順序。
+    // 本行程只在 10/25（週日）造訪，故適用；不要當成每日通則。
     name: '克拉科夫 · 辛德勒工廠', closedWeekdays: [], opens: null, closes: null, lastEntry: '18:30',
-    checkedAt: '2026-09-08', officialUrl: 'https://muzeumkrakowa.pl/oddzialy/fabryka-emalia-oskara-schindlera',
-    note: '最後入場 18:30；指定日可售時段以官方售票頁為準。',
+    checkedAt: null, sourceRef: 'trip.js Day 2 hardConstraints 與 bookingTiers 第二優先',
+    officialUrl: 'https://muzeumkrakowa.pl/oddzialy/fabryka-emalia-oskara-schindlera',
+    note: '站內記載為週日最後入場 18:30，本行程 10/25 造訪日正是週日。其他星期的時段以官方售票頁為準。',
   },
   'wroclaw-hala-stulecia': {
     name: '樂斯拉夫 · 百年廳 Visitor Centre', closedWeekdays: [1], opens: '10:00', closes: '18:00', lastEntry: null,
-    checkedAt: '2026-08-11', officialUrl: 'https://halastulecia.pl/zwiedzanie/visitor-centre/',
+    checkedAt: '2026-08-11', sourceRef: "fares['樂斯拉夫 · 百年廳 Visitor Centre'].note",
+    officialUrl: 'https://halastulecia.pl/zwiedzanie/visitor-centre/',
     note: '四–十月二–日 10:00–18:00；圓頂展廳內部仍依活動日曆開放，10/28 狀態待確認。',
   },
   'poznan-palmiarnia': {
     name: '波茲南 · Palmiarnia 棕櫚屋', closedWeekdays: [1], opens: '09:00', closes: '17:00', lastEntry: '16:00',
-    checkedAt: '2026-08-11', officialUrl: 'https://palmiarnia.poznan.pl/',
+    checkedAt: '2026-08-11', sourceRef: "fares['波茲南 · Palmiarnia 棕櫚屋'].note",
+    officialUrl: 'https://palmiarnia.poznan.pl/',
     note: '週一休館；二–五 09:00–17:00（末入 16:00）、六日與假日 09:00–18:00（末入 17:00）。此處記二–五規則。',
   },
 };

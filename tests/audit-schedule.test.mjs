@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 
 import { auditSchedule } from '../tools/audit-schedule.mjs';
 import { days } from '../src/data/trip.js';
+import { venueHours, fares } from '../src/data/tickets.js';
 
 test('真實行程目前沒有結構錯誤', () => {
   const result = auditSchedule();
@@ -184,4 +185,29 @@ test('真實拍照站位的光線宣告全部與當日日落相符', () => {
   const result = auditSchedule();
   assert.ok(result.stats.photoLightChecked >= 9, '應涵蓋所有排入行程的拍照站位');
   assert.deepEqual(result.warnings.filter(item => item.includes('拍照光線')), []);
+});
+
+test('venueHours 每筆都有可追溯的出處，fares 引用不得落空', () => {
+  const problems = [];
+  for (const [key, venue] of Object.entries(venueHours)) {
+    if (!venue.sourceRef) problems.push(`${key} 缺少 sourceRef`);
+    const faresRef = venue.sourceRef?.match(/^fares\['(.+?)'\]/);
+    if (faresRef && !fares.some(item => item.name === faresRef[1])) {
+      problems.push(`${key} 的 fares 引用指不到「${faresRef[1]}」`);
+    }
+    // checkedAt 只在來源本身帶日期時才填；不得為了好看而捏造。
+    if (venue.checkedAt !== null) {
+      assert.match(venue.checkedAt, /^\d{4}-\d{2}-\d{2}$/, `${key} 的 checkedAt 格式不符`);
+    }
+  }
+  assert.deepEqual(problems, []);
+});
+
+test('沒有來源的場館規則必須留空，不得以常識補上', () => {
+  // POLIN 站內只查得週五時段與末入場，沒有每週公休日的記載。
+  // 這類「大概是週二休」的補充會被稽核當成查證過的規則，因此必須留空。
+  const polin = venueHours['warsaw-polin'];
+  assert.deepEqual(polin.closedWeekdays, [], 'POLIN 的公休日站內無來源，應留空');
+  assert.match(polin.note, /公休日站內尚無查證資料/);
+  assert.equal(polin.checkedAt, null, '無來源日期時 checkedAt 應為 null');
 });

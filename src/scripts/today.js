@@ -31,7 +31,7 @@ export function selectToday(dates, today) {
 export function statusText(selection, total) {
   if (selection.mode === 'during') return `今天是旅程第 ${selection.index + 1} 天（共 ${total} 天）· 華沙時間 ${selection.date}`;
   if (selection.mode === 'before') return `距離出發還有 ${selection.daysUntil} 天，下方預覽 Day 1。`;
-  if (selection.mode === 'after') return `旅程已於 ${selection.daysSince} 天前結束，下方保留完整八天紀錄。`;
+  if (selection.mode === 'after') return `旅程已於 ${selection.daysSince} 天前結束，下方顯示最後一天；完整八天請看每日行程頁。`;
   return '沒有可顯示的行程。';
 }
 

@@ -18,6 +18,11 @@ function dayLink(date) {
 }
 
 import { getTaipeiToday, toComparableDate, todayIn, isOpenTodoStatus, isOpenEntryStatus, calculateDashboard, calculateCountdown, collectDeadlines, urgencyOf, labelOf, initializeCountdown, dashboardCsv, initializeDashboard } from '../scripts/dashboard.js';
+// 內嵌用的是 fn.toString()，吐出的是函式「自己的名字」而不是 import 的別名。
+// getTaipeiToday 是 taipeiToday 的別名，內嵌後頁面上只會有 taipeiToday，
+// 呼叫端必須用真名，否則在瀏覽器裡是 ReferenceError（靜態輸出看起來正常，
+// 但每分鐘的重算完全不會執行）。
+import { taipeiToday } from '../lib/schedule.mjs';
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -102,7 +107,7 @@ function renderCountdownSection({ trains, deadlines, databaseEntries }) {
     </tr>`;
   }).join('');
 
-  const countdownRuntime = [urgencyOf, labelOf, initializeCountdown, todayIn, getTaipeiToday]
+  const countdownRuntime = [urgencyOf, labelOf, initializeCountdown, todayIn, taipeiToday]
     .map(fn => fn.toString()).join('\n');
 
   return `
@@ -115,7 +120,7 @@ function renderCountdownSection({ trains, deadlines, databaseEntries }) {
         (function() {
           ${countdownRuntime}
           const root = document.currentScript.closest('.standalone-page') || document;
-          initializeCountdown(root, getTaipeiToday);
+          initializeCountdown(root, taipeiToday);
         }());
       </script>
     </section>`;

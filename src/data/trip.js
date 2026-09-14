@@ -637,7 +637,7 @@ export const deadlines = [
     basis: '待辦事項該筆的 recheckAt = 2026-10-12。',
   },
   {
-    id: 'ticket-croissant', date: '2026-10-15', category: '門票',
+    id: 'ticket-croissant', date: '2026-10-14', category: '門票',
     title: '波茲南可頌博物館 10/29 英語場',
     action: '週四不保證有英語場，先查 10/29 官方售票頁；沒有合適場次就改室內備案，不要預設週末的固定英文場。',
     status: '尚未訂', url: 'https://rogalowemuzeum.pl/en/buy-ticket/',
