@@ -1609,3 +1609,35 @@ test('sw.js 的快取版本由建置帶上資源指紋，樣式改了就會失�
   const prepare = fs.readFileSync('prepare-site.sh', 'utf8');
   assert.doesNotMatch(prepare, /^\s*sw\.js\s/m, 'prepare-site.sh 會用未帶指紋的 sw.js 覆蓋 dist 的版本');
 });
+
+test('表格排版規則：最小寬度只給寬表，列高收緊不得外洩到手機卡片版', () => {
+  const css = fs.readFileSync(new URL('../src/styles/main.css', import.meta.url), 'utf8');
+
+  // 2026-09-14 前這兩條是全站通用的，害 2 欄的「單位／電話」被撐到 832px 而橫捲，
+  // 且 5 個字的日期欄硬拿 176px、把旁邊擠到 67px。不得改回通用。
+  assert.doesNotMatch(css, /\.table-editorial\s*\{[^}]*min-width:\s*52rem/,
+    '.table-editorial 不得再有全站通用的 min-width');
+  assert.doesNotMatch(css, /\.table-editorial td:first-child\s*\{[^}]*min-width:\s*11rem/,
+    '首欄不得再硬給 11rem');
+
+  // 最小寬度改由欄數決定
+  assert.match(css, /\.table-editorial:has\(thead th:nth-child\(6\)\)\s*\{\s*min-width/,
+    '六欄以上的寬表缺少最小寬度');
+  assert.match(css, /\.table-editorial:has\(thead th:nth-child\(5\)\)\s*\{\s*min-width/,
+    '五欄表缺少最小寬度');
+
+  // 收緊列高的那條必須在桌機媒體查詢內；寫在外面會蓋掉手機卡片版的內距，
+  // 讓每個卡片欄位多出 11px 的左右縮排。用位置確認它被夾在桌機區塊裡。
+  const desktopStart = css.lastIndexOf('@media (min-width: 701px) {', css.indexOf('.table-editorial:has'));
+  const padding = css.indexOf('padding: 0.55rem 0.7rem', desktopStart);
+  const mobileStart = css.indexOf('@media (max-width: 700px) {', desktopStart);
+  assert.ok(desktopStart !== -1 && padding !== -1, '找不到桌機列高規則');
+  assert.ok(padding > desktopStart && padding < mobileStart,
+    '桌機列高收緊未寫在 min-width: 701px 內，會外洩到手機卡片版');
+  assert.match(css.slice(mobileStart), /\.table-editorial td\s*\{\s*padding:\s*0\.45rem 0;/,
+    '手機卡片版缺少自己的內距');
+
+  // .number 的 nowrap 不得再吃掉儲存格內的長附註
+  assert.match(css, /\.table-editorial \.number \.timeline-note\s*\{[^}]*white-space:\s*normal/,
+    '.number 內的附註必須可換行');
+});

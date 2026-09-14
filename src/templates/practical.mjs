@@ -64,7 +64,7 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
     <tr>
       <td><b>${train.seg}</b>${train.leg ? `<br><span class="timeline-note">${train.leg}</span>` : ''}${train.status ? `<br><span class="tag-todo">${train.status}</span>` : ''}</td>
       <td class="number">${train.date}</td><td>${train.type}</td>
-      <td class="number">${train.dep} → ${train.arr}</td>
+      <td class="number time-range">${train.dep}&nbsp;→&nbsp;${train.arr}</td>
       <td class="number">${train.dur}</td>
       <td><b>${train.saleOpens ? `${escapeHtml(train.saleOpens)} 起預售` : '官方日期待確認'}</b>${train.saleCheckedAt ? `<br><span class="timeline-note">PKP Intercity 官方售票系統查核：${escapeHtml(train.saleCheckedAt)}</span>` : ''}</td>
       <td class="number">${/^\d/.test(train.price) ? `PLN ${train.price}` : train.price}${train.note ? `<br><span class="timeline-note">${train.note}</span>` : ''}</td>

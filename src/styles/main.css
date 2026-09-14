@@ -855,6 +855,20 @@ nav.section-heading > a:last-child {
   white-space: nowrap;
 }
 
+/* .number 的 nowrap 是為了讓「08:45 → 10:58」不斷行，但會一起套用到
+   儲存格裡的附註——火車表的票價附註有 232 字，整段不換行就把表格撐到橫捲。
+   附註改為獨立一行且正常換行；純數值本身仍不斷行。 */
+.table-editorial .number .timeline-note {
+  display: block;
+  white-space: normal;
+}
+
+/* 時刻欄多數是「08:45 → 10:58」，但巴士那筆把去回程都寫在同一格（50 字），
+   nowrap 會讓這一欄獨佔 496px。改為可換行，時間本身用 &nbsp; 綁住不拆開。 */
+.table-editorial .time-range {
+  white-space: normal;
+}
+
 .tag-red,
 .tag-yellow,
 .tag-todo,
@@ -4371,15 +4385,46 @@ h3 {
 }
 
 /* --- 多欄表格：欄位太窄時，站名會斷成三行、狀態標籤被擠成圓球，
-       右側欄位還會被推出容器。給表格一個最小寬度，交給 .table-wrap
-       既有的水平捲動（含捲動陰影）處理，欄寬就不會互相壓縮。 --- */
+       右側欄位還會被推出容器。給表格最小寬度，交給 .table-wrap
+       既有的水平捲動（含捲動陰影）處理，欄寬就不會互相壓縮。
+
+       2026-09-14 修正：原本這兩條是全站通用的（min-width: 52rem 與
+       td:first-child min-width: 11rem），結果 40 張表全都套用——
+       2 欄的「單位／電話」被撐到 832px 而在窄容器裡橫捲，
+       而 5 個字的日期欄硬拿走 176px、把旁邊的欄位擠到 67px。
+       改為只有真正需要的寬表才給最小寬度，並讓短資料欄縮到內容寬度。 --- */
 @media (min-width: 701px) {
-  .table-editorial {
-    min-width: 52rem;
+  /* 六欄以上才可能壓縮（火車班次、巴士班次）；欄數用 :has() 判斷，
+     不支援 :has() 的瀏覽器只是沒有最小寬度，表格仍可讀。 */
+  .table-editorial:has(thead th:nth-child(6)) {
+    min-width: 54rem;
   }
 
-  .table-editorial td:first-child {
-    min-width: 11rem;
+  .table-editorial:has(thead th:nth-child(5)) {
+    min-width: 44rem;
+  }
+
+  /* 時間、票價、時長這類短欄縮到內容寬度，把空間讓給敘述欄。
+     width: 1% 搭配 nowrap 是表格「縮到剛好」的標準寫法。 */
+  .table-editorial .number {
+    width: 1%;
+  }
+
+  /* 列高：原本 0.78rem 的上下 padding 讓 21 列的門票表高達 2600px。
+     只收緊桌機的真表格——手機是卡片版，左右內距由 tr 負責，
+     這條若寫在媒體查詢外會蓋掉卡片版、讓每格多出 11px 的左右縮排。 */
+  .table-editorial th,
+  .table-editorial td {
+    padding: 0.55rem 0.7rem;
+    line-height: 1.55;
+  }
+}
+
+/* 手機卡片版：左右交給 tr 的內距，這裡只收上下。 */
+@media (max-width: 700px) {
+  .table-editorial td {
+    padding: 0.45rem 0;
+    line-height: 1.55;
   }
 }
 
