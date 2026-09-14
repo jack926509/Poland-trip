@@ -41,10 +41,6 @@ function stableMapUrl(attraction) {
   return attraction.mapUrl;
 }
 
-function stableMapDescription(description) {
-  return description.replace(/★\d(?:\.\d)?(?:\s*\([^)]*\)|\s*（[^）]*）)?\s*/g, '').trim();
-}
-
 export function renderCity({
   city,
   cityKey,

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
@@ -1583,4 +1584,28 @@ test('城市判斷不會把華沙的 Krakowskie Przedmieście 當成克拉科夫
   // 判斷不出來時回 null，寧可少標也不要標錯
   assert.equal(detectCity('Karczma Górnicza Kopalnia Soli Wieliczka'), null);
   assert.equal(detectCity(''), null);
+});
+
+test('sw.js 的快取版本由建置帶上資源指紋，樣式改了就會失效舊快取', () => {
+  // CSS／JS 走 cache-first，版本字串沒變的話既有安裝會拿到新 HTML 配舊樣式。
+  // 2026-09-14 就這樣漏過一次（樣式大改、VERSION 停在 v18），因此改由建置計算。
+  const source = fs.readFileSync('sw.js', 'utf8');
+  const built = read('sw.js');
+  const base = /const VERSION = '([^']+)';/.exec(source)[1];
+  const shipped = /const VERSION = '([^']+)';/.exec(built)[1];
+
+  assert.notEqual(shipped, base, 'dist/sw.js 的 VERSION 未帶上資源指紋');
+  assert.match(shipped, new RegExp(`^${base}-[0-9a-f]{8}$`), `指紋格式不對：${shipped}`);
+
+  // 指紋必須真的由 cache-first 資源算出來
+  const expected = crypto.createHash('sha256');
+  for (const asset of ['assets/main.css', 'assets/nav.js', 'assets/site-search.js',
+    'assets/database-filter.js', 'assets/leaflet/leaflet.css', 'assets/leaflet/leaflet.js']) {
+    expected.update(fs.readFileSync(path.join(distDir, asset)));
+  }
+  assert.equal(shipped, `${base}-${expected.digest('hex').slice(0, 8)}`, '指紋與實際資源內容不符');
+
+  // 部署腳本不能再用根目錄的原始 sw.js 覆蓋掉帶指紋的那份
+  const prepare = fs.readFileSync('prepare-site.sh', 'utf8');
+  assert.doesNotMatch(prepare, /^\s*sw\.js\s/m, 'prepare-site.sh 會用未帶指紋的 sw.js 覆蓋 dist 的版本');
 });

@@ -16,8 +16,10 @@ fi
 npm run build
 
 cp -R dist/. "$output/"
+# sw.js 不在這裡複製：dist/ 裡那份已由建置帶上資源指紋，
+# 用根目錄的原始檔覆蓋會把指紋洗掉，既有安裝就拿不到新樣式。
 cp \
-  sw.js apple-touch-icon.png icon-192.png icon-512.png \
+  apple-touch-icon.png icon-192.png icon-512.png \
   og-image.svg robots.txt sitemap.xml \
   "$output/"
 
