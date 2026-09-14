@@ -4591,30 +4591,97 @@ h3 {
 
 /* 城市餐飲列表：候選置頂，手機保留表頭與欄位對照。 */
 .city-dining-table-wrap { overflow-x: auto; }
-.city-dining-table { width: 100%; min-width: 1080px; table-layout: fixed; }
-.city-dining-table caption { text-align: left; padding: .65rem; font-weight: 700; }
-.city-dining-table th:nth-child(1) { width: 22%; }
-.city-dining-table th:nth-child(2) { width: 12%; }
-.city-dining-table th:nth-child(3) { width: 25%; }
-.city-dining-table th:nth-child(4) { width: 29%; }
-.city-dining-table th:nth-child(5) { width: 12%; }
+/* 地圖不再獨立成欄，店名本身就是連結，因此剩四欄、最小寬度也跟著縮。 */
+.city-dining-table { width: 100%; min-width: 820px; table-layout: fixed; }
+.city-dining-table caption { text-align: left; padding: .5rem .65rem; font-weight: 700; }
+.city-dining-table th:nth-child(1) { width: 25%; }
+.city-dining-table th:nth-child(2) { width: 13%; }
+.city-dining-table th:nth-child(3) { width: 30%; }
+.city-dining-table th:nth-child(4) { width: 32%; }
 .city-dining-table tbody th { text-align: left; font-weight: 400; }
 .city-dining-table td, .city-dining-table tbody th { vertical-align: top; overflow-wrap: anywhere; }
-.city-dining-table p { margin: .35rem 0; }
+.city-dining-table p { margin: .2rem 0; }
+
+/* 店名＝Google Maps 連結，用底線表示可點；父層 .table-editorial th a 已給 44px 觸控高度。 */
+.city-dining-name {
+  /* 專案要求任何可點目標不低於 44px；純底線連結只有 41px，用 inline-flex 撐起來。 */
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: rgb(169 78 50 / 45%);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.city-dining-name:hover,
+.city-dining-name:focus-visible { color: var(--accent-dark); text-decoration-color: currentcolor; text-decoration-thickness: 2px; }
+
 .city-dining-table .city-dining-selected { background: rgba(169, 78, 50, .045); }
 .city-dining-table .city-dining-selected th { border-left: 3px solid var(--rust, #a94e32); }
-.city-dining-choice { display: block; margin-top: .4rem; color: var(--rust, #a94e32); font-size: .875rem; font-weight: 700; }
-.city-dining-role { display: block; margin-top: .4rem; color: var(--ink-soft); font-size: .875rem; font-weight: 700; }
-.city-dining-table .food-map-links a { white-space: normal; }
+/* 標籤改行內顯示，每列少掉一整行的高度。 */
+.city-dining-choice,
+.city-dining-role { display: inline; margin-left: .4rem; font-size: .8rem; font-weight: 700; white-space: nowrap; }
+.city-dining-choice { color: var(--rust, #a94e32); }
+.city-dining-role { color: var(--ink-soft); }
 .city-dining-scroll-hint { display: none; }
-@media (max-width: 1100px) { .city-dining-scroll-hint { display: block; font-size: .875rem; color: var(--ink-soft); } }
-/* 覆寫共用手機表格卡片化，餐廳列表保持真正表格與可見表頭。 */
+@media (min-width: 701px) and (max-width: 1100px) {
+  .city-dining-scroll-hint { display: block; font-size: .875rem; color: var(--ink-soft); }
+}
+
+/* 桌機維持真正的表格與可見表頭，但把列高收緊：
+   padding .85rem → .5rem .65rem、行距 1.5，整張表大約矮三成。 */
 .city-dining-table { display: table; }
 .city-dining-table thead { display: table-header-group; }
 .city-dining-table tbody { display: table-row-group; padding: 0; }
 .city-dining-table tr { display: table-row; width: auto; padding: 0; box-shadow: none; }
-.city-dining-table td, .city-dining-table th { display: table-cell; padding: .85rem; border-bottom: 1px solid var(--line); }
+.city-dining-table td, .city-dining-table th {
+  display: table-cell;
+  padding: .5rem .65rem;
+  border-bottom: 1px solid var(--line);
+  font-size: .92rem;
+  line-height: 1.5;
+}
 .city-dining-table td { width: auto; }
 .city-dining-table td::before { content: none; }
-.city-dining-table tbody th { font-family: inherit; font-size: 1rem; letter-spacing: normal; text-transform: none; color: var(--ink); }
-.city-dining-table thead th { font-size: .875rem; }
+.city-dining-table tbody th { font-family: inherit; font-size: .98rem; letter-spacing: normal; text-transform: none; color: var(--ink); }
+.city-dining-table thead th { font-size: .82rem; }
+.city-dining-table .food-map-note { font-size: .84rem; color: var(--ink-soft); }
+
+/* 手機改回全站共用的卡片版：一家一張卡，欄名由 data-label 帶出，不必左右滑 1080px。
+   （data-label 的欄位對位在 layout.mjs 修正後才正確，見 addTableCellLabels。） */
+@media (max-width: 700px) {
+  .city-dining-table-wrap { overflow-x: visible; border: 0; background: none; }
+  .city-dining-table { display: block; min-width: 0; table-layout: auto; }
+  .city-dining-table thead { display: none; }
+  .city-dining-table tbody { display: grid; grid-template-columns: minmax(0, 1fr); gap: .6rem; padding: .6rem 0; }
+  .city-dining-table tr {
+    display: block;
+    width: 100%;
+    padding: .6rem .8rem;
+    border: 1px solid var(--line);
+    background: var(--paper-light);
+    box-shadow: var(--shadow-paper);
+  }
+  .city-dining-table td,
+  .city-dining-table tbody th { display: block; width: 100%; padding: .35rem 0; border-bottom: 0; }
+  .city-dining-table tbody th { padding-top: 0; font-size: 1.05rem; }
+  .city-dining-table td + td { border-top: 1px solid var(--line); }
+  .city-dining-table td::before {
+    display: block;
+    margin-bottom: .1rem;
+    color: var(--ink-soft);
+    content: attr(data-label);
+    font-family: var(--font-mono);
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  /* 卡片版的左側色條改掛在整張卡上，掛在 th 會只有標題那一段有色條。 */
+  .city-dining-table .city-dining-selected th { border-left: 0; }
+  .city-dining-table .city-dining-selected { border-left: 3px solid var(--rust, #a94e32); }
+  .city-dining-choice,
+  .city-dining-role { display: inline-block; margin-left: .4rem; }
+}

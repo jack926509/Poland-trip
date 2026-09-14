@@ -1072,11 +1072,27 @@ test('行程餐廳推薦的評分只由連結帶去 Google Maps，不在站內�
   for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
     const html = read(file);
     const table = html.slice(html.indexOf('id="city-dining"'), html.indexOf('</table>', html.indexOf('id="city-dining"')));
-    assert.ok(table.includes('<th scope="col">地圖導航 · 即時評分</th>'), `${file} 地圖導航欄未標明評分入口`);
-    assert.ok(table.includes('評分與導航 →'), `${file} 缺少評分與導航連結`);
+    // 地圖不再獨立成欄：店名本身就是連結，且每一列都要有
+    assert.ok(!table.includes('地圖導航'), `${file} 仍保留獨立的地圖導航欄`);
+    const rows = table.split('<tr class=').slice(1);
+    assert.ok(rows.length > 8, `${file} 餐廳列數異常`);
+    for (const row of rows) {
+      assert.match(row, /<th scope="row"><a class="city-dining-name" href="https:\/\/[^"]+"/,
+        `${file} 有餐廳的店名不是 Google Maps 連結`);
+      assert.match(row, /aria-label="在新視窗開啟 [^"]+ 的 Google Maps"/,
+        `${file} 店名連結缺少可辨識的 aria-label`);
+    }
     assert.doesNotMatch(table, bakedRating, `${file} 把 Google 評分寫死進表格`);
     assert.ok(html.includes('評分與評論數本站不保存'), `${file} 未說明評分為何不存在站內`);
   }
+
+  // 手機改回全站共用的卡片版（一家一張卡），不得退回橫向捲 800px 以上的表格
+  const css = fs.readFileSync(new URL('../src/styles/main.css', import.meta.url), 'utf8');
+  const mobile = css.slice(css.indexOf('@media (max-width: 700px) {', css.indexOf('.city-dining-table-wrap')));
+  assert.match(mobile, /\.city-dining-table \{ display: block;/, '手機版餐廳表未改為卡片版');
+  assert.match(mobile, /\.city-dining-table td::before \{[\s\S]*?content: attr\(data-label\)/, '手機卡片版未顯示欄名');
+  assert.match(css, /\.city-dining-name \{[\s\S]*?min-height: 44px/, '店名連結未維持 44px 觸控高度');
+  assert.match(css, /\.city-dining-name \{[\s\S]*?text-decoration: underline/, '店名連結未加底線');
 });
 
 test('逐日移動不保留已知不可行備案或重疊時刻', () => {
