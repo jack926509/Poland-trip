@@ -588,7 +588,6 @@ function buildSearchRecords() {
     mapPins: cities.mapPins,
     cityDining: dining.cityDining,
     cityFood: dining.cityFood,
-    foodBackup: dining.foodBackup,
     verifiedRestaurantHours: dining.verifiedRestaurantHours,
     snacksAndCafes: dining.snacksAndCafes,
   });
@@ -662,7 +661,6 @@ function buildIntoStaging(stagingRoot) {
       attractionsForCity: cities.attractions[mapKey],
       dining: dining.cityDining[mapKey],
       cityFoodForCity: dining.cityFood.find(group => group.city === city.name),
-      foodBackupForCity: dining.foodBackup.find(group => group.city === city.name),
       snacksAndCafesForCity: dining.snacksAndCafes[mapKey] || [],
       photoSpotsForCity: cities.photoSpots.filter(spot => spot.cityKey === key),
       story: cities.cityStories.find(item => item.city === city.name),

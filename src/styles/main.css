@@ -4546,13 +4546,48 @@ h3 {
 .operation-grid { align-items: start; }
 .operation-route-column { display: grid; gap: 1.25rem; min-width: 0; }
 .day-dining { min-width: 0; }
-.day-dining-list { list-style: none; padding: 0; margin: 0; }
-.day-dining-list > li { padding: 1rem 0; border-top: 1px solid var(--line); }
-.day-dining-list h4 { margin: .35rem 0; font-size: 1.15rem; overflow-wrap: anywhere; }
-.day-dining-list p { margin: .4rem 0; }
-.day-eat { margin-top: 1rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
-.day-eat-list { display: grid; gap: .85rem; }
-.day-eat-list .card { padding: 1rem; box-shadow: none; }
+
+/* 當日餐飲：候選與順路必吃融合成一份清單，共用同一種列版式。
+   導航連結放在標題右上角（flex 的第二個子元素），不另佔一行——
+   一天最多 8 列，原本每列都多一行膠囊，光連結就吃掉大半張卡片。 */
+.day-food-list { list-style: none; padding: 0; margin: .25rem 0 0; }
+.day-food-item { padding: .9rem 0; border-top: 1px solid var(--line); }
+.day-food-item:first-child { padding-top: .25rem; border-top: 0; }
+.day-food-head { display: flex; align-items: flex-start; gap: .75rem; }
+.day-food-title { flex: 1 1 auto; min-width: 0; }
+.day-food-title h4 { margin: .3rem 0 0; font-size: 1.1rem; line-height: 1.35; overflow-wrap: anywhere; }
+.day-food-item p { margin: .35rem 0 0; }
+.day-food-item .food-map-note { margin-top: .3rem; }
+
+/* 必吃用不同色的小標與左側色條區分，不必再另開一個區塊標題。 */
+.day-food-item-eat { padding-left: .75rem; border-left: 3px solid var(--accent-pale); }
+.day-food-item-eat .eyebrow { color: var(--rust, #a94e32); }
+
+.day-food-map {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: .3rem .8rem;
+  border: 1px solid rgb(142 126 112 / 40%);
+  border-radius: 999px;
+  background: var(--paper-light);
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  font-weight: 700;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background-color 160ms var(--ease), border-color 160ms var(--ease);
+}
+.day-food-map:hover,
+.day-food-map:focus-visible { border-color: var(--accent); background: var(--accent-pale); }
+
+/* 窄欄時標題容易被 44px 的膠囊擠成一字一行，改為連結換到下一行靠左。 */
+@media (max-width: 480px) {
+  .day-food-head { flex-wrap: wrap; }
+  .day-food-map { margin-top: .2rem; }
+}
 
 /* 城市餐飲列表：候選置頂，手機保留表頭與欄位對照。 */
 .city-dining-table-wrap { overflow-x: auto; }
@@ -4569,6 +4604,7 @@ h3 {
 .city-dining-table .city-dining-selected { background: rgba(169, 78, 50, .045); }
 .city-dining-table .city-dining-selected th { border-left: 3px solid var(--rust, #a94e32); }
 .city-dining-choice { display: block; margin-top: .4rem; color: var(--rust, #a94e32); font-size: .875rem; font-weight: 700; }
+.city-dining-role { display: block; margin-top: .4rem; color: var(--ink-soft); font-size: .875rem; font-weight: 700; }
 .city-dining-table .food-map-links a { white-space: normal; }
 .city-dining-scroll-hint { display: none; }
 @media (max-width: 1100px) { .city-dining-scroll-hint { display: block; font-size: .875rem; color: var(--ink-soft); } }
