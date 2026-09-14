@@ -1,33 +1,107 @@
 import { dayDining } from '../data/day-dining.js';
+import { days } from '../data/trip.js';
 
-const selections = {
-  warsaw: ['MEI', 'QQ Warsaw | Matcha & Korean Toasts', 'Yache Korea', 'Arirang Restaurant', 'Pyzy Flaki Gorące', 'WYRAJ', 'NUTA', 'Café Bristol', 'Specjały Regionalne', 'Pijalnia Czekolady E.Wedel'],
-  krakow: ['Hankki', 'NOAH', 'Pod Aniołami', 'Endzior', 'FOLGA'],
-  wroclaw: ['Restauracja Wrocławska', 'IDA kuchnia i wino', 'Samarqand', 'Konspira', 'El Gato Specialty Coffee Roasters', 'Dessert Boutique'],
-  poznan: ['Hyćka', 'Pyra Bar', 'ROGAL Świętomarciński'],
+/**
+ * 城市指南與每日行程的對照表。
+ *
+ * 2026-09-14 之前這裡是一份手寫的 selections 名單，每新增一家每日餐位就得記得回來補一次，
+ * 漏了也沒有任何徵兆（Day 2 的 Bar Mleczny Pod Temidą 就這樣漏了，城市頁看不出它排進行程）。
+ * 現在改成直接由 day-dining.js 與 trip.js 的 day.eat 推導，名單不再手寫。
+ */
+export const cityGuides = {
+  warsaw: { file: 'city-warszawa.html', name: '華沙' },
+  krakow: { file: 'city-krakow.html', name: '克拉科夫' },
+  wroclaw: { file: 'city-wroclaw.html', name: '樂斯拉夫' },
+  poznan: { file: 'city-poznan.html', name: '波茲南' },
 };
+
+/**
+ * 從門牌或 Google Maps 連結判斷城市。字尾的 negative lookahead 是必要的：
+ * Café Bristol 的門牌是華沙的「Krakowskie Przedmieście」，不加就會同時命中克拉科夫。
+ */
+const cityPatterns = {
+  warsaw: /warszaw[aąęy]|warsaw(?![a-ząćęłńóśźż])/i,
+  krakow: /krak[oó]w(?![a-ząćęłńóśźż])/i,
+  wroclaw: /wroc[lł]aw(?![a-ząćęłńóśźż])/i,
+  poznan: /pozna[nń](?![a-ząćęłńóśźż])/i,
+};
+
+export function detectCity(...values) {
+  const text = values.filter(Boolean).map(value => {
+    try { return decodeURIComponent(value); } catch { return value; }
+  }).join(' ');
+  const hits = Object.keys(cityPatterns).filter(city => cityPatterns[city].test(text));
+  // 同時命中兩座城市就當作判斷不出來，寧可少標也不要標錯。
+  return hits.length === 1 ? hits[0] : null;
+}
+
 const aliases = {
   'e wedel pijalnia': 'wedel', 'pijalnia czekolady e wedel': 'wedel',
   'rogal swietomarcinski': 'rogal', 'endzior plac nowy 圓亭': 'endzior',
 };
+
 function key(name) {
-  const normalized = name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/ł/g, 'l').replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+  const normalized = name.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/ł/g, 'l').replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
   return aliases[normalized] || normalized;
 }
 
 /**
- * 把四個來源併成單一份「行程餐廳推薦」清單：
+ * 順路必吃的店名常帶地區或分店註記（「Zapiecek（老城多家分店）」「Okrąglak, Plac Nowy」），
+ * 和城市表的寫法對不起來，因此比對前先去掉括號與逗號之後的部分。
+ */
+function coreKey(name) {
+  return key(name.replace(/[（(][^）)]*[)）]/g, ' ').replace(/,.*$/, ' '));
+}
+
+/** 只認完全相同或「整個詞開頭」（"a blikle" ↔ "a blikle 1869"），避免短字串誤配。 */
+function sameStore(a, b) {
+  if (!a || !b) return false;
+  if (a === b) return true;
+  const [short, long] = a.length < b.length ? [a, b] : [b, a];
+  return short.length >= 4 && long.startsWith(`${short} `);
+}
+
+/**
+ * 必吃在城市表要補的說明。沒有 note 時退回 text 的菜色部分（「Pierogi @ Zapiecek」取前半），
+ * 若那段其實就是店名本身（「Pierożki u Vincenta（Kazimierz）」），就不重複印在同名的列底下。
+ */
+function mustEatDetail(item, rowName) {
+  if (item.note) return item.note;
+  const text = (item.text.includes(' @ ') ? item.text.split(' @ ')[0] : item.text).trim();
+  return sameStore(coreKey(text), coreKey(rowName)) ? '' : text;
+}
+
+function dayLink(day, label) {
+  return `<a href="day-${String(day).padStart(2, '0')}.html#day-food">${label}</a>`;
+}
+
+/** 這座城市在每日行程裡排定的餐位（day-dining.js）。 */
+export function plannedMealsFor(cityKey) {
+  return Object.entries(dayDining).flatMap(([day, items]) => items
+    .filter(item => item.cityGuide !== false && detectCity(item.address, item.map) === cityKey)
+    .map(item => ({ day: Number(day), item })));
+}
+
+/** 這座城市的順路必吃（trip.js 的 day.eat）。沒有門牌，所以只用來標記既有的列。 */
+export function mustEatsFor(cityKey) {
+  return days.flatMap(day => (day.eat || [])
+    .filter(item => typeof item !== 'string' && detectCity(item.place, item.map) === cityKey)
+    .map(item => ({ day: day.n, item })));
+}
+
+/**
+ * 把資料併成單一份「行程餐廳推薦」清單：
  * 城市餐飲情報（cityDining）、行程餐廳與備案（cityFood 的 role）、
- * 小吃 · 牛奶吧 · 咖啡廳（snacksAndCafes）、你的候選（day-dining.js）。
- * 同一家店只留一列，排序為 候選 → 主推 → 備案 → 小吃 · 咖啡。
+ * 小吃 · 牛奶吧 · 咖啡廳（snacksAndCafes），再疊上每日行程的餐位與順路必吃。
+ * 同一家店只留一列，排序為 你的候選 → 順路必吃 → 主推 → 備案 → 小吃 · 咖啡。
  */
 export function mergeCityDining(cityKey, dining = [], primary = [], snacks = []) {
   const entries = new Map();
   function add(item) {
     const id = key(item.name);
-    const previous = entries.get(id) || { name: item.name, notes: [] };
+    const previous = entries.get(id) || { name: item.name, notes: [], plans: [] };
     const notes = [...new Set([...previous.notes, ...[item.note, item.highlight].filter(Boolean)])];
-    entries.set(id, { ...previous, ...item, notes, map: item.map || item.mapUrl || previous.map });
+    entries.set(id, { ...previous, ...item, notes, plans: previous.plans, map: item.map || item.mapUrl || previous.map });
   }
   for (const item of primary) {
     if (item.maps?.length) {
@@ -42,12 +116,25 @@ export function mergeCityDining(cityKey, dining = [], primary = [], snacks = [])
     // 已經是主推或備案的店不因為也出現在小吃名單而被降級，只補上營業時間與說明。
     add({ ...item, tier: previous?.tier || item.type, role: previous ? previous.role : 'snack' });
   }
-  for (const name of selections[cityKey] || []) {
-    const match = Object.entries(dayDining).flatMap(([day, items]) => items.map(item => ({ ...item, day }))).filter(item => key(item.name) === key(name));
-    const item = match[0];
-    add({ name, selected: true, ...(item ? { address: item.address, map: item.map, plan: match.map(m => `Day ${m.day} · ${m.role}：${m.note}`).join('；') } : {}) });
+
+  // 每日排定的餐位：城市表沒有這家店就新增一列，並把 Day 連回該日行程。
+  for (const { day, item } of plannedMealsFor(cityKey)) {
+    add({ name: item.name, selected: true, address: item.address, map: item.map });
+    const entry = entries.get(key(item.name));
+    entry.plans = [...entry.plans, `${dayLink(day, `Day ${day}`)} · ${item.role}：${item.note}`];
   }
-  const order = { backup: 2, snack: 3 };
-  const rank = item => (item.selected ? 0 : order[item.role] ?? 1);
+
+  // 順路必吃沒有門牌，只標記既有的列，不會憑空長出沒有地址的店。
+  for (const { day, item } of mustEatsFor(cityKey)) {
+    const wanted = coreKey(item.place || item.text);
+    const entry = [...entries.values()].find(row => sameStore(coreKey(row.name), wanted));
+    if (!entry) continue;
+    entry.mustEat = true;
+    const detail = mustEatDetail(item, entry.name);
+    entry.plans = [...entry.plans, `${dayLink(day, `Day ${day}`)} · 順路必吃${detail ? `：${detail}` : ''}`];
+  }
+
+  const order = { backup: 3, snack: 4 };
+  const rank = row => (row.selected ? 0 : row.mustEat ? 1 : order[row.role] ?? 2);
   return [...entries.values()].sort((a, b) => rank(a) - rank(b));
 }

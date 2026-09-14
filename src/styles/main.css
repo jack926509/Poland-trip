@@ -4583,6 +4583,27 @@ h3 {
 .day-food-map:hover,
 .day-food-map:focus-visible { border-color: var(--accent); background: var(--accent-pale); }
 
+/* 當日餐飲卡底部連回城市指南；城市頁的同一家店也會連回當日行程。 */
+.day-food-guides {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin: .9rem 0 0;
+  padding-top: .85rem;
+  border-top: 1px solid var(--line);
+}
+.day-food-guides a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* 窄欄時標題容易被 44px 的膠囊擠成一字一行，改為連結換到下一行靠左。 */
 @media (max-width: 480px) {
   .day-food-head { flex-wrap: wrap; }
@@ -4617,6 +4638,10 @@ h3 {
 }
 .city-dining-name:hover,
 .city-dining-name:focus-visible { color: var(--accent-dark); text-decoration-color: currentcolor; text-decoration-thickness: 2px; }
+
+/* 「行程安排」欄的 Day 連結：點了回到當日行程的餐飲卡。 */
+.city-dining-plan { margin: .2rem 0; }
+.city-dining-plan a { font-family: var(--font-mono); font-weight: 700; white-space: nowrap; }
 
 .city-dining-table .city-dining-selected { background: rgba(169, 78, 50, .045); }
 .city-dining-table .city-dining-selected th { border-left: 3px solid var(--rust, #a94e32); }
