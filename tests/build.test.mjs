@@ -1175,26 +1175,17 @@ test('全站不出現把日落寫成 15:35–15:50 的錯誤敘述', () => {
     assert.doesNotMatch(html, /日落[^。<]{0,40}15:35/, `${file} 把日落寫成 15:35`);
     assert.doesNotMatch(html, /日落[^。<]{0,40}15:50/, `${file} 把日落寫成 15:50`);
   }
-  // 日落值已由散文改為 essentials.js 的 daylight 結構化表（行前提醒頁與各日行程頁同源）。
-  // 這裡改為直接驗證那份資料，涵蓋範圍比原本的字串比對更廣。
+  // 日落值已由散文改為 essentials.js 的 daylight 結構化表。數值本身的正確性
+  // 由 tests/daylight.test.mjs 逐筆比對 tools/sun-times.mjs 的推算負責；
+  // 這裡只確認頁面真的把那份資料呈現出來，且各日頁與總表同源。
   const notes = read('practical/notes.html');
   assert.ok(notes.includes('八日日照'), '行前提醒缺少日照總表');
-  assert.equal(daylight.length, 8);
   for (const item of daylight) {
-    assert.ok(item.sunset >= '15:55' && item.sunset <= '17:00', `Day ${item.day} 日落 ${item.sunset} 超出 10 月底波蘭的合理範圍`);
-    assert.ok(item.sunrise < item.sunset, `Day ${item.day} 日出晚於日落`);
-    assert.ok(item.blueHourEnd > item.sunset, `Day ${item.day} 藍調結束早於日落`);
     assert.ok(notes.includes(item.sunset), `行前提醒的日照表缺少 Day ${item.day} 的日落 ${item.sunset}`);
+    const dayPage = read(`day-${String(item.day).padStart(2, '0')}.html`);
+    assert.ok(dayPage.includes(item.sunset), `Day ${item.day} 頁面的日落時間與日照表不一致`);
+    assert.ok(dayPage.includes(item.sunrise), `Day ${item.day} 頁面的日出時間與日照表不一致`);
   }
-  // 10/25 夏令時間結束：Day 1 仍是 CEST，日落必須明顯晚於此後各日。
-  assert.equal(daylight[0].tz, 'CEST');
-  assert.ok(daylight.slice(1).every(item => item.tz === 'CET'), 'Day 2 起應全為 CET');
-  assert.ok(daylight[0].sunset > daylight[1].sunset, '冬令時間首日的日落應早於前一天');
-
-  // Day 5 座堂島點燈依賴這個值，逐日頁與總表必須一致。
-  const wroclaw = daylight.find(item => item.day === 5);
-  assert.equal(wroclaw.sunset, '16:34');
-  assert.ok(read('day-05.html').includes('16:34'), 'Day 5 頁面的日落時間需與日照表一致');
 });
 
 test('實用頁完整包含店家地圖、安全電話、打包與最新交通資料', () => {

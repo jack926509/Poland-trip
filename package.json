@@ -8,6 +8,7 @@
     "test": "node build.mjs && node --test tests/*.test.mjs",
     "audit:map-pins": "node tools/audit-map-pins.mjs",
     "audit:schedule": "node tools/audit-schedule.mjs",
+    "sun:times": "node tools/sun-times.mjs",
     "sync:dashboard": "node tools/sync-dashboard-overrides.mjs"
   }
 }
