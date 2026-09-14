@@ -613,7 +613,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.equal(photoSpots.length, 10);
   assert.equal(photoCredits.length, 20);
   assert.deepEqual(Object.fromEntries(Object.entries(mapPins).map(([city, data]) => [city, data.points.length])), {
-    warsaw: 15, krakow: 21, wroclaw: 9, poznan: 8,
+    warsaw: 14, krakow: 18, wroclaw: 9, poznan: 7,
   });
   assert.deepEqual(Object.fromEntries(Object.entries(attractions).map(([city, items]) => [city, items.length])), {
     warsaw: 12, krakow: 6, wroclaw: 8, poznan: 9,
@@ -653,7 +653,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
 
 test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', () => {
   const allPins = Object.entries(mapPins).flatMap(([city, data]) => data.points.map((point) => ({city, name:point[2]})));
-  assert.equal(allPins.length, 53);
+  assert.equal(allPins.length, 48);
   for (const pin of allPins) {
     assert.ok(mapPinChecks[pin.city]?.[pin.name], `${pin.city}/${pin.name} 缺少圖釘查證狀態`);
   }
@@ -666,7 +666,7 @@ test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', ()
   });
   const verifiedPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'coordinate-verified');
   const areaPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'area-reference');
-  assert.equal(verifiedPins.length, 50);
+  assert.equal(verifiedPins.length, 45);
   assert.deepEqual(
     areaPins.map(({name}) => name).sort(),
     [
@@ -888,12 +888,13 @@ test('4 個已確認住宿地點皆出現在對應城市地圖，Piast 使用已
   assert.match(hotelPins.find(point => point[2] === 'Piast')?.[3] ?? '', /Piłsudskiego 98/);
 });
 
-test('4 個城市頁含正確 Leaflet 圖釘數，合計 53', () => {
+test('4 個城市頁含正確 Leaflet 圖釘數，合計 48', () => {
+  // 2026-09-14：撤掉 5 個「地圖上有、餐廳表已無」的孤兒圖釘後由 53 降為 48
   const expected = {
-    'city-warszawa.html': 15,
-    'city-krakow.html': 21,
+    'city-warszawa.html': 14,
+    'city-krakow.html': 18,
     'city-wroclaw.html': 9,
-    'city-poznan.html': 8,
+    'city-poznan.html': 7,
   };
   let total = 0;
   for (const [file, count] of Object.entries(expected)) {
@@ -908,7 +909,7 @@ test('4 個城市頁含正確 Leaflet 圖釘數，合計 53', () => {
     assert.equal(points, count, `${file} 圖釘數錯誤`);
     total += points;
   }
-  assert.equal(total, 53);
+  assert.equal(total, 48);
 });
 
 test('城市頁完整呈現故事、景點、行程餐廳推薦與拍照資訊', () => {
@@ -1685,4 +1686,13 @@ test('實用資料沒有逾期未查的項目，未完成項目都有重查日�
   assert.deepEqual(fresh.untrackedOpen, [],
     `未完成卻沒有重查日期（永遠不會被標為逾期）：${fresh.untrackedOpen.join('、')}`);
   assert.ok(fresh.beforeDeparture.length > 0, '出發前應有待查項目，資料可能未維護');
+});
+
+test('地圖沒有「圖釘有、餐廳表已無此店」的孤兒圖釘', async () => {
+  // 精煉餐廳清單時刪掉的店，圖釘也要一起撤——否則點到圖釘會看到一家
+  // 在下方餐廳表裡完全查不到的店。
+  const { auditDiningPinCoverage } = await import('../tools/audit-map-pins.mjs');
+  const coverage = auditDiningPinCoverage();
+  assert.deepEqual(coverage.orphanPins, [],
+    `以下圖釘的店已不在餐廳表：${coverage.orphanPins.join('、')}`);
 });
