@@ -1,13 +1,12 @@
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import vm from 'node:vm';
 import { test } from 'node:test';
 import { cities, cityStories, photoSpots, photoCredits, mapPins, mapPinChecks, pinCategoryLegend, attractions, cityNotices } from '../src/data/cities.js';
-import { cityDining, cityFood, foodBackup, foods, michelinSummary, michelinReservations, verifiedRestaurantHours, userPicks } from '../src/data/dining.js';
-import { dayDining } from '../src/data/day-dining.js';
-import { key as diningKey } from '../src/templates/city-dining.mjs';
-import { about, packingDefault, phrases, preDepartureNotes, safety } from '../src/data/essentials.js';
+import { cityDining, cityFood, foods, michelinSummary, michelinReservations, verifiedRestaurantHours } from '../src/data/dining.js';
+import { about, daylight, packingDefault, phrases, preDepartureNotes, safety } from '../src/data/essentials.js';
 import { shopping, souvenirCards, souvenirShops, luxuryShopping, zabkaCards } from '../src/data/shopping.js';
 import { fares, ticketsByCity } from '../src/data/tickets.js';
 import { airportTransit, passChecklist, practical, recommendedApps, transitFares, usefulRoutes } from '../src/data/transit.js';
@@ -43,6 +42,7 @@ const distDir = path.resolve('dist');
 const standalonePath = path.resolve('poland-travel-guide-2026.html');
 const expectedFiles = [
   'index.html',
+  'today.html',
   ...Array.from({ length: 8 }, (_, index) => `day-${String(index + 1).padStart(2, '0')}.html`),
   'city-warszawa.html',
   'city-krakow.html',
@@ -400,7 +400,7 @@ test('克拉科夫與樂斯拉夫飲水資訊各自保有官方來源', () => {
   assert.equal(wroclawWater?.sourceUrl, 'https://www.mpwik.wroc.pl/csr-2/pij-kranowke/');
 });
 
-test('dist 產出 23 個分頁與可直接部署的單檔版', () => {
+test('dist 產出 24 個分頁與可直接部署的單檔版', () => {
   assert.deepEqual(htmlFiles(), [...expectedFiles, 'poland-travel-guide-2026.html'].sort());
   assert.ok(fs.existsSync(path.join(distDir, 'assets/main.css')), '缺少 assets/main.css');
   assert.ok(fs.existsSync(path.join(distDir, 'assets/database-filter.js')), '缺少資料庫篩選程式');
@@ -409,7 +409,7 @@ test('dist 產出 23 個分頁與可直接部署的單檔版', () => {
   assert.equal(fs.readFileSync(deployedStandalone, 'utf8'), fs.readFileSync(standalonePath, 'utf8'));
 });
 
-test('單檔旅遊指南封裝全部 23 頁且不依賴本機 CSS 或其他 HTML', () => {
+test('單檔旅遊指南封裝全部 24 頁且不依賴本機 CSS 或其他 HTML', () => {
   assert.ok(fs.existsSync(standalonePath), '缺少 poland-travel-guide-2026.html');
   const html = fs.readFileSync(standalonePath, 'utf8');
 
@@ -433,13 +433,13 @@ test('單檔旅遊指南封裝全部 23 頁且不依賴本機 CSS 或其他 HTML
   assert.doesNotMatch(html, /<script[^>]+src="\.\.\/assets\/database-filter\.js"/);
 });
 
-test('單檔版將過長導覽收納成三組原生下拉選單', () => {
+test('單檔版將過長導覽收納成四組原生下拉選單', () => {
   const html = fs.readFileSync(standalonePath, 'utf8');
   const menus = [...html.matchAll(/<details class="standalone-menu"[^>]*data-group="([^"]+)"/g)]
     .map(match => match[1]);
 
-  assert.deepEqual(menus, ['days', 'cities', 'practical']);
-  for (const label of ['每日行程', '城市指南', '實用資訊']) {
+  assert.deepEqual(menus, ['today', 'days', 'cities', 'practical']);
+  for (const label of ['今日', '每日行程', '城市指南', '實用資訊']) {
     assert.ok(html.includes(`<summary>${label}</summary>`), `缺少 ${label} 下拉選單`);
   }
   assert.match(html, /data-group="days"[\s\S]*href="#page-day-01"[\s\S]*href="#page-day-08"/);
@@ -526,7 +526,7 @@ test('待辦事項頁將 16 項依五類整理，並在實用資訊導覽可進�
 });
 
 test('自由行資料庫頁提供 SOS、主題索引與緊急聯絡資訊', () => {
-  assert.equal(htmlFiles().length, 24);
+  assert.equal(htmlFiles().length, 25);
   const html = read('practical/database.html');
   for (const heading of ['SOS 離線急救卡', '出入境與 ETIAS', '航班與行李', '醫療與保險', '退稅 TAX FREE']) {
     assert.ok(html.includes(heading), `資料庫頁缺少 ${heading}`);
@@ -614,7 +614,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.equal(photoSpots.length, 10);
   assert.equal(photoCredits.length, 20);
   assert.deepEqual(Object.fromEntries(Object.entries(mapPins).map(([city, data]) => [city, data.points.length])), {
-    warsaw: 15, krakow: 21, wroclaw: 9, poznan: 8,
+    warsaw: 14, krakow: 18, wroclaw: 9, poznan: 7,
   });
   assert.deepEqual(Object.fromEntries(Object.entries(attractions).map(([city, items]) => [city, items.length])), {
     warsaw: 12, krakow: 6, wroclaw: 8, poznan: 9,
@@ -630,10 +630,9 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.equal(michelinReservations.length, 9);
   assert.equal(verifiedRestaurantHours.length, 4);
   assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
-    warsaw: 17, krakow: 14, wroclaw: 11, poznan: 6,
+    warsaw: 5, krakow: 7, wroclaw: 4, poznan: 7,
   });
-  assert.deepEqual(cityFood.map(group => group.items.length), [5, 8, 4, 2]);
-  assert.deepEqual(foodBackup.map(group => group.items.length), [11, 6, 5, 4]);
+  assert.deepEqual(cityFood.map(group => group.items.length), [7, 10, 6, 5]);
   assert.equal(foods.length, 12);
 
   assert.equal(fares.length, 21);
@@ -655,7 +654,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
 
 test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', () => {
   const allPins = Object.entries(mapPins).flatMap(([city, data]) => data.points.map((point) => ({city, name:point[2]})));
-  assert.equal(allPins.length, 53);
+  assert.equal(allPins.length, 48);
   for (const pin of allPins) {
     assert.ok(mapPinChecks[pin.city]?.[pin.name], `${pin.city}/${pin.name} 缺少圖釘查證狀態`);
   }
@@ -668,7 +667,7 @@ test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', ()
   });
   const verifiedPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'coordinate-verified');
   const areaPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'area-reference');
-  assert.equal(verifiedPins.length, 50);
+  assert.equal(verifiedPins.length, 45);
   assert.deepEqual(
     areaPins.map(({name}) => name).sort(),
     [
@@ -815,7 +814,7 @@ test('高風險行程文字與餐廳候選不會誤導現場判斷', () => {
   assert.match(luggageStep.sub, /距參考發車 1h55/);
   assert.match(luggageStep.sub, /抵站後保留約 35 分鐘緩衝/);
   assert.ok(!warsawDining.some(item => item.name.includes('/')), '餐廳候選不可把多個品牌合併成一筆');
-  assert.ok(warsawDining.some(item => item.name === 'Gościniec（探索候選）'));
+  assert.ok(warsawDining.some(item => item.name === 'NUTA'));
 });
 
 test('8 個每日頁的日期與標題和資料層一致', async () => {
@@ -890,12 +889,13 @@ test('4 個已確認住宿地點皆出現在對應城市地圖，Piast 使用已
   assert.match(hotelPins.find(point => point[2] === 'Piast')?.[3] ?? '', /Piłsudskiego 98/);
 });
 
-test('4 個城市頁含正確 Leaflet 圖釘數，合計 53', () => {
+test('4 個城市頁含正確 Leaflet 圖釘數，合計 48', () => {
+  // 2026-09-14：撤掉 5 個「地圖上有、餐廳表已無」的孤兒圖釘後由 53 降為 48
   const expected = {
-    'city-warszawa.html': 15,
-    'city-krakow.html': 21,
+    'city-warszawa.html': 14,
+    'city-krakow.html': 18,
     'city-wroclaw.html': 9,
-    'city-poznan.html': 8,
+    'city-poznan.html': 7,
   };
   let total = 0;
   for (const [file, count] of Object.entries(expected)) {
@@ -910,13 +910,13 @@ test('4 個城市頁含正確 Leaflet 圖釘數，合計 53', () => {
     assert.equal(points, count, `${file} 圖釘數錯誤`);
     total += points;
   }
-  assert.equal(total, 53);
+  assert.equal(total, 48);
 });
 
-test('城市頁完整呈現故事、景點、主餐廳、備案與拍照資訊', () => {
+test('城市頁完整呈現故事、景點、行程餐廳推薦與拍照資訊', () => {
   for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
     const html = read(file);
-    for (const heading of ['先理解這座城', '景點清單', '行程主餐廳推薦', '備案餐廳', '拍照建議']) {
+    for (const heading of ['先理解這座城', '景點清單', '行程餐廳推薦', '拍照建議']) {
       assert.ok(html.includes(heading), `${file} 缺少 ${heading}`);
     }
   }
@@ -1058,11 +1058,44 @@ test('Auschwitz 導覽已訂 10:30，去回巴士皆已查定但尚未購票', (
   assert.match(JSON.stringify(day3.steps), /08:35/);
 });
 
-test('餐飲、景點與地圖資料不保存無日期的動態 Google 星等', () => {
+test('餐飲、景點與地圖資料不保存無日期的動態 Google 星等', async () => {
   const dynamicRating = /★\d(?:\.\d)?/;
+  const { snacksAndCafes } = await import('../src/data/dining.js');
   assert.doesNotMatch(JSON.stringify(cityDining), dynamicRating);
   assert.doesNotMatch(JSON.stringify(attractions), dynamicRating);
   assert.doesNotMatch(JSON.stringify(mapPins), dynamicRating);
+  // 整併後的行程餐廳推薦表也吃 cityFood 與 snacksAndCafes，同樣不得存入評分快照。
+  assert.doesNotMatch(JSON.stringify(cityFood), dynamicRating);
+  assert.doesNotMatch(JSON.stringify(snacksAndCafes), dynamicRating);
+});
+
+test('行程餐廳推薦的評分只由連結帶去 Google Maps，不在站內存成數字', () => {
+  // 分數與評論數是每天都在變的快照，存進靜態站到了現場就是舊的。
+  const bakedRating = /★\s*\d(?:\.\d)?|\d\.\d\s*(?:顆星|星|\/\s*5)|\d+\s*則評論/;
+  for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
+    const html = read(file);
+    const table = html.slice(html.indexOf('id="city-dining"'), html.indexOf('</table>', html.indexOf('id="city-dining"')));
+    // 地圖不再獨立成欄：店名本身就是連結，且每一列都要有
+    assert.ok(!table.includes('地圖導航'), `${file} 仍保留獨立的地圖導航欄`);
+    const rows = table.split('<tr class=').slice(1);
+    assert.ok(rows.length > 8, `${file} 餐廳列數異常`);
+    for (const row of rows) {
+      assert.match(row, /<th scope="row"><a class="city-dining-name" href="https:\/\/[^"]+"/,
+        `${file} 有餐廳的店名不是 Google Maps 連結`);
+      assert.match(row, /aria-label="在新視窗開啟 [^"]+ 的 Google Maps"/,
+        `${file} 店名連結缺少可辨識的 aria-label`);
+    }
+    assert.doesNotMatch(table, bakedRating, `${file} 把 Google 評分寫死進表格`);
+    assert.ok(html.includes('評分與評論數本站不保存'), `${file} 未說明評分為何不存在站內`);
+  }
+
+  // 手機改回全站共用的卡片版（一家一張卡），不得退回橫向捲 800px 以上的表格
+  const css = fs.readFileSync(new URL('../src/styles/main.css', import.meta.url), 'utf8');
+  const mobile = css.slice(css.indexOf('@media (max-width: 700px) {', css.indexOf('.city-dining-table-wrap')));
+  assert.match(mobile, /\.city-dining-table \{ display: block;/, '手機版餐廳表未改為卡片版');
+  assert.match(mobile, /\.city-dining-table td::before \{[\s\S]*?content: attr\(data-label\)/, '手機卡片版未顯示欄名');
+  assert.match(css, /\.city-dining-name \{[\s\S]*?min-height: 44px/, '店名連結未維持 44px 觸控高度');
+  assert.match(css, /\.city-dining-name \{[\s\S]*?text-decoration: underline/, '店名連結未加底線');
 });
 
 test('逐日移動不保留已知不可行備案或重疊時刻', () => {
@@ -1142,11 +1175,17 @@ test('全站不出現把日落寫成 15:35–15:50 的錯誤敘述', () => {
     assert.doesNotMatch(html, /日落[^。<]{0,40}15:35/, `${file} 把日落寫成 15:35`);
     assert.doesNotMatch(html, /日落[^。<]{0,40}15:50/, `${file} 把日落寫成 15:50`);
   }
+  // 日落值已由散文改為 essentials.js 的 daylight 結構化表。數值本身的正確性
+  // 由 tests/daylight.test.mjs 逐筆比對 tools/sun-times.mjs 的推算負責；
+  // 這裡只確認頁面真的把那份資料呈現出來，且各日頁與總表同源。
   const notes = read('practical/notes.html');
-  // 2026-08-11 重算：夏令時間結束後（10/25–10/31）華沙 16:21→16:10、樂斯拉夫 16:40→16:28，
-  // 舊值 16:05–16:30 整體早了約 5–10 分鐘，已改為 16:10–16:40。
-  assert.ok(notes.includes('日落約 16:10–16:40'), '行前提醒缺少正確日落區間');
-  assert.ok(notes.includes('樂斯拉夫 10/28 約 16:34'), '行前提醒的樂斯拉夫日落時間需與 Day 5 一致');
+  assert.ok(notes.includes('八日日照'), '行前提醒缺少日照總表');
+  for (const item of daylight) {
+    assert.ok(notes.includes(item.sunset), `行前提醒的日照表缺少 Day ${item.day} 的日落 ${item.sunset}`);
+    const dayPage = read(`day-${String(item.day).padStart(2, '0')}.html`);
+    assert.ok(dayPage.includes(item.sunset), `Day ${item.day} 頁面的日落時間與日照表不一致`);
+    assert.ok(dayPage.includes(item.sunrise), `Day ${item.day} 頁面的日出時間與日照表不一致`);
+  }
 });
 
 test('實用頁完整包含店家地圖、安全電話、打包與最新交通資料', () => {
@@ -1180,7 +1219,7 @@ test('service worker 提供離線快取，且不預快取被歸檔的介面', ()
   assert.ok(worker.includes("addEventListener('fetch'"), 'sw.js 需攔截請求才能離線可用');
   assert.ok(!worker.includes('self.registration.unregister()'), '正式 worker 不應自我解除註冊');
 
-  // 23 頁與離線必要資源都要在預快取清單裡
+  // 24 頁與離線必要資源都要在預快取清單裡
   for (const file of expectedFiles) {
     assert.ok(worker.includes(`./${file}`), `sw.js 預快取缺少 ${file}`);
   }
@@ -1287,10 +1326,10 @@ test('所有拍照建議都有精確站位、方向與座標導航', () => {
 
 test('城市推薦整合完整候選與既有情報，同店不重複', async () => {
   const { mergeCityDining } = await import('../src/templates/city-dining.mjs');
-  const { cityDining, cityFood } = await import('../src/data/dining.js');
+  const { cityDining, cityFood, snacksAndCafes } = await import('../src/data/dining.js');
   for (const [i, city] of ['warsaw', 'krakow', 'wroclaw', 'poznan'].entries()) {
-    const rows = mergeCityDining(city, cityDining[city], cityFood[i].items);
-    assert.equal(rows.filter(row => row.selected).length, [10, 5, 6, 3][i]);
+    const rows = mergeCityDining(city, cityDining[city], cityFood[i].items, snacksAndCafes[city]);
+    assert.equal(rows.filter(row => row.selected).length, [12, 5, 4, 3][i]);
     assert.equal(new Set(rows.map(row => row.name.toLowerCase())).size, rows.length);
     for (const original of cityDining[city]) {
       assert.ok(rows.some(row => row.notes.includes(original.highlight)), `${city}: ${original.name} 情報遺失`);
@@ -1299,16 +1338,430 @@ test('城市推薦整合完整候選與既有情報，同店不重複', async ()
   }
 });
 
-test('餐飲資料重整：所有資料檔店名不含「✦」前綴，改用徽章統一標示自選', () => {
+test('備案與小吃咖啡廳併入同一份清單，排序為候選 → 主推 → 備案 → 小吃', async () => {
+  const { mergeCityDining } = await import('../src/templates/city-dining.mjs');
+  const { cityDining, cityFood, snacksAndCafes, foodBackup } = await import('../src/data/dining.js');
+  const cities = ['warsaw', 'krakow', 'wroclaw', 'poznan'];
+
+  // 備案不再是獨立資料來源，只能以 cityFood 的 role 標記存在。
+  assert.equal(foodBackup, undefined, 'foodBackup 應已併入 cityFood');
+  for (const group of cityFood) {
+    assert.ok(group.items.every(item => item.role === 'primary' || item.role === 'backup'),
+      `${group.city} 有未標記 role 的餐廳`);
+    assert.ok(group.items.some(item => item.role === 'backup'), `${group.city} 缺少備案`);
+  }
+
+  const order = { backup: 3, snack: 4 };
+  for (const [i, city] of cities.entries()) {
+    const rows = mergeCityDining(city, cityDining[city], cityFood[i].items, snacksAndCafes[city]);
+    // 精煉後每座城市維持在可決策的規模，不再是三份彼此重複的清單。
+    assert.ok(rows.length <= 22, `${city} 餐廳清單過長：${rows.length}`);
+    const rank = rows.map(row => (row.selected ? 0 : row.mustEat ? 1 : order[row.role] ?? 2));
+    assert.deepEqual(rank, [...rank].sort((a, b) => a - b), `${city} 排序未依候選 → 必吃 → 主推 → 備案 → 小吃`);
+    // 小吃名單裡已經是主推或備案的店不得被降級成小吃列。
+    for (const snack of snacksAndCafes[city]) {
+      assert.ok(rows.some(row => row.name === snack.name || row.hours === snack.hours),
+        `${city}「${snack.name}」沒有併進行程餐廳推薦`);
+    }
+  }
+});
+
+test('城市頁只輸出一張行程餐廳推薦表', () => {
+  for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
+    const html = read(file);
+    assert.equal(html.split('<h2>行程餐廳推薦</h2>').length - 1, 1, `${file} 應只有一張行程餐廳推薦表`);
+    assert.ok(!html.includes('<h2>行程主餐廳推薦</h2>'), `${file} 仍有舊的主餐廳區塊`);
+    assert.ok(!html.includes('<h2>備案餐廳</h2>'), `${file} 仍有獨立的備案餐廳區塊`);
+    assert.ok(!html.includes('<h2>小吃 · 牛奶吧 · 咖啡廳</h2>'), `${file} 仍有獨立的小吃區塊`);
+    assert.ok(html.includes('city-dining-role'), `${file} 缺少備案／小吃標籤`);
+  }
+});
+
+test('每日餐飲融合成一份清單，導航連結在每列標題右上角', async () => {
+  const { dayDining } = await import('../src/data/day-dining.js');
+  const { days } = await import('../src/data/trip.js');
+  const css = fs.readFileSync(new URL('../src/styles/main.css', import.meta.url), 'utf8');
+
+  for (const day of days) {
+    const html = read(`day-${String(day.n).padStart(2, '0')}.html`);
+    const entries = (dayDining[day.n] || []).length + (day.eat || []).length;
+    assert.equal(html.split('id="day-food"').length - 1, 1, `Day ${day.n} 應只有一張當日餐飲卡`);
+    assert.ok(html.includes('<h3 id="day-food-heading">當日餐飲</h3>'), `Day ${day.n} 缺少當日餐飲卡`);
+    // 舊的兩個分開清單不得殘留
+    assert.ok(!html.includes('當日餐廳候選'), `Day ${day.n} 仍有舊的當日餐廳候選標題`);
+    assert.ok(!html.includes('day-eat-list'), `Day ${day.n} 仍有舊的順路必吃清單`);
+
+    const card = html.slice(html.indexOf('id="day-food"'), html.indexOf('</article>', html.indexOf('id="day-food"')));
+    assert.equal(card.split('class="day-food-item').length - 1, entries,
+      `Day ${day.n} 餐飲列數與資料不符`);
+    // 連結必須在 .day-food-head 內（標題右上角），不得退回各佔一行的膠囊
+    assert.ok(!card.includes('food-map-links'), `Day ${day.n} 餐飲連結仍佔一整行`);
+    for (const item of card.split('<li class="day-food-item').slice(1)) {
+      if (!item.includes('day-food-map')) continue;
+      // 連結在標題列＝出現在地址與說明段落之前
+      const firstParagraph = item.indexOf('<p');
+      assert.ok(item.indexOf('day-food-map') < (firstParagraph === -1 ? Infinity : firstParagraph),
+        `Day ${day.n} 有導航連結掉到說明下方，不在標題列`);
+      assert.match(item, /aria-label="在新視窗開啟 [^"]+ 的 Google Maps 導航"/,
+        `Day ${day.n} 導航連結缺少可辨識店名的 aria-label`);
+    }
+  }
+
+  // 可見文字只有「導航」，觸控高度必須由 CSS 撐到 44px
+  const rule = css.slice(css.indexOf('.day-food-map {'), css.indexOf('}', css.indexOf('.day-food-map {')));
+  assert.match(rule, /min-height:\s*44px/, '.day-food-map 未維持 44px 觸控高度');
+});
+
+test('全站表格的 data-label 對得上實際欄位（含 tbody 的列標題）', () => {
+  // 手機把表格卡片化後靠 data-label 顯示欄名，對錯一欄整張表就讀不懂。
+  // 城市頁的行程餐廳推薦表首欄是 <th scope="row">，計數必須把它算進去。
+  let checked = 0;
+  for (const file of htmlFiles()) {
+    const html = read(file);
+    for (const table of html.match(/<table[\s\S]*?<\/table>/g) || []) {
+      const head = /<thead>[\s\S]*?<\/thead>/.exec(table)?.[0];
+      if (!head) continue;
+      const headers = [...head.matchAll(/<th[^>]*>([\s\S]*?)<\/th>/g)]
+        .map(cell => cell[1].replace(/<[^>]+>/g, '').trim());
+      for (const row of table.match(/<tr[^>]*>[\s\S]*?<\/tr>/g) || []) {
+        if (row.includes('scope="col"') || head.includes(row)) continue;
+        let column = -1;
+        for (const [, tag, attrs] of row.matchAll(/<(td|th)([^>]*)>/g)) {
+          const index = column + 1;
+          column += Number(/\bcolspan="?(\d+)/.exec(attrs)?.[1] || 1);
+          const label = /\bdata-label="([^"]*)"/.exec(attrs)?.[1];
+          if (tag === 'th' || !label) continue;
+          assert.equal(label, headers[index],
+            `${file}: 第 ${index + 1} 欄的 data-label 是「${label}」，表頭卻是「${headers[index]}」`);
+          checked += 1;
+        }
+      }
+    }
+  }
+  assert.ok(checked > 500, `檢查到的儲存格過少（${checked}），測試可能沒讀到表格`);
+});
+
+test('四個城市頁結構一致：單一 h1、章節齊全、無重複 id 與死錨點', () => {
+  const expected = ['先理解這座城', '城市風景', '互動地圖', '景點清單', '行程餐廳推薦', '拍照建議'];
+  for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
+    const html = read(file);
+
+    assert.equal(html.match(/<h1[^>]*>/g)?.length, 1, `${file} 的 h1 不是恰好一個`);
+    assert.deepEqual(
+      [...html.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/g)].map(m => m[1].replace(/<[^>]+>/g, '').trim()),
+      expected, `${file} 章節組成與其他城市不一致`);
+
+    const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map(m => m[1]);
+    assert.equal(new Set(ids).size, ids.length, `${file} 有重複 id`);
+    for (const [, anchor] of html.matchAll(/href="#([^"]+)"/g)) {
+      assert.ok(ids.includes(anchor), `${file} 有死錨點 #${anchor}`);
+    }
+
+    // 標題層級不得跳級（h1 → h3）
+    const levels = [...html.matchAll(/<h([1-6])[^>]*>/g)].map(m => Number(m[1]));
+    levels.reduce((previous, current) => {
+      assert.ok(current <= previous + 1, `${file} 標題層級從 h${previous} 跳到 h${current}`);
+      return current;
+    }, 1);
+  }
+});
+
+test('四個城市的資料接線全部解析得到，不會靜默產生空區塊', async () => {
+  const citiesData = await import('../src/data/cities.js');
+  const diningData = await import('../src/data/dining.js');
+  // 城市頁有三種查找鍵：檔名、地圖鍵、以及用中文城市名比對的 find()。
+  // 中文名一改，cityFood 與 cityStories 會靜默變 undefined，區塊就整塊消失。
+  const cityMap = {
+    warszawa: { key: 'WAW', mapKey: 'warsaw' },
+    krakow: { key: 'KRK', mapKey: 'krakow' },
+    wroclaw: { key: 'WRO', mapKey: 'wroclaw' },
+    poznan: { key: 'POZ', mapKey: 'poznan' },
+  };
+
+  for (const [fileKey, { key, mapKey }] of Object.entries(cityMap)) {
+    const city = citiesData.cities.find(item => item.key === key);
+    assert.ok(city, `cities.js 找不到 ${key}`);
+
+    const byMapKey = {
+      attractions: citiesData.attractions[mapKey],
+      mapPins: citiesData.mapPins[mapKey]?.points,
+      mapPinChecks: citiesData.mapPinChecks[mapKey],
+      cityDining: diningData.cityDining[mapKey],
+      snacksAndCafes: diningData.snacksAndCafes[mapKey],
+    };
+    for (const [source, value] of Object.entries(byMapKey)) {
+      assert.ok(value && Object.keys(value).length, `${fileKey}: ${source}['${mapKey}'] 是空的`);
+    }
+    assert.equal(Object.keys(citiesData.mapPinChecks[mapKey]).length, citiesData.mapPins[mapKey].points.length,
+      `${fileKey}: 圖釘數與座標查核數不一致`);
+
+    // 以中文名比對的兩處
+    assert.ok(diningData.cityFood.find(group => group.city === city.name)?.items.length,
+      `${fileKey}: cityFood 對不上城市名「${city.name}」`);
+    assert.ok(citiesData.cityStories.find(item => item.city === city.name),
+      `${fileKey}: cityStories 對不上城市名「${city.name}」`);
+
+    assert.ok(citiesData.photoSpots.some(spot => spot.cityKey === key), `${fileKey}: 沒有拍照建議`);
+    assert.ok(city.gallery?.length, `${fileKey}: 沒有城市風景照`);
+    for (const field of ['hero', 'og', 'detail']) {
+      assert.ok(city.photo?.[field], `${fileKey}: 缺少 ${field} 照片`);
+    }
+  }
+});
+
+test('每日餐位全部出現在對應城市指南，且雙向連結對得上', async () => {
+  const { mergeCityDining, plannedMealsFor, mustEatsFor, cityGuides, detectCity } =
+    await import('../src/templates/city-dining.mjs');
+  const { cityDining, cityFood, snacksAndCafes } = await import('../src/data/dining.js');
+  const { dayDining } = await import('../src/data/day-dining.js');
+  const { days } = await import('../src/data/trip.js');
+  const cityNames = { warsaw: '華沙', krakow: '克拉科夫', wroclaw: '樂斯拉夫', poznan: '波茲南' };
+
+  // 對照名單不得回到手寫：一旦寫死，新增每日餐位就會靜默漏標。
+  const source = fs.readFileSync(new URL('../src/templates/city-dining.mjs', import.meta.url), 'utf8');
+  assert.doesNotMatch(source, /const selections = \{/, '城市／每日對照名單不得寫死');
+
+  const tables = {};
+  for (const [i, city] of Object.keys(cityNames).entries()) {
+    tables[city] = mergeCityDining(city, cityDining[city], cityFood[i].items, snacksAndCafes[city]);
+  }
+
+  // 每一筆排定的餐位都要在該城市表裡、標成候選、並連回當日行程
+  let planned = 0;
+  for (const city of Object.keys(cityNames)) {
+    for (const { day, item } of plannedMealsFor(city)) {
+      const row = tables[city].find(entry => entry.name === item.name);
+      assert.ok(row, `${cityNames[city]} 少了 Day ${day} 的餐位「${item.name}」`);
+      assert.ok(row.selected, `${cityNames[city]}「${item.name}」沒有標成你的候選`);
+      assert.ok(row.plans.some(plan => plan.includes(`day-${String(day).padStart(2, '0')}.html#day-food`)),
+        `${cityNames[city]}「${item.name}」沒有連回 Day ${day}`);
+      planned += 1;
+    }
+  }
+  assert.ok(planned >= 25, `排進城市指南的餐位過少（${planned}）`);
+
+  // 順路必吃若在城市表找得到同一家店，就必須被標記
+  for (const city of Object.keys(cityNames)) {
+    for (const { day, item } of mustEatsFor(city)) {
+      const row = tables[city].find(entry => entry.plans.some(plan =>
+        plan.includes(`day-${String(day).padStart(2, '0')}.html#day-food`) && plan.includes('順路必吃')));
+      if (!row) continue;
+      assert.ok(row.selected || row.mustEat, `${cityNames[city]}「${item.name}」標記遺失`);
+    }
+  }
+
+  // 每一筆 dayDining（除了明確 cityGuide:false 的）都必須被某座城市收走
+  for (const [day, items] of Object.entries(dayDining)) {
+    for (const item of items) {
+      if (item.cityGuide === false) continue;
+      const city = detectCity(item.address, item.map);
+      assert.ok(city, `Day ${day}「${item.name}」判斷不出城市，將從城市指南消失`);
+      assert.ok(tables[city].some(entry => entry.name === item.name),
+        `Day ${day}「${item.name}」沒有進到 ${cityNames[city]} 的餐廳表`);
+    }
+  }
+
+  // 每日頁要連到該日餐位所在城市的指南，城市頁的 Day 連結要指向存在的頁面
+  const built = new Set(htmlFiles());
+  for (const day of days) {
+    const html = read(`day-${String(day.n).padStart(2, '0')}.html`);
+    if (!(dayDining[day.n] || []).length && !(day.eat || []).length) continue;
+    const expected = [...new Set((dayDining[day.n] || []).map(item => detectCity(item.address, item.map))
+      .concat((day.eat || []).map(item => detectCity(item.place, item.map))).filter(Boolean))];
+    for (const city of expected) {
+      assert.ok(html.includes(`href="${cityGuides[city].file}#city-dining"`),
+        `Day ${day.n} 沒有連到${cityNames[city]}城市指南`);
+    }
+  }
+  for (const [city, guide] of Object.entries(cityGuides)) {
+    const html = read(guide.file);
+    for (const [, target] of html.matchAll(/href="(day-\d\d\.html)#day-food"/g)) {
+      assert.ok(built.has(target), `${cityNames[city]}城市指南連到不存在的 ${target}`);
+    }
+    assert.ok(html.includes('#day-food'), `${cityNames[city]}城市指南沒有任何回連當日行程的連結`);
+  }
+});
+
+test('城市判斷不會把華沙的 Krakowskie Przedmieście 當成克拉科夫', async () => {
+  const { detectCity } = await import('../src/templates/city-dining.mjs');
+  assert.equal(detectCity('Krakowskie Przedmieście 42/44, Warszawa'), 'warsaw');
+  assert.equal(detectCity('Grodzka 35, Kraków'), 'krakow');
+  assert.equal(detectCity('Stawowa 23, Wrocław'), 'wroclaw');
+  assert.equal(detectCity('Strzelecka 13, Poznań'), 'poznan');
+  assert.equal(detectCity('https://www.google.com/maps/search/?api=1&query=Okraglak+Plac+Nowy+Krakow'), 'krakow');
+  // 判斷不出來時回 null，寧可少標也不要標錯
+  assert.equal(detectCity('Karczma Górnicza Kopalnia Soli Wieliczka'), null);
+  assert.equal(detectCity(''), null);
+});
+
+test('sw.js 的快取版本由建置帶上資源指紋，樣式改了就會失效舊快取', () => {
+  // CSS／JS 走 cache-first，版本字串沒變的話既有安裝會拿到新 HTML 配舊樣式。
+  // 2026-09-14 就這樣漏過一次（樣式大改、VERSION 停在 v18），因此改由建置計算。
+  const source = fs.readFileSync('sw.js', 'utf8');
+  const built = read('sw.js');
+  const base = /const VERSION = '([^']+)';/.exec(source)[1];
+  const shipped = /const VERSION = '([^']+)';/.exec(built)[1];
+
+  assert.notEqual(shipped, base, 'dist/sw.js 的 VERSION 未帶上資源指紋');
+  assert.match(shipped, new RegExp(`^${base}-[0-9a-f]{8}$`), `指紋格式不對：${shipped}`);
+
+  // 指紋必須真的由 cache-first 資源算出來
+  const expected = crypto.createHash('sha256');
+  for (const asset of ['assets/main.css', 'assets/nav.js', 'assets/site-search.js',
+    'assets/database-filter.js', 'assets/leaflet/leaflet.css', 'assets/leaflet/leaflet.js']) {
+    expected.update(fs.readFileSync(path.join(distDir, asset)));
+  }
+  assert.equal(shipped, `${base}-${expected.digest('hex').slice(0, 8)}`, '指紋與實際資源內容不符');
+
+  // 部署腳本不能再用根目錄的原始 sw.js 覆蓋掉帶指紋的那份
+  const prepare = fs.readFileSync('prepare-site.sh', 'utf8');
+  assert.doesNotMatch(prepare, /^\s*sw\.js\s/m, 'prepare-site.sh 會用未帶指紋的 sw.js 覆蓋 dist 的版本');
+});
+
+test('表格排版規則：最小寬度只給寬表，列高收緊不得外洩到手機卡片版', () => {
+  const css = fs.readFileSync(new URL('../src/styles/main.css', import.meta.url), 'utf8');
+
+  // 2026-09-14 前這兩條是全站通用的，害 2 欄的「單位／電話」被撐到 832px 而橫捲，
+  // 且 5 個字的日期欄硬拿 176px、把旁邊擠到 67px。不得改回通用。
+  assert.doesNotMatch(css, /\.table-editorial\s*\{[^}]*min-width:\s*52rem/,
+    '.table-editorial 不得再有全站通用的 min-width');
+  assert.doesNotMatch(css, /\.table-editorial td:first-child\s*\{[^}]*min-width:\s*11rem/,
+    '首欄不得再硬給 11rem');
+
+  // 最小寬度改由欄數決定
+  assert.match(css, /\.table-editorial:has\(thead th:nth-child\(6\)\)\s*\{\s*min-width/,
+    '六欄以上的寬表缺少最小寬度');
+  assert.match(css, /\.table-editorial:has\(thead th:nth-child\(5\)\)\s*\{\s*min-width/,
+    '五欄表缺少最小寬度');
+
+  // 收緊列高的那條必須在桌機媒體查詢內；寫在外面會蓋掉手機卡片版的內距，
+  // 讓每個卡片欄位多出 11px 的左右縮排。用位置確認它被夾在桌機區塊裡。
+  const desktopStart = css.lastIndexOf('@media (min-width: 701px) {', css.indexOf('.table-editorial:has'));
+  const padding = css.indexOf('padding: 0.55rem 0.7rem', desktopStart);
+  const mobileStart = css.indexOf('@media (max-width: 700px) {', desktopStart);
+  assert.ok(desktopStart !== -1 && padding !== -1, '找不到桌機列高規則');
+  assert.ok(padding > desktopStart && padding < mobileStart,
+    '桌機列高收緊未寫在 min-width: 701px 內，會外洩到手機卡片版');
+  assert.match(css.slice(mobileStart), /\.table-editorial td\s*\{\s*padding:\s*0\.45rem 0;/,
+    '手機卡片版缺少自己的內距');
+
+  // .number 的 nowrap 不得再吃掉儲存格內的長附註
+  assert.match(css, /\.table-editorial \.number \.timeline-note\s*\{[^}]*white-space:\s*normal/,
+    '.number 內的附註必須可換行');
+});
+
+test('實用資料與每日行程、城市指南互相連結', () => {
+  const stripNav = html => {
+    const main = /<main\b[^>]*>([\s\S]*?)<\/main>/.exec(html)?.[1] || html;
+    return main.replace(/<nav[\s\S]*?<\/nav>/g, '');
+  };
+
+  // 實用資料 → 每日／城市（原本內文是 0 條，只靠導覽選單）
+  const expected = {
+    'practical/tickets.html': { pattern: /href="\.\.\/city-[a-z]+\.html"/g, least: 15, what: '門票景點連回城市指南' },
+    'practical/booking.html': { pattern: /href="\.\.\/day-\d\d\.html"/g, least: 5, what: '火車班次連回當日行程' },
+    'practical/transit.html': { pattern: /href="\.\.\/city-[a-z]+\.html"/g, least: 4, what: '市區交通票價連回城市指南' },
+    'practical/dining.html': { pattern: /href="\.\.\/city-[a-z]+\.html#city-dining"/g, least: 8, what: '米其林訂位連回城市餐廳表' },
+  };
+  for (const [file, { pattern, least, what }] of Object.entries(expected)) {
+    const found = (stripNav(read(file)).match(pattern) || []).length;
+    assert.ok(found >= least, `${file} 的「${what}」只有 ${found} 條，應至少 ${least} 條`);
+  }
+
+  // 每日／城市 → 實用資料
+  for (const day of [1, 2, 3, 4, 5, 6, 7, 8]) {
+    const body = stripNav(read(`day-${String(day).padStart(2, '0')}.html`));
+    assert.match(body, /href="practical\/todos\.html"/, `Day ${day} 沒有連到待辦頁`);
+    assert.match(body, /href="practical\/tickets\.html"/, `Day ${day} 沒有連到門票頁`);
+  }
+  for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
+    const body = stripNav(read(file));
+    for (const target of ['practical/tickets.html', 'practical/transit.html', 'practical/dining.html']) {
+      assert.match(body, new RegExp(`href="${target.replace('/', '\\/')}"`), `${file} 沒有連到 ${target}`);
+    }
+  }
+});
+
+test('實用資料沒有逾期未查的項目，未完成項目都有重查日期', async () => {
+  const { auditDataFreshness } = await import('../tools/audit-map-pins.mjs');
+  const { meta } = await import('../src/data/trip.js');
+  // 以資料自己的出發日為基準，測試不會因為今天的日期而飄移
+  const fresh = auditDataFreshness(meta.checkedAt || '2026-09-14');
+
+  assert.deepEqual(fresh.overdue, [], `有逾期未查的實用資料：${fresh.overdue.join('、')}`);
+  // recheckAt 缺席時 dashboard 的 overdue() 永遠回 false，未完成項目若沒有日期就會永遠隱形
+  assert.deepEqual(fresh.untrackedOpen, [],
+    `未完成卻沒有重查日期（永遠不會被標為逾期）：${fresh.untrackedOpen.join('、')}`);
+  assert.ok(fresh.beforeDeparture.length > 0, '出發前應有待查項目，資料可能未維護');
+});
+
+test('地圖沒有「圖釘有、餐廳表已無此店」的孤兒圖釘', async () => {
+  // 精煉餐廳清單時刪掉的店，圖釘也要一起撤——否則點到圖釘會看到一家
+  // 在下方餐廳表裡完全查不到的店。
+  const { auditDiningPinCoverage } = await import('../tools/audit-map-pins.mjs');
+  const coverage = auditDiningPinCoverage();
+  assert.deepEqual(coverage.orphanPins, [],
+    `以下圖釘的店已不在餐廳表：${coverage.orphanPins.join('、')}`);
+});
+
+test('車票訂位連結：全為 https、格式正確，且 Moj Bus 已納入', async () => {
+  const modules = await Promise.all([
+    import('../src/data/trip.js'), import('../src/data/tickets.js'),
+    import('../src/data/transit.js'), import('../src/data/dining.js'),
+    import('../src/data/shopping.js'), import('../src/data/essentials.js'),
+    import('../src/data/travel-database.js'),
+  ]);
+  const urls = [];
+  const walk = value => {
+    if (!value || typeof value !== 'object') return;
+    if (Array.isArray(value)) { value.forEach(walk); return; }
+    for (const item of Object.values(value)) {
+      if (typeof item === 'string' && /^https?:/.test(item)) urls.push(item);
+      else walk(item);
+    }
+  };
+  modules.forEach(walk);
+
+  assert.ok(urls.length > 300, `外部連結數異常：${urls.length}`);
+  const insecure = urls.filter(url => url.startsWith('http://'));
+  assert.deepEqual(insecure, [], `訂位／官方連結必須是 https：${insecure.join('、')}`);
+  for (const url of urls) assert.doesNotThrow(() => new URL(url), `連結格式錯誤：${url}`);
+  // 2026-09-09 已把舊網域全面換掉，不得回頭
+  assert.ok(!urls.some(url => url.includes('lajkonikbus.eu')), '殘留已失效的 lajkonikbus.eu');
+
+  // Moj Bus 是 Kraków ⇄ Oświęcim 的另一個巴士訂位入口，
+  // 訂票頁的官方售票卡與 Day 3 回程選項都要有，兩處缺一都會讓人找不到替代班次。
+  const { railOfficialLinks, days } = modules[0];
+  assert.ok(railOfficialLinks.some(item => item.url === 'https://moj-bus.pl/en'),
+    '訂票頁的官方售票連結缺少 Moj Bus');
+  const day3 = days.find(day => day.n === 3);
+  assert.ok(day3.returnOptions.some(option => option.url === 'https://moj-bus.pl/en'),
+    'Day 3 回程選項缺少 Moj Bus');
+  assert.match(read('practical/booking.html'), /href="https:\/\/moj-bus\.pl\/en"/, '訂票頁未輸出 Moj Bus 連結');
+  assert.match(read('day-03.html'), /href="https:\/\/moj-bus\.pl\/en"/, 'Day 3 未輸出 Moj Bus 連結');
+});
+
+// ── 2026-09-13 餐飲資料收斂（feat/dining-convergence）───────────────────────
+// 原分支把「自選」名單放在 dining.js 的 userPicks；併入 main 後改採 main 的機制：
+// 城市頁的「你的候選」由 day-dining.js 推導（plannedMealsFor），不再另存一份名單。
+// 以下四條在 main 的結構下驗同一件事：自選標記只存在資料層、每日正餐與順路必吃不重複、
+// 每一天都有正餐候選、24 家自選店全部以每日餐位的形式落在資料層。
+
+test('餐飲資料重整：所有資料檔店名不含「✦ 」前綴，自選標記只透過城市頁徽章顯示', () => {
   const dataDir = path.resolve('src/data');
   for (const file of fs.readdirSync(dataDir)) {
     if (!file.endsWith('.js')) continue;
     const content = fs.readFileSync(path.join(dataDir, file), 'utf8');
     assert.doesNotMatch(content, /✦ /, `${file} 仍殘留「✦ 」前綴，自選標記應只透過徽章顯示`);
   }
+  for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
+    assert.ok(read(file).includes('<span class="city-dining-choice">你的候選</span>'), `${file} 缺少「你的候選」徽章`);
+  }
 });
 
-test('餐飲資料重整：每日餐廳候選（day-dining）與順路必吃（eat）同一天不重複同一家店', () => {
+test('餐飲資料重整：每日正餐候選（day-dining）與順路必吃（eat）同一天不重複同一家店', async () => {
+  const { dayDining } = await import('../src/data/day-dining.js');
+  const { key: diningKey } = await import('../src/templates/city-dining.mjs');
   for (const day of days) {
     const dayItems = dayDining[String(day.n)] || [];
     const eatItems = (day.eat || []).filter(item => typeof item !== 'string');
@@ -1317,14 +1770,15 @@ test('餐飲資料重整：每日餐廳候選（day-dining）與順路必吃（e
         const eatName = eat.place || eat.text;
         assert.notEqual(
           diningKey(dining.name), diningKey(eatName),
-          `Day ${day.n}：「${dining.name}」同時出現在當日餐廳候選與順路必吃`,
+          `Day ${day.n}：「${dining.name}」同時出現在當日正餐候選與順路必吃`,
         );
       }
     }
   }
 });
 
-test('餐飲資料重整：day-dining 每筆都有 role/name/note，且四城與八日頁都出現至少一次「✦ 自選」徽章', () => {
+test('餐飲資料重整：day-dining 每筆都有 role/name/note，且八天每天都有正餐候選', async () => {
+  const { dayDining } = await import('../src/data/day-dining.js');
   for (const [day, items] of Object.entries(dayDining)) {
     for (const item of items) {
       for (const field of ['role', 'name', 'note']) {
@@ -1332,22 +1786,39 @@ test('餐飲資料重整：day-dining 每筆都有 role/name/note，且四城與
       }
     }
   }
-
-  const cityPages = ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html'];
-  for (const file of cityPages) {
-    assert.ok(read(file).includes('✦ 自選'), `${file} 缺少「✦ 自選」徽章`);
-  }
   for (let n = 1; n <= 8; n += 1) {
-    const file = `day-${String(n).padStart(2, '0')}.html`;
-    assert.ok(read(file).includes('✦ 自選'), `${file} 缺少「✦ 自選」徽章`);
+    assert.ok((dayDining[String(n)] || []).some(item => /首選|早餐/.test(item.role)),
+      `Day ${n} 沒有任何正餐首選`);
+    const html = read(`day-${String(n).padStart(2, '0')}.html`);
+    assert.ok(html.includes('id="day-food"'), `day-${String(n).padStart(2, '0')}.html 缺少當日餐飲卡`);
+    assert.ok(/<li class="day-food-item">/.test(html), `day-${String(n).padStart(2, '0')}.html 沒有任何正餐候選列`);
   }
 });
 
-test('餐飲資料重整：userPicks 24 家自選清單完整搬到資料層', () => {
-  assert.deepEqual(Object.keys(userPicks), ['warsaw', 'krakow', 'wroclaw', 'poznan']);
-  const total = Object.values(userPicks).reduce((sum, list) => sum + list.length, 0);
-  assert.equal(total, 24);
-  for (const list of Object.values(userPicks)) {
-    for (const name of list) assert.ok(!name.includes('✦'), `userPicks「${name}」不應含 ✦`);
+test('餐飲資料重整：24 家自選店全部落在資料層（每日餐位或順路必吃），城市頁標為你的候選或順路必吃', async () => {
+  const { key: diningKey, mergeCityDining } = await import('../src/templates/city-dining.mjs');
+  const { snacksAndCafes } = await import('../src/data/dining.js');
+  // 這份名單原本寫死在樣板（selections）→ 分支搬到 dining.js 的 userPicks → 併入 main 後改由
+  // day-dining.js 與 trip.js 的 eat[] 推導。名單留在測試裡，確保 24 家一家都沒有在搬遷中掉隊。
+  const userPicks = {
+    warsaw: ['MEI', 'QQ Warsaw | Matcha & Korean Toasts', 'Yache Korea', 'Arirang Restaurant', 'Pyzy Flaki Gorące', 'WYRAJ', 'NUTA', 'Café Bristol', 'Specjały Regionalne', 'Pijalnia Czekolady E.Wedel'],
+    krakow: ['Hankki', 'NOAH', 'Pod Aniołami', 'Endzior', 'FOLGA'],
+    wroclaw: ['Restauracja Wrocławska', 'IDA kuchnia i wino', 'Samarqand', 'Konspira', 'El Gato Specialty Coffee Roasters', 'Dessert Boutique'],
+    poznan: ['Hyćka', 'Pyra Bar', 'ROGAL Świętomarciński'],
+  };
+  const cityNames = { warsaw: '華沙', krakow: '克拉科夫', wroclaw: '樂斯拉夫', poznan: '波茲南' };
+  assert.equal(Object.values(userPicks).flat().length, 24);
+
+  // 同一家店：key 相同，或一邊只是多了分店／描述字（"el gato specialty coffee" ↔ "el gato specialty coffee roasters"）。
+  const stripped = name => diningKey(name.replace(/[（(][^）)]*[)）]/g, ' ').replace(/,.*$/, ' '));
+  const sameStore = (a, b) => a === b || a.startsWith(`${b} `) || b.startsWith(`${a} `);
+
+  for (const [city, names] of Object.entries(userPicks)) {
+    const rows = mergeCityDining(city, cityDining[city],
+      cityFood.find(group => group.city === cityNames[city]).items, snacksAndCafes[city]);
+    for (const name of names) {
+      const row = rows.find(row => (row.selected || row.mustEat) && sameStore(stripped(row.name), stripped(name)));
+      assert.ok(row, `${cityNames[city]} 城市頁沒有把自選店「${name}」標成你的候選或順路必吃`);
+    }
   }
 });

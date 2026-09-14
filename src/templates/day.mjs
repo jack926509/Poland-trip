@@ -1,5 +1,5 @@
 import { dayDining } from '../data/day-dining.js';
-import { isUserPick } from './city-dining.mjs';
+import { cityGuides, detectCity } from './city-dining.mjs';
 import { renderLayout } from './layout.mjs';
 import { renderInteractiveMap } from './map.mjs';
 import { renderPhotoGallery } from './photo-gallery.mjs';
@@ -28,29 +28,81 @@ function safeHttpsUrl(value) {
 
 /**
  * 順路必吃可以是字串（沒有指定店家）或 {text, place, map, note}。
- * 有指定店家就附 Google Maps 連結；沒有固定店址的品項只留說明，不硬給連結。
+ * text 多半寫成「菜色 @ 店名」，拆開後菜色進小標、店名當標題，讀起來才是一家店而不是一句話。
+ * 沒有固定店址的品項（obwarzanek、rogal）只留說明，不硬給連結。
  */
-function renderEatCard(item) {
-  if (typeof item === 'string') return `<div class="card"><p>${item}</p></div>`;
-  const link = safeHttpsUrl(item.map)
-    ? `<p class="food-map-links"><a href="${safeHttpsUrl(item.map)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.place || item.text)} 地圖 →</a></p>`
-    : '';
-  const note = item.note ? `<p class="food-map-note">${escapeHtml(item.note)}</p>` : '';
-  const badge = item.place && isUserPick(item.place) ? '<span class="city-dining-choice">✦ 自選</span>' : '';
-  return `<div class="card"><p>${escapeHtml(item.text)}</p>${badge}${note}${link}</div>`;
+function eatEntry(item) {
+  if (typeof item === 'string') return { role: '順路必吃', name: item, eat: true };
+  const separator = item.text.includes(' @ ') ? ' @ ' : null;
+  const [dish, shop] = separator ? item.text.split(separator) : [null, null];
+  const name = dish ? (item.place || shop) : item.text;
+  const sameAsName = item.place && (item.text.includes(item.place) || item.place.includes(item.text));
+  return {
+    role: dish ? `順路必吃 · ${dish}` : '順路必吃',
+    name,
+    meta: dish ? '' : (sameAsName ? '' : item.place),
+    note: item.note,
+    map: item.map,
+    eat: true,
+  };
 }
 
+function diningEntry(item) {
+  return { role: item.role, name: item.name, meta: item.address, note: item.note, map: item.map };
+}
+
+/**
+ * 每一列的導航連結放在標題右上角，而不是另起一行的膠囊——
+ * 一天最多 8 列，原本每列都多一行連結，光連結就佔掉大半個卡片。
+ * 連結可見文字只有「導航」，因此用 aria-label 帶上店名，螢幕閱讀器才知道是哪一家。
+ */
+function renderDayFoodItem(entry) {
+  const url = safeHttpsUrl(entry.map);
+  const link = url
+    ? `<a class="day-food-map" href="${url}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(entry.name)} 的 Google Maps 導航">導航 ↗</a>`
+    : '';
+  return `<li class="day-food-item${entry.eat ? ' day-food-item-eat' : ''}">
+      <div class="day-food-head">
+        <div class="day-food-title"><span class="eyebrow">${escapeHtml(entry.role)}</span><h4>${escapeHtml(entry.name)}</h4></div>
+        ${link}
+      </div>
+      ${entry.meta ? `<p class="food-map-note">${escapeHtml(entry.meta)}</p>` : ''}
+      ${entry.note ? `<p>${escapeHtml(entry.note)}</p>` : ''}
+    </li>`;
+}
+
+/**
+ * 「當日餐廳候選」與「順路必吃」原本是同一張卡片裡的兩個清單，版式不同、
+ * 連結寫法也不同。現在融合成一份「當日餐飲」：候選在前、必吃在後，共用同一種列版式，
+ * 必吃以不同色的小標區分。
+ */
 function renderDayFood(day) {
-  const restaurants = dayDining[day.n] || [];
+  const entries = [
+    ...(dayDining[day.n] || []).map(diningEntry),
+    ...(day.eat || []).map(eatEntry),
+  ];
+  if (!entries.length) return '';
+  const eatCount = entries.filter(entry => entry.eat).length;
+  const summary = [
+    entries.length - eatCount ? `${entries.length - eatCount} 家候選` : '',
+    eatCount ? `${eatCount} 項順路必吃` : '',
+  ].filter(Boolean).join(' · ');
+
+  // 這一天的餐位落在哪幾座城市，就連到哪幾份城市指南（跨城日會有兩條）。
+  // 城市頁的同一家店也會標出是哪一天並連回來，兩邊互相對得上。
+  const guideCities = [...new Set(entries
+    .map(entry => detectCity(entry.meta, entry.map))
+    .filter(Boolean))]
+    // 跨城日依當天的移動方向排（day.city 寫成「克拉科夫 → 樂斯拉夫」），而不是資料出現順序
+    .sort((a, b) => day.city.indexOf(cityGuides[a].name) - day.city.indexOf(cityGuides[b].name));
+  const guides = guideCities.length ? `<p class="day-food-guides">${guideCities.map(city =>
+    `<a href="${cityGuides[city].file}#city-dining">${cityGuides[city].name}城市指南的完整餐廳清單 →</a>`).join('')}</p>` : '';
+
   return `<article class="card day-dining" id="day-food" aria-labelledby="day-food-heading">
-    <span class="eyebrow">Dining</span><h3 id="day-food-heading">當日餐廳候選</h3>
-    <p class="food-map-note">依當天動線擇一用餐；候選尚未訂位，出發前確認營業與最後點餐時間。</p>
-    <ul class="day-dining-list">${restaurants.map(item => `<li>
-      <span class="eyebrow">${escapeHtml(item.role)}</span><h4>${escapeHtml(item.name)}${isUserPick(item.name) ? '<span class="city-dining-choice">✦ 自選</span>' : ''}</h4>
-      ${item.address ? `<p class="food-map-note">${escapeHtml(item.address)}</p>` : ''}<p>${escapeHtml(item.note)}</p>
-      ${safeHttpsUrl(item.map) ? `<p class="food-map-links"><a href="${safeHttpsUrl(item.map)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.name)} 導航 ↗</a></p>` : ''}
-    </li>`).join('')}</ul>
-    ${day.eat?.length ? `<div class="day-eat"><h3>順路必吃</h3><div class="day-eat-list">${day.eat.map(renderEatCard).join('')}</div></div>` : ''}
+    <span class="eyebrow">Dining</span><h3 id="day-food-heading">當日餐飲</h3>
+    <p class="food-map-note">${summary}。依當天動線擇一用餐；候選尚未訂位，出發前確認營業與最後點餐時間。</p>
+    <ul class="day-food-list">${entries.map(renderDayFoodItem).join('')}</ul>
+    ${guides}
   </article>`;
 }
 
@@ -118,7 +170,7 @@ function renderNightChecklist(operation) {
     </section>`;
 }
 
-export function renderDay(day, photoSpotsForDay = [], operation = null, city = null, detailPhotoCity = null, dayMap = null, mapChecks = {}, legend = {}, dayGallery = []) {
+export function renderDay(day, photoSpotsForDay = [], operation = null, city = null, detailPhotoCity = null, dayMap = null, mapChecks = {}, legend = {}, dayGallery = [], daylightForDay = null) {
   const stepsHtml = day.steps.map(step => `
     <tr>
       <td class="number" data-label="時間"><b>${step.t}</b></td>
@@ -136,6 +188,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
         <h3>${day.train.from || ''}${day.train.to ? ` → ${day.train.to}` : ''}</h3>
         <p><b>${day.train.dep} → ${day.train.arr}</b> · ${day.train.dur} · ${escapeHtml(trainPrice)}</p>
         ${day.train.saleOpens ? `<p><b>${escapeHtml(day.train.saleOpens)} 起預售</b> · PKP Intercity 官方售票系統查核：${escapeHtml(day.train.saleCheckedAt)}</p>` : ''}
+        <p class="action-links"><a href="practical/booking.html#rail-itinerary">訂票與交通頁的完整班次表 →</a></p>
       </article>
     </section>` : '';
 
@@ -153,6 +206,20 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
       <p>${day.warn}</p>
     </div>` : '';
 
+  // 10 月底的波蘭日落在 16:00 上下，戶外行程排不排得下由這張卡決定；
+  // 數值取自 essentials.js 的 daylight，逐日頁不自行寫死時間。
+  const daylightHtml = daylightForDay ? `
+      <article class="card">
+        <span class="eyebrow">${escapeHtml(daylightForDay.tz)} · 戶外可用時間</span>
+        <h3>日照</h3>
+        <ul>
+          <li>日出 <b>${escapeHtml(daylightForDay.sunrise)}</b>／日落 <b>${escapeHtml(daylightForDay.sunset)}</b></li>
+          <li>藍調時刻至 <b>${escapeHtml(daylightForDay.blueHourEnd)}</b></li>
+        </ul>
+        <p>${escapeHtml(daylightForDay.note)}</p>
+        <p class="source-meta">天文推算值，出發前以天文表複核；非官方公告時刻。</p>
+      </article>` : '';
+
   const constraintHtml = `
     <section class="section">
       <div class="section-heading"><span class="section-num">Priorities</span><h2>時間彈性</h2></div>
@@ -167,6 +234,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
         <h3>可以壓縮</h3>
         ${renderList(day.compressible, item => `<li>${item}</li>`)}
       </article>
+      ${daylightHtml}
       </div>
     </section>`;
 
@@ -267,6 +335,7 @@ ${coverHtml}
       <div class="section-heading"><span class="section-num">Preparation</span><h2>訂票與提醒</h2></div>
       ${mustBookHtml}
       ${warnHtml}
+      <p class="action-links"><a href="practical/todos.html">全部待辦與查核狀態 →</a><a href="practical/tickets.html">門票價格與開放時間 →</a></p>
     </section>
     ${constraintHtml}
     ${dayMap ? renderInteractiveMap({ id: `map-day-${day.n}`, title: `Day ${day.n} 行程地圖`, mapData: dayMap, mapChecks, legend, note: dayMap.note }) : ''}

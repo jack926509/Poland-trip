@@ -96,11 +96,15 @@ export function addTableCellLabels(html) {
 
       const body = inner.replace(/<tbody>([\s\S]*?)<\/tbody>/, (bodyMatch, rows) =>
         `<tbody>${rows.replace(/<tr([^>]*)>([\s\S]*?)<\/tr>/g, (rowMatch, rowAttrs, cells) => {
+          // 欄位計數必須把 <th scope="row"> 也算進去：城市頁的行程餐廳推薦表首欄是
+          // 列標題，只數 <td> 會讓每個 data-label 都往左偏一欄。colspan 依實際跨欄數前進。
           let column = -1;
-          const labelled = cells.replace(/<td([^>]*)>/g, (cellMatch, cellAttrs) => {
-            column += 1;
-            if (/\bcolspan=/.test(cellAttrs) || /\bdata-label=/.test(cellAttrs)) return cellMatch;
-            const label = headers[column];
+          const labelled = cells.replace(/<(td|th)([^>]*)>/g, (cellMatch, tag, cellAttrs) => {
+            const index = column + 1;
+            const span = Number(/\bcolspan="?(\d+)/.exec(cellAttrs)?.[1] || 1);
+            column += span;
+            if (tag === 'th' || span > 1 || /\bdata-label=/.test(cellAttrs)) return cellMatch;
+            const label = headers[index];
             return label ? `<td${cellAttrs} data-label="${escapeAttr(label)}">` : cellMatch;
           });
           return `<tr${rowAttrs}>${labelled}</tr>`;
@@ -218,6 +222,7 @@ export function renderLayout({
       <small>Paper Travel Journal</small>
     </a>
     <span class="journal-edition" aria-hidden="true">VOL. 2026 · 08 DAYS</span>
+    <a class="nav-today" href="${path('today.html')}"${current(activeNav, 'today')}>今日</a>
     <details class="nav-dropdown${activeNav === 'days' ? ' nav-dropdown-current' : ''}" name="primary-navigation">
       <summary${currentGroup(activeNav, 'days')}>每日行程</summary>
       <ul><li><a href="${path('index.html#days')}">行程總覽</a></li>${dayLinks}</ul>

@@ -3,6 +3,9 @@
 //       poland-travel-guide-final.html:565（mapPins CITIES 圖釘物件，已套用校正表 3-1/3-2 修正）、
 //       poland-travel-guide-final.html 各城「景點 · Sights」表格（attractions）。
 // photoSpots：2026-09-08 全部 10 筆補上可直接導航的精確站位、拍攝方向與構圖主體。
+// lightPhase 宣告這個構圖預期的光線階段（daylight／goldenHour／dusk／night），
+// 由 tools/audit-schedule.mjs 拿去跟 essentials.js 的當日日落對照——10 月底日落在
+// 16:00 上下，「黃昏斜光」這種描述很容易在換季後就不再成立。
 // 座標是「建議相機站位」而非景點入口；時間仍逐一對齊 trip.js 的實際行程。
 
 import { cityGallery } from './city-gallery.js';
@@ -112,16 +115,16 @@ export const cityStories = [
 ];
 
 export const photoSpots = [
-  {id:'waw-oldtown', cityKey:'WAW', name:'老城市集廣場彩色立面', day:1, bestTime:'16:45–17:15', viewpoint:'華沙美人魚像西南側約 10 公尺，靠 Dekert Side 一側', direction:'鏡頭朝東北，先以 24–35 mm 收整排彩色立面，再退到拱廊邊拍廣場全景', light:'日落前的斜側光會打在北、東側立面；避免貼著雕像仰拍造成建築傾斜。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.249778%2C21.012151'},
-  {id:'waw-castle', cityKey:'WAW', name:'城堡廣場與皇家城堡', day:1, bestTime:'16:30–17:00', viewpoint:'齊格蒙特三世紀念柱西側、靠 Krakowskie Przedmieście 的廣場邊緣', direction:'鏡頭朝東北，把紀念柱放左側、皇家城堡紅牆放右側；直幅可同時收柱頂與城堡', light:'低角度光讓城堡紅牆更飽和；廣角請保持手機水平，避免紀念柱向後倒。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.247604%2C21.013455'},
+  {id:'waw-oldtown', lightPhase:'goldenHour', cityKey:'WAW', name:'老城市集廣場彩色立面', day:1, bestTime:'16:45–17:15', viewpoint:'華沙美人魚像西南側約 10 公尺，靠 Dekert Side 一側', direction:'鏡頭朝東北，先以 24–35 mm 收整排彩色立面，再退到拱廊邊拍廣場全景', light:'日落前的斜側光會打在北、東側立面；避免貼著雕像仰拍造成建築傾斜。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.249778%2C21.012151'},
+  {id:'waw-castle', lightPhase:'goldenHour', cityKey:'WAW', name:'城堡廣場與皇家城堡', day:1, bestTime:'16:30–17:00', viewpoint:'齊格蒙特三世紀念柱西側、靠 Krakowskie Przedmieście 的廣場邊緣', direction:'鏡頭朝東北，把紀念柱放左側、皇家城堡紅牆放右側；直幅可同時收柱頂與城堡', light:'低角度光讓城堡紅牆更飽和；廣角請保持手機水平，避免紀念柱向後倒。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.247604%2C21.013455'},
   {id:'waw-culture', cityKey:'WAW', name:'科學文化宮 30 樓城市景觀', day:null, bestTime:'城市延伸', viewpoint:'Pałac Kultury i Nauki 30 樓 Taras Widokowy 觀景台', direction:'先拍東側市中心天際線，再轉西北側拍華沙舊城方向；玻璃反光時把鏡頭貼近玻璃', light:'未排入每日行程；若自行加入，10 月底接近日落時可同時拍藍調與城市燈光，開放時段仍以當日公告為準。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.231838%2C21.005995'},
-  {id:'krk-rynek', cityKey:'KRK', name:'中央市集廣場與聖瑪利亞聖殿', day:2, bestTime:'15:00–15:30', viewpoint:'亞當・密茨凱維奇紀念碑西南側，靠紡織會館東南角', direction:'鏡頭朝東北，以紀念碑作前景、聖瑪利亞雙塔作背景；再向南走幾步拍紡織會館長廊', light:'午後從廣場中央拍可避開塔樓正逆光；整點前先完成構圖，順便錄下 Hejnał 號角。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.061793%2C19.938098'},
-  {id:'krk-wawel', cityKey:'KRK', name:'Wawel 城堡河岸全景', day:2, bestTime:'12:30–13:00', viewpoint:'維斯瓦河南岸 Bulwar Poleski 河濱步道，正對 Wawel 南側城牆', direction:'鏡頭朝北偏東，用河面作下方三分之一前景；35–50 mm 可壓縮城牆與大教堂塔樓', light:'正午前後南側城牆受光較完整；河面風大時用連拍挑倒影最乾淨的一張。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.051876%2C19.933617'},
-  {id:'krk-kazimierz', cityKey:'KRK', name:'Kazimierz・Szeroka 街', day:4, bestTime:'14:30–16:00', viewpoint:'Szeroka 24 舊猶太會堂前廣場，面向 Szeroka 街北端', direction:'鏡頭朝西北，以老會堂磚牆或街邊招牌作前景；35 mm 比超廣角更能保留街道層次', light:'午後柔和側光適合磚牆、窄街與店面；這是明確站位，不是整個 Kazimierz 街區的代表點。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.051531%2C19.949142'},
-  {id:'wro-rynek', cityKey:'WRO', name:'市政廳東立面與彩色老屋', day:5, bestTime:'09:00–10:15', viewpoint:'Aleksander Fredro 紀念碑北側、舊市政廳東立面前', direction:'鏡頭朝西北拍市政廳哥德山牆；再移到廣場西側回拍東側彩色商人屋', light:'上午先拍受光的市政廳東立面；彩色屋若逆光，改用 2× 鏡頭壓縮北側立面。', mapUrl:'https://www.google.com/maps/search/?api=1&query=51.109957%2C17.032141'},
-  {id:'wro-dwarfs', cityKey:'WRO', name:'座堂島煤氣燈與點燈人', day:5, bestTime:'16:15–17:15', viewpoint:'Most Tumski 東端進入座堂島後，Katedralna 街第一排煤氣燈旁', direction:'鏡頭朝東，以煤氣燈作近景、主教座堂雙塔作消失點；看到點燈人時保持路徑暢通、不貼身跟拍', light:'10/28 日落約 16:34；16:15 先卡位，點燈人沒有固定公開出發分鐘。暗處先用夜景模式並鎖住高光。', mapUrl:'https://www.google.com/maps/search/?api=1&query=51.114364%2C17.045103'},
-  {id:'poz-rynek', cityKey:'POZ', name:'舊市集廣場・市政廳與商人屋', day:6, bestTime:'11:00–12:15', viewpoint:'Prozerpina 噴泉西南側、面向市政廳東立面與彩色商人屋', direction:'鏡頭朝西北；11:45 後不要離開這一側，可同時卡位拍 12:00 山羊從塔樓上方出現', light:'接近正午時市政廳東立面較明亮；山羊很小，建議先準備 2×–3× 鏡頭或長焦。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.408527%2C16.935031'},
-  {id:'poz-tumski', cityKey:'POZ', name:'Jordan 橋上的波茲南主教座堂', day:6, bestTime:'09:00–10:30', viewpoint:'Most Biskupa Jordana 橋東側約三分之一處，靠 Śródka 一端', direction:'鏡頭朝西南，以橋欄杆引導視線到主教座堂雙塔；直幅可加入橋上行人增加尺度', light:'上午從 Śródka 側取景可得到側光；站在橋邊而非車道中央，避開通行中的單車與行人。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.412619%2C16.951091'},
+  {id:'krk-rynek', lightPhase:'daylight', cityKey:'KRK', name:'中央市集廣場與聖瑪利亞聖殿', day:2, bestTime:'15:00–15:30', viewpoint:'亞當・密茨凱維奇紀念碑西南側，靠紡織會館東南角', direction:'鏡頭朝東北，以紀念碑作前景、聖瑪利亞雙塔作背景；再向南走幾步拍紡織會館長廊', light:'午後從廣場中央拍可避開塔樓正逆光；整點前先完成構圖，順便錄下 Hejnał 號角。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.061793%2C19.938098'},
+  {id:'krk-wawel', lightPhase:'daylight', cityKey:'KRK', name:'Wawel 城堡河岸全景', day:2, bestTime:'12:30–13:00', viewpoint:'維斯瓦河南岸 Bulwar Poleski 河濱步道，正對 Wawel 南側城牆', direction:'鏡頭朝北偏東，用河面作下方三分之一前景；35–50 mm 可壓縮城牆與大教堂塔樓', light:'正午前後南側城牆受光較完整；河面風大時用連拍挑倒影最乾淨的一張。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.051876%2C19.933617'},
+  {id:'krk-kazimierz', lightPhase:'daylight', cityKey:'KRK', name:'Kazimierz・Szeroka 街', day:4, bestTime:'14:30–16:00', viewpoint:'Szeroka 24 舊猶太會堂前廣場，面向 Szeroka 街北端', direction:'鏡頭朝西北，以老會堂磚牆或街邊招牌作前景；35 mm 比超廣角更能保留街道層次', light:'午後柔和側光適合磚牆、窄街與店面；這是明確站位，不是整個 Kazimierz 街區的代表點。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.051531%2C19.949142'},
+  {id:'wro-rynek', lightPhase:'daylight', cityKey:'WRO', name:'市政廳東立面與彩色老屋', day:5, bestTime:'09:00–10:15', viewpoint:'Aleksander Fredro 紀念碑北側、舊市政廳東立面前', direction:'鏡頭朝西北拍市政廳哥德山牆；再移到廣場西側回拍東側彩色商人屋', light:'上午先拍受光的市政廳東立面；彩色屋若逆光，改用 2× 鏡頭壓縮北側立面。', mapUrl:'https://www.google.com/maps/search/?api=1&query=51.109957%2C17.032141'},
+  {id:'wro-dwarfs', lightPhase:'dusk', cityKey:'WRO', name:'座堂島煤氣燈與點燈人', day:5, bestTime:'16:15–17:15', viewpoint:'Most Tumski 東端進入座堂島後，Katedralna 街第一排煤氣燈旁', direction:'鏡頭朝東，以煤氣燈作近景、主教座堂雙塔作消失點；看到點燈人時保持路徑暢通、不貼身跟拍', light:'10/28 日落約 16:34；16:15 先卡位，點燈人沒有固定公開出發分鐘。暗處先用夜景模式並鎖住高光。', mapUrl:'https://www.google.com/maps/search/?api=1&query=51.114364%2C17.045103'},
+  {id:'poz-rynek', lightPhase:'daylight', cityKey:'POZ', name:'舊市集廣場・市政廳與商人屋', day:6, bestTime:'11:00–12:15', viewpoint:'Prozerpina 噴泉西南側、面向市政廳東立面與彩色商人屋', direction:'鏡頭朝西北；11:45 後不要離開這一側，可同時卡位拍 12:00 山羊從塔樓上方出現', light:'接近正午時市政廳東立面較明亮；山羊很小，建議先準備 2×–3× 鏡頭或長焦。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.408527%2C16.935031'},
+  {id:'poz-tumski', lightPhase:'daylight', cityKey:'POZ', name:'Jordan 橋上的波茲南主教座堂', day:6, bestTime:'09:00–10:30', viewpoint:'Most Biskupa Jordana 橋東側約三分之一處，靠 Śródka 一端', direction:'鏡頭朝西南，以橋欄杆引導視線到主教座堂雙塔；直幅可加入橋上行人增加尺度', light:'上午從 Śródka 側取景可得到側光；站在橋邊而非車道中央，避開通行中的單車與行人。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.412619%2C16.951091'},
 ];
 
 // licenseUrl：CC 授權要求提供「授權條款本身」的 URI，不是照片來源頁（url 欄位）。
@@ -143,10 +146,14 @@ export const photoCredits = [
 ];
 
 // mapPins 已套用校正表 3-1（Mirror Bistro、Na Winklu 從 star1 改 food；Svensson Pierogi、Hamsa 從 sight 改 food）
+// 2026-09-14：Bar Mleczny Rusałka、Mirror Bistro、Svensson Pierogi、Bar Smak、Szarlotta 五個圖釘已撤除——
+// 這五家在餐廳清單精煉時被刪掉，留著圖釘會讓人點到地圖上找得到、餐廳表卻查無的店。
+// 座標查核紀錄見 docs/research/2026-08-11-map-pins-geocoding.md，日後要復原可從該檔取回。
 // 的修正，直接來自 poland-travel-guide-final.html:565 的 CITIES 物件。
 // 校正表 3-2 記的「克拉科夫 19 個圖釘」是加入已確認住宿圖釘前的數字；
 // 2026-09-08 移除 4 個未逐店確認的 Żabka 精確圖釘；超商仍保留在購物資料，現場依即時搜尋選分店。
-// 地圖現為 15／21／9／8，合計 53；其中 50 個門牌／場館錨點、3 個面狀區域代表點。
+// 地圖現為 14／18／9／7，合計 48；其中 45 個門牌／場館錨點、3 個面狀區域代表點。
+// （2026-09-14 撤除 5 個餐廳表已無此店的孤兒圖釘，由 53 降為 48。）
 export const mapPins = {
   warsaw: {
     center: [52.235, 21.01], zoom: 13,
@@ -161,7 +168,6 @@ export const mapPins = {
       [52.2242001, 21.0350992, "Rozbrat 20 ★", "米其林一星", "https://www.google.com/maps/search/?api=1&query=Rozbrat%2020%20Warszawa", "star1"],
       [52.229941, 20.989348, "WANDAL", "必比登", "https://maps.google.com/?cid=15993615675406452524", "bib"],
       [52.236622, 20.967709, "Zagoździński", "pączki 名店", "https://maps.google.com/?cid=5270464504046978357", "food"],
-      [52.252402, 21.030581, "Bar Mleczny Rusałka", "牛奶吧", "https://maps.google.com/?cid=14427558643223382901", "food"],
       [52.2333197, 21.0149273, "Pijalnia Czekolady E.Wedel（巧克力）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJ--12WPTMHkcRgAvh-nOeA94", "shop"],
       [52.2310334, 21.0187045, "Vitkac", "精品百貨", "https://maps.google.com/?cid=6893272886103886879", "luxury"],
       [52.2215267, 21.0204772, "Chylak（波蘭設計師包款）", "精品", "https://maps.google.com/?cid=2015234439722332980", "luxury"],
@@ -184,9 +190,6 @@ export const mapPins = {
       [50.051748, 19.944791, "Okrąglak（Plac Nowy zapiekanka）", "使用者指定 · plac Nowy 4B", "https://maps.app.goo.gl/2Nitej5cqG4VAcbp6?g_st=il", "food"],
       [50.064387, 19.942273, "Szalone Widelce", "使用者指定 · Szpitalna 40", "https://maps.app.goo.gl/U3yMsjdSgM3Pwgqe9?g_st=il", "food"],
       [50.057733, 19.937930, "Bar Mleczny Pod Temidą", "使用者指定 · Grodzka 43", "https://maps.app.goo.gl/xCGDapoy56MBvg2y7?g_st=il", "food"],
-      [50.053958, 19.944839, "Mirror Bistro", "pierogi", "https://www.google.com/maps/place/?q=place_id:ChIJOwi62GpbFkcRoi0KiVCj1dk", "food"],
-      [50.07068, 19.936409, "Svensson Pierogi", "餃子", "https://maps.google.com/?cid=10705718930784059170", "food"],
-      [50.064037, 19.932167, "Bar Smak", "在地口碑", "https://maps.google.com/?cid=7513589258053856766", "food"],
       [50.053182, 19.947628, "Hamsa", "以色列 hummus", "https://maps.google.com/?cid=1317891001987072687", "food"],
       [50.055231, 19.938471, "Ceramika Bolesławiecka（陶器）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJf581WqhbFkcR1_QG-8hJ4Vc", "shop"],
       [50.058364, 19.9382007, "World of Amber（琥珀）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJPxlI8hJbFkcR7vI2ebLVIDk", "shop"],
@@ -204,7 +207,7 @@ export const mapPins = {
       [51.11274, 17.031823, "BABA ★", "米其林一星", "https://maps.google.com/?cid=9335659011047272773", "star1"],
       [51.114762, 17.031129, "Most ★", "米其林一星", "https://maps.google.com/?cid=9490447263206449328", "star1"],
       [51.112463, 17.029103, "IDA kuchnia i wino", "必比登", "https://maps.google.com/?cid=10589009865057440004", "bib"],
-      [51.112672, 17.034294, "Miś SC", "全城最有名牛奶吧", "https://maps.google.com/?cid=9100083269168988599", "food"],
+      [51.112672, 17.034294, "Bar Mleczny Miś", "全城最有名牛奶吧", "https://maps.google.com/?cid=9100083269168988599", "food"],
       [51.10013, 17.03569, "Piast", "已確認住宿 · Piłsudskiego 98", "https://www.google.com/maps/search/?api=1&query=Hotel%20Piast%2C%20Pi%C5%82sudskiego%2098%2C%20Wroc%C5%82aw", "hotel"],
     ],
   },
@@ -217,7 +220,6 @@ export const mapPins = {
       [52.402018, 16.901852, "Palmiarnia 棕櫚屋", "景點", "https://maps.google.com/?cid=10703456143872687277", "sight"],
       [52.403967, 16.929146, "Muga ★", "波茲南唯一一星", "https://maps.google.com/?cid=2998937238608160974", "star1"],
       [52.411348, 16.952952, "Na Winklu", "pierogi", "https://maps.google.com/?cid=17998777227118824033", "food"],
-      [52.407303, 16.934127, "Szarlotta", "鴨肉餃子名店", "https://maps.google.com/?cid=8072844045178633315", "food"],
       [52.403903, 16.915609, "Poznan Apartments Towarowa", "已確認住宿 · Towarowa 37/201 官方接待處", "https://www.google.com/maps/search/?api=1&query=Poznan%20Apartments%20Towarowa%2C%20Towarowa%2037%2F201%2C%20Pozna%C5%84", "hotel"],
     ],
   },
@@ -259,7 +261,6 @@ Object.assign(mapPinChecks.warsaw, {
   'WANDAL': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
   'Zagoździński': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:22},
   'Hotel Metropol': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:2},
-  'Bar Mleczny Rusałka': {status:'coordinate-verified', checkedAt:'2026-08-15', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:20},
   'Rozbrat 20 ★': {status:'coordinate-verified', checkedAt:'2026-08-15', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:0},
 });
 Object.assign(mapPinChecks.krakow, {
@@ -275,13 +276,10 @@ Object.assign(mapPinChecks.krakow, {
   'Okrąglak（Plac Nowy zapiekanka）': {status:'coordinate-verified', checkedAt:'2026-09-08', coordinateSource:'Google Maps 使用者連結 + Nominatim / OpenStreetMap 地址點', distanceMeters:5},
   'Szalone Widelce': {status:'coordinate-verified', checkedAt:'2026-09-08', coordinateSource:'Google Maps 使用者連結 + Nominatim / OpenStreetMap', distanceMeters:0},
   'Bar Mleczny Pod Temidą': {status:'coordinate-verified', checkedAt:'2026-09-08', coordinateSource:'Google Maps 使用者連結 + Nominatim / OpenStreetMap', distanceMeters:0},
-  'Mirror Bistro': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:3},
-  'Bar Smak': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:1},
   'Hamsa': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:7},
   'Ceramika Bolesławiecka（陶器）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:293, corrected:true},
   'World of Amber（琥珀）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:5},
   'Sukiennice 布廊（伴手禮攤位）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:28},
-  'Svensson Pierogi': {status:'coordinate-verified', checkedAt:'2026-08-15', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
   '中央市集廣場': {status:'area-reference', checkedAt:'2026-09-08', coordinateSource:'Google Maps 地標範圍／OpenStreetMap 面狀地物', note:'廣場範圍代表點，不是入口或門牌。'},
   'Kazimierz 猶太區': {status:'area-reference', checkedAt:'2026-09-08', coordinateSource:'Google Maps 街區範圍／OpenStreetMap 面狀地物', note:'街區範圍代表點，請依當日目的地導航。'},
 });
@@ -290,7 +288,7 @@ Object.assign(mapPinChecks.wroclaw, {
   'Afrykarium 動物園': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:34},
   '百年廳 Hala Stulecia': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:7},
   'BABA ★': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:11},
-  'Miś SC': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:14},
+  'Bar Mleczny Miś': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:14},
   'Piast': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:0},
   'Most ★': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
   'IDA kuchnia i wino': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:18},
@@ -303,7 +301,6 @@ Object.assign(mapPinChecks.poznan, {
   'Palmiarnia 棕櫚屋': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:48},
   'Muga ★': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
   'Na Winklu': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
-  'Szarlotta': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:10},
   'Poznan Apartments Towarowa': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:25},
 });
 

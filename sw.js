@@ -6,7 +6,7 @@
 //   - OSM 圖磚：stale-while-revalidate 的執行期快取，看過的區域離線仍在
 // 同時沿用舊版行為，清掉已封存的 polska-v* 快取。
 
-const VERSION = 'polska-journal-v18';
+const VERSION = 'polska-journal-v19';
 const SHELL = `${VERSION}-shell`;
 const RUNTIME = `${VERSION}-runtime`;
 const TILES = `${VERSION}-tiles`;
@@ -15,6 +15,7 @@ const TILE_LIMIT = 400;
 const PAGES = [
   './',
   './index.html',
+  './today.html',
   './day-01.html', './day-02.html', './day-03.html', './day-04.html',
   './day-05.html', './day-06.html', './day-07.html', './day-08.html',
   './city-warszawa.html', './city-krakow.html', './city-wroclaw.html', './city-poznan.html',

@@ -1,43 +1,122 @@
 import { dayDining } from '../data/day-dining.js';
-import { userPicks } from '../data/dining.js';
+import { days } from '../data/trip.js';
+
+/**
+ * 城市指南與每日行程的對照表。
+ *
+ * 2026-09-14 之前這裡是一份手寫的 selections 名單，每新增一家每日餐位就得記得回來補一次，
+ * 漏了也沒有任何徵兆（Day 2 的 Bar Mleczny Pod Temidą 就這樣漏了，城市頁看不出它排進行程）。
+ * 現在改成直接由 day-dining.js 與 trip.js 的 day.eat 推導，名單不再手寫。
+ */
+export const cityGuides = {
+  warsaw: { file: 'city-warszawa.html', name: '華沙' },
+  krakow: { file: 'city-krakow.html', name: '克拉科夫' },
+  wroclaw: { file: 'city-wroclaw.html', name: '樂斯拉夫' },
+  poznan: { file: 'city-poznan.html', name: '波茲南' },
+};
+
+/** 中文城市名 → 城市指南頁。實用資料的欄位常帶城市（「華沙 · 皇家城堡」「⭐⭐ Bottiglieria 1881（克拉科夫）」），
+ *  用這個把實用資料接回城市指南。找不到就回 null，不硬給連結。 */
+export function cityGuideByName(text, prefix = '') {
+  if (!text) return null;
+  const match = Object.values(cityGuides).find(guide => text.includes(guide.name));
+  return match ? { ...match, href: `${prefix}${match.file}` } : null;
+}
+
+/** 「10/25」→ 該日的每日行程頁。日期取自 trip.js 的 days，對不上就回 null。 */
+export function dayPageForDate(date, prefix = '') {
+  if (!date) return null;
+  const day = days.find(item => item.date.startsWith(date));
+  return day ? { n: day.n, href: `${prefix}day-${String(day.n).padStart(2, '0')}.html` } : null;
+}
+
+/**
+ * 從門牌或 Google Maps 連結判斷城市。字尾的 negative lookahead 是必要的：
+ * Café Bristol 的門牌是華沙的「Krakowskie Przedmieście」，不加就會同時命中克拉科夫。
+ */
+const cityPatterns = {
+  warsaw: /warszaw[aąęy]|warsaw(?![a-ząćęłńóśźż])/i,
+  krakow: /krak[oó]w(?![a-ząćęłńóśźż])/i,
+  wroclaw: /wroc[lł]aw(?![a-ząćęłńóśźż])/i,
+  poznan: /pozna[nń](?![a-ząćęłńóśźż])/i,
+};
+
+export function detectCity(...values) {
+  const text = values.filter(Boolean).map(value => {
+    try { return decodeURIComponent(value); } catch { return value; }
+  }).join(' ');
+  const hits = Object.keys(cityPatterns).filter(city => cityPatterns[city].test(text));
+  // 同時命中兩座城市就當作判斷不出來，寧可少標也不要標錯。
+  return hits.length === 1 ? hits[0] : null;
+}
 
 const aliases = {
   'e wedel pijalnia': 'wedel', 'pijalnia czekolady e wedel': 'wedel',
-  'pijalnia czekolady e wedel szpitalna 8': 'wedel',
   'rogal swietomarcinski': 'rogal', 'endzior plac nowy 圓亭': 'endzior',
 };
+
 export function key(name) {
-  const normalized = name.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/ł/g, 'l').replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
+  const normalized = name.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/ł/g, 'l').replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
   return aliases[normalized] || normalized;
 }
 
-const allUserPicks = Object.values(userPicks).flat();
-
 /**
- * 兩個正規化 key 是否代表同一家店：完全相同，或其中一邊只是多了分店／描述字
- * 的字首相符（例如「folga 現代料理」對「folga」、「el gato specialty coffee
- * odrzanska 8」對「el gato specialty coffee」）。
+ * 順路必吃的店名常帶地區或分店註記（「Zapiecek（老城多家分店）」「Okrąglak, Plac Nowy」），
+ * 和城市表的寫法對不起來，因此比對前先去掉括號與逗號之後的部分。
  */
-function sameStore(keyA, keyB) {
-  return keyA === keyB || keyA.startsWith(`${keyB} `) || keyB.startsWith(`${keyA} `);
+function coreKey(name) {
+  return key(name.replace(/[（(][^）)]*[)）]/g, ' ').replace(/,.*$/, ' '));
+}
+
+/** 只認完全相同或「整個詞開頭」（"a blikle" ↔ "a blikle 1869"），避免短字串誤配。 */
+function sameStore(a, b) {
+  if (!a || !b) return false;
+  if (a === b) return true;
+  const [short, long] = a.length < b.length ? [a, b] : [b, a];
+  return short.length >= 4 && long.startsWith(`${short} `);
 }
 
 /**
- * 判斷店名是否為使用者自選：以 key() 正規化比對 userPicks。
+ * 必吃在城市表要補的說明。沒有 note 時退回 text 的菜色部分（「Pierogi @ Zapiecek」取前半），
+ * 若那段其實就是店名本身（「Pierożki u Vincenta（Kazimierz）」），就不重複印在同名的列底下。
  */
-export function isUserPick(name) {
-  if (!name) return false;
-  const normalized = key(name);
-  return allUserPicks.some((pick) => sameStore(normalized, key(pick)));
+function mustEatDetail(item, rowName) {
+  if (item.note) return item.note;
+  const text = (item.text.includes(' @ ') ? item.text.split(' @ ')[0] : item.text).trim();
+  return sameStore(coreKey(text), coreKey(rowName)) ? '' : text;
 }
 
-export function mergeCityDining(cityKey, dining = [], primary = []) {
+function dayLink(day, label) {
+  return `<a href="day-${String(day).padStart(2, '0')}.html#day-food">${label}</a>`;
+}
+
+/** 這座城市在每日行程裡排定的餐位（day-dining.js）。 */
+export function plannedMealsFor(cityKey) {
+  return Object.entries(dayDining).flatMap(([day, items]) => items
+    .filter(item => item.cityGuide !== false && detectCity(item.address, item.map) === cityKey)
+    .map(item => ({ day: Number(day), item })));
+}
+
+/** 這座城市的順路必吃（trip.js 的 day.eat）。沒有門牌，所以只用來標記既有的列。 */
+export function mustEatsFor(cityKey) {
+  return days.flatMap(day => (day.eat || [])
+    .filter(item => typeof item !== 'string' && detectCity(item.place, item.map) === cityKey)
+    .map(item => ({ day: day.n, item })));
+}
+
+/**
+ * 把資料併成單一份「行程餐廳推薦」清單：
+ * 城市餐飲情報（cityDining）、行程餐廳與備案（cityFood 的 role）、
+ * 小吃 · 牛奶吧 · 咖啡廳（snacksAndCafes），再疊上每日行程的餐位與順路必吃。
+ * 同一家店只留一列，排序為 你的候選 → 順路必吃 → 主推 → 備案 → 小吃 · 咖啡。
+ */
+export function mergeCityDining(cityKey, dining = [], primary = [], snacks = []) {
   const entries = new Map();
   function add(item) {
     const id = key(item.name);
-    const previous = entries.get(id) || { name: item.name, notes: [] };
+    const previous = entries.get(id) || { name: item.name, notes: [], plans: [] };
     const notes = [...new Set([...previous.notes, ...[item.note, item.highlight].filter(Boolean)])];
-    entries.set(id, { ...previous, ...item, notes, map: item.map || item.mapUrl || previous.map });
+    entries.set(id, { ...previous, ...item, notes, plans: previous.plans, map: item.map || item.mapUrl || previous.map });
   }
   for (const item of primary) {
     if (item.maps?.length) {
@@ -45,20 +124,32 @@ export function mergeCityDining(cityKey, dining = [], primary = []) {
     } else add(item);
   }
   dining.forEach(add);
-  for (const name of userPicks[cityKey] || []) {
-    const pickKey = key(name);
-    const dayMatch = Object.entries(dayDining).flatMap(([day, items]) => items.map(item => ({ ...item, day }))).filter(item => key(item.name) === pickKey);
-    const dayItem = dayMatch[0];
-    const planInfo = dayItem ? { address: dayItem.address, map: dayItem.map, plan: dayMatch.map(m => `Day ${m.day} · ${m.role}：${m.note}`).join('；') } : {};
-    // 先找已由 cityDining／cityFood 收錄、名稱只差分店或描述字的既有列，補上「自選」與行程資訊；
-    // 找不到才新增一列，避免同一家店因命名長短不同被拆成兩列（也才拿得到既有列上的地圖連結）。
-    const existingId = [...entries.keys()].find(id => sameStore(id, pickKey));
-    if (existingId) {
-      const existing = entries.get(existingId);
-      entries.set(existingId, { ...existing, ...planInfo, selected: true, map: planInfo.map || existing.map });
-    } else {
-      add({ name, selected: true, ...planInfo });
-    }
+  // 小吃、牛奶吧與咖啡廳原本是另一個區塊，現在併進同一張表；
+  // 與上面重複的店（例如 Endzior、Konspira、Pyra Bar）只會補上營業時間，不另開一列。
+  for (const item of snacks) {
+    const previous = entries.get(key(item.name));
+    // 已經是主推或備案的店不因為也出現在小吃名單而被降級，只補上營業時間與說明。
+    add({ ...item, tier: previous?.tier || item.type, role: previous ? previous.role : 'snack' });
   }
-  return [...entries.values()].sort((a, b) => Number(Boolean(b.selected)) - Number(Boolean(a.selected)));
+
+  // 每日排定的餐位：城市表沒有這家店就新增一列，並把 Day 連回該日行程。
+  for (const { day, item } of plannedMealsFor(cityKey)) {
+    add({ name: item.name, selected: true, address: item.address, map: item.map });
+    const entry = entries.get(key(item.name));
+    entry.plans = [...entry.plans, `${dayLink(day, `Day ${day}`)} · ${item.role}：${item.note}`];
+  }
+
+  // 順路必吃沒有門牌，只標記既有的列，不會憑空長出沒有地址的店。
+  for (const { day, item } of mustEatsFor(cityKey)) {
+    const wanted = coreKey(item.place || item.text);
+    const entry = [...entries.values()].find(row => sameStore(coreKey(row.name), wanted));
+    if (!entry) continue;
+    entry.mustEat = true;
+    const detail = mustEatDetail(item, entry.name);
+    entry.plans = [...entry.plans, `${dayLink(day, `Day ${day}`)} · 順路必吃${detail ? `：${detail}` : ''}`];
+  }
+
+  const order = { backup: 3, snack: 4 };
+  const rank = row => (row.selected ? 0 : row.mustEat ? 1 : order[row.role] ?? 2);
+  return [...entries.values()].sort((a, b) => rank(a) - rank(b));
 }

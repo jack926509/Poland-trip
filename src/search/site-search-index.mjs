@@ -116,6 +116,7 @@ function restaurantRecords(data, lookup) {
     }
   }
 
+  // 備案已併入 cityFood（role: 'backup'），不再有獨立的 foodBackup 來源。
   for (const group of data.cityFood || []) {
     for (const item of group.items || []) {
       add({
@@ -123,19 +124,7 @@ function restaurantRecords(data, lookup) {
         name: item.name,
         detail: compact([item.tag, item.note]),
         mapUrl: item.map || item.maps?.[0]?.url,
-        keywords: [item.book, ...(item.maps?.map(entry => entry.name) || [])],
-      });
-    }
-  }
-
-  for (const group of data.foodBackup || []) {
-    for (const item of group.items || []) {
-      add({
-        cityRef: group.city,
-        name: item.name,
-        detail: compact([item.tag, item.note]),
-        mapUrl: item.map || item.maps?.[0]?.url,
-        keywords: [item.book, '備案', ...(item.maps?.map(entry => entry.name) || [])],
+        keywords: [item.book, ...(item.role === 'backup' ? ['備案'] : []), ...(item.maps?.map(entry => entry.name) || [])],
       });
     }
   }

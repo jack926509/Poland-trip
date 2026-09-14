@@ -855,6 +855,20 @@ nav.section-heading > a:last-child {
   white-space: nowrap;
 }
 
+/* .number 的 nowrap 是為了讓「08:45 → 10:58」不斷行，但會一起套用到
+   儲存格裡的附註——火車表的票價附註有 232 字，整段不換行就把表格撐到橫捲。
+   附註改為獨立一行且正常換行；純數值本身仍不斷行。 */
+.table-editorial .number .timeline-note {
+  display: block;
+  white-space: normal;
+}
+
+/* 時刻欄多數是「08:45 → 10:58」，但巴士那筆把去回程都寫在同一格（50 字），
+   nowrap 會讓這一欄獨佔 496px。改為可換行，時間本身用 &nbsp; 綁住不拆開。 */
+.table-editorial .time-range {
+  white-space: normal;
+}
+
 .tag-red,
 .tag-yellow,
 .tag-todo,
@@ -4371,15 +4385,46 @@ h3 {
 }
 
 /* --- 多欄表格：欄位太窄時，站名會斷成三行、狀態標籤被擠成圓球，
-       右側欄位還會被推出容器。給表格一個最小寬度，交給 .table-wrap
-       既有的水平捲動（含捲動陰影）處理，欄寬就不會互相壓縮。 --- */
+       右側欄位還會被推出容器。給表格最小寬度，交給 .table-wrap
+       既有的水平捲動（含捲動陰影）處理，欄寬就不會互相壓縮。
+
+       2026-09-14 修正：原本這兩條是全站通用的（min-width: 52rem 與
+       td:first-child min-width: 11rem），結果 40 張表全都套用——
+       2 欄的「單位／電話」被撐到 832px 而在窄容器裡橫捲，
+       而 5 個字的日期欄硬拿走 176px、把旁邊的欄位擠到 67px。
+       改為只有真正需要的寬表才給最小寬度，並讓短資料欄縮到內容寬度。 --- */
 @media (min-width: 701px) {
-  .table-editorial {
-    min-width: 52rem;
+  /* 六欄以上才可能壓縮（火車班次、巴士班次）；欄數用 :has() 判斷，
+     不支援 :has() 的瀏覽器只是沒有最小寬度，表格仍可讀。 */
+  .table-editorial:has(thead th:nth-child(6)) {
+    min-width: 54rem;
   }
 
-  .table-editorial td:first-child {
-    min-width: 11rem;
+  .table-editorial:has(thead th:nth-child(5)) {
+    min-width: 44rem;
+  }
+
+  /* 時間、票價、時長這類短欄縮到內容寬度，把空間讓給敘述欄。
+     width: 1% 搭配 nowrap 是表格「縮到剛好」的標準寫法。 */
+  .table-editorial .number {
+    width: 1%;
+  }
+
+  /* 列高：原本 0.78rem 的上下 padding 讓 21 列的門票表高達 2600px。
+     只收緊桌機的真表格——手機是卡片版，左右內距由 tr 負責，
+     這條若寫在媒體查詢外會蓋掉卡片版、讓每格多出 11px 的左右縮排。 */
+  .table-editorial th,
+  .table-editorial td {
+    padding: 0.55rem 0.7rem;
+    line-height: 1.55;
+  }
+}
+
+/* 手機卡片版：左右交給 tr 的內距，這裡只收上下。 */
+@media (max-width: 700px) {
+  .table-editorial td {
+    padding: 0.45rem 0;
+    line-height: 1.55;
   }
 }
 
@@ -4546,39 +4591,318 @@ h3 {
 .operation-grid { align-items: start; }
 .operation-route-column { display: grid; gap: 1.25rem; min-width: 0; }
 .day-dining { min-width: 0; }
-.day-dining-list { list-style: none; padding: 0; margin: 0; }
-.day-dining-list > li { padding: 1rem 0; border-top: 1px solid var(--line); }
-.day-dining-list h4 { margin: .35rem 0; font-size: 1.15rem; overflow-wrap: anywhere; }
-.day-dining-list p { margin: .4rem 0; }
-.day-eat { margin-top: 1rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
-.day-eat-list { display: grid; gap: .85rem; }
-.day-eat-list .card { padding: 1rem; box-shadow: none; }
+
+/* 當日餐飲：候選與順路必吃融合成一份清單，共用同一種列版式。
+   導航連結放在標題右上角（flex 的第二個子元素），不另佔一行——
+   一天最多 8 列，原本每列都多一行膠囊，光連結就吃掉大半張卡片。 */
+.day-food-list { list-style: none; padding: 0; margin: .25rem 0 0; }
+.day-food-item { padding: .9rem 0; border-top: 1px solid var(--line); }
+.day-food-item:first-child { padding-top: .25rem; border-top: 0; }
+.day-food-head { display: flex; align-items: flex-start; gap: .75rem; }
+.day-food-title { flex: 1 1 auto; min-width: 0; }
+.day-food-title h4 { margin: .3rem 0 0; font-size: 1.1rem; line-height: 1.35; overflow-wrap: anywhere; }
+.day-food-item p { margin: .35rem 0 0; }
+.day-food-item .food-map-note { margin-top: .3rem; }
+
+/* 必吃用不同色的小標與左側色條區分，不必再另開一個區塊標題。 */
+.day-food-item-eat { padding-left: .75rem; border-left: 3px solid var(--accent-pale); }
+.day-food-item-eat .eyebrow { color: var(--rust, #a94e32); }
+
+.day-food-map {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: .3rem .8rem;
+  border: 1px solid rgb(142 126 112 / 40%);
+  border-radius: 999px;
+  background: var(--paper-light);
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  font-weight: 700;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background-color 160ms var(--ease), border-color 160ms var(--ease);
+}
+.day-food-map:hover,
+.day-food-map:focus-visible { border-color: var(--accent); background: var(--accent-pale); }
+
+/* 實用資料表格裡接回每日行程／城市指南的連結。放在儲存格內，不另佔一欄。 */
+.cross-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+.cross-link:hover,
+.cross-link:focus-visible { text-decoration-thickness: 2px; }
+
+/* 當日餐飲卡底部連回城市指南；城市頁的同一家店也會連回當日行程。 */
+.day-food-guides {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin: .9rem 0 0;
+  padding-top: .85rem;
+  border-top: 1px solid var(--line);
+}
+.day-food-guides a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* 窄欄時標題容易被 44px 的膠囊擠成一字一行，改為連結換到下一行靠左。 */
+@media (max-width: 480px) {
+  .day-food-head { flex-wrap: wrap; }
+  .day-food-map { margin-top: .2rem; }
+}
 
 /* 城市餐飲列表：候選置頂，手機保留表頭與欄位對照。 */
 .city-dining-table-wrap { overflow-x: auto; }
-.city-dining-table { width: 100%; min-width: 1080px; table-layout: fixed; }
-.city-dining-table caption { text-align: left; padding: .65rem; font-weight: 700; }
-.city-dining-table th:nth-child(1) { width: 22%; }
-.city-dining-table th:nth-child(2) { width: 12%; }
-.city-dining-table th:nth-child(3) { width: 25%; }
-.city-dining-table th:nth-child(4) { width: 29%; }
-.city-dining-table th:nth-child(5) { width: 12%; }
+/* 地圖不再獨立成欄，店名本身就是連結，因此剩四欄、最小寬度也跟著縮。 */
+.city-dining-table { width: 100%; min-width: 820px; table-layout: fixed; }
+.city-dining-table caption { text-align: left; padding: .5rem .65rem; font-weight: 700; }
+.city-dining-table th:nth-child(1) { width: 25%; }
+.city-dining-table th:nth-child(2) { width: 13%; }
+.city-dining-table th:nth-child(3) { width: 30%; }
+.city-dining-table th:nth-child(4) { width: 32%; }
 .city-dining-table tbody th { text-align: left; font-weight: 400; }
 .city-dining-table td, .city-dining-table tbody th { vertical-align: top; overflow-wrap: anywhere; }
-.city-dining-table p { margin: .35rem 0; }
+.city-dining-table p { margin: .2rem 0; }
+
+/* 店名＝Google Maps 連結，用底線表示可點；父層 .table-editorial th a 已給 44px 觸控高度。 */
+.city-dining-name {
+  /* 專案要求任何可點目標不低於 44px；純底線連結只有 41px，用 inline-flex 撐起來。 */
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: rgb(169 78 50 / 45%);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+.city-dining-name:hover,
+.city-dining-name:focus-visible { color: var(--accent-dark); text-decoration-color: currentcolor; text-decoration-thickness: 2px; }
+
+/* 「行程安排」欄的 Day 連結：點了回到當日行程的餐飲卡。 */
+.city-dining-plan { margin: .2rem 0; }
+.city-dining-plan a { font-family: var(--font-mono); font-weight: 700; white-space: nowrap; }
+
 .city-dining-table .city-dining-selected { background: rgba(169, 78, 50, .045); }
 .city-dining-table .city-dining-selected th { border-left: 3px solid var(--rust, #a94e32); }
-.city-dining-choice { display: block; margin-top: .4rem; color: var(--rust, #a94e32); font-size: .875rem; font-weight: 700; }
-.city-dining-table .food-map-links a { white-space: normal; }
+/* 標籤改行內顯示，每列少掉一整行的高度。 */
+.city-dining-choice,
+.city-dining-role { display: inline; margin-left: .4rem; font-size: .8rem; font-weight: 700; white-space: nowrap; }
+.city-dining-choice { color: var(--rust, #a94e32); }
+.city-dining-role { color: var(--ink-soft); }
 .city-dining-scroll-hint { display: none; }
-@media (max-width: 1100px) { .city-dining-scroll-hint { display: block; font-size: .875rem; color: var(--ink-soft); } }
-/* 覆寫共用手機表格卡片化，餐廳列表保持真正表格與可見表頭。 */
+@media (min-width: 701px) and (max-width: 1100px) {
+  .city-dining-scroll-hint { display: block; font-size: .875rem; color: var(--ink-soft); }
+}
+
+/* 桌機維持真正的表格與可見表頭，但把列高收緊：
+   padding .85rem → .5rem .65rem、行距 1.5，整張表大約矮三成。 */
 .city-dining-table { display: table; }
 .city-dining-table thead { display: table-header-group; }
 .city-dining-table tbody { display: table-row-group; padding: 0; }
 .city-dining-table tr { display: table-row; width: auto; padding: 0; box-shadow: none; }
-.city-dining-table td, .city-dining-table th { display: table-cell; padding: .85rem; border-bottom: 1px solid var(--line); }
+.city-dining-table td, .city-dining-table th {
+  display: table-cell;
+  padding: .5rem .65rem;
+  border-bottom: 1px solid var(--line);
+  font-size: .92rem;
+  line-height: 1.5;
+}
 .city-dining-table td { width: auto; }
 .city-dining-table td::before { content: none; }
-.city-dining-table tbody th { font-family: inherit; font-size: 1rem; letter-spacing: normal; text-transform: none; color: var(--ink); }
-.city-dining-table thead th { font-size: .875rem; }
+.city-dining-table tbody th { font-family: inherit; font-size: .98rem; letter-spacing: normal; text-transform: none; color: var(--ink); }
+.city-dining-table thead th { font-size: .82rem; }
+.city-dining-table .food-map-note { font-size: .84rem; color: var(--ink-soft); }
+
+/* 手機改回全站共用的卡片版：一家一張卡，欄名由 data-label 帶出，不必左右滑 1080px。
+   （data-label 的欄位對位在 layout.mjs 修正後才正確，見 addTableCellLabels。） */
+@media (max-width: 700px) {
+  .city-dining-table-wrap { overflow-x: visible; border: 0; background: none; }
+  .city-dining-table { display: block; min-width: 0; table-layout: auto; }
+  .city-dining-table thead { display: none; }
+  .city-dining-table tbody { display: grid; grid-template-columns: minmax(0, 1fr); gap: .6rem; padding: .6rem 0; }
+  .city-dining-table tr {
+    display: block;
+    width: 100%;
+    padding: .6rem .8rem;
+    border: 1px solid var(--line);
+    background: var(--paper-light);
+    box-shadow: var(--shadow-paper);
+  }
+  .city-dining-table td,
+  .city-dining-table tbody th { display: block; width: 100%; padding: .35rem 0; border-bottom: 0; }
+  .city-dining-table tbody th { padding-top: 0; font-size: 1.05rem; }
+  .city-dining-table td + td { border-top: 1px solid var(--line); }
+  .city-dining-table td::before {
+    display: block;
+    margin-bottom: .1rem;
+    color: var(--ink-soft);
+    content: attr(data-label);
+    font-family: var(--font-mono);
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  /* 卡片版的左側色條改掛在整張卡上，掛在 th 會只有標題那一段有色條。 */
+  .city-dining-table .city-dining-selected th { border-left: 0; }
+  .city-dining-table .city-dining-selected { border-left: 3px solid var(--rust, #a94e32); }
+  .city-dining-choice,
+  .city-dining-role { display: inline-block; margin-left: .4rem; }
+}
+
+/* 倒數看板：急迫度只用左緣色條與底色標示，不改字色。
+   類別與狀態欄已經用既有的 tag 樣式帶顏色，倒數欄再上色會讓整列變花，
+   反而看不出哪幾列真的緊急。 */
+/* 桌機的列本身沒有邊框，只有急迫列加色條會讓那幾列的文字橫移 3px，
+   因此先給所有列一條透明的同寬邊。手機版的列是獨立卡片、本來就有 1px 外框，
+   套用這條透明邊會把卡片左緣的線抹掉，所以只在桌機寬度生效。 */
+@media (min-width: 701px) {
+  .countdown-table tbody tr {
+    border-left: 3px solid transparent;
+  }
+}
+
+.countdown-table tbody tr[data-urgency='overdue'],
+.countdown-table tbody tr[data-urgency='today'] {
+  border-left: 3px solid var(--red);
+  background: var(--surface-danger);
+}
+
+.countdown-table tbody tr[data-urgency='soon'] {
+  border-left: 3px solid var(--yellow);
+  background: var(--surface-warning);
+}
+
+.countdown-table tbody tr[data-urgency='done'] {
+  border-left: 3px solid var(--green);
+}
+
+.countdown-table [data-countdown-label] {
+  font-size: 1.02rem;
+}
+
+.countdown-table tbody tr[data-urgency='overdue'] [data-countdown-label],
+.countdown-table tbody tr[data-urgency='today'] [data-countdown-label] {
+  color: var(--red);
+}
+
+/* 首頁的下一個截止提示 */
+.next-deadline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.9rem;
+  align-items: baseline;
+  margin-top: 0.9rem;
+  padding: 0.7rem 0.9rem;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-surface);
+}
+
+.next-deadline[data-urgency='overdue'],
+.next-deadline[data-urgency='today'] {
+  border-left-color: var(--red);
+  background: var(--surface-danger);
+}
+
+.next-deadline[data-urgency='soon'] {
+  border-left-color: var(--yellow);
+  background: var(--surface-warning);
+}
+
+.next-deadline strong {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+}
+
+/* 今日卡：旅途中單手拿著看的一頁，字級與間距比其他頁寬鬆一級。 */
+.nav-today {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-xs);
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+}
+
+.nav-today[aria-current='page'] {
+  background: var(--accent);
+  color: #fff;
+}
+
+.today-status {
+  margin: 1rem 0;
+  font-family: var(--font-mono);
+  color: var(--ink-soft);
+}
+
+.today-card {
+  margin-top: 1rem;
+}
+
+.today-head h2 {
+  margin: 0.2rem 0 0.4rem;
+}
+
+.today-block {
+  margin-top: 1.4rem;
+  padding: 0.9rem 1.05rem;
+  border-left: 3px solid var(--line-strong);
+  background: var(--surface-card);
+}
+
+.today-block-alert {
+  border-left-color: var(--red);
+  background: var(--surface-danger);
+}
+
+.today-block h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+}
+
+.today-block ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.today-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.today-list li + li {
+  margin-top: 0.6rem;
+}
+
+/* 地址要能直接給司機或櫃檯看，字級放大並允許選取複製。 */
+.today-address {
+  font-size: 1.06rem;
+  line-height: 1.5;
+  user-select: all;
+}
