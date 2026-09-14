@@ -630,7 +630,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
     warsaw: 5, krakow: 7, wroclaw: 4, poznan: 7,
   });
-  assert.deepEqual(cityFood.map(group => group.items.length), [7, 9, 6, 5]);
+  assert.deepEqual(cityFood.map(group => group.items.length), [7, 10, 6, 5]);
   assert.equal(foods.length, 12);
 
   assert.equal(fares.length, 21);
@@ -1320,7 +1320,7 @@ test('城市推薦整合完整候選與既有情報，同店不重複', async ()
   const { cityDining, cityFood, snacksAndCafes } = await import('../src/data/dining.js');
   for (const [i, city] of ['warsaw', 'krakow', 'wroclaw', 'poznan'].entries()) {
     const rows = mergeCityDining(city, cityDining[city], cityFood[i].items, snacksAndCafes[city]);
-    assert.equal(rows.filter(row => row.selected).length, [10, 5, 6, 3][i]);
+    assert.equal(rows.filter(row => row.selected).length, [10, 6, 6, 3][i]);
     assert.equal(new Set(rows.map(row => row.name.toLowerCase())).size, rows.length);
     for (const original of cityDining[city]) {
       assert.ok(rows.some(row => row.notes.includes(original.highlight)), `${city}: ${original.name} 情報遺失`);
@@ -1342,13 +1342,13 @@ test('備案與小吃咖啡廳併入同一份清單，排序為候選 → 主推
     assert.ok(group.items.some(item => item.role === 'backup'), `${group.city} 缺少備案`);
   }
 
-  const order = { backup: 2, snack: 3 };
+  const order = { backup: 3, snack: 4 };
   for (const [i, city] of cities.entries()) {
     const rows = mergeCityDining(city, cityDining[city], cityFood[i].items, snacksAndCafes[city]);
     // 精煉後每座城市維持在可決策的規模，不再是三份彼此重複的清單。
     assert.ok(rows.length <= 22, `${city} 餐廳清單過長：${rows.length}`);
-    const rank = rows.map(row => (row.selected ? 0 : order[row.role] ?? 1));
-    assert.deepEqual(rank, [...rank].sort((a, b) => a - b), `${city} 排序未依候選 → 主推 → 備案 → 小吃`);
+    const rank = rows.map(row => (row.selected ? 0 : row.mustEat ? 1 : order[row.role] ?? 2));
+    assert.deepEqual(rank, [...rank].sort((a, b) => a - b), `${city} 排序未依候選 → 必吃 → 主推 → 備案 → 小吃`);
     // 小吃名單裡已經是主推或備案的店不得被降級成小吃列。
     for (const snack of snacksAndCafes[city]) {
       assert.ok(rows.some(row => row.name === snack.name || row.hours === snack.hours),
@@ -1498,4 +1498,89 @@ test('四個城市的資料接線全部解析得到，不會靜默產生空區�
       assert.ok(city.photo?.[field], `${fileKey}: 缺少 ${field} 照片`);
     }
   }
+});
+
+test('每日餐位全部出現在對應城市指南，且雙向連結對得上', async () => {
+  const { mergeCityDining, plannedMealsFor, mustEatsFor, cityGuides, detectCity } =
+    await import('../src/templates/city-dining.mjs');
+  const { cityDining, cityFood, snacksAndCafes } = await import('../src/data/dining.js');
+  const { dayDining } = await import('../src/data/day-dining.js');
+  const { days } = await import('../src/data/trip.js');
+  const cityNames = { warsaw: '華沙', krakow: '克拉科夫', wroclaw: '樂斯拉夫', poznan: '波茲南' };
+
+  // 對照名單不得回到手寫：一旦寫死，新增每日餐位就會靜默漏標。
+  const source = fs.readFileSync(new URL('../src/templates/city-dining.mjs', import.meta.url), 'utf8');
+  assert.doesNotMatch(source, /const selections = \{/, '城市／每日對照名單不得寫死');
+
+  const tables = {};
+  for (const [i, city] of Object.keys(cityNames).entries()) {
+    tables[city] = mergeCityDining(city, cityDining[city], cityFood[i].items, snacksAndCafes[city]);
+  }
+
+  // 每一筆排定的餐位都要在該城市表裡、標成候選、並連回當日行程
+  let planned = 0;
+  for (const city of Object.keys(cityNames)) {
+    for (const { day, item } of plannedMealsFor(city)) {
+      const row = tables[city].find(entry => entry.name === item.name);
+      assert.ok(row, `${cityNames[city]} 少了 Day ${day} 的餐位「${item.name}」`);
+      assert.ok(row.selected, `${cityNames[city]}「${item.name}」沒有標成你的候選`);
+      assert.ok(row.plans.some(plan => plan.includes(`day-${String(day).padStart(2, '0')}.html#day-food`)),
+        `${cityNames[city]}「${item.name}」沒有連回 Day ${day}`);
+      planned += 1;
+    }
+  }
+  assert.ok(planned >= 25, `排進城市指南的餐位過少（${planned}）`);
+
+  // 順路必吃若在城市表找得到同一家店，就必須被標記
+  for (const city of Object.keys(cityNames)) {
+    for (const { day, item } of mustEatsFor(city)) {
+      const row = tables[city].find(entry => entry.plans.some(plan =>
+        plan.includes(`day-${String(day).padStart(2, '0')}.html#day-food`) && plan.includes('順路必吃')));
+      if (!row) continue;
+      assert.ok(row.selected || row.mustEat, `${cityNames[city]}「${item.name}」標記遺失`);
+    }
+  }
+
+  // 每一筆 dayDining（除了明確 cityGuide:false 的）都必須被某座城市收走
+  for (const [day, items] of Object.entries(dayDining)) {
+    for (const item of items) {
+      if (item.cityGuide === false) continue;
+      const city = detectCity(item.address, item.map);
+      assert.ok(city, `Day ${day}「${item.name}」判斷不出城市，將從城市指南消失`);
+      assert.ok(tables[city].some(entry => entry.name === item.name),
+        `Day ${day}「${item.name}」沒有進到 ${cityNames[city]} 的餐廳表`);
+    }
+  }
+
+  // 每日頁要連到該日餐位所在城市的指南，城市頁的 Day 連結要指向存在的頁面
+  const built = new Set(htmlFiles());
+  for (const day of days) {
+    const html = read(`day-${String(day.n).padStart(2, '0')}.html`);
+    if (!(dayDining[day.n] || []).length && !(day.eat || []).length) continue;
+    const expected = [...new Set((dayDining[day.n] || []).map(item => detectCity(item.address, item.map))
+      .concat((day.eat || []).map(item => detectCity(item.place, item.map))).filter(Boolean))];
+    for (const city of expected) {
+      assert.ok(html.includes(`href="${cityGuides[city].file}#city-dining"`),
+        `Day ${day.n} 沒有連到${cityNames[city]}城市指南`);
+    }
+  }
+  for (const [city, guide] of Object.entries(cityGuides)) {
+    const html = read(guide.file);
+    for (const [, target] of html.matchAll(/href="(day-\d\d\.html)#day-food"/g)) {
+      assert.ok(built.has(target), `${cityNames[city]}城市指南連到不存在的 ${target}`);
+    }
+    assert.ok(html.includes('#day-food'), `${cityNames[city]}城市指南沒有任何回連當日行程的連結`);
+  }
+});
+
+test('城市判斷不會把華沙的 Krakowskie Przedmieście 當成克拉科夫', async () => {
+  const { detectCity } = await import('../src/templates/city-dining.mjs');
+  assert.equal(detectCity('Krakowskie Przedmieście 42/44, Warszawa'), 'warsaw');
+  assert.equal(detectCity('Grodzka 35, Kraków'), 'krakow');
+  assert.equal(detectCity('Stawowa 23, Wrocław'), 'wroclaw');
+  assert.equal(detectCity('Strzelecka 13, Poznań'), 'poznan');
+  assert.equal(detectCity('https://www.google.com/maps/search/?api=1&query=Okraglak+Plac+Nowy+Krakow'), 'krakow');
+  // 判斷不出來時回 null，寧可少標也不要標錯
+  assert.equal(detectCity('Karczma Górnicza Kopalnia Soli Wieliczka'), null);
+  assert.equal(detectCity(''), null);
 });

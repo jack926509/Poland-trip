@@ -193,6 +193,8 @@ export const dayDining = {
     {
       "role": "早餐",
       "name": "飯店早餐／住宿附近咖啡館",
+      "//": "不是特定餐廳，只是「住宿附近當天開門的店」，因此不推進城市指南的餐廳表。",
+      "cityGuide": false,
       "address": "Hotel Metropol Warszawa",
       "note": "以住宿附近、當天已開門的店為主；導航為飯店位置。保留退房與機場交通時間，不專程追店。",
       "map": "https://www.google.com/maps/search/?api=1&query=%E9%A3%AF%E5%BA%97%E6%97%A9%E9%A4%90%EF%BC%8F%E4%BD%8F%E5%AE%BF%E9%99%84%E8%BF%91%E5%92%96%E5%95%A1%E9%A4%A8%20Hotel%20Metropol%20Warszawa"

@@ -1,4 +1,5 @@
 import { dayDining } from '../data/day-dining.js';
+import { cityGuides, detectCity } from './city-dining.mjs';
 import { renderLayout } from './layout.mjs';
 import { renderInteractiveMap } from './map.mjs';
 import { renderPhotoGallery } from './photo-gallery.mjs';
@@ -86,10 +87,22 @@ function renderDayFood(day) {
     entries.length - eatCount ? `${entries.length - eatCount} 家候選` : '',
     eatCount ? `${eatCount} 項順路必吃` : '',
   ].filter(Boolean).join(' · ');
+
+  // 這一天的餐位落在哪幾座城市，就連到哪幾份城市指南（跨城日會有兩條）。
+  // 城市頁的同一家店也會標出是哪一天並連回來，兩邊互相對得上。
+  const guideCities = [...new Set(entries
+    .map(entry => detectCity(entry.meta, entry.map))
+    .filter(Boolean))]
+    // 跨城日依當天的移動方向排（day.city 寫成「克拉科夫 → 樂斯拉夫」），而不是資料出現順序
+    .sort((a, b) => day.city.indexOf(cityGuides[a].name) - day.city.indexOf(cityGuides[b].name));
+  const guides = guideCities.length ? `<p class="day-food-guides">${guideCities.map(city =>
+    `<a href="${cityGuides[city].file}#city-dining">${cityGuides[city].name}城市指南的完整餐廳清單 →</a>`).join('')}</p>` : '';
+
   return `<article class="card day-dining" id="day-food" aria-labelledby="day-food-heading">
     <span class="eyebrow">Dining</span><h3 id="day-food-heading">當日餐飲</h3>
     <p class="food-map-note">${summary}。依當天動線擇一用餐；候選尚未訂位，出發前確認營業與最後點餐時間。</p>
     <ul class="day-food-list">${entries.map(renderDayFoodItem).join('')}</ul>
+    ${guides}
   </article>`;
 }
 

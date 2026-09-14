@@ -488,6 +488,14 @@ export const cityFood = [
         "role": "primary"
       },
       {
+        "tag": "Pierogi",
+        "name": "Pierożki u Vincenta",
+        "note": "Kazimierz 小店，份量與價位親民，適合不想走遠的安靜一餐；Day 3、Day 4 均列為順路必吃。",
+        "book": "walk",
+        "map": "https://www.google.com/maps/search/?api=1&query=Piero%C5%BCki%20u%20Vincenta%2C%20B%C5%82ogos%C5%82awionej%20Bronis%C5%82awy%2C%20Krak%C3%B3w",
+        "role": "primary"
+      },
+      {
         "tag": "Zapiekanka",
         "name": "Okrąglak（Plac Nowy 圓亭）",
         "note": "plac Nowy 4B · 多家 zapiekanka 窗口；Day 2 晚餐順路",
