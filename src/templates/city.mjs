@@ -8,24 +8,7 @@ const bookingLabels = {
   walk: '現場前往',
 };
 
-/**
- * 餐廳卡片的地圖連結。單店用 item.map；一格寫兩家店（例如「U Fukiera / Polka」）
- * 用 item.maps 各給一條，避免一條連結指錯店。
- *
- * 評分與評論數是每天都在變的動態快照，本站刻意不保存（見 dining.js 與
- * 「不保存無日期的動態 Google 星等」守門測試），改由這條連結帶去 Google Maps 看即時分數，
- * 因此連結文字寫明點進去會看到什麼。
- */
-function renderFoodMapLinks(item) {
-  const links = item.maps?.length
-    ? item.maps.map(entry => ({ label: `${entry.name} 評分與導航 →`, url: entry.url }))
-    : (item.map ? [{ label: 'Google Maps 評分與導航 →', url: item.map }] : []);
-  if (!links.length) return '';
-  return `<p class="food-map-links">${links.map(link =>
-    `<a href="${link.url}" target="_blank" rel="noopener noreferrer">${link.label}</a>`).join('')}</p>`;
-}
-
-/** 合併後的餐廳清單靠標籤區分來源：你的候選、主推、備案。 */
+/** 合併後的餐廳清單靠標籤區分來源：你的候選、主推、備案、小吃 · 咖啡。 */
 function diningBadge(item) {
   if (item.selected) return '<span class="city-dining-choice">你的候選</span>';
   if (item.role === 'backup') return '<span class="city-dining-role">備案</span>';
@@ -84,23 +67,26 @@ export function renderCity({
     </tr>`).join('');
 
   const mergedDining = mergeCityDining(cityKey, dining, cityFoodForCity?.items || [], snacksAndCafesForCity);
+  // 店名本身就是 Google Maps 連結（底線超連結），不再另開一欄放連結。
+  const renderDiningName = item => (item.map
+    ? `<a class="city-dining-name" href="${item.map}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${item.name} 的 Google Maps">${item.name}</a>`
+    : `<strong>${item.name}</strong>`);
   const renderDiningRow = item => `<tr class="${item.selected ? 'city-dining-selected' : ''}">
-    <th scope="row"><strong>${item.name}</strong>${diningBadge(item)}${item.address ? `<p class="food-map-note">${item.address}</p>` : ''}</th>
+    <th scope="row">${renderDiningName(item)}${diningBadge(item)}${item.address ? `<p class="food-map-note">${item.address}</p>` : ''}</th>
     <td>${stableTier(item.tier || item.tag || '待補充')}</td>
     <td>${item.notes.length ? item.notes.join('；') : '依店家當日菜單確認'}</td>
     <td>${item.plan ? `<p>${item.plan}</p>` : `<p>${planFallback[item.role] || '依當天動線與胃口安排'}</p>`}<p class="food-map-note">${item.hours ? `營業時間：${item.hours}` : (bookingLabels[item.book] || '營業與訂位請向店家確認')}</p></td>
-    <td>${renderFoodMapLinks(item)}</td>
   </tr>`;
   const primaryDiningHtml = mergedDining.length ? `
     <section class="section" id="city-dining">
       <div class="section-heading"><span class="section-num">Dining</span><h2>行程餐廳推薦</h2></div>
       <p class="lead" id="city-dining-description">餐廳、備案與小吃咖啡廳整併為這一張表，共 ${mergedDining.length} 家：你的候選列在最上方，接著是主推、備案，最後是隨時可插進動線的小吃與咖啡廳。營業時間屬動態資料，只列有公開來源的，出發前仍要重查。</p>
-      <p class="lead">最右欄的連結同時是導航與評分入口：<b>評分與評論數本站不保存</b>，因為那是每天都在變的快照，存下來到了現場就是舊的。點連結會在 Google Maps 上看到當下的分數與評論；多數連結開的是搜尋結果頁，分數就顯示在結果清單上，點進店家卡可看完整評論——連鎖與同名店請先對門牌再看分數。</p>
-      <p class="city-dining-scroll-hint">手機可左右滑動列表，查看完整欄位。</p>
+      <p class="lead"><b>點店名即可開啟 Google Maps</b>（導航與即時評分都在那裡）。<b>評分與評論數本站不保存</b>，因為那是每天都在變的快照，存下來到了現場就是舊的；連鎖與同名店請先對門牌再看分數。</p>
+      <p class="city-dining-scroll-hint">平板寬度可左右滑動列表查看完整欄位；手機會自動改為一家一張卡片。</p>
       <div class="table-wrap city-dining-table-wrap" role="region" aria-label="行程餐廳推薦列表" tabindex="0">
         <table class="table-editorial city-dining-table" aria-describedby="city-dining-description">
           <caption>候選、主推、備案與小吃咖啡廳合併後的行程餐廳清單</caption>
-          <thead><tr><th scope="col">餐廳／地址</th><th scope="col">類型／評選標記</th><th scope="col">料理特色／推薦餐點</th><th scope="col">行程安排／訂位提醒</th><th scope="col">地圖導航 · 即時評分</th></tr></thead>
+          <thead><tr><th scope="col">餐廳／地址</th><th scope="col">類型／評選標記</th><th scope="col">料理特色／推薦餐點</th><th scope="col">行程安排／訂位提醒</th></tr></thead>
           <tbody>${mergedDining.map(renderDiningRow).join('')}</tbody>
         </table>
       </div>
