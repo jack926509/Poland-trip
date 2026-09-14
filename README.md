@@ -57,6 +57,38 @@ Day 01／06／07／08 共用華沙同一張。若要補充照片，請沿用 CRE
 - 「可查／購」仍計入未完成項目。只有收到訂票確認後才改為「已訂妥」或「已完成」，並核對 `days`、`trains`、`reservations` 與 `bookingTiers` 的相應行程；票號、訂位代碼與付款資料另存私人票券。
 - 資料庫 CSV 匯入只更新 `travel-database.js` 的對應條目，不會替使用者完成購票或自動更新 `todoGroups`。修改後執行 `env -u NODE_OPTIONS ./verify.sh`，再提交部署。
 
+## 2026-09-14 餐廳資料收斂併入 main，分支全數清空
+
+**餐廳資料收斂（PR #76）**——原本在分支上做的「自選標記」與「每日候選去重」，與 main 這幾天另做的
+餐飲整併（PR #71–#74）改到同一批資料，合併時以 **main 的資料結構為準、只加不減**：
+
+- 餐廳名稱裡寫死的「✦ 自選」前綴全部移除，改由 `day-dining.js` 推導「你的候選」徽章；
+  測試禁止「✦ 自選」字樣回頭出現，並驗 24 家自選店全部落在資料層且被標記。
+- `day-dining.js` 放每日首選／替補；`trip.js` 的 `eat[]` 只放額外順路點（Endzior、El Gato、Dessert Boutique）。
+  新增每日候選：NOAH（Day 2）、Karczma Górnicza（Day 4，不列城市指南）、U Fukiera（Day 7）、
+  Café Bristol（Day 7／8）、Prasowy（Day 8）。
+- 營業時間核實更新：Pod Temidą、Wrocławska、Pyra Bar、Prasowy、Blikle、Konspira；
+  新增小吃：Café Bristol、El Gato、Dessert Boutique。
+- 資料計數快照更新：城市指南自選店 `[12,5,4,3]`、小吃 `[6,5,6,4]`。
+
+> **刻意未併入**：分支原本刪掉的米其林名單與部分小吃店（cityFood）這次**沒有拿掉**。
+> 若確定要刪，從 main 直接改，不要再回頭找舊分支。
+
+**分支整理**——本機與 GitHub 只剩 `main`：
+
+| 處置 | 分支 |
+|---|---|
+| 合併後刪除 | `claude/laughing-volta-c0gd8y`（PR #75 車票連結健檢）、`feat/dining-convergence-20260913`（PR #76） |
+| 不採用，關閉刪除 | `feat/animated-railway-journal`（PR #68 火車環遊動畫） |
+| 已在 main，刪除 | `feat/city-dining-unified`、`feat/daily-dining-route`、`fix/dashboard-date-csv-booking`、`fix/itinerary-ux-review-20260908`、`plan/paper-travel-journal-redesign-20260825` 與 5 條 `claude/*` |
+| 本機未推、刪除 | `prototype/uxui-three-directions-20260825`（UXUI 三方向原型） |
+
+`.playwright-mcp/`（瀏覽器驗收留下的快照）加入 `.gitignore`。
+
+驗收：`node --test tests/*.test.mjs` 194 項全過；`env -u NODE_OPTIONS ./verify.sh` 通過；
+正式站以真實瀏覽器實測——華沙城市指南餐廳表 12／21 列、無「✦ 自選」、有「你的候選」，
+Day 2 含 NOAH，console 0 錯誤，375px 無水平捲軸。
+
 ## 2026-09-14 車票訂位連結全面健檢，納入 Moj Bus
 
 **健檢結果（365 條外部連結，涵蓋 trip／tickets／transit／dining／shopping／essentials／資料庫）**：
