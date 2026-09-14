@@ -1641,3 +1641,48 @@ test('表格排版規則：最小寬度只給寬表，列高收緊不得外洩�
   assert.match(css, /\.table-editorial \.number \.timeline-note\s*\{[^}]*white-space:\s*normal/,
     '.number 內的附註必須可換行');
 });
+
+test('實用資料與每日行程、城市指南互相連結', () => {
+  const stripNav = html => {
+    const main = /<main\b[^>]*>([\s\S]*?)<\/main>/.exec(html)?.[1] || html;
+    return main.replace(/<nav[\s\S]*?<\/nav>/g, '');
+  };
+
+  // 實用資料 → 每日／城市（原本內文是 0 條，只靠導覽選單）
+  const expected = {
+    'practical/tickets.html': { pattern: /href="\.\.\/city-[a-z]+\.html"/g, least: 15, what: '門票景點連回城市指南' },
+    'practical/booking.html': { pattern: /href="\.\.\/day-\d\d\.html"/g, least: 5, what: '火車班次連回當日行程' },
+    'practical/transit.html': { pattern: /href="\.\.\/city-[a-z]+\.html"/g, least: 4, what: '市區交通票價連回城市指南' },
+    'practical/dining.html': { pattern: /href="\.\.\/city-[a-z]+\.html#city-dining"/g, least: 8, what: '米其林訂位連回城市餐廳表' },
+  };
+  for (const [file, { pattern, least, what }] of Object.entries(expected)) {
+    const found = (stripNav(read(file)).match(pattern) || []).length;
+    assert.ok(found >= least, `${file} 的「${what}」只有 ${found} 條，應至少 ${least} 條`);
+  }
+
+  // 每日／城市 → 實用資料
+  for (const day of [1, 2, 3, 4, 5, 6, 7, 8]) {
+    const body = stripNav(read(`day-${String(day).padStart(2, '0')}.html`));
+    assert.match(body, /href="practical\/todos\.html"/, `Day ${day} 沒有連到待辦頁`);
+    assert.match(body, /href="practical\/tickets\.html"/, `Day ${day} 沒有連到門票頁`);
+  }
+  for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
+    const body = stripNav(read(file));
+    for (const target of ['practical/tickets.html', 'practical/transit.html', 'practical/dining.html']) {
+      assert.match(body, new RegExp(`href="${target.replace('/', '\\/')}"`), `${file} 沒有連到 ${target}`);
+    }
+  }
+});
+
+test('實用資料沒有逾期未查的項目，未完成項目都有重查日期', async () => {
+  const { auditDataFreshness } = await import('../tools/audit-map-pins.mjs');
+  const { meta } = await import('../src/data/trip.js');
+  // 以資料自己的出發日為基準，測試不會因為今天的日期而飄移
+  const fresh = auditDataFreshness(meta.checkedAt || '2026-09-14');
+
+  assert.deepEqual(fresh.overdue, [], `有逾期未查的實用資料：${fresh.overdue.join('、')}`);
+  // recheckAt 缺席時 dashboard 的 overdue() 永遠回 false，未完成項目若沒有日期就會永遠隱形
+  assert.deepEqual(fresh.untrackedOpen, [],
+    `未完成卻沒有重查日期（永遠不會被標為逾期）：${fresh.untrackedOpen.join('、')}`);
+  assert.ok(fresh.beforeDeparture.length > 0, '出發前應有待查項目，資料可能未維護');
+});

@@ -1,6 +1,8 @@
 import { pathToFileURL } from 'node:url';
 import { mapPins, mapPinChecks, pinCategoryLegend } from '../src/data/cities.js';
 import { cityDining, cityFood, snacksAndCafes } from '../src/data/dining.js';
+import { databaseEntries } from '../src/data/travel-database.js';
+import { meta } from '../src/data/trip.js';
 import { mergeCityDining } from '../src/templates/city-dining.mjs';
 
 const supportedStatuses = new Set(['coordinate-verified', 'area-reference', 'unverified']);
@@ -109,6 +111,33 @@ export function auditDiningPinCoverage() {
   return { listed, covered, byCity, orphanPins };
 }
 
+/**
+ * 實用資料的時效性。動態資料（票價、班次、開放時間）只能在出發前重查，
+ * 這裡把「還有幾筆要在出發前查完、哪幾筆逾期」印出來，才不會拖到上飛機才發現。
+ * 沒有 recheckAt 的項目若是 verified 且內容本質靜態（行李規則、自來水可飲用）是合理的，
+ * 但若是 recheck／pending／private-required 就會永遠不被標為逾期，必須點出來。
+ */
+export function auditDataFreshness(today = new Date().toISOString().slice(0, 10)) {
+  const depart = meta.travelStart;
+  const openStatuses = new Set(['recheck', 'pending', 'private-required']);
+  const overdue = [];
+  const beforeDeparture = [];
+  const duringTrip = [];
+  const untrackedOpen = [];
+  let untrackedVerified = 0;
+  for (const entry of databaseEntries) {
+    if (!entry.recheckAt) {
+      if (openStatuses.has(entry.status)) untrackedOpen.push(`${entry.id}[${entry.status}]`);
+      else untrackedVerified += 1;
+      continue;
+    }
+    if (entry.recheckAt < today) overdue.push(`${entry.recheckAt} ${entry.id}`);
+    else if (entry.recheckAt < depart) beforeDeparture.push(`${entry.recheckAt} ${entry.id}`);
+    else duringTrip.push(`${entry.recheckAt} ${entry.id}`);
+  }
+  return { today, depart, total: databaseEntries.length, overdue, beforeDeparture, duringTrip, untrackedOpen, untrackedVerified };
+}
+
 function runCli() {
   const requireAll = process.argv.includes('--require-all');
   const result = auditMapPins(mapPins, mapPinChecks, pinCategoryLegend);
@@ -131,6 +160,15 @@ function runCli() {
     console.log(`  圖釘有、餐廳表已無此店：${coverage.orphanPins.join('、')}`);
   }
   console.log('  （圖釘需要查證過的座標，不能由 Google Maps 搜尋連結推得；補齊要另行查核。）');
+
+  const fresh = auditDataFreshness();
+  console.log('');
+  console.log(`實用資料時效（今天 ${fresh.today}，出發 ${fresh.depart}，共 ${fresh.total} 筆）：`);
+  console.log(`  已逾期 ${fresh.overdue.length}、出發前到期 ${fresh.beforeDeparture.length}、旅途中到期 ${fresh.duringTrip.length}、無重查日期 ${fresh.untrackedVerified + fresh.untrackedOpen.length}`);
+  if (fresh.overdue.length) console.log(`  ⚠ 已逾期：${fresh.overdue.join('、')}`);
+  if (fresh.beforeDeparture.length) console.log(`  出發前要查完：${fresh.beforeDeparture.sort().join('、')}`);
+  if (fresh.untrackedOpen.length) console.log(`  ⚠ 未完成卻沒有重查日期（永遠不會被標為逾期）：${fresh.untrackedOpen.join('、')}`);
+  else console.log(`  （${fresh.untrackedVerified} 筆無重查日期者皆為 verified 且內容本質靜態，屬合理）`);
 
   if (result.issues.length) {
     console.error(`資料錯誤：\n- ${result.issues.join('\n- ')}`);

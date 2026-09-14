@@ -1,4 +1,22 @@
 import { renderLayout } from './layout.mjs';
+import { cityGuideByName, dayPageForDate } from './city-dining.mjs';
+
+/**
+ * 實用資料原本與每日行程、城市指南完全沒有內容連結（只靠導覽選單）。
+ * 這些欄位本來就帶著對應鍵——門票是「城市 · 景點」、火車有日期、交通票價按城市分、
+ * 米其林訂位的店名帶「（城市）」——接回去即可。對不上就不給連結，不硬湊。
+ * 實用資料頁都在 practical/ 之下，所以前綴是 '../'。
+ */
+function cityLink(text, suffix = '') {
+  const guide = cityGuideByName(text, '../');
+  return guide ? `<a class="cross-link" href="${guide.href}${suffix}">${guide.name}指南 →</a>` : '';
+}
+
+function dayLink(date) {
+  const day = dayPageForDate(date, '../');
+  return day ? `<a class="cross-link" href="${day.href}">Day ${day.n} →</a>` : '';
+}
+
 import { getTaipeiToday, toComparableDate, isOpenTodoStatus, isOpenEntryStatus, calculateDashboard, dashboardCsv, initializeDashboard } from '../scripts/dashboard.js';
 
 function escapeHtml(value) {
@@ -63,7 +81,7 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
   const trainRows = trains.map(train => `
     <tr>
       <td><b>${train.seg}</b>${train.leg ? `<br><span class="timeline-note">${train.leg}</span>` : ''}${train.status ? `<br><span class="tag-todo">${train.status}</span>` : ''}</td>
-      <td class="number">${train.date}</td><td>${train.type}</td>
+      <td class="number">${train.date}${dayLink(train.date) ? `<br>${dayLink(train.date)}` : ''}</td><td>${train.type}</td>
       <td class="number time-range">${train.dep}&nbsp;→&nbsp;${train.arr}</td>
       <td class="number">${train.dur}</td>
       <td><b>${train.saleOpens ? `${escapeHtml(train.saleOpens)} 起預售` : '官方日期待確認'}</b>${train.saleCheckedAt ? `<br><span class="timeline-note">PKP Intercity 官方售票系統查核：${escapeHtml(train.saleCheckedAt)}</span>` : ''}</td>
@@ -239,7 +257,7 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
       <td>${item.bibList.join(' · ') || '—'}</td>
     </tr>`).join('');
   const reservationRows = michelinReservations.map(item => `
-    <tr><td>${item.mapUrl ? `<a href="${item.mapUrl}" target="_blank" rel="noopener"><b>${item.restaurant}</b></a>` : `<b>${item.restaurant}</b>`}</td><td class="number">${item.perPerson}</td><td>${item.channel}${item.mapUrl ? `<br><a href="${item.mapUrl}" target="_blank" rel="noopener">Google Maps 定位 →</a>` : ''}</td></tr>`).join('');
+    <tr><td>${item.mapUrl ? `<a href="${item.mapUrl}" target="_blank" rel="noopener"><b>${item.restaurant}</b></a>` : `<b>${item.restaurant}</b>`}</td><td class="number">${item.perPerson}</td><td>${item.channel}${item.mapUrl ? `<br><a href="${item.mapUrl}" target="_blank" rel="noopener">Google Maps 定位 →</a>` : ''}${cityLink(item.restaurant, '#city-dining') ? `<br>${cityLink(item.restaurant, '#city-dining')}` : ''}</td></tr>`).join('');
   const hoursRows = verifiedRestaurantHours.map(item => `
     <tr><td>${item.city}</td><td><a href="${item.url}" target="_blank" rel="noopener"><b>${item.name}</b></a><br>${item.address}${item.mapUrl ? `<br><a href="${item.mapUrl}" target="_blank" rel="noopener">Google Maps 定位 →</a>` : ''}</td><td>${item.hours}</td><td>${item.feature}</td></tr>`).join('');
   const content = `
@@ -262,7 +280,7 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
 export function renderTickets({ fares, ticketsByCity, notices = [] }) {
   const fareRows = fares.map(item => `
     <tr>
-      <td><a href="${item.mapUrl}" target="_blank" rel="noopener"><b>${item.name}</b></a></td>
+      <td><a href="${item.mapUrl}" target="_blank" rel="noopener"><b>${item.name}</b></a>${cityLink(item.name) ? `<br>${cityLink(item.name)}` : ''}</td>
       <td class="number">${item.fullPrice}</td><td class="number">${item.discountPrice}</td>
       <td>${item.note || '—'}<br><a href="${item.officialUrl}" target="_blank" rel="noopener">官網確認 →</a></td>
     </tr>`).join('');
@@ -287,7 +305,7 @@ export function renderTickets({ fares, ticketsByCity, notices = [] }) {
 }
 
 export function renderTransit({ transitFares, airportTransit, recommendedApps, passChecklist, usefulRoutes, practical = [] }) {
-  const fareRows = transitFares.map(item => `<tr><td><a href="${item.officialUrl}" target="_blank" rel="noopener"><b>${item.city}</b></a><br><small>查核 ${item.checkedAt}</small></td><td>${item.short}</td><td>${item.min90}</td><td>${item.hour24}</td><td>${item.note}</td></tr>`).join('');
+  const fareRows = transitFares.map(item => `<tr><td><a href="${item.officialUrl}" target="_blank" rel="noopener"><b>${item.city}</b></a><br><small>查核 ${item.checkedAt}</small>${cityLink(item.city) ? `<br>${cityLink(item.city)}` : ''}</td><td>${item.short}</td><td>${item.min90}</td><td>${item.hour24}</td><td>${item.note}</td></tr>`).join('');
   const airportRows = airportTransit.map(item => `<tr><td><b>${item.route}</b></td><td>${item.method}</td><td class="number">${item.price}</td><td class="number">${item.time}</td><td>${item.note}</td></tr>`).join('');
   const appCards = recommendedApps.map(item => `<article class="card"><h3>${item.name}</h3><p>${item.desc}</p></article>`).join('');
   const practicalCards = practical.map(item => `<article class="card"><span class="eyebrow">${item.tag}</span><h3>${item.name}</h3><p>${item.note}</p></article>`).join('');

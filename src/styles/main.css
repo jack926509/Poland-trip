@@ -4628,6 +4628,22 @@ h3 {
 .day-food-map:hover,
 .day-food-map:focus-visible { border-color: var(--accent); background: var(--accent-pale); }
 
+/* 實用資料表格裡接回每日行程／城市指南的連結。放在儲存格內，不另佔一欄。 */
+.cross-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+.cross-link:hover,
+.cross-link:focus-visible { text-decoration-thickness: 2px; }
+
 /* 當日餐飲卡底部連回城市指南；城市頁的同一家店也會連回當日行程。 */
 .day-food-guides {
   display: flex;

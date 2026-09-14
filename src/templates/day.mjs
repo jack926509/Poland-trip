@@ -188,6 +188,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
         <h3>${day.train.from || ''}${day.train.to ? ` → ${day.train.to}` : ''}</h3>
         <p><b>${day.train.dep} → ${day.train.arr}</b> · ${day.train.dur} · ${escapeHtml(trainPrice)}</p>
         ${day.train.saleOpens ? `<p><b>${escapeHtml(day.train.saleOpens)} 起預售</b> · PKP Intercity 官方售票系統查核：${escapeHtml(day.train.saleCheckedAt)}</p>` : ''}
+        <p class="action-links"><a href="practical/booking.html#rail-itinerary">訂票與交通頁的完整班次表 →</a></p>
       </article>
     </section>` : '';
 
@@ -319,6 +320,7 @@ ${coverHtml}
       <div class="section-heading"><span class="section-num">Preparation</span><h2>訂票與提醒</h2></div>
       ${mustBookHtml}
       ${warnHtml}
+      <p class="action-links"><a href="practical/todos.html">全部待辦與查核狀態 →</a><a href="practical/tickets.html">門票價格與開放時間 →</a></p>
     </section>
     ${constraintHtml}
     ${dayMap ? renderInteractiveMap({ id: `map-day-${day.n}`, title: `Day ${day.n} 行程地圖`, mapData: dayMap, mapChecks, legend, note: dayMap.note }) : ''}
