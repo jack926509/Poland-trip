@@ -57,33 +57,39 @@ Day 01／06／07／08 共用華沙同一張。若要補充照片，請沿用 CRE
 - 「可查／購」仍計入未完成項目。只有收到訂票確認後才改為「已訂妥」或「已完成」，並核對 `days`、`trains`、`reservations` 與 `bookingTiers` 的相應行程；票號、訂位代碼與付款資料另存私人票券。
 - 資料庫 CSV 匯入只更新 `travel-database.js` 的對應條目，不會替使用者完成購票或自動更新 `todoGroups`。修改後執行 `env -u NODE_OPTIONS ./verify.sh`，再提交部署。
 
-## 2026-09-14 城市指南餐廳清單整合與精煉
+## 2026-09-14 城市指南餐飲整併為單一張「行程餐廳推薦」表
 
-城市頁原本有「行程主餐廳推薦」與「備案餐廳」兩個區塊，是兩份互相重複的清單——
+城市頁原本有三個餐飲區塊：「行程主餐廳推薦」（表）、「備案餐廳」（卡片）、
+「小吃 · 牛奶吧 · 咖啡廳」（卡片）。前兩者是兩份互相重複的清單——
 NOAH、MOLÁM、Folga、Most、IDA、Tarasowa、Muga、SPOT.、Fromażeria、Posto、
-Kieliszki na Próżnej、kontakt、Wyraj 等十餘家同時出現在兩邊，要比較時得上下對照。
-本次把兩份合併成單一份「餐廳推薦」，並依明確標準刪減。
+Kieliszki na Próżnej、kontakt、Wyraj 等十餘家同時出現在兩邊，要比較得上下對照。
+三塊已整併為**單一張「行程餐廳推薦」表**，並依明確標準刪減。
 
+- **整併**：`templates/city-dining.mjs` 的 `mergeCityDining()` 把四個來源合成一份、
+  同店只留一列：城市餐飲情報（`cityDining`）、行程餐廳與備案（`cityFood` 的 `role`）、
+  小吃與咖啡廳（`snacksAndCafes`）、你的候選（`day-dining.js`）。
+  重複的店（Endzior、Konspira、Pyra Bar、Hala Koszyki、Bar Mleczny Pod Temidą…）
+  只會把營業時間補進既有那一列，不另開一列，也不會從主推被降級成小吃。
 - **資料層**：`src/data/dining.js` 的 `foodBackup` 匯出**已移除**，備案併入 `cityFood`，
-  以 `role: 'primary'`（主推）／`role: 'backup'`（備案）區分。
+  以 `role: 'primary'`（主推）／`role: 'backup'`（備案）區分；
+  `snacksAndCafes` 維持獨立資料來源，在表中標為 `role: 'snack'`。
   `build.mjs`、城市頁樣板與全站搜尋索引都不再讀 `foodBackup`。
 - **保留標準**（四層，寫在 `dining.js` 檔頭）：
   ① 你的候選（`day-dining.js` 挑出的店）② 米其林星級／必比登
   ③ 各分類代表（餃子、牛奶吧、市集、甜點、啤酒）④ 首選訂不到時真的會改去的備案。
-  已在「小吃 · 牛奶吧 · 咖啡廳」區塊列出的店不再於餐廳清單重複
-  （Bar Prasowy、A. Blikle、Zagoździński、Cukiernia Michałek、Café Camelot、
-  Browar Stu Mostów、Cukiernia Kandulski 等）；
-  沒有固定店址的品項（obwarzanek、jagodzianka、Bar Mleczny 牛奶吧、Beit Warszawa 周邊小館）
-  改由每日「順路必吃」處理，不佔餐廳列。
-- **刪減結果**：兩個區塊合計 **131 筆 → 單一清單 56 筆**
-  （華沙 17、克拉科夫 15、樂斯拉夫 13、波茲南 11）。
+  沒有固定店址的品項（obwarzanek、jagodzianka、「Bar Mleczny 牛奶吧」、
+  「Beit Warszawa 周邊小館」）改由每日「順路必吃」處理，不佔餐廳列。
+- **刪減結果**：三個區塊合計 **149 筆 → 單一表 69 筆**
+  （華沙 21、克拉科夫 18、樂斯拉夫 16、波茲南 14）。
   完整米其林名單沒有消失，仍在訂票頁的米其林摘要與訂位表。
-- **呈現**：單一「餐廳推薦」區塊，排序固定為 **你的候選 → 主推 → 備案**，
-  候選掛紅色「你的候選」標籤、備案掛灰色「備案」標籤，
-  備案列的「行程安排」欄顯示「首選訂不到或客滿時的替代」。導言會寫出該城共幾家。
-- **守門測試**：新增三項——`foodBackup` 必須不存在且每筆 `cityFood` 都要有 `role`、
-  每城合併後不超過 18 列且排序符合候選→主推→備案、
-  四個城市頁只輸出一個 `<h2>餐廳推薦</h2>` 且不得殘留舊的兩個區塊標題。
+- **呈現**：排序固定為 **你的候選 → 主推 → 備案 → 小吃 · 咖啡**，
+  候選掛紅色「你的候選」標籤，備案與小吃掛灰色「備案」／「小吃 · 咖啡」標籤。
+  「行程安排／訂位提醒」欄依類型給預設說明，有公開營業時間的改顯示營業時間。
+  導言會寫出該城共幾家。
+- **守門測試**：新增兩項、改寫兩項——`foodBackup` 必須不存在且每筆 `cityFood` 都要有 `role`、
+  每城合併後不超過 22 列且排序符合候選→主推→備案→小吃、
+  每家小吃咖啡廳都要出現在合併後的表裡且該列有定位連結、
+  四個城市頁只能有一個 `<h2>行程餐廳推薦</h2>` 且不得殘留舊的三個區塊標題。
 
 `env -u NODE_OPTIONS ./verify.sh` 全數通過（119 項測試）。
 

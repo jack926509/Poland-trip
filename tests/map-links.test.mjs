@@ -63,17 +63,22 @@ test('小吃與咖啡廳推薦四城齊全且每筆都有定位', () => {
   }
 });
 
-test('城市頁輸出小吃與咖啡廳區塊並附定位連結', () => {
+test('小吃與咖啡廳併入行程餐廳推薦表且保留定位連結', async () => {
+  const { mergeCityDining } = await import('../src/templates/city-dining.mjs');
   const pages = {
-    warsaw: 'city-warszawa.html', krakow: 'city-krakow.html',
-    wroclaw: 'city-wroclaw.html', poznan: 'city-poznan.html',
+    warsaw: ['city-warszawa.html', '華沙'], krakow: ['city-krakow.html', '克拉科夫'],
+    wroclaw: ['city-wroclaw.html', '樂斯拉夫'], poznan: ['city-poznan.html', '波茲南'],
   };
-  for (const [key, file] of Object.entries(pages)) {
+  for (const [key, [file, cityName]] of Object.entries(pages)) {
     const html = readFileSync(new URL(`../dist/${file}`, import.meta.url), 'utf8');
-    assert.ok(html.includes('小吃 · 牛奶吧 · 咖啡廳'), `${file} 缺少小吃區塊`);
+    assert.ok(html.includes('<h2>行程餐廳推薦</h2>'), `${file} 缺少行程餐廳推薦表`);
+    const rows = mergeCityDining(key, cityDining[key], cityFood.find(g => g.city === cityName).items, snacksAndCafes[key]);
     for (const item of snacksAndCafes[key]) {
       assert.ok(html.includes(item.name), `${file} 缺少 ${item.name}`);
-      assert.ok(html.includes(item.map), `${file} 缺少 ${item.name} 的定位連結`);
+      // 與候選或主推同店時只留一條定位連結，因此比對合併後那一列實際使用的連結。
+      const row = rows.find(entry => entry.name === item.name || entry.hours === item.hours);
+      assert.ok(row && isMapUrl(row.map), `${file}「${item.name}」合併後缺少定位連結`);
+      assert.ok(html.includes(row.map), `${file} 缺少 ${item.name} 的定位連結`);
     }
   }
 });

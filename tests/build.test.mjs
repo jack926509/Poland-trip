@@ -910,10 +910,10 @@ test('4 個城市頁含正確 Leaflet 圖釘數，合計 53', () => {
   assert.equal(total, 53);
 });
 
-test('城市頁完整呈現故事、景點、主餐廳、備案與拍照資訊', () => {
+test('城市頁完整呈現故事、景點、行程餐廳推薦與拍照資訊', () => {
   for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
     const html = read(file);
-    for (const heading of ['先理解這座城', '景點清單', '行程主餐廳推薦', '備案餐廳', '拍照建議']) {
+    for (const heading of ['先理解這座城', '景點清單', '行程餐廳推薦', '拍照建議']) {
       assert.ok(html.includes(heading), `${file} 缺少 ${heading}`);
     }
   }
@@ -1284,9 +1284,9 @@ test('所有拍照建議都有精確站位、方向與座標導航', () => {
 
 test('城市推薦整合完整候選與既有情報，同店不重複', async () => {
   const { mergeCityDining } = await import('../src/templates/city-dining.mjs');
-  const { cityDining, cityFood } = await import('../src/data/dining.js');
+  const { cityDining, cityFood, snacksAndCafes } = await import('../src/data/dining.js');
   for (const [i, city] of ['warsaw', 'krakow', 'wroclaw', 'poznan'].entries()) {
-    const rows = mergeCityDining(city, cityDining[city], cityFood[i].items);
+    const rows = mergeCityDining(city, cityDining[city], cityFood[i].items, snacksAndCafes[city]);
     assert.equal(rows.filter(row => row.selected).length, [10, 5, 6, 3][i]);
     assert.equal(new Set(rows.map(row => row.name.toLowerCase())).size, rows.length);
     for (const original of cityDining[city]) {
@@ -1296,35 +1296,41 @@ test('城市推薦整合完整候選與既有情報，同店不重複', async ()
   }
 });
 
-test('備案已併入同一份餐廳清單，候選在前、備案在後', async () => {
+test('備案與小吃咖啡廳併入同一份清單，排序為候選 → 主推 → 備案 → 小吃', async () => {
   const { mergeCityDining } = await import('../src/templates/city-dining.mjs');
-  const { cityDining, cityFood } = await import('../src/data/dining.js');
+  const { cityDining, cityFood, snacksAndCafes, foodBackup } = await import('../src/data/dining.js');
   const cities = ['warsaw', 'krakow', 'wroclaw', 'poznan'];
 
   // 備案不再是獨立資料來源，只能以 cityFood 的 role 標記存在。
-  const dining = await import('../src/data/dining.js');
-  assert.equal(dining.foodBackup, undefined, 'foodBackup 應已併入 cityFood');
+  assert.equal(foodBackup, undefined, 'foodBackup 應已併入 cityFood');
   for (const group of cityFood) {
     assert.ok(group.items.every(item => item.role === 'primary' || item.role === 'backup'),
       `${group.city} 有未標記 role 的餐廳`);
     assert.ok(group.items.some(item => item.role === 'backup'), `${group.city} 缺少備案`);
   }
 
+  const order = { backup: 2, snack: 3 };
   for (const [i, city] of cities.entries()) {
-    const rows = mergeCityDining(city, cityDining[city], cityFood[i].items);
-    // 精煉後每座城市維持在可決策的規模，不再是兩份重複的長清單。
-    assert.ok(rows.length <= 18, `${city} 餐廳清單過長：${rows.length}`);
-    const rank = rows.map(row => (row.selected ? 0 : row.role === 'backup' ? 2 : 1));
-    assert.deepEqual(rank, [...rank].sort((a, b) => a - b), `${city} 排序未依候選 → 主推 → 備案`);
+    const rows = mergeCityDining(city, cityDining[city], cityFood[i].items, snacksAndCafes[city]);
+    // 精煉後每座城市維持在可決策的規模，不再是三份彼此重複的清單。
+    assert.ok(rows.length <= 22, `${city} 餐廳清單過長：${rows.length}`);
+    const rank = rows.map(row => (row.selected ? 0 : order[row.role] ?? 1));
+    assert.deepEqual(rank, [...rank].sort((a, b) => a - b), `${city} 排序未依候選 → 主推 → 備案 → 小吃`);
+    // 小吃名單裡已經是主推或備案的店不得被降級成小吃列。
+    for (const snack of snacksAndCafes[city]) {
+      assert.ok(rows.some(row => row.name === snack.name || row.hours === snack.hours),
+        `${city}「${snack.name}」沒有併進行程餐廳推薦`);
+    }
   }
 });
 
-test('城市頁只輸出一個合併後的餐廳區塊', () => {
+test('城市頁只輸出一張行程餐廳推薦表', () => {
   for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
     const html = read(file);
-    assert.ok(html.includes('<h2>餐廳推薦</h2>'), `${file} 缺少合併後的餐廳區塊`);
+    assert.equal(html.split('<h2>行程餐廳推薦</h2>').length - 1, 1, `${file} 應只有一張行程餐廳推薦表`);
     assert.ok(!html.includes('<h2>行程主餐廳推薦</h2>'), `${file} 仍有舊的主餐廳區塊`);
     assert.ok(!html.includes('<h2>備案餐廳</h2>'), `${file} 仍有獨立的備案餐廳區塊`);
-    assert.ok(html.includes('city-dining-role'), `${file} 缺少備案標籤`);
+    assert.ok(!html.includes('<h2>小吃 · 牛奶吧 · 咖啡廳</h2>'), `${file} 仍有獨立的小吃區塊`);
+    assert.ok(html.includes('city-dining-role'), `${file} 缺少備案／小吃標籤`);
   }
 });

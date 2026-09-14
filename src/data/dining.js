@@ -2,13 +2,15 @@
 // 以及 redesign/data.js 的行程餐廳與必吃清單。
 // 由來源機械轉錄，頁面模板不得另行寫死餐飲內容。
 //
-// 2026-09-14 精煉：原本的「行程主餐廳推薦」與「備案餐廳」是兩份互相重複的清單
-// （NOAH／MOLÁM／Most／Muga 等十餘家同時出現在兩邊）。備案已併入 cityFood，
-// 以 role: 'primary' / 'backup' 區分，`foodBackup` 匯出不再存在。
+// 2026-09-14 精煉與整併：城市頁原本有「行程主餐廳推薦」「備案餐廳」「小吃 · 牛奶吧 · 咖啡廳」
+// 三個區塊，前兩者是兩份互相重複的清單（NOAH／MOLÁM／Most／Muga 等十餘家兩邊都有）。
+// 三塊已整併為單一張「行程餐廳推薦」表，由 templates/city-dining.mjs 的 mergeCityDining()
+// 把 cityDining、cityFood、snacksAndCafes 與 day-dining.js 的候選合成一份、同店只留一列。
+// `foodBackup` 匯出不再存在，備案併入 cityFood 並以 role: 'primary' / 'backup' 區分；
+// snacksAndCafes 仍是獨立資料來源，在表中標為 role: 'snack'。
 // 保留標準：① 你的候選（day-dining.js）② 米其林星級／必比登
 // ③ 各分類代表（餃子、牛奶吧、市集、甜點）④ 首選訂不到時真的會改去的備案。
-// 已在「小吃 · 牛奶吧 · 咖啡廳」區塊列出的店，不再於餐廳清單重複；
-// 沒有固定店址的品項（obwarzanek、jagodzianka 等）交給每日「順路必吃」處理。
+// 沒有固定店址的品項（obwarzanek、jagodzianka 等）交給每日「順路必吃」處理，不佔餐廳列。
 
 export const michelinSummary = [
   {
@@ -327,6 +329,7 @@ export const cityDining = {
 };
 
 // 2026-09-09 新增：小吃、牛奶吧與咖啡廳推薦。
+// 2026-09-14 起併入城市頁的「行程餐廳推薦」表，標為 role: 'snack'，不再有獨立區塊。
 // 每筆都必須有可點的 Google Maps 連結；營業時間屬動態資料，只寫查得到來源的，並要求出發前重查。
 export const snacksAndCafes = {
   warsaw: [
