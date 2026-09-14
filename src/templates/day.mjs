@@ -1,4 +1,5 @@
 import { dayDining } from '../data/day-dining.js';
+import { isUserPick } from './city-dining.mjs';
 import { renderLayout } from './layout.mjs';
 import { renderInteractiveMap } from './map.mjs';
 import { renderPhotoGallery } from './photo-gallery.mjs';
@@ -35,7 +36,8 @@ function renderEatCard(item) {
     ? `<p class="food-map-links"><a href="${safeHttpsUrl(item.map)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.place || item.text)} 地圖 →</a></p>`
     : '';
   const note = item.note ? `<p class="food-map-note">${escapeHtml(item.note)}</p>` : '';
-  return `<div class="card"><p>${escapeHtml(item.text)}</p>${note}${link}</div>`;
+  const badge = item.place && isUserPick(item.place) ? '<span class="city-dining-choice">✦ 自選</span>' : '';
+  return `<div class="card"><p>${escapeHtml(item.text)}</p>${badge}${note}${link}</div>`;
 }
 
 function renderDayFood(day) {
@@ -44,8 +46,8 @@ function renderDayFood(day) {
     <span class="eyebrow">Dining</span><h3 id="day-food-heading">當日餐廳候選</h3>
     <p class="food-map-note">依當天動線擇一用餐；候選尚未訂位，出發前確認營業與最後點餐時間。</p>
     <ul class="day-dining-list">${restaurants.map(item => `<li>
-      <span class="eyebrow">${escapeHtml(item.role)}</span><h4>${escapeHtml(item.name)}</h4>
-      <p class="food-map-note">${escapeHtml(item.address)}</p><p>${escapeHtml(item.note)}</p>
+      <span class="eyebrow">${escapeHtml(item.role)}</span><h4>${escapeHtml(item.name)}${isUserPick(item.name) ? '<span class="city-dining-choice">✦ 自選</span>' : ''}</h4>
+      ${item.address ? `<p class="food-map-note">${escapeHtml(item.address)}</p>` : ''}<p>${escapeHtml(item.note)}</p>
       ${safeHttpsUrl(item.map) ? `<p class="food-map-links"><a href="${safeHttpsUrl(item.map)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.name)} 導航 ↗</a></p>` : ''}
     </li>`).join('')}</ul>
     ${day.eat?.length ? `<div class="day-eat"><h3>順路必吃</h3><div class="day-eat-list">${day.eat.map(renderEatCard).join('')}</div></div>` : ''}

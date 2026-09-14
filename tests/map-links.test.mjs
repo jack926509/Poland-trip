@@ -7,11 +7,23 @@ import {
   cityDining, cityFood, foodBackup, michelinReservations,
   verifiedRestaurantHours, snacksAndCafes,
 } from '../src/data/dining.js';
+import { dayDining } from '../src/data/day-dining.js';
 import { fares } from '../src/data/tickets.js';
 import { souvenirShops, luxuryShopping } from '../src/data/shopping.js';
 
 const isMapUrl = value => typeof value === 'string'
   && /^https:\/\/(maps\.google\.com|www\.google\.com\/maps|maps\.app\.goo\.gl)/.test(value);
+
+test('每日餐廳候選（day-dining）每一筆都有 role/name/note 且地圖連結可點', () => {
+  for (const [day, items] of Object.entries(dayDining)) {
+    for (const item of items) {
+      for (const field of ['role', 'name', 'note']) {
+        assert.ok(item[field]?.trim(), `day-dining Day ${day}「${item.name || '(未命名)'}」缺 ${field}`);
+      }
+      assert.ok(isMapUrl(item.map), `day-dining Day ${day}「${item.name}」缺少 Google Maps 連結`);
+    }
+  }
+});
 
 test('順路必吃每一筆都有可點的 Google Maps 連結', () => {
   for (const day of days) {

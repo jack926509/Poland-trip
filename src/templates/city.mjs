@@ -1,4 +1,4 @@
-import { mergeCityDining } from './city-dining.mjs';
+import { mergeCityDining, isUserPick } from './city-dining.mjs';
 import { renderLayout } from './layout.mjs';
 import { renderPhotoGallery } from './photo-gallery.mjs';
 
@@ -69,7 +69,7 @@ export function renderCity({
 
   const mergedDining = mergeCityDining(cityKey, dining, cityFoodForCity?.items || []);
   const renderDiningRow = item => `<tr class="${item.selected ? 'city-dining-selected' : ''}">
-    <th scope="row"><strong>${item.name}</strong>${item.selected ? '<span class="city-dining-choice">你的候選</span>' : ''}${item.address ? `<p class="food-map-note">${item.address}</p>` : ''}</th>
+    <th scope="row"><strong>${item.name}</strong>${item.selected ? '<span class="city-dining-choice">✦ 自選</span>' : ''}${item.address ? `<p class="food-map-note">${item.address}</p>` : ''}</th>
     <td>${stableTier(item.tier || item.tag || '待補充')}</td>
     <td>${item.notes.length ? item.notes.join('；') : '依店家當日菜單確認'}</td>
     <td>${item.plan ? `<p>${item.plan}</p>` : '<p>依當天動線與胃口安排</p>'}<p class="food-map-note">${bookingLabels[item.book] || '營業與訂位請向店家確認'}</p></td>
@@ -95,7 +95,7 @@ export function renderCity({
       <div class="grid">${foodBackupForCity.items.map(item => `
         <article class="card">
           <span class="eyebrow">${item.tag}</span>
-          <h3>${item.name}</h3>
+          <h3>${item.name}${isUserPick(item.name) ? '<span class="city-dining-choice">✦ 自選</span>' : ''}</h3>
           <p>${item.note}</p>
           <p><span class="${item.book === 'must' ? 'tag-todo' : 'tag-muted'}">${bookingLabels[item.book] || item.book}</span></p>
           ${renderFoodMapLinks(item)}
@@ -110,7 +110,7 @@ export function renderCity({
       <div class="grid">${snacksAndCafesForCity.map(item => `
         <article class="card">
           <span class="eyebrow">${item.type}</span>
-          <h3>${item.name}</h3>
+          <h3>${item.name}${isUserPick(item.name) ? '<span class="city-dining-choice">✦ 自選</span>' : ''}</h3>
           <p>${item.note}</p>
           <p class="timeline-note"><b>營業時間：</b>${item.hours}</p>
           <p class="food-map-links"><a href="${item.map}" target="_blank" rel="noopener noreferrer">Google Maps 定位 →</a></p>

@@ -19,3 +19,4 @@ dist/
 
 # 海報插畫原始檔（ChatGPT 生成，未壓縮，不進 git）
 插畫/
+.playwright-mcp/

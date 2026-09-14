@@ -4,7 +4,9 @@ import path from 'node:path';
 import vm from 'node:vm';
 import { test } from 'node:test';
 import { cities, cityStories, photoSpots, photoCredits, mapPins, mapPinChecks, pinCategoryLegend, attractions, cityNotices } from '../src/data/cities.js';
-import { cityDining, cityFood, foodBackup, foods, michelinSummary, michelinReservations, verifiedRestaurantHours } from '../src/data/dining.js';
+import { cityDining, cityFood, foodBackup, foods, michelinSummary, michelinReservations, verifiedRestaurantHours, userPicks } from '../src/data/dining.js';
+import { dayDining } from '../src/data/day-dining.js';
+import { key as diningKey } from '../src/templates/city-dining.mjs';
 import { about, packingDefault, phrases, preDepartureNotes, safety } from '../src/data/essentials.js';
 import { shopping, souvenirCards, souvenirShops, luxuryShopping, zabkaCards } from '../src/data/shopping.js';
 import { fares, ticketsByCity } from '../src/data/tickets.js';
@@ -1294,5 +1296,58 @@ test('城市推薦整合完整候選與既有情報，同店不重複', async ()
       assert.ok(rows.some(row => row.notes.includes(original.highlight)), `${city}: ${original.name} 情報遺失`);
     }
     assert.ok(rows.every(row => row.map || row.maps?.length));
+  }
+});
+
+test('餐飲資料重整：所有資料檔店名不含「✦」前綴，改用徽章統一標示自選', () => {
+  const dataDir = path.resolve('src/data');
+  for (const file of fs.readdirSync(dataDir)) {
+    if (!file.endsWith('.js')) continue;
+    const content = fs.readFileSync(path.join(dataDir, file), 'utf8');
+    assert.doesNotMatch(content, /✦ /, `${file} 仍殘留「✦ 」前綴，自選標記應只透過徽章顯示`);
+  }
+});
+
+test('餐飲資料重整：每日餐廳候選（day-dining）與順路必吃（eat）同一天不重複同一家店', () => {
+  for (const day of days) {
+    const dayItems = dayDining[String(day.n)] || [];
+    const eatItems = (day.eat || []).filter(item => typeof item !== 'string');
+    for (const dining of dayItems) {
+      for (const eat of eatItems) {
+        const eatName = eat.place || eat.text;
+        assert.notEqual(
+          diningKey(dining.name), diningKey(eatName),
+          `Day ${day.n}：「${dining.name}」同時出現在當日餐廳候選與順路必吃`,
+        );
+      }
+    }
+  }
+});
+
+test('餐飲資料重整：day-dining 每筆都有 role/name/note，且四城與八日頁都出現至少一次「✦ 自選」徽章', () => {
+  for (const [day, items] of Object.entries(dayDining)) {
+    for (const item of items) {
+      for (const field of ['role', 'name', 'note']) {
+        assert.ok(item[field]?.trim(), `day-dining Day ${day}「${item.name || '(未命名)'}」缺 ${field}`);
+      }
+    }
+  }
+
+  const cityPages = ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html'];
+  for (const file of cityPages) {
+    assert.ok(read(file).includes('✦ 自選'), `${file} 缺少「✦ 自選」徽章`);
+  }
+  for (let n = 1; n <= 8; n += 1) {
+    const file = `day-${String(n).padStart(2, '0')}.html`;
+    assert.ok(read(file).includes('✦ 自選'), `${file} 缺少「✦ 自選」徽章`);
+  }
+});
+
+test('餐飲資料重整：userPicks 24 家自選清單完整搬到資料層', () => {
+  assert.deepEqual(Object.keys(userPicks), ['warsaw', 'krakow', 'wroclaw', 'poznan']);
+  const total = Object.values(userPicks).reduce((sum, list) => sum + list.length, 0);
+  assert.equal(total, 24);
+  for (const list of Object.values(userPicks)) {
+    for (const name of list) assert.ok(!name.includes('✦'), `userPicks「${name}」不應含 ✦`);
   }
 });
