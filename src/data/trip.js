@@ -73,11 +73,11 @@ export const days = [
       {t:'11:10', label:'旅館寄放行李', sub:'ibis budget Krakow Stare Miasto 在 Pawia 11，飯店官網標示距車站約 200 公尺', dur:'20 min'},
       {t:'11:30', label:'車站周邊午餐', sub:'10/25 為非營業週日，先確認店家當日營業；用餐後步行約 25–30 分到 Wawel', cost:'PLN 40–60', dur:'45 min'},
       {t:'13:00', label:'★ 瓦維爾大教堂', sub:'週日 12:30–17:00；Cathedral Museum 週日不開', cost:'PLN 26／18', dur:'45 min'},
-      {t:'14:00', label:'★ Wawel 城堡短路線', sub:'選擇可於 15:00 前結束的展區；完整 2 小時路線會壓縮後續步行', cost:'依選定展區官網票價', dur:'1 h'},
+      {t:'14:00', label:'★ Wawel 城堡短路線', constraint:{venue:'krakow-wawel-castle'}, sub:'選擇可於 15:00 前結束的展區；完整 2 小時路線會壓縮後續步行', cost:'依選定展區官網票價', dur:'1 h'},
       {t:'15:00', label:'★ 中央廣場 + 聖瑪利亞', sub:'本次先看廣場與教堂外觀，登塔改為有餘裕才安排。整點 Hejnał 號角；塔票僅於 Mariacki 廣場 7 號當日現場售票', cost:'外觀免費', dur:'30 min（含由城堡步行）'},
       {t:'15:30', label:'紡織會館 Sukiennice 快速一覽', sub:'採購留到 10/27', cost:'免費入場', dur:'15 min'},
       {t:'15:45', label:'步行經 Kazimierz、Podgórze 前往辛德勒工廠', sub:'保留約 85 分鐘步行與沿途短停，17:10 前到入口；時間不足改用 Jakdojade 查當下交通', dur:'約 1 h 25 min'},
-      {t:'17:30', label:'★ 辛德勒工廠', sub:'週日最後入場 18:30 · mhk.pl/en 預約', cost:'PLN 60 · 優待 45', dur:'2 h'},
+      {t:'17:30', label:'★ 辛德勒工廠', constraint:{venue:'krakow-schindler'}, sub:'週日最後入場 18:30 · mhk.pl/en 預約', cost:'PLN 60 · 優待 45', dur:'2 h'},
       {t:'19:45', label:'★ Kazimierz Plac Nowy zapiekanka 晚餐', sub:'Endzior / Krzysiek', cost:'PLN 18–25'},
     ],
     eat: [
@@ -221,7 +221,7 @@ export const days = [
       {t:'09:00', label:'★ 中央廣場 + 紡織會館', sub:'dwarfsmap.com 找小矮人', cost:'免費', dur:'1.5 h'},
       {t:'10:30', label:'糖果屋雙屋 + 教堂塔樓', sub:'聖伊莉莎白教堂塔高 96m、觀景台 75m、304 階無電梯；一–六 10:00–19:00', cost:'PLN 16／10 · 現金', dur:'45 min'},
       {t:'11:30', label:'★ 拉茨瓦維採全景畫', sub:'30 分鐘導覽', cost:'PLN 50', dur:'1 h'},
-      {t:'13:30', label:'★ 百年廳 (UNESCO)', sub:'先以官方 availability calendar 確認 10/28 是否可參觀內部；未確認前以外觀、噴泉與日本花園規劃', cost:'外觀免費', dur:'1 h'},
+      {t:'13:30', label:'★ 百年廳 (UNESCO)', constraint:{venue:'wroclaw-hala-stulecia'}, sub:'先以官方 availability calendar 確認 10/28 是否可參觀內部；未確認前以外觀、噴泉與日本花園規劃', cost:'外觀免費', dur:'1 h'},
       {t:'16:15', label:'★ 座堂島煤氣燈', sub:'日落約 16:34；點燈人無固定公開出發分鐘，在島上等候與散步', cost:'免費', dur:'1 h'},
       {t:'17:15', label:'座堂島結束後回 Piast 取行李', sub:'座堂島 → 旅館約 25–30 分；距參考發車 1h55，18:35 前抵站後保留約 35 分鐘緩衝', dur:'約 1 h 20 min'},
       {t:'18:35 前', label:'抵 Wrocław Główny', sub:'確認月台、車廂與座位', dur:'至少 35 min 緩衝'},
@@ -284,10 +284,10 @@ export const days = [
     compressible: ['POLIN 看主展重點', '起義博物館抓核心展區', '皇家城堡採約 60 分鐘 Royal Route'],
     weather: '尚無可靠預報；出發前 7–10 天更新',
     steps: [
-      {t:'10:00', label:'★ 皇家城堡', sub:'採 Royal Route，官方標示約 60 分；二–日 10:00–18:00、末入 17:00', cost:'票價出發前依官方售票頁重查', dur:'約 60 min'},
+      {t:'10:00', label:'★ 皇家城堡', constraint:{venue:'warsaw-royal-castle'}, sub:'採 Royal Route，官方標示約 60 分；二–日 10:00–18:00、末入 17:00', cost:'票價出發前依官方售票頁重查', dur:'約 60 min'},
       {t:'11:15', label:'午餐（老城 → POLIN 路上）', sub:'選當日有營業且可訂位的店', cost:'依餐廳', dur:'45 min'},
       {t:'12:00', label:'前往 POLIN + 安檢緩衝', sub:'依當日交通重算，保留入館安檢與提早報到時間', dur:'1 h 15 min'},
-      {t:'13:15', label:'★ POLIN 猶太博物館', sub:'週五 10:00–18:00；主展最晚 16:00 入場', cost:'依官方售票頁', dur:'2 h'},
+      {t:'13:15', label:'★ POLIN 猶太博物館', constraint:{venue:'warsaw-polin'}, sub:'週五 10:00–18:00；主展最晚 16:00 入場', cost:'依官方售票頁', dur:'2 h'},
       {t:'15:15', label:'前往華沙起義博物館 + 安檢緩衝', sub:'依當日交通重算，16:00 僅為規劃目標，以實際可售時段為準', dur:'45 min'},
       {t:'16:00', label:'★ 華沙起義博物館', sub:'35／30 PLN；以官方票頁 10/30 可售時段為準', cost:'PLN 35／30', dur:'2 h'},
       {t:'19:30', label:'老城最後晚餐', sub:'U Fukiera / Polka', cost:'PLN 120–200', dur:'1.5 h'},
@@ -591,4 +591,77 @@ export const reservations = [
   {when:'現在可查／訂', what:'辛德勒工廠 10/25 場次已進個人網路票 90 天窗口；POLIN、華沙起義博物館與皇家城堡均以官方售票頁顯示的指定日庫存為準。'},
   {when:'出發前 1 週', what:'把上述所有票價、特別閉館與開放時間再確認一次 — 本清單資料查證日為 2026-08-09，臨時活動與維修仍可能變動'},
   {when:'抵達當日', what:'隔日 Wawel 國家廳室現場票（限額制，售完只能改庭院）'},
+];
+
+// 訂票與查核的行動截止日。
+//
+// 四段城際火車不列在這裡——它們的開賣日已經是 trains[].saleOpens，
+// 重抄一次就會有兩份各自漂移的事實；改由 collectDeadlines() 於建置時併入。
+//
+// basis 記錄每個日期的來源：官方公告的照抄，由既有規則推算的寫明怎麼算的。
+// 沒有來源基礎的日期不要放進這張表，倒數看板會讓它看起來像官方期限。
+export const deadlines = [
+  {
+    id: 'dining-michelin', date: '2026-10-03', category: '餐飲',
+    title: '米其林與熱門餐廳訂位',
+    action: 'Bottiglieria 1881（二星）最搶，先訂；再處理華沙一星與 BABA／Most（樂斯拉夫只停留一晚，訂不到就沒有第二次機會）。',
+    status: '尚未訂位', url: 'https://guide.michelin.com/en/pl/restaurants',
+    basis: '行前提醒「二星＋各一星出發前 3–4 週訂；華沙 splurge 級 3–5 週」，取窗口下緣 3 週由 10/24 回推；建議窗口自 9/19 起。',
+  },
+  {
+    id: 'ticket-wieliczka', date: '2026-10-03', category: '門票',
+    title: 'Wieliczka 鹽礦 10/27 英語團',
+    action: '於官方日期選擇器確認 10/27 英語場次、票價與庫存後購票；通用頁只列 from 131 PLN，不能當成實際票價。',
+    status: '需查／購', url: 'https://www.wieliczka-saltmine.com/individual-tourist/useful-information/ticket-prices-and-visiting-hours',
+    basis: '訂票優先順序列為第一優先「現在即可訂」；指定日場次有限，取出發前 3 週為行動下限。',
+  },
+  {
+    id: 'ticket-schindler', date: '2026-10-03', category: '門票',
+    title: '辛德勒工廠 10/25 場次',
+    action: '10/25 已進個人網路票 90 天窗口，依官方售票頁可售時段購票；最後入場 18:30。',
+    status: '現可查／購', url: 'https://muzeumkrakowa.pl/oddzialy/fabryka-emalia-oskara-schindlera',
+    basis: '訂票優先順序第二優先已註記「10/25 已進個人網路票 90 天窗口」；取出發前 3 週為行動下限。',
+  },
+  {
+    id: 'ticket-warsaw-trio', date: '2026-10-10', category: '門票',
+    title: '華沙三館 10/30 指定日票',
+    action: '皇家城堡 10:00（末入 17:00）、POLIN 13:15（主展末入 16:00）、起義博物館 16:00，依各官方售票頁的 10/30 可售時段一次訂齊，避免館際時間互相擠壓。',
+    status: '尚未訂', url: 'https://www.zamek-krolewski.pl/en',
+    basis: 'Day 7 為自評高風險日（三館連看），三館皆已查得開放時間但均未訂；取出發前 2 週為行動下限。',
+  },
+  {
+    id: 'bus-lajkonik', date: '2026-10-12', category: '交通',
+    title: 'Lajkonik 往返 Auschwitz 巴士購票',
+    action: '班次已查定，只差付款：去程 07:10（Bosacka 18 · D10）→ 08:35、回程 15:30 → 16:55，全票 25.00 zł。備案為回程 16:30。',
+    status: '指定日尚未確認', url: 'https://www.lajkonikbus.pl/',
+    basis: '待辦事項該筆的 recheckAt = 2026-10-12。',
+  },
+  {
+    id: 'ticket-croissant', date: '2026-10-14', category: '門票',
+    title: '波茲南可頌博物館 10/29 英語場',
+    action: '週四不保證有英語場，先查 10/29 官方售票頁；沒有合適場次就改室內備案，不要預設週末的固定英文場。',
+    status: '尚未訂', url: 'https://rogalowemuzeum.pl/en/buy-ticket/',
+    basis: 'Day 6 主行程預留 13:30–15:00 且英語場未確認；取出發前 10 天為行動下限，留得下改備案的時間。',
+  },
+  {
+    id: 'recheck-all', date: '2026-10-17', category: '複查',
+    title: '全站票價、開放時間與特別閉館複查',
+    action: '門票速查與城市指南的查證日多為 2026-08-09／08-11，臨時活動與維修仍可能變動；出發前整批重查一次。',
+    status: '待執行', url: null,
+    basis: '訂位與每人預算清單的「出發前 1 週」條目，由 10/24 回推。',
+  },
+  {
+    id: 'venue-hala-stulecia', date: '2026-10-21', category: '場館',
+    title: '百年廳 10/28 內部參觀狀態',
+    action: '上官方 availability calendar 查 10/28 圓頂展廳是否開放；未確認前 Day 5 主行程只排外觀與周邊。',
+    status: '待官方日曆確認', url: 'https://halastulecia.pl/zwiedzanie/visitor-centre/',
+    basis: '待辦事項該筆：「行前 3–5 天再複查一次」，取 3 天由 10/24 回推。',
+  },
+  {
+    id: 'etias-check-2', date: '2026-10-21', category: '證件',
+    title: 'ETIAS 最終確認',
+    action: '出發前最後一次確認；若已啟用則立即申請並存離線核准證明。',
+    status: '待確認', url: 'https://travel-europe.europa.eu/etias_en',
+    basis: '資料庫項目 entry-etias-and-passport 已排 2026-09-24 重查；本筆是出發前 3 天的最後決策點，兩者互補不重複。',
+  },
 ];

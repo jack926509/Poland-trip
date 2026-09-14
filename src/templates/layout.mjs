@@ -222,6 +222,7 @@ export function renderLayout({
       <small>Paper Travel Journal</small>
     </a>
     <span class="journal-edition" aria-hidden="true">VOL. 2026 · 08 DAYS</span>
+    <a class="nav-today" href="${path('today.html')}"${current(activeNav, 'today')}>今日</a>
     <details class="nav-dropdown${activeNav === 'days' ? ' nav-dropdown-current' : ''}" name="primary-navigation">
       <summary${currentGroup(activeNav, 'days')}>每日行程</summary>
       <ul><li><a href="${path('index.html#days')}">行程總覽</a></li>${dayLinks}</ul>

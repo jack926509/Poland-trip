@@ -1,4 +1,5 @@
 import { renderLayout } from './layout.mjs';
+import { getTaipeiToday, collectDeadlines, nextDeadline } from '../scripts/dashboard.js';
 
 const cityFileKeys = {
   WAW: 'warszawa',
@@ -27,7 +28,24 @@ function renderFlight(direction, legs) {
   </article>`;
 }
 
-export function renderHome({ meta, days, flights, cities, todoGroups = [], databaseEntries = [] }) {
+/**
+ * 首頁只顯示「下一個要處理的截止項目」。
+ *
+ * 完整倒數表在訂票頁；首頁放整張表會把八日目錄往下推，而首頁真正要回答的
+ * 只有一句話：現在最該動的是哪一件、還剩幾天。日期在建置時算定，
+ * 前端不重算——首頁的提示只是入口，精確倒數以訂票頁為準。
+ */
+function renderNextDeadline({ trains, deadlines, databaseEntries }) {
+  const next = nextDeadline(collectDeadlines({ trains, deadlines, databaseEntries }), getTaipeiToday());
+  if (!next) return '';
+  return `<p class="next-deadline" data-urgency="${next.urgency}">
+    <strong>${escapeHtml(next.label)}</strong>
+    <span>下一個期限 ${escapeHtml(next.date)}：${escapeHtml(next.title)}</span>
+    <a class="journal-text-link" href="practical/booking.html#countdown">看完整倒數 →</a>
+  </p>`;
+}
+
+export function renderHome({ meta, days, flights, cities, todoGroups = [], databaseEntries = [], trains = [], deadlines = [] }) {
   const todoCount = todoGroups.reduce((total, group) => total + group.items.filter(item => !['已訂妥', '已完成'].includes(item.status)).length, 0);
   const syncItems = databaseEntries.length;
   const pendingCount = databaseEntries.filter(entry => entry.status === 'pending').length;
@@ -126,6 +144,7 @@ ${coverFigure}
     <section class="section journal-todo-notes" id="todos">
       <div class="section-heading"><span class="section-num">03 / Field notes</span><h2>出發前待辦</h2></div>
       <p class="lead">共 ${todoCount} 項。先處理有日期與時段的票務，再完成交通、餐飲及備案。</p>
+      ${renderNextDeadline({ trains, deadlines, databaseEntries })}
       <div class="journal-notes-grid">${todoCards}</div>
       <p><a class="journal-text-link" href="practical/todos.html">開啟完整待辦事項 →</a></p>
     </section>
