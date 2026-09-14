@@ -6,7 +6,7 @@ import vm from 'node:vm';
 import { test } from 'node:test';
 import { cities, cityStories, photoSpots, photoCredits, mapPins, mapPinChecks, pinCategoryLegend, attractions, cityNotices } from '../src/data/cities.js';
 import { cityDining, cityFood, foods, michelinSummary, michelinReservations, verifiedRestaurantHours } from '../src/data/dining.js';
-import { about, packingDefault, phrases, preDepartureNotes, safety } from '../src/data/essentials.js';
+import { about, daylight, packingDefault, phrases, preDepartureNotes, safety } from '../src/data/essentials.js';
 import { shopping, souvenirCards, souvenirShops, luxuryShopping, zabkaCards } from '../src/data/shopping.js';
 import { fares, ticketsByCity } from '../src/data/tickets.js';
 import { airportTransit, passChecklist, practical, recommendedApps, transitFares, usefulRoutes } from '../src/data/transit.js';
@@ -42,6 +42,7 @@ const distDir = path.resolve('dist');
 const standalonePath = path.resolve('poland-travel-guide-2026.html');
 const expectedFiles = [
   'index.html',
+  'today.html',
   ...Array.from({ length: 8 }, (_, index) => `day-${String(index + 1).padStart(2, '0')}.html`),
   'city-warszawa.html',
   'city-krakow.html',
@@ -399,7 +400,7 @@ test('克拉科夫與樂斯拉夫飲水資訊各自保有官方來源', () => {
   assert.equal(wroclawWater?.sourceUrl, 'https://www.mpwik.wroc.pl/csr-2/pij-kranowke/');
 });
 
-test('dist 產出 23 個分頁與可直接部署的單檔版', () => {
+test('dist 產出 24 個分頁與可直接部署的單檔版', () => {
   assert.deepEqual(htmlFiles(), [...expectedFiles, 'poland-travel-guide-2026.html'].sort());
   assert.ok(fs.existsSync(path.join(distDir, 'assets/main.css')), '缺少 assets/main.css');
   assert.ok(fs.existsSync(path.join(distDir, 'assets/database-filter.js')), '缺少資料庫篩選程式');
@@ -408,7 +409,7 @@ test('dist 產出 23 個分頁與可直接部署的單檔版', () => {
   assert.equal(fs.readFileSync(deployedStandalone, 'utf8'), fs.readFileSync(standalonePath, 'utf8'));
 });
 
-test('單檔旅遊指南封裝全部 23 頁且不依賴本機 CSS 或其他 HTML', () => {
+test('單檔旅遊指南封裝全部 24 頁且不依賴本機 CSS 或其他 HTML', () => {
   assert.ok(fs.existsSync(standalonePath), '缺少 poland-travel-guide-2026.html');
   const html = fs.readFileSync(standalonePath, 'utf8');
 
@@ -432,13 +433,13 @@ test('單檔旅遊指南封裝全部 23 頁且不依賴本機 CSS 或其他 HTML
   assert.doesNotMatch(html, /<script[^>]+src="\.\.\/assets\/database-filter\.js"/);
 });
 
-test('單檔版將過長導覽收納成三組原生下拉選單', () => {
+test('單檔版將過長導覽收納成四組原生下拉選單', () => {
   const html = fs.readFileSync(standalonePath, 'utf8');
   const menus = [...html.matchAll(/<details class="standalone-menu"[^>]*data-group="([^"]+)"/g)]
     .map(match => match[1]);
 
-  assert.deepEqual(menus, ['days', 'cities', 'practical']);
-  for (const label of ['每日行程', '城市指南', '實用資訊']) {
+  assert.deepEqual(menus, ['today', 'days', 'cities', 'practical']);
+  for (const label of ['今日', '每日行程', '城市指南', '實用資訊']) {
     assert.ok(html.includes(`<summary>${label}</summary>`), `缺少 ${label} 下拉選單`);
   }
   assert.match(html, /data-group="days"[\s\S]*href="#page-day-01"[\s\S]*href="#page-day-08"/);
@@ -525,7 +526,7 @@ test('待辦事項頁將 16 項依五類整理，並在實用資訊導覽可進�
 });
 
 test('自由行資料庫頁提供 SOS、主題索引與緊急聯絡資訊', () => {
-  assert.equal(htmlFiles().length, 24);
+  assert.equal(htmlFiles().length, 25);
   const html = read('practical/database.html');
   for (const heading of ['SOS 離線急救卡', '出入境與 ETIAS', '航班與行李', '醫療與保險', '退稅 TAX FREE']) {
     assert.ok(html.includes(heading), `資料庫頁缺少 ${heading}`);
@@ -1174,11 +1175,17 @@ test('全站不出現把日落寫成 15:35–15:50 的錯誤敘述', () => {
     assert.doesNotMatch(html, /日落[^。<]{0,40}15:35/, `${file} 把日落寫成 15:35`);
     assert.doesNotMatch(html, /日落[^。<]{0,40}15:50/, `${file} 把日落寫成 15:50`);
   }
+  // 日落值已由散文改為 essentials.js 的 daylight 結構化表。數值本身的正確性
+  // 由 tests/daylight.test.mjs 逐筆比對 tools/sun-times.mjs 的推算負責；
+  // 這裡只確認頁面真的把那份資料呈現出來，且各日頁與總表同源。
   const notes = read('practical/notes.html');
-  // 2026-08-11 重算：夏令時間結束後（10/25–10/31）華沙 16:21→16:10、樂斯拉夫 16:40→16:28，
-  // 舊值 16:05–16:30 整體早了約 5–10 分鐘，已改為 16:10–16:40。
-  assert.ok(notes.includes('日落約 16:10–16:40'), '行前提醒缺少正確日落區間');
-  assert.ok(notes.includes('樂斯拉夫 10/28 約 16:34'), '行前提醒的樂斯拉夫日落時間需與 Day 5 一致');
+  assert.ok(notes.includes('八日日照'), '行前提醒缺少日照總表');
+  for (const item of daylight) {
+    assert.ok(notes.includes(item.sunset), `行前提醒的日照表缺少 Day ${item.day} 的日落 ${item.sunset}`);
+    const dayPage = read(`day-${String(item.day).padStart(2, '0')}.html`);
+    assert.ok(dayPage.includes(item.sunset), `Day ${item.day} 頁面的日落時間與日照表不一致`);
+    assert.ok(dayPage.includes(item.sunrise), `Day ${item.day} 頁面的日出時間與日照表不一致`);
+  }
 });
 
 test('實用頁完整包含店家地圖、安全電話、打包與最新交通資料', () => {
@@ -1212,7 +1219,7 @@ test('service worker 提供離線快取，且不預快取被歸檔的介面', ()
   assert.ok(worker.includes("addEventListener('fetch'"), 'sw.js 需攔截請求才能離線可用');
   assert.ok(!worker.includes('self.registration.unregister()'), '正式 worker 不應自我解除註冊');
 
-  // 23 頁與離線必要資源都要在預快取清單裡
+  // 24 頁與離線必要資源都要在預快取清單裡
   for (const file of expectedFiles) {
     assert.ok(worker.includes(`./${file}`), `sw.js 預快取缺少 ${file}`);
   }

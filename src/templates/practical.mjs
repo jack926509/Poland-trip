@@ -17,7 +17,12 @@ function dayLink(date) {
   return day ? `<a class="cross-link" href="${day.href}">Day ${day.n} →</a>` : '';
 }
 
-import { getTaipeiToday, toComparableDate, isOpenTodoStatus, isOpenEntryStatus, calculateDashboard, dashboardCsv, initializeDashboard } from '../scripts/dashboard.js';
+import { getTaipeiToday, toComparableDate, todayIn, isOpenTodoStatus, isOpenEntryStatus, calculateDashboard, calculateCountdown, collectDeadlines, urgencyOf, labelOf, initializeCountdown, dashboardCsv, initializeDashboard } from '../scripts/dashboard.js';
+// 內嵌用的是 fn.toString()，吐出的是函式「自己的名字」而不是 import 的別名。
+// getTaipeiToday 是 taipeiToday 的別名，內嵌後頁面上只會有 taipeiToday，
+// 呼叫端必須用真名，否則在瀏覽器裡是 ReferenceError（靜態輸出看起來正常，
+// 但每分鐘的重算完全不會執行）。
+import { taipeiToday } from '../lib/schedule.mjs';
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -68,7 +73,61 @@ function renderBookingNotice() {
   return '<div class="callout-note"><b>訂票狀態由人工維護，未連線查詢即時庫存。</b><p>「可查／購」只表示可前往售票頁查詢，不代表有票或已訂妥。付款前請核對指定日期、場次與價格；各項最近查核日期列於<a href="../practical/todos.html">待辦事項</a>，未記錄日期的狀態請重新確認。</p></div>';
 }
 
-export function renderBooking({ flights, trains, stay, bookingTiers, reservations, railOfficialLinks = [], railPurchaseSteps = [], auschwitzBus = null }) {
+const URGENCY_TAGS = {
+  overdue: ['tag-red', '已逾期'],
+  today: ['tag-red', '今天'],
+  soon: ['tag-yellow', '一週內'],
+  planned: ['tag-todo', '尚未到期'],
+  done: ['tag-muted', '已完成'],
+  undated: ['tag-muted', '無日期'],
+};
+
+/**
+ * 訂票與查核的倒數看板。
+ *
+ * 建置時把整張表連同跳脫處理渲染完成，前端只以 data-countdown-* 屬性更新
+ * 剩餘天數——這樣離線開啟、或分頁放著過夜，倒數都還是對的，而 HTML 結構
+ * 只有一份。沒有 JavaScript 時看到的是建置當日的快照，仍然可讀。
+ */
+function renderCountdownSection({ trains, deadlines, databaseEntries }) {
+  const items = collectDeadlines({ trains, deadlines, databaseEntries });
+  if (!items.length) return '';
+  const today = getTaipeiToday();
+  const rows = calculateCountdown(items, today).map(item => {
+    const [tagClass, tagText] = URGENCY_TAGS[item.urgency] || URGENCY_TAGS.planned;
+    const title = item.url
+      ? `<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener">${escapeHtml(item.title)}</a>`
+      : escapeHtml(item.title);
+    return `<tr data-countdown-row data-countdown-date="${escapeHtml(item.date || '')}" data-countdown-open="${item.open}" data-urgency="${item.urgency}">
+      <td class="number" data-label="倒數"><b data-countdown-label>${escapeHtml(item.label)}</b></td>
+      <td data-label="日期"><time datetime="${escapeHtml(item.date || '')}">${escapeHtml(item.date || '—')}</time></td>
+      <td data-label="類別"><span class="${tagClass}">${escapeHtml(item.category)}</span></td>
+      <td data-label="項目">${title}<br><span class="source-meta">${escapeHtml(item.action)}</span></td>
+      <td data-label="現況與依據">${escapeHtml(item.status)}<br><span class="source-meta">依據：${escapeHtml(item.basis)}</span><br><span class="tag-muted">${escapeHtml(tagText)}</span></td>
+    </tr>`;
+  }).join('');
+
+  const countdownRuntime = [urgencyOf, labelOf, initializeCountdown, todayIn, taipeiToday]
+    .map(fn => fn.toString()).join('\n');
+
+  return `
+    <section class="section" id="countdown">
+      <div class="section-heading"><span class="section-num">T-minus</span><h2>訂票與查核倒數</h2></div>
+      <p>以台灣時間 <span data-countdown-today>${escapeHtml(today)}</span> 計算。三個來源合成一張表：城際交通表的開賣日、行程自訂的行動期限、自由行資料庫的重查日，各筆的「依據」欄註明出處。這裡看的是「什麼快到期」；已經逾期的統計在資料品質面板。到期不代表已訂妥，狀態仍須人工更新。</p>
+      <noscript><p>JavaScript 未啟用，以下倒數為建置當日的快照。</p></noscript>
+      <div class="table-wrap"><table class="table-editorial countdown-table"><thead><tr><th>倒數</th><th>日期</th><th>類別</th><th>項目</th><th>現況與依據</th></tr></thead><tbody>${rows}</tbody></table></div>
+      <script>
+        (function() {
+          ${countdownRuntime}
+          const root = document.currentScript.closest('.standalone-page') || document;
+          initializeCountdown(root, taipeiToday);
+        }());
+      </script>
+    </section>`;
+}
+
+export function renderBooking({ flights, trains, stay, bookingTiers, reservations, railOfficialLinks = [], railPurchaseSteps = [], auschwitzBus = null, deadlines = [], databaseEntries = [] }) {
+  const countdownHtml = renderCountdownSection({ trains, deadlines, databaseEntries });
   const tiersHtml = bookingTiers.map((tier, index) => `
     <article class="card ${index === 0 ? 'card-accent' : ''}">
       <span class="eyebrow">Priority ${index + 1}</span>
@@ -186,6 +245,7 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
 
   const content = `
     ${renderBookingNotice()}
+    ${countdownHtml}
     <section>
       <div class="section-heading"><span class="section-num">Do first</span><h2>訂票優先順序</h2></div>
       <div class="grid">${tiersHtml}</div>
@@ -360,9 +420,24 @@ export function renderEssentials({ phrases, packingDefault, about, safety, sourc
   return renderPracticalLayout('安全與基本須知', 'Essentials', '語言、插座、打包、緊急電話與常見陷阱集中在這裡，出發前可快速複查。', content, 'practical/essentials.html');
 }
 
-export function renderNotes({ preDepartureNotes }) {
+export function renderNotes({ preDepartureNotes, daylight = [] }) {
   const cards = preDepartureNotes.map((item, index) => `<article class="card ${index < 3 || index === 8 ? 'card-accent' : ''}"><span class="section-num">${String(index + 1).padStart(2, '0')}</span><p>${item}</p></article>`).join('');
-  return renderPracticalLayout('行前提醒', 'Pre-trip', '這些限制直接對應 2026/10/24–10/31 的日期；先處理閉館、日落、夏令時間與訂票節奏。', `<div class="grid-wide">${cards}</div>`, 'practical/notes.html');
+  const daylightRows = daylight.map(item => `<tr>
+      <td class="number" data-label="日">Day ${item.day}</td>
+      <td data-label="日期"><time datetime="${escapeHtml(item.date)}">${escapeHtml(item.date)}</time><br><span class="source-meta">${escapeHtml(item.city)} · ${escapeHtml(item.tz)}</span></td>
+      <td class="number" data-label="日出">${escapeHtml(item.sunrise)}</td>
+      <td class="number" data-label="日落">${escapeHtml(item.sunset)}</td>
+      <td class="number" data-label="藍調結束">${escapeHtml(item.blueHourEnd)}</td>
+      <td data-label="備註">${escapeHtml(item.note)}</td>
+    </tr>`).join('');
+  const daylightHtml = daylight.length ? `
+    <section class="section" id="daylight">
+      <div class="section-heading"><span class="section-num">Daylight</span><h2>八日日照</h2></div>
+      <p>10/25 凌晨夏令時間結束（03:00 回撥 02:00），日落從 Day 1 的 16:52 掉到 Day 2 的 16:04——整趟旅程的戶外可用時間在第二天就少掉近一小時。排傍晚戶外行程、以及判斷哪些拍照站位還成立，都看這張表。</p>
+      <div class="callout-note"><b>資料界線：</b>本表為天文推算值，出發前以天文表複核；不是官方公告時刻。各日行程頁也會顯示當天同一組數值，兩處同源。</div>
+      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>日</th><th>日期</th><th>日出</th><th>日落</th><th>藍調結束</th><th>備註</th></tr></thead><tbody>${daylightRows}</tbody></table></div>
+    </section>` : '';
+  return renderPracticalLayout('行前提醒', 'Pre-trip', '這些限制直接對應 2026/10/24–10/31 的日期；先處理閉館、日落、夏令時間與訂票節奏。', `<div class="grid-wide">${cards}</div>${daylightHtml}`, 'practical/notes.html');
 }
 
 export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups }) {
@@ -469,7 +544,8 @@ export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups
   const handover = calculateDashboard(dashboardInput);
   const { todaySyncCount, overdue: overdueCount } = handover.metrics;
   const dashboardPayload = serializeForInlineScript(dashboardInput);
-  const dashboardRuntime = [getTaipeiToday, toComparableDate, calculateDashboard, dashboardCsv, initializeDashboard]
+  // 內嵌時沒有 import，被呼叫到的相依函式必須一起列入（todayIn 支撐 getTaipeiToday）。
+  const dashboardRuntime = [todayIn, getTaipeiToday, toComparableDate, calculateDashboard, dashboardCsv, initializeDashboard]
     .map(fn => fn.toString()).join('\n');
 
   const content = `

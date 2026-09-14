@@ -1,0 +1,454 @@
+- generic [active] [ref=f1e1]:
+  - link "跳至主要內容" [ref=f1e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - navigation "主要導覽" [ref=f1e3]:
+    - link "POLSKA Paper Travel Journal" [ref=f1e4] [cursor=pointer]:
+      - /url: ../index.html
+      - generic [ref=f1e5]: POLSKA
+      - generic [ref=f1e6]: Paper Travel Journal
+    - group [ref=f1e7]:
+      - generic "每日行程 ▾" [ref=f1e8] [cursor=pointer]
+    - group [ref=f1e9]:
+      - generic "城市指南 ▾" [ref=f1e10] [cursor=pointer]
+    - group [ref=f1e11]:
+      - generic "實用資訊 ▾" [ref=f1e12] [cursor=pointer]
+  - region "全站旅遊搜尋" [ref=f1e13]
+  - main [ref=f1e14]:
+    - generic [ref=f1e15]:
+      - text: APPENDIX
+      - generic [ref=f1e16]: Booking plan
+      - heading "訂票與交通" [level=1] [ref=f1e17]
+      - paragraph [ref=f1e18]: 先看最急的票，再核對火車、航班與已確認住宿。尚未確認的時段保留原樣，不用猜。
+    - generic [ref=f1e19]:
+      - text: › 訂票狀態由人工維護，未連線查詢即時庫存。
+      - paragraph [ref=f1e20]:
+        - text: 「可查／購」只表示可前往售票頁查詢，不代表有票或已訂妥。付款前請核對指定日期、場次與價格；各項最近查核日期列於
+        - link "待辦事項" [ref=f1e21] [cursor=pointer]:
+          - /url: ../practical/todos.html
+        - text: ，未記錄日期的狀態請重新確認。
+    - navigation [ref=f1e22]:
+      - paragraph [ref=f1e23]: 本頁章節
+      - list [ref=f1e24]:
+        - listitem [ref=f1e25]:
+          - link "Do first 訂票優先順序" [ref=f1e26] [cursor=pointer]:
+            - /url: "#sec-1"
+            - generic [ref=f1e27]: Do first
+            - text: 訂票優先順序
+        - listitem [ref=f1e28]:
+          - link "Timeline 什麼時候處理" [ref=f1e29] [cursor=pointer]:
+            - /url: "#sec-2"
+            - generic [ref=f1e30]: Timeline
+            - text: 什麼時候處理
+        - listitem [ref=f1e31]:
+          - link "Rail 城際交通" [ref=f1e32] [cursor=pointer]:
+            - /url: "#rail-itinerary"
+            - generic [ref=f1e33]: Rail
+            - text: 城際交通
+        - listitem [ref=f1e34]:
+          - link "Official 官方購票與時刻表" [ref=f1e35] [cursor=pointer]:
+            - /url: "#sec-4"
+            - generic [ref=f1e36]: Official
+            - text: 官方購票與時刻表
+        - listitem [ref=f1e37]:
+          - link "How to 網路購票教學" [ref=f1e38] [cursor=pointer]:
+            - /url: "#sec-5"
+            - generic [ref=f1e39]: How to
+            - text: 網路購票教學
+        - listitem [ref=f1e40]:
+          - link "Flights 航班" [ref=f1e41] [cursor=pointer]:
+            - /url: "#sec-6"
+            - generic [ref=f1e42]: Flights
+            - text: 航班
+        - listitem [ref=f1e43]:
+          - link "Stay 已確認住宿" [ref=f1e44] [cursor=pointer]:
+            - /url: "#sec-7"
+            - generic [ref=f1e45]: Stay
+            - text: 已確認住宿
+    - generic [ref=f1e46]:
+      - generic [ref=f1e47]:
+        - generic [ref=f1e48]: Do first
+        - heading "訂票優先順序" [level=2] [ref=f1e49]
+      - generic [ref=f1e50]:
+        - article [ref=f1e51]:
+          - text: Priority 1
+          - heading "第一優先" [level=3] [ref=f1e52]
+          - paragraph [ref=f1e53]: ❗全部尚未訂 · 先以官方售票系統確認指定日期與庫存
+          - list [ref=f1e54]:
+            - listitem [ref=f1e55]:
+              - link "Auschwitz 官方英文導覽（僅線上入場證；指定場次庫存以系統為準） →" [ref=f1e56] [cursor=pointer]:
+                - /url: https://visit.auschwitz.org/
+            - listitem [ref=f1e57]:
+              - link "Wieliczka 鹽礦英文團（現在即可訂） →" [ref=f1e58] [cursor=pointer]:
+                - /url: https://www.wieliczka-saltmine.com/
+            - listitem [ref=f1e59]:
+              - link "Lajkonik 往返巴士（10/26 指定日班次待確認） →" [ref=f1e60] [cursor=pointer]:
+                - /url: https://www.lajkonikbus.eu/krakow-oswiecim.html
+            - listitem [ref=f1e61]:
+              - link "華沙 → 克拉科夫火車 →" [ref=f1e62] [cursor=pointer]:
+                - /url: https://www.intercity.pl/en/
+            - listitem [ref=f1e63]:
+              - link "克拉科夫 → 樂斯拉夫火車 →" [ref=f1e64] [cursor=pointer]:
+                - /url: https://www.intercity.pl/en/
+            - listitem [ref=f1e65]:
+              - link "樂斯拉夫 → 波茲南火車 →" [ref=f1e66] [cursor=pointer]:
+                - /url: https://www.intercity.pl/en/
+            - listitem [ref=f1e67]:
+              - link "波茲南 → 華沙火車 →" [ref=f1e68] [cursor=pointer]:
+                - /url: https://www.intercity.pl/en/
+        - article [ref=f1e69]:
+          - text: Priority 2
+          - heading "第二優先" [level=3] [ref=f1e70]
+          - paragraph [ref=f1e71]: ❗全部尚未訂 · 辛德勒工廠現已可查／購，其餘依官方售票頁
+          - list [ref=f1e72]:
+            - listitem [ref=f1e73]:
+              - link "辛德勒工廠（10/25 已進個人網路票 90 天窗口；最後入場 18:30） →" [ref=f1e74] [cursor=pointer]:
+                - /url: https://muzeumkrakowa.pl/en/branches/oskar-schindlers-enamel-factory
+            - listitem [ref=f1e75]:
+              - link "Wawel 城堡短路線 14:00 左右時段票 →" [ref=f1e76] [cursor=pointer]:
+                - /url: https://wawel.krakow.pl/en/what-to-see
+            - listitem [ref=f1e77]:
+              - link "POLIN 波蘭猶太人歷史博物館 →" [ref=f1e78] [cursor=pointer]:
+                - /url: https://polin.pl/en
+            - listitem [ref=f1e79]:
+              - link "華沙起義博物館 →" [ref=f1e80] [cursor=pointer]:
+                - /url: https://www.1944.pl/en
+            - listitem [ref=f1e81]:
+              - link "皇家城堡（已查證二至日 10:00–18:00，末入 17:00） →" [ref=f1e82] [cursor=pointer]:
+                - /url: https://www.zamek-krolewski.pl/en
+            - listitem [ref=f1e83]:
+              - link "牛角麵包博物館（10/29 主行程，英語場待確認） →" [ref=f1e84] [cursor=pointer]:
+                - /url: https://rogalowemuzeum.pl/en/
+            - listitem [ref=f1e85]:
+              - link "拉茨瓦維採全景畫 →" [ref=f1e86] [cursor=pointer]:
+                - /url: https://mnwr.pl/en/category/branches/panorama-raclawicka/
+        - article [ref=f1e87]:
+          - text: Priority 3
+          - heading "餐廳與備案" [level=3] [ref=f1e88]
+          - paragraph [ref=f1e89]: ❗全部尚未訂 · 旅行品質加分
+          - list [ref=f1e90]:
+            - listitem [ref=f1e91]:
+              - link "克拉科夫 Kazimierz 晚餐 →" [ref=f1e92] [cursor=pointer]:
+                - /url: https://www.google.com/maps/search/?api=1&query=Kazimierz+Krakow+restaurants
+            - listitem [ref=f1e93]:
+              - link "華沙最後晚餐 →" [ref=f1e94] [cursor=pointer]:
+                - /url: https://www.google.com/maps/search/?api=1&query=Warsaw+old+town+Polish+restaurant
+            - listitem [ref=f1e95]:
+              - link "樂斯拉夫午餐或晚餐 →" [ref=f1e96] [cursor=pointer]:
+                - /url: https://www.google.com/maps/search/?api=1&query=Wroclaw+old+town+Polish+restaurant
+            - listitem [ref=f1e97]:
+              - link "波茲南老城午餐 →" [ref=f1e98] [cursor=pointer]:
+                - /url: https://www.google.com/maps/search/?api=1&query=Poznan+old+town+restaurant
+    - generic [ref=f1e99]:
+      - generic [ref=f1e100]:
+        - generic [ref=f1e101]: Timeline
+        - heading "什麼時候處理" [level=2] [ref=f1e102]
+      - table [ref=f1e104]:
+        - rowgroup [ref=f1e105]:
+          - row [ref=f1e106]:
+            - cell "時間 ❗現在就查／訂（最急）" [ref=f1e107]
+            - cell "事項 Auschwitz 英文官方導覽 — 所有入場證僅能在線上取得，10/26 的指定場次庫存與價格以 visit.auschwitz.org 為準，入口不售票。" [ref=f1e108]
+          - row [ref=f1e109]:
+            - cell "時間 ❗現在就查／訂" [ref=f1e110]
+            - cell "事項 Wieliczka 鹽礦英文 Tourist Route 10:00 場 — 10/27 英文場、實際票價與庫存以官方日期選擇器為準；不要用舊價格或開賣週期取代訂票結果。" [ref=f1e111]
+          - row [ref=f1e112]:
+            - cell "時間 現在可訂" [ref=f1e113]
+            - cell "事項 皇家城堡 — 已查證二至日 10:00–18:00、最後入場 17:00；Day 7 已改為 10:00 第一站（zamek-krolewski.pl）" [ref=f1e114]
+          - row [ref=f1e115]:
+            - cell "時間 現在可先訂" [ref=f1e116]
+            - cell "事項 米其林與熱門餐廳：Bottiglieria 1881（二星，最搶）、BABA / Most（樂斯拉夫僅停留一晚零彈性）、WANDAL、Pod Aniołami（TheFork / OpenTable / 餐廳官網）" [ref=f1e117]
+          - row [ref=f1e118]:
+            - cell "時間 火車票：指定日可售即處理" [ref=f1e119]
+            - cell "事項 PKP Intercity 四段已選規劃班次：10/25 EIP 5300 08:45–10:58、10/27 IC 3600 17:55–20:52、10/28 Baltic Express 260 19:10–20:29、10/29 EIC 8104 17:40–20:00。全部仍須在 bilet.intercity.pl 與 Passenger Portal 核實指定日班表、票價與座位後購票。" [ref=f1e120]
+          - row [ref=f1e121]:
+            - cell "時間 現在可查／訂" [ref=f1e122]
+            - cell "事項 辛德勒工廠 10/25 場次已進個人網路票 90 天窗口；POLIN、華沙起義博物館與皇家城堡均以官方售票頁顯示的指定日庫存為準。" [ref=f1e123]
+          - row [ref=f1e124]:
+            - cell "時間 出發前 1 週" [ref=f1e125]
+            - cell "事項 把上述所有票價、特別閉館與開放時間再確認一次 — 本清單資料查證日為 2026-08-09，臨時活動與維修仍可能變動" [ref=f1e126]
+          - row [ref=f1e127]:
+            - cell "時間 抵達當日" [ref=f1e128]
+            - cell "事項 隔日 Wawel 國家廳室現場票（限額制，售完只能改庭院）" [ref=f1e129]
+    - generic [ref=f1e130]:
+      - generic [ref=f1e131]:
+        - generic [ref=f1e132]: Rail
+        - heading "城際交通" [level=2] [ref=f1e133]
+      - generic [ref=f1e134]:
+        - text: "!"
+        - generic [ref=f1e135]: 班次已查核／尚未開賣
+        - paragraph [ref=f1e136]: 2026-09-08 已逐班核對 PKP Intercity 官方售票系統。下表列的是官方目前顯示的預售起始日；尚未到開賣日，也不代表已訂妥。開賣後仍須再次核對時間、價格、車廂與座位。
+      - paragraph [ref=f1e137]: 三班評估：10/27 IC 3600 能提早抵達樂斯拉夫；10/28 Baltic Express 260 候選車程僅 1 小時 19 分，最能保留白天遊玩；10/29 EIC 8104 在正午山羊秀與下午行程後出發，並適合加選一等艙體驗。若 10/25 已搭 EIP 一等艙，可依價差決定 10/29 是否再搭一等艙。
+      - paragraph [ref=f1e138]:
+        - link "PKP 官方 EIC 服務說明" [ref=f1e139] [cursor=pointer]:
+          - /url: https://www.intercity.pl/en/site/for-passengers/trains/about-eic.html
+        - text: 列有一等艙飲品與點心；指定班次的編組、設備、餐飲與票價仍以購票頁為準。
+      - table [ref=f1e141]:
+        - rowgroup [ref=f1e142]:
+          - row [ref=f1e143]:
+            - cell "路段 Warszawa Zachodnia → Kraków Główny 參考班次／尚未訂票" [ref=f1e144]:
+              - text: 路段 Warszawa Zachodnia → Kraków Główny
+              - generic [ref=f1e145]: 參考班次／尚未訂票
+            - cell "日期 10/25" [ref=f1e146]
+            - cell "車種 EIP 5300" [ref=f1e147]
+            - cell "時刻 08:45 → 10:58" [ref=f1e148]
+            - cell "時長 2h13" [ref=f1e149]
+            - cell "預售 2026-09-25 起預售 PKP Intercity 官方售票系統查核：2026-09-08" [ref=f1e150]: 預售 2026-09-25 起預售PKP Intercity 官方售票系統查核：2026-09-08
+            - cell "票價 票價待確認 一等艙建議；本趟安排頭等艙體驗。10/25 換表後須確認仍停靠西站。" [ref=f1e151]:
+              - text: 票價 票價待確認
+              - generic [ref=f1e152]: 一等艙建議；本趟安排頭等艙體驗。10/25 換表後須確認仍停靠西站。
+          - row [ref=f1e153]:
+            - cell "路段 Kraków MDA ⇄ Muzeum Auschwitz 現行班表參考 指定日尚未確認" [ref=f1e154]:
+              - text: 路段 Kraków MDA ⇄ Muzeum Auschwitz現行班表參考
+              - generic [ref=f1e155]: 指定日尚未確認
+            - cell "日期 10/26" [ref=f1e156]
+            - cell "車種 BUS · Lajkonik" [ref=f1e157]
+            - cell "時刻 參考 07:10 → 參考 16:55 回抵" [ref=f1e158]
+            - cell "時長 單程約 1h25" [ref=f1e159]
+            - cell "預售 官方日期待確認" [ref=f1e160]
+            - cell "票價 待業者開放 10/26 售票" [ref=f1e161]
+          - row [ref=f1e162]:
+            - cell "路段 Kraków Główny → Wrocław Główny 參考班次／尚未訂票" [ref=f1e163]:
+              - text: 路段 Kraków Główny → Wrocław Główny
+              - generic [ref=f1e164]: 參考班次／尚未訂票
+            - cell "日期 10/27" [ref=f1e165]
+            - cell "車種 IC 3600 Siemiradzki" [ref=f1e166]
+            - cell "時刻 17:55 → 20:52" [ref=f1e167]
+            - cell "時長 2h57" [ref=f1e168]
+            - cell "預售 2026-09-27 起預售 PKP Intercity 官方售票系統查核：2026-09-08" [ref=f1e169]: 預售 2026-09-27 起預售PKP Intercity 官方售票系統查核：2026-09-08
+            - cell "票價 票價待確認 二等艙建議；一等艙可選。17:20 前到站。" [ref=f1e170]:
+              - text: 票價 票價待確認
+              - generic [ref=f1e171]: 二等艙建議；一等艙可選。17:20 前到站。
+          - row [ref=f1e172]:
+            - cell "路段 Wrocław Główny → Poznań Główny 參考班次／尚未訂票" [ref=f1e173]:
+              - text: 路段 Wrocław Główny → Poznań Główny
+              - generic [ref=f1e174]: 參考班次／尚未訂票
+            - cell "日期 10/28" [ref=f1e175]
+            - cell "車種 Baltic Express 260" [ref=f1e176]
+            - cell "時刻 19:10 → 20:29" [ref=f1e177]
+            - cell "時長 1h19" [ref=f1e178]
+            - cell "預售 2026-09-28 起預售 PKP Intercity 官方售票系統查核：2026-09-08" [ref=f1e179]: 預售 2026-09-28 起預售PKP Intercity 官方售票系統查核：2026-09-08
+            - cell "票價 票價待確認 二等艙建議。18:35 前到站。" [ref=f1e180]:
+              - text: 票價 票價待確認
+              - generic [ref=f1e181]: 二等艙建議。18:35 前到站。
+          - row [ref=f1e182]:
+            - cell "路段 Poznań Główny → Warszawa Centralna 參考班次／尚未訂票" [ref=f1e183]:
+              - text: 路段 Poznań Główny → Warszawa Centralna
+              - generic [ref=f1e184]: 參考班次／尚未訂票
+            - cell "日期 10/29" [ref=f1e185]
+            - cell "車種 EIC 8104 Bolesław Prus" [ref=f1e186]
+            - cell "時刻 17:40 → 20:00" [ref=f1e187]
+            - cell "時長 2h20" [ref=f1e188]
+            - cell "預售 2026-09-25 起預售 PKP Intercity 官方售票系統查核：2026-09-08" [ref=f1e189]: 預售 2026-09-25 起預售PKP Intercity 官方售票系統查核：2026-09-08
+            - cell "票價 票價待確認 適合體驗一等艙；若 10/25 已搭 EIP 一等艙，可依價差改選二等艙。17:05 前到站。" [ref=f1e190]:
+              - text: 票價 票價待確認
+              - generic [ref=f1e191]: 適合體驗一等艙；若 10/25 已搭 EIP 一等艙，可依價差改選二等艙。17:05 前到站。
+    - generic [ref=f1e192]:
+      - generic [ref=f1e193]:
+        - generic [ref=f1e194]: Official
+        - heading "官方購票與時刻表" [level=2] [ref=f1e195]
+      - paragraph [ref=f1e196]: Passenger Portal 用來查班次與異動；PKP Intercity 官方售票頁用來確認可售價格、車廂與座位。兩者用途不同，建議都保留。
+      - generic [ref=f1e197]:
+        - link "PKP Intercity 官方購票 購買 EIP、EIC、IC、TLK 長途列車票；本行程四段城際車以此為主要購票入口。 開啟官網 →" [ref=f1e198] [cursor=pointer]:
+          - /url: https://ebilet.intercity.pl/
+          - heading "PKP Intercity 官方購票" [level=3] [ref=f1e199]
+          - paragraph [ref=f1e200]: 購買 EIP、EIC、IC、TLK 長途列車票；本行程四段城際車以此為主要購票入口。
+          - generic [ref=f1e201]: 開啟官網 →
+        - link "Passenger Portal 官方時刻表 查全波蘭列車班次、停靠站、即時延誤與月台；月台仍以當日站內電子牌為準。 開啟官網 →" [ref=f1e202] [cursor=pointer]:
+          - /url: https://portalpasazera.pl/en/
+          - heading "Passenger Portal 官方時刻表" [level=3] [ref=f1e203]
+          - paragraph [ref=f1e204]: 查全波蘭列車班次、停靠站、即時延誤與月台；月台仍以當日站內電子牌為準。
+          - generic [ref=f1e205]: 開啟官網 →
+        - link "PKP Intercity 官方 App（iPhone／iPad） 可購買 PKP Intercity 各車種、選位並離線開啟已購票券。 開啟官網 →" [ref=f1e206] [cursor=pointer]:
+          - /url: https://apps.apple.com/pl/app/pkp-intercity-kupuj-bilety/id1500848669
+          - heading "PKP Intercity 官方 App（iPhone／iPad）" [level=3] [ref=f1e207]
+          - paragraph [ref=f1e208]: 可購買 PKP Intercity 各車種、選位並離線開啟已購票券。
+          - generic [ref=f1e209]: 開啟官網 →
+        - link "Lajkonik · Auschwitz 巴士班表與購票 查 Kraków MDA → Muzeum Auschwitz；回程請由同站切換 Oświęcim → Kraków，10/26 指定日付款前再核對。 開啟官網 →" [ref=f1e210] [cursor=pointer]:
+          - /url: https://www.lajkonikbus.eu/krakow-oswiecim.html
+          - heading "Lajkonik · Auschwitz 巴士班表與購票" [level=3] [ref=f1e211]
+          - paragraph [ref=f1e212]: 查 Kraków MDA → Muzeum Auschwitz；回程請由同站切換 Oświęcim → Kraków，10/26 指定日付款前再核對。
+          - generic [ref=f1e213]: 開啟官網 →
+    - generic [ref=f1e214]:
+      - generic [ref=f1e215]:
+        - generic [ref=f1e216]: How to
+        - heading "網路購票教學" [level=2] [ref=f1e217]
+      - generic [ref=f1e218]:
+        - article [ref=f1e219]:
+          - generic [ref=f1e220]: "01"
+          - heading "先用官方時刻表找直達班次" [level=3] [ref=f1e221]
+          - paragraph [ref=f1e222]: 在 Passenger Portal 輸入出發站、抵達站、日期與目標時間，勾選 Direct connections。四段起點依序使用 Warszawa Zachodnia、Kraków Główny、Wrocław Główny、Poznań Główny。
+        - article [ref=f1e223]:
+          - generic [ref=f1e224]: "02"
+          - heading "進 PKP Intercity 官方購票頁重查" [level=3] [ref=f1e225]
+          - paragraph [ref=f1e226]: 用相同站名與日期搜尋；通常最早約 30 天前開放，10/25、27、28、29 的提醒日分別是 9/25、9/27、9/28、9/29，但不是保證開賣日。只有購票頁顯示可選車次與價格時才算可售。
+        - article [ref=f1e227]:
+          - generic [ref=f1e228]: "03"
+          - heading "選車種、艙等與正確優惠資格" [level=3] [ref=f1e229]
+          - paragraph [ref=f1e230]: 優先選直達 EIP／EIC／IC／TLK，依實際抵達時間與預算決定。沒有符合波蘭法定優惠資格就選一般成人票，不自行套用學生或年齡折扣。
+        - article [ref=f1e231]:
+          - generic [ref=f1e232]: "04"
+          - heading "確認座位與旅客資料再付款" [level=3] [ref=f1e233]
+          - paragraph [ref=f1e234]: 依系統畫面選 2 等座、座位偏好與同行人數；付款前核對日期、起訖站、車次、發到時間、車廂與座位。
+        - article [ref=f1e235]:
+          - generic [ref=f1e236]: "05"
+          - heading "下載 PDF 並保存離線副本" [level=3] [ref=f1e237]
+          - paragraph [ref=f1e238]: 付款成功後立即下載票券 PDF，另存到手機離線資料夾；每一段都記錄車次、車廂、座位與取消／改票條件。
+        - article [ref=f1e239]:
+          - generic [ref=f1e240]: "06"
+          - heading "搭車前再查月台與異動" [level=3] [ref=f1e241]
+          - paragraph [ref=f1e242]: 前一晚與到站後用 Passenger Portal 查看延誤或改道，進站仍以電子看板為準；至少提早 20–30 分鐘抵達大站。
+    - generic [ref=f1e243]:
+      - generic [ref=f1e244]:
+        - generic [ref=f1e245]: Flights
+        - heading "航班" [level=2] [ref=f1e246]
+      - heading "去程" [level=3] [ref=f1e247]
+      - table [ref=f1e249]:
+        - rowgroup [ref=f1e250]:
+          - row [ref=f1e251]:
+            - cell "航班 CX 479" [ref=f1e252]
+            - cell "路段 TPE → HKG" [ref=f1e253]
+            - cell "日期／時間 10/23 五 21:05 → 23:05" [ref=f1e254]
+            - cell "時長 2h00m" [ref=f1e255]
+            - cell "狀態 已購票" [ref=f1e256]:
+              - text: 狀態
+              - generic [ref=f1e257]: 已購票
+          - row [ref=f1e258]:
+            - cell "航班 ⇄ HKG" [ref=f1e259]
+            - cell "路段 轉機" [ref=f1e260]
+            - cell "日期／時間 2h20m" [ref=f1e261]
+            - cell "時長 —" [ref=f1e262]
+            - cell "狀態 轉機" [ref=f1e263]
+          - row [ref=f1e264]:
+            - cell "航班 QR 815" [ref=f1e265]
+            - cell "路段 HKG → DOH" [ref=f1e266]
+            - cell "日期／時間 10/24 六 01:25 → 04:50" [ref=f1e267]
+            - cell "時長 8h25m" [ref=f1e268]
+            - cell "狀態 已購票" [ref=f1e269]:
+              - text: 狀態
+              - generic [ref=f1e270]: 已購票
+          - row [ref=f1e271]:
+            - cell "航班 ⇄ DOH" [ref=f1e272]
+            - cell "路段 轉機" [ref=f1e273]
+            - cell "日期／時間 3h40m" [ref=f1e274]
+            - cell "時長 —" [ref=f1e275]
+            - cell "狀態 轉機" [ref=f1e276]
+          - row [ref=f1e277]:
+            - cell "航班 QR 259" [ref=f1e278]
+            - cell "路段 DOH → WAW" [ref=f1e279]
+            - cell "日期／時間 10/24 六 08:30 → 13:30" [ref=f1e280]
+            - cell "時長 6h00m" [ref=f1e281]
+            - cell "狀態 已購票" [ref=f1e282]:
+              - text: 狀態
+              - generic [ref=f1e283]: 已購票
+      - heading "回程" [level=3] [ref=f1e284]
+      - table [ref=f1e286]:
+        - rowgroup [ref=f1e287]:
+          - row [ref=f1e288]:
+            - cell "航班 QR 260" [ref=f1e289]
+            - cell "路段 WAW → DOH" [ref=f1e290]
+            - cell "日期／時間 10/31 六 14:40 → 22:10" [ref=f1e291]
+            - cell "時長 5h30m" [ref=f1e292]
+            - cell "狀態 已購票" [ref=f1e293]:
+              - text: 狀態
+              - generic [ref=f1e294]: 已購票
+          - row [ref=f1e295]:
+            - cell "航班 ⇄ DOH" [ref=f1e296]
+            - cell "路段 轉機" [ref=f1e297]
+            - cell "日期／時間 3h55m" [ref=f1e298]
+            - cell "時長 —" [ref=f1e299]
+            - cell "狀態 轉機" [ref=f1e300]
+          - row [ref=f1e301]:
+            - cell "航班 QR 818" [ref=f1e302]
+            - cell "路段 DOH → HKG" [ref=f1e303]
+            - cell "日期／時間 11/1 日 02:05 → 14:50" [ref=f1e304]
+            - cell "時長 7h45m" [ref=f1e305]
+            - cell "狀態 已購票" [ref=f1e306]:
+              - text: 狀態
+              - generic [ref=f1e307]: 已購票
+          - row [ref=f1e308]:
+            - cell "航班 ⇄ HKG" [ref=f1e309]
+            - cell "路段 轉機" [ref=f1e310]
+            - cell "日期／時間 4h50m" [ref=f1e311]
+            - cell "時長 —" [ref=f1e312]
+            - cell "狀態 轉機" [ref=f1e313]
+          - row [ref=f1e314]:
+            - cell "航班 BR 872" [ref=f1e315]
+            - cell "路段 HKG → TPE" [ref=f1e316]
+            - cell "日期／時間 11/1 日 19:40 → 21:25" [ref=f1e317]
+            - cell "時長 1h45m" [ref=f1e318]
+            - cell "狀態 已購票" [ref=f1e319]:
+              - text: 狀態
+              - generic [ref=f1e320]: 已購票
+    - generic [ref=f1e321]:
+      - generic [ref=f1e322]:
+        - generic [ref=f1e323]: Stay
+        - heading "已確認住宿" [level=2] [ref=f1e324]
+      - generic [ref=f1e325]:
+        - text: › 公開資料範圍：
+        - paragraph [ref=f1e326]: 依旅客授權列出住宿名稱、入住日期、公開地址與地圖座標；不包含住客姓名、訂房代碼、付款資料或房號。Piast 門牌與 Towarowa 實際入住門牌仍以訂房確認為準。
+      - generic [ref=f1e327]:
+        - article [ref=f1e328]:
+          - text: 已確認 · 華沙
+          - heading "Hotel Metropol" [level=3] [ref=f1e329]
+          - paragraph [ref=f1e330]: 2026-10-24 → 2026-10-25 · 1 晚 · 1 間房
+          - paragraph [ref=f1e331]: 地址：ul. Marszałkowska 99a, 00-693 Warszawa
+          - paragraph [ref=f1e332]: 座標：52.229010, 21.010990已核對 · 2026-08-11
+          - paragraph [ref=f1e333]: 第一段華沙住宿；位於 Metro Centrum 附近，距 Warszawa Centralna 約 500 公尺。
+          - paragraph [ref=f1e334]:
+            - link "座標導航 →" [ref=f1e335] [cursor=pointer]:
+              - /url: https://www.google.com/maps/search/?api=1&query=52.22901%2C21.01099
+            - link "飯店官網 →" [ref=f1e336] [cursor=pointer]:
+              - /url: https://www.hotelmetropol.com.pl/pl/
+        - article [ref=f1e337]:
+          - text: 已確認 · 克拉科夫
+          - heading "ibis budget Krakow Stare Miasto" [level=3] [ref=f1e338]
+          - paragraph [ref=f1e339]: 2026-10-25 → 2026-10-27 · 2 晚 · 1 間房
+          - paragraph [ref=f1e340]: 地址：ul. Pawia 11, 31-154 Kraków
+          - paragraph [ref=f1e341]: 座標：50.070750, 19.946163已核對 · 2026-08-11
+          - paragraph [ref=f1e342]: 位於 Kraków Główny 與 Galeria Krakowska 旁。
+          - paragraph [ref=f1e343]:
+            - link "座標導航 →" [ref=f1e344] [cursor=pointer]:
+              - /url: https://www.google.com/maps/search/?api=1&query=50.07075%2C19.946163
+            - link "飯店官網 →" [ref=f1e345] [cursor=pointer]:
+              - /url: https://all.accor.com/hotel/7165/index.en.shtml
+        - article [ref=f1e346]:
+          - text: 已確認 · 樂斯拉夫
+          - heading "Piast" [level=3] [ref=f1e347]
+          - paragraph [ref=f1e348]: 2026-10-27 14:00 → 2026-10-28 12:00 · 1 晚 · 1 間房
+          - paragraph [ref=f1e349]:
+            - text: 地址：完整地址待飯店第一方確認
+            - generic [ref=f1e350]: 門牌待確認
+          - paragraph [ref=f1e351]: 座標：51.100130, 17.035690地圖座標已核對；門牌仍待第一方確認 · 2026-08-11
+          - paragraph [ref=f1e352]: 住宿訂單已確認；飯店官網目前未正常顯示完整地址，出發前須用訂房確認或直接向飯店核對。
+          - paragraph [ref=f1e353]:
+            - link "座標導航 →" [ref=f1e354] [cursor=pointer]:
+              - /url: https://www.google.com/maps/search/?api=1&query=51.10013%2C17.03569
+            - link "飯店官網 →" [ref=f1e355] [cursor=pointer]:
+              - /url: https://piastwroclaw.pl/
+        - article [ref=f1e356]:
+          - text: 已確認 · 波茲南
+          - heading "Poznan Apartments Towarowa" [level=3] [ref=f1e357]
+          - paragraph [ref=f1e358]: 2026-10-28 15:00 → 2026-10-29 11:00 · 1 晚 · 1 間房
+          - paragraph [ref=f1e359]: 地址：Towarowa 37/201, 61-896 Poznań
+          - paragraph [ref=f1e360]: 座標：52.403903, 16.915609接待處座標已核對 · 2026-08-11
+          - paragraph [ref=f1e361]: 此處為官方接待與取鑰匙地址；實際公寓門牌以私人訂房確認為準。
+          - paragraph [ref=f1e362]:
+            - link "座標導航 →" [ref=f1e363] [cursor=pointer]:
+              - /url: https://www.google.com/maps/search/?api=1&query=52.403903%2C16.915609
+            - link "飯店官網 →" [ref=f1e364] [cursor=pointer]:
+              - /url: https://www.poznanapartments.com/kontakt
+        - article [ref=f1e365]:
+          - text: 已確認 · 華沙
+          - heading "Hotel Metropol" [level=3] [ref=f1e366]
+          - paragraph [ref=f1e367]: 2026-10-29 → 2026-10-31 · 2 晚 · 1 間房
+          - paragraph [ref=f1e368]: 地址：ul. Marszałkowska 99a, 00-693 Warszawa
+          - paragraph [ref=f1e369]: 座標：52.229010, 21.010990已核對 · 2026-08-11
+          - paragraph [ref=f1e370]: 位於 Metro Centrum 附近，步行可達 Warszawa Centralna。
+          - paragraph [ref=f1e371]:
+            - link "座標導航 →" [ref=f1e372] [cursor=pointer]:
+              - /url: https://www.google.com/maps/search/?api=1&query=52.22901%2C21.01099
+            - link "飯店官網 →" [ref=f1e373] [cursor=pointer]:
+              - /url: https://www.hotelmetropol.com.pl/pl/
+  - contentinfo [ref=f1e374]:
+    - generic [ref=f1e375]:
+      - paragraph [ref=f1e376]: POLSKA 波蘭行 · 2026/10/24–10/31
+      - paragraph [ref=f1e377]: 行程與介面檢視：2026-09-08。各筆資料查核日期見待辦與資料庫；候選班次未訂妥，票價及開放時間以官方公告與已購票券為準。

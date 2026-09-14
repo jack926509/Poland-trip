@@ -15,6 +15,7 @@ const TILE_LIMIT = 400;
 const PAGES = [
   './',
   './index.html',
+  './today.html',
   './day-01.html', './day-02.html', './day-03.html', './day-04.html',
   './day-05.html', './day-06.html', './day-07.html', './day-08.html',
   './city-warszawa.html', './city-krakow.html', './city-wroclaw.html', './city-poznan.html',

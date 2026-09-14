@@ -1,0 +1,383 @@
+- generic [active] [ref=e1]:
+  - link "跳至主要內容" [ref=e2] [cursor=pointer]:
+    - /url: "#main-content"
+  - navigation "主要導覽" [ref=e3]:
+    - link "POLSKA Paper Travel Journal" [ref=e4] [cursor=pointer]:
+      - /url: index.html
+      - generic [ref=e5]: POLSKA
+      - generic [ref=e6]: Paper Travel Journal
+    - generic [aria-hidden] [ref=e7]: VOL. 2026 · 08 DAYS
+    - group [ref=e8]:
+      - generic "每日行程 ▾" [ref=e9] [cursor=pointer]
+    - group [ref=e10]:
+      - generic "城市指南 ▾" [ref=e11] [cursor=pointer]
+    - group [ref=e12]:
+      - generic "實用資訊 ▾" [ref=e13] [cursor=pointer]
+  - region "全站旅遊搜尋" [ref=e14]:
+    - generic [ref=e15]:
+      - generic [ref=e16]:
+        - generic [ref=e17]: 搜尋整個旅遊網站
+        - generic [ref=e18]:
+          - generic [aria-hidden] [ref=e19]: ⌕
+          - searchbox "搜尋整個旅遊網站" [ref=e20]
+      - group "快捷分類" [ref=e21]:
+        - generic [ref=e22]: 快速找：
+        - button "🚆 火車" [ref=e23] [cursor=pointer]
+        - button "🍽️ 餐廳" [ref=e24] [cursor=pointer]
+        - button "🗺️ 地圖" [ref=e25] [cursor=pointer]
+        - button "✶ 城市" [ref=e26] [cursor=pointer]
+      - paragraph [ref=e27]
+  - main [ref=e28]:
+    - generic [ref=e29]:
+      - generic [ref=e30]:
+        - generic [ref=e31]: Day 01 · 10/24 (六)
+        - heading "抵達華沙 · 老城傍晚漫步" [level=1] [ref=e32]
+        - paragraph [ref=e33]: 13:30 抵蕭邦機場，SKM 進城，老城散步、倒時差
+      - figure "Warszawa · 鋼鐵摩天 × 重建老城" [ref=e34]:
+        - img "華沙城市風景" [ref=e35]
+    - navigation "當日快速導覽" [ref=e37]:
+      - link "時間表" [ref=e38] [cursor=pointer]:
+        - /url: "#schedule"
+      - link "地址與導航" [ref=e39] [cursor=pointer]:
+        - /url: "#directions"
+      - link "訂票與提醒" [ref=e40] [cursor=pointer]:
+        - /url: "#day-preparation"
+    - navigation [ref=e41]:
+      - paragraph [ref=e42]: 本頁章節
+      - list [ref=e43]:
+        - listitem [ref=e44]:
+          - link "Schedule 當日時間表" [ref=e45] [cursor=pointer]:
+            - /url: "#schedule"
+            - generic [ref=e46]: Schedule
+            - text: 當日時間表
+        - listitem [ref=e47]:
+          - link "Preparation 訂票與提醒" [ref=e48] [cursor=pointer]:
+            - /url: "#day-preparation"
+            - generic [ref=e49]: Preparation
+            - text: 訂票與提醒
+        - listitem [ref=e50]:
+          - link "Priorities 時間彈性" [ref=e51] [cursor=pointer]:
+            - /url: "#sec-3"
+            - generic [ref=e52]: Priorities
+            - text: 時間彈性
+        - listitem [ref=e53]:
+          - link "Map Day 1 行程地圖" [ref=e54] [cursor=pointer]:
+            - /url: "#sec-4"
+            - generic [ref=e55]: Map
+            - text: Day 1 行程地圖
+        - listitem [ref=e56]:
+          - link "On the ground 今天怎麼走" [ref=e57] [cursor=pointer]:
+            - /url: "#directions"
+            - generic [ref=e58]: On the ground
+            - text: 今天怎麼走
+        - listitem [ref=e59]:
+          - link "Food 順路必吃" [ref=e60] [cursor=pointer]:
+            - /url: "#sec-6"
+            - generic [ref=e61]: Food
+            - text: 順路必吃
+        - listitem [ref=e62]:
+          - link "Plan B 備案" [ref=e63] [cursor=pointer]:
+            - /url: "#sec-7"
+            - generic [ref=e64]: Plan B
+            - text: 備案
+        - listitem [ref=e65]:
+          - link "On the ground 現場實用提醒" [ref=e66] [cursor=pointer]:
+            - /url: "#sec-8"
+            - generic [ref=e67]: On the ground
+            - text: 現場實用提醒
+        - listitem [ref=e68]:
+          - link "Before sleep 晚間準備" [ref=e69] [cursor=pointer]:
+            - /url: "#sec-9"
+            - generic [ref=e70]: Before sleep
+            - text: 晚間準備
+        - listitem [ref=e71]:
+          - link "Photo 拍照建議" [ref=e72] [cursor=pointer]:
+            - /url: "#sec-10"
+            - generic [ref=e73]: Photo
+            - text: 拍照建議
+    - generic [ref=e74]:
+      - generic [ref=e75]:
+        - generic [ref=e76]: Schedule
+        - heading "當日時間表" [level=2] [ref=e77]
+      - table [ref=e79]:
+        - rowgroup [ref=e80]:
+          - row [ref=e81]:
+            - columnheader "時間" [ref=e82]
+            - columnheader "行程" [ref=e83]
+            - columnheader "花費" [ref=e84]
+            - columnheader "時長" [ref=e85]
+        - rowgroup [ref=e86]:
+          - row [ref=e87]:
+            - cell "13:30" [ref=e88]
+            - cell "抵蕭邦機場 申根入境 + 提行李 ~75min" [ref=e89]: 抵蕭邦機場申根入境 + 提行李 ~75min
+            - cell "—" [ref=e90]
+            - cell "75 min" [ref=e91]
+          - row [ref=e92]:
+            - cell "14:45" [ref=e93]
+            - cell "SKM S2/S3 目標班次 第 1 區時間票 · 約 25–30 分；抵達後查 WTP 即時月台與票價" [ref=e94]: SKM S2/S3 目標班次第 1 區時間票 · 約 25–30 分；抵達後查 WTP 即時月台與票價
+            - cell "抵達日確認" [ref=e95]
+            - cell "25–30 min" [ref=e96]
+          - row [ref=e97]:
+            - cell "15:15" [ref=e98]
+            - cell "Hotel Metropol Check-in" [ref=e99]
+            - cell "—" [ref=e100]
+            - cell "30 min" [ref=e101]
+          - row [ref=e102]:
+            - cell "16:45" [ref=e103]
+            - cell "★ 老城廣場 皇家城堡 · 美人魚雕像" [ref=e104]: ★ 老城廣場皇家城堡 · 美人魚雕像
+            - cell "免費" [ref=e105]
+            - cell "1 h" [ref=e106]
+          - row [ref=e107]:
+            - cell "18:00" [ref=e108]
+            - cell "Krakowskie Przedmieście 黃昏氛圍" [ref=e109]: Krakowskie Przedmieście黃昏氛圍
+            - cell "免費" [ref=e110]
+            - cell "1 h" [ref=e111]
+          - row [ref=e112]:
+            - cell "19:00" [ref=e113]
+            - cell "Pierogi 晚餐 Zapiecek · Krakowskie Przedmieście 55（就在 18:00 散步那條街上）；出發前確認當日營業" [ref=e114]: Pierogi 晚餐Zapiecek · Krakowskie Przedmieście 55（就在 18:00 散步那條街上）；出發前確認當日營業
+            - cell "PLN 35–55" [ref=e115]
+            - cell "—" [ref=e116]
+          - row [ref=e117]:
+            - cell "21:00" [ref=e118]
+            - cell "早睡倒時差" [ref=e119]
+            - cell "—" [ref=e120]
+            - cell "—" [ref=e121]
+    - generic [ref=e122]:
+      - generic [ref=e123]:
+        - generic [ref=e124]: Preparation
+        - heading "訂票與提醒" [level=2] [ref=e125]
+      - generic [ref=e126]: ✓ 這一天沒有待訂項目。
+    - generic [ref=e127]:
+      - generic [ref=e128]:
+        - generic [ref=e129]: Priorities
+        - heading "時間彈性" [level=2] [ref=e130]
+      - generic [ref=e131]:
+        - article [ref=e132]:
+          - text: 不能延誤
+          - heading "硬性時間" [level=3] [ref=e133]
+          - list [ref=e134]:
+            - listitem [ref=e135]: 不排室內博物館
+            - listitem [ref=e136]: 晚上早睡，保留 Day 2 轉場體力
+        - article [ref=e137]:
+          - text: 時間不夠時
+          - heading "可以壓縮" [level=3] [ref=e138]
+          - list [ref=e139]:
+            - listitem [ref=e140]: 老城散步範圍
+            - listitem [ref=e141]: 晚餐後甜點
+    - region [ref=e142]:
+      - generic [ref=e143]:
+        - generic [ref=e144]: Map
+        - heading "Day 1 行程地圖" [level=2] [ref=e145]
+      - paragraph [ref=e146]: 白天主地圖：華沙 Warszawa。共 3 個當日景點／操作錨點；晚間抵達城市不納入本圖，使用 ＋／－、滾輪或雙擊縮放。
+      - group "Day 1 行程地圖縮放控制" [ref=e147]:
+        - button "放大地圖" [ref=e148] [cursor=pointer]: ＋ 放大
+        - button "縮小地圖" [ref=e149] [cursor=pointer]: － 縮小
+        - button "重設地圖範圍" [ref=e150] [cursor=pointer]: 重設範圍
+      - region "Day 1 行程地圖" [ref=e151]:
+        - generic:
+          - generic:
+            - img:
+              - generic:
+                - generic [ref=e152] [cursor=pointer]
+                - generic [ref=e153] [cursor=pointer]
+                - generic [ref=e154] [cursor=pointer]
+        - generic [ref=e155]:
+          - link "Leaflet" [ref=e156] [cursor=pointer]:
+            - /url: https://leafletjs.com
+          - text: "| © OpenStreetMap contributors"
+      - generic "地圖圖例" [ref=e157]:
+        - generic [ref=e158]: 米其林二星
+        - generic [ref=e160]: 米其林一星
+        - generic [ref=e162]: 必比登推介
+        - generic [ref=e164]: 街食／小吃／牛奶吧
+        - generic [ref=e166]: 景點
+        - generic [ref=e168]: 伴手禮店家
+        - generic [ref=e170]: 精品購物
+        - generic [ref=e172]: 已確認住宿
+        - generic [ref=e174]: 車站／交通
+      - paragraph [ref=e176]: 地圖底圖 © OpenStreetMap contributors · 「範圍代表點」不是入口或門牌
+    - region [ref=e177]:
+      - generic [ref=e178]:
+        - generic [ref=e179]: On the ground
+        - heading "今天怎麼走" [level=2] [ref=e180]
+      - paragraph [ref=e181]: 抵達後啟用網路、確認住宿地址與行李狀態。
+      - generic [ref=e182]:
+        - article [ref=e183]:
+          - text: Address book
+          - heading "現場地址" [level=3] [ref=e184]
+          - list [ref=e185]:
+            - listitem [ref=e186]:
+              - generic [ref=e187]:
+                - generic [ref=e188]: 華沙蕭邦機場
+                - generic [ref=e189]: Żwirki i Wigury 1, 00-906 Warszawa
+              - paragraph [ref=e190]: 抵達後依航站現場標示前往 SKM 月台。
+              - paragraph [ref=e191]: 入口：抵達後依 Arrivals 與 SKM／Railway Station 標示前往航廈下方車站；回程依電子機票確認報到區。
+              - link "在新視窗開啟 華沙蕭邦機場 導航" [ref=e192] [cursor=pointer]:
+                - /url: https://www.google.com/maps/search/?api=1&query=Warsaw%20Chopin%20Airport%2C%20%C5%BBwirki%20i%20Wigury%201%2C%20Warszawa
+                - text: 開啟導航 ↗
+              - text: ·
+              - link "官網 ↗" [ref=e193] [cursor=pointer]:
+                - /url: https://www.lotnisko-chopina.pl/en/index.html
+            - listitem [ref=e194]:
+              - generic [ref=e195]:
+                - generic [ref=e196]: Warszawa Centralna
+                - generic [ref=e197]: al. Jerozolimskie 54, 00-024 Warszawa
+              - paragraph [ref=e198]: 入口：由已確認住宿方向選最近入口；進站後以大廳電子牌確認月台，不預先假定入口或月台。
+              - link "在新視窗開啟 Warszawa Centralna 導航" [ref=e199] [cursor=pointer]:
+                - /url: https://www.google.com/maps/search/?api=1&query=Warszawa%20Centralna%2C%20al.%20Jerozolimskie%2054%2C%20Warszawa
+                - text: 開啟導航 ↗
+              - text: ·
+              - link "官網 ↗" [ref=e200] [cursor=pointer]:
+                - /url: https://portalpasazera.pl/en/KatalogStacji
+            - listitem [ref=e201]:
+              - generic [ref=e202]:
+                - generic [ref=e203]: 華沙皇家城堡
+                - generic [ref=e204]: plac Zamkowy 4, 00-277 Warszawa
+              - paragraph [ref=e205]: 入口：主要訪客入口在 plac Zamkowy 4；依票券時段與現場安檢標示入場。
+              - link "在新視窗開啟 華沙皇家城堡 導航" [ref=e206] [cursor=pointer]:
+                - /url: https://www.google.com/maps/search/?api=1&query=Royal%20Castle%20Warsaw%2C%20plac%20Zamkowy%204%2C%20Warszawa
+                - text: 開啟導航 ↗
+              - text: ·
+              - link "官網 ↗" [ref=e207] [cursor=pointer]:
+                - /url: https://www.zamek-krolewski.pl/en/strona/opening-hours-and-ticket-prices/2801-opening-hours-and-ticket-prices-may-2-2026
+            - listitem [ref=e208]:
+              - generic [ref=e209]:
+                - generic [ref=e210]: 華沙老城市場廣場
+                - generic [ref=e211]: Rynek Starego Miasta, 00-272 Warszawa
+              - paragraph [ref=e212]: 入口：公共廣場，導航至 Rynek Starego Miasta；與 plac Zamkowy 的皇家城堡廣場是不同地點。
+              - link "在新視窗開啟 華沙老城市場廣場 導航" [ref=e213] [cursor=pointer]:
+                - /url: https://www.google.com/maps/search/?api=1&query=Rynek%20Starego%20Miasta%2C%20Warszawa
+                - text: 開啟導航 ↗
+              - text: ·
+              - link "官網 ↗" [ref=e214] [cursor=pointer]:
+                - /url: https://go2warsaw.pl/en/old-town/
+            - listitem [ref=e215]:
+              - generic [ref=e216]:
+                - generic [ref=e217]: Krakowskie Przedmieście
+                - generic [ref=e218]: Krakowskie Przedmieście, Warszawa
+              - paragraph [ref=e219]: 入口：公共街道，從城堡廣場沿皇家大道步行，無需入場。
+              - link "在新視窗開啟 Krakowskie Przedmieście 導航" [ref=e220] [cursor=pointer]:
+                - /url: https://www.google.com/maps/search/?api=1&query=Krakowskie%20Przedmiescie%2C%20Warszawa
+                - text: 開啟導航 ↗
+              - text: ·
+              - link "官網 ↗" [ref=e221] [cursor=pointer]:
+                - /url: https://warsawtour.pl/en/royal-route/
+            - listitem [ref=e222]:
+              - generic [ref=e223]:
+                - generic [ref=e224]: Hotel Metropol
+                - generic [ref=e225]: ul. Marszałkowska 99a, 00-693 Warszawa
+              - paragraph [ref=e226]: 第一段華沙住宿；位於 Metro Centrum 附近，距 Warszawa Centralna 約 500 公尺。
+              - paragraph [ref=e227]: 入口：抵達後由飯店主入口前往接待櫃檯，訂房代碼僅保留於私人離線資料。
+              - link "在新視窗開啟 Hotel Metropol 導航" [ref=e228] [cursor=pointer]:
+                - /url: https://www.google.com/maps/search/?api=1&query=Hotel%20Metropol%2C%20ul.%20Marsza%C5%82kowska%2099a%2C%2000-693%20Warszawa
+                - text: 開啟導航 ↗
+              - text: ·
+              - link "官網 ↗" [ref=e229] [cursor=pointer]:
+                - /url: https://www.hotelmetropol.com.pl/pl/
+        - article [ref=e230]:
+          - text: Route
+          - heading "移動步驟" [level=3] [ref=e231]
+          - list [ref=e232]:
+            - listitem [ref=e233]:
+              - generic [ref=e234]: SKM
+              - text: 蕭邦機場 → 華沙市中心
+              - paragraph [ref=e235]: 抵達後查 WTP 即時班次、月台與官方票價，使用當日適用的第 1 區時間票。
+            - listitem [ref=e236]:
+              - generic [ref=e237]: 步行／市內交通
+              - text: 住宿 → 老城廣場
+              - paragraph [ref=e238]: 先以已確認的住宿地址建立路線；若拖行李不直接去老城。
+      - generic [ref=e239]:
+        - text: "!"
+        - generic [ref=e240]: 今日注意
+        - list [ref=e241]:
+          - listitem [ref=e242]: 抵達日不排室內票券；若入境或行李延誤，直接壓縮老城散步。
+          - listitem [ref=e243]: 離開行李提領區前確認託運行李已到；未到先申報 PIR。
+      - group [ref=e244]:
+        - generic "待班次／住宿／分店確認的步驟" [ref=e245] [cursor=pointer]
+    - generic [ref=e247]:
+      - generic [ref=e248]:
+        - generic [ref=e249]: Food
+        - heading "順路必吃" [level=2] [ref=e250]
+      - generic [ref=e251]:
+        - generic [ref=e252]:
+          - paragraph [ref=e253]: Pierogi @ Zapiecek
+          - paragraph [ref=e254]:
+            - link "Zapiecek（老城多家分店） 地圖 →" [ref=e255] [cursor=pointer]:
+              - /url: https://www.google.com/maps/search/?api=1&query=Zapiecek+Polskie+Pierogarnie+Warszawa
+        - generic [ref=e256]:
+          - paragraph [ref=e257]: Wedel 熱巧克力 @ E. Wedel Pijalnia
+          - paragraph [ref=e258]:
+            - link "Pijalnia Czekolady E.Wedel 地圖 →" [ref=e259] [cursor=pointer]:
+              - /url: https://www.google.com/maps/search/?api=1&query=Pijalnia+Czekolady+E.Wedel+Warszawa
+    - generic [ref=e260]:
+      - generic [ref=e261]:
+        - generic [ref=e262]: Plan B
+        - heading "備案" [level=2] [ref=e263]
+      - generic [ref=e264]:
+        - article [ref=e265]:
+          - text: 下雨備案
+          - heading "科學文化宮 30F 觀景台" [level=3] [ref=e266]
+          - paragraph [ref=e267]: 票價出發前依官方售票頁重查 · 室內 + 360° 城景，老城廣場走路 12 分
+        - article [ref=e268]:
+          - text: 時差太累
+          - heading "Łazienki 公園溫室" [level=3] [ref=e269]
+          - paragraph [ref=e270]: 室內展館 + 蕭邦像，免費，傍晚前可走
+    - generic [ref=e271]:
+      - generic [ref=e272]:
+        - generic [ref=e273]: On the ground
+        - heading "現場實用提醒" [level=2] [ref=e274]
+      - list [ref=e275]:
+        - listitem [ref=e276]: 寄物 · Warszawa Centralna · 到站後依車站現場指示找寄物櫃；尺寸、空位與費率會變動
+        - listitem [ref=e277]: 換錢 · Kantor 民間匯兌 · 現場比較買入與賣出價，不以「0% 手續費」代替實際匯率判斷
+        - listitem [ref=e278]: SIM · Play / Plus / Orange · 預付卡需實名登記；通路、容量與價格以抵達當日電信商方案為準
+    - region [ref=e279]:
+      - generic [ref=e280]:
+        - generic [ref=e281]: Before sleep
+        - heading "晚間準備" [level=2] [ref=e282]
+      - generic [ref=e283]:
+        - paragraph [ref=e284]: 現在完成，明天出門就不用在網路不穩時臨時找資料。
+        - list [ref=e285]:
+          - listitem [ref=e286]: 手機、行動電源、相機與耳機充電
+          - listitem [ref=e287]: 將隔日火車／景點票券 PDF 存到離線資料夾
+          - listitem [ref=e288]: 截圖隔日集合點、車站入口與月台查詢頁
+          - listitem [ref=e289]: 重查隔日天氣、場館營運與市區交通異動
+          - listitem [ref=e290]: 確認 10/25 華沙 → 克拉科夫車票、車站入口與下車後的行李寄放方案
+    - figure [ref=e291]:
+      - img "華沙城堡廣場、皇家城堡與周圍彩色建築" [ref=e292]
+      - generic [ref=e293]:
+        - text: 城堡廣場與皇家城堡 · Day 1 老城散步沿途 · Steven Lek ·
+        - link "圖片來源 ↗" [ref=e294] [cursor=pointer]:
+          - /url: https://commons.wikimedia.org/wiki/File:Castle_Square_Warsaw_2018_2.jpg
+        - text: ·
+        - link "CC BY-SA 4.0 授權 ↗" [ref=e295] [cursor=pointer]:
+          - /url: https://creativecommons.org/licenses/by-sa/4.0/
+    - generic [ref=e296]:
+      - generic [ref=e297]:
+        - generic [ref=e298]: Photo
+        - heading "拍照建議" [level=2] [ref=e299]
+      - generic [ref=e300]:
+        - article [ref=e301]:
+          - text: 16:45–17:15
+          - heading "老城市集廣場彩色立面" [level=3] [ref=e302]
+          - paragraph [ref=e303]: 精確站位：華沙美人魚像西南側約 10 公尺，靠 Dekert Side 一側
+          - paragraph [ref=e304]: 拍攝方向：鏡頭朝東北，先以 24–35 mm 收整排彩色立面，再退到拱廊邊拍廣場全景
+          - paragraph [ref=e305]: 光線與構圖：日落前的斜側光會打在北、東側立面；避免貼著雕像仰拍造成建築傾斜。
+          - paragraph [ref=e306]:
+            - link "開啟拍照站位 ↗" [ref=e307] [cursor=pointer]:
+              - /url: https://www.google.com/maps/search/?api=1&query=52.249778%2C21.012151
+        - article [ref=e308]:
+          - text: 16:30–17:00
+          - heading "城堡廣場與皇家城堡" [level=3] [ref=e309]
+          - paragraph [ref=e310]: 精確站位：齊格蒙特三世紀念柱西側、靠 Krakowskie Przedmieście 的廣場邊緣
+          - paragraph [ref=e311]: 拍攝方向：鏡頭朝東北，把紀念柱放左側、皇家城堡紅牆放右側；直幅可同時收柱頂與城堡
+          - paragraph [ref=e312]: 光線與構圖：低角度光讓城堡紅牆更飽和；廣角請保持手機水平，避免紀念柱向後倒。
+          - paragraph [ref=e313]:
+            - link "開啟拍照站位 ↗" [ref=e314] [cursor=pointer]:
+              - /url: https://www.google.com/maps/search/?api=1&query=52.247604%2C21.013455
+    - navigation "每日行程翻頁" [ref=e315]:
+      - link "Day 2 →" [ref=e316] [cursor=pointer]:
+        - /url: day-02.html
+  - contentinfo [ref=e317]:
+    - generic [ref=e318]:
+      - paragraph [ref=e319]: POLSKA 波蘭行 · 2026/10/24–10/31
+      - paragraph [ref=e320]: 行程與介面檢視：2026-09-08。各筆資料查核日期見待辦與資料庫；候選班次未訂妥，票價及開放時間以官方公告與已購票券為準。
