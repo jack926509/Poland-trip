@@ -84,8 +84,8 @@ const URGENCY_TAGS = {
  * 剩餘天數——這樣離線開啟、或分頁放著過夜，倒數都還是對的，而 HTML 結構
  * 只有一份。沒有 JavaScript 時看到的是建置當日的快照，仍然可讀。
  */
-function renderCountdownSection({ trains, deadlines }) {
-  const items = collectDeadlines({ trains, deadlines });
+function renderCountdownSection({ trains, deadlines, databaseEntries }) {
+  const items = collectDeadlines({ trains, deadlines, databaseEntries });
   if (!items.length) return '';
   const today = getTaipeiToday();
   const rows = calculateCountdown(items, today).map(item => {
@@ -108,7 +108,7 @@ function renderCountdownSection({ trains, deadlines }) {
   return `
     <section class="section" id="countdown">
       <div class="section-heading"><span class="section-num">T-minus</span><h2>訂票與查核倒數</h2></div>
-      <p>以台灣時間 <span data-countdown-today>${escapeHtml(today)}</span> 計算。火車開賣日取自城際交通表，其餘依各筆「依據」欄所列的來源推算；開賣或到期都不代表已訂妥，狀態仍須人工更新。</p>
+      <p>以台灣時間 <span data-countdown-today>${escapeHtml(today)}</span> 計算。三個來源合成一張表：城際交通表的開賣日、行程自訂的行動期限、自由行資料庫的重查日，各筆的「依據」欄註明出處。這裡看的是「什麼快到期」；已經逾期的統計在資料品質面板。到期不代表已訂妥，狀態仍須人工更新。</p>
       <noscript><p>JavaScript 未啟用，以下倒數為建置當日的快照。</p></noscript>
       <div class="table-wrap"><table class="table-editorial countdown-table"><thead><tr><th>倒數</th><th>日期</th><th>類別</th><th>項目</th><th>現況與依據</th></tr></thead><tbody>${rows}</tbody></table></div>
       <script>
@@ -121,8 +121,8 @@ function renderCountdownSection({ trains, deadlines }) {
     </section>`;
 }
 
-export function renderBooking({ flights, trains, stay, bookingTiers, reservations, railOfficialLinks = [], railPurchaseSteps = [], auschwitzBus = null, deadlines = [] }) {
-  const countdownHtml = renderCountdownSection({ trains, deadlines });
+export function renderBooking({ flights, trains, stay, bookingTiers, reservations, railOfficialLinks = [], railPurchaseSteps = [], auschwitzBus = null, deadlines = [], databaseEntries = [] }) {
+  const countdownHtml = renderCountdownSection({ trains, deadlines, databaseEntries });
   const tiersHtml = bookingTiers.map((tier, index) => `
     <article class="card ${index === 0 ? 'card-accent' : ''}">
       <span class="eyebrow">Priority ${index + 1}</span>

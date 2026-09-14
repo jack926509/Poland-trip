@@ -630,13 +630,6 @@ export const deadlines = [
     basis: 'Day 7 為自評高風險日（三館連看），三館皆已查得開放時間但均未訂；取出發前 2 週為行動下限。',
   },
   {
-    id: 'etias-check-1', date: '2026-10-10', category: '證件',
-    title: 'ETIAS 啟用狀態第一次複查',
-    action: '確認 ETIAS 是否已開始收件。截至 2026-09-08 官方系統仍未運作，EU 公告預計 2026 年第 4 季啟用——本行程 10/24 出發正好落在該區間。',
-    status: '待確認', url: 'https://travel-europe.europa.eu/etias_en',
-    basis: '旅遊資訊 ETIAS 條目：「本行程 10/24 出發，須在出發前再次確認是否已需申請」。',
-  },
-  {
     id: 'bus-lajkonik', date: '2026-10-12', category: '交通',
     title: 'Lajkonik 往返 Auschwitz 巴士購票',
     action: '班次已查定，只差付款：去程 07:10（Bosacka 18 · D10）→ 08:35、回程 15:30 → 16:55，全票 25.00 zł。備案為回程 16:30。',
@@ -669,6 +662,6 @@ export const deadlines = [
     title: 'ETIAS 最終確認',
     action: '出發前最後一次確認；若已啟用則立即申請並存離線核准證明。',
     status: '待確認', url: 'https://travel-europe.europa.eu/etias_en',
-    basis: '同第一次複查，取出發前 3 天作為最後決策點。',
+    basis: '資料庫項目 entry-etias-and-passport 已排 2026-09-24 重查；本筆是出發前 3 天的最後決策點，兩者互補不重複。',
   },
 ];

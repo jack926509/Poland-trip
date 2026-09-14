@@ -717,6 +717,7 @@ function buildIntoStaging(stagingRoot) {
     railPurchaseSteps: trip.railPurchaseSteps,
     auschwitzBus: trip.auschwitzBus,
     deadlines: trip.deadlines,
+    databaseEntries: travelDatabase.databaseEntries,
   }));
   writeHtml('practical/todos.html', renderTodos({
     todoGroups: trip.todoGroups,

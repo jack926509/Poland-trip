@@ -17,13 +17,21 @@ export function isOpenEntryStatus(status) {
 }
 
 /**
- * 把四段城際火車的開賣日併入手動維護的 deadlines。
+ * 把三個來源的期限合成一張倒數表：城際火車開賣日、手動維護的 deadlines、
+ * 資料庫項目的重查日。
  *
- * 火車開賣日的正本是 trains[].saleOpens；在 deadlines 裡重抄一次，兩份就會
- * 各自漂移。建置時合併，倒數看板永遠跟著票務資料走。
+ * 三份分開維護就會變成三份互相競爭的期限——實際上已經發生過：資料庫的
+ * ETIAS 重查日是 2026-09-24，手動推算的卻排到 10/10，晚了 16 天。
+ * 合併後倒數看板是唯一入口，各來源的正本仍留在原處（trains[].saleOpens、
+ * databaseEntries[].recheckAt），這裡只讀不抄。
+ *
+ * 資料庫項目與手動項目不是重複，是不同粒度：資料庫那筆「景點票券與入場時段」
+ * 是所有票券的進度彙總，手動那幾筆是「10/03 前訂 Wieliczka 英語場」這種
+ * 具體動作，且資料庫的日期通常更早——它們是「確認要訂什麼」的前置步驟。
+ *
  * 僅於建置期呼叫，不隨頁面內嵌。
  */
-export function collectDeadlines({ trains = [], deadlines = [] } = {}) {
+export function collectDeadlines({ trains = [], deadlines = [], databaseEntries = [] } = {}) {
   const railItems = trains
     .filter(train => train.saleOpens)
     .map(train => ({
@@ -36,7 +44,22 @@ export function collectDeadlines({ trains = [], deadlines = [] } = {}) {
       url: 'https://ebilet.intercity.pl/',
       basis: `trains[].saleOpens，官方售票系統查核日 ${train.saleCheckedAt || '未記錄'}。`,
     }));
-  return [...railItems, ...deadlines].sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : a.id.localeCompare(b.id)));
+  // 已完成（verified）的資料庫項目不進倒數——催已經做完的事只會讓看板被忽略。
+  const databaseItems = databaseEntries
+    .filter(entry => entry.recheckAt && isOpenEntryStatus(entry.status))
+    .map(entry => ({
+      id: `db-${entry.id}`,
+      date: entry.recheckAt,
+      category: '資料重查',
+      title: entry.title,
+      action: entry.summary,
+      status: entry.status === 'private-required' ? '待補私人資料' : entry.status === 'recheck' ? '需重查' : '尚未完成',
+      url: entry.sourceUrl || null,
+      basis: `databaseEntries[].recheckAt，最近盤查 ${entry.checkedAt || '未記錄'}。`,
+    }));
+
+  return [...railItems, ...deadlines, ...databaseItems]
+    .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : a.id.localeCompare(b.id)));
 }
 
 /**
