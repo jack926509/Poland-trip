@@ -625,7 +625,7 @@ const flexibleStopReason = '未選定可靠分店或為彈性活動，不預填�
 const unresolvedStepReasons = {
   1: {
     'SKM S2/S3 目標班次': dynamicTransitReason,
-    'Pierogi 晚餐': flexibleStopReason,
+    '波蘭地方料理晚餐': flexibleStopReason,
     '早睡倒時差': '休息安排不需要導航地址。',
   },
   2: {

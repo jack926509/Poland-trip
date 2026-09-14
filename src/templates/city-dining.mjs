@@ -55,7 +55,7 @@ const aliases = {
   'rogal swietomarcinski': 'rogal', 'endzior plac nowy 圓亭': 'endzior',
 };
 
-function key(name) {
+export function key(name) {
   const normalized = name.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/ł/g, 'l').replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
   return aliases[normalized] || normalized;
 }

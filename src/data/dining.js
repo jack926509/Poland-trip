@@ -252,7 +252,7 @@ export const cityDining = {
     {
       "name": "Bar Mleczny Pod Temidą",
       "tier": "使用者指定 · 牛奶吧",
-      "highlight": "Grodzka 43 · 在中央廣場與 Wawel 之間，適合排平價早餐或午餐；現場排隊與營業時間依當日狀況",
+      "highlight": "Grodzka 43 · 在中央廣場與 Wawel 之間，適合排平價早餐或午餐；官網每日 09:00–20:00，惟部分來源說週末公休，行前電話 12 422 08 74 確認",
       "mapUrl": "https://maps.app.goo.gl/xCGDapoy56MBvg2y7?g_st=il"
     }
   ],
@@ -272,7 +272,7 @@ export const cityDining = {
     {
       "name": "Restauracja Wrocławska",
       "tier": "在地",
-      "highlight": "戰前風味 · 招牌：bigos 獵人燉菜、Silesian 餃",
+      "highlight": "戰前風味 · 招牌：bigos 獵人燉菜、Silesian 餃 · 週三 12:00–22:00（多來源一致，非官網一手，行前電話確認）",
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=Restauracja%20Wroc%C5%82awska%20Wroc%C5%82aw"
     },
     {
@@ -322,7 +322,7 @@ export const cityDining = {
     {
       "name": "Pyra Bar",
       "tier": "在地",
-      "highlight": "馬鈴薯專門 · 招牌：pyry s bzikiem 起司烤馬鈴薯",
+      "highlight": "馬鈴薯專門 · 招牌：pyry s bzikiem 起司烤馬鈴薯 · 週四 11:00–21:00",
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=Pyra%20Bar%20Pozna%C5%84"
     }
   ]
@@ -333,15 +333,16 @@ export const cityDining = {
 // 每筆都必須有可點的 Google Maps 連結；營業時間屬動態資料，只寫查得到來源的，並要求出發前重查。
 export const snacksAndCafes = {
   warsaw: [
-    {name:'Bar Mleczny Prasowy', type:'牛奶吧', note:'1954 年開業的華沙老牌牛奶吧，żurek、pierogi、炸豬排都是銅板價。距 Hotel Metropol 沿 Marszałkowska 步行約 5 分鐘，是最順路的一餐。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Prasowy%2C%20Marsza%C5%82kowska%2010%2F16%2C%20Warszawa'},
+    {name:'Bar Mleczny Prasowy', type:'牛奶吧', note:'1954 年開業的華沙老牌牛奶吧，żurek、pierogi、炸豬排都是銅板價。距 Hotel Metropol 沿 Marszałkowska 步行約 5 分鐘，是最順路的一餐；Day 8 早餐備案。', hours:'多數來源每日 08:00–20:00，少數來源說 09:00 才開，行前電話 666 353 776 確認', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Prasowy%2C%20Marsza%C5%82kowska%2010%2F16%2C%20Warszawa'},
     {name:'Bar Mleczny Bambino', type:'牛奶吧', note:'1959 年開業，公認華沙最「體面」的牛奶吧，內裝與菜單維持舊時樣貌。2026 年公開資料列一–五 08:00–20:00、週末 09:00–18:00；不同來源對門牌有 Hoża 19 與 Krucza 21 兩說，出發前用地圖確認分店。', hours:'一–五 08:00–20:00、六日 09:00–18:00（公開資料，出發前重查）', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Bambino%20Warszawa'},
-    {name:'A. Blikle 1869', type:'甜點 · 咖啡', note:'1869 年創立的波蘭國民甜點店，pączki 玫瑰果醬甜甜圈是招牌。Nowy Świat 本店距飯店步行約 15 分，Day 7 老城行程順路。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=A.Blikle%2C%20Nowy%20%C5%9Awiat%2033%2C%20Warszawa'},
+    {name:'A. Blikle 1869', type:'甜點 · 咖啡', note:'1869 年創立的波蘭國民甜點店，pączki 玫瑰果醬甜甜圈是招牌。Nowy Świat 本店距飯店步行約 15 分，Day 7 老城行程順路；09:00 開門，退房前想買 pączki 帶走可繞去，不適合當 Day 8 早餐主位。', hours:'每日 09:00–21:00（官網確認）', map:'https://www.google.com/maps/search/?api=1&query=A.Blikle%2C%20Nowy%20%C5%9Awiat%2033%2C%20Warszawa'},
     {name:'Cukiernia Zagoździński', type:'甜點', note:'1925 年開業的老派甜甜圈店，被在地人視為華沙 pączek 標準答案；位在 Wola 區 Górczewska 15，需搭電車前往，適合有半天餘裕時安排。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Cukiernia%20Zago%C5%BAdzi%C5%84ski%2C%20G%C3%B3rczewska%2015%2C%20Warszawa'},
+    {name:'Café Bristol', type:'咖啡 · 輕食', note:'Krakowskie Przedmieście（Hotel Bristol 內），Day 7 城堡→POLIN 途中順路輕食、Day 8 早餐主位。', hours:'每日 08:00–20:00；週六開門時間各來源不一致，行前電話 +48 22 551 18 28 確認', map:'https://www.google.com/maps/search/?api=1&query=Caf%C3%A9%20Bristol%20Krakowskie%20Przedmie%C5%9Bcie%2042/44%2C%20Warszawa'},
     {name:'Hala Koszyki', type:'美食大廳 · 宵夜', note:'百年市集改建的美食大廳，公告營業至凌晨 1:00，Day 6 晚班抵達後最好用的宵夜選項；距飯店步行約 10–15 分。', hours:'公告一–六 08:00–01:00、日 09:00–01:00（出發前重查）', map:'https://www.google.com/maps/search/?api=1&query=Hala%20Koszyki%2C%20Koszykowa%2063%2C%20Warszawa'},
   ],
   krakow: [
-    {name:'Bar Mleczny Pod Temidą', type:'牛奶吧', note:'Grodzka 43，老城區最方便的牛奶吧，pierogi、湯品與馬鈴薯煎餅都便宜；Day 2 由 Wawel 走回廣場時順路。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Pod%20Temid%C4%85%2C%20Grodzka%2043%2C%20Krak%C3%B3w'},
-    {name:'Endzior · Plac Nowy 圓亭', type:'小吃 · zapiekanka', note:'Kazimierz 圓亭（Okrąglak）內的 zapiekanka 名攤，長棍麵包烤蘑菇起司，PLN 18–25；Day 2 晚餐已排在這裡。', hours:'圓亭各攤營業到深夜，個別攤位時間不同', map:'https://www.google.com/maps/search/?api=1&query=Endzior%20Plac%20Nowy%20Krak%C3%B3w'},
+    {name:'Bar Mleczny Pod Temidą', type:'牛奶吧', note:'Grodzka 43，老城區最方便的牛奶吧，pierogi、湯品與馬鈴薯煎餅都便宜；Day 2 11:30 午餐已排在這裡。', hours:'官網每日 09:00–20:00，惟部分來源說週末公休，行前電話 12 422 08 74 確認', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Pod%20Temid%C4%85%2C%20Grodzka%2043%2C%20Krak%C3%B3w'},
+    {name:'Endzior · Plac Nowy 圓亭', type:'小吃 · zapiekanka', note:'Kazimierz 圓亭（Okrąglak）內的 zapiekanka 名攤，長棍麵包烤蘑菇起司，PLN 18–25；Day 2 晚餐後可繞來吃。', hours:'圓亭各攤營業到深夜，個別攤位時間不同', map:'https://www.google.com/maps/search/?api=1&query=Endzior%20Plac%20Nowy%20Krak%C3%B3w'},
     {name:'Karma Coffee Roasters', type:'精品咖啡', note:'2010 年開業，克拉科夫第一家精品咖啡店，Kazimierz 自家烘豆。公開資料列一–五 08:00–20:00、六日 10:00–19:00。', hours:'一–五 08:00–20:00、六日 10:00–19:00（公開資料，出發前重查）', map:'https://www.google.com/maps/search/?api=1&query=Karma%20Coffee%20Krupnicza%20Krak%C3%B3w'},
     {name:'Café Camelot', type:'咖啡廳', note:'老城區老牌文青咖啡館，距中央廣場數步，復古內裝、地窖有卡巴萊表演；適合 Day 4 採購後歇腳。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Cafe%20Camelot%2C%20%C5%9Aw.%20Tomasza%2017%2C%20Krak%C3%B3w'},
     {name:'Cukiernia Michałek', type:'甜點', note:'在地人推薦的 sernik（波蘭起司蛋糕）與傳統甜點；Day 4 已列為順路必吃。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Cukiernia%20Micha%C5%82ek%20Krak%C3%B3w'},
@@ -349,12 +350,14 @@ export const snacksAndCafes = {
   wroclaw: [
     {name:'Bar Mleczny Miś', type:'牛奶吧', note:'Kuźnicza 48，樂斯拉夫最知名的牛奶吧，營運逾 50 年；湯約 3–6 PLN、主菜 12–25 PLN。**週日公休**，本行程 10/28（三）可用。', hours:'一–五 07:00–18:00、六 08:00–17:00、日休（2026 公開資料，出發前重查）', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Mi%C5%9B%2C%20Ku%C5%BAnicza%2048%2C%20Wroc%C5%82aw'},
     {name:'Vincent · Kazimierza Wielkiego 甜點', type:'甜點 · 咖啡', note:'老城區連鎖甜點咖啡館，蛋糕櫃選擇多，適合小矮人散步途中補糖。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Cukiernia%20Vincent%20Wroc%C5%82aw'},
-    {name:'Konspira', type:'傳統小館', note:'Plac Solny 11，1980 年代地下反共運動主題餐廳，Śląskie kluski 等傳統菜；週五至日不接受訂位、依到店順序。', hours:'一–四 13:00–23:45、五–日 12:00–23:45（廚房至 23:00）', map:'https://www.google.com/maps/search/?api=1&query=Konspira%2C%20Plac%20Solny%2011%2C%20Wroc%C5%82aw'},
-    {name:'Browar Stu Mostów', type:'精釀啤酒', note:'樂斯拉夫代表性精釀酒廠，Day 5 已列為順路必吃；不喝酒可略過。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Browar%20Stu%20Most%C3%B3w%20Wroc%C5%82aw'},
+    {name:'Konspira', type:'傳統小館', note:'Plac Solny 11，1980 年代地下反共運動主題餐廳，Śląskie kluski 等傳統菜；週五至日不接受訂位、依到店順序。現為備案（Day 5 午餐主位改 Restauracja Wrocławska）。', hours:'一–四 13:00–23:45、五–日 12:00–23:45（廚房至 23:00）；惟週三開門時間另有來源說是 12:00，資料不一，行前電話 796 326 600 確認', map:'https://www.google.com/maps/search/?api=1&query=Konspira%2C%20Plac%20Solny%2011%2C%20Wroc%C5%82aw'},
+    {name:'Browar Stu Mostów', type:'精釀啤酒', note:'樂斯拉夫代表性精釀酒廠，不喝酒可略過。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Browar%20Stu%20Most%C3%B3w%20Wroc%C5%82aw'},
+    {name:'El Gato Specialty Coffee', type:'咖啡 · 精品咖啡', note:'Odrzańska 8，Day 5 午餐後咖啡，樂斯拉夫精品咖啡選項。', hours:'一–五 09:00–18:00、六日 10:00–18:00', map:'https://www.google.com/maps/search/?api=1&query=El%20Gato%20Specialty%20Coffee%20Roasters%20Odrza%C5%84ska%208/1%2C%20Wroc%C5%82aw'},
+    {name:'Dessert Boutique', type:'甜點', note:'Świętego Mikołaja 43，Day 5 甜點候選，樂斯拉夫精緻歐式甜點店。', hours:'二–五 12:00–19:00、六日 11:00–20:00', map:'https://www.google.com/maps/search/?api=1&query=Dessert%20Boutique%20%C5%9Awi%C4%99tego%20Miko%C5%82aja%2043%2C%20Wroc%C5%82aw'},
   ],
   poznan: [
-    {name:'Cukiernia Kandulski', type:'甜點 · rogal', note:'聖馬丁牛角麵包（PGI）認證店家之一，Day 6 已列為順路必吃；認證店家眾多，也可依官方認證名單就近選。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Cukiernia%20Kandulski%20Pozna%C5%84'},
-    {name:'Pyra Bar', type:'小吃 · 在地菜', note:'以大波蘭特色的 pyry z gzikiem（水煮馬鈴薯配 twaróg 起司醬）聞名，價位親民；Day 6 已列為順路必吃。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Pyra%20Bar%20Pozna%C5%84'},
+    {name:'Cukiernia Kandulski', type:'甜點 · rogal', note:'聖馬丁牛角麵包（PGI）認證店家之一，Day 6 12:15 已列為順路必吃；認證店家眾多，也可依官方認證名單就近選。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Cukiernia%20Kandulski%20Pozna%C5%84'},
+    {name:'Pyra Bar', type:'小吃 · 在地菜', note:'以大波蘭特色的 pyry z gzikiem（水煮馬鈴薯配 twaróg 起司醬）聞名，價位親民；Day 6 12:30 午餐首選。', hours:'一–四 11:00–21:00、五六 11:00–23:00、日 11:00–21:00', map:'https://www.google.com/maps/search/?api=1&query=Pyra%20Bar%20Pozna%C5%84'},
     {name:'Weranda Caffe', type:'咖啡廳 · 早午餐', note:'Świętosławska 10，就在舊城市場旁，庭院座位安靜，常被列入波茲南最佳早餐；Day 6 等 12:00 山羊鐘樓秀前可先坐。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Weranda%20Caffe%2C%20%C5%9Awi%C4%99tos%C5%82awska%2010%2C%20Pozna%C5%84'},
     {name:'Pijalnia Czekolady E.Wedel · Stary Rynek', type:'熱巧克力', note:'舊城市場上的 Wedel 巧克力沙龍，雨天或等表演時的室內選擇。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Pijalnia%20Czekolady%20E.Wedel%20Stary%20Rynek%20Pozna%C5%84'},
   ],
@@ -490,7 +493,7 @@ export const cityFood = [
       {
         "tag": "Pierogi",
         "name": "Pierożki u Vincenta",
-        "note": "Kazimierz 小店，份量與價位親民，適合不想走遠的安靜一餐；Day 3、Day 4 均列為順路必吃。",
+        "note": "Kazimierz 小店，份量與價位親民，適合不想走遠的安靜一餐；Day 4 列為順路必吃。",
         "book": "walk",
         "map": "https://www.google.com/maps/search/?api=1&query=Piero%C5%BCki%20u%20Vincenta%2C%20B%C5%82ogos%C5%82awionej%20Bronis%C5%82awy%2C%20Krak%C3%B3w",
         "role": "primary"

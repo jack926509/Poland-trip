@@ -1329,7 +1329,7 @@ test('城市推薦整合完整候選與既有情報，同店不重複', async ()
   const { cityDining, cityFood, snacksAndCafes } = await import('../src/data/dining.js');
   for (const [i, city] of ['warsaw', 'krakow', 'wroclaw', 'poznan'].entries()) {
     const rows = mergeCityDining(city, cityDining[city], cityFood[i].items, snacksAndCafes[city]);
-    assert.equal(rows.filter(row => row.selected).length, [10, 6, 6, 3][i]);
+    assert.equal(rows.filter(row => row.selected).length, [12, 5, 4, 3][i]);
     assert.equal(new Set(rows.map(row => row.name.toLowerCase())).size, rows.length);
     for (const original of cityDining[city]) {
       assert.ok(rows.some(row => row.notes.includes(original.highlight)), `${city}: ${original.name} 情報遺失`);
@@ -1739,4 +1739,86 @@ test('車票訂位連結：全為 https、格式正確，且 Moj Bus 已納入',
     'Day 3 回程選項缺少 Moj Bus');
   assert.match(read('practical/booking.html'), /href="https:\/\/moj-bus\.pl\/en"/, '訂票頁未輸出 Moj Bus 連結');
   assert.match(read('day-03.html'), /href="https:\/\/moj-bus\.pl\/en"/, 'Day 3 未輸出 Moj Bus 連結');
+});
+
+// ── 2026-09-13 餐飲資料收斂（feat/dining-convergence）───────────────────────
+// 原分支把「自選」名單放在 dining.js 的 userPicks；併入 main 後改採 main 的機制：
+// 城市頁的「你的候選」由 day-dining.js 推導（plannedMealsFor），不再另存一份名單。
+// 以下四條在 main 的結構下驗同一件事：自選標記只存在資料層、每日正餐與順路必吃不重複、
+// 每一天都有正餐候選、24 家自選店全部以每日餐位的形式落在資料層。
+
+test('餐飲資料重整：所有資料檔店名不含「✦ 」前綴，自選標記只透過城市頁徽章顯示', () => {
+  const dataDir = path.resolve('src/data');
+  for (const file of fs.readdirSync(dataDir)) {
+    if (!file.endsWith('.js')) continue;
+    const content = fs.readFileSync(path.join(dataDir, file), 'utf8');
+    assert.doesNotMatch(content, /✦ /, `${file} 仍殘留「✦ 」前綴，自選標記應只透過徽章顯示`);
+  }
+  for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
+    assert.ok(read(file).includes('<span class="city-dining-choice">你的候選</span>'), `${file} 缺少「你的候選」徽章`);
+  }
+});
+
+test('餐飲資料重整：每日正餐候選（day-dining）與順路必吃（eat）同一天不重複同一家店', async () => {
+  const { dayDining } = await import('../src/data/day-dining.js');
+  const { key: diningKey } = await import('../src/templates/city-dining.mjs');
+  for (const day of days) {
+    const dayItems = dayDining[String(day.n)] || [];
+    const eatItems = (day.eat || []).filter(item => typeof item !== 'string');
+    for (const dining of dayItems) {
+      for (const eat of eatItems) {
+        const eatName = eat.place || eat.text;
+        assert.notEqual(
+          diningKey(dining.name), diningKey(eatName),
+          `Day ${day.n}：「${dining.name}」同時出現在當日正餐候選與順路必吃`,
+        );
+      }
+    }
+  }
+});
+
+test('餐飲資料重整：day-dining 每筆都有 role/name/note，且八天每天都有正餐候選', async () => {
+  const { dayDining } = await import('../src/data/day-dining.js');
+  for (const [day, items] of Object.entries(dayDining)) {
+    for (const item of items) {
+      for (const field of ['role', 'name', 'note']) {
+        assert.ok(item[field]?.trim(), `day-dining Day ${day}「${item.name || '(未命名)'}」缺 ${field}`);
+      }
+    }
+  }
+  for (let n = 1; n <= 8; n += 1) {
+    assert.ok((dayDining[String(n)] || []).some(item => /首選|早餐/.test(item.role)),
+      `Day ${n} 沒有任何正餐首選`);
+    const html = read(`day-${String(n).padStart(2, '0')}.html`);
+    assert.ok(html.includes('id="day-food"'), `day-${String(n).padStart(2, '0')}.html 缺少當日餐飲卡`);
+    assert.ok(/<li class="day-food-item">/.test(html), `day-${String(n).padStart(2, '0')}.html 沒有任何正餐候選列`);
+  }
+});
+
+test('餐飲資料重整：24 家自選店全部落在資料層（每日餐位或順路必吃），城市頁標為你的候選或順路必吃', async () => {
+  const { key: diningKey, mergeCityDining } = await import('../src/templates/city-dining.mjs');
+  const { snacksAndCafes } = await import('../src/data/dining.js');
+  // 這份名單原本寫死在樣板（selections）→ 分支搬到 dining.js 的 userPicks → 併入 main 後改由
+  // day-dining.js 與 trip.js 的 eat[] 推導。名單留在測試裡，確保 24 家一家都沒有在搬遷中掉隊。
+  const userPicks = {
+    warsaw: ['MEI', 'QQ Warsaw | Matcha & Korean Toasts', 'Yache Korea', 'Arirang Restaurant', 'Pyzy Flaki Gorące', 'WYRAJ', 'NUTA', 'Café Bristol', 'Specjały Regionalne', 'Pijalnia Czekolady E.Wedel'],
+    krakow: ['Hankki', 'NOAH', 'Pod Aniołami', 'Endzior', 'FOLGA'],
+    wroclaw: ['Restauracja Wrocławska', 'IDA kuchnia i wino', 'Samarqand', 'Konspira', 'El Gato Specialty Coffee Roasters', 'Dessert Boutique'],
+    poznan: ['Hyćka', 'Pyra Bar', 'ROGAL Świętomarciński'],
+  };
+  const cityNames = { warsaw: '華沙', krakow: '克拉科夫', wroclaw: '樂斯拉夫', poznan: '波茲南' };
+  assert.equal(Object.values(userPicks).flat().length, 24);
+
+  // 同一家店：key 相同，或一邊只是多了分店／描述字（"el gato specialty coffee" ↔ "el gato specialty coffee roasters"）。
+  const stripped = name => diningKey(name.replace(/[（(][^）)]*[)）]/g, ' ').replace(/,.*$/, ' '));
+  const sameStore = (a, b) => a === b || a.startsWith(`${b} `) || b.startsWith(`${a} `);
+
+  for (const [city, names] of Object.entries(userPicks)) {
+    const rows = mergeCityDining(city, cityDining[city],
+      cityFood.find(group => group.city === cityNames[city]).items, snacksAndCafes[city]);
+    for (const name of names) {
+      const row = rows.find(row => (row.selected || row.mustEat) && sameStore(stripped(row.name), stripped(name)));
+      assert.ok(row, `${cityNames[city]} 城市頁沒有把自選店「${name}」標成你的候選或順路必吃`);
+    }
+  }
 });
