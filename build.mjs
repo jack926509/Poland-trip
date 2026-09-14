@@ -655,6 +655,8 @@ function buildIntoStaging(stagingRoot) {
     cities: cities.cities,
     todoGroups: trip.todoGroups,
     databaseEntries: travelDatabase.databaseEntries,
+    trains: trip.trains,
+    deadlines: trip.deadlines,
   }));
 
   for (const day of trip.days) {
@@ -701,6 +703,7 @@ function buildIntoStaging(stagingRoot) {
     railOfficialLinks: trip.railOfficialLinks,
     railPurchaseSteps: trip.railPurchaseSteps,
     auschwitzBus: trip.auschwitzBus,
+    deadlines: trip.deadlines,
   }));
   writeHtml('practical/todos.html', renderTodos({
     todoGroups: trip.todoGroups,

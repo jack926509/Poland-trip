@@ -1,23 +1,12 @@
 // Shared by the static renderer and the inline, offline-capable dashboard.
-export function getTaipeiToday(now = new Date()) {
-  const parts = new Intl.DateTimeFormat('en', {
-    timeZone: 'Asia/Taipei', year: 'numeric', month: '2-digit', day: '2-digit',
-  }).formatToParts(now);
-  const part = type => parts.find(value => value.type === type).value;
-  return `${part('year')}-${part('month')}-${part('day')}`;
-}
+//
+// 日期解析與時區判斷的正本在 lib/schedule.mjs；本檔只保留舊有的匯出名稱作為別名，
+// 避免同一套日期規則在兩處各自演化。
+// ⚠ 這裡的函式會被 templates/practical.mjs 以 fn.toString() 內嵌進頁面，
+// 內嵌時沒有 import，相依函式必須一起列入該檔的 runtime 陣列。
+import { toIsoDate, taipeiToday, todayIn } from '../lib/schedule.mjs';
 
-export function toComparableDate(value) {
-  const raw = String(value || '').trim();
-  const match = raw.match(/^(\d{4})-(\d{2})-(\d{2})$/)
-    || raw.match(/^(\d{1,2})\/(\d{1,2})$/);
-  if (!match) return null;
-  const [year, month, day] = match.length === 4
-    ? match.slice(1).map(Number) : [2026, ...match.slice(1).map(Number)];
-  const date = new Date(Date.UTC(year, month - 1, day));
-  if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day) return null;
-  return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-}
+export { toIsoDate as toComparableDate, taipeiToday as getTaipeiToday, todayIn };
 
 export function isOpenTodoStatus(text) {
   return /待|需|尚未|未|指定日|可查|可購/.test(String(text || ''));
@@ -27,10 +16,106 @@ export function isOpenEntryStatus(status) {
   return ['pending', 'recheck', 'private-required'].includes(status);
 }
 
+/**
+ * 把四段城際火車的開賣日併入手動維護的 deadlines。
+ *
+ * 火車開賣日的正本是 trains[].saleOpens；在 deadlines 裡重抄一次，兩份就會
+ * 各自漂移。建置時合併，倒數看板永遠跟著票務資料走。
+ * 僅於建置期呼叫，不隨頁面內嵌。
+ */
+export function collectDeadlines({ trains = [], deadlines = [] } = {}) {
+  const railItems = trains
+    .filter(train => train.saleOpens)
+    .map(train => ({
+      id: `rail-${train.type.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`,
+      date: train.saleOpens,
+      category: '火車',
+      title: `${train.type}｜${train.seg}`,
+      action: `${train.date} ${train.dep}–${train.arr}（${train.dur}）。開賣後於 PKP Intercity 確認指定日班表、票價與座位再購票。`,
+      status: train.status || '尚未訂票',
+      url: 'https://ebilet.intercity.pl/',
+      basis: `trains[].saleOpens，官方售票系統查核日 ${train.saleCheckedAt || '未記錄'}。`,
+    }));
+  return [...railItems, ...deadlines].sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : a.id.localeCompare(b.id)));
+}
+
+/**
+ * 為每個截止項目算出剩餘天數與急迫度。
+ * 已完成的項目不論日期都不再催——催已經做完的事只會讓看板被忽略。
+ */
+export function calculateCountdown(items, todayIso) {
+  return items.map(item => {
+    const date = toIsoDate(item.date);
+    const daysLeft = date === null ? null : Math.round(
+      (Date.parse(`${date}T00:00:00Z`) - Date.parse(`${todayIso}T00:00:00Z`)) / 86400000,
+    );
+    const open = isOpenTodoStatus(item.status);
+    return { ...item, date, daysLeft, urgency: urgencyOf(daysLeft, open), label: labelOf(daysLeft, open), open };
+  });
+}
+
+/** 下一個仍待處理的截止項目；全部完成時回 null。 */
+export function nextDeadline(items, todayIso) {
+  return calculateCountdown(items, todayIso)
+    .filter(item => item.open && item.daysLeft !== null)
+    .sort((a, b) => a.daysLeft - b.daysLeft)[0] || null;
+}
+
+/**
+ * 讓已渲染的倒數表跟上今天的日期。
+ *
+ * 只更新標籤與急迫度樣式，不重繪列——列在建置時就連同跳脫處理產生好了，
+ * 在瀏覽器再組一次 HTML 等於把同一套結構與跳脫規則維護兩遍。
+ * 會被內嵌進頁面，因此保持自足，只依賴一起內嵌的 urgencyOf／labelOf。
+ */
+export function urgencyOf(daysLeft, open) {
+  if (!open) return 'done';
+  if (daysLeft === null) return 'undated';
+  if (daysLeft < 0) return 'overdue';
+  if (daysLeft === 0) return 'today';
+  if (daysLeft <= 7) return 'soon';
+  return 'planned';
+}
+
+export function labelOf(daysLeft, open) {
+  if (!open) return '已完成';
+  if (daysLeft === null) return '無日期';
+  if (daysLeft < 0) return `逾期 ${Math.abs(daysLeft)} 天`;
+  if (daysLeft === 0) return '就是今天';
+  return `T-${daysLeft}`;
+}
+
+export function initializeCountdown(root, getToday) {
+  function refresh() {
+    const today = getToday();
+    const todayNode = root.querySelector('[data-countdown-today]');
+    if (todayNode) todayNode.textContent = today;
+    for (const row of root.querySelectorAll('[data-countdown-row]')) {
+      const date = row.getAttribute('data-countdown-date');
+      const open = row.getAttribute('data-countdown-open') === 'true';
+      const daysLeft = date
+        ? Math.round((Date.parse(`${date}T00:00:00Z`) - Date.parse(`${today}T00:00:00Z`)) / 86400000)
+        : null;
+      const urgency = urgencyOf(daysLeft, open);
+      row.setAttribute('data-urgency', urgency);
+      const label = row.querySelector('[data-countdown-label]');
+      if (label) label.textContent = labelOf(daysLeft, open);
+    }
+  }
+  refresh();
+  // 分頁整夜開著、或由上一頁返回快取還原時，日期要跟著走。
+  setInterval(refresh, 60000);
+  window.addEventListener('pageshow', refresh);
+  window.addEventListener('focus', refresh);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) refresh();
+  });
+}
+
 export function calculateDashboard(input, now = new Date()) {
-  const today = getTaipeiToday(now);
+  const today = taipeiToday(now);
   const overdue = date => {
-    const parsed = toComparableDate(date);
+    const parsed = toIsoDate(date);
     return parsed !== null && parsed < today;
   };
   const alerts = input.alertCandidates.filter(item => overdue(item.date));

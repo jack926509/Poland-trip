@@ -4771,3 +4771,62 @@ h3 {
   .city-dining-choice,
   .city-dining-role { display: inline-block; margin-left: .4rem; }
 }
+
+/* 倒數看板：急迫度只用左緣色條與底色標示，不改字色。
+   類別與狀態欄已經用既有的 tag 樣式帶顏色，倒數欄再上色會讓整列變花，
+   反而看不出哪幾列真的緊急。 */
+.countdown-table tbody tr {
+  border-left: 3px solid transparent;
+}
+
+.countdown-table tbody tr[data-urgency='overdue'],
+.countdown-table tbody tr[data-urgency='today'] {
+  border-left-color: var(--red);
+  background: var(--surface-danger);
+}
+
+.countdown-table tbody tr[data-urgency='soon'] {
+  border-left-color: var(--yellow);
+  background: var(--surface-warning);
+}
+
+.countdown-table tbody tr[data-urgency='done'] {
+  border-left-color: var(--green);
+}
+
+.countdown-table [data-countdown-label] {
+  font-size: 1.02rem;
+}
+
+.countdown-table tbody tr[data-urgency='overdue'] [data-countdown-label],
+.countdown-table tbody tr[data-urgency='today'] [data-countdown-label] {
+  color: var(--red);
+}
+
+/* 首頁的下一個截止提示 */
+.next-deadline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.9rem;
+  align-items: baseline;
+  margin-top: 0.9rem;
+  padding: 0.7rem 0.9rem;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-surface);
+}
+
+.next-deadline[data-urgency='overdue'],
+.next-deadline[data-urgency='today'] {
+  border-left-color: var(--red);
+  background: var(--surface-danger);
+}
+
+.next-deadline[data-urgency='soon'] {
+  border-left-color: var(--yellow);
+  background: var(--surface-warning);
+}
+
+.next-deadline strong {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+}

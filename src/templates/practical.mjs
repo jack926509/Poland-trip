@@ -17,7 +17,7 @@ function dayLink(date) {
   return day ? `<a class="cross-link" href="${day.href}">Day ${day.n} →</a>` : '';
 }
 
-import { getTaipeiToday, toComparableDate, isOpenTodoStatus, isOpenEntryStatus, calculateDashboard, dashboardCsv, initializeDashboard } from '../scripts/dashboard.js';
+import { getTaipeiToday, toComparableDate, todayIn, isOpenTodoStatus, isOpenEntryStatus, calculateDashboard, calculateCountdown, collectDeadlines, urgencyOf, labelOf, initializeCountdown, dashboardCsv, initializeDashboard } from '../scripts/dashboard.js';
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -68,7 +68,61 @@ function renderBookingNotice() {
   return '<div class="callout-note"><b>訂票狀態由人工維護，未連線查詢即時庫存。</b><p>「可查／購」只表示可前往售票頁查詢，不代表有票或已訂妥。付款前請核對指定日期、場次與價格；各項最近查核日期列於<a href="../practical/todos.html">待辦事項</a>，未記錄日期的狀態請重新確認。</p></div>';
 }
 
-export function renderBooking({ flights, trains, stay, bookingTiers, reservations, railOfficialLinks = [], railPurchaseSteps = [], auschwitzBus = null }) {
+const URGENCY_TAGS = {
+  overdue: ['tag-red', '已逾期'],
+  today: ['tag-red', '今天'],
+  soon: ['tag-yellow', '一週內'],
+  planned: ['tag-todo', '尚未到期'],
+  done: ['tag-muted', '已完成'],
+  undated: ['tag-muted', '無日期'],
+};
+
+/**
+ * 訂票與查核的倒數看板。
+ *
+ * 建置時把整張表連同跳脫處理渲染完成，前端只以 data-countdown-* 屬性更新
+ * 剩餘天數——這樣離線開啟、或分頁放著過夜，倒數都還是對的，而 HTML 結構
+ * 只有一份。沒有 JavaScript 時看到的是建置當日的快照，仍然可讀。
+ */
+function renderCountdownSection({ trains, deadlines }) {
+  const items = collectDeadlines({ trains, deadlines });
+  if (!items.length) return '';
+  const today = getTaipeiToday();
+  const rows = calculateCountdown(items, today).map(item => {
+    const [tagClass, tagText] = URGENCY_TAGS[item.urgency] || URGENCY_TAGS.planned;
+    const title = item.url
+      ? `<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener">${escapeHtml(item.title)}</a>`
+      : escapeHtml(item.title);
+    return `<tr data-countdown-row data-countdown-date="${escapeHtml(item.date || '')}" data-countdown-open="${item.open}" data-urgency="${item.urgency}">
+      <td class="number" data-label="倒數"><b data-countdown-label>${escapeHtml(item.label)}</b></td>
+      <td data-label="日期"><time datetime="${escapeHtml(item.date || '')}">${escapeHtml(item.date || '—')}</time></td>
+      <td data-label="類別"><span class="${tagClass}">${escapeHtml(item.category)}</span></td>
+      <td data-label="項目">${title}<br><span class="source-meta">${escapeHtml(item.action)}</span></td>
+      <td data-label="現況與依據">${escapeHtml(item.status)}<br><span class="source-meta">依據：${escapeHtml(item.basis)}</span><br><span class="tag-muted">${escapeHtml(tagText)}</span></td>
+    </tr>`;
+  }).join('');
+
+  const countdownRuntime = [urgencyOf, labelOf, initializeCountdown, todayIn, getTaipeiToday]
+    .map(fn => fn.toString()).join('\n');
+
+  return `
+    <section class="section" id="countdown">
+      <div class="section-heading"><span class="section-num">T-minus</span><h2>訂票與查核倒數</h2></div>
+      <p>以台灣時間 <span data-countdown-today>${escapeHtml(today)}</span> 計算。火車開賣日取自城際交通表，其餘依各筆「依據」欄所列的來源推算；開賣或到期都不代表已訂妥，狀態仍須人工更新。</p>
+      <noscript><p>JavaScript 未啟用，以下倒數為建置當日的快照。</p></noscript>
+      <div class="table-wrap"><table class="table-editorial countdown-table"><thead><tr><th>倒數</th><th>日期</th><th>類別</th><th>項目</th><th>現況與依據</th></tr></thead><tbody>${rows}</tbody></table></div>
+      <script>
+        (function() {
+          ${countdownRuntime}
+          const root = document.currentScript.closest('.standalone-page') || document;
+          initializeCountdown(root, getTaipeiToday);
+        }());
+      </script>
+    </section>`;
+}
+
+export function renderBooking({ flights, trains, stay, bookingTiers, reservations, railOfficialLinks = [], railPurchaseSteps = [], auschwitzBus = null, deadlines = [] }) {
+  const countdownHtml = renderCountdownSection({ trains, deadlines });
   const tiersHtml = bookingTiers.map((tier, index) => `
     <article class="card ${index === 0 ? 'card-accent' : ''}">
       <span class="eyebrow">Priority ${index + 1}</span>
@@ -186,6 +240,7 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
 
   const content = `
     ${renderBookingNotice()}
+    ${countdownHtml}
     <section>
       <div class="section-heading"><span class="section-num">Do first</span><h2>訂票優先順序</h2></div>
       <div class="grid">${tiersHtml}</div>
@@ -469,7 +524,8 @@ export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups
   const handover = calculateDashboard(dashboardInput);
   const { todaySyncCount, overdue: overdueCount } = handover.metrics;
   const dashboardPayload = serializeForInlineScript(dashboardInput);
-  const dashboardRuntime = [getTaipeiToday, toComparableDate, calculateDashboard, dashboardCsv, initializeDashboard]
+  // 內嵌時沒有 import，被呼叫到的相依函式必須一起列入（todayIn 支撐 getTaipeiToday）。
+  const dashboardRuntime = [todayIn, getTaipeiToday, toComparableDate, calculateDashboard, dashboardCsv, initializeDashboard]
     .map(fn => fn.toString()).join('\n');
 
   const content = `

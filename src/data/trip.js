@@ -592,3 +592,83 @@ export const reservations = [
   {when:'出發前 1 週', what:'把上述所有票價、特別閉館與開放時間再確認一次 — 本清單資料查證日為 2026-08-09，臨時活動與維修仍可能變動'},
   {when:'抵達當日', what:'隔日 Wawel 國家廳室現場票（限額制，售完只能改庭院）'},
 ];
+
+// 訂票與查核的行動截止日。
+//
+// 四段城際火車不列在這裡——它們的開賣日已經是 trains[].saleOpens，
+// 重抄一次就會有兩份各自漂移的事實；改由 collectDeadlines() 於建置時併入。
+//
+// basis 記錄每個日期的來源：官方公告的照抄，由既有規則推算的寫明怎麼算的。
+// 沒有來源基礎的日期不要放進這張表，倒數看板會讓它看起來像官方期限。
+export const deadlines = [
+  {
+    id: 'dining-michelin', date: '2026-10-03', category: '餐飲',
+    title: '米其林與熱門餐廳訂位',
+    action: 'Bottiglieria 1881（二星）最搶，先訂；再處理華沙一星與 BABA／Most（樂斯拉夫只停留一晚，訂不到就沒有第二次機會）。',
+    status: '尚未訂位', url: 'https://guide.michelin.com/en/pl/restaurants',
+    basis: '行前提醒「二星＋各一星出發前 3–4 週訂；華沙 splurge 級 3–5 週」，取窗口下緣 3 週由 10/24 回推；建議窗口自 9/19 起。',
+  },
+  {
+    id: 'ticket-wieliczka', date: '2026-10-03', category: '門票',
+    title: 'Wieliczka 鹽礦 10/27 英語團',
+    action: '於官方日期選擇器確認 10/27 英語場次、票價與庫存後購票；通用頁只列 from 131 PLN，不能當成實際票價。',
+    status: '需查／購', url: 'https://www.wieliczka-saltmine.com/individual-tourist/useful-information/ticket-prices-and-visiting-hours',
+    basis: '訂票優先順序列為第一優先「現在即可訂」；指定日場次有限，取出發前 3 週為行動下限。',
+  },
+  {
+    id: 'ticket-schindler', date: '2026-10-03', category: '門票',
+    title: '辛德勒工廠 10/25 場次',
+    action: '10/25 已進個人網路票 90 天窗口，依官方售票頁可售時段購票；最後入場 18:30。',
+    status: '現可查／購', url: 'https://muzeumkrakowa.pl/oddzialy/fabryka-emalia-oskara-schindlera',
+    basis: '訂票優先順序第二優先已註記「10/25 已進個人網路票 90 天窗口」；取出發前 3 週為行動下限。',
+  },
+  {
+    id: 'ticket-warsaw-trio', date: '2026-10-10', category: '門票',
+    title: '華沙三館 10/30 指定日票',
+    action: '皇家城堡 10:00（末入 17:00）、POLIN 13:15（主展末入 16:00）、起義博物館 16:00，依各官方售票頁的 10/30 可售時段一次訂齊，避免館際時間互相擠壓。',
+    status: '尚未訂', url: 'https://www.zamek-krolewski.pl/en',
+    basis: 'Day 7 為自評高風險日（三館連看），三館皆已查得開放時間但均未訂；取出發前 2 週為行動下限。',
+  },
+  {
+    id: 'etias-check-1', date: '2026-10-10', category: '證件',
+    title: 'ETIAS 啟用狀態第一次複查',
+    action: '確認 ETIAS 是否已開始收件。截至 2026-09-08 官方系統仍未運作，EU 公告預計 2026 年第 4 季啟用——本行程 10/24 出發正好落在該區間。',
+    status: '待確認', url: 'https://travel-europe.europa.eu/etias_en',
+    basis: '旅遊資訊 ETIAS 條目：「本行程 10/24 出發，須在出發前再次確認是否已需申請」。',
+  },
+  {
+    id: 'bus-lajkonik', date: '2026-10-12', category: '交通',
+    title: 'Lajkonik 往返 Auschwitz 巴士購票',
+    action: '班次已查定，只差付款：去程 07:10（Bosacka 18 · D10）→ 08:35、回程 15:30 → 16:55，全票 25.00 zł。備案為回程 16:30。',
+    status: '指定日尚未確認', url: 'https://www.lajkonikbus.pl/',
+    basis: '待辦事項該筆的 recheckAt = 2026-10-12。',
+  },
+  {
+    id: 'ticket-croissant', date: '2026-10-15', category: '門票',
+    title: '波茲南可頌博物館 10/29 英語場',
+    action: '週四不保證有英語場，先查 10/29 官方售票頁；沒有合適場次就改室內備案，不要預設週末的固定英文場。',
+    status: '尚未訂', url: 'https://rogalowemuzeum.pl/en/buy-ticket/',
+    basis: 'Day 6 主行程預留 13:30–15:00 且英語場未確認；取出發前 10 天為行動下限，留得下改備案的時間。',
+  },
+  {
+    id: 'recheck-all', date: '2026-10-17', category: '複查',
+    title: '全站票價、開放時間與特別閉館複查',
+    action: '門票速查與城市指南的查證日多為 2026-08-09／08-11，臨時活動與維修仍可能變動；出發前整批重查一次。',
+    status: '待執行', url: null,
+    basis: '訂位與每人預算清單的「出發前 1 週」條目，由 10/24 回推。',
+  },
+  {
+    id: 'venue-hala-stulecia', date: '2026-10-21', category: '場館',
+    title: '百年廳 10/28 內部參觀狀態',
+    action: '上官方 availability calendar 查 10/28 圓頂展廳是否開放；未確認前 Day 5 主行程只排外觀與周邊。',
+    status: '待官方日曆確認', url: 'https://halastulecia.pl/zwiedzanie/visitor-centre/',
+    basis: '待辦事項該筆：「行前 3–5 天再複查一次」，取 3 天由 10/24 回推。',
+  },
+  {
+    id: 'etias-check-2', date: '2026-10-21', category: '證件',
+    title: 'ETIAS 最終確認',
+    action: '出發前最後一次確認；若已啟用則立即申請並存離線核准證明。',
+    status: '待確認', url: 'https://travel-europe.europa.eu/etias_en',
+    basis: '同第一次複查，取出發前 3 天作為最後決策點。',
+  },
+];
