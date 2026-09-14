@@ -57,6 +57,36 @@ Day 01／06／07／08 共用華沙同一張。若要補充照片，請沿用 CRE
 - 「可查／購」仍計入未完成項目。只有收到訂票確認後才改為「已訂妥」或「已完成」，並核對 `days`、`trains`、`reservations` 與 `bookingTiers` 的相應行程；票號、訂位代碼與付款資料另存私人票券。
 - 資料庫 CSV 匯入只更新 `travel-database.js` 的對應條目，不會替使用者完成購票或自動更新 `todoGroups`。修改後執行 `env -u NODE_OPTIONS ./verify.sh`，再提交部署。
 
+## 2026-09-14 城市指南餐廳清單整合與精煉
+
+城市頁原本有「行程主餐廳推薦」與「備案餐廳」兩個區塊，是兩份互相重複的清單——
+NOAH、MOLÁM、Folga、Most、IDA、Tarasowa、Muga、SPOT.、Fromażeria、Posto、
+Kieliszki na Próżnej、kontakt、Wyraj 等十餘家同時出現在兩邊，要比較時得上下對照。
+本次把兩份合併成單一份「餐廳推薦」，並依明確標準刪減。
+
+- **資料層**：`src/data/dining.js` 的 `foodBackup` 匯出**已移除**，備案併入 `cityFood`，
+  以 `role: 'primary'`（主推）／`role: 'backup'`（備案）區分。
+  `build.mjs`、城市頁樣板與全站搜尋索引都不再讀 `foodBackup`。
+- **保留標準**（四層，寫在 `dining.js` 檔頭）：
+  ① 你的候選（`day-dining.js` 挑出的店）② 米其林星級／必比登
+  ③ 各分類代表（餃子、牛奶吧、市集、甜點、啤酒）④ 首選訂不到時真的會改去的備案。
+  已在「小吃 · 牛奶吧 · 咖啡廳」區塊列出的店不再於餐廳清單重複
+  （Bar Prasowy、A. Blikle、Zagoździński、Cukiernia Michałek、Café Camelot、
+  Browar Stu Mostów、Cukiernia Kandulski 等）；
+  沒有固定店址的品項（obwarzanek、jagodzianka、Bar Mleczny 牛奶吧、Beit Warszawa 周邊小館）
+  改由每日「順路必吃」處理，不佔餐廳列。
+- **刪減結果**：兩個區塊合計 **131 筆 → 單一清單 56 筆**
+  （華沙 17、克拉科夫 15、樂斯拉夫 13、波茲南 11）。
+  完整米其林名單沒有消失，仍在訂票頁的米其林摘要與訂位表。
+- **呈現**：單一「餐廳推薦」區塊，排序固定為 **你的候選 → 主推 → 備案**，
+  候選掛紅色「你的候選」標籤、備案掛灰色「備案」標籤，
+  備案列的「行程安排」欄顯示「首選訂不到或客滿時的替代」。導言會寫出該城共幾家。
+- **守門測試**：新增三項——`foodBackup` 必須不存在且每筆 `cityFood` 都要有 `role`、
+  每城合併後不超過 18 列且排序符合候選→主推→備案、
+  四個城市頁只輸出一個 `<h2>餐廳推薦</h2>` 且不得殘留舊的兩個區塊標題。
+
+`env -u NODE_OPTIONS ./verify.sh` 全數通過（119 項測試）。
+
 ## 2026-09-09 Auschwitz 回程定案 15:30，已訂場次併入巴士區塊
 
 - **回程由官方售票頁確認**：10/26 Oświęcim → Kraków 只有三班，皆 1h25、25,00 zł——

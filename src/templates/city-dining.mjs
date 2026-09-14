@@ -15,6 +15,11 @@ function key(name) {
   return aliases[normalized] || normalized;
 }
 
+/**
+ * 把三個來源併成單一份餐廳清單：
+ * 城市餐飲情報（cityDining）、行程餐廳與備案（cityFood 的 role）、你的候選（day-dining.js）。
+ * 同一家店只留一列，排序為 候選 → 主推 → 備案。
+ */
 export function mergeCityDining(cityKey, dining = [], primary = []) {
   const entries = new Map();
   function add(item) {
@@ -34,5 +39,6 @@ export function mergeCityDining(cityKey, dining = [], primary = []) {
     const item = match[0];
     add({ name, selected: true, ...(item ? { address: item.address, map: item.map, plan: match.map(m => `Day ${m.day} · ${m.role}：${m.note}`).join('；') } : {}) });
   }
-  return [...entries.values()].sort((a, b) => Number(Boolean(b.selected)) - Number(Boolean(a.selected)));
+  const rank = item => (item.selected ? 0 : item.role === 'backup' ? 2 : 1);
+  return [...entries.values()].sort((a, b) => rank(a) - rank(b));
 }

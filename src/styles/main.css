@@ -4569,6 +4569,7 @@ h3 {
 .city-dining-table .city-dining-selected { background: rgba(169, 78, 50, .045); }
 .city-dining-table .city-dining-selected th { border-left: 3px solid var(--rust, #a94e32); }
 .city-dining-choice { display: block; margin-top: .4rem; color: var(--rust, #a94e32); font-size: .875rem; font-weight: 700; }
+.city-dining-role { display: block; margin-top: .4rem; color: var(--ink-soft); font-size: .875rem; font-weight: 700; }
 .city-dining-table .food-map-links a { white-space: normal; }
 .city-dining-scroll-hint { display: none; }
 @media (max-width: 1100px) { .city-dining-scroll-hint { display: block; font-size: .875rem; color: var(--ink-soft); } }

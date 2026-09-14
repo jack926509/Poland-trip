@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 
 import { days } from '../src/data/trip.js';
 import {
-  cityDining, cityFood, foodBackup, michelinReservations,
+  cityDining, cityFood, michelinReservations,
   verifiedRestaurantHours, snacksAndCafes,
 } from '../src/data/dining.js';
 import { fares } from '../src/data/tickets.js';
@@ -32,7 +32,7 @@ test('景點、餐廳、伴手禮店家都有定位連結', () => {
   for (const item of verifiedRestaurantHours) {
     assert.ok(isMapUrl(item.mapUrl), `營業時間表缺定位：${item.name}`);
   }
-  for (const group of [...cityFood, ...foodBackup]) {
+  for (const group of cityFood) {
     for (const item of group.items) {
       const ok = isMapUrl(item.map) || (item.maps?.length && item.maps.every(entry => isMapUrl(entry.url)));
       assert.ok(ok, `${group.city}「${item.name}」缺定位`);

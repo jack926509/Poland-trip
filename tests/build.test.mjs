@@ -4,7 +4,7 @@ import path from 'node:path';
 import vm from 'node:vm';
 import { test } from 'node:test';
 import { cities, cityStories, photoSpots, photoCredits, mapPins, mapPinChecks, pinCategoryLegend, attractions, cityNotices } from '../src/data/cities.js';
-import { cityDining, cityFood, foodBackup, foods, michelinSummary, michelinReservations, verifiedRestaurantHours } from '../src/data/dining.js';
+import { cityDining, cityFood, foods, michelinSummary, michelinReservations, verifiedRestaurantHours } from '../src/data/dining.js';
 import { about, packingDefault, phrases, preDepartureNotes, safety } from '../src/data/essentials.js';
 import { shopping, souvenirCards, souvenirShops, luxuryShopping, zabkaCards } from '../src/data/shopping.js';
 import { fares, ticketsByCity } from '../src/data/tickets.js';
@@ -628,10 +628,9 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.equal(michelinReservations.length, 9);
   assert.equal(verifiedRestaurantHours.length, 4);
   assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
-    warsaw: 21, krakow: 15, wroclaw: 11, poznan: 11,
+    warsaw: 5, krakow: 7, wroclaw: 4, poznan: 7,
   });
-  assert.deepEqual(cityFood.map(group => group.items.length), [11, 12, 8, 6]);
-  assert.deepEqual(foodBackup.map(group => group.items.length), [9, 10, 6, 7]);
+  assert.deepEqual(cityFood.map(group => group.items.length), [7, 9, 6, 5]);
   assert.equal(foods.length, 12);
 
   assert.equal(fares.length, 21);
@@ -813,7 +812,7 @@ test('高風險行程文字與餐廳候選不會誤導現場判斷', () => {
   assert.match(luggageStep.sub, /距參考發車 1h55/);
   assert.match(luggageStep.sub, /抵站後保留約 35 分鐘緩衝/);
   assert.ok(!warsawDining.some(item => item.name.includes('/')), '餐廳候選不可把多個品牌合併成一筆');
-  assert.ok(warsawDining.some(item => item.name === 'Gościniec（探索候選）'));
+  assert.ok(warsawDining.some(item => item.name === 'NUTA'));
 });
 
 test('8 個每日頁的日期與標題和資料層一致', async () => {
@@ -1294,5 +1293,38 @@ test('城市推薦整合完整候選與既有情報，同店不重複', async ()
       assert.ok(rows.some(row => row.notes.includes(original.highlight)), `${city}: ${original.name} 情報遺失`);
     }
     assert.ok(rows.every(row => row.map || row.maps?.length));
+  }
+});
+
+test('備案已併入同一份餐廳清單，候選在前、備案在後', async () => {
+  const { mergeCityDining } = await import('../src/templates/city-dining.mjs');
+  const { cityDining, cityFood } = await import('../src/data/dining.js');
+  const cities = ['warsaw', 'krakow', 'wroclaw', 'poznan'];
+
+  // 備案不再是獨立資料來源，只能以 cityFood 的 role 標記存在。
+  const dining = await import('../src/data/dining.js');
+  assert.equal(dining.foodBackup, undefined, 'foodBackup 應已併入 cityFood');
+  for (const group of cityFood) {
+    assert.ok(group.items.every(item => item.role === 'primary' || item.role === 'backup'),
+      `${group.city} 有未標記 role 的餐廳`);
+    assert.ok(group.items.some(item => item.role === 'backup'), `${group.city} 缺少備案`);
+  }
+
+  for (const [i, city] of cities.entries()) {
+    const rows = mergeCityDining(city, cityDining[city], cityFood[i].items);
+    // 精煉後每座城市維持在可決策的規模，不再是兩份重複的長清單。
+    assert.ok(rows.length <= 18, `${city} 餐廳清單過長：${rows.length}`);
+    const rank = rows.map(row => (row.selected ? 0 : row.role === 'backup' ? 2 : 1));
+    assert.deepEqual(rank, [...rank].sort((a, b) => a - b), `${city} 排序未依候選 → 主推 → 備案`);
+  }
+});
+
+test('城市頁只輸出一個合併後的餐廳區塊', () => {
+  for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
+    const html = read(file);
+    assert.ok(html.includes('<h2>餐廳推薦</h2>'), `${file} 缺少合併後的餐廳區塊`);
+    assert.ok(!html.includes('<h2>行程主餐廳推薦</h2>'), `${file} 仍有舊的主餐廳區塊`);
+    assert.ok(!html.includes('<h2>備案餐廳</h2>'), `${file} 仍有獨立的備案餐廳區塊`);
+    assert.ok(html.includes('city-dining-role'), `${file} 缺少備案標籤`);
   }
 });
