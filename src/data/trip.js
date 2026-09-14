@@ -160,6 +160,12 @@ export const days = [
         status: '⚠️ 班表與上車點未逐家確認，請在 busy-krk.pl 或各業者頁面比對。',
         url: 'https://www.busy-krk.pl/en/oswiecim-krakow/',
       },
+      {
+        rank: '其他業者', name: 'Moj Bus（moj-bus.pl）',
+        detail: '另一個 Kraków ⇄ Oświęcim 的巴士訂位入口，網址帶 /en 為英文介面。Lajkonik 15:30 或 16:30 客滿時用來找替代班次。',
+        status: '⚠️ 2026-09-14 於本專案建置環境無法連線查證，班次、票價與上下車點都要出發前自行確認；務必看清楚停靠的是博物館門口還是 Oświęcim 市區站。',
+        url: 'https://moj-bus.pl/en',
+      },
     ],
     backup: [
       {label:'戶外為主 · 必備雨具', where:'比克瑙營區戶外 80%', map:'https://www.google.com/maps/search/?api=1&query=Auschwitz%20II%20Birkenau%2C%20O%C5%9Bwi%C4%99cim', why:'導覽風雨無阻，請穿防水鞋 + 帶折傘'},
@@ -422,6 +428,11 @@ export const railOfficialLinks = [
     name: 'Lajkonik 官方售票網站（lajkonikbus.pl）',
     url: 'https://www.lajkonikbus.pl/',
     note: '2026-09-09 由官方售票頁確認為現行網域（專案先前使用的舊網域已全面更新）。首頁即為查詢表單，可切換 English，另有 Where is my bus?（即時車輛位置）與 My Ticket（查已購票）。Auschwitz 往返請用下方「Auschwitz 巴士」區塊的查詢參數操作。',
+  },
+  {
+    name: 'Moj Bus 售票網站（moj-bus.pl）',
+    url: 'https://moj-bus.pl/en',
+    note: 'Kraków ⇄ Oświęcim 路線的另一個巴士訂位入口，網址帶 /en 即為英文介面。Lajkonik 採用的 15:30（或備案 16:30）客滿、或想比對其他時段時用這裡。⚠️ 2026-09-14 於本專案建置環境無法連線查證（對外連線被阻擋），班次、票價與上下車點請出發前自行於該站確認——尤其要確認停靠的是博物館門口還是 Oświęcim 市區站。',
   },
 ];
 

@@ -1696,3 +1696,40 @@ test('地圖沒有「圖釘有、餐廳表已無此店」的孤兒圖釘', async
   assert.deepEqual(coverage.orphanPins, [],
     `以下圖釘的店已不在餐廳表：${coverage.orphanPins.join('、')}`);
 });
+
+test('車票訂位連結：全為 https、格式正確，且 Moj Bus 已納入', async () => {
+  const modules = await Promise.all([
+    import('../src/data/trip.js'), import('../src/data/tickets.js'),
+    import('../src/data/transit.js'), import('../src/data/dining.js'),
+    import('../src/data/shopping.js'), import('../src/data/essentials.js'),
+    import('../src/data/travel-database.js'),
+  ]);
+  const urls = [];
+  const walk = value => {
+    if (!value || typeof value !== 'object') return;
+    if (Array.isArray(value)) { value.forEach(walk); return; }
+    for (const item of Object.values(value)) {
+      if (typeof item === 'string' && /^https?:/.test(item)) urls.push(item);
+      else walk(item);
+    }
+  };
+  modules.forEach(walk);
+
+  assert.ok(urls.length > 300, `外部連結數異常：${urls.length}`);
+  const insecure = urls.filter(url => url.startsWith('http://'));
+  assert.deepEqual(insecure, [], `訂位／官方連結必須是 https：${insecure.join('、')}`);
+  for (const url of urls) assert.doesNotThrow(() => new URL(url), `連結格式錯誤：${url}`);
+  // 2026-09-09 已把舊網域全面換掉，不得回頭
+  assert.ok(!urls.some(url => url.includes('lajkonikbus.eu')), '殘留已失效的 lajkonikbus.eu');
+
+  // Moj Bus 是 Kraków ⇄ Oświęcim 的另一個巴士訂位入口，
+  // 訂票頁的官方售票卡與 Day 3 回程選項都要有，兩處缺一都會讓人找不到替代班次。
+  const { railOfficialLinks, days } = modules[0];
+  assert.ok(railOfficialLinks.some(item => item.url === 'https://moj-bus.pl/en'),
+    '訂票頁的官方售票連結缺少 Moj Bus');
+  const day3 = days.find(day => day.n === 3);
+  assert.ok(day3.returnOptions.some(option => option.url === 'https://moj-bus.pl/en'),
+    'Day 3 回程選項缺少 Moj Bus');
+  assert.match(read('practical/booking.html'), /href="https:\/\/moj-bus\.pl\/en"/, '訂票頁未輸出 Moj Bus 連結');
+  assert.match(read('day-03.html'), /href="https:\/\/moj-bus\.pl\/en"/, 'Day 3 未輸出 Moj Bus 連結');
+});
