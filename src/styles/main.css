@@ -4830,3 +4830,74 @@ h3 {
   font-family: var(--font-mono);
   font-size: 1.05rem;
 }
+
+/* 今日卡：旅途中單手拿著看的一頁，字級與間距比其他頁寬鬆一級。 */
+.nav-today {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-xs);
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+}
+
+.nav-today[aria-current='page'] {
+  background: var(--accent);
+  color: #fff;
+}
+
+.today-status {
+  margin: 1rem 0;
+  font-family: var(--font-mono);
+  color: var(--ink-soft);
+}
+
+.today-card {
+  margin-top: 1rem;
+}
+
+.today-head h2 {
+  margin: 0.2rem 0 0.4rem;
+}
+
+.today-block {
+  margin-top: 1.4rem;
+  padding: 0.9rem 1.05rem;
+  border-left: 3px solid var(--line-strong);
+  background: var(--surface-card);
+}
+
+.today-block-alert {
+  border-left-color: var(--red);
+  background: var(--surface-danger);
+}
+
+.today-block h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+}
+
+.today-block ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.today-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.today-list li + li {
+  margin-top: 0.6rem;
+}
+
+/* 地址要能直接給司機或櫃檯看，字級放大並允許選取複製。 */
+.today-address {
+  font-size: 1.06rem;
+  line-height: 1.5;
+  user-select: all;
+}

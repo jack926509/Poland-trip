@@ -42,6 +42,7 @@ const distDir = path.resolve('dist');
 const standalonePath = path.resolve('poland-travel-guide-2026.html');
 const expectedFiles = [
   'index.html',
+  'today.html',
   ...Array.from({ length: 8 }, (_, index) => `day-${String(index + 1).padStart(2, '0')}.html`),
   'city-warszawa.html',
   'city-krakow.html',
@@ -399,7 +400,7 @@ test('克拉科夫與樂斯拉夫飲水資訊各自保有官方來源', () => {
   assert.equal(wroclawWater?.sourceUrl, 'https://www.mpwik.wroc.pl/csr-2/pij-kranowke/');
 });
 
-test('dist 產出 23 個分頁與可直接部署的單檔版', () => {
+test('dist 產出 24 個分頁與可直接部署的單檔版', () => {
   assert.deepEqual(htmlFiles(), [...expectedFiles, 'poland-travel-guide-2026.html'].sort());
   assert.ok(fs.existsSync(path.join(distDir, 'assets/main.css')), '缺少 assets/main.css');
   assert.ok(fs.existsSync(path.join(distDir, 'assets/database-filter.js')), '缺少資料庫篩選程式');
@@ -408,7 +409,7 @@ test('dist 產出 23 個分頁與可直接部署的單檔版', () => {
   assert.equal(fs.readFileSync(deployedStandalone, 'utf8'), fs.readFileSync(standalonePath, 'utf8'));
 });
 
-test('單檔旅遊指南封裝全部 23 頁且不依賴本機 CSS 或其他 HTML', () => {
+test('單檔旅遊指南封裝全部 24 頁且不依賴本機 CSS 或其他 HTML', () => {
   assert.ok(fs.existsSync(standalonePath), '缺少 poland-travel-guide-2026.html');
   const html = fs.readFileSync(standalonePath, 'utf8');
 
@@ -432,13 +433,13 @@ test('單檔旅遊指南封裝全部 23 頁且不依賴本機 CSS 或其他 HTML
   assert.doesNotMatch(html, /<script[^>]+src="\.\.\/assets\/database-filter\.js"/);
 });
 
-test('單檔版將過長導覽收納成三組原生下拉選單', () => {
+test('單檔版將過長導覽收納成四組原生下拉選單', () => {
   const html = fs.readFileSync(standalonePath, 'utf8');
   const menus = [...html.matchAll(/<details class="standalone-menu"[^>]*data-group="([^"]+)"/g)]
     .map(match => match[1]);
 
-  assert.deepEqual(menus, ['days', 'cities', 'practical']);
-  for (const label of ['每日行程', '城市指南', '實用資訊']) {
+  assert.deepEqual(menus, ['today', 'days', 'cities', 'practical']);
+  for (const label of ['今日', '每日行程', '城市指南', '實用資訊']) {
     assert.ok(html.includes(`<summary>${label}</summary>`), `缺少 ${label} 下拉選單`);
   }
   assert.match(html, /data-group="days"[\s\S]*href="#page-day-01"[\s\S]*href="#page-day-08"/);
@@ -525,7 +526,7 @@ test('待辦事項頁將 16 項依五類整理，並在實用資訊導覽可進�
 });
 
 test('自由行資料庫頁提供 SOS、主題索引與緊急聯絡資訊', () => {
-  assert.equal(htmlFiles().length, 24);
+  assert.equal(htmlFiles().length, 25);
   const html = read('practical/database.html');
   for (const heading of ['SOS 離線急救卡', '出入境與 ETIAS', '航班與行李', '醫療與保險', '退稅 TAX FREE']) {
     assert.ok(html.includes(heading), `資料庫頁缺少 ${heading}`);
@@ -1227,7 +1228,7 @@ test('service worker 提供離線快取，且不預快取被歸檔的介面', ()
   assert.ok(worker.includes("addEventListener('fetch'"), 'sw.js 需攔截請求才能離線可用');
   assert.ok(!worker.includes('self.registration.unregister()'), '正式 worker 不應自我解除註冊');
 
-  // 23 頁與離線必要資源都要在預快取清單裡
+  // 24 頁與離線必要資源都要在預快取清單裡
   for (const file of expectedFiles) {
     assert.ok(worker.includes(`./${file}`), `sw.js 預快取缺少 ${file}`);
   }

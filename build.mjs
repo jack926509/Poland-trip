@@ -10,10 +10,12 @@ import * as tickets from './src/data/tickets.js';
 import * as transit from './src/data/transit.js';
 import * as shopping from './src/data/shopping.js';
 import * as essentials from './src/data/essentials.js';
+import * as dayDining from './src/data/day-dining.js';
 import * as travelDatabase from './src/data/travel-database.js';
 
 import { renderHome } from './src/templates/home.mjs';
 import { renderDay } from './src/templates/day.mjs';
+import { renderToday } from './src/templates/today.mjs';
 import { renderCity } from './src/templates/city.mjs';
 import {
   renderBooking,
@@ -120,6 +122,7 @@ let distDir;
 let standalonePath;
 const standalonePages = [
   ['index.html', '旅程首頁'],
+  ['today.html', '今日卡'],
   ...Array.from({ length: 8 }, (_, index) => [
     `day-${String(index + 1).padStart(2, '0')}.html`,
     `Day ${index + 1}`,
@@ -140,9 +143,10 @@ const standalonePages = [
   ['practical/database.html', '自由行資料庫'],
 ];
 const standaloneNavGroups = [
-  { key: 'days', label: '每日行程', pages: standalonePages.slice(1, 9) },
-  { key: 'cities', label: '城市指南', pages: standalonePages.slice(9, 13) },
-  { key: 'practical', label: '實用資訊', pages: standalonePages.slice(13) },
+  { key: 'today', label: '今日', pages: standalonePages.slice(1, 2) },
+  { key: 'days', label: '每日行程', pages: standalonePages.slice(2, 10) },
+  { key: 'cities', label: '城市指南', pages: standalonePages.slice(10, 14) },
+  { key: 'practical', label: '實用資訊', pages: standalonePages.slice(14) },
 ];
 const cityMap = {
   warszawa: { key: 'WAW', mapKey: 'warsaw' },
@@ -659,6 +663,15 @@ function buildIntoStaging(stagingRoot) {
     deadlines: trip.deadlines,
   }));
 
+  writeHtml('today.html', renderToday({
+    meta: trip.meta,
+    days: trip.days,
+    stay: trip.stay,
+    dayDining: dayDining.dayDining,
+    daylight: essentials.daylight,
+    safety: essentials.safety,
+  }));
+
   for (const day of trip.days) {
     const photoSpotsForDay = cities.photoSpots.filter(spot => spot.day === day.n);
     const detailPhotoCity = [1, 2, 5, 6].includes(day.n)
@@ -764,7 +777,7 @@ function buildIntoStaging(stagingRoot) {
   const htmlCount = fs.readdirSync(distDir)
     .filter(name => name.endsWith('.html') && name !== 'poland-travel-guide-2026.html').length
     + fs.readdirSync(path.join(distDir, 'practical')).filter(name => name.endsWith('.html')).length;
-  if (htmlCount !== 23) throw new Error(`預期產生 23 頁，實際為 ${htmlCount} 頁`);
+  if (htmlCount !== 24) throw new Error(`預期產生 24 頁，實際為 ${htmlCount} 頁`);
   return {
     htmlCount,
     stagedDistDir: distDir,
