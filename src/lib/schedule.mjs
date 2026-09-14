@@ -116,3 +116,24 @@ export function taipeiToday(now = new Date()) {
 export function warsawToday(now = new Date()) {
   return todayIn('Europe/Warsaw', now);
 }
+
+/**
+ * days[].date（'10/24 (六)'）轉 ISO。年份取自 meta.tripStart，
+ * 因為行程資料只寫月日。無法解析回 null。
+ */
+export function dayIsoDate(dayDate, tripStart) {
+  const match = /^(\d{1,2})\/(\d{1,2})/.exec(String(dayDate ?? '').trim());
+  if (!match) return null;
+  const year = String(tripStart ?? '').slice(0, 4);
+  if (!/^\d{4}$/.test(year)) return null;
+  return toIsoDate(`${year}-${match[1].padStart(2, '0')}-${match[2].padStart(2, '0')}`);
+}
+
+/** ISO 日期的星期（0 = 週日 … 6 = 週六）；不合法回 null。 */
+export function weekdayOf(isoDate) {
+  const iso = toIsoDate(isoDate);
+  if (iso === null) return null;
+  return new Date(`${iso}T00:00:00Z`).getUTCDay();
+}
+
+export const WEEKDAY_NAMES = ['日', '一', '二', '三', '四', '五', '六'];

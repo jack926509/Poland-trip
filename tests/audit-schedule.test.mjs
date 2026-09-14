@@ -55,3 +55,96 @@ test('沒有時刻的步驟不影響順序判斷', () => {
   assert.deepEqual(result.errors, []);
   assert.equal(result.stats.stepsChecked, 2);
 });
+
+const VENUES = {
+  'test-museum': { name: '測試博物館', closedWeekdays: [1], opens: '10:00', closes: '18:00', lastEntry: '17:00', checkedAt: '2026-01-01' },
+  'test-always': { name: '全年無休館', closedWeekdays: [], opens: null, closes: null, lastEntry: null, checkedAt: '2026-01-01' },
+};
+const options = { venues: VENUES, tripStart: '2026-10-24' };
+
+test('規則 2：晚於末入場只警告，不擋流程', () => {
+  const late = auditSchedule([{
+    n: 1, date: '10/24 (六)', steps: [{ t: '17:30', label: '進館', constraint: { venue: 'test-museum' } }],
+  }], options);
+  assert.deepEqual(late.errors, []);
+  assert.equal(late.warnings.length, 1);
+  assert.match(late.warnings[0], /末入場/);
+
+  const onTime = auditSchedule([{
+    n: 1, date: '10/24 (六)', steps: [{ t: '16:30', label: '進館', constraint: { venue: 'test-museum' } }],
+  }], options);
+  assert.deepEqual(onTime.warnings, []);
+});
+
+test('規則 2：沒有末入場資料的場館直接跳過，不猜', () => {
+  const result = auditSchedule([{
+    n: 1, date: '10/24 (六)', steps: [{ t: '23:00', label: '很晚才到', constraint: { venue: 'test-always' } }],
+  }], options);
+  assert.deepEqual(result.warnings, []);
+  assert.equal(result.stats.lastEntryChecked, 0);
+});
+
+test('規則 3：轉場緩衝以發車前最後一步計算，不含上車那一步', () => {
+  const tight = auditSchedule([{
+    n: 1, date: '10/24 (六)',
+    train: { type: 'IC 1', dep: '19:10' },
+    steps: [
+      { t: '18:55', label: '抵站' },
+      { t: '19:10', label: '上車' },
+    ],
+  }], options);
+  assert.equal(tight.warnings.length, 1);
+  assert.match(tight.warnings[0], /只有 15 分鐘/);
+
+  const roomy = auditSchedule([{
+    n: 1, date: '10/24 (六)',
+    train: { type: 'IC 1', dep: '19:10' },
+    steps: [
+      { t: '18:30', label: '抵站' },
+      { t: '19:10', label: '上車' },
+    ],
+  }], options);
+  assert.deepEqual(roomy.warnings, []);
+});
+
+test('規則 4：公休日排了行程只警告（外觀與周邊仍是合理安排）', () => {
+  // 2026-10-26 是週一，測試場館週一公休。
+  const result = auditSchedule([{
+    n: 3, date: '10/26 (一)', steps: [{ t: '11:00', label: '外觀', constraint: { venue: 'test-museum' } }],
+  }], options);
+  assert.deepEqual(result.errors, []);
+  assert.equal(result.warnings.length, 1);
+  assert.match(result.warnings[0], /公休/);
+});
+
+test('規則 5：引用不存在的場館是結構錯誤，會擋流程', () => {
+  const result = auditSchedule([{
+    n: 1, date: '10/24 (六)', steps: [{ t: '11:00', label: '進館', constraint: { venue: '打錯的名字' } }],
+  }], options);
+  assert.equal(result.errors.length, 1);
+  assert.match(result.errors[0], /場館引用/);
+});
+
+test('規則 6：星期標示與實際日期不符是結構錯誤', () => {
+  const result = auditSchedule([{ n: 1, date: '10/24 (日)', steps: [] }], options);
+  assert.equal(result.errors.length, 1);
+  assert.match(result.errors[0], /星期標示/);
+  assert.match(result.errors[0], /實際是週六/);
+
+  assert.deepEqual(auditSchedule([{ n: 1, date: '10/24 (六)', steps: [] }], options).errors, []);
+});
+
+test('真實行程：星期標示全對、場館引用全部指得到', () => {
+  const result = auditSchedule();
+  assert.deepEqual(result.errors, []);
+  assert.equal(result.stats.weekdaysChecked, 8);
+  assert.ok(result.stats.venueRefs > 0, '應有步驟掛上 constraint.venue');
+  assert.ok(result.stats.lastEntryChecked > 0, '應有步驟能與末入場比對');
+});
+
+test('真實行程的警告數量維持在已知範圍，新增衝突會被注意到', () => {
+  const result = auditSchedule();
+  // 目前僅 Day 3 巴士報到 25 分鐘一項，屬刻意安排。數字變動代表行程或場館資料有變。
+  assert.equal(result.warnings.length, 1, `未預期的警告：\n${result.warnings.join('\n')}`);
+  assert.match(result.warnings[0], /Day 3.*轉場緩衝|轉場緩衝.*Day 3/);
+});
