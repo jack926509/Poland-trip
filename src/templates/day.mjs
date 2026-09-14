@@ -170,7 +170,7 @@ function renderNightChecklist(operation) {
     </section>`;
 }
 
-export function renderDay(day, photoSpotsForDay = [], operation = null, city = null, detailPhotoCity = null, dayMap = null, mapChecks = {}, legend = {}, dayGallery = []) {
+export function renderDay(day, photoSpotsForDay = [], operation = null, city = null, detailPhotoCity = null, dayMap = null, mapChecks = {}, legend = {}, dayGallery = [], daylightForDay = null) {
   const stepsHtml = day.steps.map(step => `
     <tr>
       <td class="number" data-label="時間"><b>${step.t}</b></td>
@@ -206,6 +206,20 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
       <p>${day.warn}</p>
     </div>` : '';
 
+  // 10 月底的波蘭日落在 16:00 上下，戶外行程排不排得下由這張卡決定；
+  // 數值取自 essentials.js 的 daylight，逐日頁不自行寫死時間。
+  const daylightHtml = daylightForDay ? `
+      <article class="card">
+        <span class="eyebrow">${escapeHtml(daylightForDay.tz)} · 戶外可用時間</span>
+        <h3>日照</h3>
+        <ul>
+          <li>日出 <b>${escapeHtml(daylightForDay.sunrise)}</b>／日落 <b>${escapeHtml(daylightForDay.sunset)}</b></li>
+          <li>藍調時刻至 <b>${escapeHtml(daylightForDay.blueHourEnd)}</b></li>
+        </ul>
+        <p>${escapeHtml(daylightForDay.note)}</p>
+        <p class="source-meta">天文推算值，出發前以天文表複核；非官方公告時刻。</p>
+      </article>` : '';
+
   const constraintHtml = `
     <section class="section">
       <div class="section-heading"><span class="section-num">Priorities</span><h2>時間彈性</h2></div>
@@ -220,6 +234,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
         <h3>可以壓縮</h3>
         ${renderList(day.compressible, item => `<li>${item}</li>`)}
       </article>
+      ${daylightHtml}
       </div>
     </section>`;
 

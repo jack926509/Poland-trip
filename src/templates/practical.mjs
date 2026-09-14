@@ -415,9 +415,24 @@ export function renderEssentials({ phrases, packingDefault, about, safety, sourc
   return renderPracticalLayout('安全與基本須知', 'Essentials', '語言、插座、打包、緊急電話與常見陷阱集中在這裡，出發前可快速複查。', content, 'practical/essentials.html');
 }
 
-export function renderNotes({ preDepartureNotes }) {
+export function renderNotes({ preDepartureNotes, daylight = [] }) {
   const cards = preDepartureNotes.map((item, index) => `<article class="card ${index < 3 || index === 8 ? 'card-accent' : ''}"><span class="section-num">${String(index + 1).padStart(2, '0')}</span><p>${item}</p></article>`).join('');
-  return renderPracticalLayout('行前提醒', 'Pre-trip', '這些限制直接對應 2026/10/24–10/31 的日期；先處理閉館、日落、夏令時間與訂票節奏。', `<div class="grid-wide">${cards}</div>`, 'practical/notes.html');
+  const daylightRows = daylight.map(item => `<tr>
+      <td class="number" data-label="日">Day ${item.day}</td>
+      <td data-label="日期"><time datetime="${escapeHtml(item.date)}">${escapeHtml(item.date)}</time><br><span class="source-meta">${escapeHtml(item.city)} · ${escapeHtml(item.tz)}</span></td>
+      <td class="number" data-label="日出">${escapeHtml(item.sunrise)}</td>
+      <td class="number" data-label="日落">${escapeHtml(item.sunset)}</td>
+      <td class="number" data-label="藍調結束">${escapeHtml(item.blueHourEnd)}</td>
+      <td data-label="備註">${escapeHtml(item.note)}</td>
+    </tr>`).join('');
+  const daylightHtml = daylight.length ? `
+    <section class="section" id="daylight">
+      <div class="section-heading"><span class="section-num">Daylight</span><h2>八日日照</h2></div>
+      <p>10/25 凌晨夏令時間結束（03:00 回撥 02:00），日落從 Day 1 的 16:52 掉到 Day 2 的 16:04——整趟旅程的戶外可用時間在第二天就少掉近一小時。排傍晚戶外行程、以及判斷哪些拍照站位還成立，都看這張表。</p>
+      <div class="callout-note"><b>資料界線：</b>本表為天文推算值，出發前以天文表複核；不是官方公告時刻。各日行程頁也會顯示當天同一組數值，兩處同源。</div>
+      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>日</th><th>日期</th><th>日出</th><th>日落</th><th>藍調結束</th><th>備註</th></tr></thead><tbody>${daylightRows}</tbody></table></div>
+    </section>` : '';
+  return renderPracticalLayout('行前提醒', 'Pre-trip', '這些限制直接對應 2026/10/24–10/31 的日期；先處理閉館、日落、夏令時間與訂票節奏。', `<div class="grid-wide">${cards}</div>${daylightHtml}`, 'practical/notes.html');
 }
 
 export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups }) {

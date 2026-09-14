@@ -14,12 +14,17 @@ import { pathToFileURL } from 'node:url';
 
 import { days, meta } from '../src/data/trip.js';
 import { venueHours } from '../src/data/tickets.js';
+import { daylight } from '../src/data/essentials.js';
+import { photoSpots } from '../src/data/cities.js';
 import {
   parseStepTime, toMinutes, dayIsoDate, weekdayOf, WEEKDAY_NAMES,
 } from '../src/lib/schedule.mjs';
 
 /** 轉場日留給「抵站、找月台、拖行李」的分鐘數下限，低於此值提醒複核。 */
 const TRANSFER_BUFFER_MINUTES = 30;
+
+/** 黃金時刻的起算範圍：日落前這麼多分鐘之內開拍才算得上。 */
+const GOLDEN_HOUR_LEAD_MINUTES = 90;
 
 function makeReport() {
   return {
@@ -166,9 +171,48 @@ export function auditWeekdayLabels(tripDays, tripStart, report) {
   return { checked };
 }
 
+
+/**
+ * 規則 7：拍照站位宣告的光線階段要與當日實際日落相符。
+ *
+ * 10 月底波蘭日落在 16:00 上下，且 10/25 換冬令時後又提前近一小時，
+ * 「黃昏斜光」這類描述很容易在換季後就不再成立。這裡不改寫 bestTime 的
+ * 顯示字串，只拿宣告的 lightPhase 與天文值對照。
+ */
+export function auditPhotoLight(spots, daylightByDay, report) {
+  let checked = 0;
+  for (const spot of spots) {
+    if (!spot.lightPhase || !spot.day) continue;
+    const sun = daylightByDay.get(spot.day);
+    const window = parseStepTime(spot.bestTime);
+    if (!sun || !window) continue;
+    checked += 1;
+    const start = window.minutes;
+    const end = window.endMinutes ?? window.minutes;
+    const sunset = toMinutes(sun.sunset);
+    const blueEnd = toMinutes(sun.blueHourEnd);
+    const where = `Day ${spot.day}「${spot.name}」${spot.bestTime}（當日日落 ${sun.sunset}、藍調至 ${sun.blueHourEnd}）`;
+
+    if (spot.lightPhase === 'daylight' && end > sunset) {
+      report.warn('拍照光線', `${where} 宣告為 daylight，但收工時間已過日落`);
+    } else if (spot.lightPhase === 'goldenHour') {
+      if (start > sunset) report.warn('拍照光線', `${where} 宣告為 goldenHour，但開拍時已過日落`);
+      else if (start < sunset - GOLDEN_HOUR_LEAD_MINUTES) report.warn('拍照光線', `${where} 宣告為 goldenHour，但開拍距日落超過 ${GOLDEN_HOUR_LEAD_MINUTES} 分鐘`);
+      else if (end > blueEnd) report.warn('拍照光線', `${where} 宣告為 goldenHour，但收工時已過藍調時刻`);
+    } else if (spot.lightPhase === 'dusk' && !(start <= sunset && end >= sunset)) {
+      report.warn('拍照光線', `${where} 宣告為 dusk，但拍攝區間並未橫跨日落`);
+    } else if (spot.lightPhase === 'night' && start < sunset) {
+      report.warn('拍照光線', `${where} 宣告為 night，但開拍時天還沒黑`);
+    }
+  }
+  return { checked };
+}
+
 export function auditSchedule(tripDays = days, options = {}) {
   const venues = options.venues ?? venueHours;
   const tripStart = options.tripStart ?? meta.tripStart;
+  const spots = options.photoSpots ?? photoSpots;
+  const daylightByDay = new Map((options.daylight ?? daylight).map(item => [item.day, item]));
   const report = makeReport();
 
   const order = auditStepOrder(tripDays, report);
@@ -177,6 +221,7 @@ export function auditSchedule(tripDays = days, options = {}) {
   const lastEntry = auditLastEntry(tripDays, venues, report);
   const transfers = auditTransferBuffer(tripDays, report);
   const closures = auditClosedDays(tripDays, venues, tripStart, report);
+  const photoLight = auditPhotoLight(spots, daylightByDay, report);
 
   return {
     errors: report.errors,
@@ -190,6 +235,7 @@ export function auditSchedule(tripDays = days, options = {}) {
       lastEntryChecked: lastEntry.checked,
       transfersChecked: transfers.checked,
       closureChecks: closures.checked,
+      photoLightChecked: photoLight.checked,
     },
   };
 }
@@ -199,7 +245,7 @@ function runCli() {
   const stats = result.stats;
 
   console.log(`行程時間稽核：${stats.days} 天、${stats.stepsChecked} 個有時刻的步驟`);
-  console.log(`  星期標示 ${stats.weekdaysChecked} 天、場館引用 ${stats.venueRefs} 處、末入場比對 ${stats.lastEntryChecked} 處、轉場 ${stats.transfersChecked} 段、公休比對 ${stats.closureChecks} 處`);
+  console.log(`  星期標示 ${stats.weekdaysChecked} 天、場館引用 ${stats.venueRefs} 處、末入場比對 ${stats.lastEntryChecked} 處、轉場 ${stats.transfersChecked} 段、公休比對 ${stats.closureChecks} 處、拍照光線 ${stats.photoLightChecked} 處`);
   if (stats.unusedVenues.length) {
     console.log(`  （venueHours 有但行程未引用：${stats.unusedVenues.join('、')}——留著供門票頁使用，非錯誤）`);
   }

@@ -672,7 +672,7 @@ function buildIntoStaging(stagingRoot) {
     const dayMap = makeDayMap(day, travelDatabase.dayOperations[day.n]);
     writeHtml(
       `day-${String(day.n).padStart(2, '0')}.html`,
-      renderDay(day, photoSpotsForDay, travelDatabase.dayOperations[day.n], journalCity, detailPhotoCity, dayMap, dayMap.checks, cities.pinCategoryLegend, cities.cities.flatMap(city => city.gallery || []).filter(photo => photo.days?.includes(day.n))),
+      renderDay(day, photoSpotsForDay, travelDatabase.dayOperations[day.n], journalCity, detailPhotoCity, dayMap, dayMap.checks, cities.pinCategoryLegend, cities.cities.flatMap(city => city.gallery || []).filter(photo => photo.days?.includes(day.n)), essentials.daylight.find(item => item.day === day.n) || null),
     );
   }
 
@@ -742,6 +742,7 @@ function buildIntoStaging(stagingRoot) {
   }));
   writeHtml('practical/notes.html', renderNotes({
     preDepartureNotes: essentials.preDepartureNotes,
+    daylight: essentials.daylight,
   }));
   writeHtml('practical/ops-dashboard.html', renderOpsDashboard({
     entries: travelDatabase.databaseEntries,

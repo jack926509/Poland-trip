@@ -148,3 +148,40 @@ test('真實行程的警告數量維持在已知範圍，新增衝突會被注�
   assert.equal(result.warnings.length, 1, `未預期的警告：\n${result.warnings.join('\n')}`);
   assert.match(result.warnings[0], /Day 3.*轉場緩衝|轉場緩衝.*Day 3/);
 });
+
+const SUN = [{ day: 1, date: '2026-10-24', city: '測', tz: 'CET', sunrise: '06:30', sunset: '16:00', blueHourEnd: '16:30', note: '' }];
+const lightOptions = spots => ({ ...options, photoSpots: spots, daylight: SUN });
+
+test('規則 7：宣告 daylight 卻收工於日落後會提醒', () => {
+  const late = auditSchedule([], lightOptions([{ id: 'a', name: '測站', day: 1, bestTime: '15:30–16:30', lightPhase: 'daylight' }]));
+  assert.equal(late.warnings.length, 1);
+  assert.match(late.warnings[0], /拍照光線/);
+
+  const fine = auditSchedule([], lightOptions([{ id: 'a', name: '測站', day: 1, bestTime: '14:30–15:30', lightPhase: 'daylight' }]));
+  assert.deepEqual(fine.warnings, []);
+});
+
+test('規則 7：goldenHour 必須貼著日落前開拍', () => {
+  const tooEarly = auditSchedule([], lightOptions([{ id: 'a', name: '測站', day: 1, bestTime: '13:00–14:00', lightPhase: 'goldenHour' }]));
+  assert.match(tooEarly.warnings[0], /距日落超過/);
+
+  const tooLate = auditSchedule([], lightOptions([{ id: 'a', name: '測站', day: 1, bestTime: '16:10–16:25', lightPhase: 'goldenHour' }]));
+  assert.match(tooLate.warnings[0], /開拍時已過日落/);
+
+  const fine = auditSchedule([], lightOptions([{ id: 'a', name: '測站', day: 1, bestTime: '15:20–16:20', lightPhase: 'goldenHour' }]));
+  assert.deepEqual(fine.warnings, []);
+});
+
+test('規則 7：dusk 必須真的橫跨日落', () => {
+  const spans = auditSchedule([], lightOptions([{ id: 'a', name: '測站', day: 1, bestTime: '15:45–16:45', lightPhase: 'dusk' }]));
+  assert.deepEqual(spans.warnings, []);
+
+  const misses = auditSchedule([], lightOptions([{ id: 'a', name: '測站', day: 1, bestTime: '16:10–16:40', lightPhase: 'dusk' }]));
+  assert.match(misses.warnings[0], /並未橫跨日落/);
+});
+
+test('真實拍照站位的光線宣告全部與當日日落相符', () => {
+  const result = auditSchedule();
+  assert.ok(result.stats.photoLightChecked >= 9, '應涵蓋所有排入行程的拍照站位');
+  assert.deepEqual(result.warnings.filter(item => item.includes('拍照光線')), []);
+});
