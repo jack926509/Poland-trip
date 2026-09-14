@@ -15,6 +15,21 @@ export const cityGuides = {
   poznan: { file: 'city-poznan.html', name: '波茲南' },
 };
 
+/** 中文城市名 → 城市指南頁。實用資料的欄位常帶城市（「華沙 · 皇家城堡」「⭐⭐ Bottiglieria 1881（克拉科夫）」），
+ *  用這個把實用資料接回城市指南。找不到就回 null，不硬給連結。 */
+export function cityGuideByName(text, prefix = '') {
+  if (!text) return null;
+  const match = Object.values(cityGuides).find(guide => text.includes(guide.name));
+  return match ? { ...match, href: `${prefix}${match.file}` } : null;
+}
+
+/** 「10/25」→ 該日的每日行程頁。日期取自 trip.js 的 days，對不上就回 null。 */
+export function dayPageForDate(date, prefix = '') {
+  if (!date) return null;
+  const day = days.find(item => item.date.startsWith(date));
+  return day ? { n: day.n, href: `${prefix}day-${String(day.n).padStart(2, '0')}.html` } : null;
+}
+
 /**
  * 從門牌或 Google Maps 連結判斷城市。字尾的 negative lookahead 是必要的：
  * Café Bristol 的門牌是華沙的「Krakowskie Przedmieście」，不加就會同時命中克拉科夫。

@@ -89,6 +89,7 @@ export function renderCity({
           <tbody>${mergedDining.map(renderDiningRow).join('')}</tbody>
         </table>
       </div>
+      <p class="action-links"><a href="practical/dining.html">米其林名單與訂位管道 →</a></p>
     </section>` : '';
 
   const storyHtml = story ? `
@@ -219,6 +220,7 @@ export function renderCity({
         <thead><tr><th>景點</th><th>類型</th><th>票價／備註</th></tr></thead>
         <tbody>${attractionRows}</tbody>
       </table></div>
+      <p class="action-links"><a href="practical/tickets.html">查證過的票價與開放時間 →</a><a href="practical/transit.html">${city.name}市區交通票價 →</a></p>
     </section>
 
     ${primaryDiningHtml}

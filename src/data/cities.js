@@ -143,10 +143,14 @@ export const photoCredits = [
 ];
 
 // mapPins 已套用校正表 3-1（Mirror Bistro、Na Winklu 從 star1 改 food；Svensson Pierogi、Hamsa 從 sight 改 food）
+// 2026-09-14：Bar Mleczny Rusałka、Mirror Bistro、Svensson Pierogi、Bar Smak、Szarlotta 五個圖釘已撤除——
+// 這五家在餐廳清單精煉時被刪掉，留著圖釘會讓人點到地圖上找得到、餐廳表卻查無的店。
+// 座標查核紀錄見 docs/research/2026-08-11-map-pins-geocoding.md，日後要復原可從該檔取回。
 // 的修正，直接來自 poland-travel-guide-final.html:565 的 CITIES 物件。
 // 校正表 3-2 記的「克拉科夫 19 個圖釘」是加入已確認住宿圖釘前的數字；
 // 2026-09-08 移除 4 個未逐店確認的 Żabka 精確圖釘；超商仍保留在購物資料，現場依即時搜尋選分店。
-// 地圖現為 15／21／9／8，合計 53；其中 50 個門牌／場館錨點、3 個面狀區域代表點。
+// 地圖現為 14／18／9／7，合計 48；其中 45 個門牌／場館錨點、3 個面狀區域代表點。
+// （2026-09-14 撤除 5 個餐廳表已無此店的孤兒圖釘，由 53 降為 48。）
 export const mapPins = {
   warsaw: {
     center: [52.235, 21.01], zoom: 13,
@@ -161,7 +165,6 @@ export const mapPins = {
       [52.2242001, 21.0350992, "Rozbrat 20 ★", "米其林一星", "https://www.google.com/maps/search/?api=1&query=Rozbrat%2020%20Warszawa", "star1"],
       [52.229941, 20.989348, "WANDAL", "必比登", "https://maps.google.com/?cid=15993615675406452524", "bib"],
       [52.236622, 20.967709, "Zagoździński", "pączki 名店", "https://maps.google.com/?cid=5270464504046978357", "food"],
-      [52.252402, 21.030581, "Bar Mleczny Rusałka", "牛奶吧", "https://maps.google.com/?cid=14427558643223382901", "food"],
       [52.2333197, 21.0149273, "Pijalnia Czekolady E.Wedel（巧克力）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJ--12WPTMHkcRgAvh-nOeA94", "shop"],
       [52.2310334, 21.0187045, "Vitkac", "精品百貨", "https://maps.google.com/?cid=6893272886103886879", "luxury"],
       [52.2215267, 21.0204772, "Chylak（波蘭設計師包款）", "精品", "https://maps.google.com/?cid=2015234439722332980", "luxury"],
@@ -184,9 +187,6 @@ export const mapPins = {
       [50.051748, 19.944791, "Okrąglak（Plac Nowy zapiekanka）", "使用者指定 · plac Nowy 4B", "https://maps.app.goo.gl/2Nitej5cqG4VAcbp6?g_st=il", "food"],
       [50.064387, 19.942273, "Szalone Widelce", "使用者指定 · Szpitalna 40", "https://maps.app.goo.gl/U3yMsjdSgM3Pwgqe9?g_st=il", "food"],
       [50.057733, 19.937930, "Bar Mleczny Pod Temidą", "使用者指定 · Grodzka 43", "https://maps.app.goo.gl/xCGDapoy56MBvg2y7?g_st=il", "food"],
-      [50.053958, 19.944839, "Mirror Bistro", "pierogi", "https://www.google.com/maps/place/?q=place_id:ChIJOwi62GpbFkcRoi0KiVCj1dk", "food"],
-      [50.07068, 19.936409, "Svensson Pierogi", "餃子", "https://maps.google.com/?cid=10705718930784059170", "food"],
-      [50.064037, 19.932167, "Bar Smak", "在地口碑", "https://maps.google.com/?cid=7513589258053856766", "food"],
       [50.053182, 19.947628, "Hamsa", "以色列 hummus", "https://maps.google.com/?cid=1317891001987072687", "food"],
       [50.055231, 19.938471, "Ceramika Bolesławiecka（陶器）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJf581WqhbFkcR1_QG-8hJ4Vc", "shop"],
       [50.058364, 19.9382007, "World of Amber（琥珀）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJPxlI8hJbFkcR7vI2ebLVIDk", "shop"],
@@ -204,7 +204,7 @@ export const mapPins = {
       [51.11274, 17.031823, "BABA ★", "米其林一星", "https://maps.google.com/?cid=9335659011047272773", "star1"],
       [51.114762, 17.031129, "Most ★", "米其林一星", "https://maps.google.com/?cid=9490447263206449328", "star1"],
       [51.112463, 17.029103, "IDA kuchnia i wino", "必比登", "https://maps.google.com/?cid=10589009865057440004", "bib"],
-      [51.112672, 17.034294, "Miś SC", "全城最有名牛奶吧", "https://maps.google.com/?cid=9100083269168988599", "food"],
+      [51.112672, 17.034294, "Bar Mleczny Miś", "全城最有名牛奶吧", "https://maps.google.com/?cid=9100083269168988599", "food"],
       [51.10013, 17.03569, "Piast", "已確認住宿 · Piłsudskiego 98", "https://www.google.com/maps/search/?api=1&query=Hotel%20Piast%2C%20Pi%C5%82sudskiego%2098%2C%20Wroc%C5%82aw", "hotel"],
     ],
   },
@@ -217,7 +217,6 @@ export const mapPins = {
       [52.402018, 16.901852, "Palmiarnia 棕櫚屋", "景點", "https://maps.google.com/?cid=10703456143872687277", "sight"],
       [52.403967, 16.929146, "Muga ★", "波茲南唯一一星", "https://maps.google.com/?cid=2998937238608160974", "star1"],
       [52.411348, 16.952952, "Na Winklu", "pierogi", "https://maps.google.com/?cid=17998777227118824033", "food"],
-      [52.407303, 16.934127, "Szarlotta", "鴨肉餃子名店", "https://maps.google.com/?cid=8072844045178633315", "food"],
       [52.403903, 16.915609, "Poznan Apartments Towarowa", "已確認住宿 · Towarowa 37/201 官方接待處", "https://www.google.com/maps/search/?api=1&query=Poznan%20Apartments%20Towarowa%2C%20Towarowa%2037%2F201%2C%20Pozna%C5%84", "hotel"],
     ],
   },
@@ -259,7 +258,6 @@ Object.assign(mapPinChecks.warsaw, {
   'WANDAL': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
   'Zagoździński': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:22},
   'Hotel Metropol': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:2},
-  'Bar Mleczny Rusałka': {status:'coordinate-verified', checkedAt:'2026-08-15', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:20},
   'Rozbrat 20 ★': {status:'coordinate-verified', checkedAt:'2026-08-15', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:0},
 });
 Object.assign(mapPinChecks.krakow, {
@@ -275,13 +273,10 @@ Object.assign(mapPinChecks.krakow, {
   'Okrąglak（Plac Nowy zapiekanka）': {status:'coordinate-verified', checkedAt:'2026-09-08', coordinateSource:'Google Maps 使用者連結 + Nominatim / OpenStreetMap 地址點', distanceMeters:5},
   'Szalone Widelce': {status:'coordinate-verified', checkedAt:'2026-09-08', coordinateSource:'Google Maps 使用者連結 + Nominatim / OpenStreetMap', distanceMeters:0},
   'Bar Mleczny Pod Temidą': {status:'coordinate-verified', checkedAt:'2026-09-08', coordinateSource:'Google Maps 使用者連結 + Nominatim / OpenStreetMap', distanceMeters:0},
-  'Mirror Bistro': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:3},
-  'Bar Smak': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:1},
   'Hamsa': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:7},
   'Ceramika Bolesławiecka（陶器）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:293, corrected:true},
   'World of Amber（琥珀）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:5},
   'Sukiennice 布廊（伴手禮攤位）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:28},
-  'Svensson Pierogi': {status:'coordinate-verified', checkedAt:'2026-08-15', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
   '中央市集廣場': {status:'area-reference', checkedAt:'2026-09-08', coordinateSource:'Google Maps 地標範圍／OpenStreetMap 面狀地物', note:'廣場範圍代表點，不是入口或門牌。'},
   'Kazimierz 猶太區': {status:'area-reference', checkedAt:'2026-09-08', coordinateSource:'Google Maps 街區範圍／OpenStreetMap 面狀地物', note:'街區範圍代表點，請依當日目的地導航。'},
 });
@@ -290,7 +285,7 @@ Object.assign(mapPinChecks.wroclaw, {
   'Afrykarium 動物園': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:34},
   '百年廳 Hala Stulecia': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:7},
   'BABA ★': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:11},
-  'Miś SC': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:14},
+  'Bar Mleczny Miś': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:14},
   'Piast': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:0},
   'Most ★': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
   'IDA kuchnia i wino': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:18},
@@ -303,7 +298,6 @@ Object.assign(mapPinChecks.poznan, {
   'Palmiarnia 棕櫚屋': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:48},
   'Muga ★': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
   'Na Winklu': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
-  'Szarlotta': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:10},
   'Poznan Apartments Towarowa': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:25},
 });
 

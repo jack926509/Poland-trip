@@ -613,7 +613,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.equal(photoSpots.length, 10);
   assert.equal(photoCredits.length, 20);
   assert.deepEqual(Object.fromEntries(Object.entries(mapPins).map(([city, data]) => [city, data.points.length])), {
-    warsaw: 15, krakow: 21, wroclaw: 9, poznan: 8,
+    warsaw: 14, krakow: 18, wroclaw: 9, poznan: 7,
   });
   assert.deepEqual(Object.fromEntries(Object.entries(attractions).map(([city, items]) => [city, items.length])), {
     warsaw: 12, krakow: 6, wroclaw: 8, poznan: 9,
@@ -653,7 +653,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
 
 test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', () => {
   const allPins = Object.entries(mapPins).flatMap(([city, data]) => data.points.map((point) => ({city, name:point[2]})));
-  assert.equal(allPins.length, 53);
+  assert.equal(allPins.length, 48);
   for (const pin of allPins) {
     assert.ok(mapPinChecks[pin.city]?.[pin.name], `${pin.city}/${pin.name} 缺少圖釘查證狀態`);
   }
@@ -666,7 +666,7 @@ test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', ()
   });
   const verifiedPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'coordinate-verified');
   const areaPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'area-reference');
-  assert.equal(verifiedPins.length, 50);
+  assert.equal(verifiedPins.length, 45);
   assert.deepEqual(
     areaPins.map(({name}) => name).sort(),
     [
@@ -888,12 +888,13 @@ test('4 個已確認住宿地點皆出現在對應城市地圖，Piast 使用已
   assert.match(hotelPins.find(point => point[2] === 'Piast')?.[3] ?? '', /Piłsudskiego 98/);
 });
 
-test('4 個城市頁含正確 Leaflet 圖釘數，合計 53', () => {
+test('4 個城市頁含正確 Leaflet 圖釘數，合計 48', () => {
+  // 2026-09-14：撤掉 5 個「地圖上有、餐廳表已無」的孤兒圖釘後由 53 降為 48
   const expected = {
-    'city-warszawa.html': 15,
-    'city-krakow.html': 21,
+    'city-warszawa.html': 14,
+    'city-krakow.html': 18,
     'city-wroclaw.html': 9,
-    'city-poznan.html': 8,
+    'city-poznan.html': 7,
   };
   let total = 0;
   for (const [file, count] of Object.entries(expected)) {
@@ -908,7 +909,7 @@ test('4 個城市頁含正確 Leaflet 圖釘數，合計 53', () => {
     assert.equal(points, count, `${file} 圖釘數錯誤`);
     total += points;
   }
-  assert.equal(total, 53);
+  assert.equal(total, 48);
 });
 
 test('城市頁完整呈現故事、景點、行程餐廳推薦與拍照資訊', () => {
@@ -1608,4 +1609,90 @@ test('sw.js 的快取版本由建置帶上資源指紋，樣式改了就會失�
   // 部署腳本不能再用根目錄的原始 sw.js 覆蓋掉帶指紋的那份
   const prepare = fs.readFileSync('prepare-site.sh', 'utf8');
   assert.doesNotMatch(prepare, /^\s*sw\.js\s/m, 'prepare-site.sh 會用未帶指紋的 sw.js 覆蓋 dist 的版本');
+});
+
+test('表格排版規則：最小寬度只給寬表，列高收緊不得外洩到手機卡片版', () => {
+  const css = fs.readFileSync(new URL('../src/styles/main.css', import.meta.url), 'utf8');
+
+  // 2026-09-14 前這兩條是全站通用的，害 2 欄的「單位／電話」被撐到 832px 而橫捲，
+  // 且 5 個字的日期欄硬拿 176px、把旁邊擠到 67px。不得改回通用。
+  assert.doesNotMatch(css, /\.table-editorial\s*\{[^}]*min-width:\s*52rem/,
+    '.table-editorial 不得再有全站通用的 min-width');
+  assert.doesNotMatch(css, /\.table-editorial td:first-child\s*\{[^}]*min-width:\s*11rem/,
+    '首欄不得再硬給 11rem');
+
+  // 最小寬度改由欄數決定
+  assert.match(css, /\.table-editorial:has\(thead th:nth-child\(6\)\)\s*\{\s*min-width/,
+    '六欄以上的寬表缺少最小寬度');
+  assert.match(css, /\.table-editorial:has\(thead th:nth-child\(5\)\)\s*\{\s*min-width/,
+    '五欄表缺少最小寬度');
+
+  // 收緊列高的那條必須在桌機媒體查詢內；寫在外面會蓋掉手機卡片版的內距，
+  // 讓每個卡片欄位多出 11px 的左右縮排。用位置確認它被夾在桌機區塊裡。
+  const desktopStart = css.lastIndexOf('@media (min-width: 701px) {', css.indexOf('.table-editorial:has'));
+  const padding = css.indexOf('padding: 0.55rem 0.7rem', desktopStart);
+  const mobileStart = css.indexOf('@media (max-width: 700px) {', desktopStart);
+  assert.ok(desktopStart !== -1 && padding !== -1, '找不到桌機列高規則');
+  assert.ok(padding > desktopStart && padding < mobileStart,
+    '桌機列高收緊未寫在 min-width: 701px 內，會外洩到手機卡片版');
+  assert.match(css.slice(mobileStart), /\.table-editorial td\s*\{\s*padding:\s*0\.45rem 0;/,
+    '手機卡片版缺少自己的內距');
+
+  // .number 的 nowrap 不得再吃掉儲存格內的長附註
+  assert.match(css, /\.table-editorial \.number \.timeline-note\s*\{[^}]*white-space:\s*normal/,
+    '.number 內的附註必須可換行');
+});
+
+test('實用資料與每日行程、城市指南互相連結', () => {
+  const stripNav = html => {
+    const main = /<main\b[^>]*>([\s\S]*?)<\/main>/.exec(html)?.[1] || html;
+    return main.replace(/<nav[\s\S]*?<\/nav>/g, '');
+  };
+
+  // 實用資料 → 每日／城市（原本內文是 0 條，只靠導覽選單）
+  const expected = {
+    'practical/tickets.html': { pattern: /href="\.\.\/city-[a-z]+\.html"/g, least: 15, what: '門票景點連回城市指南' },
+    'practical/booking.html': { pattern: /href="\.\.\/day-\d\d\.html"/g, least: 5, what: '火車班次連回當日行程' },
+    'practical/transit.html': { pattern: /href="\.\.\/city-[a-z]+\.html"/g, least: 4, what: '市區交通票價連回城市指南' },
+    'practical/dining.html': { pattern: /href="\.\.\/city-[a-z]+\.html#city-dining"/g, least: 8, what: '米其林訂位連回城市餐廳表' },
+  };
+  for (const [file, { pattern, least, what }] of Object.entries(expected)) {
+    const found = (stripNav(read(file)).match(pattern) || []).length;
+    assert.ok(found >= least, `${file} 的「${what}」只有 ${found} 條，應至少 ${least} 條`);
+  }
+
+  // 每日／城市 → 實用資料
+  for (const day of [1, 2, 3, 4, 5, 6, 7, 8]) {
+    const body = stripNav(read(`day-${String(day).padStart(2, '0')}.html`));
+    assert.match(body, /href="practical\/todos\.html"/, `Day ${day} 沒有連到待辦頁`);
+    assert.match(body, /href="practical\/tickets\.html"/, `Day ${day} 沒有連到門票頁`);
+  }
+  for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
+    const body = stripNav(read(file));
+    for (const target of ['practical/tickets.html', 'practical/transit.html', 'practical/dining.html']) {
+      assert.match(body, new RegExp(`href="${target.replace('/', '\\/')}"`), `${file} 沒有連到 ${target}`);
+    }
+  }
+});
+
+test('實用資料沒有逾期未查的項目，未完成項目都有重查日期', async () => {
+  const { auditDataFreshness } = await import('../tools/audit-map-pins.mjs');
+  const { meta } = await import('../src/data/trip.js');
+  // 以資料自己的出發日為基準，測試不會因為今天的日期而飄移
+  const fresh = auditDataFreshness(meta.checkedAt || '2026-09-14');
+
+  assert.deepEqual(fresh.overdue, [], `有逾期未查的實用資料：${fresh.overdue.join('、')}`);
+  // recheckAt 缺席時 dashboard 的 overdue() 永遠回 false，未完成項目若沒有日期就會永遠隱形
+  assert.deepEqual(fresh.untrackedOpen, [],
+    `未完成卻沒有重查日期（永遠不會被標為逾期）：${fresh.untrackedOpen.join('、')}`);
+  assert.ok(fresh.beforeDeparture.length > 0, '出發前應有待查項目，資料可能未維護');
+});
+
+test('地圖沒有「圖釘有、餐廳表已無此店」的孤兒圖釘', async () => {
+  // 精煉餐廳清單時刪掉的店，圖釘也要一起撤——否則點到圖釘會看到一家
+  // 在下方餐廳表裡完全查不到的店。
+  const { auditDiningPinCoverage } = await import('../tools/audit-map-pins.mjs');
+  const coverage = auditDiningPinCoverage();
+  assert.deepEqual(coverage.orphanPins, [],
+    `以下圖釘的店已不在餐廳表：${coverage.orphanPins.join('、')}`);
 });
