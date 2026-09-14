@@ -1055,11 +1055,28 @@ test('Auschwitz 導覽已訂 10:30，去回巴士皆已查定但尚未購票', (
   assert.match(JSON.stringify(day3.steps), /08:35/);
 });
 
-test('餐飲、景點與地圖資料不保存無日期的動態 Google 星等', () => {
+test('餐飲、景點與地圖資料不保存無日期的動態 Google 星等', async () => {
   const dynamicRating = /★\d(?:\.\d)?/;
+  const { snacksAndCafes } = await import('../src/data/dining.js');
   assert.doesNotMatch(JSON.stringify(cityDining), dynamicRating);
   assert.doesNotMatch(JSON.stringify(attractions), dynamicRating);
   assert.doesNotMatch(JSON.stringify(mapPins), dynamicRating);
+  // 整併後的行程餐廳推薦表也吃 cityFood 與 snacksAndCafes，同樣不得存入評分快照。
+  assert.doesNotMatch(JSON.stringify(cityFood), dynamicRating);
+  assert.doesNotMatch(JSON.stringify(snacksAndCafes), dynamicRating);
+});
+
+test('行程餐廳推薦的評分只由連結帶去 Google Maps，不在站內存成數字', () => {
+  // 分數與評論數是每天都在變的快照，存進靜態站到了現場就是舊的。
+  const bakedRating = /★\s*\d(?:\.\d)?|\d\.\d\s*(?:顆星|星|\/\s*5)|\d+\s*則評論/;
+  for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
+    const html = read(file);
+    const table = html.slice(html.indexOf('id="city-dining"'), html.indexOf('</table>', html.indexOf('id="city-dining"')));
+    assert.ok(table.includes('<th scope="col">地圖導航 · 即時評分</th>'), `${file} 地圖導航欄未標明評分入口`);
+    assert.ok(table.includes('評分與導航 →'), `${file} 缺少評分與導航連結`);
+    assert.doesNotMatch(table, bakedRating, `${file} 把 Google 評分寫死進表格`);
+    assert.ok(html.includes('評分與評論數本站不保存'), `${file} 未說明評分為何不存在站內`);
+  }
 });
 
 test('逐日移動不保留已知不可行備案或重疊時刻', () => {
