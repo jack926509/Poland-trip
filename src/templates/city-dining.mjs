@@ -153,3 +153,79 @@ export function mergeCityDining(cityKey, dining = [], primary = [], snacks = [])
   const rank = row => (row.selected ? 0 : row.mustEat ? 1 : order[row.role] ?? 2);
   return [...entries.values()].sort((a, b) => rank(a) - rank(b));
 }
+
+// ── 欄位去重 ─────────────────────────────────────────────────────
+// 餐廳表四欄的內容有各自來源，實際渲染後常出現同一句話寫兩次：地址已在店名欄，
+// 「料理特色」又抄一次；「行程安排」再把料理特色與營業時間複述一遍。
+// 以「子句」為單位比對（不是字串片段），只刪掉在鄰欄已經一字不差出現過的整句，
+// 避免把半句話切碎而讓事實走樣。多重保護：太短的子句不判重、第一句一律保留
+// （帶 Day 與角色前綴）、全部被判重時退回原文。
+const CLAUSE_SPLIT = /(?<=[；;。])/;
+
+export function dropDuplicateClauses(text, ...seen) {
+  const source = String(text ?? '').trim();
+  if (!source) return source;
+  const pool = seen.filter(Boolean).map(value => String(value).replace(/\s+/g, ''));
+  if (!pool.length) return source;
+
+  const parts = source.split(CLAUSE_SPLIT);
+  const kept = parts.filter((part, index) => {
+    if (index === 0) return true;                       // 首句帶 Day／角色前綴，一律保留
+    const norm = part.replace(/\s+/g, '').replace(/[；;。]$/, '');
+    if (norm.length < 8) return true;                   // 太短不判重，避免誤刪短事實
+    return !pool.some(entry => entry.includes(norm));
+  });
+  const result = kept.join('').replace(/^[；;。\s]+/, '').trim();
+  return result || source;                              // 全被判重就退回原文
+}
+
+/**
+ * notes 由主推、候選、小吃三份來源合併而來，常把同一件事講好幾次
+ *（例如 Bar Mleczny Pod Temidą 的「Grodzka 43」出現三次）。
+ * 逐筆比對：被其他筆完整包含的、或只是重述店名欄已有地址的，就不再列。
+ */
+export function dedupeNotes(notes, address = '') {
+  const norm = value => String(value ?? '').replace(/\s+/g, '');
+  const addr = norm(address);
+  // 每筆 notes 常以門牌開頭（「Grodzka 43 · ……」），而門牌就在隔壁的店名欄，
+  // 三筆來源各寫一次就變成同一個地址連出現三次。開頭的門牌回聲一律剝掉。
+  const street = String(address ?? '').split(/[,，]/)[0].trim();
+  const echo = street.length >= 3
+    ? new RegExp(`^${street.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*[·・,，:：-]?\\s*`)
+    : null;
+  const kept = [];
+  for (const note of notes || []) {
+    const text = String(note ?? '').trim().replace(echo || /(?!)/, '').trim();
+    if (!text) continue;
+    const key = norm(text);
+    // 整筆只是在覆述地址
+    if (addr && key.length >= 6 && addr.includes(key)) continue;
+    // 已被其他筆完整包含
+    if (kept.some(other => norm(other).includes(key))) continue;
+    // 反向：這筆更完整，換掉被它包含的舊筆
+    const index = kept.findIndex(other => key.includes(norm(other)));
+    if (index !== -1) { kept[index] = text; continue; }
+    kept.push(text);
+  }
+  return kept;
+}
+
+/**
+ * 「行程安排」欄下方已經有專門的營業時間行，敘述裡再抄一次只是把欄位撐長。
+ * 只刪掉「含時刻、且內容已出現在 hours 欄」的逗號子句——沒有時刻的句子一律保留，
+ * 避免把動線說明或訂位提醒一起刪掉。
+ */
+export function dropRestatedHours(plan, hours) {
+  const text = String(plan ?? '');
+  if (!hours) return text;
+  const normHours = String(hours).replace(/\s+/g, '');
+  const kept = text.split(/(?<=[，,；;])/).filter((segment, index) => {
+    if (index === 0) return true;
+    const norm = segment.replace(/\s+/g, '').replace(/[，,；;]$/, '');
+    if (norm.length < 8) return true;
+    if (!/\d{1,2}:\d{2}/.test(norm)) return true;       // 沒有時刻就不是營業時間複述
+    const core = norm.replace(/^(公開資料列|官網每日|公告營業至|營業時間[：:]?|每日)/, '');
+    return !(core.length >= 6 && normHours.includes(core));
+  }).join('');
+  return kept.replace(/[，,；;]\s*$/, '').trim() || text;
+}

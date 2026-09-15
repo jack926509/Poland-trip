@@ -1,5 +1,5 @@
 import { renderCityJourney } from './journey.mjs';
-import { mergeCityDining } from './city-dining.mjs';
+import { mergeCityDining, dropDuplicateClauses, dedupeNotes, dropRestatedHours } from './city-dining.mjs';
 import { renderLayout } from './layout.mjs';
 import { renderPhotoGallery } from './photo-gallery.mjs';
 
@@ -72,17 +72,17 @@ export function renderCity({
   const renderDiningRow = item => `<tr class="${item.selected ? 'city-dining-selected' : ''}">
     <th scope="row">${renderDiningName(item)}${diningBadge(item)}${item.address ? `<p class="food-map-note">${item.address}</p>` : ''}</th>
     <td>${stableTier(item.tier || item.tag || '待補充')}</td>
-    <td>${item.notes.length ? item.notes.join('；') : '依店家當日菜單確認'}</td>
+    <td>${item.notes.length ? dropDuplicateClauses(dedupeNotes(item.notes, item.address).join('；'), item.address) : '依店家當日菜單確認'}</td>
     <td>${item.plans?.length
-      ? item.plans.map(plan => `<p class="city-dining-plan">${plan}</p>`).join('')
+      ? item.plans.map(plan => `<p class="city-dining-plan">${dropRestatedHours(dropDuplicateClauses(plan, item.notes.join('；')), item.hours)}</p>`).join('')
       : `<p>${planFallback[item.role] || '依當天動線與胃口安排'}</p>`}<p class="food-map-note">${item.hours ? `營業時間：${item.hours}` : (bookingLabels[item.book] || '營業與訂位請向店家確認')}</p></td>
   </tr>`;
   const primaryDiningHtml = mergedDining.length ? `
     <section class="section" id="city-dining">
       <div class="section-heading"><span class="section-num">Dining</span><h2>行程餐廳推薦</h2></div>
-      <p class="lead" id="city-dining-description">餐廳、備案與小吃咖啡廳整併為這一張表，共 ${mergedDining.length} 家，其中 ${mergedDining.filter(item => item.selected || item.mustEat).length} 家列入每日候選：你的候選與順路必吃列在最上方並標出是哪一天（可直接點 Day 回到當日行程），接著是主推、備案，最後是隨時可插進動線的小吃與咖啡廳。營業時間屬動態資料，只列有公開來源的，出發前仍要重查。</p>
-      <p class="lead"><b>點店名即可開啟 Google Maps</b>（導航與即時評分都在那裡）。<b>評分與評論數本站不保存</b>，因為那是每天都在變的快照，存下來到了現場就是舊的；連鎖與同名店請先對門牌再看分數。</p>
-      <p class="city-dining-scroll-hint">平板寬度可左右滑動列表查看完整欄位；手機會自動改為一家一張卡片。</p>
+      <p class="lead" id="city-dining-description">共 ${mergedDining.length} 家，${mergedDining.filter(item => item.selected || item.mustEat).length} 家已列入每日候選。排序：你的候選與順路必吃置頂並標出日期（點 Day 回當日行程），其次主推、備案，最後是可隨時插入動線的小吃與咖啡廳。</p>
+      <p class="lead"><b>點店名開啟 Google Maps。</b>評分與評論數本站不保存——那是每天在變的快照；營業時間同理，出發前與現場以官方頁為準，連鎖與同名店先對門牌。</p>
+      <p class="city-dining-scroll-hint">平板可左右滑動看完整欄位，手機自動改為卡片。</p>
       <div class="table-wrap city-dining-table-wrap" role="region" aria-label="行程餐廳推薦列表" tabindex="0">
         <table class="table-editorial city-dining-table" aria-describedby="city-dining-description">
           <caption>候選、主推、備案與小吃咖啡廳合併後的行程餐廳清單</caption>
