@@ -2869,15 +2869,25 @@ figure.media-unavailable > img {
   outline-offset: 2px;
 }
 
-/* --- 表格內連結給足觸控高度 ---
+/* --- 表格內連結的觸控高度 ---
    高度用 min-height 撐，不要用上下對稱的 padding：padding-top 會把連結的第一行文字
    往下推，同一列的純文字欄卻沒有這段 padding，於是看起來一欄靠上、一欄置中。
-   改成文字留在頂端、觸控區往下延伸，同列各欄的第一行才會對齊。 */
+   文字留在頂端、觸控區往下延伸，同列各欄的第一行才會對齊。
+
+   但這段高度只有觸控裝置需要。一行文字 21px 卻要佔 44px，等於每一列多付 23px，
+   一張 21 列的表就多出近 500px 的空白；滑鼠游標不需要這麼大的命中區
+   （WCAG 2.2 AA 的最小目標是 24×24px，44px 是觸控裝置的建議值）。
+   因此依輸入方式區分：任何帶觸控輸入的裝置維持 44px，純滑鼠裝置讓列高貼近文字。 */
 .table-editorial td a,
 .table-editorial th a {
   display: inline-block;
-  min-height: 44px;
   padding-block: 0;
+}
+
+@media (any-pointer: coarse) {
+  .table-editorial td a,
+  .table-editorial th a { min-height: 44px; }
+  .city-dining-name { min-height: 44px; }
 }
 
 /* --- 行動呼籲連結改為可按標籤 --- */
@@ -4690,10 +4700,10 @@ h3 {
 
 /* 店名＝Google Maps 連結，用底線表示可點；父層 .table-editorial th a 已給 44px 觸控高度。 */
 .city-dining-name {
-  /* 專案要求任何可點目標不低於 44px；純底線連結只有 41px，用 inline-flex 撐起來。 */
+  /* 觸控高度見上方 @media (any-pointer: coarse)：只有觸控裝置需要 44px，
+     滑鼠裝置撐高只會讓每一列多出空白。 */
   display: inline-flex;
-  align-items: center;
-  min-height: 44px;
+  align-items: flex-start;
   color: var(--ink);
   font-weight: 700;
   text-decoration: underline;
@@ -4968,3 +4978,9 @@ h3 {
 .table-editorial td { padding-block: 0.4rem; line-height: 1.45; }
 .table-editorial p { margin: .15rem 0; }
 .city-dining-table p { margin: .12rem 0; }
+
+/* 景點清單：不給欄寬時瀏覽器會把寬度都分給內容最長的備註欄，景點名被擠到
+   每一列都斷成兩行，列高因此翻倍。給定比例讓名稱盡量一行放完。 */
+.sights-table th:nth-child(1) { width: 26%; }
+.sights-table th:nth-child(2) { width: 10%; }
+.sights-table th:nth-child(3) { width: 64%; }

@@ -1094,7 +1094,10 @@ test('行程餐廳推薦的評分只由連結帶去 Google Maps，不在站內�
   const mobile = css.slice(css.indexOf('@media (max-width: 700px) {', css.indexOf('.city-dining-table-wrap')));
   assert.match(mobile, /\.city-dining-table \{ display: block;/, '手機版餐廳表未改為卡片版');
   assert.match(mobile, /\.city-dining-table td::before \{[\s\S]*?content: attr\(data-label\)/, '手機卡片版未顯示欄名');
-  assert.match(css, /\.city-dining-name \{[\s\S]*?min-height: 44px/, '店名連結未維持 44px 觸控高度');
+  // 44px 觸控高度改為只在有觸控輸入的裝置生效：滑鼠裝置撐高只會讓每列多出空白。
+  // 守的仍是同一件事——觸控裝置上店名連結必須有 44px 命中區。
+  const coarse = css.slice(css.indexOf('@media (any-pointer: coarse) {'));
+  assert.match(coarse, /\.city-dining-name \{ min-height: 44px; \}/, '觸控裝置上店名連結未維持 44px 觸控高度');
   assert.match(css, /\.city-dining-name \{[\s\S]*?text-decoration: underline/, '店名連結未加底線');
 });
 
