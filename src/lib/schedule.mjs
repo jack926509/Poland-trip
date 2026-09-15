@@ -137,3 +137,80 @@ export function weekdayOf(isoDate) {
 }
 
 export const WEEKDAY_NAMES = ['日', '一', '二', '三', '四', '五', '六'];
+
+// ── 硬時間的語意分類 ───────────────────────────────────────────────
+//
+// hardConstraints 是寫給人看的句子，一句裡可能有多個時刻，而且語意不同：
+// 「皇家城堡 10:00 開門、17:00 最後入場」的 10:00 是開門（不是期限），
+// 真正不能錯過的是 17:00。只取第一個數字會錨在開門時間，過了 10:00 之後
+// 當天最該盯的期限反而消失，因此這裡把每個時刻各自取出並分類。
+// 來源字串一律不改寫——分類只是附加的讀取層。
+
+/** 各類硬時間的顯示標籤。 */
+export const HARD_TIME_KINDS = {
+  departure: '發車',
+  checkin: '報到／抵站',
+  lastEntry: '最後入場',
+  entry: '入場／場次',
+  baggage: '行李',
+  open: '開門',
+  plan: '時間點',
+};
+
+// 由具體到一般：'最後入場' 必須早於 '入場' 判斷，否則會被歸成一般入場。
+const HARD_TIME_RULES = [
+  [/最後入場|末入場|最後入園|最晚入場|最後點餐/, 'lastEntry'],
+  [/發車|開車|啟程|起飛/, 'departure'],
+  [/報到|安檢|集合|卡位|前抵|抵達|抵\s|進站|登機|櫃檯/, 'checkin'],
+  [/入場|場次|導覽|開演|秀|表演|預約/, 'entry'],
+  [/取行李|寄放|行李/, 'baggage'],
+  [/開門|開館|開放/, 'open'],
+];
+
+// 斷句符號：時刻的語意只看緊鄰的那一段，跨過標點就是另一件事。
+// 少了這個切分，'辛德勒工廠 17:30 入場（最後入場 18:30）' 的 17:30
+// 會讀到後面的「最後入場」而被誤判成期限。
+const HARD_TIME_STOP = /[、，,；;。（）()·　\n]/;
+
+function classifyHardTime(context) {
+  for (const [pattern, kind] of HARD_TIME_RULES) {
+    if (pattern.test(context)) return kind;
+  }
+  return null;
+}
+
+/**
+ * 取出句中全部時刻並各自分類。
+ * 回傳 [{ minutes, hhmm, kind, kindLabel, detail, text }]，沒有時刻回空陣列。
+ */
+export function parseHardTimes(raw) {
+  const text = String(raw ?? '').trim();
+  if (!text) return [];
+
+  const pattern = /(\d{1,2}):(\d{2})/g;
+  const found = [];
+  let match;
+  while ((match = pattern.exec(text)) !== null) {
+    const minutes = toMinutes(match[0]);
+    if (minutes !== null) found.push({ minutes, start: match.index, end: match.index + match[0].length });
+  }
+
+  return found.map((item, index) => {
+    const after = text.slice(item.end, index + 1 < found.length ? found[index + 1].start : text.length)
+      .split(HARD_TIME_STOP)[0];
+    const beforeParts = text.slice(index === 0 ? 0 : found[index - 1].end, item.start).split(HARD_TIME_STOP);
+    const before = beforeParts[beforeParts.length - 1];
+    const kind = classifyHardTime(after) || classifyHardTime(before) || 'plan';
+    return {
+      minutes: item.minutes,
+      hhmm: formatMinutes(item.minutes),
+      kind,
+      kindLabel: HARD_TIME_KINDS[kind],
+      detail: (after.trim() || before.trim()),
+      text,
+    };
+  });
+}
+
+/** 期限型的時刻才需要推導「該幾點開始移動」；開門、行李等不是。 */
+export const HARD_TIME_DEADLINES = new Set(['departure', 'checkin', 'lastEntry', 'entry']);

@@ -1,3 +1,5 @@
+import { bookingProgress } from '../lib/journey.mjs';
+import { renderDayContext } from './journey.mjs';
 import { dayDining } from '../data/day-dining.js';
 import { cityGuides, detectCity } from './city-dining.mjs';
 import { renderLayout } from './layout.mjs';
@@ -192,11 +194,12 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
       </article>
     </section>` : '';
 
-  const mustBookHtml = day.mustBook.length ? `
+  const { pending, confirmed } = bookingProgress(day);
+  const mustBookHtml = pending.length ? `
     <div class="callout-risk">
-      <span class="tag-todo">尚未完成 ${day.mustBook.length} 項</span>
+      <span class="tag-todo">尚未完成 ${pending.length} 項</span>
       <h3>這一天要先處理</h3>
-      ${renderList(day.mustBook, item => `<li>${item}</li>`)}
+      ${renderList(pending, item => `<li>${item}</li>`)}
     </div>` : `
     <div class="callout-good"><b>這一天沒有待訂項目。</b></div>`;
 
@@ -316,8 +319,9 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
 ${coverHtml}
     </header>
 
+    ${renderDayContext(day)}
     <nav class="day-shortcuts" aria-label="當日快速導覽">
-      <a href="#schedule">時間表</a><a href="#directions">地址與導航</a><a href="#day-preparation">訂票與提醒</a>
+      <a href="#schedule">時間表</a><a href="#day-food">餐飲候選</a><a href="#directions">地址與導航</a><a href="#day-preparation">訂票與提醒</a>
     </nav>
 
     <section class="section" id="schedule">
@@ -333,6 +337,7 @@ ${coverHtml}
     ${trainHtml}
     <section class="section" id="day-preparation">
       <div class="section-heading"><span class="section-num">Preparation</span><h2>訂票與提醒</h2></div>
+      ${confirmed.length ? `<div class="callout-good"><b>已完成預約</b>${renderList(confirmed, item => `<li>${escapeHtml(item)}</li>`)}</div>` : ''}
       ${mustBookHtml}
       ${warnHtml}
       <p class="action-links"><a href="practical/todos.html">全部待辦與查核狀態 →</a><a href="practical/tickets.html">門票價格與開放時間 →</a></p>
