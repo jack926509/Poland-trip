@@ -218,7 +218,7 @@ export function renderCity({
 
     <section class="section">
       <div class="section-heading"><span class="section-num">Sights</span><h2>景點清單</h2></div>
-      <div class="table-wrap"><table class="table-editorial">
+      <div class="table-wrap"><table class="table-editorial sights-table">
         <thead><tr><th>景點</th><th>類型</th><th>票價／備註</th></tr></thead>
         <tbody>${attractionRows}</tbody>
       </table></div>
