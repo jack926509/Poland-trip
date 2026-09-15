@@ -1,3 +1,4 @@
+import { renderCityJourney } from './journey.mjs';
 import { mergeCityDining } from './city-dining.mjs';
 import { renderLayout } from './layout.mjs';
 import { renderPhotoGallery } from './photo-gallery.mjs';
@@ -79,7 +80,7 @@ export function renderCity({
   const primaryDiningHtml = mergedDining.length ? `
     <section class="section" id="city-dining">
       <div class="section-heading"><span class="section-num">Dining</span><h2>行程餐廳推薦</h2></div>
-      <p class="lead" id="city-dining-description">餐廳、備案與小吃咖啡廳整併為這一張表，共 ${mergedDining.length} 家，其中 ${mergedDining.filter(item => item.selected || item.mustEat).length} 家已排進行程：你的候選與順路必吃列在最上方並標出是哪一天（可直接點 Day 回到當日行程），接著是主推、備案，最後是隨時可插進動線的小吃與咖啡廳。營業時間屬動態資料，只列有公開來源的，出發前仍要重查。</p>
+      <p class="lead" id="city-dining-description">餐廳、備案與小吃咖啡廳整併為這一張表，共 ${mergedDining.length} 家，其中 ${mergedDining.filter(item => item.selected || item.mustEat).length} 家列入每日候選：你的候選與順路必吃列在最上方並標出是哪一天（可直接點 Day 回到當日行程），接著是主推、備案，最後是隨時可插進動線的小吃與咖啡廳。營業時間屬動態資料，只列有公開來源的，出發前仍要重查。</p>
       <p class="lead"><b>點店名即可開啟 Google Maps</b>（導航與即時評分都在那裡）。<b>評分與評論數本站不保存</b>，因為那是每天都在變的快照，存下來到了現場就是舊的；連鎖與同名店請先對門牌再看分數。</p>
       <p class="city-dining-scroll-hint">平板寬度可左右滑動列表查看完整欄位；手機會自動改為一家一張卡片。</p>
       <div class="table-wrap city-dining-table-wrap" role="region" aria-label="行程餐廳推薦列表" tabindex="0">
@@ -193,6 +194,7 @@ export function renderCity({
       </div>
     </header>
 
+    ${renderCityJourney(city)}
     ${notices.map(renderNotice).join('')}
 
     <div class="journal-city-story">${storyHtml}</div>

@@ -1,3 +1,5 @@
+import { bookingProgress } from '../lib/journey.mjs';
+import { renderJourneyOverview } from './journey.mjs';
 import { renderLayout } from './layout.mjs';
 import { getTaipeiToday, collectDeadlines, nextDeadline } from '../scripts/dashboard.js';
 
@@ -76,7 +78,7 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
         <span class="journal-day-number">${String(day.n).padStart(2, '0')}</span>
         <span class="journal-day-date">${escapeHtml(day.date)}</span>
         <span class="journal-day-copy"><b>${escapeHtml(day.title)}</b><small>${escapeHtml(day.city)} · ${escapeHtml(day.headline)}</small></span>
-        <span class="${day.mustBook.length ? 'tag-todo' : 'tag-muted'}">${day.mustBook.length ? `待訂 ${day.mustBook.length}` : '無待訂'}</span>
+        <span class="${bookingProgress(day).pending.length ? 'tag-todo' : 'tag-muted'}">${bookingProgress(day).pending.length ? `待訂 ${bookingProgress(day).pending.length}` : '無待訂'}</span>
       </a>
     </li>`).join('');
 
@@ -121,6 +123,12 @@ ${coverFigure}
       ${['華沙', '克拉科夫', '樂斯拉夫', '波茲南', '華沙'].map(city => `<span class="route-stop">${city}</span>`).join('')}
     </div>
 
+    <nav class="journey-entry" aria-label="依旅行需求查找">
+      <a href="#journey-overview"><b>出發前規劃</b><span>全程動線、過夜與強度</span></a>
+      <a href="today.html"><b>旅途中速查</b><span>今天行程、導航與餐飲</span></a>
+      <a href="practical/todos.html"><b>處理預約</b><span>票券、交通與待確認事項</span></a>
+    </nav>
+    ${renderJourneyOverview()}
     <aside class="journal-status-strip" aria-label="旅程準備狀態">
       <a href="#todos" aria-label="${todoCount} 項待辦"><strong>${todoCount}</strong><span>項待辦</span></a>
       <span><strong>${verifiedCount}</strong><span>已確認</span></span>
@@ -136,7 +144,7 @@ ${coverFigure}
     </section>
 
     <section class="section" id="cities">
-      <div class="section-heading"><span class="section-num">02 / City stories</span><h2>四城攝影章節</h2></div>
+      <div class="section-heading"><span class="section-num">02 / City stories</span><h2>四城指南與行程銜接</h2></div>
       <p class="lead">先讀城市氣質，再打開地圖、景點、餐廳與拍照時間。</p>
       <div class="journal-city-chapters">${cityCards}</div>
     </section>

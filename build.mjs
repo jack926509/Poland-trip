@@ -694,6 +694,7 @@ function buildIntoStaging(stagingRoot) {
     writeHtml(`city-${fileKey}.html`, renderCity({
       city,
       cityKey: mapKey,
+      cityFile: fileKey,
       mapData: cities.mapPins[mapKey],
       mapChecks: cities.mapPinChecks[mapKey],
       legend: cities.pinCategoryLegend,

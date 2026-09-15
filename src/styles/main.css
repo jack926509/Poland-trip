@@ -4906,3 +4906,54 @@ h3 {
   line-height: 1.5;
   user-select: all;
 }
+
+/* 以旅程串接規劃、城市與現場查找。 */
+.journey-entry { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.journey-entry a, .journey-context { padding: 1rem; border: 1px solid currentColor; border-radius: 4px; }
+.journey-entry span, .journey-day-links span { display: block; font-size: .9rem; margin-top: .4rem; }
+.journey-context { margin: 1.5rem 0; }
+.journey-context p { margin: .5rem 0; }
+.journey-day-links { list-style: none; padding: 0; }
+.journey-day-links li { padding: 1rem 0; border-bottom: 1px solid #cfc5b5; }
+.journey-day-links li > a:last-child { display: inline-block; margin-top: .5rem; }
+@media (max-width: 600px) { .journey-entry { grid-template-columns: 1fr; } }
+
+/* 今日卡：優先操作，詳細內容按需展開。 */
+.today-date-controls, .today-actions, .today-next > label { display: none; }
+.today-date-controls.today-enhanced, .today-enhanced .today-actions { display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; }
+.today-enhanced .today-next > label { display: block; }
+.today-date-controls { margin: 1rem 0; }
+.today-date-controls button, .today-actions button, .today-actions a, .today-date-controls select, .today-next select { min-height: 44px; padding: .6rem .8rem; font: inherit; color: inherit; background: #faf5eb; border: 1px solid #bfb19e; border-radius: 4px; }
+.today-date-controls button:disabled { opacity: .4; }
+.today-actions { position: sticky; top: 76px; z-index: 8; padding: .5rem; background: #f4eddf; border-bottom: 1px solid #bfb19e; }
+.today-actions > * { flex: 1; text-align: center; white-space: nowrap; }
+.today-next { border-left: 4px solid #496b57; }
+.today-next-title { font-size: 1.25rem; line-height: 1.5; }
+.today-next select { width: 100%; max-width: 100%; }
+.today-block { scroll-margin-top: 150px; overflow-wrap: anywhere; }
+.today-transport-status { padding: .7rem; background: #f3e7cd; }
+.today-block summary { cursor: pointer; font-weight: 700; min-height: 44px; padding: .5rem 0; }
+.today-block details { margin-top: 1rem; }
+.today-actions :focus-visible, .today-date-controls :focus-visible, .today-next :focus-visible { outline: 3px solid #496b57; outline-offset: 2px; }
+.today-card [hidden] { display: none !important; }
+@media (max-width: 400px) { .today-actions { gap: .25rem; } .today-actions > * { padding: .55rem .35rem; font-size: .85rem; } }
+
+/* 硬時間：類型與「該幾點開始移動」要一眼分得出來。 */
+.today-hard-source, .today-move { display: block; margin-top: .35rem; line-height: 1.6; }
+.today-hard-source { font-size: .95rem; }
+.today-move { font-size: .9rem; padding: .5rem .6rem; border-left: 3px solid #496b57; background: #f3e7cd; }
+
+/* 今日卡在手機上是現場速查：頁首讓位給「接下來去哪」，讓它落在首屏。 */
+@media (max-width: 600px) {
+  .journal-today .journal-appendix-header { padding-block: 1rem; }
+  .journal-today .journal-appendix-header h1 { font-size: 2.1rem; line-height: 1.15; margin: .25rem 0; }
+  .journal-today .journal-appendix-header .hero-dek { font-size: .9rem; margin: .4rem 0 0; }
+  .journal-today .today-date-controls { margin: .75rem 0; }
+  /* 日期選單獨占一列，三個按鈕併成一排，避免各自換行後散開。 */
+  .journal-today .today-date-controls > label { order: -1; flex: 1 0 100%; }
+  .journal-today .today-date-controls button { flex: 1 1 auto; white-space: nowrap; }
+  .journal-today .today-status { margin: .5rem 0; }
+  .journal-today .today-head { margin-bottom: .5rem; }
+  .journal-today .today-head h2 { font-size: 1.5rem; line-height: 1.25; margin: .2rem 0; }
+}
+.today-snack-label { margin: 1rem 0 .25rem; }
