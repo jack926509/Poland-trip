@@ -4961,3 +4961,10 @@ h3 {
   .journal-today .today-head h2 { font-size: 1.5rem; line-height: 1.25; margin: .2rem 0; }
 }
 .today-snack-label { margin: 1rem 0 .25rem; }
+
+/* 表格精煉：行高與內距收緊一級。表格是查找用的密集資訊，不需要內文的閱讀行高；
+   收緊後同一畫面能多看到幾列，減少來回捲動。 */
+.table-editorial th,
+.table-editorial td { padding-block: 0.4rem; line-height: 1.45; }
+.table-editorial p { margin: .15rem 0; }
+.city-dining-table p { margin: .12rem 0; }
