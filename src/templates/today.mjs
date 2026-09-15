@@ -1,4 +1,4 @@
-import { bookingProgress } from '../lib/journey.mjs';
+import { bookingProgress, isDepartureDay } from '../lib/journey.mjs';
 import { renderLayout } from './layout.mjs';
 import { dayOperations } from '../data/travel-database.js';
 import { toMinutes, parseHardTimes, HARD_TIME_DEADLINES } from '../lib/schedule.mjs';
@@ -41,8 +41,12 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
   const meal = item => `<li><b>${escapeHtml(item.role)}：${escapeHtml(item.name)}</b>
     <p>${escapeHtml(item.note || '')}</p><p class="source-meta">${escapeHtml(item.address || '')}</p>
     ${safeHttpsUrl(item.map) ? `<a href="${escapeHtml(item.map)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.name)}導航 ↗</a>` : ''}</li>`;
+  // 同一天的「首選」其實橫跨不同餐別（午餐＋晚餐＋點心），不是互斥選項。
+  // 正餐與點心分開列，避免看起來像「這些全都要吃」或「只能挑一家」。
   const primary = (dining || []).filter(item => !/替補|備案/.test(item.role));
   const alternatives = (dining || []).filter(item => /替補|備案/.test(item.role));
+  const mainMeals = primary.filter(item => /早餐|午餐|晚餐/.test(item.role));
+  const snacks = primary.filter(item => !/早餐|午餐|晚餐/.test(item.role));
   const steps = day.steps.map(step => {
     const matches = (operation?.addresses || []).filter(item => item.stepLabels?.includes(step.label));
     const place = matches.length === 1 ? matches[0] : null;
@@ -88,6 +92,7 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
       ? `<span class="today-move">依行程表，這段移動由 ${escapeHtml(step.t)}「${escapeHtml(step.label)}」開始${step.dur ? `（行程表估時 ${escapeHtml(step.dur)}）` : '（行程表未列估時）'}；實際出發仍須加上取行李與現場狀況。</span>`
       : '<span class="today-move">最晚出發時間待確認：行程表沒有對得上這個地點的移動步驟與估時，請依票券與現場公告自行抓緩衝。</span>';
   };
+  const leaving = isDepartureDay(day);
   const hotelMap = bed?.addressVerified ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(bed.name+' '+bed.address)}` : null;
   return `<article class="today-card" data-today-card data-today-date="${escapeHtml(iso)}">
     <header class="today-head"><span class="eyebrow">Day ${day.n} · ${escapeHtml(day.date)}</span>
@@ -105,13 +110,14 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
     </section>
     <nav class="today-actions" aria-label="今日快捷操作">
       <button type="button" data-today-action="next">下一站</button><button type="button" data-today-action="food">今天吃哪</button>
-      <button type="button" data-today-action="stay">${bed ? '回住宿' : '去機場'}</button><a href="${escapeHtml(dayHref)}">完整行程</a>
+      <button type="button" data-today-action="stay">${bed ? '回住宿' : leaving ? '去機場' : '住宿待確認'}</button><a href="${escapeHtml(dayHref)}">完整行程</a>
     </nav>
     <section class="today-block today-block-alert">
       <h3>下一個時間提醒</h3>
-      ${timed.map(item => `<p data-hard-time data-plan-minute="${item.minutes}"><b>${escapeHtml(item.hhmm)} · ${escapeHtml(item.kindLabel)}</b><span class="today-hard-source">${escapeHtml(item.text)}</span>${moveHint(item)}</p>`).join('')}
-      <p data-hard-ended hidden>已無更晚的定時提醒；仍請核對票券與現場公告。</p>
-      <p class="source-meta">報到、入場與發車依各項文字區分。預定時間不代表已訂妥；移動需另加取行李與交通時間。</p>
+      ${timed.length ? `${timed.map(item => `<p data-hard-time data-plan-minute="${item.minutes}"><b>${escapeHtml(item.hhmm)} · ${escapeHtml(item.kindLabel)}</b><span class="today-hard-source">${escapeHtml(item.text)}</span>${moveHint(item)}</p>`).join('')}
+      <p data-hard-ended hidden>今天的定時提醒都已過時間；仍請核對票券與現場公告。</p>
+      <p class="source-meta">報到、入場、最後入場與發車分開標示。預定時間不代表已訂妥。</p>`
+      : '<p><b>今天沒有定時的硬性時間點。</b></p><p class="source-meta">這一天的限制不綁時刻（見下方展開），仍請核對票券與現場公告。</p>'}
       <details><summary>今天不能延誤／時間不夠怎麼調整</summary><ul>${list(day.hardConstraints || [])}</ul>
         <p><b>可以壓縮：</b></p><ul>${list(day.compressible || [])}</ul></details>
     </section>
@@ -121,17 +127,20 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
       <p><b>${escapeHtml(day.train.dep)} – ${escapeHtml(day.train.arr)}</b>（${escapeHtml(day.train.dur)}）</p>
       <a href="${escapeHtml(dayHref)}#day-preparation">票務與當日提醒 →</a></section>` : ''}
     <section class="today-block" data-today-food><h3>今天吃哪</h3>
-      <p class="source-meta">按餐別與動線擇一；候選不代表已訂位。餐廳導航開啟後，請確認營業及最後點餐時間。</p>
-      <ul class="today-list">${primary.map(meal).join('') || '<li>依現場動線用餐。</li>'}</ul>
+      <p class="source-meta">正餐按餐別各列一家；點心與候選看體力和動線插入，不必全吃。候選不代表已訂位，導航開啟後請再確認營業與最後點餐時間。</p>
+      <ul class="today-list">${mainMeals.map(meal).join('') || '<li>今天沒有指定正餐，依現場動線用餐。</li>'}</ul>
+      ${snacks.length ? `<p class="today-snack-label"><b>順路點心／候選</b>（${snacks.length} 家，不必全吃）</p>
+      <ul class="today-list">${snacks.map(meal).join('')}</ul>` : ''}
       ${alternatives.length ? `<details><summary>客滿或想換口味：${alternatives.length} 家替補</summary><ul class="today-list">${alternatives.map(meal).join('')}</ul></details>` : ''}
       <a href="${escapeHtml(dayHref)}#day-food">順路必吃與完整餐飲 →</a></section>
-    <section class="today-block" data-today-stay><h3>${bed ? '住宿與行李' : '離境與行李'}</h3>
+    <section class="today-block${!bed && !leaving ? ' today-block-alert' : ''}" data-today-stay><h3>${bed ? '住宿與行李' : leaving ? '離境與行李' : '今晚住宿：資料缺漏'}</h3>
       ${checkout ? `<p><b>今天退房：</b>${escapeHtml(checkout.name)}。${escapeHtml(checkout.checkOutTime || '退房時間依訂房確認')}前辦理；寄放與取件方式先向住宿確認。</p>` : ''}
       ${bed ? `<p><b>今晚落腳：${escapeHtml(bed.name)}</b>（${escapeHtml(bed.status)}）</p>
         <p class="today-address" lang="pl">${escapeHtml(bed.address)}</p>
         <p>${bed.checkIn === iso ? `今天入住：${escapeHtml(bed.checkInTime || '時間依訂房確認')}` : '今晚連住，不必再次辦理入住。'}</p>
         <p class="source-meta">${!bed.addressVerified ? '門牌尚未確認，請先核對私人訂房資料；不提供精確導航。' : bed.id === 'poznan-towarowa' ? '此地址為接待與取鑰匙處；實際公寓門牌依私人訂房確認。' : '已核對的住宿地址，可出示給司機或櫃檯。'}</p>
-        ${hotelMap ? `<a href="${escapeHtml(hotelMap)}" target="_blank" rel="noopener noreferrer">${bed.id === 'poznan-towarowa' ? '接待處導航' : '住宿導航'} ↗</a>` : ''}` : `<p>今晚離境／機上過夜。先確認航班報到、退稅與機場交通。</p><a href="${escapeHtml(dayHref)}#directions">開啟機場地址與交通 →</a>`}
+        ${hotelMap ? `<a href="${escapeHtml(hotelMap)}" target="_blank" rel="noopener noreferrer">${bed.id === 'poznan-towarowa' ? '接待處導航' : '住宿導航'} ↗</a>` : ''}` : leaving ? `<p>今晚離境／機上過夜。先確認航班報到、退稅與機場交通。</p><a href="${escapeHtml(dayHref)}#directions">開啟機場地址與交通 →</a>`
+        : `<p><b>這一天不是離境日，但查不到當晚住宿。</b>這是資料缺漏，不是「不用住」——請先補上訂房或確認安排。</p><a href="${escapeHtml(dayHref)}#day-preparation">查看當日訂房與提醒 →</a>`}
     </section>
     <details class="today-block"><summary>全天時間表</summary>${renderSteps(day)}</details>
     <details class="today-block"><summary>預約與待辦 · ${progress.pending.length} 項待處理</summary>
