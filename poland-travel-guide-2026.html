@@ -2897,11 +2897,15 @@ figure.media-unavailable > img {
   outline-offset: 2px;
 }
 
-/* --- 表格內連結給足觸控高度 --- */
+/* --- 表格內連結給足觸控高度 ---
+   高度用 min-height 撐，不要用上下對稱的 padding：padding-top 會把連結的第一行文字
+   往下推，同一列的純文字欄卻沒有這段 padding，於是看起來一欄靠上、一欄置中。
+   改成文字留在頂端、觸控區往下延伸，同列各欄的第一行才會對齊。 */
 .table-editorial td a,
 .table-editorial th a {
   display: inline-block;
-  padding-block: 0.55rem;
+  min-height: 44px;
+  padding-block: 0;
 }
 
 /* --- 行動呼籲連結改為可按標籤 --- */
