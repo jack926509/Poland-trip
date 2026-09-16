@@ -1,6 +1,7 @@
-import { bookingProgress, isDepartureDay } from '../lib/journey.mjs';
+import { escapeHtml } from '../lib/html.mjs';
+import { bookingProgress, isDepartureDay, stayForDate } from '../lib/journey.mjs';
 import { renderLayout } from './layout.mjs';
-import { cityKeysForDay } from './city-dining.mjs';
+import { cityKeysForDay } from '../lib/city-guide.mjs';
 import { renderFastFoodDayList } from './fast-food.mjs';
 import { fastFoodBranches, fastFoodChains, fastFoodHubs } from '../data/dining.js';
 import { dayOperations } from '../data/travel-database.js';
@@ -8,23 +9,9 @@ import { toMinutes, parseHardTimes, HARD_TIME_DEADLINES } from '../lib/schedule.
 import { dayIsoDate } from '../lib/schedule.mjs';
 import { dayGap, warsawTodayLocal, selectToday, statusText, warsawMinutes, nextPlanIndex, initializeToday } from '../scripts/today.js';
 
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
-
 function safeHttpsUrl(value) {
   const raw = String(value ?? '').trim();
   return /^https:\/\//.test(raw) ? raw : null;
-}
-
-/** 當晚落腳處：入住日當天到退房日前一天都算這一筆。 */
-function stayForDate(stay, iso) {
-  return stay.find(item => item.checkIn <= iso && iso < item.checkOut) || null;
 }
 
 function renderSteps(day) {

@@ -1,23 +1,11 @@
+import { cityRoutes } from '../lib/city-guide.mjs';
+import { escapeHtml } from '../lib/html.mjs';
 import { bookingProgress } from '../lib/journey.mjs';
 import { renderJourneyOverview } from './journey.mjs';
 import { renderLayout } from './layout.mjs';
 import { getTaipeiToday, collectDeadlines, nextDeadline } from '../scripts/dashboard.js';
 
-const cityFileKeys = {
-  WAW: 'warszawa',
-  KRK: 'krakow',
-  WRO: 'wroclaw',
-  POZ: 'poznan',
-};
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
+const cityFileKeys = Object.fromEntries(cityRoutes.map(city => [city.key, city.fileKey]));
 
 function renderFlight(direction, legs) {
   const actualLegs = legs.filter(leg => !leg.layover);

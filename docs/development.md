@@ -12,9 +12,19 @@
 - 儀表板依台灣日期重新計算更新量與逾期數，今日行程依華沙日期判斷；離線時計算的是已載入資料，不會自動查票。
 - 倒數期限整合火車開賣日、手動期限與資料庫重查日，應修改各來源正本，避免重抄日期。日照可用 `npm run sun:times` 重算，行程時間可用 `npm run audit:schedule` 檢查。
 
+## 程式責任分工
+
+- `build.mjs` 只協調 staging、資源複製、渲染、搜尋注入、打包與發布。
+- `src/build/pages.mjs` 將資料傳入頁面模板；`standalone.mjs` 處理單檔連結、ID 與照片內嵌；`output.mjs` 負責快取指紋與發布失敗回復。
+- 單檔照片快取與輸出路徑每次建置獨立，避免同一程序重複建置時沿用上一輪資料。
+- `src/data/day-maps.js` 保存每日地圖選點與補充座標；`src/lib/day-map.mjs` 組合圖釘及查核資料，保留白天主城市的範圍。
+- `src/lib/city-guide.mjs` 統一城市代碼、網址、每日城市對照與地址辨識。`templates/city-dining.mjs` 專注餐廳合併，並保留原有匯出介面相容性。
+- `src/lib/html.mjs` 共用 HTML 文字／屬性編碼與 HTTPS 連結處理；內嵌 JavaScript 使用自己的 JSON 序列化，不混用 HTML 編碼。
+- `src/lib/journey.mjs` 共用行程日期、入住／退房區間與訂票進度，日期解析沿用 `schedule.mjs`。
+
 ## 頁面與離線機制
 
-- 新增頁面時，核對 `build.mjs` 的 `standalonePages`、導覽分組、`htmlCount`，以及 `sw.js` 預快取、搜尋索引、`sitemap.xml` 和 `tests/build.test.mjs` 的頁數斷言。
+- 新增頁面時，在 `src/build/pages.mjs` 註冊渲染，並更新 `src/lib/routes.mjs` 的頁面清單；一般導覽、單檔分組、搜尋索引與建置頁數由這份清單推導。每日頁面由 `trip.js` 的 `days` 推導，城市網址與代碼由 `src/lib/city-guide.mjs` 管理。另核對 `sw.js` 預快取、`sitemap.xml` 和 `tests/build.test.mjs` 的頁數斷言。
 - `renderLayout` 會為適用頁面建立章節索引，頁面樣板不需另外維護同一份目錄。
 - 站台採固定淺色主題；修改介面時保留鍵盤焦點、手機觸控尺寸與減少動態效果設定。
 - `sw.js` 頁面採 network-first，靜態資源採 cache-first，OpenStreetMap 圖磚採 stale-while-revalidate，最多保留 400 塊。離線地圖僅能使用已快取圖磚。

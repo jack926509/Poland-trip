@@ -1,4 +1,5 @@
-import { cityGuides } from './city-dining.mjs';
+import { escapeHtml } from '../lib/html.mjs';
+import { cityGuides } from '../lib/city-guide.mjs';
 
 /**
  * 連鎖速食的三個出口，共用同一份資料（dining.js 的 fastFoodChains／
@@ -11,15 +12,6 @@ import { cityGuides } from './city-dining.mjs';
  * 刻意不寫營業時間（動態資料，全站一律不保存），也不進互動地圖——
  * 那裡的圖釘都逐一查證過座標，速食分店沒有這層查證，改用 Google Maps 連結。
  */
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
 
 function chips(values) {
   return (values || []).map(value => `<span class="tag-muted">${escapeHtml(value)}</span>`).join('');

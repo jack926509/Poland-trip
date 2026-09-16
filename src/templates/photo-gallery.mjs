@@ -1,8 +1,4 @@
-function escape(value) {
-  return String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
-}
-
+import { escapeHtml as escape } from '../lib/html.mjs';
 function externalLink(url, label) {
   try {
     const parsed = new URL(url);

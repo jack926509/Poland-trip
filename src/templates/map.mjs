@@ -1,8 +1,4 @@
-function escapeHtml(value) {
-  return String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
-}
-
+import { escapeHtml } from '../lib/html.mjs';
 export function renderInteractiveMap({ id, title, mapData, mapChecks = {}, legend, note = '' }) {
   const legendHtml = Object.entries(legend).map(([, item]) =>
     `<div><span style="background:${item.fill};border:1.5px solid ${item.line}"></span>${escapeHtml(item.label)}</div>`).join('');

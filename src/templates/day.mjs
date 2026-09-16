@@ -1,7 +1,8 @@
+import { escapeHtml, safeHttpsUrl } from '../lib/html.mjs';
 import { bookingProgress } from '../lib/journey.mjs';
 import { renderDayContext } from './journey.mjs';
 import { dayDining } from '../data/day-dining.js';
-import { cityGuides, cityKeysForDay, detectCity } from './city-dining.mjs';
+import { cityGuides, cityKeysForDay, detectCity } from '../lib/city-guide.mjs';
 import { renderFastFoodDayList } from './fast-food.mjs';
 import { fastFoodBranches, fastFoodChains, fastFoodHubs } from '../data/dining.js';
 import { renderLayout } from './layout.mjs';
@@ -10,24 +11,6 @@ import { renderPhotoGallery } from './photo-gallery.mjs';
 
 function renderList(items, renderItem) {
   return items?.length ? `<ul class="check-list">${items.map(renderItem).join('')}</ul>` : '';
-}
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
-
-function safeHttpsUrl(value) {
-  try {
-    const url = new URL(value);
-    return url.protocol === 'https:' ? escapeHtml(url.href) : null;
-  } catch {
-    return null;
-  }
 }
 
 /**

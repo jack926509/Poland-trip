@@ -1,5 +1,6 @@
+import { escapeHtml } from '../lib/html.mjs';
 import { renderLayout } from './layout.mjs';
-import { cityGuideByName, dayPageForDate } from './city-dining.mjs';
+import { cityGuideByName, dayPageForDate } from '../lib/city-guide.mjs';
 import { renderFastFoodMenu } from './fast-food.mjs';
 
 /**
@@ -24,15 +25,6 @@ import { getTaipeiToday, toComparableDate, todayIn, isOpenTodoStatus, isOpenEntr
 // 呼叫端必須用真名，否則在瀏覽器裡是 ReferenceError（靜態輸出看起來正常，
 // 但每分鐘的重算完全不會執行）。
 import { taipeiToday } from '../lib/schedule.mjs';
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
 
 function serializeForInlineScript(value) {
   return JSON.stringify(value)

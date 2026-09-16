@@ -1,7 +1,7 @@
+import { escapeAttr as esc } from '../lib/html.mjs';
 import { days } from '../data/trip.js';
 import { nightStay, checkoutStay, bookingProgress, dayHref, isDepartureDay } from '../lib/journey.mjs';
-import { cityGuides } from './city-dining.mjs';
-const esc = value => String(value ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
+import { cityGuides } from '../lib/city-guide.mjs';
 
 export function renderJourneyOverview() {
   return `<section class="section" id="journey-overview">
