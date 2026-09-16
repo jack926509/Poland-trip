@@ -66,7 +66,7 @@ export function renderCityFastFood({ branches = [], chains = [], hub = null, cit
   return `
     <section class="section" id="city-fast-food">
       <div class="section-heading"><span class="section-num">Fast food</span><h2>連鎖速食</h2></div>
-      <p class="lead">不做評選，只給趕行程、太晚或不想踩雷時的落腳點。地址優先挑近老城、主廣場或中央車站的分店，離動線遠的已在備註標明；點店名開啟 Google Maps。營業時間本站不保存，出發前與現場以店家頁面為準。</p>
+      <p class="lead">不做評選，只給趕行程、太晚或不想踩雷時的落腳點。地址優先挑近老城、主廣場或中央車站的分店，離動線遠的已在備註標明。連鎖分店不放進上方的互動地圖——那裡的圖釘都是逐一查證過座標的，速食分店沒有這層查證，改為每家直接給 Google Maps 連結（點店名開啟）。營業時間本站不保存，出發前與現場以店家頁面為準。</p>
       ${dayLinks(cityKey)}
       ${renderHubCallout(hub)}
       <div class="table-wrap"><table class="table-editorial fast-food-table">
@@ -106,7 +106,7 @@ export function renderFastFoodMenu({ chains = [], branches = {} }) {
   return `
     <section class="section" id="fast-food">
       <div class="section-heading"><span class="section-num">Fast food</span><h2>連鎖速食招牌</h2></div>
-      <p class="lead">行程趕、太晚或不想踩雷時的落腳點，不做評選。菜單各城相同，這裡只列招牌；分店地址與地圖圖釘在各城市指南裡，和當天動線一起看才有意義。營業時間本站不保存，出發前與現場以店家頁面為準。</p>
+      <p class="lead">行程趕、太晚或不想踩雷時的落腳點，不做評選。菜單各城相同，這裡只列招牌；分店地址在各城市指南裡，和當天動線一起看才有意義。營業時間本站不保存，出發前與現場以店家頁面為準。</p>
       <div class="grid">${chainCards}</div>
       ${cityLinks ? `<p class="action-links">${cityLinks}</p>` : ''}
     </section>`;
