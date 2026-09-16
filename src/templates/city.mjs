@@ -2,7 +2,7 @@ import { renderCityJourney } from './journey.mjs';
 import { mergeCityDining, dropDuplicateClauses, dedupeNotes, dropRestatedHours } from './city-dining.mjs';
 import { renderLayout } from './layout.mjs';
 import { renderPhotoGallery } from './photo-gallery.mjs';
-import { renderCityFastFood } from './fast-food.mjs';
+import { fastFoodDiningEntries } from './fast-food.mjs';
 
 const bookingLabels = {
   must: '建議預約',
@@ -16,12 +16,14 @@ function diningBadge(item) {
   if (item.mustEat) return '<span class="city-dining-choice">順路必吃</span>';
   if (item.role === 'backup') return '<span class="city-dining-role">備案</span>';
   if (item.role === 'snack') return '<span class="city-dining-role">小吃 · 咖啡</span>';
+  if (item.role === 'fastfood') return '<span class="city-dining-role">連鎖速食</span>';
   return '';
 }
 
 const planFallback = {
   backup: '首選訂不到或客滿時的替代',
   snack: '隨時可插進動線的歇腳與銅板價選擇',
+  fastfood: '候選客滿、太晚或趕車時的落腳點',
 };
 
 function renderNotice(notice) {
@@ -68,7 +70,13 @@ export function renderCity({
       <td>${attraction.priceNote}</td>
     </tr>`).join('');
 
-  const mergedDining = mergeCityDining(cityKey, dining, cityFoodForCity?.items || [], snacksAndCafesForCity);
+  // 連鎖速食走同一條合併路徑，排在表的最後一段：它不是推薦，是候選失效時的落腳點。
+  const fastFoodRows = fastFoodDiningEntries({
+    branches: fastFoodForCity,
+    chains: fastFoodChains,
+    hub: fastFoodHubForCity,
+  });
+  const mergedDining = mergeCityDining(cityKey, dining, cityFoodForCity?.items || [], snacksAndCafesForCity, fastFoodRows);
   // 店名本身就是 Google Maps 連結（底線超連結），不再另開一欄放連結。
   const renderDiningName = item => (item.map
     ? `<a class="city-dining-name" href="${item.map}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${item.name} 的 Google Maps">${item.name}</a>`
@@ -79,32 +87,23 @@ export function renderCity({
     <td>${item.notes.length ? dropDuplicateClauses(dedupeNotes(item.notes, item.address).join('；'), item.address) : '依店家當日菜單確認'}</td>
     <td>${item.plans?.length
       ? item.plans.map(plan => `<p class="city-dining-plan">${dropRestatedHours(dropDuplicateClauses(plan, item.notes.join('；')), item.hours)}</p>`).join('')
-      : `<p>${planFallback[item.role] || '依當天動線與胃口安排'}</p>`}<p class="food-map-note">${item.hours ? `營業時間：${item.hours}` : (bookingLabels[item.book] || '營業與訂位請向店家確認')}</p></td>
+      : `<p>${item.positionNote || planFallback[item.role] || '依當天動線與胃口安排'}</p>`}<p class="food-map-note">${item.hours ? `營業時間：${item.hours}` : (bookingLabels[item.book] || '營業與訂位請向店家確認')}</p></td>
   </tr>`;
   const primaryDiningHtml = mergedDining.length ? `
     <section class="section" id="city-dining">
       <div class="section-heading"><span class="section-num">Dining</span><h2>行程餐廳推薦</h2></div>
-      <p class="lead" id="city-dining-description">共 ${mergedDining.length} 家，${mergedDining.filter(item => item.selected || item.mustEat).length} 家已列入每日候選。排序：你的候選與順路必吃置頂並標出日期（點 Day 回當日行程），其次主推、備案，最後是可隨時插入動線的小吃與咖啡廳。</p>
+      <p class="lead" id="city-dining-description">共 ${mergedDining.length} 家，${mergedDining.filter(item => item.selected || item.mustEat).length} 家已列入每日候選。排序：你的候選與順路必吃置頂並標出日期（點 Day 回當日行程），其次主推、備案，接著是可隨時插入動線的小吃與咖啡廳，最後是候選失效時的連鎖速食。</p>
       <p class="lead"><b>點店名開啟 Google Maps。</b>評分與評論數本站不保存——那是每天在變的快照；營業時間同理，出發前與現場以官方頁為準，連鎖與同名店先對門牌。</p>
       <p class="city-dining-scroll-hint">平板可左右滑動看完整欄位，手機自動改為卡片。</p>
       <div class="table-wrap city-dining-table-wrap" role="region" aria-label="行程餐廳推薦列表" tabindex="0">
         <table class="table-editorial city-dining-table" aria-describedby="city-dining-description">
-          <caption>候選、主推、備案與小吃咖啡廳合併後的行程餐廳清單</caption>
+          <caption>候選、主推、備案、小吃咖啡廳與連鎖速食合併後的行程餐廳清單</caption>
           <thead><tr><th scope="col">餐廳／地址</th><th scope="col">類型／評選標記</th><th scope="col">料理特色／推薦餐點</th><th scope="col">行程安排／訂位提醒</th></tr></thead>
           <tbody>${mergedDining.map(renderDiningRow).join('')}</tbody>
         </table>
       </div>
       <p class="action-links"><a href="practical/dining.html">米其林名單與訂位管道 →</a></p>
     </section>` : '';
-
-  // 連鎖速食的版型與餐廳頁共用（fast-food.mjs），城市頁只傳這座城的分店。
-  const fastFoodHtml = renderCityFastFood({
-    branches: fastFoodForCity,
-    chains: fastFoodChains,
-    hub: fastFoodHubForCity,
-    cityName: city.name,
-    cityKey,
-  });
 
   const storyHtml = story ? `
     <section class="section">
@@ -239,7 +238,6 @@ export function renderCity({
     </section>
 
     ${primaryDiningHtml}
-    ${fastFoodHtml}
     ${photoHtml}
     ${mapScript}`;
 

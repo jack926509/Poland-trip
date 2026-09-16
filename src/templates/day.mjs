@@ -2,8 +2,8 @@ import { bookingProgress } from '../lib/journey.mjs';
 import { renderDayContext } from './journey.mjs';
 import { dayDining } from '../data/day-dining.js';
 import { cityGuides, cityKeysForDay, detectCity } from './city-dining.mjs';
-import { renderFastFoodFallback } from './fast-food.mjs';
-import { fastFoodBranches, fastFoodHubs } from '../data/dining.js';
+import { renderFastFoodDayList } from './fast-food.mjs';
+import { fastFoodBranches, fastFoodChains, fastFoodHubs } from '../data/dining.js';
 import { renderLayout } from './layout.mjs';
 import { renderInteractiveMap } from './map.mjs';
 import { renderPhotoGallery } from './photo-gallery.mjs';
@@ -102,8 +102,8 @@ function renderDayFood(day) {
   const guides = guideCities.length ? `<p class="day-food-guides">${guideCities.map(city =>
     `<a href="${cityGuides[city].file}#city-dining">${cityGuides[city].name}城市指南的完整餐廳清單 →</a>`).join('')}</p>` : '';
 
-  // 候選客滿或太晚時的退路：連到當天所在城市的連鎖速食，不在這裡重印店名。
-  const fastFood = renderFastFoodFallback(cityKeysForDay(day), { branches: fastFoodBranches, hubs: fastFoodHubs });
+  // 候選客滿或太晚時的退路：當天所在城市的連鎖速食，預設收合不佔版面。
+  const fastFood = renderFastFoodDayList(cityKeysForDay(day), { branches: fastFoodBranches, chains: fastFoodChains, hubs: fastFoodHubs });
 
   return `<article class="card day-dining" id="day-food" aria-labelledby="day-food-heading">
     <span class="eyebrow">Dining</span><h3 id="day-food-heading">當日餐飲</h3>

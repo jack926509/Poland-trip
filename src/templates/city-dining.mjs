@@ -127,7 +127,7 @@ export function mustEatsFor(cityKey) {
  * 小吃 · 牛奶吧 · 咖啡廳（snacksAndCafes），再疊上每日行程的餐位與順路必吃。
  * 同一家店只留一列，排序為 你的候選 → 順路必吃 → 主推 → 備案 → 小吃 · 咖啡。
  */
-export function mergeCityDining(cityKey, dining = [], primary = [], snacks = []) {
+export function mergeCityDining(cityKey, dining = [], primary = [], snacks = [], fastFood = []) {
   const entries = new Map();
   function add(item) {
     const id = key(item.name);
@@ -149,6 +149,14 @@ export function mergeCityDining(cityKey, dining = [], primary = [], snacks = [])
     add({ ...item, tier: previous?.tier || item.type, role: previous ? previous.role : 'snack' });
   }
 
+  // 連鎖速食排在最後：它不是推薦，是候選都失效時的落腳點。
+  // 走同一條合併路徑的好處是——哪天真的把某家速食排進 day-dining.js，
+  // 它會自動升格成「你的候選」並帶出 Day 連結，不必記得回來改這裡。
+  for (const item of fastFood) {
+    const previous = entries.get(key(item.name));
+    add({ ...item, role: previous ? previous.role : 'fastfood' });
+  }
+
   // 每日排定的餐位：城市表沒有這家店就新增一列，並把 Day 連回該日行程。
   for (const { day, item } of plannedMealsFor(cityKey)) {
     add({ name: item.name, selected: true, address: item.address, map: item.map });
@@ -166,7 +174,7 @@ export function mergeCityDining(cityKey, dining = [], primary = [], snacks = [])
     entry.plans = [...entry.plans, `${dayLink(day, `Day ${day}`)} · 順路必吃${detail ? `：${detail}` : ''}`];
   }
 
-  const order = { backup: 3, snack: 4 };
+  const order = { backup: 3, snack: 4, fastfood: 5 };
   const rank = row => (row.selected ? 0 : row.mustEat ? 1 : order[row.role] ?? 2);
   return [...entries.values()].sort((a, b) => rank(a) - rank(b));
 }

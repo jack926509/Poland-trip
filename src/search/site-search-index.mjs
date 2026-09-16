@@ -160,7 +160,6 @@ function restaurantRecords(data, lookup) {
         detail: compact([item.address, item.note]),
         mapUrl: item.map,
         keywords: ['速食', '連鎖'],
-        anchor: '#city-fast-food',
       });
     }
   }

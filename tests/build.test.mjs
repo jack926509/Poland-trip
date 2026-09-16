@@ -1445,7 +1445,7 @@ test('全站表格的 data-label 對得上實際欄位（含 tbody 的列標題�
 });
 
 test('四個城市頁結構一致：單一 h1、章節齊全、無重複 id 與死錨點', () => {
-  const expected = ['這座城在你的旅程中', '先理解這座城', '城市風景', '互動地圖', '景點清單', '行程餐廳推薦', '連鎖速食', '拍照建議'];
+  const expected = ['這座城在你的旅程中', '先理解這座城', '城市風景', '互動地圖', '景點清單', '行程餐廳推薦', '拍照建議'];
   for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
     const html = read(file);
 
