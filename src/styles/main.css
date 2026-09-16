@@ -5058,25 +5058,6 @@ h3 {
 .fast-food-table thead th:nth-child(1) { width: 19%; }
 .fast-food-table thead th:nth-child(2) { width: 27%; }
 .fast-food-table thead th:nth-child(3) { width: 22%; }
-.fast-food-table-all thead th:nth-child(1) { width: 11%; }
-.fast-food-table-all thead th:nth-child(2) { width: 20%; }
-.fast-food-table-all thead th:nth-child(3) { width: 27%; }
-
-/* 總表的城市欄只在該城第一列印連結，其餘列留白做視覺分組；
-   手機的卡片版每列獨立，必須把城市名顯示回來（見下方 media query）。 */
-.fast-food-city-repeat {
-  color: transparent;
-  font-size: 0.85rem;
-}
-
-/* 每座城的第一列加一條較深的上邊，24 列才看得出是四組而不是一長串 */
-.fast-food-table-all .fast-food-city-start td {
-  border-top: 2px solid var(--line);
-}
-
-.fast-food-table-all td:first-child {
-  white-space: nowrap;
-}
 
 .fast-food-hub {
   margin-bottom: 1.1rem;
@@ -5084,37 +5065,11 @@ h3 {
 
 @media (max-width: 700px) {
   /* 卡片版：每列是獨立的一張卡，城市名與欄寬都要回到正常流 */
-  .fast-food-city-repeat { color: var(--ink-soft); }
   .fast-food-table { table-layout: auto; }
   .fast-food-table caption { display: block; padding: 0 0 0.5rem; }
   .fast-food-table .tag-muted { margin-top: 0.15rem; }
-  .fast-food-table-all td:first-child { white-space: normal; }
   .fast-food-table tbody th { display: block; width: 100%; padding: 0 0 0.5rem; font-size: 1.05rem; }
   .fast-food-table tbody th + td { border-top: 1px solid var(--line); }
-  .fast-food-table-all .fast-food-city-start td { border-top: 0; }
-
-  /* 總表 24 家在手機會變成 24 張「城市／店家／地址／備註」的卡，
-     整節要捲一萬多像素。這張表的四個欄名看內容就知道是什麼，所以只有它改成
-     緊湊排版：欄名不印、欄間不畫線，城市當小標、備註降一級。
-     城市頁那張資訊較密，仍用全站共用的卡片版。 */
-  .fast-food-table-all tbody { gap: 0.55rem; }
-  .fast-food-table-all tr { padding: 0.6rem 0.85rem; }
-  .fast-food-table-all td { padding: 0.08rem 0; }
-  .fast-food-table-all td + td { border-top: 0; }
-  .fast-food-table-all td[data-label]::before { content: none; }
-  .fast-food-table-all td:first-child {
-    color: var(--ink-soft);
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-  }
-  .fast-food-table-all td:last-child {
-    margin-top: 0.15rem;
-    color: var(--ink-soft);
-    font-size: 0.88rem;
-  }
-}
 
 /* 速食與「每日行程 ↔ 城市指南」的互連。
    當日餐飲卡的城市指南連結（.day-food-guides）是同一層級的跨頁出口，

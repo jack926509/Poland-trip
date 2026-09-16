@@ -733,7 +733,6 @@ function buildIntoStaging(stagingRoot) {
     verifiedRestaurantHours: dining.verifiedRestaurantHours,
     fastFoodChains: dining.fastFoodChains,
     fastFoodBranches: dining.fastFoodBranches,
-    fastFoodHubs: dining.fastFoodHubs,
   }));
   writeHtml('practical/tickets.html', renderTickets({
     fares: tickets.fares,

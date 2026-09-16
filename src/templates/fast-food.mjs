@@ -1,9 +1,8 @@
 import { cityGuides, daysInCity } from './city-dining.mjs';
 
 /**
- * 連鎖速食的共用版型。城市指南與實用資料的餐廳頁都要顯示同一批分店，
- * 兩邊各寫一次表格，改欄位時就會有一邊漏改——所以列與卡片都只在這裡產生，
- * 兩頁的差別只有「要不要城市欄」與連結前綴。
+ * 連鎖速食的版型，兩頁分工不同但共用同一份資料：
+ * 餐廳頁只列招牌（菜單各城相同，寫一次），城市指南列該城分店並接上地圖與動線。
  *
  * 這一節刻意不寫營業時間：那是動態資料，全站一律不保存。
  */
@@ -22,32 +21,22 @@ function chips(values) {
 }
 
 /** 店名 → 招牌與標籤。城市頁的表格靠這個把「這家賣什麼」帶到店名旁邊。 */
-export function chainIndex(chains = []) {
+function chainIndex(chains = []) {
   return new Map(chains.map(chain => [chain.name, chain]));
 }
 
 /**
- * 分店列。城市頁看的是「這座城有哪幾家」，總表看的是「哪座城的哪一家」，
- * 差別只有城市欄與招牌欄；其餘共用，避免兩頁的欄序走鐘。
+ * 分店列。店名是該列的標題（手機卡片版的卡名），所以用 th scope="row"：
+ * 卡片上不會多出一行「店家」欄名，也和行程餐廳推薦表的寫法一致。
  *
- * showChain：城市頁沒有招牌卡片，所以要在店名旁帶出類型與前兩道招牌，
- * 否則只看店名不知道 Pasibus、MAX、Salad Story 各賣什麼。餐廳頁的總表上方
- * 就是六張招牌卡，同樣內容再印四次（每城一次）只是把列撐長。
+ * 類型與招牌要跟在店名旁：只看店名不知道 Pasibus、MAX、Salad Story 各賣什麼，
+ * 而完整菜單在餐廳頁，這裡只帶前兩道當判斷依據。
  */
-function branchRow(branch, chain, { cityCell = '', showChain = true, rowClass = '', nameAsRowHeader = false } = {}) {
-  // 招牌只帶前兩項：城市頁要判斷的是「值不值得停」，完整菜單在餐廳頁。
+function branchRow(branch, chain) {
   const teaser = chain?.signature?.slice(0, 2).join('、') || '';
-  const chainCell = showChain
-    ? `<td>${chain ? `<p class="fast-food-kind">${escapeHtml(chain.kind)}</p>${chips(chain.tags)}${teaser ? `<p class="fast-food-teaser">${escapeHtml(teaser)}</p>` : ''}` : '—'}</td>`
-    : '';
-  // 店名在城市頁是該列的標題（手機卡片版的卡名），所以用 th scope="row"：
-  // 這樣卡片上不會多出一行「店家」欄名，也和行程餐廳推薦表的寫法一致。
-  const nameTag = nameAsRowHeader ? 'th scope="row"' : 'td';
-  const nameClose = nameAsRowHeader ? 'th' : 'td';
-  return `<tr${rowClass ? ` class="${rowClass}"` : ''}>
-      ${cityCell}
-      <${nameTag}><a href="${escapeHtml(branch.map)}" target="_blank" rel="noopener noreferrer">${escapeHtml(branch.chain)}</a>${chain?.cn ? `<p class="fast-food-cn">${escapeHtml(chain.cn)}</p>` : ''}</${nameClose}>
-      ${chainCell}
+  return `<tr>
+      <th scope="row"><a href="${escapeHtml(branch.map)}" target="_blank" rel="noopener noreferrer">${escapeHtml(branch.chain)}</a>${chain?.cn ? `<p class="fast-food-cn">${escapeHtml(chain.cn)}</p>` : ''}</th>
+      <td>${chain ? `<p class="fast-food-kind">${escapeHtml(chain.kind)}</p>${chips(chain.tags)}${teaser ? `<p class="fast-food-teaser">${escapeHtml(teaser)}</p>` : ''}` : '—'}</td>
       <td>${escapeHtml(branch.address)}</td>
       <td>${escapeHtml(branch.note)}</td>
     </tr>`;
@@ -73,7 +62,7 @@ function dayLinks(cityKey) {
 export function renderCityFastFood({ branches = [], chains = [], hub = null, cityName = '', cityKey = '' }) {
   if (!branches.length) return '';
   const index = chainIndex(chains);
-  const rows = branches.map(branch => branchRow(branch, index.get(branch.chain), { nameAsRowHeader: true })).join('');
+  const rows = branches.map(branch => branchRow(branch, index.get(branch.chain))).join('');
   return `
     <section class="section" id="city-fast-food">
       <div class="section-heading"><span class="section-num">Fast food</span><h2>連鎖速食</h2></div>
@@ -85,18 +74,19 @@ export function renderCityFastFood({ branches = [], chains = [], hub = null, cit
         <thead><tr><th scope="col">店家</th><th scope="col">類型／招牌</th><th scope="col">分店地址</th><th scope="col">位置備註</th></tr></thead>
         <tbody>${rows}</tbody>
       </table></div>
-      <p class="action-links"><a href="practical/dining.html#fast-food">完整招牌菜單與四城分店總表 →</a></p>
+      <p class="action-links"><a href="practical/dining.html#fast-food">各家完整招牌與餐點說明 →</a></p>
     </section>`;
 }
 
 /**
- * 餐廳頁的一節：招牌推薦（菜單各城相同，只寫一次）＋四城分店總表＋一站吃到多家。
- * 四座城市原本各開一個 h2，整頁被同樣的表頭切成四段；改成單一張帶城市欄的表，
- * 既省掉重複的說明文字，也能直接比較「哪座城有哪幾家」。
+ * 餐廳頁的一節：只列各家招牌。
+ *
+ * 這裡曾經還有一張四城分店總表，但分店是「人在那座城才用得到」的資訊，
+ * 和城市指南的地圖、動線放在一起才有意義；菜單則各城相同，適合只寫一次。
+ * 所以這頁只留招牌，分店與一站多家的提示都歸城市指南，兩邊不重複。
  */
-export function renderPracticalFastFood({ chains = [], branches = {}, hubs = [] }) {
+export function renderFastFoodMenu({ chains = [], branches = {} }) {
   if (!chains.length) return '';
-  const index = chainIndex(chains);
 
   const chainCards = chains.map(chain => `
     <article class="card fast-food-card">
@@ -108,44 +98,17 @@ export function renderPracticalFastFood({ chains = [], branches = {}, hubs = [] 
       <p class="source-meta">${escapeHtml(chain.note)}</p>
     </article>`).join('');
 
-  const rows = Object.entries(branches).flatMap(([cityKey, items]) => {
-    const guide = cityGuides[cityKey];
-    if (!guide) return [];
-    return items.map((branch, position) => branchRow(branch, index.get(branch.chain), {
-      // 同一座城的六列只在第一列印城市名並連回該城指南，其餘留白，
-      // 視覺上自然分組；手機版每列是獨立卡片，所以每列都要帶得出城市。
-      cityCell: `<td data-label="城市">${position === 0
-        ? `<a class="cross-link" href="../${guide.file}#city-fast-food">${escapeHtml(guide.name)} →</a>`
-        : `<span class="fast-food-city-repeat">${escapeHtml(guide.name)}</span>`}</td>`,
-      showChain: false,
-      rowClass: position === 0 ? 'fast-food-city-start' : '',
-    }));
-  }).join('');
-
-  const hubCards = hubs.map(hub => `
-    <article class="card">
-      <span class="eyebrow">${escapeHtml(hub.city)}</span>
-      <h3><a href="${escapeHtml(hub.map)}" target="_blank" rel="noopener noreferrer">${escapeHtml(hub.place)} ↗</a></h3>
-      <p>${escapeHtml(hub.address)}</p>
-      <p class="fast-food-chips">${chips(hub.chains)}</p>
-    </article>`).join('');
+  const cityLinks = Object.entries(cityGuides)
+    .filter(([cityKey]) => (branches[cityKey] || []).length)
+    .map(([cityKey, guide]) => `<a href="../${guide.file}#city-fast-food">${escapeHtml(guide.name)} ${branches[cityKey].length} 家 →</a>`)
+    .join('');
 
   return `
     <section class="section" id="fast-food">
-      <div class="section-heading"><span class="section-num">Fast food</span><h2>連鎖速食</h2></div>
-      <p class="lead">行程趕、太晚或不想踩雷時的落腳點，不做評選。菜單各城相同，所以招牌只列一次；分店地址優先挑近老城、主廣場或中央車站者。營業時間本站不保存，出發前與現場以店家頁面為準。</p>
+      <div class="section-heading"><span class="section-num">Fast food</span><h2>連鎖速食招牌</h2></div>
+      <p class="lead">行程趕、太晚或不想踩雷時的落腳點，不做評選。菜單各城相同，這裡只列招牌；分店地址與地圖圖釘在各城市指南裡，和當天動線一起看才有意義。營業時間本站不保存，出發前與現場以店家頁面為準。</p>
       <div class="grid">${chainCards}</div>
-      <h3 id="fast-food-branches">四城分店總表</h3>
-      <p>共 ${Object.values(branches).flat().length} 家。各家招牌見上方卡片，這裡只列地址；點店名開啟 Google Maps，點城市回該城指南看地圖與鄰近景點。</p>
-      <div class="table-wrap"><table class="table-editorial fast-food-table fast-food-table-all">
-        <caption>四座城市的連鎖速食分店地址</caption>
-        <thead><tr><th scope="col">城市</th><th scope="col">店家</th><th scope="col">分店地址</th><th scope="col">位置備註</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table></div>
-      ${hubCards ? `
-      <h3>一站吃到多家</h3>
-      <p>同行人想吃的不一樣、或只剩半小時吃飯時，直接去這幾棟，不必為了選店多走一趟。</p>
-      <div class="grid">${hubCards}</div>` : ''}
+      ${cityLinks ? `<p class="action-links">${cityLinks}</p>` : ''}
     </section>`;
 }
 
