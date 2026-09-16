@@ -81,7 +81,7 @@ function createRecord({ id, type, title, meta = '', summary = '', href, mapUrl =
 function restaurantRecords(data, lookup) {
   const restaurants = new Map();
 
-  function add({ cityRef, name, detail, mapUrl = '', keywords = [] }) {
+  function add({ cityRef, name, detail, mapUrl = '', keywords = [], anchor = '#city-dining' }) {
     const city = lookup.get(cityRef);
     if (!city || !name) return;
     const key = `${city.key}|${canonicalName(name)}`;
@@ -99,7 +99,7 @@ function restaurantRecords(data, lookup) {
       title: name,
       meta: city.name,
       summary: detail,
-      href: `${city.file}#city-dining`,
+      href: `${city.file}${anchor}`,
       mapUrl: mapUrl || googleMapsSearch(name, city.name),
       keywords: [city.pl, keywords],
     }));
@@ -147,6 +147,20 @@ function restaurantRecords(data, lookup) {
         detail: compact([item.type, item.note, item.hours]),
         mapUrl: item.map,
         keywords: [item.type, '小吃', '咖啡廳', '牛奶吧'],
+      });
+    }
+  }
+
+  // 連鎖速食：名稱各城相同，加上城市後才是唯一鍵，所以與其他餐廳共用 add()。
+  for (const [mapKey, items] of Object.entries(data.fastFoodBranches || {})) {
+    for (const item of items) {
+      add({
+        cityRef: mapKey,
+        name: item.chain,
+        detail: compact([item.address, item.note]),
+        mapUrl: item.map,
+        keywords: ['速食', '連鎖'],
+        anchor: '#city-fast-food',
       });
     }
   }

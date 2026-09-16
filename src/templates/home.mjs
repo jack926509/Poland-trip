@@ -169,7 +169,7 @@ ${coverFigure}
       <div class="section-heading"><span class="section-num">05 / Appendix</span><h2>旅行附錄</h2></div>
       <div class="journal-toolkit">
         <a class="card card-link" href="practical/booking.html"><h3>訂票與交通</h3><p>航班、火車、住宿與分級訂票清單。</p><span>查看 →</span></a>
-        <a class="card card-link" href="practical/dining.html"><h3>米其林與餐廳</h3><p>2026 星級、必比登、訂位管道與預算。</p><span>查看 →</span></a>
+        <a class="card card-link" href="practical/dining.html"><h3>餐廳與速食</h3><p>2026 星級、必比登、訂位管道與預算，以及四城連鎖速食分店。</p><span>查看 →</span></a>
         <a class="card card-link" href="practical/tickets.html"><h3>門票速查</h3><p>21 個景點全票、優待與官網。</p><span>查看 →</span></a>
         <a class="card card-link" href="practical/transit.html"><h3>市內交通</h3><p>四城票價、機場接駁與購票方式。</p><span>查看 →</span></a>
         <a class="card card-link" href="practical/shopping.html"><h3>伴手禮與購物</h3><p>14 種伴手禮、實際店家與 Żabka。</p><span>查看 →</span></a>

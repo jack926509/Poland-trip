@@ -725,3 +725,118 @@ export const foods = [
     "desc": "比亞沃韋札森林野牛草浸泡，每瓶都有真草。經典喝法 Tatanka：配蘋果汁。"
   }
 ];
+
+// 2026-09-16 新增：連鎖速食店。
+// 用途與上面的餐廳清單不同——這裡不做評選，只解決「趕行程、太晚、不想踩雷」時的落腳點。
+// 菜單各城相同，所以招牌推薦（fastFoodChains）只寫一次，分店地址（fastFoodBranches）按城市列；
+// 地址優先挑近老城／主廣場／中央車站的分店，離動線遠的會在 note 標明。
+// 營業時間屬動態資料，一律不寫死，出發前與現場以店家頁面為準。
+const chainMap = query => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+
+export const fastFoodChains = [
+  {
+    name: 'KFC',
+    cn: '肯德基',
+    kind: '炸雞',
+    signature: 'Zinger 香辣雞腿堡、Twister／iTwist 墨西哥捲、Kubełek 全家桶、Hot Wings 辣雞翅、Strips 雞柳條',
+    note: '波蘭 KFC 的沾醬選擇比台灣多，主打炸雞配醬路線。',
+  },
+  {
+    name: "McDonald's",
+    cn: '麥當勞',
+    kind: '漢堡',
+    signature: 'WieśMac（鄉村堡，波蘭限定，酸黃瓜配特製醬）、McRoyal、季節限定 zakręcone frytki 螺旋薯條',
+    note: '冬季限定的 Burger Drwala（伐木工堡）歷年多在 11 月中下旬才上市（2022 年 11/23、2023 年 11/8、2024 年 11/20、2025 年 11/19）；本行程 11/01 離境，剛好錯過，不必特地等。',
+  },
+  {
+    name: 'Pasibus',
+    cn: '波蘭本土漢堡',
+    kind: '漢堡',
+    signature: 'Gonzalez（微辣）、Chorizard、Bebek Junior、Awokodus（酪梨）、Triple Smash、松露 smash',
+    note: '源自樂斯拉夫的波蘭品牌。可配 frytki z batata 地瓜薯條、chicken pops；素食點 Standard Vegan，牛肉排可免費換蔬菜排。',
+  },
+  {
+    name: 'MAX Premium Burgers',
+    cn: '瑞典連鎖',
+    kind: '漢堡',
+    signature: 'Frisco Burger、Rywala Bacon、Rywal Umami；sweet potato fries、onion rings、奶昔',
+    note: '定位在「高價速食」，主打氣候友善與植物肉餐點；綠蒜醬與奶昔評價最高。',
+  },
+  {
+    name: 'Berlin Döner Kebap',
+    cn: '土耳其式旋轉烤肉',
+    kind: '烤肉捲',
+    signature: 'Döner kebab、kebab box、American wrap；雞肉與綜合肉都可選',
+    note: '平價選項，適合當宵夜或轉場之間的一餐。',
+  },
+  {
+    name: 'Salad Story',
+    cn: '沙拉連鎖',
+    kind: '沙拉 · 素食友善',
+    signature: '招牌沙拉（芒果豆腐、酪梨雞肉、素食 teriyaki）、poke bowls、warm bowls、wraps',
+    note: '湯品有 barszcz 甜菜根湯與泰式咖哩；菜單標示素食／純素與營養成分，連日肉食後的平衡選項。',
+  },
+];
+
+export const fastFoodBranches = {
+  warsaw: [
+    {chain: 'KFC', address: 'Złota 59', note: 'Złote Tarasy 購物中心，中央車站旁', map: chainMap('KFC Złote Tarasy, Złota 59, Warszawa')},
+    {chain: "McDonald's", address: 'Świętokrzyska 35', note: '市中心，近地鐵 Świętokrzyska 站', map: chainMap("McDonald's Świętokrzyska 35, Warszawa")},
+    {chain: 'Pasibus', address: 'Hoża 29/31 ／ Złota 59', note: 'Hoża 是評價較高的一家，週五六營業到午夜；Złota 59 在 Złote Tarasy', map: chainMap('Pasibus Hoża 29/31, Warszawa')},
+    {chain: 'MAX Premium Burgers', address: 'Złota 59', note: 'Złote Tarasy', map: chainMap('MAX Premium Burgers Złote Tarasy, Złota 59, Warszawa')},
+    {chain: 'Berlin Döner Kebap', address: 'Złota 59', note: 'Złote Tarasy', map: chainMap('Berlin Döner Kebap Złote Tarasy, Złota 59, Warszawa')},
+    {chain: 'Salad Story', address: 'Chmielna 73 ／ Złota 59', note: 'Chmielna 73 在 Varso（中央車站旁）；Złota 59 在 Złote Tarasy', map: chainMap('Salad Story Varso, Chmielna 73, Warszawa')},
+  ],
+  krakow: [
+    {chain: 'KFC', address: 'Floriańska 33', note: '老城 Floriańska 街，中央市集廣場旁', map: chainMap('KFC Floriańska 33, Kraków')},
+    {chain: "McDonald's", address: 'Szewska 2', note: '中央市集廣場旁，地下室座位區是舊地窖', map: chainMap("McDonald's Szewska 2, Kraków")},
+    {chain: 'Pasibus', address: 'Pawia 5', note: 'Galeria Krakowska，中央車站旁', map: chainMap('Pasibus Galeria Krakowska, Pawia 5, Kraków')},
+    {chain: 'MAX Premium Burgers', address: 'Nowohucka 54', note: '離市中心較遠（Bonarka 方向），老城區內沒有據點', map: chainMap('MAX Premium Burgers Nowohucka 54, Kraków')},
+    {chain: 'Berlin Döner Kebap', address: 'Pawia 5 ／ Podgórska 34', note: 'Galeria Krakowska（車站）／Galeria Kazimierz', map: chainMap('Berlin Döner Kebap Galeria Krakowska, Pawia 5, Kraków')},
+    {chain: 'Salad Story', address: 'Pawia 5 ／ Podgórska 34', note: 'Galeria Krakowska（車站）／Galeria Kazimierz', map: chainMap('Salad Story Galeria Krakowska, Pawia 5, Kraków')},
+  ],
+  wroclaw: [
+    {chain: 'KFC', address: 'Świdnicka 13', note: '老城中心', map: chainMap('KFC Świdnicka 13, Wrocław')},
+    {chain: "McDonald's", address: 'Rynek 30', note: '直接開在中央廣場上', map: chainMap("McDonald's Rynek 30, Wrocław")},
+    {chain: 'Pasibus', address: 'Świdnicka 11 ／ Sucha 1', note: 'Świdnicka 是老城旗艦店，營業到凌晨 1–3 點；Sucha 1 在 Wroclavia（中央車站）', map: chainMap('Pasibus Świdnicka 11, Wrocław')},
+    {chain: 'MAX Premium Burgers', address: 'plac Dominikański 3 ／ Sucha 1', note: 'Galeria Dominikańska（市中心，營業到深夜）／Wroclavia（車站）', map: chainMap('MAX Premium Burgers Galeria Dominikańska, plac Dominikański 3, Wrocław')},
+    {chain: 'Berlin Döner Kebap', address: 'Plac Grunwaldzki 22', note: 'Pasaż Grunwaldzki，大學區，離老城稍遠；市內僅此一家', map: chainMap('Berlin Döner Kebap Pasaż Grunwaldzki, Plac Grunwaldzki 22, Wrocław')},
+    {chain: 'Salad Story', address: 'Sucha 1', note: 'Wroclavia，中央車站旁', map: chainMap('Salad Story Wroclavia, Sucha 1, Wrocław')},
+  ],
+  poznan: [
+    {chain: 'KFC', address: 'Półwiejska 42', note: 'Stary Browar，近老城', map: chainMap('KFC Stary Browar, Półwiejska 42, Poznań')},
+    {chain: "McDonald's", address: 'Stary Rynek 87', note: '舊城市集廣場上；此點公開資料較少，市內另有多家分店', map: chainMap("McDonald's Stary Rynek, Poznań")},
+    {chain: 'Pasibus', address: 'Święty Marcin 58/64 ／ Matyi 2', note: '市中心主街／Avenida（中央車站旁）', map: chainMap('Pasibus Święty Marcin 58/64, Poznań')},
+    {chain: 'MAX Premium Burgers', address: 'Hetmańska 82a', note: '市中心南側，不在老城範圍', map: chainMap('MAX Premium Burgers Hetmańska 82a, Poznań')},
+    {chain: 'Berlin Döner Kebap', address: 'Bukowska 156 ／ Drużbickiego 2', note: 'King Cross Marcelin／C.H. Plaza，兩處都離老城較遠', map: chainMap('Berlin Döner Kebap King Cross Marcelin, Bukowska 156, Poznań')},
+    {chain: 'Salad Story', address: 'Półwiejska 42 ／ Matyi 2', note: 'Stary Browar（近老城）／Avenida（車站旁）', map: chainMap('Salad Story Stary Browar, Półwiejska 42, Poznań')},
+  ],
+};
+
+// 趕行程時的一站解法：同一棟樓裡有多家，不必為了選店多走一趟。
+export const fastFoodHubs = [
+  {
+    cityKey: 'warsaw',
+    city: '華沙',
+    place: 'Złote Tarasy',
+    address: 'Złota 59（中央車站旁）',
+    chains: ['KFC', 'Pasibus', 'MAX Premium Burgers', 'Berlin Döner Kebap', 'Salad Story'],
+    map: chainMap('Złote Tarasy, Złota 59, Warszawa'),
+  },
+  {
+    cityKey: 'krakow',
+    city: '克拉科夫',
+    place: 'Galeria Krakowska',
+    address: 'Pawia 5（中央車站旁）',
+    chains: ['Pasibus', 'Berlin Döner Kebap', 'Salad Story'],
+    map: chainMap('Galeria Krakowska, Pawia 5, Kraków'),
+  },
+  {
+    cityKey: 'wroclaw',
+    city: '樂斯拉夫',
+    place: 'Wroclavia',
+    address: 'Sucha 1（中央車站旁）',
+    chains: ['Pasibus', 'MAX Premium Burgers', 'Salad Story'],
+    map: chainMap('Wroclavia, Sucha 1, Wrocław'),
+  },
+];

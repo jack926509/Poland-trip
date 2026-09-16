@@ -6,6 +6,7 @@ import { days } from '../src/data/trip.js';
 import {
   cityDining, cityFood, michelinReservations,
   verifiedRestaurantHours, snacksAndCafes,
+  fastFoodChains, fastFoodBranches, fastFoodHubs,
 } from '../src/data/dining.js';
 import { dayDining } from '../src/data/day-dining.js';
 import { fares } from '../src/data/tickets.js';
@@ -144,4 +145,32 @@ test('訂票頁的 Auschwitz 巴士區塊完整反映官方售票頁查得的資
   assert.ok(html.includes('Auschwitz 往返巴士'), '訂票頁缺 Auschwitz 巴士區塊');
   assert.ok(html.includes('Departure from'), '訂票頁缺可照填的查詢欄位');
   assert.ok(html.includes('這一天的錨點'), '訂票頁未把已訂場次放進巴士區塊');
+});
+
+test('連鎖速食分店有店家、地址、位置備註與定位連結', () => {
+  const chainNames = new Set(fastFoodChains.map(chain => chain.name));
+  assert.deepEqual(Object.keys(fastFoodBranches), ['warsaw', 'krakow', 'wroclaw', 'poznan']);
+  for (const [city, branches] of Object.entries(fastFoodBranches)) {
+    assert.ok(branches.length, `${city} 沒有任何速食分店`);
+    for (const branch of branches) {
+      for (const field of ['chain', 'address', 'note']) {
+        assert.ok(branch[field]?.trim(), `${city}「${branch.chain || '(未命名)'}」缺 ${field}`);
+      }
+      // 招牌推薦只寫一次，分店表只列地址；店名對不上就代表有一邊漏改。
+      assert.ok(chainNames.has(branch.chain), `${city}「${branch.chain}」不在 fastFoodChains 名單內`);
+      assert.ok(isMapUrl(branch.map), `${city}「${branch.chain}」缺定位`);
+    }
+  }
+});
+
+test('一站吃到多家的城市與店家都對得上分店表', () => {
+  for (const hub of fastFoodHubs) {
+    const branches = fastFoodBranches[hub.cityKey];
+    assert.ok(branches, `${hub.place} 的 cityKey「${hub.cityKey}」不存在`);
+    assert.ok(isMapUrl(hub.map), `${hub.place} 缺定位`);
+    for (const chain of hub.chains) {
+      assert.ok(branches.some(branch => branch.chain === chain),
+        `${hub.place} 列了 ${chain}，但 ${hub.cityKey} 分店表沒有這家`);
+    }
+  }
 });

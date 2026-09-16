@@ -1,5 +1,5 @@
 import { renderLayout } from './layout.mjs';
-import { cityGuideByName, dayPageForDate } from './city-dining.mjs';
+import { cityGuideByName, cityGuides, dayPageForDate } from './city-dining.mjs';
 
 /**
  * 實用資料原本與每日行程、城市指南完全沒有內容連結（只靠導覽選單）。
@@ -309,7 +309,62 @@ export function renderTodos({ todoGroups }) {
   return renderPracticalLayout('待辦事項', 'Action list', '城際交通、景點、餐飲與雨天備案集中在一頁。先處理有日期與指定場次的票，再處理彈性訂位。', content, 'practical/todos.html');
 }
 
-export function renderDining({ michelinSummary, michelinReservations, verifiedRestaurantHours = [] }) {
+/**
+ * 連鎖速食：菜單各城相同，所以招牌推薦只寫一次；分店地址按城市各一張表。
+ * 這一節不做評選，只解決「趕行程、太晚、不想踩雷」時要去哪的問題，
+ * 因此不寫營業時間（動態資料），只標出離老城／車站的相對位置。
+ */
+export function renderFastFoodSections({ fastFoodChains = [], fastFoodBranches = {}, fastFoodHubs = [] }) {
+  if (!fastFoodChains.length) return '';
+  const chainCards = fastFoodChains.map(chain => `
+    <article class="card">
+      <span class="eyebrow">${escapeHtml(chain.cn)} · ${escapeHtml(chain.kind)}</span>
+      <h3>${escapeHtml(chain.name)}</h3>
+      <p><b>招牌：</b>${escapeHtml(chain.signature)}</p>
+      <p>${escapeHtml(chain.note)}</p>
+    </article>`).join('');
+
+  const branchTables = Object.entries(fastFoodBranches).map(([cityKey, branches]) => {
+    const guide = cityGuides[cityKey];
+    if (!guide || !branches.length) return '';
+    const rows = branches.map(branch => `
+      <tr>
+        <td data-label="店家"><a href="${escapeHtml(branch.map)}" target="_blank" rel="noopener"><b>${escapeHtml(branch.chain)}</b></a></td>
+        <td data-label="地址">${escapeHtml(branch.address)}</td>
+        <td data-label="位置備註">${escapeHtml(branch.note)}</td>
+      </tr>`).join('');
+    return `
+      <section class="section">
+        <div class="section-heading"><span class="section-num">${escapeHtml(guide.name)}</span><h2>${escapeHtml(guide.name)}連鎖速食分店</h2></div>
+        <div class="table-wrap"><table class="table-editorial"><thead><tr><th>店家</th><th>地址</th><th>位置備註</th></tr></thead><tbody>${rows}</tbody></table></div>
+        <p class="action-links"><a class="cross-link" href="../${guide.file}#city-fast-food">${escapeHtml(guide.name)}指南 →</a></p>
+      </section>`;
+  }).join('');
+
+  const hubCards = fastFoodHubs.map(hub => `
+    <article class="card">
+      <span class="eyebrow">${escapeHtml(hub.city)}</span>
+      <h3><a href="${escapeHtml(hub.map)}" target="_blank" rel="noopener">${escapeHtml(hub.place)} ↗</a></h3>
+      <p>${escapeHtml(hub.address)}</p>
+      <p><b>同一棟 ${hub.chains.length} 家：</b>${hub.chains.map(escapeHtml).join(' · ')}</p>
+    </article>`).join('');
+
+  return `
+    <section class="section" id="fast-food">
+      <div class="section-heading"><span class="section-num">Fast food</span><h2>連鎖速食招牌推薦</h2></div>
+      <p>菜單各城相同，所以招牌只列一次；下面四張表才按城市列分店地址。營業時間本站不保存，出發前與現場以店家頁面為準。</p>
+      <div class="grid">${chainCards}</div>
+    </section>
+    ${branchTables}
+    ${hubCards ? `
+    <section class="section">
+      <div class="section-heading"><span class="section-num">One stop</span><h2>一站吃到多家</h2></div>
+      <p>趕行程或同行人想吃的不一樣時，直接去這幾棟，不必為了選店多走一趟。</p>
+      <div class="grid">${hubCards}</div>
+    </section>` : ''}`;
+}
+
+export function renderDining({ michelinSummary, michelinReservations, verifiedRestaurantHours = [], fastFoodChains = [], fastFoodBranches = {}, fastFoodHubs = [] }) {
   const summaryRows = michelinSummary.map(item => `
     <tr>
       <td><b>${item.city}</b></td><td class="number">${item.stars}</td>
@@ -333,8 +388,9 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
     <section class="section">
       <div class="section-heading"><span class="section-num">Reserve</span><h2>訂位與每人預算</h2></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>餐廳</th><th>每人 PLN</th><th>訂位管道／備註</th></tr></thead><tbody>${reservationRows}</tbody></table></div>
-    </section>`;
-  return renderPracticalLayout('米其林與餐廳', 'Michelin 2026', '已把 2026 米其林名單與本行程實際餐廳分開；營業時間只寫能追到店家來源的分店。', content, 'practical/dining.html');
+    </section>
+    ${renderFastFoodSections({ fastFoodChains, fastFoodBranches, fastFoodHubs })}`;
+  return renderPracticalLayout('餐廳與速食', 'Michelin 2026', '已把 2026 米其林名單與本行程實際餐廳分開；營業時間只寫能追到店家來源的分店。趕行程時的連鎖速食分店另列一節。', content, 'practical/dining.html');
 }
 
 export function renderTickets({ fares, ticketsByCity, notices = [] }) {
