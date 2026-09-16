@@ -36,13 +36,14 @@ python3 -m http.server 8000 --directory dist
 | --- | --- |
 | 行程、住宿、火車與訂票待辦 | `src/data/trip.js` |
 | 每日餐廳、城市餐飲資料 | `src/data/day-dining.js`、`src/data/dining.js` |
-| 城市、地圖與照片資料 | `src/data/cities.js`、`src/data/city-gallery.js` |
+| 城市、地圖與照片資料 | `src/data/cities.js`、`src/data/day-maps.js`、`src/data/city-gallery.js` |
 | 門票、交通、伴手禮與實用資訊 | `src/data/tickets.js`、`transit.js`、`shopping.js`、`essentials.js` |
 | 自由行資料庫 | `src/data/travel-database.js` |
 | 頁面版型與共用元件 | `src/templates/` |
 | 樣式與瀏覽器互動 | `src/styles/`、`src/scripts/` |
-| 時間邏輯與搜尋索引 | `src/lib/`、`src/search/` |
-| 建置、離線快取與驗收 | `build.mjs`、`sw.js`、`tests/`、`tools/` |
+| 共用城市／頁面對照、日期與文字處理 | `src/lib/` |
+| 全站搜尋索引 | `src/search/` |
+| 建置、離線快取與驗收 | `build.mjs`、`src/build/`、`sw.js`、`tests/`、`tools/` |
 
 **請修改來源檔，不要直接編輯 `dist/` 或單檔版；下次建置會覆蓋它們。**
 

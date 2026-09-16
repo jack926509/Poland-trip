@@ -1,42 +1,11 @@
+import { escapeAttr } from '../lib/html.mjs';
+import { CITY_LINKS, DAY_LINKS, PRACTICAL_LINKS } from '../lib/routes.mjs';
 function current(activeNav, key) {
   return activeNav === key ? ' aria-current="page"' : '';
 }
 
 function currentGroup(activeNav, key) {
   return activeNav === key ? ' aria-current="true"' : '';
-}
-
-const CITY_LINKS = [
-  ['city-warszawa.html', '華沙 Warszawa'],
-  ['city-krakow.html', '克拉科夫 Kraków'],
-  ['city-wroclaw.html', '樂斯拉夫 Wrocław'],
-  ['city-poznan.html', '波茲南 Poznań'],
-];
-
-const PRACTICAL_LINKS = [
-  ['practical/todos.html', '待辦事項'],
-  ['practical/booking.html', '訂票與交通'],
-  ['practical/dining.html', '餐廳與速食'],
-  ['practical/tickets.html', '門票速查'],
-  ['practical/transit.html', '市內交通'],
-  ['practical/shopping.html', '伴手禮與購物'],
-  ['practical/essentials.html', '安全與基本須知'],
-  ['practical/notes.html', '行前提醒'],
-  ['practical/ops-dashboard.html', '資料更新儀表板'],
-  ['practical/database.html', '自由行資料庫'],
-];
-
-const DAY_LINKS = Array.from({ length: 8 }, (_, index) => {
-  const day = index + 1;
-  return [`day-${String(day).padStart(2, '0')}.html`, `Day ${day}`];
-});
-
-function escapeAttr(value) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;');
 }
 
 function buildChapterIndex(bodyHtml) {

@@ -1,3 +1,4 @@
+import { escapeHtml, safeHttpsUrl } from '../lib/html.mjs';
 import { renderLayout } from './layout.mjs';
 
 const displaySectionLabels = {
@@ -32,24 +33,6 @@ const citySearchAliases = {
   ROUTE: 'route multi-city',
 };
 const cityFilterOrder = ['WAW', 'KRK', 'WRO', 'POZ', 'PL', 'ROUTE'];
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
-}
-
-function safeHttpsUrl(value) {
-  try {
-    const url = new URL(value);
-    return url.protocol === 'https:' ? escapeHtml(url.href) : null;
-  } catch {
-    return null;
-  }
-}
 
 function formatDate(value) {
   return escapeHtml(value || '未設定');

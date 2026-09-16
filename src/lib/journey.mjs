@@ -1,13 +1,12 @@
+import { dayIsoDate } from './schedule.mjs';
 import { meta, stay, flights } from '../data/trip.js';
 
 // 依住宿日期推導過夜城市；跨城日不能拿白天城市代替住宿城市。
 export function dayDate(day) {
-  const [month, date] = day.date.split(' ')[0].split('/');
-  return `${meta.tripStart.slice(0, 4)}-${month.padStart(2, '0')}-${date.padStart(2, '0')}`;
+  return dayIsoDate(day.date, meta.tripStart);
 }
 export function nightStay(day) {
-  const date = dayDate(day);
-  return stay.find(item => item.checkIn <= date && date < item.checkOut) || null;
+  return stayForDate(stay, dayDate(day));
 }
 export function checkoutStay(day) {
   return stay.find(item => item.checkOut === dayDate(day)) || null;
@@ -33,4 +32,9 @@ export function departureIso() {
 }
 export function isDepartureDay(day) {
   return dayDate(day) === departureIso();
+}
+
+/** 入住日包含、退房日不包含；查不到不推定已離境。 */
+export function stayForDate(stays, iso) {
+  return stays.find(item => item.checkIn <= iso && iso < item.checkOut) || null;
 }
