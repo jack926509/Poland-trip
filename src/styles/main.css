@@ -4984,3 +4984,99 @@ h3 {
 .sights-table th:nth-child(1) { width: 26%; }
 .sights-table th:nth-child(2) { width: 10%; }
 .sights-table th:nth-child(3) { width: 64%; }
+
+/* ── 連鎖速食 ────────────────────────────────────────────────
+   這一節的用途是「現在要落腳，去哪」，所以掃視速度優先於資訊密度：
+   類型與標籤用既有的 .tag-muted 字形，招牌只帶一行提示，
+   不另外發明一組顏色，避免和米其林評選標記搶注意力。 */
+.fast-food-cn {
+  margin: 0.15rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.fast-food-card .fast-food-cn {
+  margin-top: -0.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.fast-food-chips {
+  margin: 0 0 0.6rem;
+}
+
+.fast-food-card .check-list {
+  margin: 0.2rem 0 0;
+}
+
+/* 卡片裡的招牌是條列，一道一行就夠，不需要段落間距 */
+.fast-food-card .check-list li {
+  margin-bottom: 0.25rem;
+}
+
+.fast-food-card .source-meta {
+  margin-top: 0.9rem;
+  padding-top: 0.6rem;
+}
+
+/* 速食在每日行程與今日速查裡是收合的一段：平常不佔版面，
+   真的要找落腳點時一次看到店名、類型與地址。
+   摘要行沿用當日餐飲卡既有的 details 樣式，不另立一套視覺。 */
+.day-food-fastfood,
+.today-fastfood {
+  margin-top: 0.9rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.9rem;
+}
+
+.day-food-fastfood > summary,
+.today-fastfood > summary {
+  color: var(--accent-dark);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.fast-food-fallback-city + .fast-food-fallback-city {
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px dashed var(--line);
+}
+
+.fast-food-fallback-city-name {
+  margin: 0.7rem 0 0.2rem;
+}
+
+.fast-food-fallback-hub {
+  margin: 0.2rem 0;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+
+.fast-food-fallback-list {
+  margin: 0.4rem 0;
+  padding-left: 1.1rem;
+}
+
+.fast-food-fallback-list li {
+  margin-bottom: 0.3rem;
+}
+
+/* 類型與地址是同一行的次要資訊，降一級並留出間距，店名才站得出來 */
+.fast-food-kind-inline,
+.fast-food-address {
+  margin-left: 0.45rem;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+
+.fast-food-kind-inline {
+  font-family: var(--font-mono);
+}
+
+/* 觸控裝置才需要 44px 命中區；滑鼠游標下這些只是清單連結，撐高反而佔版面 */
+@media (any-pointer: coarse) {
+  .fast-food-fallback-list a { display: inline-flex; align-items: center; min-height: 44px; }
+}

@@ -16,7 +16,7 @@ const CITY_LINKS = [
 const PRACTICAL_LINKS = [
   ['practical/todos.html', '待辦事項'],
   ['practical/booking.html', '訂票與交通'],
-  ['practical/dining.html', '米其林與餐廳'],
+  ['practical/dining.html', '餐廳與速食'],
   ['practical/tickets.html', '門票速查'],
   ['practical/transit.html', '市內交通'],
   ['practical/shopping.html', '伴手禮與購物'],

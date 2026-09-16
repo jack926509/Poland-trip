@@ -617,6 +617,7 @@ function buildSearchRecords() {
     cityFood: dining.cityFood,
     verifiedRestaurantHours: dining.verifiedRestaurantHours,
     snacksAndCafes: dining.snacksAndCafes,
+    fastFoodBranches: dining.fastFoodBranches,
   });
   const pageRecords = buildPageSearchRecords(standalonePages.map(([relativePath, title]) => ({
     relativePath,
@@ -703,6 +704,9 @@ function buildIntoStaging(stagingRoot) {
       cityFoodForCity: dining.cityFood.find(group => group.city === city.name),
       snacksAndCafesForCity: dining.snacksAndCafes[mapKey] || [],
       photoSpotsForCity: cities.photoSpots.filter(spot => spot.cityKey === key),
+      fastFoodForCity: dining.fastFoodBranches[mapKey] || [],
+      fastFoodHubForCity: dining.fastFoodHubs.find(hub => hub.cityKey === mapKey) || null,
+      fastFoodChains: dining.fastFoodChains,
       story: cities.cityStories.find(item => item.city === city.name),
       notices: cities.cityNotices[mapKey],
     }));
@@ -727,6 +731,8 @@ function buildIntoStaging(stagingRoot) {
     michelinSummary: dining.michelinSummary,
     michelinReservations: dining.michelinReservations,
     verifiedRestaurantHours: dining.verifiedRestaurantHours,
+    fastFoodChains: dining.fastFoodChains,
+    fastFoodBranches: dining.fastFoodBranches,
   }));
   writeHtml('practical/tickets.html', renderTickets({
     fares: tickets.fares,

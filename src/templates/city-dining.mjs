@@ -31,6 +31,23 @@ export function dayPageForDate(date, prefix = '') {
 }
 
 /**
+ * 這座城在行程裡的哪幾天。day.city 寫成「克拉科夫 → 樂斯拉夫」這種跨城字串，
+ * 含城市名就算，所以跨城日會同時屬於兩座城——和 day.mjs 既有的判斷方式一致。
+ */
+export function daysInCity(cityKey) {
+  const name = cityGuides[cityKey]?.name;
+  if (!name) return [];
+  return days.filter(day => day.city.includes(name)).map(day => day.n);
+}
+
+/** 這一天會待在哪幾座城，依當天的移動方向排（day.city 的字面順序）。 */
+export function cityKeysForDay(day) {
+  return Object.keys(cityGuides)
+    .filter(key => day.city.includes(cityGuides[key].name))
+    .sort((a, b) => day.city.indexOf(cityGuides[a].name) - day.city.indexOf(cityGuides[b].name));
+}
+
+/**
  * 從門牌或 Google Maps 連結判斷城市。字尾的 negative lookahead 是必要的：
  * Café Bristol 的門牌是華沙的「Krakowskie Przedmieście」，不加就會同時命中克拉科夫。
  */
@@ -110,7 +127,7 @@ export function mustEatsFor(cityKey) {
  * 小吃 · 牛奶吧 · 咖啡廳（snacksAndCafes），再疊上每日行程的餐位與順路必吃。
  * 同一家店只留一列，排序為 你的候選 → 順路必吃 → 主推 → 備案 → 小吃 · 咖啡。
  */
-export function mergeCityDining(cityKey, dining = [], primary = [], snacks = []) {
+export function mergeCityDining(cityKey, dining = [], primary = [], snacks = [], fastFood = []) {
   const entries = new Map();
   function add(item) {
     const id = key(item.name);
@@ -132,6 +149,14 @@ export function mergeCityDining(cityKey, dining = [], primary = [], snacks = [])
     add({ ...item, tier: previous?.tier || item.type, role: previous ? previous.role : 'snack' });
   }
 
+  // 連鎖速食排在最後：它不是推薦，是候選都失效時的落腳點。
+  // 走同一條合併路徑的好處是——哪天真的把某家速食排進 day-dining.js，
+  // 它會自動升格成「你的候選」並帶出 Day 連結，不必記得回來改這裡。
+  for (const item of fastFood) {
+    const previous = entries.get(key(item.name));
+    add({ ...item, role: previous ? previous.role : 'fastfood' });
+  }
+
   // 每日排定的餐位：城市表沒有這家店就新增一列，並把 Day 連回該日行程。
   for (const { day, item } of plannedMealsFor(cityKey)) {
     add({ name: item.name, selected: true, address: item.address, map: item.map });
@@ -149,7 +174,7 @@ export function mergeCityDining(cityKey, dining = [], primary = [], snacks = [])
     entry.plans = [...entry.plans, `${dayLink(day, `Day ${day}`)} · 順路必吃${detail ? `：${detail}` : ''}`];
   }
 
-  const order = { backup: 3, snack: 4 };
+  const order = { backup: 3, snack: 4, fastfood: 5 };
   const rank = row => (row.selected ? 0 : row.mustEat ? 1 : order[row.role] ?? 2);
   return [...entries.values()].sort((a, b) => rank(a) - rank(b));
 }

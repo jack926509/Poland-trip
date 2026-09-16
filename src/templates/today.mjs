@@ -1,5 +1,8 @@
 import { bookingProgress, isDepartureDay } from '../lib/journey.mjs';
 import { renderLayout } from './layout.mjs';
+import { cityKeysForDay } from './city-dining.mjs';
+import { renderFastFoodDayList } from './fast-food.mjs';
+import { fastFoodBranches, fastFoodChains, fastFoodHubs } from '../data/dining.js';
 import { dayOperations } from '../data/travel-database.js';
 import { toMinutes, parseHardTimes, HARD_TIME_DEADLINES } from '../lib/schedule.mjs';
 import { dayIsoDate } from '../lib/schedule.mjs';
@@ -132,6 +135,7 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
       ${snacks.length ? `<p class="today-snack-label"><b>順路點心／候選</b>（${snacks.length} 家，不必全吃）</p>
       <ul class="today-list">${snacks.map(meal).join('')}</ul>` : ''}
       ${alternatives.length ? `<details><summary>客滿或想換口味：${alternatives.length} 家替補</summary><ul class="today-list">${alternatives.map(meal).join('')}</ul></details>` : ''}
+      ${renderFastFoodDayList(cityKeysForDay(day), { branches: fastFoodBranches, chains: fastFoodChains, hubs: fastFoodHubs, className: 'today-fastfood' })}
       <a href="${escapeHtml(dayHref)}#day-food">順路必吃與完整餐飲 →</a></section>
     <section class="today-block${!bed && !leaving ? ' today-block-alert' : ''}" data-today-stay><h3>${bed ? '住宿與行李' : leaving ? '離境與行李' : '今晚住宿：資料缺漏'}</h3>
       ${checkout ? `<p><b>今天退房：</b>${escapeHtml(checkout.name)}。${escapeHtml(checkout.checkOutTime || '退房時間依訂房確認')}前辦理；寄放與取件方式先向住宿確認。</p>` : ''}
