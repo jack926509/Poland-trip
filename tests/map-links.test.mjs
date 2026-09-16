@@ -174,3 +174,28 @@ test('一站吃到多家的城市與店家都對得上分店表', () => {
     }
   }
 });
+
+test('速食與每日行程、城市指南互相接得上', async () => {
+  const { daysInCity, cityKeysForDay, cityGuides } = await import('../src/templates/city-dining.mjs');
+  const { renderFastFoodFallback } = await import('../src/templates/fast-food.mjs');
+
+  // 每座有分店的城市都要在行程裡有日子，否則城市頁的「這座城的行程日」會是空的
+  for (const cityKey of Object.keys(fastFoodBranches)) {
+    assert.ok(daysInCity(cityKey).length, `${cityGuides[cityKey].name}在行程裡找不到對應日期`);
+  }
+
+  // 每一天都要指得到城市，速食備援才不會在某幾天憑空消失
+  for (const day of days) {
+    const keys = cityKeysForDay(day);
+    assert.ok(keys.length, `Day ${day.n}「${day.city}」對不到任何城市指南`);
+    const html = renderFastFoodFallback(keys, { branches: fastFoodBranches, hubs: fastFoodHubs });
+    assert.ok(html.includes('#city-fast-food'), `Day ${day.n} 少了連鎖速食備援連結`);
+    // 跨城日兩座城都要列出來，不能只給先到的那一座
+    assert.equal((html.match(/#city-fast-food/g) || []).length, keys.length,
+      `Day ${day.n} 的備援連結數與當天城市數不符`);
+  }
+
+  // 地址本身已帶括號（「Pawia 5（中央車站旁）」），版型不得再包一層
+  const nested = renderFastFoodFallback(['krakow'], { branches: fastFoodBranches, hubs: fastFoodHubs });
+  assert.ok(!/（[^）]*（/.test(nested), `一站提示出現巢狀括號：${nested}`);
+});

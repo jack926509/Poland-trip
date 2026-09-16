@@ -5115,3 +5115,52 @@ h3 {
     font-size: 0.88rem;
   }
 }
+
+/* 速食與「每日行程 ↔ 城市指南」的互連。
+   當日餐飲卡的城市指南連結（.day-food-guides）是同一層級的跨頁出口，
+   所以這行沿用它的字體與 44px 命中區，只在前面加一句情境說明，
+   讓它讀起來是「候選失效時的退路」而不是另一份推薦。 */
+.day-food-fastfood,
+.today-fastfood {
+  margin: 0.45rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+/* 一座城一行：連結與它的「一棟幾家」提示綁在一起，跨城日才不會錯位 */
+.fast-food-fallback-city {
+  display: block;
+  margin-top: 0.3rem;
+}
+
+.day-food-fastfood a,
+.today-fastfood a {
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.fast-food-fallback-hub {
+  display: block;
+  font-size: 0.8rem;
+}
+
+/* 觸控裝置才需要 44px 命中區；滑鼠游標下這行只是一句備註，撐高反而佔版面 */
+@media (any-pointer: coarse) {
+  .day-food-fastfood a,
+  .today-fastfood a { display: inline-flex; align-items: center; min-height: 44px; }
+}
+
+/* 城市頁的速食區塊回連當日行程，與行程餐廳推薦表的 Day 連結同一種視覺。 */
+.fast-food-days {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+}
+
+.fast-food-days a {
+  font-family: var(--font-mono);
+  font-weight: 700;
+}

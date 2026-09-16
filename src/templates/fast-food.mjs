@@ -1,4 +1,4 @@
-import { cityGuides } from './city-dining.mjs';
+import { cityGuides, daysInCity } from './city-dining.mjs';
 
 /**
  * 連鎖速食的共用版型。城市指南與實用資料的餐廳頁都要顯示同一批分店，
@@ -57,12 +57,20 @@ function branchRow(branch, chain, { cityCell = '', showChain = true, rowClass = 
 export function renderHubCallout(hub) {
   if (!hub) return '';
   return `<div class="callout-note fast-food-hub">
-      <b>一站吃到多家：</b><a href="${escapeHtml(hub.map)}" target="_blank" rel="noopener noreferrer">${escapeHtml(hub.place)}</a>（${escapeHtml(hub.address)}）同一棟就有 ${hub.chains.length} 家——${hub.chains.map(escapeHtml).join(' · ')}。
+      <b>一站吃到多家：</b><a href="${escapeHtml(hub.map)}" target="_blank" rel="noopener noreferrer">${escapeHtml(hub.place)}</a> · ${escapeHtml(hub.address)}，同一棟就有 ${hub.chains.length} 家——${hub.chains.map(escapeHtml).join(' · ')}。
     </div>`;
 }
 
+/** 「Day 2 · Day 3」這種回連，和行程餐廳推薦表的 Day 連結同一種寫法。 */
+function dayLinks(cityKey) {
+  const numbers = daysInCity(cityKey);
+  if (!numbers.length) return '';
+  const links = numbers.map(n => `<a href="day-${String(n).padStart(2, '0')}.html#day-food">Day ${n}</a>`).join(' · ');
+  return `<p class="fast-food-days"><b>這座城的行程日：</b>${links}（點 Day 回當日的餐飲安排）</p>`;
+}
+
 /** 城市指南裡的一節：只有這座城的分店，招牌帶一行提示，完整菜單連去餐廳頁。 */
-export function renderCityFastFood({ branches = [], chains = [], hub = null, cityName = '' }) {
+export function renderCityFastFood({ branches = [], chains = [], hub = null, cityName = '', cityKey = '' }) {
   if (!branches.length) return '';
   const index = chainIndex(chains);
   const rows = branches.map(branch => branchRow(branch, index.get(branch.chain), { nameAsRowHeader: true })).join('');
@@ -70,6 +78,7 @@ export function renderCityFastFood({ branches = [], chains = [], hub = null, cit
     <section class="section" id="city-fast-food">
       <div class="section-heading"><span class="section-num">Fast food</span><h2>連鎖速食</h2></div>
       <p class="lead">不做評選，只給趕行程、太晚或不想踩雷時的落腳點。地址優先挑近老城、主廣場或中央車站的分店，離動線遠的已在備註標明；點店名開啟 Google Maps。營業時間本站不保存，出發前與現場以店家頁面為準。</p>
+      ${dayLinks(cityKey)}
       ${renderHubCallout(hub)}
       <div class="table-wrap"><table class="table-editorial fast-food-table">
         <caption>${escapeHtml(cityName)}的連鎖速食分店與各家招牌</caption>
@@ -138,4 +147,27 @@ export function renderPracticalFastFood({ chains = [], branches = {}, hubs = [] 
       <p>同行人想吃的不一樣、或只剩半小時吃飯時，直接去這幾棟，不必為了選店多走一趟。</p>
       <div class="grid">${hubCards}</div>` : ''}
     </section>`;
+}
+
+/**
+ * 每日行程與今日速查用的一行備援。
+ *
+ * 當日餐飲卡列的是候選餐廳，但真正需要速食的情境正好是那張卡失效的時候——
+ * 客滿、太晚、趕車。所以這行只連到「今天所在城市」的速食區塊，不重印店名：
+ * 跨城日會有兩條（依當天移動方向），與卡片裡的城市指南連結排序一致。
+ */
+export function renderFastFoodFallback(cityKeys = [], { branches = {}, hubs = [], prefix = '', className = 'day-food-fastfood' } = {}) {
+  const parts = cityKeys.map(cityKey => {
+    const list = branches[cityKey] || [];
+    const guide = cityGuides[cityKey];
+    if (!list.length || !guide) return '';
+    const hub = hubs.find(item => item.cityKey === cityKey);
+    // hub.address 本身就帶括號（「Pawia 5（中央車站旁）」），外面再包一層會變成雙括號
+    const hint = hub ? `<span class="fast-food-fallback-hub">${escapeHtml(hub.place)} · ${escapeHtml(hub.address)}一棟 ${hub.chains.length} 家</span>` : '';
+    // 跨城日有兩座城，連結與它的一站提示必須綁在同一行，否則會變成
+    // 「克拉科夫的連結、樂斯拉夫的連結、克拉科夫的提示」這種對不起來的排列。
+    return `<span class="fast-food-fallback-city"><a href="${prefix}${guide.file}#city-fast-food">${escapeHtml(guide.name)}連鎖速食 ${list.length} 家 →</a>${hint}</span>`;
+  }).filter(Boolean);
+  if (!parts.length) return '';
+  return `<p class="${className}"><b>客滿、太晚或趕車：</b>${parts.join('')}</p>`;
 }

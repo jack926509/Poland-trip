@@ -31,6 +31,23 @@ export function dayPageForDate(date, prefix = '') {
 }
 
 /**
+ * 這座城在行程裡的哪幾天。day.city 寫成「克拉科夫 → 樂斯拉夫」這種跨城字串，
+ * 含城市名就算，所以跨城日會同時屬於兩座城——和 day.mjs 既有的判斷方式一致。
+ */
+export function daysInCity(cityKey) {
+  const name = cityGuides[cityKey]?.name;
+  if (!name) return [];
+  return days.filter(day => day.city.includes(name)).map(day => day.n);
+}
+
+/** 這一天會待在哪幾座城，依當天的移動方向排（day.city 的字面順序）。 */
+export function cityKeysForDay(day) {
+  return Object.keys(cityGuides)
+    .filter(key => day.city.includes(cityGuides[key].name))
+    .sort((a, b) => day.city.indexOf(cityGuides[a].name) - day.city.indexOf(cityGuides[b].name));
+}
+
+/**
  * 從門牌或 Google Maps 連結判斷城市。字尾的 negative lookahead 是必要的：
  * Café Bristol 的門牌是華沙的「Krakowskie Przedmieście」，不加就會同時命中克拉科夫。
  */

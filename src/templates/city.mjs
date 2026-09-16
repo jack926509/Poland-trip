@@ -103,6 +103,7 @@ export function renderCity({
     chains: fastFoodChains,
     hub: fastFoodHubForCity,
     cityName: city.name,
+    cityKey,
   });
 
   const storyHtml = story ? `
