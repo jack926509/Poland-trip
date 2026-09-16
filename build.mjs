@@ -706,6 +706,7 @@ function buildIntoStaging(stagingRoot) {
       photoSpotsForCity: cities.photoSpots.filter(spot => spot.cityKey === key),
       fastFoodForCity: dining.fastFoodBranches[mapKey] || [],
       fastFoodHubForCity: dining.fastFoodHubs.find(hub => hub.cityKey === mapKey) || null,
+      fastFoodChains: dining.fastFoodChains,
       story: cities.cityStories.find(item => item.city === city.name),
       notices: cities.cityNotices[mapKey],
     }));

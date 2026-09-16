@@ -4984,3 +4984,134 @@ h3 {
 .sights-table th:nth-child(1) { width: 26%; }
 .sights-table th:nth-child(2) { width: 10%; }
 .sights-table th:nth-child(3) { width: 64%; }
+
+/* ── 連鎖速食 ────────────────────────────────────────────────
+   這一節的用途是「現在要落腳，去哪」，所以掃視速度優先於資訊密度：
+   類型與標籤用既有的 .tag-muted 字形，招牌只帶一行提示，
+   不另外發明一組顏色，避免和米其林評選標記搶注意力。 */
+.fast-food-cn,
+.fast-food-kind,
+.fast-food-teaser {
+  margin: 0.15rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.fast-food-kind {
+  margin-bottom: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+}
+
+.fast-food-card .fast-food-cn {
+  margin-top: -0.35rem;
+  margin-bottom: 0.5rem;
+}
+
+.fast-food-chips {
+  margin: 0 0 0.6rem;
+}
+
+.fast-food-card .check-list {
+  margin: 0.2rem 0 0;
+}
+
+/* 卡片裡的招牌是條列，一道一行就夠，不需要段落間距 */
+.fast-food-card .check-list li {
+  margin-bottom: 0.25rem;
+}
+
+.fast-food-card .source-meta {
+  margin-top: 0.9rem;
+  padding-top: 0.6rem;
+}
+
+/* 城市頁的店名是列標題（th），要壓掉表頭那種小字級與字距，
+   否則店名會被排成灰色的迷你標籤，和其他欄的內文對不上。 */
+.fast-food-table tbody th {
+  font-family: inherit;
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--ink);
+}
+
+/* 表格標題沿用行程餐廳表的寫法：靠左、與表頭同一縱線，
+   置中的 caption 在這種寬表上會飄在半空中。 */
+.fast-food-table caption {
+  padding: 0.5rem 0.65rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+/* 欄寬：地址與備註是實際要讀的內容，店名與城市固定窄欄，
+   不然「Pawia 5 ／ Podgórska 34」這種雙分店地址會被擠成兩三行。 */
+.fast-food-table { table-layout: fixed; }
+.fast-food-table col,
+.fast-food-table th { overflow-wrap: break-word; }
+/* 只掛在 thead：table-layout: fixed 由首列決定欄寬就夠，
+   若寫成 .fast-food-table th 會一併命中內文的列標題，
+   手機卡片版那個 th 是 display: block，19% 會把店名壓成一行一個字。 */
+.fast-food-table thead th:nth-child(1) { width: 19%; }
+.fast-food-table thead th:nth-child(2) { width: 27%; }
+.fast-food-table thead th:nth-child(3) { width: 22%; }
+.fast-food-table-all thead th:nth-child(1) { width: 11%; }
+.fast-food-table-all thead th:nth-child(2) { width: 20%; }
+.fast-food-table-all thead th:nth-child(3) { width: 27%; }
+
+/* 總表的城市欄只在該城第一列印連結，其餘列留白做視覺分組；
+   手機的卡片版每列獨立，必須把城市名顯示回來（見下方 media query）。 */
+.fast-food-city-repeat {
+  color: transparent;
+  font-size: 0.85rem;
+}
+
+/* 每座城的第一列加一條較深的上邊，24 列才看得出是四組而不是一長串 */
+.fast-food-table-all .fast-food-city-start td {
+  border-top: 2px solid var(--line);
+}
+
+.fast-food-table-all td:first-child {
+  white-space: nowrap;
+}
+
+.fast-food-hub {
+  margin-bottom: 1.1rem;
+}
+
+@media (max-width: 700px) {
+  /* 卡片版：每列是獨立的一張卡，城市名與欄寬都要回到正常流 */
+  .fast-food-city-repeat { color: var(--ink-soft); }
+  .fast-food-table { table-layout: auto; }
+  .fast-food-table caption { display: block; padding: 0 0 0.5rem; }
+  .fast-food-table .tag-muted { margin-top: 0.15rem; }
+  .fast-food-table-all td:first-child { white-space: normal; }
+  .fast-food-table tbody th { display: block; width: 100%; padding: 0 0 0.5rem; font-size: 1.05rem; }
+  .fast-food-table tbody th + td { border-top: 1px solid var(--line); }
+  .fast-food-table-all .fast-food-city-start td { border-top: 0; }
+
+  /* 總表 24 家在手機會變成 24 張「城市／店家／地址／備註」的卡，
+     整節要捲一萬多像素。這張表的四個欄名看內容就知道是什麼，所以只有它改成
+     緊湊排版：欄名不印、欄間不畫線，城市當小標、備註降一級。
+     城市頁那張資訊較密，仍用全站共用的卡片版。 */
+  .fast-food-table-all tbody { gap: 0.55rem; }
+  .fast-food-table-all tr { padding: 0.6rem 0.85rem; }
+  .fast-food-table-all td { padding: 0.08rem 0; }
+  .fast-food-table-all td + td { border-top: 0; }
+  .fast-food-table-all td[data-label]::before { content: none; }
+  .fast-food-table-all td:first-child {
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+  .fast-food-table-all td:last-child {
+    margin-top: 0.15rem;
+    color: var(--ink-soft);
+    font-size: 0.88rem;
+  }
+}

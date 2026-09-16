@@ -2,6 +2,7 @@ import { renderCityJourney } from './journey.mjs';
 import { mergeCityDining, dropDuplicateClauses, dedupeNotes, dropRestatedHours } from './city-dining.mjs';
 import { renderLayout } from './layout.mjs';
 import { renderPhotoGallery } from './photo-gallery.mjs';
+import { renderCityFastFood } from './fast-food.mjs';
 
 const bookingLabels = {
   must: '建議預約',
@@ -56,6 +57,7 @@ export function renderCity({
   photoSpotsForCity,
   fastFoodForCity = [],
   fastFoodHubForCity = null,
+  fastFoodChains = [],
   story,
   notices = [],
 }) {
@@ -95,23 +97,13 @@ export function renderCity({
       <p class="action-links"><a href="practical/dining.html">米其林名單與訂位管道 →</a></p>
     </section>` : '';
 
-  // 連鎖速食只列地址與位置關係：菜單各城相同，招牌推薦統一放在實用資料的餐廳頁，不在四座城市各抄一次。
-  const fastFoodHtml = fastFoodForCity.length ? `
-    <section class="section" id="city-fast-food">
-      <div class="section-heading"><span class="section-num">Fast food</span><h2>連鎖速食</h2></div>
-      <p class="lead">不做評選，只給趕行程、太晚或不想踩雷時的落腳點。地址優先挑近老城、主廣場或中央車站的分店，離動線遠的已在備註標明；點店名開啟 Google Maps。營業時間本站不保存，出發前與現場以店家頁面為準。</p>
-      ${fastFoodHubForCity ? `<div class="callout-note"><b>一站吃到多家：</b><a href="${fastFoodHubForCity.map}" target="_blank" rel="noopener noreferrer">${fastFoodHubForCity.place}</a>（${fastFoodHubForCity.address}）同一棟就有 ${fastFoodHubForCity.chains.length} 家：${fastFoodHubForCity.chains.join(' · ')}。</div>` : ''}
-      <div class="table-wrap"><table class="table-editorial">
-        <thead><tr><th>店家</th><th>地址</th><th>位置備註</th></tr></thead>
-        <tbody>${fastFoodForCity.map(branch => `
-          <tr>
-            <td><a href="${branch.map}" target="_blank" rel="noopener noreferrer"><b>${branch.chain}</b></a></td>
-            <td>${branch.address}</td>
-            <td>${branch.note}</td>
-          </tr>`).join('')}</tbody>
-      </table></div>
-      <p class="action-links"><a href="practical/dining.html#fast-food">各家招牌推薦與四城分店總表 →</a></p>
-    </section>` : '';
+  // 連鎖速食的版型與餐廳頁共用（fast-food.mjs），城市頁只傳這座城的分店。
+  const fastFoodHtml = renderCityFastFood({
+    branches: fastFoodForCity,
+    chains: fastFoodChains,
+    hub: fastFoodHubForCity,
+    cityName: city.name,
+  });
 
   const storyHtml = story ? `
     <section class="section">
