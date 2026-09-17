@@ -130,17 +130,17 @@ export const dayDining = {
       "map": "https://www.google.com/maps/search/?api=1&query=ROGAL%20%C5%9Awi%C4%99tomarci%C5%84ski%20Stary%20Rynek%2011/17%2C%20Pozna%C5%84"
     },
     {
-      "role": "回華沙晚餐候選",
+      "role": "韓式（改日或提早才可行）",
       "name": "Yache Korea",
       "address": "Nowogrodzka 25, Warszawa",
-      "note": "靠近 Metropol 的韓式換口味選項；約 20:30 用餐，出發前確認最後點餐。想更省時就直接吃 Hala Koszyki 宵夜。",
+      "note": "⚠️ 不要當 Day 6 晚抵備案。2026-09-17 官網 yachekorea.com：週一–四 12:00–20:30、週五 12:00–21:30。10/29 是週四，20:30 就打烊，而本日預計 20:30 才走到餐廳——等於撲空。想吃改排 Day 7（10/30 週五，到 21:30）或當日提早到店。",
       "map": "https://www.google.com/maps/search/?api=1&query=Yache%20Korea%20Nowogrodzka%2025%2C%20Warszawa"
     },
     {
       "role": "韓式替補",
       "name": "Arirang Restaurant",
       "address": "Nowogrodzka 38, Warszawa",
-      "note": "Yache 的替補；晚抵達先確認營業與收客時間。",
+      "note": "同樣位於 Nowogrodzka，但適用門市與最後點餐都找不到店家一手公告，只能當候選、不能當可靠保底；晚抵達前先致電確認。",
       "map": "https://www.google.com/maps/search/?api=1&query=Arirang%20Restaurant%20Nowogrodzka%2038%2C%20Warszawa"
     }
   ],
@@ -207,7 +207,7 @@ export const dayDining = {
       "role": "替補",
       "name": "Bar Mleczny Prasowy",
       "address": "Marszałkowska 10/16, Warszawa",
-      "note": "多數來源顯示每日 08:00–20:00，少數來源說 09:00 才開，行前電話 666 353 776 確認；若 Café Bristol 週六開門時間有異可改這裡。",
+      "note": "⚠️ 已降級為不可靠備案。2026-09-17 華沙市府旅遊資訊中心列這家（Marszałkowska 10/16）週一 09:00–20:00、週二–日 09:00–19:00——10/31 是週六，09:00 才開，趕不上 08:00 早餐與 09:45 退房。網路上的「08:00 開」是 Powiśle 分店（Zajęcza 1a）。且此店在 Marszałkowska 南端，與 Marszałkowska 99a 的 Hotel Metropol 不是步行五分鐘的距離。",
       "map": "https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Prasowy%2C%20Marsza%C5%82kowska%2010%2F16%2C%20Warszawa"
     }
   ]
