@@ -636,11 +636,13 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.equal(foods.length, 12);
 
   assert.equal(fares.length, 21);
-  assert.deepEqual(ticketsByCity.map(group => group.items.length), [6, 6, 2, 3]);
+  // 2026-09-17 複查後新增：華沙 E.Wedel、克拉科夫 Wawel 拆成二樓／寶庫兩列、
+  // 樂斯拉夫動物園、波茲南棕櫚屋閉館與考古博物館開放時間。
+  assert.deepEqual(ticketsByCity.map(group => group.items.length), [7, 7, 3, 5]);
   assert.deepEqual([
     transitFares.length, airportTransit.length, recommendedApps.length,
     passChecklist.length, usefulRoutes.length, practical.length,
-  ], [4, 6, 4, 4, 5, 6]);
+  ], [4, 7, 4, 4, 5, 6]);
   assert.deepEqual([
     souvenirCards.length, luxuryShopping.length, souvenirShops.length,
     shopping.length, zabkaCards.length,
@@ -1115,10 +1117,15 @@ test('逐日移動不保留已知不可行備案或重疊時刻', () => {
 
 test('舊票價與過時場館資料已從產出頁面移除', () => {
   const html = expectedFiles.map(read).join('\n');
-  for (const stale of ['199／149', 'PLN 32', '50／40 PLN', '2026 新開的 E.Wedel']) {
+  // 2026-09-17 官網複查後，Wawel 9–12 月是分路線售票、沒有 95／71 套票；
+  // 棕櫚屋則已改建閉館。兩筆舊事實一併列為不得再出現。
+  for (const stale of ['199／149', 'PLN 32', '50／40 PLN', '2026 新開的 E.Wedel', '語音導覽 10 PLN', '完整路線 95／71']) {
     assert.ok(!html.includes(stale), `仍出現舊資料：${stale}`);
   }
-  assert.ok(html.includes('城堡一、二樓完整路線 95／71'));
+  // 95／71 只允許以「官網未列這個套票」的否定說明形式出現，不得再當成可買的票價。
+  assert.ok(html.includes('官網未列 95／71'));
+  assert.ok(html.includes('瓦維爾城堡二樓代表廳') && html.includes('PLN 57／43'));
+  assert.ok(html.includes('地圖 10／語音導覽 20'), '帝王城堡應改用官網 2026-09-17 的票價');
   assert.ok(html.includes('Kolejkowo') && html.includes('線上 39 起／現場 55 起'));
 });
 
@@ -1136,10 +1143,13 @@ test('備案景點的票價與開放資訊使用最新官方查證結果', () =>
   assert.equal(kolejkowo?.discountPrice, '線上 33 起／現場 45 起');
   assert.match(kolejkowo?.note ?? '', /2026-08-12 官網查證/);
   assert.match(palmiarnia?.officialUrl ?? '', /^https:\/\/palmiarnia\.poznan\.pl/);
-  assert.match(palmiarnia?.note ?? '', /週一休館/);
+  // 官網公告改建暫時閉館：不得再列票價或開放時間，否則會被當成還能排。
+  assert.equal(palmiarnia?.fullPrice, '暫時閉館');
+  assert.match(palmiarnia?.note ?? '', /暫時閉館/);
+  assert.doesNotMatch(palmiarnia?.note ?? '', /週一休館；二–五/);
   assert.match(wroclawAttractions.find(item => item.name === 'Hydropolis 水知識中心')?.priceNote ?? '', /2026-08-11 官網查證/);
   assert.match(wroclawAttractions.find(item => item.name === 'Kolejkowo 微縮館')?.priceNote ?? '', /2026-08-12 官網查證/);
-  assert.match(poznanAttractions.find(item => item.name === 'Palmiarnia 棕櫚屋')?.priceNote ?? '', /週一休館/);
+  assert.match(poznanAttractions.find(item => item.name === 'Palmiarnia 棕櫚屋')?.priceNote ?? '', /暫時閉館/);
   assert.doesNotMatch(JSON.stringify(cityStories.find(story => story.city === '樂斯拉夫')), /1,040/);
 });
 

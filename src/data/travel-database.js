@@ -356,7 +356,7 @@ const officialPlaceUrls = {
 };
 
 const entranceNotesByName = {
-  '華沙蕭邦機場': '抵達後依 Arrivals 與 SKM／Railway Station 標示前往航廈下方車站；S2／S3 於 Warszawa Śródmieście 下車最接近 Hotel Metropol（出站即 Metro Centrum）。回程依電子機票確認報到區。',
+  '華沙蕭邦機場': '抵達後依 Arrivals 與 SKM／Railway Station 標示前往航廈下方車站。2026-09-17 WTP 官方機場交通頁：S2 經 Zachodnia → Warszawa Śródmieście → Wschodnia，S3 經 Zachodnia → Warszawa Centralna → Wschodnia，兩線停靠站不同——最接近 Hotel Metropol 的是 S2 的 Śródmieście（出站即 Metro Centrum）；搭到 S3 請在 Centralna 下車。官方標示用 75 分鐘第 1 區票。回程依電子機票確認報到區。',
   'Warszawa Centralna': '由 Hotel Metropol 沿 Marszałkowska 步行約 500 公尺／8–10 分，選當時最近的入口；進站後以大廳電子牌確認月台，不預先假定入口或月台。',
   'Warszawa Zachodnia': '僅在票面上車站為西站時才需前往：由 Hotel Metropol 步行至 Warszawa Centralna 後轉 SKM／KM 約 7–10 分，或用 Jakdojade 查當日大眾運輸；進站後以電子牌確認 EIP 5300 的實際月台。',
   '華沙皇家城堡': '主要訪客入口在 plac Zamkowy 4；依票券時段與現場安檢標示入場。',
@@ -624,7 +624,7 @@ const dynamicTransitReason = '班次、月台或上下車點為動態資料，�
 const flexibleStopReason = '未選定可靠分店或為彈性活動，不預填地址。';
 const unresolvedStepReasons = {
   1: {
-    'SKM S2/S3 目標班次': dynamicTransitReason,
+    'SKM S2／S3 目標班次': dynamicTransitReason,
     '波蘭地方料理晚餐': flexibleStopReason,
     '早睡倒時差': '休息安排不需要導航地址。',
   },
@@ -661,7 +661,7 @@ const unresolvedStepReasons = {
     '老城最後晚餐': flexibleStopReason,
   },
   8: {
-    'SKM S2/S3 目標班次': dynamicTransitReason,
+    'SKM S2／S3 目標班次': dynamicTransitReason,
   },
 };
 

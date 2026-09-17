@@ -173,9 +173,9 @@ export const verifiedRestaurantHours = [
     name: 'Konspira',
     mapUrl: 'https://www.google.com/maps/search/?api=1&query=Konspira%2C%20Plac%20Solny%2011%2C%20Wroc%C5%82aw',
     address: 'Plac Solny 11',
-    hours: '週一–四 13:00–23:45；週五–日 12:00–23:45；廚房至 23:00',
-    feature: '傳統波蘭料理與 1980 年代反共地下運動主題空間；週五至日不接受一般訂位，依到店順序。',
-    url: 'https://restauracjakonspira.pl/menu',
+    hours: '週一–四 13:00–23:45；週五–日 12:00–23:45；廚房至 23:00（官網首頁版本；/menu 與 /reservation 子頁另載一–三 13:00–23:00、廚房至 22:00，訂位時確認）',
+    feature: '傳統波蘭料理與 1980 年代反共地下運動主題空間；週五、週末與假日不接受訂位，依到店順序。訂位電話 +48 535 212 586。',
+    url: 'https://restauracjakonspira.pl/',
   },
 ];
 
@@ -333,7 +333,7 @@ export const cityDining = {
 // 每筆都必須有可點的 Google Maps 連結；營業時間屬動態資料，只寫查得到來源的，並要求出發前重查。
 export const snacksAndCafes = {
   warsaw: [
-    {name:'Bar Mleczny Prasowy', type:'牛奶吧', note:'1954 年開業的華沙老牌牛奶吧，żurek、pierogi、炸豬排都是銅板價。距 Hotel Metropol 沿 Marszałkowska 步行約 5 分鐘，是最順路的一餐；Day 8 早餐備案。', hours:'多數來源每日 08:00–20:00，少數來源說 09:00 才開，行前電話 666 353 776 確認', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Prasowy%2C%20Marsza%C5%82kowska%2010%2F16%2C%20Warszawa'},
+    {name:'Bar Mleczny Prasowy（Marszałkowska 店）', type:'牛奶吧', note:'1954 年開業的華沙老牌牛奶吧，żurek、pierogi、炸豬排都是銅板價。⚠️ 位置更正：門市在 Marszałkowska 10/16（Śródmieście Południowe、近 plac Zbawiciela），Hotel Metropol 在 Marszałkowska 99a（Rondo Dmowskiego／Centrum 一帶）——兩者在同一條街的兩端，不是步行五分鐘的相鄰位置。⚠️ 另一常見誤會：網路流傳的「每日 08:00–20:00」是 Powiśle 分店（Zajęcza 1a）的時間，不是這家。因 09:00 才開，不適合當 Day 8（10/31）08:00 早餐的備案。', hours:'2026-09-17 華沙市府旅遊資訊中心（wcit.waw.pl）：週一 09:00–20:00、週二–日 09:00–19:00；行前電話 666 353 776 再確認', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Prasowy%2C%20Marsza%C5%82kowska%2010%2F16%2C%20Warszawa'},
     {name:'Bar Mleczny Bambino', type:'牛奶吧', note:'1959 年開業，公認華沙最「體面」的牛奶吧，內裝與菜單維持舊時樣貌。2026 年公開資料列一–五 08:00–20:00、週末 09:00–18:00；不同來源對門牌有 Hoża 19 與 Krucza 21 兩說，出發前用地圖確認分店。', hours:'一–五 08:00–20:00、六日 09:00–18:00（公開資料，出發前重查）', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Bambino%20Warszawa'},
     {name:'A. Blikle 1869', type:'甜點 · 咖啡', note:'1869 年創立的波蘭國民甜點店，pączki 玫瑰果醬甜甜圈是招牌。Nowy Świat 本店距飯店步行約 15 分，Day 7 老城行程順路；09:00 開門，退房前想買 pączki 帶走可繞去，不適合當 Day 8 早餐主位。', hours:'每日 09:00–21:00（官網確認）', map:'https://www.google.com/maps/search/?api=1&query=A.Blikle%2C%20Nowy%20%C5%9Awiat%2033%2C%20Warszawa'},
     {name:'Cukiernia Zagoździński', type:'甜點', note:'1925 年開業的老派甜甜圈店，被在地人視為華沙 pączek 標準答案；位在 Wola 區 Górczewska 15，需搭電車前往，適合有半天餘裕時安排。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Cukiernia%20Zago%C5%BAdzi%C5%84ski%2C%20G%C3%B3rczewska%2015%2C%20Warszawa'},
@@ -350,9 +350,9 @@ export const snacksAndCafes = {
   wroclaw: [
     {name:'Bar Mleczny Miś', type:'牛奶吧', note:'Kuźnicza 48，樂斯拉夫最知名的牛奶吧，營運逾 50 年；湯約 3–6 PLN、主菜 12–25 PLN。**週日公休**，本行程 10/28（三）可用。', hours:'一–五 07:00–18:00、六 08:00–17:00、日休（2026 公開資料，出發前重查）', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Mi%C5%9B%2C%20Ku%C5%BAnicza%2048%2C%20Wroc%C5%82aw'},
     {name:'Vincent · Kazimierza Wielkiego 甜點', type:'甜點 · 咖啡', note:'老城區連鎖甜點咖啡館，蛋糕櫃選擇多，適合小矮人散步途中補糖。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Cukiernia%20Vincent%20Wroc%C5%82aw'},
-    {name:'Konspira', type:'傳統小館', note:'Plac Solny 11，1980 年代地下反共運動主題餐廳，Śląskie kluski 等傳統菜；週五至日不接受訂位、依到店順序。現為備案（Day 5 午餐主位改 Restauracja Wrocławska）。', hours:'一–四 13:00–23:45、五–日 12:00–23:45（廚房至 23:00）；惟週三開門時間另有來源說是 12:00，資料不一，行前電話 796 326 600 確認', map:'https://www.google.com/maps/search/?api=1&query=Konspira%2C%20Plac%20Solny%2011%2C%20Wroc%C5%82aw'},
+    {name:'Konspira', type:'傳統小館', note:'Plac Solny 11，1980 年代地下反共運動主題餐廳，Śląskie kluski 等傳統菜；週五至日不接受訂位、依到店順序。現為備案（Day 5 午餐主位改 Restauracja Wrocławska）。', hours:'2026-09-17 官網查證，站內自相矛盾兩版並列：首頁寫一–四 13:00–23:45、五–日 12:00–23:45，廚房均至 23:00；/menu 與 /reservation 子頁卻寫一–三 13:00–23:00（廚房至 22:00）、四 13:00–23:45、五六 12:00–23:45。Day 5（週三）兩版都是 13:00 開門，但打烊與廚房收單差一小時，訂位時一併問清楚。訂位電話 +48 535 212 586（官網另列 rezerwacje.konspira@gmail.com）；週五、週末與假日不接受訂位', map:'https://www.google.com/maps/search/?api=1&query=Konspira%2C%20Plac%20Solny%2011%2C%20Wroc%C5%82aw'},
     {name:'Browar Stu Mostów', type:'精釀啤酒', note:'樂斯拉夫代表性精釀酒廠，不喝酒可略過。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Browar%20Stu%20Most%C3%B3w%20Wroc%C5%82aw'},
-    {name:'El Gato Specialty Coffee', type:'咖啡 · 精品咖啡', note:'Odrzańska 8，Day 5 午餐後咖啡，樂斯拉夫精品咖啡選項。', hours:'一–五 09:00–18:00、六日 10:00–18:00', map:'https://www.google.com/maps/search/?api=1&query=El%20Gato%20Specialty%20Coffee%20Roasters%20Odrza%C5%84ska%208/1%2C%20Wroc%C5%82aw'},
+    {name:'El Gato Specialty Coffee', type:'咖啡 · 精品咖啡', note:'Odrzańska 8/1，Day 5 午餐後咖啡，樂斯拉夫精品咖啡選項。', hours:'待確認——站內原記的「一–五 09:00–18:00、六日 10:00–18:00」找不到店家一手出處，已撤下不再當成已查；到店前看店家官方社群當日公告', map:'https://www.google.com/maps/search/?api=1&query=El%20Gato%20Specialty%20Coffee%20Roasters%20Odrza%C5%84ska%208/1%2C%20Wroc%C5%82aw'},
     {name:'Dessert Boutique', type:'甜點', note:'Świętego Mikołaja 43，Day 5 甜點候選，樂斯拉夫精緻歐式甜點店。', hours:'二–五 12:00–19:00、六日 11:00–20:00', map:'https://www.google.com/maps/search/?api=1&query=Dessert%20Boutique%20%C5%9Awi%C4%99tego%20Miko%C5%82aja%2043%2C%20Wroc%C5%82aw'},
   ],
   poznan: [
