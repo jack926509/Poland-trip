@@ -628,7 +628,10 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
 
   assert.equal(michelinSummary.length, 4);
   assert.equal(michelinReservations.length, 9);
-  assert.equal(verifiedRestaurantHours.length, 4);
+  // 2026-09-18 複查後新增兩列：克拉科夫 Pod Aniołami（官網「每日 13:00–23:00」）與
+  // 樂斯拉夫 Restauracja Wrocławska（官網日–四 12:00–22:00、五六 12:00–00:00），
+  // 兩家原本只有第三方來源，現已由店家官網一手查得。
+  assert.equal(verifiedRestaurantHours.length, 6);
   assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
     warsaw: 5, krakow: 7, wroclaw: 4, poznan: 7,
   });
@@ -1160,7 +1163,9 @@ test('餐廳頁只把可追到店家來源的營業時間列為已查', () => {
     assert.ok(html.includes(restaurant.hours));
     assert.ok(html.includes(restaurant.url));
   }
-  assert.ok(html.includes('營業時間查證於 2026-08-09'));
+  // 2026-09-18 起改為指向該輪店家官網複查，並明說查不到一手來源就標「待確認」。
+  assert.ok(html.includes('以店家官網複查於 2026-09-18'));
+  assert.ok(html.includes('查不到一手來源的店家一律標「待確認」'));
 });
 
 test('城市頁不再將 Google 星等與評論數當成固定資料', () => {

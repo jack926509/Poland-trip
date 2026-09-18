@@ -32,7 +32,7 @@ export const dayDining = {
       "role": "午餐首選",
       "name": "Bar Mleczny Pod Temidą",
       "address": "Grodzka 43, Kraków",
-      "note": "中央廣場往 Wawel 路上的平價牛奶吧；官網每日 09:00–20:00，惟部分來源說週末公休，行前電話 12 422 08 74 確認。",
+      "note": "中央廣場往 Wawel 路上的平價牛奶吧。⚠️ 2026-09-18 複查確認這家沒有官方網站，第三方資料對週日有「公休」「09:00–20:00」「10:45–19:00」三種說法。10/25 是週日，出發前必打 +48 12 422 08 74 確認；沒接通就別把它當唯一午餐。",
       "map": "https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Pod%20Temid%C4%85%20Grodzka%2043%2C%20Krak%C3%B3w"
     },
     {
@@ -55,7 +55,7 @@ export const dayDining = {
       "role": "晚餐首選",
       "name": "Pod Aniołami",
       "address": "Grodzka 35, Kraków",
-      "note": "地窖傳統波蘭菜，要訂位；官網每日 13:00–23:00，惟本項風險最高，行前電話 12 421 39 99 確認週一是否照常營業。",
+      "note": "地窖傳統波蘭菜，要訂位。2026-09-18 官網（podaniolami.pl）查證：「Otwarte codziennie 13:00–23:00」——每日營業，10/26 週一照常，先前的週一風險註記已解除。訂位電話 +48 12 421 39 99 或 +48 12 430 21 13。",
       "map": "https://www.google.com/maps/search/?api=1&query=Pod%20Anio%C5%82ami%20Grodzka%2035%2C%20Krak%C3%B3w"
     },
     {
@@ -89,7 +89,7 @@ export const dayDining = {
       "role": "午餐首選",
       "name": "Restauracja Wrocławska",
       "address": "Szewska 59/60, Wrocław",
-      "note": "戰前風味，招牌 bigos 獵人燉菜；週三 12:00–22:00（多來源一致，非官網一手，行前電話確認）。須先挪出完整午餐時間，不能直接塞在全景畫與百年廳之間。",
+      "note": "戰前風味，招牌 bigos 獵人燉菜。2026-09-18 查證官方網站 wroclawska.com.pl：日–四 12:00–22:00、五六 12:00–00:00，10/28 週三為 12:00–22:00。訂位電話 +48 71 305 12 28。須先挪出完整午餐時間，不能直接塞在全景畫與百年廳之間。",
       "map": "https://www.google.com/maps/search/?api=1&query=Restauracja%20Wroc%C5%82awska%20Szewska%2059/60%2C%20Wroc%C5%82aw"
     },
     {

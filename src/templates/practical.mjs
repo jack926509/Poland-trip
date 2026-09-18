@@ -314,7 +314,7 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
   const hoursRows = verifiedRestaurantHours.map(item => `
     <tr><td>${item.city}</td><td><a href="${item.url}" target="_blank" rel="noopener"><b>${item.name}</b></a><br>${item.address}${item.mapUrl ? `<br><a href="${item.mapUrl}" target="_blank" rel="noopener">Google Maps 定位 →</a>` : ''}</td><td>${item.hours}</td><td>${item.feature}</td></tr>`).join('');
   const content = `
-    <div class="callout-note"><b>資料界線：</b>米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不把它們當成固定資料。高價餐廳預算已於 2026-09-08 對照旅程試算表更新；營業時間查證於 2026-08-09，訂位前仍看店家公告。</div>
+    <div class="callout-note"><b>資料界線：</b>米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不把它們當成固定資料。高價餐廳預算已於 2026-09-08 對照旅程試算表更新；下表營業時間最近一輪以店家官網複查於 2026-09-18，查不到一手來源的店家一律標「待確認」，訂位前仍看店家公告。</div>
     <section>
       <div class="section-heading"><span class="section-num">Guide</span><h2>2026 米其林總表</h2></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>星級</th><th>星級餐廳</th><th>Bib Gourmand</th></tr></thead><tbody>${summaryRows}</tbody></table></div>
@@ -347,7 +347,7 @@ export function renderTickets({ fares, ticketsByCity, notices = [] }) {
     ${notices.map(item => `<div class="callout-risk"><span class="tag-todo">${item.status}</span><p>${item.text} <a href="${item.url}" target="_blank" rel="noopener">開啟官網 →</a></p></div>`).join('')}
     <section>
       <div class="section-heading"><span class="section-num">2026-09</span><h2>最新門票速查</h2></div>
-      <p class="lead">全票／優待皆為 PLN。2026/09/08 已再核對高風險條目；動態票價、指定日場次與臨時閉館，購票前仍以官網為準。</p>
+      <p class="lead">全票／優待皆為 PLN。最近一輪逐項回官網複查為 2026-09-17／09-18（各列 note 內自帶該項查證日）；動態票價、指定日場次與臨時閉館，購票前仍以官網為準。</p>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>景點</th><th>全票</th><th>優待</th><th>備註</th></tr></thead><tbody>${fareRows}</tbody></table></div>
     </section>
     <section class="section">

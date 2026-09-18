@@ -169,12 +169,30 @@ export const verifiedRestaurantHours = [
     url: 'https://wedelpijalnie.pl/lokale',
   },
   {
+    city: '克拉科夫',
+    name: 'Pod Aniołami',
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Pod%20Anio%C5%82ami%2C%20Grodzka%2035%2C%20Krak%C3%B3w',
+    address: 'ul. Grodzka 35',
+    hours: '每日 13:00–23:00',
+    feature: '地窖燭光的傳統波蘭菜，Day 3（10/26 週一）晚餐首選。2026-09-18 官網查證，原文「Otwarte codziennie」——每日營業、週一不休，先前的週一風險註記已解除。訂位電話 +48 12 421 39 99 或 +48 12 430 21 13、restauracja@podaniolami.pl。',
+    url: 'https://podaniolami.pl/',
+  },
+  {
+    city: '樂斯拉夫',
+    name: 'Restauracja Wrocławska',
+    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Restauracja%20Wroc%C5%82awska%2C%20Szewska%2059/60%2C%20Wroc%C5%82aw',
+    address: 'ul. Szewska 59/60',
+    hours: '週日–四 12:00–22:00；週五–六 12:00–00:00',
+    feature: '戰前樂斯拉夫風味，招牌 bigos 與西里西亞餃；Day 5（10/28 週三）午餐首選，當天為 12:00–22:00。2026-09-18 由店家官網查得，先前僅有第三方來源。訂位電話 +48 71 305 12 28、restauracja@wroclawska.com.pl。',
+    url: 'https://wroclawska.com.pl/en/contact/',
+  },
+  {
     city: '樂斯拉夫',
     name: 'Konspira',
     mapUrl: 'https://www.google.com/maps/search/?api=1&query=Konspira%2C%20Plac%20Solny%2011%2C%20Wroc%C5%82aw',
     address: 'Plac Solny 11',
-    hours: '週一–四 13:00–23:45；週五–日 12:00–23:45；廚房至 23:00（官網首頁版本；/menu 與 /reservation 子頁另載一–三 13:00–23:00、廚房至 22:00，訂位時確認）',
-    feature: '傳統波蘭料理與 1980 年代反共地下運動主題空間；週五、週末與假日不接受訂位，依到店順序。訂位電話 +48 535 212 586。',
+    hours: '週一–三 13:00–23:00（廚房至 22:00）；週四 13:00–23:45（廚房至 23:00）；週五–六 12:00–23:45（廚房至 23:00）；週日 12:00–23:00（廚房至 22:00）',
+    feature: '傳統波蘭料理與 1980 年代反共地下運動主題空間。2026-09-18 官網查證，先前首頁與 /menu 子頁兩版矛盾的時間已統一。官方明示週五、週末與假日不接受訂位，依到店順序；Day 5（10/28 週三）為 13:00–23:00、廚房收單 22:00，可訂位。訂位電話 +48 535 212 586、rezerwacje.konspira@gmail.com。',
     url: 'https://restauracjakonspira.pl/',
   },
 ];
@@ -272,7 +290,7 @@ export const cityDining = {
     {
       "name": "Restauracja Wrocławska",
       "tier": "在地",
-      "highlight": "戰前風味 · 招牌：bigos 獵人燉菜、Silesian 餃 · 週三 12:00–22:00（多來源一致，非官網一手，行前電話確認）",
+      "highlight": "戰前風味 · 招牌：bigos 獵人燉菜、Silesian 餃 · 2026-09-18 官網查證日–四 12:00–22:00、五六 12:00–00:00（10/28 週三為 12:00–22:00）",
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=Restauracja%20Wroc%C5%82awska%20Wroc%C5%82aw"
     },
     {
@@ -338,10 +356,10 @@ export const snacksAndCafes = {
     {name:'A. Blikle 1869', type:'甜點 · 咖啡', note:'1869 年創立的波蘭國民甜點店，pączki 玫瑰果醬甜甜圈是招牌。Nowy Świat 本店距飯店步行約 15 分，Day 7 老城行程順路；09:00 開門，退房前想買 pączki 帶走可繞去，不適合當 Day 8 早餐主位。', hours:'每日 09:00–21:00（官網確認）', map:'https://www.google.com/maps/search/?api=1&query=A.Blikle%2C%20Nowy%20%C5%9Awiat%2033%2C%20Warszawa'},
     {name:'Cukiernia Zagoździński', type:'甜點', note:'1925 年開業的老派甜甜圈店，被在地人視為華沙 pączek 標準答案；位在 Wola 區 Górczewska 15，需搭電車前往，適合有半天餘裕時安排。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Cukiernia%20Zago%C5%BAdzi%C5%84ski%2C%20G%C3%B3rczewska%2015%2C%20Warszawa'},
     {name:'Café Bristol', type:'咖啡 · 輕食', note:'Krakowskie Przedmieście（Hotel Bristol 內），Day 7 城堡→POLIN 途中順路輕食、Day 8 早餐主位。', hours:'每日 08:00–20:00；週六開門時間各來源不一致，行前電話 +48 22 551 18 28 確認', map:'https://www.google.com/maps/search/?api=1&query=Caf%C3%A9%20Bristol%20Krakowskie%20Przedmie%C5%9Bcie%2042/44%2C%20Warszawa'},
-    {name:'Hala Koszyki', type:'美食大廳 · 宵夜', note:'百年市集改建的美食大廳，公告營業至凌晨 1:00，Day 6 晚班抵達後最好用的宵夜選項；距飯店步行約 10–15 分。', hours:'公告一–六 08:00–01:00、日 09:00–01:00（出發前重查）', map:'https://www.google.com/maps/search/?api=1&query=Hala%20Koszyki%2C%20Koszykowa%2063%2C%20Warszawa'},
+    {name:'Hala Koszyki', type:'美食大廳 · 宵夜', note:'百年市集改建的美食大廳，Day 6（10/29 週四）晚班抵達後最好用的晚餐／宵夜選項；距飯店步行約 10–15 分。官方註明各餐廳與店舖時間可能與大廳不同，抵達前先確認個別店家。地下停車場 200 席、每小時 10 PLN。', hours:'2026-09-18 官方網站（koszyki.com）查證：一、二 08:00–23:00；三、四 08:00–00:00；五、六 08:00–01:00；日 08:00–23:00。舊記的「一–六 08:00–01:00、日 09:00–01:00」已過時——凌晨 1:00 只有週五六，10/29（週四）是 00:00 打烊', map:'https://www.google.com/maps/search/?api=1&query=Hala%20Koszyki%2C%20Koszykowa%2063%2C%20Warszawa'},
   ],
   krakow: [
-    {name:'Bar Mleczny Pod Temidą', type:'牛奶吧', note:'Grodzka 43，老城區最方便的牛奶吧，pierogi、湯品與馬鈴薯煎餅都便宜；Day 2 11:30 午餐已排在這裡。', hours:'官網每日 09:00–20:00，惟部分來源說週末公休，行前電話 12 422 08 74 確認', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Pod%20Temid%C4%85%2C%20Grodzka%2043%2C%20Krak%C3%B3w'},
+    {name:'Bar Mleczny Pod Temidą', type:'牛奶吧', note:'Grodzka 43，老城區最方便的牛奶吧，pierogi、湯品與馬鈴薯煎餅都便宜；Day 2 11:30 午餐已排在這裡。⚠️ 2026-09-18 複查：這家沒有官方網站，第三方資料對週日的說法互相衝突（週日公休／09:00–20:00／10:45–19:00 三種都有）。10/25 正好是週日，出發前務必電話 +48 12 422 08 74 確認，並先想好同區的替代午餐（克拉科夫餐廳表的必比登選項或中央廣場周邊）。', hours:'待電話確認——無官方網站可查，第三方來源對週日互相矛盾（公休／09:00–20:00／10:45–19:00）；平日普遍列 09:00–20:00', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Pod%20Temid%C4%85%2C%20Grodzka%2043%2C%20Krak%C3%B3w'},
     {name:'Endzior · Plac Nowy 圓亭', type:'小吃 · zapiekanka', note:'Kazimierz 圓亭（Okrąglak）內的 zapiekanka 名攤，長棍麵包烤蘑菇起司，PLN 18–25；Day 2 晚餐後可繞來吃。', hours:'圓亭各攤營業到深夜，個別攤位時間不同', map:'https://www.google.com/maps/search/?api=1&query=Endzior%20Plac%20Nowy%20Krak%C3%B3w'},
     {name:'Karma Coffee Roasters', type:'精品咖啡', note:'2010 年開業，克拉科夫第一家精品咖啡店，Kazimierz 自家烘豆。公開資料列一–五 08:00–20:00、六日 10:00–19:00。', hours:'一–五 08:00–20:00、六日 10:00–19:00（公開資料，出發前重查）', map:'https://www.google.com/maps/search/?api=1&query=Karma%20Coffee%20Krupnicza%20Krak%C3%B3w'},
     {name:'Café Camelot', type:'咖啡廳', note:'老城區老牌文青咖啡館，距中央廣場數步，復古內裝、地窖有卡巴萊表演；適合 Day 4 採購後歇腳。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Cafe%20Camelot%2C%20%C5%9Aw.%20Tomasza%2017%2C%20Krak%C3%B3w'},
@@ -350,9 +368,9 @@ export const snacksAndCafes = {
   wroclaw: [
     {name:'Bar Mleczny Miś', type:'牛奶吧', note:'Kuźnicza 48，樂斯拉夫最知名的牛奶吧，營運逾 50 年；湯約 3–6 PLN、主菜 12–25 PLN。**週日公休**，本行程 10/28（三）可用。', hours:'一–五 07:00–18:00、六 08:00–17:00、日休（2026 公開資料，出發前重查）', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Mi%C5%9B%2C%20Ku%C5%BAnicza%2048%2C%20Wroc%C5%82aw'},
     {name:'Vincent · Kazimierza Wielkiego 甜點', type:'甜點 · 咖啡', note:'老城區連鎖甜點咖啡館，蛋糕櫃選擇多，適合小矮人散步途中補糖。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Cukiernia%20Vincent%20Wroc%C5%82aw'},
-    {name:'Konspira', type:'傳統小館', note:'Plac Solny 11，1980 年代地下反共運動主題餐廳，Śląskie kluski 等傳統菜；週五至日不接受訂位、依到店順序。現為備案（Day 5 午餐主位改 Restauracja Wrocławska）。', hours:'2026-09-17 官網查證，站內自相矛盾兩版並列：首頁寫一–四 13:00–23:45、五–日 12:00–23:45，廚房均至 23:00；/menu 與 /reservation 子頁卻寫一–三 13:00–23:00（廚房至 22:00）、四 13:00–23:45、五六 12:00–23:45。Day 5（週三）兩版都是 13:00 開門，但打烊與廚房收單差一小時，訂位時一併問清楚。訂位電話 +48 535 212 586（官網另列 rezerwacje.konspira@gmail.com）；週五、週末與假日不接受訂位', map:'https://www.google.com/maps/search/?api=1&query=Konspira%2C%20Plac%20Solny%2011%2C%20Wroc%C5%82aw'},
+    {name:'Konspira', type:'傳統小館', note:'Plac Solny 11，1980 年代地下反共運動主題餐廳，Śląskie kluski 等傳統菜；週五至日不接受訂位、依到店順序。現為備案（Day 5 午餐主位改 Restauracja Wrocławska）。', hours:'2026-09-18 官網查證（矛盾已解決）：一–三 13:00–23:00（廚房至 22:00）、四 13:00–23:45（廚房至 23:00）、五六 12:00–23:45（廚房至 23:00）、日 12:00–23:00（廚房至 22:00）。Day 5（10/28 週三）為 13:00–23:00、廚房收單 22:00。訂位電話 +48 535 212 586（官網另列 rezerwacje.konspira@gmail.com）；週五、週末與假日不接受訂位', map:'https://www.google.com/maps/search/?api=1&query=Konspira%2C%20Plac%20Solny%2011%2C%20Wroc%C5%82aw'},
     {name:'Browar Stu Mostów', type:'精釀啤酒', note:'樂斯拉夫代表性精釀酒廠，不喝酒可略過。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Browar%20Stu%20Most%C3%B3w%20Wroc%C5%82aw'},
-    {name:'El Gato Specialty Coffee', type:'咖啡 · 精品咖啡', note:'Odrzańska 8/1，Day 5 午餐後咖啡，樂斯拉夫精品咖啡選項。', hours:'待確認——站內原記的「一–五 09:00–18:00、六日 10:00–18:00」找不到店家一手出處，已撤下不再當成已查；到店前看店家官方社群當日公告', map:'https://www.google.com/maps/search/?api=1&query=El%20Gato%20Specialty%20Coffee%20Roasters%20Odrza%C5%84ska%208/1%2C%20Wroc%C5%82aw'},
+    {name:'El Gato Specialty Coffee', type:'咖啡 · 精品咖啡', note:'Day 5 午餐後咖啡，樂斯拉夫精品咖啡選項。2026-09-18 官網（elgatocoffee.pl）確認這是自家烘豆的 El Gato Coffee Roasters，市中心門市地址為 Odrzańska 8/1，品牌在樂斯拉夫與 Trzebnica 共 4 處門市——到店認「Odrzańska 8/1」這一間。', hours:'仍待確認——2026-09-18 再查官網，全站只列地址與品牌介紹、沒有任何門市營業時間；站內原記的「一–五 09:00–18:00、六日 10:00–18:00」查無一手出處，維持撤下。到店前看店家官方社群當日公告', map:'https://www.google.com/maps/search/?api=1&query=El%20Gato%20Specialty%20Coffee%20Roasters%20Odrza%C5%84ska%208/1%2C%20Wroc%C5%82aw'},
     {name:'Dessert Boutique', type:'甜點', note:'Świętego Mikołaja 43，Day 5 甜點候選，樂斯拉夫精緻歐式甜點店。', hours:'二–五 12:00–19:00、六日 11:00–20:00', map:'https://www.google.com/maps/search/?api=1&query=Dessert%20Boutique%20%C5%9Awi%C4%99tego%20Miko%C5%82aja%2043%2C%20Wroc%C5%82aw'},
   ],
   poznan: [
@@ -805,7 +823,7 @@ export const fastFoodBranches = {
     {chain: 'KFC', address: 'Świdnicka 13', note: '老城中心', map: chainMap('KFC Świdnicka 13, Wrocław')},
     {chain: "McDonald's", address: 'Rynek 30', note: '直接開在中央廣場上', map: chainMap("McDonald's Rynek 30, Wrocław")},
     {chain: 'Pasibus', address: 'Świdnicka 11 ／ Sucha 1', note: 'Świdnicka 是老城旗艦店，營業到凌晨 1–3 點；Sucha 1 在 Wroclavia（中央車站）', map: chainMap('Pasibus Świdnicka 11, Wrocław')},
-    {chain: 'MAX Premium Burgers', address: 'plac Dominikański 3 ／ Sucha 1', note: 'Galeria Dominikańska（市中心，營業到深夜）／Wroclavia（車站）', map: chainMap('MAX Premium Burgers Galeria Dominikańska, plac Dominikański 3, Wrocław')},
+    {chain: 'MAX Premium Burgers', address: 'plac Dominikański 3 ／ Sucha 1', note: '2026-09-18 官網查證 Galeria Dominikańska 店：一–四與日 09:00–04:00、五六 09:00–05:00，電話 +48 71 661 29 48——Day 5（10/28 週三）09:00–04:00，是市中心最晚的保底；另一家在 Wroclavia（車站）', map: chainMap('MAX Premium Burgers Galeria Dominikańska, plac Dominikański 3, Wrocław')},
     {chain: 'Berlin Döner Kebap', address: 'Plac Grunwaldzki 22', note: 'Pasaż Grunwaldzki，大學區，離老城稍遠；市內僅此一家', map: chainMap('Berlin Döner Kebap Pasaż Grunwaldzki, Plac Grunwaldzki 22, Wrocław')},
     {chain: 'Salad Story', address: 'Sucha 1', note: 'Wroclavia，中央車站旁', map: chainMap('Salad Story Wroclavia, Sucha 1, Wrocław')},
   ],
