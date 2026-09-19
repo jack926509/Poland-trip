@@ -1,3 +1,4 @@
+import { renderDiningFacts } from '../lib/dining.mjs';
 import { escapeHtml } from '../lib/html.mjs';
 import { renderLayout } from './layout.mjs';
 import { cityGuideByName, dayPageForDate } from '../lib/city-guide.mjs';
@@ -312,9 +313,9 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
   const reservationRows = michelinReservations.map(item => `
     <tr><td>${item.mapUrl ? `<a href="${item.mapUrl}" target="_blank" rel="noopener"><b>${item.restaurant}</b></a>` : `<b>${item.restaurant}</b>`}</td><td class="number">${item.perPerson}</td><td>${item.channel}${item.mapUrl ? `<br><a href="${item.mapUrl}" target="_blank" rel="noopener">Google Maps 定位 →</a>` : ''}${cityLink(item.restaurant, '#city-dining') ? `<br>${cityLink(item.restaurant, '#city-dining')}` : ''}</td></tr>`).join('');
   const hoursRows = verifiedRestaurantHours.map(item => `
-    <tr><td>${item.city}</td><td><a href="${item.url}" target="_blank" rel="noopener"><b>${item.name}</b></a><br>${item.address}${item.mapUrl ? `<br><a href="${item.mapUrl}" target="_blank" rel="noopener">Google Maps 定位 →</a>` : ''}</td><td>${item.hours}</td><td>${item.feature}</td></tr>`).join('');
+    <tr><td>${item.city}</td><td><a href="${item.url}" target="_blank" rel="noopener"><b>${item.name}</b></a><br>${item.address}${item.mapUrl ? `<br><a href="${item.mapUrl}" target="_blank" rel="noopener">Google Maps 定位 →</a>` : ''}</td><td>${renderDiningFacts(item)}</td><td>${item.feature}</td></tr>`).join('');
   const content = `
-    <div class="callout-note"><b>資料界線：</b>米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不把它們當成固定資料。高價餐廳預算已於 2026-09-08 對照旅程試算表更新；下表營業時間最近一輪以店家官網複查於 2026-09-18，查不到一手來源的店家一律標「待確認」，訂位前仍看店家公告。</div>
+    <div class="callout-note"><b>資料界線：</b>米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不把它們當成固定資料。高價餐廳預算已於 2026-09-08 對照旅程試算表更新；下表逐筆列出查核日期與來源，查不到一手來源的店家一律標「待確認」，訂位前仍看店家公告。</div>
     <section>
       <div class="section-heading"><span class="section-num">Guide</span><h2>2026 米其林總表</h2></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>星級</th><th>星級餐廳</th><th>Bib Gourmand</th></tr></thead><tbody>${summaryRows}</tbody></table></div>

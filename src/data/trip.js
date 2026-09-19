@@ -1,7 +1,13 @@
+import { resolveDining } from './dining-places.js';
 // trip.js — 行程資料源頭：meta、flights、days×8、stay、trains、bookingTiers、reservations
 // 來源：redesign/data.js（原 window.TRIP 物件字面值），轉為 ES module 具名匯出。
 // 2026-08-09 依景點、博物館與交通營運單位公開資料重新盤查。
 // 尚未開賣的 10 月火車與短期資料明確標為待確認，不用歷史班次作為確定時刻。
+
+function snack(item) {
+  const place = resolveDining(item);
+  return {...place, text:item.text, place:place.name, note:[place.note, place.hours, place.verificationNote].filter(Boolean).join('；')};
+}
 
 export const meta = {
   code: 'POLSKA',
@@ -37,11 +43,11 @@ export const days = [
       {t:'15:15', label:'Hotel Metropol Check-in', sub:'ul. Marszałkowska 99a；入住 15:00 起，提早到可先寄放行李再出門', dur:'30 min'},
       {t:'16:45', label:'★ 老城廣場', sub:'皇家城堡 · 美人魚雕像', cost:'免費', dur:'1 h'},
       {t:'18:00', label:'Krakowskie Przedmieście', sub:'黃昏氛圍', cost:'免費', dur:'1 h'},
-      {t:'19:00', label:'波蘭地方料理晚餐', sub:'Specjały Regionalne · Nowy Świat；出發前確認當日營業', cost:'PLN 35–55'},
+      {t:'19:00', id:'d1-dinner', label:'波蘭地方料理晚餐', sub:'Specjały Regionalne · Nowy Świat；出發前確認當日營業', cost:'PLN 35–55'},
       {t:'21:00', label:'早睡倒時差'},
     ],
     eat: [
-      {text:'甜點 @ Pijalnia Czekolady E.Wedel（Szpitalna 8）', place:'Pijalnia Czekolady E.Wedel（Szpitalna 8）', note:'2026-09-19 官方門市頁複核：一–六 09:00–22:00、日 09:00–21:00', map:'https://www.google.com/maps/search/?api=1&query=Pijalnia+Czekolady+E.Wedel+Szpitalna+8+Warsaw'},
+      snack({text:'甜點 @ Pijalnia Czekolady E.Wedel（Szpitalna 8）', placeId:'warsaw-wedel-szpitalna-8'}),
     ],
     backup: [
       {label:'下雨備案', where:'科學文化宮 30F 觀景台', why:'全票 30／優待 25 PLN（2026-09-18 官方售票系統查證）· 每日 10:00–20:00 · 室內 + 360° 城景；從老城前往須另抓交通時間，依當下導航確認', map:'https://www.google.com/maps/search/?api=1&query=Pa%C5%82ac%20Kultury%20i%20Nauki%2C%20plac%20Defilad%201%2C%20Warszawa'},
@@ -70,17 +76,17 @@ export const days = [
       {t:'參考 08:45', label:'EIP 5300 前往克拉科夫', sub:'參考班次；10/25 換表後須確認實際停靠站與時刻並完成購票，購票後只依票面上車站行動', cost:'票價待確認', dur:'2h13'},
       {t:'參考 10:58', label:'抵 Kraków Główny', dur:'5–10 min 拖行李'},
       {t:'11:10', label:'旅館寄放行李', sub:'ibis budget Krakow Stare Miasto 在 Pawia 11，飯店官網標示距車站約 200 公尺', dur:'20 min'},
-      {t:'11:30', label:'車站周邊午餐', sub:'10/25 為非營業週日，先確認店家當日營業；用餐後步行約 25–30 分到 Wawel', cost:'PLN 40–60', dur:'45 min'},
+      {t:'11:30', id:'d2-lunch', label:'車站周邊午餐', sub:'午餐候選為老城 Grodzka 43 的 Pod Temidą，非車站內店家；先由車站前往並確認週日營業，未確認則在車站周邊另選，再依實際位置前往 Wawel', cost:'PLN 40–60', dur:'45 min'},
       {t:'13:00', label:'★ 瓦維爾大教堂', sub:'週日 12:30–17:00；Cathedral Museum 週日不開', cost:'PLN 26／18', dur:'45 min'},
       {t:'14:00', label:'★ Wawel 城堡短路線', constraint:{venue:'krakow-wawel-castle'}, sub:'2026-09-17 官網 9–12 月分路線售票，適合一小時空檔的是：王冠寶庫 47／35、Castle Underground 47／35（含語音導覽）、Armoury 47／35；二樓代表廳 57／43 需時較長。不要硬排一、二樓完整路線，會壓縮後續步行', cost:'寶庫或地下路線 PLN 47／35', dur:'1 h'},
       {t:'15:00', label:'★ 中央廣場 + 聖瑪利亞', sub:'本次先看廣場與教堂外觀，登塔改為有餘裕才安排。整點 Hejnał 號角；塔票僅於 Mariacki 廣場 7 號當日現場售票', cost:'外觀免費', dur:'30 min（含由城堡步行）'},
       {t:'15:30', label:'紡織會館 Sukiennice 快速一覽', sub:'採購留到 10/27', cost:'免費入場', dur:'15 min'},
       {t:'15:45', label:'步行經 Kazimierz、Podgórze 前往辛德勒工廠', sub:'保留約 85 分鐘步行與沿途短停，17:10 前到入口；時間不足改用 Jakdojade 查當下交通', dur:'約 1 h 25 min'},
       {t:'17:30', label:'★ 辛德勒工廠', constraint:{venue:'krakow-schindler'}, sub:'週日 09:00–20:00、最後入場為閉館前 90 分（18:30）· 常設展線上票一律實名，入場要帶與購票同名的證件正本 · 官方售票頁預約', cost:'PLN 60 · 優待 45', dur:'2 h'},
-      {t:'19:45', label:'★ Kazimierz Plac Nowy zapiekanka 晚餐', sub:'19:45 主餐先訂 NOAH（以色列烤羊肉串配 pitta 餅），飯後再走去圓亭吃 Endzior zapiekanka', cost:'PLN 60–100'},
+      {t:'19:45', id:'d2-dinner', label:'★ Kazimierz Plac Nowy zapiekanka 晚餐', sub:'19:45 主餐先訂 NOAH（以色列烤羊肉串配 pitta 餅），飯後再走去圓亭吃 Endzior zapiekanka', cost:'PLN 60–100'},
     ],
     eat: [
-      {text:'zapiekanka 街食 @ Endzior', place:'Endzior @ Okrąglak（Plac Nowy 圓亭）', note:'圓亭內 zapiekanka 名攤，長棍麵包烤蘑菇起司', map:'https://www.google.com/maps/search/?api=1&query=Endzior+Krakow'},
+      snack({text:'zapiekanka 街食 @ Endzior', placeId:'krakow-endzior'}),
     ],
     warn: '❗瓦維爾城堡尚未訂票；辛德勒工廠個人網路票在參觀日前 90 天 09:00 開放，10/25 已可在官方售票頁查／購。瓦維爾大教堂週日 12:30–17:00；城堡改走短路線並於 15:00 前離開，保留經 Kazimierz、Podgórze 步行到辛德勒工廠的時間。辛德勒工廠週二至週日 09:00–20:00、最後入場 18:30，17:30 屬可行時段。10/25 為非營業週日，多數一般商店關閉；餐廳等法定例外是否營業仍以店家公告為準。',
     backup: [
@@ -116,10 +122,10 @@ export const days = [
       {t:'約 14:15', label:'導覽結束', sub:'比克瑙結束後依接駁巴士回一館，再走到停車站牌'},
       {t:'15:30', label:'回程巴士返克拉科夫', sub:'2026-09-09 於 lajkonikbus.pl 查得 10/26 回程僅三班：14:00（導覽結束前就開走，不可用）、15:30、16:30。採 15:30 由 Więźniów Oświęcimia 55 發車，導覽結束後有 75 分鐘走回站牌與休息；若導覽延後或接駁排隊，改搭 16:30（17:55 抵）', cost:'PLN 25.00（優待 22.00）', dur:'1h25'},
       {t:'16:55', label:'抵 Kraków MDA · 休息', sub:'ul. Bosacka 18 Dworzec Autobusowy；距晚餐還有約 1 小時，可先回旅館放東西'},
-      {t:'18:00', label:'安靜晚餐沉澱情緒', cost:'PLN 60–100'},
+      {t:'18:00', id:'d3-dinner', label:'安靜晚餐沉澱情緒', cost:'PLN 60–100'},
     ],
     eat: [
-      {text:'回程後的一杯咖啡 @ Karma Coffee Roasters', place:'Karma Coffee Roasters（Krupnicza）', note:'克拉科夫第一家精品咖啡店，公開資料列一–五 08:00–20:00、六日 10:00–19:00；巴士回到市區後可先坐下沉澱', map:'https://www.google.com/maps/search/?api=1&query=Karma%20Coffee%20Krupnicza%20Krak%C3%B3w'},
+      snack({text:'回程後的一杯咖啡 @ Karma Coffee Roasters', placeId:'krakow-karma-coffee-roasters'}),
     ],
     warn: '✅ 導覽已訂妥：10/26 10:30 英文個人 educator 導覽（Zwiedzanie indywidualne z edukatorem），官方標示約 3 小時 45 分，2 人。官方明載「入場證需搭配身分證件」，請把電子入場證存離線並帶護照。🚌 巴士去回皆已查定、但尚未購票：官方要求入場時段前 30 分鐘到場完成安檢，因此必須在 10:00 前完成安檢；導覽約 14:15 結束，回程只能挑那之後的班次。去程已於 2026-09-09 在官方售票頁 lajkonikbus.pl 查得 10/26 實際班次並選定 **07:10 → 08:35**（D10 發車，1h25，全票 25.00 zł／優待 22.00 zł），抵達後距入場有 1 小時 55 分。當日另一班 08:25 → 09:50 只比 10:00 安檢截止早 10 分鐘，巴士一誤點就來不及，不採用；**沒有 07:35 這班**。回程同日查得 10/26 下午僅三班：14:00（導覽結束前開走，不可用）、**15:30 → 16:55（採用）**、16:30 → 17:55（備案），皆 25.00 zł、車程 1h25。去回兩程皆尚未購票，付款前仍以售票頁當下顯示為準。',
     // 回程選項。導覽約 14:15 結束，全部以「14:15 之後發車」為門檻。
@@ -183,7 +189,7 @@ export const days = [
       {t:'08:00', label:'早餐 + 退房', sub:'行李寄旅館'},
       {t:'09:00', label:'火車到 Wieliczka Rynek-Kopalnia', sub:'KMŁ；2026-09-17 ZTP 官方票價表載明 70 分鐘 KMK+KMŁ 聯票涵蓋 Wieliczka Bogucice–Wieliczka Rynek Kopalnia 區段與所有站名含「Kraków」的車站，唯一排除的是 Kraków Airport——此程適用。注意是「70 分鐘」有效，逾時要另購', cost:'PLN 10（優待 5）', dur:'約 25 min'},
       {t:'10:00', label:'★ Wieliczka 鹽礦 Tourist Route 英文團', sub:'3.5 km · 135m 深 · St. Kinga 鹽教堂。指定日票價已查：10/27 英語 Tourist Route 全票 143／優待 121 PLN；但 10:00 這個場次是否存在、還有沒有位子仍未確認，購票前務必在官方日期選擇器逐項核對', cost:'PLN 143（優待 121）· 已查票價／尚未購票', dur:'2–3 h'},
-      {t:'13:00', label:'Wieliczka 鎮中心午餐', cost:'PLN 40–60', dur:'30 min'},
+      {t:'13:00', id:'d4-lunch', label:'Wieliczka 鎮中心午餐', cost:'PLN 40–60', dur:'30 min'},
       {t:'13:30', label:'火車回 Kraków Główny', sub:'回程同樣可用 70 分鐘 KMK+KMŁ 聯票（去程那張已失效，需再買一張）', cost:'PLN 10（優待 5）', dur:'約 25 min'},
       {t:'14:30', label:'★ Kazimierz 白天散步', sub:'舊猶太會堂 · Szeroka 街 · 《辛德勒名單》場景', cost:'免費', dur:'1.5 h'},
       {t:'16:00', label:'結束 Kazimierz 散步，回 ibis 取行李', sub:'飯店距 Kraków Główny 約 200 公尺；採購改為有餘裕才安排'},
@@ -192,8 +198,8 @@ export const days = [
       {t:'參考 20:52', label:'抵 Wrocław Główny', sub:'步行至主站對面的 Hotel Piast，拖行李保守抓 5–10 分鐘'},
     ],
     eat: [
-      {text:'Sernik @ Cukiernia Michałek', place:'Cukiernia Michałek', map:'https://www.google.com/maps/search/?api=1&query=Cukiernia+Michalek+Krakow'},
-      {text:'Pierożki u Vincenta（Kazimierz）', place:'Pierożki u Vincenta', map:'https://www.google.com/maps/search/?api=1&query=Pierozki+u+Vincenta+Krakow'},
+      snack({text:'Sernik @ Cukiernia Michałek', placeId:'krakow-cukiernia-michalek'}),
+      snack({text:'Pierożki u Vincenta（Kazimierz）', placeId:'krakow-pierozki-u-vincenta'}),
     ],
     warn: '❗鹽礦與城際火車皆尚未購票。10/27 英語 Tourist Route 票價已查到 143／121 PLN，但 10:00 場次與庫存仍未確認，仍須在官方日期選擇器逐項核對；IC 3600 的 17:55–20:52 是目前採用的參考班次，不是已購票。若指定日班表不同，先保留 17:20 抵站與住宿接駁緩衝再重排。',
     backup: [
@@ -230,8 +236,8 @@ export const days = [
       {t:'參考 20:29', label:'抵 Poznań Główny', sub:'先到 Towarowa 37/201 接待處取鑰匙；實際公寓門牌依訂房確認'},
     ],
     eat: [
-      {text:'咖啡 @ El Gato Specialty Coffee', place:'El Gato Specialty Coffee（Odrzańska 8/1）', note:'2026-09-18 官網確認市中心門市在 Odrzańska 8/1（品牌另有其他門市，別走錯）；營業時間官網未公布，仍待確認', map:'https://www.google.com/maps/search/?api=1&query=El+Gato+Specialty+Coffee+Odrzanska+8+Wroclaw'},
-      {text:'甜點 @ Dessert Boutique', place:'Dessert Boutique', note:'二–五 12:00–19:00', map:'https://www.google.com/maps/search/?api=1&query=Dessert+Boutique+Cukiernia+Premium+Wroclaw'},
+      snack({text:'咖啡 @ El Gato Specialty Coffee', placeId:'wroclaw-el-gato-specialty-coffee'}),
+      snack({text:'甜點 @ Dessert Boutique', placeId:'wroclaw-dessert-boutique'}),
     ],
     warn: '❗此日兩項皆尚未訂票。百年廳的 10/28 內部參觀狀態須以官方 availability calendar 確認，未確認前不販售或保證室內行程。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，因此安排 16:15–17:15 在座堂島等候，不再把 16:45 寫成確定時刻。',
     backup: [
@@ -265,8 +271,8 @@ export const days = [
       {t:'20:30', label:'放行李後晚餐', sub:'Hala Koszyki 美食大廳（2026-09-18 官網查證：週四 08:00–00:00，只有週五六才到凌晨 1:00），距飯店步行約 10–15 分；若想更省時可改車站對面 Złote Tarasy（一–六約至 22:00、日至 21:00）。大廳時間不等於各攤位時間，當日仍先確認個別店家營業與是否需訂位', cost:'PLN 60–120', dur:'1–1.5 h'},
     ],
     eat: [
-      {text:'12:15 聖馬丁牛角麵包 @ Cukiernia Kandulski', place:'Cukiernia Kandulski（示範分店）', note:'認證店家眾多，出發前依官方認證名單就近選擇；地圖先連到示範分店，選定分店後再改導航', map:'https://www.google.com/maps/search/?api=1&query=Cukiernia+Kandulski+Pozna%C5%84'},
-      {text:'20:30 華沙宵夜 @ Hala Koszyki', place:'Hala Koszyki（美食大廳）', note:'10/29 週四大廳 08:00–00:00（凌晨 1:00 只有週五六），距飯店步行約 10–15 分；個別攤位時間可能更早收', map:'https://www.google.com/maps/search/?api=1&query=Hala+Koszyki+Warszawa'},
+      snack({text:'12:15 聖馬丁牛角麵包 @ Cukiernia Kandulski', placeId:'poznan-cukiernia-kandulski'}),
+      snack({text:'20:30 華沙宵夜 @ Hala Koszyki', placeId:'warsaw-hala-koszyki'}),
     ],
     backup: [
       {label:'雨天想看山羊鐘', where:'可頌博物館官方售票頁', map:'https://www.google.com/maps/search/?api=1&query=Rogalowe%20Muzeum%20Poznania%2C%20Klasztorna%2023%2C%20Pozna%C5%84', why:'英語公開場官方票價 47 PLN／人，但 10/29 有無場次與庫存都須依官方售票系統確認；未確認前改以 Stary Browar 或帝王城堡為室內備案。棕櫚屋已因改建閉館，不能再列為雨天備案'},
@@ -285,12 +291,12 @@ export const days = [
     weather: '尚無可靠預報；出發前 7–10 天更新',
     steps: [
       {t:'10:00', label:'★ 皇家城堡', constraint:{venue:'warsaw-royal-castle'}, sub:'採 Royal Route，官方標示約 60 分（含語音導覽）；二–日 10:00–18:00、末入 17:00、週一休館。10/30 是週五，不適用週三的限定路線免費場', cost:'PLN 60 · 優待 45', dur:'約 60 min'},
-      {t:'11:15', label:'午餐（老城 → POLIN 路上）', sub:'Café Bristol（Krakowskie Przedmieście，Hotel Bristol 內）；選當日有營業且可訂位的店', cost:'依餐廳', dur:'45 min'},
+      {t:'11:15', id:'d7-lunch', label:'午餐（老城 → POLIN 路上）', sub:'Café Bristol（Krakowskie Przedmieście，Hotel Bristol 內）；選當日有營業且可訂位的店', cost:'依餐廳', dur:'45 min'},
       {t:'12:00', label:'前往 POLIN + 安檢緩衝', sub:'依當日交通重算，保留入館安檢與提早報到時間', dur:'1 h 15 min'},
       {t:'13:15', label:'★ POLIN 猶太博物館', constraint:{venue:'warsaw-polin'}, sub:'週五 10:00–18:00；主展最晚 16:00 入場', cost:'依官方售票頁', dur:'2 h'},
       {t:'15:15', label:'前往華沙起義博物館 + 安檢緩衝', sub:'依當日交通重算，16:00 僅為規劃目標，以實際可售時段為準', dur:'45 min'},
       {t:'16:00', label:'★ 華沙起義博物館', sub:'35／30 PLN；以官方票頁 10/30 可售時段為準', cost:'PLN 35／30', dur:'2 h'},
-      {t:'19:30', label:'老城最後晚餐', sub:'U Fukiera', cost:'PLN 120–200', dur:'1.5 h'},
+      {t:'19:30', id:'d7-dinner', label:'老城最後晚餐', sub:'U Fukiera', cost:'PLN 120–200', dur:'1.5 h'},
       {t:'21:00', label:'老城廣場夜燈漫步', sub:'自由收尾'},
     ],
     eat: [],
@@ -317,7 +323,7 @@ export const days = [
     compressible: ['飯店周邊散步', '最後採買'],
     weather: '尚無可靠預報；出發前 7–10 天更新',
     steps: [
-      {t:'08:00', label:'早餐 + 老城散步', sub:'Café Bristol（Krakowskie Przedmieście，Hotel Bristol 內）；A. Blikle 09:00 才開門，不適合當早餐', cost:'PLN 40', dur:'1.5 h'},
+      {t:'08:00', id:'d8-breakfast', label:'早餐 + 老城散步', sub:'Café Bristol（Krakowskie Przedmieście，Hotel Bristol 內）；A. Blikle 09:00 才開門，不適合當早餐', cost:'PLN 40', dur:'1.5 h'},
       {t:'09:45', label:'退房 → Warszawa Centralna', sub:'由 Hotel Metropol 出發；依行李狀況步行或叫車，當日再用導航重算並預留找月台緩衝', dur:'30–45 min'},
       {t:'10:30', label:'SKM S2／S3 目標班次', sub:'回程往機場方向：S2 由 Warszawa Śródmieście 上車、S3 由 Warszawa Centralna 上車（兩線停靠站不同，看清楚再上）。官方標示 75 分鐘第 1 區票；當日查 WTP 月台與發車時間', cost:'75 分第 1 區票 4.40', dur:'約 25–30 min'},
       {t:'11:00', label:'抵 Chopin 第一航廈'},

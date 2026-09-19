@@ -1,17 +1,6 @@
-// 本檔整合 poland-travel-guide-final.html 的 2026 餐飲資料，
-// 以及 redesign/data.js 的行程餐廳與必吃清單。
-// 由來源機械轉錄，頁面模板不得另行寫死餐飲內容。
-//
-// 2026-09-14 精煉與整併：城市頁原本有「行程主餐廳推薦」「備案餐廳」「小吃 · 牛奶吧 · 咖啡廳」
-// 三個區塊，前兩者是兩份互相重複的清單（NOAH／MOLÁM／Most／Muga 等十餘家兩邊都有）。
-// 三塊已整併為單一張「行程餐廳推薦」表，由 templates/city-dining.mjs 的 mergeCityDining()
-// 把 cityDining、cityFood、snacksAndCafes 與 day-dining.js 的候選合成一份、同店只留一列。
-// `foodBackup` 匯出不再存在，備案併入 cityFood 並以 role: 'primary' / 'backup' 區分；
-// snacksAndCafes 仍是獨立資料來源，在表中標為 role: 'snack'。
-// 保留標準：① 你的候選（day-dining.js）② 米其林星級／必比登
-// ③ 各分類代表（餃子、牛奶吧、市集、甜點）④ 首選訂不到時真的會改去的備案。
-// 沒有固定店址的品項（obwarzanek、jagodzianka 等）交給每日「順路必吃」處理，不佔餐廳列。
-
+// 門市事實在 dining-places.js；本檔僅維護推薦分類與訂位管道。
+import { resolveDining } from './dining-places.js';
+export { fastFoodChains, fastFoodBranches, fastFoodHubs } from './fast-food.js';
 export const michelinSummary = [
   {
     "city": "克拉科夫",
@@ -80,7 +69,6 @@ export const michelinSummary = [
     ]
   }
 ];
-
 export const michelinReservations = [
   {
     "restaurant": "⭐⭐ Bottiglieria 1881（克拉科夫）",
@@ -137,538 +125,6 @@ export const michelinReservations = [
     "channel": "官網未列站內原有套餐價；訂位前查看最新菜單"
   }
 ];
-
-// 僅收錄能由店家官網直接確認、且和本行程實際用餐有關的分店。
-// 營業時間查證日：2026-08-08；餐廳仍可能臨時包場或調整，訂位頁優先。
-export const verifiedRestaurantHours = [
-  {
-    city: '華沙',
-    name: 'U Fukiera',
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=U%20Fukiera%2C%20Rynek%20Starego%20Miasta%2027%2C%20Warszawa',
-    address: 'Rynek Starego Miasta 27',
-    hours: '週一–四 12:00–23:00；週五–六 12:00–23:30；週日 12:00–23:00',
-    feature: '歷史老城波蘭料理；官網菜單可確認 żurek、餃子、鯡魚與韃靼牛肉。',
-    url: 'https://www.ufukiera.pl/kontakt/',
-  },
-  {
-    city: '華沙',
-    name: 'Polka',
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Restauracja%20Polka%2C%20%C5%9Awi%C4%99toja%C5%84ska%202%2C%20Warszawa',
-    address: 'Świętojańska 2（皇家城堡旁）',
-    hours: '每日 12:00–22:00',
-    feature: '傳統波蘭料理，位置最適合接皇家城堡；不是 U Fukiera 的同一間店。',
-    url: 'https://warszawa.restauracjapolka.pl/about-us',
-  },
-  {
-    city: '華沙',
-    name: 'E.Wedel Pijalnia',
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Pijalnia%20Czekolady%20E.Wedel%2C%20Krakowskie%20Przedmie%C5%9Bcie%2045%2C%20Warszawa',
-    address: 'Krakowskie Przedmieście 45',
-    hours: '週一–四 10:00–22:00；週五–六 10:00–23:00；週日 10:00–22:00',
-    feature: 'E.Wedel 巧克力飲品與甜點；已鎖定分店，避免套用商場分店的週日休店規則。',
-    url: 'https://wedelpijalnie.pl/lokale',
-  },
-  {
-    city: '克拉科夫',
-    name: 'Pod Aniołami',
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Pod%20Anio%C5%82ami%2C%20Grodzka%2035%2C%20Krak%C3%B3w',
-    address: 'ul. Grodzka 35',
-    hours: '每日 13:00–23:00',
-    feature: '地窖燭光的傳統波蘭菜，Day 3（10/26 週一）晚餐首選。2026-09-18 官網查證，原文「Otwarte codziennie」——每日營業、週一不休，先前的週一風險註記已解除。訂位電話 +48 12 421 39 99 或 +48 12 430 21 13、restauracja@podaniolami.pl。',
-    url: 'https://podaniolami.pl/',
-  },
-  {
-    city: '樂斯拉夫',
-    name: 'Restauracja Wrocławska',
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Restauracja%20Wroc%C5%82awska%2C%20Szewska%2059/60%2C%20Wroc%C5%82aw',
-    address: 'ul. Szewska 59/60',
-    hours: '開門時間待店家確認；週日–四廚房至 21:30、酒吧至 22:00；週五–六廚房至 22:00、酒吧至 00:00',
-    feature: '戰前樂斯拉夫風味，招牌 bigos 與西里西亞餃；Day 5（10/28 週三）午餐首選。2026-09-19 店家官網查證；訂位電話 +48 71 305 12 28、restauracja@wroclawska.com.pl。',
-    url: 'https://wroclawska.com.pl/en/contact/',
-  },
-  {
-    city: '樂斯拉夫',
-    name: 'Konspira',
-    mapUrl: 'https://www.google.com/maps/search/?api=1&query=Konspira%2C%20Plac%20Solny%2011%2C%20Wroc%C5%82aw',
-    address: 'Plac Solny 11',
-    hours: '週一–三 13:00–23:00（廚房至 22:00）；週四 13:00–23:45（廚房至 23:00）；週五–六 12:00–23:45（廚房至 23:00）；週日 12:00–23:00（廚房至 22:00）',
-    feature: '傳統波蘭料理與 1980 年代反共地下運動主題空間。2026-09-18 官網查證，先前首頁與 /menu 子頁兩版矛盾的時間已統一。官方明示週五、週末與假日不接受訂位，依到店順序；Day 5（10/28 週三）為 13:00–23:00、廚房收單 22:00，可訂位。訂位電話 +48 535 212 586、rezerwacje.konspira@gmail.com。',
-    url: 'https://restauracjakonspira.pl/',
-  },
-];
-
-export const cityDining = {
-  "warsaw": [
-    {
-      "name": "NUTA",
-      "tier": "★",
-      "highlight": "招牌：主廚 Andrea Camastra 創意套餐，義式底蘊融合亞洲香料，劇場式上菜 · 提前 3–5 週",
-      "mapUrl": "https://maps.google.com/?cid=4624148008162643045"
-    },
-    {
-      "name": "Wyraj",
-      "tier": "Bib",
-      "highlight": "招牌：時令波蘭傳統家常菜重製",
-      "mapUrl": "https://www.google.com/maps/search/?api=1&query=Wyraj%20Warszawa"
-    },
-    {
-      "name": "WANDAL",
-      "tier": "Bib · 2026 新",
-      "highlight": "米其林 2026「年度開幕」· 招牌：顛覆式當代波蘭菜",
-      "mapUrl": "https://maps.google.com/?cid=15993615675406452524"
-    },
-    {
-      "name": "Kieliszki na Próżnej",
-      "tier": "Bib",
-      "highlight": "招牌：酒杯小酌配歐陸小盤 · 酒吧型小酒館",
-      "mapUrl": "https://www.google.com/maps/search/?api=1&query=Kieliszki%20na%20Pr%C3%B3%C5%BCnej%20Warszawa"
-    },
-    {
-      "name": "Hala Koszyki",
-      "tier": "美食廣場",
-      "highlight": "免訂位 · 多攤集合，可一次吃到多國小吃",
-      "mapUrl": "https://www.google.com/maps/search/?api=1&query=Hala%20Koszyki%20Warszawa"
-    }
-  ],
-  "krakow": [
-    {
-      "name": "Bottiglieria 1881",
-      "tier": "★★",
-      "highlight": "全波蘭唯一二星(Kazimierz) · 招牌：波蘭×北歐兩套 tasting · 逾 500 款酒",
-      "mapUrl": "https://maps.google.com/?cid=8570908113421134699"
-    },
-    {
-      "name": "Folga",
-      "tier": "Bib",
-      "highlight": "招牌：當代創意料理小盤 · 高CP",
-      "mapUrl": "https://maps.google.com/?cid=7193800786272583343"
-    },
-    {
-      "name": "NOAH",
-      "tier": "Bib",
-      "highlight": "招牌：以色列烤羊肉串配 pitta 餅 · 平價實惠",
-      "mapUrl": "https://maps.google.com/?cid=6279990201826816109"
-    },
-    {
-      "name": "Hamsa",
-      "tier": "在地候選",
-      "highlight": "Kazimierz（Szeroka 2）· 招牌：中東鷹嘴豆泥 hummus、falafel",
-      "mapUrl": "https://maps.google.com/?cid=1317891001987072687"
-    },
-    {
-      "name": "Okrąglak（Plac Nowy 圓亭）",
-      "tier": "使用者指定 · 街食",
-      "highlight": "plac Nowy 4B · 圓亭四周聚集多家 zapiekanka 窗口；Day 2 晚餐可直接排在 Kazimierz 動線末段",
-      "mapUrl": "https://maps.app.goo.gl/2Nitej5cqG4VAcbp6?g_st=il"
-    },
-    {
-      "name": "Szalone Widelce",
-      "tier": "使用者指定 · 波蘭料理",
-      "highlight": "Szpitalna 40 · 位於老城東側，適合接中央市集廣場；營業時間與訂位以店家即時頁面為準",
-      "mapUrl": "https://maps.app.goo.gl/U3yMsjdSgM3Pwgqe9?g_st=il"
-    },
-    {
-      "name": "Bar Mleczny Pod Temidą",
-      "tier": "使用者指定 · 牛奶吧",
-      "highlight": "Grodzka 43 · 在中央廣場與 Wawel 之間，適合排平價早餐或午餐；官網每日 09:00–20:00，惟部分來源說週末公休，行前電話 12 422 08 74 確認",
-      "mapUrl": "https://maps.app.goo.gl/xCGDapoy56MBvg2y7?g_st=il"
-    }
-  ],
-  "wroclaw": [
-    {
-      "name": "BABA",
-      "tier": "★ · 2026 新",
-      "highlight": "2025 Bib 升 2026 一星 · Nożownicza 1D · 主廚 Beata Śniechowska · 2026-02 官網菜單主菜約 69–159 PLN",
-      "mapUrl": "https://maps.google.com/?cid=9335659011047272773"
-    },
-    {
-      "name": "IDA kuchnia i wino",
-      "tier": "Bib",
-      "highlight": "招牌：現代版 kopytka 馬鈴薯疙瘩、pierogi、żurek 酸湯 · 站內舊套餐價無法由 2026-09-19 官網核實",
-      "mapUrl": "https://maps.google.com/?cid=10589009865057440004"
-    },
-    {
-      "name": "Restauracja Wrocławska",
-      "tier": "在地",
-      "highlight": "戰前風味 · 招牌：bigos 獵人燉菜、Silesian 餃 · 2026-09-19 官網查證日–四廚房至 21:30、酒吧至 22:00；五六廚房至 22:00、酒吧至 00:00",
-      "mapUrl": "https://www.google.com/maps/search/?api=1&query=Restauracja%20Wroc%C5%82awska%20Wroc%C5%82aw"
-    },
-    {
-      "name": "Piwnica Świdnicka",
-      "tier": "歷史",
-      "highlight": "市政廳地窖 · 歐洲最古老餐廳之一（1273）· 招牌：傳統燉肉與啤酒",
-      "mapUrl": "https://www.google.com/maps/search/?api=1&query=Piwnica%20%C5%9Awidnicka%20Wroc%C5%82aw"
-    }
-  ],
-  "poznan": [
-    {
-      "name": "Muga",
-      "tier": "★",
-      "highlight": "波茲南首家、目前唯一一星 · 法系 · 招牌：時令 10–12 道套餐（如烤鴿配無花果）· 套餐 390–540 PLN",
-      "mapUrl": "https://maps.google.com/?cid=2998937238608160974"
-    },
-    {
-      "name": "Fromażeria",
-      "tier": "Bib",
-      "highlight": "招牌：起司主題料理，融合波蘭與地中海／黎凡特香料風味",
-      "mapUrl": "https://www.google.com/maps/search/?api=1&query=Froma%C5%BCeria%20Pozna%C5%84"
-    },
-    {
-      "name": "SPOT.",
-      "tier": "Bib",
-      "highlight": "招牌：當代創意料理小盤",
-      "mapUrl": "https://www.google.com/maps/search/?api=1&query=SPOT.%20Pozna%C5%84"
-    },
-    {
-      "name": "rogal świętomarciński",
-      "tier": "名物",
-      "highlight": "PGI 聖馬丁可頌 · 白罌粟籽餡 · 四季有售 · Rogalowe Muzeum、Wise Cafe（Mercure 內）公認名版本",
-      "mapUrl": "https://www.google.com/maps/search/?api=1&query=rogal%20%C5%9Bwi%C4%99tomarci%C5%84ski%20Pozna%C5%84"
-    },
-    {
-      "name": "Na Winklu",
-      "tier": "餃子",
-      "highlight": "Śródka 區河畔 · 招牌：烤製版大顆 pierogi，外皮酥脆內餡多汁，在地人氣首選",
-      "mapUrl": "https://maps.google.com/?cid=17998777227118824033"
-    },
-    {
-      "name": "Hyćka",
-      "tier": "傳統",
-      "highlight": "大波蘭菜 · 招牌：烤鴨配 pyzy 蒸糰（Muga 主廚推薦）",
-      "mapUrl": "https://www.google.com/maps/search/?api=1&query=Hy%C4%87ka%20Pozna%C5%84"
-    },
-    {
-      "name": "Pyra Bar",
-      "tier": "在地",
-      "highlight": "馬鈴薯專門 · 招牌：pyry s bzikiem 起司烤馬鈴薯 · 週四 11:00–21:00",
-      "mapUrl": "https://www.google.com/maps/search/?api=1&query=Pyra%20Bar%20Pozna%C5%84"
-    }
-  ]
-};
-
-// 2026-09-09 新增：小吃、牛奶吧與咖啡廳推薦。
-// 2026-09-14 起併入城市頁的「行程餐廳推薦」表，標為 role: 'snack'，不再有獨立區塊。
-// 每筆都必須有可點的 Google Maps 連結；營業時間屬動態資料，只寫查得到來源的，並要求出發前重查。
-export const snacksAndCafes = {
-  warsaw: [
-    {name:'Bar Mleczny Prasowy（Marszałkowska 店）', type:'牛奶吧', note:'1954 年開業的華沙老牌牛奶吧，żurek、pierogi、炸豬排都是銅板價。⚠️ 位置更正：門市在 Marszałkowska 10/16（Śródmieście Południowe、近 plac Zbawiciela），Hotel Metropol 在 Marszałkowska 99a（Rondo Dmowskiego／Centrum 一帶）——兩者在同一條街的兩端，不是步行五分鐘的相鄰位置。⚠️ 另一常見誤會：網路流傳的「每日 08:00–20:00」是 Powiśle 分店（Zajęcza 1a）的時間，不是這家。因 09:00 才開，不適合當 Day 8（10/31）08:00 早餐的備案。', hours:'2026-09-17 華沙市府旅遊資訊中心（wcit.waw.pl）：週一 09:00–20:00、週二–日 09:00–19:00；行前電話 666 353 776 再確認', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Prasowy%2C%20Marsza%C5%82kowska%2010%2F16%2C%20Warszawa'},
-    {name:'Bar Mleczny Bambino', type:'牛奶吧', note:'1959 年開業，公認華沙最「體面」的牛奶吧，內裝與菜單維持舊時樣貌。2026 年公開資料列一–五 08:00–20:00、週末 09:00–18:00；不同來源對門牌有 Hoża 19 與 Krucza 21 兩說，出發前用地圖確認分店。', hours:'一–五 08:00–20:00、六日 09:00–18:00（公開資料，出發前重查）', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Bambino%20Warszawa'},
-    {name:'A. Blikle 1869', type:'甜點 · 咖啡', note:'1869 年創立的波蘭國民甜點店，pączki 玫瑰果醬甜甜圈是招牌。Nowy Świat 本店距飯店步行約 15 分，Day 7 老城行程順路；09:00 開門，退房前想買 pączki 帶走可繞去，不適合當 Day 8 早餐主位。', hours:'每日 09:00–21:00（官網確認）', map:'https://www.google.com/maps/search/?api=1&query=A.Blikle%2C%20Nowy%20%C5%9Awiat%2033%2C%20Warszawa'},
-    {name:'Cukiernia Zagoździński', type:'甜點', note:'1925 年開業的老派甜甜圈店，被在地人視為華沙 pączek 標準答案；位在 Wola 區 Górczewska 15，需搭電車前往，適合有半天餘裕時安排。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Cukiernia%20Zago%C5%BAdzi%C5%84ski%2C%20G%C3%B3rczewska%2015%2C%20Warszawa'},
-    {name:'Café Bristol', type:'咖啡 · 輕食', note:'Krakowskie Przedmieście（Hotel Bristol 內），Day 7 城堡→POLIN 途中順路輕食、Day 8 早餐主位。', hours:'2026-09-19 店家官網：日–四 08:00–19:00、五六 08:00–21:00', map:'https://www.google.com/maps/search/?api=1&query=Caf%C3%A9%20Bristol%20Krakowskie%20Przedmie%C5%9Bcie%2042/44%2C%20Warszawa'},
-    {name:'Hala Koszyki', type:'美食大廳 · 宵夜', note:'百年市集改建的美食大廳，Day 6（10/29 週四）晚班抵達後最好用的晚餐／宵夜選項；距飯店步行約 10–15 分。官方註明各餐廳與店舖時間可能與大廳不同，抵達前先確認個別店家。地下停車場 200 席、每小時 10 PLN。', hours:'2026-09-18 官方網站（koszyki.com）查證：一、二 08:00–23:00；三、四 08:00–00:00；五、六 08:00–01:00；日 08:00–23:00。舊記的「一–六 08:00–01:00、日 09:00–01:00」已過時——凌晨 1:00 只有週五六，10/29（週四）是 00:00 打烊', map:'https://www.google.com/maps/search/?api=1&query=Hala%20Koszyki%2C%20Koszykowa%2063%2C%20Warszawa'},
-  ],
-  krakow: [
-    {name:'Bar Mleczny Pod Temidą', type:'牛奶吧', note:'Grodzka 43，老城區最方便的牛奶吧，pierogi、湯品與馬鈴薯煎餅都便宜；Day 2 11:30 午餐已排在這裡。⚠️ 2026-09-18 複查：這家沒有官方網站，第三方資料對週日的說法互相衝突（週日公休／09:00–20:00／10:45–19:00 三種都有）。10/25 正好是週日，出發前務必電話 +48 12 422 08 74 確認，並先想好同區的替代午餐（克拉科夫餐廳表的必比登選項或中央廣場周邊）。', hours:'待電話確認——無官方網站可查，第三方來源對週日互相矛盾（公休／09:00–20:00／10:45–19:00）；平日普遍列 09:00–20:00', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Pod%20Temid%C4%85%2C%20Grodzka%2043%2C%20Krak%C3%B3w'},
-    {name:'Endzior · Plac Nowy 圓亭', type:'小吃 · zapiekanka', note:'Kazimierz 圓亭（Okrąglak）內的 zapiekanka 名攤，長棍麵包烤蘑菇起司，PLN 18–25；Day 2 晚餐後可繞來吃。', hours:'圓亭各攤營業到深夜，個別攤位時間不同', map:'https://www.google.com/maps/search/?api=1&query=Endzior%20Plac%20Nowy%20Krak%C3%B3w'},
-    {name:'Karma Coffee Roasters', type:'精品咖啡', note:'2010 年開業，克拉科夫第一家精品咖啡店，Kazimierz 自家烘豆。公開資料列一–五 08:00–20:00、六日 10:00–19:00。', hours:'一–五 08:00–20:00、六日 10:00–19:00（公開資料，出發前重查）', map:'https://www.google.com/maps/search/?api=1&query=Karma%20Coffee%20Krupnicza%20Krak%C3%B3w'},
-    {name:'Café Camelot', type:'咖啡廳', note:'老城區老牌文青咖啡館，距中央廣場數步，復古內裝、地窖有卡巴萊表演；適合 Day 4 採購後歇腳。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Cafe%20Camelot%2C%20%C5%9Aw.%20Tomasza%2017%2C%20Krak%C3%B3w'},
-    {name:'Cukiernia Michałek', type:'甜點', note:'在地人推薦的 sernik（波蘭起司蛋糕）與傳統甜點；Day 4 已列為順路必吃。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Cukiernia%20Micha%C5%82ek%20Krak%C3%B3w'},
-  ],
-  wroclaw: [
-    {name:'Bar Mleczny Miś', type:'牛奶吧', note:'Kuźnicza 48，樂斯拉夫最知名的牛奶吧，營運逾 50 年；湯約 3–6 PLN、主菜 12–25 PLN。**週日公休**，本行程 10/28（三）可用。', hours:'一–五 07:00–18:00、六 08:00–17:00、日休（2026 公開資料，出發前重查）', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Mi%C5%9B%2C%20Ku%C5%BAnicza%2048%2C%20Wroc%C5%82aw'},
-    {name:'Vincent · Kazimierza Wielkiego 甜點', type:'甜點 · 咖啡', note:'老城區連鎖甜點咖啡館，蛋糕櫃選擇多，適合小矮人散步途中補糖。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Cukiernia%20Vincent%20Wroc%C5%82aw'},
-    {name:'Konspira', type:'傳統小館', note:'Plac Solny 11，1980 年代地下反共運動主題餐廳，Śląskie kluski 等傳統菜；週五至日不接受訂位、依到店順序。現為備案（Day 5 午餐主位改 Restauracja Wrocławska）。', hours:'2026-09-18 官網查證（矛盾已解決）：一–三 13:00–23:00（廚房至 22:00）、四 13:00–23:45（廚房至 23:00）、五六 12:00–23:45（廚房至 23:00）、日 12:00–23:00（廚房至 22:00）。Day 5（10/28 週三）為 13:00–23:00、廚房收單 22:00。訂位電話 +48 535 212 586（官網另列 rezerwacje.konspira@gmail.com）；週五、週末與假日不接受訂位', map:'https://www.google.com/maps/search/?api=1&query=Konspira%2C%20Plac%20Solny%2011%2C%20Wroc%C5%82aw'},
-    {name:'Browar Stu Mostów', type:'精釀啤酒', note:'樂斯拉夫代表性精釀酒廠，不喝酒可略過。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Browar%20Stu%20Most%C3%B3w%20Wroc%C5%82aw'},
-    {name:'El Gato Specialty Coffee', type:'咖啡 · 精品咖啡', note:'Day 5 午餐後咖啡，樂斯拉夫精品咖啡選項。2026-09-18 官網（elgatocoffee.pl）確認這是自家烘豆的 El Gato Coffee Roasters，市中心門市地址為 Odrzańska 8/1，品牌在樂斯拉夫與 Trzebnica 共 4 處門市——到店認「Odrzańska 8/1」這一間。', hours:'仍待確認——2026-09-18 再查官網，全站只列地址與品牌介紹、沒有任何門市營業時間；站內原記的「一–五 09:00–18:00、六日 10:00–18:00」查無一手出處，維持撤下。到店前看店家官方社群當日公告', map:'https://www.google.com/maps/search/?api=1&query=El%20Gato%20Specialty%20Coffee%20Roasters%20Odrza%C5%84ska%208/1%2C%20Wroc%C5%82aw'},
-    {name:'Dessert Boutique', type:'甜點', note:'Świętego Mikołaja 43，Day 5 甜點候選，樂斯拉夫精緻歐式甜點店。', hours:'二–五 12:00–19:00、六日 11:00–20:00', map:'https://www.google.com/maps/search/?api=1&query=Dessert%20Boutique%20%C5%9Awi%C4%99tego%20Miko%C5%82aja%2043%2C%20Wroc%C5%82aw'},
-  ],
-  poznan: [
-    {name:'Cukiernia Kandulski', type:'甜點 · rogal', note:'聖馬丁牛角麵包（PGI）認證店家之一，Day 6 12:15 已列為順路必吃；認證店家眾多，也可依官方認證名單就近選。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Cukiernia%20Kandulski%20Pozna%C5%84'},
-    {name:'Pyra Bar', type:'小吃 · 在地菜', note:'以大波蘭特色的 pyry z gzikiem（水煮馬鈴薯配 twaróg 起司醬）聞名，價位親民；Day 6 12:30 午餐首選。', hours:'一–四 11:00–21:00、五六 11:00–23:00、日 11:00–21:00', map:'https://www.google.com/maps/search/?api=1&query=Pyra%20Bar%20Pozna%C5%84'},
-    {name:'Weranda Caffe', type:'咖啡廳 · 早午餐', note:'Świętosławska 10，就在舊城市場旁，庭院座位安靜，常被列入波茲南最佳早餐；Day 6 等 12:00 山羊鐘樓秀前可先坐。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Weranda%20Caffe%2C%20%C5%9Awi%C4%99tos%C5%82awska%2010%2C%20Pozna%C5%84'},
-    {name:'Pijalnia Czekolady E.Wedel · Stary Rynek', type:'熱巧克力', note:'舊城市場上的 Wedel 巧克力沙龍，雨天或等表演時的室內選擇。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Pijalnia%20Czekolady%20E.Wedel%20Stary%20Rynek%20Pozna%C5%84'},
-  ],
-};
-
-// 城市餐廳清單：role 為 primary（主推）或 backup（首選訂不到時的替代）。
-export const cityFood = [
-  {
-    "city": "華沙",
-    "en": "Warszawa",
-    "items": [
-      {
-        "tag": "美食市集",
-        "name": "Hala Koszyki",
-        "note": "百年美食市集",
-        "book": "walk",
-        "map": "https://www.google.com/maps/search/?api=1&query=Hala+Koszyki+Warszawa",
-        "role": "primary"
-      },
-      {
-        "tag": "Pierogi",
-        "name": "Zapiecek",
-        "note": "老城多家分店",
-        "book": "walk",
-        "map": "https://www.google.com/maps/search/?api=1&query=Zapiecek+Polskie+Pierogarnie+Warszawa",
-        "role": "primary"
-      },
-      {
-        "tag": "熱巧克力",
-        "name": "E. Wedel Pijalnia",
-        "note": "1851 年創立的華沙巧克力老牌，招牌是濃稠熱巧克力",
-        "book": "queue",
-        "map": "https://www.google.com/maps/search/?api=1&query=Pijalnia+Czekolady+E.Wedel+Warszawa",
-        "role": "primary"
-      },
-      {
-        "tag": "老城經典",
-        "name": "U Fukiera / Polka",
-        "note": "Żurek 麵包碗；兩家皆非米其林必比登名單，屬觀光區老牌波蘭餐廳",
-        "book": "must",
-        "maps": [
-          {
-            "name": "U Fukiera",
-            "url": "https://www.google.com/maps/search/?api=1&query=U+Fukiera+Warszawa"
-          },
-          {
-            "name": "Polka",
-            "url": "https://www.google.com/maps/search/?api=1&query=Restauracja+Polka+Warszawa"
-          }
-        ],
-        "role": "primary"
-      },
-      {
-        "tag": "年度開幕獎 2026",
-        "name": "WANDAL",
-        "note": "必比登 · 顛覆式波蘭菜，Day 7 晚餐候選",
-        "book": "must",
-        "map": "https://www.google.com/maps/search/?api=1&query=WANDAL+restauracja+Warszawa",
-        "role": "primary"
-      },
-      {
-        "tag": "必比登備案",
-        "name": "Kieliszki na Próżnej",
-        "note": "酒杯牆名店 · 波蘭菜配酒，WANDAL 訂不到的首替",
-        "book": "must",
-        "map": "https://www.google.com/maps/search/?api=1&query=Kieliszki+na+Proznej+Warszawa",
-        "role": "backup"
-      },
-      {
-        "tag": "傳統備案",
-        "name": "Stary Dom",
-        "note": "老派滿漢波蘭菜 · 韃靼牛肉名店，離市中心稍遠",
-        "book": "must",
-        "map": "https://www.google.com/maps/search/?api=1&query=Restauracja+Stary+Dom+Warszawa",
-        "role": "backup"
-      }
-    ]
-  },
-  {
-    "city": "克拉科夫",
-    "en": "Kraków",
-    "items": [
-      {
-        "tag": "傳統餐廳",
-        "name": "Starka / Szara Gęś",
-        "note": "Kazimierz 與廣場",
-        "book": "must",
-        "maps": [
-          {
-            "name": "Starka",
-            "url": "https://www.google.com/maps/search/?api=1&query=Starka+Restauracja+Krakow"
-          },
-          {
-            "name": "Szara Gęś",
-            "url": "https://www.google.com/maps/search/?api=1&query=Szara+Ges+w+Kuchni+Krakow"
-          }
-        ],
-        "role": "primary"
-      },
-      {
-        "tag": "地窖晚餐",
-        "name": "Pod Aniołami",
-        "note": "燭光氛圍",
-        "book": "must",
-        "map": "https://www.google.com/maps/search/?api=1&query=Pod+Aniolami+Krakow",
-        "role": "primary"
-      },
-      {
-        "tag": "猶太料理",
-        "name": "Hamsa / Klezmer-Hois",
-        "note": "Kazimierz",
-        "book": "walk",
-        "maps": [
-          {
-            "name": "Hamsa",
-            "url": "https://www.google.com/maps/search/?api=1&query=Hamsa+Hummus+and+Happiness+Krakow"
-          },
-          {
-            "name": "Klezmer-Hois",
-            "url": "https://www.google.com/maps/search/?api=1&query=Klezmer-Hois+Krakow"
-          }
-        ],
-        "role": "primary"
-      },
-      {
-        "tag": "Pierogi",
-        "name": "Pierogarnia Krakowiacy",
-        "note": "老城手工餃子",
-        "book": "walk",
-        "map": "https://www.google.com/maps/search/?api=1&query=Pierogarnia+Krakowiacy+Krakow",
-        "role": "primary"
-      },
-      {
-        "tag": "Pierogi",
-        "name": "Pierożki u Vincenta",
-        "note": "Kazimierz 小店，份量與價位親民，適合不想走遠的安靜一餐；Day 4 列為順路必吃。",
-        "book": "walk",
-        "map": "https://www.google.com/maps/search/?api=1&query=Piero%C5%BCki%20u%20Vincenta%2C%20B%C5%82ogos%C5%82awionej%20Bronis%C5%82awy%2C%20Krak%C3%B3w",
-        "role": "primary"
-      },
-      {
-        "tag": "Zapiekanka",
-        "name": "Okrąglak（Plac Nowy 圓亭）",
-        "note": "plac Nowy 4B · 多家 zapiekanka 窗口；Day 2 晚餐順路",
-        "book": "queue",
-        "map": "https://maps.app.goo.gl/2Nitej5cqG4VAcbp6?g_st=il",
-        "role": "primary"
-      },
-      {
-        "tag": "波蘭料理",
-        "name": "Szalone Widelce",
-        "note": "Szpitalna 40 · 老城東側，可接中央市集廣場",
-        "book": "queue",
-        "map": "https://maps.app.goo.gl/U3yMsjdSgM3Pwgqe9?g_st=il",
-        "role": "primary"
-      },
-      {
-        "tag": "牛奶吧",
-        "name": "Bar Mleczny Pod Temidą",
-        "note": "Grodzka 43 · 中央廣場往 Wawel 的順路平價選擇",
-        "book": "queue",
-        "map": "https://maps.app.goo.gl/xCGDapoy56MBvg2y7?g_st=il",
-        "role": "primary"
-      },
-      {
-        "tag": "米其林二星",
-        "name": "Bottiglieria 1881",
-        "note": "2026 連續第四年二星 · 全波蘭唯一 · 需提前 2 週+ 訂位",
-        "book": "must",
-        "map": "https://www.google.com/maps/search/?api=1&query=Bottiglieria+1881+Krakow",
-        "role": "primary"
-      },
-      {
-        "tag": "傳統備案",
-        "name": "Miód Malina",
-        "note": "「蜂蜜覆盆子」· 廣場旁氣氛店，觀光但穩定",
-        "book": "must",
-        "map": "https://www.google.com/maps/search/?api=1&query=Miod+Malina+Krakow",
-        "role": "backup"
-      }
-    ]
-  },
-  {
-    "city": "樂斯拉夫",
-    "en": "Wrocław",
-    "items": [
-      {
-        "tag": "西里西亞",
-        "name": "Konspira",
-        "note": "80 年代反共主題",
-        "book": "walk",
-        "map": "https://www.google.com/maps/search/?api=1&query=Konspira+Wroclaw",
-        "role": "primary"
-      },
-      {
-        "tag": "Pierogi",
-        "name": "Pierogarnia Stary Młyn",
-        "note": "廣場旁",
-        "book": "walk",
-        "map": "https://www.google.com/maps/search/?api=1&query=Pierogarnia+Stary+Mlyn+Wroclaw",
-        "role": "primary"
-      },
-      {
-        "tag": "市場午餐",
-        "name": "Hala Targowa",
-        "note": "PLN 20–30",
-        "book": "walk",
-        "map": "https://www.google.com/maps/search/?api=1&query=Hala+Targowa+Wroclaw",
-        "role": "primary"
-      },
-      {
-        "tag": "傳統餐廳",
-        "name": "Pod Fredrą / Jadka",
-        "note": "廣場旁傳統",
-        "book": "must",
-        "maps": [
-          {
-            "name": "Pod Fredrą",
-            "url": "https://www.google.com/maps/search/?api=1&query=Restauracja+Pod+Fredra+Wroclaw"
-          },
-          {
-            "name": "Jadka",
-            "url": "https://www.google.com/maps/search/?api=1&query=Jadka+Wroclaw"
-          }
-        ],
-        "role": "primary"
-      },
-      {
-        "tag": "米其林一星 2026",
-        "name": "BABA",
-        "note": "新升星 · 波蘭菜當代詮釋，午間較易訂",
-        "book": "must",
-        "map": "https://www.google.com/maps/search/?api=1&query=BABA+restauracja+Wroclaw",
-        "role": "primary"
-      },
-      {
-        "tag": "傳統備案",
-        "name": "Kurna Chata",
-        "note": "民俗風家常波蘭菜 · 廣場旁 · 平價大份",
-        "book": "queue",
-        "map": "https://www.google.com/maps/search/?api=1&query=Kurna+Chata+Wroclaw",
-        "role": "backup"
-      }
-    ]
-  },
-  {
-    "city": "波茲南",
-    "en": "Poznań",
-    "items": [
-      {
-        "tag": "Lech 啤酒",
-        "name": "Stary Browar",
-        "note": "古釀酒廠改造",
-        "book": "walk",
-        "map": "https://www.google.com/maps/search/?api=1&query=Stary+Browar+Poznan",
-        "role": "primary"
-      },
-      {
-        "tag": "燒烤",
-        "name": "Whiskey In The Jar",
-        "note": "燒烤名店",
-        "book": "must",
-        "map": "https://www.google.com/maps/search/?api=1&query=Whiskey+in+the+Jar+Poznan",
-        "role": "primary"
-      },
-      {
-        "tag": "歷史名宅",
-        "name": "Hotel Bazar",
-        "note": "1918 年帕德瑞夫斯基陽台演說與大波蘭起義的重要歷史地點",
-        "book": "walk",
-        "map": "https://www.google.com/maps/search/?api=1&query=Hotel+Bazar+Poznan",
-        "role": "primary"
-      },
-      {
-        "tag": "家常",
-        "name": "Pyra Bar",
-        "note": "馬鈴薯佐凝乳",
-        "book": "walk",
-        "map": "https://www.google.com/maps/search/?api=1&query=Pyra+Bar+Poznan",
-        "role": "primary"
-      },
-      {
-        "tag": "傳統備案",
-        "name": "Brovaria",
-        "note": "Stary Rynek 上的自釀啤酒餐廳 · 順路一杯",
-        "book": "walk",
-        "map": "https://www.google.com/maps/search/?api=1&query=Brovaria+Poznan",
-        "role": "backup"
-      }
-    ]
-  }
-];
-
 export const foods = [
   {
     "n": "01",
@@ -743,124 +199,443 @@ export const foods = [
     "desc": "比亞沃韋札森林野牛草浸泡，每瓶都有真草。經典喝法 Tatanka：配蘋果汁。"
   }
 ];
-
-// 2026-09-16 新增：連鎖速食店。
-// 用途與上面的餐廳清單不同——這裡不做評選，只解決「趕行程、太晚、不想踩雷」時的落腳點。
-// 菜單各城相同，所以招牌推薦（fastFoodChains）只寫一次，分店地址（fastFoodBranches）按城市列；
-// 地址優先挑近老城／主廣場／中央車站的分店，離動線遠的會在 note 標明。
-// 營業時間屬動態資料，一律不寫死，出發前與現場以店家頁面為準。
-const chainMap = query => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
-
-export const fastFoodChains = [
+export const cityFood = [
   {
-    name: 'KFC',
-    cn: '肯德基',
-    kind: '炸雞',
-    tags: ['沾醬選擇多'],
-    signature: ['Zinger 香辣雞腿堡', 'Twister／iTwist 墨西哥捲', 'Kubełek 全家桶', 'Hot Wings 辣雞翅', 'Strips 雞柳條'],
-    note: '波蘭 KFC 的沾醬選擇比台灣多，主打炸雞配醬路線。',
+    "city": "華沙",
+    "en": "Warszawa",
+    "items": [
+      {
+        "placeId": "warsaw-hala-koszyki",
+        "tag": "美食市集",
+        "book": "walk",
+        "role": "primary"
+      },
+      {
+        "placeId": "warsaw-zapiecek",
+        "tag": "Pierogi",
+        "book": "walk",
+        "role": "primary"
+      },
+      {
+        "placeId": "warsaw-wedel-szpitalna-8",
+        "tag": "熱巧克力",
+        "book": "queue",
+        "role": "primary"
+      },
+      {
+        "placeId": "warsaw-u-fukiera",
+        "tag": "老城經典",
+        "book": "must",
+        "role": "primary"
+      },
+      {
+        "placeId": "warsaw-polka",
+        "tag": "老城經典",
+        "book": "must",
+        "role": "primary"
+      },
+      {
+        "placeId": "warsaw-wandal",
+        "tag": "年度開幕獎 2026",
+        "book": "must",
+        "role": "primary"
+      },
+      {
+        "placeId": "warsaw-kieliszki-na-proznej",
+        "tag": "必比登備案",
+        "book": "must",
+        "role": "backup"
+      },
+      {
+        "placeId": "warsaw-stary-dom",
+        "tag": "傳統備案",
+        "book": "must",
+        "role": "backup"
+      }
+    ]
   },
   {
-    name: "McDonald's",
-    cn: '麥當勞',
-    kind: '漢堡',
-    tags: ['波蘭限定'],
-    signature: ['WieśMac 鄉村堡（波蘭限定，酸黃瓜配特製醬）', 'McRoyal', 'zakręcone frytki 螺旋薯條（季節限定）'],
-    note: '冬季限定的 Burger Drwala（伐木工堡）歷年多在 11 月中下旬才上市（2022 年 11/23、2023 年 11/8、2024 年 11/20、2025 年 11/19）；本行程 11/01 離境，剛好錯過，不必特地等。',
+    "city": "克拉科夫",
+    "en": "Kraków",
+    "items": [
+      {
+        "placeId": "krakow-starka",
+        "tag": "傳統餐廳",
+        "book": "must",
+        "role": "primary"
+      },
+      {
+        "placeId": "krakow-szara-ges",
+        "tag": "傳統餐廳",
+        "book": "must",
+        "role": "primary"
+      },
+      {
+        "placeId": "krakow-pod-aniolami",
+        "tag": "地窖晚餐",
+        "book": "must",
+        "role": "primary"
+      },
+      {
+        "placeId": "krakow-hamsa",
+        "tag": "猶太料理",
+        "book": "walk",
+        "role": "primary"
+      },
+      {
+        "placeId": "krakow-klezmer-hois",
+        "tag": "猶太料理",
+        "book": "walk",
+        "role": "primary"
+      },
+      {
+        "placeId": "krakow-pierogarnia-krakowiacy",
+        "tag": "Pierogi",
+        "book": "walk",
+        "role": "primary"
+      },
+      {
+        "placeId": "krakow-pierozki-u-vincenta",
+        "tag": "Pierogi",
+        "book": "walk",
+        "role": "primary"
+      },
+      {
+        "placeId": "krakow-okraglak-plac-nowy-圓亭",
+        "tag": "Zapiekanka",
+        "book": "queue",
+        "role": "primary"
+      },
+      {
+        "placeId": "krakow-szalone-widelce",
+        "tag": "波蘭料理",
+        "book": "queue",
+        "role": "primary"
+      },
+      {
+        "placeId": "krakow-bar-mleczny-pod-temida",
+        "tag": "牛奶吧",
+        "book": "queue",
+        "role": "primary"
+      },
+      {
+        "placeId": "krakow-bottiglieria-1881",
+        "tag": "米其林二星",
+        "book": "must",
+        "role": "primary"
+      },
+      {
+        "placeId": "krakow-miod-malina",
+        "tag": "傳統備案",
+        "book": "must",
+        "role": "backup"
+      }
+    ]
   },
   {
-    name: 'Pasibus',
-    cn: '波蘭本土漢堡',
-    kind: '漢堡',
-    tags: ['波蘭品牌', '素食可換'],
-    signature: ['Gonzalez（微辣）', 'Chorizard', 'Bebek Junior', 'Awokodus（酪梨）', 'Triple Smash', '松露 smash'],
-    note: '源自樂斯拉夫的波蘭品牌。可配 frytki z batata 地瓜薯條、chicken pops；素食點 Standard Vegan，牛肉排可免費換蔬菜排。',
+    "city": "樂斯拉夫",
+    "en": "Wrocław",
+    "items": [
+      {
+        "placeId": "wroclaw-konspira",
+        "tag": "西里西亞",
+        "book": "walk",
+        "role": "primary"
+      },
+      {
+        "placeId": "wroclaw-pierogarnia-stary-mlyn",
+        "tag": "Pierogi",
+        "book": "walk",
+        "role": "primary"
+      },
+      {
+        "placeId": "wroclaw-hala-targowa",
+        "tag": "市場午餐",
+        "book": "walk",
+        "role": "primary"
+      },
+      {
+        "placeId": "wroclaw-pod-fredra",
+        "tag": "傳統餐廳",
+        "book": "must",
+        "role": "primary"
+      },
+      {
+        "placeId": "wroclaw-jadka",
+        "tag": "傳統餐廳",
+        "book": "must",
+        "role": "primary"
+      },
+      {
+        "placeId": "wroclaw-baba",
+        "tag": "米其林一星 2026",
+        "book": "must",
+        "role": "primary"
+      },
+      {
+        "placeId": "wroclaw-kurna-chata",
+        "tag": "傳統備案",
+        "book": "queue",
+        "role": "backup"
+      }
+    ]
   },
   {
-    name: 'MAX Premium Burgers',
-    cn: '瑞典連鎖',
-    kind: '漢堡',
-    tags: ['高價位', '植物肉'],
-    signature: ['Frisco Burger', 'Rywala Bacon', 'Rywal Umami', 'sweet potato fries', 'onion rings', '奶昔'],
-    note: '定位在「高價速食」，主打氣候友善與植物肉餐點；綠蒜醬與奶昔評價最高。',
-  },
-  {
-    name: 'Berlin Döner Kebap',
-    cn: '土耳其式旋轉烤肉',
-    kind: '烤肉捲',
-    tags: ['平價', '適合宵夜'],
-    signature: ['Döner kebab', 'kebab box', 'American wrap'],
-    note: '雞肉與綜合肉都可選，適合當宵夜或轉場之間的一餐。',
-  },
-  {
-    name: 'Salad Story',
-    cn: '沙拉連鎖',
-    kind: '沙拉',
-    tags: ['素食友善', '有營養標示'],
-    signature: ['招牌沙拉（芒果豆腐、酪梨雞肉、素食 teriyaki）', 'poke bowls', 'warm bowls', 'wraps', 'barszcz 甜菜根湯'],
-    note: '菜單標示素食／純素與營養成分，是連日肉食後的平衡選項。',
-  },
-];
-
-export const fastFoodBranches = {
-  warsaw: [
-    {chain: 'KFC', address: 'Złota 59', note: 'Złote Tarasy 購物中心，中央車站旁', map: chainMap('KFC Złote Tarasy, Złota 59, Warszawa')},
-    {chain: "McDonald's", address: 'Świętokrzyska 35', note: '市中心，近地鐵 Świętokrzyska 站', map: chainMap("McDonald's Świętokrzyska 35, Warszawa")},
-    {chain: 'Pasibus', address: 'Hoża 29/31 ／ Złota 59', note: 'Hoża 是評價較高的一家，週五六營業到午夜；Złota 59 在 Złote Tarasy', map: chainMap('Pasibus Hoża 29/31, Warszawa')},
-    {chain: 'MAX Premium Burgers', address: 'Złota 59', note: 'Złote Tarasy', map: chainMap('MAX Premium Burgers Złote Tarasy, Złota 59, Warszawa')},
-    {chain: 'Berlin Döner Kebap', address: 'Złota 59', note: 'Złote Tarasy', map: chainMap('Berlin Döner Kebap Złote Tarasy, Złota 59, Warszawa')},
-    {chain: 'Salad Story', address: 'Chmielna 73 ／ Złota 59', note: 'Chmielna 73 在 Varso（中央車站旁）；Złota 59 在 Złote Tarasy', map: chainMap('Salad Story Varso, Chmielna 73, Warszawa')},
+    "city": "波茲南",
+    "en": "Poznań",
+    "items": [
+      {
+        "placeId": "poznan-stary-browar",
+        "tag": "Lech 啤酒",
+        "book": "walk",
+        "role": "primary"
+      },
+      {
+        "placeId": "poznan-whiskey-in-the-jar",
+        "tag": "燒烤",
+        "book": "must",
+        "role": "primary"
+      },
+      {
+        "placeId": "poznan-hotel-bazar",
+        "tag": "歷史名宅",
+        "book": "walk",
+        "role": "primary"
+      },
+      {
+        "placeId": "poznan-pyra-bar",
+        "tag": "家常",
+        "book": "walk",
+        "role": "primary"
+      },
+      {
+        "placeId": "poznan-brovaria",
+        "tag": "傳統備案",
+        "book": "walk",
+        "role": "backup"
+      }
+    ]
+  }
+].map(group => ({...group,items:group.items.map(resolveDining)}));
+export const cityDining = Object.fromEntries(Object.entries({
+  "warsaw": [
+    {
+      "placeId": "warsaw-nuta",
+      "tier": "★"
+    },
+    {
+      "placeId": "warsaw-wyraj",
+      "tier": "Bib"
+    },
+    {
+      "placeId": "warsaw-wandal",
+      "tier": "Bib · 2026 新"
+    },
+    {
+      "placeId": "warsaw-kieliszki-na-proznej",
+      "tier": "Bib"
+    },
+    {
+      "placeId": "warsaw-hala-koszyki",
+      "tier": "美食廣場"
+    }
   ],
-  krakow: [
-    {chain: 'KFC', address: 'Floriańska 33', note: '老城 Floriańska 街，中央市集廣場旁', map: chainMap('KFC Floriańska 33, Kraków')},
-    {chain: "McDonald's", address: 'Szewska 2', note: '中央市集廣場旁，地下室座位區是舊地窖', map: chainMap("McDonald's Szewska 2, Kraków")},
-    {chain: 'Pasibus', address: 'Pawia 5', note: 'Galeria Krakowska，中央車站旁', map: chainMap('Pasibus Galeria Krakowska, Pawia 5, Kraków')},
-    {chain: 'MAX Premium Burgers', address: 'Nowohucka 52', note: '離市中心較遠（M1／Selgros 一帶），老城區內沒有據點', map: chainMap('MAX Premium Burgers Nowohucka 52, Kraków')},
-    {chain: 'Berlin Döner Kebap', address: 'Pawia 5 ／ Podgórska 34', note: 'Galeria Krakowska（車站）／Galeria Kazimierz', map: chainMap('Berlin Döner Kebap Galeria Krakowska, Pawia 5, Kraków')},
-    {chain: 'Salad Story', address: 'Pawia 5 ／ Podgórska 34', note: 'Galeria Krakowska（車站）／Galeria Kazimierz', map: chainMap('Salad Story Galeria Krakowska, Pawia 5, Kraków')},
+  "krakow": [
+    {
+      "placeId": "krakow-bottiglieria-1881",
+      "tier": "★★"
+    },
+    {
+      "placeId": "krakow-folga",
+      "tier": "Bib"
+    },
+    {
+      "placeId": "krakow-noah",
+      "tier": "Bib"
+    },
+    {
+      "placeId": "krakow-hamsa",
+      "tier": "在地候選"
+    },
+    {
+      "placeId": "krakow-okraglak-plac-nowy-圓亭",
+      "tier": "使用者指定 · 街食"
+    },
+    {
+      "placeId": "krakow-szalone-widelce",
+      "tier": "使用者指定 · 波蘭料理"
+    },
+    {
+      "placeId": "krakow-bar-mleczny-pod-temida",
+      "tier": "使用者指定 · 牛奶吧"
+    }
   ],
-  wroclaw: [
-    {chain: 'KFC', address: 'Świdnicka 13', note: '老城中心', map: chainMap('KFC Świdnicka 13, Wrocław')},
-    {chain: "McDonald's", address: 'Rynek 30', note: '直接開在中央廣場上', map: chainMap("McDonald's Rynek 30, Wrocław")},
-    {chain: 'Pasibus', address: 'Świdnicka 11 ／ Sucha 1', note: 'Świdnicka 是老城旗艦店，營業到凌晨 1–3 點；Sucha 1 在 Wroclavia（中央車站）', map: chainMap('Pasibus Świdnicka 11, Wrocław')},
-    {chain: 'MAX Premium Burgers', address: 'plac Dominikański 3 ／ Sucha 1', note: '2026-09-18 官網查證 Galeria Dominikańska 店：一–四與日 09:00–04:00、五六 09:00–05:00，電話 +48 71 661 29 48——Day 5（10/28 週三）09:00–04:00，是市中心最晚的保底；另一家在 Wroclavia（車站）', map: chainMap('MAX Premium Burgers Galeria Dominikańska, plac Dominikański 3, Wrocław')},
-    {chain: 'Berlin Döner Kebap', address: 'Plac Grunwaldzki 22', note: 'Pasaż Grunwaldzki，大學區，離老城稍遠；市內僅此一家', map: chainMap('Berlin Döner Kebap Pasaż Grunwaldzki, Plac Grunwaldzki 22, Wrocław')},
-    {chain: 'Salad Story', address: 'Sucha 1', note: 'Wroclavia，中央車站旁', map: chainMap('Salad Story Wroclavia, Sucha 1, Wrocław')},
+  "wroclaw": [
+    {
+      "placeId": "wroclaw-baba",
+      "tier": "★ · 2026 新"
+    },
+    {
+      "placeId": "wroclaw-ida-kuchnia-i-wino",
+      "tier": "Bib"
+    },
+    {
+      "placeId": "wroclaw-restauracja-wroclawska",
+      "tier": "在地"
+    },
+    {
+      "placeId": "wroclaw-piwnica-swidnicka",
+      "tier": "歷史"
+    }
   ],
-  poznan: [
-    {chain: 'KFC', address: 'Półwiejska 42', note: 'Stary Browar，近老城', map: chainMap('KFC Stary Browar, Półwiejska 42, Poznań')},
-    {chain: "McDonald's", address: 'Stary Rynek 87', note: '舊城市集廣場上；此點公開資料較少，市內另有多家分店', map: chainMap("McDonald's Stary Rynek, Poznań")},
-    {chain: 'Pasibus', address: 'Święty Marcin 58/64 ／ Matyi 2', note: '市中心主街／Avenida（中央車站旁）', map: chainMap('Pasibus Święty Marcin 58/64, Poznań')},
-    {chain: 'MAX Premium Burgers', address: 'Hetmańska 82a', note: '市中心南側，不在老城範圍', map: chainMap('MAX Premium Burgers Hetmańska 82a, Poznań')},
-    {chain: 'Berlin Döner Kebap', address: 'Bukowska 156 ／ Drużbickiego 2', note: 'King Cross Marcelin／C.H. Plaza，兩處都離老城較遠', map: chainMap('Berlin Döner Kebap King Cross Marcelin, Bukowska 156, Poznań')},
-    {chain: 'Salad Story', address: 'Półwiejska 42 ／ Matyi 2', note: 'Stary Browar（近老城）／Avenida（車站旁）', map: chainMap('Salad Story Stary Browar, Półwiejska 42, Poznań')},
+  "poznan": [
+    {
+      "placeId": "poznan-muga",
+      "tier": "★"
+    },
+    {
+      "placeId": "poznan-fromazeria",
+      "tier": "Bib"
+    },
+    {
+      "placeId": "poznan-spot",
+      "tier": "Bib"
+    },
+    {
+      "placeId": "poznan-rogal",
+      "tier": "名物"
+    },
+    {
+      "placeId": "poznan-na-winklu",
+      "tier": "餃子"
+    },
+    {
+      "placeId": "poznan-hycka",
+      "tier": "傳統"
+    },
+    {
+      "placeId": "poznan-pyra-bar",
+      "tier": "在地"
+    }
+  ]
+}).map(([city,items]) => [city,items.map(resolveDining)]));
+export const snacksAndCafes = Object.fromEntries(Object.entries({
+  "warsaw": [
+    {
+      "placeId": "warsaw-bar-mleczny-prasowy-marszalkowska",
+      "type": "牛奶吧"
+    },
+    {
+      "placeId": "warsaw-bar-mleczny-bambino",
+      "type": "牛奶吧"
+    },
+    {
+      "placeId": "warsaw-a-blikle-1869",
+      "type": "甜點 · 咖啡"
+    },
+    {
+      "placeId": "warsaw-cukiernia-zagozdzinski",
+      "type": "甜點"
+    },
+    {
+      "placeId": "warsaw-cafe-bristol",
+      "type": "咖啡 · 輕食"
+    },
+    {
+      "placeId": "warsaw-hala-koszyki",
+      "type": "美食大廳 · 宵夜"
+    }
   ],
-};
-
-// 趕行程時的一站解法：同一棟樓裡有多家，不必為了選店多走一趟。
-export const fastFoodHubs = [
+  "krakow": [
+    {
+      "placeId": "krakow-bar-mleczny-pod-temida",
+      "type": "牛奶吧"
+    },
+    {
+      "placeId": "krakow-endzior",
+      "type": "小吃 · zapiekanka"
+    },
+    {
+      "placeId": "krakow-karma-coffee-roasters",
+      "type": "精品咖啡"
+    },
+    {
+      "placeId": "krakow-cafe-camelot",
+      "type": "咖啡廳"
+    },
+    {
+      "placeId": "krakow-cukiernia-michalek",
+      "type": "甜點"
+    }
+  ],
+  "wroclaw": [
+    {
+      "placeId": "wroclaw-bar-mleczny-mis",
+      "type": "牛奶吧"
+    },
+    {
+      "placeId": "wroclaw-vincent-kazimierza-wielkiego-甜點",
+      "type": "甜點 · 咖啡"
+    },
+    {
+      "placeId": "wroclaw-konspira",
+      "type": "傳統小館"
+    },
+    {
+      "placeId": "wroclaw-browar-stu-mostow",
+      "type": "精釀啤酒"
+    },
+    {
+      "placeId": "wroclaw-el-gato-specialty-coffee",
+      "type": "咖啡 · 精品咖啡"
+    },
+    {
+      "placeId": "wroclaw-dessert-boutique",
+      "type": "甜點"
+    }
+  ],
+  "poznan": [
+    {
+      "placeId": "poznan-cukiernia-kandulski",
+      "type": "甜點 · rogal"
+    },
+    {
+      "placeId": "poznan-pyra-bar",
+      "type": "小吃 · 在地菜"
+    },
+    {
+      "placeId": "poznan-weranda-caffe",
+      "type": "咖啡廳 · 早午餐"
+    },
+    {
+      "placeId": "poznan-pijalnia-czekolady-e-wedel-stary-rynek",
+      "type": "熱巧克力"
+    }
+  ]
+}).map(([city,items]) => [city,items.map(resolveDining)]));
+export const verifiedRestaurantHours = [
   {
-    cityKey: 'warsaw',
-    city: '華沙',
-    place: 'Złote Tarasy',
-    address: 'Złota 59（中央車站旁）',
-    chains: ['KFC', 'Pasibus', 'MAX Premium Burgers', 'Berlin Döner Kebap', 'Salad Story'],
-    map: chainMap('Złote Tarasy, Złota 59, Warszawa'),
+    "placeId": "warsaw-u-fukiera",
+    "city": "華沙"
   },
   {
-    cityKey: 'krakow',
-    city: '克拉科夫',
-    place: 'Galeria Krakowska',
-    address: 'Pawia 5（中央車站旁）',
-    chains: ['Pasibus', 'Berlin Döner Kebap', 'Salad Story'],
-    map: chainMap('Galeria Krakowska, Pawia 5, Kraków'),
+    "placeId": "warsaw-polka",
+    "city": "華沙"
   },
   {
-    cityKey: 'wroclaw',
-    city: '樂斯拉夫',
-    place: 'Wroclavia',
-    address: 'Sucha 1（中央車站旁）',
-    chains: ['Pasibus', 'MAX Premium Burgers', 'Salad Story'],
-    map: chainMap('Wroclavia, Sucha 1, Wrocław'),
+    "placeId": "warsaw-wedel-krakowskie-45",
+    "city": "華沙"
   },
-];
+  {
+    "placeId": "krakow-pod-aniolami",
+    "city": "克拉科夫"
+  },
+  {
+    "placeId": "wroclaw-restauracja-wroclawska",
+    "city": "樂斯拉夫"
+  },
+  {
+    "placeId": "wroclaw-konspira",
+    "city": "樂斯拉夫"
+  }
+].map(resolveDining);

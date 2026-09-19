@@ -1,6 +1,7 @@
+import { fastFoodDiningEntries } from '../src/templates/fast-food.mjs';
 import { pathToFileURL } from 'node:url';
 import { mapPins, mapPinChecks, pinCategoryLegend } from '../src/data/cities.js';
-import { cityDining, cityFood, snacksAndCafes } from '../src/data/dining.js';
+import { cityDining, cityFood, snacksAndCafes, fastFoodBranches, fastFoodChains, fastFoodHubs } from '../src/data/dining.js';
 import { databaseEntries } from '../src/data/travel-database.js';
 import { meta } from '../src/data/trip.js';
 import { mergeCityDining } from '../src/templates/city-dining.mjs';
@@ -93,6 +94,7 @@ export function auditDiningPinCoverage() {
       city, cityDining[city],
       cityFood.find(group => group.city === label)?.items || [],
       snacksAndCafes[city] || [],
+      fastFoodDiningEntries({branches:fastFoodBranches[city],chains:fastFoodChains,hub:fastFoodHubs.find(h => h.cityKey === city)}),
     );
     // 餐廳也可能被歸在 sight／shopping 類（Hala Targowa、Stary Browar），
     // 只要地圖上找得到就算有涵蓋，因此比對全部圖釘而非只有 food 類。

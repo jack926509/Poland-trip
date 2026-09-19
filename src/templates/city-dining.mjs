@@ -1,4 +1,6 @@
+import { mealTiming } from '../lib/dining.mjs';
 import { dayDining } from '../data/day-dining.js';
+import { verifiedRestaurantHours } from '../data/dining.js';
 import { days } from '../data/trip.js';
 
 /**
@@ -54,14 +56,14 @@ function dayLink(day, label) {
 /** 這座城市在每日行程裡排定的餐位（day-dining.js）。 */
 export function plannedMealsFor(cityKey) {
   return Object.entries(dayDining).flatMap(([day, items]) => items
-    .filter(item => item.cityGuide !== false && detectCity(item.address, item.map) === cityKey)
+    .filter(item => item.cityGuide !== false && (item.cityKey || detectCity(item.address, item.map)) === cityKey)
     .map(item => ({ day: Number(day), item })));
 }
 
 /** 這座城市的順路必吃（trip.js 的 day.eat）。沒有門牌，所以只用來標記既有的列。 */
 export function mustEatsFor(cityKey) {
   return days.flatMap(day => (day.eat || [])
-    .filter(item => typeof item !== 'string' && detectCity(item.place, item.map) === cityKey)
+    .filter(item => typeof item !== 'string' && (item.cityKey || detectCity(item.place, item.map)) === cityKey)
     .map(item => ({ day: day.n, item })));
 }
 
@@ -74,7 +76,7 @@ export function mustEatsFor(cityKey) {
 export function mergeCityDining(cityKey, dining = [], primary = [], snacks = [], fastFood = []) {
   const entries = new Map();
   function add(item) {
-    const id = key(item.name);
+    const id = item.placeId || item.id || key(item.name);
     const previous = entries.get(id) || { name: item.name, notes: [], plans: [] };
     const notes = [...new Set([...previous.notes, ...[item.note, item.highlight].filter(Boolean)])];
     entries.set(id, { ...previous, ...item, notes, plans: previous.plans, map: item.map || item.mapUrl || previous.map });
@@ -85,10 +87,11 @@ export function mergeCityDining(cityKey, dining = [], primary = [], snacks = [],
     } else add(item);
   }
   dining.forEach(add);
+  verifiedRestaurantHours.filter(item => item.cityKey === cityKey).forEach(add);
   // 小吃、牛奶吧與咖啡廳原本是另一個區塊，現在併進同一張表；
   // 與上面重複的店（例如 Endzior、Konspira、Pyra Bar）只會補上營業時間，不另開一列。
   for (const item of snacks) {
-    const previous = entries.get(key(item.name));
+    const previous = entries.get(item.placeId || item.id || key(item.name));
     // 已經是主推或備案的店不因為也出現在小吃名單而被降級，只補上營業時間與說明。
     add({ ...item, tier: previous?.tier || item.type, role: previous ? previous.role : 'snack' });
   }
@@ -97,21 +100,21 @@ export function mergeCityDining(cityKey, dining = [], primary = [], snacks = [],
   // 走同一條合併路徑的好處是——哪天真的把某家速食排進 day-dining.js，
   // 它會自動升格成「你的候選」並帶出 Day 連結，不必記得回來改這裡。
   for (const item of fastFood) {
-    const previous = entries.get(key(item.name));
+    const previous = entries.get(item.placeId || item.id || key(item.name));
     add({ ...item, role: previous ? previous.role : 'fastfood' });
   }
 
   // 每日排定的餐位：城市表沒有這家店就新增一列，並把 Day 連回該日行程。
   for (const { day, item } of plannedMealsFor(cityKey)) {
-    add({ name: item.name, selected: true, address: item.address, map: item.map });
-    const entry = entries.get(key(item.name));
-    entry.plans = [...entry.plans, `${dayLink(day, `Day ${day}`)} · ${item.role}：${item.note}`];
+    add({ ...item, note: undefined, highlight: undefined, selected: true });
+    const entry = entries.get(item.placeId || item.id || key(item.name));
+    entry.plans = [...entry.plans, `${dayLink(day, `Day ${day}`)} · ${item.role}：${item.note} · ${mealTiming(item, days.find(value => value.n === day))}`];
   }
 
   // 順路必吃沒有門牌，只標記既有的列，不會憑空長出沒有地址的店。
   for (const { day, item } of mustEatsFor(cityKey)) {
     const wanted = coreKey(item.place || item.text);
-    const entry = [...entries.values()].find(row => sameStore(coreKey(row.name), wanted));
+    const entry = [...entries.values()].find(row => item.placeId ? row.placeId === item.placeId : sameStore(coreKey(row.name), wanted));
     if (!entry) continue;
     entry.mustEat = true;
     const detail = mustEatDetail(item, entry.name);

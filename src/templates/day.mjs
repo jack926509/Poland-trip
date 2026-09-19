@@ -1,3 +1,4 @@
+import { mealTiming, renderDiningFacts } from '../lib/dining.mjs';
 import { escapeHtml, safeHttpsUrl } from '../lib/html.mjs';
 import { bookingProgress } from '../lib/journey.mjs';
 import { renderDayContext } from './journey.mjs';
@@ -34,8 +35,8 @@ function eatEntry(item) {
   };
 }
 
-function diningEntry(item) {
-  return { role: item.role, name: item.name, meta: item.address, note: item.note, map: item.map };
+function diningEntry(item, day) {
+  return { ...item, meta: item.address, timing:mealTiming(item, day), facts:renderDiningFacts(item) };
 }
 
 /**
@@ -55,6 +56,7 @@ function renderDayFoodItem(entry) {
       </div>
       ${entry.meta ? `<p class="food-map-note">${escapeHtml(entry.meta)}</p>` : ''}
       ${entry.note ? `<p>${escapeHtml(entry.note)}</p>` : ''}
+      ${entry.timing ? `<p class="food-map-note">${escapeHtml(entry.timing)}</p>` : ''}${entry.facts || ''}
     </li>`;
 }
 
@@ -65,7 +67,7 @@ function renderDayFoodItem(entry) {
  */
 function renderDayFood(day) {
   const entries = [
-    ...(dayDining[day.n] || []).map(diningEntry),
+    ...(dayDining[day.n] || []).map(item => diningEntry(item, day)),
     ...(day.eat || []).map(eatEntry),
   ];
   if (!entries.length) return '';

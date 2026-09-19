@@ -1,3 +1,4 @@
+import { renderDiningFacts } from '../lib/dining.mjs';
 import { renderCityJourney } from './journey.mjs';
 import { mergeCityDining, dropDuplicateClauses, dedupeNotes, dropRestatedHours } from './city-dining.mjs';
 import { renderLayout } from './layout.mjs';
@@ -87,13 +88,13 @@ export function renderCity({
     <td>${item.notes.length ? dropDuplicateClauses(dedupeNotes(item.notes, item.address).join('；'), item.address) : '依店家當日菜單確認'}</td>
     <td>${item.plans?.length
       ? item.plans.map(plan => `<p class="city-dining-plan">${dropRestatedHours(dropDuplicateClauses(plan, item.notes.join('；')), item.hours)}</p>`).join('')
-      : `<p>${item.positionNote || planFallback[item.role] || '依當天動線與胃口安排'}</p>`}<p class="food-map-note">${item.hours ? `營業時間：${item.hours}` : (bookingLabels[item.book] || '營業與訂位請向店家確認')}</p></td>
+      : `<p>${item.positionNote || planFallback[item.role] || '依當天動線與胃口安排'}</p>`}<p class="food-map-note">${bookingLabels[item.book] || '訂位請向店家確認'}</p>${renderDiningFacts(item)}</td>
   </tr>`;
   const primaryDiningHtml = mergedDining.length ? `
     <section class="section" id="city-dining">
       <div class="section-heading"><span class="section-num">Dining</span><h2>行程餐廳推薦</h2></div>
       <p class="lead" id="city-dining-description">共 ${mergedDining.length} 家，${mergedDining.filter(item => item.selected || item.mustEat).length} 家已列入每日候選。排序：你的候選與順路必吃置頂並標出日期（點 Day 回當日行程），其次主推、備案，接著是可隨時插入動線的小吃與咖啡廳，最後是候選失效時的連鎖速食。</p>
-      <p class="lead"><b>點店名開啟 Google Maps。</b>評分與評論數本站不保存——那是每天在變的快照；營業時間同理，出發前與現場以官方頁為準，連鎖與同名店先對門牌。</p>
+      <p class="lead"><b>點店名開啟 Google Maps。</b>評分與評論數本站不保存——那是每天在變的快照；營業時間附查核狀態，出發前與現場以官方頁為準，連鎖與同名店先對門牌。</p>
       <p class="city-dining-scroll-hint">平板可左右滑動看完整欄位，手機自動改為卡片。</p>
       <div class="table-wrap city-dining-table-wrap" role="region" aria-label="行程餐廳推薦列表" tabindex="0">
         <table class="table-editorial city-dining-table" aria-describedby="city-dining-description">

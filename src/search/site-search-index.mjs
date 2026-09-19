@@ -1,3 +1,6 @@
+import { mergeCityDining } from '../templates/city-dining.mjs';
+import { fastFoodDiningEntries } from '../templates/fast-food.mjs';
+import { dayDining } from '../data/day-dining.js';
 const cityDefinitions = {
   WAW: { mapKey: 'warsaw', file: 'city-warszawa.html' },
   KRK: { mapKey: 'krakow', file: 'city-krakow.html' },
@@ -79,92 +82,29 @@ function createRecord({ id, type, title, meta = '', summary = '', href, mapUrl =
 }
 
 function restaurantRecords(data, lookup) {
-  const restaurants = new Map();
-
-  function add({ cityRef, name, detail, mapUrl = '', keywords = [], anchor = '#city-dining' }) {
-    const city = lookup.get(cityRef);
-    if (!city || !name) return;
-    const key = `${city.key}|${canonicalName(name)}`;
-    const existing = restaurants.get(key);
-    if (existing) {
-      const details = new Set([existing.summary, detail].filter(Boolean));
-      existing.summary = [...details].join(' · ');
-      existing.mapUrl ||= mapUrl || googleMapsSearch(name, city.name);
-      existing.searchText = searchBag([existing.searchText, detail, keywords]);
-      return;
-    }
-    restaurants.set(key, createRecord({
-      id: `restaurant-${city.mapKey}-${slug(name)}`,
-      type: 'restaurant',
-      title: name,
-      meta: city.name,
-      summary: detail,
-      href: `${city.file}${anchor}`,
-      mapUrl: mapUrl || googleMapsSearch(name, city.name),
-      keywords: [city.pl, keywords],
-    }));
-  }
-
-  for (const [mapKey, items] of Object.entries(data.cityDining || {})) {
-    for (const item of items) {
-      add({
-        cityRef: mapKey,
-        name: item.name,
-        detail: compact([item.tier, item.highlight]),
-        mapUrl: item.mapUrl,
-      });
+  const records = new Map();
+  for (const [cityKey, items] of Object.entries(data.cityDining || {})) {
+    const city = lookup.get(cityKey);
+    if (!city) continue;
+    const rows = mergeCityDining(cityKey, items,
+      (data.cityFood || []).find(group => group.city === city.name)?.items || [],
+      data.snacksAndCafes?.[cityKey] || [],
+      fastFoodDiningEntries({branches:data.fastFoodBranches?.[cityKey] || [], chains:data.fastFoodChains || [], hub:data.fastFoodHubs?.find(h => h.cityKey === cityKey)}));
+    for (const row of rows) {
+      const placeId = row.placeId || row.id || `${cityKey}-${slug(row.name)}`;
+      const record = createRecord({id:`restaurant-${placeId}`, type:'restaurant', title:row.name,
+        meta:compact([city.name, row.address]), summary:compact([row.tier, row.hours, ...(row.notes || []), ...(row.plans || []).map(text => text.replace(/<[^>]*>/g, ''))]),
+        href:`${city.file}#city-dining`, mapUrl:row.map || '', keywords:[row.chain, '餐廳', row.role === 'fastfood' ? '速食 連鎖' : '', row.verificationStatus]});
+      records.set(placeId, {...record, placeId});
     }
   }
-
-  // 備案已併入 cityFood（role: 'backup'），不再有獨立的 foodBackup 來源。
-  for (const group of data.cityFood || []) {
-    for (const item of group.items || []) {
-      add({
-        cityRef: group.city,
-        name: item.name,
-        detail: compact([item.tag, item.note]),
-        mapUrl: item.map || item.maps?.[0]?.url,
-        keywords: [item.book, ...(item.role === 'backup' ? ['備案'] : []), ...(item.maps?.map(entry => entry.name) || [])],
-      });
-    }
+  // 四座城市以外或店家待選的用餐，也可從餐廳分類回到原定日期。
+  for (const [day, items] of Object.entries(dayDining)) for (const item of items) {
+    if (records.has(item.placeId)) continue;
+    records.set(item.placeId, {...createRecord({id:`restaurant-${item.placeId}`, type:'restaurant', title:item.name,
+      meta:item.address, summary:compact([item.role, item.note, item.hours]), href:`day-${String(day).padStart(2,'0')}.html#day-food`, mapUrl:item.map}), placeId:item.placeId});
   }
-
-  for (const item of data.verifiedRestaurantHours || []) {
-    add({
-      cityRef: item.city,
-      name: item.name,
-      detail: compact([item.address, item.hours, item.feature]),
-      mapUrl: item.mapUrl,
-      keywords: [item.url, '已查營業時間'],
-    });
-  }
-
-  for (const [mapKey, items] of Object.entries(data.snacksAndCafes || {})) {
-    for (const item of items) {
-      add({
-        cityRef: mapKey,
-        name: item.name,
-        detail: compact([item.type, item.note, item.hours]),
-        mapUrl: item.map,
-        keywords: [item.type, '小吃', '咖啡廳', '牛奶吧'],
-      });
-    }
-  }
-
-  // 連鎖速食：名稱各城相同，加上城市後才是唯一鍵，所以與其他餐廳共用 add()。
-  for (const [mapKey, items] of Object.entries(data.fastFoodBranches || {})) {
-    for (const item of items) {
-      add({
-        cityRef: mapKey,
-        name: item.chain,
-        detail: compact([item.address, item.note]),
-        mapUrl: item.map,
-        keywords: ['速食', '連鎖'],
-      });
-    }
-  }
-
-  return [...restaurants.values()];
+  return [...records.values()];
 }
 
 export function buildTravelSearchRecords(data) {

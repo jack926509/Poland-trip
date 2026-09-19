@@ -37,6 +37,8 @@ function buildSearchRecords(distDir) {
     verifiedRestaurantHours: dining.verifiedRestaurantHours,
     snacksAndCafes: dining.snacksAndCafes,
     fastFoodBranches: dining.fastFoodBranches,
+    fastFoodChains: dining.fastFoodChains,
+    fastFoodHubs: dining.fastFoodHubs,
   });
   const pageRecords = buildPageSearchRecords(standalonePages.map(([relativePath, title]) => ({
     relativePath,

@@ -1,3 +1,4 @@
+import { mealTiming, renderDiningFacts } from '../lib/dining.mjs';
 import { escapeHtml, safeHttpsUrl } from '../lib/html.mjs';
 import { bookingProgress, isDepartureDay, stayForDate } from '../lib/journey.mjs';
 import { renderLayout } from './layout.mjs';
@@ -29,6 +30,7 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
   const list = items => items.map(item => `<li>${escapeHtml(item)}</li>`).join('');
   const meal = item => `<li><b>${escapeHtml(item.role)}：${escapeHtml(item.name)}</b>
     <p>${escapeHtml(item.note || '')}</p><p class="source-meta">${escapeHtml(item.address || '')}</p>
+    <p class="food-map-note">${escapeHtml(mealTiming(item, day))}</p>${renderDiningFacts(item)}
     ${navigationLink(item.map, `${item.name}導航`)}</li>`;
   // 同一天的「首選」其實橫跨不同餐別（午餐＋晚餐＋點心），不是互斥選項。
   // 正餐與點心分開列，避免看起來像「這些全都要吃」或「只能挑一家」。

@@ -635,7 +635,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
     warsaw: 5, krakow: 7, wroclaw: 4, poznan: 7,
   });
-  assert.deepEqual(cityFood.map(group => group.items.length), [7, 10, 6, 5]);
+  assert.deepEqual(cityFood.map(group => group.items.length), [8, 12, 7, 5]);
   assert.equal(foods.length, 12);
 
   assert.equal(fares.length, 21);
@@ -1164,7 +1164,8 @@ test('餐廳頁只把可追到店家來源的營業時間列為已查', () => {
     assert.ok(html.includes(restaurant.url));
   }
   // 2026-09-18 起改為指向該輪店家官網複查，並明說查不到一手來源就標「待確認」。
-  assert.ok(html.includes('以店家官網複查於 2026-09-18'));
+  assert.ok(html.includes('逐筆列出查核日期與來源'));
+  for (const item of verifiedRestaurantHours.filter(item => item.checkedAt)) assert.ok(html.includes(item.checkedAt));
   assert.ok(html.includes('查不到一手來源的店家一律標「待確認」'));
 });
 

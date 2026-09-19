@@ -1,4 +1,5 @@
 import { escapeHtml } from '../lib/html.mjs';
+import { safeHttpsUrl } from '../lib/html.mjs';
 import { cityGuides } from '../lib/city-guide.mjs';
 
 /**
@@ -9,7 +10,7 @@ import { cityGuides } from '../lib/city-guide.mjs';
  * - 城市指南：不另開區塊，直接併進「行程餐廳推薦」表的最後一段。
  * - 每日行程與今日速查：收合的一段，當天所在城市有哪幾家、在哪裡。
  *
- * 刻意不寫營業時間（動態資料，全站一律不保存），也不進互動地圖——
+ * 營業時間保留官方來源、查核日期及待確認狀態；不自動進互動地圖——
  * 那裡的圖釘都逐一查證過座標，速食分店沒有這層查證，改用 Google Maps 連結。
  */
 
@@ -35,15 +36,23 @@ export function fastFoodDiningEntries({ branches = [], chains = [], hub = null }
   return branches.map(branch => {
     const chain = index.get(branch.chain);
     // 同一棟還有別家時把它寫進行程欄：趕行程時「這棟一次解決」比店名本身有用。
-    const alsoHere = hub?.chains.includes(branch.chain)
+    const alsoHere = hub?.branchIds?.includes(branch.id)
       ? hub.chains.filter(name => name !== branch.chain)
       : [];
     const positionNote = [
       branch.note,
+      branch.verificationStatus === 'verified' ? `官方門市資料已核對（${branch.checkedAt}）；當日供應仍須確認` : '門市資料待確認，勿當作可靠保底',
       alsoHere.length ? `同在 ${hub.place} 的還有 ${alsoHere.join('、')}，一棟解決` : '',
     ].filter(Boolean).join('；');
     return {
-      name: branch.chain,
+      id: branch.id,
+      placeId: branch.id,
+      chain: branch.chain,
+      name: `${branch.chain} · ${branch.address}`,
+      hours: branch.hours,
+      sourceUrl: branch.sourceUrl,
+      checkedAt: branch.checkedAt,
+      verificationStatus: branch.verificationStatus,
       address: branch.address,
       map: branch.map,
       tier: [chain?.kind, '連鎖速食'].filter(Boolean).join(' · '),
@@ -75,11 +84,13 @@ export function renderFastFoodDayList(cityKeys = [], { branches = {}, chains = [
       return `<li>
           <a href="${escapeHtml(branch.map)}" target="_blank" rel="noopener noreferrer">${escapeHtml(branch.chain)}</a>${chain?.kind ? `<span class="fast-food-kind-inline">${escapeHtml(chain.kind)}</span>` : ''}
           <span class="fast-food-address">${escapeHtml(branch.address)}</span>
+          <p class="food-map-note">${escapeHtml(branch.note)} · ${escapeHtml(branch.hours || '營業時間待確認')}</p>
+          <p class="source-meta">${branch.verificationStatus === 'verified' ? `官方門市資料已核對（${escapeHtml(branch.checkedAt)}）；出發前重查` : '門市資料待確認，勿當作可靠保底'}${safeHttpsUrl(branch.sourceUrl) ? ` · <a href="${safeHttpsUrl(branch.sourceUrl)}" target="_blank" rel="noopener noreferrer">官方來源 ↗</a>` : ''}</p>
         </li>`;
     }).join('');
     // hub.address 本身就帶括號（「Pawia 5（中央車站旁）」），外面再包一層會變成雙括號
     const hubLine = hub
-      ? `<p class="fast-food-fallback-hub">一站吃到多家：${escapeHtml(hub.place)} · ${escapeHtml(hub.address)}，同一棟 ${hub.chains.length} 家。</p>`
+      ? `<p class="fast-food-fallback-hub">一站吃到多家：${escapeHtml(hub.place)} · ${escapeHtml(hub.address)}，同一棟 ${hub.branchIds.length} 家（各店營業與最後點餐須分別確認）。</p>`
       : '';
     return `<div class="fast-food-fallback-city">
         <p class="fast-food-fallback-city-name"><b>${escapeHtml(guide.name)}</b> · ${list.length} 家</p>
@@ -91,7 +102,7 @@ export function renderFastFoodDayList(cityKeys = [], { branches = {}, chains = [
   if (!blocks.length) return '';
   const total = cityKeys.reduce((sum, cityKey) => sum + (branches[cityKey] || []).length, 0);
   return `<details class="${className}">
-      <summary>客滿、太晚或趕車：連鎖速食 ${total} 家</summary>
+      <summary>連鎖速食候選（營業須確認）： ${total} 間</summary>
       ${blocks.join('')}
     </details>`;
 }
@@ -123,7 +134,7 @@ export function renderFastFoodMenu({ chains = [], branches = {} }) {
   return `
     <section class="section" id="fast-food">
       <div class="section-heading"><span class="section-num">Fast food</span><h2>連鎖速食招牌</h2></div>
-      <p class="lead">行程趕、太晚或不想踩雷時的落腳點，不做評選。菜單各城相同，這裡只列招牌；分店併在各城市指南的行程餐廳推薦表末段，和其他餐廳一起看動線。營業時間本站不保存，出發前與現場以店家頁面為準。</p>
+      <p class="lead">行程趕、太晚或不想踩雷時的落腳點，不做評選。菜單各城相同，這裡只列招牌；分店併在各城市指南的行程餐廳推薦表末段，和其他餐廳一起看動線。門市地址、營業時間與查核狀態由同一份門市資料提供，出發前仍以店家頁面為準。</p>
       <div class="grid">${chainCards}</div>
       ${cityLinks ? `<p class="action-links">${cityLinks}</p>` : ''}
     </section>`;
