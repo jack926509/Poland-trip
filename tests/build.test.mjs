@@ -1217,6 +1217,17 @@ test('實用頁完整包含店家地圖、安全電話、打包與最新交通�
   assert.ok(read('practical/booking.html').includes('QR 260'));
 });
 
+test('今日頁與安全須知頁的緊急電話輸出可直接撥打的 tel: 連結（稽核 H4）', () => {
+  for (const [file, expectedTelLinks] of [['today.html', 5], ['practical/essentials.html', 5]]) {
+    const html = read(file);
+    for (const number of ['112', '997', '998', '999', '986']) {
+      assert.match(html, new RegExp(`<a href="tel:${number}">${number}</a>`), `${file} 缺少 ${number} 的可撥打連結`);
+    }
+    const telLinks = html.match(/<a href="tel:\d+">/g) || [];
+    assert.ok(telLinks.length >= expectedTelLinks, `${file} 的 tel: 連結數量不足`);
+  }
+});
+
 test('全站沒有常見簡體專用字', () => {
   const simplifiedOnly = ['国', '学', '语', '应', '现', '实', '导', '为', '会', '这', '来', '说', '们', '产', '业', '变', '关', '开', '间', '进', '长', '门', '问', '么', '义', '儿', '车', '马', '鱼', '龙', '爱', '东', '华', '历', '经', '结', '统', '传', '让', '认', '识', '远', '运'];
   const offenders = [];

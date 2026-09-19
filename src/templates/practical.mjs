@@ -400,7 +400,7 @@ export function renderEssentials({ phrases, packingDefault, about, safety, sourc
   const phraseRows = phrases.map(item => `<tr><td>${item[0]}</td><td><b>${item[1]}</b></td><td>${item[2] || '—'}</td></tr>`).join('');
   const aboutCards = about.map(item => `<article class="card"><span class="eyebrow">${item[0]}</span><p>${item[1]}</p></article>`).join('');
   const packingHtml = Object.entries(packingDefault).map(([category, items]) => `<article class="card"><h3>${category}</h3><ul class="check-list">${items.map(item => `<li>${item}</li>`).join('')}</ul></article>`).join('');
-  const emergencyRows = safety.emergency.map(item => `<tr><td>${item[0]}</td><td class="number"><b>${item[1]}</b></td></tr>`).join('');
+  const emergencyRows = safety.emergency.map(item => `<tr><td>${item[0]}</td><td class="number"><b><a href="tel:${item[1].replace(/\s+/g, '')}">${escapeHtml(item[1])}</a></b></td></tr>`).join('');
   const embassyRows = safety.embassy.map(item => `<tr><td>${item[0]}</td><td><b>${item[1]}</b></td></tr>`).join('');
   const safetyCards = safety.tips.map(item => `<article class="card"><h3>${item.label}</h3><p>${item.text}</p></article>`).join('');
   const sourceRows = sources.map(item => `<tr><td><a href="${item.url}" target="_blank" rel="noopener"><b>${item.name}</b></a></td><td>${item.checkedAt}</td><td>${item.note}</td></tr>`).join('');
