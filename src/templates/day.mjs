@@ -178,7 +178,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
         <span class="eyebrow">${day.train.type}${day.train.leg ? ` · ${day.train.leg}` : ''}</span>
         <h3>${day.train.from || ''}${day.train.to ? ` → ${day.train.to}` : ''}</h3>
         <p><b>${day.train.dep} → ${day.train.arr}</b> · ${day.train.dur} · ${escapeHtml(trainPrice)}</p>
-        ${day.train.saleOpens ? `<p><b>${escapeHtml(day.train.saleOpens)} 起預售</b> · PKP Intercity 官方售票系統查核：${escapeHtml(day.train.saleCheckedAt)}</p>` : ''}
+        ${day.train.saleOpens ? `<p><b>上次查得 ${escapeHtml(day.train.saleOpens)} 起預售（待複核）</b> · PKP Intercity 官方售票系統查核：${escapeHtml(day.train.saleCheckedAt)}</p>` : ''}
         <p class="action-links"><a href="practical/booking.html#rail-itinerary">訂票與交通頁的完整班次表 →</a></p>
       </article>
     </section>` : '';

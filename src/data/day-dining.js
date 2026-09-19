@@ -23,7 +23,7 @@ export const dayDining = {
       "role": "咖啡甜點",
       "name": "Café Bristol",
       "address": "Krakowskie Przedmieście 42/44, Warszawa",
-      "note": "皇家大道途中休息；與 Wedel 擇一優先。每日 08:00–20:00，週六開門時間各來源不一致，行前電話 +48 22 551 18 28 確認。",
+      "note": "皇家大道途中休息；與 Wedel 擇一優先。2026-09-19 店家官網：日–四 08:00–19:00、五六 08:00–21:00。",
       "map": "https://www.google.com/maps/search/?api=1&query=Caf%C3%A9%20Bristol%20Krakowskie%20Przedmie%C5%9Bcie%2042/44%2C%20Warszawa"
     }
   ],
@@ -68,12 +68,20 @@ export const dayDining = {
   ],
   "4": [
     {
-      "role": "午餐首選",
+      "role": "午餐首選（店家待選）",
+      "name": "Wieliczka 鎮中心午餐",
+      "cityGuide": false,
+      "address": "Wieliczka 鎮中心",
+      "note": "依既定行程 13:00 在鎮中心午餐，店家尚未選定；鹽礦地下餐廳營業有官方資訊衝突，先不要依賴。地圖只搜尋鎮中心餐廳，不代表已確認營業；出礦後確認店家，保留回克拉科夫取行李的時間。",
+      "map": "https://www.google.com/maps/search/?api=1&query=restaurants+Wieliczka+Rynek"
+    },
+    {
+      "role": "午餐備案（營業待確認，暫不採用）",
       "name": "Karczma Górnicza",
       "//": "在維利奇卡鹽礦地下 125 公尺，不屬四座城市，因此不推進城市指南的餐廳表。",
       "cityGuide": false,
       "address": "Kopalnia Soli Wieliczka",
-      "note": "Wieliczka 鹽礦 125 公尺地下餐廳午餐。",
+      "note": "2026-09-19 查核：礦場公司波蘭文頁列目前關閉，英文餐飲頁仍有菜單，官方資訊不一致；未獲礦場確認前不採用，依既定 13:00 Wieliczka 鎮中心午餐安排，店家現場再選。",
       "map": "https://www.google.com/maps/search/?api=1&query=Karczma+Gornicza+Kopalnia+Soli+Wieliczka"
     },
     {
@@ -89,21 +97,21 @@ export const dayDining = {
       "role": "午餐首選",
       "name": "Restauracja Wrocławska",
       "address": "Szewska 59/60, Wrocław",
-      "note": "戰前風味，招牌 bigos 獵人燉菜。2026-09-18 查證官方網站 wroclawska.com.pl：日–四 12:00–22:00、五六 12:00–00:00，10/28 週三為 12:00–22:00。訂位電話 +48 71 305 12 28。須先挪出完整午餐時間，不能直接塞在全景畫與百年廳之間。",
+      "note": "戰前風味，招牌 bigos 獵人燉菜。2026-09-19 店家官網：開門時間待店家確認；日–四廚房至 21:30、酒吧至 22:00；五六廚房至 22:00、酒吧至 00:00。10/28 週三廚房 21:30 收單、酒吧 22:00 結束；午餐供應起始時間須先確認。訂位電話 +48 71 305 12 28。須先挪出完整午餐時間，不能直接塞在全景畫與百年廳之間。",
       "map": "https://www.google.com/maps/search/?api=1&query=Restauracja%20Wroc%C5%82awska%20Szewska%2059/60%2C%20Wroc%C5%82aw"
     },
     {
       "role": "晚餐首選",
       "name": "IDA kuchnia i wino",
       "address": "Łazienna 4, Wrocław",
-      "note": "19:10 火車前的提早晚餐，建議訂位並單點；六道套餐 209 PLN，葡萄酒搭配另加 169 PLN（現行菜單）；週三 12:00–22:00。",
+      "note": "19:10 火車前的提早晚餐，建議訂位並單點；2026-09-19 官網只核實週三 12:00–22:00，現行套餐與搭酒價格未能由店家官網核實，點餐前查看最新菜單。",
       "map": "https://www.google.com/maps/search/?api=1&query=IDA%20kuchnia%20i%20wino%20%C5%81azienna%204%2C%20Wroc%C5%82aw"
     },
     {
       "role": "替補",
       "name": "Konspira",
       "address": "Plac Solny 11, Wrocław",
-      "note": "1980 年代反共主題傳統小館；現為備案，週三開門時間 12:00 或 13:00 資料不一，行前電話 796 326 600 確認，週五至日不接受訂位。",
+      "note": "1980 年代反共主題傳統小館；現為備案。2026-09-19 店家官網：週三 13:00–23:00、廚房至 22:00；訂位電話 +48 535 212 586。週五、週末與假日不接受訂位。",
       "map": "https://www.google.com/maps/search/?api=1&query=Konspira%20Plac%20Solny%2011%2C%20Wroc%C5%82aw"
     }
   ],
@@ -149,7 +157,7 @@ export const dayDining = {
       "role": "午餐首選",
       "name": "Café Bristol",
       "address": "Krakowskie Przedmieście 42/44, Warszawa",
-      "note": "城堡→POLIN 途中的輕食站；每日 08:00–20:00，週六開門時間各來源不一致，行前電話 +48 22 551 18 28 確認。",
+      "note": "城堡→POLIN 途中的輕食站；2026-09-19 店家官網：日–四 08:00–19:00、五六 08:00–21:00。",
       "map": "https://www.google.com/maps/search/?api=1&query=Caf%C3%A9%20Bristol%20Krakowskie%20Przedmie%C5%9Bcie%2042/44%2C%20Warszawa"
     },
     {
@@ -169,9 +177,9 @@ export const dayDining = {
     {
       "role": "替補",
       "name": "NUTA",
-      "address": "NUTA Warszawa",
-      "note": "主廚 Andrea Camastra 創意套餐，義式底蘊融合亞洲香料；現為備案，需提前 3–5 週訂位，並向店家確認現址與時間。",
-      "map": "https://www.google.com/maps/search/?api=1&query=NUTA%20NUTA%20Warszawa"
+      "address": "Plac Trzech Krzyży 10/14, Warszawa",
+      "note": "主廚 Andrea Camastra 創意套餐，義式底蘊融合亞洲香料；現為備案。2026-09-19 官網：二–六 18:00–21:15 接受最後訂位，日一休；套餐價格以訂位頁即時顯示為準。",
+      "map": "https://www.google.com/maps/search/?api=1&query=NUTA%20Plac%20Trzech%20Krzy%C5%BCy%2010%2F14%20Warszawa"
     },
     {
       "role": "韓式烤肉替補",
@@ -191,7 +199,7 @@ export const dayDining = {
       "role": "巧克力甜點",
       "name": "Pijalnia Czekolady E.Wedel",
       "address": "Szpitalna 8, Warszawa",
-      "note": "熱巧克力，Szpitalna 8 分店；一–五 08:00–22:00、六 09:00–22:00、日 09:00–21:00。若抵達日已喝過，可略過。",
+      "note": "熱巧克力，Szpitalna 8 分店；2026-09-19 官方 locator：一–六 09:00–22:00、日 09:00–21:00。若抵達日已喝過，可略過。",
       "map": "https://www.google.com/maps/search/?api=1&query=Pijalnia%20Czekolady%20E.Wedel%20Szpitalna%208%2C%20Warszawa"
     }
   ],
@@ -200,7 +208,7 @@ export const dayDining = {
       "role": "早餐",
       "name": "Café Bristol",
       "address": "Krakowskie Przedmieście 42/44, Warszawa",
-      "note": "每日 08:00–20:00；週六開門時間各來源不一致，行前電話 +48 22 551 18 28 確認。保留退房與機場交通時間，不專程追店。",
+      "note": "2026-09-19 店家官網：日–四 08:00–19:00、五六 08:00–21:00。保留退房與機場交通時間，不專程追店。",
       "map": "https://www.google.com/maps/search/?api=1&query=Caf%C3%A9%20Bristol%20Krakowskie%20Przedmie%C5%9Bcie%2042/44%2C%20Warszawa"
     },
     {

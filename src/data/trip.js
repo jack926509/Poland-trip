@@ -41,11 +41,11 @@ export const days = [
       {t:'21:00', label:'早睡倒時差'},
     ],
     eat: [
-      {text:'甜點 @ Pijalnia Czekolady E.Wedel（Szpitalna 8）', place:'Pijalnia Czekolady E.Wedel（Szpitalna 8）', note:'一–五 08:00–22:00、六 09:00–22:00、日 09:00–21:00', map:'https://www.google.com/maps/search/?api=1&query=Pijalnia+Czekolady+E.Wedel+Szpitalna+8+Warsaw'},
+      {text:'甜點 @ Pijalnia Czekolady E.Wedel（Szpitalna 8）', place:'Pijalnia Czekolady E.Wedel（Szpitalna 8）', note:'2026-09-19 官方門市頁複核：一–六 09:00–22:00、日 09:00–21:00', map:'https://www.google.com/maps/search/?api=1&query=Pijalnia+Czekolady+E.Wedel+Szpitalna+8+Warsaw'},
     ],
     backup: [
-      {label:'下雨備案', where:'科學文化宮 30F 觀景台', why:'全票 30／優待 25 PLN（2026-09-18 官方售票系統查證）· 每日 10:00–20:00 · 室內 + 360° 城景，老城廣場走路 12 分', map:'https://www.google.com/maps/search/?api=1&query=Pa%C5%82ac%20Kultury%20i%20Nauki%2C%20plac%20Defilad%201%2C%20Warszawa'},
-      {label:'時差太累', where:'Łazienki 公園溫室', why:'室內展館 + 蕭邦像，免費，傍晚前可走', map:'https://www.google.com/maps/search/?api=1&query=%C5%81azienki%20Kr%C3%B3lewskie%2C%20Agrykola%201%2C%20Warszawa'},
+      {label:'下雨備案', where:'科學文化宮 30F 觀景台', why:'全票 30／優待 25 PLN（2026-09-18 官方售票系統查證）· 每日 10:00–20:00 · 室內 + 360° 城景；從老城前往須另抓交通時間，依當下導航確認', map:'https://www.google.com/maps/search/?api=1&query=Pa%C5%82ac%20Kultury%20i%20Nauki%2C%20plac%20Defilad%201%2C%20Warszawa'},
+      {label:'時差太累', where:'Łazienki 公園散步', why:'2026-09-19 官網複核：花園每日 06:00–22:00 免費；蕭邦像在戶外，館舍另有門票與開放時間，不能當成免費室內備案。抵達日仍以體力與交通時間決定是否前往', map:'https://www.google.com/maps/search/?api=1&query=%C5%81azienki%20Kr%C3%B3lewskie%2C%20Agrykola%201%2C%20Warszawa'},
     ],
     practical: [
       {tag:'寄物', name:'飯店櫃檯優先', note:'Hotel Metropol 櫃檯提供行李寄放，15:00 前抵達先寄物；車站寄物櫃只作備案，尺寸、空位與費率會變動'},
@@ -100,7 +100,7 @@ export const days = [
     tag: 'Memorial',
     intensity: '中高',
     hardConstraints: ['10:00 前完成 Muzeum Auschwitz 安檢（官方要求入場時段前 30 分鐘到場）', '10:30 英文 educator 導覽已訂妥，遲到不予補場', '回程巴士 15:30 發車，導覽結束後不要走遠', '晚間不再加博物館或長距離步行'],
-    mustBook: ['✅ 已訂妥 · Auschwitz 官方英文導覽 10/26 10:30（個人 educator 導覽，約 3 小時 45 分，2 人）', '❗尚未購票 · Lajkonik 去程 07:10 → 08:35（班次已查定，直接下單）', '❗尚未購票 · Lajkonik 回程 15:30 → 16:55（備案 16:30 → 17:55）'],
+    mustBook: ['✅ 已訂妥 · Auschwitz 官方英文導覽 10/26 10:30（個人 educator 導覽，約 3 小時 45 分，2 人）', '❗尚未購票 · Lajkonik 去程 07:10 → 08:35（曾查得班次，付款前重查）', '❗尚未購票 · Lajkonik 回程 15:30 → 16:55（備案 16:30 → 17:55）'],
     compressible: ['回克拉科夫後晚餐形式', '晚間自由活動'],
     weather: '尚無可靠預報；出發前 7–10 天更新',
     // 導覽已訂妥 10:30，巴士以「09:45 前抵達」回推。
@@ -294,7 +294,7 @@ export const days = [
       {t:'21:00', label:'老城廣場夜燈漫步', sub:'自由收尾'},
     ],
     eat: [],
-    warn: '❗四項皆尚未訂。皇家城堡已由官方確認二–日 10:00–18:00、最後入場 17:00；本行程採約 60 分鐘 Royal Route，避免與午餐及館際移動重疊。POLIN 週五 10:00–18:00，主展最後入場為閉館前 2 小時。起義博物館票價 35／30，個人免費日為週一（非週四，官方公告）；10/30 是週五，照常收費，實際可售時段仍以官方票頁為準。蕭邦博物館已由蕭邦研究所公告 2026 全年整修閉館、預計 2027 年 1 月重開，本趟不列入行程。',
+    warn: '❗四項皆尚未訂。皇家城堡已由官方確認二–日 10:00–18:00、最後入場 17:00；本行程採約 60 分鐘 Royal Route，避免與午餐及館際移動重疊。POLIN 週五 10:00–18:00，主展最後入場為閉館前 2 小時。起義博物館票價 35／30，2026-09-19 官網複核個人免費日為週四；10/30 是週五，照常收費，實際可售時段仍以官方票頁為準。蕭邦博物館已由蕭邦研究所公告 2026 全年整修閉館、預計 2027 年 1 月重開，本趟不列入行程。',
     extend: [
       {label:'Bulwary Wiślane 維斯瓦河畔', when:'21:00 後老城散步延伸', map:'https://www.google.com/maps/search/?api=1&query=Bulwary%20Wi%C5%9Blane%2C%20Warszawa', why:'河濱步道 + 沙灘酒吧，皇家城堡步行 10–15 分，適合晚餐後收尾散步，免費'},
       {label:'Neon Museum 霓虹燈博物館', when:'若提前結束起義博物館可插入', map:'https://www.google.com/maps/search/?api=1&query=Neon%20Muzeum%2C%20plac%20Defilad%201%2C%20Warszawa', why:'已遷入科學文化宮 4 樓（Marszałkowska 入口），共產時期霓虹招牌收藏，PLN 25／優待 18，可與觀景台一起看'},
@@ -328,7 +328,7 @@ export const days = [
     backup: [
       {label:'早餐備案', where:'Bar Mleczny Prasowy（Marszałkowska 10/16，旅館旁）', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Prasowy%2C%20Marsza%C5%82kowska%2010%2F16%2C%20Warszawa', why:'⚠️ 已不是可靠備案：2026-09-17 華沙市府旅遊資訊中心列 Marszałkowska 10/16 這家為週一 09:00–20:00、週二–日 09:00–19:00，10/31（六）09:00 才開，趕不上 08:00 早餐與 09:45 退房。網路上的「08:00 開」屬 Powiśle 分店（Zajęcza 1a）。此店也在 Marszałkowska 南端，與旅館（99a）不是步行五分鐘。若 Café Bristol 有異，改找退房路線上或車站內的選擇'},
       {label:'班機提早 2 h', where:'蕭邦機場 1F Costa Coffee · 觀景窗', map:'https://www.google.com/maps/search/?api=1&query=Warsaw%20Chopin%20Airport%20Terminal%20A', why:'退稅 + 安檢順可能 12:30 就過關，1F 貴賓區外有平價咖啡'},
-      {label:'紀念品最後採買', where:'先在飯店旁 Złote Tarasy 補齊，機場店只作最後備案', map:'https://www.google.com/maps/search/?api=1&query=Z%C5%82ote%20Tarasy%2C%20Z%C5%82ota%2059%2C%20Warszawa', why:'Złote Tarasy 就在 Warszawa Centralna 對面、距 Hotel Metropol 約 500 公尺，一–六約 09:00 開門，退房前後順路可買；機場 1F 的 Wedel、Krówki 方便但價差約 +10–15%'},
+      {label:'紀念品最後採買', where:'先在飯店旁 Złote Tarasy 補齊，機場店只作最後備案', map:'https://www.google.com/maps/search/?api=1&query=Z%C5%82ote%20Tarasy%2C%20Z%C5%82ota%2059%2C%20Warszawa', why:'Złote Tarasy 就在 Warszawa Centralna 對面、距 Hotel Metropol 約 500 公尺，一–六約 09:00 開門，距 09:45 退房出發僅 45 分鐘，還需往返與結帳；伴手禮宜前一天買齊，未核實的機場價差不作預算依據'},
     ],
   },
 ];
@@ -508,10 +508,10 @@ export const railPurchaseSteps = [
 ];
 
 export const bookingTiers = [
-  {tier:'第一優先', note:'❗全部尚未訂 · 先以官方售票系統確認指定日期與庫存', items:[
+  {tier:'第一優先', note:'Auschwitz 已訂妥；其餘尚未訂 · 先以官方售票系統確認指定日期與庫存', items:[
     {name:'Auschwitz 官方英文導覽（10/26 10:30 已訂妥）', url:'https://visit.auschwitz.org/'},
     {name:'Wieliczka 鹽礦英文團（現在即可訂）', url:'https://www.wieliczka-saltmine.com/'},
-    {name:'Lajkonik 往返巴士（去程 07:10 → 08:35、回程 15:30 → 16:55，皆已查定待購票）', url:'https://www.lajkonikbus.pl/'},
+    {name:'Lajkonik 往返巴士（去程 07:10 → 08:35、回程 15:30 → 16:55，皆曾查得、付款前重查）', url:'https://www.lajkonikbus.pl/'},
     {name:'華沙 → 克拉科夫火車', url:'https://www.intercity.pl/en/'},
     {name:'克拉科夫 → 樂斯拉夫火車', url:'https://www.intercity.pl/en/'},
     {name:'樂斯拉夫 → 波茲南火車', url:'https://www.intercity.pl/en/'},
@@ -543,7 +543,7 @@ export const todoGroups = [
     intro: '四段 PKP 已選定規劃班次；Auschwitz 導覽已訂妥 10/26 10:30，往返巴士改依該時段回推目標班次。尚未完成指定日確認或購票前，不把時刻、車種或月台當成已確認。',
     items: [
       {checkedAt:null, recheckAt:null, date:'10/25', name:'EIP 5300｜華沙 → Kraków Główny', status:'參考班次／尚未訂票', action:'核對 10/25 換表後的實際停靠站，比較由 Warszawa Centralna（步行可達飯店）與 Zachodnia 上車的票價與座位，確認 08:45–10:58 後購票。', url:'https://www.intercity.pl/en/'},
-      {checkedAt:'2026-09-09', recheckAt:'2026-10-12', date:'10/26', name:'Lajkonik 克拉科夫 ⇄ Auschwitz 巴士', status:'指定日尚未確認', action:'去回班次皆已在 lajkonikbus.pl 查定，剩下只差付款：去程 07:10（Bosacka 18 D10）→ 08:35、回程 15:30（Więźniów Oświęcimia 55）→ 16:55，各 1h25、全票 25.00 zł／優待 22.00 zł。備案為回程 16:30 → 17:55。下單時確認人數、上下車站與是否需選位。', url:'https://www.lajkonikbus.pl/krakow-oswiecim.html'},
+      {checkedAt:'2026-09-09', recheckAt:'2026-10-12', date:'10/26', name:'Lajkonik 克拉科夫 ⇄ Auschwitz 巴士', status:'曾查得指定日班次／尚未購票', action:'2026-09-09 曾在 lajkonikbus.pl 查得去回班次；本輪未重新取得 10/26 可售結果，付款前須重查班次與庫存：去程 07:10（Bosacka 18 D10）→ 08:35、回程 15:30（Więźniów Oświęcimia 55）→ 16:55，各 1h25、全票 25.00 zł／優待 22.00 zł。備案為回程 16:30 → 17:55。下單時確認人數、上下車站與是否需選位。', url:'https://www.lajkonikbus.pl/krakow-oswiecim.html'},
       {checkedAt:null, recheckAt:null, date:'10/27', name:'IC 3600｜Kraków Główny → Wrocław Główny', status:'參考班次／尚未訂票', action:'核實 17:55–20:52 指定日班表並購票；記錄車廂、座位與訂位憑證。', url:'https://www.intercity.pl/en/'},
       {checkedAt:null, recheckAt:null, date:'10/28', name:'Baltic Express 260｜Wrocław Główny → Poznań Główny', status:'參考班次／尚未訂票', action:'核實 19:10–20:29 指定日班表並購票；確認公寓晚間取鑰匙方式。', url:'https://www.intercity.pl/en/'},
       {checkedAt:null, recheckAt:null, date:'10/29', name:'EIC 8104｜Poznań Główny → Warszawa Centralna', status:'參考班次／尚未訂票', action:'核實 17:40–20:00 指定日班表並購票；抵站後步行至 Metropol 預留 10–15 分鐘。', url:'https://www.intercity.pl/en/'},
@@ -636,7 +636,7 @@ export const deadlines = [
   {
     id: 'bus-lajkonik', date: '2026-10-12', category: '交通',
     title: 'Lajkonik 往返 Auschwitz 巴士購票',
-    action: '班次已查定，只差付款：去程 07:10（Bosacka 18 · D10）→ 08:35、回程 15:30 → 16:55，全票 25.00 zł。備案為回程 16:30。',
+    action: '2026-09-09 曾查得班次，尚未購票；付款前須重查班次、票價與庫存：去程 07:10（Bosacka 18 · D10）→ 08:35、回程 15:30 → 16:55，全票 25.00 zł。備案為回程 16:30。',
     status: '指定日尚未確認', url: 'https://www.lajkonikbus.pl/',
     basis: '待辦事項該筆的 recheckAt = 2026-10-12。',
   },

@@ -1,17 +1,16 @@
-import { escapeHtml } from '../lib/html.mjs';
+import { escapeHtml, safeHttpsUrl } from '../lib/html.mjs';
 import { bookingProgress, isDepartureDay, stayForDate } from '../lib/journey.mjs';
 import { renderLayout } from './layout.mjs';
 import { cityKeysForDay } from '../lib/city-guide.mjs';
 import { renderFastFoodDayList } from './fast-food.mjs';
 import { fastFoodBranches, fastFoodChains, fastFoodHubs } from '../data/dining.js';
 import { dayOperations } from '../data/travel-database.js';
-import { toMinutes, parseHardTimes, HARD_TIME_DEADLINES } from '../lib/schedule.mjs';
-import { dayIsoDate } from '../lib/schedule.mjs';
+import { toMinutes, parseHardTimes, HARD_TIME_DEADLINES, dayIsoDate, todayIn } from '../lib/schedule.mjs';
 import { dayGap, warsawTodayLocal, selectToday, statusText, warsawMinutes, nextPlanIndex, initializeToday } from '../scripts/today.js';
 
-function safeHttpsUrl(value) {
-  const raw = String(value ?? '').trim();
-  return /^https:\/\//.test(raw) ? raw : null;
+function navigationLink(url, label) {
+  const href = safeHttpsUrl(url);
+  return href ? `<a href="${href}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)} ↗</a>` : '';
 }
 
 function renderSteps(day) {
@@ -30,7 +29,7 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
   const list = items => items.map(item => `<li>${escapeHtml(item)}</li>`).join('');
   const meal = item => `<li><b>${escapeHtml(item.role)}：${escapeHtml(item.name)}</b>
     <p>${escapeHtml(item.note || '')}</p><p class="source-meta">${escapeHtml(item.address || '')}</p>
-    ${safeHttpsUrl(item.map) ? `<a href="${escapeHtml(item.map)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.name)}導航 ↗</a>` : ''}</li>`;
+    ${navigationLink(item.map, `${item.name}導航`)}</li>`;
   // 同一天的「首選」其實橫跨不同餐別（午餐＋晚餐＋點心），不是互斥選項。
   // 正餐與點心分開列，避免看起來像「這些全都要吃」或「只能挑一家」。
   const primary = (dining || []).filter(item => !/替補|備案/.test(item.role));
@@ -41,7 +40,8 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
     const matches = (operation?.addresses || []).filter(item => item.stepLabels?.includes(step.label));
     const place = matches.length === 1 ? matches[0] : null;
     const unresolved = operation?.unresolvedSteps?.find(item => item.label === step.label);
-    return {...step, minute:toMinutes(step.t), place:unresolved || !place?.reliable || /票面/.test(step.label) ? null : place, reason:unresolved?.reason};
+    const verifiedPlace = unresolved || !place?.reliable || /票面/.test(step.label) ? null : place;
+    return {...step, minute:toMinutes(step.t), place:verifiedPlace, navigationHref:safeHttpsUrl(verifiedPlace?.url), reason:unresolved?.reason};
   }).filter(step => step.minute !== null).sort((a,b) => a.minute-b.minute);
 
   // 一句可能含多個時刻且語意不同，逐一取出分類；來源字串保持原文。
@@ -94,7 +94,7 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
         <p class="today-next-title"><b>${escapeHtml(step.t)} · ${escapeHtml(step.label)}</b></p>
         <p>${escapeHtml(step.sub || '')}</p>
         ${step.place ? `<p lang="pl">${escapeHtml(step.place.address)}</p><p>${escapeHtml(step.place.entranceNote || '')}</p>` : `<p class="source-meta">${escapeHtml(step.reason || '此步驟沒有唯一確認的入口，請查看當日地址與移動步驟。')}</p>`}
-        <a data-next-nav href="${step.place && safeHttpsUrl(step.place.url) ? escapeHtml(step.place.url) : escapeHtml(dayHref+'#directions')}" ${step.place && safeHttpsUrl(step.place.url) ? 'target="_blank" rel="noopener noreferrer"' : ''}>${step.place && safeHttpsUrl(step.place.url) ? '導航到這一站 ↗' : '查看地址與移動方式 →'}</a>
+        <a data-next-nav href="${step.navigationHref ? step.navigationHref : escapeHtml(dayHref+'#directions')}" ${step.navigationHref ? 'target="_blank" rel="noopener noreferrer"' : ''}>${step.navigationHref ? '導航到這一站 ↗' : '查看地址與移動方式 →'}</a>
       </div>`).join('')}
       <p data-next-ended hidden>今天已沒有更晚的預定行程。可查看其他時段或回住宿休息。</p>
     </section>
@@ -140,7 +140,7 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
       <a href="${escapeHtml(dayHref)}#day-preparation">完整訂票提醒 →</a></details>
     <details class="today-block"><summary>日照、備案與晚間準備</summary>
       ${sun ? `<h3>日照</h3><p>日出 ${escapeHtml(sun.sunrise)}／日落 <b>${escapeHtml(sun.sunset)}</b>／藍調至 ${escapeHtml(sun.blueHourEnd)}（${escapeHtml(sun.tz)}）</p><p>${escapeHtml(sun.note)}</p>` : ''}
-      <h3>備案</h3><ul>${(day.backup || []).map(item => `<li><b>${escapeHtml(item.label)}：${escapeHtml(item.where)}</b><p>${escapeHtml(item.why || '')}</p>${safeHttpsUrl(item.map) ? `<a href="${escapeHtml(item.map)}" target="_blank" rel="noopener noreferrer">備案導航 ↗</a>` : ''}</li>`).join('')}</ul>
+      <h3>備案</h3><ul>${(day.backup || []).map(item => `<li><b>${escapeHtml(item.label)}：${escapeHtml(item.where)}</b><p>${escapeHtml(item.why || '')}</p>${navigationLink(item.map, '備案導航')}</li>`).join('')}</ul>
       <h3>晚間準備</h3><ul>${list(operation?.nightChecklist || [])}</ul>
     </details>
   </article>`;
@@ -167,8 +167,8 @@ export function renderToday({ meta, days, stay, dayDining = {}, daylight = [], s
     dayHref: `${pathPrefix}day-${String(day.n).padStart(2, '0')}.html`,
   })).join('');
 
-  // 內嵌時沒有 import，相依函式要全部列進來（dayGap 支撐 selectToday）。
-  const todayRuntime = [dayGap, warsawTodayLocal, selectToday, statusText, warsawMinutes, nextPlanIndex, initializeToday]
+  // 內嵌時沒有 import；日期與選日函式的相依也必須一起帶入。
+  const todayRuntime = [todayIn, dayGap, warsawTodayLocal, selectToday, statusText, warsawMinutes, nextPlanIndex, initializeToday]
     .map(fn => fn.toString()).join('\n');
 
   const emergency = (safety?.emergency || [])

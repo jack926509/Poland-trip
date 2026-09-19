@@ -8,12 +8,10 @@
 // 打包 <main> 內容，外部 script 會被丟掉）。內嵌時沒有 import，相依函式必須
 // 全部具名匯出並一起列入該檔的 runtime 陣列。
 
+import { todayIn } from '../lib/schedule.mjs';
+
 export function warsawTodayLocal(now) {
-  const parts = new Intl.DateTimeFormat('en', {
-    timeZone: 'Europe/Warsaw', year: 'numeric', month: '2-digit', day: '2-digit',
-  }).formatToParts(now);
-  const part = type => parts.find(value => value.type === type).value;
-  return `${part('year')}-${part('month')}-${part('day')}`;
+  return todayIn('Europe/Warsaw', now);
 }
 
 export function dayGap(fromIso, toIso) {

@@ -39,10 +39,10 @@ export function collectDeadlines({ trains = [], deadlines = [], databaseEntries 
       date: train.saleOpens,
       category: '火車',
       title: `${train.type}｜${train.seg}`,
-      action: `${train.date} ${train.dep}–${train.arr}（${train.dur}）。開賣後於 PKP Intercity 確認指定日班表、票價與座位再購票。`,
+      action: `${train.date} ${train.dep}–${train.arr}（${train.dur}）。請現在於 PKP Intercity 重查指定日可售狀態、班表、票價與座位；不必等到上次記錄的預售日期。`,
       status: train.status || '尚未訂票',
       url: 'https://ebilet.intercity.pl/',
-      basis: `trains[].saleOpens，官方售票系統查核日 ${train.saleCheckedAt || '未記錄'}。`,
+      basis: `trains[].saleOpens，官方售票系統歷次查核日 ${train.saleCheckedAt || '未記錄'}；保留當時的預售日期，現行可售狀態待複核。`,
     }));
   // 已完成（verified）的資料庫項目不進倒數——催已經做完的事只會讓看板被忽略。
   const databaseItems = databaseEntries

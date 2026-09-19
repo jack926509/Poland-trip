@@ -1,10 +1,9 @@
-import { escapeHtml as escape } from '../lib/html.mjs';
+import { escapeHtml as escape, safeHttpsUrl } from '../lib/html.mjs';
 function externalLink(url, label) {
-  try {
-    const parsed = new URL(url);
-    if (parsed.protocol !== 'https:') return escape(label);
-    return `<a href="${escape(parsed.href)}" target="_blank" rel="noopener noreferrer">${escape(label)}</a>`;
-  } catch { return escape(label); }
+  const href = safeHttpsUrl(url);
+  return href
+    ? `<a href="${href}" target="_blank" rel="noopener noreferrer">${escape(label)}</a>`
+    : escape(label);
 }
 
 export function renderPhotoGallery(photos = [], title = '城市風景') {

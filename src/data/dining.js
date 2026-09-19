@@ -97,8 +97,8 @@ export const michelinReservations = [
   {
     "restaurant": "⭐ Most（樂斯拉夫）",
     "mapUrl": "https://maps.google.com/?cid=9490447263206449328",
-    "perPerson": "490",
-    "channel": "miedzy-mostami.pl · 僅週四–六 · 需訂金 · Księcia Witolda 1"
+    "perPerson": "價格待店家最新菜單確認",
+    "channel": "Michelin 現列一–四 17:00–22:00、五 17:00–23:00、六 14:00–23:00、日 14:00–21:00 · Księcia Witolda 1"
   },
   {
     "restaurant": "⭐ Muga（波茲南）",
@@ -109,8 +109,8 @@ export const michelinReservations = [
   {
     "restaurant": "⭐ NUTA（華沙）",
     "mapUrl": "https://maps.google.com/?cid=4624148008162643045",
-    "perPerson": "595 / 795",
-    "channel": "Michelin 線上/官網 · plac Trzech Krzyży（ETHOS）· 主廚 Andrea Camastra"
+    "perPerson": "價格依訂位頁",
+    "channel": "官網 · Plac Trzech Krzyży 10/14 · 二–六 18:00–21:15 接受最後訂位 · 主廚 Andrea Camastra"
   },
   {
     "restaurant": "⭐ Rozbrat 20（華沙）",
@@ -121,8 +121,8 @@ export const michelinReservations = [
   {
     "restaurant": "⭐ BABA（樂斯拉夫）",
     "mapUrl": "https://maps.google.com/?cid=9335659011047272773",
-    "perPerson": "主菜 82–179",
-    "channel": "Michelin 免費線上 · Nożownicza 26 席 · 主廚 Beata Śniechowska"
+    "perPerson": "主菜約 69–159（2026-02 官網菜單）",
+    "channel": "Michelin 免費線上 · Nożownicza 1D · 主廚 Beata Śniechowska"
   },
   {
     "restaurant": "Bib · Bufet KRK（克拉科夫）",
@@ -133,8 +133,8 @@ export const michelinReservations = [
   {
     "restaurant": "Bib · IDA kuchnia i wino（樂斯拉夫）",
     "mapUrl": "https://maps.google.com/?cid=10589009865057440004",
-    "perPerson": "209",
-    "channel": "套餐含酒 · 全趟最高CP"
+    "perPerson": "價格待店家最新菜單確認",
+    "channel": "官網未列站內原有套餐價；訂位前查看最新菜單"
   }
 ];
 
@@ -182,8 +182,8 @@ export const verifiedRestaurantHours = [
     name: 'Restauracja Wrocławska',
     mapUrl: 'https://www.google.com/maps/search/?api=1&query=Restauracja%20Wroc%C5%82awska%2C%20Szewska%2059/60%2C%20Wroc%C5%82aw',
     address: 'ul. Szewska 59/60',
-    hours: '週日–四 12:00–22:00；週五–六 12:00–00:00',
-    feature: '戰前樂斯拉夫風味，招牌 bigos 與西里西亞餃；Day 5（10/28 週三）午餐首選，當天為 12:00–22:00。2026-09-18 由店家官網查得，先前僅有第三方來源。訂位電話 +48 71 305 12 28、restauracja@wroclawska.com.pl。',
+    hours: '開門時間待店家確認；週日–四廚房至 21:30、酒吧至 22:00；週五–六廚房至 22:00、酒吧至 00:00',
+    feature: '戰前樂斯拉夫風味，招牌 bigos 與西里西亞餃；Day 5（10/28 週三）午餐首選。2026-09-19 店家官網查證；訂位電話 +48 71 305 12 28、restauracja@wroclawska.com.pl。',
     url: 'https://wroclawska.com.pl/en/contact/',
   },
   {
@@ -278,19 +278,19 @@ export const cityDining = {
     {
       "name": "BABA",
       "tier": "★ · 2026 新",
-      "highlight": "2025 Bib 升 2026 一星 · 主廚 Beata Śniechowska · 招牌：「Petit Bonbon」創意餃子、招牌肉卷（meatloaf）",
+      "highlight": "2025 Bib 升 2026 一星 · Nożownicza 1D · 主廚 Beata Śniechowska · 2026-02 官網菜單主菜約 69–159 PLN",
       "mapUrl": "https://maps.google.com/?cid=9335659011047272773"
     },
     {
       "name": "IDA kuchnia i wino",
       "tier": "Bib",
-      "highlight": "招牌：現代版 kopytka 馬鈴薯疙瘩、pierogi、żurek 酸湯 · 149 PLN 含酒套餐，高CP",
+      "highlight": "招牌：現代版 kopytka 馬鈴薯疙瘩、pierogi、żurek 酸湯 · 站內舊套餐價無法由 2026-09-19 官網核實",
       "mapUrl": "https://maps.google.com/?cid=10589009865057440004"
     },
     {
       "name": "Restauracja Wrocławska",
       "tier": "在地",
-      "highlight": "戰前風味 · 招牌：bigos 獵人燉菜、Silesian 餃 · 2026-09-18 官網查證日–四 12:00–22:00、五六 12:00–00:00（10/28 週三為 12:00–22:00）",
+      "highlight": "戰前風味 · 招牌：bigos 獵人燉菜、Silesian 餃 · 2026-09-19 官網查證日–四廚房至 21:30、酒吧至 22:00；五六廚房至 22:00、酒吧至 00:00",
       "mapUrl": "https://www.google.com/maps/search/?api=1&query=Restauracja%20Wroc%C5%82awska%20Wroc%C5%82aw"
     },
     {
@@ -355,7 +355,7 @@ export const snacksAndCafes = {
     {name:'Bar Mleczny Bambino', type:'牛奶吧', note:'1959 年開業，公認華沙最「體面」的牛奶吧，內裝與菜單維持舊時樣貌。2026 年公開資料列一–五 08:00–20:00、週末 09:00–18:00；不同來源對門牌有 Hoża 19 與 Krucza 21 兩說，出發前用地圖確認分店。', hours:'一–五 08:00–20:00、六日 09:00–18:00（公開資料，出發前重查）', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Bambino%20Warszawa'},
     {name:'A. Blikle 1869', type:'甜點 · 咖啡', note:'1869 年創立的波蘭國民甜點店，pączki 玫瑰果醬甜甜圈是招牌。Nowy Świat 本店距飯店步行約 15 分，Day 7 老城行程順路；09:00 開門，退房前想買 pączki 帶走可繞去，不適合當 Day 8 早餐主位。', hours:'每日 09:00–21:00（官網確認）', map:'https://www.google.com/maps/search/?api=1&query=A.Blikle%2C%20Nowy%20%C5%9Awiat%2033%2C%20Warszawa'},
     {name:'Cukiernia Zagoździński', type:'甜點', note:'1925 年開業的老派甜甜圈店，被在地人視為華沙 pączek 標準答案；位在 Wola 區 Górczewska 15，需搭電車前往，適合有半天餘裕時安排。', hours:'依店家當日公告', map:'https://www.google.com/maps/search/?api=1&query=Cukiernia%20Zago%C5%BAdzi%C5%84ski%2C%20G%C3%B3rczewska%2015%2C%20Warszawa'},
-    {name:'Café Bristol', type:'咖啡 · 輕食', note:'Krakowskie Przedmieście（Hotel Bristol 內），Day 7 城堡→POLIN 途中順路輕食、Day 8 早餐主位。', hours:'每日 08:00–20:00；週六開門時間各來源不一致，行前電話 +48 22 551 18 28 確認', map:'https://www.google.com/maps/search/?api=1&query=Caf%C3%A9%20Bristol%20Krakowskie%20Przedmie%C5%9Bcie%2042/44%2C%20Warszawa'},
+    {name:'Café Bristol', type:'咖啡 · 輕食', note:'Krakowskie Przedmieście（Hotel Bristol 內），Day 7 城堡→POLIN 途中順路輕食、Day 8 早餐主位。', hours:'2026-09-19 店家官網：日–四 08:00–19:00、五六 08:00–21:00', map:'https://www.google.com/maps/search/?api=1&query=Caf%C3%A9%20Bristol%20Krakowskie%20Przedmie%C5%9Bcie%2042/44%2C%20Warszawa'},
     {name:'Hala Koszyki', type:'美食大廳 · 宵夜', note:'百年市集改建的美食大廳，Day 6（10/29 週四）晚班抵達後最好用的晚餐／宵夜選項；距飯店步行約 10–15 分。官方註明各餐廳與店舖時間可能與大廳不同，抵達前先確認個別店家。地下停車場 200 席、每小時 10 PLN。', hours:'2026-09-18 官方網站（koszyki.com）查證：一、二 08:00–23:00；三、四 08:00–00:00；五、六 08:00–01:00；日 08:00–23:00。舊記的「一–六 08:00–01:00、日 09:00–01:00」已過時——凌晨 1:00 只有週五六，10/29（週四）是 00:00 打烊', map:'https://www.google.com/maps/search/?api=1&query=Hala%20Koszyki%2C%20Koszykowa%2063%2C%20Warszawa'},
   ],
   krakow: [
@@ -459,7 +459,7 @@ export const cityFood = [
     "en": "Kraków",
     "items": [
       {
-        "tag": "米其林必比登",
+        "tag": "傳統餐廳",
         "name": "Starka / Szara Gęś",
         "note": "Kazimierz 與廣場",
         "book": "must",
@@ -587,7 +587,7 @@ export const cityFood = [
         "role": "primary"
       },
       {
-        "tag": "米其林必比登",
+        "tag": "傳統餐廳",
         "name": "Pod Fredrą / Jadka",
         "note": "廣場旁傳統",
         "book": "must",
@@ -815,7 +815,7 @@ export const fastFoodBranches = {
     {chain: 'KFC', address: 'Floriańska 33', note: '老城 Floriańska 街，中央市集廣場旁', map: chainMap('KFC Floriańska 33, Kraków')},
     {chain: "McDonald's", address: 'Szewska 2', note: '中央市集廣場旁，地下室座位區是舊地窖', map: chainMap("McDonald's Szewska 2, Kraków")},
     {chain: 'Pasibus', address: 'Pawia 5', note: 'Galeria Krakowska，中央車站旁', map: chainMap('Pasibus Galeria Krakowska, Pawia 5, Kraków')},
-    {chain: 'MAX Premium Burgers', address: 'Nowohucka 54', note: '離市中心較遠（Bonarka 方向），老城區內沒有據點', map: chainMap('MAX Premium Burgers Nowohucka 54, Kraków')},
+    {chain: 'MAX Premium Burgers', address: 'Nowohucka 52', note: '離市中心較遠（M1／Selgros 一帶），老城區內沒有據點', map: chainMap('MAX Premium Burgers Nowohucka 52, Kraków')},
     {chain: 'Berlin Döner Kebap', address: 'Pawia 5 ／ Podgórska 34', note: 'Galeria Krakowska（車站）／Galeria Kazimierz', map: chainMap('Berlin Döner Kebap Galeria Krakowska, Pawia 5, Kraków')},
     {chain: 'Salad Story', address: 'Pawia 5 ／ Podgórska 34', note: 'Galeria Krakowska（車站）／Galeria Kazimierz', map: chainMap('Salad Story Galeria Krakowska, Pawia 5, Kraków')},
   ],

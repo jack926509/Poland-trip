@@ -27,10 +27,13 @@ function makeStubDom() {
     addEventListener() {},
     closest: () => null,
   };
+  // 提供一張真實日期的卡片，避免 initializeToday 因零張卡提早返回，漏驗日期相依。
+  const card = { ...node, getAttribute: key => key === 'data-today-date' ? '2026-10-24' : null };
+  node.querySelectorAll = selector => selector === '[data-today-card]' ? [card] : [];
   const document = {
     currentScript: { closest: () => null },
     querySelector: () => node,
-    querySelectorAll: () => [],
+    querySelectorAll: node.querySelectorAll,
     createElement: () => ({ ...node, style: {}, click() {}, remove() {} }),
     body: { appendChild() {} },
     addEventListener() {},

@@ -73,9 +73,9 @@ const databaseEntriesBase = [
   {
     id: 'rail-trip-tickets', section: 'rail', category: 'transit', cityKey: 'ROUTE',
     title: '本次城際車票',
-    summary: '本次華沙、克拉科夫、樂斯拉夫與波茲南間的車次、車廂、座位與 through-ticket 狀態尚待開賣後確認。',
+    summary: '本次華沙、克拉科夫、樂斯拉夫與波茲南間的車次、車廂、座位與 through-ticket 狀態尚待於官方售票系統確認。',
     status: 'pending', sourceUrl: null, verifiedAt: null, recheckAt: '2026-09-23',
-    offlineNote: 'PKP 開賣後保存車票 PDF 與月台查詢連結；分開買票要留意轉乘保障可能不同。', private: false,
+    offlineNote: 'PKP 購票後保存車票 PDF 與月台查詢連結；分開買票要留意轉乘保障可能不同。', private: false,
   },
   {
     id: 'rail-station-directory', section: 'rail', category: 'transit', cityKey: 'PL',

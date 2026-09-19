@@ -13,7 +13,7 @@ export const fares = [
   {name:'克拉科夫 · 辛德勒工廠', fullPrice:'60', discountPrice:'45', note:'2026-09-18 克拉科夫博物館官網查證：ul. Lipowa 4 · 週一 10:00–15:00、二–日 09:00–20:00，每月第一個週二休館、最後入場為閉館前 90 分（10/25 是週日，09:00–20:00）· 全票 60 PLN（官網價目另列 Karta Kraków dla Rodziny 30／22.5，即全票與優待 45 的半價）· 英語個人導覽場二–日 10:00、12:00、16:00，英語固定導覽票 90／75 · 常設展線上票一律實名，入場須帶與購票同名的證件正本；線上開賣為參觀日前 90 天，團體票 08:00 起、個人票 09:00 起 · 週一免費入場（免費日不能預約、現場限量）· 官方近期休館日含 10/6、11/1、11/3、11/11，本行程日期不受影響', officialUrl:'https://muzeumkrakowa.pl/oddzialy/fabryka-emalia-oskara-schindlera', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20%E8%BE%9B%E5%BE%B7%E5%8B%92%E5%B7%A5%E5%BB%A0'},
   {name:'克拉科夫 · 維利奇卡鹽礦', fullPrice:'日期選擇器', discountPrice:'日期選擇器', note:'2026-09-18 官網複查：票價與場次頁只有 JavaScript 日期選擇器，靜態頁讀不到指定日數字，10/27 英語場的票價、時刻與庫存仍須在官網選日期確認（先前查得旅遊路線全票 143／優待 121）· 官方註記「非波蘭語與英語的導覽才強制事先線上購票」，英語場可現場購票但受庫存限制 · 官方唯一售票通道是 bilety.kopalnia.pl 與礦區售票口／售票機，官網聲明不與任何外部平台或中介合作 · 集合點 Szyb Daniłowicz（ul. Daniłowicza 10）官方 GPS 49.98348°N／20.05477°E · 全程約 2–3 小時、地下 17–18ºC、路線 3.5 km、下探 135 m、超過 800 級階梯', officialUrl:'https://www.wieliczka-saltmine.com/individual-tourist/useful-information/ticket-prices-and-visiting-hours', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20%E7%B6%AD%E5%88%A9%E5%A5%87%E5%8D%A1%E9%B9%BD%E7%A4%A6%20Wieliczka'},
   {name:'克拉科夫 · 奧斯威辛', fullPrice:'依訂票頁', discountPrice:'依資格', note:'所有入場證僅能線上取得；10 月 07:30–16:00 只能跟官方導覽，16:00 後才有免費自導時段', officialUrl:'https://www.auschwitz.org/en/visiting/guided-tours-for-individual-visitors/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20%E5%A5%A7%E6%96%AF%E5%A8%81%E8%BE%9B%20O%C5%9Bwi%C4%99cim'},
-  {name:'樂斯拉夫 · Afrykarium／動物園', fullPrice:'線上 69 起／現場 99', discountPrice:'線上 59 起／現場 89', note:'2026-09-17 官方票價頁查證：全票線上 69 zł 起、售票口 99 zł；優待票線上 59 zł 起、售票口 89 zł。採動態定價，「起」價會隨日期變動，指定日以官方售票頁為準 · 開放 09:00–18:00、最後入場 17:00 · 入園票已含 Afrykarium，不需另購', officialUrl:'https://zoo.wroclaw.pl/en/prices/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20Afrykarium%EF%BC%8F%E5%8B%95%E7%89%A9%E5%9C%92'},
+  {name:'樂斯拉夫 · Afrykarium／動物園', fullPrice:'線上 69 起／現場 99', discountPrice:'線上 59 起／現場 89', note:'2026-09-17 官方票價頁查證：全票線上 69 zł 起、售票口 99 zł；優待票線上 59 zł 起、售票口 89 zł。採動態定價，「起」價會隨日期變動，指定日以官方售票頁為準 · 2026-09-19 官方開放時間複核：10 月一–四入園 09:00–16:00、館舍至 16:45、戶外與 Afrykarium 至 17:00；五–日及假日入園至 17:00、館舍至 17:45、戶外與 Afrykarium 至 18:00 · 入園票已含 Afrykarium，不需另購', officialUrl:'https://zoo.wroclaw.pl/en/prices/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20Afrykarium%EF%BC%8F%E5%8B%95%E7%89%A9%E5%9C%92'},
   {name:'樂斯拉夫 · Panorama Racławicka', fullPrice:'50', discountPrice:'35', note:'官網優待價已補上', officialUrl:'https://mnwr.pl/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20Panorama%20Rac%C5%82awicka'},
   {name:'樂斯拉夫 · 百年廳 Visitor Centre', fullPrice:'25', discountPrice:'20', note:'2026-09-18 官網查證：夏季（4–10 月）二–日 10:00–18:00、冬季（11–3 月）二–日 10:00–17:00；多媒體展全票 25／優待 20、家庭票 45，加看百年廳內部（看台視角）為 30／25、家庭票 55。10 人以下散客不需預約，只有 10 人以上團體要事先訂位 · 內部開放依官方 availability calendar 分四色：綠＝展覽與廳內看台都可看、藍＝部分時段廳內不開放但展覽可看、黃＝不能進到圓頂正下方但展覽可看、紅＝展覽與廳內都關閉；10/28 是哪一色須在官網日曆當日確認', officialUrl:'https://halastulecia.pl/zwiedzanie/visitor-centre/', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20%E7%99%BE%E5%B9%B4%E5%BB%B3'},
   {name:'樂斯拉夫 · Hydropolis', fullPrice:'45', discountPrice:'36', note:'2026-08-11 官網查證：週末及假日為 47／38 PLN；指定日期入場名額以官方售票頁為準', officialUrl:'https://bilety.hydropolis.pl/cennik.html?lang=en', mapUrl:'https://www.google.com/maps/search/?api=1&query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20Hydropolis'},
@@ -48,7 +48,7 @@ export const ticketsByCity = [
   {city:'樂斯拉夫', items:[
     ['百年廳 Hala Stulecia', 'Visitor Centre 25／20；含廳內 30／25 · 夏季（4–10 月）二–日 10:00–18:00 · 10 人以下不需預約 · 內部開放看官方日曆四色分級，10/28 當日確認'],
     ['拉茨瓦維採全景畫', 'PLN 50／35 · 每場 30 分鐘 · 10/28 指定時段庫存待確認'],
-    ['Afrykarium 動物園', '全票線上 69 起／現場 99；優待線上 59 起／現場 89 · 09:00–18:00、末入 17:00 · 已含 Afrykarium'],
+    ['Afrykarium 動物園', '全票線上 69 起／現場 99；優待線上 59 起／現場 89 · 10 月一–四末入 16:00、Afrykarium 至 17:00；五–日及假日末入 17:00、Afrykarium 至 18:00 · 已含 Afrykarium'],
   ]},
   {city:'波茲南', items:[
     ['牛角麵包博物館', '英語公開場 47 PLN（滿 3 歲）／未滿 3 歲 1 PLN · 官網列日–五 11:00–15:30、六 11:00–17:00（第一場與最後一場開演時間）· 10/29 有無英語場與開演時刻看官方售票頁'],
@@ -144,9 +144,9 @@ export const venueHours = {
     note: '2026-09-17 官網查證：一–日 12:00–19:00，售票至 18:00（語音導覽機同樣 18:00 前發放、19:00 前歸還）。',
   },
   'wroclaw-zoo': {
-    name: '樂斯拉夫 · Afrykarium／動物園', closedWeekdays: [], opens: '09:00', closes: '18:00', lastEntry: '17:00',
-    checkedAt: '2026-09-17', sourceRef: "fares['樂斯拉夫 · Afrykarium／動物園'].note",
-    officialUrl: 'https://zoo.wroclaw.pl/en/prices/',
-    note: '2026-09-17 官網查證：09:00–18:00、最後入場 17:00。',
+    name: '樂斯拉夫 · Afrykarium／動物園', closedWeekdays: [], opens: '09:00', closes: '17:00', lastEntry: '16:00',
+    checkedAt: '2026-09-19', sourceRef: "fares['樂斯拉夫 · Afrykarium／動物園'].note",
+    officialUrl: 'https://zoo.wroclaw.pl/en/opening-hours/',
+    note: '2026-09-19 官網查證：此處採旅程 10/28 週三適用時間，入園 09:00–16:00、館舍至 16:45、戶外與 Afrykarium 至 17:00；10 月五–日及假日則入園至 17:00、Afrykarium 至 18:00。',
   },
 };
