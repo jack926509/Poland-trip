@@ -628,10 +628,10 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
 
   assert.equal(michelinSummary.length, 4);
   assert.equal(michelinReservations.length, 9);
-  // 2026-09-18 複查後新增兩列：克拉科夫 Pod Aniołami（官網「每日 13:00–23:00」）與
-  // 樂斯拉夫 Restauracja Wrocławska（官網日–四 12:00–22:00、五六 12:00–00:00），
-  // 兩家原本只有第三方來源，現已由店家官網一手查得。
-  assert.equal(verifiedRestaurantHours.length, 6);
+  // 2026-09-19 資料精煉切片 1：verifiedRestaurantHours 改由每日餐位（day-dining.js）中
+  // 已核實／部分核實的門市直接推導（見 src/lib/dining.mjs 的 plannedVerifiedPlaces），
+  // 不再是手寫子集，筆數會隨每日餐位調整自然變動。
+  assert.equal(verifiedRestaurantHours.length, 15);
   assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
     warsaw: 5, krakow: 7, wroclaw: 4, poznan: 7,
   });

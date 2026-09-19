@@ -6,7 +6,7 @@ export const diningPlaces = {
     "name": "Hala Koszyki",
     "address": "門牌待確認",
     "map": "https://www.google.com/maps/search/?api=1&query=Hala%20Koszyki%2C%20Koszykowa%2063%2C%20Warszawa",
-    "hours": "2026-09-18 官方網站（koszyki.com）查證：一、二 08:00–23:00；三、四 08:00–00:00；五、六 08:00–01:00；日 08:00–23:00。舊記的「一–六 08:00–01:00、日 09:00–01:00」已過時——凌晨 1:00 只有週五六，10/29（週四）是 00:00 打烊",
+    "hours": "目前查到但尚未列入官方查核的時段：一、二 08:00–23:00；三、四 08:00–00:00；五、六 08:00–01:00；日 08:00–23:00。舊記的「一–六 08:00–01:00、日 09:00–01:00」同樣未經官方核實——兩者皆待確認，10/29（週四）實際打烊時間仍以到店或店家公告為準",
     "sourceUrl": null,
     "checkedAt": null,
     "verificationStatus": "pending",
@@ -168,8 +168,8 @@ export const diningPlaces = {
     "id": "krakow-bar-mleczny-pod-temida",
     "cityKey": "krakow",
     "name": "Bar Mleczny Pod Temidą",
-    "address": "Grodzka 43, Kraków",
-    "map": "https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Pod%20Temid%C4%85%20Grodzka%2043%2C%20Krak%C3%B3w",
+    "address": "門牌待確認（Kraków 市區）",
+    "map": "https://maps.app.goo.gl/xCGDapoy56MBvg2y7?g_st=il",
     "hours": "營業時間待確認",
     "sourceUrl": null,
     "checkedAt": null,
@@ -366,7 +366,7 @@ export const diningPlaces = {
     "cityKey": "warsaw",
     "name": "NUTA",
     "address": "Plac Trzech Krzyży 10/14, Warszawa",
-    "map": "https://www.google.com/maps/search/?api=1&query=NUTA%20Plac%20Trzech%20Krzy%C5%BCy%2010%2F14%20Warszawa",
+    "map": "https://maps.google.com/?cid=4624148008162643045",
     "hours": "週二至週六 18:00–21:15（最後訂位）；週日、週一休息",
     "sourceUrl": "https://nuta.com.pl/en/",
     "checkedAt": "2026-09-19",
@@ -396,7 +396,7 @@ export const diningPlaces = {
     "cityKey": "krakow",
     "name": "FOLGA",
     "address": "Estery 12, Kraków",
-    "map": "https://www.google.com/maps/search/?api=1&query=FOLGA%20Estery%2012%2C%20Krak%C3%B3w",
+    "map": "https://maps.google.com/?cid=7193800786272583343",
     "hours": "營業時間待確認",
     "sourceUrl": "https://folgakrakow.pl/",
     "checkedAt": null,
@@ -411,7 +411,7 @@ export const diningPlaces = {
     "cityKey": "krakow",
     "name": "NOAH",
     "address": "Meiselsa 24, Kraków",
-    "map": "https://www.google.com/maps/search/?api=1&query=NOAH%20Meiselsa%2024%2C%20Krak%C3%B3w",
+    "map": "https://maps.google.com/?cid=6279990201826816109",
     "hours": "週一至週四 16:00–22:00；週五 14:00–23:00；週六 13:00–23:00；週日 13:00–21:30",
     "sourceUrl": "https://noahkrakow.pl/",
     "checkedAt": "2026-09-19",
@@ -440,7 +440,7 @@ export const diningPlaces = {
     "cityKey": "wroclaw",
     "name": "IDA kuchnia i wino",
     "address": "Łazienna 4, Wrocław",
-    "map": "https://www.google.com/maps/search/?api=1&query=IDA%20kuchnia%20i%20wino%20%C5%81azienna%204%2C%20Wroc%C5%82aw",
+    "map": "https://maps.google.com/?cid=10589009865057440004",
     "hours": "週一至週五 12:00–22:00；週六 13:00–22:00；週日 13:00–19:00",
     "sourceUrl": "https://idakuchniaiwino.pl/",
     "checkedAt": "2026-09-19",
@@ -603,7 +603,7 @@ export const diningPlaces = {
     "name": "A. Blikle 1869",
     "address": "門牌待確認",
     "map": "https://www.google.com/maps/search/?api=1&query=A.Blikle%2C%20Nowy%20%C5%9Awiat%2033%2C%20Warszawa",
-    "hours": "每日 09:00–21:00（官網確認）",
+    "hours": "每日 09:00–21:00（資料待確認，非官方查核值）",
     "sourceUrl": null,
     "checkedAt": null,
     "verificationStatus": "pending",
@@ -616,7 +616,7 @@ export const diningPlaces = {
     "cityKey": "warsaw",
     "name": "Cukiernia Zagoździński",
     "address": "門牌待確認",
-    "map": "https://www.google.com/maps/search/?api=1&query=Cukiernia%20Zago%C5%BAdzi%C5%84ski%2C%20G%C3%B3rczewska%2015%2C%20Warszawa",
+    "map": "https://maps.google.com/?cid=5270464504046978357",
     "hours": "依店家當日公告",
     "sourceUrl": null,
     "checkedAt": null,
@@ -701,7 +701,7 @@ export const diningPlaces = {
     "cityKey": "wroclaw",
     "name": "Bar Mleczny Miś",
     "address": "門牌待確認",
-    "map": "https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Mi%C5%9B%2C%20Ku%C5%BAnicza%2048%2C%20Wroc%C5%82aw",
+    "map": "https://maps.google.com/?cid=9100083269168988599",
     "hours": "一–五 07:00–18:00、六 08:00–17:00、日休（2026 公開資料，出發前重查）",
     "sourceUrl": null,
     "checkedAt": null,
@@ -749,7 +749,7 @@ export const diningPlaces = {
     "checkedAt": null,
     "verificationStatus": "pending",
     "notes": [
-      "Day 5 午餐後咖啡，樂斯拉夫精品咖啡選項。2026-09-18 官網（elgatocoffee.pl）確認這是自家烘豆的 El Gato Coffee Roasters，市中心門市地址為 Odrzańska 8/1，品牌在樂斯拉夫與 Trzebnica 共 4 處門市——到店認「Odrzańska 8/1」這一間。"
+      "Day 5 午餐後咖啡，樂斯拉夫精品咖啡選項。查得資料顯示這是自家烘豆的 El Gato Coffee Roasters，市中心門市地址可能為 Odrzańska 8/1（尚未經官方查核），品牌在樂斯拉夫與 Trzebnica 共 4 處門市——到店前務必再次確認是否為「Odrzańska 8/1」這一間。"
     ]
   },
   "wroclaw-dessert-boutique": {
@@ -1070,6 +1070,118 @@ export const diningPlaces = {
     "verificationStatus": "pending",
     "notes": [
       "廣場旁傳統"
+    ]
+  },
+  "warsaw-alon-omakase": {
+    "id": "warsaw-alon-omakase",
+    "cityKey": "warsaw",
+    "name": "Alon Omakase",
+    "address": "門牌待確認",
+    "map": "https://maps.google.com/?cid=8029724309073713102",
+    "hours": "營業時間待確認",
+    "sourceUrl": null,
+    "checkedAt": null,
+    "verificationStatus": "pending",
+    "role": "reference",
+    "notes": [
+      "米其林一星 · Edomae 壽司 omakase，僅 omakase.eu 線上訂位，取消／減人照收全額",
+      "地圖圖釘參考店，未排入本趟每日餐廳安排"
+    ]
+  },
+  "warsaw-hub-praga": {
+    "id": "warsaw-hub-praga",
+    "cityKey": "warsaw",
+    "name": "hub.praga",
+    "address": "門牌待確認",
+    "map": "https://maps.google.com/?cid=10117754456971759897",
+    "hours": "營業時間待確認",
+    "sourceUrl": null,
+    "checkedAt": null,
+    "verificationStatus": "pending",
+    "role": "reference",
+    "notes": [
+      "米其林一星 · Praga 區餐廳",
+      "地圖圖釘參考店，未排入本趟每日餐廳安排"
+    ]
+  },
+  "warsaw-rozbrat-20": {
+    "id": "warsaw-rozbrat-20",
+    "cityKey": "warsaw",
+    "name": "Rozbrat 20",
+    "address": "門牌待確認",
+    "map": "https://www.google.com/maps/search/?api=1&query=Rozbrat%2020%20Warszawa",
+    "hours": "營業時間待確認",
+    "sourceUrl": null,
+    "checkedAt": null,
+    "verificationStatus": "pending",
+    "role": "reference",
+    "notes": [
+      "米其林一星 · rozbrat20.com.pl 訂位，需信用卡、+12.5% 服務費，smart casual、12 歲以上",
+      "地圖圖釘參考店，未排入本趟每日餐廳安排"
+    ]
+  },
+  "krakow-bufet-krk": {
+    "id": "krakow-bufet-krk",
+    "cityKey": "krakow",
+    "name": "Bufet KRK",
+    "address": "門牌待確認",
+    "map": "https://maps.google.com/?cid=861978380086701482",
+    "hours": "營業時間待確認",
+    "sourceUrl": null,
+    "checkedAt": null,
+    "verificationStatus": "pending",
+    "role": "reference",
+    "notes": [
+      "必比登推介 · Bottiglieria 1881 姊妹店，訂不到二星時的替代",
+      "地圖圖釘參考店，未排入本趟每日餐廳安排"
+    ]
+  },
+  "krakow-molam-thai": {
+    "id": "krakow-molam-thai",
+    "cityKey": "krakow",
+    "name": "MOLÁM Thai",
+    "address": "門牌待確認",
+    "map": "https://maps.google.com/?cid=14914780693072191645",
+    "hours": "營業時間待確認",
+    "sourceUrl": null,
+    "checkedAt": null,
+    "verificationStatus": "pending",
+    "role": "reference",
+    "notes": [
+      "必比登推介 · 泰式料理",
+      "地圖圖釘參考店，未排入本趟每日餐廳安排"
+    ]
+  },
+  "krakow-nat-bistro": {
+    "id": "krakow-nat-bistro",
+    "cityKey": "krakow",
+    "name": "Nat Bistro",
+    "address": "門牌待確認",
+    "map": "https://maps.google.com/?cid=10025714057570046192",
+    "hours": "營業時間待確認",
+    "sourceUrl": null,
+    "checkedAt": null,
+    "verificationStatus": "pending",
+    "role": "reference",
+    "notes": [
+      "必比登推介",
+      "地圖圖釘參考店，未排入本趟每日餐廳安排"
+    ]
+  },
+  "wroclaw-most": {
+    "id": "wroclaw-most",
+    "cityKey": "wroclaw",
+    "name": "Most",
+    "address": "Księcia Witolda 1, Wrocław",
+    "map": "https://maps.google.com/?cid=9490447263206449328",
+    "hours": "Michelin 指南現列一–四 17:00–22:00、五 17:00–23:00、六 14:00–23:00、日 14:00–21:00（尚未經店家官網查核）",
+    "sourceUrl": null,
+    "checkedAt": null,
+    "verificationStatus": "pending",
+    "role": "reference",
+    "notes": [
+      "米其林一星",
+      "地圖圖釘參考店，未排入本趟每日餐廳安排"
     ]
   }
 };

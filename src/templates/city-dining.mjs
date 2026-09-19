@@ -1,6 +1,6 @@
 import { mealTiming } from '../lib/dining.mjs';
 import { dayDining } from '../data/day-dining.js';
-import { verifiedRestaurantHours } from '../data/dining.js';
+import { diningPlaces, resolveDining } from '../data/dining-places.js';
 import { days } from '../data/trip.js';
 
 /**
@@ -87,7 +87,12 @@ export function mergeCityDining(cityKey, dining = [], primary = [], snacks = [],
     } else add(item);
   }
   dining.forEach(add);
-  verifiedRestaurantHours.filter(item => item.cityKey === cityKey).forEach(add);
+  // 城市頁另外補上「已核實但沒被任何候選名單引用」的門市（例如需要跟主分店互相對照、
+  // 避免混淆的第二間 Wedel）。不是每個城市都有，多數城市這裡什麼都不會多加。
+  Object.values(diningPlaces)
+    .filter(place => place.cityKey === cityKey && ['verified', 'partial'].includes(place.verificationStatus) && place.role !== 'reference')
+    .map(place => resolveDining({ placeId: place.id }))
+    .forEach(add);
   // 小吃、牛奶吧與咖啡廳原本是另一個區塊，現在併進同一張表；
   // 與上面重複的店（例如 Endzior、Konspira、Pyra Bar）只會補上營業時間，不另開一列。
   for (const item of snacks) {

@@ -1,5 +1,7 @@
 // 門市事實在 dining-places.js；本檔僅維護推薦分類與訂位管道。
 import { resolveDining } from './dining-places.js';
+import { dayDining } from './day-dining.js';
+import { plannedVerifiedPlaces } from '../lib/dining.mjs';
 export { fastFoodChains, fastFoodBranches, fastFoodHubs } from './fast-food.js';
 export const michelinSummary = [
   {
@@ -340,7 +342,7 @@ export const cityFood = [
         "placeId": "wroclaw-konspira",
         "tag": "西里西亞",
         "book": "walk",
-        "role": "primary"
+        "role": "backup"
       },
       {
         "placeId": "wroclaw-pierogarnia-stary-mlyn",
@@ -613,29 +615,6 @@ export const snacksAndCafes = Object.fromEntries(Object.entries({
     }
   ]
 }).map(([city,items]) => [city,items.map(resolveDining)]));
-export const verifiedRestaurantHours = [
-  {
-    "placeId": "warsaw-u-fukiera",
-    "city": "華沙"
-  },
-  {
-    "placeId": "warsaw-polka",
-    "city": "華沙"
-  },
-  {
-    "placeId": "warsaw-wedel-krakowskie-45",
-    "city": "華沙"
-  },
-  {
-    "placeId": "krakow-pod-aniolami",
-    "city": "克拉科夫"
-  },
-  {
-    "placeId": "wroclaw-restauracja-wroclawska",
-    "city": "樂斯拉夫"
-  },
-  {
-    "placeId": "wroclaw-konspira",
-    "city": "樂斯拉夫"
-  }
-].map(resolveDining);
+// 舊版是一份手寫子集，容易漏掉新排進行程的已核實門市（也漏掉真正 pending 的店卻被列進來）。
+// 現在改由「當天餐位是否已核實／部分核實」直接推導，見 src/lib/dining.mjs 的 plannedVerifiedPlaces。
+export const verifiedRestaurantHours = plannedVerifiedPlaces(dayDining);

@@ -8,6 +8,24 @@ export function mealTiming(item, day) {
   return `行程預留 ${step.t} · ${step.label}（不代表已訂位）`;
 }
 
+const CITY_NAMES_BY_KEY = { warsaw: '華沙', krakow: '克拉科夫', wroclaw: '樂斯拉夫', poznan: '波茲南', wieliczka: 'Wieliczka' };
+
+/**
+ * 「行程餐廳營業時間」表的唯一來源：從每日餐位（day-dining.js）中挑出
+ * 已核實或部分核實的門市，不再手寫一份會漂移的子集清單。
+ * 同一門市在多天出現時只保留第一筆，順序依 Day 1→8、當天內原順序。
+ */
+export function plannedVerifiedPlaces(dayDiningByDay) {
+  const seen = new Map();
+  for (const items of Object.values(dayDiningByDay)) {
+    for (const item of items) {
+      if (!['verified', 'partial'].includes(item.verificationStatus)) continue;
+      if (!seen.has(item.placeId)) seen.set(item.placeId, { ...item, city: CITY_NAMES_BY_KEY[item.cityKey] || item.cityKey });
+    }
+  }
+  return [...seen.values()];
+}
+
 export function renderDiningFacts(item) {
   const status = {verified:'已核實所列資料',partial:'部分核實，仍有缺項',pending:'資料待確認'}[item.verificationStatus] || '資料待確認';
   const source = safeHttpsUrl(item.sourceUrl);

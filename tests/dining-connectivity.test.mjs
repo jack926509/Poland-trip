@@ -101,3 +101,40 @@ test('資料遷移保留每日獨有餐廳的料理資訊與點心查核狀態',
   assert.ok(html.includes('部分核實，仍有缺項'));
   assert.ok(html.includes('資料待確認'));
 });
+
+test('餐飲類圖釘（star1/star2/bib/food）都帶 placeId，且導航連結與門市主檔一致', () => {
+  const diningCategories = new Set(['star1', 'star2', 'bib', 'food']);
+  let checked = 0;
+  for (const [city, data] of Object.entries(cities.mapPins)) {
+    for (const point of data.points) {
+      const [, , name, , url, category, , placeId] = point;
+      if (!diningCategories.has(category)) continue;
+      checked += 1;
+      assert.ok(placeId, `${city}／${name} 缺少 placeId`);
+      assert.ok(diningPlaces[placeId], `${city}／${name} 的 placeId 找不到門市：${placeId}`);
+      assert.equal(url, diningPlaces[placeId].map, `${city}／${name} 的圖釘導航連結與門市主檔不一致`);
+    }
+  }
+  assert.equal(checked, 22);
+});
+
+test('「行程餐廳營業時間」表 = 每日餐位中已核實／部分核實的門市集合', () => {
+  const expected = new Set();
+  for (const items of Object.values(dayDining)) for (const item of items) {
+    if (['verified', 'partial'].includes(item.verificationStatus)) expected.add(item.placeId);
+  }
+  const actual = new Set(dining.verifiedRestaurantHours.map(item => item.placeId));
+  assert.deepEqual(actual, expected);
+  assert.ok(actual.has('krakow-noah') && actual.has('krakow-pod-aniolami') && actual.has('poznan-pyra-bar') && actual.has('wroclaw-samarqand'));
+  assert.ok(!actual.has('warsaw-polka'), 'Polka 仍是 pending，不該出現在已核實表');
+});
+
+test('米其林星級名單（star1／star2）每個店名都能對到門市主檔（允許大小寫差異）', () => {
+  const names = Object.values(diningPlaces).map(place => place.name.toLowerCase());
+  const resolvable = text => names.some(name => name.includes(text.toLowerCase()) || text.toLowerCase().includes(name));
+  for (const group of dining.michelinSummary) {
+    for (const name of [...group.star2List, ...group.star1List]) {
+      assert.ok(resolvable(name), `${group.city} 星級餐廳「${name}」在門市主檔找不到對應`);
+    }
+  }
+});
