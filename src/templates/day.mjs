@@ -32,6 +32,7 @@ function eatEntry(item) {
     note: item.note,
     map: item.map,
     eat: true,
+    facts: item.placeId ? renderDiningFacts(item) : '',
   };
 }
 

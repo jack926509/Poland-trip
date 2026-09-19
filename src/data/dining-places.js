@@ -864,7 +864,9 @@ export const diningPlaces = {
     "sourceUrl": "https://specjalyregionalne.pl/",
     "checkedAt": null,
     "verificationStatus": "pending",
-    "notes": [],
+    "notes": [
+      "波蘭地方料理。"
+    ],
     "verificationNote": "店家公司頁面曾同時出現 11:30 與 12:00 開門兩種版本，無法建立唯一可靠時段；用餐日前應由訂位頁或電話確認。"
   },
   "warsaw-pyzy-flaki-gorace": {
@@ -877,7 +879,9 @@ export const diningPlaces = {
     "sourceUrl": "https://www.pyzyflakigorace.pl/kontakt/",
     "checkedAt": null,
     "verificationStatus": "pending",
-    "notes": [],
+    "notes": [
+      "老城店，馬鈴薯糰與牛肚湯。"
+    ],
     "verificationNote": "官方聯絡頁確認 Podwale 5，並列週一至五 12:00–22:00、週日 12:00–21:00，但漏列週六；10/24（週六）不可據此推定營業。"
   },
   "krakow-hankki": {
@@ -890,7 +894,9 @@ export const diningPlaces = {
     "sourceUrl": "https://guide.michelin.com/cz/en/lesser-poland/krakow/restaurant/hankki",
     "checkedAt": null,
     "verificationStatus": "pending",
-    "notes": [],
+    "notes": [
+      "韓日料理。"
+    ],
     "verificationNote": "Michelin 官方指南可確認店名與 Zabłocie 19A，但沒有店家一手營業時間；仍須向餐廳確認當晚收客時間。"
   },
   "wieliczka-wieliczka-鎮中心午餐": {
@@ -903,7 +909,9 @@ export const diningPlaces = {
     "sourceUrl": null,
     "checkedAt": null,
     "verificationStatus": "pending",
-    "notes": []
+    "notes": [
+      "鎮中心午餐安排，尚未指定餐廳。"
+    ]
   },
   "wieliczka-karczma-gornicza": {
     "id": "wieliczka-karczma-gornicza",
@@ -915,7 +923,9 @@ export const diningPlaces = {
     "sourceUrl": null,
     "checkedAt": null,
     "verificationStatus": "pending",
-    "notes": []
+    "notes": [
+      "鹽礦地下餐廳；官方營業資訊矛盾，未確認前不採用。"
+    ]
   },
   "wroclaw-samarqand": {
     "id": "wroclaw-samarqand",
@@ -927,7 +937,9 @@ export const diningPlaces = {
     "sourceUrl": "https://samarqand.pl/regulamin/",
     "checkedAt": "2026-09-19",
     "verificationStatus": "verified",
-    "notes": [],
+    "notes": [
+      "烏茲別克／喬治亞料理。"
+    ],
     "verificationNote": "官方頁確認地址與完整時段；Day 4 週二 20:52 抵站時仍須考慮 22:00 廚房收單及火車延誤。"
   },
   "warsaw-yache-korea": {
@@ -940,7 +952,9 @@ export const diningPlaces = {
     "sourceUrl": "https://yachekorea.com/",
     "checkedAt": "2026-09-17",
     "verificationStatus": "verified",
-    "notes": [],
+    "notes": [
+      "韓式料理。"
+    ],
     "verificationNote": "保留原查核日；10/29 週四預計 20:30 才抵達，不可當晚抵備案。週末時段未納入本次已核實內容。"
   },
   "warsaw-arirang-restaurant": {
@@ -953,7 +967,9 @@ export const diningPlaces = {
     "sourceUrl": null,
     "checkedAt": null,
     "verificationStatus": "pending",
-    "notes": [],
+    "notes": [
+      "韓式料理候選。"
+    ],
     "verificationNote": "未找到可稽核的店家一手網站或公告；Nowogrodzka 38 與網路時段不可升級為已核實，晚抵前須電話確認。"
   },
   "warsaw-mei": {
@@ -966,7 +982,9 @@ export const diningPlaces = {
     "sourceUrl": "https://mei.eatbu.com/?lang=pl",
     "checkedAt": null,
     "verificationStatus": "pending",
-    "notes": [],
+    "notes": [
+      "韓式烤肉。"
+    ],
     "verificationNote": "店家官網確認 Solec 81B、電話 +48 571 219 973 與韓式燒肉服務，但動態營業時間未能讀出；需電話確認。"
   },
   "warsaw-qq-warsaw-matcha-korean-toasts": {
@@ -979,7 +997,9 @@ export const diningPlaces = {
     "sourceUrl": null,
     "checkedAt": null,
     "verificationStatus": "pending",
-    "notes": [],
+    "notes": [
+      "抹茶與韓式吐司候選，店址及營業時間待確認。"
+    ],
     "verificationNote": "只找到第三方資料，未找到可稽核的店家一手地址與時段；「平日 11:00 開」不可升級為已核實。"
   },
   "krakow-starka": {
@@ -1058,6 +1078,6 @@ export function resolveDining(item) {
   const place = diningPlaces[item.placeId];
   if (!place) throw new Error('找不到餐廳門市：' + item.placeId);
   return {...place, ...item, name:place.name, address:place.address, map:place.map, mapUrl:place.map,
-    hours:place.hours, url:place.sourceUrl, note:item.note ?? place.notes.join('；'),
-    highlight:place.notes.join('；'), feature:[...place.notes,place.verificationNote].filter(Boolean).join('；')};
+    hours:place.hours, url:place.sourceUrl, note:item.note ?? place.notes.map(note => note.replace(/[；。]+$/, '')).join('；'),
+    highlight:place.notes.map(note => note.replace(/[；。]+$/, '')).join('；'), feature:[...place.notes,place.verificationNote].filter(Boolean).join('；')};
 }

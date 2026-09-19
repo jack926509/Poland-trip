@@ -41,7 +41,7 @@ export function fastFoodDiningEntries({ branches = [], chains = [], hub = null }
       : [];
     const positionNote = [
       branch.note,
-      branch.verificationStatus === 'verified' ? `官方門市資料已核對（${branch.checkedAt}）；當日供應仍須確認` : '門市資料待確認，勿當作可靠保底',
+      branch.verificationStatus === 'verified' ? `官方門市資料已核對（${branch.checkedAt}）；當日供應仍須確認` : branch.verificationStatus === 'partial' ? '地址已核實，營業時間待確認' : '門市資料待確認，勿當作可靠保底',
       alsoHere.length ? `同在 ${hub.place} 的還有 ${alsoHere.join('、')}，一棟解決` : '',
     ].filter(Boolean).join('；');
     return {
@@ -85,7 +85,7 @@ export function renderFastFoodDayList(cityKeys = [], { branches = {}, chains = [
           <a href="${escapeHtml(branch.map)}" target="_blank" rel="noopener noreferrer">${escapeHtml(branch.chain)}</a>${chain?.kind ? `<span class="fast-food-kind-inline">${escapeHtml(chain.kind)}</span>` : ''}
           <span class="fast-food-address">${escapeHtml(branch.address)}</span>
           <p class="food-map-note">${escapeHtml(branch.note)} · ${escapeHtml(branch.hours || '營業時間待確認')}</p>
-          <p class="source-meta">${branch.verificationStatus === 'verified' ? `官方門市資料已核對（${escapeHtml(branch.checkedAt)}）；出發前重查` : '門市資料待確認，勿當作可靠保底'}${safeHttpsUrl(branch.sourceUrl) ? ` · <a href="${safeHttpsUrl(branch.sourceUrl)}" target="_blank" rel="noopener noreferrer">官方來源 ↗</a>` : ''}</p>
+          <p class="source-meta">${branch.verificationStatus === 'verified' ? `官方門市資料已核對（${escapeHtml(branch.checkedAt)}）；出發前重查` : branch.verificationStatus === 'partial' ? '地址已核實，營業時間待確認' : '門市資料待確認，勿當作可靠保底'}${safeHttpsUrl(branch.sourceUrl) ? ` · <a href="${safeHttpsUrl(branch.sourceUrl)}" target="_blank" rel="noopener noreferrer">官方來源 ↗</a>` : ''}</p>
         </li>`;
     }).join('');
     // hub.address 本身就帶括號（「Pawia 5（中央車站旁）」），外面再包一層會變成雙括號

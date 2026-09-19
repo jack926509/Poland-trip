@@ -93,7 +93,7 @@ function restaurantRecords(data, lookup) {
     for (const row of rows) {
       const placeId = row.placeId || row.id || `${cityKey}-${slug(row.name)}`;
       const record = createRecord({id:`restaurant-${placeId}`, type:'restaurant', title:row.name,
-        meta:compact([city.name, row.address]), summary:compact([row.tier, row.hours, ...(row.notes || []), ...(row.plans || []).map(text => text.replace(/<[^>]*>/g, ''))]),
+        meta:compact([city.name, row.address]), summary:compact([row.tier, row.verificationStatus === 'verified' ? '已核實所列資料' : row.verificationStatus === 'partial' ? '部分核實' : '資料待確認', row.checkedAt, row.hours, ...(row.notes || []), ...(row.plans || []).map(text => text.replace(/<[^>]*>/g, ''))]),
         href:`${city.file}#city-dining`, mapUrl:row.map || '', keywords:[row.chain, '餐廳', row.role === 'fastfood' ? '速食 連鎖' : '', row.verificationStatus]});
       records.set(placeId, {...record, placeId});
     }

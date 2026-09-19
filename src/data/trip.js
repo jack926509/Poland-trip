@@ -6,7 +6,7 @@ import { resolveDining } from './dining-places.js';
 
 function snack(item) {
   const place = resolveDining(item);
-  return {...place, text:item.text, place:place.name, note:[place.note, place.hours, place.verificationNote].filter(Boolean).join('；')};
+  return {...place, text:item.text, place:place.name, note:place.note};
 }
 
 export const meta = {
@@ -115,7 +115,7 @@ export const days = [
     // 指定日班次仍須在業者售票頁確認，這裡只寫目標時段。
     train: {type:'BUS · Lajkonik', leg:'去回班次皆已於官方售票頁查得／尚未購票（回程 15:30 → 16:55）', from:'Kraków MDA（ul. Bosacka 18，D10）', to:'Oświęcim, Więźniów Oświęcimia 55（Muzeum Auschwitz）', dep:'07:10', arr:'08:35', dur:'1h25', price:'PLN 25.00（優待 22.00）'},
     steps: [
-      {t:'06:45', label:'Kraków MDA 報到', sub:'ul. Bosacka 18 Dworzec Autobusowy（Kraków Główny 後方步行約 5 分）；官方售票頁顯示此班由地下層 D10 發車，仍以現場電子看板為準', dur:'25 min 緩衝'},
+      {t:'06:40', label:'Kraków MDA 報到', sub:'ul. Bosacka 18 Dworzec Autobusowy（Kraków Główny 後方步行約 5 分）；官方售票頁顯示此班由地下層 D10 發車，仍以現場電子看板為準', dur:'30 min 規劃緩衝（非官方最低要求）'},
       {t:'07:10', label:'Lajkonik · 克拉科夫 → 奧斯威辛', sub:'2026-09-09 於 lajkonikbus.pl 查得 10/26 當日班次：07:10 D10 發車、08:35 抵 Więźniów Oświęcimia 55，車程 1h25，全票 25.00 zł（優待 22.00 zł）。當日另一班 08:25 → 09:50 只比 10:00 安檢截止早 10 分鐘，緩衝不足不採用', cost:'PLN 25.00（優待 22.00）', dur:'1h25'},
       {t:'08:35', label:'抵 Auschwitz I', sub:'下車處就在博物館停車場對面。距 10:30 入場有 1 小時 55 分：先用免費寄物櫃放大件行李、過安檢（機場式檢查會排隊），剩餘時間可待在訪客中心書店與展覽前導區', dur:'1h55 緩衝'},
       {t:'10:30', label:'★ 英文官方導覽（已訂妥）', sub:'個人 educator 導覽 · 一館 + 比克瑙 · 官方標示約 3 小時 45 分；入場憑電子入場證＋證件，兩者缺一不可', cost:'已付款', dur:'3h45'},

@@ -1,7 +1,7 @@
 # 2026-09-19 每日餐位官方資料補查
 
-> 查核基準日：2026-09-19（台北時間）  
-> 對接鍵：`name`＋`cityKey`；同名多分店（E.Wedel）還必須比對 `address`。  
+> 查核基準日：2026-09-19（台北時間）
+> 對接鍵：`name`＋`cityKey`；同名多分店（E.Wedel）還必須比對 `address`。
 > 輸出：`src/data/dining-fact-updates.js`
 
 ## 結論

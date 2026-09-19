@@ -106,7 +106,7 @@ export function mergeCityDining(cityKey, dining = [], primary = [], snacks = [],
 
   // 每日排定的餐位：城市表沒有這家店就新增一列，並把 Day 連回該日行程。
   for (const { day, item } of plannedMealsFor(cityKey)) {
-    add({ ...item, note: undefined, highlight: undefined, selected: true });
+    add({ ...item, note: undefined, selected: true });
     const entry = entries.get(item.placeId || item.id || key(item.name));
     entry.plans = [...entry.plans, `${dayLink(day, `Day ${day}`)} · ${item.role}：${item.note} · ${mealTiming(item, days.find(value => value.n === day))}`];
   }

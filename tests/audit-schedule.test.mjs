@@ -145,9 +145,8 @@ test('真實行程：星期標示全對、場館引用全部指得到', () => {
 
 test('真實行程的警告數量維持在已知範圍，新增衝突會被注意到', () => {
   const result = auditSchedule();
-  // 目前僅 Day 3 巴士報到 25 分鐘一項，屬刻意安排。數字變動代表行程或場館資料有變。
-  assert.equal(result.warnings.length, 1, `未預期的警告：\n${result.warnings.join('\n')}`);
-  assert.match(result.warnings[0], /Day 3.*轉場緩衝|轉場緩衝.*Day 3/);
+  // Day 3 報到提前到 06:40，保留 30 分鐘規劃緩衝；新的時程衝突應直接顯示。
+  assert.equal(result.warnings.length, 0, `未預期的警告：\n${result.warnings.join('\n')}`);
 });
 
 const SUN = [{ day: 1, date: '2026-10-24', city: '測', tz: 'CET', sunrise: '06:30', sunset: '16:00', blueHourEnd: '16:30', note: '' }];

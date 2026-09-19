@@ -35,7 +35,8 @@ python3 -m http.server 8000 --directory dist
 | 內容 | 檔案位置 |
 | --- | --- |
 | 行程、住宿、火車與訂票待辦 | `src/data/trip.js` |
-| 每日餐廳、城市餐飲資料 | `src/data/day-dining.js`、`src/data/dining.js` |
+| 餐飲門市、每日安排與分類 | `src/data/dining-places.js`、`src/data/day-dining.js`、`src/data/dining.js` |
+| 連鎖速食品牌、獨立門市與商場 | `src/data/fast-food.js` |
 | 城市、地圖與照片資料 | `src/data/cities.js`、`src/data/day-maps.js`、`src/data/city-gallery.js` |
 | 門票、交通、伴手禮與實用資訊 | `src/data/tickets.js`、`transit.js`、`shopping.js`、`essentials.js` |
 | 自由行資料庫 | `src/data/travel-database.js` |

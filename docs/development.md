@@ -6,7 +6,10 @@
 
 - `src/data/trip.js` 的 `todoGroups` 是人工訂票紀錄。查核後更新 `status`、`checkedAt`（實際查核日）、`recheckAt`（下次查核期限）、`action` 與 `url`，不要用建置或部署日期代填查核日。
 - 「可查／購」仍是未完成。收到訂票確認後才改為「已訂妥」或「已完成」，並同步核對 `days`、`trains`、`reservations` 與 `bookingTiers`。票號、訂位代碼與付款資料另存私人票券。
-- 每日餐位維護於 `day-dining.js`，額外順路美食維護於 `trip.js` 的 `eat`；城市餐飲整合由 `src/templates/city-dining.mjs` 推導，避免另外手寫一份候選名單。
+- 餐飲門市事實維護於 `dining-places.js`（`id/cityKey/address/map/hours/sourceUrl/checkedAt/verificationStatus`）；`day-dining.js` 只保存 `placeId/role/note/stepId/planStatus`，`trip.js` 的 `eat` 也引用 `placeId`。地址、時段或店名不要回填到每日安排。`resolveDining` 供各頁共用，城市表與餐廳搜尋使用相同合併資料。
+- 速食品牌與單店維護於 `fast-food.js`；每個分店一個 ID、一個地址與導航，商場以 `branchIds` 關聯；不同分店不得以品牌名合併。
+- `stepId` 只能指向當日既有步驟 ID；未排餐段者保持 null，頁面會明示候選未排時段，不可假設景點間有用餐空檔。
+- 查核狀態採 verified／partial／pending；日期與來源必須有實際證據。只查得地址而沒有時間時用 partial。研究快照在 docs/research，屬歷史查核，不作執行時資料來源。
 - 刪除城市餐廳時，檢查 `cities.js` 的 `mapPins` 與 `mapPinChecks` 是否需同步更新。座標要有查核依據，Google Maps 搜尋連結不能當作已驗證座標。
 - 資料庫 CSV 匯入只更新 `travel-database.js` 的對應條目，不會完成購票或自動更新 `todoGroups`。
 - 儀表板依台灣日期重新計算更新量與逾期數，今日行程依華沙日期判斷；離線時計算的是已載入資料，不會自動查票。

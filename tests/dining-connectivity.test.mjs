@@ -91,3 +91,13 @@ test('圖釘覆蓋分母包含每間速食，不漏算新增餐廳',()=>{
   const count=Object.keys(dining.cityDining).reduce((sum,city,i)=>sum+mergeCityDining(city,dining.cityDining[city],dining.cityFood[i].items,dining.snacksAndCafes[city],fastFoodDiningEntries({branches:dining.fastFoodBranches[city],chains:dining.fastFoodChains})).length,0);
   assert.equal(report.listed,count);
 });
+
+test('資料遷移保留每日獨有餐廳的料理資訊與點心查核狀態', () => {
+  assert.match(diningPlaces['krakow-hankki'].notes.join(''),/韓日料理/);
+  assert.match(diningPlaces['wroclaw-samarqand'].notes.join(''),/烏茲別克／喬治亞料理/);
+  const rows=mergeCityDining('wroclaw',dining.cityDining.wroclaw,dining.cityFood[2].items,dining.snacksAndCafes.wroclaw);
+  assert.match(rows.find(x=>x.placeId==='wroclaw-samarqand').notes.join(''),/烏茲別克／喬治亞料理/);
+  const html=fs.readFileSync(new URL('../dist/day-05.html',import.meta.url),'utf8');
+  assert.ok(html.includes('部分核實，仍有缺項'));
+  assert.ok(html.includes('資料待確認'));
+});

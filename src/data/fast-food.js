@@ -58,9 +58,9 @@ const pending = ({id, chain, cityKey, address, note, query, sourceUrl}) => ({
   checkedAt: '', verificationStatus: 'pending',
 });
 
-const verified = ({id, chain, cityKey, address, note, query, hours, sourceUrl}) => ({
+const verified = ({id, chain, cityKey, address, note, query, hours, sourceUrl, verificationStatus = 'verified'}) => ({
   id, chain, cityKey, address, note, map: chainMap(query), hours, sourceUrl,
-  checkedAt: '2026-09-19', verificationStatus: 'verified',
+  checkedAt: '2026-09-19', verificationStatus,
 });
 
 export const fastFoodBranches = {
@@ -99,7 +99,7 @@ export const fastFoodBranches = {
     pending({id: 'poznan-mcdonalds-stary-rynek', chain: "McDonald's", cityKey: 'poznan', address: 'Stary Rynek 87', note: '舊城市集廣場候選；本輪未能由官方 locator 逐店重現，存在性與時間均待確認。', query: "McDonald's Stary Rynek 87, Poznań", sourceUrl: 'https://mcdonalds.pl/restauracje/'}),
     verified({id: 'poznan-pasibus-swiety-marcin', chain: 'Pasibus', cityKey: 'poznan', address: 'Święty Marcin 58/64', note: '市中心主街街邊店。', query: 'Pasibus Święty Marcin 58/64, Poznań', hours: '週日–四 12:00–23:00；週五–六 12:00–00:00', sourceUrl: 'https://pasibus.pl/lokalizacje/poznan/lokal-pasibus-sw-marcin/'}),
     verified({id: 'poznan-pasibus-avenida', chain: 'Pasibus', cityKey: 'poznan', address: 'Matyi 2', note: 'Avenida，中央車站旁。', query: 'Pasibus Avenida, Matyi 2, Poznań', hours: '週一–六 09:00–21:00；週日 09:00–20:00', sourceUrl: 'https://pasibus.pl/lokalizacje/poznan/foodcourt-pasibus-avenida/'}),
-    verified({id: 'poznan-max-hetmanska', chain: 'MAX Premium Burgers', cityKey: 'poznan', address: 'Hetmańska 82a', note: '市中心南側，不在老城範圍；官方目前可確認地址，逐日時間待門市頁重現。', query: 'MAX Premium Burgers Hetmańska 82a, Poznań', hours: '待確認', sourceUrl: 'https://www.maxpremiumburgers.pl/dostawa/'}),
+    verified({id: 'poznan-max-hetmanska', chain: 'MAX Premium Burgers', cityKey: 'poznan', address: 'Hetmańska 82a', note: '市中心南側，不在老城範圍；官方目前可確認地址，逐日時間待門市頁重現。', query: 'MAX Premium Burgers Hetmańska 82a, Poznań', hours: '待確認', sourceUrl: 'https://www.maxpremiumburgers.pl/dostawa/', verificationStatus:'partial'}),
     verified({id: 'poznan-berlin-doner-king-cross', chain: 'Berlin Döner Kebap', cityKey: 'poznan', address: 'Bukowska 156', note: 'King Cross Marcelin，離老城較遠；非營業週日休息。', query: 'Berlin Döner Kebap King Cross Marcelin, Bukowska 156, Poznań', hours: '週一–六 09:00–21:00；營業週日 10:00–20:00；非營業週日休息', sourceUrl: 'https://www.berlindonerkebap.com/restauracje/poznan/ch-king-cross-marcelin/'}),
     verified({id: 'poznan-berlin-doner-poznan-plaza', chain: 'Berlin Döner Kebap', cityKey: 'poznan', address: 'Drużbickiego 2', note: 'Poznań Plaza，離老城較遠。', query: 'Berlin Döner Kebap Poznań Plaza, Drużbickiego 2, Poznań', hours: '週一–六 09:30–21:00；營業週日 10:00–20:00；非營業週日 12:00–20:00', sourceUrl: 'https://www.berlindonerkebap.com/restauracje/poznan/pozna-plaza/'}),
     pending({id: 'poznan-salad-story-stary-browar', chain: 'Salad Story', cityKey: 'poznan', address: 'Półwiejska 42', note: 'Stary Browar，近老城；本輪未能由官方 locator 逐店重現。', query: 'Salad Story Stary Browar, Półwiejska 42, Poznań', sourceUrl: 'https://saladstory.com/lokale/'}),
