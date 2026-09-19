@@ -409,6 +409,32 @@ test('dist 產出 24 個分頁與可直接部署的單檔版', () => {
   assert.equal(fs.readFileSync(deployedStandalone, 'utf8'), fs.readFileSync(standalonePath, 'utf8'));
 });
 
+test('dist 含 Web App Manifest 與三個圖示，可加到主畫面（稽核 H5）', () => {
+  const manifestPath = path.join(distDir, 'manifest.webmanifest');
+  assert.ok(fs.existsSync(manifestPath), 'dist 缺少 manifest.webmanifest');
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  assert.equal(manifest.name, 'POLSKA 波蘭行程');
+  assert.equal(manifest.display, 'standalone');
+  assert.equal(manifest.start_url, '/');
+  assert.deepEqual(manifest.icons.map(icon => icon.sizes).sort(), ['192x192', '512x512']);
+
+  for (const icon of ['icon-192.png', 'icon-512.png', 'apple-touch-icon.png']) {
+    assert.ok(fs.existsSync(path.join(distDir, icon)), `dist 缺少 ${icon}`);
+  }
+
+  for (const file of expectedFiles) {
+    const html = read(file);
+    assert.match(html, /<link rel="manifest" href="[^"]*manifest\.webmanifest">/, `${file} 缺少 manifest 連結`);
+    assert.match(html, /<link rel="apple-touch-icon" href="[^"]*apple-touch-icon\.png">/, `${file} 缺少 apple-touch-icon`);
+    assert.ok(html.includes('name="apple-mobile-web-app-capable" content="yes"'), `${file} 缺少 apple-mobile-web-app-capable`);
+  }
+
+  // 兩條部署腳本（Cloudflare、GitHub Pages）都靠 prepare-site.sh 組公開輸出；
+  // dist/. 會整包帶到 manifest 與圖示，這裡額外把 manifest 也列進明確複製清單。
+  const prepareScript = fs.readFileSync('prepare-site.sh', 'utf8');
+  assert.match(prepareScript, /manifest\.webmanifest/, 'prepare-site.sh 未明確帶上 manifest.webmanifest');
+});
+
 test('單檔旅遊指南封裝全部 24 頁且不依賴本機 CSS 或其他 HTML', () => {
   assert.ok(fs.existsSync(standalonePath), '缺少 poland-travel-guide-2026.html');
   const html = fs.readFileSync(standalonePath, 'utf8');
@@ -1253,7 +1279,8 @@ test('service worker 提供離線快取，且不預快取被歸檔的介面', ()
   for (const file of expectedFiles) {
     assert.ok(worker.includes(`./${file}`), `sw.js 預快取缺少 ${file}`);
   }
-  for (const asset of ['./assets/main.css', './assets/nav.js', './assets/site-search.js', './assets/database-filter.js', './assets/leaflet/leaflet.js']) {
+  for (const asset of ['./assets/main.css', './assets/nav.js', './assets/site-search.js', './assets/database-filter.js', './assets/leaflet/leaflet.js',
+    './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png']) {
     assert.ok(worker.includes(asset), `sw.js 預快取缺少 ${asset}`);
   }
 
