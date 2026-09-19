@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
+import http from 'node:http';
 import path from 'node:path';
 import vm from 'node:vm';
 import { test } from 'node:test';
@@ -1330,6 +1331,111 @@ test('service worker 預快取失敗時不啟用殘缺新版', async () => {
   handlers.get('install')({ waitUntil(promise) { installPromise = promise; } });
   await assert.rejects(installPromise, /模擬必要資源下載失敗/);
   assert.equal(skipWaitingCalls, 0, '預快取失敗時不得啟用新版 worker');
+});
+
+test('sw.js 預快取頁面會拿掉轉址旗標，並同時存乾淨網址與 .html 兩種 key（稽核 H2）', async () => {
+  // 模擬 Cloudflare Pages 的行為：請求 .html 會收到 308 轉址到乾淨網址。
+  const worker = fs.readFileSync('sw.js', 'utf8');
+  const server = http.createServer((req, res) => {
+    if (req.url === '/today.html') {
+      res.writeHead(308, { Location: '/today' });
+      res.end();
+      return;
+    }
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+    res.end('<html>今日卡內容</html>');
+  });
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address();
+  const origin = `http://127.0.0.1:${port}`;
+
+  const store = new Map();
+  const cache = {
+    async put(key, response) {
+      const url = typeof key === 'string' ? new URL(key, `${origin}/`).toString() : key.url;
+      store.set(url, response);
+    },
+  };
+
+  // sw.js 頂層會立刻呼叫 self.addEventListener 註冊 install/activate/fetch，
+  // 缺這個方法 vm.runInContext 會同步拋錯；若拋錯發生在 server 開啟之後、
+  // try/finally 保護之外，server 就永遠不會關閉，測試程序會因為事件迴圈裡
+  // 還有活著的 listening socket 而卡住不結束（曾經整組測試因此掛住）。
+  // 所以 runInContext 也要包進 try/finally，且 self 要有完整的假方法。
+  try {
+    const context = {
+      self: {
+        location: { origin },
+        clients: { claim: async () => {} },
+        addEventListener() {},
+        async skipWaiting() {},
+      },
+      fetch: (input, init) => fetch(new URL(String(input), `${origin}/`).toString(), init),
+      URL,
+      Response,
+      console,
+    };
+    vm.createContext(context);
+    vm.runInContext(worker, context);
+
+    await context.precachePage(cache, './today.html');
+  } finally {
+    // fetch 走 keep-alive 連線；只呼叫 close() 不會關掉閒置中的 socket，
+    // 測試程序會因為事件迴圈裡還有活著的連線而卡住不結束。
+    server.closeAllConnections();
+    server.close();
+  }
+
+  const htmlKeyResponse = store.get(`${origin}/today.html`);
+  const cleanKeyResponse = store.get(`${origin}/today`);
+  assert.ok(htmlKeyResponse, '缺少 .html 版本的快取 key');
+  assert.ok(cleanKeyResponse, '缺少乾淨網址版本的快取 key');
+  assert.equal(htmlKeyResponse.redirected, false, '重建後的 Response 不應再帶轉址旗標（否則離線導覽會被 Chrome 拒用）');
+  assert.equal(cleanKeyResponse.redirected, false, '重建後的 Response 不應再帶轉址旗標');
+  assert.equal(await htmlKeyResponse.clone().text(), '<html>今日卡內容</html>');
+  assert.equal(await cleanKeyResponse.clone().text(), '<html>今日卡內容</html>');
+});
+
+test('sw.js 離線時，導覽請求無論用哪種網址寫法（有無 .html）都能命中快取（稽核 H2）', async () => {
+  const worker = fs.readFileSync('sw.js', 'utf8');
+  const origin = 'https://example.test';
+
+  async function runPageStrategy(storedUrl, requestUrl) {
+    const store = new Map();
+    store.set(storedUrl, new Response('<html>快取內容</html>', { status: 200, headers: { 'Content-Type': 'text/html' } }));
+    const cache = {
+      async match(key) {
+        const url = typeof key === 'string' ? key : key.url;
+        return store.get(url);
+      },
+    };
+    const context = {
+      self: {
+        location: { origin },
+        clients: { claim: async () => {} },
+        addEventListener() {},
+        async skipWaiting() {},
+      },
+      caches: { open: async () => cache },
+      fetch: async () => { throw new Error('離線：不應連上網路'); },
+      URL,
+      Response,
+      console,
+    };
+    vm.createContext(context);
+    vm.runInContext(worker, context);
+    return context.pageStrategy({ url: requestUrl, method: 'GET' });
+  }
+
+  // Cloudflare Pages 情境：只有乾淨網址被存過，導覽請求卻用了 .html 寫法
+  const cfResponse = await runPageStrategy(`${origin}/today`, `${origin}/today.html`);
+  assert.ok(cfResponse, '只存了乾淨網址版本時，.html 寫法的導覽請求應仍能命中快取');
+  assert.equal(await cfResponse.clone().text(), '<html>快取內容</html>');
+
+  // GitHub Pages 情境：只有 .html 被存過，導覽請求卻用了乾淨網址
+  const ghResponse = await runPageStrategy(`${origin}/today.html`, `${origin}/today`);
+  assert.ok(ghResponse, '只存了 .html 版本時，乾淨網址寫法的導覽請求應仍能命中快取');
+  assert.equal(await ghResponse.clone().text(), '<html>快取內容</html>');
 });
 
 test('每頁都註冊 service worker，且 sw.js 一起輸出到站台根目錄', () => {
