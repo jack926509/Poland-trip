@@ -27,6 +27,17 @@ test('表格內連結不用上下對稱 padding 撐高度', () => {
   assert.ok(!/min-height/.test(body), '觸控高度不應在基礎規則佔版面，見 any-pointer: coarse');
 });
 
+test('城市頁餐飲表 caption 手機版強制橫排，不直排成一字一行', () => {
+  // 稽核 H3：table 手機版 display:block 後，caption 仍是 table-caption，
+  // 在 block 容器內收縮到最小寬度，中文標題逐字垂直排列（寬 53px、高 456px）。
+  const mobileBlockStart = css.indexOf('@media (max-width: 700px) {\n  .city-dining-table-wrap');
+  assert.notEqual(mobileBlockStart, -1, '找不到城市餐飲表手機版規則區塊');
+  const blockEnd = css.indexOf('\n}', mobileBlockStart);
+  const block = css.slice(mobileBlockStart, blockEnd);
+  assert.match(block, /\.city-dining-table caption\s*\{[^}]*display:\s*block;[^}]*width:\s*100%[^}]*\}/,
+    'caption 未在手機版強制 display:block; width:100%');
+});
+
 test('44px 觸控高度只在有觸控輸入的裝置生效', () => {
   // 一行文字 21px 卻佔 44px，等於每列多付 23px；滑鼠游標不需要這麼大的命中區
   //（WCAG 2.2 AA 最小目標 24×24px，44px 是觸控裝置的建議值）。

@@ -4783,6 +4783,9 @@ h3 {
   .city-dining-table-wrap { overflow-x: visible; border: 0; background: none; }
   .city-dining-table { display: block; min-width: 0; table-layout: auto; }
   .city-dining-table thead { display: none; }
+  /* caption 預設是 table-caption；表格本身改 display:block 後，caption 沒有父層
+     table 的寬度可撐，會收縮到內容最小寬度，中文逐字直排成一長條（見稽核 H3）。 */
+  .city-dining-table caption { display: block; width: 100%; padding: .5rem 0; text-align: left; }
   .city-dining-table tbody { display: grid; grid-template-columns: minmax(0, 1fr); gap: .6rem; padding: .6rem 0; }
   .city-dining-table tr {
     display: block;
