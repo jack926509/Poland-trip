@@ -23,8 +23,9 @@ test('長頁保留章節索引、目前頁面與目前導覽群組標示', () =>
   assert.match(day, /<summary aria-current="true">每日行程<\/summary>/);
 });
 
-test('手機快捷導覽在分頁存在一次，單檔版也只保留一份', () => {
-  assert.equal((read('day-04.html').match(/class="mobile-quick-nav"/g) || []).length, 0);
+test('手機快捷導覽在分頁每頁存在一次，單檔版整份也只保留一份（稽核 M2）', () => {
+  assert.equal((read('day-04.html').match(/class="mobile-quick-nav"/g) || []).length, 1);
+  assert.equal((read('index.html').match(/class="mobile-quick-nav"/g) || []).length, 1);
   const standalone = fs.readFileSync(path.resolve('poland-travel-guide-2026.html'), 'utf8');
   assert.equal((standalone.match(/class="mobile-quick-nav"/g) || []).length, 1);
   assert.match(standalone, /href="#page-practical-booking--rail-itinerary"/);

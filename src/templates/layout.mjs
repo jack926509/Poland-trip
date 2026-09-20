@@ -126,6 +126,26 @@ export function renderSiteSearch({
   </section>`;
 }
 
+/**
+ * 手機底部固定快捷列：CSS（.mobile-quick-nav）本來就有，但沒有任何模板輸出過，
+ * 導致手機導覽列不固定、頁面又極長時使用者捲到深處回不了「今日」（稽核 M2）。
+ * 放在 </main> 之後、頁尾之前，因此永遠不會被 buildStandalone 的 <main> 擷取
+ * 進單檔版——單檔版有自己的一份固定快捷列（見 src/build/standalone.mjs）。
+ */
+export function renderMobileQuickNav(pathPrefix, pageKind) {
+  const path = file => `${pathPrefix}${file}`;
+  const todayHref = path('today.html');
+  const scheduleHref = pageKind === 'day' ? '#schedule' : `${todayHref}#today-schedule`;
+  const foodHref = pageKind === 'day' ? '#day-food' : pageKind === 'city' ? '#city-dining' : `${todayHref}#today-food`;
+  const sosHref = `${path('practical/database.html')}#sos-contacts`;
+  return `<nav class="mobile-quick-nav" aria-label="手機快速導覽">
+    <a href="${todayHref}"><span aria-hidden="true">▣</span>今日</a>
+    <a href="${scheduleHref}"><span aria-hidden="true">▤</span>時間表</a>
+    <a href="${foodHref}"><span aria-hidden="true">🍽</span>吃哪</a>
+    <a href="${sosHref}"><span aria-hidden="true">☎</span>SOS</a>
+  </nav>`;
+}
+
 export function renderLayout({
   title,
   activeNav,
@@ -214,6 +234,7 @@ export function renderLayout({
   <main class="page" id="main-content">
     ${pageBody}
   </main>
+  ${renderMobileQuickNav(pathPrefix, pageKind)}
   <footer class="footer">
     <div class="footer-inner">
       <p>POLSKA 波蘭行 · 2026/10/24–10/31</p>

@@ -98,6 +98,15 @@ export function initializeToday(root, now = () => new Date()) {
   prev?.addEventListener('click', () => choose(shown-1));
   next?.addEventListener('click', () => choose(shown+1));
   root.querySelector('[data-date-reset]')?.addEventListener('click', () => { manualDate=null; manualStep=null; refresh(); });
+  function revealTarget(card, key) {
+    const target = card?.querySelector(`[data-${key}]`);
+    if (!target) return null;
+    if (target.tagName === 'DETAILS') target.open = true;
+    target.scrollIntoView({block:'start',behavior:'smooth'});
+    target.setAttribute('tabindex','-1');
+    target.focus({preventScroll:true});
+    return target;
+  }
   cards.forEach(card => {
     card.classList?.add('today-enhanced');
     card.querySelector?.('[data-step-picker]')?.addEventListener('change', event => {
@@ -107,13 +116,24 @@ export function initializeToday(root, now = () => new Date()) {
     card.querySelectorAll?.('[data-today-action]').forEach(button => button.addEventListener('click', () => {
       const action = button.getAttribute('data-today-action');
       if (action === 'next') { manualStep=null; refresh(); }
-      const target = card.querySelector(`[data-today-${action}]`);
-      target?.scrollIntoView({block:'start',behavior:'smooth'});
-      if (target) { target.setAttribute('tabindex','-1'); target.focus({preventScroll:true}); }
+      revealTarget(card, `today-${action}`);
     }));
   });
   if (picker) picker.closest('nav')?.classList.add('today-enhanced');
+  // 手機底部快捷列的「時間表」「吃哪」用網址片段（#today-schedule／#today-food）
+  // 指到目前顯示的那張卡，而不是寫死 id——八張卡是同時渲染、只用 hidden 切換，
+  // 寫死 id 會重複八次。
+  function focusHash() {
+    // 內嵌／測試環境不一定有 location（例如單元測試用純物件模擬 DOM），
+    // 沒有就當作沒有片段導覽，不影響其餘初始化流程。
+    const hash = typeof location === 'undefined' ? '' : location.hash;
+    const key = hash.replace(/^#/, '');
+    if (key !== 'today-schedule' && key !== 'today-food') return;
+    revealTarget(cards[shown], key);
+  }
   refresh();
+  focusHash();
+  window.addEventListener('hashchange', focusHash);
   setInterval(refresh,60000);
   window.addEventListener('pageshow',refresh);
   window.addEventListener('focus',refresh);

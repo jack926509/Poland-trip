@@ -2390,6 +2390,11 @@ figure.media-unavailable > img {
 
   .mobile-quick-nav a span { color: #fff; font-size: 1rem; }
 
+  /* 底部固定快捷列會蓋住頁尾最後一行，手機統一留出等高的底部留白（稽核 M2）。 */
+  .journal-site {
+    padding-bottom: calc(4.25rem + env(safe-area-inset-bottom));
+  }
+
   .journal-appendix-header {
     margin-bottom: 3rem;
     padding: 1.5rem 0;

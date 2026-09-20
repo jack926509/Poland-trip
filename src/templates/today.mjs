@@ -135,7 +135,7 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
         ${hotelMap ? `<a href="${escapeHtml(hotelMap)}" target="_blank" rel="noopener noreferrer">${bed.id === 'poznan-towarowa' ? '接待處導航' : '住宿導航'} ↗</a>` : ''}` : leaving ? `<p>今晚離境／機上過夜。先確認航班報到、退稅與機場交通。</p><a href="${escapeHtml(dayHref)}#directions">開啟機場地址與交通 →</a>`
         : `<p><b>這一天不是離境日，但查不到當晚住宿。</b>這是資料缺漏，不是「不用住」——請先補上訂房或確認安排。</p><a href="${escapeHtml(dayHref)}#day-preparation">查看當日訂房與提醒 →</a>`}
     </section>
-    <details class="today-block"><summary>全天時間表</summary>${renderSteps(day)}</details>
+    <details class="today-block" data-today-schedule><summary>全天時間表</summary>${renderSteps(day)}</details>
     <details class="today-block"><summary>預約與待辦 · ${progress.pending.length} 項待處理</summary>
       <h3>仍未訂妥</h3><ul>${list(progress.pending) || '<li>無待訂項目。</li>'}</ul>
       ${progress.confirmed.length ? `<h3>已完成預約</h3><ul>${list(progress.confirmed)}</ul>` : ''}

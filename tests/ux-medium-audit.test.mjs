@@ -36,6 +36,40 @@ test('M1：今日頁手機 sticky 動作列貼齊頂端且改成單行，不再�
   assert.match(rule, /flex-wrap:\s*nowrap/);
 });
 
+test('M2：手機底部快捷列在各類頁面都輸出，且連結依頁面類型指向對的錨點', () => {
+  // 首頁（非日／城市頁）：時間表與吃哪都導回今日頁對應區塊
+  const home = read('index.html');
+  const homeNav = home.match(/<nav class="mobile-quick-nav"[\s\S]*?<\/nav>/)?.[0];
+  assert.ok(homeNav, '首頁缺少手機快捷列');
+  assert.match(homeNav, /href="today\.html"/);
+  assert.match(homeNav, /href="today\.html#today-schedule"/);
+  assert.match(homeNav, /href="today\.html#today-food"/);
+  assert.match(homeNav, /href="practical\/database\.html#sos-contacts"/);
+
+  // 日頁：時間表／吃哪改成同頁錨點，不必先跳今日頁
+  const day = read('day-02.html');
+  const dayNav = day.match(/<nav class="mobile-quick-nav"[\s\S]*?<\/nav>/)?.[0];
+  assert.match(dayNav, /href="#schedule"/);
+  assert.match(dayNav, /href="#day-food"/);
+
+  // 城市頁：吃哪指到城市頁自己的餐飲章節
+  const city = read('city-krakow.html');
+  const cityNav = city.match(/<nav class="mobile-quick-nav"[\s\S]*?<\/nav>/)?.[0];
+  assert.match(cityNav, /href="#city-dining"/);
+
+  // 快捷列在 </main> 之後、頁尾之前，不會被單檔版的 <main> 擷取邏輯收進去
+  assert.match(home, /<\/main>\s*<nav class="mobile-quick-nav"/);
+
+  // 今日頁本身要有可被快捷列指到的錨點目標
+  const today = read('today.html');
+  assert.match(today, /<details class="today-block" data-today-schedule>/);
+  assert.match(today, /data-today-food/);
+
+  // 手機底部固定列會蓋住頁尾，統一留出底部留白
+  const source = css();
+  assert.match(source, /\.journal-site\s*\{\s*padding-bottom:\s*calc\(4\.25rem \+ env\(safe-area-inset-bottom\)\);?\s*\}/);
+});
+
 test('M8：「資料更新儀表板」從主導覽「實用資訊」下拉移除，但頁面仍存在可連結', () => {
   const home = read('index.html');
   const navSection = home.match(/<details class="nav-dropdown[^>]*>\s*<summary[^>]*>實用資訊<\/summary>([\s\S]*?)<\/details>/)?.[1];

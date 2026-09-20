@@ -2418,6 +2418,11 @@ figure.media-unavailable > img {
 
   .mobile-quick-nav a span { color: #fff; font-size: 1rem; }
 
+  /* 底部固定快捷列會蓋住頁尾最後一行，手機統一留出等高的底部留白（稽核 M2）。 */
+  .journal-site {
+    padding-bottom: calc(4.25rem + env(safe-area-inset-bottom));
+  }
+
   .journal-appendix-header {
     margin-bottom: 3rem;
     padding: 1.5rem 0;
@@ -6553,7 +6558,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
         <p class="source-meta">已核對的住宿地址，可出示給司機或櫃檯。</p>
         <a href="https://www.google.com/maps/search/?api=1&amp;query=Hotel%20Metropol%20ul.%20Marsza%C5%82kowska%2099a%2C%2000-693%20Warszawa" target="_blank" rel="noopener noreferrer">住宿導航 ↗</a>
     </section>
-    <details class="today-block"><summary>全天時間表</summary><div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>行程</th></tr></thead><tbody><tr>
+    <details class="today-block" data-today-schedule><summary>全天時間表</summary><div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>行程</th></tr></thead><tbody><tr>
       <td class="number" data-label="時間"><b>13:30</b></td>
       <td data-label="行程">抵蕭邦機場<br><span class="source-meta">申根入境 + 提行李 ~75min</span></td>
     </tr><tr>
@@ -6796,7 +6801,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
         <p class="source-meta">已核對的住宿地址，可出示給司機或櫃檯。</p>
         <a href="https://www.google.com/maps/search/?api=1&amp;query=ibis%20budget%20Krakow%20Stare%20Miasto%20ul.%20Pawia%2011%2C%2031-154%20Krak%C3%B3w" target="_blank" rel="noopener noreferrer">住宿導航 ↗</a>
     </section>
-    <details class="today-block"><summary>全天時間表</summary><div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>行程</th></tr></thead><tbody><tr>
+    <details class="today-block" data-today-schedule><summary>全天時間表</summary><div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>行程</th></tr></thead><tbody><tr>
       <td class="number" data-label="時間"><b>07:35</b></td>
       <td data-label="行程">退房後前往上車站<br><span class="source-meta">Hotel Metropol → Warszawa Centralna 步行約 500 公尺／8–10 分；若票面上車站為 Warszawa Zachodnia，再由 Centralna 轉 SKM／KM 約 7–10 分，全程用 Jakdojade 重算並預留拖行李時間</span></td>
     </tr><tr>
@@ -6983,7 +6988,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
         <p class="source-meta">已核對的住宿地址，可出示給司機或櫃檯。</p>
         <a href="https://www.google.com/maps/search/?api=1&amp;query=ibis%20budget%20Krakow%20Stare%20Miasto%20ul.%20Pawia%2011%2C%2031-154%20Krak%C3%B3w" target="_blank" rel="noopener noreferrer">住宿導航 ↗</a>
     </section>
-    <details class="today-block"><summary>全天時間表</summary><div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>行程</th></tr></thead><tbody><tr>
+    <details class="today-block" data-today-schedule><summary>全天時間表</summary><div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>行程</th></tr></thead><tbody><tr>
       <td class="number" data-label="時間"><b>06:40</b></td>
       <td data-label="行程">Kraków MDA 報到<br><span class="source-meta">ul. Bosacka 18 Dworzec Autobusowy（Kraków Główny 後方步行約 5 分）；官方售票頁顯示此班由地下層 D10 發車，仍以現場電子看板為準</span></td>
     </tr><tr>
@@ -7215,7 +7220,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
         <p class="source-meta">門牌尚未確認，請先核對私人訂房資料；不提供精確導航。</p>
 
     </section>
-    <details class="today-block"><summary>全天時間表</summary><div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>行程</th></tr></thead><tbody><tr>
+    <details class="today-block" data-today-schedule><summary>全天時間表</summary><div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>行程</th></tr></thead><tbody><tr>
       <td class="number" data-label="時間"><b>08:00</b></td>
       <td data-label="行程">早餐 + 退房<br><span class="source-meta">行李寄旅館</span></td>
     </tr><tr>
@@ -7452,7 +7457,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
         <p class="source-meta">此地址為接待與取鑰匙處；實際公寓門牌依私人訂房確認。</p>
         <a href="https://www.google.com/maps/search/?api=1&amp;query=Poznan%20Apartments%20Towarowa%20Towarowa%2037%2F201%2C%2061-896%20Pozna%C5%84" target="_blank" rel="noopener noreferrer">接待處導航 ↗</a>
     </section>
-    <details class="today-block"><summary>全天時間表</summary><div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>行程</th></tr></thead><tbody><tr>
+    <details class="today-block" data-today-schedule><summary>全天時間表</summary><div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>行程</th></tr></thead><tbody><tr>
       <td class="number" data-label="時間"><b>09:00</b></td>
       <td data-label="行程">★ 中央廣場 + 紡織會館<br><span class="source-meta">dwarfsmap.com 找小矮人</span></td>
     </tr><tr>
@@ -7707,7 +7712,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
         <p class="source-meta">已核對的住宿地址，可出示給司機或櫃檯。</p>
         <a href="https://www.google.com/maps/search/?api=1&amp;query=Hotel%20Metropol%20ul.%20Marsza%C5%82kowska%2099a%2C%2000-693%20Warszawa" target="_blank" rel="noopener noreferrer">住宿導航 ↗</a>
     </section>
-    <details class="today-block"><summary>全天時間表</summary><div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>行程</th></tr></thead><tbody><tr>
+    <details class="today-block" data-today-schedule><summary>全天時間表</summary><div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>行程</th></tr></thead><tbody><tr>
       <td class="number" data-label="時間"><b>09:00</b></td>
       <td data-label="行程">★ 教堂島 Ostrów Tumski<br><span class="source-meta">梅什科一世受洗地</span></td>
     </tr><tr>
@@ -7910,7 +7915,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
         <p class="source-meta">已核對的住宿地址，可出示給司機或櫃檯。</p>
         <a href="https://www.google.com/maps/search/?api=1&amp;query=Hotel%20Metropol%20ul.%20Marsza%C5%82kowska%2099a%2C%2000-693%20Warszawa" target="_blank" rel="noopener noreferrer">住宿導航 ↗</a>
     </section>
-    <details class="today-block"><summary>全天時間表</summary><div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>行程</th></tr></thead><tbody><tr>
+    <details class="today-block" data-today-schedule><summary>全天時間表</summary><div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>行程</th></tr></thead><tbody><tr>
       <td class="number" data-label="時間"><b>10:00</b></td>
       <td data-label="行程">★ 皇家城堡<br><span class="source-meta">採 Royal Route，官方標示約 60 分（含語音導覽）；二–日 10:00–18:00、末入 17:00、週一休館。10/30 是週五，不適用週三的限定路線免費場</span></td>
     </tr><tr>
@@ -8064,7 +8069,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
       <p><b>今天退房：</b>Hotel Metropol。12:00前辦理；寄放與取件方式先向住宿確認。</p>
       <p>今晚離境／機上過夜。先確認航班報到、退稅與機場交通。</p><a href="#page-day-08--directions">開啟機場地址與交通 →</a>
     </section>
-    <details class="today-block"><summary>全天時間表</summary><div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>行程</th></tr></thead><tbody><tr>
+    <details class="today-block" data-today-schedule><summary>全天時間表</summary><div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>行程</th></tr></thead><tbody><tr>
       <td class="number" data-label="時間"><b>08:00</b></td>
       <td data-label="行程">早餐 + 老城散步<br><span class="source-meta">Café Bristol（Krakowskie Przedmieście，Hotel Bristol 內）；A. Blikle 09:00 才開門，不適合當早餐</span></td>
     </tr><tr>
@@ -8191,6 +8196,15 @@ function initializeToday(root, now = () => new Date()) {
   prev?.addEventListener('click', () => choose(shown-1));
   next?.addEventListener('click', () => choose(shown+1));
   root.querySelector('[data-date-reset]')?.addEventListener('click', () => { manualDate=null; manualStep=null; refresh(); });
+  function revealTarget(card, key) {
+    const target = card?.querySelector(`[data-${key}]`);
+    if (!target) return null;
+    if (target.tagName === 'DETAILS') target.open = true;
+    target.scrollIntoView({block:'start',behavior:'smooth'});
+    target.setAttribute('tabindex','-1');
+    target.focus({preventScroll:true});
+    return target;
+  }
   cards.forEach(card => {
     card.classList?.add('today-enhanced');
     card.querySelector?.('[data-step-picker]')?.addEventListener('change', event => {
@@ -8200,13 +8214,24 @@ function initializeToday(root, now = () => new Date()) {
     card.querySelectorAll?.('[data-today-action]').forEach(button => button.addEventListener('click', () => {
       const action = button.getAttribute('data-today-action');
       if (action === 'next') { manualStep=null; refresh(); }
-      const target = card.querySelector(`[data-today-${action}]`);
-      target?.scrollIntoView({block:'start',behavior:'smooth'});
-      if (target) { target.setAttribute('tabindex','-1'); target.focus({preventScroll:true}); }
+      revealTarget(card, `today-${action}`);
     }));
   });
   if (picker) picker.closest('nav')?.classList.add('today-enhanced');
+  // 手機底部快捷列的「時間表」「吃哪」用網址片段（#today-schedule／#today-food）
+  // 指到目前顯示的那張卡，而不是寫死 id——八張卡是同時渲染、只用 hidden 切換，
+  // 寫死 id 會重複八次。
+  function focusHash() {
+    // 內嵌／測試環境不一定有 location（例如單元測試用純物件模擬 DOM），
+    // 沒有就當作沒有片段導覽，不影響其餘初始化流程。
+    const hash = typeof location === 'undefined' ? '' : location.hash;
+    const key = hash.replace(/^#/, '');
+    if (key !== 'today-schedule' && key !== 'today-food') return;
+    revealTarget(cards[shown], key);
+  }
   refresh();
+  focusHash();
+  window.addEventListener('hashchange', focusHash);
   setInterval(refresh,60000);
   window.addEventListener('pageshow',refresh);
   window.addEventListener('focus',refresh);
