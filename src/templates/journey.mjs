@@ -12,7 +12,7 @@ export function renderJourneyOverview() {
       <th scope="row"><a href="${dayHref(day)}">Day ${day.n} · ${esc(day.date)}</a></th>
       <td>${esc(day.city)}<br>${esc(day.title)}</td>
       <td>${hotel ? `${esc(hotel.city)} · ${esc(hotel.name)}` : isDepartureDay(day) ? '離境／機上過夜' : '⚠ 住宿資料缺漏'}</td>
-      <td>${esc(day.intensity)} · <a href="${dayHref(day)}#day-preparation">${progress.pending.length ? `待處理 ${progress.pending.length} 項` : '無待訂項目'}</a></td>
+      <td>${esc(day.intensity)} · ${progress.pending.length ? `<a href="${dayHref(day)}#day-preparation">待處理 ${progress.pending.length} 項</a>` : '<span class="source-meta">無待訂項目</span>'}</td>
     </tr>`; }).join('')}</tbody></table></div>
   </section>`;
 }
