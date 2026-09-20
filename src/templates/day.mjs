@@ -178,7 +178,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
     </tr>`).join('');
 
   const trainSegment = segmentForDay(day);
-  const trainPrice = trainSegment?.price?.startsWith('PLN') ? trainSegment.price : trainSegment?.price;
+  const trainPrice = trainSegment?.price;
   const trainHtml = trainSegment ? `
     <section class="section">
       <div class="section-heading"><span class="section-num">Transport</span><h2>當天交通</h2></div>

@@ -212,3 +212,61 @@ test('一般跨頁搜尋結果點擊仍保留目前搜尋狀態交由瀏覽器�
     assert.equal(summary.textContent, '顯示 1 筆相符資料');
   });
 });
+
+test('外部搜尋索引下載失敗時顯示明確錯誤訊息而不是「找不到相符資料」，下次 focus 會重試', async () => {
+  const previousDocument = globalThis.document;
+  const previousFetch = globalThis.fetch;
+  globalThis.document = { createElement: tagName => new FakeElement(tagName) };
+
+  let callCount = 0;
+  globalThis.fetch = () => {
+    callCount += 1;
+    if (callCount === 1) return Promise.reject(new Error('network down'));
+    return Promise.resolve({ ok: true, json: () => Promise.resolve(records) });
+  };
+
+  try {
+    const root = new FakeElement();
+    const input = new FakeElement('input');
+    const index = new FakeElement('script'); // 空內容：走外部索引情境
+    const results = new FakeElement('ul');
+    const summary = new FakeElement('p');
+    const empty = new FakeElement('p');
+    const clear = new FakeElement('button');
+    const reset = new FakeElement('button');
+    root.dataset.searchIndexUrl = 'assets/search-index.json';
+
+    const selectors = new Map([
+      ['input[type="search"]', input],
+      ['[data-site-search-index]', index],
+      ['[data-search-results]', results],
+      ['[data-search-summary]', summary],
+      ['[data-search-empty]', empty],
+      ['[data-search-clear]', clear],
+      ['[data-search-reset]', reset],
+    ]);
+    root.querySelector = selector => selectors.get(selector) || null;
+    root.querySelectorAll = () => [];
+
+    initializeSiteSearch(root);
+
+    input.value = 'EIP';
+    input.dispatch('input');
+    await new Promise(resolvePromise => setTimeout(resolvePromise, 0));
+
+    assert.equal(callCount, 1, '第一次應該嘗試下載一次');
+    assert.equal(summary.textContent, '搜尋資料下載失敗，請連網後再試');
+    assert.equal(results.hidden, true, '下載失敗不應把畫面顯示成「查無結果」');
+
+    // 下次 focus 觸發重試，這次改回傳成功
+    input.dispatch('focus');
+    await new Promise(resolvePromise => setTimeout(resolvePromise, 0));
+
+    assert.equal(callCount, 2, 'focus 應該觸發第二次下載重試');
+    assert.equal(summary.textContent, '顯示 1 筆相符資料', '重試成功後應顯示正確結果，不再卡在錯誤訊息');
+  } finally {
+    globalThis.fetch = previousFetch;
+    if (previousDocument === undefined) delete globalThis.document;
+    else globalThis.document = previousDocument;
+  }
+});

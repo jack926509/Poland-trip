@@ -1427,6 +1427,27 @@ test('sw.js 預快取頁面會拿掉轉址旗標，並同時存乾淨網址與 .
   assert.equal(await cleanKeyResponse.clone().text(), '<html>今日卡內容</html>');
 });
 
+test('sw.js 的 stripRedirectFlag 不複製 content-encoding／content-length，其餘標頭保留', async () => {
+  // body 已是解碼後內容，原樣複製 content-encoding／content-length 會跟實際
+  // 存進 Cache 的 body 對不上；直接構造 Response（不走真的網路），避免真的
+  // 用 gzip 編碼、只驗證標頭是否被正確過濾。
+  const worker = fs.readFileSync('sw.js', 'utf8');
+  const context = { self: { addEventListener() {} }, Response, console };
+  vm.createContext(context);
+  vm.runInContext(worker, context);
+
+  const source = new context.Response('內容', {
+    status: 200,
+    headers: { 'content-encoding': 'gzip', 'content-length': '999', 'x-custom': 'keep-me' },
+  });
+  const stripped = await context.stripRedirectFlag(source);
+
+  assert.equal(stripped.headers.get('content-encoding'), null, 'content-encoding 應被拿掉');
+  assert.equal(stripped.headers.get('content-length'), null, 'content-length 應被拿掉');
+  assert.equal(stripped.headers.get('x-custom'), 'keep-me', '其餘標頭應保留');
+  assert.equal(await stripped.text(), '內容');
+});
+
 test('sw.js 離線時，導覽請求無論用哪種網址寫法（有無 .html）都能命中快取（稽核 H2）', async () => {
   const worker = fs.readFileSync('sw.js', 'utf8');
   const origin = 'https://example.test';

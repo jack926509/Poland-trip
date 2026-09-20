@@ -38,8 +38,8 @@ export function venuesByCity(cityKey) {
  * 回傳形狀與既有 daySupplementaryPins 的原始 tuple 完全一致：
  * [lat, lng, name, label, mapUrl, category, coordinateSource]。
  */
-export function venuePin(id, { label, category, coordinateSource, displayName } = {}) {
+export function venuePin(id, { label, category, coordinateSource, displayName, mapUrl } = {}) {
   const venue = resolveVenue(id);
   if (!venue.coords) throw new Error(`venuePin：${id} 沒有座標（venues.js 的 coords 是 null）`);
-  return [venue.coords[0], venue.coords[1], displayName ?? venue.name, label, venue.map, category, coordinateSource];
+  return [venue.coords[0], venue.coords[1], displayName ?? venue.name, label, mapUrl ?? venue.map, category, coordinateSource];
 }

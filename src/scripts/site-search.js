@@ -61,6 +61,7 @@ export function initializeSiteSearch(root) {
     let records = [];
     let recordsReady = false;
     let fetchStarted = false;
+    let loadFailed = false;
 
     // 索引可能直接內嵌在頁面（單檔版：本來就要能整份下載後離線自足，不能
     // 再靠額外的網路請求），也可能只留一個外部 assets/search-index.json 的
@@ -83,11 +84,15 @@ export function initializeSiteSearch(root) {
       const indexUrl = root.dataset.searchIndexUrl;
       if (!indexUrl || typeof fetch !== 'function') { recordsReady = true; return; }
       fetchStarted = true;
+      loadFailed = false;
       fetch(indexUrl)
         .then(response => (response.ok ? response.json() : Promise.reject(new Error('搜尋索引下載失敗'))))
-        .then(data => { records = Array.isArray(data) ? data : []; })
-        .catch(() => { summaryElement.textContent = '搜尋資料無法載入，請檢查網路連線。'; })
-        .then(() => { recordsReady = true; render(); });
+        .then(data => { records = Array.isArray(data) ? data : []; recordsReady = true; })
+        // 下載失敗時不能把 recordsReady 設成 true：那樣下一行的 render() 會拿
+        // 空陣列算出「找不到相符資料」，使用者會誤以為站內真的沒有這家店，
+        // 而不是網路問題。fetchStarted 歸零讓下次 focus／輸入時重試。
+        .catch(() => { loadFailed = true; fetchStarted = false; })
+        .then(() => { render(); });
     }
 
     const pathPrefix = root.dataset.searchPathPrefix || '';
@@ -158,7 +163,16 @@ export function initializeSiteSearch(root) {
         return;
       }
 
-      ensureRecords();
+      // 觸發下載交給呼叫端（focus／input／分類點擊事件）負責，render() 只
+      // 負責依目前狀態顯示畫面——否則失敗後這裡再呼叫 ensureRecords() 會在
+      // 每次 render() 都自動重打一次網路，變成沒有使用者動作的重試迴圈。
+      if (loadFailed) {
+        resultsElement.hidden = true;
+        emptyElement.hidden = true;
+        summaryElement.textContent = '搜尋資料下載失敗，請連網後再試';
+        return;
+      }
+
       if (!recordsReady) {
         // 索引還在抓（外部 JSON 情境）：顯示載入中，不要誤判成查無結果。
         resultsElement.hidden = true;
@@ -186,8 +200,11 @@ export function initializeSiteSearch(root) {
       render();
     }
 
+    // ensureRecords() 只由使用者實際互動的事件觸發（聚焦、輸入、點分類），
+    // 不再由 render() 自己觸發——這樣下載失敗後，重試只會發生在使用者
+    // 下一次 focus／輸入／點分類時，不會變成無限自動重試。
     input.addEventListener('focus', ensureRecords);
-    input.addEventListener('input', render);
+    input.addEventListener('input', () => { ensureRecords(); render(); });
     root.addEventListener('keydown', event => {
       if (event.key !== 'Escape') return;
       event.preventDefault();
@@ -206,6 +223,7 @@ export function initializeSiteSearch(root) {
       button.addEventListener('click', () => {
         const category = button.dataset.searchCategory || '';
         activeCategory = activeCategory === category ? '' : category;
+        ensureRecords();
         render();
       });
     });

@@ -10,6 +10,7 @@
 
 import { cityGallery } from './city-gallery.js';
 import { diningPlaces } from './dining-places.js';
+import { venues } from './venues.js';
 import { stayPin } from '../lib/journey.mjs';
 
 export const cities = [
@@ -318,46 +319,46 @@ Object.assign(mapPinChecks.poznan, {
 // name/mapUrl 不受影響，仍是原本的「主要連結」。
 export const attractions = {
   warsaw: [
-    {name:"MSN 當代美術館", tag:"美術館", mapUrl:"https://www.google.com/maps/search/?api=1&query=MSN%20%E7%95%B6%E4%BB%A3%E7%BE%8E%E8%A1%93%E9%A4%A8%20Warszawa", venueId:"warsaw-msn", extra:"Plac Defilad · 展覽 40／30 · 18:00 後 25／15 · Gallery A 免費 · 週一休"},
-    {name:"Neon 霓虹博物館", tag:"遷址", mapUrl:"https://www.google.com/maps/search/?api=1&query=Neon%20%E9%9C%93%E8%99%B9%E5%8D%9A%E7%89%A9%E9%A4%A8%20Warszawa", venueId:"warsaw-neon-museum", extra:"PLN 25 / 優待 18 · 已遷入科學文化宮 4 樓（Marszałkowska 入口），可與觀景台一起看"},
+    {name:"MSN 當代美術館", tag:"美術館", mapUrl:venues['warsaw-msn'].map, venueId:"warsaw-msn", extra:"Plac Defilad · 展覽 40／30 · 18:00 後 25／15 · Gallery A 免費 · 週一休"},
+    {name:"Neon 霓虹博物館", tag:"遷址", mapUrl:venues['warsaw-neon-museum'].map, venueId:"warsaw-neon-museum", extra:"PLN 25 / 優待 18 · 已遷入科學文化宮 4 樓（Marszałkowska 入口），可與觀景台一起看"},
     {name:"Kolejkowo Warszawa", tag:"2025 新開", mapUrl:"https://www.google.com/maps/search/?api=1&query=Kolejkowo%20Warszawa", venueId:null, extra:"微縮模型館 · 2025-04 開幕 · 適合親子"},
     {name:"海報博物館 Wilanów", tag:"2026 重啟", mapUrl:"https://www.google.com/maps/search/?api=1&query=%E6%B5%B7%E5%A0%B1%E5%8D%9A%E7%89%A9%E9%A4%A8%20Wilan%C3%B3w%20Warszawa", venueId:null, extra:"2026-03 全新形式 · 常設「Polish Posters. Collection」"},
-    {name:"波蘭歷史博物館 · Cytadela", tag:"2023 新館", mapUrl:"https://www.google.com/maps/search/?api=1&query=Muzeum%20Historii%20Polski%20Cytadela%20Warszawa", venueId:"warsaw-history-museum", extra:"新總部 2023 開館；常設展仍在建置，先查當期臨展與入場資訊"},
-    {name:"E.Wedel 巧克力工廠博物館", tag:"2024 開館", mapUrl:"https://www.google.com/maps/search/?api=1&query=E.Wedel%20Chocolate%20Warszawa", venueId:"warsaw-wedel-chocolate", extra:"每日 10:00–20:00 · 最後一團 18:15 · 導覽約 90 分 · 票價依官方場次"},
-    {name:"皇家城堡", tag:"UNESCO 舊城核心", mapUrl:"https://maps.google.com/?cid=2313057209867159998", venueId:"warsaw-royal-castle", extra:"2026-09-18 官網查證：二–日 10:00–18:00，最後入場 17:00、週一休館 · Castle Route 95／75（含語音導覽，約 150 分）· Royal Route 60／45（含語音導覽，約 60 分）· 週三免費，但只走皇家寓所與 Lanckoroński 畫廊的限定路線（綠廳、黃廳、大理石廳、瓷器與 Wettin 畫廊、議會廳不開），且只能個人自行參觀、不能預約，當日在售票口領票、數量有限 · 語音導覽租借 10"},
-    {name:"華沙起義博物館", tag:"歷史", mapUrl:"https://maps.google.com/?cid=12215511195580548645", venueId:"warsaw-rising-museum", extra:"2026-09-18 官網查證：PLN 35／30 · 一 08:00–18:00、二休館、三–五 08:00–18:00、六日 10:00–18:00，售票至閉館前 30 分 · 官方明列免費日為週四（10/30 是週五，要買票）· 語音導覽租借 13／自備手機 10 · 英語導覽 250＋門票"},
-    {name:"POLIN 猶太史博物館", tag:"歷史", mapUrl:"https://maps.google.com/?cid=16292574584610500784", venueId:"warsaw-polin", extra:"週二休；週五 10:00–18:00，主展最後入場 16:00 · 票價與庫存看官方售票頁"},
-    {name:"科學文化宮觀景台", tag:"地標", mapUrl:"https://maps.google.com/?cid=14044892037721828802", venueId:"warsaw-pkin-terrace", extra:"2026-09-18 官方售票系統查證：全票 30／優待 25 PLN（10 人以上團體 22）· 每日 10:00–20:00、售票口同時間 · 不接受預約，現場最多買到 7 天後 · 夜間場（35 PLN）只在週五六且官方只排到 9 月底，不套用到 10 月；11/1 閉館"},
+    {name:"波蘭歷史博物館 · Cytadela", tag:"2023 新館", mapUrl:venues['warsaw-history-museum'].map, venueId:"warsaw-history-museum", extra:"新總部 2023 開館；常設展仍在建置，先查當期臨展與入場資訊"},
+    {name:"E.Wedel 巧克力工廠博物館", tag:"2024 開館", mapUrl:venues['warsaw-wedel-chocolate'].map, venueId:"warsaw-wedel-chocolate", extra:"每日 10:00–20:00 · 最後一團 18:15 · 導覽約 90 分 · 票價依官方場次"},
+    {name:"皇家城堡", tag:"UNESCO 舊城核心", mapUrl:venues['warsaw-royal-castle'].map, venueId:"warsaw-royal-castle", extra:"2026-09-18 官網查證：二–日 10:00–18:00，最後入場 17:00、週一休館 · Castle Route 95／75（含語音導覽，約 150 分）· Royal Route 60／45（含語音導覽，約 60 分）· 週三免費，但只走皇家寓所與 Lanckoroński 畫廊的限定路線（綠廳、黃廳、大理石廳、瓷器與 Wettin 畫廊、議會廳不開），且只能個人自行參觀、不能預約，當日在售票口領票、數量有限 · 語音導覽租借 10"},
+    {name:"華沙起義博物館", tag:"歷史", mapUrl:venues['warsaw-rising-museum'].map, venueId:"warsaw-rising-museum", extra:"2026-09-18 官網查證：PLN 35／30 · 一 08:00–18:00、二休館、三–五 08:00–18:00、六日 10:00–18:00，售票至閉館前 30 分 · 官方明列免費日為週四（10/30 是週五，要買票）· 語音導覽租借 13／自備手機 10 · 英語導覽 250＋門票"},
+    {name:"POLIN 猶太史博物館", tag:"歷史", mapUrl:venues['warsaw-polin'].map, venueId:"warsaw-polin", extra:"週二休；週五 10:00–18:00，主展最後入場 16:00 · 票價與庫存看官方售票頁"},
+    {name:"科學文化宮觀景台", tag:"地標", mapUrl:venues['warsaw-pkin-terrace'].map, venueId:"warsaw-pkin-terrace", extra:"2026-09-18 官方售票系統查證：全票 30／優待 25 PLN（10 人以上團體 22）· 每日 10:00–20:00、售票口同時間 · 不接受預約，現場最多買到 7 天後 · 夜間場（35 PLN）只在週五六且官方只排到 9 月底，不套用到 10 月；11/1 閉館"},
     {name:"Łazienki 公園 · Wilanów 宮", tag:"皇家之路", mapUrl:"https://www.google.com/maps/search/?api=1&query=%C5%81azienki%20%E5%85%AC%E5%9C%92%20Warszawa", venueId:null, extra:"公園免費 · 宮殿另購票"},
     {name:"蕭邦博物館", tag:"閉館", mapUrl:"https://www.google.com/maps/search/?api=1&query=%E8%95%AD%E9%82%A6%E5%8D%9A%E7%89%A9%E9%A4%A8%20Warszawa", venueId:null, extra:"2026 整年閉館（整修）"},
   ],
   krakow: [
-    {name:"Wawel 皇家城堡群", tag:"逐展售票", mapUrl:"https://maps.google.com/?cid=12446225081720350104", venueId:"krakow-wawel-castle", extra:"2026-09-17 官網查證（9–12 月）：二–日 09:00–17:00，分路線售票 · 二樓代表廳（含鄂圖曼土耳其帳篷）57／43、末入場為閉館前 50 分 · 王冠寶庫 47／35、末入場前 40 分 · Castle Underground 47／35（含語音導覽）· Armoury 47／35 · 皇家花園只開到 10/4"},
-    {name:"中央市集廣場 · 紡織會館", tag:"地標", mapUrl:"https://maps.google.com/?cid=14107513768635600179", venueId:"krakow-rynek-glowny", extra:"大型中世紀廣場（Rynek Główny）· 廣場免費"},
+    {name:"Wawel 皇家城堡群", tag:"逐展售票", mapUrl:venues['krakow-wawel-castle'].map, venueId:"krakow-wawel-castle", extra:"2026-09-17 官網查證（9–12 月）：二–日 09:00–17:00，分路線售票 · 二樓代表廳（含鄂圖曼土耳其帳篷）57／43、末入場為閉館前 50 分 · 王冠寶庫 47／35、末入場前 40 分 · Castle Underground 47／35（含語音導覽）· Armoury 47／35 · 皇家花園只開到 10/4"},
+    {name:"中央市集廣場 · 紡織會館", tag:"地標", mapUrl:venues['krakow-rynek-glowny'].map, venueId:"krakow-rynek-glowny", extra:"大型中世紀廣場（Rynek Główny）· 廣場免費"},
     {name:"Kazimierz 猶太區", tag:"街區", mapUrl:"https://maps.google.com/?cid=5623518211080575812", venueId:null, extra:"猶太會堂、餐酒館、街食聚集"},
-    {name:"辛德勒工廠博物館", tag:"需訂", mapUrl:"https://maps.google.com/?cid=3670197855150446585", venueId:"krakow-schindler", extra:"2026-09-18 官網查證：PLN 60／45 · ul. Lipowa 4 · 週一 10:00–15:00、週二–日 09:00–20:00、每月第一個週二休 · 最後入場為閉館前 90 分鐘 · 常設展線上票一律實名，入場要帶同名證件正本 · 英語個人導覽場二–日 10:00／12:00／16:00（90／75）· 週一免費、現場限量"},
-    {name:"維利奇卡鹽礦", tag:"需票", mapUrl:"https://maps.google.com/?cid=10891192289792865301", venueId:"krakow-wieliczka", extra:"UNESCO · Kinga 鹽教堂 · 恆溫 17–18°C · 路線 3.5 km、下探 135 m、超過 800 級階梯、全程約 2–3 h · 10/27 英語團、價格與庫存看官方日期選擇器 · 只在 bilety.kopalnia.pl 與現場售票口／售票機購票，官方聲明不與外部平台或中介合作"},
-    {name:"奧斯威辛-比克瑙", tag:"只限線上取得入場證", mapUrl:"https://www.google.com/maps/search/?api=1&query=%E5%A5%A7%E6%96%AF%E5%A8%81%E8%BE%9B-%E6%AF%94%E5%85%8B%E7%91%99%20Krak%C3%B3w", venueId:"krakow-auschwitz", extra:"10 月 07:30–17:00 · 入口不售票 · 英文導覽指定場次與票價看官方預約系統"},
+    {name:"辛德勒工廠博物館", tag:"需訂", mapUrl:venues['krakow-schindler'].map, venueId:"krakow-schindler", extra:"2026-09-18 官網查證：PLN 60／45 · ul. Lipowa 4 · 週一 10:00–15:00、週二–日 09:00–20:00、每月第一個週二休 · 最後入場為閉館前 90 分鐘 · 常設展線上票一律實名，入場要帶同名證件正本 · 英語個人導覽場二–日 10:00／12:00／16:00（90／75）· 週一免費、現場限量"},
+    {name:"維利奇卡鹽礦", tag:"需票", mapUrl:venues['krakow-wieliczka'].map, venueId:"krakow-wieliczka", extra:"UNESCO · Kinga 鹽教堂 · 恆溫 17–18°C · 路線 3.5 km、下探 135 m、超過 800 級階梯、全程約 2–3 h · 10/27 英語團、價格與庫存看官方日期選擇器 · 只在 bilety.kopalnia.pl 與現場售票口／售票機購票，官方聲明不與外部平台或中介合作"},
+    {name:"奧斯威辛-比克瑙", tag:"只限線上取得入場證", mapUrl:venues['krakow-auschwitz'].map, venueId:"krakow-auschwitz", extra:"10 月 07:30–17:00 · 入口不售票 · 英文導覽指定場次與票價看官方預約系統"},
   ],
   wroclaw: [
     {name:"小矮人 Krasnale 尋寶", tag:"免費", mapUrl:"https://maps.google.com/?cid=10632303817405446655", venueId:null, extra:"全城散布大量小銅像 · Rynek／Plac Solny／Świdnicka 一帶較集中"},
-    {name:"中央市集廣場 · 市政廳塔", tag:"地標", mapUrl:"https://www.google.com/maps/search/?api=1&query=%E4%B8%AD%E5%A4%AE%E5%B8%82%E9%9B%86%E5%BB%A3%E5%A0%B4%20Wroc%C5%82aw", venueId:"wroclaw-rynek", extra:"彩色山牆屋 · 觀景塔"},
+    {name:"中央市集廣場 · 市政廳塔", tag:"地標", mapUrl:venues['wroclaw-rynek'].map, venueId:"wroclaw-rynek", extra:"彩色山牆屋 · 觀景塔"},
     {name:"大教堂島 Ostrów Tumski", tag:"古城", mapUrl:"https://maps.google.com/?cid=3827887123396229836", venueId:null, extra:"全城最古老城區"},
-    {name:"Afrykarium · 動物園", tag:"熱門", mapUrl:"https://www.google.com/maps/search/?api=1&query=Afrykarium%20Wroc%C5%82aw", venueId:"wroclaw-zoo", extra:"2026-09-17 官方票價頁查證：全票線上 69 zł 起／售票口 99 zł，優待票線上 59 zł 起／售票口 89 zł（動態定價）· 2026-09-19 開放時間複核：10 月一–四入園至 16:00、館舍至 16:45、Afrykarium 至 17:00；五–日及假日入園至 17:00、Afrykarium 至 18:00 · 入園票已含 Afrykarium"},
-    {name:"Panorama Racławicka", tag:"全景畫", mapUrl:"https://www.google.com/maps/search/?api=1&query=Panorama%20Rac%C5%82awicka%20Wroc%C5%82aw", venueId:"wroclaw-panorama", extra:"4/1–10/31 每日 08:30–19:00 · PLN 50／35 · 每場 30 分，門票指定日期與場次 · 官方 2026 閉館日含 10/31 與 11/1（10/28 不在其列）· 票根 3 個月內可免費進國立博物館等三館"},
-    {name:"百年廳 Hala Stulecia", tag:"UNESCO", mapUrl:"https://maps.google.com/?cid=10763621538599936407", venueId:"wroclaw-hala-stulecia", extra:"2026-09-18 官網查證：Visitor Centre 夏季（4–10 月）二–日 10:00–18:00、冬季 10:00–17:00，25／20 · 含廳內看台 30／25 · 10 人以下不需預約。官方 availability calendar 逐日分四色（綠＝含廳內看台／藍＝部分時段廳內不開／黃＝不能進圓頂正下方／紅＝全不開），10/28 屬哪一色待確認"},
-    {name:"Hydropolis 水知識中心", tag:"室內", mapUrl:"https://www.google.com/maps/search/?api=1&query=Hydropolis%20%E6%B0%B4%E7%9F%A5%E8%AD%98%E4%B8%AD%E5%BF%83%20Wroc%C5%82aw", venueId:"wroclaw-hydropolis", extra:"2026-08-11 官網查證：平日 45／36、週末／假日 47／38 PLN；入場與名額以指定日期售票頁為準"},
-    {name:"Kolejkowo 微縮館", tag:"室內", mapUrl:"https://www.google.com/maps/search/?api=1&query=Kolejkowo%20%E5%BE%AE%E7%B8%AE%E9%A4%A8%20Wroc%C5%82aw", venueId:"wroclaw-kolejkowo", extra:"2026-08-12 官網查證：一般票線上 39 PLN 起、現場 55 PLN 起；優待票線上 33 PLN 起、現場 45 PLN 起 · Sky Tower 1 樓 · 每日 10:00 起，關門時間查指定日期"},
+    {name:"Afrykarium · 動物園", tag:"熱門", mapUrl:venues['wroclaw-zoo'].map, venueId:"wroclaw-zoo", extra:"2026-09-17 官方票價頁查證：全票線上 69 zł 起／售票口 99 zł，優待票線上 59 zł 起／售票口 89 zł（動態定價）· 2026-09-19 開放時間複核：10 月一–四入園至 16:00、館舍至 16:45、Afrykarium 至 17:00；五–日及假日入園至 17:00、Afrykarium 至 18:00 · 入園票已含 Afrykarium"},
+    {name:"Panorama Racławicka", tag:"全景畫", mapUrl:venues['wroclaw-panorama'].map, venueId:"wroclaw-panorama", extra:"4/1–10/31 每日 08:30–19:00 · PLN 50／35 · 每場 30 分，門票指定日期與場次 · 官方 2026 閉館日含 10/31 與 11/1（10/28 不在其列）· 票根 3 個月內可免費進國立博物館等三館"},
+    {name:"百年廳 Hala Stulecia", tag:"UNESCO", mapUrl:venues['wroclaw-hala-stulecia'].map, venueId:"wroclaw-hala-stulecia", extra:"2026-09-18 官網查證：Visitor Centre 夏季（4–10 月）二–日 10:00–18:00、冬季 10:00–17:00，25／20 · 含廳內看台 30／25 · 10 人以下不需預約。官方 availability calendar 逐日分四色（綠＝含廳內看台／藍＝部分時段廳內不開／黃＝不能進圓頂正下方／紅＝全不開），10/28 屬哪一色待確認"},
+    {name:"Hydropolis 水知識中心", tag:"室內", mapUrl:venues['wroclaw-hydropolis'].map, venueId:"wroclaw-hydropolis", extra:"2026-08-11 官網查證：平日 45／36、週末／假日 47／38 PLN；入場與名額以指定日期售票頁為準"},
+    {name:"Kolejkowo 微縮館", tag:"室內", mapUrl:venues['wroclaw-kolejkowo'].map, venueId:"wroclaw-kolejkowo", extra:"2026-08-12 官網查證：一般票線上 39 PLN 起、現場 55 PLN 起；優待票線上 33 PLN 起、現場 45 PLN 起 · Sky Tower 1 樓 · 每日 10:00 起，關門時間查指定日期"},
   ],
   poznan: [
     {name:"舊市集廣場 Stary Rynek", tag:"2024 重修", mapUrl:"https://www.google.com/maps/search/?api=1&query=%E8%88%8A%E5%B8%82%E9%9B%86%E5%BB%A3%E5%A0%B4%20Stary%20Rynek%20Pozna%C5%84", venueId:null, extra:"鋪面與無障礙全面翻新 · 彩色商人屋 · 四座神話噴泉 · 免費"},
-    {name:"市政廳正午山羊鐘", tag:"免費", mapUrl:"https://www.google.com/maps/search/?api=1&query=Pozna%C5%84%20Town%20Hall%20Stary%20Rynek", venueId:"poznan-town-hall", extra:"官方確認每日 12:00，兩隻機械山羊頂角 12 次；不將非官方的 15:00 說法寫入行程"},
-    {name:"可頌博物館 Rogalowe Muzeum", tag:"場次制展演", mapUrl:"https://maps.google.com/?cid=402526412385617111", venueId:"poznan-croissant-museum", extra:"2026-09-18 官網查證：英語公開場 47 PLN／人（滿 3 歲起）、未滿 3 歲 1 PLN；官方售票頁列日–五 11:00–15:30、六 11:00–17:00（官方註明是第一場與最後一場開演時間），入口 Klasztorna 23、館內約 50 人。10/29 有無英語場與開演時刻仍看官方售票頁，不要預設 13:30 有場"},
-    {name:"古市政廳博物館", tag:"歷史", mapUrl:"https://www.google.com/maps/search/?api=1&query=%E5%8F%A4%E5%B8%82%E6%94%BF%E5%BB%B3%E5%8D%9A%E7%89%A9%E9%A4%A8%20Pozna%C5%84", venueId:"poznan-old-town-hall-museum", extra:"2026/7/1–2027/11/30 整修閉館，行程期間無法入內，僅能外觀"},
-    {name:"帝王城堡 Zamek Cesarski", tag:"地標", mapUrl:"https://www.google.com/maps/search/?api=1&query=%E5%B8%9D%E7%8E%8B%E5%9F%8E%E5%A0%A1%20Zamek%20Cesarski%20Pozna%C5%84", venueId:"poznan-ck-zamek", extra:"2026-09-17 官網查證：CK ZAMEK 文化中心，一–日 12:00–19:00、售票至 18:00 · 附地圖摺頁自行參觀 10／7 PLN、語音導覽 20／15 PLN，導覽機 18:00 前發放、19:00 前歸還 · 室內可參觀空間仍依當日活動公告"},
+    {name:"市政廳正午山羊鐘", tag:"免費", mapUrl:venues['poznan-town-hall'].map, venueId:"poznan-town-hall", extra:"官方確認每日 12:00，兩隻機械山羊頂角 12 次；不將非官方的 15:00 說法寫入行程"},
+    {name:"可頌博物館 Rogalowe Muzeum", tag:"場次制展演", mapUrl:venues['poznan-croissant-museum'].map, venueId:"poznan-croissant-museum", extra:"2026-09-18 官網查證：英語公開場 47 PLN／人（滿 3 歲起）、未滿 3 歲 1 PLN；官方售票頁列日–五 11:00–15:30、六 11:00–17:00（官方註明是第一場與最後一場開演時間），入口 Klasztorna 23、館內約 50 人。10/29 有無英語場與開演時刻仍看官方售票頁，不要預設 13:30 有場"},
+    {name:"古市政廳博物館", tag:"歷史", mapUrl:venues['poznan-old-town-hall-museum'].map, venueId:"poznan-old-town-hall-museum", extra:"2026/7/1–2027/11/30 整修閉館，行程期間無法入內，僅能外觀"},
+    {name:"帝王城堡 Zamek Cesarski", tag:"地標", mapUrl:venues['poznan-ck-zamek'].map, venueId:"poznan-ck-zamek", extra:"2026-09-17 官網查證：CK ZAMEK 文化中心，一–日 12:00–19:00、售票至 18:00 · 附地圖摺頁自行參觀 10／7 PLN、語音導覽 20／15 PLN，導覽機 18:00 前發放、19:00 前歸還 · 室內可參觀空間仍依當日活動公告"},
     {name:"大教堂島 Ostrów Tumski", tag:"古城", mapUrl:"https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E6%95%99%E5%A0%82%E5%B3%B6%20Ostr%C3%B3w%20Tumski%20Pozna%C5%84", venueId:null, extra:"波蘭建國搖籃"},
-    {name:"Palmiarnia 棕櫚屋", tag:"暫時閉館", mapUrl:"https://maps.google.com/?cid=10703456143872687277", venueId:"poznan-palmiarnia", extra:"2026-09-18 再次複查公告未變（原查 2026-09-17）：因現代化與改建工程對外暫時閉館，官方未公布重開日期（公告見 palmiarnia.poznan.pl，另指向 pim.poznan.pl）。行程期間無法入內，也不要當雨天室內備案"},
-    {name:"考古博物館", tag:"室內", mapUrl:"https://www.google.com/maps/search/?api=1&query=%E8%80%83%E5%8F%A4%E5%8D%9A%E7%89%A9%E9%A4%A8%20Pozna%C5%84", venueId:"poznan-archaeological-museum", extra:"2026-09-18 官方票價頁查證：常設展全票 15／優待 10、家庭票 40，與 Genius loci 的聯票 25／15 · 官方每週二免費（10/29 是週四，要買票）· 學期季（9/1–6/30）二–四 09:00–16:00、五 10:00–17:00、六 11:00–18:00、日 12:00–16:00"},
-    {name:"Stary Browar · Malta 湖 · Citadel 公園", tag:"戶外／購物", mapUrl:"https://www.google.com/maps/search/?api=1&query=Stary%20Browar%20Pozna%C5%84", venueId:"poznan-stary-browar", extra:"Śródka 有壁畫街拍點"},
+    {name:"Palmiarnia 棕櫚屋", tag:"暫時閉館", mapUrl:venues['poznan-palmiarnia'].map, venueId:"poznan-palmiarnia", extra:"2026-09-18 再次複查公告未變（原查 2026-09-17）：因現代化與改建工程對外暫時閉館，官方未公布重開日期（公告見 palmiarnia.poznan.pl，另指向 pim.poznan.pl）。行程期間無法入內，也不要當雨天室內備案"},
+    {name:"考古博物館", tag:"室內", mapUrl:venues['poznan-archaeological-museum'].map, venueId:"poznan-archaeological-museum", extra:"2026-09-18 官方票價頁查證：常設展全票 15／優待 10、家庭票 40，與 Genius loci 的聯票 25／15 · 官方每週二免費（10/29 是週四，要買票）· 學期季（9/1–6/30）二–四 09:00–16:00、五 10:00–17:00、六 11:00–18:00、日 12:00–16:00"},
+    {name:"Stary Browar · Malta 湖 · Citadel 公園", tag:"戶外／購物", mapUrl:venues['poznan-stary-browar'].map, venueId:"poznan-stary-browar", extra:"Śródka 有壁畫街拍點"},
   ],
 };

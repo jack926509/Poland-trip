@@ -35,7 +35,7 @@ export const daySupplementaryPins = {
     venuePin('krakow-auschwitz-ii-birkenau', { displayName: 'Auschwitz II–Birkenau 主入口', label: 'Ofiar Faszyzmu 12 · 導覽接駁下車後依現場指示集合', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=50.035948&mlon=19.178314' }),
   ],
   4: [
-    venuePin('krakow-wieliczka', { displayName: '維利奇卡鹽礦 Daniłowicz Shaft', label: '官方確認 Tourist Route 集合入口', category: 'sight', coordinateSource: 'https://www.wieliczka-saltmine.com/events/important-information/map-and-access' }),
+    venuePin('krakow-wieliczka', { displayName: '維利奇卡鹽礦 Daniłowicz Shaft', label: '官方確認 Tourist Route 集合入口', category: 'sight', coordinateSource: 'https://www.wieliczka-saltmine.com/events/important-information/map-and-access', mapUrl: 'https://www.google.com/maps/search/?api=1&query=Wieliczka%20Salt%20Mine%2C%20Dani%C5%82owicza%2010%2C%20Wieliczka' }),
     [49.982938, 20.054328, 'Wieliczka Rynek-Kopalnia 車站', 'KMŁ 下車站；步行前往 Daniłowicz Shaft', 'https://www.google.com/maps/search/?api=1&query=Wieliczka%20Rynek-Kopalnia%20railway%20station', 'transport', 'https://www.openstreetmap.org/?mlat=49.982938&mlon=20.054328'],
     venuePin('krakow-glowny-station', { label: '取行李後的城際火車出發站', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=50.069918&mlon=19.947160' }),
   ],

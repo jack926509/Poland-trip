@@ -24,7 +24,7 @@
 export const venues = {
   'warsaw-royal-castle': {
     id: "warsaw-royal-castle", cityKey: "WAW", name: "華沙 · 皇家城堡",
-    map: "https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20%E7%9A%87%E5%AE%B6%E5%9F%8E%E5%A0%A1",
+    map: "https://maps.google.com/?cid=2313057209867159998",
     officialUrl: "https://www.zamek-krolewski.pl/en/strona/opening-hours-and-ticket-prices/2801-opening-hours-and-ticket-prices-may-2-2026",
     address: "plac Zamkowy 4, 00-277 Warszawa",
     entranceNote: "主要訪客入口在 plac Zamkowy 4；依票券時段與現場安檢標示入場。",
@@ -42,7 +42,7 @@ export const venues = {
   },
   'warsaw-pkin-terrace': {
     id: "warsaw-pkin-terrace", cityKey: "WAW", name: "華沙 · 科學文化宮觀景台",
-    map: "https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20%E7%A7%91%E5%AD%B8%E6%96%87%E5%8C%96%E5%AE%AE%E8%A7%80%E6%99%AF%E5%8F%B0",
+    map: "https://maps.google.com/?cid=14044892037721828802",
     officialUrl: "https://pkin.pl/taras-widokowy/o-tarasie-widokowym/",
     address: null,
     entranceNote: null,
@@ -60,7 +60,7 @@ export const venues = {
   },
   'warsaw-neon-museum': {
     id: "warsaw-neon-museum", cityKey: "WAW", name: "華沙 · Neon 霓虹博物館",
-    map: "https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20Neon%20%E9%9C%93%E8%99%B9%E5%8D%9A%E7%89%A9%E9%A4%A8",
+    map: "https://www.google.com/maps/search/?api=1&query=Neon%20Museum%2C%20Warszawa",
     officialUrl: "https://www.neonmuzeum.org/",
     address: null,
     entranceNote: null,
@@ -73,7 +73,7 @@ export const venues = {
   },
   'warsaw-msn': {
     id: "warsaw-msn", cityKey: "WAW", name: "華沙 · MSN 當代美術館",
-    map: "https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20MSN%20%E7%95%B6%E4%BB%A3%E7%BE%8E%E8%A1%93%E9%A4%A8",
+    map: "https://www.google.com/maps/search/?api=1&query=Museum%20of%20Modern%20Art%20Warsaw%20MSN%2C%20Warszawa",
     officialUrl: "https://artmuseum.pl/en/visit",
     address: null,
     entranceNote: null,
@@ -86,7 +86,7 @@ export const venues = {
   },
   'warsaw-history-museum': {
     id: "warsaw-history-museum", cityKey: "WAW", name: "華沙 · 波蘭歷史博物館",
-    map: "https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20%E6%B3%A2%E8%98%AD%E6%AD%B7%E5%8F%B2%E5%8D%9A%E7%89%A9%E9%A4%A8%20Warszawa",
+    map: "https://www.google.com/maps/search/?api=1&query=Muzeum%20Historii%20Polski%2C%20Cytadela%20Warszawska%2C%20Warszawa",
     officialUrl: "https://muzhp.pl/en/about-museum",
     address: null,
     entranceNote: null,
@@ -99,7 +99,7 @@ export const venues = {
   },
   'warsaw-wedel-chocolate': {
     id: "warsaw-wedel-chocolate", cityKey: "WAW", name: "華沙 · E.Wedel 巧克力工廠博物館",
-    map: "https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20E.Wedel%20Warszawa",
+    map: "https://www.google.com/maps/search/?api=1&query=E.Wedel%20Chocolate%20Factory%20Museum%2C%20Warszawa",
     officialUrl: "https://fabrykaczekolady.pl/en/",
     address: null,
     entranceNote: null,
@@ -112,7 +112,7 @@ export const venues = {
   },
   'krakow-wawel-treasury': {
     id: "krakow-wawel-treasury", cityKey: "KRK", name: "克拉科夫 · Wawel 王冠寶庫",
-    map: "https://www.google.com/maps/search/?api=1&query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20Wawel%20%E7%8E%8B%E5%86%A0%E5%AF%B6%E5%BA%AB",
+    map: "https://maps.google.com/?cid=12446225081720350104",
     officialUrl: "https://wawel.krakow.pl/",
     address: null,
     entranceNote: null,
@@ -130,7 +130,7 @@ export const venues = {
   },
   'krakow-wawel-castle': {
     id: "krakow-wawel-castle", cityKey: "KRK", name: "克拉科夫 · Wawel 城堡一、二樓",
-    map: "https://www.google.com/maps/search/?api=1&query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20Wawel%20%E5%9F%8E%E5%A0%A1",
+    map: "https://maps.google.com/?cid=12446225081720350104",
     officialUrl: "https://wawel.krakow.pl/en/what-to-see",
     address: "Wawel 5, 31-001 Kraków",
     entranceNote: "先到 Wawel Hill 訪客服務／票券標示處，再依已購路線入口入場。",
@@ -148,7 +148,7 @@ export const venues = {
   },
   'krakow-schindler': {
     id: "krakow-schindler", cityKey: "KRK", name: "克拉科夫 · 辛德勒工廠",
-    map: "https://www.google.com/maps/search/?api=1&query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20%E8%BE%9B%E5%BE%B7%E5%8B%92%E5%B7%A5%E5%BB%A0",
+    map: "https://maps.google.com/?cid=3670197855150446585",
     officialUrl: "https://muzeumkrakowa.pl/oddzialy/fabryka-emalia-oskara-schindlera",
     address: "Lipowa 4, 30-702 Kraków",
     entranceNote: "導航至 Lipowa 4，依 Museum of Kraków 入口與已購時段排隊。",
@@ -166,7 +166,7 @@ export const venues = {
   },
   'krakow-wieliczka': {
     id: "krakow-wieliczka", cityKey: "KRK", name: "克拉科夫 · 維利奇卡鹽礦",
-    map: "https://www.google.com/maps/search/?api=1&query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20%E7%B6%AD%E5%88%A9%E5%A5%87%E5%8D%A1%E9%B9%BD%E7%A4%A6%20Wieliczka",
+    map: "https://maps.google.com/?cid=10891192289792865301",
     officialUrl: "https://www.wieliczka-saltmine.com/individual-tourist/useful-information/ticket-prices-and-visiting-hours",
     address: "Daniłowicza 10, 32-020 Wieliczka",
     entranceNote: "Tourist Route 從 Daniłowicz Shaft（Daniłowicza 10）集合入場。",
@@ -179,7 +179,7 @@ export const venues = {
   },
   'krakow-auschwitz': {
     id: "krakow-auschwitz", cityKey: "KRK", name: "克拉科夫 · 奧斯威辛",
-    map: "https://www.google.com/maps/search/?api=1&query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20%E5%A5%A7%E6%96%AF%E5%A8%81%E8%BE%9B%20O%C5%9Bwi%C4%99cim",
+    map: "https://www.google.com/maps/search/?api=1&query=Auschwitz%20I%20Visitor%20Service%20Center%2C%20Wiezniow%20Oswiecimia%2055%2C%20Oswiecim",
     officialUrl: "https://www.auschwitz.org/en/visiting/guided-tours-for-individual-visitors/",
     address: null,
     entranceNote: null,
@@ -192,7 +192,7 @@ export const venues = {
   },
   'wroclaw-zoo': {
     id: "wroclaw-zoo", cityKey: "WRO", name: "樂斯拉夫 · Afrykarium／動物園",
-    map: "https://www.google.com/maps/search/?api=1&query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20Afrykarium%EF%BC%8F%E5%8B%95%E7%89%A9%E5%9C%92",
+    map: "https://maps.google.com/?cid=6359100319840704536",
     officialUrl: "https://zoo.wroclaw.pl/en/prices/",
     address: null,
     entranceNote: null,
@@ -210,7 +210,7 @@ export const venues = {
   },
   'wroclaw-panorama': {
     id: "wroclaw-panorama", cityKey: "WRO", name: "樂斯拉夫 · Panorama Racławicka",
-    map: "https://www.google.com/maps/search/?api=1&query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20Panorama%20Rac%C5%82awicka",
+    map: "https://www.google.com/maps/search/?api=1&query=Panorama%20Rac%C5%82awicka%2C%20Jana%20Ewangelisty%20Purkyniego%2011%2C%20Wroc%C5%82aw",
     officialUrl: "https://mnwr.pl/",
     address: "Jana Ewangelisty Purkyniego 11, 50-155 Wrocław",
     entranceNote: "由 Purkyniego 11 主入口依已購時段入場。",
@@ -223,7 +223,7 @@ export const venues = {
   },
   'wroclaw-hala-stulecia': {
     id: "wroclaw-hala-stulecia", cityKey: "WRO", name: "樂斯拉夫 · 百年廳 Visitor Centre",
-    map: "https://www.google.com/maps/search/?api=1&query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20%E7%99%BE%E5%B9%B4%E5%BB%B3",
+    map: "https://maps.google.com/?cid=10763621538599936407",
     officialUrl: "https://halastulecia.pl/zwiedzanie/visitor-centre/",
     address: "Wystawowa 1, 51-618 Wrocław",
     entranceNote: "本日只看外觀與周邊；如臨時改入室內，使用 Wystawowa 1 訪客中心入口。",
@@ -241,7 +241,7 @@ export const venues = {
   },
   'wroclaw-hydropolis': {
     id: "wroclaw-hydropolis", cityKey: "WRO", name: "樂斯拉夫 · Hydropolis",
-    map: "https://www.google.com/maps/search/?api=1&query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20Hydropolis",
+    map: "https://www.google.com/maps/search/?api=1&query=Hydropolis%2C%20Wroc%C5%82aw",
     officialUrl: "https://bilety.hydropolis.pl/cennik.html?lang=en",
     address: null,
     entranceNote: null,
@@ -254,7 +254,7 @@ export const venues = {
   },
   'wroclaw-kolejkowo': {
     id: "wroclaw-kolejkowo", cityKey: "WRO", name: "樂斯拉夫 · Kolejkowo",
-    map: "https://www.google.com/maps/search/?api=1&query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20Kolejkowo",
+    map: "https://www.google.com/maps/search/?api=1&query=Kolejkowo%2C%20Sky%20Tower%2C%20Wroc%C5%82aw",
     officialUrl: "https://kolejkowo.pl/wroclaw/en/price-list/",
     address: null,
     entranceNote: null,
@@ -267,7 +267,7 @@ export const venues = {
   },
   'poznan-palmiarnia': {
     id: "poznan-palmiarnia", cityKey: "POZ", name: "波茲南 · Palmiarnia 棕櫚屋",
-    map: "https://www.google.com/maps/search/?api=1&query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20Palmiarnia%20%E6%A3%95%E6%AB%9A%E5%B1%8B",
+    map: "https://maps.google.com/?cid=10703456143872687277",
     officialUrl: "https://palmiarnia.poznan.pl/zwiedzanie/godziny-otwarcia/",
     address: null,
     entranceNote: null,
@@ -285,7 +285,7 @@ export const venues = {
   },
   'poznan-croissant-museum': {
     id: "poznan-croissant-museum", cityKey: "POZ", name: "波茲南 · 可頌博物館",
-    map: "https://www.google.com/maps/search/?api=1&query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20%E5%8F%AF%E9%A0%8C%E5%8D%9A%E7%89%A9%E9%A4%A8",
+    map: "https://maps.google.com/?cid=402526412385617111",
     officialUrl: "https://rogalowemuzeum.pl/en/buy-tickets/",
     address: "Stary Rynek 41/2, 61-772 Poznań",
     entranceNote: "地址為 Stary Rynek 41/2，實際入口在 Klasztorna 23；請於場次開始前 10 分鐘報到。",
@@ -298,7 +298,7 @@ export const venues = {
   },
   'poznan-ck-zamek': {
     id: "poznan-ck-zamek", cityKey: "POZ", name: "波茲南 · 帝王城堡",
-    map: "https://www.google.com/maps/search/?api=1&query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20%E5%B8%9D%E7%8E%8B%E5%9F%8E%E5%A0%A1",
+    map: "https://www.google.com/maps/search/?api=1&query=Zamek%20Culture%20Centre%20(CK%20ZAMEK)%2C%20%C5%9Awi%C4%99ty%20Marcin%2080%2F82%2C%20Pozna%C5%84",
     officialUrl: "https://ckzamek.pl/podstrony/6071-zwiedzanie-zamku/",
     address: "Święty Marcin 80/82, 61-809 Poznań",
     entranceNote: "由 Święty Marcin 80/82 依 CK Zamek 訪客標示進入。",
@@ -316,7 +316,7 @@ export const venues = {
   },
   'poznan-old-town-hall-museum': {
     id: "poznan-old-town-hall-museum", cityKey: "POZ", name: "波茲南 · 古市政廳博物館",
-    map: "https://www.google.com/maps/search/?api=1&query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20%E5%8F%A4%E5%B8%82%E6%94%BF%E5%BB%B3%E5%8D%9A%E7%89%A9%E9%A4%A8",
+    map: "https://www.google.com/maps/search/?api=1&query=Pozna%C5%84%20Town%20Hall%2C%20Stary%20Rynek%201%2C%20Pozna%C5%84",
     officialUrl: "https://www.msu.mnp.art.pl/profile/wizyta-ratusz-muzeum-poznania",
     address: null,
     entranceNote: null,
@@ -329,7 +329,7 @@ export const venues = {
   },
   'poznan-archaeological-museum': {
     id: "poznan-archaeological-museum", cityKey: "POZ", name: "波茲南 · 考古博物館",
-    map: "https://www.google.com/maps/search/?api=1&query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20%E8%80%83%E5%8F%A4%E5%8D%9A%E7%89%A9%E9%A4%A8",
+    map: "https://www.google.com/maps/search/?api=1&query=Archaeological%20Museum%2C%20Pozna%C5%84",
     officialUrl: "https://nowa.muzarp.poznan.pl/pl/bilety",
     address: null,
     entranceNote: null,

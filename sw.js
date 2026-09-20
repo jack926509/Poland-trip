@@ -68,7 +68,15 @@ const ASSETS = [
 // 全新的 Response。只有這種乾淨的 Response 可以被 Cache 交給導覽請求使用。
 async function stripRedirectFlag(response) {
   const body = await response.clone().arrayBuffer();
-  return new Response(body, { status: response.status, statusText: response.statusText, headers: response.headers });
+  // content-encoding／content-length 是對「原始傳輸位元組」描述的標頭；
+  // body 這裡已經是瀏覽器解碼後的內容，原樣複製這兩個標頭跟實際存進 Cache
+  // 的 body 對不上，日後改自建 Response 遇到解碼錯誤時這是第一個該查的。
+  const headers = {};
+  for (const [key, value] of response.headers.entries()) {
+    if (key === 'content-encoding' || key === 'content-length') continue;
+    headers[key] = value;
+  }
+  return new Response(body, { status: response.status, statusText: response.statusText, headers });
 }
 
 // './index.html' 對應網站根目錄 './'；其餘去掉 .html 副檔名，對應

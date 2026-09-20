@@ -177,3 +177,43 @@ test('切片 4b：辛德勒工廠／皇家城堡／POLIN 三個步驟的 sub 改
     assert.doesNotMatch(step.sub, priceListPattern, `${step.label} 的 sub 仍殘留全票／優待並列的票價寫法`);
   }
 });
+
+// 中-3 的護欄：venues.js 的 map 不能再退化成「城市＋中文景點名」這種搜尋
+// 連結，一律要有官方 cid 或精確英文地址查詢；cities.js attractions 有
+// venueId 的都必須直接引用 venues.js 的 map，不能各自維護一份會兜不起來
+// 的連結；有座標的 venuePin 補充圖釘也要接得到同一份資料。
+test('venues.js 的 map 沒有任何一筆是中文關鍵字搜尋連結', () => {
+  const cjk = /[一-鿿]/;
+  for (const [id, venue] of Object.entries(venues)) {
+    const match = /[?&]query=([^&]+)/.exec(venue.map);
+    if (!match) continue; // cid=／place 連結沒有 query 參數，不受檢查
+    const decoded = decodeURIComponent(match[1]);
+    assert.ok(!cjk.test(decoded), `${id} 的 map 仍是中文關鍵字搜尋：${venue.map}`);
+  }
+});
+
+test('cities.js attractions 有 venueId 的每一筆，mapUrl 都直接引用 venues.js 的 map（單一來源）', () => {
+  let checked = 0;
+  for (const [city, items] of Object.entries(attractions)) {
+    for (const item of items) {
+      if (!item.venueId) continue;
+      assert.equal(item.mapUrl, venues[item.venueId].map,
+        `${city}「${item.name}」的 mapUrl 與 venues['${item.venueId}'].map 不一致`);
+      checked += 1;
+    }
+  }
+  assert.ok(checked > 0);
+});
+
+test('venuePin 支援 mapUrl 覆寫；Day 4 鹽礦補充圖釘指回 Daniłowicz Shaft 而非整座鹽礦的一般入口', () => {
+  const genericPin = venuePin('krakow-wieliczka', { label: '測試', category: 'sight' });
+  assert.equal(genericPin[4], venues['krakow-wieliczka'].map, '沒有覆寫時，mapUrl 應回退到 venue.map');
+
+  const overridden = venuePin('krakow-wieliczka', { label: '測試', category: 'sight', mapUrl: 'https://example.com/override' });
+  assert.equal(overridden[4], 'https://example.com/override', 'venuePin 應允許以 mapUrl 覆寫 venue.map');
+
+  const day4Wieliczka = daySupplementaryPins[4].find(point => point[2].includes('Daniłowicz Shaft'));
+  assert.ok(day4Wieliczka, 'Day 4 補充圖釘應保留 Daniłowicz Shaft 這個顯示名稱');
+  assert.match(day4Wieliczka[4], /Dani%C5%82owicza|Daniłowicza/, 'Day 4 鹽礦圖釘的連結應指向 Daniłowicz Shaft 集合入口，而不是整座鹽礦的一般 cid');
+  assert.notEqual(day4Wieliczka[4], venues['krakow-wieliczka'].map, 'Day 4 鹽礦圖釘不應退化成與一般景點頁相同的整座鹽礦入口連結');
+});

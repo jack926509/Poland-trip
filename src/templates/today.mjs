@@ -194,7 +194,7 @@ export function renderToday({ meta, days, stay, dayDining = {}, daylight = [], s
     <p class="today-status" data-today-status>正在判斷今天是旅程的第幾天…</p>
     <noscript><p class="today-status">JavaScript 未啟用時無法自動選日，以下列出全部 ${days.length} 天。</p></noscript>
 
-    <section class="section today-block-alert" data-today-sos>
+    <section class="section today-block today-block-alert" data-today-sos>
       <div class="section-heading"><span class="section-num">SOS</span><h2>緊急電話</h2></div>
       <ul class="today-list">${emergency}</ul>
       <p class="source-meta">歐洲通用緊急號碼 112 可直接撥打，不需解鎖或有 SIM 卡餘額。</p>
