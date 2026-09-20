@@ -54,7 +54,7 @@ const databaseEntriesBase = [
     title: '本次航班時刻、行李額度與直掛確認',
     summary: '本次電子機票的實際起降時刻、行李額度、是否直掛及 HKG、DOH 轉機程序，必須由旅客的訂單與航空公司確認。網站上的 QR 260 於 10/31 14:40 起飛屬冬季班表，與目前公開的夏季班表不同，Day 8 全天時間表都建立在這個時刻上，務必以電子機票核對。',
     status: 'private-required', sourceUrl: null, verifiedAt: null, recheckAt: '2026-10-22',
-    offlineNote: '離線保存電子機票；先核對五個航段的起降時刻與轉機時間是否與行程一致，再於出發前 48 小時核對報到、航廈、座位、行李直掛與特殊餐。', private: true,
+    offlineNote: '離線保存電子機票；先核對六段航班（含轉機共 3 段去程、3 段回程）的起降時刻與轉機時間是否與行程一致，再於出發前 48 小時核對報到、航廈、座位、行李直掛與特殊餐。', private: true,
   },
   {
     id: 'aviation-missing-baggage', section: 'aviation', category: 'safety', cityKey: 'WAW',
@@ -287,7 +287,7 @@ export const readinessItems = [
   { id: 'accommodation', title: '住宿', detail: '5 筆／7 晚訂單已確認；出發前補齊私人離線備份與寄放安排', priority: 'P0', status: 'private-required', entryId: 'accommodation-confirmations', private: true },
   { id: 'rail-tickets', title: '城際車票', detail: '確認車次、車廂、座位與轉乘保障', priority: 'P0', status: 'pending', entryId: 'rail-trip-tickets', private: false },
   { id: 'attraction-tickets', title: '景點票券', detail: '確認日期、入場時段與離線票券', priority: 'P0', status: 'pending', entryId: 'documents-attraction-tickets', private: true },
-  { id: 'flight-ticket', title: '航班時刻與行李', detail: '核對電子機票的五段起降時刻、行李額度與是否直掛', priority: 'P0', status: 'private-required', entryId: 'aviation-trip-baggage-confirmation', private: true },
+  { id: 'flight-ticket', title: '航班時刻與行李', detail: '核對電子機票的六段起降時刻、行李額度與是否直掛', priority: 'P0', status: 'private-required', entryId: 'aviation-trip-baggage-confirmation', private: true },
   { id: 'insurance', title: '旅平險', detail: '保存保單與海外救援聯絡方式', priority: 'P0', status: 'private-required', entryId: 'medical-insurance-and-emergency', private: true },
   { id: 'offline-pack', title: '網路離線', detail: '準備 SIM／eSIM、離線地圖與文件包', priority: 'P1', status: 'pending', entryId: 'connectivity-prepaid-registration', private: false },
   { id: 'passport-etias', title: 'ETIAS', detail: '依官方啟用進度重查入境資格', priority: 'P0', status: 'recheck', entryId: 'entry-etias-and-passport', private: false },
@@ -605,7 +605,7 @@ export const dayOperations = {
       address('華沙老城市場廣場', 'Rynek Starego Miasta, 00-272 Warszawa', 'Rynek Starego Miasta, Warszawa'),
       address('Warszawa Centralna', 'al. Jerozolimskie 54, 00-024 Warszawa', 'Warszawa Centralna, al. Jerozolimskie 54, Warszawa'),
       address('華沙蕭邦機場', 'Żwirki i Wigury 1, 00-906 Warszawa', 'Warsaw Chopin Airport, Żwirki i Wigury 1, Warszawa'),
-      address('駐波蘭台北代表處', '30th Floor, ul. Emilii Plater 53, 00-113 Warszawa', 'Taipei Representative Office in Poland, Emilii Plater 53, Warszawa', '僅供緊急狀況備援，不列為一般行程站點。'),
+      address('駐波蘭台北代表處', '30th Floor, Ul. Emilii Plater 53, 00-113 Warsaw, Poland', 'Taipei Representative Office in Poland, Emilii Plater 53, Warszawa', '僅供緊急狀況備援，不列為一般行程站點。'),
     ],
     navigation: [
       { mode: 'SKM', route: '華沙市中心 → 蕭邦機場', action: '當日查 WTP 即時發車、月台與改道；如要退稅或託運商品查驗，比一般報到更早抵達。' },
@@ -647,7 +647,6 @@ const unresolvedStepReasons = {
   },
   5: {
     '糖果屋雙屋 + 教堂塔樓': '教堂塔樓入口與開放狀態須依當日官方公告確認。',
-    '座堂島結束後回 Piast 取行李': 'Piast 住宿已確認，但完整門牌尚待飯店第一方或私人訂房確認核對。',
     'Baltic Express 260 前往波茲南': dynamicTransitReason,
   },
   6: {

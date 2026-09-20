@@ -73,12 +73,24 @@ test('今日卡保留票務狀態、餐廳注意事項及住宿地址限制',()=
   const html=renderToday({...trip, dayDining, safety:{emergency:[]}});
   assert.match(html,/指定日待確認／尚未訂票/);
   assert.match(html,/此地址為接待與取鑰匙處/);
-  assert.match(html,/門牌尚未確認/);
   assert.match(html,/客滿或想換口味/);
   assert.ok(html.includes(dayDining[5][0].note.replaceAll('&','&amp;')));
   const day5=html.split('data-today-date="2026-10-28"')[1].split('</article>')[0];
   const stay=day5.split('data-today-stay')[1].split('</section>')[0];
   assert.ok(stay.includes('接待處導航'));
+  // Piast 門牌已於切片 2 核對為 addressVerified:true，Day 4（10/27 入住）現在應提供住宿導航。
   const day4=html.split('data-today-date="2026-10-27"')[1].split('</article>')[0];
-  assert.ok(!day4.split('data-today-stay')[1].split('</section>')[0].includes('住宿導航'));
+  assert.ok(day4.split('data-today-stay')[1].split('</section>')[0].includes('住宿導航'));
+});
+
+test('住宿門牌未核對時，今日卡改顯示「門牌尚未確認」且不給精確導航',()=>{
+  // 目前真實資料全部 5 筆 stay 都已 addressVerified:true，
+  // 這裡用一份合成的未核對住宿覆蓋，確保該分支邏輯沒有因為切片 2 的改動而壞掉。
+  const unverifiedStay = trip.stay.map(item =>
+    item.id === 'wroclaw-piast' ? { ...item, addressVerified:false } : item);
+  const html=renderToday({...trip, stay:unverifiedStay, dayDining, safety:{emergency:[]}});
+  const day4=html.split('data-today-date="2026-10-27"')[1].split('</article>')[0];
+  const stayBlock=day4.split('data-today-stay')[1].split('</section>')[0];
+  assert.match(stayBlock,/門牌尚未確認/);
+  assert.ok(!stayBlock.includes('住宿導航'));
 });

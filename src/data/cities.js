@@ -10,12 +10,13 @@
 
 import { cityGallery } from './city-gallery.js';
 import { diningPlaces } from './dining-places.js';
+import { stayPin } from '../lib/journey.mjs';
 
 export const cities = [
-  {key:'WAW', name:'華沙', pl:'Warszawa', tag:'CAPITAL', nights:'1 + 2', totalNights:3, stayNote:'首晚倒時差 + 回程兩晚收尾', vibe:'鋼鐵摩天 × 重建老城', highlights:['POLIN 猶太博物館','起義博物館','皇家城堡','Krakowskie Przedmieście'], photo:{hero:'assets/photos/warszawa-hero.webp',thumb:'assets/photos/warszawa-thumb.webp',og:'assets/og/warszawa-og.jpg'}},
-  {key:'KRK', name:'克拉科夫', pl:'Kraków', tag:'OLD WORLD', nights:2, totalNights:2, stayNote:'兩晚承接老城、Auschwitz、鹽礦', vibe:'中世紀石板路 × 千年王城', highlights:['Wawel 城堡','中央市集 Rynek','Auschwitz 一日往返','Kazimierz 猶太區'], photo:{hero:'assets/photos/krakow-hero.webp',thumb:'assets/photos/krakow-thumb.webp',og:'assets/og/krakow-og.jpg'}},
-  {key:'WRO', name:'樂斯拉夫', pl:'Wrocław', tag:'1000+ DWARFS', nights:1, totalNights:1, vibe:'千尊小矮人 × 煤氣燈點燈', highlights:['百年廳 UNESCO','全景畫 Panorama','座堂島 Ostrów Tumski','糖果屋雙屋'], photo:{hero:'assets/photos/wroclaw-hero.webp',thumb:'assets/photos/wroclaw-thumb.webp',og:'assets/og/wroclaw-og.jpg',detail:'assets/photos/wroclaw-ostrow-tumski-night.webp',detailAlt:'夜色中的樂斯拉夫座堂島與河岸燈光',detailCaption:'座堂島入夜後的河岸燈光 · Day 5 日落前後散步重點',detailHeight:853,detailAuthor:'Jg44.89',detailLicense:'CC BY 4.0',detailLicenseUrl:'https://creativecommons.org/licenses/by/4.0/',detailSource:'https://commons.wikimedia.org/wiki/File:Ostr%C3%B3w_Tumski_Wroc%C5%82aw.jpg'}},
-  {key:'POZ', name:'波茲南', pl:'Poznań', tag:'CRADLE', nights:1, totalNights:1, vibe:'波蘭文明發源 × 山羊報時', highlights:['教堂島 Ostrów Tumski','12:00 山羊鐘樓秀','聖馬丁牛角麵包 PGI','帝王城堡'], photo:{hero:'assets/photos/poznan-hero.webp',thumb:'assets/photos/poznan-thumb.webp',og:'assets/og/poznan-og.jpg',detail:'assets/photos/poznan-old-market.webp',detailAlt:'波茲南舊市集廣場周圍的彩色老屋',detailCaption:'舊市集廣場周圍的彩色老屋 · Day 6 正午山羊報時周邊',detailHeight:960,detailAuthor:'Mariochom',detailLicense:'CC BY-SA 4.0',detailLicenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',detailSource:'https://commons.wikimedia.org/wiki/File:Pozna%C5%84-Old_Market_Square.jpg'}},
+  {key:'WAW', name:'華沙', pl:'Warszawa', tag:'CAPITAL', vibe:'鋼鐵摩天 × 重建老城', highlights:['POLIN 猶太博物館','起義博物館','皇家城堡','Krakowskie Przedmieście'], photo:{hero:'assets/photos/warszawa-hero.webp',thumb:'assets/photos/warszawa-thumb.webp',og:'assets/og/warszawa-og.jpg'}},
+  {key:'KRK', name:'克拉科夫', pl:'Kraków', tag:'OLD WORLD', vibe:'中世紀石板路 × 千年王城', highlights:['Wawel 城堡','中央市集 Rynek','Auschwitz 一日往返','Kazimierz 猶太區'], photo:{hero:'assets/photos/krakow-hero.webp',thumb:'assets/photos/krakow-thumb.webp',og:'assets/og/krakow-og.jpg'}},
+  {key:'WRO', name:'樂斯拉夫', pl:'Wrocław', tag:'1000+ DWARFS', vibe:'千尊小矮人 × 煤氣燈點燈', highlights:['百年廳 UNESCO','全景畫 Panorama','座堂島 Ostrów Tumski','糖果屋雙屋'], photo:{hero:'assets/photos/wroclaw-hero.webp',thumb:'assets/photos/wroclaw-thumb.webp',og:'assets/og/wroclaw-og.jpg',detail:'assets/photos/wroclaw-ostrow-tumski-night.webp',detailAlt:'夜色中的樂斯拉夫座堂島與河岸燈光',detailCaption:'座堂島入夜後的河岸燈光 · Day 5 日落前後散步重點',detailHeight:853,detailAuthor:'Jg44.89',detailLicense:'CC BY 4.0',detailLicenseUrl:'https://creativecommons.org/licenses/by/4.0/',detailSource:'https://commons.wikimedia.org/wiki/File:Ostr%C3%B3w_Tumski_Wroc%C5%82aw.jpg'}},
+  {key:'POZ', name:'波茲南', pl:'Poznań', tag:'CRADLE', vibe:'波蘭文明發源 × 山羊報時', highlights:['教堂島 Ostrów Tumski','12:00 山羊鐘樓秀','聖馬丁牛角麵包 PGI','帝王城堡'], photo:{hero:'assets/photos/poznan-hero.webp',thumb:'assets/photos/poznan-thumb.webp',og:'assets/og/poznan-og.jpg',detail:'assets/photos/poznan-old-market.webp',detailAlt:'波茲南舊市集廣場周圍的彩色老屋',detailCaption:'舊市集廣場周圍的彩色老屋 · Day 6 正午山羊報時周邊',detailHeight:960,detailAuthor:'Mariochom',detailLicense:'CC BY-SA 4.0',detailLicenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',detailSource:'https://commons.wikimedia.org/wiki/File:Pozna%C5%84-Old_Market_Square.jpg'}},
 ];
 
 Object.assign(cities.find(city => city.key === 'WAW').photo, {
@@ -172,7 +173,7 @@ export const mapPins = {
       [52.2333197, 21.0149273, "Pijalnia Czekolady E.Wedel（巧克力）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJ--12WPTMHkcRgAvh-nOeA94", "shop"],
       [52.2310334, 21.0187045, "Vitkac", "精品百貨", "https://maps.google.com/?cid=6893272886103886879", "luxury"],
       [52.2215267, 21.0204772, "Chylak（波蘭設計師包款）", "精品", "https://maps.google.com/?cid=2015234439722332980", "luxury"],
-      [52.22901, 21.01099, "Hotel Metropol", "已確認住宿 · 10/24–10/25、10/29–10/31", "https://www.google.com/maps/search/?api=1&query=Hotel%20Metropol%2C%20ul.%20Marsza%C5%82kowska%2099a%2C%20Warszawa", "hotel"],
+      stayPin(['warsaw-metropol-arrival', 'warsaw-metropol']),
     ],
   },
   krakow: {
@@ -195,7 +196,7 @@ export const mapPins = {
       [50.055231, 19.938471, "Ceramika Bolesławiecka（陶器）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJf581WqhbFkcR1_QG-8hJ4Vc", "shop"],
       [50.058364, 19.9382007, "World of Amber（琥珀）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJPxlI8hJbFkcR7vI2ebLVIDk", "shop"],
       [50.06171320000001, 19.9373488, "Sukiennice 布廊（伴手禮攤位）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJ3Q97Bw5bFkcRc3GzJiVsH9A", "shop"],
-      [50.07075, 19.946163, "ibis budget Krakow Stare Miasto", "已確認住宿 · 10/25–10/27", "https://www.google.com/maps/search/?api=1&query=ibis%20budget%20Krakow%20Stare%20Miasto%2C%20ul.%20Pawia%2011%2C%20Krak%C3%B3w", "hotel"],
+      stayPin('krakow-stare-miasto'),
     ],
   },
   wroclaw: {
@@ -209,7 +210,7 @@ export const mapPins = {
       [51.114762, 17.031129, "Most ★", "米其林一星", diningPlaces['wroclaw-most'].map, "star1", null, 'wroclaw-most'],
       [51.112463, 17.029103, "IDA kuchnia i wino", "必比登", diningPlaces['wroclaw-ida-kuchnia-i-wino'].map, "bib", null, 'wroclaw-ida-kuchnia-i-wino'],
       [51.112672, 17.034294, "Bar Mleczny Miś", "全城最有名牛奶吧", diningPlaces['wroclaw-bar-mleczny-mis'].map, "food", null, 'wroclaw-bar-mleczny-mis'],
-      [51.10013, 17.03569, "Piast", "已確認住宿 · Piłsudskiego 98", "https://www.google.com/maps/search/?api=1&query=Hotel%20Piast%2C%20Pi%C5%82sudskiego%2098%2C%20Wroc%C5%82aw", "hotel"],
+      stayPin('wroclaw-piast'),
     ],
   },
   poznan: {
@@ -221,7 +222,7 @@ export const mapPins = {
       [52.402018, 16.901852, "Palmiarnia 棕櫚屋", "改建暫時閉館，重開未定", "https://maps.google.com/?cid=10703456143872687277", "sight"],
       [52.403967, 16.929146, "Muga ★", "波茲南唯一一星", diningPlaces['poznan-muga'].map, "star1", null, 'poznan-muga'],
       [52.411348, 16.952952, "Na Winklu", "pierogi", diningPlaces['poznan-na-winklu'].map, "food", null, 'poznan-na-winklu'],
-      [52.403903, 16.915609, "Poznan Apartments Towarowa", "已確認住宿 · Towarowa 37/201 官方接待處", "https://www.google.com/maps/search/?api=1&query=Poznan%20Apartments%20Towarowa%2C%20Towarowa%2037%2F201%2C%20Pozna%C5%84", "hotel"],
+      stayPin('poznan-towarowa'),
     ],
   },
 };

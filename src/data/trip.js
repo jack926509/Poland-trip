@@ -40,7 +40,7 @@ export const days = [
     steps: [
       {t:'13:30', label:'抵蕭邦機場', sub:'申根入境 + 提行李 ~75min', cost:'—', dur:'75 min'},
       {t:'14:45', label:'SKM S2／S3 目標班次', sub:'2026-09-17 WTP 官方機場交通頁：S2 停 Warszawa Śródmieście、S3 停 Warszawa Centralna，兩線都不互停，官方標示買 75 分鐘第 1 區票。上車先看是 S2 還 S3——S2 坐到 Śródmieście 出站即 Metro Centrum、飯店在對街；S3 要在 Centralna 下車再步行。月台與即時班次抵達後查 WTP', cost:'75 分第 1 區票 4.40', dur:'25–30 min'},
-      {t:'15:15', label:'Hotel Metropol Check-in', sub:'ul. Marszałkowska 99a；入住 15:00 起，提早到可先寄放行李再出門', dur:'30 min'},
+      {t:'15:15', label:'Hotel Metropol Check-in', sub:'入住 15:00 起，提早到可先寄放行李再出門', dur:'30 min'},
       {t:'16:45', label:'★ 老城廣場', sub:'皇家城堡 · 美人魚雕像', cost:'免費', dur:'1 h'},
       {t:'18:00', label:'Krakowskie Przedmieście', sub:'黃昏氛圍', cost:'免費', dur:'1 h'},
       {t:'19:00', id:'d1-dinner', label:'波蘭地方料理晚餐', sub:'Specjały Regionalne · Nowy Świat；出發前確認當日營業', cost:'PLN 35–55'},
@@ -75,7 +75,7 @@ export const days = [
       {t:'08:10', label:'抵票面上車站', sub:'現行班表 EIP 5300 停 Warszawa Centralna（約 08:40）後才到 Zachodnia（約 08:45）；購票時若可選 Centralna 上車，可省去跨站轉乘。月台以當日電子牌為準', dur:'35 min 緩衝'},
       {t:'參考 08:45', label:'EIP 5300 前往克拉科夫', sub:'參考班次；10/25 換表後須確認實際停靠站與時刻並完成購票，購票後只依票面上車站行動', cost:'票價待確認', dur:'2h13'},
       {t:'參考 10:58', label:'抵 Kraków Główny', dur:'5–10 min 拖行李'},
-      {t:'11:10', label:'旅館寄放行李', sub:'ibis budget Krakow Stare Miasto 在 Pawia 11，飯店官網標示距車站約 200 公尺', dur:'20 min'},
+      {t:'11:10', label:'旅館寄放行李', sub:'ibis budget Krakow Stare Miasto，飯店官網標示距車站約 200 公尺', dur:'20 min'},
       {t:'11:30', id:'d2-lunch', label:'車站周邊午餐', sub:'午餐候選為老城的 Bar Mleczny Pod Temidą（門牌待確認），非車站內店家；先由車站前往並確認週日營業，未確認則在車站周邊另選，再依實際位置前往 Wawel', cost:'PLN 40–60', dur:'45 min'},
       {t:'13:00', label:'★ 瓦維爾大教堂', sub:'週日 12:30–17:00；Cathedral Museum 週日不開', cost:'PLN 26／18', dur:'45 min'},
       {t:'14:00', label:'★ Wawel 城堡短路線', constraint:{venue:'krakow-wawel-castle'}, sub:'2026-09-17 官網 9–12 月分路線售票，適合一小時空檔的是：王冠寶庫 47／35、Castle Underground 47／35（含語音導覽）、Armoury 47／35；二樓代表廳 57／43 需時較長。不要硬排一、二樓完整路線，會壓縮後續步行', cost:'寶庫或地下路線 PLN 47／35', dur:'1 h'},
@@ -233,7 +233,7 @@ export const days = [
       {t:'17:15', label:'座堂島結束後回 Piast 取行李', sub:'座堂島 → 旅館約 25–30 分；距參考發車 1h55，18:35 前抵站後保留約 35 分鐘緩衝', dur:'約 1 h 20 min'},
       {t:'18:35 前', label:'抵 Wrocław Główny', sub:'確認月台、車廂與座位', dur:'至少 35 min 緩衝'},
       {t:'參考 19:10', label:'Baltic Express 260 前往波茲南', sub:'指定日待確認／尚未訂票', cost:'票價待確認', dur:'1h19'},
-      {t:'參考 20:29', label:'抵 Poznań Główny', sub:'先到 Towarowa 37/201 接待處取鑰匙；實際公寓門牌依訂房確認'},
+      {t:'參考 20:29', label:'抵 Poznań Główny', sub:'先到官方接待處取鑰匙；實際公寓門牌依訂房確認'},
     ],
     eat: [
       snack({text:'咖啡 @ El Gato Specialty Coffee', placeId:'wroclaw-el-gato-specialty-coffee'}),
@@ -376,10 +376,10 @@ export const stay = [
   {
     id:'wroclaw-piast', city:'樂斯拉夫', en:'Wrocław', name:'Piast',
     checkIn:'2026-10-27', checkOut:'2026-10-28', checkInTime:'14:00', checkOutTime:'12:00', nights:1,
-    address:'完整地址待飯店第一方確認', addressVerified:false, rooms:1, status:'已確認',
-    coordinates:{lat:51.10013, lng:17.03569, status:'地圖座標已核對；門牌仍待第一方確認', checkedAt:'2026-08-11'},
+    address:'Piłsudskiego 98, Wrocław', addressVerified:true, rooms:1, status:'已確認',
+    coordinates:{lat:51.10013, lng:17.03569, status:'已核對', checkedAt:'2026-08-11'},
     officialUrl:'https://piastwroclaw.pl/',
-    note:'住宿訂單已確認；飯店官網目前未正常顯示完整地址，出發前須用訂房確認或直接向飯店核對。',
+    note:'住宿訂單已確認，門牌 Piłsudskiego 98 已核對；飯店官網目前未正常顯示完整地址，仍建議出發前用訂房確認再核對一次。',
   },
   {
     id:'poznan-towarowa', city:'波茲南', en:'Poznań', name:'Poznan Apartments Towarowa',

@@ -140,8 +140,8 @@ test('5 筆已確認住宿區段完整涵蓋 7 晚並保留官方地址', () => 
     assert.equal(typeof booking.coordinates?.lng, 'number');
     assert.match(booking.coordinates?.checkedAt ?? '', /^2026-\d{2}-\d{2}$/);
   }
-  assert.equal(stay.filter(item => item.addressVerified).length, 4);
-  assert.equal(stay.find(item => item.name === 'Piast')?.address, '完整地址待飯店第一方確認');
+  assert.equal(stay.filter(item => item.addressVerified).length, 5);
+  assert.equal(stay.find(item => item.name === 'Piast')?.address, 'Piłsudskiego 98, Wrocław');
   for (const booking of stay.filter(item => item.addressVerified)) assert.match(booking.address, /\d/);
 
   const bookingPage = read('practical/booking.html');
@@ -879,7 +879,7 @@ test('Day 8 退稅與報到已合併，不再出現獨立 11:30 時段', () => {
   assert.ok(main.includes('退稅') && main.includes('報到'), 'Day 8 缺少合併後的退稅／報到內容');
 });
 
-test('4 個已確認住宿地點皆出現在對應城市地圖，Piast 使用已核對門牌', () => {
+test('4 個已確認住宿地點皆出現在對應城市地圖，圖釘地址與 stay.addressVerified 一致', () => {
   const hotelPins = Object.values(mapPins)
     .flatMap(city => city.points)
     .filter(point => point[5] === 'hotel');
@@ -891,7 +891,21 @@ test('4 個已確認住宿地點皆出現在對應城市地圖，Piast 使用已
     'Piast',
     'Poznan Apartments Towarowa',
   ]);
-  assert.match(hotelPins.find(point => point[2] === 'Piast')?.[3] ?? '', /Piłsudskiego 98/);
+
+  for (const point of hotelPins) {
+    const booking = stay.find(item => item.name === point[2]);
+    assert.ok(booking, `找不到對應住宿資料：${point[2]}`);
+    const query = decodeURIComponent(point[4].split('query=')[1] ?? '');
+    if (booking.addressVerified) {
+      assert.ok(query.includes(booking.address), `${point[2]} 已核對地址應出現在導航連結：${query}`);
+    } else {
+      assert.ok(!query.includes(booking.address), `${point[2]} 門牌未核對，不應出現在導航連結：${query}`);
+    }
+  }
+
+  const piast = hotelPins.find(point => point[2] === 'Piast');
+  assert.equal(stay.find(item => item.name === 'Piast')?.addressVerified, true);
+  assert.match(decodeURIComponent(piast[4]), /Piłsudskiego 98/);
 });
 
 test('4 個城市頁含正確 Leaflet 圖釘數，合計 48', () => {

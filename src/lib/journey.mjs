@@ -38,3 +38,29 @@ export function isDepartureDay(day) {
 export function stayForDate(stays, iso) {
   return stays.find(item => item.checkIn <= iso && iso < item.checkOut) || null;
 }
+
+const isoToShortDate = iso => iso.slice(5).replace('-', '/');
+
+/**
+ * 給城市地圖用的住宿圖釘：直接從 stay 推導，不再由 cities.js 另存一份座標與地址。
+ * 同一間飯店在同城市分兩段入住（例如華沙 Hotel Metropol 抵達／回程各一段）時，
+ * 傳入這幾筆 id，圖釘標籤會把入住區間合併成一列，座標與導航仍以第一筆為準。
+ * 導航連結是否帶完整門牌，直接跟著 stay[].addressVerified 走——
+ * 門牌未核對時只用旅館名稱＋城市查詢，避免導去一個沒人核對過的地址。
+ */
+export function stayPin(ids) {
+  const list = (Array.isArray(ids) ? ids : [ids]).map(id => {
+    const booking = stay.find(item => item.id === id);
+    if (!booking) throw new Error(`stayPin 找不到住宿資料：${id}`);
+    return booking;
+  });
+  const [first] = list;
+  const dateLabel = list.map(item => `${isoToShortDate(item.checkIn)}–${isoToShortDate(item.checkOut)}`).join('、');
+  const query = first.addressVerified ? `${first.name}, ${first.address}` : `${first.name}, ${first.city}`;
+  return [
+    first.coordinates.lat, first.coordinates.lng, first.name,
+    `已確認住宿 · ${dateLabel}`,
+    `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`,
+    'hotel',
+  ];
+}
