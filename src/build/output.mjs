@@ -12,6 +12,7 @@ import path from 'node:path';
 export function writeServiceWorker({ projectRoot, distDir }) {
   const source = fs.readFileSync(path.join(projectRoot, 'sw.js'), 'utf8');
   const cacheFirstAssets = [
+    'manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png',
     'assets/main.css', 'assets/nav.js', 'assets/site-search.js',
     'assets/database-filter.js', 'assets/leaflet/leaflet.css', 'assets/leaflet/leaflet.js',
   ];

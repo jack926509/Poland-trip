@@ -1644,7 +1644,8 @@ test('sw.js 的快取版本由建置帶上資源指紋，樣式改了就會失�
 
   // 指紋必須真的由 cache-first 資源算出來
   const expected = crypto.createHash('sha256');
-  for (const asset of ['assets/main.css', 'assets/nav.js', 'assets/site-search.js',
+  for (const asset of ['manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png',
+    'assets/main.css', 'assets/nav.js', 'assets/site-search.js',
     'assets/database-filter.js', 'assets/leaflet/leaflet.css', 'assets/leaflet/leaflet.js']) {
     expected.update(fs.readFileSync(path.join(distDir, asset)));
   }

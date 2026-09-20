@@ -71,6 +71,9 @@ function buildIntoStaging(stagingRoot) {
   fs.cpSync(path.join(projectRoot, 'vendor', 'leaflet'), path.join(distDir, 'assets', 'leaflet'), { recursive: true });
   fs.cpSync(path.join(projectRoot, 'assets', 'photos'), path.join(distDir, 'assets', 'photos'), { recursive: true });
   fs.cpSync(path.join(projectRoot, 'assets', 'og'), path.join(distDir, 'assets', 'og'), { recursive: true });
+  for (const asset of ['manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png']) {
+    fs.copyFileSync(path.join(projectRoot, asset), path.join(distDir, asset));
+  }
   // 資源全部就位後才算指紋
   writeServiceWorker({ projectRoot, distDir });
 
