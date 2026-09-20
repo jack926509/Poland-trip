@@ -922,14 +922,28 @@ test('4 個已確認住宿地點皆出現在對應城市地圖，圖釘地址與
     const query = decodeURIComponent(point[4].split('query=')[1] ?? '');
     if (booking.addressVerified) {
       assert.ok(query.includes(booking.address), `${point[2]} 已核對地址應出現在導航連結：${query}`);
+      // 真機驗收發現：圖釘彈出文字（point[3]）以前只有「已確認住宿 · 日期」，
+      // 地址只藏在導航連結的 URL 參數裡，使用者在畫面上看不到門牌。
+      assert.ok(point[3].includes(booking.address), `${point[2]} 圖釘彈出文字應可讀到地址：${point[3]}`);
     } else {
       assert.ok(!query.includes(booking.address), `${point[2]} 門牌未核對，不應出現在導航連結：${query}`);
+      assert.ok(point[3].includes('門牌待確認'), `${point[2]} 門牌未核對，圖釘彈出文字應顯示「門牌待確認」：${point[3]}`);
     }
   }
 
   const piast = hotelPins.find(point => point[2] === 'Piast');
   assert.equal(stay.find(item => item.name === 'Piast')?.addressVerified, true);
   assert.match(decodeURIComponent(piast[4]), /Piłsudskiego 98/);
+  assert.match(piast[3], /Piłsudskiego 98/);
+
+  // dist 實際 HTML（4 個城市頁）也要能讀到該飯店的地址，不是只有 JS 資料層有。
+  for (const point of hotelPins) {
+    const booking = stay.find(item => item.name === point[2]);
+    const cityFile = { '克拉科夫': 'city-krakow.html', '華沙': 'city-warszawa.html', '樂斯拉夫': 'city-wroclaw.html', '波茲南': 'city-poznan.html' }[booking.city];
+    const html = read(cityFile);
+    const expected = booking.addressVerified ? booking.address : '門牌待確認';
+    assert.ok(html.includes(expected), `${cityFile} 應含 ${point[2]} 的住宿地址文字「${expected}」`);
+  }
 });
 
 test('4 個城市頁含正確 Leaflet 圖釘數，合計 48', () => {

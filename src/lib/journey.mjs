@@ -57,9 +57,10 @@ export function stayPin(ids) {
   const [first] = list;
   const dateLabel = list.map(item => `${isoToShortDate(item.checkIn)}–${isoToShortDate(item.checkOut)}`).join('、');
   const query = first.addressVerified ? `${first.name}, ${first.address}` : `${first.name}, ${first.city}`;
+  const addressLabel = first.addressVerified ? first.address : '門牌待確認';
   return [
     first.coordinates.lat, first.coordinates.lng, first.name,
-    `已確認住宿 · ${dateLabel}`,
+    `已確認住宿 · ${dateLabel} · ${addressLabel}`,
     `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`,
     'hotel',
   ];
