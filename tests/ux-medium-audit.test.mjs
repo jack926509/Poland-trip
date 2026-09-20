@@ -36,6 +36,24 @@ test('M1：今日頁手機 sticky 動作列貼齊頂端且改成單行，不再�
   assert.match(rule, /flex-wrap:\s*nowrap/);
 });
 
+test('M4：城市頁餐飲區分組收合，候選預設展開、其餘收合並標數量', () => {
+  const html = read('city-krakow.html');
+  const section = html.slice(html.indexOf('id="city-dining"'), html.indexOf('</section>', html.indexOf('id="city-dining"')));
+  const groups = Array.from(section.matchAll(/<details class="city-dining-group"( open)?>\s*<summary>([^<]*)<\/summary>/g));
+  assert.ok(groups.length >= 3, `克拉科夫餐飲分組數異常：${groups.length}`);
+  // 第一組（你的候選與順路必吃）預設展開
+  assert.match(groups[0][2], /你的候選與順路必吃/);
+  assert.ok(groups[0][1], '「你的候選與順路必吃」該預設展開（open）');
+  // 其餘分組不展開，且 summary 要標出家數
+  for (const [, openAttr, label] of groups.slice(1)) {
+    assert.equal(openAttr, undefined, `分組「${label}」不該預設展開`);
+    assert.match(label, /（\d+ 家）/, `分組「${label}」缺少家數標示`);
+  }
+  // 資料本身不減少：全部分組的總列數應等於原本合併餐廳數
+  const rowCount = (section.match(/<tr class="/g) || []).length;
+  assert.ok(rowCount >= 8, `餐廳總列數異常：${rowCount}`);
+});
+
 test('M2：手機底部快捷列在各類頁面都輸出，且連結依頁面類型指向對的錨點', () => {
   // 首頁（非日／城市頁）：時間表與吃哪都導回今日頁對應區塊
   const home = read('index.html');

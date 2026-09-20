@@ -1106,7 +1106,9 @@ test('行程餐廳推薦的評分只由連結帶去 Google Maps，不在站內�
   const bakedRating = /★\s*\d(?:\.\d)?|\d\.\d\s*(?:顆星|星|\/\s*5)|\d+\s*則評論/;
   for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
     const html = read(file);
-    const table = html.slice(html.indexOf('id="city-dining"'), html.indexOf('</table>', html.indexOf('id="city-dining"')));
+    // 稽核 M4 把整段拆成 5 個 <details> 分組，取到整個 section 結束（而非第一個
+    // </table>）才能涵蓋全部分組的列，不只驗到「你的候選」那一組。
+    const table = html.slice(html.indexOf('id="city-dining"'), html.indexOf('</section>', html.indexOf('id="city-dining"')));
     // 地圖不再獨立成欄：店名本身就是連結，且每一列都要有
     assert.ok(!table.includes('地圖導航'), `${file} 仍保留獨立的地圖導航欄`);
     const rows = table.split('<tr class=').slice(1);

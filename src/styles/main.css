@@ -4741,6 +4741,26 @@ h3 {
   .city-dining-scroll-hint { display: block; font-size: .875rem; color: var(--ink-soft); }
 }
 
+/* 餐飲分組收合（稽核 M4）：候選以外的四組預設收合，summary 是唯一可點列，
+   給足觸控高度並標出家數，才知道值不值得點開。 */
+.city-dining-group + .city-dining-group,
+.city-dining-group + p.action-links {
+  margin-top: 1.5rem;
+}
+.city-dining-group summary {
+  min-height: 44px;
+  padding: .6rem .2rem;
+  border-block: 1px solid var(--line);
+  font-weight: 700;
+  cursor: pointer;
+}
+.city-dining-group[open] summary {
+  border-bottom-color: var(--line-strong);
+}
+.city-dining-group .city-dining-table-wrap {
+  margin-top: .75rem;
+}
+
 /* 桌機維持真正的表格與可見表頭，但把列高收緊：
    padding .85rem → .5rem .65rem、行距 1.5，整張表大約矮三成。 */
 .city-dining-table { display: table; }

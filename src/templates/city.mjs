@@ -90,19 +90,37 @@ export function renderCity({
       ? item.plans.map(plan => `<p class="city-dining-plan">${dropRestatedHours(dropDuplicateClauses(plan, item.notes.join('；')), item.hours)}</p>`).join('')
       : `<p>${item.positionNote || planFallback[item.role] || '依當天動線與胃口安排'}</p>`}<p class="food-map-note">${bookingLabels[item.book] || '訂位請向店家確認'}</p>${renderDiningFacts(item)}</td>
   </tr>`;
+  // 27 家一路展開要捲 13,800px 以上（稽核 M4）。依既有排序邏輯分成 5 組收合，
+  // 「你的候選與順路必吃」預設展開，其餘收合並在 summary 標出家數。
+  const diningGroupDefs = [
+    { key: 'candidate', label: '你的候選與順路必吃', match: item => item.selected || item.mustEat, open: true },
+    { key: 'primary', label: '主推餐廳', match: item => !item.selected && !item.mustEat && !['backup', 'snack', 'fastfood'].includes(item.role) },
+    { key: 'backup', label: '備案', match: item => item.role === 'backup' },
+    { key: 'snack', label: '小吃・咖啡廳', match: item => item.role === 'snack' },
+    { key: 'fastfood', label: '連鎖速食候選（客滿或趕時間才用）', match: item => item.role === 'fastfood' },
+  ];
+  const diningTableHead = '<thead><tr><th scope="col">餐廳／地址</th><th scope="col">類型／評選標記</th><th scope="col">料理特色／推薦餐點</th><th scope="col">行程安排／訂位提醒</th></tr></thead>';
+  const diningGroupsHtml = diningGroupDefs.map(group => {
+    const items = mergedDining.filter(group.match);
+    if (!items.length) return '';
+    return `<details class="city-dining-group"${group.open ? ' open' : ''}>
+      <summary>${group.label}（${items.length} 家）</summary>
+      <div class="table-wrap city-dining-table-wrap" role="region" aria-label="${group.label}列表" tabindex="0">
+        <table class="table-editorial city-dining-table" aria-describedby="city-dining-description">
+          <caption>${group.label}</caption>
+          ${diningTableHead}
+          <tbody>${items.map(renderDiningRow).join('')}</tbody>
+        </table>
+      </div>
+    </details>`;
+  }).join('');
   const primaryDiningHtml = mergedDining.length ? `
     <section class="section" id="city-dining">
       <div class="section-heading"><span class="section-num">Dining</span><h2>行程餐廳推薦</h2></div>
-      <p class="lead" id="city-dining-description">共 ${mergedDining.length} 家，${mergedDining.filter(item => item.selected || item.mustEat).length} 家已列入每日候選。排序：你的候選與順路必吃置頂並標出日期（點 Day 回當日行程），其次主推、備案，接著是可隨時插入動線的小吃與咖啡廳，最後是候選失效時的連鎖速食。</p>
+      <p class="lead" id="city-dining-description">共 ${mergedDining.length} 家，${mergedDining.filter(item => item.selected || item.mustEat).length} 家已列入每日候選。分組展開：你的候選與順路必吃預設打開並標出日期（點 Day 回當日行程），其餘主推、備案、小吃咖啡、連鎖速食點標題即可展開。</p>
       <p class="lead"><b>點店名開啟 Google Maps。</b>評分與評論數本站不保存——那是每天在變的快照；營業時間附查核狀態，出發前與現場以官方頁為準，連鎖與同名店先對門牌。</p>
       <p class="city-dining-scroll-hint">平板可左右滑動看完整欄位，手機自動改為卡片。</p>
-      <div class="table-wrap city-dining-table-wrap" role="region" aria-label="行程餐廳推薦列表" tabindex="0">
-        <table class="table-editorial city-dining-table" aria-describedby="city-dining-description">
-          <caption>候選、主推、備案、小吃咖啡廳與連鎖速食合併後的行程餐廳清單</caption>
-          <thead><tr><th scope="col">餐廳／地址</th><th scope="col">類型／評選標記</th><th scope="col">料理特色／推薦餐點</th><th scope="col">行程安排／訂位提醒</th></tr></thead>
-          <tbody>${mergedDining.map(renderDiningRow).join('')}</tbody>
-        </table>
-      </div>
+      ${diningGroupsHtml}
       <p class="action-links"><a href="practical/dining.html">米其林名單與訂位管道 →</a></p>
     </section>` : '';
 
