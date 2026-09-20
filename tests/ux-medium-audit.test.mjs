@@ -28,6 +28,14 @@ test('M11：今日頁標題上方顯示 TODAY 而非 APPENDIX，資料庫頁維�
   assert.match(database, /<body class="journal-site journal-practical">/);
 });
 
+test('M1：今日頁手機 sticky 動作列貼齊頂端且改成單行，不再懸空留縫', () => {
+  const source = css();
+  const rule = source.match(/\.journal-today \.today-actions \{([^}]*)\}/)?.[1];
+  assert.ok(rule, '找不到 .journal-today .today-actions 手機覆寫規則');
+  assert.match(rule, /top:\s*0/);
+  assert.match(rule, /flex-wrap:\s*nowrap/);
+});
+
 test('M8：「資料更新儀表板」從主導覽「實用資訊」下拉移除，但頁面仍存在可連結', () => {
   const home = read('index.html');
   const navSection = home.match(/<details class="nav-dropdown[^>]*>\s*<summary[^>]*>實用資訊<\/summary>([\s\S]*?)<\/details>/)?.[1];

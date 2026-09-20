@@ -5006,6 +5006,11 @@ h3 {
   .journal-today .today-status { margin: .5rem 0; }
   .journal-today .today-head { margin-bottom: .5rem; }
   .journal-today .today-head h2 { font-size: 1.5rem; line-height: 1.25; margin: .2rem 0; }
+  /* sticky 動作列的 top: 76px 是假設桌機固定導覽列的高度；手機導覽列不是 fixed，
+     捲動後上方露出 76px 縫隙，內容從縫裡透出（稽核 M1）。手機貼齊視窗頂端，
+     並把四顆按鈕收成單行，避免換成兩列讓列高翻倍。 */
+  .journal-today .today-actions { top: 0; flex-wrap: nowrap; }
+  .journal-today .today-actions > * { padding: .5rem .3rem; font-size: .82rem; }
 }
 .today-snack-label { margin: 1rem 0 .25rem; }
 
