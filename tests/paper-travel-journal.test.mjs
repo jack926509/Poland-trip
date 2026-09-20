@@ -17,10 +17,19 @@ test('正式頁面使用紙上旅行誌外框且保留可及性入口', () => {
 });
 
 test('長頁保留章節索引、目前頁面與目前導覽群組標示', () => {
+  // 日頁稽核 M3 後改用 sticky .day-shortcuts 取代自動章節索引（見下方
+  // 「日頁停用自動章節目錄」），這裡改用仍保留自動目錄的實用資料頁驗證
+  // 該機制本身沒壞掉；目前頁面／導覽群組標示仍用 day-02.html 驗證。
+  assert.match(read('practical/booking.html'), /class="chapter-index"/);
   const day = read('day-02.html');
-  assert.match(day, /class="chapter-index"/);
   assert.match(day, /<a href="day-02\.html" aria-current="page" class="nav-link-current">Day 2<\/a>/);
   assert.match(day, /<summary aria-current="true">每日行程<\/summary>/);
+});
+
+test('日頁停用自動章節目錄，改以 sticky 的 .day-shortcuts 提供頁內導覽（稽核 M3）', () => {
+  const day = read('day-02.html');
+  assert.doesNotMatch(day, /class="chapter-index"/, '日頁不該再有自動章節目錄');
+  assert.match(day, /class="day-shortcuts"/, '日頁仍要保留 sticky 的當日捷徑');
 });
 
 test('手機快捷導覽在分頁每頁存在一次，單檔版整份也只保留一份（稽核 M2）', () => {

@@ -54,6 +54,19 @@ test('M4：城市頁餐飲區分組收合，候選預設展開、其餘收合並
   assert.ok(rowCount >= 8, `餐廳總列數異常：${rowCount}`);
 });
 
+test('M3：日頁停用自動章節目錄、去除今日主軸重複句、時間表空欄位在手機不佔行', () => {
+  const day = read('day-02.html');
+  // 自動章節目錄已停用，保留 sticky 當日捷徑
+  assert.doesNotMatch(day, /class="chapter-index"/);
+  assert.match(day, /class="day-shortcuts"/);
+  // 「今日主軸」標籤本身已移除（hero-dek 已顯示過同一句 headline）
+  assert.doesNotMatch(day, /<b>今日主軸：<\/b>/);
+  // 時間表花費／時長缺資料時帶 data-empty，CSS 在手機把該行隱藏
+  assert.match(day, /data-label="花費" data-empty>—<\/td>/);
+  const css = fs.readFileSync(path.join(distDir, 'assets/main.css'), 'utf8');
+  assert.match(css, /\.table-schedule td\[data-empty\]\s*\{\s*display:\s*none;?\s*\}/);
+});
+
 test('M6：搜尋索引改成外部檔案，多頁版不再內嵌 526KB、單頁 HTML 明顯變小', () => {
   const indexPath = path.join(distDir, 'assets/search-index.json');
   assert.ok(fs.existsSync(indexPath), '缺少 dist/assets/search-index.json');

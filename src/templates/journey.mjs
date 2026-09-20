@@ -20,8 +20,9 @@ export function renderJourneyOverview() {
 export function renderDayContext(day) {
   const hotel = nightStay(day), checkout = checkoutStay(day);
   const guides = Object.values(cityGuides).filter(guide => day.city.includes(guide.name) || hotel?.city === guide.name);
+  // 「今日主軸」＝ day.headline，日頁的刊頭 hero-dek 已經顯示過一次
+  // （稽核 M3：同一句在日頁重複出現），這裡不再重複輸出。
   return `<aside class="journey-context" aria-label="當日行程銜接">
-    <p><b>今日主軸：</b>${esc(day.headline)}</p>
     <p><b>今晚：</b>${hotel ? `${esc(hotel.city)} · ${esc(hotel.name)}（${esc(hotel.status)}）` : isDepartureDay(day) ? '離境／機上過夜' : '⚠ 住宿資料缺漏，請確認'}${hotel && !hotel.addressVerified ? ' · 飯店門牌待確認' : ''}</p>
     ${checkout ? `<p><b>行李：</b>今天從 ${esc(checkout.name)} 退房；先確認寄放與取件方式，再依交通時間取行李。</p>` : ''}
     <p class="action-links"><a href="index.html#journey-overview">全程動線</a>${guides.map(guide => `<a href="${guide.file}#city-journey">${guide.name}指南</a>`).join('')}<a href="practical/booking.html">住宿與交通詳情</a></p>

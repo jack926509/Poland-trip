@@ -72,8 +72,10 @@ test('不硬編碼天數，改由資料長度推導', () => {
 test('今日卡不掛自動章節目錄：它連到被 JS 隱藏的日卡，且擠掉首屏的接下來去哪', () => {
   const html = today();
   assert.ok(!html.includes('chapter-index'), '今日卡頁不應出現本頁章節目錄');
-  // 其他頁仍保留目錄，避免誤把全站的目錄關掉。
-  assert.ok(fs.readFileSync('dist/day-01.html', 'utf8').includes('chapter-index'));
+  // 其他頁型仍保留目錄，避免誤把全站的目錄關掉；日頁本身在稽核 M3 後
+  // 也改用 sticky 的 .day-shortcuts 取代自動目錄（見 paper-travel-journal
+  // 的專屬測試），這裡改用實用資料頁驗證機制本身沒壞掉。
+  assert.ok(fs.readFileSync('dist/practical/booking.html', 'utf8').includes('chapter-index'));
   // 首屏順序：日期切換 → 當日標題 → 接下來去哪，且都排在快捷操作之前。
   const order = ['today-date-controls', 'today-head', 'today-next', 'today-actions']
     .map(cls => html.indexOf(cls));

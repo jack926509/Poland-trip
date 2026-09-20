@@ -2479,6 +2479,13 @@ figure.media-unavailable > img {
     border-bottom: 0;
   }
 
+  /* 花費／時長沒資料時桌機仍顯示「—」保留欄位對齊，手機拆成卡片後
+     一格一行，「—」照樣佔一整行；用 data-empty 直接不渲染那一行
+     （稽核 M3：Day 2 20+ 步，每步省兩行約 60px）。 */
+  .table-schedule td[data-empty] {
+    display: none;
+  }
+
   .table-itinerary td:last-child a {
     display: inline-flex;
     align-items: center;

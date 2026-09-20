@@ -171,7 +171,13 @@ export function renderLayout({
   const pageDescription = description || DEFAULT_DESCRIPTION;
   const ogUrl = `${SITE_ORIGIN}/${currentPage}`;
   const ogImageUrl = `${SITE_ORIGIN}/${ogImage}`;
-  const useChapterIndex = chapterIndex && pageKind !== 'home' && !bodyHtml.includes('database-index');
+  // 日頁已有 sticky 的 .day-shortcuts（今日主軸／時間表／餐飲／訂票 4 個
+  // 主要錨點），自動章節目錄疊上去等於三層導覽疊加，且日頁常有 8–10 個
+  // 章節，目錄本身就佔約 600px（稽核 M3）。日頁停用自動目錄。
+  // 城市頁稽核建議一併停用，但城市頁沒有等效的替代導覽（沒有 shortcuts
+  // nav），拿掉會讓長頁失去唯一的頁內跳轉方式，保守起見保留，交由使用者
+  // 決定要不要另外幫城市頁做一份 shortcuts。
+  const useChapterIndex = chapterIndex && pageKind !== 'home' && pageKind !== 'day' && !bodyHtml.includes('database-index');
   const pageBody = addTableCellLabels(useChapterIndex ? buildChapterIndex(bodyHtml) : bodyHtml);
   const navLink = ([file, label]) => {
     const isCurrent = currentPage === file;
