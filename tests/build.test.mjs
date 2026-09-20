@@ -666,9 +666,11 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.deepEqual(cityFood.map(group => group.items.length), [8, 12, 7, 5]);
   assert.equal(foods.length, 12);
 
-  assert.equal(fares.length, 21);
   // 2026-09-17 複查後新增：華沙 E.Wedel、克拉科夫 Wawel 拆成二樓／寶庫兩列、
   // 樂斯拉夫動物園、波茲南棕櫚屋閉館與考古博物館開放時間。
+  // 精煉切片 4a：fares 改由 venues.js 推導，補上原本只在 ticketsByCity／
+  // venueHours 出現的 POLIN、華沙起義博物館，21 → 23。
+  assert.equal(fares.length, 23);
   assert.deepEqual(ticketsByCity.map(group => group.items.length), [7, 7, 3, 5]);
   assert.deepEqual([
     transitFares.length, airportTransit.length, recommendedApps.length,
@@ -1239,9 +1241,9 @@ test('城市頁不再將 Google 星等與評論數當成固定資料', () => {
   }
 });
 
-test('門票頁含 21 筆新資料、Panorama 優待 35 與 Auschwitz 線上票規則', async () => {
+test('門票頁含 23 筆新資料、Panorama 優待 35 與 Auschwitz 線上票規則', async () => {
   const { fares } = await import('../src/data/tickets.js');
-  assert.equal(fares.length, 21);
+  assert.equal(fares.length, 23);
   const panorama = fares.find(item => item.name.includes('Panorama'));
   assert.equal(panorama.discountPrice, '35');
   const html = read('practical/tickets.html');

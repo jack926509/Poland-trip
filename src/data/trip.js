@@ -91,7 +91,7 @@ export const days = [
       {t:'11:10', label:'旅館寄放行李', sub:'ibis budget Krakow Stare Miasto，飯店官網標示距車站約 200 公尺', dur:'20 min'},
       {t:'11:30', id:'d2-lunch', label:'車站周邊午餐', sub:'午餐候選為老城的 Bar Mleczny Pod Temidą（門牌待確認），非車站內店家；先由車站前往並確認週日營業，未確認則在車站周邊另選，再依實際位置前往 Wawel', cost:'PLN 40–60', dur:'45 min'},
       {t:'13:00', label:'★ 瓦維爾大教堂', sub:'週日 12:30–17:00；Cathedral Museum 週日不開', cost:'PLN 26／18', dur:'45 min'},
-      {t:'14:00', label:'★ Wawel 城堡短路線', constraint:{venue:'krakow-wawel-castle'}, sub:'2026-09-17 官網 9–12 月分路線售票，適合一小時空檔的是：王冠寶庫 47／35、Castle Underground 47／35（含語音導覽）、Armoury 47／35；二樓代表廳 57／43 需時較長。不要硬排一、二樓完整路線，會壓縮後續步行', cost:'寶庫或地下路線 PLN 47／35', dur:'1 h'},
+      {t:'14:00', label:'★ Wawel 城堡短路線', constraint:{venue:'krakow-wawel-treasury'}, sub:'2026-09-17 官網 9–12 月分路線售票，適合一小時空檔的是：王冠寶庫 47／35、Castle Underground 47／35（含語音導覽）、Armoury 47／35；二樓代表廳 57／43 需時較長。不要硬排一、二樓完整路線，會壓縮後續步行', cost:'寶庫或地下路線 PLN 47／35', dur:'1 h'},
       {t:'15:00', label:'★ 中央廣場 + 聖瑪利亞', sub:'本次先看廣場與教堂外觀，登塔改為有餘裕才安排。整點 Hejnał 號角；塔票僅於 Mariacki 廣場 7 號當日現場售票', cost:'外觀免費', dur:'30 min（含由城堡步行）'},
       {t:'15:30', label:'紡織會館 Sukiennice 快速一覽', sub:'採購留到 10/27', cost:'免費入場', dur:'15 min'},
       {t:'15:45', label:'步行經 Kazimierz、Podgórze 前往辛德勒工廠', sub:'保留約 85 分鐘步行與沿途短停，17:10 前到入口；時間不足改用 Jakdojade 查當下交通', dur:'約 1 h 25 min'},
