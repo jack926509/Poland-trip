@@ -67,6 +67,14 @@ test('M3：日頁停用自動章節目錄、去除今日主軸重複句、時間
   assert.match(css, /\.table-schedule td\[data-empty\]\s*\{\s*display:\s*none;?\s*\}/);
 });
 
+test('M5：地圖圖釘放大到 radius 12（原 16×16px 太小，難精準點擊）', () => {
+  const day = read('day-02.html');
+  assert.match(day, /L\.circleMarker\(\[point\[0\], point\[1\]\], \{ radius: 12,/, '日頁地圖圖釘未放大');
+  const city = read('city-krakow.html');
+  assert.match(city, /radius:\s*12,/, '城市頁地圖圖釘未放大');
+  assert.doesNotMatch(day + city, /radius:\s*8,/, '仍殘留舊的 radius: 8');
+});
+
 test('M9：首頁待辦分類只留計數＋連結，逐項名稱不再與待辦頁重複；nav-today 手機字級提高', () => {
   const home = read('index.html');
   // 5 個分類都改成 <a class="card card-link"> 摘要卡，不再逐項列出

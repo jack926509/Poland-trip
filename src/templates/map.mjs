@@ -38,7 +38,9 @@ export function renderInteractiveMap({ id, title, mapData, mapChecks = {}, legen
       var category = config.legend[point[5]] || config.legend.sight;
       var check = config.mapChecks[point[2]] || {};
       var area = check.status === 'area-reference';
-      var marker = L.circleMarker([point[0], point[1]], { radius: 8, color: category.line, fillColor: category.fill, weight: 2, fillOpacity: .92 }).addTo(map);
+      // 16×16px 圖釘手機上很難精準點到（稽核 M5），放大到接近 Leaflet 預設
+      // marker 的命中區。
+      var marker = L.circleMarker([point[0], point[1]], { radius: 12, color: category.line, fillColor: category.fill, weight: 2, fillOpacity: .92 }).addTo(map);
       var label = area ? '<br><small>範圍代表點，請依實際目的地導航</small>' : '<br><small>已查證場館／門牌錨點</small>';
       var popup = document.createElement('div');
       var heading = document.createElement('b'); heading.textContent = point[2]; popup.appendChild(heading);

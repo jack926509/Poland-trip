@@ -185,8 +185,10 @@ export function renderCity({
       mapData.points.forEach(function (point) {
         var category = point[5] || 'sight';
         var color = colors[category] || colors.sight;
+        // 16×16px 圖釘手機上很難精準點到（稽核 M5），放大到接近 Leaflet
+        // 預設 marker 的命中區。
         var marker = L.circleMarker([point[0], point[1]], {
-          radius: 8,
+          radius: 12,
           weight: 2,
           color: color.line,
           fillColor: color.fill,
