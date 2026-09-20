@@ -4761,6 +4761,21 @@ h3 {
   margin-top: .75rem;
 }
 
+/* 門票速查依城市分組（稽核 M7）：預設全部展開（不像餐廳分組要收合），
+   summary 只是可跳轉的錨點兼標題，仍給足觸控高度。 */
+.ticket-city-group + .ticket-city-group {
+  margin-top: 1.5rem;
+}
+.ticket-city-group summary {
+  min-height: 44px;
+  padding-block: .4rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.ticket-city-group .table-wrap {
+  margin-top: .5rem;
+}
+
 /* 桌機維持真正的表格與可見表頭，但把列高收緊：
    padding .85rem → .5rem .65rem、行距 1.5，整張表大約矮三成。 */
 .city-dining-table { display: table; }

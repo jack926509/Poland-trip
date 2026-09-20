@@ -1,7 +1,7 @@
 import { renderDiningFacts } from '../lib/dining.mjs';
 import { escapeHtml } from '../lib/html.mjs';
 import { renderLayout } from './layout.mjs';
-import { cityGuideByName, dayPageForDate } from '../lib/city-guide.mjs';
+import { cityGuideByName, dayPageForDate, cityRoutes } from '../lib/city-guide.mjs';
 import { renderFastFoodMenu } from './fast-food.mjs';
 
 /**
@@ -332,13 +332,37 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
   return renderPracticalLayout('餐廳與速食', 'Michelin 2026', '已把 2026 米其林名單與本行程實際餐廳分開；營業時間只寫能追到店家來源的分店。趕行程時的連鎖速食分店另列一節。', content, 'practical/dining.html');
 }
 
+// 每個景點名稱都寫成「城市 · 景點」，用這個前綴分組，不需要另存一份對照表（稽核 M7）。
+function ticketCityFor(name) {
+  const cityName = name.split('·')[0]?.trim();
+  return cityRoutes.find(city => name.startsWith(city.name)) || cityRoutes.find(city => city.name === cityName) || null;
+}
+
 export function renderTickets({ fares, ticketsByCity, notices = [] }) {
-  const fareRows = fares.map(item => `
+  const fareRow = item => `
     <tr>
       <td><a href="${item.mapUrl}" target="_blank" rel="noopener"><b>${item.name}</b></a>${cityLink(item.name) ? `<br>${cityLink(item.name)}` : ''}</td>
       <td class="number">${item.fullPrice}</td><td class="number">${item.discountPrice}</td>
       <td>${item.note || '—'}<br><a href="${item.officialUrl}" target="_blank" rel="noopener">官網確認 →</a></td>
-    </tr>`).join('');
+    </tr>`;
+  // 14,617px 一路捲、無城市篩選（稽核 M7）：依「城市 · 景點」前綴分組成每城一個
+  // <details open>（本來就想全部看到，不像 M4 的餐廳收合），並在表前加一排可跳轉的
+  // 城市 chip，重用 .day-shortcuts 的 sticky 樣式。
+  const fareGroups = [];
+  for (const item of fares) {
+    const city = ticketCityFor(item.name);
+    const key = city?.fileKey || 'other';
+    let group = fareGroups.find(g => g.key === key);
+    if (!group) { group = { key, label: city?.name || '其他景點', items: [] }; fareGroups.push(group); }
+    group.items.push(item);
+  }
+  const cityChipsHtml = fareGroups.length > 1 ? `<nav class="day-shortcuts" aria-label="依城市跳到門票分組">
+      ${fareGroups.map(group => `<a href="#tickets-${group.key}">${group.label}</a>`).join('')}
+    </nav>` : '';
+  const fareGroupsHtml = fareGroups.map(group => `<details class="ticket-city-group" id="tickets-${group.key}" open>
+      <summary>${group.label}（${group.items.length} 項）</summary>
+      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>景點</th><th>全票（PLN）</th><th>優待（PLN）</th><th>備註</th></tr></thead><tbody>${group.items.map(fareRow).join('')}</tbody></table></div>
+    </details>`).join('');
   const quickCards = ticketsByCity.map(group => `
     <article class="card">
       <h3>${group.city}</h3>
@@ -348,8 +372,9 @@ export function renderTickets({ fares, ticketsByCity, notices = [] }) {
     ${notices.map(item => `<div class="callout-risk"><span class="tag-todo">${item.status}</span><p>${item.text} <a href="${item.url}" target="_blank" rel="noopener">開啟官網 →</a></p></div>`).join('')}
     <section>
       <div class="section-heading"><span class="section-num">2026-09</span><h2>最新門票速查</h2></div>
-      <p class="lead">全票／優待皆為 PLN。最近一輪逐項回官網複查為 2026-09-17／09-18（各列 note 內自帶該項查證日）；動態票價、指定日場次與臨時閉館，購票前仍以官網為準。</p>
-      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>景點</th><th>全票</th><th>優待</th><th>備註</th></tr></thead><tbody>${fareRows}</tbody></table></div>
+      <p class="lead">全票／優待皆為 PLN（zł）。最近一輪逐項回官網複查為 2026-09-17／09-18（各列 note 內自帶該項查證日）；動態票價、指定日場次與臨時閉館，購票前仍以官網為準。</p>
+      ${cityChipsHtml}
+      ${fareGroupsHtml}
     </section>
     <section class="section">
       <div class="section-heading"><span class="section-num">By city</span><h2>行程快速清單</h2></div>

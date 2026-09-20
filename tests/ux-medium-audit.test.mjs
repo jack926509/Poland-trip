@@ -54,6 +54,19 @@ test('M4：城市頁餐飲區分組收合，候選預設展開、其餘收合並
   assert.ok(rowCount >= 8, `餐廳總列數異常：${rowCount}`);
 });
 
+test('M7：門票速查有城市篩選 chip 與分組，價格欄位標明 PLN', () => {
+  const html = read('practical/tickets.html');
+  const chips = html.match(/<nav class="day-shortcuts"[\s\S]*?<\/nav>/)?.[0];
+  assert.ok(chips, '門票頁缺少城市篩選 chip');
+  for (const city of ['warszawa', 'krakow', 'wroclaw', 'poznan']) {
+    assert.match(chips, new RegExp(`href="#tickets-${city}"`), `城市 chip 缺少 ${city}`);
+  }
+  const groups = Array.from(html.matchAll(/<details class="ticket-city-group" id="tickets-([a-z]+)" open>\s*<summary>([^<]*（\d+ 項）)<\/summary>/g));
+  assert.equal(groups.length, 4, `門票分組數應為 4，實際 ${groups.length}`);
+  assert.match(html, /<th>全票（PLN）<\/th>/);
+  assert.match(html, /<th>優待（PLN）<\/th>/);
+});
+
 test('M2：手機底部快捷列在各類頁面都輸出，且連結依頁面類型指向對的錨點', () => {
   // 首頁（非日／城市頁）：時間表與吃哪都導回今日頁對應區塊
   const home = read('index.html');
