@@ -88,16 +88,24 @@ const DEFAULT_DESCRIPTION = '2026 波蘭四城 8 天旅遊規劃：逐日行程�
 const DEFAULT_OG_IMAGE = 'assets/og/polska-og.jpg';
 const DEFAULT_OG_IMAGE_ALT = '波蘭旅程總覽海報';
 
-export const searchIndexPlaceholder = '__SITE_SEARCH_INDEX__';
-
+/**
+ * 每頁本來都內嵌完整搜尋索引（526KB），24 頁全部進 Service Worker 預快取
+ * （稽核 M6）。多頁版改成外部 assets/search-index.json，頁面只帶一個 URL，
+ * site-search.js 在使用者真的要搜尋（focus／輸入）時才 fetch。
+ *
+ * 單檔版是唯一例外：它本來就要能整份下載後離線自足，不能再依賴額外的
+ * 網路請求，因此 buildStandalone 仍會傳入 searchIndexJson 走原本的內嵌路徑。
+ */
 export function renderSiteSearch({
   pathPrefix = '',
-  searchIndexJson = searchIndexPlaceholder,
+  searchIndexJson = null,
+  indexUrl = null,
   databaseHref = '',
 } = {}) {
   const path = file => `${pathPrefix}${file}`;
   const fallbackHref = databaseHref || path('practical/database.html');
-  return `<section class="site-search-shell" data-site-search data-search-path-prefix="${pathPrefix}" aria-label="全站旅遊搜尋">
+  const resolvedIndexUrl = searchIndexJson === null ? (indexUrl || path('assets/search-index.json')) : null;
+  return `<section class="site-search-shell" data-site-search data-search-path-prefix="${pathPrefix}"${resolvedIndexUrl ? ` data-search-index-url="${resolvedIndexUrl}"` : ''} aria-label="全站旅遊搜尋">
     <div class="site-search-inner">
       <div class="site-search-form-row">
         <label class="site-search-label" for="site-search-input">搜尋整個旅遊網站</label>
@@ -121,7 +129,7 @@ export function renderSiteSearch({
         <button type="button" data-search-reset>清除條件</button>
       </div>
       <noscript><p class="site-search-noscript">瀏覽器未開啟 JavaScript，請改用 <a href="${fallbackHref}">自由行資料庫</a>。</p></noscript>
-      <script type="application/json" data-site-search-index>${searchIndexJson}</script>
+      <script type="application/json" data-site-search-index>${searchIndexJson ?? ''}</script>
     </div>
   </section>`;
 }

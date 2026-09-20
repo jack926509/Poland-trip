@@ -822,12 +822,19 @@ test('首頁包含 8 天、4 城與全部實用頁入口', () => {
 
 test('首頁移除出發準備度與步調，直接列出資料層待辦', () => {
   const html = read('index.html');
-  const todoCount = todoGroups.reduce((total, group) => total + group.items.length, 0);
+  // 首頁顯示的是「還沒處理」的待辦數，不是總項目數；home.mjs 用同一條
+  // 過濾規則排掉已訂妥／已完成。稽核 M6 把每頁內嵌的 526KB 搜尋索引移除
+  // 後才發現：這裡原本用「總項目數」比對也會過，其實是巧合命中了索引裡
+  // 待辦頁自己文字的「16 項待辦」字樣，不是真的驗到首頁內容——改為驗證
+  // 首頁實際算出的待處理數。
+  const rawTodoCount = todoGroups.reduce((total, group) => total + group.items.length, 0);
+  const todoCount = todoGroups.reduce((total, group) =>
+    total + group.items.filter(item => !['已訂妥', '已完成'].includes(item.status)).length, 0);
 
   assert.ok(!html.includes('出發準備度'));
   assert.ok(!html.includes('00 / Readiness'));
   assert.ok(!html.includes('高效率城市探索 · 腳程快 · 重點景點完整走完'));
-  assert.ok(!html.includes(`${todoCount} 項尚未訂`));
+  assert.ok(!html.includes(`${rawTodoCount} 項尚未訂`));
   assert.ok(html.includes(`${todoCount} 項待辦`));
   for (const group of todoGroups) {
     assert.ok(html.includes(`>${group.title}<`), `首頁缺少待辦分類：${group.title}`);

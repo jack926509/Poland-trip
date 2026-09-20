@@ -54,6 +54,30 @@ test('M4：城市頁餐飲區分組收合，候選預設展開、其餘收合並
   assert.ok(rowCount >= 8, `餐廳總列數異常：${rowCount}`);
 });
 
+test('M6：搜尋索引改成外部檔案，多頁版不再內嵌 526KB、單頁 HTML 明顯變小', () => {
+  const indexPath = path.join(distDir, 'assets/search-index.json');
+  assert.ok(fs.existsSync(indexPath), '缺少 dist/assets/search-index.json');
+  const index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+  assert.ok(Array.isArray(index) && index.length > 100, '外部索引內容異常');
+
+  for (const file of ['index.html', 'city-krakow.html', 'practical/database.html']) {
+    const html = read(file);
+    // 內嵌 script 應該是空的，索引改成外部 URL
+    assert.match(html, /<script type="application\/json" data-site-search-index><\/script>/, `${file} 仍內嵌搜尋索引`);
+    assert.match(html, /data-search-index-url="[^"]*assets\/search-index\.json"/, `${file} 缺少外部索引 URL`);
+    const sizeKb = Buffer.byteLength(html) / 1024;
+    assert.ok(sizeKb < 100, `${file} 仍有 ${sizeKb.toFixed(1)}KB，未明顯縮小`);
+  }
+
+  // 單檔版是唯一例外：本來就要整份下載後離線自足，仍內嵌完整索引
+  const standalone = fs.readFileSync(path.resolve('poland-travel-guide-2026.html'), 'utf8');
+  assert.match(standalone, /<script type="application\/json" data-site-search-index>\[/, '單檔版應保留內嵌索引');
+
+  // sw.js 要預快取外部索引才能離線搜尋
+  const worker = fs.readFileSync(path.join(distDir, 'sw.js'), 'utf8');
+  assert.match(worker, /\.\/assets\/search-index\.json/, 'sw.js 未預快取搜尋索引');
+});
+
 test('M7：門票速查有城市篩選 chip 與分組，價格欄位標明 PLN', () => {
   const html = read('practical/tickets.html');
   const chips = html.match(/<nav class="day-shortcuts"[\s\S]*?<\/nav>/)?.[0];

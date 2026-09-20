@@ -45,6 +45,8 @@ const ASSETS = [
   './assets/nav.js',
   './assets/site-search.js',
   './assets/database-filter.js',
+  // 搜尋索引改成外部檔案（稽核 M6）：預快取起來，離線時搜尋才有資料可查。
+  './assets/search-index.json',
   './assets/leaflet/leaflet.css',
   './assets/leaflet/leaflet.js',
   './assets/photos/warszawa-hero.webp',
