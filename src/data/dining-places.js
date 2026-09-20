@@ -168,7 +168,7 @@ export const diningPlaces = {
     "id": "krakow-bar-mleczny-pod-temida",
     "cityKey": "krakow",
     "name": "Bar Mleczny Pod Temidą",
-    "address": "門牌待確認（Kraków 市區）",
+    "address": "Grodzka 43, Kraków（未經官方查核）",
     "map": "https://maps.app.goo.gl/xCGDapoy56MBvg2y7?g_st=il",
     "hours": "營業時間待確認",
     "sourceUrl": null,
