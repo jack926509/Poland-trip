@@ -1,6 +1,7 @@
 import { mealTiming, renderDiningFacts } from '../lib/dining.mjs';
 import { escapeHtml, safeHttpsUrl } from '../lib/html.mjs';
 import { bookingProgress } from '../lib/journey.mjs';
+import { segmentForDay } from '../lib/rail.mjs';
 import { renderDayContext } from './journey.mjs';
 import { dayDining } from '../data/day-dining.js';
 import { cityGuides, cityKeysForDay, detectCity } from '../lib/city-guide.mjs';
@@ -173,15 +174,16 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
       <td class="number" data-label="時長">${step.dur || '—'}</td>
     </tr>`).join('');
 
-  const trainPrice = day.train?.price?.startsWith('PLN') ? day.train.price : day.train?.price;
-  const trainHtml = day.train ? `
+  const trainSegment = segmentForDay(day);
+  const trainPrice = trainSegment?.price?.startsWith('PLN') ? trainSegment.price : trainSegment?.price;
+  const trainHtml = trainSegment ? `
     <section class="section">
       <div class="section-heading"><span class="section-num">Transport</span><h2>當天交通</h2></div>
       <article class="card card-accent">
-        <span class="eyebrow">${day.train.type}${day.train.leg ? ` · ${day.train.leg}` : ''}</span>
-        <h3>${day.train.from || ''}${day.train.to ? ` → ${day.train.to}` : ''}</h3>
-        <p><b>${day.train.dep} → ${day.train.arr}</b> · ${day.train.dur} · ${escapeHtml(trainPrice)}</p>
-        ${day.train.saleOpens ? `<p><b>上次查得 ${escapeHtml(day.train.saleOpens)} 起預售（待複核）</b> · PKP Intercity 官方售票系統查核：${escapeHtml(day.train.saleCheckedAt)}</p>` : ''}
+        <span class="eyebrow">${trainSegment.type}${trainSegment.leg ? ` · ${trainSegment.leg}` : ''}</span>
+        <h3>${trainSegment.from || ''}${trainSegment.to ? ` → ${trainSegment.to}` : ''}</h3>
+        <p><b>${trainSegment.dep} → ${trainSegment.arr}</b> · ${trainSegment.dur} · ${escapeHtml(trainPrice)}</p>
+        ${trainSegment.saleOpens ? `<p><b>上次查得 ${escapeHtml(trainSegment.saleOpens)} 起預售（待複核）</b> · PKP Intercity 官方售票系統查核：${escapeHtml(trainSegment.saleCheckedAt)}</p>` : ''}
         <p class="action-links"><a href="practical/booking.html#rail-itinerary">訂票與交通頁的完整班次表 →</a></p>
       </article>
     </section>` : '';

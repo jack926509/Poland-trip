@@ -1061,8 +1061,12 @@ test('Auschwitz 導覽已訂 10:30，去回巴士皆已查定但尚未購票', (
   assert.match(JSON.stringify(day3), /14:00/);
   assert.doesNotMatch(JSON.stringify(day3), /13:45/, '13:45 不在 10/26 的官方班表中');
   assert.ok(!day3.steps.some(step => step.t.includes('07:35')), '07:35 這班並不存在，不應排進行程');
-  assert.equal(day3.train.dep, '07:10');
-  assert.equal(day3.train.arr, '08:35');
+  // days[].train 只存 {segmentId}（精煉切片 3）；實際 dep/arr 到 rail.js 的 segments 核對。
+  assert.deepEqual(Object.keys(day3.train), ['segmentId']);
+  assert.equal(day3.train.segmentId, 'bus-lajkonik');
+  const lajkonikSegment = trains.find(item => item.id === 'bus-lajkonik');
+  assert.match(lajkonikSegment.dep, /^07:10/);
+  assert.match(lajkonikSegment.arr, /^08:35/);
   const day3Html = read('day-03.html');
   assert.ok(day3Html.includes('回程選項'));
   for (const option of day3.returnOptions) assert.ok(day3Html.includes(option.name), `Day 3 頁缺回程選項：${option.name}`);

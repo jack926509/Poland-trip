@@ -16,9 +16,19 @@ import { days, meta } from '../src/data/trip.js';
 import { venueHours } from '../src/data/tickets.js';
 import { daylight } from '../src/data/essentials.js';
 import { photoSpots } from '../src/data/cities.js';
+import { segmentForDay } from '../src/lib/rail.mjs';
 import {
   parseStepTime, toMinutes, dayIsoDate, weekdayOf, WEEKDAY_NAMES,
 } from '../src/lib/schedule.mjs';
+
+/**
+ * days[].train 現在只存 {segmentId}；規則 3（轉場緩衝）要看的 type/dep 在
+ * rail.js 的 segments 裡。這裡只轉換「有 segmentId 的」那種，單元測試直接
+ * 傳 { type, dep } 的合成資料維持不變，不用跟著改。
+ */
+function withResolvedTrain(day) {
+  return day.train?.segmentId ? { ...day, train: segmentForDay(day) } : day;
+}
 
 /** 轉場日留給「抵站、找月台、拖行李」的分鐘數下限，低於此值提醒複核。 */
 const TRANSFER_BUFFER_MINUTES = 30;
@@ -209,6 +219,7 @@ export function auditPhotoLight(spots, daylightByDay, report) {
 }
 
 export function auditSchedule(tripDays = days, options = {}) {
+  tripDays = tripDays.map(withResolvedTrain);
   const venues = options.venues ?? venueHours;
   const tripStart = options.tripStart ?? meta.tripStart;
   const spots = options.photoSpots ?? photoSpots;

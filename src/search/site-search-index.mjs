@@ -1,6 +1,7 @@
 import { mergeCityDining } from '../templates/city-dining.mjs';
 import { fastFoodDiningEntries } from '../templates/fast-food.mjs';
 import { dayDining } from '../data/day-dining.js';
+import { segmentForDay } from '../lib/rail.mjs';
 const cityDefinitions = {
   WAW: { mapKey: 'warsaw', file: 'city-warszawa.html' },
   KRK: { mapKey: 'krakow', file: 'city-krakow.html' },
@@ -169,15 +170,16 @@ export function buildTravelSearchRecords(data) {
   records.push(...restaurantRecords(data, lookup));
 
   for (const day of data.days || []) {
-    const publicTrain = day.train && [
-      day.train.type,
-      day.train.leg,
-      day.train.from,
-      day.train.to,
-      day.train.dep,
-      day.train.arr,
-      day.train.dur,
-      day.train.price,
+    const daySegment = segmentForDay(day);
+    const publicTrain = daySegment && [
+      daySegment.type,
+      daySegment.leg,
+      daySegment.from,
+      daySegment.to,
+      daySegment.dep,
+      daySegment.arr,
+      daySegment.dur,
+      daySegment.price,
     ];
     const publicSteps = day.steps?.map(step => [step.t, step.label, step.sub, step.cost, step.dur]);
     const publicPractical = day.practical?.map(item => (

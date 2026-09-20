@@ -1,6 +1,7 @@
 import { mealTiming, renderDiningFacts } from '../lib/dining.mjs';
 import { escapeHtml, safeHttpsUrl } from '../lib/html.mjs';
 import { bookingProgress, isDepartureDay, stayForDate } from '../lib/journey.mjs';
+import { segmentForDay } from '../lib/rail.mjs';
 import { renderLayout } from './layout.mjs';
 import { cityKeysForDay } from '../lib/city-guide.mjs';
 import { renderFastFoodDayList } from './fast-food.mjs';
@@ -23,6 +24,7 @@ function renderSteps(day) {
 }
 
 function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
+  const trainSegment = segmentForDay(day);
   const bed = stayForDate(stay, iso);
   const checkout = stay.find(item => item.checkOut === iso);
   const operation = dayOperations[day.n];
@@ -49,8 +51,8 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
   // 一句可能含多個時刻且語意不同，逐一取出分類；來源字串保持原文。
   const timed = [
     ...(day.hardConstraints || []).flatMap(item => parseHardTimes(item)),
-    ...(day.train ? parseHardTimes(`${day.train.dep} 發車 · ${day.train.type} · ${day.train.leg || '訂票狀態待確認'}`)
-      .slice(0, 1).map(item => ({...item, text:`${day.train.dep} 發車 · ${day.train.type} · ${day.train.leg || '訂票狀態待確認'}`})) : []),
+    ...(trainSegment ? parseHardTimes(`${trainSegment.dep} 發車 · ${trainSegment.type} · ${trainSegment.leg || '訂票狀態待確認'}`)
+      .slice(0, 1).map(item => ({...item, text:`${trainSegment.dep} 發車 · ${trainSegment.type} · ${trainSegment.leg || '訂票狀態待確認'}`})) : []),
   ].sort((a,b) => a.minutes - b.minutes);
 
   // 「幾點該開始移動」只從行程表既有的移動步驟推導，不自行加固定緩衝分鐘。
@@ -113,10 +115,10 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
       <details><summary>今天不能延誤／時間不夠怎麼調整</summary><ul>${list(day.hardConstraints || [])}</ul>
         <p><b>可以壓縮：</b></p><ul>${list(day.compressible || [])}</ul></details>
     </section>
-    ${day.train ? `<section class="today-block"><h3>今天的城際移動</h3>
-      <p class="today-transport-status"><b>${escapeHtml(day.train.leg || '訂票狀態待確認')}</b></p>
-      <p>${escapeHtml(day.train.type)} · ${escapeHtml(day.train.from)} → ${escapeHtml(day.train.to)}</p>
-      <p><b>${escapeHtml(day.train.dep)} – ${escapeHtml(day.train.arr)}</b>（${escapeHtml(day.train.dur)}）</p>
+    ${trainSegment ? `<section class="today-block"><h3>今天的城際移動</h3>
+      <p class="today-transport-status"><b>${escapeHtml(trainSegment.leg || '訂票狀態待確認')}</b></p>
+      <p>${escapeHtml(trainSegment.type)} · ${escapeHtml(trainSegment.from)} → ${escapeHtml(trainSegment.to)}</p>
+      <p><b>${escapeHtml(trainSegment.dep)} – ${escapeHtml(trainSegment.arr)}</b>（${escapeHtml(trainSegment.dur)}）</p>
       <a href="${escapeHtml(dayHref)}#day-preparation">票務與當日提醒 →</a></section>` : ''}
     <section class="today-block" data-today-food><h3>今天吃哪</h3>
       <p class="source-meta">正餐按餐別各列一家；點心與候選看體力和動線插入，不必全吃。候選不代表已訂位，導航開啟後請再確認營業與最後點餐時間。</p>

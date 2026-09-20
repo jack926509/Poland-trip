@@ -1,13 +1,26 @@
 import { resolveDining } from './dining-places.js';
+import { segments, auschwitzBus, lajkonikFare, saleOpensShort } from './rail.js';
 // trip.js — 行程資料源頭：meta、flights、days×8、stay、trains、bookingTiers、reservations
 // 來源：redesign/data.js（原 window.TRIP 物件字面值），轉為 ES module 具名匯出。
 // 2026-08-09 依景點、博物館與交通營運單位公開資料重新盤查。
 // 尚未開賣的 10 月火車與短期資料明確標為待確認，不用歷史班次作為確定時刻。
+//
+// 火車與巴士的欄位正本在 rail.js（segments、auschwitzBus）；這裡只用
+// {segmentId} 引用，或在敘述文字用 template literal 帶出 rail.js 的值，
+// 不再整段複製一次（精煉切片 3）。
 
 function snack(item) {
   const place = resolveDining(item);
   return {...place, text:item.text, place:place.name, note:place.note};
 }
+
+// Lajkonik 去回目前採用（decision === '採用'）的班次與其他 3 個備選/不採用班次，
+// 供本檔多處敘述文字引用，不再各自手打一次時刻。
+const lajkonikOutboundAdopted = auschwitzBus.outbound.services.find(item => item.decision === '採用');
+const lajkonikOutboundRejected = auschwitzBus.outbound.services.find(item => item.decision === '不採用');
+const lajkonikInboundAdopted = auschwitzBus.inbound.services.find(item => item.decision === '採用');
+const lajkonikInboundBackup = auschwitzBus.inbound.services.find(item => item.decision === '備案');
+const lajkonikInboundRejected = auschwitzBus.inbound.services.find(item => item.decision === '不採用');
 
 export const meta = {
   code: 'POLSKA',
@@ -69,7 +82,7 @@ export const days = [
     mustBook: ['❗尚未購票 · 華沙 → 克拉科夫火車', '❗尚未購票 · Wawel 短路線 14:00 左右時段票（寶庫或地下路線 47／35）', '可立即查／購 · 辛德勒工廠 17:30 時段票'],
     compressible: ['聖瑪利亞教堂內部參觀', '紡織會館購物時間'],
     weather: '尚無可靠預報；出發前 7–10 天更新',
-    train: {type:'EIP 5300 · 參考班次', saleOpens:'2026-09-25', saleCheckedAt:'2026-09-08', leg:'指定日待確認／尚未訂票 · 一等艙建議', from:'Warszawa Zachodnia', to:'Kraków Główny', dep:'08:45', arr:'10:58', dur:'2h13', price:'票價待確認'},
+    train: {segmentId:'eip-5300'},
     steps: [
       {t:'07:35', label:'退房後前往上車站', sub:'Hotel Metropol → Warszawa Centralna 步行約 500 公尺／8–10 分；若票面上車站為 Warszawa Zachodnia，再由 Centralna 轉 SKM／KM 約 7–10 分，全程用 Jakdojade 重算並預留拖行李時間', dur:'約 15–35 min'},
       {t:'08:10', label:'抵票面上車站', sub:'現行班表 EIP 5300 停 Warszawa Centralna（約 08:40）後才到 Zachodnia（約 08:45）；購票時若可選 Centralna 上車，可省去跨站轉乘。月台以當日電子牌為準', dur:'35 min 緩衝'},
@@ -102,50 +115,50 @@ export const days = [
   {
     n: 3, date: '10/26 (一)', city: '克拉科夫',
     title: 'Auschwitz-Birkenau · 一日往返',
-    headline: '10:30 英文 educator 導覽已訂妥；巴士去 07:10、回 15:30 皆已查定',
+    headline: `10:30 英文 educator 導覽已訂妥；巴士去 ${lajkonikOutboundAdopted.dep}、回 ${lajkonikInboundAdopted.dep} 皆已查定`,
     tag: 'Memorial',
     intensity: '中高',
-    hardConstraints: ['10:00 前完成 Muzeum Auschwitz 安檢（官方要求入場時段前 30 分鐘到場）', '10:30 英文 educator 導覽已訂妥，遲到不予補場', '回程巴士 15:30 發車，導覽結束後不要走遠', '晚間不再加博物館或長距離步行'],
-    mustBook: ['✅ 已訂妥 · Auschwitz 官方英文導覽 10/26 10:30（個人 educator 導覽，約 3 小時 45 分，2 人）', '❗尚未購票 · Lajkonik 去程 07:10 → 08:35（曾查得班次，付款前重查）', '❗尚未購票 · Lajkonik 回程 15:30 → 16:55（備案 16:30 → 17:55）'],
+    hardConstraints: ['10:00 前完成 Muzeum Auschwitz 安檢（官方要求入場時段前 30 分鐘到場）', '10:30 英文 educator 導覽已訂妥，遲到不予補場', `回程巴士 ${lajkonikInboundAdopted.dep} 發車，導覽結束後不要走遠`, '晚間不再加博物館或長距離步行'],
+    mustBook: ['✅ 已訂妥 · Auschwitz 官方英文導覽 10/26 10:30（個人 educator 導覽，約 3 小時 45 分，2 人）', `❗尚未購票 · Lajkonik 去程 ${lajkonikOutboundAdopted.dep} → ${lajkonikOutboundAdopted.arr}（曾查得班次，付款前重查）`, `❗尚未購票 · Lajkonik 回程 ${lajkonikInboundAdopted.dep} → ${lajkonikInboundAdopted.arr}（備案 ${lajkonikInboundBackup.dep} → ${lajkonikInboundBackup.arr}）`],
     compressible: ['回克拉科夫後晚餐形式', '晚間自由活動'],
     weather: '尚無可靠預報；出發前 7–10 天更新',
     // 導覽已訂妥 10:30，巴士以「09:45 前抵達」回推。
     // 2026-09-09 以公開班表資料點重算：現行班表 Kraków MDA 06:20 起約每小時一班，
     // 已知資料點 08:35→約 10:00（太晚）、08:40、09:50；回程已知 08:20、11:30、13:45→15:10、14:00、16:30，末班約 18:15–19:15。
     // 指定日班次仍須在業者售票頁確認，這裡只寫目標時段。
-    train: {type:'BUS · Lajkonik', leg:'去回班次皆已於官方售票頁查得／尚未購票（回程 15:30 → 16:55）', from:'Kraków MDA（ul. Bosacka 18，D10）', to:'Oświęcim, Więźniów Oświęcimia 55（Muzeum Auschwitz）', dep:'07:10', arr:'08:35', dur:'1h25', price:'PLN 25.00（優待 22.00）'},
+    train: {segmentId:'bus-lajkonik'},
     steps: [
       {t:'06:40', label:'Kraków MDA 報到', sub:'ul. Bosacka 18 Dworzec Autobusowy（Kraków Główny 後方步行約 5 分）；官方售票頁顯示此班由地下層 D10 發車，仍以現場電子看板為準', dur:'30 min 規劃緩衝（非官方最低要求）'},
-      {t:'07:10', label:'Lajkonik · 克拉科夫 → 奧斯威辛', sub:'2026-09-09 於 lajkonikbus.pl 查得 10/26 當日班次：07:10 D10 發車、08:35 抵 Więźniów Oświęcimia 55，車程 1h25，全票 25.00 zł（優待 22.00 zł）。當日另一班 08:25 → 09:50 只比 10:00 安檢截止早 10 分鐘，緩衝不足不採用', cost:'PLN 25.00（優待 22.00）', dur:'1h25'},
-      {t:'08:35', label:'抵 Auschwitz I', sub:'下車處就在博物館停車場對面。距 10:30 入場有 1 小時 55 分：先用免費寄物櫃放大件行李、過安檢（機場式檢查會排隊），剩餘時間可待在訪客中心書店與展覽前導區', dur:'1h55 緩衝'},
+      {t: lajkonikOutboundAdopted.dep, label:'Lajkonik · 克拉科夫 → 奧斯威辛', sub:`2026-09-09 於 lajkonikbus.pl 查得 10/26 當日班次：${lajkonikOutboundAdopted.dep} ${lajkonikOutboundAdopted.bay} 發車、${lajkonikOutboundAdopted.arr} 抵 Więźniów Oświęcimia 55，車程 ${lajkonikOutboundAdopted.dur}，全票 ${lajkonikFare.full} zł（優待 ${lajkonikFare.discount} zł）。當日另一班 ${lajkonikOutboundRejected.dep} → ${lajkonikOutboundRejected.arr} 只比 10:00 安檢截止早 10 分鐘，緩衝不足不採用`, cost:`PLN ${lajkonikFare.full}（優待 ${lajkonikFare.discount}）`, dur: lajkonikOutboundAdopted.dur},
+      {t: lajkonikOutboundAdopted.arr, label:'抵 Auschwitz I', sub:'下車處就在博物館停車場對面。距 10:30 入場有 1 小時 55 分：先用免費寄物櫃放大件行李、過安檢（機場式檢查會排隊），剩餘時間可待在訪客中心書店與展覽前導區', dur:'1h55 緩衝'},
       {t:'10:30', label:'★ 英文官方導覽（已訂妥）', sub:'個人 educator 導覽 · 一館 + 比克瑙 · 官方標示約 3 小時 45 分；入場憑電子入場證＋證件，兩者缺一不可', cost:'已付款', dur:'3h45'},
       {t:'約 14:15', label:'導覽結束', sub:'比克瑙結束後依接駁巴士回一館，再走到停車站牌'},
-      {t:'15:30', label:'回程巴士返克拉科夫', sub:'2026-09-09 於 lajkonikbus.pl 查得 10/26 回程僅三班：14:00（導覽結束前就開走，不可用）、15:30、16:30。採 15:30 由 Więźniów Oświęcimia 55 發車，導覽結束後有 75 分鐘走回站牌與休息；若導覽延後或接駁排隊，改搭 16:30（17:55 抵）', cost:'PLN 25.00（優待 22.00）', dur:'1h25'},
-      {t:'16:55', label:'抵 Kraków MDA · 休息', sub:'ul. Bosacka 18 Dworzec Autobusowy；距晚餐還有約 1 小時，可先回旅館放東西'},
+      {t: lajkonikInboundAdopted.dep, label:'回程巴士返克拉科夫', sub:`2026-09-09 於 lajkonikbus.pl 查得 10/26 回程僅三班：${lajkonikInboundRejected.dep}（導覽結束前就開走，不可用）、${lajkonikInboundAdopted.dep}、${lajkonikInboundBackup.dep}。採 ${lajkonikInboundAdopted.dep} 由 Więźniów Oświęcimia 55 發車，導覽結束後有 75 分鐘走回站牌與休息；若導覽延後或接駁排隊，改搭 ${lajkonikInboundBackup.dep}（${lajkonikInboundBackup.arr} 抵）`, cost:`PLN ${lajkonikFare.full}（優待 ${lajkonikFare.discount}）`, dur: lajkonikInboundAdopted.dur},
+      {t: lajkonikInboundAdopted.arr, label:'抵 Kraków MDA · 休息', sub:'ul. Bosacka 18 Dworzec Autobusowy；距晚餐還有約 1 小時，可先回旅館放東西'},
       {t:'18:00', id:'d3-dinner', label:'安靜晚餐沉澱情緒', cost:'PLN 60–100'},
     ],
     eat: [
       snack({text:'回程後的一杯咖啡 @ Karma Coffee Roasters', placeId:'krakow-karma-coffee-roasters'}),
     ],
-    warn: '✅ 導覽已訂妥：10/26 10:30 英文個人 educator 導覽（Zwiedzanie indywidualne z edukatorem），官方標示約 3 小時 45 分，2 人。官方明載「入場證需搭配身分證件」，請把電子入場證存離線並帶護照。🚌 巴士去回皆已查定、但尚未購票：官方要求入場時段前 30 分鐘到場完成安檢，因此必須在 10:00 前完成安檢；導覽約 14:15 結束，回程只能挑那之後的班次。去程已於 2026-09-09 在官方售票頁 lajkonikbus.pl 查得 10/26 實際班次並選定 **07:10 → 08:35**（D10 發車，1h25，全票 25.00 zł／優待 22.00 zł），抵達後距入場有 1 小時 55 分。當日另一班 08:25 → 09:50 只比 10:00 安檢截止早 10 分鐘，巴士一誤點就來不及，不採用；**沒有 07:35 這班**。回程同日查得 10/26 下午僅三班：14:00（導覽結束前開走，不可用）、**15:30 → 16:55（採用）**、16:30 → 17:55（備案），皆 25.00 zł、車程 1h25。去回兩程皆尚未購票，付款前仍以售票頁當下顯示為準。',
+    warn: `✅ 導覽已訂妥：10/26 10:30 英文個人 educator 導覽（Zwiedzanie indywidualne z edukatorem），官方標示約 3 小時 45 分，2 人。官方明載「入場證需搭配身分證件」，請把電子入場證存離線並帶護照。🚌 巴士去回皆已查定、但尚未購票：官方要求入場時段前 30 分鐘到場完成安檢，因此必須在 10:00 前完成安檢；導覽約 14:15 結束，回程只能挑那之後的班次。去程已於 2026-09-09 在官方售票頁 lajkonikbus.pl 查得 10/26 實際班次並選定 **${lajkonikOutboundAdopted.dep} → ${lajkonikOutboundAdopted.arr}**（${lajkonikOutboundAdopted.bay} 發車，${lajkonikOutboundAdopted.dur}，全票 ${lajkonikFare.full} zł／優待 ${lajkonikFare.discount} zł），抵達後距入場有 1 小時 55 分。當日另一班 ${lajkonikOutboundRejected.dep} → ${lajkonikOutboundRejected.arr} 只比 10:00 安檢截止早 10 分鐘，巴士一誤點就來不及，不採用；**沒有 07:35 這班**。回程同日查得 10/26 下午僅三班：${lajkonikInboundRejected.dep}（導覽結束前開走，不可用）、**${lajkonikInboundAdopted.dep} → ${lajkonikInboundAdopted.arr}（採用）**、${lajkonikInboundBackup.dep} → ${lajkonikInboundBackup.arr}（備案），皆 ${lajkonikFare.full} zł、車程 ${lajkonikOutboundAdopted.dur}。去回兩程皆尚未購票，付款前仍以售票頁當下顯示為準。`,
     // 回程選項。導覽約 14:15 結束，全部以「14:15 之後發車」為門檻。
     // 去程與回程皆已於 2026-09-09 由官方售票頁 lajkonikbus.pl 查得 10/26 當日班次；
     // 兩個方向都尚未購票，付款前仍以售票頁當下顯示為準。
     returnOptions: [
       {
-        rank: '採用', name: 'Lajkonik 15:30 → 16:55 抵 Kraków MDA',
-        detail: '由 Więźniów Oświęcimia 55 發車、停 ul. Bosacka 18 Dworzec Autobusowy，車程 1h25，25,00 zł。導覽 14:15 結束後有 75 分鐘走回站牌、上洗手間與逛訪客中心書店。',
+        rank: '採用', name: `Lajkonik ${lajkonikInboundAdopted.dep} → ${lajkonikInboundAdopted.arr} 抵 Kraków MDA`,
+        detail: `由 Więźniów Oświęcimia 55 發車、停 ul. Bosacka 18 Dworzec Autobusowy，車程 ${lajkonikInboundAdopted.dur}，${lajkonikInboundAdopted.fare}。導覽 14:15 結束後有 75 分鐘走回站牌、上洗手間與逛訪客中心書店。`,
         status: '✅ 2026-09-09 於官方售票頁 lajkonikbus.pl 查得 10/26 確有此班；尚未購票。',
         url: 'https://www.lajkonikbus.pl/',
       },
       {
-        rank: '備案', name: 'Lajkonik 16:30 → 17:55 抵 Kraków MDA',
+        rank: '備案', name: `Lajkonik ${lajkonikInboundBackup.dep} → ${lajkonikInboundBackup.arr} 抵 Kraków MDA`,
         detail: '同站牌、同票價的下一班。導覽延後、比克瑙接駁排隊或想多留時間時改搭，代價是多等 1 小時。',
-        status: '✅ 同日查得。當天若已趕上 15:30 就不需要這班。',
+        status: `✅ 同日查得。當天若已趕上 ${lajkonikInboundAdopted.dep} 就不需要這班。`,
         url: 'https://www.lajkonikbus.pl/',
       },
       {
-        rank: '不可採用', name: 'Lajkonik 14:00 → 15:25',
+        rank: '不可採用', name: `Lajkonik ${lajkonikInboundRejected.dep} → ${lajkonikInboundRejected.arr}`,
         detail: '當日下午最早的一班，由同一站牌發車。',
         status: '❌ 導覽約 14:15 才結束，這班在那之前就開走。',
         url: 'https://www.lajkonikbus.pl/',
@@ -184,7 +197,7 @@ export const days = [
     mustBook: ['❗尚未訂 · Wieliczka 鹽礦英文團', '❗尚未訂 · 克拉科夫 → 樂斯拉夫火車'],
     compressible: ['Kazimierz 白天散步', '老城補逛與採購'],
     weather: '尚無可靠預報；出發前 7–10 天更新',
-    train: {type:'IC 3600 Siemiradzki · 參考班次', saleOpens:'2026-09-27', saleCheckedAt:'2026-09-08', leg:'指定日待確認／尚未訂票 · 二等艙建議', from:'Kraków Główny', to:'Wrocław Główny', dep:'17:55', arr:'20:52', dur:'2h57', price:'票價待確認'},
+    train: {segmentId:'ic-3600'},
     steps: [
       {t:'08:00', label:'早餐 + 退房', sub:'行李寄旅館'},
       {t:'09:00', label:'火車到 Wieliczka Rynek-Kopalnia', sub:'KMŁ；2026-09-17 ZTP 官方票價表載明 70 分鐘 KMK+KMŁ 聯票涵蓋 Wieliczka Bogucice–Wieliczka Rynek Kopalnia 區段與所有站名含「Kraków」的車站，唯一排除的是 Kraków Airport——此程適用。注意是「70 分鐘」有效，逾時要另購', cost:'PLN 10（優待 5）', dur:'約 25 min'},
@@ -223,7 +236,7 @@ export const days = [
     mustBook: ['❗尚未訂 · 樂斯拉夫 → 波茲南火車', '❗尚未訂 · 拉茨瓦維採全景畫場次'],
     compressible: ['百年廳停留縮短為外觀與周邊', '座堂島改 45–60 分鐘重點散步', '午餐改簡餐或外帶'],
     weather: '尚無可靠預報；出發前 7–10 天更新',
-    train: {type:'Baltic Express 260 · 參考班次', saleOpens:'2026-09-28', saleCheckedAt:'2026-09-08', leg:'指定日待確認／尚未訂票 · 二等艙建議', from:'Wrocław Główny', to:'Poznań Główny', dep:'19:10', arr:'20:29', dur:'1h19', price:'票價待確認'},
+    train: {segmentId:'baltic-express-260'},
     steps: [
       {t:'09:00', label:'★ 中央廣場 + 紡織會館', sub:'dwarfsmap.com 找小矮人', cost:'免費', dur:'1.5 h'},
       {t:'10:30', label:'糖果屋雙屋 + 教堂塔樓', sub:'聖伊莉莎白教堂塔高 96m、觀景台 75m、304 階無電梯；一–六 10:00–19:00', cost:'PLN 16／10 · 現金', dur:'45 min'},
@@ -256,7 +269,7 @@ export const days = [
     mustBook: ['❗尚未訂 · 波茲南 → 華沙火車', '❗尚未訂 · 牛角麵包博物館（10/29 英語場待確認）'],
     compressible: ['Stary Browar 停留時間', '帝王城堡內部參觀'],
     weather: '尚無可靠預報；出發前 7–10 天更新',
-    train: {type:'EIC 8104 Bolesław Prus · 參考班次', saleOpens:'2026-09-25', saleCheckedAt:'2026-09-08', leg:'指定日待確認／尚未訂票 · 二等艙建議', from:'Poznań Główny', to:'Warszawa Centralna', dep:'17:40', arr:'20:00', dur:'2h20', price:'票價待確認'},
+    train: {segmentId:'eic-8104'},
     steps: [
       {t:'09:00', label:'★ 教堂島 Ostrów Tumski', sub:'梅什科一世受洗地', cost:'未收費', dur:'1.5 h'},
       {t:'11:00', label:'廣場卡正面位置', dur:'45 min · 提早卡位'},
@@ -399,13 +412,9 @@ export const stay = [
   },
 ];
 
-export const trains = [
-  {seg:'Warszawa Zachodnia → Kraków Główny', date:'10/25', type:'EIP 5300', saleOpens:'2026-09-25', saleCheckedAt:'2026-09-08', dep:'08:45', arr:'10:58', dur:'2h13', price:'票價待確認', status:'參考班次／尚未訂票', note:'一等艙建議；本趟安排頭等艙體驗。現行班表本車先停 Warszawa Centralna（約 08:40）再停 Zachodnia；住宿改為 Hotel Metropol 後由 Centralna 上車只需步行 500 公尺，購票時優先比較 Centralna 出發的票價與座位。10/25 換表後仍須確認實際停靠站。'},
-  {seg:'Kraków MDA ⇄ Oświęcim Muzeum Auschwitz', date:'10/26', type:'BUS · Lajkonik', saleCheckedAt:'2026-09-09', dep:'07:10（D10）／回程 15:30', arr:'08:35 ／回程 16:55 抵 Kraków MDA', dur:'單程 1h25', price:'PLN 25.00（優待 22.00，購票日確認）', status:'去回班次皆已查得／尚未購票', note:'2026-09-09 於官方售票頁查 10/26：去程 07:10（D10）→ 08:35 採用、08:25（D9）→ 09:50 只比 10:00 安檢截止早 10 分鐘故不用（售票頁當時沒有 07:35）；回程 14:00 → 15:25 在導覽 14:15 結束前開走不可用、15:30 → 16:55 採用（結束後留 75 分鐘緩衝）、16:30 → 17:55 為備案。2026-09-18 另查官方公告時刻表，確認 07:10→08:35 與 15:30→16:55 都在正班表上，且全線班次比售票頁當時顯示的多（Kraków MDA 發車 06:15／07:10／08:25／09:20／10:40／11:30／13:00／14:00／15:55／17:30；Muz. Auschwitz 回程 08:10／09:00／11:00／12:00／14:00／15:30／16:30／17:30／18:30／19:45）——「當日只有兩班／三班」只是那天售票頁的可售結果，不是全部班次。時刻表另註中途站為招手停（na żądanie），且部分班次有季節／假日代碼限制，購票時一併確認。'},
-  {seg:'Kraków Główny → Wrocław Główny', date:'10/27', type:'IC 3600 Siemiradzki', saleOpens:'2026-09-27', saleCheckedAt:'2026-09-08', dep:'17:55', arr:'20:52', dur:'2h57', price:'票價待確認', status:'參考班次／尚未訂票', note:'二等艙建議；一等艙可選。17:20 前到站。'},
-  {seg:'Wrocław Główny → Poznań Główny', date:'10/28', type:'Baltic Express 260', saleOpens:'2026-09-28', saleCheckedAt:'2026-09-08', dep:'19:10', arr:'20:29', dur:'1h19', price:'票價待確認', status:'參考班次／尚未訂票', note:'二等艙建議。18:35 前到站。'},
-  {seg:'Poznań Główny → Warszawa Centralna', date:'10/29', type:'EIC 8104 Bolesław Prus', saleOpens:'2026-09-25', saleCheckedAt:'2026-09-08', dep:'17:40', arr:'20:00', dur:'2h20', price:'票價待確認', status:'參考班次／尚未訂票', note:'適合體驗一等艙；若 10/25 已搭 EIP 一等艙，可依價差改選二等艙。17:05 前到站。'},
-];
+// trains[] 的正本已搬到 rail.js 的 segments（補了 id／day／from／to 等欄位）；
+// 這裡原樣重新匯出，既有的 import { trains } from './trip.js' 都不用改。
+export { segments as trains };
 
 export const railOfficialLinks = [
   {
@@ -435,56 +444,9 @@ export const railOfficialLinks = [
   },
 ];
 
-// Lajkonik · Auschwitz 往返巴士。
-// 去程資料 2026-09-09 由官方售票頁 lajkonikbus.pl 查 2026-10-26 當日結果取得；
-// 回程尚未查詢，下方保留可直接照填的查詢參數。
-export const auschwitzBus = {
-  operator: 'LAJKONIK',
-  site: 'https://www.lajkonikbus.pl/',
-  siteNote: '首頁右上可切 English；表單四欄依序為 Departure from／Destination／Date of departure／Normal（人數），按 Search courses 查班次，每筆班次可直接 Buy ticket。另有 Where is my bus? 查即時車輛位置、My Ticket 查已購票券。',
-  fare: '全票 25.00 zł／優待 22.00 zł（每人，官方售票頁 2026-10-26 顯示值）',
-  stops: {
-    krakow: 'Kraków · ul. Bosacka 18, Dworzec Autobusowy（MDA，Kraków Główny 後方步行約 5 分；站位 D9／D10）',
-    oswiecim: 'Oświęcim · Więźniów Oświęcimia 55（Muzeum Auschwitz，下車處在博物館停車場對面）',
-  },
-  outbound: {
-    status: '已於官方售票頁查得／尚未購票',
-    checkedAt: '2026-09-09',
-    query: { from: 'Kraków', to: 'Oświęcim', date: '2026-10-26', passengers: 1 },
-    services: [
-      { dep: '07:10', arr: '08:35', dur: '1h25', bay: 'D10', fare: '25,00 zł', decision: '採用', why: '距 10:30 入場有 1 小時 55 分，足以吸收巴士誤點、寄物與安檢排隊。' },
-      { dep: '08:25', arr: '09:50', dur: '1h25', bay: 'D9', fare: '25,00 zł', decision: '不採用', why: '官方要求入場前 30 分鐘完成安檢（10:00 前到），此班只早 10 分鐘，誤點即錯過已付款導覽。' },
-    ],
-    note: '2026-09-09 售票頁當日只開放這兩班、沒有 07:35；2026-09-18 查官方公告時刻表，Kraków MDA（Bosacka 18）整日發車為 06:15／07:10／08:25／09:20／10:40／11:30／13:00／14:00／15:55／17:30，多數由 D10 發車（08:25 那班為 D9）。若售票頁只剩少數班次，那是可售狀況而非全部班次。班次與票價仍以購票當下的售票頁為準。',
-  },
-  inbound: {
-    status: '已於官方售票頁查得／尚未購票',
-    checkedAt: '2026-09-09',
-    threshold: '導覽約 14:15 結束，必須挑 14:15 之後發車的班次',
-    query: { from: 'Oświęcim', to: 'Kraków', date: '2026-10-26', passengers: 1 },
-    services: [
-      { dep: '14:00', arr: '15:25', dur: '1h25', fare: '25,00 zł', decision: '不採用', why: '在導覽 14:15 結束前就發車，趕不上。' },
-      { dep: '15:30', arr: '16:55', dur: '1h25', fare: '25,00 zł', decision: '採用', why: '導覽結束後有 75 分鐘走回站牌、上洗手間與逛訪客中心書店，緩衝充足又不必空等。' },
-      { dep: '16:30', arr: '17:55', dur: '1h25', fare: '25,00 zł', decision: '備案', why: '若導覽延後、比克瑙接駁排隊或想多留時間，改搭這班；代價是多等 1 小時。' },
-    ],
-    note: '2026-09-09 售票頁當日下午只開放這三班；2026-09-18 查官方公告時刻表，Oświęcim Muz. Auschwitz 整日回程為 08:10／09:00／11:00／12:00／14:00／15:30／16:30／17:30／18:30／19:45，也就是 17:30 與 18:30 可作更晚的保底。15:30 與 16:30 都由 Więźniów Oświęcimia 55 發車、停 ul. Bosacka 18 Dworzec Autobusowy，票價同為 25,00 zł。時刻表註明中途站是招手停，部分班次帶季節／假日代碼，購票時確認 10/26 是否適用。',
-  },
-  // 巴士的取捨完全由這個已訂妥的導覽場次決定，因此把場次一併放在同一區塊。
-  tour: {
-    status: '已訂妥',
-    date: '2026-10-26（一）',
-    time: '10:30',
-    name: 'Zwiedzanie indywidualne z edukatorem（個人 educator 導覽）',
-    scope: 'Zwiedzanie ogólne · Auschwitz I ＋ Birkenau',
-    language: 'English',
-    duration: '官方標示 3 godz. 45 min.（3 小時 45 分）',
-    people: '2 人',
-    endsAt: '約 14:15',
-    arriveBy: '10:00（官方要求入場時段前 30 分鐘完成安檢）',
-    entryRule: '官方確認信載明「Entry Pass is valid with identity card」——電子入場證與身分證件必須同時出示，入場證請列印或存離線。',
-    officialUrl: 'https://visit.auschwitz.org/',
-  },
-};
+// auschwitzBus 的正本已搬到 rail.js（segments 的 Lajkonik 段也從這裡推導）；
+// 這裡原樣重新匯出，既有的 import { auschwitzBus } from './trip.js' 都不用改。
+export { auschwitzBus };
 
 export const railPurchaseSteps = [
   {
@@ -493,7 +455,7 @@ export const railPurchaseSteps = [
   },
   {
     title: '進 PKP Intercity 官方購票頁重查',
-    detail: '用相同站名與日期搜尋。2026-09-08 逐班查核官方售票系統得到的預售起始日為：10/25 EIP 5300 與 10/29 EIC 8104 皆 9/25、10/27 IC 3600 為 9/27、10/28 Baltic Express 260 為 9/28。四段都落在 10/25 新班表換表前後，實際開賣仍以購票頁顯示可選車次與價格為準。EIP／EIC 名目上可提前更久購買，但新班表未上線前一樣買不到。',
+    detail: `用相同站名與日期搜尋。2026-09-08 逐班查核官方售票系統得到的預售起始日為：10/25 EIP 5300 與 10/29 EIC 8104 皆 ${saleOpensShort('eip-5300')}、10/27 IC 3600 為 ${saleOpensShort('ic-3600')}、10/28 Baltic Express 260 為 ${saleOpensShort('baltic-express-260')}。四段都落在 10/25 新班表換表前後，實際開賣仍以購票頁顯示可選車次與價格為準。EIP／EIC 名目上可提前更久購買，但新班表未上線前一樣買不到。`,
   },
   {
     title: '選車種、艙等與正確優惠資格',
@@ -517,7 +479,7 @@ export const bookingTiers = [
   {tier:'第一優先', note:'Auschwitz 已訂妥；其餘尚未訂 · 先以官方售票系統確認指定日期與庫存', items:[
     {name:'Auschwitz 官方英文導覽（10/26 10:30 已訂妥）', url:'https://visit.auschwitz.org/'},
     {name:'Wieliczka 鹽礦英文團（現在即可訂）', url:'https://www.wieliczka-saltmine.com/'},
-    {name:'Lajkonik 往返巴士（去程 07:10 → 08:35、回程 15:30 → 16:55，皆曾查得、付款前重查）', url:'https://www.lajkonikbus.pl/'},
+    {name:`Lajkonik 往返巴士（去程 ${lajkonikOutboundAdopted.dep} → ${lajkonikOutboundAdopted.arr}、回程 ${lajkonikInboundAdopted.dep} → ${lajkonikInboundAdopted.arr}，皆曾查得、付款前重查）`, url:'https://www.lajkonikbus.pl/'},
     {name:'華沙 → 克拉科夫火車', url:'https://www.intercity.pl/en/'},
     {name:'克拉科夫 → 樂斯拉夫火車', url:'https://www.intercity.pl/en/'},
     {name:'樂斯拉夫 → 波茲南火車', url:'https://www.intercity.pl/en/'},
@@ -549,7 +511,7 @@ export const todoGroups = [
     intro: '四段 PKP 已選定規劃班次；Auschwitz 導覽已訂妥 10/26 10:30，往返巴士改依該時段回推目標班次。尚未完成指定日確認或購票前，不把時刻、車種或月台當成已確認。',
     items: [
       {checkedAt:null, recheckAt:null, date:'10/25', name:'EIP 5300｜華沙 → Kraków Główny', status:'參考班次／尚未訂票', action:'核對 10/25 換表後的實際停靠站，比較由 Warszawa Centralna（步行可達飯店）與 Zachodnia 上車的票價與座位，確認 08:45–10:58 後購票。', url:'https://www.intercity.pl/en/'},
-      {checkedAt:'2026-09-09', recheckAt:'2026-10-12', date:'10/26', name:'Lajkonik 克拉科夫 ⇄ Auschwitz 巴士', status:'曾查得指定日班次／尚未購票', action:'2026-09-09 曾在 lajkonikbus.pl 查得去回班次；本輪未重新取得 10/26 可售結果，付款前須重查班次與庫存：去程 07:10（Bosacka 18 D10）→ 08:35、回程 15:30（Więźniów Oświęcimia 55）→ 16:55，各 1h25、全票 25.00 zł／優待 22.00 zł。備案為回程 16:30 → 17:55。下單時確認人數、上下車站與是否需選位。', url:'https://www.lajkonikbus.pl/krakow-oswiecim.html'},
+      {checkedAt:'2026-09-09', recheckAt:'2026-10-12', date:'10/26', name:'Lajkonik 克拉科夫 ⇄ Auschwitz 巴士', status:'曾查得指定日班次／尚未購票', action:`2026-09-09 曾在 lajkonikbus.pl 查得去回班次；本輪未重新取得 10/26 可售結果，付款前須重查班次與庫存：去程 ${lajkonikOutboundAdopted.dep}（Bosacka 18 ${lajkonikOutboundAdopted.bay}）→ ${lajkonikOutboundAdopted.arr}、回程 ${lajkonikInboundAdopted.dep}（Więźniów Oświęcimia 55）→ ${lajkonikInboundAdopted.arr}，各 ${lajkonikOutboundAdopted.dur}、全票 ${lajkonikFare.full} zł／優待 ${lajkonikFare.discount} zł。備案為回程 ${lajkonikInboundBackup.dep} → ${lajkonikInboundBackup.arr}。下單時確認人數、上下車站與是否需選位。`, url:'https://www.lajkonikbus.pl/krakow-oswiecim.html'},
       {checkedAt:null, recheckAt:null, date:'10/27', name:'IC 3600｜Kraków Główny → Wrocław Główny', status:'參考班次／尚未訂票', action:'核實 17:55–20:52 指定日班表並購票；記錄車廂、座位與訂位憑證。', url:'https://www.intercity.pl/en/'},
       {checkedAt:null, recheckAt:null, date:'10/28', name:'Baltic Express 260｜Wrocław Główny → Poznań Główny', status:'參考班次／尚未訂票', action:'核實 19:10–20:29 指定日班表並購票；確認公寓晚間取鑰匙方式。', url:'https://www.intercity.pl/en/'},
       {checkedAt:null, recheckAt:null, date:'10/29', name:'EIC 8104｜Poznań Główny → Warszawa Centralna', status:'參考班次／尚未訂票', action:'核實 17:40–20:00 指定日班表並購票；抵站後步行至 Metropol 預留 10–15 分鐘。', url:'https://www.intercity.pl/en/'},
@@ -642,7 +604,7 @@ export const deadlines = [
   {
     id: 'bus-lajkonik', date: '2026-10-12', category: '交通',
     title: 'Lajkonik 往返 Auschwitz 巴士購票',
-    action: '2026-09-09 曾查得班次，尚未購票；付款前須重查班次、票價與庫存：去程 07:10（Bosacka 18 · D10）→ 08:35、回程 15:30 → 16:55，全票 25.00 zł。備案為回程 16:30。',
+    action: `2026-09-09 曾查得班次，尚未購票；付款前須重查班次、票價與庫存：去程 ${lajkonikOutboundAdopted.dep}（Bosacka 18 · ${lajkonikOutboundAdopted.bay}）→ ${lajkonikOutboundAdopted.arr}、回程 ${lajkonikInboundAdopted.dep} → ${lajkonikInboundAdopted.arr}，全票 ${lajkonikFare.full} zł。備案為回程 ${lajkonikInboundBackup.dep}。`,
     status: '指定日尚未確認', url: 'https://www.lajkonikbus.pl/',
     basis: '待辦事項該筆的 recheckAt = 2026-10-12。',
   },
