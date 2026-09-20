@@ -15,6 +15,9 @@ export function writeServiceWorker({ projectRoot, distDir }) {
     'manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png',
     'assets/main.css', 'assets/nav.js', 'assets/site-search.js',
     'assets/database-filter.js', 'assets/leaflet/leaflet.css', 'assets/leaflet/leaflet.js',
+    // 搜尋索引也是 cache-first 資源（sw.js 的 ASSETS）：沒有它，改了資料但
+    // CSS/JS 都沒動時 VERSION 指紋不變，已安裝的 PWA 搜尋結果會永遠停在安裝當天。
+    'assets/search-index.json',
   ];
   const hash = crypto.createHash('sha256');
   for (const asset of cacheFirstAssets) hash.update(fs.readFileSync(path.join(distDir, asset)));

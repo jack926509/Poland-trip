@@ -78,13 +78,15 @@ function buildIntoStaging(stagingRoot) {
   for (const asset of ['manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png']) {
     fs.copyFileSync(path.join(projectRoot, asset), path.join(distDir, asset));
   }
-  // 資源全部就位後才算指紋
-  writeServiceWorker({ projectRoot, distDir });
-
   renderPages(distDir);
 
   const searchRecords = buildSearchRecords(distDir);
   writeSearchIndexAsset(distDir, searchRecords);
+
+  // 資源全部就位（含 search-index.json）後才算指紋：sw.js 的 cache-first
+  // 清單含 search-index.json，指紋算太早會漏算它，離線後搜尋資料就更新不到。
+  writeServiceWorker({ projectRoot, distDir });
+
   buildStandalone({ distDir, standalonePath, searchRecords });
   fs.copyFileSync(standalonePath, path.join(distDir, 'poland-travel-guide-2026.html'));
 

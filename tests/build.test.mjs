@@ -1803,7 +1803,10 @@ test('sw.js 的快取版本由建置帶上資源指紋，樣式改了就會失�
   const expected = crypto.createHash('sha256');
   for (const asset of ['manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png',
     'assets/main.css', 'assets/nav.js', 'assets/site-search.js',
-    'assets/database-filter.js', 'assets/leaflet/leaflet.css', 'assets/leaflet/leaflet.js']) {
+    'assets/database-filter.js', 'assets/leaflet/leaflet.css', 'assets/leaflet/leaflet.js',
+    // 中-1：搜尋索引也要納入指紋，否則只改資料（不動樣式／腳本）時 VERSION
+    // 不變，已安裝的 PWA 搜尋結果會停在安裝當天（見 build.mjs／output.mjs）。
+    'assets/search-index.json']) {
     expected.update(fs.readFileSync(path.join(distDir, asset)));
   }
   assert.equal(shipped, `${base}-${expected.digest('hex').slice(0, 8)}`, '指紋與實際資源內容不符');
@@ -1811,6 +1814,47 @@ test('sw.js 的快取版本由建置帶上資源指紋，樣式改了就會失�
   // 部署腳本不能再用根目錄的原始 sw.js 覆蓋掉帶指紋的那份
   const prepare = fs.readFileSync('prepare-site.sh', 'utf8');
   assert.doesNotMatch(prepare, /^\s*sw\.js\s/m, 'prepare-site.sh 會用未帶指紋的 sw.js 覆蓋 dist 的版本');
+});
+
+test('中-1：只改搜尋索引內容（資料檔變動的效果），sw.js 的指紋也會跟著變──不會停在安裝當天', async () => {
+  const { writeServiceWorker } = await import('../src/build/output.mjs');
+  const projectRoot = path.resolve('.');
+
+  // 複製一份真實 dist 的 cache-first 資源到暫存目錄，其餘檔案 writeServiceWorker
+  // 不會讀到，不用整份 dist 複製。
+  const assets = ['manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png',
+    'assets/main.css', 'assets/nav.js', 'assets/site-search.js',
+    'assets/database-filter.js', 'assets/leaflet/leaflet.css', 'assets/leaflet/leaflet.js',
+    'assets/search-index.json'];
+  const tmpDir = fs.mkdtempSync(path.join(projectRoot, '.test-sw-fingerprint-'));
+  try {
+    fs.mkdirSync(path.join(tmpDir, 'assets', 'leaflet'), { recursive: true });
+    for (const asset of assets) {
+      fs.copyFileSync(path.join(distDir, asset), path.join(tmpDir, asset));
+    }
+
+    writeServiceWorker({ projectRoot, distDir: tmpDir });
+    const before = /const VERSION = '([^']+)';/.exec(fs.readFileSync(path.join(tmpDir, 'sw.js'), 'utf8'))[1];
+
+    // 只改搜尋索引內容，其餘 cache-first 資源（CSS／JS）完全不動。
+    const original = fs.readFileSync(path.join(tmpDir, 'assets/search-index.json'), 'utf8');
+    fs.writeFileSync(path.join(tmpDir, 'assets/search-index.json'), `${original}\n`);
+
+    writeServiceWorker({ projectRoot, distDir: tmpDir });
+    const after = /const VERSION = '([^']+)';/.exec(fs.readFileSync(path.join(tmpDir, 'sw.js'), 'utf8'))[1];
+
+    assert.notEqual(after, before, '只改搜尋索引內容，VERSION 指紋卻沒變──已安裝的 PWA 搜尋結果會停在安裝當天');
+  } finally {
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
+});
+
+test('build.mjs 產生搜尋索引之後才計算 sw.js 指紋，指紋才算得到 search-index.json', () => {
+  const source = fs.readFileSync('build.mjs', 'utf8');
+  const searchIndexAt = source.indexOf('writeSearchIndexAsset(distDir');
+  const serviceWorkerAt = source.indexOf('writeServiceWorker({ projectRoot, distDir })');
+  assert.ok(searchIndexAt !== -1 && serviceWorkerAt !== -1, 'build.mjs 缺少預期的呼叫');
+  assert.ok(searchIndexAt < serviceWorkerAt, 'writeServiceWorker 必須在 writeSearchIndexAsset 之後執行，否則指紋算不到搜尋索引');
 });
 
 test('表格排版規則：最小寬度只給寬表，列高收緊不得外洩到手機卡片版', () => {
