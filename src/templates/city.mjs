@@ -68,7 +68,7 @@ export function renderCity({
     <tr>
       <td><a href="${stableMapUrl(attraction)}" target="_blank" rel="noopener">${attraction.name}</a></td>
       <td>${stableTier(attraction.tag)}</td>
-      <td>${attraction.priceNote}</td>
+      <td>${attraction.extra}</td>
     </tr>`).join('');
 
   // 連鎖速食走同一條合併路徑，排在表的最後一段：它不是推薦，是候選失效時的落腳點。

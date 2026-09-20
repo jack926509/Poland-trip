@@ -1213,9 +1213,9 @@ test('備案景點的票價與開放資訊使用最新官方查證結果', () =>
   assert.equal(palmiarnia?.fullPrice, '暫時閉館');
   assert.match(palmiarnia?.note ?? '', /暫時閉館/);
   assert.doesNotMatch(palmiarnia?.note ?? '', /週一休館；二–五/);
-  assert.match(wroclawAttractions.find(item => item.name === 'Hydropolis 水知識中心')?.priceNote ?? '', /2026-08-11 官網查證/);
-  assert.match(wroclawAttractions.find(item => item.name === 'Kolejkowo 微縮館')?.priceNote ?? '', /2026-08-12 官網查證/);
-  assert.match(poznanAttractions.find(item => item.name === 'Palmiarnia 棕櫚屋')?.priceNote ?? '', /暫時閉館/);
+  assert.match(wroclawAttractions.find(item => item.name === 'Hydropolis 水知識中心')?.extra ?? '', /2026-08-11 官網查證/);
+  assert.match(wroclawAttractions.find(item => item.name === 'Kolejkowo 微縮館')?.extra ?? '', /2026-08-12 官網查證/);
+  assert.match(poznanAttractions.find(item => item.name === 'Palmiarnia 棕櫚屋')?.extra ?? '', /暫時閉館/);
   assert.doesNotMatch(JSON.stringify(cityStories.find(story => story.city === '樂斯拉夫')), /1,040/);
 });
 

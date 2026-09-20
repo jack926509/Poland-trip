@@ -1,10 +1,20 @@
 import { days as itineraryDays, stay } from './trip.js';
+import { venueAddress } from '../lib/venues.mjs';
+import { auschwitzBus, segments, lajkonikFare } from './rail.js';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const overridePath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'travel-database.sync.json');
 const syncMeta = readSyncOverrides();
+
+// 精煉切片 3 已把 Lajkonik 巴士與四段城際火車的時刻、票價收斂進 rail.js，但
+// 這個檔案裡還留了幾處手抄的 Lajkonik 去程時刻／票價與 EIP 5300 抵站時刻
+// （切片 4b 補的殘留，見 data-audit.md 切片 4 說明）；改用 rail.js 的資料，
+// 不再另打一份第二份數字。
+const lajkonikOutboundAdopted = auschwitzBus.outbound.services.find(item => item.decision === '採用');
+const lajkonikOutboundRejected = auschwitzBus.outbound.services.find(item => item.decision === '不採用');
+const eip5300 = segments.find(item => item.id === 'eip-5300');
 
 // 自由行資料庫：公開事實與私人待填狀態分開，供後續首頁、每日操作卡與 SOS 頁共用。
 // 私人項目只記錄完成狀態，絕不放入訂位代碼、護照、保單或付款資料。
@@ -321,74 +331,13 @@ const accommodationAddress = (id, stepLabels = []) => {
   };
 };
 
-const officialPlaceUrls = {
-  '華沙蕭邦機場': 'https://www.lotnisko-chopina.pl/en/index.html',
-  'Warszawa Centralna': 'https://portalpasazera.pl/en/KatalogStacji',
-  'Warszawa Zachodnia': 'https://portalpasazera.pl/en/KatalogStacji',
-  '華沙皇家城堡': 'https://www.zamek-krolewski.pl/en/strona/opening-hours-and-ticket-prices/2801-opening-hours-and-ticket-prices-may-2-2026',
-  '華沙老城市場廣場': 'https://go2warsaw.pl/en/old-town/',
-  'Krakowskie Przedmieście': 'https://warsawtour.pl/en/royal-route/',
-  'Kraków Główny': 'https://portalpasazera.pl/en/KatalogStacji',
-  '瓦維爾大教堂': 'https://www.katedra-wawelska.pl/en/katedra-wawelska/zaplanuj-wizyte/',
-  '瓦維爾皇家城堡': 'https://wawel.krakow.pl/en/what-to-see',
-  '辛德勒工廠': 'https://www.muzeumkrakowa.pl/en/opening-hours-and-ticket-prices',
-  '聖瑪利亞聖殿': 'https://mariacki.com/en/',
-  '中央廣場 Rynek Główny': 'https://krakow.travel/en/55-krakow-main-market-square',
-  '紡織會館 Sukiennice': 'https://mnk.pl/oddzialy/sukiennice/',
-  'Plac Nowy': 'https://krakow.travel/655-krakow-plac-nowy',
-  'Auschwitz I 訪客服務中心／入口': 'https://www.auschwitz.org/en/visiting/',
-  'Auschwitz II–Birkenau': 'https://www.auschwitz.org/en/visiting/',
-  '維利奇卡鹽礦': 'https://www.kopalnia.pl/',
-  'Wrocław Główny': 'https://portalpasazera.pl/en/KatalogStacji',
-  '拉茨瓦維採全景畫': 'https://mnwr.pl/en/branches/panorama-of-the-battle-of-raclawice/information/',
-  '百年廳': 'https://halastulecia.pl/zwiedzanie/visitor-centre/',
-  '樂斯拉夫中央廣場': 'https://visitwroclaw.eu/en/atrakcje/market-square-and-town-hall/',
-  '樂斯拉夫主教座堂': 'https://katedra.wroclaw.pl/',
-  'Poznań Główny': 'https://portalpasazera.pl/en/KatalogStacji',
-  '波茲南主教座堂': 'https://www.katedra.archpoznan.pl/',
-  '波茲南市政廳': 'https://www.msu.mnp.art.pl/profile/wizyta-ratusz-muzeum-poznania',
-  '帝王城堡': 'https://ckzamek.pl/podstrony/6071-zwiedzanie-zamku/',
-  'Stary Browar': 'https://starybrowar5050.com/en/contact/',
-  '牛角麵包博物館': 'https://rogalowemuzeum.pl/en/',
-  'POLIN 波蘭猶太人歷史博物館': 'https://polin.pl/en',
-  '華沙起義博物館': 'https://www.1944.pl/en',
-  '駐波蘭台北代表處': 'https://www.mofa.gov.tw/CountryInfo.aspx?CASN=1&n=164&s=124&sms=33&tabs=08617EE9DB3C61E3',
-};
-
-const entranceNotesByName = {
-  '華沙蕭邦機場': '抵達後依 Arrivals 與 SKM／Railway Station 標示前往航廈下方車站。2026-09-17 WTP 官方機場交通頁：S2 經 Zachodnia → Warszawa Śródmieście → Wschodnia，S3 經 Zachodnia → Warszawa Centralna → Wschodnia，兩線停靠站不同——最接近 Hotel Metropol 的是 S2 的 Śródmieście（出站即 Metro Centrum）；搭到 S3 請在 Centralna 下車。官方標示用 75 分鐘第 1 區票。回程依電子機票確認報到區。',
-  'Warszawa Centralna': '由 Hotel Metropol 沿 Marszałkowska 步行約 500 公尺／8–10 分，選當時最近的入口；進站後以大廳電子牌確認月台，不預先假定入口或月台。',
-  'Warszawa Zachodnia': '僅在票面上車站為西站時才需前往：由 Hotel Metropol 步行至 Warszawa Centralna 後轉 SKM／KM 約 7–10 分，或用 Jakdojade 查當日大眾運輸；進站後以電子牌確認 EIP 5300 的實際月台。',
-  '華沙皇家城堡': '主要訪客入口在 plac Zamkowy 4；依票券時段與現場安檢標示入場。',
-  '華沙老城市場廣場': '公共廣場，導航至 Rynek Starego Miasta；與 plac Zamkowy 的皇家城堡廣場是不同地點。',
-  'Krakowskie Przedmieście': '公共街道，從城堡廣場沿皇家大道步行，無需入場。',
-  'Kraków Główny': '依 Galeria Krakowska／車站大廳指標進站，月台以當日電子牌為準。',
-  '瓦維爾大教堂': '登上 Wawel Hill 後依 Cathedral 指標前往大教堂入口，避開禮拜動線。',
-  '瓦維爾皇家城堡': '先到 Wawel Hill 訪客服務／票券標示處，再依已購路線入口入場。',
-  '中央廣場 Rynek Główny': '公共廣場，從 Grodzka／Floriańska 等街道步行進入，無單一入口。',
-  '聖瑪利亞聖殿': '由 plac Mariacki 5 的訪客入口依現場標示進入，禮拜入口可能分流。',
-  '紡織會館 Sukiennice': '一樓公共市集由中央廣場拱廊進入；博物館入口依 MNK 現場標示。',
-  'Plac Nowy': '公共廣場，導航至中央圓亭；餐飲攤位仍須逐店確認。',
-  '辛德勒工廠': '導航至 Lipowa 4，依 Museum of Kraków 入口與已購時段排隊。',
-  'Auschwitz I 訪客服務中心／入口': '務必到 Więźniów Oświęcimia 55 的訪客服務中心／入口，不使用通訊地址 20 號。',
-  'Auschwitz II–Birkenau': '跟隨官方導覽接駁與工作人員指示，不自行變更集合點。',
-  '維利奇卡鹽礦': 'Tourist Route 從 Daniłowicz Shaft（Daniłowicza 10）集合入場。',
-  'Wrocław Główny': '由主站大廳進站，當日用電子牌確認月台與任何臨時改道。',
-  '樂斯拉夫中央廣場': '公共廣場，導航至 Rynek；無單一入口。',
-  '拉茨瓦維採全景畫': '由 Purkyniego 11 主入口依已購時段入場。',
-  '百年廳': '本日只看外觀與周邊；如臨時改入室內，使用 Wystawowa 1 訪客中心入口。',
-  '樂斯拉夫主教座堂': '由 plac Katedralny 18 正門進入；禮拜期間尊重現場分流。',
-  'Poznań Główny': '由車站大廳依電子牌前往月台；商場與車站入口不要混淆。',
-  '波茲南主教座堂': '由 Ostrów Tumski 17 正門進入；禮拜期間以現場開放區域為準。',
-  '波茲南市政廳': '本次只在 Stary Rynek 1 外觀區看 12:00 山羊鐘樓秀，博物館整修閉館。',
-  '帝王城堡': '由 Święty Marcin 80/82 依 CK Zamek 訪客標示進入。',
-  'Stary Browar': '由 Półwiejska 42 商場入口進入；與帝王城堡是兩個不同站點。',
-  '牛角麵包博物館': '地址為 Stary Rynek 41/2，實際入口在 Klasztorna 23；請於場次開始前 10 分鐘報到。',
-  'POLIN 波蘭猶太人歷史博物館': '由 Mordechaja Anielewicza 6 主入口依票券與安檢標示進入。',
-  '華沙起義博物館': '由 Grzybowska 79 訪客入口依已購時段進場。',
-  '駐波蘭台北代表處': '僅作緊急聯絡備援；一般領務先於辦公時間電話確認。',
-};
-
+// officialPlaceUrls／entranceNotesByName 兩份表（景點官網、現場怎麼進入）與
+// venueCard() 呼叫本身重複打的街道地址，精煉切片 4b 前是三份各自維護的事實
+// （見 data-audit.md §2-E）。三者已併入 src/data/venues.js 的單一景點／地點
+// 主檔，這裡改由 src/lib/venues.mjs 的 venueAddress() 取得；下面只留
+// addressStepLabels——它把「行程步驟 label」對回「地址卡」，是這個資料庫檔案
+// 自己的呈現邏輯（哪個步驟該連到哪張地址卡），不是重複的地點事實，暫時保留
+// 用字串鍵（displayName）比對。
 const addressStepLabels = {
   '華沙蕭邦機場': ['抵蕭邦機場', '抵 Chopin 第一航廈', '退稅文件 + 報到 + 安檢', '★ QR 260 起飛'],
   'Warszawa Centralna': ['退房 → Warszawa Centralna', '抵華沙中央車站', '抵 Warszawa Centralna'],
@@ -421,16 +370,23 @@ const addressStepLabels = {
   '華沙起義博物館': ['前往華沙起義博物館 + 安檢緩衝', '★ 華沙起義博物館'],
 };
 
-const address = (name, street, query, note = '') => ({
-  name,
-  address: street,
-  url: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`,
-  note,
-  reliable: Boolean(officialPlaceUrls[name]),
-  entranceNote: officialPlaceUrls[name] ? entranceNotesByName[name] || '抵達後依官網預約資訊與現場入口標示進入。' : '待班次、分店或現場集合點確認。',
-  officialUrl: officialPlaceUrls[name] || null,
-  stepLabels: addressStepLabels[name] || [],
-});
+// venueId 對 src/data/venues.js 的地點主檔；displayName 是這個步驟要顯示的
+// 名稱（多數與 venue.name 相同，但少數地址卡沿用比較口語的稱呼，例如
+// 「瓦維爾皇家城堡」對到 venues.js 的 krakow-wawel-castle），note 是每個
+// call site 各自的當下提醒文字，不是地點本身的固定事實。
+const venueCard = (venueId, displayName, note = '') => {
+  const venue = venueAddress(venueId);
+  return {
+    name: displayName,
+    address: venue.address,
+    url: venue.url,
+    note,
+    reliable: Boolean(venue.officialUrl),
+    entranceNote: venue.officialUrl ? (venue.entranceNote || '抵達後依官網預約資訊與現場入口標示進入。') : '待班次、分店或現場集合點確認。',
+    officialUrl: venue.officialUrl || null,
+    stepLabels: addressStepLabels[displayName] || [],
+  };
+};
 
 export const dayOperations = {
   1: {
@@ -438,11 +394,11 @@ export const dayOperations = {
     entryIds: ['connectivity-prepaid-registration', 'aviation-missing-baggage', 'accommodation-confirmations'],
     note: '抵達後啟用網路、確認住宿地址與行李狀態。',
     addresses: [
-      address('華沙蕭邦機場', 'Żwirki i Wigury 1, 00-906 Warszawa', 'Warsaw Chopin Airport, Żwirki i Wigury 1, Warszawa', '抵達後依航站現場標示前往 SKM 月台。'),
-      address('Warszawa Centralna', 'al. Jerozolimskie 54, 00-024 Warszawa', 'Warszawa Centralna, al. Jerozolimskie 54, Warszawa'),
-      address('華沙皇家城堡', 'plac Zamkowy 4, 00-277 Warszawa', 'Royal Castle Warsaw, plac Zamkowy 4, Warszawa'),
-      address('華沙老城市場廣場', 'Rynek Starego Miasta, 00-272 Warszawa', 'Rynek Starego Miasta, Warszawa'),
-      address('Krakowskie Przedmieście', 'Krakowskie Przedmieście, Warszawa', 'Krakowskie Przedmiescie, Warszawa'),
+      venueCard('warsaw-chopin-airport', '華沙蕭邦機場', '抵達後依航站現場標示前往 SKM 月台。'),
+      venueCard('warsaw-centralna-station', 'Warszawa Centralna'),
+      venueCard('warsaw-royal-castle', '華沙皇家城堡'),
+      venueCard('warsaw-old-town-square', '華沙老城市場廣場'),
+      venueCard('warsaw-krakowskie-przedmiescie', 'Krakowskie Przedmieście'),
       accommodationAddress('warsaw-metropol-arrival', ['Hotel Metropol Check-in']),
     ],
     navigation: [
@@ -460,26 +416,26 @@ export const dayOperations = {
     entryIds: ['rail-trip-tickets', 'calendar-sunday-and-all-saints', 'accommodation-confirmations'],
     note: '非營業週日；火車班次與餐廳營業當日確認。',
     addresses: [
-      address('Warszawa Centralna', 'al. Jerozolimskie 54, 00-024 Warszawa', 'Warszawa Centralna, al. Jerozolimskie 54, Warszawa'),
-      address('Warszawa Zachodnia', 'Aleje Jerozolimskie 142A, 02-305 Warszawa', 'Warszawa Zachodnia, Aleje Jerozolimskie 142A, Warszawa'),
-      address('Kraków Główny', 'plac Jana Nowaka-Jeziorańskiego 3, 31-154 Kraków', 'Krakow Glowny, plac Jana Nowaka-Jezioranskiego 3, Krakow'),
-      address('瓦維爾大教堂', 'Wawel 3, 31-001 Kraków', 'Wawel Cathedral, Wawel 3, Krakow'),
-      address('瓦維爾皇家城堡', 'Wawel 5, 31-001 Kraków', 'Wawel Royal Castle, Wawel 5, Krakow'),
-      address('中央廣場 Rynek Główny', 'Rynek Główny, 31-042 Kraków', 'Rynek Glowny, Krakow'),
-      address('聖瑪利亞聖殿', 'plac Mariacki 5, 31-042 Kraków', 'St Mary Basilica, plac Mariacki 5, Krakow'),
-      address('紡織會館 Sukiennice', 'Rynek Główny 3, 31-042 Kraków', 'Sukiennice, Rynek Glowny 3, Krakow'),
-      address('辛德勒工廠', 'Lipowa 4, 30-702 Kraków', 'Oskar Schindler Enamel Factory, Lipowa 4, Krakow'),
-      address('Plac Nowy', 'Plac Nowy, 31-056 Kraków', 'Plac Nowy, Krakow'),
+      venueCard('warsaw-centralna-station', 'Warszawa Centralna'),
+      venueCard('warsaw-zachodnia-station', 'Warszawa Zachodnia'),
+      venueCard('krakow-glowny-station', 'Kraków Główny'),
+      venueCard('krakow-wawel-cathedral', '瓦維爾大教堂'),
+      venueCard('krakow-wawel-castle', '瓦維爾皇家城堡'),
+      venueCard('krakow-rynek-glowny', '中央廣場 Rynek Główny'),
+      venueCard('krakow-st-mary-basilica', '聖瑪利亞聖殿'),
+      venueCard('krakow-sukiennice', '紡織會館 Sukiennice'),
+      venueCard('krakow-schindler', '辛德勒工廠'),
+      venueCard('krakow-plac-nowy', 'Plac Nowy'),
       accommodationAddress('warsaw-metropol-arrival', ['退房後前往上車站']),
       accommodationAddress('krakow-stare-miasto', ['旅館寄放行李']),
     ],
     navigation: [
-      { mode: 'PKP', route: '華沙 → Kraków Główny', action: '目前採 EIP 5300 參考 08:45–10:58。現行班表本車先停 Warszawa Centralna（約 08:40）再停 Zachodnia（約 08:45），住宿改 Hotel Metropol 後由 Centralna 上車只需步行約 500 公尺；10/25 換表後核實實際停靠站，完成購票後只依票面車次、上車站、車廂與座位進站。' },
+      { mode: 'PKP', route: '華沙 → Kraków Główny', action: `目前採 EIP 5300 參考 ${eip5300.dep}–${eip5300.arr}。現行班表本車先停 Warszawa Centralna（約 08:40）再停 Zachodnia（約 ${eip5300.dep}），住宿改 Hotel Metropol 後由 Centralna 上車只需步行約 500 公尺；10/25 換表後核實實際停靠站，完成購票後只依票面車次、上車站、車廂與座位進站。` },
       { mode: '步行／市內交通', route: 'Kraków Główny → Wawel → Kazimierz → Podgórze → 辛德勒工廠', action: '先寄放行李；15:45 由老城出發，沿 Kazimierz、Podgórze 步行，17:10 前到辛德勒工廠。若延誤則用 Jakdojade 查即時市內交通。' },
     ],
     dailyAlerts: [
       '10/25 為非營業週日，多數一般商店關閉；餐廳與例外店家仍逐店確認。',
-      'EIP 5300 的 08:45–10:58 是參考班次；完成指定日核實與購票前，不把它當成已確定發車。',
+      `EIP 5300 的 ${eip5300.dep}–${eip5300.arr} 是參考班次；完成指定日核實與購票前，不把它當成已確定發車。`,
     ],
     nightChecklist: [...standardNightChecklist, '確認 Auschwitz 官方導覽姓名、入場時段、行李限制與往返車票狀態'],
   },
@@ -488,13 +444,13 @@ export const dayOperations = {
     entryIds: ['dining-reservation-and-backup', 'medical-insurance-and-emergency', 'daily-basics-krakow-water'],
     note: '長時間導覽日，保留補水、保暖與醫療聯絡卡。',
     addresses: [
-      address('Kraków MDA 客運站', 'Bosacka 18, 31-505 Kraków', 'MDA Bus Station Krakow, Bosacka 18, Krakow', 'Kraków Główny 後方步行約 5 分。官方售票頁顯示 10/26 的 07:10 班次由地下層 D10 發車（08:25 那班為 D9）；站位仍以當日電子看板為準。'),
-      address('Auschwitz I 訪客服務中心／入口', 'Więźniów Oświęcimia 55, 32-600 Oświęcim', 'Auschwitz I Visitor Service Center, Wiezniow Oswiecimia 55, Oswiecim'),
-      address('Auschwitz II–Birkenau', 'Ofiar Faszyzmu 12, 32-600 Brzezinka', 'Auschwitz II Birkenau, Ofiar Faszyzmu 12, Brzezinka'),
+      venueCard('krakow-mda-bus-station', 'Kraków MDA 客運站', `Kraków Główny 後方步行約 5 分。官方售票頁顯示 10/26 的 ${lajkonikOutboundAdopted.dep} 班次由地下層 ${lajkonikOutboundAdopted.bay} 發車（${lajkonikOutboundRejected.dep} 那班為 ${lajkonikOutboundRejected.bay}）；站位仍以當日電子看板為準。`),
+      venueCard('krakow-auschwitz-i-entrance', 'Auschwitz I 訪客服務中心／入口'),
+      venueCard('krakow-auschwitz-ii-birkenau', 'Auschwitz II–Birkenau'),
       accommodationAddress('krakow-stare-miasto'),
     ],
     navigation: [
-      { mode: 'Lajkonik 巴士', route: 'Kraków MDA ↔ Oświęcim Muzeum Auschwitz', action: '去程已於官方售票頁 lajkonikbus.pl 查得 10/26 班次：07:10 由 ul. Bosacka 18 的 D10 發車、08:35 抵 Więźniów Oświęcimia 55，1h25，全票 25.00 zł／優待 22.00 zł；當日另一班 08:25 → 09:50 只比 10:00 安檢截止早 10 分鐘，緩衝不足不採用。回程請在同站反向查 10/26 的 14:15 之後班次；13:45 與 14:00 都在導覽結束前開走。' },
+      { mode: 'Lajkonik 巴士', route: 'Kraków MDA ↔ Oświęcim Muzeum Auschwitz', action: `去程已於官方售票頁 lajkonikbus.pl 查得 10/26 班次：${lajkonikOutboundAdopted.dep} 由 ul. Bosacka 18 的 ${lajkonikOutboundAdopted.bay} 發車、${lajkonikOutboundAdopted.arr} 抵 Więźniów Oświęcimia 55，${lajkonikOutboundAdopted.dur}，全票 ${lajkonikFare.full} zł／優待 ${lajkonikFare.discount} zł；當日另一班 ${lajkonikOutboundRejected.dep} → ${lajkonikOutboundRejected.arr} 只比 10:00 安檢截止早 10 分鐘，緩衝不足不採用。回程請在同站反向查 10/26 的 14:15 之後班次；13:45 與 14:00 都在導覽結束前開走。` },
       { mode: '導覽接駁', route: 'Auschwitz I → Birkenau', action: '參加官方導覽時依當日工作人員指示搭接駁車，不自行跳過集合點。' },
     ],
     dailyAlerts: [
@@ -508,11 +464,11 @@ export const dayOperations = {
     entryIds: ['luggage-storage-transition', 'rail-trip-tickets', 'accessibility-station-assistance'],
     note: '退房後先確認行李寄放，再依實際 PKP 班次轉場。',
     addresses: [
-      address('Kraków Główny', 'plac Jana Nowaka-Jeziorańskiego 3, 31-154 Kraków', 'Krakow Glowny, plac Jana Nowaka-Jezioranskiego 3, Krakow'),
-      address('維利奇卡鹽礦', 'Daniłowicza 10, 32-020 Wieliczka', 'Wieliczka Salt Mine, Danilowicza 10, Wieliczka'),
-      address('Plac Nowy', 'Plac Nowy, 31-056 Kraków', 'Plac Nowy, Krakow'),
-      address('紡織會館 Sukiennice', 'Rynek Główny 3, 31-042 Kraków', 'Sukiennice, Rynek Glowny 3, Krakow'),
-      address('Wrocław Główny', 'Piłsudskiego 105, 50-085 Wrocław', 'Wroclaw Glowny, Pilsudskiego 105, Wroclaw'),
+      venueCard('krakow-glowny-station', 'Kraków Główny'),
+      venueCard('krakow-wieliczka', '維利奇卡鹽礦'),
+      venueCard('krakow-plac-nowy', 'Plac Nowy'),
+      venueCard('krakow-sukiennice', '紡織會館 Sukiennice'),
+      venueCard('wroclaw-glowny-station', 'Wrocław Główny'),
       accommodationAddress('krakow-stare-miasto', ['早餐 + 退房', '結束 Kazimierz 散步，回 ibis 取行李']),
       accommodationAddress('wroclaw-piast'),
     ],
@@ -531,12 +487,12 @@ export const dayOperations = {
     entryIds: ['luggage-storage-transition', 'rail-trip-tickets', 'daily-basics-wroclaw-water'],
     note: '高強度轉場日；晚間先充電並下載隔日資料。',
     addresses: [
-      address('Wrocław Główny', 'Piłsudskiego 105, 50-085 Wrocław', 'Wroclaw Glowny, Pilsudskiego 105, Wroclaw'),
-      address('拉茨瓦維採全景畫', 'Jana Ewangelisty Purkyniego 11, 50-155 Wrocław', 'Panorama Raclawicka, Purkyniego 11, Wroclaw'),
-      address('百年廳', 'Wystawowa 1, 51-618 Wrocław', 'Centennial Hall, Wystawowa 1, Wroclaw'),
-      address('樂斯拉夫中央廣場', 'Rynek, 50-101 Wrocław', 'Rynek, Wroclaw'),
-      address('樂斯拉夫主教座堂', 'plac Katedralny 18, 50-329 Wrocław', 'Wroclaw Cathedral, plac Katedralny 18, Wroclaw'),
-      address('Poznań Główny', 'Dworcowa 2, 61-801 Poznań', 'Poznan Glowny, Dworcowa 2, Poznan'),
+      venueCard('wroclaw-glowny-station', 'Wrocław Główny'),
+      venueCard('wroclaw-panorama', '拉茨瓦維採全景畫'),
+      venueCard('wroclaw-hala-stulecia', '百年廳'),
+      venueCard('wroclaw-rynek', '樂斯拉夫中央廣場'),
+      venueCard('wroclaw-cathedral', '樂斯拉夫主教座堂'),
+      venueCard('poznan-glowny-station', 'Poznań Główny'),
       accommodationAddress('wroclaw-piast', ['座堂島結束後回 Piast 取行李']),
       accommodationAddress('poznan-towarowa'),
     ],
@@ -555,13 +511,13 @@ export const dayOperations = {
     entryIds: ['luggage-storage-transition', 'rail-trip-tickets', 'dining-reservation-and-backup'],
     note: '城際火車與華沙住宿均以離線地址備援。',
     addresses: [
-      address('Poznań Główny', 'Dworcowa 2, 61-801 Poznań', 'Poznan Glowny, Dworcowa 2, Poznan'),
-      address('波茲南主教座堂', 'Ostrów Tumski 17, 61-109 Poznań', 'Poznan Cathedral, Ostrow Tumski 17, Poznan'),
-      address('波茲南市政廳', 'Stary Rynek 1, 61-768 Poznań', 'Poznan Town Hall, Stary Rynek 1, Poznan', '博物館整修閉館，此地點用於 12:00 山羊鐘樓秀外觀。'),
-      address('牛角麵包博物館', 'Stary Rynek 41/2, 61-772 Poznań', 'Klasztorna 23, 61-779 Poznan', '官方標示實際入口在 Klasztorna 23；10/29 英語場仍須從售票頁確認。'),
-      address('帝王城堡', 'Święty Marcin 80/82, 61-809 Poznań', 'Zamek Culture Centre, Swiety Marcin 80 82, Poznan'),
-      address('Stary Browar', 'Półwiejska 42, 61-888 Poznań', 'Stary Browar, Polwiejska 42, Poznan'),
-      address('Warszawa Centralna', 'al. Jerozolimskie 54, 00-024 Warszawa', 'Warszawa Centralna, al. Jerozolimskie 54, Warszawa'),
+      venueCard('poznan-glowny-station', 'Poznań Główny'),
+      venueCard('poznan-cathedral', '波茲南主教座堂'),
+      venueCard('poznan-town-hall', '波茲南市政廳', '博物館整修閉館，此地點用於 12:00 山羊鐘樓秀外觀。'),
+      venueCard('poznan-croissant-museum', '牛角麵包博物館', '官方標示實際入口在 Klasztorna 23；10/29 英語場仍須從售票頁確認。'),
+      venueCard('poznan-ck-zamek', '帝王城堡'),
+      venueCard('poznan-stary-browar', 'Stary Browar'),
+      venueCard('warsaw-centralna-station', 'Warszawa Centralna'),
       accommodationAddress('poznan-towarowa'),
       accommodationAddress('warsaw-metropol'),
     ],
@@ -580,10 +536,10 @@ export const dayOperations = {
     entryIds: ['calendar-sunday-and-all-saints', 'dining-reservation-and-backup', 'emergency-taiwan-representative'],
     note: '諸聖節前夕，逐店確認晚餐與交通；離線備妥 SOS 卡。',
     addresses: [
-      address('華沙皇家城堡', 'plac Zamkowy 4, 00-277 Warszawa', 'Royal Castle Warsaw, plac Zamkowy 4, Warszawa'),
-      address('華沙老城市場廣場', 'Rynek Starego Miasta, 00-272 Warszawa', 'Rynek Starego Miasta, Warszawa'),
-      address('POLIN 波蘭猶太人歷史博物館', 'Mordechaja Anielewicza 6, 00-157 Warszawa', 'POLIN Museum, Mordechaja Anielewicza 6, Warszawa'),
-      address('華沙起義博物館', 'Grzybowska 79, 00-844 Warszawa', 'Warsaw Rising Museum, Grzybowska 79, Warszawa'),
+      venueCard('warsaw-royal-castle', '華沙皇家城堡'),
+      venueCard('warsaw-old-town-square', '華沙老城市場廣場'),
+      venueCard('warsaw-polin', 'POLIN 波蘭猶太人歷史博物館'),
+      venueCard('warsaw-rising-museum', '華沙起義博物館'),
       accommodationAddress('warsaw-metropol'),
     ],
     navigation: [
@@ -602,10 +558,10 @@ export const dayOperations = {
     note: '離開 EU 前處理退稅；託運商品若需查驗，先完成海關程序。',
     addresses: [
       accommodationAddress('warsaw-metropol'),
-      address('華沙老城市場廣場', 'Rynek Starego Miasta, 00-272 Warszawa', 'Rynek Starego Miasta, Warszawa'),
-      address('Warszawa Centralna', 'al. Jerozolimskie 54, 00-024 Warszawa', 'Warszawa Centralna, al. Jerozolimskie 54, Warszawa'),
-      address('華沙蕭邦機場', 'Żwirki i Wigury 1, 00-906 Warszawa', 'Warsaw Chopin Airport, Żwirki i Wigury 1, Warszawa'),
-      address('駐波蘭台北代表處', '30th Floor, Ul. Emilii Plater 53, 00-113 Warsaw, Poland', 'Taipei Representative Office in Poland, Emilii Plater 53, Warszawa', '僅供緊急狀況備援，不列為一般行程站點。'),
+      venueCard('warsaw-old-town-square', '華沙老城市場廣場'),
+      venueCard('warsaw-centralna-station', 'Warszawa Centralna'),
+      venueCard('warsaw-chopin-airport', '華沙蕭邦機場'),
+      venueCard('taipei-representative-office-warsaw', '駐波蘭台北代表處', '僅供緊急狀況備援，不列為一般行程站點。'),
     ],
     navigation: [
       { mode: 'SKM', route: '華沙市中心 → 蕭邦機場', action: '當日查 WTP 即時發車、月台與改道；如要退稅或託運商品查驗，比一般報到更早抵達。' },
@@ -634,7 +590,7 @@ const unresolvedStepReasons = {
     '步行經 Kazimierz、Podgórze 前往辛德勒工廠': '步行沿途短停保持彈性；以辛德勒工廠入口地址為終點，17:10 前到場。',
   },
   3: {
-    'Kraków MDA 報到': '巴士站地址（Bosacka 18）與 10/26 的 07:10 班次已在官方售票頁查得，售票頁標示由地下層 D10 發車；站位仍以當日電子看板為準，尚未購票。',
+    'Kraków MDA 報到': `巴士站地址（Bosacka 18）與 10/26 的 ${lajkonikOutboundAdopted.dep} 班次已在官方售票頁查得，售票頁標示由地下層 ${lajkonikOutboundAdopted.bay} 發車；站位仍以當日電子看板為準，尚未購票。`,
     'Lajkonik · 克拉科夫 → 奧斯威辛': dynamicTransitReason,
     '回程巴士返克拉科夫': '導覽 14:15 結束後才發車，實際班次依當日選定的回程選項；上車點與時刻在售票頁確認後再導航。',
     '抵 Kraków MDA · 休息': '抵達後的休息地點保持彈性，不需要固定導航地址。',

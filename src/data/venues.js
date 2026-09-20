@@ -1,51 +1,34 @@
-// venues.js — 景點主檔（精煉切片 4a）。
+// venues.js — 景點與地點主檔（精煉切片 4a／4b）。
 //
-// 這裡以前分四份平行表各存一次同一批景點事實：tickets.js 的 fares（票價與說明）、
-// ticketsByCity（城市分組的行程摘要短句）、venueHours（給 tools/audit-schedule.mjs
-// 用的結構化開放時間），以及 cities.js attractions[].priceNote（城市頁的自由文字）。
-// 四份各自手key，改一個字要記得改四處，實際上常常漏改（見 data-audit.md §2-D）。
-//
-// 這裡先把 fares／venueHours 收斂成單一主檔；tickets.js 的三個 export 改成
-// 由這裡推導，export 名稱與模板消費端暫不動。cities.js attractions 的收斂留給
-// 切片 4b（那邊還要動 travel-database.js 的地址、day-maps.js 的圖釘）。
+// 4a：把 tickets.js 的 fares／ticketsByCity／venueHours 三份平行表收斂成這裡的
+// 票券景點清單（見下方各筆 prices／hours）。
+// 4b：再把 travel-database.js 的 officialPlaceUrls／entranceNotesByName／
+// address() 呼叫參數，以及 day-maps.js 部分補充圖釘的座標，併進同一份主檔
+// ——car站、街道廣場、教堂、代表處這類「有地址但沒有票價」的地點沒有
+// prices／hours，其餘欄位（address／officialUrl／entranceNote／map／coords）
+// 與票券景點共用同一套 schema，讓 src/lib/venues.mjs 的 resolveVenue／
+// venueAddress 對任何 id 都適用。
 //
 // 欄位：
-//   id          venueHours 原本的 slug，穩定識別碼
-//   cityKey     WAW／KRK／WRO／POZ
-//   name        「城市 · 景點名」，與原 fares[].name 一致（維持 dist 輸出不變）
-//   map         Google Maps 定位連結（原 fares[].mapUrl）
-//   officialUrl 官方頁面
-//   address     街道地址；4a 階段不整併地址（那是切片 4b 的範圍），先留 null
-//   prices      { full, discount, note }——note 是原 fares[].note 的完整查證文字
-//   hours       { opens, closes, lastEntry, closedWeekdays, checkedAt, sourceRef, note }
-//               只在原本就有 venueHours 結構化資料的場館才有值，其餘留 null——
-//               沒查到開放時間結構就是沒查到，不用常識補（沿用原 tickets.js 的方法論）
-//   checkedAt   最近一次查證日；來源本身沒帶日期就是 null
-//   quickNote   原 ticketsByCity 該筆的行程摘要短句；沒有對應項目就是 null
+//   id／cityKey／name／map／officialUrl  同 4a
+//   address      街道地址；無來源留 null
+//   entranceNote 現場怎麼進入（原 travel-database.js 的 entranceNotesByName）
+//   coords       [lat, lng]；只有 day-maps.js 原本就有補充圖釘座標的地點才填，
+//                其餘留 null——沒有查證來源不用官方地址反推座標
+//   prices／hours 只有票券景點才有（4a 建立的 23 筆），純地址地標一律 null
+//   checkedAt／quickNote／shortLabel  同 4a，純地址地標一律 null
 //
-// 矛盾修正（見 data-audit.md §3）：
-//   #11 辛德勒工廠：fares.note 已有 2026-09-18 官網查證的完整時段，但原本
-//        venueHours 結構化欄位仍是 null——等於敘述說查過、結構卻沒填。兩邊同一
-//        個來源，這裡把 hours.opens/closes 補上，不是另外猜測。
-//   #12 Wawel 步驟對錯場館：trip.js Day 2「★ Wawel 城堡短路線」的文字描述是
-//        「寶庫或地下路線」，但原本 constraint.venue 指向的是二樓代表廳
-//        （krakow-wawel-castle，57／43、末入 16:10）；已在 trip.js 改指
-//        krakow-wawel-treasury（47／35、末入 16:20），與步驟文字和 cost 一致。
-//   #5 POLIN 公休日：cities.js 的 priceNote 寫「週二休」，但站內只查得到週五
-//        時段、查無公休日的官方紀錄（見下方 warsaw-polin 的 hours.note）。兩邊
-//        都沒有一份「官方公休日」的來源可引用，不屬於「報告已指明哪邊對」的情況；
-//        依指示保留現狀（hours.closedWeekdays 留空，不猜週二），cities.js 那句
-//        未經查證的「週二休」留到切片 4b 改用 venueId 渲染時一併拿掉。
-//
-// 新增 warsaw-polin、warsaw-rising-museum 兩筆：這兩個場館原本只存在於
-// ticketsByCity 與 venueHours，fares／門票速查頁完全沒有這兩列，使用者在
-// 門票速查頁看不到華沙這兩個景點的票價資訊。
+// 精煉切片 4b 修的殘留：Kraków MDA 客運站的 officialUrl 原本就是 null
+// （travel-database.js 裡這筆的 reliable:false），這裡照樣保留 null，不去
+// 網路補一個沒查證過的官網。
 export const venues = {
   'warsaw-royal-castle': {
     id: "warsaw-royal-castle", cityKey: "WAW", name: "華沙 · 皇家城堡",
     map: "https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20%E7%9A%87%E5%AE%B6%E5%9F%8E%E5%A0%A1",
     officialUrl: "https://www.zamek-krolewski.pl/en/strona/opening-hours-and-ticket-prices/2801-opening-hours-and-ticket-prices-may-2-2026",
-    address: null,
+    address: "plac Zamkowy 4, 00-277 Warszawa",
+    entranceNote: "主要訪客入口在 plac Zamkowy 4；依票券時段與現場安檢標示入場。",
+    coords: null,
     prices: { full: "60／95", discount: "45／75", note: "2026-08-11 官網查證：二–日 10:00–18:00、最後入場 17:00；Royal Route 60／45（約 60 分）、Castle Route 95／75（約 150 分，含語音導覽）；週三免費但只走限定路線、現場領票且數量有限，語音導覽另收 10" },
     hours: {
       opens: "10:00", closes: "18:00", lastEntry: "17:00",
@@ -62,6 +45,8 @@ export const venues = {
     map: "https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20%E7%A7%91%E5%AD%B8%E6%96%87%E5%8C%96%E5%AE%AE%E8%A7%80%E6%99%AF%E5%8F%B0",
     officialUrl: "https://pkin.pl/taras-widokowy/o-tarasie-widokowym/",
     address: null,
+    entranceNote: null,
+    coords: null,
     prices: { full: "30", discount: "25", note: "2026-09-18 官方售票系統（bilety.pkin.pl）查證：全票 30、優待 25 PLN（10 人以上團體全票 22）；線上票自購買日起 12 個月有效。每日 10:00–20:00、售票口同開放時間；不接受事前預約，現場售票最多可買到 7 天後的場次。觀景台在 30 樓、114 m，電梯 19 秒；夜間場（20:00–24:00、35 PLN、只收信用卡、僅大廳自動售票機販售）只在週五六且只到 9 月底，10 月不適用；11/1 閉館" },
     hours: {
       opens: "10:00", closes: "20:00", lastEntry: null,
@@ -78,6 +63,8 @@ export const venues = {
     map: "https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20Neon%20%E9%9C%93%E8%99%B9%E5%8D%9A%E7%89%A9%E9%A4%A8",
     officialUrl: "https://www.neonmuzeum.org/",
     address: null,
+    entranceNote: null,
+    coords: null,
     prices: { full: "25", discount: "18", note: "科學文化宮 4 樓；一–四 11:00–18:00、五–六至 19:00、日 11:00–18:00" },
     hours: null,
     checkedAt: null,
@@ -89,6 +76,8 @@ export const venues = {
     map: "https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20MSN%20%E7%95%B6%E4%BB%A3%E7%BE%8E%E8%A1%93%E9%A4%A8",
     officialUrl: "https://artmuseum.pl/en/visit",
     address: null,
+    entranceNote: null,
+    coords: null,
     prices: { full: "40", discount: "30", note: "二–四／六 11:00–19:00、五至 20:00、日至 18:00；18:00 後 25／15，Gallery A 免費" },
     hours: null,
     checkedAt: null,
@@ -100,6 +89,8 @@ export const venues = {
     map: "https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20%E6%B3%A2%E8%98%AD%E6%AD%B7%E5%8F%B2%E5%8D%9A%E7%89%A9%E9%A4%A8%20Warszawa",
     officialUrl: "https://muzhp.pl/en/about-museum",
     address: null,
+    entranceNote: null,
+    coords: null,
     prices: { full: "以官網", discount: "—", note: "華沙城堡區新館已於 2023 開館；常設展仍在建置，先查當期臨展" },
     hours: null,
     checkedAt: null,
@@ -111,6 +102,8 @@ export const venues = {
     map: "https://www.google.com/maps/search/?api=1&query=%E8%8F%AF%E6%B2%99%20E.Wedel%20Warszawa",
     officialUrl: "https://fabrykaczekolady.pl/en/",
     address: null,
+    entranceNote: null,
+    coords: null,
     prices: { full: "70", discount: "55", note: "2026-09-18 官網英文版查證：導覽個人票全票 70、優待 55、家庭票 59／人（另有工作坊 95／80，工作坊票不含導覽）· al. Emila Wedla 5（近 Warszawa Wschodnia 站，入口在 Kamionkowskie 湖畔）· 一–日 10:00–20:00 · 導覽 90 分鐘、分組跟導覽員，官方要求準時 · 官網明列英語導覽場只在週一與週五，本行程唯一可用的是 10/30（五）· 官方建議線上購票；退票為導覽前 3 天、工作坊前 7 天" },
     hours: null,
     checkedAt: null,
@@ -122,6 +115,8 @@ export const venues = {
     map: "https://www.google.com/maps/search/?api=1&query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20Wawel%20%E7%8E%8B%E5%86%A0%E5%AF%B6%E5%BA%AB",
     officialUrl: "https://wawel.krakow.pl/",
     address: null,
+    entranceNote: null,
+    coords: null,
     prices: { full: "47", discount: "35", note: "2026-09-17 官網查證（9–12 月）：二–日 09:00–17:00、最後入場為閉館前 40 分（約 16:20），47／35 PLN。皇家花園季節開放只到 10/4，10/25 票券不含花園。官網另載 10–12 月週一有限定路線的免費場、數量有限，10/25 是週日不適用，若要改排週一須先在官方售票頁確認" },
     hours: {
       opens: "09:00", closes: "17:00", lastEntry: "16:20",
@@ -137,7 +132,9 @@ export const venues = {
     id: "krakow-wawel-castle", cityKey: "KRK", name: "克拉科夫 · Wawel 城堡一、二樓",
     map: "https://www.google.com/maps/search/?api=1&query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20Wawel%20%E5%9F%8E%E5%A0%A1",
     officialUrl: "https://wawel.krakow.pl/en/what-to-see",
-    address: null,
+    address: "Wawel 5, 31-001 Kraków",
+    entranceNote: "先到 Wawel Hill 訪客服務／票券標示處，再依已購路線入口入場。",
+    coords: null,
     prices: { full: "57", discount: "43", note: "2026-09-17 官網查證（9–12 月）：二–日 09:00–17:00、最後入場為閉館前 50 分（約 16:10）。官網此季分路線售票，「Castle 2nd floor（代表廳＋鄂圖曼土耳其帳篷）」57／43；同季另有 Castle Underground 47／35（含語音導覽）、Armoury 47／35。官網未列 95／71 的一、二樓整合套票，需要合併路線請以官方售票系統 bilety.wawel.krakow.pl 當日顯示為準" },
     hours: {
       opens: "09:00", closes: "17:00", lastEntry: "16:10",
@@ -153,7 +150,9 @@ export const venues = {
     id: "krakow-schindler", cityKey: "KRK", name: "克拉科夫 · 辛德勒工廠",
     map: "https://www.google.com/maps/search/?api=1&query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20%E8%BE%9B%E5%BE%B7%E5%8B%92%E5%B7%A5%E5%BB%A0",
     officialUrl: "https://muzeumkrakowa.pl/oddzialy/fabryka-emalia-oskara-schindlera",
-    address: null,
+    address: "Lipowa 4, 30-702 Kraków",
+    entranceNote: "導航至 Lipowa 4，依 Museum of Kraków 入口與已購時段排隊。",
+    coords: null,
     prices: { full: "60", discount: "45", note: "2026-09-18 克拉科夫博物館官網查證：ul. Lipowa 4 · 週一 10:00–15:00、二–日 09:00–20:00，每月第一個週二休館、最後入場為閉館前 90 分（10/25 是週日，09:00–20:00）· 全票 60 PLN（官網價目另列 Karta Kraków dla Rodziny 30／22.5，即全票與優待 45 的半價）· 英語個人導覽場二–日 10:00、12:00、16:00，英語固定導覽票 90／75 · 常設展線上票一律實名，入場須帶與購票同名的證件正本；線上開賣為參觀日前 90 天，團體票 08:00 起、個人票 09:00 起 · 週一免費入場（免費日不能預約、現場限量）· 官方近期休館日含 10/6、11/1、11/3、11/11，本行程日期不受影響" },
     hours: {
       opens: "09:00", closes: "20:00", lastEntry: "18:30",
@@ -169,7 +168,9 @@ export const venues = {
     id: "krakow-wieliczka", cityKey: "KRK", name: "克拉科夫 · 維利奇卡鹽礦",
     map: "https://www.google.com/maps/search/?api=1&query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20%E7%B6%AD%E5%88%A9%E5%A5%87%E5%8D%A1%E9%B9%BD%E7%A4%A6%20Wieliczka",
     officialUrl: "https://www.wieliczka-saltmine.com/individual-tourist/useful-information/ticket-prices-and-visiting-hours",
-    address: null,
+    address: "Daniłowicza 10, 32-020 Wieliczka",
+    entranceNote: "Tourist Route 從 Daniłowicz Shaft（Daniłowicza 10）集合入場。",
+    coords: [49.98348,20.05477],
     prices: { full: "日期選擇器", discount: "日期選擇器", note: "2026-09-18 官網複查：票價與場次頁只有 JavaScript 日期選擇器，靜態頁讀不到指定日數字，10/27 英語場的票價、時刻與庫存仍須在官網選日期確認（先前查得旅遊路線全票 143／優待 121）· 官方註記「非波蘭語與英語的導覽才強制事先線上購票」，英語場可現場購票但受庫存限制 · 官方唯一售票通道是 bilety.kopalnia.pl 與礦區售票口／售票機，官網聲明不與任何外部平台或中介合作 · 集合點 Szyb Daniłowicz（ul. Daniłowicza 10）官方 GPS 49.98348°N／20.05477°E · 全程約 2–3 小時、地下 17–18ºC、路線 3.5 km、下探 135 m、超過 800 級階梯" },
     hours: null,
     checkedAt: null,
@@ -181,6 +182,8 @@ export const venues = {
     map: "https://www.google.com/maps/search/?api=1&query=%E5%85%8B%E6%8B%89%E7%A7%91%E5%A4%AB%20%E5%A5%A7%E6%96%AF%E5%A8%81%E8%BE%9B%20O%C5%9Bwi%C4%99cim",
     officialUrl: "https://www.auschwitz.org/en/visiting/guided-tours-for-individual-visitors/",
     address: null,
+    entranceNote: null,
+    coords: null,
     prices: { full: "依訂票頁", discount: "依資格", note: "所有入場證僅能線上取得；10 月 07:30–16:00 只能跟官方導覽，16:00 後才有免費自導時段" },
     hours: null,
     checkedAt: null,
@@ -192,6 +195,8 @@ export const venues = {
     map: "https://www.google.com/maps/search/?api=1&query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20Afrykarium%EF%BC%8F%E5%8B%95%E7%89%A9%E5%9C%92",
     officialUrl: "https://zoo.wroclaw.pl/en/prices/",
     address: null,
+    entranceNote: null,
+    coords: null,
     prices: { full: "線上 69 起／現場 99", discount: "線上 59 起／現場 89", note: "2026-09-17 官方票價頁查證：全票線上 69 zł 起、售票口 99 zł；優待票線上 59 zł 起、售票口 89 zł。採動態定價，「起」價會隨日期變動，指定日以官方售票頁為準 · 2026-09-19 官方開放時間複核：10 月一–四入園 09:00–16:00、館舍至 16:45、戶外與 Afrykarium 至 17:00；五–日及假日入園至 17:00、館舍至 17:45、戶外與 Afrykarium 至 18:00 · 入園票已含 Afrykarium，不需另購" },
     hours: {
       opens: "09:00", closes: "17:00", lastEntry: "16:00",
@@ -207,7 +212,9 @@ export const venues = {
     id: "wroclaw-panorama", cityKey: "WRO", name: "樂斯拉夫 · Panorama Racławicka",
     map: "https://www.google.com/maps/search/?api=1&query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20Panorama%20Rac%C5%82awicka",
     officialUrl: "https://mnwr.pl/",
-    address: null,
+    address: "Jana Ewangelisty Purkyniego 11, 50-155 Wrocław",
+    entranceNote: "由 Purkyniego 11 主入口依已購時段入場。",
+    coords: [51.110187,17.044488],
     prices: { full: "50", discount: "35", note: "官網優待價已補上" },
     hours: null,
     checkedAt: null,
@@ -218,7 +225,9 @@ export const venues = {
     id: "wroclaw-hala-stulecia", cityKey: "WRO", name: "樂斯拉夫 · 百年廳 Visitor Centre",
     map: "https://www.google.com/maps/search/?api=1&query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20%E7%99%BE%E5%B9%B4%E5%BB%B3",
     officialUrl: "https://halastulecia.pl/zwiedzanie/visitor-centre/",
-    address: null,
+    address: "Wystawowa 1, 51-618 Wrocław",
+    entranceNote: "本日只看外觀與周邊；如臨時改入室內，使用 Wystawowa 1 訪客中心入口。",
+    coords: null,
     prices: { full: "25", discount: "20", note: "2026-09-18 官網查證：夏季（4–10 月）二–日 10:00–18:00、冬季（11–3 月）二–日 10:00–17:00；多媒體展全票 25／優待 20、家庭票 45，加看百年廳內部（看台視角）為 30／25、家庭票 55。10 人以下散客不需預約，只有 10 人以上團體要事先訂位 · 內部開放依官方 availability calendar 分四色：綠＝展覽與廳內看台都可看、藍＝部分時段廳內不開放但展覽可看、黃＝不能進到圓頂正下方但展覽可看、紅＝展覽與廳內都關閉；10/28 是哪一色須在官網日曆當日確認" },
     hours: {
       opens: "10:00", closes: "18:00", lastEntry: null,
@@ -235,6 +244,8 @@ export const venues = {
     map: "https://www.google.com/maps/search/?api=1&query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20Hydropolis",
     officialUrl: "https://bilety.hydropolis.pl/cennik.html?lang=en",
     address: null,
+    entranceNote: null,
+    coords: null,
     prices: { full: "45", discount: "36", note: "2026-08-11 官網查證：週末及假日為 47／38 PLN；指定日期入場名額以官方售票頁為準" },
     hours: null,
     checkedAt: null,
@@ -246,6 +257,8 @@ export const venues = {
     map: "https://www.google.com/maps/search/?api=1&query=%E6%A8%82%E6%96%AF%E6%8B%89%E5%A4%AB%20Kolejkowo",
     officialUrl: "https://kolejkowo.pl/wroclaw/en/price-list/",
     address: null,
+    entranceNote: null,
+    coords: null,
     prices: { full: "線上 39 起／現場 55 起", discount: "線上 33 起／現場 45 起", note: "2026-08-12 官網查證：票價為起價，指定日期與線上庫存以官方售票頁為準 · Sky Tower 1 樓（Powstańców Śląskich 95）· 全年 365 天開放含非營業週日，每日 10:00 起、關門時間依官方日期日曆 · 參觀約 1.5 h" },
     hours: null,
     checkedAt: null,
@@ -257,6 +270,8 @@ export const venues = {
     map: "https://www.google.com/maps/search/?api=1&query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20Palmiarnia%20%E6%A3%95%E6%AB%9A%E5%B1%8B",
     officialUrl: "https://palmiarnia.poznan.pl/zwiedzanie/godziny-otwarcia/",
     address: null,
+    entranceNote: null,
+    coords: null,
     prices: { full: "暫時閉館", discount: "—", note: "2026-09-18 再次複查，公告未變（原查證 2026-09-17）：整站首頁為「ZAMKNIĘCIE PALMIARNI」公告——因現代化與改建工程對外暫時閉館，官方只說重開與參觀方式會在官方管道公告（另指向 pim.poznan.pl），未給任何重開日期。本行程 10/29 不排入，也不再作為雨天室內備案；舊的 19／15 PLN 與二–五 09:00–17:00 規則已失效" },
     hours: {
       opens: null, closes: null, lastEntry: null,
@@ -272,7 +287,9 @@ export const venues = {
     id: "poznan-croissant-museum", cityKey: "POZ", name: "波茲南 · 可頌博物館",
     map: "https://www.google.com/maps/search/?api=1&query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20%E5%8F%AF%E9%A0%8C%E5%8D%9A%E7%89%A9%E9%A4%A8",
     officialUrl: "https://rogalowemuzeum.pl/en/buy-tickets/",
-    address: null,
+    address: "Stary Rynek 41/2, 61-772 Poznań",
+    entranceNote: "地址為 Stary Rynek 41/2，實際入口在 Klasztorna 23；請於場次開始前 10 分鐘報到。",
+    coords: null,
     prices: { full: "英語公開場 47", discount: "未滿 3 歲 1", note: "2026-09-17 官網查證：英語公開場 47 PLN／人（滿 3 歲起）、未滿 3 歲 1 PLN；2026-09-18 官方售票頁複查開放時間為日–五（Nd-Pt）11:00–15:30、六 11:00–17:00，官方註明這是第一場與最後一場「開演」時間，入口在 Klasztorna 23、售票口於開演前 15 分開放、館內約 50 人上限。10/29（週四）是否有英語場、開演時刻與庫存一律以官方售票頁當日顯示為準——不可預設 13:30 有場，未顯示日期也不等於售罄" },
     hours: null,
     checkedAt: null,
@@ -283,7 +300,9 @@ export const venues = {
     id: "poznan-ck-zamek", cityKey: "POZ", name: "波茲南 · 帝王城堡",
     map: "https://www.google.com/maps/search/?api=1&query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20%E5%B8%9D%E7%8E%8B%E5%9F%8E%E5%A0%A1",
     officialUrl: "https://ckzamek.pl/podstrony/6071-zwiedzanie-zamku/",
-    address: null,
+    address: "Święty Marcin 80/82, 61-809 Poznań",
+    entranceNote: "由 Święty Marcin 80/82 依 CK Zamek 訪客標示進入。",
+    coords: [52.407808,16.919214],
     prices: { full: "地圖 10／語音導覽 20", discount: "地圖 7／語音導覽 15", note: "2026-09-17 官網查證：一–日 12:00–19:00、售票至 18:00；附地圖摺頁自行參觀 10／7 PLN，語音導覽 20／15 PLN，導覽機最晚 18:00 發放、19:00 前歸還（也可改用語音導覽存取碼，需自備手機與耳機）。這裡是 CK ZAMEK 文化中心而非宮殿博物館，可參觀空間仍依當日活動而定" },
     hours: {
       opens: "12:00", closes: "19:00", lastEntry: "18:00",
@@ -300,6 +319,8 @@ export const venues = {
     map: "https://www.google.com/maps/search/?api=1&query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20%E5%8F%A4%E5%B8%82%E6%94%BF%E5%BB%B3%E5%8D%9A%E7%89%A9%E9%A4%A8",
     officialUrl: "https://www.msu.mnp.art.pl/profile/wizyta-ratusz-muzeum-poznania",
     address: null,
+    entranceNote: null,
+    coords: null,
     prices: { full: "閉館中", discount: "—", note: "整修中；官方預計 2027 年底至 2028 年初才全面重開" },
     hours: null,
     checkedAt: null,
@@ -311,6 +332,8 @@ export const venues = {
     map: "https://www.google.com/maps/search/?api=1&query=%E6%B3%A2%E8%8C%B2%E5%8D%97%20%E8%80%83%E5%8F%A4%E5%8D%9A%E7%89%A9%E9%A4%A8",
     officialUrl: "https://nowa.muzarp.poznan.pl/pl/bilety",
     address: null,
+    entranceNote: null,
+    coords: null,
     prices: { full: "15", discount: "10", note: "2026-09-18 官方票價頁查證：本館（Pałac Górków，ul. Wodna 27）常設展全票 15、優待 10、家庭票 40（最多 6 人）、10 人以上團體 10／人；與 Genius loci 考古保護區的聯票 25／15、家庭票 70。官方明列「每週二免費入場」——10/29 是週四不適用。學期季（9/1–6/30）開放時間二–四 09:00–16:00、五 10:00–17:00、六 11:00–18:00、日 12:00–16:00。2026-09-17 記錄的舊值 10／6 已確認過時，外傳的 15／10 與 25／15 則與官方一致" },
     hours: null,
     checkedAt: null,
@@ -321,7 +344,9 @@ export const venues = {
     id: "warsaw-polin", cityKey: "WAW", name: "華沙 · POLIN 猶太歷史博物館",
     map: "https://maps.google.com/?cid=16292574584610500784",
     officialUrl: "https://polin.pl/en",
-    address: null,
+    address: "Mordechaja Anielewicza 6, 00-157 Warszawa",
+    entranceNote: "由 Mordechaja Anielewicza 6 主入口依票券與安檢標示進入。",
+    coords: null,
     prices: { full: "依官方售票頁", discount: "—", note: "週五 10:00–18:00，主展最後入場為閉館前 2 小時。每週公休日站內尚無查證資料，行前須另行確認。" },
     hours: {
       opens: "10:00", closes: "18:00", lastEntry: "16:00",
@@ -337,7 +362,9 @@ export const venues = {
     id: "warsaw-rising-museum", cityKey: "WAW", name: "華沙 · 華沙起義博物館",
     map: "https://maps.google.com/?cid=12215511195580548645",
     officialUrl: "https://www.1944.pl/en/article/visit-us,4993.html",
-    address: null,
+    address: "Grzybowska 79, 00-844 Warszawa",
+    entranceNote: "由 Grzybowska 79 訪客入口依已購時段進場。",
+    coords: null,
     prices: { full: "35", discount: "30", note: "2026-09-17 官網查證：一、三、四、五 08:00–18:00，二休館，六日 10:00–18:00；售票至閉館前 30 分。本行程 10/30 是週五，適用 08:00–18:00。週四免費入場。" },
     hours: {
       opens: "08:00", closes: "18:00", lastEntry: "17:30",
@@ -348,6 +375,292 @@ export const venues = {
     checkedAt: "2026-09-17",
     quickNote: "PLN 35／30 · 官方目前列週四免費；10/30（五）不適用",
     shortLabel: "華沙起義博物館",
+  },
+  'warsaw-chopin-airport': {
+    id: "warsaw-chopin-airport", cityKey: "WAW", name: "華沙蕭邦機場",
+    map: "https://www.google.com/maps/search/?api=1&query=Warsaw%20Chopin%20Airport%2C%20%C5%BBwirki%20i%20Wigury%201%2C%20Warszawa",
+    officialUrl: "https://www.lotnisko-chopina.pl/en/index.html",
+    address: "Żwirki i Wigury 1, 00-906 Warszawa",
+    entranceNote: "抵達後依 Arrivals 與 SKM／Railway Station 標示前往航廈下方車站。2026-09-17 WTP 官方機場交通頁：S2 經 Zachodnia → Warszawa Śródmieście → Wschodnia，S3 經 Zachodnia → Warszawa Centralna → Wschodnia，兩線停靠站不同——最接近 Hotel Metropol 的是 S2 的 Śródmieście（出站即 Metro Centrum）；搭到 S3 請在 Centralna 下車。官方標示用 75 分鐘第 1 區票。回程依電子機票確認報到區。",
+    coords: null,
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'warsaw-centralna-station': {
+    id: "warsaw-centralna-station", cityKey: "WAW", name: "Warszawa Centralna",
+    map: "https://www.google.com/maps/search/?api=1&query=Warszawa%20Centralna%2C%20al.%20Jerozolimskie%2054%2C%20Warszawa",
+    officialUrl: "https://portalpasazera.pl/en/KatalogStacji",
+    address: "al. Jerozolimskie 54, 00-024 Warszawa",
+    entranceNote: "由 Hotel Metropol 沿 Marszałkowska 步行約 500 公尺／8–10 分，選當時最近的入口；進站後以大廳電子牌確認月台，不預先假定入口或月台。",
+    coords: [52.228917,21.003315],
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'warsaw-zachodnia-station': {
+    id: "warsaw-zachodnia-station", cityKey: "WAW", name: "Warszawa Zachodnia",
+    map: "https://www.google.com/maps/search/?api=1&query=Warszawa%20Zachodnia%2C%20Aleje%20Jerozolimskie%20142A%2C%20Warszawa",
+    officialUrl: "https://portalpasazera.pl/en/KatalogStacji",
+    address: "Aleje Jerozolimskie 142A, 02-305 Warszawa",
+    entranceNote: "僅在票面上車站為西站時才需前往：由 Hotel Metropol 步行至 Warszawa Centralna 後轉 SKM／KM 約 7–10 分，或用 Jakdojade 查當日大眾運輸；進站後以電子牌確認 EIP 5300 的實際月台。",
+    coords: null,
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'warsaw-old-town-square': {
+    id: "warsaw-old-town-square", cityKey: "WAW", name: "華沙老城市場廣場",
+    map: "https://www.google.com/maps/search/?api=1&query=Rynek%20Starego%20Miasta%2C%20Warszawa",
+    officialUrl: "https://go2warsaw.pl/en/old-town/",
+    address: "Rynek Starego Miasta, 00-272 Warszawa",
+    entranceNote: "公共廣場，導航至 Rynek Starego Miasta；與 plac Zamkowy 的皇家城堡廣場是不同地點。",
+    coords: [52.249778,21.012151],
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'warsaw-krakowskie-przedmiescie': {
+    id: "warsaw-krakowskie-przedmiescie", cityKey: "WAW", name: "Krakowskie Przedmieście",
+    map: "https://www.google.com/maps/search/?api=1&query=Krakowskie%20Przedmiescie%2C%20Warszawa",
+    officialUrl: "https://warsawtour.pl/en/royal-route/",
+    address: "Krakowskie Przedmieście, Warszawa",
+    entranceNote: "公共街道，從城堡廣場沿皇家大道步行，無需入場。",
+    coords: [52.24216,21.01569],
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'krakow-glowny-station': {
+    id: "krakow-glowny-station", cityKey: "KRK", name: "Kraków Główny",
+    map: "https://www.google.com/maps/search/?api=1&query=Krakow%20Glowny%2C%20plac%20Jana%20Nowaka-Jezioranskiego%203%2C%20Krakow",
+    officialUrl: "https://portalpasazera.pl/en/KatalogStacji",
+    address: "plac Jana Nowaka-Jeziorańskiego 3, 31-154 Kraków",
+    entranceNote: "依 Galeria Krakowska／車站大廳指標進站，月台以當日電子牌為準。",
+    coords: [50.069918,19.94716],
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'krakow-wawel-cathedral': {
+    id: "krakow-wawel-cathedral", cityKey: "KRK", name: "瓦維爾大教堂",
+    map: "https://www.google.com/maps/search/?api=1&query=Wawel%20Cathedral%2C%20Wawel%203%2C%20Krakow",
+    officialUrl: "https://www.katedra-wawelska.pl/en/katedra-wawelska/zaplanuj-wizyte/",
+    address: "Wawel 3, 31-001 Kraków",
+    entranceNote: "登上 Wawel Hill 後依 Cathedral 指標前往大教堂入口，避開禮拜動線。",
+    coords: [50.054727,19.935226],
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'krakow-rynek-glowny': {
+    id: "krakow-rynek-glowny", cityKey: "KRK", name: "中央廣場 Rynek Główny",
+    map: "https://www.google.com/maps/search/?api=1&query=Rynek%20Glowny%2C%20Krakow",
+    officialUrl: "https://krakow.travel/en/55-krakow-main-market-square",
+    address: "Rynek Główny, 31-042 Kraków",
+    entranceNote: "公共廣場，從 Grodzka／Floriańska 等街道步行進入，無單一入口。",
+    coords: null,
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'krakow-st-mary-basilica': {
+    id: "krakow-st-mary-basilica", cityKey: "KRK", name: "聖瑪利亞聖殿",
+    map: "https://www.google.com/maps/search/?api=1&query=St%20Mary%20Basilica%2C%20plac%20Mariacki%205%2C%20Krakow",
+    officialUrl: "https://mariacki.com/en/",
+    address: "plac Mariacki 5, 31-042 Kraków",
+    entranceNote: "由 plac Mariacki 5 的訪客入口依現場標示進入，禮拜入口可能分流。",
+    coords: [50.061692,19.939409],
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'krakow-sukiennice': {
+    id: "krakow-sukiennice", cityKey: "KRK", name: "紡織會館 Sukiennice",
+    map: "https://www.google.com/maps/search/?api=1&query=Sukiennice%2C%20Rynek%20Glowny%203%2C%20Krakow",
+    officialUrl: "https://mnk.pl/oddzialy/sukiennice/",
+    address: "Rynek Główny 3, 31-042 Kraków",
+    entranceNote: "一樓公共市集由中央廣場拱廊進入；博物館入口依 MNK 現場標示。",
+    coords: [50.061713,19.937349],
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'krakow-plac-nowy': {
+    id: "krakow-plac-nowy", cityKey: "KRK", name: "Plac Nowy",
+    map: "https://www.google.com/maps/search/?api=1&query=Plac%20Nowy%2C%20Krakow",
+    officialUrl: "https://krakow.travel/655-krakow-plac-nowy",
+    address: "Plac Nowy, 31-056 Kraków",
+    entranceNote: "公共廣場，導航至中央圓亭；餐飲攤位仍須逐店確認。",
+    coords: null,
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'krakow-mda-bus-station': {
+    id: "krakow-mda-bus-station", cityKey: "KRK", name: "Kraków MDA 客運站",
+    map: "https://www.google.com/maps/search/?api=1&query=MDA%20Bus%20Station%20Krakow%2C%20Bosacka%2018%2C%20Krakow",
+    officialUrl: null,
+    address: "Bosacka 18, 31-505 Kraków",
+    entranceNote: "待班次、分店或現場集合點確認。",
+    coords: null,
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'krakow-auschwitz-i-entrance': {
+    id: "krakow-auschwitz-i-entrance", cityKey: "KRK", name: "Auschwitz I 訪客服務中心／入口",
+    map: "https://www.google.com/maps/search/?api=1&query=Auschwitz%20I%20Visitor%20Service%20Center%2C%20Wiezniow%20Oswiecimia%2055%2C%20Oswiecim",
+    officialUrl: "https://www.auschwitz.org/en/visiting/",
+    address: "Więźniów Oświęcimia 55, 32-600 Oświęcim",
+    entranceNote: "務必到 Więźniów Oświęcimia 55 的訪客服務中心／入口，不使用通訊地址 20 號。",
+    coords: [50.029763,19.204816],
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'krakow-auschwitz-ii-birkenau': {
+    id: "krakow-auschwitz-ii-birkenau", cityKey: "KRK", name: "Auschwitz II–Birkenau",
+    map: "https://www.google.com/maps/search/?api=1&query=Auschwitz%20II%20Birkenau%2C%20Ofiar%20Faszyzmu%2012%2C%20Brzezinka",
+    officialUrl: "https://www.auschwitz.org/en/visiting/",
+    address: "Ofiar Faszyzmu 12, 32-600 Brzezinka",
+    entranceNote: "跟隨官方導覽接駁與工作人員指示，不自行變更集合點。",
+    coords: [50.035948,19.178314],
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'wroclaw-glowny-station': {
+    id: "wroclaw-glowny-station", cityKey: "WRO", name: "Wrocław Główny",
+    map: "https://www.google.com/maps/search/?api=1&query=Wroclaw%20Glowny%2C%20Pilsudskiego%20105%2C%20Wroclaw",
+    officialUrl: "https://portalpasazera.pl/en/KatalogStacji",
+    address: "Piłsudskiego 105, 50-085 Wrocław",
+    entranceNote: "由主站大廳進站，當日用電子牌確認月台與任何臨時改道。",
+    coords: [51.098928,17.036255],
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'wroclaw-rynek': {
+    id: "wroclaw-rynek", cityKey: "WRO", name: "樂斯拉夫中央廣場",
+    map: "https://www.google.com/maps/search/?api=1&query=Rynek%2C%20Wroclaw",
+    officialUrl: "https://visitwroclaw.eu/en/atrakcje/market-square-and-town-hall/",
+    address: "Rynek, 50-101 Wrocław",
+    entranceNote: "公共廣場，導航至 Rynek；無單一入口。",
+    coords: null,
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'wroclaw-cathedral': {
+    id: "wroclaw-cathedral", cityKey: "WRO", name: "樂斯拉夫主教座堂",
+    map: "https://www.google.com/maps/search/?api=1&query=Wroclaw%20Cathedral%2C%20plac%20Katedralny%2018%2C%20Wroclaw",
+    officialUrl: "https://katedra.wroclaw.pl/",
+    address: "plac Katedralny 18, 50-329 Wrocław",
+    entranceNote: "由 plac Katedralny 18 正門進入；禮拜期間尊重現場分流。",
+    coords: [51.114616,17.046989],
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'poznan-glowny-station': {
+    id: "poznan-glowny-station", cityKey: "POZ", name: "Poznań Główny",
+    map: "https://www.google.com/maps/search/?api=1&query=Poznan%20Glowny%2C%20Dworcowa%202%2C%20Poznan",
+    officialUrl: "https://portalpasazera.pl/en/KatalogStacji",
+    address: "Dworcowa 2, 61-801 Poznań",
+    entranceNote: "由車站大廳依電子牌前往月台；商場與車站入口不要混淆。",
+    coords: [52.402786,16.912914],
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'poznan-cathedral': {
+    id: "poznan-cathedral", cityKey: "POZ", name: "波茲南主教座堂",
+    map: "https://www.google.com/maps/search/?api=1&query=Poznan%20Cathedral%2C%20Ostrow%20Tumski%2017%2C%20Poznan",
+    officialUrl: "https://www.katedra.archpoznan.pl/",
+    address: "Ostrów Tumski 17, 61-109 Poznań",
+    entranceNote: "由 Ostrów Tumski 17 正門進入；禮拜期間以現場開放區域為準。",
+    coords: [52.411873,16.949286],
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'poznan-town-hall': {
+    id: "poznan-town-hall", cityKey: "POZ", name: "波茲南市政廳",
+    map: "https://www.google.com/maps/search/?api=1&query=Poznan%20Town%20Hall%2C%20Stary%20Rynek%201%2C%20Poznan",
+    officialUrl: "https://www.msu.mnp.art.pl/profile/wizyta-ratusz-muzeum-poznania",
+    address: "Stary Rynek 1, 61-768 Poznań",
+    entranceNote: "本次只在 Stary Rynek 1 外觀區看 12:00 山羊鐘樓秀，博物館整修閉館。",
+    coords: [52.408265,16.93456],
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'poznan-stary-browar': {
+    id: "poznan-stary-browar", cityKey: "POZ", name: "Stary Browar",
+    map: "https://www.google.com/maps/search/?api=1&query=Stary%20Browar%2C%20Polwiejska%2042%2C%20Poznan",
+    officialUrl: "https://starybrowar5050.com/en/contact/",
+    address: "Półwiejska 42, 61-888 Poznań",
+    entranceNote: "由 Półwiejska 42 商場入口進入；與帝王城堡是兩個不同站點。",
+    coords: [52.400887,16.928376],
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
+  },
+  'taipei-representative-office-warsaw': {
+    id: "taipei-representative-office-warsaw", cityKey: "WAW", name: "駐波蘭台北代表處",
+    map: "https://www.google.com/maps/search/?api=1&query=Taipei%20Representative%20Office%20in%20Poland%2C%20Emilii%20Plater%2053%2C%20Warszawa",
+    officialUrl: "https://www.mofa.gov.tw/CountryInfo.aspx?CASN=1&n=164&s=124&sms=33&tabs=08617EE9DB3C61E3",
+    address: "30th Floor, Ul. Emilii Plater 53, 00-113 Warsaw, Poland",
+    entranceNote: "僅作緊急聯絡備援；一般領務先於辦公時間電話確認。",
+    coords: null,
+    prices: null,
+    hours: null,
+    checkedAt: null,
+    quickNote: null,
+    shortLabel: null,
   },
 };
 

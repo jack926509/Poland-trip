@@ -1,5 +1,6 @@
 import { resolveDining } from './dining-places.js';
 import { segments, auschwitzBus, lajkonikFare, saleOpensShort } from './rail.js';
+import { resolveVenue } from '../lib/venues.mjs';
 // trip.js — 行程資料源頭：meta、flights、days×8、stay、trains、bookingTiers、reservations
 // 來源：redesign/data.js（原 window.TRIP 物件字面值），轉為 ES module 具名匯出。
 // 2026-08-09 依景點、博物館與交通營運單位公開資料重新盤查。
@@ -21,6 +22,15 @@ const lajkonikOutboundRejected = auschwitzBus.outbound.services.find(item => ite
 const lajkonikInboundAdopted = auschwitzBus.inbound.services.find(item => item.decision === '採用');
 const lajkonikInboundBackup = auschwitzBus.inbound.services.find(item => item.decision === '備案');
 const lajkonikInboundRejected = auschwitzBus.inbound.services.find(item => item.decision === '不採用');
+
+// 精煉切片 4b：三個步驟的 sub 裡原本手打了一次開放時間，剛好與 constraint.venue
+// 指到的場館 hours 完全同義（辛德勒工廠、皇家城堡、POLIN）；改成從 venues.js
+// 用 template literal 帶出，不再另打一份數字。其餘掛 constraint.venue 的步驟
+// （Wawel 短路線比較四條子路線票價、百年廳的四色日曆說明）不是單一場館 hours
+// 可以乾淨代換的內容，保留原文，不勉強套用。
+const schindlerVenue = resolveVenue('krakow-schindler');
+const royalCastleVenue = resolveVenue('warsaw-royal-castle');
+const polinVenue = resolveVenue('warsaw-polin');
 
 export const meta = {
   code: 'POLSKA',
@@ -95,7 +105,7 @@ export const days = [
       {t:'15:00', label:'★ 中央廣場 + 聖瑪利亞', sub:'本次先看廣場與教堂外觀，登塔改為有餘裕才安排。整點 Hejnał 號角；塔票僅於 Mariacki 廣場 7 號當日現場售票', cost:'外觀免費', dur:'30 min（含由城堡步行）'},
       {t:'15:30', label:'紡織會館 Sukiennice 快速一覽', sub:'採購留到 10/27', cost:'免費入場', dur:'15 min'},
       {t:'15:45', label:'步行經 Kazimierz、Podgórze 前往辛德勒工廠', sub:'保留約 85 分鐘步行與沿途短停，17:10 前到入口；時間不足改用 Jakdojade 查當下交通', dur:'約 1 h 25 min'},
-      {t:'17:30', label:'★ 辛德勒工廠', constraint:{venue:'krakow-schindler'}, sub:'週日 09:00–20:00、最後入場為閉館前 90 分（18:30）· 常設展線上票一律實名，入場要帶與購票同名的證件正本 · 官方售票頁預約', cost:'PLN 60 · 優待 45', dur:'2 h'},
+      {t:'17:30', label:'★ 辛德勒工廠', constraint:{venue:'krakow-schindler'}, sub:`週日 ${schindlerVenue.hours.opens}–${schindlerVenue.hours.closes}、最後入場為閉館前 90 分（${schindlerVenue.hours.lastEntry}）· 常設展線上票一律實名，入場要帶與購票同名的證件正本 · 官方售票頁預約`, cost:'PLN 60 · 優待 45', dur:'2 h'},
       {t:'19:45', id:'d2-dinner', label:'★ Kazimierz Plac Nowy zapiekanka 晚餐', sub:'19:45 主餐先訂 NOAH（以色列烤羊肉串配 pitta 餅），飯後再走去圓亭吃 Endzior zapiekanka', cost:'PLN 60–100'},
     ],
     eat: [
@@ -303,10 +313,10 @@ export const days = [
     compressible: ['POLIN 看主展重點', '起義博物館抓核心展區', '皇家城堡採約 60 分鐘 Royal Route'],
     weather: '尚無可靠預報；出發前 7–10 天更新',
     steps: [
-      {t:'10:00', label:'★ 皇家城堡', constraint:{venue:'warsaw-royal-castle'}, sub:'採 Royal Route，官方標示約 60 分（含語音導覽）；二–日 10:00–18:00、末入 17:00、週一休館。10/30 是週五，不適用週三的限定路線免費場', cost:'PLN 60 · 優待 45', dur:'約 60 min'},
+      {t:'10:00', label:'★ 皇家城堡', constraint:{venue:'warsaw-royal-castle'}, sub:`採 Royal Route，官方標示約 60 分（含語音導覽）；二–日 ${royalCastleVenue.hours.opens}–${royalCastleVenue.hours.closes}、末入 ${royalCastleVenue.hours.lastEntry}、週一休館。10/30 是週五，不適用週三的限定路線免費場`, cost:'PLN 60 · 優待 45', dur:'約 60 min'},
       {t:'11:15', id:'d7-lunch', label:'午餐（老城 → POLIN 路上）', sub:'Café Bristol（Krakowskie Przedmieście，Hotel Bristol 內）；選當日有營業且可訂位的店', cost:'依餐廳', dur:'45 min'},
       {t:'12:00', label:'前往 POLIN + 安檢緩衝', sub:'依當日交通重算，保留入館安檢與提早報到時間', dur:'1 h 15 min'},
-      {t:'13:15', label:'★ POLIN 猶太博物館', constraint:{venue:'warsaw-polin'}, sub:'週五 10:00–18:00；主展最晚 16:00 入場', cost:'依官方售票頁', dur:'2 h'},
+      {t:'13:15', label:'★ POLIN 猶太博物館', constraint:{venue:'warsaw-polin'}, sub:`週五 ${polinVenue.hours.opens}–${polinVenue.hours.closes}；主展最晚 ${polinVenue.hours.lastEntry} 入場`, cost:'依官方售票頁', dur:'2 h'},
       {t:'15:15', label:'前往華沙起義博物館 + 安檢緩衝', sub:'依當日交通重算，16:00 僅為規劃目標，以實際可售時段為準', dur:'45 min'},
       {t:'16:00', label:'★ 華沙起義博物館', sub:'35／30 PLN；以官方票頁 10/30 可售時段為準', cost:'PLN 35／30', dur:'2 h'},
       {t:'19:30', id:'d7-dinner', label:'老城最後晚餐', sub:'U Fukiera', cost:'PLN 120–200', dur:'1.5 h'},

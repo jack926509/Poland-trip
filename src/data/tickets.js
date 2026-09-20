@@ -2,13 +2,17 @@
 // 精煉切片 4a 之前，這三個 + cities.js 的 attractions[].priceNote 是同一批景點事實的
 // 四份平行表，各自手打。現在單一來源移到 venues.js（見該檔開頭說明與矛盾修正 #5／
 // #11／#12），這裡只做「從 venues.js 推導回原本形狀」——export 名稱、欄位與模板消費端
-// 暫不動，好讓這次改動的 diff 侷限在資料層。cities.js 的收斂留給切片 4b。
+// 暫不動，好讓這次改動的 diff 侷限在資料層。
+//
+// 切片 4b 把 venues.js 擴大成「景點＋地點」共用主檔（車站、廣場、代表處這類純
+// 地址地標也在裡面，供 travel-database.js／day-maps.js 用），fares 只取
+// 有 prices 的票券景點，過濾條件是新加的，其餘邏輯不變。
 import { venues, ticketsByCityExtras } from './venues.js';
 
 // fares：Object.values 依 venues.js 的 key 插入順序回傳，與原本 fares 陣列的
 // 城市分組順序（華沙→克拉科夫→樂斯拉夫→波茲南）一致；POLIN、華沙起義博物館
 // 兩筆原本只存在於 ticketsByCity／venueHours、fares 表沒有，這裡補上（4a 範圍）。
-export const fares = Object.values(venues).map(venue => ({
+export const fares = Object.values(venues).filter(venue => venue.prices).map(venue => ({
   name: venue.name,
   fullPrice: venue.prices.full,
   discountPrice: venue.prices.discount,
