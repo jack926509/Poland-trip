@@ -2131,6 +2131,12 @@ figure.media-unavailable > img {
     display: none;
   }
 
+  /* 手機導覽列裡「今日」是唯一常駐入口，卻是整排字級最小的一顆
+     （稽核 M9：12.48px）。提到 .95rem，跟其他導覽字級接近。 */
+  .nav-today {
+    font-size: .95rem;
+  }
+
   .nav-dropdown {
     position: static;
   }

@@ -67,6 +67,19 @@ test('M3：日頁停用自動章節目錄、去除今日主軸重複句、時間
   assert.match(css, /\.table-schedule td\[data-empty\]\s*\{\s*display:\s*none;?\s*\}/);
 });
 
+test('M9：首頁待辦分類只留計數＋連結，逐項名稱不再與待辦頁重複；nav-today 手機字級提高', () => {
+  const home = read('index.html');
+  // 5 個分類都改成 <a class="card card-link"> 摘要卡，不再逐項列出
+  const todosSection = home.slice(home.indexOf('id="todos"'), home.indexOf('</section>', home.indexOf('id="todos"')));
+  assert.equal((todosSection.match(/class="card card-link"/g) || []).length, 5, '待辦分類卡片數不對');
+  assert.match(todosSection, /項待處理|已全部完成/);
+  // 逐項的「日期 · 狀態」小標不再輸出到首頁
+  assert.doesNotMatch(todosSection, /<span class="eyebrow">\d{1,2}\/\d{1,2} ·/);
+
+  const css = fs.readFileSync(path.join(distDir, 'assets/main.css'), 'utf8');
+  assert.match(css, /\.nav-today\s*\{\s*font-size:\s*\.95rem;?\s*\}/, '手機導覽「今日」字級未提高到 .95rem');
+});
+
 test('M6：搜尋索引改成外部檔案，多頁版不再內嵌 526KB、單頁 HTML 明顯變小', () => {
   const indexPath = path.join(distDir, 'assets/search-index.json');
   assert.ok(fs.existsSync(indexPath), '缺少 dist/assets/search-index.json');

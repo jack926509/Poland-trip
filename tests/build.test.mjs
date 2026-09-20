@@ -344,7 +344,8 @@ test('首頁待辦事項會跳脫資料文字', () => {
   assert.doesNotMatch(html, /<script>|<img src=x>/);
   assert.ok(html.includes('&lt;script&gt;x()&lt;/script&gt;'));
   assert.ok(html.includes('A &amp; B'));
-  assert.ok(html.includes('&lt;b&gt;危險項目&lt;/b&gt;'));
+  // 稽核 M9：首頁待辦分類只留計數＋連結，item.name 不再輸出到首頁
+  // （改到 practical/todos.html 才會顯示），因此不再驗證它在首頁的跳脫。
 });
 
 test('資料庫模板會跳脫資料文字並拒絕非 HTTPS 官方來源', () => {
@@ -836,9 +837,15 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
   assert.ok(!html.includes('高效率城市探索 · 腳程快 · 重點景點完整走完'));
   assert.ok(!html.includes(`${rawTodoCount} 項尚未訂`));
   assert.ok(html.includes(`${todoCount} 項待辦`));
+  // 稽核 M9：首頁每個分類只留計數＋連結，逐項名稱與 practical/todos.html
+  // 的完整清單重複，不再需要在首頁重複列出——這裡驗證分類與計數存在，
+  // 項目本身改到 practical/todos.html 專屬測試驗證。
   for (const group of todoGroups) {
     assert.ok(html.includes(`>${group.title}<`), `首頁缺少待辦分類：${group.title}`);
-    for (const item of group.items) assert.ok(html.includes(`>${item.name}<`), `首頁缺少待辦：${item.name}`);
+    const pending = group.items.filter(item => !['已訂妥', '已完成'].includes(item.status)).length;
+    const summary = pending ? `${pending} 項待處理` : '已全部完成';
+    assert.ok(html.includes(`href="practical/todos.html#todo-${group.id}"`), `首頁缺少待辦分類連結：${group.id}`);
+    assert.ok(html.includes(summary), `首頁缺少待辦分類計數：${group.title}`);
   }
   assert.ok(html.includes('href="#todos"'));
   assert.ok(html.includes('href="practical/todos.html"'));
