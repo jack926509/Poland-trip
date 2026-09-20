@@ -1880,6 +1880,12 @@ figure.media-unavailable > img {
   font-size: clamp(3.5rem, 7.5vw, 7rem);
 }
 
+/* 今日卡是旅途中最主要的頁，沿用附錄版式但不該被標成「APPENDIX」，
+   否則會讓人誤以為是次要頁面（稽核 M11）。 */
+.journal-today .journal-appendix-header::before {
+  content: 'TODAY';
+}
+
 .journal-practical .page > .section,
 .journal-practical .page > section,
 .journal-practical .page > .grid-wide,
