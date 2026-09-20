@@ -88,16 +88,24 @@ const DEFAULT_DESCRIPTION = '2026 波蘭四城 8 天旅遊規劃：逐日行程�
 const DEFAULT_OG_IMAGE = 'assets/og/polska-og.jpg';
 const DEFAULT_OG_IMAGE_ALT = '波蘭旅程總覽海報';
 
-export const searchIndexPlaceholder = '__SITE_SEARCH_INDEX__';
-
+/**
+ * 每頁本來都內嵌完整搜尋索引（526KB），24 頁全部進 Service Worker 預快取
+ * （稽核 M6）。多頁版改成外部 assets/search-index.json，頁面只帶一個 URL，
+ * site-search.js 在使用者真的要搜尋（focus／輸入）時才 fetch。
+ *
+ * 單檔版是唯一例外：它本來就要能整份下載後離線自足，不能再依賴額外的
+ * 網路請求，因此 buildStandalone 仍會傳入 searchIndexJson 走原本的內嵌路徑。
+ */
 export function renderSiteSearch({
   pathPrefix = '',
-  searchIndexJson = searchIndexPlaceholder,
+  searchIndexJson = null,
+  indexUrl = null,
   databaseHref = '',
 } = {}) {
   const path = file => `${pathPrefix}${file}`;
   const fallbackHref = databaseHref || path('practical/database.html');
-  return `<section class="site-search-shell" data-site-search data-search-path-prefix="${pathPrefix}" aria-label="全站旅遊搜尋">
+  const resolvedIndexUrl = searchIndexJson === null ? (indexUrl || path('assets/search-index.json')) : null;
+  return `<section class="site-search-shell" data-site-search data-search-path-prefix="${pathPrefix}"${resolvedIndexUrl ? ` data-search-index-url="${resolvedIndexUrl}"` : ''} aria-label="全站旅遊搜尋">
     <div class="site-search-inner">
       <div class="site-search-form-row">
         <label class="site-search-label" for="site-search-input">搜尋整個旅遊網站</label>
@@ -121,9 +129,29 @@ export function renderSiteSearch({
         <button type="button" data-search-reset>清除條件</button>
       </div>
       <noscript><p class="site-search-noscript">瀏覽器未開啟 JavaScript，請改用 <a href="${fallbackHref}">自由行資料庫</a>。</p></noscript>
-      <script type="application/json" data-site-search-index>${searchIndexJson}</script>
+      <script type="application/json" data-site-search-index>${searchIndexJson ?? ''}</script>
     </div>
   </section>`;
+}
+
+/**
+ * 手機底部固定快捷列：CSS（.mobile-quick-nav）本來就有，但沒有任何模板輸出過，
+ * 導致手機導覽列不固定、頁面又極長時使用者捲到深處回不了「今日」（稽核 M2）。
+ * 放在 </main> 之後、頁尾之前，因此永遠不會被 buildStandalone 的 <main> 擷取
+ * 進單檔版——單檔版有自己的一份固定快捷列（見 src/build/standalone.mjs）。
+ */
+export function renderMobileQuickNav(pathPrefix, pageKind) {
+  const path = file => `${pathPrefix}${file}`;
+  const todayHref = path('today.html');
+  const scheduleHref = pageKind === 'day' ? '#schedule' : `${todayHref}#today-schedule`;
+  const foodHref = pageKind === 'day' ? '#day-food' : pageKind === 'city' ? '#city-dining' : `${todayHref}#today-food`;
+  const sosHref = `${path('practical/database.html')}#sos-contacts`;
+  return `<nav class="mobile-quick-nav" aria-label="手機快速導覽">
+    <a href="${todayHref}"><span aria-hidden="true">▣</span>今日</a>
+    <a href="${scheduleHref}"><span aria-hidden="true">▤</span>時間表</a>
+    <a href="${foodHref}"><span aria-hidden="true">🍽</span>吃哪</a>
+    <a href="${sosHref}"><span aria-hidden="true">☎</span>SOS</a>
+  </nav>`;
 }
 
 export function renderLayout({
@@ -143,7 +171,13 @@ export function renderLayout({
   const pageDescription = description || DEFAULT_DESCRIPTION;
   const ogUrl = `${SITE_ORIGIN}/${currentPage}`;
   const ogImageUrl = `${SITE_ORIGIN}/${ogImage}`;
-  const useChapterIndex = chapterIndex && pageKind !== 'home' && !bodyHtml.includes('database-index');
+  // 日頁已有 sticky 的 .day-shortcuts（今日主軸／時間表／餐飲／訂票 4 個
+  // 主要錨點），自動章節目錄疊上去等於三層導覽疊加，且日頁常有 8–10 個
+  // 章節，目錄本身就佔約 600px（稽核 M3）。日頁停用自動目錄。
+  // 城市頁稽核建議一併停用，但城市頁沒有等效的替代導覽（沒有 shortcuts
+  // nav），拿掉會讓長頁失去唯一的頁內跳轉方式，保守起見保留，交由使用者
+  // 決定要不要另外幫城市頁做一份 shortcuts。
+  const useChapterIndex = chapterIndex && pageKind !== 'home' && pageKind !== 'day' && !bodyHtml.includes('database-index');
   const pageBody = addTableCellLabels(useChapterIndex ? buildChapterIndex(bodyHtml) : bodyHtml);
   const navLink = ([file, label]) => {
     const isCurrent = currentPage === file;
@@ -178,6 +212,9 @@ export function renderLayout({
   <link rel="icon" type="image/png" sizes="192x192" href="${path('icon-192.png')}">
   <link rel="apple-touch-icon" sizes="180x180" href="${path('apple-touch-icon.png')}">
   <link rel="manifest" href="${path('manifest.json')}">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="POLSKA">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null">
@@ -211,6 +248,7 @@ export function renderLayout({
   <main class="page" id="main-content">
     ${pageBody}
   </main>
+  ${renderMobileQuickNav(pathPrefix, pageKind)}
   <footer class="footer">
     <div class="footer-inner">
       <p>POLSKA 波蘭行 · 2026/10/24–10/31</p>

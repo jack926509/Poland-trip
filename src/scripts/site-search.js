@@ -59,12 +59,35 @@ export function initializeSiteSearch(root) {
     if (!input || !indexElement || !resultsElement || !summaryElement || !emptyElement) return;
 
     let records = [];
-    try {
-      const parsed = JSON.parse(indexElement.textContent || '[]');
-      records = Array.isArray(parsed) ? parsed : [];
-    } catch (error) {
-      summaryElement.textContent = '搜尋資料無法載入。';
-      return;
+    let recordsReady = false;
+    let fetchStarted = false;
+
+    // 索引可能直接內嵌在頁面（單檔版：本來就要能整份下載後離線自足，不能
+    // 再靠額外的網路請求），也可能只留一個外部 assets/search-index.json 的
+    // URL（多頁版，稽核 M6：本來每頁都內嵌 526KB，改成只在使用者真的要
+    // 搜尋——聚焦輸入框或開始打字——才 fetch，並且只抓一次）。
+    function loadInlineRecords() {
+      try {
+        const parsed = JSON.parse(indexElement.textContent || '[]');
+        records = Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        summaryElement.textContent = '搜尋資料無法載入。';
+      }
+      recordsReady = true;
+    }
+
+    function ensureRecords() {
+      if (recordsReady || fetchStarted) return;
+      const inline = (indexElement.textContent || '').trim();
+      if (inline) { loadInlineRecords(); return; }
+      const indexUrl = root.dataset.searchIndexUrl;
+      if (!indexUrl || typeof fetch !== 'function') { recordsReady = true; return; }
+      fetchStarted = true;
+      fetch(indexUrl)
+        .then(response => (response.ok ? response.json() : Promise.reject(new Error('搜尋索引下載失敗'))))
+        .then(data => { records = Array.isArray(data) ? data : []; })
+        .catch(() => { summaryElement.textContent = '搜尋資料無法載入，請檢查網路連線。'; })
+        .then(() => { recordsReady = true; render(); });
     }
 
     const pathPrefix = root.dataset.searchPathPrefix || '';
@@ -135,6 +158,15 @@ export function initializeSiteSearch(root) {
         return;
       }
 
+      ensureRecords();
+      if (!recordsReady) {
+        // 索引還在抓（外部 JSON 情境）：顯示載入中，不要誤判成查無結果。
+        resultsElement.hidden = true;
+        emptyElement.hidden = true;
+        summaryElement.textContent = '搜尋資料載入中…';
+        return;
+      }
+
       const results = selectSearchRecords(records, {
         query,
         category: activeCategory,
@@ -154,6 +186,7 @@ export function initializeSiteSearch(root) {
       render();
     }
 
+    input.addEventListener('focus', ensureRecords);
     input.addEventListener('input', render);
     root.addEventListener('keydown', event => {
       if (event.key !== 'Escape') return;

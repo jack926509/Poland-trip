@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
+import http from 'node:http';
 import path from 'node:path';
 import vm from 'node:vm';
 import { test } from 'node:test';
@@ -343,7 +344,8 @@ test('首頁待辦事項會跳脫資料文字', () => {
   assert.doesNotMatch(html, /<script>|<img src=x>/);
   assert.ok(html.includes('&lt;script&gt;x()&lt;/script&gt;'));
   assert.ok(html.includes('A &amp; B'));
-  assert.ok(html.includes('&lt;b&gt;危險項目&lt;/b&gt;'));
+  // 稽核 M9：首頁待辦分類只留計數＋連結，item.name 不再輸出到首頁
+  // （改到 practical/todos.html 才會顯示），因此不再驗證它在首頁的跳脫。
 });
 
 test('資料庫模板會跳脫資料文字並拒絕非 HTTPS 官方來源', () => {
@@ -407,6 +409,32 @@ test('dist 產出 24 個分頁與可直接部署的單檔版', () => {
   const deployedStandalone = path.join(distDir, 'poland-travel-guide-2026.html');
   assert.ok(fs.existsSync(deployedStandalone), 'Pages 公開輸出缺少單檔版');
   assert.equal(fs.readFileSync(deployedStandalone, 'utf8'), fs.readFileSync(standalonePath, 'utf8'));
+});
+
+test('dist 含 Web App Manifest 與三個圖示，可加到主畫面（稽核 H5）', () => {
+  const manifestPath = path.join(distDir, 'manifest.json');
+  assert.ok(fs.existsSync(manifestPath), 'dist 缺少 manifest.json');
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  assert.equal(manifest.name, 'POLSKA 波蘭行程');
+  assert.equal(manifest.display, 'standalone');
+  assert.ok(manifest.start_url, 'manifest.json 缺少 start_url');
+  assert.deepEqual(manifest.icons.map(icon => icon.sizes).sort(), ['192x192', '512x512']);
+
+  for (const icon of ['icon-192.png', 'icon-512.png', 'apple-touch-icon.png']) {
+    assert.ok(fs.existsSync(path.join(distDir, icon)), `dist 缺少 ${icon}`);
+  }
+
+  for (const file of expectedFiles) {
+    const html = read(file);
+    assert.match(html, /<link rel="manifest" href="[^"]*manifest\.json">/, `${file} 缺少 manifest 連結`);
+    assert.match(html, /<link rel="apple-touch-icon"[^>]*href="[^"]*apple-touch-icon\.png">/, `${file} 缺少 apple-touch-icon`);
+    assert.ok(html.includes('name="apple-mobile-web-app-capable" content="yes"'), `${file} 缺少 apple-mobile-web-app-capable`);
+  }
+
+  // 兩條部署腳本（Cloudflare、GitHub Pages）都靠 prepare-site.sh 組公開輸出；
+  // dist/. 會整包帶到 manifest 與圖示，這裡額外把 manifest 也列進明確複製清單。
+  const prepareScript = fs.readFileSync('prepare-site.sh', 'utf8');
+  assert.match(prepareScript, /manifest\.json/, 'prepare-site.sh 未明確帶上 manifest.json');
 });
 
 test('單檔旅遊指南封裝全部 24 頁且不依賴本機 CSS 或其他 HTML', () => {
@@ -795,16 +823,29 @@ test('首頁包含 8 天、4 城與全部實用頁入口', () => {
 
 test('首頁移除出發準備度與步調，直接列出資料層待辦', () => {
   const html = read('index.html');
-  const todoCount = todoGroups.reduce((total, group) => total + group.items.length, 0);
+  // 首頁顯示的是「還沒處理」的待辦數，不是總項目數；home.mjs 用同一條
+  // 過濾規則排掉已訂妥／已完成。稽核 M6 把每頁內嵌的 526KB 搜尋索引移除
+  // 後才發現：這裡原本用「總項目數」比對也會過，其實是巧合命中了索引裡
+  // 待辦頁自己文字的「16 項待辦」字樣，不是真的驗到首頁內容——改為驗證
+  // 首頁實際算出的待處理數。
+  const rawTodoCount = todoGroups.reduce((total, group) => total + group.items.length, 0);
+  const todoCount = todoGroups.reduce((total, group) =>
+    total + group.items.filter(item => !['已訂妥', '已完成'].includes(item.status)).length, 0);
 
   assert.ok(!html.includes('出發準備度'));
   assert.ok(!html.includes('00 / Readiness'));
   assert.ok(!html.includes('高效率城市探索 · 腳程快 · 重點景點完整走完'));
-  assert.ok(!html.includes(`${todoCount} 項尚未訂`));
+  assert.ok(!html.includes(`${rawTodoCount} 項尚未訂`));
   assert.ok(html.includes(`${todoCount} 項待辦`));
+  // 稽核 M9：首頁每個分類只留計數＋連結，逐項名稱與 practical/todos.html
+  // 的完整清單重複，不再需要在首頁重複列出——這裡驗證分類與計數存在，
+  // 項目本身改到 practical/todos.html 專屬測試驗證。
   for (const group of todoGroups) {
     assert.ok(html.includes(`>${group.title}<`), `首頁缺少待辦分類：${group.title}`);
-    for (const item of group.items) assert.ok(html.includes(`>${item.name}<`), `首頁缺少待辦：${item.name}`);
+    const pending = group.items.filter(item => !['已訂妥', '已完成'].includes(item.status)).length;
+    const summary = pending ? `${pending} 項待處理` : '已全部完成';
+    assert.ok(html.includes(`href="practical/todos.html#todo-${group.id}"`), `首頁缺少待辦分類連結：${group.id}`);
+    assert.ok(html.includes(summary), `首頁缺少待辦分類計數：${group.title}`);
   }
   assert.ok(html.includes('href="#todos"'));
   assert.ok(html.includes('href="practical/todos.html"'));
@@ -1097,7 +1138,9 @@ test('行程餐廳推薦的評分只由連結帶去 Google Maps，不在站內�
   const bakedRating = /★\s*\d(?:\.\d)?|\d\.\d\s*(?:顆星|星|\/\s*5)|\d+\s*則評論/;
   for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
     const html = read(file);
-    const table = html.slice(html.indexOf('id="city-dining"'), html.indexOf('</table>', html.indexOf('id="city-dining"')));
+    // 稽核 M4 把整段拆成 5 個 <details> 分組，取到整個 section 結束（而非第一個
+    // </table>）才能涵蓋全部分組的列，不只驗到「你的候選」那一組。
+    const table = html.slice(html.indexOf('id="city-dining"'), html.indexOf('</section>', html.indexOf('id="city-dining"')));
     // 地圖不再獨立成欄：店名本身就是連結，且每一列都要有
     assert.ok(!table.includes('地圖導航'), `${file} 仍保留獨立的地圖導航欄`);
     const rows = table.split('<tr class=').slice(1);
@@ -1235,6 +1278,17 @@ test('實用頁完整包含店家地圖、安全電話、打包與最新交通�
   assert.ok(read('practical/booking.html').includes('QR 260'));
 });
 
+test('今日頁與安全須知頁的緊急電話輸出可直接撥打的 tel: 連結（稽核 H4）', () => {
+  for (const [file, expectedTelLinks] of [['today.html', 5], ['practical/essentials.html', 5]]) {
+    const html = read(file);
+    for (const number of ['112', '997', '998', '999', '986']) {
+      assert.match(html, new RegExp(`<a href="tel:${number}">${number}</a>`), `${file} 缺少 ${number} 的可撥打連結`);
+    }
+    const telLinks = html.match(/<a href="tel:\d+">/g) || [];
+    assert.ok(telLinks.length >= expectedTelLinks, `${file} 的 tel: 連結數量不足`);
+  }
+});
+
 test('全站沒有常見簡體專用字', () => {
   const simplifiedOnly = ['国', '学', '语', '应', '现', '实', '导', '为', '会', '这', '来', '说', '们', '产', '业', '变', '关', '开', '间', '进', '长', '门', '问', '么', '义', '儿', '车', '马', '鱼', '龙', '爱', '东', '华', '历', '经', '结', '统', '传', '让', '认', '识', '远', '运'];
   const offenders = [];
@@ -1260,7 +1314,8 @@ test('service worker 提供離線快取，且不預快取被歸檔的介面', ()
   for (const file of expectedFiles) {
     assert.ok(worker.includes(`./${file}`), `sw.js 預快取缺少 ${file}`);
   }
-  for (const asset of ['./assets/main.css', './assets/nav.js', './assets/site-search.js', './assets/database-filter.js', './assets/leaflet/leaflet.js']) {
+  for (const asset of ['./assets/main.css', './assets/nav.js', './assets/site-search.js', './assets/database-filter.js', './assets/leaflet/leaflet.js',
+    './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png']) {
     assert.ok(worker.includes(asset), `sw.js 預快取缺少 ${asset}`);
   }
 
@@ -1310,6 +1365,111 @@ test('service worker 預快取失敗時不啟用殘缺新版', async () => {
   handlers.get('install')({ waitUntil(promise) { installPromise = promise; } });
   await assert.rejects(installPromise, /模擬必要資源下載失敗/);
   assert.equal(skipWaitingCalls, 0, '預快取失敗時不得啟用新版 worker');
+});
+
+test('sw.js 預快取頁面會拿掉轉址旗標，並同時存乾淨網址與 .html 兩種 key（稽核 H2）', async () => {
+  // 模擬 Cloudflare Pages 的行為：請求 .html 會收到 308 轉址到乾淨網址。
+  const worker = fs.readFileSync('sw.js', 'utf8');
+  const server = http.createServer((req, res) => {
+    if (req.url === '/today.html') {
+      res.writeHead(308, { Location: '/today' });
+      res.end();
+      return;
+    }
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+    res.end('<html>今日卡內容</html>');
+  });
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  const { port } = server.address();
+  const origin = `http://127.0.0.1:${port}`;
+
+  const store = new Map();
+  const cache = {
+    async put(key, response) {
+      const url = typeof key === 'string' ? new URL(key, `${origin}/`).toString() : key.url;
+      store.set(url, response);
+    },
+  };
+
+  // sw.js 頂層會立刻呼叫 self.addEventListener 註冊 install/activate/fetch，
+  // 缺這個方法 vm.runInContext 會同步拋錯；若拋錯發生在 server 開啟之後、
+  // try/finally 保護之外，server 就永遠不會關閉，測試程序會因為事件迴圈裡
+  // 還有活著的 listening socket 而卡住不結束（曾經整組測試因此掛住）。
+  // 所以 runInContext 也要包進 try/finally，且 self 要有完整的假方法。
+  try {
+    const context = {
+      self: {
+        location: { origin },
+        clients: { claim: async () => {} },
+        addEventListener() {},
+        async skipWaiting() {},
+      },
+      fetch: (input, init) => fetch(new URL(String(input), `${origin}/`).toString(), init),
+      URL,
+      Response,
+      console,
+    };
+    vm.createContext(context);
+    vm.runInContext(worker, context);
+
+    await context.precachePage(cache, './today.html');
+  } finally {
+    // fetch 走 keep-alive 連線；只呼叫 close() 不會關掉閒置中的 socket，
+    // 測試程序會因為事件迴圈裡還有活著的連線而卡住不結束。
+    server.closeAllConnections();
+    server.close();
+  }
+
+  const htmlKeyResponse = store.get(`${origin}/today.html`);
+  const cleanKeyResponse = store.get(`${origin}/today`);
+  assert.ok(htmlKeyResponse, '缺少 .html 版本的快取 key');
+  assert.ok(cleanKeyResponse, '缺少乾淨網址版本的快取 key');
+  assert.equal(htmlKeyResponse.redirected, false, '重建後的 Response 不應再帶轉址旗標（否則離線導覽會被 Chrome 拒用）');
+  assert.equal(cleanKeyResponse.redirected, false, '重建後的 Response 不應再帶轉址旗標');
+  assert.equal(await htmlKeyResponse.clone().text(), '<html>今日卡內容</html>');
+  assert.equal(await cleanKeyResponse.clone().text(), '<html>今日卡內容</html>');
+});
+
+test('sw.js 離線時，導覽請求無論用哪種網址寫法（有無 .html）都能命中快取（稽核 H2）', async () => {
+  const worker = fs.readFileSync('sw.js', 'utf8');
+  const origin = 'https://example.test';
+
+  async function runPageStrategy(storedUrl, requestUrl) {
+    const store = new Map();
+    store.set(storedUrl, new Response('<html>快取內容</html>', { status: 200, headers: { 'Content-Type': 'text/html' } }));
+    const cache = {
+      async match(key) {
+        const url = typeof key === 'string' ? key : key.url;
+        return store.get(url);
+      },
+    };
+    const context = {
+      self: {
+        location: { origin },
+        clients: { claim: async () => {} },
+        addEventListener() {},
+        async skipWaiting() {},
+      },
+      caches: { open: async () => cache },
+      fetch: async () => { throw new Error('離線：不應連上網路'); },
+      URL,
+      Response,
+      console,
+    };
+    vm.createContext(context);
+    vm.runInContext(worker, context);
+    return context.pageStrategy({ url: requestUrl, method: 'GET' });
+  }
+
+  // Cloudflare Pages 情境：只有乾淨網址被存過，導覽請求卻用了 .html 寫法
+  const cfResponse = await runPageStrategy(`${origin}/today`, `${origin}/today.html`);
+  assert.ok(cfResponse, '只存了乾淨網址版本時，.html 寫法的導覽請求應仍能命中快取');
+  assert.equal(await cfResponse.clone().text(), '<html>快取內容</html>');
+
+  // GitHub Pages 情境：只有 .html 被存過，導覽請求卻用了乾淨網址
+  const ghResponse = await runPageStrategy(`${origin}/today.html`, `${origin}/today`);
+  assert.ok(ghResponse, '只存了 .html 版本時，乾淨網址寫法的導覽請求應仍能命中快取');
+  assert.equal(await ghResponse.clone().text(), '<html>快取內容</html>');
 });
 
 test('每頁都註冊 service worker，且 sw.js 一起輸出到站台根目錄', () => {

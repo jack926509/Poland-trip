@@ -8,7 +8,6 @@ import { renderPages } from './src/build/pages.mjs';
 import { buildStandalone } from './src/build/standalone.mjs';
 import { writeServiceWorker, replacePublishedOutputs } from './src/build/output.mjs';
 import { standalonePages } from './src/lib/routes.mjs';
-import { searchIndexPlaceholder } from './src/templates/layout.mjs';
 import { buildPageSearchRecords, buildTravelSearchRecords, serializeSearchIndex } from './src/search/site-search-index.mjs';
 
 // 保留既有匯入介面；實作分別由打包與發布模組負責。
@@ -48,15 +47,17 @@ function buildSearchRecords(distDir) {
   return [...travelRecords, ...pageRecords];
 }
 
-function injectSearchIndex(distDir, searchRecords) {
+// 稽核 M6：每頁本來都內嵌完整索引（單頁最多 526KB），改成寫一份共用的
+// assets/search-index.json，頁面只留一個 URL（見 layout.mjs 的
+// renderSiteSearch），由 site-search.js 在使用者要搜尋時才 fetch。
+function writeSearchIndexAsset(distDir, searchRecords) {
   const serialized = serializeSearchIndex(searchRecords);
+  fs.writeFileSync(path.join(distDir, 'assets/search-index.json'), serialized, 'utf8');
   for (const [relativePath] of standalonePages) {
-    const outputPath = path.join(distDir, relativePath);
-    const html = fs.readFileSync(outputPath, 'utf8');
-    if (!html.includes(searchIndexPlaceholder)) {
-      throw new Error(`${relativePath} 缺少搜尋索引佔位`);
+    const html = fs.readFileSync(path.join(distDir, relativePath), 'utf8');
+    if (!html.includes('data-search-index-url="')) {
+      throw new Error(`${relativePath} 缺少外部搜尋索引的 data-search-index-url`);
     }
-    fs.writeFileSync(outputPath, html.replace(searchIndexPlaceholder, serialized), 'utf8');
   }
 }
 
@@ -71,6 +72,9 @@ function buildIntoStaging(stagingRoot) {
   fs.cpSync(path.join(projectRoot, 'vendor', 'leaflet'), path.join(distDir, 'assets', 'leaflet'), { recursive: true });
   fs.cpSync(path.join(projectRoot, 'assets', 'photos'), path.join(distDir, 'assets', 'photos'), { recursive: true });
   fs.cpSync(path.join(projectRoot, 'assets', 'og'), path.join(distDir, 'assets', 'og'), { recursive: true });
+  // manifest 與圖示放站台根目錄：iOS／Android 都靠絕對路徑 /icon-*.png 找圖示，
+  // 兩條部署腳本（Cloudflare、GitHub Pages）都直接複製 dist/. 到公開輸出，
+  // 放進 dist 就會一起帶到，不必各自維護一份複製清單。
   for (const asset of ['manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png']) {
     fs.copyFileSync(path.join(projectRoot, asset), path.join(distDir, asset));
   }
@@ -80,7 +84,7 @@ function buildIntoStaging(stagingRoot) {
   renderPages(distDir);
 
   const searchRecords = buildSearchRecords(distDir);
-  injectSearchIndex(distDir, searchRecords);
+  writeSearchIndexAsset(distDir, searchRecords);
   buildStandalone({ distDir, standalonePath, searchRecords });
   fs.copyFileSync(standalonePath, path.join(distDir, 'poland-travel-guide-2026.html'));
 

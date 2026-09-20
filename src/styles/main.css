@@ -1880,6 +1880,12 @@ figure.media-unavailable > img {
   font-size: clamp(3.5rem, 7.5vw, 7rem);
 }
 
+/* 今日卡是旅途中最主要的頁，沿用附錄版式但不該被標成「APPENDIX」，
+   否則會讓人誤以為是次要頁面（稽核 M11）。 */
+.journal-today .journal-appendix-header::before {
+  content: 'TODAY';
+}
+
 .journal-practical .page > .section,
 .journal-practical .page > section,
 .journal-practical .page > .grid-wide,
@@ -2123,6 +2129,12 @@ figure.media-unavailable > img {
 
   .journal-edition {
     display: none;
+  }
+
+  /* 手機導覽列裡「今日」是唯一常駐入口，卻是整排字級最小的一顆
+     （稽核 M9：12.48px）。提到 .95rem，跟其他導覽字級接近。 */
+  .nav-today {
+    font-size: .95rem;
   }
 
   .nav-dropdown {
@@ -2384,6 +2396,11 @@ figure.media-unavailable > img {
 
   .mobile-quick-nav a span { color: #fff; font-size: 1rem; }
 
+  /* 底部固定快捷列會蓋住頁尾最後一行，手機統一留出等高的底部留白（稽核 M2）。 */
+  .journal-site {
+    padding-bottom: calc(4.25rem + env(safe-area-inset-bottom));
+  }
+
   .journal-appendix-header {
     margin-bottom: 3rem;
     padding: 1.5rem 0;
@@ -2466,6 +2483,13 @@ figure.media-unavailable > img {
   .table-itinerary td:last-child,
   .table-schedule td:last-child {
     border-bottom: 0;
+  }
+
+  /* 花費／時長沒資料時桌機仍顯示「—」保留欄位對齊，手機拆成卡片後
+     一格一行，「—」照樣佔一整行；用 data-empty 直接不渲染那一行
+     （稽核 M3：Day 2 20+ 步，每步省兩行約 60px）。 */
+  .table-schedule td[data-empty] {
+    display: none;
   }
 
   .table-itinerary td:last-child a {
@@ -4730,6 +4754,41 @@ h3 {
   .city-dining-scroll-hint { display: block; font-size: .875rem; color: var(--ink-soft); }
 }
 
+/* 餐飲分組收合（稽核 M4）：候選以外的四組預設收合，summary 是唯一可點列，
+   給足觸控高度並標出家數，才知道值不值得點開。 */
+.city-dining-group + .city-dining-group,
+.city-dining-group + p.action-links {
+  margin-top: 1.5rem;
+}
+.city-dining-group summary {
+  min-height: 44px;
+  padding: .6rem .2rem;
+  border-block: 1px solid var(--line);
+  font-weight: 700;
+  cursor: pointer;
+}
+.city-dining-group[open] summary {
+  border-bottom-color: var(--line-strong);
+}
+.city-dining-group .city-dining-table-wrap {
+  margin-top: .75rem;
+}
+
+/* 門票速查依城市分組（稽核 M7）：預設全部展開（不像餐廳分組要收合），
+   summary 只是可跳轉的錨點兼標題，仍給足觸控高度。 */
+.ticket-city-group + .ticket-city-group {
+  margin-top: 1.5rem;
+}
+.ticket-city-group summary {
+  min-height: 44px;
+  padding-block: .4rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.ticket-city-group .table-wrap {
+  margin-top: .5rem;
+}
+
 /* 桌機維持真正的表格與可見表頭，但把列高收緊：
    padding .85rem → .5rem .65rem、行距 1.5，整張表大約矮三成。 */
 .city-dining-table { display: table; }
@@ -4755,6 +4814,9 @@ h3 {
   .city-dining-table-wrap { overflow-x: visible; border: 0; background: none; }
   .city-dining-table { display: block; min-width: 0; table-layout: auto; }
   .city-dining-table thead { display: none; }
+  /* caption 預設是 table-caption；表格本身改 display:block 後，caption 沒有父層
+     table 的寬度可撐，會收縮到內容最小寬度，中文逐字直排成一長條（見稽核 H3）。 */
+  .city-dining-table caption { display: block; width: 100%; padding: .5rem 0; text-align: left; }
   .city-dining-table tbody { display: grid; grid-template-columns: minmax(0, 1fr); gap: .6rem; padding: .6rem 0; }
   .city-dining-table tr {
     display: block;
@@ -4969,6 +5031,11 @@ h3 {
   .journal-today .today-status { margin: .5rem 0; }
   .journal-today .today-head { margin-bottom: .5rem; }
   .journal-today .today-head h2 { font-size: 1.5rem; line-height: 1.25; margin: .2rem 0; }
+  /* sticky 動作列的 top: 76px 是假設桌機固定導覽列的高度；手機導覽列不是 fixed，
+     捲動後上方露出 76px 縫隙，內容從縫裡透出（稽核 M1）。手機貼齊視窗頂端，
+     並把四顆按鈕收成單行，避免換成兩列讓列高翻倍。 */
+  .journal-today .today-actions { top: 0; flex-wrap: nowrap; }
+  .journal-today .today-actions > * { padding: .5rem .3rem; font-size: .82rem; }
 }
 .today-snack-label { margin: 1rem 0 .25rem; }
 

@@ -47,19 +47,18 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
         <img class="journal-cover-photo" src="${escapeHtml(coverCity.photo.hero)}" alt="${escapeHtml(coverCity.name)}城市風景" width="1200" height="800" decoding="async" fetchpriority="high">
         <figcaption>${escapeHtml(coverCity.pl)} · ${escapeHtml(coverCity.vibe)}</figcaption>
       </figure>` : '<div class="journal-cover-figure journal-cover-fallback" aria-hidden="true"></div>';
-  const todoCards = todoGroups.map(group => `
-    <article class="journal-note-card">
+  // 首頁原本把每個分類的全部項目（16 項）逐條列出，和 practical/todos.html
+  // 的完整清單（21 項）大面積重複。首頁只留「這類還有幾項要處理」的計數
+  // 加連結，項目本身只在待辦頁看一次（稽核 M9）。
+  const todoCards = todoGroups.map(group => {
+    const pending = group.items.filter(item => !['已訂妥', '已完成'].includes(item.status)).length;
+    return `<a class="card card-link" href="practical/todos.html#todo-${escapeHtml(group.id)}">
       <span class="eyebrow">${escapeHtml(group.eyebrow)}</span>
       <h3>${escapeHtml(group.title)}</h3>
       <p>${escapeHtml(group.intro)}</p>
-      <ul class="check-list">
-        ${group.items.map(item => `<li>
-          <span class="eyebrow">${escapeHtml(item.date)} · ${escapeHtml(item.status)}</span><br>
-          <b>${escapeHtml(item.name)}</b>
-        </li>`).join('')}
-      </ul>
-      <a href="practical/todos.html#todo-${escapeHtml(group.id)}">查看下一步與處理連結 →</a>
-    </article>`).join('');
+      <span>${pending ? `${pending} 項待處理` : '已全部完成'}（共 ${group.items.length} 項）→</span>
+    </a>`;
+  }).join('');
   const dayEntries = days.map(day => `
     <li class="journal-day-entry">
       <a href="day-${String(day.n).padStart(2, '0')}.html">

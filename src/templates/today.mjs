@@ -1,5 +1,5 @@
 import { mealTiming, renderDiningFacts } from '../lib/dining.mjs';
-import { escapeHtml, safeHttpsUrl } from '../lib/html.mjs';
+import { escapeAttr, escapeHtml, safeHttpsUrl } from '../lib/html.mjs';
 import { bookingProgress, isDepartureDay, stayForDate } from '../lib/journey.mjs';
 import { segmentForDay } from '../lib/rail.mjs';
 import { renderLayout } from './layout.mjs';
@@ -137,7 +137,7 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
         ${hotelMap ? `<a href="${escapeHtml(hotelMap)}" target="_blank" rel="noopener noreferrer">${bed.id === 'poznan-towarowa' ? '接待處導航' : '住宿導航'} ↗</a>` : ''}` : leaving ? `<p>今晚離境／機上過夜。先確認航班報到、退稅與機場交通。</p><a href="${escapeHtml(dayHref)}#directions">開啟機場地址與交通 →</a>`
         : `<p><b>這一天不是離境日，但查不到當晚住宿。</b>這是資料缺漏，不是「不用住」——請先補上訂房或確認安排。</p><a href="${escapeHtml(dayHref)}#day-preparation">查看當日訂房與提醒 →</a>`}
     </section>
-    <details class="today-block"><summary>全天時間表</summary>${renderSteps(day)}</details>
+    <details class="today-block" data-today-schedule><summary>全天時間表</summary>${renderSteps(day)}</details>
     <details class="today-block"><summary>預約與待辦 · ${progress.pending.length} 項待處理</summary>
       <h3>仍未訂妥</h3><ul>${list(progress.pending) || '<li>無待訂項目。</li>'}</ul>
       ${progress.confirmed.length ? `<h3>已完成預約</h3><ul>${list(progress.confirmed)}</ul>` : ''}
@@ -176,7 +176,7 @@ export function renderToday({ meta, days, stay, dayDining = {}, daylight = [], s
     .map(fn => fn.toString()).join('\n');
 
   const emergency = (safety?.emergency || [])
-    .map(([label, number]) => `<li><b>${escapeHtml(number)}</b>　${escapeHtml(label)}</li>`).join('');
+    .map(([label, number]) => `<li><a href="tel:${escapeAttr(number.replace(/\s+/g, ''))}">${escapeHtml(number)}</a>　${escapeHtml(label)}</li>`).join('');
 
   const bodyHtml = `
     <header class="journal-appendix-header">
@@ -194,18 +194,18 @@ export function renderToday({ meta, days, stay, dayDining = {}, daylight = [], s
     <p class="today-status" data-today-status>正在判斷今天是旅程的第幾天…</p>
     <noscript><p class="today-status">JavaScript 未啟用時無法自動選日，以下列出全部 ${days.length} 天。</p></noscript>
 
+    <section class="section today-block-alert" data-today-sos>
+      <div class="section-heading"><span class="section-num">SOS</span><h2>緊急電話</h2></div>
+      <ul class="today-list">${emergency}</ul>
+      <p class="source-meta">歐洲通用緊急號碼 112 可直接撥打，不需解鎖或有 SIM 卡餘額。</p>
+    </section>
+
     <div data-today-cards>${cards}</div>
 
     <section class="section" data-today-outside hidden>
       <div class="section-heading"><span class="section-num">Off-trip</span><h2>不在旅程期間</h2></div>
       <p data-today-outside-note></p>
       <p><a class="journal-text-link" href="${pathPrefix}practical/booking.html#countdown">看訂票與查核倒數 →</a>　<a class="journal-text-link" href="${pathPrefix}index.html#days">開啟八日行程目錄 →</a></p>
-    </section>
-
-    <section class="section">
-      <div class="section-heading"><span class="section-num">SOS</span><h2>緊急電話</h2></div>
-      <ul class="today-list">${emergency}</ul>
-      <p class="source-meta">歐洲通用緊急號碼 112 可直接撥打，不需解鎖或有 SIM 卡餘額。</p>
     </section>
 
     <script>

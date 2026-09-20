@@ -62,6 +62,16 @@ test('今日卡帶上住宿波蘭文地址、緊急電話與當日日照', () =>
   assert.ok(html.includes('16:34'), '缺少 Day 5 的日落時間');
 });
 
+test('緊急電話可直接撥打，SOS 區塊在日卡清單之前（稽核 H4）', () => {
+  const html = renderPage();
+  assert.match(html, /<a href="tel:112">112<\/a>/, '緊急電話未輸出 tel: 連結');
+  const sosIndex = html.indexOf('data-today-sos');
+  const cardsIndex = html.indexOf('data-today-cards');
+  assert.notEqual(sosIndex, -1, '缺少 SOS 區塊');
+  assert.notEqual(cardsIndex, -1, '缺少日卡清單容器');
+  assert.ok(sosIndex < cardsIndex, 'SOS 區塊應在日卡清單之前，不能埋在頁面深處');
+});
+
 test('不使用寫死的 id 選取器，單檔版加前綴後才不會失效', () => {
   const html = renderPage();
   const script = html.match(/<script>([\s\S]*?)<\/script>/)[1];
