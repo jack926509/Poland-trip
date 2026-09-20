@@ -27,7 +27,6 @@ import {
   databaseEntries,
   databaseSections,
   dayOperations,
-  readinessItems,
   statusLabels,
   normalizeSyncRow,
   applyDashboardSync,
@@ -82,9 +81,8 @@ function htmlFiles() {
 test('自由行資料庫遵守統一資料契約且不含私人館址', () => {
   assert.ok(databaseEntries.length >= 15);
   assert.deepEqual(new Set(databaseEntries.map(item => item.status)), new Set(['verified', 'recheck', 'pending', 'private-required']));
-  assert.equal(readinessItems.length, 8);
   assert.deepEqual(Object.keys(dayOperations).map(Number), [1, 2, 3, 4, 5, 6, 7, 8]);
-  assert.ok(!JSON.stringify({ databaseEntries, readinessItems, dayOperations }).includes('Al. Jerozolimskie 179'));
+  assert.ok(!JSON.stringify({ databaseEntries, dayOperations }).includes('Al. Jerozolimskie 179'));
 });
 
 test('dashboard 同步不會因缺少 private 欄位而把私人資料改為公開', () => {
@@ -117,10 +115,6 @@ test('官方旅客權益與本次私人／待購狀態分開', () => {
   assert.equal(byId.get('aviation-trip-baggage-confirmation')?.status, 'private-required');
   assert.equal(byId.get('rail-delay-rights')?.status, 'verified');
   assert.equal(byId.get('rail-trip-tickets')?.status, 'pending');
-  assert.equal(readinessItems.find(item => item.id === 'flight-ticket')?.entryId, 'aviation-trip-baggage-confirmation');
-  assert.equal(readinessItems.find(item => item.id === 'rail-tickets')?.entryId, 'rail-trip-tickets');
-  assert.ok(dayOperations[8].entryIds.includes('aviation-trip-baggage-confirmation'));
-  for (const day of [2, 4, 5, 6]) assert.ok(dayOperations[day].entryIds.includes('rail-trip-tickets'));
 });
 
 test('5 筆已確認住宿區段完整涵蓋 7 晚並保留官方地址', () => {
@@ -154,7 +148,6 @@ test('5 筆已確認住宿區段完整涵蓋 7 晚並保留官方地址', () => 
 
 test('公開版涵蓋完整航空往返日期，六段航班均標示已購票', () => {
   assert.equal(meta.travelStart, '2026-10-23');
-  assert.equal(meta.travelEnd, '2026-11-01');
   assert.equal(meta.tripStart, '2026-10-24');
   assert.equal(meta.tripEnd, '2026-10-31');
   const actualFlights = [...flights.out, ...flights.back].filter(item => !item.layover);
@@ -166,7 +159,6 @@ test('自由行資料庫的狀態、來源、日期與關聯資料符合完整�
   assert.doesNotThrow(() => validateTravelDatabase({
     entries: databaseEntries,
     sections: databaseSections,
-    readiness: readinessItems,
     operations: dayOperations,
     labels: statusLabels,
   }));
@@ -175,7 +167,6 @@ test('自由行資料庫的狀態、來源、日期與關聯資料符合完整�
     () => validateTravelDatabase({
       entries: [{ ...databaseEntries[0], status: '未定義狀態' }, ...databaseEntries.slice(1)],
       sections: databaseSections,
-      readiness: readinessItems,
       operations: dayOperations,
       labels: statusLabels,
     }),
@@ -190,7 +181,6 @@ test('自由行資料庫的狀態、來源、日期與關聯資料符合完整�
       () => validateTravelDatabase({
         entries: [{ ...databaseEntries[0], [field]: value }, ...databaseEntries.slice(1)],
         sections: databaseSections,
-        readiness: readinessItems,
         operations: dayOperations,
         labels: statusLabels,
       }),
@@ -203,7 +193,6 @@ test('自由行資料庫的狀態、來源、日期與關聯資料符合完整�
       () => validateTravelDatabase({
         entries: [{ ...databaseEntries[0], verifiedAt: invalidDate }, ...databaseEntries.slice(1)],
         sections: databaseSections,
-        readiness: readinessItems,
         operations: dayOperations,
         labels: statusLabels,
       }),
@@ -217,19 +206,11 @@ test('自由行資料庫的狀態、來源、日期與關聯資料符合完整�
       name: 'section 空白',
       sections: [{ ...databaseSections[0], id: 'bad id' }, ...databaseSections.slice(1)],
       entries: databaseEntries,
-      readiness: readinessItems,
     },
     {
       name: 'entry 含 %20',
       sections: databaseSections,
       entries: [{ ...databaseEntries[0], id: 'bad%20id' }, ...databaseEntries.slice(1)],
-      readiness: readinessItems,
-    },
-    {
-      name: 'readiness 含 #',
-      sections: databaseSections,
-      entries: databaseEntries,
-      readiness: [{ ...readinessItems[0], id: 'bad#id' }, ...readinessItems.slice(1)],
     },
   ];
   for (const invalid of invalidSlugCases) {
@@ -237,7 +218,6 @@ test('自由行資料庫的狀態、來源、日期與關聯資料符合完整�
       () => validateTravelDatabase({
         entries: invalid.entries,
         sections: invalid.sections,
-        readiness: invalid.readiness,
         operations: dayOperations,
         labels: statusLabels,
       }),
@@ -253,14 +233,9 @@ test('自由行資料庫的狀態、來源、日期與關聯資料符合完整�
   ]) {
     assert.throws(() => validateTravelDatabase({
       entries: [invalidEntry, ...databaseEntries.slice(1)], sections: databaseSections,
-      readiness: readinessItems, operations: dayOperations, labels: statusLabels,
+      operations: dayOperations, labels: statusLabels,
     }));
   }
-  assert.throws(() => validateTravelDatabase({
-    entries: databaseEntries, sections: databaseSections,
-    readiness: [{ ...readinessItems[0], priority: 'P2' }, ...readinessItems.slice(1)],
-    operations: dayOperations, labels: statusLabels,
-  }), /未知 priority/);
 });
 
 test('每日操作資料會攔截缺欄、空字串與錯誤型別', () => {
@@ -269,7 +244,6 @@ test('每日操作資料會攔截缺欄、空字串與錯誤型別', () => {
     { field: 'navigation', value: [{ mode: '步行', route: 'A → B' }] },
     { field: 'dailyAlerts', value: [''] },
     { field: 'nightChecklist', value: [{}] },
-    { field: 'entryIds', value: [] },
   ];
 
   for (const invalid of invalidOperations) {
@@ -277,7 +251,6 @@ test('每日操作資料會攔截缺欄、空字串與錯誤型別', () => {
       () => validateTravelDatabase({
         entries: databaseEntries,
         sections: databaseSections,
-        readiness: readinessItems,
         operations: {
           ...dayOperations,
           1: { ...dayOperations[1], [invalid.field]: invalid.value },
@@ -287,6 +260,14 @@ test('每日操作資料會攔截缺欄、空字串與錯誤型別', () => {
       /Day 1/,
       `未攔截每日操作欄位 ${invalid.field}`,
     );
+  }
+});
+
+test('travel-database.js 不再 export readinessItems、dayOperations 不再帶 entryIds（切片 5：孤兒清除）', () => {
+  const source = fs.readFileSync(path.resolve('src/data/travel-database.js'), 'utf8');
+  assert.ok(!/export const readinessItems/.test(source));
+  for (const day of Object.keys(dayOperations)) {
+    assert.equal(dayOperations[day].entryIds, undefined, `Day ${day} 不應再有 entryIds`);
   }
 });
 
@@ -698,7 +679,7 @@ test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', ()
   const cathedralCheck = mapPinChecks.poznan['大教堂島 Ostrów Tumski'];
   assert.deepEqual(cathedral.slice(0, 2), [52.411573, 16.948647]);
   assert.deepEqual(cathedralCheck, {
-    status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:448, corrected:true,
+    status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:448,
   });
   const verifiedPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'coordinate-verified');
   const areaPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'area-reference');
@@ -1035,7 +1016,7 @@ test('尚未開賣的長途交通與天氣不假裝成已確認', () => {
     }
   }
   for (const day of days) {
-    assert.equal(day.weather, '尚無可靠預報；出發前 7–10 天更新');
+    assert.equal(day.weather, undefined, '切片 5：weather 已移除（無頁面消費者）');
   }
   const allDays = Array.from({ length: 8 }, (_, index) => read(`day-${String(index + 1).padStart(2, '0')}.html`)).join('\n');
   assert.ok(!allDays.includes('22:54'));

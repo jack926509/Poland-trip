@@ -12,7 +12,7 @@ export const michelinSummary = [
     ],
     "star1List": [],
     "bibList": [
-      "Folga",
+      "FOLGA",
       "MOLÁM",
       "NOAH",
       "Bufet KRK",
@@ -35,7 +35,7 @@ export const michelinSummary = [
       "Koneser Grill",
       "kontakt",
       "Le Braci",
-      "Wyraj",
+      "WYRAJ",
       "AHAAN",
       "Blisko Bar",
       "WANDAL",
@@ -204,7 +204,6 @@ export const foods = [
 export const cityFood = [
   {
     "city": "華沙",
-    "en": "Warszawa",
     "items": [
       {
         "placeId": "warsaw-hala-koszyki",
@@ -258,7 +257,6 @@ export const cityFood = [
   },
   {
     "city": "克拉科夫",
-    "en": "Kraków",
     "items": [
       {
         "placeId": "krakow-starka",
@@ -336,7 +334,6 @@ export const cityFood = [
   },
   {
     "city": "樂斯拉夫",
-    "en": "Wrocław",
     "items": [
       {
         "placeId": "wroclaw-konspira",
@@ -384,7 +381,6 @@ export const cityFood = [
   },
   {
     "city": "波茲南",
-    "en": "Poznań",
     "items": [
       {
         "placeId": "poznan-stary-browar",

@@ -293,17 +293,6 @@ for (const entry of databaseEntries) {
   entry.checkedAt ||= entry.id === 'accommodation-confirmations' ? '2026-08-10' : '2026-08-08';
 }
 
-export const readinessItems = [
-  { id: 'accommodation', title: '住宿', detail: '5 筆／7 晚訂單已確認；出發前補齊私人離線備份與寄放安排', priority: 'P0', status: 'private-required', entryId: 'accommodation-confirmations', private: true },
-  { id: 'rail-tickets', title: '城際車票', detail: '確認車次、車廂、座位與轉乘保障', priority: 'P0', status: 'pending', entryId: 'rail-trip-tickets', private: false },
-  { id: 'attraction-tickets', title: '景點票券', detail: '確認日期、入場時段與離線票券', priority: 'P0', status: 'pending', entryId: 'documents-attraction-tickets', private: true },
-  { id: 'flight-ticket', title: '航班時刻與行李', detail: '核對電子機票的六段起降時刻、行李額度與是否直掛', priority: 'P0', status: 'private-required', entryId: 'aviation-trip-baggage-confirmation', private: true },
-  { id: 'insurance', title: '旅平險', detail: '保存保單與海外救援聯絡方式', priority: 'P0', status: 'private-required', entryId: 'medical-insurance-and-emergency', private: true },
-  { id: 'offline-pack', title: '網路離線', detail: '準備 SIM／eSIM、離線地圖與文件包', priority: 'P1', status: 'pending', entryId: 'connectivity-prepaid-registration', private: false },
-  { id: 'passport-etias', title: 'ETIAS', detail: '依官方啟用進度重查入境資格', priority: 'P0', status: 'recheck', entryId: 'entry-etias-and-passport', private: false },
-  { id: 'emergency-contact', title: '緊急聯絡', detail: '完成旅外登錄並讓聯絡人持有行程', priority: 'P0', status: 'private-required', entryId: 'documents-travel-registration', private: true },
-];
-
 const standardNightChecklist = [
   '手機、行動電源、相機與耳機充電',
   '將隔日火車／景點票券 PDF 存到離線資料夾',
@@ -391,7 +380,6 @@ const venueCard = (venueId, displayName, note = '') => {
 export const dayOperations = {
   1: {
     cityKey: 'warsaw',
-    entryIds: ['connectivity-prepaid-registration', 'aviation-missing-baggage', 'accommodation-confirmations'],
     note: '抵達後啟用網路、確認住宿地址與行李狀態。',
     addresses: [
       venueCard('warsaw-chopin-airport', '華沙蕭邦機場', '抵達後依航站現場標示前往 SKM 月台。'),
@@ -413,7 +401,6 @@ export const dayOperations = {
   },
   2: {
     cityKey: 'krakow',
-    entryIds: ['rail-trip-tickets', 'calendar-sunday-and-all-saints', 'accommodation-confirmations'],
     note: '非營業週日；火車班次與餐廳營業當日確認。',
     addresses: [
       venueCard('warsaw-centralna-station', 'Warszawa Centralna'),
@@ -441,7 +428,6 @@ export const dayOperations = {
   },
   3: {
     cityKey: 'krakow',
-    entryIds: ['dining-reservation-and-backup', 'medical-insurance-and-emergency', 'daily-basics-krakow-water'],
     note: '長時間導覽日，保留補水、保暖與醫療聯絡卡。',
     addresses: [
       venueCard('krakow-mda-bus-station', 'Kraków MDA 客運站', `Kraków Główny 後方步行約 5 分。官方售票頁顯示 10/26 的 ${lajkonikOutboundAdopted.dep} 班次由地下層 ${lajkonikOutboundAdopted.bay} 發車（${lajkonikOutboundRejected.dep} 那班為 ${lajkonikOutboundRejected.bay}）；站位仍以當日電子看板為準。`),
@@ -461,7 +447,6 @@ export const dayOperations = {
   },
   4: {
     cityKey: 'wroclaw',
-    entryIds: ['luggage-storage-transition', 'rail-trip-tickets', 'accessibility-station-assistance'],
     note: '退房後先確認行李寄放，再依實際 PKP 班次轉場。',
     addresses: [
       venueCard('krakow-glowny-station', 'Kraków Główny'),
@@ -484,7 +469,6 @@ export const dayOperations = {
   },
   5: {
     cityKey: 'poznan',
-    entryIds: ['luggage-storage-transition', 'rail-trip-tickets', 'daily-basics-wroclaw-water'],
     note: '高強度轉場日；晚間先充電並下載隔日資料。',
     addresses: [
       venueCard('wroclaw-glowny-station', 'Wrocław Główny'),
@@ -508,7 +492,6 @@ export const dayOperations = {
   },
   6: {
     cityKey: 'warsaw',
-    entryIds: ['luggage-storage-transition', 'rail-trip-tickets', 'dining-reservation-and-backup'],
     note: '城際火車與華沙住宿均以離線地址備援。',
     addresses: [
       venueCard('poznan-glowny-station', 'Poznań Główny'),
@@ -533,7 +516,6 @@ export const dayOperations = {
   },
   7: {
     cityKey: 'warsaw',
-    entryIds: ['calendar-sunday-and-all-saints', 'dining-reservation-and-backup', 'emergency-taiwan-representative'],
     note: '諸聖節前夕，逐店確認晚餐與交通；離線備妥 SOS 卡。',
     addresses: [
       venueCard('warsaw-royal-castle', '華沙皇家城堡'),
@@ -554,7 +536,6 @@ export const dayOperations = {
   },
   8: {
     cityKey: 'warsaw',
-    entryIds: ['tax-free-vat-refund', 'aviation-trip-baggage-confirmation', 'documents-travel-registration'],
     note: '離開 EU 前處理退稅；託運商品若需查驗，先完成海關程序。',
     addresses: [
       accommodationAddress('warsaw-metropol'),
@@ -672,7 +653,7 @@ function assertNonEmptyText(value, field) {
  * 驗證自由行資料庫的公開資料契約。
  * 可由測試注入資料，亦在模組載入時檢查正式資料，避免錯誤進入產出頁面。
  */
-export function validateTravelDatabase({ entries, sections, readiness, operations, labels }) {
+export function validateTravelDatabase({ entries, sections, operations, labels }) {
   const allowedCategories = new Set(['place', 'transit', 'dining', 'practical', 'safety', 'document']);
   const allowedCityKeys = new Set(['WAW', 'KRK', 'WRO', 'POZ', 'PL', 'ROUTE']);
   const sectionIds = new Set();
@@ -683,13 +664,11 @@ export function validateTravelDatabase({ entries, sections, readiness, operation
   }
 
   const entryIds = new Set();
-  const entriesById = new Map();
   const sectionCounts = new Map(sections.map(section => [section.id, 0]));
   for (const entry of entries) {
     assertStableSlug(entry.id, '資料庫 entry ID');
     if (entryIds.has(entry.id)) throw new Error(`資料庫 entry ID 重複：${entry.id}`);
     entryIds.add(entry.id);
-    entriesById.set(entry.id, entry);
 
     for (const field of ['title', 'summary', 'offlineNote']) {
       assertNonEmptyText(entry[field], `${entry.id} 的 ${field}`);
@@ -717,19 +696,6 @@ export function validateTravelDatabase({ entries, sections, readiness, operation
 
   for (const [sectionId, count] of sectionCounts) {
     if (count === 0) throw new Error(`資料庫 section 沒有任何資料：${sectionId}`);
-  }
-
-  const readinessIds = new Set();
-  for (const item of readiness) {
-    assertStableSlug(item.id, 'readiness ID');
-    if (readinessIds.has(item.id)) throw new Error(`readiness ID 重複：${item.id}`);
-    readinessIds.add(item.id);
-    for (const field of ['title', 'detail']) assertNonEmptyText(item[field], `${item.id} 的 ${field}`);
-    if (!['P0', 'P1'].includes(item.priority)) throw new Error(`${item.id} 使用未知 priority：${item.priority}`);
-    if (typeof item.private !== 'boolean') throw new Error(`${item.id} 的 private 必須是 boolean`);
-    const entry = entriesById.get(item.entryId);
-    if (!entry) throw new Error(`${item.id} 指向不存在的 entry：${item.entryId}`);
-    if (item.status !== entry.status) throw new Error(`${item.id} 的狀態與 ${item.entryId} 不一致`);
   }
 
   for (let day = 1; day <= 8; day += 1) {
@@ -773,13 +739,6 @@ export function validateTravelDatabase({ entries, sections, readiness, operation
       }
     }
 
-    if (!Array.isArray(operation.entryIds) || operation.entryIds.length === 0) {
-      throw new Error(`Day ${day} 的 entryIds 必須是非空陣列`);
-    }
-    for (const entryId of operation.entryIds) {
-      if (!entriesById.has(entryId)) throw new Error(`Day ${day} 指向不存在的 entry：${entryId}`);
-    }
-
     if (!Array.isArray(operation.unresolvedSteps)) throw new Error(`Day ${day} 的 unresolvedSteps 必須是陣列`);
     const coveredLabels = new Set(operation.addresses.filter(item => item.reliable).flatMap(item => item.stepLabels));
     const unresolvedLabels = new Set(operation.unresolvedSteps.map(item => {
@@ -799,7 +758,7 @@ export function validateTravelDatabase({ entries, sections, readiness, operation
     }
   }
 
-  const serialized = JSON.stringify({ entries, sections, readiness, operations });
+  const serialized = JSON.stringify({ entries, sections, operations });
   for (const forbidden of forbiddenPublicContent) {
     if (serialized.includes(forbidden)) throw new Error(`公開資料含禁止內容：${forbidden}`);
   }
@@ -810,7 +769,6 @@ export function validateTravelDatabase({ entries, sections, readiness, operation
 validateTravelDatabase({
   entries: databaseEntries,
   sections: databaseSections,
-  readiness: readinessItems,
   operations: dayOperations,
   labels: statusLabels,
 });

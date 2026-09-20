@@ -53,7 +53,7 @@ export const cityNotices = {
 
 export const cityStories = [
   {
-    city:'華沙', en:'Warszawa',
+    city:'華沙',
     geo:'維斯瓦河（Wisła）中游西岸，波蘭地理與交通的十字路口。左岸（西）是重建的老城與現代市中心，右岸 Praga 區因 1944 年已被蘇軍佔領而躲過摧毀，保留了戰前原始街景——今日的藝術替代區。',
     history:'二戰中被系統性夷平的城市：1944 華沙起義失敗後，希特勒下令逐街爆破，市區約 85% 化為瓦礫。戰後波蘭人依 18 世紀宮廷畫家 Bellotto（Canaletto）的城市風景畫逐磚重建老城，1980 年以「非典型完整重建案例」列入 UNESCO——你走的老城廣場每一面牆都不到 80 歲，卻承載 700 年的記憶。',
     stories:[
@@ -69,7 +69,7 @@ export const cityStories = [
     ],
   },
   {
-    city:'克拉科夫', en:'Kraków',
+    city:'克拉科夫',
     geo:'維斯瓦河上游，Wawel 城堡建在河畔一座石灰岩丘上——控制河運的天然要塞，也是波蘭王權 500 年的地理支點。老城以歐洲最大中世紀廣場 Rynek Główny（200m × 200m）為核心，街廓在 1241 年蒙古入侵劫掠後、依 1257 年建城特許狀重劃，至今未變。',
     history:'1038–1596 年的波蘭王都，歷代國王在 Wawel 加冕與安葬。二戰時因作為納粹總督府所在地而未被戰火摧毀，是波蘭極少數「原裝」的古城——你在克拉科夫摸到的石頭大多是真的中世紀石頭。Kazimierz 原是 1335 年卡齊米日大帝敕建的獨立城市，數百年來是歐洲猶太文化重鎮，戰前 6.5 萬猶太居民戰後僅存數千。',
     stories:[
@@ -85,7 +85,7 @@ export const cityStories = [
     ],
   },
   {
-    city:'樂斯拉夫', en:'Wrocław',
+    city:'樂斯拉夫',
     geo:'奧得河（Odra）在此裂成多條支流，把城市切成 12 座島、以 100 多座橋相連——「波蘭威尼斯」。最老的核心 Ostrów Tumski（座堂島）是千年前的起點，至今保留全歐少數仍由點燈人每晚手工點燃的瓦斯街燈。',
     history:'這座城市 1945 年前叫 Breslau，是德國第六大城。戰後國界西移，德裔居民被遷出，取而代之的是被蘇聯劃走的東部城市利沃夫（Lwów）的波蘭移民——整座城市的人口被「換血」。拉茨瓦維採全景畫正是從利沃夫一起搬來的鎮城之寶，Karczma Lwowska 餐廳的名字也是這段記憶。',
     stories:[
@@ -100,7 +100,7 @@ export const cityStories = [
     ],
   },
   {
-    city:'波茲南', en:'Poznań',
+    city:'波茲南',
     geo:'瓦爾塔河（Warta）畔，位居柏林—華沙軸線正中，千年來吃盡東西貿易紅利，至今仍是波蘭的會展之都。城市原點在河中沙洲 Ostrów Tumski（與樂斯拉夫的座堂島同名不同地）。',
     history:'波蘭國家的搖籃：966 年梅什科一世（Mieszko I）在此受洗，波蘭以此為建國元年；最早的君主就葬在波茲南座堂。近代史上同樣硬氣——1956 年 6 月的工人起義是共產波蘭第一場大規模反抗，比華沙、格但斯克都早。',
     stories:[
@@ -279,7 +279,7 @@ Object.assign(mapPinChecks.krakow, {
   'Szalone Widelce': {status:'coordinate-verified', checkedAt:'2026-09-08', coordinateSource:'Google Maps 使用者連結 + Nominatim / OpenStreetMap', distanceMeters:0},
   'Bar Mleczny Pod Temidą': {status:'coordinate-verified', checkedAt:'2026-09-08', coordinateSource:'Google Maps 使用者連結 + Nominatim / OpenStreetMap', distanceMeters:0},
   'Hamsa': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:7},
-  'Ceramika Bolesławiecka（陶器）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:293, corrected:true},
+  'Ceramika Bolesławiecka（陶器）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:293},
   'World of Amber（琥珀）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:5},
   'Sukiennice 布廊（伴手禮攤位）': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:28},
   '中央市集廣場': {status:'area-reference', checkedAt:'2026-09-08', coordinateSource:'Google Maps 地標範圍／OpenStreetMap 面狀地物', note:'廣場範圍代表點，不是入口或門牌。'},
@@ -300,7 +300,7 @@ Object.assign(mapPinChecks.wroclaw, {
 });
 Object.assign(mapPinChecks.poznan, {
   '舊市集廣場 Stary Rynek': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:64},
-  '大教堂島 Ostrów Tumski': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:448, corrected:true},
+  '大教堂島 Ostrów Tumski': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:448},
   '可頌博物館': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:12},
   'Palmiarnia 棕櫚屋': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:48},
   'Muga ★': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
