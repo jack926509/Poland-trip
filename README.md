@@ -64,7 +64,26 @@ env -u NODE_OPTIONS ./verify.sh
 
 ## 部署
 
-推送至 `main` 後，既有 GitHub Actions 會先驗收、組裝 `_site/`，再部署到 Cloudflare Pages 與 GitHub Pages。Cloudflare 工作流程使用儲存庫 Secrets 中的 `CLOUDFLARE_API_TOKEN` 與 `CLOUDFLARE_ACCOUNT_ID`。
+**部署＝推送至 `main`，沒有其他手動步驟。** 兩條 GitHub Actions 會同時啟動，各自先跑 `./verify.sh` 驗收、再用 `./prepare-site.sh _site` 組裝發布目錄：
+
+| 工作流程 | 目的地 | 網址 |
+|---|---|---|
+| `.github/workflows/cloudflare-pages.yml`（wrangler `pages deploy _site --project-name=poland-trip`） | Cloudflare Pages | https://polandtrip.xiehnet.com （別名 https://poland-trip-7wm.pages.dev） |
+| `.github/workflows/deploy.yml` | GitHub Pages | https://jack926509.github.io/Poland-trip/ |
+
+Cloudflare 工作流程使用儲存庫 Secrets 中的 `CLOUDFLARE_API_TOKEN` 與 `CLOUDFLARE_ACCOUNT_ID`。
+
+**Cloudflare 專案不得連接 Git 整合**（Dashboard → Workers & Pages → poland-trip → 設定 → 組建 → Git 存放庫必須是「連線」未連接狀態）。一旦連上，Cloudflare 會依 `wrangler.toml` 的 `pages_build_output_dir = "."` 把未建置的 repo 根目錄整包當成第二個 Production 部署，與 GitHub Actions 上傳的正確版本互相覆蓋，導致 `/day-05` 等乾淨網址 404、`sw.js` 沒有版本指紋。2026-09-21 已斷開；若 `npx wrangler pages deployment list --project-name poland-trip` 出現同一 commit 兩個 Production 部署，就是又被連上了。
+
+推送後確認正式站拿到的是這次的建置（版本字串應與本機 `dist/sw.js` 相同）：
+
+```bash
+grep -o "polska-journal-v[0-9a-z-]*" dist/sw.js
+curl -sL https://polandtrip.xiehnet.com/sw.js | grep -o "polska-journal-v[0-9a-z-]*"
+curl -s -o /dev/null -w "%{http_code}\n" https://polandtrip.xiehnet.com/day-05   # 應為 200
+```
+
+不一致時到 GitHub Actions 重跑「Deploy to Cloudflare Pages」該次執行即可（`gh run rerun <run-id>`）。
 
 手動組裝發布檔案時，指定一個新建的空目錄：
 
