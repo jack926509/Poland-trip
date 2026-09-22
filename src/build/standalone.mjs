@@ -47,7 +47,7 @@ export function rewriteStandaloneIdReferences(content, pageId) {
 }
 
 function inlineStandalonePhotos(content, { distDir, photos }) {
-  return content.replace(/src="(?:\.\.\/)?assets\/photos\/([^"/]+\.(?:webp|jpe?g|png))"/gi, (match, fileName) => {
+  return content.replace(/(src|href)="(?:\.\.\/)?assets\/photos\/([^"/]+\.(?:webp|jpe?g|png))"/gi, (match, attribute, fileName) => {
     if (!photos.has(fileName)) {
       const extension = path.extname(fileName).toLowerCase();
       const mime = extension === '.webp' ? 'image/webp' : extension === '.png' ? 'image/png' : 'image/jpeg';
@@ -55,7 +55,7 @@ function inlineStandalonePhotos(content, { distDir, photos }) {
       if (!fs.existsSync(photoPath)) throw new Error(`單檔版找不到照片：${fileName}`);
       photos.set(fileName, `data:${mime};base64,${fs.readFileSync(photoPath).toString('base64')}`);
     }
-    return `src="${photos.get(fileName)}"`;
+    return `${attribute}="${photos.get(fileName)}"`;
   });
 }
 
