@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { initializeToday, warsawMinutes, nextPlanIndex } from '../src/scripts/today.js';
+import { initializeToday, warsawMinutes, nextPlanIndex, planEta } from '../src/scripts/today.js';
 import { renderToday } from '../src/templates/today.mjs';
 import * as trip from '../src/data/trip.js';
 import { dayDining } from '../src/data/day-dining.js';
@@ -20,9 +20,14 @@ function fixture() {
   const dates=['2026-10-24','2026-10-25'];
   const cards=dates.map(date=> {
     const card=new Node({'data-today-date':date});
-    card.lists['[data-next-step]']=[600,720].map(n=>new Node({'data-plan-minute':String(n)}));
-    card.lists['[data-hard-time]']=[660,780].map(n=>new Node({'data-plan-minute':String(n)}));
-    for(const key of ['step-picker','next-ended','next-mode','hard-ended']) card.nodes[`[data-${key}]`]=new Node();
+    const withEta=(minute,key)=> {
+      const node=new Node({'data-plan-minute':String(minute)});
+      node.nodes[`[data-${key}]`]=new Node();
+      return node;
+    };
+    card.lists['[data-next-step]']=[600,720].map(n=>withEta(n,'next-eta'));
+    card.lists['[data-hard-time]']=[660,780].map(n=>withEta(n,'hard-eta'));
+    for(const key of ['step-picker','next-ended','next-mode','hard-ended','next-progress']) card.nodes[`[data-${key}]`]=new Node();
     return card;
   });
   root.lists['[data-today-card]']=cards;
@@ -93,4 +98,44 @@ test('住宿門牌未核對時，今日卡改顯示「門牌尚未確認」且�
   const stayBlock=day4.split('data-today-stay')[1].split('</section>')[0];
   assert.match(stayBlock,/門牌尚未確認/);
   assert.ok(!stayBlock.includes('住宿導航'));
+});
+
+test('planEta 只做時鐘減法，預覽別天時不給任何倒數',()=>{
+  assert.deepEqual(planEta(720,600),{text:'還有 2 小時',level:'ahead'});
+  assert.deepEqual(planEta(635,600),{text:'還有 35 分',level:'ahead'});
+  // 30 分鐘內升級成 soon，CSS 才把膠囊轉紅。
+  assert.deepEqual(planEta(630,600),{text:'還有 30 分',level:'soon'});
+  assert.deepEqual(planEta(600,600),{text:'就是現在',level:'soon'});
+  assert.deepEqual(planEta(600,725),{text:'已過 2 小時 5 分',level:'past'});
+  // 預覽其他日期時 currentMinute 是 -1：不顯示任何看似即時的數字。
+  assert.equal(planEta(600,-1),null);
+  assert.equal(planEta(Number.NaN,600),null);
+});
+
+test('顯示中的那一站才有倒數與站次，預覽別天時兩者都收起來',()=>{
+  const {root,cards}=fixture();
+  const original={window:globalThis.window,document:globalThis.document,setInterval:globalThis.setInterval};
+  const windowEvents={};
+  globalThis.window={addEventListener:(type,fn)=>windowEvents[type]=fn};
+  globalThis.document={addEventListener(){},hidden:false};
+  globalThis.setInterval=()=>0;
+  const now=new Date('2026-10-24T08:30:00Z'); // 波蘭 10:30
+  try {
+    initializeToday(root,()=>now);
+    const step=cards[0].lists['[data-next-step]'][1];              // 12:00 那一站
+    assert.equal(step.nodes['[data-next-eta]'].textContent,'還有 1 小時 30 分');
+    assert.equal(step.nodes['[data-next-eta]'].hidden,false);
+    assert.equal(cards[0].lists['[data-next-step]'][0].nodes['[data-next-eta]'].textContent,'','未顯示的時段不能留著上一次算出的倒數');
+    assert.equal(cards[0].nodes['[data-next-progress]'].textContent,'第 2／2 站');
+    const deadline=cards[0].lists['[data-hard-time]'][0];          // 11:00 期限
+    assert.equal(deadline.nodes['[data-hard-eta]'].textContent,'還有 30 分');
+    assert.equal(deadline.attrs['data-eta-level'],'soon');
+    // 自動模式下「回到今天」沒有作用，應為停用狀態。
+    assert.equal(root.nodes['[data-date-reset]'].disabled,true);
+
+    root.nodes['[data-date-next]'].trigger('click');               // 預覽 10/25
+    assert.equal(cards[1].lists['[data-next-step]'][0].nodes['[data-next-eta]'].hidden,true);
+    assert.equal(cards[1].nodes['[data-next-progress]'].hidden,false);
+    assert.equal(root.nodes['[data-date-reset]'].disabled,false);
+  } finally {Object.assign(globalThis,original);}
 });
