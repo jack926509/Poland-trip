@@ -51,16 +51,26 @@ function renderBranch(branch, chain) {
     </li>`;
 }
 
+/**
+ * 商品卡：照片、推薦理由與來源都保留 2026-09-22 重新收錄的內容，一項商品一張卡。
+ * 原本同一批商品在表格與 details 各列一次，商品名還互相連結；表格又因為
+ * .grocery-table 的 min-width 在手機把整頁撐出視窗，照片欄讓它更擠。
+ */
 function renderProduct(product) {
-  const sources = product.sources.map(s => external(s.url, s.title) + ' · ' + e(s.date) + ' · ' + e(s.kind)).join('<br>');
+  const sources = product.sources.map(source =>
+    `<li>${external(source.url, source.title)}<span class="grocery-source-meta">${e(source.date)} · ${e(source.kind)}</span></li>`).join('');
+  // 商品名跨兩欄擺在最上面：照片的圖說與 CC 授權標示有三行，
+  // 放在名字前面會把「這是什麼」推到卡片中段。
   return `<li class="grocery-product${product.priority ? ' is-priority' : ''}" id="product-${product.rank}">
       <p class="grocery-product-head"><b lang="pl">${e(product.localName)}</b>${product.priority ? '<span class="grocery-priority">行李有限先挑</span>' : ''}</p>
-      <p class="grocery-product-zh">${e(product.name)} · ${e(product.use)}</p>
-      ${renderProductPhoto(product)}
-      <p class="grocery-product-pack"><span>包裝辨識</span>${e(product.packaging)}</p>
-      <p>${e(product.reason)}</p>
-      <p class="source-meta">${sources}</p>
-      <details class="grocery-product-note"><summary>怎麼認、什麼口味</summary><p>${e(product.note)}</p></details>
+      <div class="grocery-product-photo">${renderProductPhoto(product)}</div>
+      <div class="grocery-product-body">
+        <p class="grocery-product-zh">${e(product.name)}　·　${e(product.use)}</p>
+        <p class="grocery-product-pack"><span>包裝辨識</span>${e(product.packaging)}</p>
+        <p class="grocery-product-reason">${e(product.reason)}</p>
+        <details class="grocery-product-note"><summary>怎麼認、什麼口味</summary><p>${e(product.note)}</p></details>
+        <details class="grocery-product-sources"><summary>推薦來源 ${product.sources.length} 筆</summary><ul>${sources}</ul></details>
+      </div>
     </li>`;
 }
 
@@ -69,7 +79,7 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
   const partialCount = groceryBranches.filter(b => b.verificationStatus === 'partial').length;
 
   // 只有三列三欄的對照表做成表格，在手機上會被拆成三張只有兩行字的卡片，
-  // 反而比直接排三張卡更長。這裡改用卡片，順便讓連鎖的顏色identity從這裡開始一致。
+  // 反而比直接排三張卡更長。這裡改用卡片，連鎖的顏色 identity 也從這裡開始一致。
   const chains = `<ul class="grocery-chain-grid">${groceryChains.map(c => `<li class="grocery-chain-card" data-chain="${e(c.id)}">
       <p class="grocery-chain-head">${chainTag(c)}<span class="grocery-chain-kind">${e(c.kind)}</span></p>
       <p class="grocery-chain-buy">${e(c.buy)}</p>
@@ -90,21 +100,30 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
       <p class="source-meta grocery-city-foot">臨時要找別家：${groceryChains.map(c => external(mapUrl(`${c.name} ${city.localName}`), c.name)).join(' · ')}。以上地圖都是搜尋連結，本輪沒有取得任何一家的核實座標。</p>
     </section>`;
   }).join('');
-  const productCards = (title, items) => `<h3>${e(title)}</h3><ul class="grocery-product-list">${items.map(p => renderProduct(p)).join('')}</ul>`;
-  const products = productCards('2026 年文章推薦', groceryProducts.filter(p => p.sources.some(s => s.kind === '2026 旅遊推薦')))
-    + productCards('經典補充｜來源為歷年推薦', groceryProducts.filter(p => !p.sources.some(s => s.kind === '2026 旅遊推薦')));
+
+  // 2026 年文章推薦與歷年經典補充分開，是 c378570 定下的資訊分界，保留；
+  // 只把兩張表換成卡片清單，並在標題上標出各自幾項。
+  const productGroup = (heading, note, items) => items.length ? `<div class="grocery-product-group">
+      <h3>${e(heading)}<span class="grocery-group-count">${items.length} 項</span></h3>
+      <p class="source-meta">${e(note)}</p>
+      <ol class="grocery-product-list">${items.map(renderProduct).join('')}</ol>
+    </div>` : '';
+  const is2026 = product => product.sources.some(source => source.kind === '2026 旅遊推薦');
+  const products = productGroup('2026 年文章推薦', '來源為 2026 年的旅遊文章；推薦的是品牌或品類，不等於指定照片中的口味。', groceryProducts.filter(is2026))
+    + productGroup('經典補充', '來源為歷年網友推薦或品牌商品資料，不是 2026 年新文。', groceryProducts.filter(product => !is2026(product)));
 
   const content = `<header class="journal-appendix-header"><span class="section-num">Everyday shopping</span><h1>超市與便利商店</h1><p class="hero-dek">四城補給、零食試吃與最後一站伴手禮採買。先選城市找店，再拿波蘭文商品名對照貨架。</p></header>
     <p class="action-links">${cityRoutes.map(c => `<a href="#${c.mapKey}">${e(c.name)}</a>`).join('')}<a href="#recommendations">採買推薦</a><a href="#shopping-tips">採買提醒</a></p>
     <div class="callout-note"><b>門市地址已逐店核對（2026-09-22）：</b>12 筆候選地址全部由品牌官方來源確認，其中 ${verifiedCount} 筆（Biedronka）連逐日營業時間都取自官方門市頁，其餘 ${partialCount} 筆只核到地址，營業時間仍待確認。地圖按鈕仍是搜尋連結，不代表已核實的座標。營業時間、庫存與價格以門市當日資訊為準；Biedronka 官網也註明網頁上的時間僅供參考。</div>
     <section class="section" id="chains"><div class="section-heading"><span class="section-num">Chains</span><h2>三大連鎖怎麼選</h2></div>${chains}</section>
     ${cities}
-    <section class="section" id="recommendations"><span id="top10" aria-hidden="true"></span><div class="section-heading"><span class="section-num">Shopping picks</span><h2>波蘭超市採買推薦</h2></div><p>2026/09/22 重新收錄：先看 2026 年文章推薦，再看歷年經典補充；按採買用途整理，不代表銷售或人氣排名。每項都附推薦來源及原文日期，照片下方另列影像來源。2026 年文章推薦品牌或品類，不等於指定照片中的口味。各店庫存與價格請以現場為準。</p>${products}<p><b>行李有限的採買建議：</b>${groceryProducts.filter(p => p.priority).map(p => e(p.localName)).join('、')}；先試吃再決定數量。</p></section>
-
+    <section class="section" id="recommendations"><span id="top10" aria-hidden="true"></span><div class="section-heading"><span class="section-num">Shopping picks</span><h2>波蘭超市採買推薦</h2></div>
+      <p>2026/09/22 重新收錄：先看 2026 年文章推薦，再看歷年經典補充；按採買用途整理，不代表銷售或人氣排名。每項都附推薦來源及原文日期，照片下方另列影像來源。2026 年文章推薦品牌或品類，不等於指定照片中的口味。各店庫存與價格請以現場為準。</p>
+      ${products}
+      <p class="grocery-priority-foot"><b>行李有限的採買建議：</b>${groceryProducts.filter(p => p.priority).map(p => e(p.localName)).join('、')}；先試吃再決定數量。</p>
+    </section>
     <section class="section" id="strategy"><div class="section-heading"><span class="section-num">Plan</span><h2>前段試吃，華沙補貨</h2></div><ol class="check-list"><li>克拉科夫與樂斯拉夫：巧克力、牛奶糖、威化餅先買小份試吃，記下喜歡的品牌與口味。</li><li>波茲南：補搭車零食與飲料，減少沿途搬運。</li><li>最後回到華沙：集中買常溫伴手禮，優先找順路的 Biedronka；缺貨再看其他超市。確認行李空間與門市時間後再安排。</li></ol><p><a href="shopping.html">更多伴手禮與購物店家 →</a></p></section>
     <section class="section" id="shopping-tips"><div class="section-heading"><span class="section-num">Before you shop</span><h2>星期日與食品採買提醒</h2></div><ul class="check-list"><li><b>Day 2（2026/10/25）是非交易星期日：</b>Biedronka 官方日曆列出 2026 年的交易星期日是 1/25、3/29、4/26、6/28、8/30、12/6、12/13、12/20，十月一天都沒有。一般門市這天不開，仍請先在前一天準備早餐與飲水。${external('https://www.biedronka.pl/pl/niedziele-handlowe', 'Biedronka 2026 官方日曆')}（2026/09/22 查閱）</li><li><b>兩家車站型 Biedronka 官方標示星期日照常營業：</b>華沙 <a href="#warsaw-1">Al. Jerozolimskie 54</a>（每日 05:00–01:00）與波茲南 <a href="#poznan-1">Dworcowa 2</a>（星期日 06:00–22:00）的官方門市頁都帶「sklep czynny w niedzielę」標記。Day 2 早上從華沙中央車站出發前仍有機會補早餐，但非交易星期日的實際開門以門市當日公告為準，不要當成唯一計畫。</li><li><b>克拉科夫與樂斯拉夫的 Biedronka 候選星期日不開：</b><a href="#krakow-1">Rynek Główny 34</a> 與 <a href="#wroclaw-1">Krawiecka 3a</a> 的官方門市頁星期日都是 Zamknięte，沒有車站型門市的例外標記。</li><li>Żabka 的星期日與夜間營業依各店公告，不能假設每家都開到深夜或 24 小時營業；本輪只核到四家 Żabka 的地址，時間一律待確認。</li><li>冷藏／冷凍 Pierogi、Żurek 與乳製品先確認保存條件；餃子、湯底不一定可以直接食用，住宿沒有加熱設備就改買可即食商品。</li><li>Kabanosy 與含肉食品安排在波蘭當地吃，不列為回台伴手禮；攜帶食品前請查閱<a href="essentials.html">安全與基本須知</a>中的官方入境資訊。</li><li>價牌可能附會員、多件或促銷條件，結帳前核對實際適用價格。自備購物袋，少量補給就近購買即可。</li></ul></section>
     <section class="section" id="sources"><div class="section-heading"><span class="section-num">Sources</span><h2>資料來源與查核界線</h2></div><p>門市候選沿用原採買指南；商品清單於 2026/09/22 依網路推薦重新收錄。Becca Daily 原文日期為 2026/07/02；Reddit 討論為 2025/07/29，明列為經典補充；English Wizards 頁面未標示發文日期，不據搜尋引擎收錄時間宣稱為 2026 新文。推薦理由為摘要與採買建議，並非票選結果。</p><p><b>2026/09/22 逐店核對：</b>12 筆地址全部由品牌官方來源確認——4 家 Biedronka 取自官方逐店頁（含逐日營業時間）、4 家 Lidl 取自官方門市頁與官方門市清單 PDF、4 家 Żabka 取自官方門市清單 PDF 與 zabka.pl 的門市說明頁。Lidl 門市頁的營業時間由 JavaScript 載入、Żabka 不逐店公布，因此這 8 筆只核到地址。Biedronka 官網自己註明網頁上的營業時間僅供參考。</p><p><b>仍未核實的部分：</b>沒有取得任何一家的核實座標，地圖按鈕維持搜尋連結；庫存與價格一律以門市當日資訊為準。Żabka 的官方門市清單是 2024/02 版，只能證明當時該址有門市。出發前請用品牌官方查詢再確認；離線版不會即時更新。</p><p>逐筆來源與判讀記在原始碼庫的 <code>docs/research/2026-09-22-grocery-branch-verification.md</code>。</p></section>`;
   return renderLayout({ title: '超市與便利商店', activeNav: 'practical', bodyHtml: content + renderProductPhotoViewer(), pathPrefix: '../', pageKind: 'practical', currentPage: 'practical/groceries.html' });
 }
-
-

@@ -102,24 +102,24 @@ test('星期日狀態每家店都標出來，三態各自對應資料而不是�
   assert.match(html, /星期日依店公告/);
 });
 
-test('新版推薦一項商品只出現一次，保留照片、理由與來源', () => {
+test('採買推薦一項商品只出現一次，照片、理由與來源都留在同一張卡', () => {
   const html = fs.readFileSync('dist/practical/groceries.html', 'utf8');
   for (const product of groceryProducts) {
     assert.equal((html.match(new RegExp(`id="product-${product.rank}"`, 'g')) || []).length, 1, `product-${product.rank} 錨點重複`);
   }
-  assert.equal((html.match(/class="grocery-product(?: is-priority)?" id="product-/g) || []).length, 10);
-  // main 已取消未核實的通路符號，合併後保留新版推薦與照片。
-  assert.doesNotMatch(html, /class="grocery-availability"/);
+  assert.equal((html.match(/class="grocery-product(?: is-priority)?" id="product-/g) || []).length, groceryProducts.length);
+  // c378570 加入的照片、推薦理由與來源都必須還在，改版只換版面不砍內容
+  assert.equal((html.match(/class="grocery-product-photo"/g) || []).length, groceryProducts.length);
+  assert.equal((html.match(/class="grocery-product-reason"/g) || []).length, groceryProducts.length);
+  assert.equal((html.match(/class="grocery-product-sources"/g) || []).length, groceryProducts.length);
   for (const product of groceryProducts) {
-    assert.ok(html.includes(product.reason));
-    for (const source of product.sources) {
-      assert.ok(html.includes(source.url.replace(/&/g, '&amp;')));
-      assert.ok(html.includes(source.date));
-    }
+    for (const source of product.sources) assert.ok(html.includes(source.url), `缺來源連結 ${source.url}`);
+    if (product.photo) assert.ok(html.includes(product.photo.src), `缺照片 ${product.photo.src}`);
   }
+  // 2026 年文章推薦與歷年經典補充仍分成兩組
+  assert.equal((html.match(/class="grocery-product-group"/g) || []).length, 2);
   assert.match(html, /2026 年文章推薦/);
-  assert.match(html, /經典補充｜來源為歷年推薦/);
-  assert.equal((html.match(/class="grocery-product-note"/g) || []).length, 10);
-  // 行李有限先挑的五樣在卡片上就標出來
+  assert.match(html, /經典補充/);
+  // 行李有限先挑的幾樣在卡片上就標出來
   assert.equal((html.match(/class="grocery-priority"/g) || []).length, groceryProducts.filter(p => p.priority).length);
 });
