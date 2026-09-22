@@ -1,3 +1,4 @@
+import { groceryPhotos } from './grocery-photos.js';
 // 候選地址與商品清單來自使用者 2026-09-22 提供的採買指南。
 //
 // 2026-09-22 逐店核對：12 筆地址全部由品牌官方來源確認（見
@@ -354,4 +355,5 @@ export const groceryProducts = [
     "priority": false,
     "note": "波蘭餃子。Ruskie 馬鈴薯＋起司、z mięsem 肉餡、z kapustą i grzybami 酸菜＋蘑菇。冷藏／冷凍商品先看保存與煮食說明，確認住宿有加熱設備。"
   }
-];
+].map(product => ({ ...product, photo: groceryPhotos[product.rank] }));
+

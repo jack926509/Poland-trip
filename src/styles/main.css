@@ -5450,3 +5450,16 @@ h3 {
 .grocery-product { padding: .85rem 0; border-bottom: 1px solid var(--line, #ddd4c5); }
 .grocery-product summary { cursor: pointer; font-weight: 600; min-height: 2.75rem; display: list-item; align-content: center; }
 .grocery-product p { margin-top: .75rem; }
+
+
+/* 商品包裝：保持整張照片與原始比例，貨架上可對照名稱。 */
+.grocery-photo { margin: 0; width: 12rem; max-width: 100%; }
+.grocery-photo > a { display: grid; justify-items: center; gap: .35rem; padding: .5rem; background: #fff; border: 1px solid var(--line, #ddd4c5); border-radius: .5rem; }
+.grocery-photo img { width: 10rem; height: 9rem; object-fit: contain; }
+.grocery-photo figcaption { font-size: .8rem; line-height: 1.5; margin-top: .5rem; }
+.grocery-photo-credit { display: block; font-size: .75rem; }
+.grocery-photo-dialog { width: min(42rem, calc(100vw - 2rem)); max-height: calc(100dvh - 2rem); overflow: auto; padding: 1rem; border: 1px solid #ddd4c5; border-radius: .75rem; background: #fffdf7; color: #2b2723; }
+.grocery-photo-dialog::backdrop { background: rgb(0 0 0 / .65); }
+.grocery-photo-dialog img { display: block; margin: 1rem auto; max-width: 100%; width: auto; height: auto; max-height: 60dvh; object-fit: contain; }
+.grocery-photo-dialog button { display: block; margin-left: auto; min-height: 44px; padding: .5rem 1rem; cursor: pointer; }
+.grocery-photo-title { font-size: 1.2rem; font-weight: 700; }
