@@ -417,7 +417,7 @@ export function renderShopping({ souvenirCards, luxuryShopping, souvenirShops = 
     <section class="section"><div class="section-heading"><span class="section-num">Where to buy</span><h2>實際店家</h2></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>店家</th><th>備註</th></tr></thead><tbody>${shopRows}</tbody></table></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Quick list</span><h2>傳統伴手禮備忘</h2></div><div class="grid">${legacyCards}</div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Luxury</span><h2>精品購物</h2></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>店家</th><th>城市</th><th>備註</th></tr></thead><tbody>${luxuryRows}</tbody></table></div></section>
-    <section class="section"><div class="section-heading"><span class="section-num">Żabka</span><h2>超商怎麼逛</h2></div><p class="action-links"><a href="groceries.html">四城超市與便利商店・Top 10 採買指南 →</a></p><div class="grid">${zabkaHtml}</div></section>`;
+    <section class="section"><div class="section-heading"><span class="section-num">Żabka</span><h2>超商怎麼逛</h2></div><p class="action-links"><a href="groceries.html">四城超市與便利商店・採買推薦 →</a></p><div class="grid">${zabkaHtml}</div></section>`;
   return renderPracticalLayout('伴手禮與購物', 'Shopping', '先決定要買什麼，再直接打開店家地圖；肉製品入境台灣限制也已標出。', content, 'practical/shopping.html');
 }
 
@@ -616,4 +616,5 @@ export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups
 
   return renderPracticalLayout('資料更新儀表板', 'Ops', '把 dashboard、待辦與網站三者同步；每次更新都先落在欄位、再看頁面。', content, 'practical/ops-dashboard.html');
 }
+
 

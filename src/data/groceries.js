@@ -1,5 +1,5 @@
 import { groceryPhotos } from './grocery-photos.js';
-// 候選地址與商品清單來自使用者 2026-09-22 提供的採買指南。
+// 門市候選沿用使用者採買指南；商品於 2026-09-22 依逐項來源重新收錄。
 //
 // 2026-09-22 逐店核對：12 筆地址全部由品牌官方來源確認（見
 // docs/research/2026-09-22-grocery-branch-verification.md）。
@@ -214,146 +214,238 @@ export const groceryBranches = [
   }
 ];
 
+// rank 僅保留既有商品錨點相容性，不代表排名；新商品使用新的識別碼。
 export const groceryProducts = [
   {
     "rank": 1,
     "name": "鳥奶巧克力",
     "localName": "Ptasie Mleczko",
     "packaging": "E. Wedel 長方紙盒",
-    "availability": [
-      "◎",
-      "○",
-      "△"
-    ],
     "use": "伴手禮候選",
     "priority": true,
-    "note": "E. Wedel 巧克力包覆的輕盈奶霜甜點。找長方形紙盒上的 Ptasie Mleczko；Waniliowe 是香草、Czekoladowe 是巧克力、Śmietankowe 是奶油。"
+    "note": "E. Wedel 巧克力包覆的輕盈奶霜甜點。找長方形紙盒上的 Ptasie Mleczko；Waniliowe 是香草、Czekoladowe 是巧克力、Śmietankowe 是奶油。",
+    "reason": "2026 遊記推薦香草口味；巧克力外層搭配輕柔奶霜。照片示範巧克力口味，購買時另看口味名稱。",
+    "sources": [
+      {
+        "title": "Becca Daily｜波蘭伴手禮",
+        "url": "https://beccadaily.com/poland-souvenirs/",
+        "date": "2026-07-02",
+        "kind": "2026 旅遊推薦"
+      },
+      {
+        "title": "English Wizards｜Polish Snacks and Souvenirs",
+        "url": "https://englishwizards.org/student-stories/polish-snacks-souvenirs/",
+        "date": "未標示日期",
+        "kind": "採買指南（補充）"
+      }
+    ],
+    "checkedAt": "2026-09-22"
   },
   {
-    "rank": 2,
-    "name": "波蘭牛奶糖",
-    "localName": "Krówki",
-    "packaging": "牛圖案、獨立糖紙",
-    "availability": [
-      "◎",
-      "◎",
-      "○"
-    ],
+    "rank": 11,
+    "name": "李子巧克力",
+    "localName": "Śliwka Nałęczowska",
+    "packaging": "藍底綠點包裝，找 Śliwka 字樣",
     "use": "伴手禮候選",
     "priority": true,
-    "note": "焦糖牛奶糖，常見乳牛圖案、獨立糖紙與袋裝。找 Krówka／Krówki 字樣。"
-  },
-  {
-    "rank": 3,
-    "name": "波蘭細香腸",
-    "localName": "Kabanosy",
-    "packaging": "透明長條香腸袋",
-    "availability": [
-      "◎",
-      "◎",
-      "○"
+    "note": "果乾搭配巧克力，適合喜歡水果風味的人。品牌有不同容量，照片為包裝辨識參考。",
+    "reason": "2026 遊記中作者最推薦的一款，適合優先買小盒試吃。",
+    "sources": [
+      {
+        "title": "Becca Daily｜波蘭伴手禮",
+        "url": "https://beccadaily.com/poland-souvenirs/",
+        "date": "2026-07-02",
+        "kind": "2026 旅遊推薦"
+      },
+      {
+        "title": "Colian｜Śliwka Nałęczowska",
+        "url": "https://colian.com/nasze-marki/sliwka-naleczowska-2/",
+        "date": "未標示日期",
+        "kind": "品牌商品資料"
+      }
     ],
-    "use": "當地食用",
-    "priority": false,
-    "note": "細長乾燥香腸；可留意 Tarczyński、Lidl 的 Pikok。Wieprzowe 是豬肉、Drobiowe 是禽肉。僅安排在波蘭當地吃，不列為回台伴手禮。"
-  },
-  {
-    "rank": 4,
-    "name": "洋芋片／零食",
-    "localName": "Przysnacki",
-    "packaging": "大包零食袋",
-    "availability": [
-      "◎",
-      "○",
-      "○"
-    ],
-    "use": "伴手禮候選",
-    "priority": true,
-    "note": "洋芋片與玉米零食，找袋面 Przysnacki 字樣；口味與包裝顏色不同，先買小包試吃。"
-  },
-  {
-    "rank": 5,
-    "name": "巧克力威化",
-    "localName": "Prince Polo",
-    "packaging": "長條單支包裝",
-    "availability": [
-      "◎",
-      "◎",
-      "◎"
-    ],
-    "use": "伴手禮候選",
-    "priority": true,
-    "note": "巧克力威化餅，長條單支包裝；找 Prince Polo 字樣，適合分送。"
+    "checkedAt": "2026-09-22"
   },
   {
     "rank": 6,
     "name": "果凍巧克力餅乾",
     "localName": "Delicje",
     "packaging": "長方形餅乾包",
-    "availability": [
-      "◎",
-      "◎",
-      "○"
-    ],
     "use": "伴手禮候選",
     "priority": true,
-    "note": "Delicje Szampańskie 果凍巧克力餅乾；可先試橘子口味，袋面常見橘子圖案。"
+    "note": "Delicje Szampańskie 果凍巧克力餅乾；可先試橘子口味，袋面常見橘子圖案。",
+    "reason": "2026 遊記推薦的果味巧克力點心，可從柳橙口味開始。",
+    "sources": [
+      {
+        "title": "Becca Daily｜波蘭伴手禮",
+        "url": "https://beccadaily.com/poland-souvenirs/",
+        "date": "2026-07-02",
+        "kind": "2026 旅遊推薦"
+      },
+      {
+        "title": "Reddit r/poland｜Quintessential Polish Snacks",
+        "url": "https://www.reddit.com/r/poland/comments/1mbyjhu/quintessential_polish_snacks/",
+        "date": "2025-07-29",
+        "kind": "歷年網友推薦（補充）"
+      }
+    ],
+    "checkedAt": "2026-09-22"
+  },
+  {
+    "rank": 12,
+    "name": "鹹餅乾棒",
+    "localName": "Paluszki",
+    "packaging": "細長餅乾棒袋裝；照片為 Lajkonik",
+    "use": "伴手禮／旅途零食",
+    "priority": true,
+    "note": "想換鹹口味時可找鹽味或芝麻口味。Paluszki 是品類名稱，照片品牌只是辨識範例，並非來源指定品牌。",
+    "reason": "2026 遊記列入推薦的鹹口零食；便於旅行途中分享。",
+    "sources": [
+      {
+        "title": "Becca Daily｜波蘭伴手禮",
+        "url": "https://beccadaily.com/poland-souvenirs/",
+        "date": "2026-07-02",
+        "kind": "2026 旅遊推薦"
+      },
+      {
+        "title": "Reddit r/poland｜Quintessential Polish Snacks",
+        "url": "https://www.reddit.com/r/poland/comments/1mbyjhu/quintessential_polish_snacks/",
+        "date": "2025-07-29",
+        "kind": "歷年網友推薦（補充）"
+      }
+    ],
+    "checkedAt": "2026-09-22"
+  },
+  {
+    "rank": 13,
+    "name": "Princessa 威化餅",
+    "localName": "Princessa",
+    "packaging": "單支長條包裝；照片為椰子口味",
+    "use": "伴手禮／旅途零食",
+    "priority": false,
+    "note": "想和 Prince Polo 比較口味時可各買一支。照片上的 kokosowa 是椰子口味；來源推薦品牌，沒有指定這個口味。",
+    "reason": "2026 遊記列入可順手採買的威化餅。",
+    "sources": [
+      {
+        "title": "Becca Daily｜波蘭伴手禮",
+        "url": "https://beccadaily.com/poland-souvenirs/",
+        "date": "2026-07-02",
+        "kind": "2026 旅遊推薦"
+      }
+    ],
+    "checkedAt": "2026-09-22"
+  },
+  {
+    "rank": 2,
+    "name": "波蘭牛奶糖",
+    "localName": "Krówki",
+    "packaging": "牛圖案、獨立糖紙",
+    "use": "伴手禮候選",
+    "priority": false,
+    "note": "焦糖牛奶糖，常見乳牛圖案、獨立糖紙與袋裝。找 Krówka／Krówki 字樣。",
+    "reason": "牛奶焦糖類經典甜食，獨立糖紙方便分送。",
+    "sources": [
+      {
+        "title": "Reddit r/poland｜Quintessential Polish Snacks",
+        "url": "https://www.reddit.com/r/poland/comments/1mbyjhu/quintessential_polish_snacks/",
+        "date": "2025-07-29",
+        "kind": "歷年網友推薦（補充）"
+      },
+      {
+        "title": "English Wizards｜Polish Snacks and Souvenirs",
+        "url": "https://englishwizards.org/student-stories/polish-snacks-souvenirs/",
+        "date": "未標示日期",
+        "kind": "採買指南（補充）"
+      }
+    ],
+    "checkedAt": "2026-09-22"
+  },
+  {
+    "rank": 5,
+    "name": "巧克力威化",
+    "localName": "Prince Polo",
+    "packaging": "長條單支包裝",
+    "use": "伴手禮候選",
+    "priority": true,
+    "note": "巧克力威化餅，長條單支包裝；找 Prince Polo 字樣，適合分送。",
+    "reason": "網友反覆提及的巧克力威化，適合搭車時試吃。",
+    "sources": [
+      {
+        "title": "Reddit r/poland｜Quintessential Polish Snacks",
+        "url": "https://www.reddit.com/r/poland/comments/1mbyjhu/quintessential_polish_snacks/",
+        "date": "2025-07-29",
+        "kind": "歷年網友推薦（補充）"
+      },
+      {
+        "title": "English Wizards｜Polish Snacks and Souvenirs",
+        "url": "https://englishwizards.org/student-stories/polish-snacks-souvenirs/",
+        "date": "未標示日期",
+        "kind": "採買指南（補充）"
+      }
+    ],
+    "checkedAt": "2026-09-22"
   },
   {
     "rank": 7,
     "name": "堅果巧克力糖",
     "localName": "Michałki",
     "packaging": "獨立糖果、大袋裝",
-    "availability": [
-      "◎",
-      "○",
-      "△"
-    ],
     "use": "伴手禮候選",
     "priority": false,
-    "note": "花生／堅果巧克力糖，多為獨立糖紙與大袋裝；有過敏需求請逐包核對成分。"
+    "note": "花生／堅果巧克力糖，多為獨立糖紙與大袋裝；有過敏需求請逐包核對成分。",
+    "reason": "喜歡花生巧克力可試；有過敏需求先核對標籤。",
+    "sources": [
+      {
+        "title": "Reddit r/poland｜Quintessential Polish Snacks",
+        "url": "https://www.reddit.com/r/poland/comments/1mbyjhu/quintessential_polish_snacks/",
+        "date": "2025-07-29",
+        "kind": "歷年網友推薦（補充）"
+      }
+    ],
+    "checkedAt": "2026-09-22"
+  },
+  {
+    "rank": 3,
+    "name": "波蘭細香腸",
+    "localName": "Kabanosy",
+    "packaging": "透明長條香腸袋",
+    "use": "當地食用",
+    "priority": false,
+    "note": "細長乾燥香腸；可留意 Tarczyński、Lidl 的 Pikok。Wieprzowe 是豬肉、Drobiowe 是禽肉。僅安排在波蘭當地吃，不列為回台伴手禮。",
+    "reason": "網友推薦的鹹口細香腸，安排在波蘭當地吃。",
+    "sources": [
+      {
+        "title": "Reddit r/poland｜Quintessential Polish Snacks",
+        "url": "https://www.reddit.com/r/poland/comments/1mbyjhu/quintessential_polish_snacks/",
+        "date": "2025-07-29",
+        "kind": "歷年網友推薦（補充）"
+      },
+      {
+        "title": "English Wizards｜Polish Snacks and Souvenirs",
+        "url": "https://englishwizards.org/student-stories/polish-snacks-souvenirs/",
+        "date": "未標示日期",
+        "kind": "採買指南（補充）"
+      }
+    ],
+    "checkedAt": "2026-09-22"
   },
   {
     "rank": 8,
     "name": "果汁飲料",
     "localName": "Tymbark",
     "packaging": "玻璃瓶／PET／紙盒",
-    "availability": [
-      "◎",
-      "◎",
-      "◎"
-    ],
     "use": "當地食用",
     "priority": false,
-    "note": "果汁／果汁飲料。Jabłko 蘋果、Wiśnia 酸櫻桃、Jabłko-Mięta 蘋果薄荷、Multiwitamina 綜合水果；不同系列果汁含量不同。"
-  },
-  {
-    "rank": 9,
-    "name": "波蘭酸湯",
-    "localName": "Żurek",
-    "packaging": "湯包／瓶裝／冷藏",
-    "availability": [
-      "◎",
-      "○",
-      "△"
+    "note": "果汁／果汁飲料。Jabłko 蘋果、Wiśnia 酸櫻桃、Jabłko-Mięta 蘋果薄荷、Multiwitamina 綜合水果；不同系列果汁含量不同。",
+    "reason": "網友推薦的在地飲料品牌，順路補給時嘗試即可。",
+    "sources": [
+      {
+        "title": "Reddit r/poland｜Quintessential Polish Snacks",
+        "url": "https://www.reddit.com/r/poland/comments/1mbyjhu/quintessential_polish_snacks/",
+        "date": "2025-07-29",
+        "kind": "歷年網友推薦（補充）"
+      }
     ],
-    "use": "當地食用",
-    "priority": false,
-    "note": "酸黑麥湯。玻璃瓶也可能只是發酵湯底，不是開瓶即食湯；購買前看調理方式、冷藏要求與有無肉類。"
-  },
-  {
-    "rank": 10,
-    "name": "波蘭餃子",
-    "localName": "Pierogi",
-    "packaging": "冷藏透明盒／袋",
-    "availability": [
-      "◎",
-      "◎",
-      "△"
-    ],
-    "use": "當地食用",
-    "priority": false,
-    "note": "波蘭餃子。Ruskie 馬鈴薯＋起司、z mięsem 肉餡、z kapustą i grzybami 酸菜＋蘑菇。冷藏／冷凍商品先看保存與煮食說明，確認住宿有加熱設備。"
+    "checkedAt": "2026-09-22"
   }
 ].map(product => ({ ...product, photo: groceryPhotos[product.rank] }));
-
