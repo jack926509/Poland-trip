@@ -5147,3 +5147,11 @@ h3 {
 @media (any-pointer: coarse) {
   .fast-food-fallback-list a { display: inline-flex; align-items: center; min-height: 44px; }
 }
+
+
+/* 採買指南維持列表；窄螢幕於區域內橫向捲動。 */
+.grocery-table { min-width: 42rem; }
+.grocery-table th, .grocery-table td { overflow-wrap: anywhere; }
+.grocery-product { padding: .85rem 0; border-bottom: 1px solid var(--line, #ddd4c5); }
+.grocery-product summary { cursor: pointer; font-weight: 600; min-height: 2.75rem; display: list-item; align-content: center; }
+.grocery-product p { margin-top: .75rem; }

@@ -32,6 +32,7 @@ const PAGES = [
   './city-warszawa.html', './city-krakow.html', './city-wroclaw.html', './city-poznan.html',
   './practical/todos.html', './practical/booking.html', './practical/dining.html',
   './practical/tickets.html', './practical/transit.html', './practical/shopping.html',
+  './practical/groceries.html',
   './practical/essentials.html', './practical/notes.html',
   './practical/ops-dashboard.html', './practical/database.html',
 ];

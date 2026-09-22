@@ -15,6 +15,7 @@ export const PRACTICAL_PAGES = [
   ['practical/notes.html', '行前提醒'],
   ['practical/booking.html', '訂票與交通'],
   ['practical/shopping.html', '伴手禮與購物'],
+  ['practical/groceries.html', '超市與便利商店'],
   ['practical/ops-dashboard.html', '資料更新儀表板'],
   ['practical/database.html', '自由行資料庫'],
 ];

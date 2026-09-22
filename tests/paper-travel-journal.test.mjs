@@ -112,11 +112,11 @@ test('實用頁採旅行誌附錄版式且資料庫接口不變', () => {
   assert.match(database, /src="\.\.\/assets\/database-filter\.js"/);
 });
 
-test('單檔版使用旅行誌刊頭並完整封裝 24 個章節', () => {
+test('單檔版使用旅行誌刊頭並完整封裝 25 個章節', () => {
   const standalone = fs.readFileSync(path.resolve('poland-travel-guide-2026.html'), 'utf8');
   assert.match(standalone, /<body class="journal-site journal-standalone">/);
   assert.match(standalone, /POLSKA PAPER TRAVEL JOURNAL/);
-  assert.equal((standalone.match(/class="standalone-page"/g) || []).length, 24);
+  assert.equal((standalone.match(/class="standalone-page"/g) || []).length, 25);
   assert.match(standalone, /<style data-bundled="main\.css">/);
   assert.match(standalone, /<style data-bundled="leaflet\.css">/);
   assert.match(standalone, /<script data-bundled="leaflet\.js">/);
