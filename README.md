@@ -9,7 +9,7 @@
 - 全程動線與過夜總覽、每日行程、今日速查、交通步驟與景點導航。
 - 城市指南與每日行程雙向串接；住宿依日期帶入，已訂妥項目與待處理項目分開顯示。
 - 四座城市指南、餐廳候選、順路美食與拍照建議。
-- 超市與便利商店指南：四城候選門市、地圖搜尋、Top 10 商品、星期日採買提醒。
+- 超市與便利商店指南：四城候選門市、地圖搜尋、附來源與照片的採買推薦、星期日採買提醒。
 - 訂票待辦與倒數、交通及門票資訊、自由行資料庫。
 - 全站搜尋、資料更新儀表板、PWA 離線瀏覽與可攜式單檔版。
 
@@ -103,3 +103,4 @@ mkdir _site
 - 詳細操作見[開發與資料維護指南](docs/development.md)，照片授權見[照片來源](assets/photos/CREDITS.md)。
 - 查核資料保留在 [docs/research/](docs/research/)，舊版網站保留在 [archive/](archive/)。
 - README 只說明目前專案與開發方式；逐次修改、測試結果與分支整理紀錄留在 [PR](https://github.com/jack926509/Poland-trip/pulls?q=is%3Apr) 與 [Git 歷史](https://github.com/jack926509/Poland-trip/commits/main/)，不再追加到本頁。
+

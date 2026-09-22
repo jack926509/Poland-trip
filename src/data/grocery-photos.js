@@ -1,4 +1,4 @@
-// 對照 assets/photos/GROCERY-CREDITS.md；影像已逐張目視核對。
+// 對照 assets/photos/GROCERY-CREDITS.md；新照片已目視核對。
 export const groceryPhotos = {
   "1": {
     "src": "assets/photos/grocery-01.webp",
@@ -97,6 +97,36 @@ export const groceryPhotos = {
     "height": 400,
     "sourceUrl": "https://world.openfoodfacts.org/product/5901398069974",
     "originalUrl": "https://images.openfoodfacts.org/images/products/590/139/806/9974/front_pl.11.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-09-22"
+  },
+  "11": {
+    "src": "assets/photos/grocery-11.webp",
+    "label": "Solidarność Śliwka Nałęczowska 李子巧克力",
+    "width": 300,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900189009441",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/018/900/9441/front_en.4.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-09-22"
+  },
+  "12": {
+    "src": "assets/photos/grocery-12.webp",
+    "label": "Lajkonik Paluszki 鹹餅乾棒",
+    "width": 270,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900320001303",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/032/000/1303/front_en.31.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-09-22"
+  },
+  "13": {
+    "src": "assets/photos/grocery-13.webp",
+    "label": "Princessa Longa 椰子威化餅",
+    "width": 280,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/8445291034761",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/844/529/103/4761/front_pl.3.400.jpg",
     "license": "CC BY-SA 3.0",
     "checkedAt": "2026-09-22"
   }

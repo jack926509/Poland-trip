@@ -20,3 +20,9 @@
 | grocery-08.webp | Tymbark 100% 蘋果汁（紙盒） | [Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900334012753) | [原圖](https://images.openfoodfacts.org/images/products/590/033/401/2753/front_pl.18.400.jpg) |
 | grocery-09.webp | Winiary Żurek 調理湯粉 | [Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900085010114) | [原圖](https://images.openfoodfacts.org/images/products/590/008/501/0114/front_pl.37.400.jpg) |
 | grocery-10.webp | Swojsko Chłopo Pierogi ruskie 馬鈴薯起司餃 | [Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5901398069974) | [原圖](https://images.openfoodfacts.org/images/products/590/139/806/9974/front_pl.11.400.jpg) |
+
+## 2026-09-22 新增採買推薦照片
+
+- assets/photos/grocery-11.webp：Solidarność Śliwka Nałęczowska 李子巧克力；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900189009441)；[原圖](https://images.openfoodfacts.org/images/products/590/018/900/9441/front_en.4.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-09-22 核對。
+- assets/photos/grocery-12.webp：Lajkonik Paluszki 鹹餅乾棒；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900320001303)；[原圖](https://images.openfoodfacts.org/images/products/590/032/000/1303/front_en.31.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-09-22 核對。
+- assets/photos/grocery-13.webp：Princessa Longa 椰子威化餅；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/8445291034761)；[原圖](https://images.openfoodfacts.org/images/products/844/529/103/4761/front_pl.3.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-09-22 核對。
