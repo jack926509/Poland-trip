@@ -8,7 +8,7 @@ import { renderFastFoodDayList } from './fast-food.mjs';
 import { fastFoodBranches, fastFoodChains, fastFoodHubs } from '../data/dining.js';
 import { dayOperations } from '../data/travel-database.js';
 import { toMinutes, parseHardTimes, HARD_TIME_DEADLINES, dayIsoDate, todayIn } from '../lib/schedule.mjs';
-import { dayGap, warsawTodayLocal, selectToday, statusText, warsawMinutes, nextPlanIndex, initializeToday } from '../scripts/today.js';
+import { dayGap, warsawTodayLocal, selectToday, statusText, warsawMinutes, nextPlanIndex, planEta, initializeToday } from '../scripts/today.js';
 
 function navigationLink(url, label) {
   const href = safeHttpsUrl(url);
@@ -30,10 +30,20 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
   const operation = dayOperations[day.n];
   const progress = bookingProgress(day);
   const list = items => items.map(item => `<li>${escapeHtml(item)}</li>`).join('');
-  const meal = item => `<li><b>${escapeHtml(item.role)}：${escapeHtml(item.name)}</b>
-    <p>${escapeHtml(item.note || '')}</p><p class="source-meta">${escapeHtml(item.address || '')}</p>
-    <p class="food-map-note">${escapeHtml(mealTiming(item, day))}</p>${renderDiningFacts(item)}
-    ${navigationLink(item.map, `${item.name}導航`)}</li>`;
+  // 餐飲列沿用每日行程頁的 .day-food-item 版式：店名是標題、導航收在標題右上角的膠囊，
+  // 不再是「角色：店名」加四段文字的文字牆。同一家店在兩個頁面長得一樣，不必重新學。
+  const meal = item => {
+    const mapUrl = safeHttpsUrl(item.map);
+    return `<li class="day-food-item">
+      <div class="day-food-head">
+        <div class="day-food-title"><span class="eyebrow">${escapeHtml(item.role)}</span><h4>${escapeHtml(item.name)}</h4></div>
+        ${mapUrl ? `<a class="day-food-map" href="${mapUrl}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(item.name)} 的 Google Maps 導航">導航 ↗</a>` : ''}
+      </div>
+      ${item.note ? `<p>${escapeHtml(item.note)}</p>` : ''}
+      ${item.address ? `<p class="source-meta" lang="pl">${escapeHtml(item.address)}</p>` : ''}
+      <p class="food-map-note">${escapeHtml(mealTiming(item, day))}</p>${renderDiningFacts(item)}
+    </li>`;
+  };
   // 同一天的「首選」其實橫跨不同餐別（午餐＋晚餐＋點心），不是互斥選項。
   // 正餐與點心分開列，避免看起來像「這些全都要吃」或「只能挑一家」。
   const primary = (dining || []).filter(item => !/替補|備案/.test(item.role));
@@ -89,63 +99,68 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
   const leaving = isDepartureDay(day);
   const hotelMap = bed?.addressVerified ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(bed.name+' '+bed.address)}` : null;
   return `<article class="today-card" data-today-card data-today-date="${escapeHtml(iso)}">
-    <header class="today-head"><span class="eyebrow">Day ${day.n} · ${escapeHtml(day.date)}</span>
-      <h2>${escapeHtml(day.title)}</h2><p>${escapeHtml(day.headline)}</p><a href="${escapeHtml(dayHref)}">完整當日行程 →</a></header>
+    <header class="today-head">
+      <p class="today-head-meta"><span class="today-day-badge">Day ${day.n}</span><span class="today-head-date">${escapeHtml(day.date)}</span></p>
+      <h2>${escapeHtml(day.title)}</h2>
+      <p class="today-head-dek">${escapeHtml(day.headline)}</p>
+      <a class="today-head-link" href="${escapeHtml(dayHref)}">完整當日行程 →</a></header>
     <section class="today-block today-next" data-today-next>
-      <h3>接下來去哪</h3><p class="source-meta" data-next-mode>依行程表預覽；不是即時定位或交通資訊。</p>
-      <label>改看其他行程 <select data-step-picker aria-label="選擇要查看的行程">${steps.map((step,index) => `<option value="${index}">${escapeHtml(step.t)} · ${escapeHtml(step.label)}</option>`).join('')}</select></label>
-      ${steps.map(step => `<div data-next-step data-plan-minute="${step.minute}">
-        <p class="today-next-title"><b>${escapeHtml(step.t)} · ${escapeHtml(step.label)}</b></p>
-        <p>${escapeHtml(step.sub || '')}</p>
-        ${step.place ? `<p lang="pl">${escapeHtml(step.place.address)}</p><p>${escapeHtml(step.place.entranceNote || '')}</p>` : `<p class="source-meta">${escapeHtml(step.reason || '此步驟沒有唯一確認的入口，請查看當日地址與移動步驟。')}</p>`}
-        <a data-next-nav href="${step.navigationHref ? step.navigationHref : escapeHtml(dayHref+'#directions')}" ${step.navigationHref ? 'target="_blank" rel="noopener noreferrer"' : ''}>${step.navigationHref ? '導航到這一站 ↗' : '查看地址與移動方式 →'}</a>
+      <div class="today-block-head"><h3>接下來去哪</h3><span class="today-next-progress" data-next-progress hidden></span></div>
+      ${steps.map(step => `<div class="today-next-step" data-next-step data-plan-minute="${step.minute}">
+        <p class="today-next-clock"><b>${escapeHtml(step.t)}</b><span class="today-next-eta" data-next-eta hidden></span></p>
+        <p class="today-next-title">${escapeHtml(step.label)}</p>
+        ${step.sub ? `<p class="today-next-sub">${escapeHtml(step.sub)}</p>` : ''}
+        ${step.place ? `<p class="today-address" lang="pl">${escapeHtml(step.place.address)}</p>${step.place.entranceNote ? `<p class="today-next-entrance">${escapeHtml(step.place.entranceNote)}</p>` : ''}` : `<p class="source-meta">${escapeHtml(step.reason || '此步驟沒有唯一確認的入口，請查看當日地址與移動步驟。')}</p>`}
+        <a class="today-next-nav" data-next-nav href="${step.navigationHref ? step.navigationHref : escapeHtml(dayHref+'#directions')}" ${step.navigationHref ? 'target="_blank" rel="noopener noreferrer"' : ''}>${step.navigationHref ? '導航到這一站 ↗' : '查看地址與移動方式 →'}</a>
       </div>`).join('')}
-      <p data-next-ended hidden>今天已沒有更晚的預定行程。可查看其他時段或回住宿休息。</p>
+      <p class="today-next-ended" data-next-ended hidden>今天已沒有更晚的預定行程。可查看其他時段或回住宿休息。</p>
+      <label class="today-field">改看其他行程 <select data-step-picker aria-label="選擇要查看的行程">${steps.map((step,index) => `<option value="${index}">${escapeHtml(step.t)} · ${escapeHtml(step.label)}</option>`).join('')}</select></label>
+      <p class="source-meta" data-next-mode>依行程表預覽；不是即時定位或交通資訊。</p>
     </section>
     <nav class="today-actions" aria-label="今日快捷操作">
-      <button type="button" data-today-action="next">下一站</button><button type="button" data-today-action="food">今天吃哪</button>
-      <button type="button" data-today-action="stay">${bed ? '回住宿' : leaving ? '去機場' : '住宿待確認'}</button><a href="${escapeHtml(dayHref)}">完整行程</a>
+      <button class="today-action today-action-lead" type="button" data-today-action="next">下一站</button><button class="today-action" type="button" data-today-action="food">今天吃哪</button>
+      <button class="today-action" type="button" data-today-action="stay">${bed ? '回住宿' : leaving ? '去機場' : '住宿待確認'}</button><a class="today-action" href="${escapeHtml(dayHref)}">完整行程</a>
     </nav>
-    <section class="today-block today-block-alert">
-      <h3>下一個時間提醒</h3>
-      ${timed.length ? `${timed.map(item => `<p data-hard-time data-plan-minute="${item.minutes}"><b>${escapeHtml(item.hhmm)} · ${escapeHtml(item.kindLabel)}</b><span class="today-hard-source">${escapeHtml(item.text)}</span>${moveHint(item)}</p>`).join('')}
-      <p data-hard-ended hidden>今天的定時提醒都已過時間；仍請核對票券與現場公告。</p>
+    <section class="today-block today-block-time">
+      <div class="today-block-head"><h3>下一個時間提醒</h3></div>
+      ${timed.length ? `${timed.map(item => `<p class="today-hard" data-hard-time data-plan-minute="${item.minutes}"><b>${escapeHtml(item.hhmm)} · ${escapeHtml(item.kindLabel)}</b><span class="today-hard-eta" data-hard-eta hidden></span><span class="today-hard-source">${escapeHtml(item.text)}</span>${moveHint(item)}</p>`).join('')}
+      <p class="today-hard-ended" data-hard-ended hidden>今天的定時提醒都已過時間；仍請核對票券與現場公告。</p>
       <p class="source-meta">報到、入場、最後入場與發車分開標示。預定時間不代表已訂妥。</p>`
       : '<p><b>今天沒有定時的硬性時間點。</b></p><p class="source-meta">這一天的限制不綁時刻（見下方展開），仍請核對票券與現場公告。</p>'}
       <details><summary>今天不能延誤／時間不夠怎麼調整</summary><ul>${list(day.hardConstraints || [])}</ul>
         <p><b>可以壓縮：</b></p><ul>${list(day.compressible || [])}</ul></details>
     </section>
-    ${trainSegment ? `<section class="today-block"><h3>今天的城際移動</h3>
+    ${trainSegment ? `<section class="today-block today-transport"><div class="today-block-head"><h3>今天的城際移動</h3></div>
       <p class="today-transport-status"><b>${escapeHtml(trainSegment.leg || '訂票狀態待確認')}</b></p>
-      <p>${escapeHtml(trainSegment.type)} · ${escapeHtml(trainSegment.from)} → ${escapeHtml(trainSegment.to)}</p>
-      <p><b>${escapeHtml(trainSegment.dep)} – ${escapeHtml(trainSegment.arr)}</b>（${escapeHtml(trainSegment.dur)}）</p>
-      <a href="${escapeHtml(dayHref)}#day-preparation">票務與當日提醒 →</a></section>` : ''}
-    <section class="today-block" data-today-food><h3>今天吃哪</h3>
+      <p class="today-transport-route"><b>${escapeHtml(trainSegment.from)}</b> → <b>${escapeHtml(trainSegment.to)}</b></p>
+      <p class="today-transport-time"><b>${escapeHtml(trainSegment.dep)} – ${escapeHtml(trainSegment.arr)}</b><span>${escapeHtml(trainSegment.type)} · ${escapeHtml(trainSegment.dur)}</span></p>
+      <a class="today-block-link" href="${escapeHtml(dayHref)}#day-preparation">票務與當日提醒 →</a></section>` : ''}
+    <section class="today-block" data-today-food><div class="today-block-head"><h3>今天吃哪</h3></div>
       <p class="source-meta">正餐按餐別各列一家；點心與候選看體力和動線插入，不必全吃。候選不代表已訂位，導航開啟後請再確認營業與最後點餐時間。</p>
-      <ul class="today-list">${mainMeals.map(meal).join('') || '<li>今天沒有指定正餐，依現場動線用餐。</li>'}</ul>
+      <ul class="day-food-list">${mainMeals.map(meal).join('') || '<li class="today-empty">今天沒有指定正餐，依現場動線用餐。</li>'}</ul>
       ${snacks.length ? `<p class="today-snack-label"><b>順路點心／候選</b>（${snacks.length} 家，不必全吃）</p>
-      <ul class="today-list">${snacks.map(meal).join('')}</ul>` : ''}
-      ${alternatives.length ? `<details><summary>客滿或想換口味：${alternatives.length} 家替補</summary><ul class="today-list">${alternatives.map(meal).join('')}</ul></details>` : ''}
+      <ul class="day-food-list">${snacks.map(meal).join('')}</ul>` : ''}
+      ${alternatives.length ? `<details><summary>客滿或想換口味：${alternatives.length} 家替補</summary><ul class="day-food-list">${alternatives.map(meal).join('')}</ul></details>` : ''}
       ${renderFastFoodDayList(cityKeysForDay(day), { branches: fastFoodBranches, chains: fastFoodChains, hubs: fastFoodHubs, className: 'today-fastfood' })}
-      <a href="${escapeHtml(dayHref)}#day-food">順路必吃與完整餐飲 →</a></section>
-    <section class="today-block${!bed && !leaving ? ' today-block-alert' : ''}" data-today-stay><h3>${bed ? '住宿與行李' : leaving ? '離境與行李' : '今晚住宿：資料缺漏'}</h3>
+      <a class="today-block-link" href="${escapeHtml(dayHref)}#day-food">順路必吃與完整餐飲 →</a></section>
+    <section class="today-block${!bed && !leaving ? ' today-block-alert' : ''}" data-today-stay><div class="today-block-head"><h3>${bed ? '住宿與行李' : leaving ? '離境與行李' : '今晚住宿：資料缺漏'}</h3></div>
       ${checkout ? `<p><b>今天退房：</b>${escapeHtml(checkout.name)}。${escapeHtml(checkout.checkOutTime || '退房時間依訂房確認')}前辦理；寄放與取件方式先向住宿確認。</p>` : ''}
       ${bed ? `<p><b>今晚落腳：${escapeHtml(bed.name)}</b>（${escapeHtml(bed.status)}）</p>
         <p class="today-address" lang="pl">${escapeHtml(bed.address)}</p>
         <p>${bed.checkIn === iso ? `今天入住：${escapeHtml(bed.checkInTime || '時間依訂房確認')}` : '今晚連住，不必再次辦理入住。'}</p>
         <p class="source-meta">${!bed.addressVerified ? '門牌尚未確認，請先核對私人訂房資料；不提供精確導航。' : bed.id === 'poznan-towarowa' ? '此地址為接待與取鑰匙處；實際公寓門牌依私人訂房確認。' : '已核對的住宿地址，可出示給司機或櫃檯。'}</p>
-        ${hotelMap ? `<a href="${escapeHtml(hotelMap)}" target="_blank" rel="noopener noreferrer">${bed.id === 'poznan-towarowa' ? '接待處導航' : '住宿導航'} ↗</a>` : ''}` : leaving ? `<p>今晚離境／機上過夜。先確認航班報到、退稅與機場交通。</p><a href="${escapeHtml(dayHref)}#directions">開啟機場地址與交通 →</a>`
-        : `<p><b>這一天不是離境日，但查不到當晚住宿。</b>這是資料缺漏，不是「不用住」——請先補上訂房或確認安排。</p><a href="${escapeHtml(dayHref)}#day-preparation">查看當日訂房與提醒 →</a>`}
+        ${hotelMap ? `<a class="today-block-link" href="${escapeHtml(hotelMap)}" target="_blank" rel="noopener noreferrer">${bed.id === 'poznan-towarowa' ? '接待處導航' : '住宿導航'} ↗</a>` : ''}` : leaving ? `<p>今晚離境／機上過夜。先確認航班報到、退稅與機場交通。</p><a class="today-block-link" href="${escapeHtml(dayHref)}#directions">開啟機場地址與交通 →</a>`
+        : `<p><b>這一天不是離境日，但查不到當晚住宿。</b>這是資料缺漏，不是「不用住」——請先補上訂房或確認安排。</p><a class="today-block-link" href="${escapeHtml(dayHref)}#day-preparation">查看當日訂房與提醒 →</a>`}
     </section>
-    <details class="today-block" data-today-schedule><summary>全天時間表</summary>${renderSteps(day)}</details>
-    <details class="today-block"><summary>預約與待辦 · ${progress.pending.length} 項待處理</summary>
-      <h3>仍未訂妥</h3><ul>${list(progress.pending) || '<li>無待訂項目。</li>'}</ul>
-      ${progress.confirmed.length ? `<h3>已完成預約</h3><ul>${list(progress.confirmed)}</ul>` : ''}
-      <a href="${escapeHtml(dayHref)}#day-preparation">完整訂票提醒 →</a></details>
-    <details class="today-block"><summary>日照、備案與晚間準備</summary>
-      ${sun ? `<h3>日照</h3><p>日出 ${escapeHtml(sun.sunrise)}／日落 <b>${escapeHtml(sun.sunset)}</b>／藍調至 ${escapeHtml(sun.blueHourEnd)}（${escapeHtml(sun.tz)}）</p><p>${escapeHtml(sun.note)}</p>` : ''}
-      <h3>備案</h3><ul>${(day.backup || []).map(item => `<li><b>${escapeHtml(item.label)}：${escapeHtml(item.where)}</b><p>${escapeHtml(item.why || '')}</p>${navigationLink(item.map, '備案導航')}</li>`).join('')}</ul>
-      <h3>晚間準備</h3><ul>${list(operation?.nightChecklist || [])}</ul>
+    <details class="today-block today-block-more" data-today-schedule><summary>全天時間表<span class="today-more-meta">${day.steps.length} 個時段</span></summary>${renderSteps(day)}</details>
+    <details class="today-block today-block-more"><summary>預約與待辦<span class="today-more-meta">${progress.pending.length} 項待處理</span></summary>
+      <h4>仍未訂妥</h4><ul>${list(progress.pending) || '<li>無待訂項目。</li>'}</ul>
+      ${progress.confirmed.length ? `<h4>已完成預約</h4><ul>${list(progress.confirmed)}</ul>` : ''}
+      <a class="today-block-link" href="${escapeHtml(dayHref)}#day-preparation">完整訂票提醒 →</a></details>
+    <details class="today-block today-block-more"><summary>日照、備案與晚間準備${sun ? `<span class="today-more-meta">日落 ${escapeHtml(sun.sunset)}</span>` : ''}</summary>
+      ${sun ? `<h4>日照</h4><p>日出 ${escapeHtml(sun.sunrise)}／日落 <b>${escapeHtml(sun.sunset)}</b>／藍調至 ${escapeHtml(sun.blueHourEnd)}（${escapeHtml(sun.tz)}）</p><p>${escapeHtml(sun.note)}</p>` : ''}
+      <h4>備案</h4><ul class="today-list">${(day.backup || []).map(item => `<li><b>${escapeHtml(item.label)}：${escapeHtml(item.where)}</b><p>${escapeHtml(item.why || '')}</p>${navigationLink(item.map, '備案導航')}</li>`).join('')}</ul>
+      <h4>晚間準備</h4><ul>${list(operation?.nightChecklist || [])}</ul>
     </details>
   </article>`;
 }
@@ -172,31 +187,36 @@ export function renderToday({ meta, days, stay, dayDining = {}, daylight = [], s
   })).join('');
 
   // 內嵌時沒有 import；日期與選日函式的相依也必須一起帶入。
-  const todayRuntime = [todayIn, dayGap, warsawTodayLocal, selectToday, statusText, warsawMinutes, nextPlanIndex, initializeToday]
+  const todayRuntime = [todayIn, dayGap, warsawTodayLocal, selectToday, statusText, warsawMinutes, nextPlanIndex, planEta, initializeToday]
     .map(fn => fn.toString()).join('\n');
 
+  // 緊急電話排成一列可點的號碼膠囊：號碼大、說明小，一眼就能按。
+  // 原本是滿版紅色區塊，把「接下來去哪」推出首屏——真的要打時只需要號碼本身。
   const emergency = (safety?.emergency || [])
-    .map(([label, number]) => `<li><a href="tel:${escapeAttr(number.replace(/\s+/g, ''))}">${escapeHtml(number)}</a>　${escapeHtml(label)}</li>`).join('');
+    .map(([label, number]) => `<li><a href="tel:${escapeAttr(number.replace(/\s+/g, ''))}">${escapeHtml(number)}</a><span>${escapeHtml(label)}</span></li>`).join('');
 
   const bodyHtml = `
     <header class="journal-appendix-header">
-      <span class="section-num">Today</span>
+      <!-- 版式的 ::before 已經印出「TODAY」（稽核 M11）；這裡再放一次 section-num
+           會在手機上變成上下兩行一模一樣的 TODAY，白佔一段首屏。 -->
       <h1>今日卡</h1>
       <p class="hero-dek">今天該做什麼、住哪、幾點出發、天黑前要收哪一段，集中在這一頁。日期以華沙當地時間判斷。</p>
     </header>
 
     <nav class="today-date-controls" aria-label="切換旅行日期">
-      <button type="button" data-date-prev aria-label="看前一天">← 前一天</button>
-      <label>查看日期 <select data-date-picker>${days.map(day => `<option value="${dayIsoDate(day.date, meta.tripStart)}">Day ${day.n} · ${escapeHtml(day.date)}</option>`).join('')}</select></label>
-      <button type="button" data-date-next aria-label="看後一天">後一天 →</button>
-      <button type="button" data-date-reset>回到今天</button>
+      <label class="today-field">查看日期 <select data-date-picker>${days.map(day => `<option value="${dayIsoDate(day.date, meta.tripStart)}">Day ${day.n} · ${escapeHtml(day.date)}</option>`).join('')}</select></label>
+      <div class="today-date-buttons">
+        <button type="button" data-date-prev aria-label="看前一天">← 前一天</button>
+        <button type="button" data-date-reset>回到今天</button>
+        <button type="button" data-date-next aria-label="看後一天">後一天 →</button>
+      </div>
     </nav>
     <p class="today-status" data-today-status>正在判斷今天是旅程的第幾天…</p>
     <noscript><p class="today-status">JavaScript 未啟用時無法自動選日，以下列出全部 ${days.length} 天。</p></noscript>
 
-    <section class="section today-block today-block-alert" data-today-sos>
-      <div class="section-heading"><span class="section-num">SOS</span><h2>緊急電話</h2></div>
-      <ul class="today-list">${emergency}</ul>
+    <section class="today-sos" data-today-sos aria-label="緊急電話">
+      <p class="today-sos-title"><span class="today-sos-tag">SOS</span>緊急電話</p>
+      <ul class="today-sos-list">${emergency}</ul>
       <p class="source-meta">歐洲通用緊急號碼 112 可直接撥打，不需解鎖或有 SIM 卡餘額。</p>
     </section>
 

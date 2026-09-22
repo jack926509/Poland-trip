@@ -151,7 +151,7 @@ test('M2：手機底部快捷列在各類頁面都輸出，且連結依頁面類
 
   // 今日頁本身要有可被快捷列指到的錨點目標
   const today = read('today.html');
-  assert.match(today, /<details class="today-block" data-today-schedule>/);
+  assert.match(today, /<details class="today-block[^"]*" data-today-schedule>/);
   assert.match(today, /data-today-food/);
 
   // 手機底部固定列會蓋住頁尾，統一留出底部留白

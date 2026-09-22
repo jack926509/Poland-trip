@@ -42,6 +42,25 @@ export function nextPlanIndex(minutes, currentMinute) {
   return minutes.findIndex(minute => minute >= currentMinute);
 }
 
+/**
+ * 「還有多久」。現場最常問的是這個，原本要自己拿手機時鐘減行程表。
+ *
+ * 只做時鐘減法，不猜交通與現場狀況——回傳字串刻意不寫「來得及」。
+ * 預覽別的日期時 currentMinute 會是 -1，此時回傳 null，不顯示任何倒數，
+ * 免得看別天的行程卻出現一個看似即時的數字。
+ */
+export function planEta(planMinute, currentMinute) {
+  if (!Number.isFinite(planMinute) || !Number.isFinite(currentMinute) || currentMinute < 0) return null;
+  const diff = planMinute - currentMinute;
+  const span = Math.abs(diff);
+  const hours = Math.floor(span / 60);
+  const minutes = span % 60;
+  const amount = hours ? `${hours} 小時${minutes ? ` ${minutes} 分` : ''}` : `${minutes} 分`;
+  if (diff > 0) return { text: `還有 ${amount}`, level: diff <= 30 ? 'soon' : 'ahead' };
+  if (diff === 0) return { text: '就是現在', level: 'soon' };
+  return { text: `已過 ${amount}`, level: 'past' };
+}
+
 export function initializeToday(root, now = () => new Date()) {
   const cards = Array.from(root.querySelectorAll('[data-today-card]'));
   if (!cards.length) return;
@@ -52,9 +71,20 @@ export function initializeToday(root, now = () => new Date()) {
   const picker = root.querySelector('[data-date-picker]');
   const prev = root.querySelector('[data-date-prev]');
   const next = root.querySelector('[data-date-next]');
+  const reset = root.querySelector('[data-date-reset]');
   let manualDate = null;
   let manualStep = null;
   let shown = 0;
+
+  // 「還有多久」寫進指定的 span：沒有這個節點（舊版 DOM、單元測試）就跳過，
+  // 選日本身不該因為少一個裝飾性節點而壞掉。
+  function applyEta(host, planMinute, currentMinute) {
+    if (!host) return;
+    const eta = planEta(planMinute, currentMinute);
+    host.textContent = eta ? eta.text : '';
+    host.hidden = !eta;
+    host.setAttribute?.('data-eta-level', eta ? eta.level : 'none');
+  }
 
   function refresh() {
     const clock = now();
@@ -80,13 +110,33 @@ export function initializeToday(root, now = () => new Date()) {
     if (stepPicker) stepPicker.value = selected < 0 ? '' : String(selected);
     const ended = card.querySelector?.('[data-next-ended]');
     if (ended) ended.hidden = selected !== -1;
+    // 只有顯示中的那一站算倒數；其餘一律傳 -1 清空，
+    // 否則手動切站或換日之後，被藏起來的節點會留著上一次算出的舊數字。
+    steps.forEach((step,index) => applyEta(step.querySelector?.('[data-next-eta]'),
+      Number(step.getAttribute('data-plan-minute')), index === selected ? minute : -1));
+    // 「第幾站／共幾站」讓人知道今天還剩多少，而不是只看到孤立的一站。
+    const progress = card.querySelector?.('[data-next-progress]');
+    if (progress) {
+      progress.hidden = !steps.length || selected < 0;
+      progress.textContent = steps.length && selected >= 0 ? `第 ${selected + 1}／${steps.length} 站` : '';
+    }
     const mode = card.querySelector?.('[data-next-mode]');
     if (mode) mode.textContent = `${manualStep?.date === dates[shown] ? '手動查看此站' : preview ? '預覽當日第一個時間點' : '依波蘭時間顯示下一個預定時間點'}；不代表目前位置或上一站已完成。`;
     const deadlines = Array.from(card.querySelectorAll?.('[data-hard-time]') || []);
     const deadlineIndex = nextPlanIndex(deadlines.map(item => Number(item.getAttribute('data-plan-minute'))),minute);
     deadlines.forEach((item,index) => { item.hidden = index !== deadlineIndex; });
+    // 逼近的期限才升級成紅色；離得遠或在預覽別天時維持琥珀色的提示，
+    // 紅色留給真的快來不及，才不會每天都紅、看久了就當背景。
+    deadlines.forEach((item,index) => {
+      const planMinute = Number(item.getAttribute('data-plan-minute'));
+      const at = index === deadlineIndex ? minute : -1;
+      item.setAttribute?.('data-eta-level', planEta(planMinute, at)?.level || 'none');
+      applyEta(item.querySelector?.('[data-hard-eta]'), planMinute, at);
+    });
     const hardEnded = card.querySelector?.('[data-hard-ended]');
     if (hardEnded) hardEnded.hidden = deadlineIndex !== -1;
+    // 已經是自動模式（看今天）時「回到今天」沒有作用，停用它才看得出目前狀態。
+    if (reset) reset.disabled = manualDate === null && manualStep === null;
   }
 
   function choose(index) {
@@ -97,7 +147,7 @@ export function initializeToday(root, now = () => new Date()) {
   picker?.addEventListener('change', () => choose(dates.indexOf(picker.value)));
   prev?.addEventListener('click', () => choose(shown-1));
   next?.addEventListener('click', () => choose(shown+1));
-  root.querySelector('[data-date-reset]')?.addEventListener('click', () => { manualDate=null; manualStep=null; refresh(); });
+  reset?.addEventListener('click', () => { manualDate=null; manualStep=null; refresh(); });
   function revealTarget(card, key) {
     const target = card?.querySelector(`[data-${key}]`);
     if (!target) return null;

@@ -72,6 +72,22 @@ test('緊急電話可直接撥打，SOS 區塊在日卡清單之前（稽核 H4�
   assert.ok(sosIndex < cardsIndex, 'SOS 區塊應在日卡清單之前，不能埋在頁面深處');
 });
 
+test('頁首只印一次 TODAY：版式的 ::before 已經有了，模板不再重複', () => {
+  const html = renderPage();
+  const header = html.slice(html.indexOf('journal-appendix-header'), html.indexOf('</header>'));
+  assert.doesNotMatch(header, /<span class="section-num">/, '頁首不該再輸出 section-num，會和 CSS 的 TODAY 重複一行');
+});
+
+test('緊急電話排成號碼膠囊，不再是把日卡推出首屏的滿版區塊（稽核 H4 的版面部分）', () => {
+  const html = renderPage();
+  const sos = html.slice(html.indexOf('data-today-sos'), html.indexOf('data-today-cards'));
+  assert.match(sos, /class="today-sos-list"/);
+  // 號碼本身仍是可撥打連結，說明字排在旁邊
+  assert.match(sos, /<li><a href="tel:112">112<\/a><span>歐洲通用緊急<\/span><\/li>/);
+  // 不再使用會帶來 h2 巨大字級的 section-heading 版式
+  assert.doesNotMatch(sos, /section-heading/);
+});
+
 test('不使用寫死的 id 選取器，單檔版加前綴後才不會失效', () => {
   const html = renderPage();
   const script = html.match(/<script>([\s\S]*?)<\/script>/)[1];
