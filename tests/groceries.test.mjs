@@ -29,8 +29,9 @@ test('採買指南保留四城 12 個門市與十項商品，每筆都標出核�
   }
   assert.equal((html.match(/營業時間待確認/g) || []).length, 8);
   assert.equal((html.match(/官方門市頁已核對/g) || []).length, 4);
-  // 座標仍未核實：地圖維持搜尋連結，這句話不可以消失
-  assert.match(html, /地圖仍是搜尋連結，未取得核實座標/);
+  // 座標仍未核實：地圖維持搜尋連結。改版後這句話從每列重複 12 次收成
+  // 四個城市各一次，加上「資料來源與查核界線」一次，共 5 次；不能再少。
+  assert.equal((html.match(/沒有取得任何一家的核實座標/g) || []).length, 5);
   assert.match(html, /2026\/10\/25/);
 });
 
@@ -75,4 +76,50 @@ test('離線單檔保留採買內容並正確改寫跨頁城市錨點', () => {
   assert.ok(html.includes('id="page-practical-groceries--warsaw"'));
   assert.ok(html.includes('href="#page-practical-groceries--warsaw"'));
   assert.ok(fs.readFileSync('dist/sw.js', 'utf8').includes('./practical/groceries.html'));
+});
+
+test('採買頁在手機不得橫向溢出，門市與商品都用卡片而不是被撐寬的表格', () => {
+  const html = fs.readFileSync('dist/practical/groceries.html', 'utf8');
+  // 這一頁曾因 .grocery-table 的 min-width: 42rem 在卡片模式沒解除，
+  // 於 390px 視窗被撐到 696px，地址被切掉、整頁可左右拉。
+  assert.doesNotMatch(html, /grocery-table/, '門市與商品不該再走會被撐寬的表格版面');
+  assert.match(html, /class="grocery-branch-list"/);
+  assert.match(html, /class="grocery-product-list"/);
+
+  const css = fs.readFileSync('dist/assets/main.css', 'utf8');
+  const cardMode = css.slice(css.indexOf('@media (max-width: 700px)'));
+  assert.match(cardMode, /\.table-editorial \{\s*min-width: 0;?\s*\}/, '卡片模式必須解除桌機的 min-width');
+  assert.match(cardMode, /\.table-editorial caption \{[^}]*display: block/, '卡片模式的 caption 必須 display:block，否則中文逐字直排');
+});
+
+test('星期日狀態每家店都標出來，三態各自對應資料而不是猜的', () => {
+  const html = fs.readFileSync('dist/practical/groceries.html', 'utf8');
+  assert.equal((html.match(/class="grocery-sunday"/g) || []).length, 12, '12 家都要有星期日標記');
+  assert.equal((html.match(/data-sunday="open"/g) || []).length, 2, '只有兩家車站型 Biedronka 官方標示星期日營業');
+  assert.equal((html.match(/data-sunday="closed"/g) || []).length, 6);
+  // Żabka 四家沒查到，只能寫「依店公告」，不可以猜成營業或不營業
+  assert.equal((html.match(/data-sunday="unknown"/g) || []).length, 4);
+  assert.match(html, /星期日依店公告/);
+});
+
+test('採買推薦一項商品只出現一次，照片、理由與來源都留在同一張卡', () => {
+  const html = fs.readFileSync('dist/practical/groceries.html', 'utf8');
+  for (const product of groceryProducts) {
+    assert.equal((html.match(new RegExp(`id="product-${product.rank}"`, 'g')) || []).length, 1, `product-${product.rank} 錨點重複`);
+  }
+  assert.equal((html.match(/class="grocery-product(?: is-priority)?" id="product-/g) || []).length, groceryProducts.length);
+  // c378570 加入的照片、推薦理由與來源都必須還在，改版只換版面不砍內容
+  assert.equal((html.match(/class="grocery-product-photo"/g) || []).length, groceryProducts.length);
+  assert.equal((html.match(/class="grocery-product-reason"/g) || []).length, groceryProducts.length);
+  assert.equal((html.match(/class="grocery-product-sources"/g) || []).length, groceryProducts.length);
+  for (const product of groceryProducts) {
+    for (const source of product.sources) assert.ok(html.includes(source.url), `缺來源連結 ${source.url}`);
+    if (product.photo) assert.ok(html.includes(product.photo.src), `缺照片 ${product.photo.src}`);
+  }
+  // 2026 年文章推薦與歷年經典補充仍分成兩組
+  assert.equal((html.match(/class="grocery-product-group"/g) || []).length, 2);
+  assert.match(html, /2026 年文章推薦/);
+  assert.match(html, /經典補充/);
+  // 行李有限先挑的幾樣在卡片上就標出來
+  assert.equal((html.match(/class="grocery-priority"/g) || []).length, groceryProducts.filter(p => p.priority).length);
 });
