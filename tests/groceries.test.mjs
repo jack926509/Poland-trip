@@ -5,19 +5,52 @@ import { groceryBranches, groceryProducts } from '../src/data/groceries.js';
 import { cityRoutes } from '../src/lib/city-guide.mjs';
 import { normalizeText } from '../src/search/site-search-index.mjs';
 
-test('採買指南保留四城 12 個待確認候選與十項商品，不把候選當作已驗證門市', () => {
+test('採買指南保留四城 12 個門市與十項商品，每筆都標出核到哪一層', () => {
   assert.equal(groceryBranches.length, 12);
   assert.equal(new Set(groceryBranches.map(b => b.id)).size, 12);
   assert.equal(groceryProducts.length, 10);
   for (const city of cityRoutes) assert.equal(groceryBranches.filter(b => b.cityKey === city.mapKey).length, 3);
+  // 2026-09-22 逐店核對：Biedronka 四筆有官方逐日時間（verified），
+  // Lidl 與 Żabka 八筆只核到地址（partial）。沒有任何一筆可以無來源地宣稱已核實。
   for (const b of groceryBranches) {
-    assert.equal(b.verificationStatus, 'pending');
-    assert.equal(b.verifiedAt, null);
+    assert.ok(['verified', 'partial'].includes(b.verificationStatus), `${b.id}: ${b.verificationStatus}`);
+    assert.equal(b.verifiedAt, '2026-09-22', b.id);
+    assert.match(b.sourceUrl, /^https:\/\/(www\.biedronka\.pl|www\.lidl\.pl|www\.zabka\.pl|cdn\.zabka\.pl)\//, `${b.id} 的來源必須是品牌官方網域`);
+    if (b.verificationStatus === 'partial') assert.equal(b.hours, '待確認', `${b.id} 只核到地址就不能列出營業時間`);
   }
+  assert.equal(groceryBranches.filter(b => b.chain === 'biedronka' && b.verificationStatus === 'verified').length, 4);
+  assert.equal(groceryBranches.filter(b => b.verificationStatus === 'partial').length, 8);
+
   const html = fs.readFileSync('dist/practical/groceries.html', 'utf8');
-  assert.equal((html.match(/地址與營業時間尚未核實/g) || []).length, 12);
-  for (const b of groceryBranches) assert.ok(html.includes(encodeURIComponent(`${b.name} ${b.address}`)));
+  // 每一列都要帶自己的官方來源與核對狀態，不能整頁一句話帶過
+  for (const b of groceryBranches) {
+    assert.ok(html.includes(b.sourceUrl.replace(/&/g, '&amp;')), `${b.id} 缺官方來源連結`);
+    assert.ok(html.includes(encodeURIComponent(`${b.name} ${b.address}`)));
+  }
+  assert.equal((html.match(/營業時間待確認/g) || []).length, 8);
+  assert.equal((html.match(/官方門市頁已核對/g) || []).length, 4);
+  // 座標仍未核實：地圖維持搜尋連結，這句話不可以消失
+  assert.match(html, /地圖仍是搜尋連結，未取得核實座標/);
   assert.match(html, /2026\/10\/25/);
+});
+
+test('星期日判斷依官方日曆，且車站型門市的例外不被寫成保證', () => {
+  const html = fs.readFileSync('dist/practical/groceries.html', 'utf8');
+  // 2026 年十月沒有交易星期日，官方日曆列出的八天都不在十月
+  assert.match(html, /1\/25、3\/29、4\/26、6\/28、8\/30、12\/6、12\/13、12\/20/);
+  assert.doesNotMatch(html, /10\/25 是交易星期日/);
+  // 華沙與波茲南車站型門市由官方標記星期日營業；語氣是「有機會」不是保證
+  assert.match(html, /sklep czynny w niedzielę/);
+  assert.match(html, /以門市當日公告為準/);
+  const warsaw = groceryBranches.find(b => b.id === 'warsaw-1');
+  const poznan = groceryBranches.find(b => b.id === 'poznan-1');
+  assert.equal(warsaw.sundayOpen, true);
+  assert.equal(poznan.sundayOpen, true);
+  // 克拉科夫與樂斯拉夫的 Biedronka 官方頁星期日關門，不可標成營業
+  assert.equal(groceryBranches.find(b => b.id === 'krakow-1').sundayOpen, false);
+  assert.equal(groceryBranches.find(b => b.id === 'wroclaw-1').sundayOpen, false);
+  // Żabka 依各店公告，不給 true/false
+  for (const b of groceryBranches.filter(x => x.chain === 'zabka')) assert.equal(b.sundayOpen, null, b.id);
 });
 
 test('採買頁與四城雙向串接，商品與地址可透過共用搜尋索引找到', () => {
