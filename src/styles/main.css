@@ -3016,6 +3016,21 @@ a[href^="tel:"]:focus-visible {
     white-space: normal;
   }
 
+  /* 表格改 display:block 之後，桌機用的 min-width 會直接把版面撐出視窗
+     （採買頁曾被撐到 696px／視窗 390px，整頁可左右拉、地址被切掉）；
+     caption 也失去可撐寬的父層 table，中文會逐字直排成一條（稽核 H3）。
+     兩者都是卡片模式共通的問題，在這裡一次擋掉，不必每張表各修一次。 */
+  .table-editorial {
+    min-width: 0;
+  }
+
+  .table-editorial caption {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0;
+    text-align: left;
+  }
+
   .table-editorial td[data-label]::before {
     display: block;
     margin-bottom: 0.15rem;
@@ -5444,9 +5459,326 @@ h3 {
 }
 
 
-/* 採買指南維持列表；窄螢幕於區域內橫向捲動。 */
-.grocery-table { min-width: 42rem; }
-.grocery-table th, .grocery-table td { overflow-wrap: anywhere; }
-.grocery-product { padding: .85rem 0; border-bottom: 1px solid var(--line, #ddd4c5); }
-.grocery-product summary { cursor: pointer; font-weight: 600; min-height: 2.75rem; display: list-item; align-content: center; }
-.grocery-product p { margin-top: .75rem; }
+/* ══ 採買指南 ═══════════════════════════════════════════════
+   改版前這一頁全部塞在 .table-editorial 表格裡，手機上有兩個硬傷：
+   1. .grocery-table 的 min-width: 42rem 在手機卡片模式沒有解除，整頁被撐到
+      696px（視窗 390px），地址被切掉、整頁可以左右拉——全站只有這一頁這樣。
+   2. 表格改 display:block 後 <caption> 失去可撐寬的父層，中文逐字直排成一條，
+      六張表各白吃掉約 230px。.city-dining-table 早就修過（稽核 H3），
+      這一頁沒跟上。
+   現在門市與商品都改成卡片，不再經過表格，兩個問題一起消失。
+
+   三家連鎖各給一個色票（沿用全站 token，不用品牌原色），
+   連鎖卡、門市卡、Top 10 的通路符號都用同一個顏色，
+   眼睛在三節之間跳的時候可以靠顏色接上，不必每次重讀店名。 */
+.grocery-chain-tag[data-chain='biedronka'],
+.grocery-branch[data-chain='biedronka'],
+.grocery-availability li[data-chain='biedronka'],
+.grocery-chain-card[data-chain='biedronka'] { --grocery-chain: var(--accent-dark); }
+.grocery-chain-tag[data-chain='lidl'],
+.grocery-branch[data-chain='lidl'],
+.grocery-availability li[data-chain='lidl'],
+.grocery-chain-card[data-chain='lidl'] { --grocery-chain: var(--plum); }
+.grocery-chain-tag[data-chain='zabka'],
+.grocery-branch[data-chain='zabka'],
+.grocery-availability li[data-chain='zabka'],
+.grocery-chain-card[data-chain='zabka'] { --grocery-chain: var(--green); }
+
+.grocery-chain-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.18rem 0.6rem;
+  border-radius: 999px;
+  background: var(--grocery-chain, var(--ink-soft));
+  color: var(--paper-light);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.grocery-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.3rem 0.85rem;
+  border: 1px solid rgb(142 126 112 / 40%);
+  border-radius: 999px;
+  background: var(--paper-light);
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 160ms var(--ease), border-color 160ms var(--ease);
+}
+
+.grocery-btn:hover,
+.grocery-btn:focus-visible { border-color: var(--accent); background: var(--accent-pale); }
+
+/* ── 三大連鎖 ── */
+.grocery-chain-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.grocery-chain-card {
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--grocery-chain, var(--line-strong));
+  border-radius: var(--radius-sm);
+  background: var(--paper-light);
+  box-shadow: var(--shadow-1);
+}
+
+.grocery-chain-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.5rem;
+}
+
+.grocery-chain-kind { color: var(--ink-soft); font-size: 0.84rem; }
+.grocery-chain-buy { margin: 0 0 0.35rem; }
+.grocery-chain-card p:last-child { margin: 0; }
+
+/* ── 門市卡 ── */
+/* 一個城市三家並排：桌機滿版單欄會讓每張卡右半邊全空，
+   而這三家本來就是要互相比較「現在去哪一家」。 */
+.grocery-branch-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 0.9rem;
+  align-items: start;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.grocery-branch {
+  padding: 0.95rem 1.05rem;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--grocery-chain, var(--line-strong));
+  border-radius: var(--radius-sm);
+  background: var(--paper-light);
+  box-shadow: var(--shadow-1);
+  overflow-wrap: anywhere;
+  scroll-margin-top: 6rem;
+}
+
+.grocery-branch-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+/* 星期日狀態是這頁最關鍵的判斷，做成三態標記讓人掃一眼就知道，
+   不必讀完整段說明。灰＝依各店公告，不是「應該會開」。 */
+.grocery-sunday {
+  padding: 0.18rem 0.6rem;
+  border: 1px solid currentcolor;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.grocery-sunday[data-sunday='open'] { background: var(--surface-success); color: var(--green); }
+.grocery-sunday[data-sunday='closed'] { background: var(--surface-danger); color: var(--red); }
+.grocery-sunday[data-sunday='unknown'] { background: var(--paper-deep); color: var(--ink-soft); }
+
+.grocery-branch-name { margin: 0 0 0.25rem; font-weight: 700; }
+
+/* 地址要能直接拿給司機或店員看：放大、框起來、可整段選取。 */
+.grocery-branch-address {
+  margin: 0;
+  padding: 0.45rem 0.6rem;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-xs);
+  font-size: 1.02rem;
+  line-height: 1.5;
+  user-select: all;
+}
+
+.grocery-branch-area { margin: 0.35rem 0 0; color: var(--ink-soft); font-size: 0.86rem; }
+
+.grocery-branch-hours {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0.7rem 0 0;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--line);
+}
+
+.grocery-branch-hours > span {
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.grocery-branch-hours > b { font-size: 1.02rem; }
+.grocery-branch-sunday-note,
+.grocery-branch-use { margin: 0.4rem 0 0; font-size: 0.92rem; }
+.grocery-branch-sunday-note { color: var(--ink-soft); }
+
+.grocery-branch-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.8rem 0 0;
+}
+
+.grocery-branch-status { margin: 0.55rem 0 0; }
+.grocery-city-lead { margin-top: 0.6rem; }
+.grocery-city-foot { margin: 0.8rem 0 0; }
+
+/* ── Top 10 ── */
+.grocery-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xs);
+  background: var(--surface-card);
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+.grocery-legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+.grocery-legend b[data-mark],
+.grocery-availability b[data-mark] { font-family: var(--font-mono); font-size: 1rem; }
+.grocery-legend b[data-mark='◎'],
+.grocery-availability b[data-mark='◎'] { color: var(--green); }
+.grocery-legend b[data-mark='○'],
+.grocery-availability b[data-mark='○'] { color: var(--ink); }
+.grocery-legend b[data-mark='△'],
+.grocery-availability b[data-mark='△'] { color: var(--ink-soft); }
+
+.grocery-product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr));
+  gap: 0.9rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.grocery-product {
+  padding: 0.95rem 1.05rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper-light);
+  box-shadow: var(--shadow-1);
+  scroll-margin-top: 6rem;
+}
+
+/* 行李塞不下時先買的五樣，卡片上就看得出來，不必捲到最底下那一句。 */
+.grocery-product.is-priority { border-color: rgb(168 75 50 / 45%); background: var(--surface-note); }
+
+.grocery-product-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.grocery-rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 999px;
+  background: var(--plum);
+  color: var(--paper-light);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.grocery-product-head > b { font-size: 1.12rem; line-height: 1.3; }
+
+.grocery-priority {
+  padding: 0.12rem 0.5rem;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.grocery-product-zh { margin: 0.35rem 0 0; color: var(--ink-soft); font-size: 0.9rem; }
+
+.grocery-product-pack { margin: 0.5rem 0 0; font-size: 0.92rem; }
+.grocery-product-pack > span {
+  margin-right: 0.4rem;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+/* 三個通路排成一行。原本在手機卡片模式下會變成三個獨立欄位、
+   每個只放一個符號，光這裡一項商品就多出四行。 */
+.grocery-availability {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.7rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.grocery-availability li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--grocery-chain, var(--line-strong));
+  border-radius: var(--radius-xs);
+  background: var(--surface-card);
+}
+
+.grocery-availability span { color: var(--ink-soft); font-size: 0.76rem; }
+
+.grocery-product-note { margin-top: 0.7rem; padding-top: 0.6rem; border-top: 1px solid var(--line); }
+.grocery-product-note > summary {
+  display: list-item;
+  min-height: 2.75rem;
+  align-content: center;
+  color: var(--accent-dark);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.grocery-product-note p { margin: 0.5rem 0 0; font-size: 0.92rem; }
+
+.grocery-priority-foot { margin-top: 1rem; }
+
+@media (max-width: 600px) {
+  .grocery-branch,
+  .grocery-product,
+  .grocery-chain-card { padding: 0.85rem 0.9rem; }
+  .grocery-branch-actions .grocery-btn { flex: 1 1 auto; justify-content: center; }
+}
