@@ -6,6 +6,8 @@ import * as dining from '../data/dining.js';
 import * as tickets from '../data/tickets.js';
 import * as transit from '../data/transit.js';
 import * as shopping from '../data/shopping.js';
+import * as groceries from '../data/groceries.js';
+import { renderGroceries } from '../templates/groceries.mjs';
 import * as essentials from '../data/essentials.js';
 import * as dayDining from '../data/day-dining.js';
 import * as travelDatabase from '../data/travel-database.js';
@@ -125,6 +127,7 @@ export function renderPages(distDir) {
     usefulRoutes: transit.usefulRoutes,
     practical: transit.practical,
   }));
+  writeHtml('practical/groceries.html', renderGroceries(groceries));
   writeHtml('practical/shopping.html', renderShopping({
     souvenirCards: shopping.souvenirCards,
     luxuryShopping: shopping.luxuryShopping,

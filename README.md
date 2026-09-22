@@ -9,6 +9,7 @@
 - 全程動線與過夜總覽、每日行程、今日速查、交通步驟與景點導航。
 - 城市指南與每日行程雙向串接；住宿依日期帶入，已訂妥項目與待處理項目分開顯示。
 - 四座城市指南、餐廳候選、順路美食與拍照建議。
+- 超市與便利商店指南：四城候選門市、地圖搜尋、Top 10 商品、星期日採買提醒。
 - 訂票待辦與倒數、交通及門票資訊、自由行資料庫。
 - 全站搜尋、資料更新儀表板、PWA 離線瀏覽與可攜式單檔版。
 
@@ -39,6 +40,7 @@ python3 -m http.server 8000 --directory dist
 | 連鎖速食品牌、獨立門市與商場 | `src/data/fast-food.js` |
 | 城市、地圖與照片資料 | `src/data/cities.js`、`src/data/day-maps.js`、`src/data/city-gallery.js` |
 | 門票、交通、伴手禮與實用資訊 | `src/data/tickets.js`、`transit.js`、`shopping.js`、`essentials.js` |
+| 超市品牌、候選地址與採買商品 | `src/data/groceries.js` |
 | 自由行資料庫 | `src/data/travel-database.js` |
 | 頁面版型與共用元件 | `src/templates/` |
 | 樣式與瀏覽器互動 | `src/styles/`、`src/scripts/` |

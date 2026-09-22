@@ -54,6 +54,7 @@ const expectedFiles = [
   'practical/tickets.html',
   'practical/transit.html',
   'practical/shopping.html',
+  'practical/groceries.html',
   'practical/essentials.html',
   'practical/notes.html',
   'practical/ops-dashboard.html',
@@ -383,7 +384,7 @@ test('克拉科夫與樂斯拉夫飲水資訊各自保有官方來源', () => {
   assert.equal(wroclawWater?.sourceUrl, 'https://www.mpwik.wroc.pl/csr-2/pij-kranowke/');
 });
 
-test('dist 產出 24 個分頁與可直接部署的單檔版', () => {
+test('dist 產出 25 個分頁與可直接部署的單檔版', () => {
   assert.deepEqual(htmlFiles(), [...expectedFiles, 'poland-travel-guide-2026.html'].sort());
   assert.ok(fs.existsSync(path.join(distDir, 'assets/main.css')), '缺少 assets/main.css');
   assert.ok(fs.existsSync(path.join(distDir, 'assets/database-filter.js')), '缺少資料庫篩選程式');
@@ -418,7 +419,7 @@ test('dist 含 Web App Manifest 與三個圖示，可加到主畫面（稽核 H5
   assert.match(prepareScript, /manifest\.json/, 'prepare-site.sh 未明確帶上 manifest.json');
 });
 
-test('單檔旅遊指南封裝全部 24 頁且不依賴本機 CSS 或其他 HTML', () => {
+test('單檔旅遊指南封裝全部 25 頁且不依賴本機 CSS 或其他 HTML', () => {
   assert.ok(fs.existsSync(standalonePath), '缺少 poland-travel-guide-2026.html');
   const html = fs.readFileSync(standalonePath, 'utf8');
 
@@ -535,7 +536,7 @@ test('待辦事項頁將 16 項依五類整理，並在實用資訊導覽可進�
 });
 
 test('自由行資料庫頁提供 SOS、主題索引與緊急聯絡資訊', () => {
-  assert.equal(htmlFiles().length, 25);
+  assert.equal(htmlFiles().length, expectedFiles.length + 1);
   const html = read('practical/database.html');
   for (const heading of ['SOS 離線急救卡', '出入境與 ETIAS', '航班與行李', '醫療與保險', '退稅 TAX FREE']) {
     assert.ok(html.includes(heading), `資料庫頁缺少 ${heading}`);
@@ -973,7 +974,7 @@ test('4 個城市頁含正確 Leaflet 圖釘數，合計 48', () => {
 test('城市頁完整呈現故事、景點、行程餐廳推薦與拍照資訊', () => {
   for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
     const html = read(file);
-    for (const heading of ['先理解這座城', '景點清單', '行程餐廳推薦', '拍照建議']) {
+    for (const heading of ['先理解這座城', '景點清單', '行程餐廳推薦', '超市與便利商店', '拍照建議']) {
       assert.ok(html.includes(heading), `${file} 缺少 ${heading}`);
     }
   }
@@ -1657,7 +1658,7 @@ test('全站表格的 data-label 對得上實際欄位（含 tbody 的列標題�
 });
 
 test('四個城市頁結構一致：單一 h1、章節齊全、無重複 id 與死錨點', () => {
-  const expected = ['這座城在你的旅程中', '先理解這座城', '城市風景', '互動地圖', '景點清單', '行程餐廳推薦', '拍照建議'];
+  const expected = ['這座城在你的旅程中', '先理解這座城', '城市風景', '互動地圖', '景點清單', '行程餐廳推薦', '超市與便利商店', '拍照建議'];
   for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
     const html = read(file);
 
@@ -2082,3 +2083,4 @@ test('餐飲資料重整：24 家自選店全部落在資料層（每日餐位�
     }
   }
 });
+

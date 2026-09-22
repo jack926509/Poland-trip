@@ -259,6 +259,7 @@ export function renderCity({
     </section>
 
     ${primaryDiningHtml}
+    <section class="section" id="city-groceries"><div class="section-heading"><span class="section-num">Groceries</span><h2>超市與便利商店</h2></div><p>飲水、早餐、搭車零食與伴手禮採買：先查附近門市，再確認當天營業。</p><p class="action-links"><a href="practical/groceries.html#${cityKey}">${city.name}採買位置與地圖搜尋 →</a><a href="practical/groceries.html#top10">超市必買 Top 10 →</a></p></section>
     ${photoHtml}
     ${mapScript}`;
 
