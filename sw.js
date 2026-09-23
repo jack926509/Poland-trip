@@ -47,33 +47,15 @@ const ASSETS = [
   './assets/search-index.json',
   './assets/leaflet/leaflet.css',
   './assets/leaflet/leaflet.js',
-  './assets/photos/grocery-01.webp',
-  './assets/photos/grocery-02.webp',
-  './assets/photos/grocery-03.webp',
-  './assets/photos/grocery-04.webp',
-  './assets/photos/grocery-05.webp',
-  './assets/photos/grocery-06.webp',
-  './assets/photos/grocery-07.webp',
-  './assets/photos/grocery-08.webp',
-  './assets/photos/grocery-09.webp',
-  './assets/photos/grocery-10.webp',
-  './assets/photos/grocery-11.webp',
-  './assets/photos/grocery-12.webp',
-  './assets/photos/grocery-13.webp',
-  './assets/photos/grocery-14.webp',
-  './assets/photos/grocery-15.webp',
-  './assets/photos/grocery-16.webp',
-  './assets/photos/grocery-17.webp',
-  './assets/photos/grocery-18.webp',
-  './assets/photos/grocery-19.webp',
-  './assets/photos/grocery-20.webp',
-  './assets/photos/grocery-21.webp',
-  './assets/photos/grocery-22.webp',
-  './assets/photos/grocery-23.webp',
-  './assets/photos/grocery-24.jpg',
-  './assets/photos/grocery-25.jpg',
-  './assets/photos/grocery-26.jpg',
-  './assets/photos/grocery-27.jpg',
+  // 商品包裝照片：這一段由 build 依 src/data/groceries.js 實際引用的照片重寫
+  // （見 src/build/output.mjs 的 injectGroceryPhotos）。手動維護已經漂移過：
+  // 2026-09 的採買推薦改版換掉三項商品後，這裡仍列著三張沒有任何頁面引用的
+  // 照片，照樣被每個安裝下載、快取，還算進快取指紋；之後補新商品時又得記得
+  // 每張手動加一行、副檔名還分 .webp／.jpg。更糟的是 install 用 cache.addAll，
+  // 列表裡只要有一個檔案不存在，整個 Service Worker 就裝不起來，離線功能整份
+  // 失效——所以這份清單不該靠人記得同步。
+  // GROCERY-PHOTOS:START
+  // GROCERY-PHOTOS:END
   './assets/photos/warszawa-hero.webp',
   './assets/photos/krakow-hero.webp',
   './assets/photos/wroclaw-hero.webp',

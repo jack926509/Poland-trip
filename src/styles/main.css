@@ -5474,15 +5474,12 @@ h3 {
    眼睛在三節之間跳的時候可以靠顏色接上，不必每次重讀店名。 */
 .grocery-chain-tag[data-chain='biedronka'],
 .grocery-branch[data-chain='biedronka'],
-.grocery-availability li[data-chain='biedronka'],
 .grocery-chain-card[data-chain='biedronka'] { --grocery-chain: var(--accent-dark); }
 .grocery-chain-tag[data-chain='lidl'],
 .grocery-branch[data-chain='lidl'],
-.grocery-availability li[data-chain='lidl'],
 .grocery-chain-card[data-chain='lidl'] { --grocery-chain: var(--plum); }
 .grocery-chain-tag[data-chain='zabka'],
 .grocery-branch[data-chain='zabka'],
-.grocery-availability li[data-chain='zabka'],
 .grocery-chain-card[data-chain='zabka'] { --grocery-chain: var(--green); }
 
 .grocery-chain-tag {

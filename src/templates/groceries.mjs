@@ -56,14 +56,14 @@ function renderBranch(branch, chain) {
  * 原本同一批商品在表格與 details 各列一次，商品名還互相連結；表格又因為
  * .grocery-table 的 min-width 在手機把整頁撐出視窗，照片欄讓它更擠。
  */
-function renderProduct(product) {
+function renderProduct(product, pathPrefix) {
   const sources = product.sources.map(source =>
     `<li>${external(source.url, source.title)}<span class="grocery-source-meta">${e(source.date)} · ${e(source.kind)}</span></li>`).join('');
   // 商品名跨兩欄擺在最上面：照片的圖說與 CC 授權標示有三行，
   // 放在名字前面會把「這是什麼」推到卡片中段。
-  return `<li class="grocery-product${product.priority ? ' is-priority' : ''}" id="product-${product.rank}">
+  return `<li class="grocery-product${product.priority ? ' is-priority' : ''}" id="product-${product.id}">
       <p class="grocery-product-head"><b lang="pl">${e(product.localName)}</b>${product.priority ? '<span class="grocery-priority">行李有限先挑</span>' : ''}</p>
-      <div class="grocery-product-photo">${renderProductPhoto(product)}</div>
+      <div class="grocery-product-photo">${renderProductPhoto(product, pathPrefix)}</div>
       <div class="grocery-product-body">
         <p class="grocery-product-zh">${e(product.name)}　·　${e(product.use)}</p>
         <p class="grocery-product-pack"><span>包裝辨識</span>${e(product.packaging)}</p>
@@ -75,6 +75,8 @@ function renderProduct(product) {
 }
 
 export function renderGroceries({ groceryChains, groceryBranches, groceryProducts }) {
+  // 這一頁在 practical/ 底下；照片路徑與 renderLayout 用同一個值，不各寫一次。
+  const pathPrefix = '../';
   const verifiedCount = groceryBranches.filter(b => b.verificationStatus === 'verified').length;
   const partialCount = groceryBranches.filter(b => b.verificationStatus === 'partial').length;
 
@@ -106,7 +108,7 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
   const productGroup = (heading, note, items) => items.length ? `<div class="grocery-product-group">
       <h3>${e(heading)}<span class="grocery-group-count">${items.length} 項</span></h3>
       <p class="source-meta">${e(note)}</p>
-      <ol class="grocery-product-list">${items.map(renderProduct).join('')}</ol>
+      <ol class="grocery-product-list">${items.map(product => renderProduct(product, pathPrefix)).join('')}</ol>
     </div>` : '';
   const is2026 = product => product.sources.some(source => source.kind === '2026 旅遊推薦');
   const products = productGroup('2026 年文章推薦', '來源為 2026 年的旅遊文章；推薦的是品牌或品類，不等於指定照片中的口味。', groceryProducts.filter(is2026))
@@ -129,5 +131,5 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
     <section class="section" id="strategy"><div class="section-heading"><span class="section-num">Plan</span><h2>前段試吃，華沙補貨</h2></div><ol class="check-list"><li>克拉科夫與樂斯拉夫：巧克力、牛奶糖、威化餅先買小份試吃，記下喜歡的品牌與口味。</li><li>波茲南：補搭車零食與飲料，減少沿途搬運。</li><li>最後回到華沙（10/30–31）：集中買常溫伴手禮，優先找順路的 Biedronka；缺貨再看其他超市。確認行李空間與門市時間後再安排。巧克力避熱、餅乾防壓；托運額度依自己的機票確認。</li></ol><p><a href="shopping.html">更多伴手禮與購物店家 →</a></p></section>
     <section class="section" id="shopping-tips"><div class="section-heading"><span class="section-num">Before you shop</span><h2>星期日與食品採買提醒</h2></div><ul class="check-list"><li><b>Day 2（2026/10/25）是非交易星期日：</b>Biedronka 官方日曆列出 2026 年的交易星期日是 1/25、3/29、4/26、6/28、8/30、12/6、12/13、12/20，十月一天都沒有。一般門市這天不開，仍請先在前一天準備早餐與飲水。${external('https://www.biedronka.pl/pl/niedziele-handlowe', 'Biedronka 2026 官方日曆')}（2026/09/22 查閱）</li><li><b>兩家車站型 Biedronka 官方標示星期日照常營業：</b>華沙 <a href="#warsaw-1">Al. Jerozolimskie 54</a>（每日 05:00–01:00）與波茲南 <a href="#poznan-1">Dworcowa 2</a>（星期日 06:00–22:00）的官方門市頁都帶「sklep czynny w niedzielę」標記。Day 2 早上從華沙中央車站出發前仍有機會補早餐，但非交易星期日的實際開門以門市當日公告為準，不要當成唯一計畫。</li><li><b>克拉科夫與樂斯拉夫的 Biedronka 候選星期日不開：</b><a href="#krakow-1">Rynek Główny 34</a> 與 <a href="#wroclaw-1">Krawiecka 3a</a> 的官方門市頁星期日都是 Zamknięte，沒有車站型門市的例外標記。</li><li>Żabka 的星期日與夜間營業依各店公告，不能假設每家都開到深夜或 24 小時營業；本輪只核到四家 Żabka 的地址，時間一律待確認。</li><li>冷藏／冷凍 Pierogi、Żurek 與乳製品先確認保存條件；餃子、湯底不一定可以直接食用，住宿沒有加熱設備就改買可即食商品。</li><li>Kabanosy 與含肉食品安排在波蘭當地吃，不列為回台伴手禮；攜帶食品前請查閱<a href="essentials.html">安全與基本須知</a>中的官方入境資訊。</li><li>不想買含酒精甜食時，留意 Adwokat、likier 等字樣並核對成分。價牌可能附會員、多件或促銷條件，結帳前核對實際適用價格。自備購物袋，少量補給就近購買即可。</li></ul></section>
     <section class="section" id="sources"><div class="section-heading"><span class="section-num">Sources</span><h2>資料來源與查核界線</h2></div><p>門市候選沿用原採買指南；商品清單於 2026/09/22 依網路推薦重新收錄。Becca Daily 原文日期為 2026/07/02；Reddit 討論為 2025/07/29，明列為經典補充；English Wizards 頁面未標示發文日期，不據搜尋引擎收錄時間宣稱為 2026 新文。推薦理由為摘要與採買建議，並非票選結果。2026/09/23 依提供的採買清單補入 6 項常溫選品與 4 項冷藏甜點，另依指定新增 Jeżyki、Frugo、Kubuś、蜂蜜並補充 Żabka 熱食；查閱日期不代表文章發布日期，也不代表商品為波蘭原產。未找到『波蘭 Anna 推薦蜂蜜』原始內容，本站不將特定品牌歸因於她。</p><p><b>2026/09/22 逐店核對：</b>12 筆地址全部由品牌官方來源確認——4 家 Biedronka 取自官方逐店頁（含逐日營業時間）、4 家 Lidl 取自官方門市頁與官方門市清單 PDF、4 家 Żabka 取自官方門市清單 PDF 與 zabka.pl 的門市說明頁。Lidl 門市頁的營業時間由 JavaScript 載入、Żabka 不逐店公布，因此這 8 筆只核到地址。Biedronka 官網自己註明網頁上的營業時間僅供參考。</p><p><b>仍未核實的部分：</b>沒有取得任何一家的核實座標，地圖按鈕維持搜尋連結；庫存與價格一律以門市當日資訊為準。Żabka 的官方門市清單是 2024/02 版，只能證明當時該址有門市。出發前請用品牌官方查詢再確認；離線版不會即時更新。</p><p>逐筆來源與判讀記在原始碼庫的 <code>docs/research/2026-09-22-grocery-branch-verification.md</code>。</p></section>`;
-  return renderLayout({ title: '超市與便利商店', activeNav: 'practical', bodyHtml: content + renderProductPhotoViewer(), pathPrefix: '../', pageKind: 'practical', currentPage: 'practical/groceries.html' });
+  return renderLayout({ title: '超市與便利商店', activeNav: 'practical', bodyHtml: content + renderProductPhotoViewer(), pathPrefix, pageKind: 'practical', currentPage: 'practical/groceries.html' });
 }

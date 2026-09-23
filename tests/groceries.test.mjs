@@ -105,7 +105,7 @@ test('星期日狀態每家店都標出來，三態各自對應資料而不是�
 test('採買推薦一項商品只出現一次，照片、理由與來源都留在同一張卡', () => {
   const html = fs.readFileSync('dist/practical/groceries.html', 'utf8');
   for (const product of groceryProducts) {
-    assert.equal((html.match(new RegExp(`id="product-${product.rank}"`, 'g')) || []).length, 1, `product-${product.rank} 錨點重複`);
+    assert.equal((html.match(new RegExp(`id="product-${product.id}"`, 'g')) || []).length, 1, `product-${product.id} 錨點重複`);
   }
   assert.equal((html.match(/class="grocery-product(?: is-priority)?" id="product-/g) || []).length, groceryProducts.length);
   // c378570 加入的照片、推薦理由與來源都必須還在，改版只換版面不砍內容
@@ -122,4 +122,16 @@ test('採買推薦一項商品只出現一次，照片、理由與來源都留�
   assert.match(html, /經典補充/);
   // 行李有限先挑的幾樣在卡片上就標出來
   assert.equal((html.match(/class="grocery-priority"/g) || []).length, groceryProducts.filter(p => p.priority).length);
+});
+
+test('id 同時是錨點與照片鍵，不能當成排名', () => {
+  const ids = groceryProducts.map(product => product.id);
+  assert.equal(new Set(ids).size, ids.length, 'id 重複會讓錨點與照片互相蓋掉');
+  for (const product of groceryProducts) {
+    const digits = String(product.id).padStart(2, '0');
+    assert.match(product.photo.src, new RegExp(`^assets/photos/grocery-${digits}\\.(?:webp|jpe?g)$`), `${product.localName} 的 id 與照片檔名對不上`);
+  }
+  // 目前的排列順序刻意不等於 id 順序，頁面也寫明不代表排名
+  assert.notDeepEqual(ids, [...ids].sort((a, b) => a - b));
+  assert.match(fs.readFileSync('dist/practical/groceries.html', 'utf8'), /不代表銷售或人氣排名/);
 });
