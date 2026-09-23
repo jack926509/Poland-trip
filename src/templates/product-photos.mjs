@@ -9,7 +9,7 @@ export function renderProductPhoto(product) {
       <span>點擊放大</span>
     </a>
     <figcaption><b>${e(photo.label)}</b><br>代表包裝，現場版本可能不同。
-      <span class="grocery-photo-credit"><a href="${e(photo.sourceUrl)}" target="_blank" rel="noopener noreferrer">Open Food Facts 貢獻者</a> · <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 3.0</a> · 縮放及 WebP 轉檔</span>
+      <span class="grocery-photo-credit"><a href="${e(photo.sourceUrl)}" target="_blank" rel="noopener noreferrer">Open Food Facts 貢獻者</a> · <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 3.0</a>${photo.src.endsWith('.webp') ? ' · 縮放及 WebP 轉檔' : ' · 原圖尺寸'}</span>
     </figcaption>
   </figure>`;
 }

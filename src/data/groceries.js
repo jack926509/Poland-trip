@@ -400,6 +400,12 @@ export const groceryProducts = [
         "url": "https://www.reddit.com/r/poland/comments/1mbyjhu/quintessential_polish_snacks/",
         "date": "2025-07-29",
         "kind": "歷年網友推薦（補充）"
+      },
+      {
+        "title": "Wawel｜Michałki z Wawelu Klasyczne",
+        "url": "https://www.wawel.com.pl/oferta/michalki-z-wawelu-klasyczne",
+        "date": "未標示發布日期；2026-09-23 查閱",
+        "kind": "品牌商品資料"
       }
     ],
     "checkedAt": "2026-09-22"
@@ -658,6 +664,67 @@ export const groceryProducts = [
       }
     ],
     "checkedAt": "2026-09-23"
+  },
+  {
+    "rank": 24,
+    "name": "焦糖榛果巧克力餅乾",
+    "localName": "Jeżyki Classic",
+    "packaging": "找 Jeżyki Classic 字樣與長條餅乾袋；照片為 140 g 代表包裝。",
+    "use": "常溫零食",
+    "priority": false,
+    "reason": "餅乾、焦糖與榛果的組合，適合先買一包試吃；『最好吃之一』屬個人口味評語，未找到原始試吃來源。",
+    "note": "有奶、榛果等過敏原，依實際包裝成分確認；易碎且怕熱，回程注意防壓。",
+    "supplement": true,
+    "localOnly": false,
+    "sources": [{"title":"Jeżyki 品牌｜Classic","url":"https://jezykiciastka.pl/","date":"未標示發布日期；2026-09-23 查閱","kind":"品牌商品資料（使用者提名）"}],
+    "checkedAt": "2026-09-23"
+  },
+  {
+    "rank": 25,
+    "name": "黑色綜合果汁飲料",
+    "localName": "Frugo Czarne",
+    "drink": true,
+    "packaging": "黑色 FRUGO 大字瓶身；照片為 Czarne 代表包裝。",
+    "use": "當地試喝",
+    "priority": false,
+    "reason": "波蘭品牌飲料；先選一瓶試喝，無須把『國民飲料』當成排行。",
+    "note": "Frugo 有不同顏色與配方，Czarne 是其中一款，果汁含量與甜味劑請以瓶身標示為準。",
+    "supplement": true,
+    "localOnly": true,
+    "sources": [{"title":"Frugo 品牌｜Frugo czarne","url":"https://frugo.pl/frugo-czarne","date":"未標示發布日期；2026-09-23 查閱","kind":"品牌商品資料（使用者提名）"}],
+    "checkedAt": "2026-09-23"
+  },
+  {
+    "rank": 26,
+    "name": "蘋果、胡蘿蔔、香蕉果汁",
+    "localName": "Kubuś 100% Jabłko Marchew Banan",
+    "drink": true,
+    "packaging": "Kubuś 小熊與 K 100% 標誌；照片為 300 ml 代表包裝。",
+    "use": "當地試喝",
+    "priority": false,
+    "reason": "Kubuś 有果汁、果泥等不同系列，選 100% 系列小瓶先試。",
+    "note": "這款含蘋果、胡蘿蔔、香蕉；其他 Kubuś 系列不一定是 100% 果汁。",
+    "supplement": true,
+    "localOnly": true,
+    "sources": [{"title":"Kubuś 品牌｜100% 300 ml","url":"https://kubus.pl/produkt/kubus-banan-marchew-jablko/","date":"未標示發布日期；2026-09-23 查閱","kind":"品牌商品資料（使用者提名）"}],
+    "checkedAt": "2026-09-23"
+  },
+  {
+    "rank": 27,
+    "name": "波蘭百花蜂蜜",
+    "localName": "Miód wielokwiatowy",
+    "packaging": "蜂蜜罐看 Miód wielokwiatowy、產地國與生產商；照片為 Sądecki Bartnik 代表包裝。",
+    "use": "伴手禮候選",
+    "priority": false,
+    "reason": "波蘭蜂蜜適合作為採買候選；目前未找到『波蘭 Anna』推薦的原文，這款品牌不歸因於她。",
+    "note": "照片是 Sądecki Bartnik 百花蜜，非唯一推薦品牌。混合蜂蜜也可能使用不同國家原料，請看瓶上產地；玻璃瓶需防撞。",
+    "supplement": true,
+    "localOnly": false,
+    "sources": [
+      {"title":"Sądecki Bartnik｜波蘭養蜂場百花蜜","url":"https://sklep.bartnik.pl/pl/produkt/1587-miod-wielokwiatowy-50-g-z-polskich-pasiek.html","date":"未標示發布日期；2026-09-23 查閱","kind":"品牌商品資料（代表品牌）"},
+      {"title":"波蘭文化機構 Culture.pl｜蜂蜜介紹","url":"https://culture.pl/zht/article/50023","date":"2024-11-07；2026-09-23 查閱","kind":"品類介紹"},
+      {"title":"波蘭官方｜2026 蜂蜜產地標示","url":"https://www.gov.pl/web/ijhars/nowe-zasady-znakowania-zywnosci-flaga-kraju-pochodzenia-na-owocach-i-warzywach-oraz-zmiany-w-oznakowaniu-przetworow-owocowych-i-miodu","date":"2025-12-02；2026-09-23 查閱","kind":"產地標示規則"}
+    ],
+    "checkedAt": "2026-09-23"
   }
-
 ].map(product => ({ ...product, photo: groceryPhotos[product.rank] }));

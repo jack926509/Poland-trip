@@ -229,5 +229,37 @@ export const groceryPhotos = {
     "originalUrl": "https://images.openfoodfacts.org/images/products/000/004/237/4688/front_en.22.400.jpg",
     "license": "CC BY-SA 3.0",
     "checkedAt": "2026-09-23"
+  },
+  "24": {
+    "src": "assets/photos/grocery-24.jpg",
+    "label": "Jeżyki Classic 巧克力焦糖餅乾 140 g",
+    "width": 400, "height": 160,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900352002361",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/035/200/2361/front_en.7.400.jpg",
+    "license": "CC BY-SA 3.0", "checkedAt": "2026-09-23"
+  },
+  "25": {
+    "src": "assets/photos/grocery-25.jpg",
+    "label": "Frugo Czarne 500 ml",
+    "width": 125, "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5901861003504",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/186/100/3504/front_pl.6.400.jpg",
+    "license": "CC BY-SA 3.0", "checkedAt": "2026-09-23"
+  },
+  "26": {
+    "src": "assets/photos/grocery-26.jpg",
+    "label": "Kubuś 100% 蘋果胡蘿蔔香蕉果汁 300 ml",
+    "width": 211, "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5901067451024",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/106/745/1024/front_fr.11.400.jpg",
+    "license": "CC BY-SA 3.0", "checkedAt": "2026-09-23"
+  },
+  "27": {
+    "src": "assets/photos/grocery-27.jpg",
+    "label": "Sądecki Bartnik 百花蜂蜜代表包裝",
+    "width": 350, "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900597000016",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/059/700/0016/front_en.3.400.jpg",
+    "license": "CC BY-SA 3.0", "checkedAt": "2026-09-23"
   }
 };

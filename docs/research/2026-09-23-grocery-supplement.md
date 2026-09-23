@@ -37,3 +37,19 @@
 ## 驗證
 
 verify.sh 通過（282 tests），涵蓋商品卡唯一性、搜尋索引、離線單檔、照片放大互動與門市星期日三態。新增照片已加入 service worker 預快取。
+
+## 追加查詢：Jeżyki、Michałki、Frugo、Kubuś、Żabka、蜂蜜
+
+2026-09-23 依使用者提名補入四款代表商品及 Żabka 早餐／熱食資訊；Michałki 原已收錄，僅補 Wawel 原廠來源。不宣稱 Jeżyki 的「最好吃之一」評語有可查的原試吃貼文，也未查到「波蘭 Anna」蜂蜜推薦原始內容；Sądecki Bartnik 是示例品牌，並非代言或 Anna 指定。
+
+| 品項 | 資料來源 | 照片來源 |
+|---|---|---|
+| Jeżyki Classic | https://jezykiciastka.pl/ | Open Food Facts 5900352002361 |
+| Michałki 經典款 | https://www.wawel.com.pl/oferta/michalki-z-wawelu-klasyczne | 沿用 grocery-07.webp |
+| Frugo Czarne | https://frugo.pl/frugo-czarne | Open Food Facts 5901861003504 |
+| Kubuś 100% 蘋果胡蘿蔔香蕉 | https://kubus.pl/produkt/kubus-banan-marchew-jablko/ | Open Food Facts 5901067451024 |
+| 百花蜂蜜／Sądecki Bartnik 代表包裝 | https://sklep.bartnik.pl/pl/produkt/1587-miod-wielokwiatowy-50-g-z-polskich-pasiek.html ; https://culture.pl/zht/article/50023 | Open Food Facts 5900597000016 |
+| 蜂蜜產地標示 | https://www.gov.pl/web/ijhars/nowe-zasady-znakowania-zywnosci-flaga-kraju-pochodzenia-na-owocach-i-warzywach-oraz-zmiany-w-oznakowaniu-przetworow-owocowych-i-miodu | 無 |
+| Żabka Tosty、Panini、Zapiekanki、咖啡 | https://www.zabka.pl/sniadania-w-zabce-staly-sie-hitem/ ; https://www.zabka.pl/zabka-menu/ | 無 |
+
+各分店即食餐飲與飲料庫存以現場為準；官方菜單沒有足夠資訊可宣稱每家咖啡都為自助。新四張照片使用 Open Food Facts 原尺寸 JPG，來源／授權逐張列在 GROCERY-CREDITS.md，離線單檔及 PWA 預快取一併納入。

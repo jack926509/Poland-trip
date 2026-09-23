@@ -22,7 +22,7 @@ export function writeServiceWorker({ projectRoot, distDir }) {
   const hash = crypto.createHash('sha256');
   for (const asset of cacheFirstAssets) hash.update(fs.readFileSync(path.join(distDir, asset)));
   // 商品圖也預快取；只換照片時同樣需要淘汰舊版本。
-  for (const name of fs.readdirSync(path.join(distDir, 'assets/photos')).filter(name => /^grocery-.*\.webp$/.test(name)).sort()) {
+  for (const name of fs.readdirSync(path.join(distDir, 'assets/photos')).filter(name => /^grocery-.*\.(?:webp|jpe?g)$/.test(name)).sort()) {
     hash.update(fs.readFileSync(path.join(distDir, 'assets/photos', name)));
   }
   const fingerprint = hash.digest('hex').slice(0, 8);

@@ -5,10 +5,10 @@ import { groceryBranches, groceryProducts } from '../src/data/groceries.js';
 import { cityRoutes } from '../src/lib/city-guide.mjs';
 import { normalizeText } from '../src/search/site-search-index.mjs';
 
-test('採買指南保留四城 12 個門市與二十項商品，每筆都標出核到哪一層', () => {
+test('採買指南保留四城 12 個門市與二十四項商品，每筆都標出核到哪一層', () => {
   assert.equal(groceryBranches.length, 12);
   assert.equal(new Set(groceryBranches.map(b => b.id)).size, 12);
-  assert.equal(groceryProducts.length, 20);
+  assert.equal(groceryProducts.length, 24);
   for (const city of cityRoutes) assert.equal(groceryBranches.filter(b => b.cityKey === city.mapKey).length, 3);
   // 2026-09-22 逐店核對：Biedronka 四筆有官方逐日時間（verified），
   // Lidl 與 Żabka 八筆只核到地址（partial）。沒有任何一筆可以無來源地宣稱已核實。
@@ -117,7 +117,7 @@ test('採買推薦一項商品只出現一次，照片、理由與來源都留�
     if (product.photo) assert.ok(html.includes(product.photo.src), `缺照片 ${product.photo.src}`);
   }
   // 2026 年文章推薦與歷年經典補充仍分成兩組
-  assert.equal((html.match(/class="grocery-product-group"/g) || []).length, 4);
+  assert.equal((html.match(/class="grocery-product-group"/g) || []).length, 5);
   assert.match(html, /2026 年文章推薦/);
   assert.match(html, /經典補充/);
   // 行李有限先挑的幾樣在卡片上就標出來

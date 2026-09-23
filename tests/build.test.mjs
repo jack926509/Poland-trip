@@ -1831,7 +1831,7 @@ test('sw.js 的快取版本由建置帶上資源指紋，樣式改了就會失�
     'assets/search-index.json']) {
     expected.update(fs.readFileSync(path.join(distDir, asset)));
   }
-  for (const name of fs.readdirSync(path.join(distDir, 'assets/photos')).filter(name => /^grocery-.*\.webp$/.test(name)).sort()) expected.update(fs.readFileSync(path.join(distDir, 'assets/photos', name)));
+  for (const name of fs.readdirSync(path.join(distDir, 'assets/photos')).filter(name => /^grocery-.*\.(?:webp|jpe?g)$/.test(name)).sort()) expected.update(fs.readFileSync(path.join(distDir, 'assets/photos', name)));
   assert.equal(shipped, `${base}-${expected.digest('hex').slice(0, 8)}`, '指紋與實際資源內容不符');
 
   // 部署腳本不能再用根目錄的原始 sw.js 覆蓋掉帶指紋的那份
@@ -2085,4 +2085,3 @@ test('餐飲資料重整：24 家自選店全部落在資料層（每日餐位�
     }
   }
 });
-
