@@ -5646,15 +5646,48 @@ h3 {
 .grocery-city-foot { margin: 0.8rem 0 0; }
 
 /* ── 採買推薦 ── */
-/* 2026 年文章推薦與歷年經典補充是兩組不同效力的來源，標題就要分得出來。 */
-.grocery-product-group + .grocery-product-group { margin-top: 2rem; }
-.grocery-product-group > h3 {
+/* 分組沿用城市頁餐飲分組的收合慣例（稽核 M4）：第一組展開，其餘收合並標數量。
+   摘要列多一行組內商品名，收合時也看得出要找的東西在哪一組；打開後這行就收起來，
+   不和下面的卡片重複。箭頭用邊框畫，不放文字字元，螢幕閱讀器只讀展開狀態。 */
+.grocery-product-group { margin-top: 1rem; border-top: 1px solid var(--line); }
+.grocery-product-group:last-of-type { border-bottom: 1px solid var(--line); }
+.grocery-product-group > summary {
+  display: block;
+  min-height: 44px;
+  padding: 0.8rem 0.2rem;
+  cursor: pointer;
+  list-style: none;
+}
+.grocery-product-group > summary::-webkit-details-marker { display: none; }
+.grocery-group-title {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.6rem;
-  margin: 1.6rem 0 0.3rem;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  font-size: clamp(1.15rem, 2vw, 1.4rem);
 }
+.grocery-group-title::before {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-right: 2px solid currentcolor;
+  border-bottom: 2px solid currentcolor;
+  content: '';
+  transform: rotate(-45deg);
+  transition: transform 160ms var(--ease);
+}
+.grocery-product-group[open] > summary .grocery-group-title::before { transform: rotate(45deg); }
+.grocery-group-names {
+  display: block;
+  margin: 0.3rem 0 0 1.05rem;
+  color: var(--ink-soft);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+.grocery-product-group[open] > summary .grocery-group-names { display: none; }
+.grocery-product-group > .source-meta { margin: 0 0 0.2rem; }
+.grocery-product-group[open] { padding-bottom: 1.1rem; }
 
 .grocery-group-count {
   padding: 0.12rem 0.55rem;
@@ -5675,13 +5708,17 @@ h3 {
   list-style: none;
 }
 
-/* 照片與文字並排：包裝照是貨架上唯一的比對依據，不該被推到卡片最上面
-   另佔一整塊，也不該像表格那樣自己吃掉一欄。 */
+/* 商品卡：名字跨欄置頂，縮圖在左、辨識資訊在右，照片圖說收成底下一行小字。
+   原本手機上照片滿版、三行圖說擺在名字與資訊之間，一張卡平均 602px，
+   24 項光這一節就 15,858px。
+   圖說必須留在 <figure> 裡（放大視窗從 link.closest('figure') 複製署名），
+   所以 figure 與外層用 display: contents，把縮圖與圖說直接交給卡片的 grid 排，
+   DOM 結構完全不變。 */
 .grocery-product {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  grid-template-areas: 'head head' 'photo body';
-  gap: 0.6rem 0.9rem;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  grid-template-areas: 'head head' 'thumb info' 'cap cap' 'more more';
+  gap: 0.55rem 0.9rem;
   align-items: start;
   padding: 0.95rem 1.05rem;
   border: 1px solid var(--line);
@@ -5694,10 +5731,22 @@ h3 {
 /* 行李塞不下時先買的那幾樣，卡片上就看得出來，不必捲到最底下那一句。 */
 .grocery-product.is-priority { border-color: rgb(168 75 50 / 45%); background: var(--surface-note); }
 
-.grocery-product-photo { grid-area: photo; }
-.grocery-product-photo .grocery-photo { width: 8.5rem; }
-.grocery-product-photo .grocery-photo img { width: 7rem; height: 6.5rem; }
-.grocery-product-body { grid-area: body; min-width: 0; }
+.grocery-product-photo,
+.grocery-product .grocery-photo { display: contents; }
+.grocery-product .grocery-photo > a { grid-area: thumb; gap: 0.2rem; padding: 0.35rem; font-size: 0.72rem; }
+.grocery-product .grocery-photo img { width: 100%; height: 6rem; }
+.grocery-product .grocery-photo figcaption {
+  grid-area: cap;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+.grocery-product .grocery-photo figcaption::before { content: '照片｜'; }
+.grocery-product .grocery-photo figcaption br { display: none; }
+.grocery-product .grocery-photo figcaption b { margin-right: 0.35rem; font-weight: 700; }
+.grocery-product .grocery-photo-credit { display: inline; margin-left: 0.35rem; font-size: inherit; }
+.grocery-product-info { grid-area: info; min-width: 0; }
 
 .grocery-product-head {
   grid-area: head;
@@ -5721,9 +5770,9 @@ h3 {
   white-space: nowrap;
 }
 
-.grocery-product-zh { margin: 0; color: var(--ink-soft); font-size: 0.9rem; }
+.grocery-product-zh { margin: 0; color: var(--ink-soft); font-size: 0.88rem; }
 
-.grocery-product-pack { margin: 0.5rem 0 0; font-size: 0.92rem; }
+.grocery-product-pack { margin: 0.35rem 0 0; font-size: 0.9rem; }
 .grocery-product-pack > span {
   margin-right: 0.4rem;
   color: var(--ink-soft);
@@ -5733,24 +5782,23 @@ h3 {
   letter-spacing: 0.08em;
 }
 
-.grocery-product-reason { margin: 0.5rem 0 0; font-size: 0.92rem; }
+.grocery-product-reason { margin: 0.35rem 0 0; font-size: 0.9rem; }
 
-.grocery-product-note,
-.grocery-product-sources { margin-top: 0.6rem; padding-top: 0.55rem; border-top: 1px solid var(--line); }
-.grocery-product-note > summary,
-.grocery-product-sources > summary {
+/* 原本「怎麼認」與「推薦來源」各佔一個 44px 高的收合列，合成一個。 */
+.grocery-product-more { grid-area: more; padding-top: 0.2rem; border-top: 1px solid var(--line); }
+.grocery-product-more > summary {
   display: list-item;
   min-height: 2.75rem;
   align-content: center;
   color: var(--accent-dark);
   cursor: pointer;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
 }
-.grocery-product-note p { margin: 0.5rem 0 0; font-size: 0.92rem; }
-.grocery-product-sources ul { margin: 0.5rem 0 0; padding-left: 1.1rem; font-size: 0.88rem; }
-.grocery-product-sources li + li { margin-top: 0.4rem; }
+.grocery-product-more p { margin: 0.3rem 0 0; font-size: 0.9rem; }
+.grocery-product-more ul { margin: 0.6rem 0 0.2rem; padding-left: 1.1rem; font-size: 0.86rem; }
+.grocery-product-more li + li { margin-top: 0.4rem; }
 .grocery-source-meta { display: block; color: var(--ink-soft); font-size: 0.78rem; }
 
 .grocery-priority-foot { margin-top: 1.4rem; }
@@ -5758,12 +5806,18 @@ h3 {
 @media (max-width: 600px) {
   .grocery-branch,
   .grocery-product,
-  .grocery-chain-card { padding: 0.85rem 0.9rem; }
+  .grocery-chain-card { padding: 0.8rem 0.85rem; }
   .grocery-branch-actions .grocery-btn { flex: 1 1 auto; justify-content: center; }
-  /* 窄螢幕照片改置頂滿版一行，文字不必擠在 8.5rem 照片旁邊的窄欄裡 */
-  .grocery-product { grid-template-columns: minmax(0, 1fr); grid-template-areas: 'head' 'photo' 'body'; }
-  .grocery-product-photo .grocery-photo { width: 100%; }
-  .grocery-product-photo .grocery-photo img { width: 100%; height: 9rem; }
+  .grocery-product { grid-template-columns: 5.5rem minmax(0, 1fr); gap: 0.5rem 0.75rem; }
+  .grocery-product .grocery-photo img { height: 4.75rem; }
+  .grocery-product-list { gap: 0.7rem; }
+  /* 門市卡：資訊一項不少，只收掉多餘的留白與分隔線 */
+  .grocery-branch-head { margin-bottom: 0.45rem; }
+  .grocery-branch-hours { margin-top: 0.5rem; padding-top: 0.5rem; }
+  .grocery-branch-sunday-note,
+  .grocery-branch-use { margin-top: 0.3rem; font-size: 0.86rem; }
+  .grocery-branch-actions { margin-top: 0.55rem; }
+  .grocery-branch-list { gap: 0.7rem; }
 }
 
 /* 商品包裝：保持整張照片與原始比例，貨架上可對照名稱。 */

@@ -111,13 +111,14 @@ test('採買推薦一項商品只出現一次，照片、理由與來源都留�
   // c378570 加入的照片、推薦理由與來源都必須還在，改版只換版面不砍內容
   assert.equal((html.match(/class="grocery-product-photo"/g) || []).length, groceryProducts.length);
   assert.equal((html.match(/class="grocery-product-reason"/g) || []).length, groceryProducts.length);
-  assert.equal((html.match(/class="grocery-product-sources"/g) || []).length, groceryProducts.length);
+  // 「怎麼認」與「推薦來源」合成一個收合列，內容一項不少
+  assert.equal((html.match(/class="grocery-product-more"/g) || []).length, groceryProducts.length);
   for (const product of groceryProducts) {
     for (const source of product.sources) assert.ok(html.includes(source.url), `缺來源連結 ${source.url}`);
     if (product.photo) assert.ok(html.includes(product.photo.src), `缺照片 ${product.photo.src}`);
   }
   // 2026 年文章推薦與歷年經典補充仍分成兩組
-  assert.equal((html.match(/class="grocery-product-group"/g) || []).length, 5);
+  assert.equal((html.match(/class="grocery-product-group"(?: open)?>/g) || []).length, 5);
   assert.match(html, /2026 年文章推薦/);
   assert.match(html, /經典補充/);
   // 行李有限先挑的幾樣在卡片上就標出來
@@ -134,4 +135,39 @@ test('id 同時是錨點與照片鍵，不能當成排名', () => {
   // 目前的排列順序刻意不等於 id 順序，頁面也寫明不代表排名
   assert.notDeepEqual(ids, [...ids].sort((a, b) => a - b));
   assert.match(fs.readFileSync('dist/practical/groceries.html', 'utf8'), /不代表銷售或人氣排名/);
+});
+
+test('手機長度：推薦分組只展開第一組、摘要列出商品名，照片署名仍留在 figure 裡', () => {
+  const html = fs.readFileSync('dist/practical/groceries.html', 'utf8');
+  // 補到 24 項後全部攤開，手機整頁約 29,000px。沿用城市頁餐飲分組慣例（稽核 M4）：
+  // 第一組展開，其餘收合並標數量。
+  const groups = [...html.matchAll(/<details class="grocery-product-group"( open)?>\s*<summary>([\s\S]*?)<\/summary>/g)];
+  assert.equal(groups.length, 5);
+  assert.deepEqual(groups.map(group => Boolean(group[1])), [true, false, false, false, false], '只有第一組預設展開');
+  assert.match(groups[0][2], /2026 年文章推薦/);
+  // 收合時也要看得出要找的東西在哪一組：摘要列出每項商品的波蘭文名
+  const summaries = groups.map(group => group[2]).join('');
+  for (const product of groceryProducts) assert.ok(summaries.includes(product.localName.replace(/&/g, '&amp;')), `${product.localName} 沒出現在分組摘要`);
+  // 標題仍是 h3，螢幕閱讀器的標題導覽不會少掉這五組
+  assert.equal((summaries.match(/<h3 class="grocery-group-title">/g) || []).length, 5);
+  // 行李有限先挑的五項至少大半在展開的第一組，收合不會把重點藏起來
+  const firstOpen = groups[0].index;
+  const secondStart = groups[1].index;
+  const priorityInOpen = groceryProducts.filter(product => product.priority)
+    .filter(product => { const at = html.indexOf(`id="product-${product.id}"`); return at > firstOpen && at < secondStart; });
+  assert.ok(priorityInOpen.length >= 4, `展開組裡只有 ${priorityInOpen.length} 項行李有限先挑`);
+
+  // 放大視窗從 link.closest('figure') 找署名；版面改用 display: contents，
+  // 署名必須仍在 figure 內
+  for (const figure of html.matchAll(/<figure class="grocery-photo">([\s\S]*?)<\/figure>/g)) {
+    assert.match(figure[1], /data-product-photo/);
+    assert.match(figure[1], /class="grocery-photo-credit"/);
+  }
+
+  // 自動章節目錄（手機 609px）與頁首跳轉鈕重複，改由鈕列涵蓋每個章節
+  assert.doesNotMatch(html, /class="chapter-index"/);
+  const links = html.match(/<p class="action-links">([\s\S]*?)<\/p>/)[1];
+  for (const id of [...html.matchAll(/<section class="section" id="([^"]+)"/g)].map(match => match[1])) {
+    assert.ok(links.includes(`href="#${id}"`), `頁首跳轉鈕缺少 #${id}`);
+  }
 });
