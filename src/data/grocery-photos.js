@@ -30,16 +30,6 @@ export const groceryPhotos = {
     "license": "CC BY-SA 3.0",
     "checkedAt": "2026-09-22"
   },
-  "4": {
-    "src": "assets/photos/grocery-04.webp",
-    "label": "Przysnacki 海鹽鍋炸洋芋片",
-    "width": 300,
-    "height": 400,
-    "sourceUrl": "https://world.openfoodfacts.org/product/5900073020118",
-    "originalUrl": "https://images.openfoodfacts.org/images/products/590/007/302/0118/front_pl.30.400.jpg",
-    "license": "CC BY-SA 3.0",
-    "checkedAt": "2026-09-22"
-  },
   "5": {
     "src": "assets/photos/grocery-05.webp",
     "label": "Prince Polo XXL Classic 巧克力威化",
@@ -77,26 +67,6 @@ export const groceryPhotos = {
     "height": 400,
     "sourceUrl": "https://world.openfoodfacts.org/product/5900334012753",
     "originalUrl": "https://images.openfoodfacts.org/images/products/590/033/401/2753/front_pl.18.400.jpg",
-    "license": "CC BY-SA 3.0",
-    "checkedAt": "2026-09-22"
-  },
-  "9": {
-    "src": "assets/photos/grocery-09.webp",
-    "label": "Winiary Żurek 調理湯粉",
-    "width": 357,
-    "height": 400,
-    "sourceUrl": "https://world.openfoodfacts.org/product/5900085010114",
-    "originalUrl": "https://images.openfoodfacts.org/images/products/590/008/501/0114/front_pl.37.400.jpg",
-    "license": "CC BY-SA 3.0",
-    "checkedAt": "2026-09-22"
-  },
-  "10": {
-    "src": "assets/photos/grocery-10.webp",
-    "label": "Swojsko Chłopo Pierogi ruskie 馬鈴薯起司餃",
-    "width": 247,
-    "height": 400,
-    "sourceUrl": "https://world.openfoodfacts.org/product/5901398069974",
-    "originalUrl": "https://images.openfoodfacts.org/images/products/590/139/806/9974/front_pl.11.400.jpg",
     "license": "CC BY-SA 3.0",
     "checkedAt": "2026-09-22"
   },

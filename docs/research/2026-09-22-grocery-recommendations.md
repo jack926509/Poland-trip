@@ -22,3 +22,9 @@
 保留既有商品錨點識別碼，新品用 11–13，不顯示成排名。舊 #top10 連結保留相容性，新入口使用 #recommendations。
 
 全部商品使用本機 Open Food Facts 代表包裝照片，點擊可放大；來源、原圖與 CC BY-SA 3.0 授權見 assets/photos/GROCERY-CREDITS.md。三張新圖已核對商品名並轉成 WebP，加入離線快取。原照片不是 2026 新包裝保證。
+
+## 2026-09-23 補記：移除三張已無商品的照片
+
+上面移除 Przysnacki、Żurek、Pierogi 時，對應的 `grocery-04.webp`、`grocery-09.webp`、`grocery-10.webp` 沒有跟著清掉：資料檔仍定義、`sw.js` 仍手動列著，每個 PWA 安裝都照樣下載並永久快取這 81KB，還算進快取指紋。2026-09-23 的補充（#91）重新整理商品時也沒有把這三項加回來，因此確認為孤兒並刪除檔案、`grocery-photos.js` 條目與 `GROCERY-CREDITS.md` 署名列。檔案可從 git 歷史取回；日後若重新收錄，連同來源與推薦理由一起加回即可。
+
+同時把 `sw.js` 的商品照片預快取清單改由建置依 `groceryProducts` 推導，並以測試要求資料、檔案、預快取清單與署名四者一致，之後換商品不需要再手動同步。
