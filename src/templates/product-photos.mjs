@@ -1,11 +1,14 @@
 import { escapeHtml as e } from '../lib/html.mjs';
 
-export function renderProductPhoto(product) {
+// pathPrefix 由呼叫端提供，跟 renderLayout 收到的是同一個值。原本寫死 '../'，
+// 只有在 practical/ 底下的頁面才正確；哪天首頁或城市頁也要放商品照，
+// 圖片會靜默地連到不存在的路徑。
+export function renderProductPhoto(product, pathPrefix = '') {
   const photo = product.photo;
   if (!photo) return '<span class="source-meta">照片待補；請依商品名稱辨識</span>';
   return `<figure class="grocery-photo">
-    <a href="../${e(photo.src)}" data-product-photo aria-label="放大 ${e(photo.label)} 包裝照片">
-      <img src="../${e(photo.src)}" alt="${e(photo.label)} 包裝正面" width="${photo.width}" height="${photo.height}" loading="lazy" decoding="async">
+    <a href="${e(pathPrefix)}${e(photo.src)}" data-product-photo aria-label="放大 ${e(photo.label)} 包裝照片">
+      <img src="${e(pathPrefix)}${e(photo.src)}" alt="${e(photo.label)} 包裝正面" width="${photo.width}" height="${photo.height}" loading="lazy" decoding="async">
       <span>點擊放大</span>
     </a>
     <figcaption><b>${e(photo.label)}</b><br>代表包裝，現場版本可能不同。

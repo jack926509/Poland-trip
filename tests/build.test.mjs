@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
+import { precachedGroceryPhotos } from '../src/build/output.mjs';
 import fs from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
@@ -1831,7 +1832,9 @@ test('sw.js 的快取版本由建置帶上資源指紋，樣式改了就會失�
     'assets/search-index.json']) {
     expected.update(fs.readFileSync(path.join(distDir, asset)));
   }
-  for (const name of fs.readdirSync(path.join(distDir, 'assets/photos')).filter(name => /^grocery-.*\.(?:webp|jpe?g)$/.test(name)).sort()) expected.update(fs.readFileSync(path.join(distDir, 'assets/photos', name)));
+  // 只有真的被預快取的商品照片算進指紋；掃整個目錄會讓沒人引用的照片也
+  // 影響版本，改到它們就白白讓所有安裝重新下載整包。
+  for (const src of precachedGroceryPhotos()) expected.update(fs.readFileSync(path.join(distDir, src)));
   assert.equal(shipped, `${base}-${expected.digest('hex').slice(0, 8)}`, '指紋與實際資源內容不符');
 
   // 部署腳本不能再用根目錄的原始 sw.js 覆蓋掉帶指紋的那份
@@ -1848,7 +1851,10 @@ test('中-1：只改搜尋索引內容（資料檔變動的效果），sw.js 的
   const assets = ['manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png',
     'assets/main.css', 'assets/nav.js', 'assets/site-search.js',
     'assets/database-filter.js', 'assets/leaflet/leaflet.css', 'assets/leaflet/leaflet.js',
-    'assets/search-index.json'];
+    'assets/search-index.json',
+    // 商品照片也走 cache-first 並算進指紋，所以暫存 dist 也要有這幾張；
+    // 清單跟 writeServiceWorker 讀的是同一個函式。
+    ...precachedGroceryPhotos()];
   const tmpDir = fs.mkdtempSync(path.join(projectRoot, '.test-sw-fingerprint-'));
   try {
     fs.mkdirSync(path.join(tmpDir, 'assets', 'leaflet'), { recursive: true });

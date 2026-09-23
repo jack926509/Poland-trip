@@ -13,13 +13,10 @@
 | grocery-01.webp | E. Wedel Ptasie Mleczko 巧克力口味 | [Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5901588400310) | [原圖](https://images.openfoodfacts.org/images/products/590/158/840/0310/front_pl.19.400.jpg) |
 | grocery-02.webp | Krówki Milanowskie 牛奶糖 | [Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5901715000734) | [原圖](https://images.openfoodfacts.org/images/products/590/171/500/0734/front_fr.3.400.jpg) |
 | grocery-03.webp | Tarczyński Exclusive 豬肉細香腸 | [Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5908230521485) | [原圖](https://images.openfoodfacts.org/images/products/590/823/052/1485/front_en.35.400.jpg) |
-| grocery-04.webp | Przysnacki 海鹽鍋炸洋芋片 | [Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900073020118) | [原圖](https://images.openfoodfacts.org/images/products/590/007/302/0118/front_pl.30.400.jpg) |
 | grocery-05.webp | Prince Polo XXL Classic 巧克力威化 | [Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/7622210309792) | [原圖](https://images.openfoodfacts.org/images/products/762/221/030/9792/front_pl.15.400.jpg) |
 | grocery-06.webp | Delicje Szampańskie 橘子口味 | [Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5906747308438) | [原圖](https://images.openfoodfacts.org/images/products/590/674/730/8438/front_pl.20.400.jpg) |
 | grocery-07.webp | Wawel Michałki 經典巧克力糖 | [Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900102021130) | [原圖](https://images.openfoodfacts.org/images/products/590/010/202/1130/front_fr.11.400.jpg) |
 | grocery-08.webp | Tymbark 100% 蘋果汁（紙盒） | [Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900334012753) | [原圖](https://images.openfoodfacts.org/images/products/590/033/401/2753/front_pl.18.400.jpg) |
-| grocery-09.webp | Winiary Żurek 調理湯粉 | [Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900085010114) | [原圖](https://images.openfoodfacts.org/images/products/590/008/501/0114/front_pl.37.400.jpg) |
-| grocery-10.webp | Swojsko Chłopo Pierogi ruskie 馬鈴薯起司餃 | [Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5901398069974) | [原圖](https://images.openfoodfacts.org/images/products/590/139/806/9974/front_pl.11.400.jpg) |
 
 ## 2026-09-22 新增採買推薦照片
 

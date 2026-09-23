@@ -217,7 +217,7 @@ export const groceryBranches = [
 // rank 僅保留既有商品錨點相容性，不代表排名；新商品使用新的識別碼。
 export const groceryProducts = [
   {
-    "rank": 1,
+    "id": 1,
     "name": "鳥奶巧克力",
     "localName": "Ptasie Mleczko",
     "packaging": "E. Wedel 長方紙盒",
@@ -242,7 +242,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-22"
   },
   {
-    "rank": 11,
+    "id": 11,
     "name": "李子巧克力",
     "localName": "Śliwka Nałęczowska",
     "packaging": "藍底綠點包裝，找 Śliwka 字樣",
@@ -267,7 +267,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-22"
   },
   {
-    "rank": 6,
+    "id": 6,
     "name": "果凍巧克力餅乾",
     "localName": "Delicje",
     "packaging": "長方形餅乾包",
@@ -292,7 +292,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-22"
   },
   {
-    "rank": 12,
+    "id": 12,
     "name": "鹹餅乾棒",
     "localName": "Paluszki",
     "packaging": "細長餅乾棒袋裝；照片為 Lajkonik",
@@ -317,7 +317,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-22"
   },
   {
-    "rank": 13,
+    "id": 13,
     "name": "Princessa 威化餅",
     "localName": "Princessa",
     "packaging": "單支長條包裝；照片為椰子口味",
@@ -336,7 +336,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-22"
   },
   {
-    "rank": 2,
+    "id": 2,
     "name": "波蘭牛奶糖",
     "localName": "Krówki",
     "packaging": "牛圖案、獨立糖紙",
@@ -361,7 +361,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-22"
   },
   {
-    "rank": 5,
+    "id": 5,
     "name": "巧克力威化",
     "localName": "Prince Polo",
     "packaging": "長條單支包裝",
@@ -386,7 +386,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-22"
   },
   {
-    "rank": 7,
+    "id": 7,
     "name": "堅果巧克力糖",
     "localName": "Michałki",
     "packaging": "獨立糖果、大袋裝",
@@ -411,7 +411,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-22"
   },
   {
-    "rank": 3,
+    "id": 3,
     "name": "波蘭細香腸",
     "localName": "Kabanosy",
     "packaging": "透明長條香腸袋",
@@ -436,7 +436,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-22"
   },
   {
-    "rank": 8,
+    "id": 8,
     "name": "果汁飲料",
     "localName": "Tymbark",
     "packaging": "玻璃瓶／PET／紙盒",
@@ -456,7 +456,7 @@ export const groceryProducts = [
   },
 
   {
-    "rank": 14,
+    "id": 14,
     "name": "磚型巧克力",
     "localName": "E. Wedel Czekolada",
     "packaging": "E. Wedel 標誌與長方形包裝，依 mleczna（牛奶）或 gorzka（黑巧克力）選口味。",
@@ -477,7 +477,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-23"
   },
   {
-    "rank": 15,
+    "id": 15,
     "name": "水果軟糖巧克力",
     "localName": "Wawel Mieszanka Krakowska",
     "packaging": "找 Wawel 與 Mieszanka Krakowska 字樣，內為水果軟糖裹巧克力。",
@@ -498,7 +498,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-23"
   },
   {
-    "rank": 16,
+    "id": 16,
     "name": "可可威化餅",
     "localName": "Grześki",
     "packaging": "認 Grześki 字樣；有原味威化及巧克力包覆版本。",
@@ -519,7 +519,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-23"
   },
   {
-    "rank": 17,
+    "id": 17,
     "name": "托倫薑餅",
     "localName": "Kopernik Katarzynki",
     "packaging": "找 Kopernik、Katarzynki 或 Pierniki 字樣；照片為巧克力包覆薑餅。",
@@ -540,7 +540,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-23"
   },
   {
-    "rank": 18,
+    "id": 18,
     "name": "香草布丁粉",
     "localName": "Dr. Oetker Budyń waniliowy",
     "packaging": "烘焙／甜點粉區的 Budyń 小袋裝；照片為香草口味。",
@@ -561,7 +561,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-23"
   },
   {
-    "rank": 19,
+    "id": 19,
     "name": "穀物棒",
     "localName": "Bakalland BA!",
     "packaging": "BA! 大字樣與獨立條裝；照片為 5 Bakalii 果乾堅果版本。",
@@ -582,7 +582,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-23"
   },
   {
-    "rank": 20,
+    "id": 20,
     "name": "巧克力榛果奶霜甜點",
     "localName": "Zott Monte",
     "packaging": "冷藏杯裝，Monte 字樣與奶白、巧克力色甜點圖。",
@@ -603,7 +603,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-23"
   },
   {
-    "rank": 21,
+    "id": 21,
     "name": "牛奶米布丁",
     "localName": "Zott Belriso",
     "packaging": "冷藏圓杯，Belriso 字樣；不同口味的醬料與杯蓋圖案不同。",
@@ -624,7 +624,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-23"
   },
   {
-    "rank": 22,
+    "id": 22,
     "name": "甜味白起司杯",
     "localName": "Danio",
     "packaging": "冷藏杯裝，找 Danio、serek 與 waniliowy（香草）字樣。",
@@ -645,7 +645,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-23"
   },
   {
-    "rank": 23,
+    "id": 23,
     "name": "米布丁",
     "localName": "Müller Riso",
     "packaging": "Müller 與 Riso 字樣的冷藏杯；照片是櫻桃版本。",
@@ -666,7 +666,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-23"
   },
   {
-    "rank": 24,
+    "id": 24,
     "name": "焦糖榛果巧克力餅乾",
     "localName": "Jeżyki Classic",
     "packaging": "找 Jeżyki Classic 字樣與長條餅乾袋；照片為 140 g 代表包裝。",
@@ -680,7 +680,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-23"
   },
   {
-    "rank": 25,
+    "id": 25,
     "name": "黑色綜合果汁飲料",
     "localName": "Frugo Czarne",
     "drink": true,
@@ -695,7 +695,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-23"
   },
   {
-    "rank": 26,
+    "id": 26,
     "name": "蘋果、胡蘿蔔、香蕉果汁",
     "localName": "Kubuś 100% Jabłko Marchew Banan",
     "drink": true,
@@ -710,7 +710,7 @@ export const groceryProducts = [
     "checkedAt": "2026-09-23"
   },
   {
-    "rank": 27,
+    "id": 27,
     "name": "波蘭百花蜂蜜",
     "localName": "Miód wielokwiatowy",
     "packaging": "蜂蜜罐看 Miód wielokwiatowy、產地國與生產商；照片為 Sądecki Bartnik 代表包裝。",
@@ -727,4 +727,8 @@ export const groceryProducts = [
     ],
     "checkedAt": "2026-09-23"
   }
-].map(product => ({ ...product, photo: groceryPhotos[product.rank] }));
+// id 同時是錨點（#product-<id>）與照片鍵：groceryPhotos 與 assets/photos/grocery-NN.webp
+// 都以同一個編號對應。這個欄位原本叫 rank，但商品早就不按它排序
+// （目前順序是 1、11、6、12、13…），頁面本身也寫明「不代表銷售或人氣排名」；
+// 叫 rank 會讓人以為重排或重編號是安全的，實際上會靜默換掉商品照片。
+].map(product => ({ ...product, photo: groceryPhotos[product.id] }));
