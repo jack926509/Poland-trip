@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import * as trip from './src/data/trip.js';
 import * as cities from './src/data/cities.js';
 import * as dining from './src/data/dining.js';
+import { groceryProducts } from './src/data/groceries.js';
 import { renderPages } from './src/build/pages.mjs';
 import { buildStandalone } from './src/build/standalone.mjs';
 import { writeServiceWorker, replacePublishedOutputs } from './src/build/output.mjs';
@@ -38,6 +39,7 @@ function buildSearchRecords(distDir) {
     fastFoodBranches: dining.fastFoodBranches,
     fastFoodChains: dining.fastFoodChains,
     fastFoodHubs: dining.fastFoodHubs,
+    groceryProducts,
   });
   const pageRecords = buildPageSearchRecords(standalonePages.map(([relativePath, title]) => ({
     relativePath,

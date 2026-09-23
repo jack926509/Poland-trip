@@ -332,7 +332,7 @@ const addressStepLabels = {
   'Warszawa Centralna': ['退房 → Warszawa Centralna', '抵華沙中央車站', '抵 Warszawa Centralna'],
   'Warszawa Zachodnia': ['抵票面上車站'],
   '華沙皇家城堡': ['★ 皇家城堡'],
-  '華沙老城市場廣場': ['★ 老城廣場', '老城廣場夜燈漫步', '早餐 + 老城散步'],
+  '華沙老城市場廣場': ['★ 老城廣場', '老城廣場夜燈漫步'],
   'Krakowskie Przedmieście': ['Krakowskie Przedmieście'],
   'Kraków Główny': ['抵 Kraków Główny', '火車回 Kraków Główny'],
   '瓦維爾大教堂': ['★ 瓦維爾大教堂'],
@@ -481,7 +481,7 @@ export const dayOperations = {
       accommodationAddress('poznan-towarowa'),
     ],
     navigation: [
-      { mode: '步行／市內交通', route: '老城 → Panorama → 百年廳 → 座堂島', action: '百年廳跨區移動當日用 Jakdojade 選取實際電車；預留從座堂島回車站取行李的時間。' },
+      { mode: '步行／市內交通', route: '老城 → Panorama → 午餐 → 百年廳 → 座堂島', action: '午餐預留 12:30–13:15，13:15 開始往百年廳移動；當日用 Jakdojade 選取實際電車，並預留從座堂島回車站取行李的時間。' },
       { mode: 'PKP', route: 'Wrocław Główny → Poznań Główny', action: '目前採 Baltic Express 260 參考 19:10–20:29；18:35 前到站，指定日核實並購票後依票面班次行動。' },
     ],
     dailyAlerts: [
@@ -584,9 +584,12 @@ const unresolvedStepReasons = {
   },
   5: {
     '糖果屋雙屋 + 教堂塔樓': '教堂塔樓入口與開放狀態須依當日官方公告確認。',
+    '午餐 · Restauracja Wrocławska 候選': '餐廳開門與快速出餐尚待確認；不合時改在全景畫附近外帶。',
+    '前往百年廳': '市內交通路線與站點依當日 Jakdojade 導航確認。',
     'Baltic Express 260 前往波茲南': dynamicTransitReason,
   },
   6: {
+    '午餐 · Pyra Bar 候選': '須與牛角麵包博物館實際英語場協調；排隊過久時改為外帶。',
     '取行李、前往 Poznań Główny': '公寓寄放與取行李地點須先向住宿確認，再前往車站。',
     '★ 聖馬丁牛角麵包 (PGI)': '尚未選定可靠分店，待分店與營業時間確認後補入。',
     'EIC 8104 前往華沙': dynamicTransitReason,
@@ -597,6 +600,7 @@ const unresolvedStepReasons = {
     '老城最後晚餐': flexibleStopReason,
   },
   8: {
+    '飯店或中央車站附近早餐': '未指定店家；飯店含餐與週六營業時間前一晚確認。',
     'SKM S2／S3 目標班次': dynamicTransitReason,
   },
 };

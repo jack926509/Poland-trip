@@ -232,7 +232,7 @@ export function renderToday({ meta, days, stay, dayDining = {}, daylight = [], s
       (function() {
         ${todayRuntime}
         const root = document.currentScript.closest('.standalone-page') || document;
-        initializeToday(root);
+        initializeToday(root, undefined, ${JSON.stringify(meta.travelStart)});
       }());
     </script>`;
 

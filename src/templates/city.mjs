@@ -164,6 +164,13 @@ export function renderCity({
     if (check.status === 'area-reference') summary.area += 1;
     return summary;
   }, {precise: 0, area: 0});
+  const unpinnedDining = mergedDining.filter(item => (item.selected || item.mustEat) && item.map
+    && !mapData.points.some(point => point[2] === item.name));
+  const unpinnedDiningHtml = unpinnedDining.length ? `<details class="city-map-unpinned">
+      <summary>其他行程餐廳的導航連結（${unpinnedDining.length} 家）</summary>
+      <p>以下店家尚無本站核實的圖釘座標。點店名可用即時地圖查找地址與營業狀態；請先核對分店。</p>
+      <ul class="check-list">${unpinnedDining.map(item => `<li><a href="${item.map}" target="_blank" rel="noopener noreferrer">${item.name}</a>${item.address ? ` · ${item.address}` : ''}</li>`).join('')}</ul>
+    </details>` : '';
 
   const mapScript = `
     <script src="assets/leaflet/leaflet.js"></script>
@@ -246,6 +253,7 @@ export function renderCity({
       </div>
       <div id="map-${cityKey}" class="map-container" data-map-key="${cityKey}" role="region" aria-label="${city.name}互動地圖"><p class="map-fallback">地圖需要網路連線才能載入。離線或載入失敗時，請改用下方景點清單中的 Google Maps 連結。</p></div>
       <div class="map-legend" aria-label="地圖圖例">${legendHtml}</div>
+      ${unpinnedDiningHtml}
       <p class="map-caption">地圖底圖 © OpenStreetMap contributors</p>
     </section>
 
@@ -276,4 +284,3 @@ export function renderCity({
     ogImageAlt: `${city.name}章節海報`,
   });
 }
-

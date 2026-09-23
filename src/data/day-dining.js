@@ -92,9 +92,9 @@ export const dayDiningPlans = {
     {
       "placeId": "wroclaw-restauracja-wroclawska",
       "role": "午餐首選",
-      "note": "午餐候選未排時段；需先確認開門時間，再挪出完整用餐與交通時間，不能直接塞在全景畫與百年廳之間。",
-      "stepId": null,
-      "planStatus": "candidate"
+      "note": "12:30 預留午餐；開門時間及快速出餐尚未核實，先向店家確認。若無法在 13:15 前離開，改在全景畫附近外帶。",
+      "stepId": "d5-lunch",
+      "planStatus": "scheduled"
     },
     {
       "placeId": "wroclaw-ida-kuchnia-i-wino",
@@ -115,9 +115,9 @@ export const dayDiningPlans = {
     {
       "placeId": "poznan-pyra-bar",
       "role": "午餐首選",
-      "note": "馬鈴薯地方料理；午餐候選未排時段，需配合山羊秀及牛角麵包博物館場次。",
-      "stepId": null,
-      "planStatus": "candidate"
+      "note": "12:30 預留快速午餐；配合山羊秀及牛角麵包博物館實際英語場，排隊太久改外帶。",
+      "stepId": "d6-lunch",
+      "planStatus": "scheduled"
     },
     {
       "placeId": "poznan-hycka",

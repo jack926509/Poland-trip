@@ -109,6 +109,18 @@
 
   markToday();
 
+  // 搜尋可直達商品卡；目標若位於收合分組，先展開才能正確捲動。
+  const revealProductHash = () => {
+    const id = decodeURIComponent(location.hash.slice(1));
+    if (!/^product-\d+$/.test(id)) return;
+    const target = document.getElementById(id);
+    if (!target) return;
+    target.closest('.grocery-product-group')?.setAttribute('open', '');
+    requestAnimationFrame(() => target.scrollIntoView({ block: 'start' }));
+  };
+  revealProductHash();
+  window.addEventListener('hashchange', revealProductHash);
+
   /**
    * 資料庫等頁面超過 19000px，捲到底沒有回頭路。
    */

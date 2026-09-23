@@ -381,6 +381,9 @@ ${standaloneMobileQuickNav}
         window.requestAnimationFrame(function () {
           window.requestAnimationFrame(function () {
             var activeTarget = document.getElementById(targetId) || document.getElementById(activePageId);
+            if (activeTarget && /--product-\d+$/.test(targetId)) {
+              activeTarget.closest('.grocery-product-group')?.setAttribute('open', '');
+            }
             if (shouldScroll && activeTarget) activeTarget.scrollIntoView({ block: 'start' });
             window.dispatchEvent(new Event('resize'));
           });

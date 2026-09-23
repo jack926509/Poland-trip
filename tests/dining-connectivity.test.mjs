@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import * as dining from '../src/data/dining.js';
 import * as cities from '../src/data/cities.js';
 import * as trip from '../src/data/trip.js';
+import { groceryProducts } from '../src/data/groceries.js';
 import { dayDining } from '../src/data/day-dining.js';
 import { buildTravelSearchRecords } from '../src/search/site-search-index.mjs';
 import { mergeCityDining } from '../src/templates/city-dining.mjs';
@@ -14,6 +15,16 @@ test('每日門市可在餐廳分類搜尋，使用相同地址導航', () => {
     assert.ok(meal.placeId && match, `Day ${day} ${meal.name} 缺少門市搜尋`);
     assert.equal(match.mapUrl, meal.map);
   }
+});
+
+test('商品搜尋從波蘭品名直達單筆商品，單檔版也保留相同錨點', () => {
+  const records = buildTravelSearchRecords({ ...trip, groceryProducts });
+  const jezyki = records.find(record => record.title.includes('Jeżyki Classic'));
+  assert.ok(jezyki);
+  assert.equal(jezyki.href, 'practical/groceries.html#product-24');
+  assert.ok(jezyki.searchText.includes('jezyki'));
+  const standalone = fs.readFileSync('poland-travel-guide-2026.html', 'utf8');
+  assert.ok(standalone.includes('href":"#page-practical-groceries--product-24"'));
 });
 
 test('華沙 Wedel 兩個門市的識別及導航不混用', () => {
@@ -72,7 +83,8 @@ test('餐段引用必須存在；未安排餐段必須明說，不自動假設�
     if(item.stepId)assert.ok(day.steps.some(x=>x.id===item.stepId));
     else assert.match(timing,/未排|不採用/);
   }
-  for (const meal of dayDining[5].filter(x=>/首選/.test(x.role)))assert.match(mealTiming(meal,trip.days[4]),/候選未排時段/);
+  assert.match(mealTiming(dayDining[5].find(x=>x.placeId==='wroclaw-restauracja-wroclawska'),trip.days[4]),/行程預留 12:30/);
+  assert.match(mealTiming(dayDining[6].find(x=>x.placeId==='poznan-pyra-bar'),trip.days[5]),/行程預留 12:30/);
   const html=fs.readFileSync(new URL('../dist/today.html',import.meta.url),'utf8');
   assert.ok(html.includes('候選未排時段'));
 });
