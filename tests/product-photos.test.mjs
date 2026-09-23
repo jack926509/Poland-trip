@@ -11,7 +11,7 @@ test('十項商品皆有本機真實照片、代表包裝說明與授權，單�
   const page = fs.readFileSync('dist/practical/groceries.html', 'utf8');
   const standalone = fs.readFileSync('poland-travel-guide-2026.html', 'utf8');
   const sw = fs.readFileSync('dist/sw.js', 'utf8');
-  assert.equal((page.match(/data-product-photo aria-label=/g) || []).length, 10);
+  assert.equal((page.match(/data-product-photo aria-label=/g) || []).length, 20);
   for (const product of groceryProducts) {
     const photo = product.photo;
     assert.ok(photo.width > 0 && photo.height > 0);
