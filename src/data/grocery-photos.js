@@ -1,4 +1,4 @@
-// 對照 assets/photos/GROCERY-CREDITS.md；新照片已目視核對。
+// 對照 assets/photos/GROCERY-CREDITS.md；照片已目視核對。
 export const groceryPhotos = {
   "1": {
     "src": "assets/photos/grocery-01.webp",
@@ -129,5 +129,137 @@ export const groceryPhotos = {
     "originalUrl": "https://images.openfoodfacts.org/images/products/844/529/103/4761/front_pl.3.400.jpg",
     "license": "CC BY-SA 3.0",
     "checkedAt": "2026-09-22"
+  },
+  "14": {
+    "src": "assets/photos/grocery-14.webp",
+    "label": "E. Wedel 牛奶巧克力",
+    "width": 282,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5901588018775",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/158/801/8775/front_pl.75.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-09-23"
+  },
+  "15": {
+    "src": "assets/photos/grocery-15.webp",
+    "label": "Wawel Mieszanka Krakowska 水果軟糖巧克力",
+    "width": 300,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900102021567",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/010/202/1567/front_fr.4.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-09-23"
+  },
+  "16": {
+    "src": "assets/photos/grocery-16.webp",
+    "label": "Grześki Mega 可可威化",
+    "width": 400,
+    "height": 95,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900394006495",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/039/400/6495/front_pl.6.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-09-23"
+  },
+  "17": {
+    "src": "assets/photos/grocery-17.webp",
+    "label": "Kopernik Katarzynki 巧克力薑餅",
+    "width": 400,
+    "height": 200,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900056012758",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/005/601/2758/front_pl.18.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-09-23"
+  },
+  "18": {
+    "src": "assets/photos/grocery-18.webp",
+    "label": "Dr. Oetker 香草布丁粉",
+    "width": 349,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900437020013",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/043/702/0013/front_it.3.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-09-23"
+  },
+  "19": {
+    "src": "assets/photos/grocery-19.webp",
+    "label": "Bakalland BA! 5 Bakalii 穀物棒",
+    "width": 400,
+    "height": 151,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900749610933",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/074/961/0933/front_pl.18.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-09-23"
+  },
+  "20": {
+    "src": "assets/photos/grocery-20.webp",
+    "label": "Zott Monte Maxi 奶霜甜點",
+    "width": 391,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/4014500036830",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/401/450/003/6830/front_en.89.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-09-23"
+  },
+  "21": {
+    "src": "assets/photos/grocery-21.webp",
+    "label": "Zott Belriso 米布丁",
+    "width": 400,
+    "height": 319,
+    "sourceUrl": "https://world.openfoodfacts.org/product/4014500511702",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/401/450/051/1702/front_pl.17.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-09-23"
+  },
+  "22": {
+    "src": "assets/photos/grocery-22.webp",
+    "label": "Danio 香草白起司杯",
+    "width": 400,
+    "height": 238,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900643048528",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/064/304/8528/front_en.3.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-09-23"
+  },
+  "23": {
+    "src": "assets/photos/grocery-23.webp",
+    "label": "Müller Riso 櫻桃米布丁",
+    "width": 396,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/42374688",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/000/004/237/4688/front_en.22.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-09-23"
+  },
+  "24": {
+    "src": "assets/photos/grocery-24.jpg",
+    "label": "Jeżyki Classic 巧克力焦糖餅乾 140 g",
+    "width": 400, "height": 160,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900352002361",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/035/200/2361/front_en.7.400.jpg",
+    "license": "CC BY-SA 3.0", "checkedAt": "2026-09-23"
+  },
+  "25": {
+    "src": "assets/photos/grocery-25.jpg",
+    "label": "Frugo Czarne 500 ml",
+    "width": 125, "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5901861003504",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/186/100/3504/front_pl.6.400.jpg",
+    "license": "CC BY-SA 3.0", "checkedAt": "2026-09-23"
+  },
+  "26": {
+    "src": "assets/photos/grocery-26.jpg",
+    "label": "Kubuś 100% 蘋果胡蘿蔔香蕉果汁 300 ml",
+    "width": 211, "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5901067451024",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/106/745/1024/front_fr.11.400.jpg",
+    "license": "CC BY-SA 3.0", "checkedAt": "2026-09-23"
+  },
+  "27": {
+    "src": "assets/photos/grocery-27.jpg",
+    "label": "Sądecki Bartnik 百花蜂蜜代表包裝",
+    "width": 350, "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900597000016",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/059/700/0016/front_en.3.400.jpg",
+    "license": "CC BY-SA 3.0", "checkedAt": "2026-09-23"
   }
 };

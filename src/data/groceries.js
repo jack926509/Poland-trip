@@ -400,6 +400,12 @@ export const groceryProducts = [
         "url": "https://www.reddit.com/r/poland/comments/1mbyjhu/quintessential_polish_snacks/",
         "date": "2025-07-29",
         "kind": "歷年網友推薦（補充）"
+      },
+      {
+        "title": "Wawel｜Michałki z Wawelu Klasyczne",
+        "url": "https://www.wawel.com.pl/oferta/michalki-z-wawelu-klasyczne",
+        "date": "未標示發布日期；2026-09-23 查閱",
+        "kind": "品牌商品資料"
       }
     ],
     "checkedAt": "2026-09-22"
@@ -447,5 +453,278 @@ export const groceryProducts = [
       }
     ],
     "checkedAt": "2026-09-22"
+  },
+
+  {
+    "rank": 14,
+    "name": "磚型巧克力",
+    "localName": "E. Wedel Czekolada",
+    "packaging": "E. Wedel 標誌與長方形包裝，依 mleczna（牛奶）或 gorzka（黑巧克力）選口味。",
+    "use": "常溫選品",
+    "priority": false,
+    "reason": "薄片容易分配行李空間，可先買一片試吃再補送禮數量。",
+    "note": "巧克力怕熱；包裝平整不等於耐壓。照片為牛奶巧克力代表包裝。",
+    "supplement": true,
+    "localOnly": false,
+    "sources": [
+      {
+        "title": "E. Wedel 商品系列",
+        "url": "https://wedel.com/our-products",
+        "date": "未標示發布日期；2026-09-23 查閱",
+        "kind": "品牌／零售商商品資料（使用者清單補充）"
+      }
+    ],
+    "checkedAt": "2026-09-23"
+  },
+  {
+    "rank": 15,
+    "name": "水果軟糖巧克力",
+    "localName": "Wawel Mieszanka Krakowska",
+    "packaging": "找 Wawel 與 Mieszanka Krakowska 字樣，內為水果軟糖裹巧克力。",
+    "use": "常溫選品",
+    "priority": false,
+    "reason": "想在牛奶糖之外增加口感變化，可試水果軟糖與巧克力的組合。",
+    "note": "品牌有多種水果與組合版本，依實際包裝挑選；不是一般實心巧克力。",
+    "supplement": true,
+    "localOnly": false,
+    "sources": [
+      {
+        "title": "Wawel 官方商品",
+        "url": "https://www.wawel.com.pl/oferta/mieszanka-krakowska",
+        "date": "未標示發布日期；2026-09-23 查閱",
+        "kind": "品牌／零售商商品資料（使用者清單補充）"
+      }
+    ],
+    "checkedAt": "2026-09-23"
+  },
+  {
+    "rank": 16,
+    "name": "可可威化餅",
+    "localName": "Grześki",
+    "packaging": "認 Grześki 字樣；有原味威化及巧克力包覆版本。",
+    "use": "常溫選品",
+    "priority": false,
+    "reason": "可與清單中的 Prince Polo 各買一條試吃，再選喜歡的帶回。",
+    "note": "威化餅容易碎，放在硬盒內；照片是可可威化的代表版本。",
+    "supplement": true,
+    "localOnly": false,
+    "sources": [
+      {
+        "title": "Colian／Grześki 品牌介紹",
+        "url": "https://colian.com/nasze-marki/grzeski/",
+        "date": "未標示發布日期；2026-09-23 查閱",
+        "kind": "品牌／零售商商品資料（使用者清單補充）"
+      }
+    ],
+    "checkedAt": "2026-09-23"
+  },
+  {
+    "rank": 17,
+    "name": "托倫薑餅",
+    "localName": "Kopernik Katarzynki",
+    "packaging": "找 Kopernik、Katarzynki 或 Pierniki 字樣；照片為巧克力包覆薑餅。",
+    "use": "常溫選品",
+    "priority": false,
+    "reason": "想找巧克力與威化以外的波蘭點心，可從托倫薑餅試起。",
+    "note": "含香料的薑餅有原味、糖霜及巧克力等版本；餅乾仍需防壓。",
+    "supplement": true,
+    "localOnly": false,
+    "sources": [
+      {
+        "title": "Kopernik／Katarzynki 介紹",
+        "url": "https://konkurs.kopernik.com.pl/en/24%2C26/dzial_katarzynki__.html",
+        "date": "未標示發布日期；2026-09-23 查閱",
+        "kind": "品牌／零售商商品資料（使用者清單補充）"
+      }
+    ],
+    "checkedAt": "2026-09-23"
+  },
+  {
+    "rank": 18,
+    "name": "香草布丁粉",
+    "localName": "Dr. Oetker Budyń waniliowy",
+    "packaging": "烘焙／甜點粉區的 Budyń 小袋裝；照片為香草口味。",
+    "use": "常溫選品・需煮",
+    "priority": false,
+    "reason": "體積小，適合喜歡自己做甜點的人；回家依包裝加牛奶煮。",
+    "note": "這款為需煮的布丁粉，不是即食布丁或只加熱水的版本。其他品牌、口味請各自確認做法。",
+    "supplement": true,
+    "localOnly": false,
+    "sources": [
+      {
+        "title": "Dr. Oetker 官方商品與做法",
+        "url": "https://www.oetker.pl/produkty/p/budyn-waniliowy",
+        "date": "未標示發布日期；2026-09-23 查閱",
+        "kind": "品牌／零售商商品資料（使用者清單補充）"
+      }
+    ],
+    "checkedAt": "2026-09-23"
+  },
+  {
+    "rank": 19,
+    "name": "穀物棒",
+    "localName": "Bakalland BA!",
+    "packaging": "BA! 大字樣與獨立條裝；照片為 5 Bakalii 果乾堅果版本。",
+    "use": "常溫選品・旅途零食",
+    "priority": false,
+    "reason": "適合搭車時少量補給，也可選幾種口味分享。",
+    "note": "BA! 也有麥片等品項，請認條裝穀物棒。含穀物、堅果等成分依各口味標示確認。",
+    "supplement": true,
+    "localOnly": false,
+    "sources": [
+      {
+        "title": "Bakalland 官方品牌介紹",
+        "url": "https://jeszcodobre.bakalland.pl/",
+        "date": "未標示發布日期；2026-09-23 查閱",
+        "kind": "品牌／零售商商品資料（使用者清單補充）"
+      }
+    ],
+    "checkedAt": "2026-09-23"
+  },
+  {
+    "rank": 20,
+    "name": "巧克力榛果奶霜甜點",
+    "localName": "Zott Monte",
+    "packaging": "冷藏杯裝，Monte 字樣與奶白、巧克力色甜點圖。",
+    "use": "當地吃・冷藏",
+    "priority": false,
+    "reason": "喜歡奶香與榛果巧克力口味，可買小杯當飯後甜點。",
+    "note": "找冷藏櫃的 Monte 甜點，別與 Monte Drink 或其他系列混淆；購後依包裝冷藏並儘快食用。",
+    "supplement": true,
+    "localOnly": true,
+    "sources": [
+      {
+        "title": "Zott Monte Original 官方商品",
+        "url": "https://www.zott-dairy.com/pl/marki-produkty/monte/monte-original/",
+        "date": "未標示發布日期；2026-09-23 查閱",
+        "kind": "品牌／零售商商品資料（使用者清單補充）"
+      }
+    ],
+    "checkedAt": "2026-09-23"
+  },
+  {
+    "rank": 21,
+    "name": "牛奶米布丁",
+    "localName": "Zott Belriso",
+    "packaging": "冷藏圓杯，Belriso 字樣；不同口味的醬料與杯蓋圖案不同。",
+    "use": "當地吃・冷藏",
+    "priority": false,
+    "reason": "想試米粒口感的乳製甜點，可選一杯與 Monte 比較。",
+    "note": "口味以貨架為準；旅途中維持包裝要求的冷藏條件，住宿沒有冰箱時避免囤貨。",
+    "supplement": true,
+    "localOnly": true,
+    "sources": [
+      {
+        "title": "Zott Belriso 官方系列",
+        "url": "https://www.zott-dairy.com/pl/marki-produkty/belriso/",
+        "date": "未標示發布日期；2026-09-23 查閱",
+        "kind": "品牌／零售商商品資料（使用者清單補充）"
+      }
+    ],
+    "checkedAt": "2026-09-23"
+  },
+  {
+    "rank": 22,
+    "name": "甜味白起司杯",
+    "localName": "Danio",
+    "packaging": "冷藏杯裝，找 Danio、serek 與 waniliowy（香草）字樣。",
+    "use": "當地吃・冷藏",
+    "priority": false,
+    "reason": "喜歡濃稠乳製甜點，可試香草白起司杯；它與一般優格的質地不同。",
+    "note": "這是均質白起司甜點，不是原味無糖優格。照片包裝規格可能與現場不同；依標示冷藏。",
+    "supplement": true,
+    "localOnly": true,
+    "sources": [
+      {
+        "title": "Danio 香草白起司官方商品",
+        "url": "https://danio.com.pl/produkty/klasyczne/danio-o-smaku-klasycznej-wanilii/",
+        "date": "未標示發布日期；2026-09-23 查閱",
+        "kind": "品牌／零售商商品資料（使用者清單補充）"
+      }
+    ],
+    "checkedAt": "2026-09-23"
+  },
+  {
+    "rank": 23,
+    "name": "米布丁",
+    "localName": "Müller Riso",
+    "packaging": "Müller 與 Riso 字樣的冷藏杯；照片是櫻桃版本。",
+    "use": "當地吃・冷藏",
+    "priority": false,
+    "reason": "可和 Belriso 擇一試吃；想吃米粒乳製甜點時多一個選擇。",
+    "note": "有原味及不同醬料口味，照片不代表各店固定供貨。依包裝冷藏，不安排長途常溫攜帶。",
+    "supplement": true,
+    "localOnly": true,
+    "sources": [
+      {
+        "title": "Auchan／Müller Riso 商品資料",
+        "url": "https://zakupy.auchan.pl/products/riso-deser-mleczno-ry%C5%BCowy-naturalny-m%C3%BCller-200-g/00902378",
+        "date": "未標示發布日期；2026-09-23 查閱",
+        "kind": "品牌／零售商商品資料（使用者清單補充）"
+      }
+    ],
+    "checkedAt": "2026-09-23"
+  },
+  {
+    "rank": 24,
+    "name": "焦糖榛果巧克力餅乾",
+    "localName": "Jeżyki Classic",
+    "packaging": "找 Jeżyki Classic 字樣與長條餅乾袋；照片為 140 g 代表包裝。",
+    "use": "常溫零食",
+    "priority": false,
+    "reason": "餅乾、焦糖與榛果的組合，適合先買一包試吃；『最好吃之一』屬個人口味評語，未找到原始試吃來源。",
+    "note": "有奶、榛果等過敏原，依實際包裝成分確認；易碎且怕熱，回程注意防壓。",
+    "supplement": true,
+    "localOnly": false,
+    "sources": [{"title":"Jeżyki 品牌｜Classic","url":"https://jezykiciastka.pl/","date":"未標示發布日期；2026-09-23 查閱","kind":"品牌商品資料（使用者提名）"}],
+    "checkedAt": "2026-09-23"
+  },
+  {
+    "rank": 25,
+    "name": "黑色綜合果汁飲料",
+    "localName": "Frugo Czarne",
+    "drink": true,
+    "packaging": "黑色 FRUGO 大字瓶身；照片為 Czarne 代表包裝。",
+    "use": "當地試喝",
+    "priority": false,
+    "reason": "波蘭品牌飲料；先選一瓶試喝，無須把『國民飲料』當成排行。",
+    "note": "Frugo 有不同顏色與配方，Czarne 是其中一款，果汁含量與甜味劑請以瓶身標示為準。",
+    "supplement": true,
+    "localOnly": true,
+    "sources": [{"title":"Frugo 品牌｜Frugo czarne","url":"https://frugo.pl/frugo-czarne","date":"未標示發布日期；2026-09-23 查閱","kind":"品牌商品資料（使用者提名）"}],
+    "checkedAt": "2026-09-23"
+  },
+  {
+    "rank": 26,
+    "name": "蘋果、胡蘿蔔、香蕉果汁",
+    "localName": "Kubuś 100% Jabłko Marchew Banan",
+    "drink": true,
+    "packaging": "Kubuś 小熊與 K 100% 標誌；照片為 300 ml 代表包裝。",
+    "use": "當地試喝",
+    "priority": false,
+    "reason": "Kubuś 有果汁、果泥等不同系列，選 100% 系列小瓶先試。",
+    "note": "這款含蘋果、胡蘿蔔、香蕉；其他 Kubuś 系列不一定是 100% 果汁。",
+    "supplement": true,
+    "localOnly": true,
+    "sources": [{"title":"Kubuś 品牌｜100% 300 ml","url":"https://kubus.pl/produkt/kubus-banan-marchew-jablko/","date":"未標示發布日期；2026-09-23 查閱","kind":"品牌商品資料（使用者提名）"}],
+    "checkedAt": "2026-09-23"
+  },
+  {
+    "rank": 27,
+    "name": "波蘭百花蜂蜜",
+    "localName": "Miód wielokwiatowy",
+    "packaging": "蜂蜜罐看 Miód wielokwiatowy、產地國與生產商；照片為 Sądecki Bartnik 代表包裝。",
+    "use": "伴手禮候選",
+    "priority": false,
+    "reason": "波蘭蜂蜜適合作為採買候選；目前未找到『波蘭 Anna』推薦的原文，這款品牌不歸因於她。",
+    "note": "照片是 Sądecki Bartnik 百花蜜，非唯一推薦品牌。混合蜂蜜也可能使用不同國家原料，請看瓶上產地；玻璃瓶需防撞。",
+    "supplement": true,
+    "localOnly": false,
+    "sources": [
+      {"title":"Sądecki Bartnik｜波蘭養蜂場百花蜜","url":"https://sklep.bartnik.pl/pl/produkt/1587-miod-wielokwiatowy-50-g-z-polskich-pasiek.html","date":"未標示發布日期；2026-09-23 查閱","kind":"品牌商品資料（代表品牌）"},
+      {"title":"波蘭文化機構 Culture.pl｜蜂蜜介紹","url":"https://culture.pl/zht/article/50023","date":"2024-11-07；2026-09-23 查閱","kind":"品類介紹"},
+      {"title":"波蘭官方｜2026 蜂蜜產地標示","url":"https://www.gov.pl/web/ijhars/nowe-zasady-znakowania-zywnosci-flaga-kraju-pochodzenia-na-owocach-i-warzywach-oraz-zmiany-w-oznakowaniu-przetworow-owocowych-i-miodu","date":"2025-12-02；2026-09-23 查閱","kind":"產地標示規則"}
+    ],
+    "checkedAt": "2026-09-23"
   }
 ].map(product => ({ ...product, photo: groceryPhotos[product.rank] }));

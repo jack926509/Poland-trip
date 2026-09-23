@@ -7,21 +7,23 @@ import { groceryProducts } from '../src/data/groceries.js';
 import { initializeProductPhotos, renderProductPhoto } from '../src/templates/product-photos.mjs';
 import { writeServiceWorker } from '../src/build/output.mjs';
 
-test('十項商品皆有本機真實照片、代表包裝說明與授權，單檔照片連結也可離線開啟', () => {
+test('商品皆有本機真實照片、代表包裝說明與授權，單檔照片連結也可離線開啟', () => {
   const page = fs.readFileSync('dist/practical/groceries.html', 'utf8');
   const standalone = fs.readFileSync('poland-travel-guide-2026.html', 'utf8');
   const sw = fs.readFileSync('dist/sw.js', 'utf8');
-  assert.equal((page.match(/data-product-photo aria-label=/g) || []).length, 10);
+  assert.equal((page.match(/data-product-photo aria-label=/g) || []).length, 24);
   for (const product of groceryProducts) {
     const photo = product.photo;
     assert.ok(photo.width > 0 && photo.height > 0);
     assert.equal(photo.license, 'CC BY-SA 3.0');
     assert.match(photo.sourceUrl, /^https:\/\/world\.openfoodfacts\.org\/product\/\d+$/);
     const data = fs.readFileSync(photo.src);
-    assert.equal(data.subarray(8, 12).toString(), 'WEBP');
+    const isWebP = photo.src.endsWith('.webp');
+    if (isWebP) assert.equal(data.subarray(8, 12).toString(), 'WEBP');
+    else assert.equal(data.subarray(0, 3).toString('hex'), 'ffd8ff');
     assert.ok(page.includes(`src="../${photo.src}"`));
     assert.ok(sw.includes(`./${photo.src}`));
-    const inline = `data:image/webp;base64,${data.toString('base64')}`;
+    const inline = `data:image/${isWebP ? 'webp' : 'jpeg'};base64,${data.toString('base64')}`;
     assert.ok(standalone.includes(`src="${inline}"`));
     assert.ok(standalone.includes(`href="${inline}"`));
   }
