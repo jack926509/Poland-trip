@@ -28,7 +28,7 @@ function injectGroceryPhotos(source, photos) {
 }
 
 /**
- * sw.js 的快取版本自動帶上 cache-first 資源的指紋。
+ * sw.js 的快取版本自動帶上預快取資源的指紋。
  *
  * CSS 與 JS 走 cache-first，版本字串沒變的話既有安裝會拿到新 HTML 配舊樣式——
  * 版面直接壞掉。以前靠人工改 VERSION，2026-09-14 就漏過一次（樣式大改但版本停在 v18）。
@@ -47,9 +47,11 @@ export function writeServiceWorker({ projectRoot, distDir }) {
   ];
   const hash = crypto.createHash('sha256');
   for (const asset of cacheFirstAssets) hash.update(fs.readFileSync(path.join(distDir, asset)));
-  // 商品圖也預快取；只換照片時同樣需要淘汰舊版本。只算真的會被預快取的那幾張，
-  // 跟上面注入 sw.js 的是同一份清單。
-  for (const src of groceryPhotos) hash.update(fs.readFileSync(path.join(distDir, src)));
+  // 城市封面和商品圖都列在 sw.js 的 ASSETS；更換照片也須更換快取版本。
+  // 從已注入商品照片的清單擷取，免得兩處清單日後不同步。
+  for (const [, src] of source.matchAll(/'\.\/(assets\/photos\/[^']+)'/g)) {
+    hash.update(fs.readFileSync(path.join(distDir, src)));
+  }
   const fingerprint = hash.digest('hex').slice(0, 8);
   const versioned = source.replace(/const VERSION = '([^']+)';/,
     (match, version) => `const VERSION = '${version}-${fingerprint}';`);

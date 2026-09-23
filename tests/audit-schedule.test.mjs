@@ -63,6 +63,18 @@ const VENUES = {
 };
 const options = { venues: VENUES, tripStart: '2026-10-24' };
 
+test('已知場館開門時間和明確停留時長衝突會提出複核', () => {
+  const result = auditSchedule([{
+    n: 1, date: '10/24 (六)', steps: [
+      { t: '09:30', label: '進館', dur: '2 h', constraint: { venue: 'test-museum' } },
+      { t: '10:30', label: '下一站' },
+    ],
+  }], options);
+  assert.deepEqual(result.errors, []);
+  assert.ok(result.warnings.some(warning => /開門時間/.test(warning)));
+  assert.ok(result.warnings.some(warning => /停留重疊/.test(warning)));
+});
+
 test('規則 2：晚於末入場只警告，不擋流程', () => {
   const late = auditSchedule([{
     n: 1, date: '10/24 (六)', steps: [{ t: '17:30', label: '進館', constraint: { venue: 'test-museum' } }],

@@ -82,7 +82,8 @@ test('每日頁有城市攝影章節且保留現場操作資訊', () => {
   assert.match(day, /class="section operation-section"/);
 });
 
-test('跨城每日頁使用最右側已知目的地的城市照片', () => {
+test('跨城每日頁依實際白天行程選封面，晚轉場 Day 5 留在樂斯拉夫', () => {
+  assert.match(read('day-05.html'), /src="assets\/photos\/wroclaw-hero\.webp"/);
   assert.match(read('day-06.html'), /src="assets\/photos\/warszawa-hero\.webp"/);
   assert.match(read('day-08.html'), /src="assets\/photos\/warszawa-hero\.webp"/);
 });

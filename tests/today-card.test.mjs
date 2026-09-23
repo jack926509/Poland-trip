@@ -31,6 +31,15 @@ test('旅程前後都要有內容，不是空白頁', () => {
   assert.equal(selectToday([], '2026-09-14').mode, 'empty');
 });
 
+test('倒數使用起飛日，出發當天提示搭機而非剩一天', () => {
+  const before = selectToday(DATES, '2026-10-22', trip.meta.travelStart);
+  assert.equal(before.daysUntil, 1);
+  const departure = selectToday(DATES, '2026-10-23', trip.meta.travelStart);
+  assert.equal(departure.daysUntil, 0);
+  assert.match(statusText(departure, DATES.length), /今天搭機出發/);
+  assert.match(renderPage(), /initializeToday\(root, undefined, "2026-10-23"\)/);
+});
+
 test('dayGap 跨越冬令時轉換仍為整數天', () => {
   assert.equal(dayGap('2026-10-24', '2026-10-26'), 2);
   assert.equal(dayGap('2026-10-24', '2026-10-31'), 7);
@@ -130,7 +139,7 @@ test('內嵌腳本在 DOM 中真的選出當天那張卡', () => {
   vm.createContext(context);
   // 以受控的 root 與時間執行內嵌的 runtime。
   vm.runInContext(`${script.replace(/const root = [^;]+;/, 'const root = globalThis.__root;')
-    .replace(/initializeToday\(root\);/, 'initializeToday(root, () => globalThis.__now);')}`, Object.assign(context, { __root: root }));
+    .replace(/initializeToday\(root, undefined, "2026-10-23"\);/, 'initializeToday(root, () => globalThis.__now, "2026-10-23");')}`, Object.assign(context, { __root: root }));
 
   const visible = cards.filter(card => !card.hidden);
   assert.equal(visible.length, 1, '應只顯示一張卡');

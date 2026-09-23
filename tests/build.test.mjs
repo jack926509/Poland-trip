@@ -1832,9 +1832,10 @@ test('sw.js 的快取版本由建置帶上資源指紋，樣式改了就會失�
     'assets/search-index.json']) {
     expected.update(fs.readFileSync(path.join(distDir, asset)));
   }
-  // 只有真的被預快取的商品照片算進指紋；掃整個目錄會讓沒人引用的照片也
-  // 影響版本，改到它們就白白讓所有安裝重新下載整包。
-  for (const src of precachedGroceryPhotos()) expected.update(fs.readFileSync(path.join(distDir, src)));
+  // 所有 sw.js 實際預快取的照片（含城市封面與商品）都須算進指紋。
+  for (const [, src] of built.matchAll(/'\.\/(assets\/photos\/[^']+)'/g)) {
+    expected.update(fs.readFileSync(path.join(distDir, src)));
+  }
   assert.equal(shipped, `${base}-${expected.digest('hex').slice(0, 8)}`, '指紋與實際資源內容不符');
 
   // 部署腳本不能再用根目錄的原始 sw.js 覆蓋掉帶指紋的那份
@@ -1854,6 +1855,7 @@ test('中-1：只改搜尋索引內容（資料檔變動的效果），sw.js 的
     'assets/search-index.json',
     // 商品照片也走 cache-first 並算進指紋，所以暫存 dist 也要有這幾張；
     // 清單跟 writeServiceWorker 讀的是同一個函式。
+    ...[...fs.readFileSync('sw.js', 'utf8').matchAll(/'\.\/(assets\/photos\/[^']+)'/g)].map(match => match[1]),
     ...precachedGroceryPhotos()];
   const tmpDir = fs.mkdtempSync(path.join(projectRoot, '.test-sw-fingerprint-'));
   try {

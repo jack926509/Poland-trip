@@ -70,6 +70,18 @@ test('只更新商品照片也會變更 PWA 快取版本', () => {
   } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
 });
 
+test('只更新城市封面也會變更 PWA 快取版本', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'city-photo-cache-'));
+  try {
+    fs.cpSync('dist', tmp, { recursive: true });
+    writeServiceWorker({ projectRoot: process.cwd(), distDir: tmp });
+    const before = fs.readFileSync(path.join(tmp, 'sw.js'), 'utf8');
+    fs.appendFileSync(path.join(tmp, 'assets/photos/warszawa-hero.webp'), 'updated-photo');
+    writeServiceWorker({ projectRoot: process.cwd(), distDir: tmp });
+    assert.notEqual(fs.readFileSync(path.join(tmp, 'sw.js'), 'utf8'), before);
+  } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
+});
+
 test('商品照片沒有孤兒：sw 只預快取引用到的、資料與檔案互相對得上、每張都有署名', () => {
   const referenced = [...new Set(groceryProducts.map(product => product.photo.src))].sort();
 

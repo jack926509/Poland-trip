@@ -230,7 +230,7 @@ export const days = [
   {
     n: 5, date: '10/28 (三)', city: '樂斯拉夫 → 波茲南',
     title: '小矮人尋寶 + 點燈儀式 + 晚轉場',
-    headline: 'Baltic Express 260 參考 19:10–20:29；完整保留白天遊玩時間',
+    headline: 'Baltic Express 260 參考 19:10–20:29；午餐與跨區移動先留時間',
     tag: 'Transit',
     intensity: '很高',
     hardConstraints: ['早餐後早出門', '百年廳距離老城較遠需抓交通', '座堂島點燈人無對外保證的固定出發分鐘，日落前到場等候', '18:35 前抵 Wrocław Główny；260 指定日班次仍須確認'],
@@ -241,7 +241,9 @@ export const days = [
       {t:'09:00', label:'★ 中央廣場 + 紡織會館', sub:'dwarfsmap.com 找小矮人', cost:'免費', dur:'1.5 h'},
       {t:'10:30', label:'糖果屋雙屋 + 教堂塔樓', sub:'聖伊莉莎白教堂塔高 96m、觀景台 75m、304 階無電梯；一–六 10:00–19:00', cost:'PLN 16／10 · 現金', dur:'45 min'},
       {t:'11:30', label:'★ 拉茨瓦維採全景畫', sub:'30 分鐘一場，採分時段入場；10/28 指定時段庫存尚未確認', cost:'PLN 50／優待 35', dur:'1 h'},
-      {t:'13:30', label:'★ 百年廳 (UNESCO)', constraint:{venue:'wroclaw-hala-stulecia'}, sub:'官方 availability calendar 逐日分四色：綠＝多媒體展與廳內看台都可看、藍＝部分時段廳內不開但展覽可看、黃＝不能進到圓頂正下方但展覽可看、紅＝兩者都不開。2026-09-18 複查官方日曆仍以 JavaScript 逐日渲染，靜態頁讀不到指定日顏色，10/28 屬於哪一色仍未確認——行前重查，未確認前以外觀、噴泉與日本花園規劃', cost:'外觀免費；Visitor Centre 25／20、加看廳內 30／25', dur:'1 h'},
+      {t:'12:30', id:'d5-lunch', label:'午餐 · Restauracja Wrocławska 候選', sub:'由全景畫往老城 Szewska 59/60；開門時間尚待店家確認，且午餐需於 13:15 前結束。未確認開門或無法快速出餐時，改在全景畫附近外帶，避免壓縮百年廳交通。', cost:'依店家', dur:'45 min（含步行，需事先確認）'},
+      {t:'13:15', label:'前往百年廳', sub:'預留約 45 分鐘搭車與步行；實際路線、站點以當日 Jakdojade 為準', dur:'45 min'},
+      {t:'14:00', label:'★ 百年廳 (UNESCO)', constraint:{venue:'wroclaw-hala-stulecia'}, sub:'10/28 室內開放狀態未確認；先按外觀、噴泉與周邊規劃。要進 Visitor Centre 或百年廳，須先查官方 availability calendar 當日狀態。', cost:'外觀免費；Visitor Centre 25／20、加看廳內 30／25', dur:'1 h'},
       {t:'16:15', label:'★ 座堂島煤氣燈', sub:'日落約 16:34；點燈人無固定公開出發分鐘，在島上等候與散步', cost:'免費', dur:'1 h'},
       {t:'17:15', label:'座堂島結束後回 Piast 取行李', sub:'座堂島 → 旅館約 25–30 分；距參考發車 1h55，18:35 前抵站後保留約 35 分鐘緩衝', dur:'約 1 h 20 min'},
       {t:'18:35 前', label:'抵 Wrocław Główny', sub:'確認月台、車廂與座位', dur:'至少 35 min 緩衝'},
@@ -252,7 +254,7 @@ export const days = [
       snack({text:'咖啡 @ El Gato Specialty Coffee', placeId:'wroclaw-el-gato-specialty-coffee'}),
       snack({text:'甜點 @ Dessert Boutique', placeId:'wroclaw-dessert-boutique'}),
     ],
-    warn: '❗此日兩項皆尚未訂票。百年廳的 10/28 內部參觀狀態須以官方 availability calendar 確認，未確認前不販售或保證室內行程。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，因此安排 16:15–17:15 在座堂島等候，不再把 16:45 寫成確定時刻。',
+    warn: '❗此日兩項皆尚未訂票。午餐首選需先確認開門及出餐速度，否則改外帶。百年廳的 10/28 內部參觀狀態須以官方 availability calendar 確認，未確認前不保證室內行程。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，因此安排 16:15–17:15 在座堂島等候。',
     backup: [
       {label:'雨天備案', where:'Sky Tower 觀景台', map:'https://www.google.com/maps/search/?api=1&query=Sky%20Tower%2C%20Powsta%C5%84c%C3%B3w%20%C5%9Al%C4%85skich%2095%2C%20Wroc%C5%82aw', why:'開放時間、票價與能見度以官方當日公告為準，不用舊票價規劃'},
       {label:'點燈師看不到', where:'廣場連拱廊 + 紡織會館內部市集', map:'https://www.google.com/maps/search/?api=1&query=Rynek%20Wroc%C5%82aw', why:'若日落後遇雨遮蔽煤氣燈，回廣場喝熱酒（PLN 12）'},
@@ -274,6 +276,7 @@ export const days = [
       {t:'11:00', label:'廣場卡正面位置', dur:'45 min · 提早卡位'},
       {t:'12:00', label:'★ 山羊鐘樓秀', sub:'官方固定正午登場，兩隻金屬山羊互頂 12 次', cost:'免費', dur:'5 min'},
       {t:'12:15', label:'★ 聖馬丁牛角麵包 (PGI)', sub:'Cukiernia Kandulski；出發前確認分店、當日營業與 PGI 證書', cost:'依門市標價', dur:'15 min'},
+      {t:'12:30', id:'d6-lunch', label:'午餐 · Pyra Bar 候選', sub:'Strzelecka 13；確認週四營業、博物館英語場與現場等候時間。若 13:30 有可訂英語場且餐廳排隊，改老城附近外帶，避免遲到。', cost:'依店家', dur:'約 45 min（含來回步行）'},
       {t:'13:30–15:00 預留', label:'★ 牛角麵包博物館', sub:'2026-09-18 官網：英語公開場 47 PLN／人（滿 3 歲起，未滿 3 歲 1 PLN），官方售票頁列開放時間為日–五 11:00–15:30（官方註明是第一場與最後一場開演時間），入口在 Klasztorna 23。10/29 週四在營業日內，但有沒有英語場、幾點開演仍未確認，不能直接視為 13:30 開演——依官方售票頁當日可售場次調整', cost:'英語場 PLN 47／人', dur:'表演約 1 h'},
       {t:'15:00', label:'Stary Browar', sub:'博物館若延後則縮短購物；沒有合適英語場時改逛帝王城堡（CK ZAMEK 12:00–19:00、售票至 18:00，地圖摺頁 10／7、語音導覽 20／15）', cost:'購物另計', dur:'1 h'},
       {t:'16:00', label:'取行李、前往 Poznań Główny', sub:'先確認公寓行李寄放地點；17:05 前抵站', dur:'約 1 h'},
@@ -315,7 +318,7 @@ export const days = [
     extend: [
       {label:'Bulwary Wiślane 維斯瓦河畔', when:'21:00 後老城散步延伸', map:'https://www.google.com/maps/search/?api=1&query=Bulwary%20Wi%C5%9Blane%2C%20Warszawa', why:'河濱步道 + 沙灘酒吧，皇家城堡步行 10–15 分，適合晚餐後收尾散步，免費'},
       {label:'Neon Museum 霓虹燈博物館', when:'若提前結束起義博物館可插入', map:'https://www.google.com/maps/search/?api=1&query=Neon%20Muzeum%2C%20plac%20Defilad%201%2C%20Warszawa', why:'已遷入科學文化宮 4 樓（Marszałkowska 入口），共產時期霓虹招牌收藏，PLN 25／優待 18，可與觀景台一起看'},
-      {label:'Praga 區塗鴉與 Koneser 舊釀酒廠', when:'午餐後彈性時段', map:'https://www.google.com/maps/search/?api=1&query=Centrum%20Praskie%20Koneser%2C%20plac%20Konesera%202%2C%20Warszawa', why:'起義博物館到皇家城堡之間若時間寬裕，可繞道河對岸 Praga 感受工業改造街區，步行或電車皆可'},
+      {label:'Praga 區塗鴉與 Koneser 舊釀酒廠', when:'僅在取消一館或另一天有完整空檔時', map:'https://www.google.com/maps/search/?api=1&query=Centrum%20Praskie%20Koneser%2C%20plac%20Konesera%202%2C%20Warszawa', why:'位於維斯瓦河對岸；三館日依皇家城堡→POLIN→起義博物館移動，沒有順路跨河時段。若要另訪，須重新安排交通與入場時段'},
       {label:'科學文化宮 30F 觀景台夜景版', when:'起義博物館後、晚餐前', map:'https://www.google.com/maps/search/?api=1&query=Pa%C5%82ac%20Kultury%20i%20Nauki%2C%20plac%20Defilad%201%2C%20Warszawa', why:'全票 30／優待 25 PLN · 每日開放與售票皆至 20:00；夜間場（35 PLN）只在週五六且官方只排到 9 月底，10/30 沒有晚間延長場'},
     ],
     backup: [
@@ -326,14 +329,14 @@ export const days = [
   {
     n: 8, date: '10/31 (六)', city: '華沙 → 多哈',
     title: '機場日 · 14:40 QR 260 起飛',
-    headline: '從容收尾 · SKM 機場線 20 分鐘',
+    headline: '從容收尾 · SKM 機場線約 25–30 分鐘，另留候車與找月台時間',
     tag: 'Departure',
     intensity: '低',
     hardConstraints: ['11:00 前抵達華沙蕭邦機場', '如需退稅需預留更多機場時間', '不排正式景點'],
     mustBook: [],
     compressible: ['飯店周邊散步', '最後採買'],
     steps: [
-      {t:'08:00', id:'d8-breakfast', label:'早餐 + 老城散步', sub:'Café Bristol（Krakowskie Przedmieście，Hotel Bristol 內）；A. Blikle 09:00 才開門，不適合當早餐', cost:'PLN 40', dur:'1.5 h'},
+      {t:'08:00', id:'d8-breakfast', label:'飯店或中央車站附近早餐', sub:'先確認 Hotel Metropol 住宿是否含早餐及供餐時段；未含餐時在飯店至 Warszawa Centralna 的路線上選擇當日營業店家。Café Bristol 位於老城方向，這天不特地往返。', cost:'依實際選擇', dur:'約 45–60 min'},
       {t:'09:45', label:'退房 → Warszawa Centralna', sub:'由 Hotel Metropol 出發；依行李狀況步行或叫車，當日再用導航重算並預留找月台緩衝', dur:'30–45 min'},
       {t:'10:30', label:'SKM S2／S3 目標班次', sub:'回程往機場方向：S2 由 Warszawa Śródmieście 上車、S3 由 Warszawa Centralna 上車（兩線停靠站不同，看清楚再上）。官方標示 75 分鐘第 1 區票；當日查 WTP 月台與發車時間', cost:'75 分第 1 區票 4.40', dur:'約 25–30 min'},
       {t:'11:00', label:'抵 Chopin 第一航廈'},
@@ -342,7 +345,7 @@ export const days = [
     ],
     eat: [],
     backup: [
-      {label:'早餐備案', where:'Bar Mleczny Prasowy（Marszałkowska 10/16）', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Prasowy%2C%20Marsza%C5%82kowska%2010%2F16%2C%20Warszawa', why:'⚠️ 已不是可靠備案：2026-09-17 華沙市府旅遊資訊中心列 Marszałkowska 10/16 這家為週一 09:00–20:00、週二–日 09:00–19:00，10/31（六）09:00 才開，趕不上 08:00 早餐與 09:45 退房。網路上的「08:00 開」屬 Powiśle 分店（Zajęcza 1a）。此店也在 Marszałkowska 南端，與旅館（99a）不是步行五分鐘。若 Café Bristol 有異，改找退房路線上或車站內的選擇'},
+      {label:'早餐備案', where:'Warszawa Centralna 車站內當日營業的咖啡或麵包店', map:'https://www.google.com/maps/search/?api=1&query=Warszawa%20Centralna%20coffee%20bakery', why:'由 Hotel Metropol 往機場鐵路站時順路購買；店家和週六開門時間尚未指定，前一晚確認。Bar Mleczny Prasowy（Marszałkowska 10/16）週六 09:00 才開且不順路，不列為 08:00 早餐備案'},
       {label:'班機提早 2 h', where:'蕭邦機場 1F Costa Coffee · 觀景窗', map:'https://www.google.com/maps/search/?api=1&query=Warsaw%20Chopin%20Airport%20Terminal%20A', why:'退稅 + 安檢順可能 12:30 就過關，1F 貴賓區外有平價咖啡'},
       {label:'紀念品最後採買', where:'先在飯店旁 Złote Tarasy 補齊，機場店只作最後備案', map:'https://www.google.com/maps/search/?api=1&query=Z%C5%82ote%20Tarasy%2C%20Z%C5%82ota%2059%2C%20Warszawa', why:'Złote Tarasy 就在 Warszawa Centralna 對面、距 Hotel Metropol 約 500 公尺，一–六約 09:00 開門，距 09:45 退房出發僅 45 分鐘，還需往返與結帳；伴手禮宜前一天買齊，未核實的機場價差不作預算依據'},
     ],
