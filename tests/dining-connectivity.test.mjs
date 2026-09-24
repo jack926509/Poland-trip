@@ -127,7 +127,7 @@ test('餐飲類圖釘（star1/star2/bib/food）都帶 placeId，且導航連結�
       assert.equal(url, diningPlaces[placeId].map, `${city}／${name} 的圖釘導航連結與門市主檔不一致`);
     }
   }
-  assert.equal(checked, 22);
+  assert.equal(checked, 24);
 });
 
 test('「行程餐廳營業時間」表 = 每日餐位中已核實／部分核實的門市集合', () => {

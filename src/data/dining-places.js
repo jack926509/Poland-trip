@@ -168,19 +168,19 @@ export const diningPlaces = {
     "id": "krakow-bar-mleczny-pod-temida",
     "cityKey": "krakow",
     "name": "Bar Mleczny Pod Temidą",
-    "address": "Grodzka 43, Kraków（未經官方查核）",
+    "address": "Grodzka 43, Kraków",
     "map": "https://maps.app.goo.gl/xCGDapoy56MBvg2y7?g_st=il",
-    "hours": "營業時間待確認",
-    "sourceUrl": null,
-    "checkedAt": null,
-    "verificationStatus": "pending",
+    "hours": "每日 09:00–20:00",
+    "sourceUrl": "https://podtemida.pl/",
+    "checkedAt": "2026-09-24",
+    "verificationStatus": "verified",
     "notes": [
       "Grodzka 43 · 中央廣場往 Wawel 的順路平價選擇",
       "Grodzka 43 · 在中央廣場與 Wawel 之間，適合排平價早餐或午餐；",
       "Grodzka 43，老城區最方便的牛奶吧，pierogi、湯品與馬鈴薯煎餅都便宜；",
-      "10/25 正好是週日，出發前務必電話 +48 12 422 08 74 確認，並先想好同區的替代午餐（克拉科夫餐廳表的必比登選項或中央廣場周邊）。"
+      "10/25 週日適用官網每日 09:00–20:00 時段；若臨時休店，可改中央廣場周邊午餐。"
     ],
-    "verificationNote": "找不到店家一手網站；第三方對週日是否營業互相矛盾。現有 Grodzka 43 只保留在原行程地圖，不升級成已核實地址或時段。"
+    "verificationNote": "2026-09-24 瀏覽器讀取官網頁尾：pon - niedz.: 9-20；頁首確認 Grodzka 43（頁尾街名 Gordzka 為拼字誤植）。電話 +48 12 422 08 74。"
   },
   "krakow-bottiglieria-1881": {
     "id": "krakow-bottiglieria-1881",
@@ -456,16 +456,16 @@ export const diningPlaces = {
     "name": "Restauracja Wrocławska",
     "address": "Szewska 59/60, Wrocław",
     "map": "https://www.google.com/maps/search/?api=1&query=Restauracja%20Wroc%C5%82awska%20Szewska%2059/60%2C%20Wroc%C5%82aw",
-    "hours": "開門時間待確認；週日至週四廚房至 21:30、酒吧至 22:00；週五、週六廚房至 22:00、酒吧至 00:00",
-    "sourceUrl": "https://wroclawska.com.pl/kontakt/",
-    "checkedAt": "2026-09-19",
-    "verificationStatus": "partial",
+    "hours": "每日 12:00 開門；週日至週四廚房至 21:30、酒吧至 22:00；週五、週六廚房至 22:00、酒吧至 00:00",
+    "sourceUrl": "https://restauracja-wroclawska.eatbu.com/?lang=en",
+    "checkedAt": "2026-09-24",
+    "verificationStatus": "verified",
     "notes": [
       "戰前樂斯拉夫風味，招牌 bigos 與西里西亞餃；",
       "Day 5（10/28 週三）午餐首選。",
       "訂位電話 +48 71 305 12 28、restauracja@wroclawska.com.pl。"
     ],
-    "verificationNote": "官方聯絡頁只列結束時間，未列開門時間；不可把 12:00 當成已核實。"
+    "verificationNote": "2026-09-24 已讀出店家 DISH 官網完整週時段；廚房收單時間另以 wroclawska.com.pl/kontakt/ 核對。12:30 可安排午餐，但出餐速度未獲保證。"
   },
   "wroclaw-piwnica-swidnicka": {
     "id": "wroclaw-piwnica-swidnicka",
@@ -558,14 +558,14 @@ export const diningPlaces = {
     "name": "Hyćka",
     "address": "Rynek Śródecki 17, Poznań",
     "map": "https://www.google.com/maps/search/?api=1&query=Hy%C4%87ka%20Rynek%20%C5%9Ar%C3%B3decki%2017%2C%20Pozna%C5%84",
-    "hours": "週四 11:00 起；完整週時段未由目前可讀官網確認",
+    "hours": "週一 11:00–20:00；週二、週三 11:00–21:00；週四、週五 11:00–22:00；週六 12:00–22:00；週日 12:00–20:00",
     "sourceUrl": "https://hycka.pl/",
-    "checkedAt": "2026-09-19",
-    "verificationStatus": "partial",
+    "checkedAt": "2026-09-24",
+    "verificationStatus": "verified",
     "notes": [
       "大波蘭菜 · 招牌：烤鴨配 pyzy 蒸糰（Muga 主廚推薦）"
     ],
-    "verificationNote": "沿用舊報告的週四查核值；本輪官網可再確認地址，但未顯示完整營業時間。"
+    "verificationNote": "官網列完整週時段與 Rynek Śródecki 17；只接受電話訂位：+48 535 045 035。"
   },
   "warsaw-bar-mleczny-prasowy-marszalkowska": {
     "id": "warsaw-bar-mleczny-prasowy-marszalkowska",
@@ -742,29 +742,31 @@ export const diningPlaces = {
     "id": "wroclaw-el-gato-specialty-coffee",
     "cityKey": "wroclaw",
     "name": "El Gato Specialty Coffee",
-    "address": "門牌待確認",
-    "map": "https://www.google.com/maps/search/?api=1&query=El%20Gato%20Specialty%20Coffee%20Roasters%20Odrza%C5%84ska%208/1%2C%20Wroc%C5%82aw",
-    "hours": "仍待確認——2026-09-18 再查官網，全站只列地址與品牌介紹、沒有任何門市營業時間；站內原記的「一–五 09:00–18:00、六日 10:00–18:00」查無一手出處，維持撤下。到店前看店家官方社群當日公告",
-    "sourceUrl": null,
-    "checkedAt": null,
-    "verificationStatus": "pending",
+    "address": "Odrzańska 8, Wrocław",
+    "map": "https://www.google.com/maps/search/?api=1&query=El%20Gato%20Specialty%20Coffee%20Roasters%20Odrza%C5%84ska%208%2C%20Wroc%C5%82aw",
+    "hours": "每日 08:00–20:00（Odrzańska 8 分店）",
+    "sourceUrl": "https://elgatocoffee.pl/kontakt/",
+    "checkedAt": "2026-09-24",
+    "verificationStatus": "verified",
     "notes": [
-      "Day 5 午餐後咖啡，樂斯拉夫精品咖啡選項。查得資料顯示這是自家烘豆的 El Gato Coffee Roasters，市中心門市地址可能為 Odrzańska 8/1（尚未經官方查核），品牌在樂斯拉夫與 Trzebnica 共 4 處門市——到店前務必再次確認是否為「Odrzańska 8/1」這一間。"
-    ]
+      "老城 Odrzańska 8 分店，自家烘豆咖啡；Day 5 有餘裕時安排。"
+    ],
+    "verificationNote": "官方聯絡頁逐分店列時段；先前 09:00–18:00／週末 10:00–18:00 屬 Trzebnica，不能套用 Wrocław 老城分店。"
   },
   "wroclaw-dessert-boutique": {
     "id": "wroclaw-dessert-boutique",
     "cityKey": "wroclaw",
     "name": "Dessert Boutique",
-    "address": "門牌待確認",
+    "address": "Świętego Mikołaja 43, Wrocław",
     "map": "https://www.google.com/maps/search/?api=1&query=Dessert%20Boutique%20%C5%9Awi%C4%99tego%20Miko%C5%82aja%2043%2C%20Wroc%C5%82aw",
-    "hours": "二–五 12:00–19:00、六日 11:00–20:00",
-    "sourceUrl": null,
-    "checkedAt": null,
-    "verificationStatus": "pending",
+    "hours": "實體店：週二至週五 12:00–19:00；週六、週日 11:00–20:00；週一未列",
+    "sourceUrl": "https://dessertboutique.pl/pages/contact",
+    "checkedAt": "2026-09-24",
+    "verificationStatus": "partial",
     "notes": [
       "Świętego Mikołaja 43，Day 5 甜點候選，樂斯拉夫精緻歐式甜點店。"
-    ]
+    ],
+    "verificationNote": "官方聯絡頁與門市頁一致；週一實體店狀態未列，線上服務每日 09:00–17:00 不等於門市營業時間。Day 5 週三適用 12:00–19:00。"
   },
   "poznan-cukiernia-kandulski": {
     "id": "poznan-cukiernia-kandulski",
@@ -860,14 +862,14 @@ export const diningPlaces = {
     "name": "Specjały Regionalne",
     "address": "Nowy Świat 44, Warszawa",
     "map": "https://www.google.com/maps/search/?api=1&query=Specja%C5%82y%20Regionalne%20Nowy%20%C5%9Awiat%2044%2C%20Warszawa",
-    "hours": "營業時間待確認",
-    "sourceUrl": "https://specjalyregionalne.pl/",
-    "checkedAt": null,
-    "verificationStatus": "pending",
+    "hours": "品牌門市頁：週日至週四 11:30–22:00；週五、週六 11:30–23:00（與另一官方站版本不一致）",
+    "sourceUrl": "https://www.specjalyregionalne.pl/sklepy-stacjonarne/",
+    "checkedAt": "2026-09-24",
+    "verificationStatus": "partial",
     "notes": [
       "波蘭地方料理。"
     ],
-    "verificationNote": "店家公司頁面曾同時出現 11:30 與 12:00 開門兩種版本，無法建立唯一可靠時段；用餐日前應由訂位頁或電話確認。"
+    "verificationNote": "2026-09-24 品牌門市頁確認 Nowy Świat 44 與上述時段；polishcuisine.pl 另列每日 12:00 開門、週五六至 23:30，其餘至 22:00，仍需訂位確認。10/24 19:00 晚餐在兩版時段交集內；電話 +48 662 254 215。"
   },
   "warsaw-pyzy-flaki-gorace": {
     "id": "warsaw-pyzy-flaki-gorace",
@@ -875,14 +877,14 @@ export const diningPlaces = {
     "name": "Pyzy Flaki Gorące",
     "address": "Podwale 5, Warszawa",
     "map": "https://www.google.com/maps/search/?api=1&query=Pyzy%20Flaki%20Gor%C4%85ce%20Podwale%205%2C%20Warszawa",
-    "hours": "營業時間待確認",
+    "hours": "官方已列：週一至週五 12:00–22:00；週日 12:00–21:00；週六漏列",
     "sourceUrl": "https://www.pyzyflakigorace.pl/kontakt/",
-    "checkedAt": null,
-    "verificationStatus": "pending",
+    "checkedAt": "2026-09-24",
+    "verificationStatus": "partial",
     "notes": [
       "老城店，馬鈴薯糰與牛肚湯。"
     ],
-    "verificationNote": "官方聯絡頁確認 Podwale 5，並列週一至五 12:00–22:00、週日 12:00–21:00，但漏列週六；10/24（週六）不可據此推定營業。"
+    "verificationNote": "2026-09-24 官方聯絡頁仍漏列週六；10/24（週六）須向 Podwale 5 分店電話 +48 722 255 245 確認，不能用平日時段推定。"
   },
   "krakow-hankki": {
     "id": "krakow-hankki",
@@ -978,14 +980,14 @@ export const diningPlaces = {
     "name": "MEI",
     "address": "Solec 81B, Warszawa",
     "map": "https://www.google.com/maps/search/?api=1&query=MEI%20Solec%2081B%2C%20Warszawa",
-    "hours": "營業時間待確認",
-    "sourceUrl": "https://mei.eatbu.com/?lang=pl",
-    "checkedAt": null,
-    "verificationStatus": "pending",
+    "hours": "週一至週四、週日 12:00–21:00；週五、週六 12:00–22:00",
+    "sourceUrl": "https://mei.eatbu.com/?lang=en",
+    "checkedAt": "2026-09-24",
+    "verificationStatus": "verified",
     "notes": [
       "韓式烤肉。"
     ],
-    "verificationNote": "店家官網確認 Solec 81B、電話 +48 571 219 973 與韓式燒肉服務，但動態營業時間未能讀出；需電話確認。"
+    "verificationNote": "2026-09-24 以瀏覽器讀出店家官網動態週時段及官方 Google Maps 商家定位；電話 +48 571 219 973。"
   },
   "warsaw-qq-warsaw-matcha-korean-toasts": {
     "id": "warsaw-qq-warsaw-matcha-korean-toasts",
