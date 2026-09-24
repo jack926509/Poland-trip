@@ -567,7 +567,7 @@ const unresolvedStepReasons = {
   },
   2: {
     'EIP 5300 前往克拉科夫': dynamicTransitReason,
-    '車站周邊午餐': flexibleStopReason,
+    '老城午餐 · Pod Temidą': flexibleStopReason,
     '步行經 Kazimierz、Podgórze 前往辛德勒工廠': '步行沿途短停保持彈性；以辛德勒工廠入口地址為終點，17:10 前到場。',
   },
   3: {
