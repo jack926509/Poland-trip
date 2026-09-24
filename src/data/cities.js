@@ -155,7 +155,7 @@ export const photoCredits = [
 // 的修正，直接來自 poland-travel-guide-final.html:565 的 CITIES 物件。
 // 校正表 3-2 記的「克拉科夫 19 個圖釘」是加入已確認住宿圖釘前的數字；
 // 2026-09-08 移除 4 個未逐店確認的 Żabka 精確圖釘；超商仍保留在購物資料，現場依即時搜尋選分店。
-// 地圖現為 14／18／9／7，合計 48；其中 45 個門牌／場館錨點、3 個面狀區域代表點。
+// 2026-09-24 新增 MEI、Restauracja Wrocławska 官方導航點：15／18／10／7，合計 50；47 個門牌／場館錨點、3 個範圍代表點。
 // （2026-09-14 撤除 5 個餐廳表已無此店的孤兒圖釘，由 53 降為 48。）
 export const mapPins = {
   warsaw: {
@@ -174,6 +174,7 @@ export const mapPins = {
       [52.2333197, 21.0149273, "Pijalnia Czekolady E.Wedel（巧克力）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJ--12WPTMHkcRgAvh-nOeA94", "shop"],
       [52.2310334, 21.0187045, "Vitkac", "精品百貨", "https://maps.google.com/?cid=6893272886103886879", "luxury"],
       [52.2215267, 21.0204772, "Chylak（波蘭設計師包款）", "精品", "https://maps.google.com/?cid=2015234439722332980", "luxury"],
+      [52.2340388, 21.031448, "MEI", "韓式烤肉 · Solec 81B", diningPlaces['warsaw-mei'].map, "food", null, 'warsaw-mei'],
       stayPin(['warsaw-metropol-arrival', 'warsaw-metropol']),
     ],
   },
@@ -211,6 +212,7 @@ export const mapPins = {
       [51.114762, 17.031129, "Most ★", "米其林一星", diningPlaces['wroclaw-most'].map, "star1", null, 'wroclaw-most'],
       [51.112463, 17.029103, "IDA kuchnia i wino", "必比登", diningPlaces['wroclaw-ida-kuchnia-i-wino'].map, "bib", null, 'wroclaw-ida-kuchnia-i-wino'],
       [51.112672, 17.034294, "Bar Mleczny Miś", "全城最有名牛奶吧", diningPlaces['wroclaw-bar-mleczny-mis'].map, "food", null, 'wroclaw-bar-mleczny-mis'],
+      [51.111136, 17.035006, "Restauracja Wrocławska", "地方料理 · Szewska 59/60", diningPlaces['wroclaw-restauracja-wroclawska'].map, "food", null, 'wroclaw-restauracja-wroclawska'],
       stayPin('wroclaw-piast'),
     ],
   },
@@ -250,7 +252,10 @@ export const mapPinChecks = Object.fromEntries(
   ]),
 );
 
+// 2026-09-24：以下兩點直接採官方導航的目的地；distanceMeters=0 表示與來源相同，非實測誤差。
+// 證據與限制：docs/research/2026-09-24-pending-details.md。
 Object.assign(mapPinChecks.warsaw, {
+  'MEI': {status:'coordinate-verified', checkedAt:'2026-09-24', coordinateSource:'https://mei.eatbu.com/?lang=en — 官方 Google Maps 商家連結 !3d52.2340388!4d21.031448', distanceMeters:0},
   'Alon Omakase ★': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:7},
   '皇家城堡': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:80},
   'POLIN 猶太史博物館': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:26},
@@ -287,6 +292,7 @@ Object.assign(mapPinChecks.krakow, {
   'Kazimierz 猶太區': {status:'area-reference', checkedAt:'2026-09-08', coordinateSource:'Google Maps 街區範圍／OpenStreetMap 面狀地物', note:'街區範圍代表點，請依當日目的地導航。'},
 });
 Object.assign(mapPinChecks.wroclaw, {
+  'Restauracja Wrocławska': {status:'coordinate-verified', checkedAt:'2026-09-24', coordinateSource:'https://wroclawska.com.pl/kontakt/ — Wyznacz trasę 目的地 51.111136,17.035006', distanceMeters:0},
   '中央市集廣場': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:73},
   'Afrykarium 動物園': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:34},
   // 2026-09-18 升級來源：halastulecia.pl 官方「Praktyczne informacje」頁自行公布 51°06′25″N 17°04′37″E，

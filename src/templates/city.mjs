@@ -245,7 +245,7 @@ export function renderCity({
     <section class="section journal-city-map">
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
       <p class="lead">拖曳、滾輪、雙擊或使用按鈕縮放；手機可用雙指縮放，點選圖釘可直接開啟 Google Maps。</p>
-      <div class="callout-note"><b>座標狀態：</b>${mapCheckSummary.precise} 個門牌／場館錨點已比對${mapCheckSummary.area ? `，${mapCheckSummary.area} 個街區或島區採範圍代表點` : ''}。座標查證於 2026/08/11–15，本次發布複核於 2026/09/08；未確認分店的 Żabka 不放精確圖釘，抵達後請用即時地圖搜尋附近分店。</div>
+      <div class="callout-note"><b>座標狀態：</b>${mapCheckSummary.precise} 個門牌／場館錨點已比對${mapCheckSummary.area ? `，${mapCheckSummary.area} 個街區或島區採範圍代表點` : ''}。既有座標於 2026/08/11–09/08 查核；MEI 與 Restauracja Wrocławska 於 2026/09/24 採店家官方導航目的地補入；未確認分店的 Żabka 不放精確圖釘，抵達後請用即時地圖搜尋附近分店。</div>
       <div class="map-toolbar" role="group" aria-label="${city.name}地圖縮放控制">
         <button type="button" data-map-action="zoom-in">＋ 放大</button>
         <button type="button" data-map-action="zoom-out">－ 縮小</button>

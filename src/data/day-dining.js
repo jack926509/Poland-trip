@@ -28,7 +28,7 @@ export const dayDiningPlans = {
     {
       "placeId": "krakow-bar-mleczny-pod-temida",
       "role": "午餐首選",
-      "note": "中央廣場往 Wawel 路上的牛奶吧；週日營業待電話確認，未確認前不要作為唯一午餐。",
+      "note": "Grodzka 43、中央廣場往 Wawel 路上的牛奶吧；官網已確認每日 09:00–20:00，週日可安排。",
       "stepId": "d2-lunch",
       "planStatus": "scheduled"
     },
@@ -92,7 +92,7 @@ export const dayDiningPlans = {
     {
       "placeId": "wroclaw-restauracja-wroclawska",
       "role": "午餐首選",
-      "note": "12:30 預留午餐；開門時間及快速出餐尚未核實，先向店家確認。若無法在 13:15 前離開，改在全景畫附近外帶。",
+      "note": "12:30 預留午餐；官網已確認 12:00 開門。仍須先確認快速出餐，若無法在 13:15 前離開，改在全景畫附近外帶。",
       "stepId": "d5-lunch",
       "planStatus": "scheduled"
     },
