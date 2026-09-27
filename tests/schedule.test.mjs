@@ -55,11 +55,11 @@ test('parseStepTime 對沒有時刻的步驟回 null 而不拋錯', () => {
   }
 });
 
-test('trip.js 全部 steps[].t 皆可解析', () => {
+test('trip.js 已知時刻皆可解析，三段未知抵達時間清楚標示', () => {
   const failures = [];
   for (const day of trip.days) {
     for (const step of day.steps) {
-      if (step.t && parseStepTime(step.t) === null) failures.push(`Day ${day.n}：${step.t}`);
+      if (step.t && step.t !== '抵站後' && parseStepTime(step.t) === null) failures.push(`Day ${day.n}：${step.t}`);
     }
   }
   assert.deepEqual(failures, [], `無法解析的時刻：${failures.join('、')}`);

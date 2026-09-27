@@ -9,7 +9,7 @@ const overridePath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'tr
 const syncMeta = readSyncOverrides();
 
 // 精煉切片 3 已把 Lajkonik 巴士與四段城際火車的時刻、票價收斂進 rail.js，但
-// 這個檔案裡還留了幾處手抄的 Lajkonik 去程時刻／票價與 EIP 5300 抵站時刻
+// 這個檔案裡還留了幾處手抄的 Lajkonik 去程時刻／票價與 EIP 5300 發車時刻
 // （切片 4b 補的殘留，見 data-audit.md 切片 4 說明）；改用 rail.js 的資料，
 // 不再另打一份第二份數字。
 const lajkonikOutboundAdopted = auschwitzBus.outbound.services.find(item => item.decision === '採用');
@@ -83,9 +83,9 @@ const databaseEntriesBase = [
   {
     id: 'rail-trip-tickets', section: 'rail', category: 'transit', cityKey: 'ROUTE',
     title: '本次城際車票',
-    summary: '本次華沙、克拉科夫、樂斯拉夫與波茲南間的車次、車廂、座位與 through-ticket 狀態尚待於官方售票系統確認。',
-    status: 'pending', sourceUrl: null, verifiedAt: null, recheckAt: '2026-09-23',
-    offlineNote: 'PKP 購票後保存車票 PDF 與月台查詢連結；分開買票要留意轉乘保障可能不同。', private: false,
+    summary: '2026-09-28 旅客提供的 App 票券清單顯示 10/25 EIP 5300、10/27 IC 3830、10/28 IC 260 已購票；10/29 波茲南→華沙尚未見票券。前三段的抵達時間、艙等、車廂與座位仍待票券詳細頁核對。',
+    status: 'pending', sourceUrl: null, verifiedAt: '2026-09-28', recheckAt: '2026-09-28',
+    offlineNote: '保存已購三段車票離線副本並核對詳細資料；10/29 車票仍待購。搭車前用 Passenger Portal 查月台與異動。', private: false,
   },
   {
     id: 'rail-station-directory', section: 'rail', category: 'transit', cityKey: 'PL',
@@ -330,7 +330,6 @@ const accommodationAddress = (id, stepLabels = []) => {
 const addressStepLabels = {
   '華沙蕭邦機場': ['抵蕭邦機場', '抵 Chopin 第一航廈', '退稅文件 + 報到 + 安檢', '★ QR 260 起飛'],
   'Warszawa Centralna': ['退房 → Warszawa Centralna', '抵華沙中央車站', '抵 Warszawa Centralna'],
-  'Warszawa Zachodnia': ['抵票面上車站'],
   '華沙皇家城堡': ['★ 皇家城堡'],
   '華沙老城市場廣場': ['★ 老城廣場', '老城廣場夜燈漫步', '早餐 + 老城散步'],
   'Krakowskie Przedmieście': ['Krakowskie Przedmieście'],
@@ -341,7 +340,7 @@ const addressStepLabels = {
   '中央廣場 Rynek Główny': ['★ 中央廣場 + 聖瑪利亞', '★ 中央廣場 + 紡織會館'],
   '聖瑪利亞聖殿': ['★ 中央廣場 + 聖瑪利亞'],
   '紡織會館 Sukiennice': ['紡織會館 Sukiennice 快速一覽', '紡織會館 Sukiennice 採購收尾', '★ 中央廣場 + 紡織會館'],
-  'Plac Nowy': ['★ Kazimierz Plac Nowy zapiekanka 晚餐', '★ Kazimierz 白天散步'],
+  'Plac Nowy': ['★ Kazimierz Plac Nowy zapiekanka 晚餐'],
   'Auschwitz I 訪客服務中心／入口': ['抵 Auschwitz I', '★ 英文官方導覽（已訂妥）', '導覽結束'],
   '維利奇卡鹽礦': ['★ Wieliczka 鹽礦 Tourist Route 英文團'],
   'Wrocław Główny': ['抵 Wrocław Główny'],
@@ -404,7 +403,6 @@ export const dayOperations = {
     note: '非營業週日；火車班次與餐廳營業當日確認。',
     addresses: [
       venueCard('warsaw-centralna-station', 'Warszawa Centralna'),
-      venueCard('warsaw-zachodnia-station', 'Warszawa Zachodnia'),
       venueCard('krakow-glowny-station', 'Kraków Główny'),
       venueCard('krakow-wawel-cathedral', '瓦維爾大教堂'),
       venueCard('krakow-wawel-castle', '瓦維爾皇家城堡'),
@@ -417,12 +415,12 @@ export const dayOperations = {
       accommodationAddress('krakow-stare-miasto', ['旅館寄放行李']),
     ],
     navigation: [
-      { mode: 'PKP', route: '華沙 → Kraków Główny', action: `目前採 EIP 5300 參考 ${eip5300.dep}–${eip5300.arr}。現行班表本車先停 Warszawa Centralna（約 08:40）再停 Zachodnia（約 ${eip5300.dep}），住宿改 Hotel Metropol 後由 Centralna 上車只需步行約 500 公尺；10/25 換表後核實實際停靠站，完成購票後只依票面車次、上車站、車廂與座位進站。` },
+      { mode: 'PKP', route: 'Warszawa Centralna → Kraków Główny', action: `已購 EIP 5300 ${eip5300.dep} 由 Warszawa Centralna 出發；從 Hotel Metropol 步行約 500 公尺。抵達時間、月台、車廂與座位依票券詳細頁及現場電子牌確認。` },
       { mode: '步行／市內交通', route: 'Kraków Główny → Wawel → Kazimierz → Podgórze → 辛德勒工廠', action: '先寄放行李；15:45 由老城出發，沿 Kazimierz、Podgórze 步行，17:10 前到辛德勒工廠。若延誤則用 Jakdojade 查即時市內交通。' },
     ],
     dailyAlerts: [
       '10/25 為非營業週日，多數一般商店關閉；餐廳與例外店家仍逐店確認。',
-      `EIP 5300 的 ${eip5300.dep}–${eip5300.arr} 是參考班次；完成指定日核實與購票前，不把它當成已確定發車。`,
+      `EIP 5300 已購票，${eip5300.dep} 由 Warszawa Centralna 發車；抵達時間與車廂座位待查票面。`,
     ],
     nightChecklist: [...standardNightChecklist, '確認 Auschwitz 官方導覽姓名、入場時段、行李限制與往返車票狀態'],
   },
@@ -459,11 +457,11 @@ export const dayOperations = {
     ],
     navigation: [
       { mode: 'KMŁ', route: 'Kraków Główny ↔ Wieliczka Rynek-Kopalnia', action: '以當日時刻表與售票頁為準；下車後步行前往 Daniłowicza 立坑入口。' },
-      { mode: 'PKP', route: 'Kraków Główny → Wrocław Główny', action: '目前採 IC 3600 參考 17:55–20:52；17:20 前到站，指定日核實並購票後依票面班次行動。' },
+      { mode: 'PKP', route: 'Kraków Główny → Wrocław Główny', action: '已購 IC 3830 16:45；15:00 結束 Kazimierz，16:10 前抵站。抵達時間、車廂與座位待查票面。' },
     ],
     dailyAlerts: [
       '鹽礦全程階梯多、地下約 17–18°C；穿好走防滑鞋並攜薄外套。',
-      '克拉科夫→樂斯拉夫完成購票前，不延長 Kazimierz 活動到壓縮進站緩衝。',
+      '克拉科夫→樂斯拉夫已購 IC 3830 16:45；Kazimierz 最遲 15:00 收尾，鹽礦延誤就跳過。',
     ],
     nightChecklist: [...standardNightChecklist, '抵達樂斯拉夫後確認隔日 Panorama 時段票、行李寄放與往波茲南的已購車票'],
   },
@@ -482,7 +480,7 @@ export const dayOperations = {
     ],
     navigation: [
       { mode: '步行／市內交通', route: '老城 → Panorama → 百年廳 → 座堂島', action: '百年廳跨區移動當日用 Jakdojade 選取實際電車；預留從座堂島回車站取行李的時間。' },
-      { mode: 'PKP', route: 'Wrocław Główny → Poznań Główny', action: '目前採 Baltic Express 260 參考 19:10–20:29；18:35 前到站，指定日核實並購票後依票面班次行動。' },
+      { mode: 'PKP', route: 'Wrocław Główny → Poznań Główny', action: '已購 IC 260 19:10；18:35 前抵站。抵達時間、車廂與座位待查票面。' },
     ],
     dailyAlerts: [
       '百年廳 10/28 的內部參觀狀態須以官方 availability calendar 確認；未確認前只排外觀與周邊。',
@@ -580,11 +578,12 @@ const unresolvedStepReasons = {
   4: {
     '火車到 Wieliczka Rynek-Kopalnia': dynamicTransitReason,
     'Wieliczka 鎮中心午餐': flexibleStopReason,
-    'IC 3600 前往樂斯拉夫': dynamicTransitReason,
+    'Kazimierz 快速散步（有餘裕才去）': '彈性散步路線；鹽礦延誤時跳過，直接回旅館取行李。',
+    'IC 3830 前往樂斯拉夫': dynamicTransitReason,
   },
   5: {
     '糖果屋雙屋 + 教堂塔樓': '教堂塔樓入口與開放狀態須依當日官方公告確認。',
-    'Baltic Express 260 前往波茲南': dynamicTransitReason,
+    'IC 260 前往波茲南': dynamicTransitReason,
   },
   6: {
     '取行李、前往 Poznań Główny': '公寓寄放與取行李地點須先向住宿確認，再前往車站。',

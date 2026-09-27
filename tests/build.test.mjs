@@ -814,7 +814,8 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
   // 首頁實際算出的待處理數。
   const rawTodoCount = todoGroups.reduce((total, group) => total + group.items.length, 0);
   const todoCount = todoGroups.reduce((total, group) =>
-    total + group.items.filter(item => !['已訂妥', '已完成'].includes(item.status)).length, 0);
+    total + group.items.filter(item => !['已訂妥', '已完成', '已購票'].includes(item.status)).length, 0);
+  assert.equal(todoCount, 12, '三段已購火車與 Auschwitz 導覽不可算進待辦');
 
   assert.ok(!html.includes('出發準備度'));
   assert.ok(!html.includes('00 / Readiness'));
@@ -826,7 +827,7 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
   // 項目本身改到 practical/todos.html 專屬測試驗證。
   for (const group of todoGroups) {
     assert.ok(html.includes(`>${group.title}<`), `首頁缺少待辦分類：${group.title}`);
-    const pending = group.items.filter(item => !['已訂妥', '已完成'].includes(item.status)).length;
+    const pending = group.items.filter(item => !['已訂妥', '已完成', '已購票'].includes(item.status)).length;
     const summary = pending ? `${pending} 項待處理` : '已全部完成';
     assert.ok(html.includes(`href="practical/todos.html#todo-${group.id}"`), `首頁缺少待辦分類連結：${group.id}`);
     assert.ok(html.includes(summary), `首頁缺少待辦分類計數：${group.title}`);
@@ -841,7 +842,7 @@ test('高風險行程文字與餐廳候選不會誤導現場判斷', () => {
   const warsawDining = cityDining.warsaw;
 
   assert.match(luggageStep.sub, /座堂島 → 旅館約 25–30 分/);
-  assert.match(luggageStep.sub, /距參考發車 1h55/);
+  assert.match(luggageStep.sub, /已購 IC 260 19:10 發車/);
   assert.match(luggageStep.sub, /抵站後保留約 35 分鐘緩衝/);
   assert.ok(!warsawDining.some(item => item.name.includes('/')), '餐廳候選不可把多個品牌合併成一筆');
   assert.ok(warsawDining.some(item => item.name === 'NUTA'));
@@ -1018,13 +1019,15 @@ test('Day 7 改為早上皇家城堡，並保留 POLIN 至起義博物館的移�
   assert.doesNotMatch(main, /17:00[^<]{0,80}皇家城堡/);
 });
 
-test('尚未開賣的長途交通與天氣不假裝成已確認', () => {
+test('已購城際火車與未購交通分開標示，未知票面細節不臆測', () => {
   for (const train of trains) {
-    // 城際火車票價未開賣，仍寫「待確認」；Auschwitz 巴士去程班次已在官方售票頁查得，
-    // 但購票前一樣不能當成已訂。
+    // 截圖可確認三段已購，未提供的票價不能臆測；Auschwitz 巴士仍未購。
     if (train.date === '10/26') {
       assert.match(train.status, /尚未購票/);
       assert.match(train.price, /購票日確認/);
+    } else if (train.status === '已購票') {
+      assert.equal(train.arr, '待查票面');
+      assert.equal(train.price, '票價未提供');
     } else {
       assert.match(train.status, /尚未確認|尚未訂票/);
       assert.match(train.price, /待/);
@@ -1039,17 +1042,19 @@ test('尚未開賣的長途交通與天氣不假裝成已確認', () => {
   assert.ok(!allDays.includes('價差 ≤'));
 });
 
-test('四段跨城火車使用採用班次，並保留指定日待確認狀態', () => {
+test('四段跨城火車反映三張已購票券及一段待購', () => {
   assert.deepEqual(
     trains.filter(item => item.type !== 'BUS · Lajkonik').map(item => [item.date, item.type, item.dep, item.arr]),
     [
-    ['10/25', 'EIP 5300', '08:45', '10:58'],
-      ['10/27', 'IC 3600 Siemiradzki', '17:55', '20:52'],
-      ['10/28', 'Baltic Express 260', '19:10', '20:29'],
+    ['10/25', 'EIP 5300', '08:40', '待查票面'],
+      ['10/27', 'IC 3830', '16:45', '待查票面'],
+      ['10/28', 'IC 260', '19:10', '待查票面'],
     ['10/29', 'EIC 8104 Bolesław Prus', '17:40', '20:00'],
     ],
   );
-  assert.match(trains[0].note, /一等艙/);
+  assert.deepEqual(trains.filter(item => item.type !== 'BUS · Lajkonik').map(item => item.status), ['已購票', '已購票', '已購票', '參考班次／尚未訂票']);
+  assert.equal(trains[0].from, 'Warszawa Centralna');
+  assert.ok(!dayOperations[2].addresses.some(item => item.name === 'Warszawa Zachodnia'), 'Day 2 已購中央車站上車票，不應再提供西站導航卡');
 });
 
 test('城際交通提供官方購票、官方時刻表與可操作的購票教學', () => {
@@ -2085,4 +2090,3 @@ test('餐飲資料重整：24 家自選店全部落在資料層（每日餐位�
     }
   }
 });
-

@@ -9,8 +9,10 @@ test('真實行程目前沒有結構錯誤', () => {
   const result = auditSchedule();
   assert.deepEqual(result.errors, []);
   assert.equal(result.stats.days, 8);
-  // 每個有時刻的步驟都要被檢查到；解析失敗會讓這個數字掉下來。
-  const withTime = days.flatMap(day => day.steps).filter(step => step.t).length;
+  // 三段已購車票的抵達時間未顯示，明確用「抵站後」，其餘時刻都要被檢查。
+  const untimedArrivals = days.flatMap(day => day.steps).filter(step => step.t === '抵站後');
+  assert.equal(untimedArrivals.length, 3);
+  const withTime = days.flatMap(day => day.steps).filter(step => step.t && step.t !== '抵站後').length;
   assert.equal(result.stats.stepsChecked, withTime);
 });
 

@@ -9,11 +9,11 @@ import { databaseEntries } from '../src/data/travel-database.js';
 
 const allSources = { ...trip, databaseEntries };
 
-test('四段 PKP 規劃班次保留官方預售日與查核日', () => {
+test('已購三段以截圖車次及發車時間為準，歷史開賣日不掛在新車次', () => {
   const expected = [
-    ['EIP 5300', '2026-09-25', '08:45', '10:58', '2h13'],
-    ['IC 3600', '2026-09-27', '17:55', '20:52', '2h57'],
-    ['BALTIC EXPRESS 260', '2026-09-28', '19:10', '20:29', '1h19'],
+    ['EIP 5300', undefined, '08:40', '待查票面', '待查票面'],
+    ['IC 3830', undefined, '16:45', '待查票面', '待查票面'],
+    ['IC 260', undefined, '19:10', '待查票面', '待查票面'],
     ['EIC 8104', '2026-09-25', '17:40', '20:00', '2h20'],
   ];
 
@@ -21,58 +21,55 @@ test('四段 PKP 規劃班次保留官方預售日與查核日', () => {
     const train = trip.trains.find(item => item.type.toUpperCase().includes(type));
     assert.ok(train, `找不到 ${type}`);
     assert.equal(train.saleOpens, saleOpens);
-    assert.equal(train.saleCheckedAt, '2026-09-08');
+    assert.equal(train.saleCheckedAt, saleOpens ? '2026-09-08' : undefined);
     assert.equal(train.dep, dep);
     assert.equal(train.arr, arr);
     assert.equal(train.dur, dur);
   }
 });
 
-test('訂票頁顯示每段火車的官方預售註記', () => {
+test('訂票頁已購三段不再以歷史開賣日催票，只保留待購段預售註記', () => {
   const html = renderBooking(trip);
 
-  for (const date of ['2026-09-25', '2026-09-27', '2026-09-28']) {
-    assert.match(html, new RegExp(`${date} 起預售`));
-  }
+  assert.match(html, /已購 3／4 段城際火車/);
+  assert.match(html, /2026-09-25 起預售/);
+  assert.doesNotMatch(html, /2026-09-27 起預售|2026-09-28 起預售/);
   assert.match(html, /PKP Intercity 官方售票系統查核：2026-09-08/);
 });
 
-test('倒數看板併入四段火車開賣日，且不與 deadlines 重複維護', () => {
+test('倒數看板只催未購的返華沙火車，不催已購三段', () => {
   const items = collectDeadlines(allSources);
   const rail = items.filter(item => item.category === '火車');
-  assert.equal(rail.length, 4);
-  assert.deepEqual(
-    rail.map(item => item.date).sort(),
-    ['2026-09-25', '2026-09-25', '2026-09-27', '2026-09-28'],
-  );
+  assert.deepEqual(rail.map(item => [item.title, item.date]), [['EIC 8104 Bolesław Prus｜Poznań Główny → Warszawa Centralna', '2026-09-25']]);
   // 火車開賣日的正本是 trains[].saleOpens；手動 deadlines 裡不該再出現一份。
   for (const deadline of trip.deadlines) {
     assert.notEqual(deadline.category, '火車', `deadlines 不應重抄火車開賣日：${deadline.id}`);
   }
-  assert.equal(items.length, 4 + trip.deadlines.length + databaseEntries.filter(entry => entry.recheckAt && isOpenEntryStatus(entry.status)).length);
+  assert.equal(items.length, 1 + trip.deadlines.length + databaseEntries.filter(entry => entry.recheckAt && isOpenEntryStatus(entry.status)).length);
 });
 
 test('倒數以注入的固定日期計算，涵蓋未到期、當天與逾期', () => {
   const items = collectDeadlines(allSources);
   const find = (today, id) => calculateCountdown(items, today).find(item => item.id.includes(id));
 
-  const early = find('2026-09-20', 'eip-5300');
+  const early = find('2026-09-20', 'eic-8104');
   assert.equal(early.daysLeft, 5);
   assert.equal(early.label, 'T-5');
   assert.equal(early.urgency, 'soon');
 
-  const onSaleDay = find('2026-09-25', 'eip-5300');
+  const onSaleDay = find('2026-09-25', 'eic-8104');
   assert.equal(onSaleDay.daysLeft, 0);
   assert.equal(onSaleDay.label, '就是今天');
   assert.equal(onSaleDay.urgency, 'today');
 
-  const late = find('2026-09-26', 'eip-5300');
+  const late = find('2026-09-26', 'eic-8104');
   assert.equal(late.daysLeft, -1);
   assert.equal(late.label, '逾期 1 天');
   assert.equal(late.urgency, 'overdue');
 
   // 距離超過一週的仍是一般狀態，不應該一開始就全表紅色。
-  assert.equal(find('2026-09-01', 'eip-5300').urgency, 'planned');
+  assert.equal(find('2026-09-01', 'eic-8104').urgency, 'planned');
+  assert.equal(find('2026-09-26', 'eip-5300'), undefined);
 });
 
 test('已完成的項目不再被催，不論日期多久以前', () => {
@@ -85,11 +82,11 @@ test('已完成的項目不再被催，不論日期多久以前', () => {
 
 test('nextDeadline 取最迫切的待處理項目，逾期未處理者優先', () => {
   const items = collectDeadlines(allSources);
-  // 資料庫的車票重查排在開賣日之前，合併後它才是下一件事。
-  assert.equal(nextDeadline(items, '2026-09-14').date, '2026-09-23');
+  // 車票進度更新後，9/24 的 ETIAS 重查成為最早待處理項目。
+  assert.equal(nextDeadline(items, '2026-09-14').date, '2026-09-24');
   // 日期已過卻仍未完成，才是最該動的一件，不能被之後的項目蓋過去。
   const overdue = nextDeadline(items, '2026-09-26');
-  assert.equal(overdue.date, '2026-09-23');
+  assert.equal(overdue.date, '2026-09-24');
   assert.equal(overdue.urgency, 'overdue');
   assert.equal(nextDeadline([], '2026-09-14'), null);
 });

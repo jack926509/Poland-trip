@@ -3,7 +3,7 @@ import { escapeHtml } from '../lib/html.mjs';
 import { bookingProgress } from '../lib/journey.mjs';
 import { renderJourneyOverview } from './journey.mjs';
 import { renderLayout } from './layout.mjs';
-import { getTaipeiToday, collectDeadlines, nextDeadline } from '../scripts/dashboard.js';
+import { getTaipeiToday, collectDeadlines, nextDeadline, isOpenTodoStatus } from '../scripts/dashboard.js';
 
 const cityFileKeys = Object.fromEntries(cityRoutes.map(city => [city.key, city.fileKey]));
 
@@ -36,7 +36,7 @@ function renderNextDeadline({ trains, deadlines, databaseEntries }) {
 }
 
 export function renderHome({ meta, days, flights, cities, todoGroups = [], databaseEntries = [], trains = [], deadlines = [] }) {
-  const todoCount = todoGroups.reduce((total, group) => total + group.items.filter(item => !['已訂妥', '已完成'].includes(item.status)).length, 0);
+  const todoCount = todoGroups.reduce((total, group) => total + group.items.filter(item => isOpenTodoStatus(item.status)).length, 0);
   const syncItems = databaseEntries.length;
   const pendingCount = databaseEntries.filter(entry => entry.status === 'pending').length;
   const recheckCount = databaseEntries.filter(entry => entry.status === 'recheck').length;
@@ -51,7 +51,7 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
   // 的完整清單（21 項）大面積重複。首頁只留「這類還有幾項要處理」的計數
   // 加連結，項目本身只在待辦頁看一次（稽核 M9）。
   const todoCards = todoGroups.map(group => {
-    const pending = group.items.filter(item => !['已訂妥', '已完成'].includes(item.status)).length;
+    const pending = group.items.filter(item => isOpenTodoStatus(item.status)).length;
     return `<a class="card card-link" href="practical/todos.html#todo-${escapeHtml(group.id)}">
       <span class="eyebrow">${escapeHtml(group.eyebrow)}</span>
       <h3>${escapeHtml(group.title)}</h3>

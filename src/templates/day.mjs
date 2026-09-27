@@ -186,7 +186,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
         <span class="eyebrow">${trainSegment.type}${trainSegment.leg ? ` · ${trainSegment.leg}` : ''}</span>
         <h3>${trainSegment.from || ''}${trainSegment.to ? ` → ${trainSegment.to}` : ''}</h3>
         <p><b>${trainSegment.dep} → ${trainSegment.arr}</b> · ${trainSegment.dur} · ${escapeHtml(trainPrice)}</p>
-        ${trainSegment.saleOpens ? `<p><b>上次查得 ${escapeHtml(trainSegment.saleOpens)} 起預售（待複核）</b> · PKP Intercity 官方售票系統查核：${escapeHtml(trainSegment.saleCheckedAt)}</p>` : ''}
+        ${trainSegment.saleOpens && !trainSegment.leg?.includes('已購票') ? `<p><b>上次查得 ${escapeHtml(trainSegment.saleOpens)} 起預售（待複核）</b> · PKP Intercity 官方售票系統查核：${escapeHtml(trainSegment.saleCheckedAt)}</p>` : ''}
         <p class="action-links"><a href="practical/booking.html#rail-itinerary">訂票與交通頁的完整班次表 →</a></p>
       </article>
     </section>` : '';

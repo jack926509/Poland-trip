@@ -940,7 +940,7 @@ export const diningPlaces = {
     "notes": [
       "烏茲別克／喬治亞料理。"
     ],
-    "verificationNote": "官方頁確認地址與完整時段；Day 4 週二 20:52 抵站時仍須考慮 22:00 廚房收單及火車延誤。"
+    "verificationNote": "官方頁確認地址與完整時段；Day 4 週二 IC 3830 抵站時間待查票面，仍須考慮 22:00 廚房收單及火車延誤。"
   },
   "warsaw-yache-korea": {
     "id": "warsaw-yache-korea",

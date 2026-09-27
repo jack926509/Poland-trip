@@ -133,11 +133,11 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
   const reservationRows = reservations.map(item => `<tr><td><b>${item.when}</b></td><td>${item.what}</td></tr>`).join('');
   const trainRows = trains.map(train => `
     <tr>
-      <td><b>${train.seg}</b>${train.leg ? `<br><span class="timeline-note">${train.leg}</span>` : ''}${train.status ? `<br><span class="tag-todo">${train.status}</span>` : ''}</td>
+      <td><b>${train.seg}</b>${train.leg ? `<br><span class="timeline-note">${train.leg}</span>` : ''}${train.status ? `<br><span class="${train.status === '已購票' ? 'tag-muted' : 'tag-todo'}">${train.status}</span>` : ''}</td>
       <td class="number">${train.date}${dayLink(train.date) ? `<br>${dayLink(train.date)}` : ''}</td><td>${train.type}</td>
       <td class="number time-range">${train.dep}&nbsp;→&nbsp;${train.arr}</td>
       <td class="number">${train.dur}</td>
-      <td><b>${train.saleOpens ? `上次查得 ${escapeHtml(train.saleOpens)} 起預售（待複核）` : '官方日期待確認'}</b>${train.saleCheckedAt ? `<br><span class="timeline-note">PKP Intercity 官方售票系統查核：${escapeHtml(train.saleCheckedAt)}</span>` : ''}</td>
+      <td><b>${train.status === '已購票' ? '已購票' : train.saleOpens ? `上次查得 ${escapeHtml(train.saleOpens)} 起預售（待複核）` : '官方日期待確認'}</b>${train.status !== '已購票' && train.saleCheckedAt ? `<br><span class="timeline-note">PKP Intercity 官方售票系統查核：${escapeHtml(train.saleCheckedAt)}</span>` : ''}</td>
       <td class="number">${/^\d/.test(train.price) ? `PLN ${train.price}` : train.price}${train.note ? `<br><span class="timeline-note">${train.note}</span>` : ''}</td>
     </tr>`).join('');
   const railLinkCards = railOfficialLinks.map(item => `
@@ -250,8 +250,7 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
     </section>
     <section class="section" id="rail-itinerary">
       <div class="section-heading"><span class="section-num">Rail</span><h2>城際交通</h2></div>
-      <div class="callout-risk"><span class="tag-todo">歷次查核紀錄／可售狀態待複核</span><p>下表保留 2026-09-08 查得的 PKP Intercity 班次與預售起始日，並非即時可售狀態。2026-09-19 複查尚未取得指定日售票結果；換表期間預售窗口可能調整，請現在進官方系統重查，不必等到舊紀錄日期。班次、時間、價格、車廂與座位仍以購票時的結果為準。</p></div>
-      <p><b>三班評估：</b>10/27 IC 3600 能提早抵達樂斯拉夫；10/28 Baltic Express 260 候選車程僅 1 小時 19 分，最能保留白天遊玩；10/29 EIC 8104 在正午山羊秀與下午行程後出發，並適合加選一等艙體驗。若 10/25 已搭 EIP 一等艙，可依價差決定 10/29 是否再搭一等艙。</p>
+      <div class="callout-note"><b>已購 3／4 段城際火車。</b><p>2026-09-28 依旅客提供的 PKP App 票券清單，確認 10/25 EIP 5300、10/27 IC 3830、10/28 IC 260 的日期、起訖站及發車時間。截圖沒有抵達時間、艙等、車廂、座位與票價；請進票券詳細頁核對。10/29 波茲南 → 華沙仍未見票券，原規劃 EIC 8104 只作購票參考。</p></div>
       <p><a href="https://www.intercity.pl/en/site/for-passengers/trains/about-eic.html" target="_blank" rel="noopener">PKP 官方 EIC 服務說明</a>列有一等艙飲品與點心；指定班次的編組、設備、餐飲與票價仍以購票頁為準。</p>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>路段</th><th>日期</th><th>車種</th><th>時刻</th><th>時長</th><th>預售</th><th>票價</th></tr></thead><tbody>${trainRows}</tbody></table></div>
     </section>
@@ -280,11 +279,12 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
 }
 
 export function renderTodos({ todoGroups }) {
-  const total = todoGroups.flatMap(group => group.items).length;
+  const allItems = todoGroups.flatMap(group => group.items);
+  const total = allItems.filter(item => isOpenTodoStatus(item.status)).length;
   const groupsHtml = todoGroups.map((group, index) => {
     const rows = group.items.map(item => `<tr>
       <td class="number"><b>${item.date}</b></td>
-      <td><b>${item.name}</b><br><span class="tag-todo">${item.status}</span></td>
+      <td><b>${item.name}</b><br><span class="${item.status === '已購票' || item.status === '已訂妥' ? 'tag-muted' : 'tag-todo'}">${item.status}</span></td>
       <td>${toComparableDate(item.checkedAt) ? `<time datetime="${toComparableDate(item.checkedAt)}">${toComparableDate(item.checkedAt)}</time>` : '未記錄，請重查'}${toComparableDate(item.recheckAt) ? `<br>下次查核：<time datetime="${toComparableDate(item.recheckAt)}">${toComparableDate(item.recheckAt)}</time>` : ''}</td>
       <td>${item.action}${item.url ? `<br><a href="${item.url}" target="_blank" rel="noopener">開啟處理頁 →</a>` : ''}</td>
     </tr>`).join('');
@@ -297,7 +297,7 @@ export function renderTodos({ todoGroups }) {
 
   const content = `
     ${renderBookingNotice()}
-    <div class="callout-risk"><span class="tag-todo">${total} 項待辦</span><p>按「要買什麼」而非逐日行程整理。完成後請將票券與訂位資訊離線保存；未開賣項目仍以官方系統實際可售狀態為準。</p></div>
+    <div class="callout-risk"><span class="tag-todo">${total} 項待辦</span><p>共 ${allItems.length} 項，已完成的仍保留在下表供核對。完成後請將票券與訂位資訊離線保存；未開賣項目仍以官方系統實際可售狀態為準。</p></div>
     ${groupsHtml}`.trim();
 
   return renderPracticalLayout('待辦事項', 'Action list', '城際交通、景點、餐飲與雨天備案集中在一頁。先處理有日期與指定場次的票，再處理彈性訂位。', content, 'practical/todos.html');
@@ -616,5 +616,3 @@ export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups
 
   return renderPracticalLayout('資料更新儀表板', 'Ops', '把 dashboard、待辦與網站三者同步；每次更新都先落在欄位、再看頁面。', content, 'practical/ops-dashboard.html');
 }
-
-

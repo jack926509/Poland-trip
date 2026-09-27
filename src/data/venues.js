@@ -407,7 +407,7 @@ export const venues = {
     map: "https://www.google.com/maps/search/?api=1&query=Warszawa%20Zachodnia%2C%20Aleje%20Jerozolimskie%20142A%2C%20Warszawa",
     officialUrl: "https://portalpasazera.pl/en/KatalogStacji",
     address: "Aleje Jerozolimskie 142A, 02-305 Warszawa",
-    entranceNote: "僅在票面上車站為西站時才需前往：由 Hotel Metropol 步行至 Warszawa Centralna 後轉 SKM／KM 約 7–10 分，或用 Jakdojade 查當日大眾運輸；進站後以電子牌確認 EIP 5300 的實際月台。",
+    entranceNote: "若其他行程的票面上車站為西站，先依實際路線規劃前往；進站後以當日電子牌確認月台。10/25 的 EIP 5300 票面上車站是 Warszawa Centralna。",
     coords: null,
     prices: null,
     hours: null,
