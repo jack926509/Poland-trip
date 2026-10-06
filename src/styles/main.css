@@ -1110,6 +1110,14 @@ nav.section-heading > a:last-child {
   font-size: 0.85rem;
 }
 
+/* 表格儲存格內的行內補充文字：不要套區塊用的上框線，否則每行文字看起來像被劃掉 */
+td > span.source-meta {
+  display: block;
+  margin: 0.25rem 0 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
 .source-meta > div {
   display: grid;
   grid-template-columns: 5.5rem 1fr;

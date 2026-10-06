@@ -453,7 +453,7 @@ export function renderNotes({ preDepartureNotes, daylight = [] }) {
   const daylightHtml = daylight.length ? `
     <section class="section" id="daylight">
       <div class="section-heading"><span class="section-num">Daylight</span><h2>八日日照</h2></div>
-      <p>10/25 凌晨夏令時間結束（03:00 回撥 02:00），日落從 Day 1 的 16:52 掉到 Day 2 的 16:04——整趟旅程的戶外可用時間在第二天就少掉近一小時。排傍晚戶外行程、以及判斷哪些拍照站位還成立，都看這張表。</p>
+      <p>10/25 凌晨夏令時間結束（03:00 回撥 02:00），日落從 Day 1 的 ${escapeHtml(daylight[0].sunset)} 掉到 Day 2 的 ${escapeHtml(daylight[1].sunset)}——整趟旅程的戶外可用時間在第二天就少掉約 53 分鐘。排傍晚戶外行程、以及判斷哪些拍照站位還成立，都看這張表。</p>
       <div class="callout-note"><b>資料界線：</b>本表為天文推算值，出發前以天文表複核；不是官方公告時刻。各日行程頁也會顯示當天同一組數值，兩處同源。</div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>日</th><th>日期</th><th>日出</th><th>日落</th><th>藍調結束</th><th>備註</th></tr></thead><tbody>${daylightRows}</tbody></table></div>
     </section>` : '';

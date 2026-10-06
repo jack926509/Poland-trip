@@ -93,7 +93,7 @@ export const days = [
       {t:'抵站後', label:'抵 Kraków Główny', sub:'票券清單未顯示抵達時間；後續 11:10 寄放行李等排程，須依票券詳細頁重核', dur:'5–10 min 拖行李'},
       {t:'11:10', label:'旅館寄放行李', sub:'ibis budget Krakow Stare Miasto，飯店官網標示距車站約 200 公尺', dur:'20 min'},
       {t:'11:30', id:'d2-lunch', label:'老城午餐 · Pod Temidą', sub:'Bar Mleczny Pod Temidą 位於 Grodzka 43；9/24 官網記錄每日 09:00–20:00；10/06 未能完整重讀，出發前再查。這是老城店而非車站內店家，先由車站前往，再沿 Grodzka 往 Wawel', cost:'PLN 40–60', dur:'45 min'},
-      {t:'13:00', label:'★ 瓦維爾大教堂', sub:'週日 12:30–17:00；Cathedral Museum 週日不開', cost:'PLN 26／18', dur:'45 min'},
+      {t:'13:00', label:'★ 瓦維爾大教堂', sub:'週日 12:30–16:00（秋冬季 10–3 月，最後入場 15:30）；Cathedral Museum 週日不開', cost:'PLN 26／18', dur:'45 min'},
       {t:'14:00', label:'★ Wawel 城堡短路線', constraint:{venue:'krakow-wawel-treasury'}, sub:'2026-09-17 官網 9–12 月分路線售票，適合一小時空檔的是：王冠寶庫 47／35、Castle Underground 47／35（含語音導覽）、Armoury 47／35；二樓代表廳 57／43 需時較長。不要硬排一、二樓完整路線，會壓縮後續步行', cost:'寶庫或地下路線 PLN 47／35', dur:'1 h'},
       {t:'15:00', label:'★ 中央廣場 + 聖瑪利亞', sub:'本次先看廣場與教堂外觀，登塔改為有餘裕才安排。整點 Hejnał 號角；塔票僅於 Mariacki 廣場 7 號當日現場售票', cost:'外觀免費', dur:'30 min（含由城堡步行）'},
       {t:'15:30', label:'紡織會館 Sukiennice 快速一覽', sub:'採購留到 10/27', cost:'免費入場', dur:'15 min'},
@@ -104,7 +104,7 @@ export const days = [
     eat: [
       snack({text:'zapiekanka 街食 @ Endzior', placeId:'krakow-endzior'}),
     ],
-    warn: '❗EIP 5300 已購票，但截圖未顯示抵達時間；11:10 寄放行李與午後行程須依票券詳細頁重新核對。瓦維爾城堡尚未訂票；辛德勒工廠個人網路票在參觀日前 90 天 09:00 開放，10/25 已可在官方售票頁查／購。瓦維爾大教堂週日 12:30–17:00；城堡改走短路線並於 15:00 前離開，保留經 Kazimierz、Podgórze 步行到辛德勒工廠的時間。辛德勒工廠週二至週日 09:00–20:00、最後入場 18:30，17:30 屬可行時段。10/25 為非營業週日，多數一般商店關閉；餐廳等法定例外是否營業仍以店家公告為準。',
+    warn: '❗EIP 5300 已購票，但截圖未顯示抵達時間；11:10 寄放行李與午後行程須依票券詳細頁重新核對。瓦維爾城堡尚未訂票；辛德勒工廠個人網路票在參觀日前 90 天 09:00 開放，10/25 已可在官方售票頁查／購。瓦維爾大教堂週日 12:30–16:00（最後入場 15:30）；城堡改走短路線並於 15:00 前離開，保留經 Kazimierz、Podgórze 步行到辛德勒工廠的時間。辛德勒工廠週二至週日 09:00–20:00、最後入場 18:30，17:30 屬可行時段。10/25 為非營業週日，多數一般商店關閉；餐廳等法定例外是否營業仍以店家公告為準。',
     backup: [
       {label:'辛德勒 17:30 滿場', where:'改訂 18:30 最後入場，或往前壓到下午較早時段（如 14:00）', why:'最後入場其實是 18:30，比原記錄多一小時可調度；mhk.pl/en 開放預約後立即下單'},
       {label:'雨天替代 Wawel', where:'地下市集博物館 Rynek Underground', map:'https://www.google.com/maps/search/?api=1&query=Rynek%20Underground%2C%20Rynek%20G%C5%82%C3%B3wny%201%2C%20Krak%C3%B3w', why:'廣場下方歷史展（Rynek Główny 1），PLN 45／35，最後入場為閉館前 75 分鐘。官方 2026 閉館日不含 10/25；週日時間以官網當日為準。另註：每週二免費（免費日不可預約、現場限量、每人限領 5 張），每月第二個週一休館'},
@@ -167,7 +167,7 @@ export const days = [
       {
         rank: '彈性備案', name: '火車 Oświęcim → Kraków Główny',
         detail: '車程約 1 小時（區間車約 1h15），票價約 PLN 20–29，班次比巴士密。但 Oświęcim 火車站距博物館約 1.6 公里：步行約 20 分，或搭市區 0／2／3／8 路到「Muzeum I」約 4 分，4–10 月另有 M 線接駁。',
-        status: '⚠️ 現行鐵路班表只到 2026-10-25，你 10/26 出發時已換新表，時刻必須重查。',
+        status: '⚠️ 現行班表到 10/24，10/25 起為新班表（Day 2 EIP 5300 即新表第一天，出發前用 PKP App 確認票面時刻與月台）；10/26 火車時刻以新表為準，必須重查。',
         url: 'https://portalpasazera.pl/en/',
       },
       {
@@ -201,7 +201,7 @@ export const days = [
     steps: [
       {t:'08:00', label:'早餐 + 退房', sub:'行李寄旅館'},
       {t:'09:00', label:'火車到 Wieliczka Rynek-Kopalnia', sub:'KMŁ；2026-09-17 ZTP 官方票價表載明 70 分鐘 KMK+KMŁ 聯票涵蓋 Wieliczka Bogucice–Wieliczka Rynek Kopalnia 區段與所有站名含「Kraków」的車站，唯一排除的是 Kraków Airport——此程適用。注意是「70 分鐘」有效，逾時要另購', cost:'PLN 10（優待 5）', dur:'約 25 min'},
-      {t:'10:00', label:'★ Wieliczka 鹽礦 Tourist Route 英文團', sub:'3.5 km · 135m 深 · St. Kinga 鹽教堂。指定日票價已查：10/27 英語 Tourist Route 全票 143／優待 121 PLN；09/24 官方售票頁回傳無法存取，未能核實 10:00 場次與餘額；這不表示售罄，購票前仍須在官方日期選擇器核對', cost:'PLN 143（優待 121）· 已查票價／尚未購票', dur:'2–3 h'},
+      {t:'10:00', label:'★ Wieliczka 鹽礦 Tourist Route 英文團', sub:'3.5 km · 135m 深 · St. Kinga 鹽教堂。指定日票價已查：10/27 英語 Tourist Route 全票 143／優待 121 PLN；2026-10-06 官方售票系統查詢時，10/27 英文場自 08:30 起每 30 分鐘一場，10:00 場有名額（10/06 官網查詢時有名額，不保證購票時仍有位）；尚未購票，餘額會變動，購票前仍須在官方日期選擇器核對', cost:'PLN 143（優待 121）· 已查票價／尚未購票', dur:'2–3 h'},
       {t:'13:00', id:'d4-lunch', label:'Wieliczka 鎮中心午餐', sub:'僅在導覽準時結束且回程火車時間允許時用餐；若導覽到 13:00 才結束，改買外帶並直接返站', cost:'PLN 40–60', dur:'最多 30 min'},
       {t:'13:30', label:'火車回 Kraków Główny', sub:'回程同樣可用 70 分鐘 KMK+KMŁ 聯票（去程那張已失效，需再買一張）', cost:'PLN 10（優待 5）', dur:'約 25 min'},
       {t:'14:30', label:'Kazimierz 快速散步（有餘裕才去）', sub:'只走舊猶太會堂與 Szeroka 街附近；鹽礦或回程火車稍有延誤就直接回旅館取行李', cost:'免費', dur:'最多 30 min'},
@@ -214,7 +214,7 @@ export const days = [
       snack({text:'Sernik @ Cukiernia Michałek', placeId:'krakow-cukiernia-michalek'}),
       snack({text:'Pierożki u Vincenta（分店待確認，未排入動線）', placeId:'krakow-pierozki-u-vincenta'}),
     ],
-    warn: '❗鹽礦尚未購票。10/27 英語 Tourist Route 票價曾查到 143／121 PLN，但 10:00 場次與庫存仍未確認，仍須在官方日期選擇器逐項核對。城際段已購 IC 3830，16:45 發車；若鹽礦延誤，直接跳過 Kazimierz，16:10 前抵 Kraków Główny。抵達樂斯拉夫時間待查票面。',
+    warn: '❗鹽礦尚未購票。10/27 英語 Tourist Route 票價 2026-10-06 已核實為 143／121 PLN，10/06 官網查詢時 10:00 英文場有名額（餘額會變動，不保證有位），建議盡早購票並在官方日期選擇器核對。城際段已購 IC 3830，16:45 發車；若鹽礦延誤，直接跳過 Kazimierz，16:10 前抵 Kraków Główny。抵達樂斯拉夫時間待查票面。',
     backup: [
       {label:'鹽礦客滿或超時', where:'先查當日英文場並保住 16:45 的已購火車', why:'需要 16:10 前到 Kraków Główny；來不及就略過 Kazimierz'},
       {label:'雨天備案', where:'鹽礦本身就在地下 135m', map:'https://www.google.com/maps/search/?api=1&query=Kopalnia%20Soli%20Wieliczka%2C%20Dani%C5%82owicza%2010%2C%20Wieliczka', why:'地下約 17–18°C、防雨遮陽最佳備案'},
@@ -238,7 +238,7 @@ export const days = [
     train: {segmentId:'ic-260'},
     steps: [
       {t:'09:00', label:'★ 中央廣場 + 紡織會館', sub:'dwarfsmap.com 找小矮人', cost:'免費', dur:'1.5 h'},
-      {t:'10:30', label:'糖果屋雙屋 + 教堂塔樓', sub:'聖伊莉莎白教堂塔高 96m、觀景台 75m、304 階無電梯；一–六 10:00–19:00', cost:'PLN 16／10 · 現金', dur:'45 min'},
+      {t:'10:30', label:'糖果屋雙屋 + 教堂塔樓', sub:'聖伊莉莎白教堂塔高 96m、觀景台 75m、304 階無電梯；10 月 10:00 起、週日 11:00 起，開到黃昏（約 16:30 前）；下雨或雷暴不開，改走廣場與全景畫', cost:'PLN 16／10 · 現金', dur:'45 min'},
       {t:'11:30', label:'★ 拉茨瓦維採全景畫', sub:'2026-09-24 官方售票系統已查得 10/28 11:30 場，當下顯示 85 個名額；30 分鐘一場，尚未購票，餘額會變動', cost:'PLN 50／優待 35', dur:'1 h'},
       {t:'12:30', id:'d5-lunch', label:'午餐 · Restauracja Wrocławska 候選', sub:'由全景畫往老城 Szewska 59/60；已確認每日 12:00 開門，午餐後保留彈性休息時間，16:15 前到座堂島等候點燈。', cost:'依店家', dur:'45 min（含步行，需事先確認）'},
       {t:'16:15', label:'★ 座堂島煤氣燈', sub:'日落約 16:34；點燈人無固定公開出發分鐘，在島上等候與散步', cost:'免費', dur:'1 h'},

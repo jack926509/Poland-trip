@@ -171,7 +171,7 @@ export const venues = {
     address: "Daniłowicza 10, 32-020 Wieliczka",
     entranceNote: "Tourist Route 從 Daniłowicz Shaft（Daniłowicza 10）集合入場。",
     coords: [49.98348,20.05477],
-    prices: { full: "日期選擇器", discount: "日期選擇器", note: "2026-09-18 官網複查：票價與場次頁只有 JavaScript 日期選擇器，靜態頁讀不到指定日數字，10/27 英語場的票價、時刻與庫存仍須在官網選日期確認（先前查得旅遊路線全票 143／優待 121）· 官方註記「非波蘭語與英語的導覽才強制事先線上購票」，英語場可現場購票但受庫存限制 · 官方唯一售票通道是 bilety.kopalnia.pl 與礦區售票口／售票機，官網聲明不與任何外部平台或中介合作 · 集合點 Szyb Daniłowicz（ul. Daniłowicza 10）官方 GPS 49.98348°N／20.05477°E · 全程約 2–3 小時、地下 17–18ºC、路線 3.5 km、下探 135 m、超過 800 級階梯" },
+    prices: { full: "日期選擇器", discount: "日期選擇器", note: "2026-10-06 官網與售票系統複查：10/27 英語 Tourist Route 全票 143／優待 121 PLN 已核實；英文場自 08:30 起每 30 分鐘一場，10/06 官網查詢時 10:00 場有名額（餘額會變動，不保證有位，尚未購票）· 官方註記「非波蘭語與英語的導覽才強制事先線上購票」，英語場可現場購票但受庫存限制 · 官方唯一售票通道是 bilety.kopalnia.pl 與礦區售票口／售票機，官網聲明不與任何外部平台或中介合作 · 集合點 Szyb Daniłowicz（ul. Daniłowicza 10）官方 GPS 49.98348°N／20.05477°E · 全程約 2–3 小時、地下 17–18ºC、路線 3.5 km、下探 135 m、超過 800 級階梯" },
     hours: null,
     checkedAt: null,
     quickNote: "10/27 英文場、實際票價與庫存看官方日期選擇器（先前查得 143／121）· 只在 bilety.kopalnia.pl 與現場售票口購票，官方不與外部平台合作",
