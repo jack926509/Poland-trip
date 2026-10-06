@@ -20,13 +20,13 @@ function pickService(services, decision) {
 }
 
 // Lajkonik · Auschwitz 往返巴士。
-// 去程資料 2026-09-09 由官方售票頁 lajkonikbus.pl 查 2026-10-26 當日結果取得；
-// 回程尚未查詢，下方保留可直接照填的查詢參數。
+// 去回程資料為 2026-09-09 查詢 2026-10-26 的官方售票頁快照，尚未購票；
+// 2026-10-06 重查公告班表與司機售票價，未重查指定日可售座位。
 export const auschwitzBus = {
   operator: 'LAJKONIK',
   site: 'https://www.lajkonikbus.pl/',
   siteNote: '首頁右上可切 English；表單四欄依序為 Departure from／Destination／Date of departure／Normal（人數），按 Search courses 查班次，每筆班次可直接 Buy ticket。另有 Where is my bus? 查即時車輛位置、My Ticket 查已購票券。',
-  fare: '全票 25.00 zł／優待 22.00 zł（每人，官方售票頁 2026-10-26 顯示值）',
+  fare: '全票 25.00 zł／優待 22.00 zł（每人，2026-09-09 查 2026-10-26 的線上票價快照，付款前重查）；2026-10-06 複核司機售票全票 27.00 zł／優待 22.00 zł，線上可能另有折扣，優待須符合資格並出示證明',
   stops: {
     krakow: 'Kraków · ul. Bosacka 18, Dworzec Autobusowy（MDA，Kraków Główny 後方步行約 5 分；站位 D9／D10）',
     oswiecim: 'Oświęcim · Więźniów Oświęcimia 55（Muzeum Auschwitz，下車處在博物館停車場對面）',
@@ -37,9 +37,9 @@ export const auschwitzBus = {
     query: { from: 'Kraków', to: 'Oświęcim', date: '2026-10-26', passengers: 1 },
     services: [
       { dep: '07:10', arr: '08:35', dur: '1h25', bay: 'D10', fare: '25,00 zł', decision: '採用', why: '距 10:30 入場有 1 小時 55 分，足以吸收巴士誤點、寄物與安檢排隊。' },
-      { dep: '08:25', arr: '09:50', dur: '1h25', bay: 'D9', fare: '25,00 zł', decision: '不採用', why: '官方要求入場前 30 分鐘完成安檢（10:00 前到），此班只早 10 分鐘，誤點即錯過已付款導覽。' },
+      { dep: '08:25', arr: '09:50', dur: '1h25', bay: 'D9', fare: '25,00 zł', decision: '不採用', why: '官方要求導覽前至少 30 分鐘抵達，以留安檢時間；10:30 導覽應在 10:00 前到場。此班只比到場要求早 10 分鐘，難吸收誤點與下車步行，因此不採用。' },
     ],
-    note: '2026-09-09 售票頁當日只開放這兩班、沒有 07:35；2026-09-18 查官方公告時刻表，Kraków MDA（Bosacka 18）整日發車為 06:15／07:10／08:25／09:20／10:40／11:30／13:00／14:00／15:55／17:30，多數由 D10 發車（08:25 那班為 D9）。若售票頁只剩少數班次，那是可售狀況而非全部班次。班次與票價仍以購票當下的售票頁為準。',
+    note: '2026-09-09 查 10/26 的售票頁只顯示這兩班、沒有 07:35，這是當時的可售快照。2026-10-06 複核官方公告班表（自 2026-03-01 起至變更），Kraków MDA（Bosacka 18）發車為 06:15（11–3 月）／07:10／08:25／09:20／10:40／11:30／13:00／14:00／15:55（4–10 月），多數由 D10 發車（08:25 為 D9）。部分班次有季節／假日代碼，公告班表不代表 10/26 全部可售；班次、座位及線上票價仍須在付款前重查。',
   },
   inbound: {
     status: '已於官方售票頁查得／尚未購票',
@@ -51,7 +51,7 @@ export const auschwitzBus = {
       { dep: '15:30', arr: '16:55', dur: '1h25', fare: '25,00 zł', decision: '採用', why: '導覽結束後有 75 分鐘走回站牌、上洗手間與逛訪客中心書店，緩衝充足又不必空等。' },
       { dep: '16:30', arr: '17:55', dur: '1h25', fare: '25,00 zł', decision: '備案', why: '若導覽延後、比克瑙接駁排隊或想多留時間，改搭這班；代價是多等 1 小時。' },
     ],
-    note: '2026-09-09 售票頁當日下午只開放這三班；2026-09-18 查官方公告時刻表，Oświęcim Muz. Auschwitz 整日回程為 08:10／09:00／11:00／12:00／14:00／15:30／16:30／17:30／18:30／19:45，也就是 17:30 與 18:30 可作更晚的保底。15:30 與 16:30 都由 Więźniów Oświęcimia 55 發車、停 ul. Bosacka 18 Dworzec Autobusowy，票價同為 25,00 zł。時刻表註明中途站是招手停，部分班次帶季節／假日代碼，購票時確認 10/26 是否適用。',
+    note: '2026-09-09 查 10/26 的售票頁下午只顯示這三班，25,00 zł 是當時的線上票價快照。2026-10-06 複核官方公告班表（自 2026-03-01 起至變更），Oświęcim Muz. Auschwitz 回程為 08:10（11–3 月）／09:00／11:00／12:00／14:00／15:30／16:30／17:30／18:30（4–10 月）；17:30／18:30 是公告中的較晚班次，適用日期與座位須另查。15:30／16:30 由 Więźniów Oświęcimia 55 發車，公告抵 Kraków MDA Bosacka 18 分別為 16:55／17:55。中途站是招手停，部分班次有季節／假日代碼；付款前確認 10/26 適用班次、座位與票價。',
   },
   // 巴士的取捨完全由這個已訂妥的導覽場次決定，因此把場次一併放在同一區塊。
   tour: {
@@ -64,7 +64,7 @@ export const auschwitzBus = {
     duration: '官方標示 3 godz. 45 min.（3 小時 45 分）',
     people: '2 人',
     endsAt: '約 14:15',
-    arriveBy: '10:00（官方要求入場時段前 30 分鐘完成安檢）',
+    arriveBy: '10:00 前到場（官方要求導覽前至少 30 分鐘抵達，以留安檢時間；本行程另以 10:00 前完成安檢為保守目標，並非官方安檢截止）',
     entryRule: '官方確認信載明「Entry Pass is valid with identity card」——電子入場證與身分證件必須同時出示，入場證請列印或存離線。',
     officialUrl: 'https://visit.auschwitz.org/',
   },
@@ -113,11 +113,11 @@ export const segments = [
     dep: `${lajkonikOutboundAdopted.dep}（${lajkonikOutboundAdopted.bay}）／回程 ${lajkonikInboundAdopted.dep}`,
     arr: `${lajkonikOutboundAdopted.arr} ／回程 ${lajkonikInboundAdopted.arr} 抵 Kraków MDA`,
     dur: `單程 ${lajkonikOutboundAdopted.dur}`,
-    price: `PLN ${lajkonikFare.full}（優待 ${lajkonikFare.discount}，購票日確認）`,
+    price: `線上快照 PLN ${lajkonikFare.full}（優待 ${lajkonikFare.discount}，2026-09-09 查得；付款前重查）`,
     dayDep: lajkonikOutboundAdopted.dep, dayArr: lajkonikOutboundAdopted.arr, dayDur: lajkonikOutboundAdopted.dur,
-    dayPrice: `PLN ${lajkonikFare.full}（優待 ${lajkonikFare.discount}）`,
+    dayPrice: `線上快照 PLN ${lajkonikFare.full}（優待 ${lajkonikFare.discount}；付款前重查）`,
     status: '去回班次皆已查得／尚未購票',
-    note: '2026-09-09 於官方售票頁查 10/26：去程 07:10（D10）→ 08:35 採用、08:25（D9）→ 09:50 只比 10:00 安檢截止早 10 分鐘故不用（售票頁當時沒有 07:35）；回程 14:00 → 15:25 在導覽 14:15 結束前開走不可用、15:30 → 16:55 採用（結束後留 75 分鐘緩衝）、16:30 → 17:55 為備案。2026-09-18 另查官方公告時刻表，確認 07:10→08:35 與 15:30→16:55 都在正班表上，且全線班次比售票頁當時顯示的多（Kraków MDA 發車 06:15／07:10／08:25／09:20／10:40／11:30／13:00／14:00／15:55／17:30；Muz. Auschwitz 回程 08:10／09:00／11:00／12:00／14:00／15:30／16:30／17:30／18:30／19:45）——「當日只有兩班／三班」只是那天售票頁的可售結果，不是全部班次。時刻表另註中途站為招手停（na żądanie），且部分班次有季節／假日代碼限制，購票時一併確認。',
+    note: '2026-09-09 查 10/26 官方售票頁：去程 07:10（D10）→ 08:35 採用；08:25（D9）→ 09:50 只比官方要求的 10:00 到場時間早 10 分鐘，緩衝不足不採用；回程 14:00 → 15:25 趕不上，15:30 → 16:55 採用，16:30 → 17:55 備案。2026-10-06 複核公告班表：去程發車 06:15（11–3 月）／07:10／08:25／09:20／10:40／11:30／13:00／14:00／15:55（4–10 月）；Muz. Auschwitz 回程 08:10（11–3 月）／09:00／11:00／12:00／14:00／15:30／16:30／17:30／18:30（4–10 月）。公告自 2026-03-01 起至變更，部分班次有季節／假日代碼、中途站為招手停；公告班表與 09/09 可售快照均不保證目前 10/26 庫存。司機售票現行全票 27／優待 22 PLN，線上快照 25／22 PLN 須於付款前重查。',
   },
   {
     id: 'ic-3830', day: 4,

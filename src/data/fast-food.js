@@ -58,16 +58,16 @@ const pending = ({id, chain, cityKey, address, note, query, sourceUrl}) => ({
   checkedAt: '', verificationStatus: 'pending',
 });
 
-const verified = ({id, chain, cityKey, address, note, query, hours, sourceUrl, verificationStatus = 'verified'}) => ({
+const verified = ({id, chain, cityKey, address, note, query, hours, sourceUrl, checkedAt = '2026-09-19', verificationStatus = 'verified'}) => ({
   id, chain, cityKey, address, note, map: chainMap(query), hours, sourceUrl,
-  checkedAt: '2026-09-19', verificationStatus,
+  checkedAt, verificationStatus,
 });
 
 export const fastFoodBranches = {
   warsaw: [
     pending({id: 'warsaw-kfc-zlote-tarasy', chain: 'KFC', cityKey: 'warsaw', address: 'Złota 59', note: 'Złote Tarasy，中央車站旁；本輪未能由官方 locator 逐店重現。', query: 'KFC Złote Tarasy, Złota 59, Warszawa', sourceUrl: 'https://kfc.pl/restauracje'}),
     pending({id: 'warsaw-mcdonalds-swietokrzyska', chain: "McDonald's", cityKey: 'warsaw', address: 'Świętokrzyska 35', note: '市中心，近地鐵 Świętokrzyska 站；本輪未能由官方 locator 逐店重現。', query: "McDonald's Świętokrzyska 35, Warszawa", sourceUrl: 'https://mcdonalds.pl/restauracje/'}),
-    verified({id: 'warsaw-pasibus-hoza', chain: 'Pasibus', cityKey: 'warsaw', address: 'Hoża 29', note: '街邊店；官網門市頁地址為 Hoża 29。', query: 'Pasibus Hoża 29, Warszawa', hours: '週一–四 10:00–22:00；週五–六 10:00–00:00；週日 10:00–23:00', sourceUrl: 'https://pasibus.pl/lokalizacje/warszawa/pasibus-hoza-warszawa/'}),
+    verified({id: 'warsaw-pasibus-hoza', chain: 'Pasibus', cityKey: 'warsaw', address: 'Hoża 29', note: '街邊店；官網門市頁地址為 Hoża 29。', query: 'Pasibus Hoża 29, Warszawa', hours: '週日–四 10:00–22:00；週五–六 10:00–00:00', sourceUrl: 'https://pasibus.pl/lokalizacje/warszawa/pasibus-hoza-warszawa/', checkedAt: '2026-10-06'}),
     verified({id: 'warsaw-pasibus-zlote-tarasy', chain: 'Pasibus', cityKey: 'warsaw', address: 'Złota 59', note: 'Złote Tarasy，中央車站旁。', query: 'Pasibus Złote Tarasy, Złota 59, Warszawa', hours: '週一–六 09:00–22:00；週日 09:00–21:00', sourceUrl: 'https://pasibus.pl/lokalizacje/warszawa/warszawa-zlote-tarasy/'}),
     verified({id: 'warsaw-max-zlote-tarasy', chain: 'MAX Premium Burgers', cityKey: 'warsaw', address: 'Złota 59', note: 'Złote Tarasy。', query: 'MAX Premium Burgers Złote Tarasy, Złota 59, Warszawa', hours: '週一–六 09:00–22:00；週日 09:00–21:00', sourceUrl: 'https://www.maxpremiumburgers.pl/znajdz-max/restauracje/warszawa-2/'}),
     verified({id: 'warsaw-berlin-doner-zlote-tarasy', chain: 'Berlin Döner Kebap', cityKey: 'warsaw', address: 'Złota 59', note: 'Złote Tarasy；官方標示非營業週日亦開門。', query: 'Berlin Döner Kebap Złote Tarasy, Złota 59, Warszawa', hours: '週一–六 09:00–22:00；週日 09:00–21:00', sourceUrl: 'https://www.berlindonerkebap.com/restauracje/warszawa/zote-tarasy/'}),
@@ -87,7 +87,7 @@ export const fastFoodBranches = {
   wroclaw: [
     pending({id: 'wroclaw-kfc-swidnicka', chain: 'KFC', cityKey: 'wroclaw', address: 'Świdnicka 13', note: '老城中心；本輪未能由官方 locator 逐店重現。', query: 'KFC Świdnicka 13, Wrocław', sourceUrl: 'https://kfc.pl/restauracje'}),
     pending({id: 'wroclaw-mcdonalds-rynek', chain: "McDonald's", cityKey: 'wroclaw', address: 'Rynek 30', note: '中央廣場；本輪未能由官方 locator 逐店重現。', query: "McDonald's Rynek 30, Wrocław", sourceUrl: 'https://mcdonalds.pl/restauracje/'}),
-    verified({id: 'wroclaw-pasibus-swidnicka', chain: 'Pasibus', cityKey: 'wroclaw', address: 'Świdnicka 11', note: '老城街邊店。', query: 'Pasibus Świdnicka 11, Wrocław', hours: '週一–四 12:00–01:00；週五–六 12:00–03:00；週日 12:00–00:00', sourceUrl: 'https://pasibus.pl/lokalizacje/wroclaw/lokal-pasibus-stacja-swidnicka/'}),
+    verified({id: 'wroclaw-pasibus-swidnicka', chain: 'Pasibus', cityKey: 'wroclaw', address: 'Świdnicka 11', note: '老城街邊店。', query: 'Pasibus Świdnicka 11, Wrocław', hours: '週一–四 12:00–00:00；週五–六 12:00–02:00；週日 12:00–00:00', sourceUrl: 'https://pasibus.pl/lokalizacje/wroclaw/lokal-pasibus-stacja-swidnicka/', checkedAt: '2026-10-06'}),
     verified({id: 'wroclaw-pasibus-wroclavia', chain: 'Pasibus', cityKey: 'wroclaw', address: 'Sucha 1', note: 'Wroclavia，中央車站旁。', query: 'Pasibus Wroclavia, Sucha 1, Wrocław', hours: '週一–六 09:00–22:00；週日 11:00–21:00', sourceUrl: 'https://pasibus.pl/lokalizacje/wroclaw/lokal-pasibus-wroclavia/'}),
     verified({id: 'wroclaw-max-galeria-dominikanska', chain: 'MAX Premium Burgers', cityKey: 'wroclaw', address: 'plac Dominikański 3', note: 'Galeria Dominikańska，市中心深夜保底。', query: 'MAX Premium Burgers Galeria Dominikańska, plac Dominikański 3, Wrocław', hours: '週一–四、週日 09:00–04:00；週五–六 09:00–05:00', sourceUrl: 'https://www.maxpremiumburgers.pl/znajdz-max/restauracje/wroclaw/'}),
     verified({id: 'wroclaw-max-wroclavia', chain: 'MAX Premium Burgers', cityKey: 'wroclaw', address: 'Sucha 1', note: 'Wroclavia，中央車站旁。', query: 'MAX Premium Burgers Wroclavia, Sucha 1, Wrocław', hours: '週一–四 08:00–01:00；週五–六 07:00–02:00；週日 07:00–01:00', sourceUrl: 'https://www.maxpremiumburgers.pl/znajdz-max/restauracje/wroclaw3/'}),

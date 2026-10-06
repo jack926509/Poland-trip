@@ -47,17 +47,17 @@ export const databaseSections = [
 const databaseEntriesBase = [
   {
     id: 'entry-etias-and-passport', section: 'entry', category: 'document', cityKey: 'PL',
-    title: '護照與 ETIAS 動態閘門',
-    summary: '非 EU 旅客護照須在離開 EU 後至少仍有 3 個月效期、入境日距簽發日不得超過 10 年。ETIAS 官方頁目前寫預計 2026 年第 4 季啟用，行程正值該期間，不能先判定不需要申請。',
-    status: 'recheck', sourceUrl: 'https://travel-europe.europa.eu/en/etias', verifiedAt: '2026-08-08', recheckAt: '2026-09-24',
-    offlineNote: '列印護照、回程票、住宿與保險證明；出發前 30、14、3 天重查 EU 官方頁。', private: false,
+    title: '護照、EES 與 ETIAS 出發前複查',
+    summary: '10/06 EU 官方確認 EES 已於 4/10 全面運作，短期入境非 EU 旅客首次須在邊境登錄護照及生物辨識。ETIAS 尚未運作、不收申請，確切日期另公告。護照效期須在離開申根區後至少 3 個月，且入境時簽發未滿 10 年；旅客須自行核對私人證件。',
+    status: 'recheck', sourceUrl: 'https://home-affairs.ec.europa.eu/policies/schengen/smart-borders_en', verifiedAt: '2026-10-06', recheckAt: '2026-10-16',
+    offlineNote: '備妥護照、回程票、住宿與保險證明；10/16 複查 EU 狀態，10/20 最終確認。10/24 首次入境留 EES 登錄與排隊時間，不將私人護照核對視為已完成。', private: false,
   },
   {
     id: 'aviation-baggage-rules', section: 'aviation', category: 'transit', cityKey: 'ROUTE',
     title: '航空行李官方規則',
-    summary: '聯運行程的行李額度需依電子機票與航空公司的官方行李規則判讀；不用非本次訂單的一般額度代替。',
-    status: 'verified', sourceUrl: 'https://www.qatarairways.com/en/baggage/allowance.html', verifiedAt: '2026-08-08', recheckAt: null,
-    offlineNote: '先保存官方規則，但本次可用額度仍以電子機票為準。', private: false,
+    summary: '聯運行李額度依電子機票與實際承運航空判讀。10/06 重查行動電源：Cathay／Qatar／EVA 均每人最多 2 個、只能手提且不放頭頂；Qatar 各 ≤100 Wh、機上不得為行動電源充電；Cathay／EVA 另禁止機上使用。各航司來源見行前提醒頁。',
+    status: 'verified', sourceUrl: 'https://www.qatarairways.com/en/travel-alerts.html', verifiedAt: '2026-10-06', recheckAt: null,
+    offlineNote: '本趟準備每人最多 2 個、各 ≤100 Wh，保護接點且規格清楚；保存各承運航司規則。本次免費行李額度與直掛仍待電子機票確認。', private: false,
   },
   {
     id: 'aviation-trip-baggage-confirmation', section: 'aviation', category: 'transit', cityKey: 'ROUTE',
@@ -433,7 +433,7 @@ export const dayOperations = {
       accommodationAddress('krakow-stare-miasto'),
     ],
     navigation: [
-      { mode: 'Lajkonik 巴士', route: 'Kraków MDA ↔ Oświęcim Muzeum Auschwitz', action: `去程已於官方售票頁 lajkonikbus.pl 查得 10/26 班次：${lajkonikOutboundAdopted.dep} 由 ul. Bosacka 18 的 ${lajkonikOutboundAdopted.bay} 發車、${lajkonikOutboundAdopted.arr} 抵 Więźniów Oświęcimia 55，${lajkonikOutboundAdopted.dur}，全票 ${lajkonikFare.full} zł／優待 ${lajkonikFare.discount} zł；當日另一班 ${lajkonikOutboundRejected.dep} → ${lajkonikOutboundRejected.arr} 只比 10:00 安檢截止早 10 分鐘，緩衝不足不採用。回程請在同站反向查 10/26 的 14:15 之後班次；13:45 與 14:00 都在導覽結束前開走。` },
+      { mode: 'Lajkonik 巴士', route: 'Kraków MDA ↔ Oświęcim Muzeum Auschwitz', action: `9/09 官方售票頁曾查得 10/26 班次（歷史快照，付款前重查）：${lajkonikOutboundAdopted.dep} 由 ul. Bosacka 18 的 ${lajkonikOutboundAdopted.bay} 發車、${lajkonikOutboundAdopted.arr} 抵 Więźniów Oświęcimia 55，${lajkonikOutboundAdopted.dur}，全票 ${lajkonikFare.full} zł／優待 ${lajkonikFare.discount} zł；當日另一班 ${lajkonikOutboundRejected.dep} → ${lajkonikOutboundRejected.arr} 距官方建議的 10:00 到場時間只剩 10 分鐘，緩衝不足不採用。回程請在同站反向查 10/26 的 14:15 之後班次；當時查得的 14:00 班在導覽結束前開走；此處不列未確認的其他班次。` },
       { mode: '導覽接駁', route: 'Auschwitz I → Birkenau', action: '參加官方導覽時依當日工作人員指示搭接駁車，不自行跳過集合點。' },
     ],
     dailyAlerts: [
@@ -511,7 +511,7 @@ export const dayOperations = {
   },
   7: {
     cityKey: 'warsaw',
-    note: '諸聖節前夕，逐店確認晚餐與交通；離線備妥 SOS 卡。',
+    note: '10/30 為諸聖節前兩日，逐店確認晚餐與交通；離線備妥 SOS 卡。',
     addresses: [
       venueCard('warsaw-royal-castle', '華沙皇家城堡'),
       venueCard('warsaw-old-town-square', '華沙老城市場廣場'),
@@ -562,7 +562,7 @@ const unresolvedStepReasons = {
   },
   2: {
     'EIP 5300 前往克拉科夫': dynamicTransitReason,
-    '老城午餐 · Pod Temidą': '店址 Grodzka 43 與營業時間已查；尚無獨立核實的地圖圖釘，且午餐時間須依已購火車的實際抵達時間調整。',
+    '老城午餐 · Pod Temidą': '店址 Grodzka 43 與城市主檔圖釘已有查核記錄；午餐時間仍須依已購火車的實際抵達時間調整，營業時段出發前再查。',
     '步行經 Kazimierz、Podgórze 前往辛德勒工廠': '步行沿途短停保持彈性；以辛德勒工廠入口地址為終點，17:10 前到場。',
   },
   3: {

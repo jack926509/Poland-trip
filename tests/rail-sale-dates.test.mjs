@@ -160,7 +160,7 @@ test('由出發日回推的期限，算術與 basis 敘述一致', () => {
     'recheck-all': 7,
     'etias-check-2': 3,
   };
-  const depart = Date.parse(`${trip.meta.tripStart}T00:00:00Z`);
+  const depart = Date.parse(`${trip.meta.travelStart}T00:00:00Z`);
   for (const [id, days] of Object.entries(offsets)) {
     const deadline = trip.deadlines.find(item => item.id === id);
     assert.ok(deadline, `找不到 ${id}`);
@@ -173,6 +173,6 @@ test('每筆手動期限都標明是照抄來源還是自行推算', () => {
   for (const deadline of trip.deadlines) {
     assert.ok(deadline.basis?.length > 10, `${deadline.id} 缺少 basis`);
     assert.ok(deadline.action?.length > 10, `${deadline.id} 缺少可執行的 action`);
-    assert.ok(deadline.date <= trip.meta.tripStart, `${deadline.id} 的期限不該晚於出發日`);
+    assert.ok(deadline.date <= trip.meta.travelStart, `${deadline.id} 的期限不該晚於台灣出發日`);
   }
 });

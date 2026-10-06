@@ -515,7 +515,7 @@ test('2026-08-09 官方盤查會移除未能證實的場次、價格與閉館敘
     assert.ok(!publicData.includes(unsupportedClaim), `不應保留未證實敘述：${unsupportedClaim}`);
   }
   assert.ok(days[1].mustBook.some(item => item.includes('可立即查／購')));
-  assert.equal(days[6].steps.find(step => step.label === '★ POLIN 猶太博物館')?.cost, '依官方售票頁');
+  assert.equal(days[6].steps.find(step => step.label === '★ POLIN 猶太博物館')?.cost, 'PLN 45 · 優待 35（含語音導覽）');
   assert.ok(cityNotices.wroclaw.some(item => item.text.includes('availability calendar')));
 });
 
@@ -664,7 +664,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.deepEqual([
     phrases.length, about.length, preDepartureNotes.length,
     safety.emergency.length, safety.embassy.length, safety.tips.length,
-  ], [12, 8, 8, 5, 4, 4]);
+  ], [12, 13, 8, 5, 4, 4]);
   assert.deepEqual(Object.values(packingDefault).map(items => items.length), [5, 5, 5, 4]);
 });
 
@@ -1022,7 +1022,7 @@ test('已購城際火車與未購交通分開標示，未知票面細節不臆�
     // 截圖可確認四段已購，未提供的票價不能臆測；Auschwitz 巴士仍未購。
     if (train.date === '10/26') {
       assert.match(train.status, /尚未購票/);
-      assert.match(train.price, /購票日確認/);
+      assert.match(train.price, /付款前重查/);
     } else if (train.status === '已購票') {
       assert.equal(train.arr, '待查票面');
       assert.equal(train.price, '票價未提供');
@@ -1190,14 +1190,13 @@ test('逐日移動不保留已知不可行備案或重疊時刻', () => {
 
 test('舊票價與過時場館資料已從產出頁面移除', () => {
   const html = expectedFiles.map(read).join('\n');
-  // 2026-09-17 官網複查後，Wawel 9–12 月是分路線售票、沒有 95／71 套票；
-  // 棕櫚屋則已改建閉館。兩筆舊事實一併列為不得再出現。
+  // 不相關的舊票價仍不得出現；Wawel 合票以 10/06 官方重查校正。
   for (const stale of ['199／149', 'PLN 32', '50／40 PLN', '2026 新開的 E.Wedel', '語音導覽 10 PLN', '完整路線 95／71']) {
     assert.ok(!html.includes(stale), `仍出現舊資料：${stale}`);
   }
-  // 95／71 只允許以「官網未列這個套票」的否定說明形式出現，不得再當成可買的票價。
-  assert.ok(html.includes('官網未列 95／71'));
-  assert.ok(html.includes('瓦維爾城堡二樓代表廳') && html.includes('PLN 57／43'));
+  assert.ok(!html.includes('官網未列 95／71'));
+  assert.ok(html.includes('一、二樓合票 95／71') && html.includes('合票末入 15:00'));
+  assert.ok(html.includes('單獨二樓 57／43'));
   assert.ok(html.includes('地圖 10／語音導覽 20'), '帝王城堡應改用官網 2026-09-17 的票價');
   assert.ok(html.includes('Kolejkowo') && html.includes('線上 39 起／現場 55 起'));
 });
@@ -2058,7 +2057,7 @@ test('餐飲資料重整：每日正餐候選（day-dining）與順路必吃（e
   }
 });
 
-test('餐飲資料重整：day-dining 每筆都有 role/name/note，且八天每天都有正餐候選', async () => {
+test('餐飲資料重整：餐飲引用完整，機場日早餐保留飯店／中央車站附近待選', async () => {
   const { dayDining } = await import('../src/data/day-dining.js');
   for (const [day, items] of Object.entries(dayDining)) {
     for (const item of items) {
@@ -2068,8 +2067,13 @@ test('餐飲資料重整：day-dining 每筆都有 role/name/note，且八天每
     }
   }
   for (let n = 1; n <= 8; n += 1) {
-    assert.ok((dayDining[String(n)] || []).some(item => /首選|早餐/.test(item.role)),
+    if (n < 8) assert.ok((dayDining[String(n)] || []).some(item => /首選|早餐/.test(item.role)),
       `Day ${n} 沒有任何正餐首選`);
+    else {
+      assert.ok(!dayDining['8'].some(item => item.stepId === 'd8-breakfast'));
+      assert.ok(!dayDining['8'].some(item => item.placeId === 'warsaw-cafe-bristol'));
+      assert.match(days[7].steps.find(item => item.id === 'd8-breakfast').label, /飯店|中央車站/);
+    }
     const html = read(`day-${String(n).padStart(2, '0')}.html`);
     assert.ok(html.includes('id="day-food"'), `day-${String(n).padStart(2, '0')}.html 缺少當日餐飲卡`);
     assert.ok(/<li class="day-food-item">/.test(html), `day-${String(n).padStart(2, '0')}.html 沒有任何正餐候選列`);

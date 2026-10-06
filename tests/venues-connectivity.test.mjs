@@ -79,10 +79,12 @@ test('fares／ticketsByCity／venueHours 仍是 tickets.js 既有 export 形狀�
   }
 });
 
-test('矛盾 #5：POLIN 公休日站內無來源，venues.js 與稽核腳本一致地留空、不猜週二休', () => {
+test('POLIN 官網已確認週二休，來源與稽核規則一致', () => {
   const polin = venues['warsaw-polin'];
-  assert.deepEqual(polin.hours.closedWeekdays, []);
-  assert.match(polin.hours.note, /公休日站內尚無查證資料/);
+  assert.deepEqual(polin.hours.closedWeekdays, [2]);
+  assert.match(polin.hours.note, /週二/);
+  assert.equal(polin.prices.full, '45');
+  assert.equal(polin.prices.discount, '35');
 });
 
 test('矛盾 #11：辛德勒工廠 hours.opens/closes 已從 prices.note 的官網查證補上，不再是空的結構化欄位', () => {

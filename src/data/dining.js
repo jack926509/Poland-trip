@@ -76,7 +76,7 @@ export const michelinReservations = [
     "restaurant": "⭐⭐ Bottiglieria 1881（克拉科夫）",
     "mapUrl": "https://maps.google.com/?cid=8570908113421134699",
     "perPerson": "940 / 990",
-    "channel": "自家電話 +48 660 661 756 · ul. Bocheńska 5 · 平日另有單點，週末僅套餐"
+    "channel": "官網／電話 +48 660 661 756 · ul. Bocheńska 5 · 僅供 tasting menu，不供單點；另加 12.5% 服務費；價格為 2026-10-06 官網查核"
   },
   {
     "restaurant": "⭐ Alon Omakase（華沙）",
@@ -94,7 +94,7 @@ export const michelinReservations = [
     "restaurant": "⭐ Muga（波茲南）",
     "mapUrl": "https://maps.google.com/?cid=2998937238608160974",
     "perPerson": "560 / 685",
-    "channel": "官網／電話 · 法系套餐；高階版本含魚子醬"
+    "channel": "官網／電話 · Reserva 套餐 560 PLN，含魚子醬版本 685 PLN；另加 12.5% 服務費；價格為 2026-10-06 官網查核"
   },
   {
     "restaurant": "⭐ NUTA（華沙）",

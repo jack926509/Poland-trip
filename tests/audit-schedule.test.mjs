@@ -216,11 +216,9 @@ test('venueHours 每筆都有可追溯的出處，fares 引用不得落空', () 
   assert.deepEqual(problems, []);
 });
 
-test('沒有來源的場館規則必須留空，不得以常識補上', () => {
-  // POLIN 站內只查得週五時段與末入場，沒有每週公休日的記載。
-  // 這類「大概是週二休」的補充會被稽核當成查證過的規則，因此必須留空。
+test('POLIN 公休日使用 10/06 官網查證結果', () => {
   const polin = venueHours['warsaw-polin'];
-  assert.deepEqual(polin.closedWeekdays, [], 'POLIN 的公休日站內無來源，應留空');
-  assert.match(polin.note, /公休日站內尚無查證資料/);
-  assert.equal(polin.checkedAt, null, '無來源日期時 checkedAt 應為 null');
+  assert.deepEqual(polin.closedWeekdays, [2]);
+  assert.match(polin.note, /週二/);
+  assert.equal(polin.checkedAt, '2026-10-06');
 });

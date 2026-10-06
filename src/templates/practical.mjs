@@ -430,7 +430,7 @@ export function renderEssentials({ phrases, packingDefault, about, safety, sourc
   const safetyCards = safety.tips.map(item => `<article class="card"><h3>${item.label}</h3><p>${item.text}</p></article>`).join('');
   const sourceRows = sources.map(item => `<tr><td><a href="${item.url}" target="_blank" rel="noopener"><b>${item.name}</b></a></td><td>${item.checkedAt}</td><td>${item.note}</td></tr>`).join('');
   const content = `
-    <div class="callout-note"><b>2026/09/08 複核：</b>ETIAS 目前仍未啟用；但 EU 官方仍以 2026 年第 4 季為啟用期，本行程 10/24 出發前必須再查一次。緊急電話、免簽條件與 TAX FREE 門檻皆保留官方來源。</div>
+    <div class="callout-note"><b>2026/10/06 入境與行動電源複核：</b>EES 已全面運作，首次入境留登錄時間；ETIAS 仍未啟用、不收申請。10/23 自台灣出發前再查啟用日及適用規則；Cathay、Qatar、EVA 行動電源規則見下表。其他資料各自保留查核日期與官方來源。</div>
     <section><div class="section-heading"><span class="section-num">Basics</span><h2>基本須知</h2></div><div class="grid">${aboutCards}</div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Language</span><h2>常用波蘭語</h2></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>中文</th><th>波蘭語</th><th>音譯</th></tr></thead><tbody>${phraseRows}</tbody></table></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Packing</span><h2>打包清單</h2></div><div class="grid-wide">${packingHtml}</div></section>

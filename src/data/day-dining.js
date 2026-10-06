@@ -201,13 +201,6 @@ export const dayDiningPlans = {
   ],
   "8": [
     {
-      "placeId": "warsaw-cafe-bristol",
-      "role": "早餐",
-      "note": "早餐後保留退房與機場交通時間，不專程追店。",
-      "stepId": "d8-breakfast",
-      "planStatus": "scheduled"
-    },
-    {
       "placeId": "warsaw-bar-mleczny-prasowy-marszalkowska",
       "role": "替補",
       "note": "不適合本日早餐時段；此店不在旅館旁，無法及時用餐時改找退房路線或車站內店家。",

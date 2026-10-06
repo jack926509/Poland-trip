@@ -125,14 +125,15 @@ export const diningPlaces = {
     "cityKey": "krakow",
     "name": "Pierożki u Vincenta",
     "address": "門牌待確認",
-    "map": "https://www.google.com/maps/search/?api=1&query=Piero%C5%BCki%20u%20Vincenta%2C%20B%C5%82ogos%C5%82awionej%20Bronis%C5%82awy%2C%20Krak%C3%B3w",
+    "map": "https://www.google.com/maps/search/?api=1&query=Piero%C5%BCki%20u%20Vincenta%20Krak%C3%B3w",
     "hours": "營業時間待確認",
     "sourceUrl": null,
     "checkedAt": null,
     "verificationStatus": "pending",
     "notes": [
-      "Kazimierz 小店，份量與價位親民，適合不想走遠的安靜一餐；Day 4 列為順路必吃。"
-    ]
+      "餃子店候選，實體分店與現行營業時間待確認；尚未排入 Day 4 動線，不預設位於 Kazimierz 或 Bronisławy。"
+    ],
+    "verificationNote": "2026-10-06 可讀訂餐頁列 Lea 114，但頁面混入無關內容且有舊評論，未足以確認現行分店。保留 pending；前往前確認分店與地址。"
   },
   "krakow-okraglak-plac-nowy-圓亭": {
     "id": "krakow-okraglak-plac-nowy-圓亭",
@@ -186,16 +187,17 @@ export const diningPlaces = {
     "id": "krakow-bottiglieria-1881",
     "cityKey": "krakow",
     "name": "Bottiglieria 1881",
-    "address": "門牌待確認",
+    "address": "Bocheńska 5, Kraków",
     "map": "https://maps.google.com/?cid=8570908113421134699",
-    "hours": "營業時間待確認",
-    "sourceUrl": null,
-    "checkedAt": null,
-    "verificationStatus": "pending",
+    "hours": "週二–六 17:00 起（關門時間未列）；週日、一休息",
+    "sourceUrl": "https://1881.com.pl/nasze-menu/",
+    "checkedAt": "2026-10-06",
+    "verificationStatus": "partial",
     "notes": [
-      "2026 連續第四年二星 · 全波蘭唯一 · 需提前 2 週+ 訂位",
-      "全波蘭唯一二星(Kazimierz) · 招牌：波蘭×北歐兩套 tasting · 逾 500 款酒"
-    ]
+      "2026 米其林二星 · Kazimierz 餐廳候選，需先查詢可訂日期。",
+      "僅供 tasting menu，不供單點，也不可分食套餐；同桌須選相同套餐。2026-10-06 官網價格 940／990 PLN，另加 12.5% 服務費。"
+    ],
+    "verificationNote": "2026-10-06 官網確認地址、開門日與套餐規則；關門時間未公布，維持部分查證。尚未訂位，餐價及菜單可能調整。"
   },
   "krakow-miod-malina": {
     "id": "krakow-miod-malina",
@@ -485,15 +487,16 @@ export const diningPlaces = {
     "id": "poznan-muga",
     "cityKey": "poznan",
     "name": "Muga",
-    "address": "門牌待確認",
+    "address": "Krysiewicza 5, Poznań",
     "map": "https://maps.google.com/?cid=2998937238608160974",
     "hours": "營業時間待確認",
-    "sourceUrl": null,
-    "checkedAt": null,
-    "verificationStatus": "pending",
+    "sourceUrl": "https://www.restauracjamuga.pl/en/menu/reserva",
+    "checkedAt": "2026-10-06",
+    "verificationStatus": "partial",
     "notes": [
-      "波茲南首家、目前唯一一星 · 法系 · 招牌：時令 10–12 道套餐（如烤鴿配無花果）· 套餐 390–540 PLN"
-    ]
+      "法系 tasting menu · Reserva 套餐 560 PLN，含魚子醬版本 685 PLN；另加 12.5% 服務費。套餐約 2–3 小時，菜單與價格以訂位時店家公告為準。"
+    ],
+    "verificationNote": "2026-10-06 重新核對 Reserva 官方菜單及費用，官方 contact 頁確認 Krysiewicza 5；完整營業時間尚未核對，維持部分查證，尚未訂位。"
   },
   "poznan-fromazeria": {
     "id": "poznan-fromazeria",

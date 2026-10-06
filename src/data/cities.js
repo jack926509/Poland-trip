@@ -75,7 +75,7 @@ export const cityStories = [
     history:'1038–1596 年的波蘭王都，歷代國王在 Wawel 加冕與安葬。二戰時因作為納粹總督府所在地而未被戰火摧毀，是波蘭極少數「原裝」的古城——你在克拉科夫摸到的石頭大多是真的中世紀石頭。Kazimierz 原是 1335 年卡齊米日大帝敕建的獨立城市，數百年來是歐洲猶太文化重鎮，戰前 6.5 萬猶太居民戰後僅存數千。',
     stories:[
       {title:'瓦維爾龍', text:'傳說 Wawel 山丘下的洞穴住著噴火龍，吃遍牲口少女。屠龍的不是騎士，而是鞋匠學徒 Skuba——他把硫磺塞進羊皮縫成假羊，龍吞下後渴到狂飲維斯瓦河水，最後爆掉。今日城堡下河畔有一座每隔幾分鐘真的噴火的龍雕像。'},
-      {title:'斷在半空的號角', text:'聖瑪利亞教堂塔頂每小時整點吹奏 Hejnał 號角，旋律永遠在同一個音戛然而止——紀念 1241 年蒙古來襲時，吹號示警的哨兵喉嚨中箭、樂聲中斷的傳說。這是全世界少數「以未完成為完成」的城市儀式，Day 2 16:00 廣場行程剛好對到整點。'},
+      {title:'斷在半空的號角', text:'聖瑪利亞教堂塔頂每小時整點吹奏 Hejnał 號角，旋律永遠在同一個音戛然而止——紀念 1241 年蒙古來襲時，吹號示警的哨兵喉嚨中箭、樂聲中斷的傳說。這是全世界少數「以未完成為完成」的城市儀式，Day 2 15:00 廣場行程剛好對到整點。'},
       {title:'廣場底下還有一個廣場', text:'Rynek 地面下 4 公尺是 13 世紀的街面。2005–2010 年考古挖掘後原地做成 Rynek Underground 博物館（Day 2 雨備）——你腳下踩的其實是中世紀商路的天花板。'},
       {title:'兩顆星的城市', text:'2026 米其林把全波蘭唯一二星留給了這裡的 Bottiglieria 1881（連四年），發布典禮也選在克拉科夫 ICE 會議中心舉行——波蘭美食之都的地位官方蓋章。'},
     ],
@@ -103,7 +103,7 @@ export const cityStories = [
   {
     city:'波茲南',
     geo:'瓦爾塔河（Warta）畔，位居柏林—華沙軸線正中，千年來吃盡東西貿易紅利，至今仍是波蘭的會展之都。城市原點在河中沙洲 Ostrów Tumski（與樂斯拉夫的座堂島同名不同地）。',
-    history:'波蘭國家的搖籃：966 年梅什科一世（Mieszko I）在此受洗，波蘭以此為建國元年；最早的君主就葬在波茲南座堂。近代史上同樣硬氣——1956 年 6 月的工人起義是共產波蘭第一場大規模反抗，比華沙、格但斯克都早。',
+    history:'波蘭國家的搖籃：梅什科一世（Mieszko I）於 966 年受洗，被視為波蘭歷史的重要起點；確切受洗地點未有定論，波茲南是可能地點之一；最早的君主就葬在波茲南座堂。近代史上同樣硬氣——1956 年 6 月的工人起義是共產波蘭第一場大規模反抗，比華沙、格但斯克都早。',
     stories:[
       {title:'兩隻山羊的贖罪', text:'1551 年市政廳新鐘落成宴上，學徒烤焦了鹿肉，情急偷了兩隻山羊代替；山羊逃上鐘塔，在全城面前頂起角來，逗笑了市長與賓客，因而獲赦。從此市政廳每天 12:00 由機械山羊互撞 12 下——Day 6 正午行程就是為它排的。'},
       {title:'有身分證的麵包', text:'聖馬丁牛角麵包（rogal świętomarciński）受歐盟 PGI 保護：白罌粟籽餡、81 層酥皮、只有波茲南地區持證烘焙坊能做。傳統上 11/11 聖馬丁節當天全城吃掉數百噸——你早到兩週，平日仍買得到，認明店內 PGI 證書（Kandulski 由 Wojciech Kandulski 於 1983 年創立，是波茲南最知名的家族烘焙坊之一）。'},
@@ -123,7 +123,7 @@ export const photoSpots = [
   {id:'waw-culture', cityKey:'WAW', name:'科學文化宮 30 樓城市景觀', day:null, bestTime:'城市延伸', viewpoint:'Pałac Kultury i Nauki 30 樓 Taras Widokowy 觀景台', direction:'先拍東側市中心天際線，再轉西北側拍華沙舊城方向；玻璃反光時把鏡頭貼近玻璃', light:'未排入每日行程；若自行加入，10 月底接近日落時可同時拍藍調與城市燈光，開放時段仍以當日公告為準。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.231838%2C21.005995'},
   {id:'krk-rynek', lightPhase:'daylight', cityKey:'KRK', name:'中央市集廣場與聖瑪利亞聖殿', day:2, bestTime:'15:00–15:30', viewpoint:'亞當・密茨凱維奇紀念碑西南側，靠紡織會館東南角', direction:'鏡頭朝東北，以紀念碑作前景、聖瑪利亞雙塔作背景；再向南走幾步拍紡織會館長廊', light:'午後從廣場中央拍可避開塔樓正逆光；整點前先完成構圖，順便錄下 Hejnał 號角。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.061793%2C19.938098'},
   {id:'krk-wawel', lightPhase:'daylight', cityKey:'KRK', name:'Wawel 城堡河岸全景', day:2, bestTime:'12:30–13:00', viewpoint:'維斯瓦河南岸 Bulwar Poleski 河濱步道，正對 Wawel 南側城牆', direction:'鏡頭朝北偏東，用河面作下方三分之一前景；35–50 mm 可壓縮城牆與大教堂塔樓', light:'正午前後南側城牆受光較完整；河面風大時用連拍挑倒影最乾淨的一張。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.051876%2C19.933617'},
-  {id:'krk-kazimierz', lightPhase:'daylight', cityKey:'KRK', name:'Kazimierz・Szeroka 街', day:4, bestTime:'14:30–16:00', viewpoint:'Szeroka 24 舊猶太會堂前廣場，面向 Szeroka 街北端', direction:'鏡頭朝西北，以老會堂磚牆或街邊招牌作前景；35 mm 比超廣角更能保留街道層次', light:'午後柔和側光適合磚牆、窄街與店面；這是明確站位，不是整個 Kazimierz 街區的代表點。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.051531%2C19.949142'},
+  {id:'krk-kazimierz', lightPhase:'daylight', cityKey:'KRK', name:'Kazimierz・Szeroka 街', day:4, bestTime:'14:30–15:00', viewpoint:'Szeroka 24 舊猶太會堂前廣場，面向 Szeroka 街北端', direction:'鏡頭朝西北，以老會堂磚牆或街邊招牌作前景；35 mm 比超廣角更能保留街道層次', light:'午後側光適合磚牆、窄街與店面；15:00 前收尾回旅館取行李，鹽礦回程延誤就略過，保留 IC 3830 16:45 上車緩衝。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.051531%2C19.949142'},
   {id:'wro-rynek', lightPhase:'daylight', cityKey:'WRO', name:'市政廳東立面與彩色老屋', day:5, bestTime:'09:00–10:15', viewpoint:'Aleksander Fredro 紀念碑北側、舊市政廳東立面前', direction:'鏡頭朝西北拍市政廳哥德山牆；再移到廣場西側回拍東側彩色商人屋', light:'上午先拍受光的市政廳東立面；彩色屋若逆光，改用 2× 鏡頭壓縮北側立面。', mapUrl:'https://www.google.com/maps/search/?api=1&query=51.109957%2C17.032141'},
   {id:'wro-dwarfs', lightPhase:'dusk', cityKey:'WRO', name:'座堂島煤氣燈與點燈人', day:5, bestTime:'16:15–17:15', viewpoint:'Most Tumski 東端進入座堂島後，Katedralna 街第一排煤氣燈旁', direction:'鏡頭朝東，以煤氣燈作近景、主教座堂雙塔作消失點；看到點燈人時保持路徑暢通、不貼身跟拍', light:'10/28 日落約 16:34；16:15 先卡位，點燈人沒有固定公開出發分鐘。暗處先用夜景模式並鎖住高光。', mapUrl:'https://www.google.com/maps/search/?api=1&query=51.114364%2C17.045103'},
   {id:'poz-rynek', lightPhase:'daylight', cityKey:'POZ', name:'舊市集廣場・市政廳與商人屋', day:6, bestTime:'11:00–12:15', viewpoint:'Prozerpina 噴泉西南側、面向市政廳東立面與彩色商人屋', direction:'鏡頭朝西北；11:45 後不要離開這一側，可同時卡位拍 12:00 山羊從塔樓上方出現', light:'接近正午時市政廳東立面較明亮；山羊很小，建議先準備 2×–3× 鏡頭或長焦。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.408527%2C16.935031'},

@@ -4,8 +4,8 @@ export const souvenirCards = [
   {title:'伏特加 Wódka（不喝酒可略過）', desc:'透明瓶身，Żubrówka 瓶內有一根綠色野牛草最好認；Wyborowa、Sobieski、Luksusowa、J.A. Baczewski 也常見。'},
   {title:'巧克力 · 糖果', desc:'E. Wedel 老牌深棕包裝；Ptasie Mleczko 藍白紙盒，巧克力棉花糖；Krówki 奶油糖、Michałki、Kukułki 銀色包裝。'},
   {title:'Prince Polo 巧克力威化棒', desc:'紅金配色長條包裝，波蘭國民零食，超商常見隨手包，價格依門市；巧克力／花生／椰子多口味，適合當辦公室伴手禮。'},
-  {title:'Delicje 果醬夾心餅', desc:'橘黃色圓形包裝盒，Wedel 出品，海綿蛋糕夾杏桃果醬裹巧克力；茶點好搭檔，包裝精美適合送禮。'},
-  {title:'Mieszanka Krakowska 克拉科夫綜合糖', desc:'金黃色鐵盒印花包裝，Wawel 品牌經典什錦巧克力糖，克拉科夫限定款，適合當紀念品。'},
+  {title:'Delicje 果凍巧克力餅乾', desc:'Mondelēz 品牌，由波蘭 Płońsk 工廠生產；海綿餅乾搭配水果果凍與巧克力。可先試 Delicje Szampańskie 橘子口味；有不同口味與包裝規格，依袋面品名與重量選購。'},
+  {title:'Wawel Mieszanka Krakowska 水果果凍巧克力', desc:'Wawel 品牌的水果果凍裹巧克力，有不同水果口味、包裝與重量；亦可在品牌官方網店購買，並非克拉科夫限定或固定鐵盒款。依實際包裝選購。'},
   {title:'Paluszki 鹹餅乾棒', desc:'透明袋裝可見金黃色細長餅乾棒，原味／起司／罌粟籽口味，配啤酒或純吃皆宜。'},
   {title:'波蘭花草茶 · 蜂蜜', desc:'Herbapol 綠色系花草茶包輕便好帶；miód lipowy 椴樹蜜呈琥珀金色，市集常見小罐裝。'},
   {title:'Toruń 薑餅 Pierniki', desc:'深褐色心型／圓形餅乾，常見錫盒或印花紙盒裝，全波蘭知名甜點禮，密封包裝好帶。'},
@@ -42,8 +42,8 @@ export const shopping = [
 
 export const zabkaCards = [
   {title:'招牌熱狗', desc:'紅白配色熱狗機台最好認，口味：klasyczna（經典）／kurczak（雞）／grillowana（烤腸）／czarna（黑麵包），可自選醬料。售價與供應品項依門市及官方 App；機器人製作服務僅部分門市提供，時間依現場。'},
-  {title:'💳 免辦 App 也能買', desc:'不需要 Żappka 帳號，直接用感應信用卡／Apple Pay／Google Pay 在機台或櫃檯結帳即可。App 只有在想集點、預先點餐、或要進 Żabka Nano 無人店時才用得到，觀光客可以完全跳過註冊。'},
-  {title:'📱 App 進階功能', desc:'想集點可下載 Żappka App（需門號收簡訊驗證，用台灣門號多半也收得到）；Żabka Nano 無人店用手機掃碼開門、自動結帳，全程免排隊。'},
+  {title:'💳 一般門市免辦 App', desc:'一般有人服務的 Żabka 門市可直接結帳，不需 Żappka 帳號；支付方式依門市。Nano 無人店另有入店驗證，不能當作一般門市直接刷卡結帳。'},
+  {title:'📱 Nano 入店與 App', desc:'Żabka Nano 可用 Żappka App 綁卡後掃 QR code，或感應支付卡入店；感應卡首次須輸入門號及簡訊驗證碼。每次入店會暫扣 15 PLN，再依實際採買結算；台灣門號能否完成驗證尚未確認。'},
   {title:'☕ 咖啡與熱食', desc:'現煮咖啡售價依門市及官方 App，不預設與其他店的價差；另有微波即食餐 Szamamm、三明治 Tomcio Paluch、果汁 Wycisk，適合早餐或宵夜。'},
   {title:'🕐 營業時間', desc:'各店營業時間不同，週日及假日也可能調整；深夜或早班火車前補給，先查官方門市資訊，不預設 24 小時營業。'},
   {title:'🧾 其他服務', desc:'彩券、卡片存提現、繳費、包裹寄取（InPost 智能取件櫃常設在店外）；多數店員英文有限，觸控機台通常有英文介面可切換。'},
