@@ -107,7 +107,7 @@ function renderCountdownSection({ trains, deadlines, databaseEntries }) {
   return `
     <section class="section" id="countdown">
       <div class="section-heading"><span class="section-num">T-minus</span><h2>訂票與查核倒數</h2></div>
-      <p>以台灣時間 <span data-countdown-today>${escapeHtml(today)}</span> 計算。三個來源合成一張表：城際交通表的開賣日、行程自訂的行動期限、自由行資料庫的重查日，各筆的「依據」欄註明出處。這裡看的是「什麼快到期」；已經逾期的統計在資料品質面板。到期不代表已訂妥，狀態仍須人工更新。</p>
+      <p>以台灣時間 <span data-countdown-today>${escapeHtml(today)}</span> 計算。行程自訂的行動期限與自由行資料庫的重查日列在下表；尚未購買的城際火車若有開賣日，也會列入。各筆的「依據」欄註明出處。這裡看的是「什麼快到期」；已經逾期的統計在資料品質面板。到期不代表已訂妥，狀態仍須人工更新。</p>
       <noscript><p>JavaScript 未啟用，以下倒數為建置當日的快照。</p></noscript>
       <div class="table-wrap"><table class="table-editorial countdown-table"><thead><tr><th>倒數</th><th>日期</th><th>類別</th><th>項目</th><th>現況與依據</th></tr></thead><tbody>${rows}</tbody></table></div>
       <script>
@@ -250,7 +250,7 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
     </section>
     <section class="section" id="rail-itinerary">
       <div class="section-heading"><span class="section-num">Rail</span><h2>城際交通</h2></div>
-      <div class="callout-note"><b>已購 3／4 段城際火車。</b><p>2026-09-28 依旅客提供的 PKP App 票券清單，確認 10/25 EIP 5300、10/27 IC 3830、10/28 IC 260 的日期、起訖站及發車時間。截圖沒有抵達時間、艙等、車廂、座位與票價；請進票券詳細頁核對。10/29 波茲南 → 華沙仍未見票券，原規劃 EIC 8104 只作購票參考。</p></div>
+      <div class="callout-note"><b>已購 4／4 段城際火車。</b><p>2026-09-28 與 2026-10-06 依旅客提供的 PKP App 票券清單，確認 10/25 EIP 5300、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 的日期、起訖站及發車時間。截圖沒有抵達時間、艙等、車廂、座位與票價；請進票券詳細頁核對並保存離線票券。</p></div>
       <p><a href="https://www.intercity.pl/en/site/for-passengers/trains/about-eic.html" target="_blank" rel="noopener">PKP 官方 EIC 服務說明</a>列有一等艙飲品與點心；指定班次的編組、設備、餐飲與票價仍以購票頁為準。</p>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>路段</th><th>日期</th><th>車種</th><th>時刻</th><th>時長</th><th>預售</th><th>票價</th></tr></thead><tbody>${trainRows}</tbody></table></div>
     </section>

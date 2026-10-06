@@ -55,7 +55,7 @@ test('parseStepTime 對沒有時刻的步驟回 null 而不拋錯', () => {
   }
 });
 
-test('trip.js 已知時刻皆可解析，三段未知抵達時間清楚標示', () => {
+test('trip.js 已知時刻皆可解析，四段未知抵達時間清楚標示', () => {
   const failures = [];
   for (const day of trip.days) {
     for (const step of day.steps) {

@@ -1,5 +1,5 @@
 import { resolveDining } from './dining-places.js';
-import { segments, auschwitzBus, lajkonikFare, saleOpensShort } from './rail.js';
+import { segments, auschwitzBus, lajkonikFare } from './rail.js';
 import { resolveVenue } from '../lib/venues.mjs';
 // trip.js — 行程資料源頭：meta、flights、days×8、stay、trains、bookingTiers、reservations
 // 來源：redesign/data.js（原 window.TRIP 物件字面值），轉為 ES module 具名匯出。
@@ -262,11 +262,11 @@ export const days = [
   {
     n: 6, date: '10/29 (四)', city: '波茲南 → 華沙',
     title: '山羊鐘樓秀 + 聖馬丁牛角麵包',
-    headline: 'EIC 8104 參考 17:40–20:00；兼顧正午山羊秀與下午行程',
+    headline: 'EIC 8104 已購票，17:40 發車；兼顧正午山羊秀與下午行程',
     tag: 'Transit',
     intensity: '中高',
-    hardConstraints: ['11:45 前抵達老城廣場卡位', '12:00 山羊鐘樓秀', '17:05 前抵 Poznań Główny；EIC 8104 指定日班次仍須確認'],
-    mustBook: ['❗尚未訂 · 波茲南 → 華沙火車', '❗尚未訂 · 牛角麵包博物館（10/29 英語場待確認）'],
+    hardConstraints: ['11:45 前抵達老城廣場卡位', '12:00 山羊鐘樓秀', '17:05 前抵 Poznań Główny；搭乘已購 EIC 8104'],
+    mustBook: ['✅ 已購票 · 波茲南 → 華沙 EIC 8104 17:40', '❗尚未訂 · 牛角麵包博物館（10/29 英語場待確認）'],
     compressible: ['Stary Browar 停留時間', '帝王城堡內部參觀'],
     train: {segmentId:'eic-8104'},
     steps: [
@@ -278,13 +278,13 @@ export const days = [
       {t:'15:00', label:'Stary Browar', sub:'博物館若延後則縮短購物；沒有合適英語場時改逛帝王城堡（CK ZAMEK 12:00–19:00、售票至 18:00，地圖摺頁 10／7、語音導覽 20／15）', cost:'購物另計', dur:'1 h'},
       {t:'16:00', label:'取行李、前往 Poznań Główny', sub:'先確認公寓行李寄放地點；17:05 前抵站', dur:'約 1 h'},
       {t:'17:05', label:'抵 Poznań Główny', sub:'確認月台、車廂與座位；拖行李保留進站緩衝', dur:'35 min 緩衝'},
-      {t:'參考 17:40', label:'EIC 8104 前往華沙', sub:'指定日待確認／尚未訂票', cost:'票價待確認', dur:'2h20'},
-      {t:'參考20:00', label:'抵 Warszawa Centralna', sub:'步行至 Hotel Metropol 約 500 公尺，拖行李預留 10–15 分鐘'},
-      {t:'20:30', label:'放行李後晚餐', sub:'Hala Koszyki 美食大廳（2026-09-18 官網查證：週四 08:00–00:00，只有週五六才到凌晨 1:00），距飯店步行約 10–15 分；若想更省時可改車站對面 Złote Tarasy（一–六約至 22:00、日至 21:00）。大廳時間不等於各攤位時間，當日仍先確認個別店家營業與是否需訂位', cost:'PLN 60–120', dur:'1–1.5 h'},
+      {t:'17:40', label:'EIC 8104 前往華沙', sub:'EIC 8104 已購票；抵達時間、車廂與座位待查票面', cost:'票價未提供', dur:'待查票面'},
+      {t:'抵站後', label:'抵 Warszawa Centralna', sub:'票面抵達時間待查；步行至 Hotel Metropol 約 500 公尺，拖行李預留 10–15 分鐘'},
+      {t:'抵站後', label:'放行李後晚餐', sub:'實際用餐時間依票面抵達時間調整。Hala Koszyki 美食大廳（2026-09-18 官網查證：週四 08:00–00:00，只有週五六才到凌晨 1:00），距飯店步行約 10–15 分；若想更省時可改車站對面 Złote Tarasy（一–六約至 22:00、日至 21:00）。大廳時間不等於各攤位時間，當日仍先確認個別店家營業與是否需訂位', cost:'PLN 60–120', dur:'1–1.5 h'},
     ],
     eat: [
       snack({text:'12:15 聖馬丁牛角麵包 @ Cukiernia Kandulski', placeId:'poznan-cukiernia-kandulski'}),
-      snack({text:'20:30 華沙宵夜 @ Hala Koszyki', placeId:'warsaw-hala-koszyki'}),
+      snack({text:'抵站、放行李後華沙宵夜 @ Hala Koszyki', placeId:'warsaw-hala-koszyki'}),
     ],
     backup: [
       {label:'雨天想看山羊鐘', where:'可頌博物館官方售票頁', map:'https://www.google.com/maps/search/?api=1&query=Rogalowe%20Muzeum%20Poznania%2C%20Klasztorna%2023%2C%20Pozna%C5%84', why:'英語公開場官方票價 47 PLN／人，但 10/29 有無場次與庫存都須依官方售票系統確認；未確認前改以 Stary Browar 或帝王城堡為室內備案。棕櫚屋已因改建閉館，不能再列為雨天備案'},
@@ -448,11 +448,11 @@ export { auschwitzBus };
 export const railPurchaseSteps = [
   {
     title: '先用官方時刻表找直達班次',
-    detail: '在 Passenger Portal 輸入出發站、抵達站、日期與目標時間，勾選 Direct connections。四段起點依序使用 Warszawa Centralna、Kraków Główny、Wrocław Główny、Poznań Główny；已購三段仍以票面站名為準。',
+    detail: '在 Passenger Portal 輸入出發站、抵達站、日期與目標時間，勾選 Direct connections。四段起點依序使用 Warszawa Centralna、Kraków Główny、Wrocław Główny、Poznań Główny；已購四段仍以票面站名為準。',
   },
   {
-    title: '進 PKP Intercity 官方購票頁重查',
-    detail: `10/25 EIP 5300、10/27 IC 3830、10/28 IC 260 已在旅客 App 票券清單；尚待購買 10/29 波茲南 → 華沙車票，請用票面站名及日期搜尋。2026-09-08 舊查核紀錄曾顯示 10/29 EIC 8104 於 ${saleOpensShort('eic-8104')} 起預售，現行可售車次、票價與座位以購票頁為準。`,
+    title: '逐張核對 PKP App 已購車票',
+    detail: '10/25 EIP 5300、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 均已在旅客 App 票券清單；請逐張開啟票券詳細頁，核對抵達時間、艙等、車廂、座位與票價，並保存離線副本。',
   },
   {
     title: '選車種、艙等與正確優惠資格',
@@ -473,14 +473,14 @@ export const railPurchaseSteps = [
 ];
 
 export const bookingTiers = [
-  {tier:'第一優先', note:'三段城際火車與 Auschwitz 導覽已訂妥；其餘依官方售票系統確認指定日期與庫存', items:[
+  {tier:'第一優先', note:'四段城際火車與 Auschwitz 導覽已訂妥；其餘依官方售票系統確認指定日期與庫存', items:[
     {name:'Auschwitz 官方英文導覽（10/26 10:30 已訂妥）', url:'https://visit.auschwitz.org/'},
     {name:'Wieliczka 鹽礦英文團（現在即可訂）', url:'https://www.wieliczka-saltmine.com/'},
     {name:`Lajkonik 往返巴士（去程 ${lajkonikOutboundAdopted.dep} → ${lajkonikOutboundAdopted.arr}、回程 ${lajkonikInboundAdopted.dep} → ${lajkonikInboundAdopted.arr}，皆曾查得、付款前重查）`, url:'https://www.lajkonikbus.pl/'},
     {name:'華沙 → 克拉科夫 EIP 5300（已購票；核對抵達時間與座位）', url:'https://www.intercity.pl/en/'},
     {name:'克拉科夫 → 樂斯拉夫 IC 3830（已購票；核對抵達時間與座位）', url:'https://www.intercity.pl/en/'},
     {name:'樂斯拉夫 → 波茲南 IC 260（已購票；核對抵達時間與座位）', url:'https://www.intercity.pl/en/'},
-    {name:'波茲南 → 華沙火車（尚未見票券，待購）', url:'https://www.intercity.pl/en/'},
+    {name:'波茲南 → 華沙 EIC 8104（已購票；核對抵達時間與座位）', url:'https://www.intercity.pl/en/'},
   ]},
   {tier:'第二優先', note:'❗全部尚未訂 · 辛德勒工廠現已可查／購，其餘依官方售票頁', items:[
     {name:'辛德勒工廠（10/25 已進個人網路票 90 天窗口；最後入場 18:30）', url:'https://muzeumkrakowa.pl/en/branches/oskar-schindlers-enamel-factory'},
@@ -501,18 +501,18 @@ export const bookingTiers = [
 
 // checkedAt：實際人工核對這筆狀態的 YYYY-MM-DD；不以建置日期代填。
 // recheckAt：下次查核期限 YYYY-MM-DD；null 時儀表板以行程日期判斷逾期。
-// 已購三段的 checkedAt 為 2026-09-28 檢視旅客提供的 App 票券清單日期；
+// 前三段的 checkedAt 為 2026-09-28，第四段為 2026-10-06 檢視 App 票券清單日期；
 // 截圖未顯示抵達時間、艙等與座位，這些資訊仍需票券詳細頁。
 export const todoGroups = [
   {
     id: 'rail', title: '城際交通', eyebrow: 'Rail · 5 項',
-    intro: '四段 PKP 中已有三段出現在旅客 App 票券清單，10/29 波茲南 → 華沙尚未見票券；Auschwitz 導覽已訂妥，往返巴士尚未購票。已購火車的抵達時間、車廂與座位仍待票券詳細頁核對。',
+    intro: '四段 PKP 均已出現在旅客 App 票券清單；Auschwitz 導覽已訂妥，往返巴士尚未購票。四段火車的抵達時間、艙等、車廂、座位與票價仍待票券詳細頁核對。',
     items: [
       {checkedAt:'2026-09-28', recheckAt:null, date:'10/25', name:'EIP 5300｜Warszawa Centralna → Kraków Główny', status:'已購票', action:'App 票券清單顯示 08:40 發車；開啟票券詳細頁核對抵達時間、艙等、車廂、座位並存離線。', url:'https://www.intercity.pl/en/'},
       {checkedAt:'2026-09-09', recheckAt:'2026-10-12', date:'10/26', name:'Lajkonik 克拉科夫 ⇄ Auschwitz 巴士', status:'曾查得指定日班次／尚未購票', action:`2026-09-09 曾在 lajkonikbus.pl 查得去回班次；本輪未重新取得 10/26 可售結果，付款前須重查班次與庫存：去程 ${lajkonikOutboundAdopted.dep}（Bosacka 18 ${lajkonikOutboundAdopted.bay}）→ ${lajkonikOutboundAdopted.arr}、回程 ${lajkonikInboundAdopted.dep}（Więźniów Oświęcimia 55）→ ${lajkonikInboundAdopted.arr}，各 ${lajkonikOutboundAdopted.dur}、全票 ${lajkonikFare.full} zł／優待 ${lajkonikFare.discount} zł。備案為回程 ${lajkonikInboundBackup.dep} → ${lajkonikInboundBackup.arr}。下單時確認人數、上下車站與是否需選位。`, url:'https://www.lajkonikbus.pl/'},
       {checkedAt:'2026-09-28', recheckAt:null, date:'10/27', name:'IC 3830｜Kraków Główny → Wrocław Główny', status:'已購票', action:'App 票券清單顯示 16:45 發車；開啟票券詳細頁核對抵達時間、艙等、車廂、座位。15:00 結束 Kazimierz，16:10 前到站。', url:'https://www.intercity.pl/en/'},
       {checkedAt:'2026-09-28', recheckAt:null, date:'10/28', name:'IC 260｜Wrocław Główny → Poznań Główny', status:'已購票', action:'App 票券清單顯示 19:10 發車；核對抵達時間、艙等、車廂、座位，並確認公寓晚間取鑰匙方式。', url:'https://www.intercity.pl/en/'},
-      {checkedAt:null, recheckAt:null, date:'10/29', name:'EIC 8104｜Poznań Główny → Warszawa Centralna', status:'參考班次／尚未訂票', action:'核實 17:40–20:00 指定日班表並購票；抵站後步行至 Metropol 預留 10–15 分鐘。', url:'https://www.intercity.pl/en/'},
+      {checkedAt:'2026-10-06', recheckAt:null, date:'10/29', name:'EIC 8104｜Poznań Główny → Warszawa Centralna', status:'已購票', action:'App 票券清單顯示 17:40 發車；開啟票券詳細頁核對抵達時間、艙等、車廂、座位及票價並存離線。17:05 前到站。', url:'https://www.intercity.pl/en/'},
     ],
   },
   {
@@ -557,7 +557,7 @@ export const reservations = [
   {when:'❗現在就查／訂', what:'Wieliczka 鹽礦英文 Tourist Route 10:00 場 — 10/27 英文場、實際票價與庫存以官方日期選擇器為準；不要用舊價格或開賣週期取代訂票結果。'},
   {when:'現在可訂', what:'皇家城堡 — 已查證二至日 10:00–18:00、最後入場 17:00；Day 7 已改為 10:00 第一站（zamek-krolewski.pl）'},
   {when:'現在可先訂', what:'米其林與熱門餐廳：Bottiglieria 1881（二星，最搶）、BABA / Most（樂斯拉夫僅停留一晚零彈性）、WANDAL、Pod Aniołami（TheFork / OpenTable / 餐廳官網）'},
-  {when:'火車票：已購 3／4 段', what:'App 票券清單已有 10/25 EIP 5300（Warszawa Centralna 08:40）、10/27 IC 3830（Kraków Główny 16:45）、10/28 IC 260（Wrocław Główny 19:10）。10/29 波茲南 → 華沙尚未見票券；原規劃 EIC 8104 17:40–20:00，購票前仍須核對指定日班次。前三段抵達時間與座位待查票券詳細頁。'},
+  {when:'火車票：已購 4／4 段', what:'App 票券清單已有 10/25 EIP 5300（Warszawa Centralna 08:40）、10/27 IC 3830（Kraków Główny 16:45）、10/28 IC 260（Wrocław Główny 19:10）、10/29 EIC 8104（Poznań Główny 17:40）。四段抵達時間、艙等、車廂、座位與票價待查票券詳細頁。'},
   {when:'現在可查／訂', what:'辛德勒工廠 10/25 場次已進個人網路票 90 天窗口；POLIN、華沙起義博物館與皇家城堡均以官方售票頁顯示的指定日庫存為準。'},
   {when:'出發前 1 週', what:'把上述所有票價、特別閉館與開放時間再確認一次 — 門票速查與城市指南已於 2026-09-17／09-18 全面複查過，臨時活動與維修仍可能變動'},
   {when:'抵達當日', what:'隔日 Wawel 國家廳室現場票（限額制，售完只能改庭院）'},

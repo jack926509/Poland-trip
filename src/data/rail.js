@@ -139,12 +139,11 @@ export const segments = [
   },
   {
     id: 'eic-8104', day: 6,
-    seg: 'Poznań Główny → Warszawa Centralna', date: '10/29', type: 'EIC 8104 Bolesław Prus',
+    seg: 'Poznań Główny → Warszawa Centralna', date: '10/29', type: 'EIC 8104',
     from: 'Poznań Główny', to: 'Warszawa Centralna',
-    dayType: 'EIC 8104 Bolesław Prus · 參考班次', dayLeg: '指定日待確認／尚未訂票 · 二等艙建議',
-    saleOpens: '2026-09-25', saleCheckedAt: '2026-09-08',
-    dep: '17:40', arr: '20:00', dur: '2h20', price: '票價待確認',
-    status: '參考班次／尚未訂票',
-    note: '適合體驗一等艙；若 10/25 已搭 EIP 一等艙，可依價差改選二等艙。17:05 前到站。',
+    dayType: 'EIC 8104', dayLeg: '已購票 · 17:40 發車；抵達時間待查票面',
+    dep: '17:40', arr: '待查票面', dur: '待查票面', price: '票價未提供',
+    status: '已購票',
+    note: '2026-10-06 依旅客提供的 PKP App 票券清單確認日期、車次、起訖站與發車時間。截圖標示 EIC 8104；原規劃的 Bolesław Prus 名稱不再沿用。抵達時間、艙等、車廂、座位及票價待查票面。17:05 前到站。',
   },
 ];

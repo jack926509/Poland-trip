@@ -9,12 +9,12 @@ import { databaseEntries } from '../src/data/travel-database.js';
 
 const allSources = { ...trip, databaseEntries };
 
-test('已購三段以截圖車次及發車時間為準，歷史開賣日不掛在新車次', () => {
+test('已購四段以截圖車次及發車時間為準，歷史開賣日不掛在已購車次', () => {
   const expected = [
     ['EIP 5300', undefined, '08:40', '待查票面', '待查票面'],
     ['IC 3830', undefined, '16:45', '待查票面', '待查票面'],
     ['IC 260', undefined, '19:10', '待查票面', '待查票面'],
-    ['EIC 8104', '2026-09-25', '17:40', '20:00', '2h20'],
+    ['EIC 8104', undefined, '17:40', '待查票面', '待查票面'],
   ];
 
   for (const [type, saleOpens, dep, arr, dur] of expected) {
@@ -28,48 +28,48 @@ test('已購三段以截圖車次及發車時間為準，歷史開賣日不掛�
   }
 });
 
-test('訂票頁已購三段不再以歷史開賣日催票，只保留待購段預售註記', () => {
+test('訂票頁顯示四段已購，並提醒查票面細節', () => {
   const html = renderBooking(trip);
 
-  assert.match(html, /已購 3／4 段城際火車/);
-  assert.match(html, /2026-09-25 起預售/);
+  assert.match(html, /已購 4／4 段城際火車/);
+  assert.match(html, /10\/29 EIC 8104/);
+  assert.doesNotMatch(html, /2026-09-25 起預售/);
   assert.doesNotMatch(html, /2026-09-27 起預售|2026-09-28 起預售/);
-  assert.match(html, /PKP Intercity 官方售票系統查核：2026-09-08/);
+  assert.match(html, /2026-10-06 依旅客提供的 PKP App 票券清單/);
 });
 
-test('倒數看板只催未購的返華沙火車，不催已購三段', () => {
+test('倒數看板不再催四段已購火車', () => {
   const items = collectDeadlines(allSources);
   const rail = items.filter(item => item.category === '火車');
-  assert.deepEqual(rail.map(item => [item.title, item.date]), [['EIC 8104 Bolesław Prus｜Poznań Główny → Warszawa Centralna', '2026-09-25']]);
+  assert.deepEqual(rail, []);
   // 火車開賣日的正本是 trains[].saleOpens；手動 deadlines 裡不該再出現一份。
   for (const deadline of trip.deadlines) {
     assert.notEqual(deadline.category, '火車', `deadlines 不應重抄火車開賣日：${deadline.id}`);
   }
-  assert.equal(items.length, 1 + trip.deadlines.length + databaseEntries.filter(entry => entry.recheckAt && isOpenEntryStatus(entry.status)).length);
+  assert.equal(items.length, trip.deadlines.length + databaseEntries.filter(entry => entry.recheckAt && isOpenEntryStatus(entry.status)).length);
 });
 
 test('倒數以注入的固定日期計算，涵蓋未到期、當天與逾期', () => {
-  const items = collectDeadlines(allSources);
-  const find = (today, id) => calculateCountdown(items, today).find(item => item.id.includes(id));
+  const items = [{ id: 'test-deadline', date: '2026-09-25', category: '測試', title: '查核事項', action: '查核', status: '尚未完成' }];
+  const find = today => calculateCountdown(items, today)[0];
 
-  const early = find('2026-09-20', 'eic-8104');
+  const early = find('2026-09-20');
   assert.equal(early.daysLeft, 5);
   assert.equal(early.label, 'T-5');
   assert.equal(early.urgency, 'soon');
 
-  const onSaleDay = find('2026-09-25', 'eic-8104');
+  const onSaleDay = find('2026-09-25');
   assert.equal(onSaleDay.daysLeft, 0);
   assert.equal(onSaleDay.label, '就是今天');
   assert.equal(onSaleDay.urgency, 'today');
 
-  const late = find('2026-09-26', 'eic-8104');
+  const late = find('2026-09-26');
   assert.equal(late.daysLeft, -1);
   assert.equal(late.label, '逾期 1 天');
   assert.equal(late.urgency, 'overdue');
 
   // 距離超過一週的仍是一般狀態，不應該一開始就全表紅色。
-  assert.equal(find('2026-09-01', 'eic-8104').urgency, 'planned');
-  assert.equal(find('2026-09-26', 'eip-5300'), undefined);
+  assert.equal(find('2026-09-01').urgency, 'planned');
 });
 
 test('已完成的項目不再被催，不論日期多久以前', () => {

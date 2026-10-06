@@ -83,9 +83,9 @@ const databaseEntriesBase = [
   {
     id: 'rail-trip-tickets', section: 'rail', category: 'transit', cityKey: 'ROUTE',
     title: '本次城際車票',
-    summary: '2026-09-28 旅客提供的 App 票券清單顯示 10/25 EIP 5300、10/27 IC 3830、10/28 IC 260 已購票；10/29 波茲南→華沙尚未見票券。前三段的抵達時間、艙等、車廂與座位仍待票券詳細頁核對。',
-    status: 'pending', sourceUrl: null, verifiedAt: '2026-09-28', recheckAt: '2026-09-28',
-    offlineNote: '保存已購三段車票離線副本並核對詳細資料；10/29 車票仍待購。搭車前用 Passenger Portal 查月台與異動。', private: false,
+    summary: '2026-09-28 與 2026-10-06 旅客提供的 App 票券清單顯示 10/25 EIP 5300、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 均已購票。四段的抵達時間、艙等、車廂、座位與票價仍待票券詳細頁核對。',
+    status: 'pending', sourceUrl: null, verifiedAt: '2026-10-06', checkedAt: '2026-10-06', recheckAt: '2026-10-24',
+    offlineNote: '請在抵波蘭當日 10/24，也就是 10/25 首段城際火車前一日，保存四段車票離線副本並核對票面詳細資料；這是自行設定的查核期限，非官方期限。搭車前用 Passenger Portal 查月台與異動。', private: false,
   },
   {
     id: 'rail-station-directory', section: 'rail', category: 'transit', cityKey: 'PL',
@@ -504,7 +504,7 @@ export const dayOperations = {
     ],
     navigation: [
       { mode: '步行／市內交通', route: '教堂島 → 舊城市場 → 牛角麵包博物館 → Stary Browar → Poznań Główny', action: '11:45 前到市政廳正面；博物館英語場依售票頁調整，16:00 開始取行李與前往車站。' },
-      { mode: 'PKP', route: 'Poznań Główny → Warszawa Centralna', action: '目前採 EIC 8104 參考 17:40–20:00；17:05 前到站，指定日核實並購票後依票面班次行動。' },
+      { mode: 'PKP', route: 'Poznań Główny → Warszawa Centralna', action: 'EIC 8104 已購票，17:40 發車；17:05 前到站。抵達時間、車廂與座位待查票面，搭車前再查月台與異動。' },
     ],
     dailyAlerts: [
       '市政廳博物館整修閉館；主行程只看官方確認的 12:00 山羊鐘樓秀。',

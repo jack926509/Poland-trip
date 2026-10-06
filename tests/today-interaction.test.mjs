@@ -76,7 +76,7 @@ test('日期切換、手動選站、回到今天與跨午夜更新',()=>{
 
 test('今日卡保留票務狀態、餐廳注意事項及住宿地址限制',()=>{
   const html=renderToday({...trip, dayDining, safety:{emergency:[]}});
-  assert.match(html,/指定日待確認／尚未訂票/);
+  assert.match(html,/EIC 8104 已購票/);
   assert.match(html,/此地址為接待與取鑰匙處/);
   assert.match(html,/客滿或想換口味/);
   assert.ok(html.includes(dayDining[5][0].note.replaceAll('&','&amp;')));

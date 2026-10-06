@@ -815,7 +815,7 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
   const rawTodoCount = todoGroups.reduce((total, group) => total + group.items.length, 0);
   const todoCount = todoGroups.reduce((total, group) =>
     total + group.items.filter(item => !['已訂妥', '已完成', '已購票'].includes(item.status)).length, 0);
-  assert.equal(todoCount, 12, '三段已購火車與 Auschwitz 導覽不可算進待辦');
+  assert.equal(todoCount, 11, '四段已購火車與 Auschwitz 導覽不可算進待辦');
 
   assert.ok(!html.includes('出發準備度'));
   assert.ok(!html.includes('00 / Readiness'));
@@ -1021,7 +1021,7 @@ test('Day 7 改為早上皇家城堡，並保留 POLIN 至起義博物館的移�
 
 test('已購城際火車與未購交通分開標示，未知票面細節不臆測', () => {
   for (const train of trains) {
-    // 截圖可確認三段已購，未提供的票價不能臆測；Auschwitz 巴士仍未購。
+    // 截圖可確認四段已購，未提供的票價不能臆測；Auschwitz 巴士仍未購。
     if (train.date === '10/26') {
       assert.match(train.status, /尚未購票/);
       assert.match(train.price, /購票日確認/);
@@ -1042,19 +1042,27 @@ test('已購城際火車與未購交通分開標示，未知票面細節不臆�
   assert.ok(!allDays.includes('價差 ≤'));
 });
 
-test('四段跨城火車反映三張已購票券及一段待購', () => {
+test('四段跨城火車反映四張已購票券', () => {
   assert.deepEqual(
     trains.filter(item => item.type !== 'BUS · Lajkonik').map(item => [item.date, item.type, item.dep, item.arr]),
     [
     ['10/25', 'EIP 5300', '08:40', '待查票面'],
       ['10/27', 'IC 3830', '16:45', '待查票面'],
       ['10/28', 'IC 260', '19:10', '待查票面'],
-    ['10/29', 'EIC 8104 Bolesław Prus', '17:40', '20:00'],
+    ['10/29', 'EIC 8104', '17:40', '待查票面'],
     ],
   );
-  assert.deepEqual(trains.filter(item => item.type !== 'BUS · Lajkonik').map(item => item.status), ['已購票', '已購票', '已購票', '參考班次／尚未訂票']);
+  assert.deepEqual(trains.filter(item => item.type !== 'BUS · Lajkonik').map(item => item.status), ['已購票', '已購票', '已購票', '已購票']);
   assert.equal(trains[0].from, 'Warszawa Centralna');
   assert.ok(!dayOperations[2].addresses.some(item => item.name === 'Warszawa Zachodnia'), 'Day 2 已購中央車站上車票，不應再提供西站導航卡');
+});
+
+test('城際車票資料庫顯示最新人工盤查日期與自訂票面核對期限', () => {
+  const ticketEntry = databaseEntries.find(item => item.id === 'rail-trip-tickets');
+  assert.equal(ticketEntry.checkedAt, '2026-10-06');
+  assert.equal(ticketEntry.recheckAt, '2026-10-24');
+  assert.match(ticketEntry.offlineNote, /10\/25 首段城際火車前一日/);
+  assert.match(ticketEntry.offlineNote, /非官方期限/);
 });
 
 test('城際交通提供官方購票、官方時刻表與可操作的購票教學', () => {
