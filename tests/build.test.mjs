@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
+import { precachedGroceryPhotos } from '../src/build/output.mjs';
 import fs from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
@@ -624,7 +625,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.equal(photoSpots.length, 10);
   assert.equal(photoCredits.length, 20);
   assert.deepEqual(Object.fromEntries(Object.entries(mapPins).map(([city, data]) => [city, data.points.length])), {
-    warsaw: 14, krakow: 18, wroclaw: 9, poznan: 7,
+    warsaw: 15, krakow: 18, wroclaw: 10, poznan: 7,
   });
   assert.deepEqual(Object.fromEntries(Object.entries(attractions).map(([city, items]) => [city, items.length])), {
     warsaw: 12, krakow: 6, wroclaw: 8, poznan: 9,
@@ -641,7 +642,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   // 2026-09-19 資料精煉切片 1：verifiedRestaurantHours 改由每日餐位（day-dining.js）中
   // 已核實／部分核實的門市直接推導（見 src/lib/dining.mjs 的 plannedVerifiedPlaces），
   // 不再是手寫子集，筆數會隨每日餐位調整自然變動。
-  assert.equal(verifiedRestaurantHours.length, 15);
+  assert.equal(verifiedRestaurantHours.length, 19);
   assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
     warsaw: 5, krakow: 7, wroclaw: 4, poznan: 7,
   });
@@ -671,7 +672,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
 
 test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', () => {
   const allPins = Object.entries(mapPins).flatMap(([city, data]) => data.points.map((point) => ({city, name:point[2]})));
-  assert.equal(allPins.length, 48);
+  assert.equal(allPins.length, 50);
   for (const pin of allPins) {
     assert.ok(mapPinChecks[pin.city]?.[pin.name], `${pin.city}/${pin.name} 缺少圖釘查證狀態`);
   }
@@ -684,7 +685,7 @@ test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', ()
   });
   const verifiedPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'coordinate-verified');
   const areaPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'area-reference');
-  assert.equal(verifiedPins.length, 45);
+  assert.equal(verifiedPins.length, 47);
   assert.deepEqual(
     areaPins.map(({name}) => name).sort(),
     [
@@ -948,12 +949,12 @@ test('4 個已確認住宿地點皆出現在對應城市地圖，圖釘地址與
   }
 });
 
-test('4 個城市頁含正確 Leaflet 圖釘數，合計 48', () => {
+test('4 個城市頁含正確 Leaflet 圖釘數，合計 50', () => {
   // 2026-09-14：撤掉 5 個「地圖上有、餐廳表已無」的孤兒圖釘後由 53 降為 48
   const expected = {
-    'city-warszawa.html': 14,
+    'city-warszawa.html': 15,
     'city-krakow.html': 18,
-    'city-wroclaw.html': 9,
+    'city-wroclaw.html': 10,
     'city-poznan.html': 7,
   };
   let total = 0;
@@ -969,7 +970,7 @@ test('4 個城市頁含正確 Leaflet 圖釘數，合計 48', () => {
     assert.equal(points, count, `${file} 圖釘數錯誤`);
     total += points;
   }
-  assert.equal(total, 48);
+  assert.equal(total, 50);
 });
 
 test('城市頁完整呈現故事、景點、行程餐廳推薦與拍照資訊', () => {
@@ -1844,7 +1845,10 @@ test('sw.js 的快取版本由建置帶上資源指紋，樣式改了就會失�
     'assets/search-index.json']) {
     expected.update(fs.readFileSync(path.join(distDir, asset)));
   }
-  for (const name of fs.readdirSync(path.join(distDir, 'assets/photos')).filter(name => /^grocery-.*\.webp$/.test(name)).sort()) expected.update(fs.readFileSync(path.join(distDir, 'assets/photos', name)));
+  // 所有 sw.js 實際預快取的照片（含城市封面與商品）都須算進指紋。
+  for (const [, src] of built.matchAll(/'\.\/(assets\/photos\/[^']+)'/g)) {
+    expected.update(fs.readFileSync(path.join(distDir, src)));
+  }
   assert.equal(shipped, `${base}-${expected.digest('hex').slice(0, 8)}`, '指紋與實際資源內容不符');
 
   // 部署腳本不能再用根目錄的原始 sw.js 覆蓋掉帶指紋的那份
@@ -1861,7 +1865,11 @@ test('中-1：只改搜尋索引內容（資料檔變動的效果），sw.js 的
   const assets = ['manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png',
     'assets/main.css', 'assets/nav.js', 'assets/site-search.js',
     'assets/database-filter.js', 'assets/leaflet/leaflet.css', 'assets/leaflet/leaflet.js',
-    'assets/search-index.json'];
+    'assets/search-index.json',
+    // 商品照片也走 cache-first 並算進指紋，所以暫存 dist 也要有這幾張；
+    // 清單跟 writeServiceWorker 讀的是同一個函式。
+    ...[...fs.readFileSync('sw.js', 'utf8').matchAll(/'\.\/(assets\/photos\/[^']+)'/g)].map(match => match[1]),
+    ...precachedGroceryPhotos()];
   const tmpDir = fs.mkdtempSync(path.join(projectRoot, '.test-sw-fingerprint-'));
   try {
     fs.mkdirSync(path.join(tmpDir, 'assets', 'leaflet'), { recursive: true });

@@ -164,6 +164,13 @@ export function renderCity({
     if (check.status === 'area-reference') summary.area += 1;
     return summary;
   }, {precise: 0, area: 0});
+  const unpinnedDining = mergedDining.filter(item => (item.selected || item.mustEat) && item.map
+    && !mapData.points.some(point => point[2] === item.name));
+  const unpinnedDiningHtml = unpinnedDining.length ? `<details class="city-map-unpinned">
+      <summary>其他行程餐廳的導航連結（${unpinnedDining.length} 家）</summary>
+      <p>以下店家尚無本站核實的圖釘座標。點店名可用即時地圖查找地址與營業狀態；請先核對分店。</p>
+      <ul class="check-list">${unpinnedDining.map(item => `<li><a href="${item.map}" target="_blank" rel="noopener noreferrer">${item.name}</a>${item.address ? ` · ${item.address}` : ''}</li>`).join('')}</ul>
+    </details>` : '';
 
   const mapScript = `
     <script src="assets/leaflet/leaflet.js"></script>
@@ -238,7 +245,7 @@ export function renderCity({
     <section class="section journal-city-map">
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
       <p class="lead">拖曳、滾輪、雙擊或使用按鈕縮放；手機可用雙指縮放，點選圖釘可直接開啟 Google Maps。</p>
-      <div class="callout-note"><b>座標狀態：</b>${mapCheckSummary.precise} 個門牌／場館錨點已比對${mapCheckSummary.area ? `，${mapCheckSummary.area} 個街區或島區採範圍代表點` : ''}。座標查證於 2026/08/11–15，本次發布複核於 2026/09/08；未確認分店的 Żabka 不放精確圖釘，抵達後請用即時地圖搜尋附近分店。</div>
+      <div class="callout-note"><b>座標狀態：</b>${mapCheckSummary.precise} 個門牌／場館錨點已比對${mapCheckSummary.area ? `，${mapCheckSummary.area} 個街區或島區採範圍代表點` : ''}。既有座標於 2026/08/11–09/08 查核；MEI 與 Restauracja Wrocławska 於 2026/09/24 採店家官方導航目的地補入；未確認分店的 Żabka 不放精確圖釘，抵達後請用即時地圖搜尋附近分店。</div>
       <div class="map-toolbar" role="group" aria-label="${city.name}地圖縮放控制">
         <button type="button" data-map-action="zoom-in">＋ 放大</button>
         <button type="button" data-map-action="zoom-out">－ 縮小</button>
@@ -246,6 +253,7 @@ export function renderCity({
       </div>
       <div id="map-${cityKey}" class="map-container" data-map-key="${cityKey}" role="region" aria-label="${city.name}互動地圖"><p class="map-fallback">地圖需要網路連線才能載入。離線或載入失敗時，請改用下方景點清單中的 Google Maps 連結。</p></div>
       <div class="map-legend" aria-label="地圖圖例">${legendHtml}</div>
+      ${unpinnedDiningHtml}
       <p class="map-caption">地圖底圖 © OpenStreetMap contributors</p>
     </section>
 
@@ -276,4 +284,3 @@ export function renderCity({
     ogImageAlt: `${city.name}章節海報`,
   });
 }
-

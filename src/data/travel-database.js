@@ -331,7 +331,7 @@ const addressStepLabels = {
   '華沙蕭邦機場': ['抵蕭邦機場', '抵 Chopin 第一航廈', '退稅文件 + 報到 + 安檢', '★ QR 260 起飛'],
   'Warszawa Centralna': ['退房 → Warszawa Centralna', '抵華沙中央車站', '抵 Warszawa Centralna'],
   '華沙皇家城堡': ['★ 皇家城堡'],
-  '華沙老城市場廣場': ['★ 老城廣場', '老城廣場夜燈漫步', '早餐 + 老城散步'],
+  '華沙老城市場廣場': ['★ 老城廣場', '老城廣場夜燈漫步'],
   'Krakowskie Przedmieście': ['Krakowskie Przedmieście'],
   'Kraków Główny': ['抵 Kraków Główny', '火車回 Kraków Główny'],
   '瓦維爾大教堂': ['★ 瓦維爾大教堂'],
@@ -479,11 +479,11 @@ export const dayOperations = {
       accommodationAddress('poznan-towarowa'),
     ],
     navigation: [
-      { mode: '步行／市內交通', route: '老城 → Panorama → 百年廳 → 座堂島', action: '百年廳跨區移動當日用 Jakdojade 選取實際電車；預留從座堂島回車站取行李的時間。' },
+      { mode: '步行／市內交通', route: '老城 → Panorama → 午餐 → 百年廳 → 座堂島', action: '午餐預留 12:30–13:15，13:15 開始往百年廳移動；當日用 Jakdojade 選取實際電車，並預留從座堂島回車站取行李的時間。' },
       { mode: 'PKP', route: 'Wrocław Główny → Poznań Główny', action: '已購 IC 260 19:10；18:35 前抵站。抵達時間、車廂與座位待查票面。' },
     ],
     dailyAlerts: [
-      '百年廳 10/28 的內部參觀狀態須以官方 availability calendar 確認；未確認前只排外觀與周邊。',
+      '百年廳 10/28 已查為藍色日，Visitor Centre 可看；14:00 廳內開放仍須行前確認。',
       '點燈人沒有對外保證的出發分鐘；日落前到座堂島等待，不把 16:45 當成確定時刻。',
     ],
     nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票'],
@@ -565,7 +565,7 @@ const unresolvedStepReasons = {
   },
   2: {
     'EIP 5300 前往克拉科夫': dynamicTransitReason,
-    '車站周邊午餐': flexibleStopReason,
+    '老城午餐 · Pod Temidą': '店址 Grodzka 43 與營業時間已查；尚無獨立核實的地圖圖釘，且午餐時間須依已購火車的實際抵達時間調整。',
     '步行經 Kazimierz、Podgórze 前往辛德勒工廠': '步行沿途短停保持彈性；以辛德勒工廠入口地址為終點，17:10 前到場。',
   },
   3: {
@@ -583,9 +583,12 @@ const unresolvedStepReasons = {
   },
   5: {
     '糖果屋雙屋 + 教堂塔樓': '教堂塔樓入口與開放狀態須依當日官方公告確認。',
+    '午餐 · Restauracja Wrocławska 候選': '餐廳每日 12:00 開門已查；排隊與快速出餐仍待確認，無法在 13:15 前結束時改在全景畫附近外帶。',
+    '前往百年廳': '市內交通路線與站點依當日 Jakdojade 導航確認。',
     'IC 260 前往波茲南': dynamicTransitReason,
   },
   6: {
+    '午餐 · Pyra Bar 候選': '須與牛角麵包博物館實際英語場協調；排隊過久時改為外帶。',
     '取行李、前往 Poznań Główny': '公寓寄放與取行李地點須先向住宿確認，再前往車站。',
     '★ 聖馬丁牛角麵包 (PGI)': '尚未選定可靠分店，待分店與營業時間確認後補入。',
     'EIC 8104 前往華沙': dynamicTransitReason,
@@ -596,6 +599,7 @@ const unresolvedStepReasons = {
     '老城最後晚餐': flexibleStopReason,
   },
   8: {
+    '飯店或中央車站附近早餐': '未指定店家；飯店含餐與週六營業時間前一晚確認。',
     'SKM S2／S3 目標班次': dynamicTransitReason,
   },
 };

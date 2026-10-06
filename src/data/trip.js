@@ -92,7 +92,7 @@ export const days = [
       {t:'08:40', label:'EIP 5300 前往克拉科夫', sub:'已購票；票券清單顯示 08:40 Warszawa Centralna → Kraków Główny。抵達時間與車廂座位待查票面', cost:'已購票', dur:'車程待查票面'},
       {t:'抵站後', label:'抵 Kraków Główny', sub:'票券清單未顯示抵達時間；後續 11:10 寄放行李等排程，須依票券詳細頁重核', dur:'5–10 min 拖行李'},
       {t:'11:10', label:'旅館寄放行李', sub:'ibis budget Krakow Stare Miasto，飯店官網標示距車站約 200 公尺', dur:'20 min'},
-      {t:'11:30', id:'d2-lunch', label:'車站周邊午餐', sub:'午餐候選為老城的 Bar Mleczny Pod Temidą（門牌待確認），非車站內店家；先由車站前往並確認週日營業，未確認則在車站周邊另選，再依實際位置前往 Wawel', cost:'PLN 40–60', dur:'45 min'},
+      {t:'11:30', id:'d2-lunch', label:'老城午餐 · Pod Temidą', sub:'Bar Mleczny Pod Temidą 位於 Grodzka 43；官網已確認每日 09:00–20:00。這是老城店而非車站內店家，先由車站前往，再沿 Grodzka 往 Wawel', cost:'PLN 40–60', dur:'45 min'},
       {t:'13:00', label:'★ 瓦維爾大教堂', sub:'週日 12:30–17:00；Cathedral Museum 週日不開', cost:'PLN 26／18', dur:'45 min'},
       {t:'14:00', label:'★ Wawel 城堡短路線', constraint:{venue:'krakow-wawel-treasury'}, sub:'2026-09-17 官網 9–12 月分路線售票，適合一小時空檔的是：王冠寶庫 47／35、Castle Underground 47／35（含語音導覽）、Armoury 47／35；二樓代表廳 57／43 需時較長。不要硬排一、二樓完整路線，會壓縮後續步行', cost:'寶庫或地下路線 PLN 47／35', dur:'1 h'},
       {t:'15:00', label:'★ 中央廣場 + 聖瑪利亞', sub:'本次先看廣場與教堂外觀，登塔改為有餘裕才安排。整點 Hejnał 號角；塔票僅於 Mariacki 廣場 7 號當日現場售票', cost:'外觀免費', dur:'30 min（含由城堡步行）'},
@@ -202,7 +202,7 @@ export const days = [
     steps: [
       {t:'08:00', label:'早餐 + 退房', sub:'行李寄旅館'},
       {t:'09:00', label:'火車到 Wieliczka Rynek-Kopalnia', sub:'KMŁ；2026-09-17 ZTP 官方票價表載明 70 分鐘 KMK+KMŁ 聯票涵蓋 Wieliczka Bogucice–Wieliczka Rynek Kopalnia 區段與所有站名含「Kraków」的車站，唯一排除的是 Kraków Airport——此程適用。注意是「70 分鐘」有效，逾時要另購', cost:'PLN 10（優待 5）', dur:'約 25 min'},
-      {t:'10:00', label:'★ Wieliczka 鹽礦 Tourist Route 英文團', sub:'3.5 km · 135m 深 · St. Kinga 鹽教堂。指定日票價已查：10/27 英語 Tourist Route 全票 143／優待 121 PLN；但 10:00 這個場次是否存在、還有沒有位子仍未確認，購票前務必在官方日期選擇器逐項核對', cost:'PLN 143（優待 121）· 已查票價／尚未購票', dur:'2–3 h'},
+      {t:'10:00', label:'★ Wieliczka 鹽礦 Tourist Route 英文團', sub:'3.5 km · 135m 深 · St. Kinga 鹽教堂。指定日票價已查：10/27 英語 Tourist Route 全票 143／優待 121 PLN；09/24 官方售票頁回傳無法存取，未能核實 10:00 場次與餘額；這不表示售罄，購票前仍須在官方日期選擇器核對', cost:'PLN 143（優待 121）· 已查票價／尚未購票', dur:'2–3 h'},
       {t:'13:00', id:'d4-lunch', label:'Wieliczka 鎮中心午餐', sub:'僅在導覽準時結束且回程火車時間允許時用餐；若導覽到 13:00 才結束，改買外帶並直接返站', cost:'PLN 40–60', dur:'最多 30 min'},
       {t:'13:30', label:'火車回 Kraków Główny', sub:'回程同樣可用 70 分鐘 KMK+KMŁ 聯票（去程那張已失效，需再買一張）', cost:'PLN 10（優待 5）', dur:'約 25 min'},
       {t:'14:30', label:'Kazimierz 快速散步（有餘裕才去）', sub:'只走舊猶太會堂與 Szeroka 街附近；鹽礦或回程火車稍有延誤就直接回旅館取行李', cost:'免費', dur:'最多 30 min'},
@@ -230,7 +230,7 @@ export const days = [
   {
     n: 5, date: '10/28 (三)', city: '樂斯拉夫 → 波茲南',
     title: '小矮人尋寶 + 點燈儀式 + 晚轉場',
-    headline: 'IC 260 已購票：19:10 由 Wrocław Główny 出發；抵達時間待查票面',
+    headline: 'IC 260 已購票，19:10 由 Wrocław Główny 出發；午餐與跨區移動先留時間，抵達時間待查票面',
     tag: 'Transit',
     intensity: '很高',
     hardConstraints: ['早餐後早出門', '百年廳距離老城較遠需抓交通', '座堂島點燈人無對外保證的固定出發分鐘，日落前到場等候', '18:35 前抵 Wrocław Główny；已購 IC 260 19:10 發車'],
@@ -240,8 +240,10 @@ export const days = [
     steps: [
       {t:'09:00', label:'★ 中央廣場 + 紡織會館', sub:'dwarfsmap.com 找小矮人', cost:'免費', dur:'1.5 h'},
       {t:'10:30', label:'糖果屋雙屋 + 教堂塔樓', sub:'聖伊莉莎白教堂塔高 96m、觀景台 75m、304 階無電梯；一–六 10:00–19:00', cost:'PLN 16／10 · 現金', dur:'45 min'},
-      {t:'11:30', label:'★ 拉茨瓦維採全景畫', sub:'30 分鐘一場，採分時段入場；10/28 指定時段庫存尚未確認', cost:'PLN 50／優待 35', dur:'1 h'},
-      {t:'13:30', label:'★ 百年廳 (UNESCO)', constraint:{venue:'wroclaw-hala-stulecia'}, sub:'官方 availability calendar 逐日分四色：綠＝多媒體展與廳內看台都可看、藍＝部分時段廳內不開但展覽可看、黃＝不能進到圓頂正下方但展覽可看、紅＝兩者都不開。2026-09-18 複查官方日曆仍以 JavaScript 逐日渲染，靜態頁讀不到指定日顏色，10/28 屬於哪一色仍未確認——行前重查，未確認前以外觀、噴泉與日本花園規劃', cost:'外觀免費；Visitor Centre 25／20、加看廳內 30／25', dur:'1 h'},
+      {t:'11:30', label:'★ 拉茨瓦維採全景畫', sub:'2026-09-24 官方售票系統已查得 10/28 11:30 場，當下顯示 85 個名額；30 分鐘一場，尚未購票，餘額會變動', cost:'PLN 50／優待 35', dur:'1 h'},
+      {t:'12:30', id:'d5-lunch', label:'午餐 · Restauracja Wrocławska 候選', sub:'由全景畫往老城 Szewska 59/60；已確認每日 12:00 開門，午餐仍需於 13:15 前結束。若無法快速出餐，改在全景畫附近外帶，避免壓縮百年廳交通。', cost:'依店家', dur:'45 min（含步行，需事先確認）'},
+      {t:'13:15', label:'前往百年廳', sub:'預留約 45 分鐘搭車與步行；實際路線、站點以當日 Jakdojade 為準', dur:'45 min'},
+      {t:'14:00', label:'★ 百年廳 (UNESCO)', constraint:{venue:'wroclaw-hala-stulecia'}, sub:'2026-09-24 官方日曆確認 10/28 為藍色日：Visitor Centre 可看，廳內部分時段可能不開放。14:00 可規劃展覽；廳內參觀須再確認當日限制。', cost:'外觀免費；Visitor Centre 25／20、加看廳內 30／25', dur:'1 h'},
       {t:'16:15', label:'★ 座堂島煤氣燈', sub:'日落約 16:34；點燈人無固定公開出發分鐘，在島上等候與散步', cost:'免費', dur:'1 h'},
       {t:'17:15', label:'座堂島結束後回 Piast 取行李', sub:'座堂島 → 旅館約 25–30 分；已購 IC 260 19:10 發車，18:35 前抵站後保留約 35 分鐘緩衝', dur:'約 1 h 20 min'},
       {t:'18:35 前', label:'抵 Wrocław Główny', sub:'確認月台、車廂與座位', dur:'至少 35 min 緩衝'},
@@ -252,7 +254,7 @@ export const days = [
       snack({text:'咖啡 @ El Gato Specialty Coffee', placeId:'wroclaw-el-gato-specialty-coffee'}),
       snack({text:'甜點 @ Dessert Boutique', placeId:'wroclaw-dessert-boutique'}),
     ],
-    warn: '❗IC 260 城際火車已購票；拉茨瓦維採全景畫場次仍未訂。百年廳的 10/28 內部參觀狀態須以官方 availability calendar 確認，未確認前不保證室內行程。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，因此安排 16:15–17:15 在座堂島等候。',
+    warn: '✅ IC 260 城際火車已購票；拉茨瓦維採全景畫 11:30 場已查到但尚未購票。午餐候選已確認 12:00 開門，仍須確認出餐速度。百年廳 10/28 已查為藍色日，可看 Visitor Centre，但 14:00 廳內開放不保證。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，因此安排 16:15–17:15 在座堂島等候。',
     backup: [
       {label:'雨天備案', where:'Sky Tower 觀景台', map:'https://www.google.com/maps/search/?api=1&query=Sky%20Tower%2C%20Powsta%C5%84c%C3%B3w%20%C5%9Al%C4%85skich%2095%2C%20Wroc%C5%82aw', why:'開放時間、票價與能見度以官方當日公告為準，不用舊票價規劃'},
       {label:'點燈師看不到', where:'廣場連拱廊 + 紡織會館內部市集', map:'https://www.google.com/maps/search/?api=1&query=Rynek%20Wroc%C5%82aw', why:'若日落後遇雨遮蔽煤氣燈，回廣場喝熱酒（PLN 12）'},
@@ -274,7 +276,8 @@ export const days = [
       {t:'11:00', label:'廣場卡正面位置', dur:'45 min · 提早卡位'},
       {t:'12:00', label:'★ 山羊鐘樓秀', sub:'官方固定正午登場，兩隻金屬山羊互頂 12 次', cost:'免費', dur:'5 min'},
       {t:'12:15', label:'★ 聖馬丁牛角麵包 (PGI)', sub:'Cukiernia Kandulski；出發前確認分店、當日營業與 PGI 證書', cost:'依門市標價', dur:'15 min'},
-      {t:'13:30–15:00 預留', label:'★ 牛角麵包博物館', sub:'2026-09-18 官網：英語公開場 47 PLN／人（滿 3 歲起，未滿 3 歲 1 PLN），官方售票頁列開放時間為日–五 11:00–15:30（官方註明是第一場與最後一場開演時間），入口在 Klasztorna 23。10/29 週四在營業日內，但有沒有英語場、幾點開演仍未確認，不能直接視為 13:30 開演——依官方售票頁當日可售場次調整', cost:'英語場 PLN 47／人', dur:'表演約 1 h'},
+      {t:'12:30', id:'d6-lunch', label:'午餐 · Pyra Bar 候選', sub:'Strzelecka 13；確認週四營業、博物館英語場與現場等候時間。若 13:30 有可訂英語場且餐廳排隊，改老城附近外帶，避免遲到。', cost:'依店家', dur:'約 45 min（含來回步行）'},
+      {t:'13:30–15:00 預留', label:'★ 牛角麵包博物館', sub:'2026-09-18 官網：英語公開場 47 PLN／人（滿 3 歲起，未滿 3 歲 1 PLN），官方售票頁列開放時間為日–五 11:00–15:30（官方註明是第一場與最後一場開演時間），入口在 Klasztorna 23。09/24 再查官方說明：通常在演出前 1–30 天開賣，10/29 的 30 天前是 09/29；售票元件本次未載入，未能判定指定日場次或售罄。週四不保證有英語場，不可直接視為 13:30 開演', cost:'英語場 PLN 47／人', dur:'表演約 1 h'},
       {t:'15:00', label:'Stary Browar', sub:'博物館若延後則縮短購物；沒有合適英語場時改逛帝王城堡（CK ZAMEK 12:00–19:00、售票至 18:00，地圖摺頁 10／7、語音導覽 20／15）', cost:'購物另計', dur:'1 h'},
       {t:'16:00', label:'取行李、前往 Poznań Główny', sub:'先確認公寓行李寄放地點；17:05 前抵站', dur:'約 1 h'},
       {t:'17:05', label:'抵 Poznań Główny', sub:'確認月台、車廂與座位；拖行李保留進站緩衝', dur:'35 min 緩衝'},
@@ -315,7 +318,7 @@ export const days = [
     extend: [
       {label:'Bulwary Wiślane 維斯瓦河畔', when:'21:00 後老城散步延伸', map:'https://www.google.com/maps/search/?api=1&query=Bulwary%20Wi%C5%9Blane%2C%20Warszawa', why:'河濱步道 + 沙灘酒吧，皇家城堡步行 10–15 分，適合晚餐後收尾散步，免費'},
       {label:'Neon Museum 霓虹燈博物館', when:'若提前結束起義博物館可插入', map:'https://www.google.com/maps/search/?api=1&query=Neon%20Muzeum%2C%20plac%20Defilad%201%2C%20Warszawa', why:'已遷入科學文化宮 4 樓（Marszałkowska 入口），共產時期霓虹招牌收藏，PLN 25／優待 18，可與觀景台一起看'},
-      {label:'Praga 區塗鴉與 Koneser 舊釀酒廠', when:'午餐後彈性時段', map:'https://www.google.com/maps/search/?api=1&query=Centrum%20Praskie%20Koneser%2C%20plac%20Konesera%202%2C%20Warszawa', why:'起義博物館到皇家城堡之間若時間寬裕，可繞道河對岸 Praga 感受工業改造街區，步行或電車皆可'},
+      {label:'Praga 區塗鴉與 Koneser 舊釀酒廠', when:'僅在取消一館或另一天有完整空檔時', map:'https://www.google.com/maps/search/?api=1&query=Centrum%20Praskie%20Koneser%2C%20plac%20Konesera%202%2C%20Warszawa', why:'位於維斯瓦河對岸；三館日依皇家城堡→POLIN→起義博物館移動，沒有順路跨河時段。若要另訪，須重新安排交通與入場時段'},
       {label:'科學文化宮 30F 觀景台夜景版', when:'起義博物館後、晚餐前', map:'https://www.google.com/maps/search/?api=1&query=Pa%C5%82ac%20Kultury%20i%20Nauki%2C%20plac%20Defilad%201%2C%20Warszawa', why:'全票 30／優待 25 PLN · 每日開放與售票皆至 20:00；夜間場（35 PLN）只在週五六且官方只排到 9 月底，10/30 沒有晚間延長場'},
     ],
     backup: [
@@ -326,14 +329,14 @@ export const days = [
   {
     n: 8, date: '10/31 (六)', city: '華沙 → 多哈',
     title: '機場日 · 14:40 QR 260 起飛',
-    headline: '從容收尾 · SKM 機場線 20 分鐘',
+    headline: '從容收尾 · SKM 機場線約 25–30 分鐘，另留候車與找月台時間',
     tag: 'Departure',
     intensity: '低',
     hardConstraints: ['11:00 前抵達華沙蕭邦機場', '如需退稅需預留更多機場時間', '不排正式景點'],
     mustBook: [],
     compressible: ['飯店周邊散步', '最後採買'],
     steps: [
-      {t:'08:00', id:'d8-breakfast', label:'早餐 + 老城散步', sub:'Café Bristol（Krakowskie Przedmieście，Hotel Bristol 內）；A. Blikle 09:00 才開門，不適合當早餐', cost:'PLN 40', dur:'1.5 h'},
+      {t:'08:00', id:'d8-breakfast', label:'飯店或中央車站附近早餐', sub:'先確認 Hotel Metropol 住宿是否含早餐及供餐時段；未含餐時在飯店至 Warszawa Centralna 的路線上選擇當日營業店家。Café Bristol 位於老城方向，這天不特地往返。', cost:'依實際選擇', dur:'約 45–60 min'},
       {t:'09:45', label:'退房 → Warszawa Centralna', sub:'由 Hotel Metropol 出發；依行李狀況步行或叫車，當日再用導航重算並預留找月台緩衝', dur:'30–45 min'},
       {t:'10:30', label:'SKM S2／S3 目標班次', sub:'回程往機場方向：S2 由 Warszawa Śródmieście 上車、S3 由 Warszawa Centralna 上車（兩線停靠站不同，看清楚再上）。官方標示 75 分鐘第 1 區票；當日查 WTP 月台與發車時間', cost:'75 分第 1 區票 4.40', dur:'約 25–30 min'},
       {t:'11:00', label:'抵 Chopin 第一航廈'},
@@ -342,7 +345,7 @@ export const days = [
     ],
     eat: [],
     backup: [
-      {label:'早餐備案', where:'Bar Mleczny Prasowy（Marszałkowska 10/16）', map:'https://www.google.com/maps/search/?api=1&query=Bar%20Mleczny%20Prasowy%2C%20Marsza%C5%82kowska%2010%2F16%2C%20Warszawa', why:'⚠️ 已不是可靠備案：2026-09-17 華沙市府旅遊資訊中心列 Marszałkowska 10/16 這家為週一 09:00–20:00、週二–日 09:00–19:00，10/31（六）09:00 才開，趕不上 08:00 早餐與 09:45 退房。網路上的「08:00 開」屬 Powiśle 分店（Zajęcza 1a）。此店也在 Marszałkowska 南端，與旅館（99a）不是步行五分鐘。若 Café Bristol 有異，改找退房路線上或車站內的選擇'},
+      {label:'早餐備案', where:'Warszawa Centralna 車站內當日營業的咖啡或麵包店', map:'https://www.google.com/maps/search/?api=1&query=Warszawa%20Centralna%20coffee%20bakery', why:'由 Hotel Metropol 往機場鐵路站時順路購買；店家和週六開門時間尚未指定，前一晚確認。Bar Mleczny Prasowy（Marszałkowska 10/16）週六 09:00 才開且不順路，不列為 08:00 早餐備案'},
       {label:'班機提早 2 h', where:'蕭邦機場 1F Costa Coffee · 觀景窗', map:'https://www.google.com/maps/search/?api=1&query=Warsaw%20Chopin%20Airport%20Terminal%20A', why:'退稅 + 安檢順可能 12:30 就過關，1F 貴賓區外有平價咖啡'},
       {label:'紀念品最後採買', where:'先在飯店旁 Złote Tarasy 補齊，機場店只作最後備案', map:'https://www.google.com/maps/search/?api=1&query=Z%C5%82ote%20Tarasy%2C%20Z%C5%82ota%2059%2C%20Warszawa', why:'Złote Tarasy 就在 Warszawa Centralna 對面、距 Hotel Metropol 約 500 公尺，一–六約 09:00 開門，距 09:45 退房出發僅 45 分鐘，還需往返與結帳；伴手禮宜前一天買齊，未核實的機場價差不作預算依據'},
     ],
@@ -523,7 +526,7 @@ export const todoGroups = [
       {checkedAt:null, recheckAt:null, date:'10/25', name:'辛德勒工廠 17:30', status:'現可查／購', action:'10/25 已進個人網路票 90 天窗口；以官方售票頁的可售時段為準。', url:'https://muzeumkrakowa.pl/en/branches/oskar-schindlers-enamel-factory'},
       {checkedAt:'2026-09-09', recheckAt:null, date:'10/26', name:'Auschwitz 英文官方導覽', status:'已訂妥', action:'10:30 個人 educator 導覽（英文），官方標示約 3 小時 45 分，2 人。電子入場證存離線，入場須同時出示證件。', url:'https://visit.auschwitz.org/'},
       {checkedAt:null, recheckAt:null, date:'10/27', name:'Wieliczka 鹽礦英文團', status:'需查／購', action:'在官方日期選擇器確認英文場、票價與庫存。', url:'https://www.wieliczka-saltmine.com/'},
-      {checkedAt:null, recheckAt:null, date:'10/28', name:'拉茨瓦維採全景畫', status:'尚未訂', action:'以官方售票頁確認指定入場時段。', url:'https://mnwr.pl/en/category/branches/panorama-raclawicka/'},
+      {checkedAt:'2026-09-24', recheckAt:null, date:'10/28', name:'拉茨瓦維採全景畫 11:30', status:'場次已查／尚未訂', action:'官方 10/28 日期下已列 11:30 場，查核時 85 個名額；付款前重查餘額。', url:'https://bilety.mnwr.pl/?lang=en'},
       {checkedAt:null, recheckAt:null, date:'10/30', name:'華沙皇家城堡 10:00', status:'尚未訂', action:'選擇 10:00 入場，並保留安檢與離館移動時間。', url:'https://www.zamek-krolewski.pl/en'},
       {checkedAt:null, recheckAt:null, date:'10/30', name:'POLIN 猶太人歷史博物館 13:15', status:'尚未訂', action:'依官方售票頁的指定日庫存選擇 13:15 左右時段（主展最後入場 16:00）。', url:'https://polin.pl/en'},
       {checkedAt:null, recheckAt:null, date:'10/30', name:'華沙起義博物館 16:00', status:'尚未訂', action:'依官方票頁可售時段確認，避免與前一館離館時間衝突。', url:'https://www.1944.pl/en'},
@@ -531,9 +534,9 @@ export const todoGroups = [
   },
   {
     id: 'venue-status', title: '場館開放狀態', eyebrow: 'Status · 1 項',
-    intro: '不需購票，但會決定當天走不走得成；未確認前主行程只排外觀與周邊。',
+    intro: '先確認開放狀態，再決定參觀範圍；Visitor Centre 與廳內參觀仍需購票。',
     items: [
-      {checkedAt:null, recheckAt:null, date:'10/28', name:'百年廳 10/28 內部參觀狀態', status:'待官方日曆確認', action:'上 halastulecia.pl 的 availability calendar 查 10/28 是綠／藍／黃／紅哪一色（綠＝含廳內看台、黃＝只能看展覽不能進圓頂下方、紅＝全關）；2026-09-18 複查仍讀不到指定日顏色，官方日曆只在瀏覽器逐日渲染。行前 3–5 天再查一次。', url:'https://halastulecia.pl/zwiedzanie/visitor-centre/'},
+      {checkedAt:'2026-09-24', recheckAt:'2026-10-21', date:'10/28', name:'百年廳 10/28 內部參觀狀態', status:'藍色日已查／廳內時段待查', action:'官方十月日曆已查為藍色：Visitor Centre 可參觀，廳內部分時段可能不開放；頁面未列 14:00 的具體限制。行前再次確認。', url:'https://halastulecia.pl/zwiedzanie/kalendarz-dostepnosci/'},
     ],
   },
   {
@@ -609,22 +612,22 @@ export const deadlines = [
   {
     id: 'ticket-croissant', date: '2026-10-14', category: '門票',
     title: '波茲南可頌博物館 10/29 英語場',
-    action: '官網列的營業時間是日–五 11:00–15:30（第一場與最後一場開演時間），10/29 週四在營業日內，但週四不保證有英語場——先查 10/29 官方售票頁；沒有合適場次就改室內備案，不要預設週末的固定英文場。',
-    status: '尚未訂', url: 'https://rogalowemuzeum.pl/en/buy-tickets/',
+    action: '官網列的營業時間是日–五 11:00–15:30（第一場與最後一場開演時間），通常演出前 1–30 天開賣；10/29 的 30 天前是 09/29，可從當天起重查。週四不保證有英語場——先查 10/29 官方售票頁；沒有合適場次就改室內備案，不要預設週末的固定英文場。',
+    status: '尚未訂', url: 'https://rogalowemuzeum.pl/en/buy-ticket/',
     basis: 'Day 6 主行程預留 13:30–15:00 且英語場未確認；取出發前 10 天為行動下限，留得下改備案的時間。',
   },
   {
     id: 'recheck-all', date: '2026-10-17', category: '複查',
     title: '全站票價、開放時間與特別閉館複查',
-    action: '門票速查與城市指南已於 2026-09-17／09-18 全面複查過，但臨時活動與維修仍可能變動；出發前再整批重查一次，重點在仍標「待確認」的項目（百年廳 10/28 色階、可頌博物館 10/29 英語場、Wieliczka 10/27 場次、El Gato 營業時間）。',
+    action: '門票速查與城市指南已於 2026-09-17／09-18 全面複查過，但臨時活動與維修仍可能變動；出發前再整批重查一次，重點在仍標「待確認」的項目（百年廳 10/28 藍色日的廳內限制、可頌博物館 10/29 英語場、Wieliczka 10/27 場次；El Gato Odrzańska 8 已查每日 08:00–20:00）。',
     status: '待執行', url: null,
     basis: '訂位與每人預算清單的「出發前 1 週」條目，由 10/24 回推。',
   },
   {
     id: 'venue-hala-stulecia', date: '2026-10-21', category: '場館',
     title: '百年廳 10/28 內部參觀狀態',
-    action: '上官方 availability calendar 查 10/28 是綠／藍／黃／紅哪一色；未確認前 Day 5 主行程只排外觀與周邊。',
-    status: '待官方日曆確認', url: 'https://halastulecia.pl/zwiedzanie/visitor-centre/',
+    action: '09/24 已查 10/28 為藍色日，可看 Visitor Centre；行前重查 14:00 廳內是否受活動限制。',
+    status: '需行前複查／藍色日已查', url: 'https://halastulecia.pl/zwiedzanie/kalendarz-dostepnosci/',
     basis: '待辦事項該筆：「行前 3–5 天再複查一次」，取 3 天由 10/24 回推。',
   },
   {

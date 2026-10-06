@@ -169,6 +169,18 @@ export function buildTravelSearchRecords(data) {
 
   records.push(...restaurantRecords(data, lookup));
 
+  for (const product of data.groceryProducts || []) {
+    records.push(createRecord({
+      id: `product-${product.id}`,
+      type: 'page',
+      title: `${product.localName}｜${product.name}`,
+      meta: '波蘭超市採買推薦',
+      summary: product.use || product.reason || '',
+      href: `practical/groceries.html#product-${product.id}`,
+      keywords: [product.packaging, product.reason, '商品 超市'],
+    }));
+  }
+
   for (const day of data.days || []) {
     const daySegment = segmentForDay(day);
     const publicTrain = daySegment && [

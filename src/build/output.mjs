@@ -2,15 +2,41 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 
+import { groceryProducts } from '../data/groceries.js';
+
 /**
- * sw.js 的快取版本自動帶上 cache-first 資源的指紋。
+ * sw.js 的商品照片預快取清單改由資料推導，不再靠人維護。
+ *
+ * install 用 cache.addAll：清單裡只要有一個檔案不存在，整個 Service Worker
+ * 就裝不起來，離線功能整份失效。反方向的漂移一樣有代價——2026-09 的採買推薦
+ * 換掉三項商品後，三張沒有任何頁面引用的照片仍留在清單裡，每個安裝都照樣
+ * 下載、快取，還算進快取指紋。這裡只列 groceryProducts 真的引用的照片，
+ * 副檔名（.webp／.jpg）也跟著資料走，兩種漂移都不可能發生。
+ */
+export function precachedGroceryPhotos() {
+  return [...new Set(groceryProducts.map(product => product.photo?.src).filter(Boolean))].sort();
+}
+
+function injectGroceryPhotos(source, photos) {
+  const start = '  // GROCERY-PHOTOS:START';
+  const end = '  // GROCERY-PHOTOS:END';
+  const from = source.indexOf(start);
+  const to = source.indexOf(end);
+  if (from === -1 || to === -1) throw new Error('sw.js 找不到 GROCERY-PHOTOS 標記，商品照片預快取清單無法產生');
+  const lines = photos.map(src => `  './${src}',`).join('\n');
+  return `${source.slice(0, from + start.length)}\n${lines}\n${source.slice(to)}`;
+}
+
+/**
+ * sw.js 的快取版本自動帶上預快取資源的指紋。
  *
  * CSS 與 JS 走 cache-first，版本字串沒變的話既有安裝會拿到新 HTML 配舊樣式——
  * 版面直接壞掉。以前靠人工改 VERSION，2026-09-14 就漏過一次（樣式大改但版本停在 v18）。
  * 改由建置計算，樣式或腳本一動版本就變，不動則保持穩定（建置仍可重現）。
  */
 export function writeServiceWorker({ projectRoot, distDir }) {
-  const source = fs.readFileSync(path.join(projectRoot, 'sw.js'), 'utf8');
+  const groceryPhotos = precachedGroceryPhotos();
+  const source = injectGroceryPhotos(fs.readFileSync(path.join(projectRoot, 'sw.js'), 'utf8'), groceryPhotos);
   const cacheFirstAssets = [
     'manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png',
     'assets/main.css', 'assets/nav.js', 'assets/site-search.js',
@@ -21,9 +47,10 @@ export function writeServiceWorker({ projectRoot, distDir }) {
   ];
   const hash = crypto.createHash('sha256');
   for (const asset of cacheFirstAssets) hash.update(fs.readFileSync(path.join(distDir, asset)));
-  // 商品圖也預快取；只換照片時同樣需要淘汰舊版本。
-  for (const name of fs.readdirSync(path.join(distDir, 'assets/photos')).filter(name => /^grocery-.*\.webp$/.test(name)).sort()) {
-    hash.update(fs.readFileSync(path.join(distDir, 'assets/photos', name)));
+  // 城市封面和商品圖都列在 sw.js 的 ASSETS；更換照片也須更換快取版本。
+  // 從已注入商品照片的清單擷取，免得兩處清單日後不同步。
+  for (const [, src] of source.matchAll(/'\.\/(assets\/photos\/[^']+)'/g)) {
+    hash.update(fs.readFileSync(path.join(distDir, src)));
   }
   const fingerprint = hash.digest('hex').slice(0, 8);
   const versioned = source.replace(/const VERSION = '([^']+)';/,

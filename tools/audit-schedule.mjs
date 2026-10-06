@@ -96,6 +96,42 @@ export function auditLastEntry(tripDays, venues, report) {
   return { checked };
 }
 
+/** 場館步驟早於已知開門時間時提醒；未建檔時間不作猜測。 */
+export function auditOpeningHours(tripDays, venues, report) {
+  let checked = 0;
+  for (const day of tripDays) for (const step of day.steps) {
+    const venue = venues[step.constraint?.venue];
+    const parsed = parseStepTime(step.t);
+    if (!venue?.opens || !parsed) continue;
+    checked += 1;
+    if (parsed.minutes < toMinutes(venue.opens)) {
+      report.warn('開門時間', `${dayLabel(day)}「${step.t} ${step.label}」早於 ${venue.name} 開門 ${venue.opens}（查證 ${venue.checkedAt}）`);
+    }
+  }
+  return { checked };
+}
+
+/** 只比較明寫「1 h」「45 min」的停留長度；概估與區間時刻留給人工判斷。 */
+export function auditStepDuration(tripDays, report) {
+  let checked = 0;
+  for (const day of tripDays) {
+    const timed = day.steps.map(step => ({ step, parsed: parseStepTime(step.t) })).filter(item => item.parsed);
+    for (let index = 0; index < timed.length - 1; index += 1) {
+      const { step, parsed } = timed[index];
+      if (parsed.endMinutes !== undefined || !step.dur) continue;
+      const duration = /^(\d+(?:\.\d+)?)\s*(h|min)\b/i.exec(step.dur);
+      if (!duration) continue;
+      const minutes = Number(duration[1]) * (duration[2].toLowerCase() === 'h' ? 60 : 1);
+      checked += 1;
+      const next = timed[index + 1];
+      if (parsed.minutes + minutes > next.parsed.minutes) {
+        report.warn('停留重疊', `${dayLabel(day)}「${step.t} ${step.label}」標示 ${step.dur}，但下一步「${next.step.t} ${next.step.label}」已開始`);
+      }
+    }
+  }
+  return { checked };
+}
+
 /**
  * 規則 3：轉場日的最後一個行程步驟與發車之間要留得下移動時間。
  * 只看 day.train（當日城際轉場），市內移動不在此列。
@@ -230,6 +266,8 @@ export function auditSchedule(tripDays = days, options = {}) {
   const weekdays = auditWeekdayLabels(tripDays, tripStart, report);
   const references = auditVenueReferences(tripDays, venues, report);
   const lastEntry = auditLastEntry(tripDays, venues, report);
+  const openings = auditOpeningHours(tripDays, venues, report);
+  const durations = auditStepDuration(tripDays, report);
   const transfers = auditTransferBuffer(tripDays, report);
   const closures = auditClosedDays(tripDays, venues, tripStart, report);
   const photoLight = auditPhotoLight(spots, daylightByDay, report);
@@ -244,6 +282,8 @@ export function auditSchedule(tripDays = days, options = {}) {
       venueRefs: references.checked,
       unusedVenues: references.unused,
       lastEntryChecked: lastEntry.checked,
+      openingChecks: openings.checked,
+      durationChecks: durations.checked,
       transfersChecked: transfers.checked,
       closureChecks: closures.checked,
       photoLightChecked: photoLight.checked,
@@ -256,7 +296,7 @@ function runCli() {
   const stats = result.stats;
 
   console.log(`行程時間稽核：${stats.days} 天、${stats.stepsChecked} 個有時刻的步驟`);
-  console.log(`  星期標示 ${stats.weekdaysChecked} 天、場館引用 ${stats.venueRefs} 處、末入場比對 ${stats.lastEntryChecked} 處、轉場 ${stats.transfersChecked} 段、公休比對 ${stats.closureChecks} 處、拍照光線 ${stats.photoLightChecked} 處`);
+  console.log(`  星期標示 ${stats.weekdaysChecked} 天、場館引用 ${stats.venueRefs} 處、開門比對 ${stats.openingChecks} 處、末入場比對 ${stats.lastEntryChecked} 處、停留時長 ${stats.durationChecks} 處、轉場 ${stats.transfersChecked} 段、公休比對 ${stats.closureChecks} 處、拍照光線 ${stats.photoLightChecked} 處`);
   if (stats.unusedVenues.length) {
     console.log(`  （venueHours 有但行程未引用：${stats.unusedVenues.join('、')}——留著供門票頁使用，非錯誤）`);
   }

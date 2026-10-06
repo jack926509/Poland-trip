@@ -58,11 +58,11 @@ export function renderPages(distDir) {
     const detailPhotoCity = [1, 2, 5, 6].includes(day.n)
       ? cities.cities.find(item => item.key === photoSpotsForDay[0]?.cityKey)
       : null;
-    const journalCity = day.city
+    const journalCities = day.city
       .split('→')
-      .reverse()
-      .map(stop => cities.cities.find(city => stop.includes(city.name)))
-      .find(Boolean) || cities.cities[0];
+      .map(stop => cities.cities.find(city => stop.includes(city.name)));
+    // 一般跨城日以目的地為封面；Day 5 晚上才搭車，白天行程全在樂斯拉夫。
+    const journalCity = (day.n === 5 ? journalCities : journalCities.reverse()).find(Boolean) || cities.cities[0];
     const dayMap = makeDayMap(day);
     writeHtml(
       `day-${String(day.n).padStart(2, '0')}.html`,

@@ -118,8 +118,8 @@ test('可查購仍未完成，未記錄查核日期不冒用建置日期', () =>
   assert.ok(html.includes('最近人工查核'));
   assert.ok(html.includes('11 項待辦'));
   assert.ok(html.includes('共 16 項'));
-  // Auschwitz 導覽與巴士、四段已購火車均已有人工核對日期。
-  assert.equal((html.match(/未記錄，請重查/g) || []).length, 10);
+  // Auschwitz 導覽與巴士、四段火車，以及 09/24 查過的全景畫與百年廳均已有人工核對日期。
+  assert.equal((html.match(/未記錄，請重查/g) || []).length, 8);
   const dated = renderTodos({ todoGroups: [{ id: 'test', items: [{ date: '10/25', name: '車票', checkedAt: '2026-09-06', recheckAt: '2026-09-24', status: '需重查', action: '查詢' }] }] });
   assert.ok(dated.includes('datetime="2026-09-06"'));
   assert.ok(dated.includes('下次查核：<time datetime="2026-09-24"'));

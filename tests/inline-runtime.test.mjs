@@ -60,6 +60,7 @@ const OWNED = [
   ['dist/practical/booking.html', 'initializeCountdown', '訂票倒數'],
   ['dist/today.html', 'initializeToday', '今日卡選日'],
   ['dist/practical/ops-dashboard.html', 'initializeDashboard', '資料品質面板'],
+  ['dist/practical/groceries.html', 'initializeProductPhotos', '商品照片放大'],
 ];
 
 for (const [file, marker, label] of OWNED) {

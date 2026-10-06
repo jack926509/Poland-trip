@@ -28,7 +28,7 @@ export const dayDiningPlans = {
     {
       "placeId": "krakow-bar-mleczny-pod-temida",
       "role": "午餐首選",
-      "note": "中央廣場往 Wawel 路上的牛奶吧；週日營業待電話確認，未確認前不要作為唯一午餐。",
+      "note": "Grodzka 43、中央廣場往 Wawel 路上的牛奶吧；官網已確認每日 09:00–20:00，週日可安排。",
       "stepId": "d2-lunch",
       "planStatus": "scheduled"
     },
@@ -92,9 +92,9 @@ export const dayDiningPlans = {
     {
       "placeId": "wroclaw-restauracja-wroclawska",
       "role": "午餐首選",
-      "note": "午餐候選未排時段；需先確認開門時間，再挪出完整用餐與交通時間，不能直接塞在全景畫與百年廳之間。",
-      "stepId": null,
-      "planStatus": "candidate"
+      "note": "12:30 預留午餐；官網已確認 12:00 開門。仍須先確認快速出餐，若無法在 13:15 前離開，改在全景畫附近外帶。",
+      "stepId": "d5-lunch",
+      "planStatus": "scheduled"
     },
     {
       "placeId": "wroclaw-ida-kuchnia-i-wino",
@@ -115,9 +115,9 @@ export const dayDiningPlans = {
     {
       "placeId": "poznan-pyra-bar",
       "role": "午餐首選",
-      "note": "馬鈴薯地方料理；午餐候選未排時段，需配合山羊秀及牛角麵包博物館場次。",
-      "stepId": null,
-      "planStatus": "candidate"
+      "note": "12:30 預留快速午餐；配合山羊秀及牛角麵包博物館實際英語場，排隊太久改外帶。",
+      "stepId": "d6-lunch",
+      "planStatus": "scheduled"
     },
     {
       "placeId": "poznan-hycka",

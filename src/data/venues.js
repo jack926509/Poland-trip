@@ -228,7 +228,7 @@ export const venues = {
     address: "Wystawowa 1, 51-618 Wrocław",
     entranceNote: "本日只看外觀與周邊；如臨時改入室內，使用 Wystawowa 1 訪客中心入口。",
     coords: null,
-    prices: { full: "25", discount: "20", note: "2026-09-18 官網查證：夏季（4–10 月）二–日 10:00–18:00、冬季（11–3 月）二–日 10:00–17:00；多媒體展全票 25／優待 20、家庭票 45，加看百年廳內部（看台視角）為 30／25、家庭票 55。10 人以下散客不需預約，只有 10 人以上團體要事先訂位 · 內部開放依官方 availability calendar 分四色：綠＝展覽與廳內看台都可看、藍＝部分時段廳內不開放但展覽可看、黃＝不能進到圓頂正下方但展覽可看、紅＝展覽與廳內都關閉；10/28 是哪一色須在官網日曆當日確認" },
+    prices: { full: "25", discount: "20", note: "2026-09-18 官網查證：夏季（4–10 月）二–日 10:00–18:00、冬季（11–3 月）二–日 10:00–17:00；多媒體展全票 25／優待 20、家庭票 45，加看百年廳內部（看台視角）為 30／25、家庭票 55。10 人以下散客不需預約，只有 10 人以上團體要事先訂位 · 內部開放依官方 availability calendar 分四色：綠＝展覽與廳內看台都可看、藍＝部分時段廳內不開放但展覽可看、黃＝不能進到圓頂正下方但展覽可看、紅＝展覽與廳內都關閉；2026-09-24 讀取官方十月日曆：10/28 為藍色日，Visitor Centre 可看；14:00 廳內是否受限仍須再確認" },
     hours: {
       opens: "10:00", closes: "18:00", lastEntry: null,
       closedWeekdays: [1], checkedAt: "2026-08-11",
@@ -286,11 +286,11 @@ export const venues = {
   'poznan-croissant-museum': {
     id: "poznan-croissant-museum", cityKey: "POZ", name: "波茲南 · 可頌博物館",
     map: "https://maps.google.com/?cid=402526412385617111",
-    officialUrl: "https://rogalowemuzeum.pl/en/buy-tickets/",
+    officialUrl: "https://rogalowemuzeum.pl/en/buy-ticket/",
     address: "Stary Rynek 41/2, 61-772 Poznań",
     entranceNote: "地址為 Stary Rynek 41/2，實際入口在 Klasztorna 23；請於場次開始前 10 分鐘報到。",
     coords: null,
-    prices: { full: "英語公開場 47", discount: "未滿 3 歲 1", note: "2026-09-17 官網查證：英語公開場 47 PLN／人（滿 3 歲起）、未滿 3 歲 1 PLN；2026-09-18 官方售票頁複查開放時間為日–五（Nd-Pt）11:00–15:30、六 11:00–17:00，官方註明這是第一場與最後一場「開演」時間，入口在 Klasztorna 23、售票口於開演前 15 分開放、館內約 50 人上限。10/29（週四）是否有英語場、開演時刻與庫存一律以官方售票頁當日顯示為準——不可預設 13:30 有場，未顯示日期也不等於售罄" },
+    prices: { full: "英語公開場 47", discount: "未滿 3 歲 1", note: "2026-09-17 官網查證：英語公開場 47 PLN／人（滿 3 歲起）、未滿 3 歲 1 PLN；2026-09-18 官方售票頁複查開放時間為日–五（Nd-Pt）11:00–15:30、六 11:00–17:00，官方註明這是第一場與最後一場「開演」時間，入口在 Klasztorna 23、售票口於開演前 15 分開放、館內約 50 人上限。2026-09-24 官網補查：通常演出前 1–30 天開放售票；10/29 的 30 天前為 09/29，非保證開賣日。10/29（週四）英語場與庫存仍須查官方售票頁——不可預設 13:30 有場，未顯示日期也不等於售罄" },
     hours: null,
     checkedAt: null,
     quickNote: "英語公開場 47 PLN（滿 3 歲）／未滿 3 歲 1 PLN · 官網列日–五 11:00–15:30、六 11:00–17:00（第一場與最後一場開演時間）· 10/29 有無英語場與開演時刻看官方售票頁",

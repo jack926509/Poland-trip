@@ -18,17 +18,19 @@ export function dayGap(fromIso, toIso) {
   return Math.round((Date.parse(`${toIso}T00:00:00Z`) - Date.parse(`${fromIso}T00:00:00Z`)) / 86400000);
 }
 
-export function selectToday(dates, today) {
+export function selectToday(dates, today, travelStart = dates[0]) {
   if (!dates.length) return { mode: 'empty' };
   const index = dates.indexOf(today);
   if (index !== -1) return { mode: 'during', index, date: today };
-  if (today < dates[0]) return { mode: 'before', daysUntil: dayGap(today, dates[0]), date: dates[0] };
+  if (today < dates[0]) return { mode: 'before', daysUntil: dayGap(today, travelStart), date: dates[0] };
   return { mode: 'after', daysSince: dayGap(dates[dates.length - 1], today) };
 }
 
 export function statusText(selection, total) {
   if (selection.mode === 'during') return `今天是旅程第 ${selection.index + 1} 天（共 ${total} 天）· 華沙時間 ${selection.date}`;
-  if (selection.mode === 'before') return `距離出發還有 ${selection.daysUntil} 天，下方預覽 Day 1。`;
+  if (selection.mode === 'before') return selection.daysUntil === 0
+    ? '今天搭機出發，下方預覽 Day 1。'
+    : `距離出發還有 ${selection.daysUntil} 天，下方預覽 Day 1。`;
   if (selection.mode === 'after') return `旅程已於 ${selection.daysSince} 天前結束，下方顯示最後一天；完整 ${total} 天請看每日行程頁。`;
   return '沒有可顯示的行程。';
 }
@@ -61,7 +63,7 @@ export function planEta(planMinute, currentMinute) {
   return { text: `已過 ${amount}`, level: 'past' };
 }
 
-export function initializeToday(root, now = () => new Date()) {
+export function initializeToday(root, now = () => new Date(), travelStart = null) {
   const cards = Array.from(root.querySelectorAll('[data-today-card]'));
   if (!cards.length) return;
   const dates = cards.map(card => card.getAttribute('data-today-date'));
@@ -89,7 +91,7 @@ export function initializeToday(root, now = () => new Date()) {
   function refresh() {
     const clock = now();
     const today = warsawTodayLocal(clock);
-    const selection = selectToday(dates, today);
+    const selection = selectToday(dates, today, travelStart || dates[0]);
     shown = manualDate !== null ? dates.indexOf(manualDate) : selection.mode === 'during' ? selection.index
       : selection.mode === 'after' ? cards.length - 1 : 0;
     const preview = dates[shown] !== today;

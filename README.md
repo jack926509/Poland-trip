@@ -68,6 +68,8 @@ env -u NODE_OPTIONS ./verify.sh
 
 **部署＝推送至 `main`，沒有其他手動步驟。** 兩條 GitHub Actions 會同時啟動，各自先跑 `./verify.sh` 驗收、再用 `./prepare-site.sh _site` 組裝發布目錄：
 
+送出指向 `main` 的 Pull Request 時，`.github/workflows/verify-pr.yml` 會先執行 `./verify.sh` 檢查建置、測試與地圖資料；PR 檢查不發布網站。合併後上述兩條部署流程才會啟動。
+
 | 工作流程 | 目的地 | 網址 |
 |---|---|---|
 | `.github/workflows/cloudflare-pages.yml`（wrangler `pages deploy _site --project-name=poland-trip`） | Cloudflare Pages | https://polandtrip.xiehnet.com （別名 https://poland-trip-7wm.pages.dev） |
@@ -103,4 +105,3 @@ mkdir _site
 - 詳細操作見[開發與資料維護指南](docs/development.md)，照片授權見[照片來源](assets/photos/CREDITS.md)。
 - 查核資料保留在 [docs/research/](docs/research/)，舊版網站保留在 [archive/](archive/)。
 - README 只說明目前專案與開發方式；逐次修改、測試結果與分支整理紀錄留在 [PR](https://github.com/jack926509/Poland-trip/pulls?q=is%3Apr) 與 [Git 歷史](https://github.com/jack926509/Poland-trip/commits/main/)，不再追加到本頁。
-
