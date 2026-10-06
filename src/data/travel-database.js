@@ -345,7 +345,6 @@ const addressStepLabels = {
   '維利奇卡鹽礦': ['★ Wieliczka 鹽礦 Tourist Route 英文團'],
   'Wrocław Główny': ['抵 Wrocław Główny'],
   '拉茨瓦維採全景畫': ['★ 拉茨瓦維採全景畫'],
-  '百年廳': ['★ 百年廳 (UNESCO)'],
   '樂斯拉夫中央廣場': ['★ 中央廣場 + 紡織會館'],
   '樂斯拉夫主教座堂': ['★ 座堂島煤氣燈'],
   'Poznań Główny': ['抵 Poznań Główny'],
@@ -471,7 +470,6 @@ export const dayOperations = {
     addresses: [
       venueCard('wroclaw-glowny-station', 'Wrocław Główny'),
       venueCard('wroclaw-panorama', '拉茨瓦維採全景畫'),
-      venueCard('wroclaw-hala-stulecia', '百年廳'),
       venueCard('wroclaw-rynek', '樂斯拉夫中央廣場'),
       venueCard('wroclaw-cathedral', '樂斯拉夫主教座堂'),
       venueCard('poznan-glowny-station', 'Poznań Główny'),
@@ -479,11 +477,10 @@ export const dayOperations = {
       accommodationAddress('poznan-towarowa'),
     ],
     navigation: [
-      { mode: '步行／市內交通', route: '老城 → Panorama → 午餐 → 百年廳 → 座堂島', action: '午餐預留 12:30–13:15，13:15 開始往百年廳移動；當日用 Jakdojade 選取實際電車，並預留從座堂島回車站取行李的時間。' },
+      { mode: '步行／市內交通', route: '老城 → Panorama → 午餐與休息 → 座堂島', action: '午餐後保留彈性休息時間，16:15 前抵座堂島；預留從座堂島回旅館取行李及前往車站的時間。' },
       { mode: 'PKP', route: 'Wrocław Główny → Poznań Główny', action: '已購 IC 260 19:10；18:35 前抵站。抵達時間、車廂與座位待查票面。' },
     ],
     dailyAlerts: [
-      '百年廳 10/28 已查為藍色日，Visitor Centre 可看；14:00 廳內開放仍須行前確認。',
       '點燈人沒有對外保證的出發分鐘；日落前到座堂島等待，不把 16:45 當成確定時刻。',
     ],
     nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票'],
@@ -583,8 +580,7 @@ const unresolvedStepReasons = {
   },
   5: {
     '糖果屋雙屋 + 教堂塔樓': '教堂塔樓入口與開放狀態須依當日官方公告確認。',
-    '午餐 · Restauracja Wrocławska 候選': '餐廳每日 12:00 開門已查；排隊與快速出餐仍待確認，無法在 13:15 前結束時改在全景畫附近外帶。',
-    '前往百年廳': '市內交通路線與站點依當日 Jakdojade 導航確認。',
+    '午餐 · Restauracja Wrocławska 候選': '餐廳每日 12:00 開門已查；排隊與實際出餐時間仍待確認，午餐後保留休息與前往座堂島的時間。',
     'IC 260 前往波茲南': dynamicTransitReason,
   },
   6: {

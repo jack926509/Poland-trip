@@ -92,7 +92,7 @@ export const dayDiningPlans = {
     {
       "placeId": "wroclaw-restauracja-wroclawska",
       "role": "午餐首選",
-      "note": "12:30 預留午餐；官網已確認 12:00 開門。仍須先確認快速出餐，若無法在 13:15 前離開，改在全景畫附近外帶。",
+      "note": "12:30 預留午餐；官網已確認 12:00 開門。午餐後保留彈性休息時間，16:15 前抵達座堂島。",
       "stepId": "d5-lunch",
       "planStatus": "scheduled"
     },

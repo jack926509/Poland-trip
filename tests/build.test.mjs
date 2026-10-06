@@ -519,16 +519,14 @@ test('2026-08-09 官方盤查會移除未能證實的場次、價格與閉館敘
   assert.ok(cityNotices.wroclaw.some(item => item.text.includes('availability calendar')));
 });
 
-test('待辦事項頁將 16 項依五類整理，並在實用資訊導覽可進入', () => {
-  // 2026-08-11 新增 venue-status：百年廳 10/28 內部開放狀態不需購票，
-  // 但未確認就可能整段落空，必須是可勾稽的待辦而不只是頁面上的警語。
+test('待辦事項頁將 15 項依四類整理，並在實用資訊導覽可進入', () => {
   assert.deepEqual(todoGroups.map(group => [group.id, group.items.length]), [
-    ['rail', 5], ['attractions', 8], ['venue-status', 1], ['dining', 1], ['rainy-day', 1],
+    ['rail', 5], ['attractions', 8], ['dining', 1], ['rainy-day', 1],
   ]);
-  assert.equal(todoGroups.flatMap(group => group.items).length, 16);
+  assert.equal(todoGroups.flatMap(group => group.items).length, 15);
 
   const html = read('practical/todos.html');
-  for (const label of ['城際交通', '主要景點', '場館開放狀態', '餐飲訂位', '雨天備案']) {
+  for (const label of ['城際交通', '主要景點', '餐飲訂位', '雨天備案']) {
     assert.ok(html.includes(label), `待辦頁缺少分類：${label}`);
   }
   assert.ok(html.includes('辛德勒工廠 17:30'));
@@ -666,7 +664,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.deepEqual([
     phrases.length, about.length, preDepartureNotes.length,
     safety.emergency.length, safety.embassy.length, safety.tips.length,
-  ], [12, 8, 9, 5, 4, 4]);
+  ], [12, 8, 8, 5, 4, 4]);
   assert.deepEqual(Object.values(packingDefault).map(items => items.length), [5, 5, 5, 4]);
 });
 
@@ -816,7 +814,7 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
   const rawTodoCount = todoGroups.reduce((total, group) => total + group.items.length, 0);
   const todoCount = todoGroups.reduce((total, group) =>
     total + group.items.filter(item => !['已訂妥', '已完成', '已購票'].includes(item.status)).length, 0);
-  assert.equal(todoCount, 11, '四段已購火車與 Auschwitz 導覽不可算進待辦');
+  assert.equal(todoCount, 10, '四段已購火車與 Auschwitz 導覽不可算進待辦');
 
   assert.ok(!html.includes('出發準備度'));
   assert.ok(!html.includes('00 / Readiness'));
@@ -995,12 +993,11 @@ test('高風險校正：波茲南古市政廳整修閉館，不再顯示可購�
   assert.doesNotMatch(html, /古市政廳博物館[\s\S]{0,160}<td class="number">10<\/td>/);
 });
 
-test('高風險校正：百年廳 10/28 改由官方 availability calendar 確認', () => {
-  for (const file of ['day-05.html', 'city-wroclaw.html']) {
-    const html = read(file);
-    assert.ok(html.includes('10/28') && html.includes('availability calendar'), `${file} 缺少百年廳可售狀態確認提示`);
-    assert.ok(!html.includes('圓頂展廳不開放'), `${file} 不應保留未證實閉館敘述`);
-  }
+test('Day 5 移除百年廳參觀與交通，保留座堂島及已購火車', () => {
+  const day = days.find(day => day.n === 5);
+  assert.ok(!day.steps.some(step => /百年廳/.test(step.label)));
+  assert.ok(day.steps.some(step => step.t === '16:15'));
+  assert.ok(day.steps.some(step => step.t === '19:10'));
 });
 
 test('高風險校正：皇家城堡與辛德勒工廠已依官方時間修正', () => {
@@ -1536,7 +1533,7 @@ test('Day 5 樂斯拉夫大教堂島保留範圍代表點標示', () => {
   assert.equal(config.mapChecks['大教堂島 Ostrów Tumski'].status, 'area-reference');
   assert.match(config.mapData.note, /樂斯拉夫 Wrocław/);
   assert.ok(config.mapData.points.some(point => point[2] === 'Wrocław Główny'));
-  assert.ok(config.mapData.points.some(point => point[2] === '日本花園 Ogród Japoński'));
+  assert.ok(!config.mapData.points.some(point => point[2] === '日本花園 Ogród Japoński'));
   assert.ok(config.mapData.points.every(point => !/Poznań|波茲南/.test(point[2])), 'Day 5 白天地圖不應混入晚間抵達的波茲南');
 });
 

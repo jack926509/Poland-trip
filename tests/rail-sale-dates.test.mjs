@@ -49,12 +49,8 @@ test('倒數看板不再催四段已購火車', () => {
   assert.equal(items.length, trip.deadlines.length + databaseEntries.filter(entry => entry.recheckAt && isOpenEntryStatus(entry.status)).length);
 });
 
-test('百年廳藍色日已查，但 10/21 廳內限制仍須行前複查', () => {
-  const item = calculateCountdown(collectDeadlines(allSources), '2026-10-20')
-    .find(entry => entry.id === 'venue-hala-stulecia');
-  assert.ok(item);
-  assert.equal(item.open, true);
-  assert.equal(item.label, 'T-1');
+test('刪除百年廳行程後不再出現查核倒數', () => {
+  assert.ok(!collectDeadlines(allSources).some(entry => entry.id === 'venue-hala-stulecia'));
 });
 
 test('倒數以注入的固定日期計算，涵蓋未到期、當天與逾期', () => {
@@ -162,7 +158,6 @@ test('由出發日回推的期限，算術與 basis 敘述一致', () => {
     'ticket-warsaw-trio': 14,
     'ticket-croissant': 10,
     'recheck-all': 7,
-    'venue-hala-stulecia': 3,
     'etias-check-2': 3,
   };
   const depart = Date.parse(`${trip.meta.tripStart}T00:00:00Z`);

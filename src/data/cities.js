@@ -47,7 +47,7 @@ export const cityNotices = {
     {status:'已查證', level:'note', text:'辛德勒工廠週二至週日 09:00–20:00，最後入場為閉館前 90 分鐘；Day 2 的週日 17:30 時段可行，但仍須先取得官方時段票。'},
   ],
   wroclaw: [
-    {status:'指定日重查', level:'risk', text:'百年廳 10/28 的內部參觀狀態需以官方 availability calendar 確認；未確認前主行程只排外觀與周邊。'},
+    {status:'一般參觀提醒', level:'risk', text:'百年廳未列入本次主行程；自行前往時，請先查官方 availability calendar 的當日開放範圍。'},
   ],
   poznan: [],
 };
@@ -352,7 +352,7 @@ export const attractions = {
     {name:"大教堂島 Ostrów Tumski", tag:"古城", mapUrl:"https://maps.google.com/?cid=3827887123396229836", venueId:null, extra:"全城最古老城區"},
     {name:"Afrykarium · 動物園", tag:"熱門", mapUrl:venues['wroclaw-zoo'].map, venueId:"wroclaw-zoo", extra:"2026-09-17 官方票價頁查證：全票線上 69 zł 起／售票口 99 zł，優待票線上 59 zł 起／售票口 89 zł（動態定價）· 2026-09-19 開放時間複核：10 月一–四入園至 16:00、館舍至 16:45、Afrykarium 至 17:00；五–日及假日入園至 17:00、Afrykarium 至 18:00 · 入園票已含 Afrykarium"},
     {name:"Panorama Racławicka", tag:"全景畫", mapUrl:venues['wroclaw-panorama'].map, venueId:"wroclaw-panorama", extra:"4/1–10/31 每日 08:30–19:00 · PLN 50／35 · 每場 30 分，門票指定日期與場次 · 官方 2026 閉館日含 10/31 與 11/1（10/28 不在其列）· 票根 3 個月內可免費進國立博物館等三館"},
-    {name:"百年廳 Hala Stulecia", tag:"UNESCO", mapUrl:venues['wroclaw-hala-stulecia'].map, venueId:"wroclaw-hala-stulecia", extra:"2026-09-18 官網查證：Visitor Centre 夏季（4–10 月）二–日 10:00–18:00、冬季 10:00–17:00，25／20 · 含廳內看台 30／25 · 10 人以下不需預約。官方 availability calendar 逐日分四色（綠＝含廳內看台／藍＝部分時段廳內不開／黃＝不能進圓頂正下方／紅＝全不開），10/28 屬哪一色待確認"},
+    {name:"百年廳 Hala Stulecia", tag:"UNESCO", mapUrl:venues['wroclaw-hala-stulecia'].map, venueId:"wroclaw-hala-stulecia", extra:"2026-09-18 官網查證：Visitor Centre 夏季（4–10 月）二–日 10:00–18:00、冬季 10:00–17:00，25／20 · 含廳內看台 30／25 · 10 人以下不需預約。官方 availability calendar 逐日分四色（綠＝含廳內看台／藍＝部分時段廳內不開／黃＝不能進圓頂正下方／紅＝全不開），自行前往時查當日開放範圍"},
     {name:"Hydropolis 水知識中心", tag:"室內", mapUrl:venues['wroclaw-hydropolis'].map, venueId:"wroclaw-hydropolis", extra:"2026-08-11 官網查證：平日 45／36、週末／假日 47／38 PLN；入場與名額以指定日期售票頁為準"},
     {name:"Kolejkowo 微縮館", tag:"室內", mapUrl:venues['wroclaw-kolejkowo'].map, venueId:"wroclaw-kolejkowo", extra:"2026-08-12 官網查證：一般票線上 39 PLN 起、現場 55 PLN 起；優待票線上 33 PLN 起、現場 45 PLN 起 · Sky Tower 1 樓 · 每日 10:00 起，關門時間查指定日期"},
   ],

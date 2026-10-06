@@ -233,17 +233,15 @@ export const days = [
     headline: 'IC 260 已購票，19:10 由 Wrocław Główny 出發；午餐與跨區移動先留時間，抵達時間待查票面',
     tag: 'Transit',
     intensity: '很高',
-    hardConstraints: ['早餐後早出門', '百年廳距離老城較遠需抓交通', '座堂島點燈人無對外保證的固定出發分鐘，日落前到場等候', '18:35 前抵 Wrocław Główny；已購 IC 260 19:10 發車'],
+    hardConstraints: ['早餐後早出門', '座堂島點燈人無對外保證的固定出發分鐘，日落前到場等候', '18:35 前抵 Wrocław Główny；已購 IC 260 19:10 發車'],
     mustBook: ['✅ 已購票 · 樂斯拉夫 → 波茲南 IC 260 19:10', '❗尚未訂 · 拉茨瓦維採全景畫場次'],
-    compressible: ['百年廳停留縮短為外觀與周邊', '座堂島改 45–60 分鐘重點散步', '午餐改簡餐或外帶'],
+    compressible: ['座堂島改 45–60 分鐘重點散步', '午餐改簡餐或外帶'],
     train: {segmentId:'ic-260'},
     steps: [
       {t:'09:00', label:'★ 中央廣場 + 紡織會館', sub:'dwarfsmap.com 找小矮人', cost:'免費', dur:'1.5 h'},
       {t:'10:30', label:'糖果屋雙屋 + 教堂塔樓', sub:'聖伊莉莎白教堂塔高 96m、觀景台 75m、304 階無電梯；一–六 10:00–19:00', cost:'PLN 16／10 · 現金', dur:'45 min'},
       {t:'11:30', label:'★ 拉茨瓦維採全景畫', sub:'2026-09-24 官方售票系統已查得 10/28 11:30 場，當下顯示 85 個名額；30 分鐘一場，尚未購票，餘額會變動', cost:'PLN 50／優待 35', dur:'1 h'},
-      {t:'12:30', id:'d5-lunch', label:'午餐 · Restauracja Wrocławska 候選', sub:'由全景畫往老城 Szewska 59/60；已確認每日 12:00 開門，午餐仍需於 13:15 前結束。若無法快速出餐，改在全景畫附近外帶，避免壓縮百年廳交通。', cost:'依店家', dur:'45 min（含步行，需事先確認）'},
-      {t:'13:15', label:'前往百年廳', sub:'預留約 45 分鐘搭車與步行；實際路線、站點以當日 Jakdojade 為準', dur:'45 min'},
-      {t:'14:00', label:'★ 百年廳 (UNESCO)', constraint:{venue:'wroclaw-hala-stulecia'}, sub:'2026-09-24 官方日曆確認 10/28 為藍色日：Visitor Centre 可看，廳內部分時段可能不開放。14:00 可規劃展覽；廳內參觀須再確認當日限制。', cost:'外觀免費；Visitor Centre 25／20、加看廳內 30／25', dur:'1 h'},
+      {t:'12:30', id:'d5-lunch', label:'午餐 · Restauracja Wrocławska 候選', sub:'由全景畫往老城 Szewska 59/60；已確認每日 12:00 開門，午餐後保留彈性休息時間，16:15 前到座堂島等候點燈。', cost:'依店家', dur:'45 min（含步行，需事先確認）'},
       {t:'16:15', label:'★ 座堂島煤氣燈', sub:'日落約 16:34；點燈人無固定公開出發分鐘，在島上等候與散步', cost:'免費', dur:'1 h'},
       {t:'17:15', label:'座堂島結束後回 Piast 取行李', sub:'座堂島 → 旅館約 25–30 分；已購 IC 260 19:10 發車，18:35 前抵站後保留約 35 分鐘緩衝', dur:'約 1 h 20 min'},
       {t:'18:35 前', label:'抵 Wrocław Główny', sub:'確認月台、車廂與座位', dur:'至少 35 min 緩衝'},
@@ -254,11 +252,10 @@ export const days = [
       snack({text:'咖啡 @ El Gato Specialty Coffee', placeId:'wroclaw-el-gato-specialty-coffee'}),
       snack({text:'甜點 @ Dessert Boutique', placeId:'wroclaw-dessert-boutique'}),
     ],
-    warn: '✅ IC 260 城際火車已購票；拉茨瓦維採全景畫 11:30 場已查到但尚未購票。午餐候選已確認 12:00 開門，仍須確認出餐速度。百年廳 10/28 已查為藍色日，可看 Visitor Centre，但 14:00 廳內開放不保證。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，因此安排 16:15–17:15 在座堂島等候。',
+    warn: '✅ IC 260 城際火車已購票；拉茨瓦維採全景畫 11:30 場已查到但尚未購票。午餐候選已確認 12:00 開門，仍須確認出餐速度。午餐後至座堂島前保留彈性休息時間。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，因此安排 16:15–17:15 在座堂島等候。',
     backup: [
       {label:'雨天備案', where:'Sky Tower 觀景台', map:'https://www.google.com/maps/search/?api=1&query=Sky%20Tower%2C%20Powsta%C5%84c%C3%B3w%20%C5%9Al%C4%85skich%2095%2C%20Wroc%C5%82aw', why:'開放時間、票價與能見度以官方當日公告為準，不用舊票價規劃'},
       {label:'點燈師看不到', where:'廣場連拱廊 + 紡織會館內部市集', map:'https://www.google.com/maps/search/?api=1&query=Rynek%20Wroc%C5%82aw', why:'若日落後遇雨遮蔽煤氣燈，回廣場喝熱酒（PLN 12）'},
-      {label:'百年廳未開放內部時的替代', where:'Panorama 全景畫後直接回老城，多留時間給小矮人與座堂島', why:'若 official availability calendar 顯示內部不可參觀，省下的時間可補足點燈前空檔'},
     ],
   },
   {
@@ -533,13 +530,6 @@ export const todoGroups = [
     ],
   },
   {
-    id: 'venue-status', title: '場館開放狀態', eyebrow: 'Status · 1 項',
-    intro: '先確認開放狀態，再決定參觀範圍；Visitor Centre 與廳內參觀仍需購票。',
-    items: [
-      {checkedAt:'2026-09-24', recheckAt:'2026-10-21', date:'10/28', name:'百年廳 10/28 內部參觀狀態', status:'藍色日已查／廳內時段待查', action:'官方十月日曆已查為藍色：Visitor Centre 可參觀，廳內部分時段可能不開放；頁面未列 14:00 的具體限制。行前再次確認。', url:'https://halastulecia.pl/zwiedzanie/kalendarz-dostepnosci/'},
-    ],
-  },
-  {
     id: 'dining', title: '餐飲訂位', eyebrow: 'Dining · 1 項',
     intro: '餐廳營業與臨時包場以店家訂位頁公告為準。',
     items: [
@@ -619,16 +609,9 @@ export const deadlines = [
   {
     id: 'recheck-all', date: '2026-10-17', category: '複查',
     title: '全站票價、開放時間與特別閉館複查',
-    action: '門票速查與城市指南已於 2026-09-17／09-18 全面複查過，但臨時活動與維修仍可能變動；出發前再整批重查一次，重點在仍標「待確認」的項目（百年廳 10/28 藍色日的廳內限制、可頌博物館 10/29 英語場、Wieliczka 10/27 場次；El Gato Odrzańska 8 已查每日 08:00–20:00）。',
+    action: '門票速查與城市指南已於 2026-09-17／09-18 全面複查過，但臨時活動與維修仍可能變動；出發前再整批重查一次，重點在仍標「待確認」的項目（可頌博物館 10/29 英語場、Wieliczka 10/27 場次；El Gato Odrzańska 8 已查每日 08:00–20:00）。',
     status: '待執行', url: null,
     basis: '訂位與每人預算清單的「出發前 1 週」條目，由 10/24 回推。',
-  },
-  {
-    id: 'venue-hala-stulecia', date: '2026-10-21', category: '場館',
-    title: '百年廳 10/28 內部參觀狀態',
-    action: '09/24 已查 10/28 為藍色日，可看 Visitor Centre；行前重查 14:00 廳內是否受活動限制。',
-    status: '需行前複查／藍色日已查', url: 'https://halastulecia.pl/zwiedzanie/kalendarz-dostepnosci/',
-    basis: '待辦事項該筆：「行前 3–5 天再複查一次」，取 3 天由 10/24 回推。',
   },
   {
     id: 'etias-check-2', date: '2026-10-21', category: '證件',
