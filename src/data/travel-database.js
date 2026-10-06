@@ -111,7 +111,7 @@ const databaseEntriesBase = [
   {
     id: 'medical-insurance-and-emergency', section: 'medical', category: 'safety', cityKey: 'PL',
     title: '旅平險與緊急就醫',
-    summary: '波蘭緊急狀況可撥 112；醫療急症可撥 999。保險公司、保單號與海外救援電話必須由旅客自行填入私人資料。',
+    summary: '波蘭緊急狀況可撥 112；醫療急症可撥 999。保險公司、保單號與海外救援電話必須由旅客自行填入私人資料（可填在自由行資料庫 SOS 區的「我的私人資料」，只存在這支手機）。',
     status: 'private-required', sourceUrl: 'https://www.gov.pl/web/mswia-en/emergency-number-112', verifiedAt: '2026-08-08', recheckAt: '2026-10-21',
     offlineNote: '危及生命先撥 112 或 999，接著聯絡保險救援並保存診斷、處方、收據與付款證明。', private: true,
   },

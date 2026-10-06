@@ -8,6 +8,8 @@ import { renderFastFoodDayList } from './fast-food.mjs';
 import { fastFoodBranches, fastFoodChains, fastFoodHubs } from '../data/dining.js';
 import { dayOperations } from '../data/travel-database.js';
 import { toMinutes, parseHardTimes, HARD_TIME_DEADLINES, dayIsoDate, todayIn } from '../lib/schedule.mjs';
+import { privateSlots } from '../data/private-slots.js';
+import { renderPrivateRuntime } from './private-panel.mjs';
 import { dayGap, warsawTodayLocal, selectToday, statusText, warsawMinutes, nextPlanIndex, planEta, initializeToday } from '../scripts/today.js';
 
 function navigationLink(url, label) {
@@ -23,7 +25,18 @@ function renderSteps(day) {
   return `<div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>行程</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
-function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
+// 票券存放位置：只輸出「空的容器」，內容由瀏覽器端從這支手機的 localStorage 填入
+// （見 scripts/private-data.js）。公開資料只有提醒文字，不含任何私人內容。
+function privateProofLine(slot, privateHref) {
+  return `<span class="today-proof" data-private-slot="${escapeAttr(slot.id)}">
+      <span data-private-has="where" hidden>票券在：<b data-private-text="where"></b></span>
+      <span data-private-missing="where">存放位置還沒填 · <a href="${escapeAttr(privateHref)}">填寫</a></span>
+      <span data-private-has="code" hidden> · 訂位代號 <b class="today-proof-code" data-private-text="code"></b></span>
+    </span>`;
+}
+
+function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref }) {
+  const daySlots = privateSlots.filter(slot => slot.day === day.n);
   const trainSegment = segmentForDay(day);
   const bed = stayForDate(stay, iso);
   const checkout = stay.find(item => item.checkOut === iso);
@@ -97,6 +110,7 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
       : '<span class="today-move">最晚出發時間待確認：行程表沒有對得上這個地點的移動步驟與估時，請依票券與現場公告自行抓緩衝。</span>';
   };
   const leaving = isDepartureDay(day);
+  const hotelPhone = bed?.phone ? { digits: bed.phone.replace(/[^\d+]/g, '') } : null;
   const hotelMap = bed?.addressVerified ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(bed.name+' '+bed.address)}` : null;
   return `<article class="today-card" data-today-card data-today-date="${escapeHtml(iso)}">
     <header class="today-head">
@@ -110,6 +124,7 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
         <p class="today-next-clock"><b>${escapeHtml(step.t)}</b><span class="today-next-eta" data-next-eta hidden></span></p>
         <p class="today-next-title">${escapeHtml(step.label)}</p>
         ${step.sub ? `<p class="today-next-sub">${escapeHtml(step.sub)}</p>` : ''}
+        ${(() => { const slot = daySlots.find(item => item.stepPattern && step.label.includes(item.stepPattern)); return slot ? `<p class="today-next-ticket">${privateProofLine(slot, privateHref)}</p>` : ''; })()}
         ${step.place ? `<p class="today-address" lang="pl">${escapeHtml(step.place.address)}</p>${step.place.entranceNote ? `<p class="today-next-entrance">${escapeHtml(step.place.entranceNote)}</p>` : ''}` : `<p class="source-meta">${escapeHtml(step.reason || '此步驟沒有唯一確認的入口，請查看當日地址與移動步驟。')}</p>`}
         <a class="today-next-nav" data-next-nav href="${step.navigationHref ? step.navigationHref : escapeHtml(dayHref+'#directions')}" ${step.navigationHref ? 'target="_blank" rel="noopener noreferrer"' : ''}>${step.navigationHref ? '導航到這一站 ↗' : '查看地址與移動方式 →'}</a>
       </div>`).join('')}
@@ -121,6 +136,10 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
       <button class="today-action today-action-lead" type="button" data-today-action="next">下一站</button><button class="today-action" type="button" data-today-action="food">今天吃哪</button>
       <button class="today-action" type="button" data-today-action="stay">${bed ? '回住宿' : leaving ? '去機場' : '住宿待確認'}</button><a class="today-action" href="${escapeHtml(dayHref)}">完整行程</a>
     </nav>
+    ${daySlots.length ? `<section class="today-block today-tickets" data-today-tickets>
+      <div class="today-block-head"><h3>今天的預約與票券</h3></div>
+      <ul class="today-ticket-list">${daySlots.map(slot => `<li><b>${escapeHtml(slot.label)}</b><span class="source-meta">${escapeHtml(slot.detail)}</span><span class="today-ticket-note">${escapeHtml(slot.publicNote)}</span>${privateProofLine(slot, privateHref)}</li>`).join('')}</ul>
+    </section>` : ''}
     <section class="today-block today-block-time">
       <div class="today-block-head"><h3>下一個時間提醒</h3></div>
       ${timed.length ? `${timed.map(item => `<p class="today-hard" data-hard-time data-plan-minute="${item.minutes}"><b>${escapeHtml(item.hhmm)} · ${escapeHtml(item.kindLabel)}</b><span class="today-hard-eta" data-hard-eta hidden></span><span class="today-hard-source">${escapeHtml(item.text)}</span>${moveHint(item)}</p>`).join('')}
@@ -147,6 +166,7 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref }) {
       ${checkout ? `<p><b>今天退房：</b>${escapeHtml(checkout.name)}。${escapeHtml(checkout.checkOutTime || '退房時間依訂房確認')}前辦理；寄放與取件方式先向住宿確認。</p>` : ''}
       ${bed ? `<p><b>今晚落腳：${escapeHtml(bed.name)}</b>（${escapeHtml(bed.status)}）</p>
         <p class="today-address" lang="pl">${escapeHtml(bed.address)}</p>
+        <p class="today-hotel-phone"><b>飯店電話：</b>${hotelPhone ? `<a href="tel:${escapeAttr(hotelPhone.digits)}">${escapeHtml(bed.phone)}</a>` : '請看訂房確認信'}</p>
         <p>${bed.checkIn === iso ? `今天入住：${escapeHtml(bed.checkInTime || '時間依訂房確認')}` : '今晚連住，不必再次辦理入住。'}</p>
         <p class="source-meta">${!bed.addressVerified ? '門牌尚未確認，請先核對私人訂房資料；不提供精確導航。' : bed.id === 'poznan-towarowa' ? '此地址為接待與取鑰匙處；實際公寓門牌依私人訂房確認。' : '已核對的住宿地址，可出示給司機或櫃檯。'}</p>
         ${hotelMap ? `<a class="today-block-link" href="${escapeHtml(hotelMap)}" target="_blank" rel="noopener noreferrer">${bed.id === 'poznan-towarowa' ? '接待處導航' : '住宿導航'} ↗</a>` : ''}` : leaving ? `<p>今晚離境／機上過夜。先確認航班報到、退稅與機場交通。</p><a class="today-block-link" href="${escapeHtml(dayHref)}#directions">開啟機場地址與交通 →</a>`
@@ -184,6 +204,7 @@ export function renderToday({ meta, days, stay, dayDining = {}, daylight = [], s
     dining: dayDining[String(day.n)],
     sun: daylightByDay.get(day.n),
     dayHref: `${pathPrefix}day-${String(day.n).padStart(2, '0')}.html`,
+    privateHref: `${pathPrefix}practical/database.html#my-private`,
   })).join('');
 
   // 內嵌時沒有 import；日期與選日函式的相依也必須一起帶入。
@@ -192,10 +213,19 @@ export function renderToday({ meta, days, stay, dayDining = {}, daylight = [], s
 
   // 緊急電話排成一列可點的號碼膠囊：號碼大、說明小，一眼就能按。
   // 原本是滿版紅色區塊，把「接下來去哪」推出首屏——真的要打時只需要號碼本身。
+  // 旅途中的精簡版（手機）只留 112、999 與駐波蘭代表處急難救助三顆，其餘號碼加 today-sos-extra
+  // 在精簡版隱藏；非旅途期間版面不變，代表處那一顆（today-sos-compact-only）也不出現。
+  const COMPACT_KEEP = new Set(['112', '999']);
   const emergency = (safety?.emergency || [])
-    .map(([label, number]) => `<li><a href="tel:${escapeAttr(number.replace(/\s+/g, ''))}">${escapeHtml(number)}</a><span>${escapeHtml(label)}</span></li>`).join('');
+    .map(([label, number]) => `<li${COMPACT_KEEP.has(number) ? '' : ' class="today-sos-extra"'}><a href="tel:${escapeAttr(number.replace(/\s+/g, ''))}">${escapeHtml(number)}</a><span>${escapeHtml(label)}</span></li>`).join('');
+  const embassyUrgent = (safety?.embassy || []).find(([label]) => /急難救助/.test(label));
+  const embassyItem = embassyUrgent
+    ? `<li class="today-sos-compact-only"><a href="tel:${escapeAttr(embassyUrgent[1].replace(/[^\d+]/g, ''))}">${escapeHtml(embassyUrgent[1])}</a><span>駐波蘭代表處急難救助</span></li>` : '';
+  // 保險救援電話只在使用者填過之後才出現（內容來自這支手機的 localStorage）。
+  const insurerItem = `<li class="today-sos-insurer" data-private-has="insurerPhone" hidden><a data-private-tel="insurerPhone" class="private-tel"></a><span>我的保險救援</span></li>`;
 
   const bodyHtml = `
+    <div data-today-page>
     <header class="journal-appendix-header">
       <!-- 版式的 ::before 已經印出「TODAY」（稽核 M11）；這裡再放一次 section-num
            會在手機上變成上下兩行一模一樣的 TODAY，白佔一段首屏。 -->
@@ -216,8 +246,9 @@ export function renderToday({ meta, days, stay, dayDining = {}, daylight = [], s
 
     <section class="today-sos" data-today-sos aria-label="緊急電話">
       <p class="today-sos-title"><span class="today-sos-tag">SOS</span>緊急電話</p>
-      <ul class="today-sos-list">${emergency}</ul>
+      <ul class="today-sos-list">${emergency}${embassyItem}${insurerItem}</ul>
       <p class="source-meta">歐洲通用緊急號碼 112 可直接撥打，不需解鎖或有 SIM 卡餘額。</p>
+      <p class="source-meta today-sos-private" data-private-missing="insurerPhone">保險救援電話還沒填 · <a href="${pathPrefix}practical/database.html#my-private">填入我的私人資料</a>（只存在這支手機）</p>
     </section>
 
     <div data-today-cards>${cards}</div>
@@ -227,6 +258,7 @@ export function renderToday({ meta, days, stay, dayDining = {}, daylight = [], s
       <p data-today-outside-note></p>
       <p><a class="journal-text-link" href="${pathPrefix}practical/booking.html#countdown">看訂票與查核倒數 →</a>　<a class="journal-text-link" href="${pathPrefix}index.html#days">開啟八日行程目錄 →</a></p>
     </section>
+    </div>
 
     <script>
       (function() {
@@ -234,7 +266,8 @@ export function renderToday({ meta, days, stay, dayDining = {}, daylight = [], s
         const root = document.currentScript.closest('.standalone-page') || document;
         initializeToday(root, undefined, ${JSON.stringify(meta.travelStart)});
       }());
-    </script>`;
+    </script>
+    ${renderPrivateRuntime()}`;
 
   return renderLayout({
     title: '今日卡',

@@ -324,7 +324,8 @@ test('首頁待辦事項會跳脫資料文字', () => {
       { date: '10/25', name: '<b>危險項目</b>', status: '待處理', action: '下一步', url: null },
     ] }],
   });
-  assert.doesNotMatch(html, /<script>|<img src=x>/);
+  // 首頁現在有一段合法的內嵌腳本（旅途期間收掉過期的期限提示），只檢查資料注入的標記。
+  assert.doesNotMatch(html, /<script>x\(\)|<img src=x>/);
   assert.ok(html.includes('&lt;script&gt;x()&lt;/script&gt;'));
   assert.ok(html.includes('A &amp; B'));
   // 稽核 M9：首頁待辦分類只留計數＋連結，item.name 不再輸出到首頁
@@ -351,7 +352,8 @@ test('資料庫模板會跳脫資料文字並拒絕非 HTTPS 官方來源', () =
     statusLabels,
   });
 
-  assert.doesNotMatch(html, /<script>|<img src=x|javascript:/);
+  // SOS 區現在有內嵌腳本（私人資料），只檢查資料注入的標記。
+  assert.doesNotMatch(html, /<script>(?:category|summary)\(\)|<img src=x|javascript:/);
   assert.ok(html.includes('&lt;script&gt;summary()&lt;/script&gt;'));
   assert.ok(html.includes('&lt;b&gt;危險標題&lt;/b&gt;'));
   assert.ok(html.includes('A &amp; B'));

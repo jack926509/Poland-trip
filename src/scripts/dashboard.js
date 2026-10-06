@@ -108,7 +108,7 @@ export function labelOf(daysLeft, open) {
   return `T-${daysLeft}`;
 }
 
-export function initializeCountdown(root, getToday) {
+export function initializeCountdown(root, getToday, tripStart) {
   function refresh() {
     const today = getToday();
     const todayNode = root.querySelector('[data-countdown-today]');
@@ -119,10 +119,19 @@ export function initializeCountdown(root, getToday) {
       const daysLeft = date
         ? Math.round((Date.parse(`${date}T00:00:00Z`) - Date.parse(`${today}T00:00:00Z`)) / 86400000)
         : null;
-      const urgency = urgencyOf(daysLeft, open);
+      let urgency = urgencyOf(daysLeft, open);
+      let text = labelOf(daysLeft, open);
+      // 旅途期間（台北日期到了出發日）：出發前的期限都已經過了，再顯示紅色「已逾期 N 天」
+      // 只會製造雜訊；改成中性的「旅途中」，出發前仍維持原樣。
+      const traveling = Boolean(tripStart) && today >= tripStart;
+      if (traveling && urgency === 'overdue') { urgency = 'trip'; text = '旅途中'; }
       row.setAttribute('data-urgency', urgency);
       const label = row.querySelector('[data-countdown-label]');
-      if (label) label.textContent = labelOf(daysLeft, open);
+      if (label) label.textContent = text;
+      const category = row.querySelector('[data-countdown-category]');
+      if (category && category.setAttribute) category.setAttribute('class', traveling && urgency === 'trip' ? 'tag-muted' : category.getAttribute('data-countdown-class'));
+      const tag = row.querySelector('[data-countdown-tag]');
+      if (tag) tag.textContent = traveling && urgency === 'trip' ? '旅途中，不需處理' : tag.getAttribute('data-countdown-text');
     }
   }
   refresh();
@@ -205,4 +214,20 @@ export function initializeDashboard(root, input) {
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) refresh();
   });
+}
+
+/**
+ * 首頁「下一個期限」提示是建置當天算好的靜態文字，旅途中會變成過時的紅色逾期。
+ * 台北日期到了出發日就整句收掉；出發前不動。
+ */
+export function hideDeadlineOnTrip(root, getToday, tripStart) {
+  function refresh() {
+    const hide = Boolean(tripStart) && getToday() >= tripStart;
+    root.querySelectorAll('[data-next-deadline]').forEach(el => { el.hidden = hide; });
+  }
+  refresh();
+  setInterval(refresh, 60000);
+  window.addEventListener('pageshow', refresh);
+  window.addEventListener('focus', refresh);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
 }

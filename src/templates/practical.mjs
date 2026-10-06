@@ -26,6 +26,7 @@ import { getTaipeiToday, toComparableDate, todayIn, isOpenTodoStatus, isOpenEntr
 // 呼叫端必須用真名，否則在瀏覽器裡是 ReferenceError（靜態輸出看起來正常，
 // 但每分鐘的重算完全不會執行）。
 import { taipeiToday } from '../lib/schedule.mjs';
+import { meta } from '../data/trip.js';
 
 function serializeForInlineScript(value) {
   return JSON.stringify(value)
@@ -95,9 +96,9 @@ function renderCountdownSection({ trains, deadlines, databaseEntries }) {
     return `<tr data-countdown-row data-countdown-date="${escapeHtml(item.date || '')}" data-countdown-open="${item.open}" data-urgency="${item.urgency}">
       <td class="number" data-label="倒數"><b data-countdown-label>${escapeHtml(item.label)}</b></td>
       <td data-label="日期"><time datetime="${escapeHtml(item.date || '')}">${escapeHtml(item.date || '—')}</time></td>
-      <td data-label="類別"><span class="${tagClass}">${escapeHtml(item.category)}</span></td>
+      <td data-label="類別"><span class="${tagClass}" data-countdown-category data-countdown-class="${tagClass}">${escapeHtml(item.category)}</span></td>
       <td data-label="項目">${title}<br><span class="source-meta">${escapeHtml(item.action)}</span></td>
-      <td data-label="現況與依據">${escapeHtml(item.status)}<br><span class="source-meta">依據：${escapeHtml(item.basis)}</span><br><span class="tag-muted">${escapeHtml(tagText)}</span></td>
+      <td data-label="現況與依據">${escapeHtml(item.status)}<br><span class="source-meta">依據：${escapeHtml(item.basis)}</span><br><span class="tag-muted" data-countdown-tag data-countdown-text="${escapeHtml(tagText)}">${escapeHtml(tagText)}</span></td>
     </tr>`;
   }).join('');
 
@@ -114,7 +115,7 @@ function renderCountdownSection({ trains, deadlines, databaseEntries }) {
         (function() {
           ${countdownRuntime}
           const root = document.currentScript.closest('.standalone-page') || document;
-          initializeCountdown(root, taipeiToday);
+          initializeCountdown(root, taipeiToday, ${JSON.stringify(meta.tripStart)});
         }());
       </script>
     </section>`;
@@ -161,6 +162,7 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
       <p><b>${escapeHtml(item.checkIn)}${item.checkInTime ? ` ${escapeHtml(item.checkInTime)}` : ''} → ${escapeHtml(item.checkOut)}${item.checkOutTime ? ` ${escapeHtml(item.checkOutTime)}` : ''}</b> · ${item.nights} 晚 · ${item.rooms} 間房</p>
       <p><b>地址：</b>${escapeHtml(item.address)}${item.addressVerified ? '' : ' <span class="tag-todo">門牌待確認</span>'}</p>
       <p><b>座標：</b><span class="number">${coordinateLabel}</span>${coordinate ? `<br><span class="timeline-note">${escapeHtml(coordinate.status)} · ${escapeHtml(coordinate.checkedAt)}</span>` : ''}</p>
+      <p><b>電話：</b>${item.phone ? `<a href="tel:${escapeHtml(item.phone.replace(/[^\d+]/g, ''))}">${escapeHtml(item.phone)}</a><br><span class="timeline-note">來源：<a href="${escapeHtml(item.phoneSource.url)}" target="_blank" rel="noopener noreferrer">飯店官方網站</a> · 查證 ${escapeHtml(item.phoneSource.checkedAt)}</span>` : '請看訂房確認信'}</p>
       <p class="timeline-note">${escapeHtml(item.note)}</p>
       <p class="action-links">${mapUrl ? `<a href="${mapUrl}" target="_blank" rel="noopener noreferrer">座標導航 →</a>` : ''}<a href="${escapeHtml(item.officialUrl)}" target="_blank" rel="noopener noreferrer">飯店官網 →</a></p>
     </article>`;
@@ -434,7 +436,8 @@ export function renderEssentials({ phrases, packingDefault, about, safety, sourc
     <section><div class="section-heading"><span class="section-num">Basics</span><h2>基本須知</h2></div><div class="grid">${aboutCards}</div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Language</span><h2>常用波蘭語</h2></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>中文</th><th>波蘭語</th><th>音譯</th></tr></thead><tbody>${phraseRows}</tbody></table></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Packing</span><h2>打包清單</h2></div><div class="grid-wide">${packingHtml}</div></section>
-    <section class="section"><div class="section-heading"><span class="section-num">SOS</span><h2>緊急聯絡</h2></div><div class="grid-wide"><div class="table-wrap"><table class="table-editorial"><thead><tr><th>單位</th><th>電話</th></tr></thead><tbody>${emergencyRows}</tbody></table></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>駐波蘭代表處</th><th>資訊</th></tr></thead><tbody>${embassyRows}</tbody></table></div></div></section>
+    <section class="section"><div class="section-heading"><span class="section-num">SOS</span><h2>緊急聯絡</h2></div><div class="grid-wide"><div class="table-wrap"><table class="table-editorial"><thead><tr><th>單位</th><th>電話</th></tr></thead><tbody>${emergencyRows}</tbody></table></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>駐波蘭代表處</th><th>資訊</th></tr></thead><tbody>${embassyRows}</tbody></table></div></div>
+      <p class="callout-note"><b>保險救援電話、保單號碼與各預約的訂位代號</b>可填在<a href="database.html#my-private">「我的私人資料」</a>（只存在這支手機的這個瀏覽器，不會上傳）；住宿電話見<a href="database.html#sos-hotels">資料庫 SOS 區</a>。</p></section>
     <section class="section"><div class="section-heading"><span class="section-num">Safety</span><h2>安全與禮儀</h2></div><div class="grid-wide">${safetyCards}</div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Sources</span><h2>官方查核來源</h2></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>項目</th><th>查核日期</th><th>目前結論</th></tr></thead><tbody>${sourceRows}</tbody></table></div></section>`;
   return renderPracticalLayout('安全與基本須知', 'Essentials', '語言、插座、打包、緊急電話與常見陷阱集中在這裡，出發前可快速複查。', content, 'practical/essentials.html');

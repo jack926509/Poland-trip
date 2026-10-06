@@ -3,7 +3,8 @@ import { escapeHtml } from '../lib/html.mjs';
 import { bookingProgress } from '../lib/journey.mjs';
 import { renderJourneyOverview } from './journey.mjs';
 import { renderLayout } from './layout.mjs';
-import { getTaipeiToday, collectDeadlines, nextDeadline, isOpenTodoStatus } from '../scripts/dashboard.js';
+import { getTaipeiToday, collectDeadlines, nextDeadline, isOpenTodoStatus, hideDeadlineOnTrip, todayIn } from '../scripts/dashboard.js';
+import { taipeiToday } from '../lib/schedule.mjs';
 
 const cityFileKeys = Object.fromEntries(cityRoutes.map(city => [city.key, city.fileKey]));
 
@@ -28,7 +29,7 @@ function renderFlight(direction, legs) {
 function renderNextDeadline({ trains, deadlines, databaseEntries }) {
   const next = nextDeadline(collectDeadlines({ trains, deadlines, databaseEntries }), getTaipeiToday());
   if (!next) return '';
-  return `<p class="next-deadline" data-urgency="${next.urgency}">
+  return `<p class="next-deadline" data-next-deadline data-urgency="${next.urgency}">
     <strong>${escapeHtml(next.label)}</strong>
     <span>下一個期限 ${escapeHtml(next.date)}：${escapeHtml(next.title)}</span>
     <a class="journal-text-link" href="practical/booking.html#countdown">看完整倒數 →</a>
@@ -163,7 +164,14 @@ ${coverFigure}
         <a class="card card-link" href="practical/notes.html"><h3>出發前提醒</h3><p>夏令時間、日落、閉館與訂票節奏。</p><span>查看 →</span></a>
         <a class="card card-link" href="practical/database.html"><h3>自由行資料庫</h3><p>SOS、行前重查與各主題官方資料集中管理。</p><span>查看 →</span></a>
       </div>
-    </section>`;
+    </section>
+    <script>
+      (function() {
+        ${[todayIn, taipeiToday, hideDeadlineOnTrip].map(fn => fn.toString()).join('\n')}
+        const root = document.currentScript.closest('.standalone-page') || document;
+        hideDeadlineOnTrip(root, taipeiToday, ${JSON.stringify(meta.tripStart)});
+      }());
+    </script>`;
 
   return renderLayout({ title: '首頁', activeNav: 'home', bodyHtml, pageKind: 'home' });
 }

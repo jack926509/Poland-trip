@@ -372,6 +372,7 @@ export const stay = [
     address:'ul. Marszałkowska 99a, 00-693 Warszawa', addressVerified:true, rooms:1, status:'已確認',
     coordinates:{lat:52.22901, lng:21.01099, status:'已核對', checkedAt:'2026-08-11'},
     officialUrl:'https://www.hotelmetropol.com.pl/pl/',
+    phone:'+48 22 32 53 100', phoneSource:{url:'https://www.hotelmetropol.com.pl/pl/', checkedAt:'2026-10-06'},
     note:'第一段華沙住宿（2026-09 換訂本館，兩段華沙住宿現為同一家）。位置在 Marszałkowska／Metro Centrum 出口正對面，步行至 Warszawa Centralna 約 500 公尺；入住 15:00 起、退房 12:00 前，櫃檯可寄放行李。時間依公開訂房資料，抵達前再以訂房確認核對。',
   },
   {
@@ -380,6 +381,7 @@ export const stay = [
     address:'ul. Pawia 11, 31-154 Kraków', addressVerified:true, rooms:1, status:'已確認',
     coordinates:{lat:50.07075, lng:19.946163, status:'已核對', checkedAt:'2026-08-11'},
     officialUrl:'https://all.accor.com/hotel/7165/index.en.shtml',
+    phone:'+48 12 355 29 50', phoneSource:{url:'https://all.accor.com/hotel/7165/index.en.shtml', checkedAt:'2026-10-06'},
     note:'位於 Kraków Główny 與 Galeria Krakowska 旁。10/06 官網確認入住 15:00 起、退房 12:00 前，提供寄物服務；私人訂房約定仍以確認信為準。',
   },
   {
@@ -388,6 +390,7 @@ export const stay = [
     address:'Piłsudskiego 98, Wrocław', addressVerified:true, rooms:1, status:'已確認',
     coordinates:{lat:51.10013, lng:17.03569, status:'已核對', checkedAt:'2026-08-11'},
     officialUrl:'https://piastwroclaw.pl/',
+    phone:'+48 71 796 62 00', phoneSource:{url:'https://piastwroclaw.pl/kontakt/', checkedAt:'2026-10-06'},
     note:'住宿訂單已確認，門牌 Piłsudskiego 98 已核對；飯店官網目前未正常顯示完整地址，仍建議出發前用訂房確認再核對一次。',
   },
   {
@@ -396,6 +399,7 @@ export const stay = [
     address:'Towarowa 37/201, 61-896 Poznań', addressVerified:true, rooms:1, status:'已確認',
     coordinates:{lat:52.403903, lng:16.915609, status:'接待處座標已核對', checkedAt:'2026-08-11'},
     officialUrl:'https://www.poznanapartments.com/kontakt',
+    phone:'+48 531 000 209', phoneSource:{url:'https://www.poznanapartments.com/kontakt', checkedAt:'2026-10-06'},
     note:'此處為官方接待與取鑰匙地址；實際公寓門牌以私人訂房確認為準。',
   },
   {
@@ -404,6 +408,7 @@ export const stay = [
     address:'ul. Marszałkowska 99a, 00-693 Warszawa', addressVerified:true, rooms:1, status:'已確認',
     coordinates:{lat:52.22901, lng:21.01099, status:'已核對', checkedAt:'2026-08-11'},
     officialUrl:'https://www.hotelmetropol.com.pl/pl/',
+    phone:'+48 22 32 53 100', phoneSource:{url:'https://www.hotelmetropol.com.pl/pl/', checkedAt:'2026-10-06'},
     note:'第二段華沙住宿，與第一段同館同址，行李寄放與周邊動線可沿用 Day 1 經驗。10/29 EIC 8104 抵 Warszawa Centralna 後步行約 500 公尺即到；10/31 退房 12:00 前，當日 09:45 出發搭機不受影響。',
   },
 ];

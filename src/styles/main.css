@@ -5839,3 +5839,82 @@ h3 {
 .grocery-photo-dialog img { display: block; margin: 1rem auto; max-width: 100%; width: auto; height: auto; max-height: 60dvh; object-fit: contain; }
 .grocery-photo-dialog button { display: block; margin-left: auto; min-height: 44px; padding: .5rem 1rem; cursor: pointer; }
 .grocery-photo-title { font-size: 1.2rem; font-weight: 700; }
+
+/* 旅途中的今日卡（手機精簡版）。
+   旅途期間（華沙時間在 10/24–10/31，由 today.js 在 [data-today-page] 加上 today-compact）
+   頁首、日期控制與 SOS 收成精簡版，讓「接下來去哪」進入 390×844 的第一個畫面。
+   SOS 仍在日卡之前、號碼仍是 tel: 連結；非旅途期間沒有 today-compact，版面不變。 */
+@media (max-width: 600px) {
+  /* h1 對讀屏軟體仍在，只是不佔版面。 */
+  .today-compact .journal-appendix-header {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+    clip: rect(0 0 0 0); border: 0; white-space: nowrap;
+  }
+  .today-compact .today-date-controls.today-enhanced {
+    grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: .4rem; margin: .5rem 0 0;
+  }
+  .today-compact .today-date-controls .today-field { font-size: 0; }
+  .today-compact .today-date-controls .today-field select { margin-top: 0; min-height: 40px; padding-block: .4rem; font-size: .9rem; }
+  .today-compact .today-date-controls button { min-height: 40px; padding: .4rem .55rem; font-size: .8rem; }
+  /* 自動模式（看今天）時「回到今天」已停用，精簡版直接收掉；手動切日後才出現。 */
+  .today-compact [data-date-reset]:disabled { display: none; }
+  .today-live .today-status { display: none; }
+  .today-compact .today-status { margin: .35rem 0 0; font-size: .8rem; }
+
+  .today-compact .today-sos {
+    display: flex; align-items: center; gap: .5rem; margin-top: .5rem; padding: .4rem .6rem;
+  }
+  .today-compact .today-sos-title { flex: none; margin: 0; font-size: 0; }
+  .today-compact .today-sos-list { flex: 1 1 auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .25rem .5rem; margin: 0; }
+  .today-compact .today-sos-list li { flex: none; min-width: 0; }
+  .today-compact .today-sos-list a[href^='tel:'] { padding: .2rem .55rem; font-size: .95rem; min-height: 32px; display: inline-flex; align-items: center; }
+  .today-compact .today-sos-list span { font-size: .68rem; }
+  .today-compact .today-sos-list a[href^='tel:'] { white-space: nowrap; }
+  .today-compact .today-sos-extra { display: none; }
+  .today-compact .today-sos-compact-only, .today-compact .today-sos-insurer { grid-column: 1 / -1; }
+  .today-compact .today-sos > .source-meta { display: none; }
+
+  .today-compact .today-card { margin-top: .5rem; }
+  .today-compact .today-head { padding: .5rem .8rem; }
+  .today-compact .today-head-meta { margin: 0 0 .15rem; }
+  .today-compact .today-head h2 { font-size: 1.25rem; }
+  .today-compact .today-head-dek, .today-compact .today-head-link { display: none; }
+}
+.today-sos-compact-only { display: none; }
+@media (max-width: 600px) { .today-compact .today-sos-compact-only { display: flex; } }
+.today-sos-insurer[hidden], .today-sos-private[hidden] { display: none !important; }
+.today-sos-private { margin: .4rem 0 0; }
+@media (max-width: 600px) { .today-compact .today-sos-private { display: none; } }
+
+/* 私人資料的顯示／隱藏全靠 hidden；class 設了 display 的元素會蓋過 [hidden] 的預設樣式，
+   所以明確補一條，避免「還沒填」與「已填」兩種文字同時出現。 */
+[data-private-has][hidden], [data-private-missing][hidden] { display: none !important; }
+
+/* 今日卡：當天預約與票券放在行程旁邊，不再藏在最底部的摺疊區。 */
+.today-ticket-list { display: grid; gap: .75rem; margin: 0; padding: 0; list-style: none; }
+.today-ticket-list li { display: grid; gap: .2rem; padding-bottom: .75rem; border-bottom: 1px solid var(--line); }
+.today-ticket-list li:last-child { padding-bottom: 0; border-bottom: 0; }
+.today-ticket-note { font-size: .9rem; }
+.today-proof { display: block; padding: .4rem .6rem; border-left: 3px solid var(--green); border-radius: var(--radius-xs); background: var(--paper-light); font-size: .92rem; line-height: 1.5; }
+.today-proof-code { font-family: var(--font-mono); letter-spacing: .04em; }
+.today-next-ticket { margin: .5rem 0 0; }
+.today-hotel-phone { margin: .35rem 0; }
+
+/* 我的私人資料：編輯區與顯示用的電話連結。 */
+.private-panel { max-width: 56rem; }
+.private-warning { margin-block: .5rem 1rem; }
+.private-status { margin: 0 0 1rem; color: var(--ink-soft); font-size: .9rem; }
+.private-status[data-problem='true'] { color: var(--red); font-weight: 700; }
+.private-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: .75rem; }
+.private-slot { margin: 0 0 .75rem; padding: .75rem .9rem; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: var(--paper-light); min-width: 0; }
+.private-slots .private-slot { margin: 0; }
+.private-slot legend { padding-inline: .3rem; font-weight: 700; }
+.private-slot label { display: block; margin-top: .6rem; color: var(--ink-soft); font-size: .82rem; font-weight: 700; }
+.private-slot input { display: block; width: 100%; min-height: 44px; margin-top: .25rem; padding: .5rem .7rem; font: inherit; font-size: 1rem; color: var(--ink); background: #fff; border: 1px solid var(--line-strong); border-radius: var(--radius-xs); }
+.private-readout { margin: .75rem 0 0; }
+.private-tel { font-family: var(--font-mono); font-weight: 700; }
+.private-clear { min-height: 44px; padding: .5rem 1rem; font: inherit; color: var(--red); background: var(--paper-light); border: 1px solid var(--red); border-radius: var(--radius-xs); cursor: pointer; }
+.sos-hotel-list { margin: .5rem 0 0; padding-left: 1.1rem; }
+.sos-hotel-list li { margin-bottom: .5rem; }
+
+[data-next-deadline][hidden] { display: none !important; }

@@ -58,6 +58,9 @@ function runInline(source) {
 
 const OWNED = [
   ['dist/practical/booking.html', 'initializeCountdown', '訂票倒數'],
+  ['dist/index.html', 'hideDeadlineOnTrip', '首頁旅途隱藏逾期'],
+  ['dist/today.html', 'initializePrivate', '今日卡私人資料'],
+  ['dist/practical/database.html', 'initializePrivate', '資料庫私人資料'],
   ['dist/today.html', 'initializeToday', '今日卡選日'],
   ['dist/practical/ops-dashboard.html', 'initializeDashboard', '資料品質面板'],
   ['dist/practical/groceries.html', 'initializeProductPhotos', '商品照片放大'],

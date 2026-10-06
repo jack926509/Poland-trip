@@ -101,6 +101,14 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
     if (next) next.disabled = shown === cards.length - 1;
     if (status) status.textContent = preview ? `預覽 Day ${shown+1} · ${dates[shown]}（非今天）· 華沙日期 ${today}` : statusText(selection,cards.length);
     if (outside) outside.hidden = selection.mode === 'during';
+    // 旅途期間（華沙時間在行程日內）手機頁首改精簡版，讓「接下來去哪」進首屏；
+    // 非旅途期間不加 class，版面維持原樣。today-live 另外表示「看的就是今天」，
+    // 此時狀態列的「今天是旅程第 N 天」與卡片上的 Day 徽章重複，精簡版會收掉它。
+    const page = root.querySelector('[data-today-page]');
+    if (page && page.classList) {
+      page.classList.toggle('today-compact', selection.mode === 'during');
+      page.classList.toggle('today-live', selection.mode === 'during' && !preview);
+    }
     if (outsideNote && selection.mode !== 'during') outsideNote.textContent = statusText(selection,cards.length);
     const card = cards[shown];
     // 舊版靜態 DOM 與無行程卡片也可正常選日。

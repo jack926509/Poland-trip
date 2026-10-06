@@ -1,5 +1,7 @@
 import { escapeHtml, safeHttpsUrl } from '../lib/html.mjs';
 import { renderLayout } from './layout.mjs';
+import { stay } from '../data/trip.js';
+import { renderPrivatePanel, renderPrivateRuntime } from './private-panel.mjs';
 
 const displaySectionLabels = {
   entry: '出入境與 ETIAS',
@@ -122,6 +124,17 @@ function renderCard(entry, statusLabels, { representativePhone = false } = {}) {
     </article>`;
 }
 
+/** 住宿電話：同一間飯店分兩段入住只列一次；查不到官方電話就叫人看訂房確認信，不拿訂房網站的號碼頂替。 */
+function hotelPhoneItems() {
+  const seen = new Set();
+  return stay.filter(item => !seen.has(item.name) && seen.add(item.name)).map(item => {
+    const digits = String(item.phone || '').replace(/[^\d+]/g, '');
+    return `<li><b>${escapeHtml(item.name)}</b>（${escapeHtml(item.city)}）<br>${digits
+      ? `<a href="tel:${escapeHtml(digits)}">${escapeHtml(item.phone)}</a>`
+      : '<span class="source-meta">請看訂房確認信</span>'}</li>`;
+  }).join('');
+}
+
 function renderSos(entries, statusLabels) {
   const medical = entries.find(entry => entry.id === 'medical-insurance-and-emergency');
   const medicalStatus = statusLabels[medical?.status] || '需填私人資料';
@@ -141,8 +154,15 @@ function renderSos(entries, statusLabels) {
         <article class="database-card"><h3>999 醫療急救</h3><p>波蘭醫療緊急電話。</p><p class="database-card-action"><a href="tel:999">撥打 999</a></p></article>
         <article class="database-card"><h3>駐波蘭台北代表處</h3><p>30th Floor, Ul. Emilii Plater 53, 00-113 Warsaw, Poland</p><p><a href="https://www.google.com/maps/search/?api=1&amp;query=Taipei%20Representative%20Office%20in%20Poland%2C%20Emilii%20Plater%2053%2C%20Warsaw" target="_blank" rel="noopener noreferrer">開啟地址地圖 ↗</a></p><p class="database-card-action"><a href="tel:+48222130060">辦公室 +48 22 213 0060</a><br><a href="tel:+48668027574">急難救助 +48 668 027 574</a></p></article>
         <article class="database-card"><h3>外交部 24 小時緊急聯絡中心</h3><p>海外緊急聯絡，以台灣國碼格式撥打。</p><p class="database-card-action"><a href="tel:+886800085095">+886 800 085 095</a></p></article>
-        <article class="database-card"><h3>保險海外救援</h3><p><span class="status-private">狀態：${escapeHtml(medicalStatus)}</span></p><p>請在私人離線包填入保險公司與救援電話；不放入公開網站。</p></article>
+        <article class="database-card" id="sos-hotels"><h3>住宿電話</h3><p>飯店官方網站公開的電話（查證日 2026-10-06）；晚到、鑰匙或行李問題先打給住宿。</p><ul class="sos-hotel-list">${hotelPhoneItems()}</ul></article>
+        <article class="database-card"><h3>保險海外救援</h3>
+          <p data-private-missing="insurerPhone"><span class="status-private">狀態：${escapeHtml(medicalStatus)}</span></p>
+          <p data-private-missing="insurerPhone">還沒填。請到下方<a href="#my-private">「我的私人資料」</a>填入保險公司與救援電話，只會存在這支手機。</p>
+          <p data-private-has="insurerPhone" hidden><b data-private-text="insurer"></b></p>
+          <p class="database-card-action" data-private-has="insurerPhone" hidden><a data-private-tel="insurerPhone" class="private-tel"></a></p>
+          <p class="source-meta" data-private-has="policy" hidden>保單號碼：<span data-private-text="policy"></span></p></article>
       </div>
+      ${renderPrivatePanel()}
       <div class="grid-wide sos-flows">${flows.map(([id, title, steps]) => `<article class="card" id="sos-flow-${id}"><h3>${title}</h3><ol>${steps.map(step => `<li>${step}</li>`).join('')}</ol></article>`).join('')}</div>
     </section>`;
 }
@@ -206,7 +226,8 @@ export function renderDatabase({ entries, sections, statusLabels }) {
     </nav>
     ${sectionCards}
     </div>
-    <script src="../assets/database-filter.js" defer></script>`;
+    <script src="../assets/database-filter.js" defer></script>
+    ${renderPrivateRuntime()}`;
   return renderLayout({
     title: '自由行資料庫',
     activeNav: 'practical',
