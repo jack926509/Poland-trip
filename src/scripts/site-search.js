@@ -41,14 +41,27 @@ function createTextElement(tagName, className, text) {
   }
 
 export function initializeSiteSearch(root) {
-    if (typeof window !== 'undefined') {
+    const input = root.querySelector('input[type="search"]');
+    // 手機（≤700px）搜尋面板預設收起，只留一顆搜尋鈕；之前收起後沒有任何
+    // 按鈕能再打開，手機上等於完全沒有全站搜尋。
+    const toggleButton = root.querySelector('[data-search-toggle]');
+    function setPanelOpen(open) {
+      if (open) root.setAttribute('open', '');
+      else root.removeAttribute('open');
+      toggleButton?.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+    if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
       const mobileQuery = window.matchMedia('(max-width: 700px)');
-      if (mobileQuery.matches) root.removeAttribute('open');
+      setPanelOpen(!mobileQuery.matches);
       mobileQuery.addEventListener?.('change', event => {
-        if (!event.matches) root.setAttribute('open', '');
+        if (!event.matches) setPanelOpen(true);
       });
     }
-    const input = root.querySelector('input[type="search"]');
+    toggleButton?.addEventListener('click', () => {
+      const willOpen = !root.hasAttribute?.('open');
+      setPanelOpen(willOpen);
+      if (willOpen) input?.focus();
+    });
     const indexElement = root.querySelector('[data-site-search-index]');
     const resultsElement = root.querySelector('[data-search-results]');
     const summaryElement = root.querySelector('[data-search-summary]');

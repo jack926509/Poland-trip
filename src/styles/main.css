@@ -69,6 +69,10 @@ h4 {
   font-weight: 700;
   line-height: 1.12;
   text-wrap: balance;
+  /* 中文標題只在空白、標點處換行：避免「辛德勒／工廠」「樂斯拉／夫」這種
+     把詞拆成兩行的斷法；真的放不下時 overflow-wrap 仍會強制斷開。 */
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 
 h1 {
@@ -377,6 +381,11 @@ summary:focus-visible {
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 1rem;
+}
+
+/* 外框已有 :focus-within 光圈，輸入框本身再畫一圈會變成雙框 */
+.site-search-input-row input:focus-visible {
+  outline: none;
 }
 
 .site-search-input-row input::placeholder {
@@ -1585,6 +1594,10 @@ figure.media-unavailable > img {
   line-height: 0.82;
 }
 
+.journal-cover-route span {
+  white-space: nowrap;
+}
+
 .journal-cover-route {
   max-width: 28ch;
   margin: auto 0 1.75rem;
@@ -2167,15 +2180,46 @@ figure.media-unavailable > img {
   .site-search-toggle {
     display: flex;
     align-items: center;
-    min-height: 48px;
-    padding: .65rem 1.25rem;
-    color: var(--plum);
-    font-weight: 700;
+    gap: 0.55rem;
+    width: calc(100% - 2.5rem);
+    min-height: 44px;
+    margin: 0.55rem 1.25rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgb(142 126 112 / 38%);
+    border-radius: 999px;
+    background: var(--paper-light);
+    box-shadow: var(--shadow-1);
+    color: var(--ink-soft);
+    font: inherit;
+    font-size: 0.92rem;
+    text-align: left;
     cursor: pointer;
   }
 
-  .site-search-toggle::after { margin-left: auto; content: '＋'; }
-  .site-search-shell[open] .site-search-toggle::after { content: '－'; }
+  .site-search-toggle > span[aria-hidden] {
+    color: var(--accent-dark);
+    font-family: var(--font-mono);
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+
+  .site-search-toggle::after { margin-left: auto; color: var(--plum); content: '＋'; }
+  /* 展開後輸入框本身就在下方，搜尋鈕縮成右上角一行「收起搜尋」 */
+  .site-search-shell[open] .site-search-toggle {
+    justify-content: flex-end;
+    min-height: 36px;
+    margin-block: 0.25rem -0.4rem;
+    padding-block: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    color: var(--plum);
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+  .site-search-shell[open] .site-search-toggle > span { display: none; }
+  .site-search-shell[open] .site-search-toggle::after { margin-left: 0; content: '收起搜尋 －'; }
+  .site-search-toggle:focus-visible { outline: 3px solid var(--focus-ring-soft); outline-offset: 2px; }
 
   .site-search-form-row {
     grid-template-columns: 1fr;
@@ -5198,7 +5242,14 @@ h3 {
   content: '';
 }
 
+.today-sos-list a[href^='tel:'],
+.today-sos-list .private-tel {
+  flex: none;
+  white-space: nowrap;
+}
+
 .today-sos-list span {
+  min-width: 0;
   color: var(--ink-soft);
   font-size: 0.76rem;
   line-height: 1.35;
@@ -5336,7 +5387,11 @@ h3 {
   .today-next-clock b { font-size: 2rem; }
   .today-next-title { font-size: 1.3rem; }
   .today-next-nav { width: 100%; }
-  .today-sos-list li { flex: 1 1 5rem; }
+  /* 手機改兩欄格線：號碼不換行，長號碼（代表處、保險）獨佔一列，
+     說明字不會再被擠到號碼底下或疊在一起。 */
+  .today-sos-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .45rem .6rem; }
+  .today-sos-list li { min-width: 0; }
+  .today-sos-list .today-sos-wide { grid-column: 1 / -1; }
   /* sticky 動作列的 top: 76px 是假設桌機固定導覽列的高度；手機導覽列不是 fixed，
      捲動後上方露出 76px 縫隙，內容從縫裡透出（稽核 M1）。手機貼齊視窗頂端，
      並把四顆按鈕收成單行，避免換成兩列讓列高翻倍。 */
@@ -5918,3 +5973,37 @@ h3 {
 .sos-hotel-list li { margin-bottom: .5rem; }
 
 [data-next-deadline][hidden] { display: none !important; }
+
+/* 今日卡：出發前／旅程後的提示卡，放在日期列下方 */
+.today-outside {
+  max-width: 56rem;
+  margin: 0.75rem 0 0;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--line-strong);
+  border-left: 4px solid var(--plum);
+  border-radius: var(--radius-sm);
+  background: var(--paper-light);
+}
+.today-outside[hidden] { display: none; }
+.today-outside p { margin: 0; }
+.today-outside-title {
+  color: var(--plum);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.today-outside [data-today-outside-note] { margin-top: 0.2rem; font-weight: 700; }
+.today-outside-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  margin-top: 0.5rem !important;
+}
+.today-outside-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--accent-dark);
+  font-weight: 700;
+}
