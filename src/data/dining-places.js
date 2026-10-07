@@ -16,6 +16,21 @@ export const diningPlaces = {
       "百年市集改建的美食大廳，Day 6（10/29 週四）晚班抵達後最好用的晚餐／宵夜選項；距飯店步行約 10–15 分。官方註明各餐廳與店舖時間可能與大廳不同，抵達前先確認個別店家。地下停車場 200 席、每小時 10 PLN。"
     ]
   },
+  "warsaw-cma-hala-koszyki": {
+    "id": "warsaw-cma-hala-koszyki",
+    "cityKey": "warsaw",
+    "name": "Ćma by Mateusz Gessler",
+    "address": "Hala Koszyki, Koszykowa 63, Warszawa",
+    "map": "https://www.google.com/maps/search/?api=1&query=%C4%86ma%20by%20Mateusz%20Gessler%2C%20Hala%20Koszyki%2C%20Koszykowa%2063%2C%20Warszawa",
+    "hours": "24 小時營業（官網與 Hala Koszyki 標示 24/7）",
+    "sourceUrl": "https://www.mateuszgessler.com.pl/restauracje/cma/",
+    "checkedAt": "2026-10-07",
+    "verificationStatus": "verified",
+    "notes": [
+      "名廚 Mateusz Gessler 的全天候波蘭小館 · żurek、餃子、烤肋排"
+    ],
+    "verificationNote": "店家官網與 Hala Koszyki 店家頁皆標示 24/7；大廳本身週四 08:00–00:00，深夜入口以現場指示為準。"
+  },
   "warsaw-zapiecek": {
     "id": "warsaw-zapiecek",
     "cityKey": "warsaw",
@@ -917,6 +932,21 @@ export const diningPlaces = {
     "notes": [
       "鎮中心午餐安排，尚未指定餐廳。"
     ]
+  },
+  "wieliczka-bistro-posolone": {
+    "id": "wieliczka-bistro-posolone",
+    "cityKey": "wieliczka",
+    "name": "Bistro Posolone",
+    "address": "Kopalnia Soli Wieliczka（Daniłowicz 立坑旁）",
+    "map": "https://www.google.com/maps/search/?api=1&query=Bistro%20Posolone%2C%20Wieliczka",
+    "hours": "每日，於鹽礦開放時間內營業（礦方官網）",
+    "sourceUrl": "https://www.kopalnia.pl/zasmakuj-w-kopalni",
+    "checkedAt": "2026-10-07",
+    "verificationStatus": "partial",
+    "notes": [
+      "鹽礦入口旁的礦方餐廳：湯、披薩、漢堡、麵食等簡餐"
+    ],
+    "verificationNote": "礦方官網只寫「每日於鹽礦開放時間內營業」，未列確切開關門時刻與門牌；出礦後依現場指標前往。"
   },
   "wieliczka-karczma-gornicza": {
     "id": "wieliczka-karczma-gornicza",

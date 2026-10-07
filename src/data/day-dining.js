@@ -5,7 +5,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-specjaly-regionalne",
       "role": "晚餐首選",
-      "note": "皇家大道散步後的波蘭地方料理，出發前確認訂位。",
+      "note": "皇家大道散步後的波蘭地方料理：兩人分享綜合 pierogi 與 żurek 酸黑麥湯，胃口夠再加一道肉類主菜。週六晚上先訂位。",
       "stepId": "d1-dinner",
       "planStatus": "scheduled"
     },
@@ -35,7 +35,7 @@ export const dayDiningPlans = {
     {
       "placeId": "krakow-noah",
       "role": "晚餐首選",
-      "note": "以色列烤羊肉串配 pitta 餅；飯後可走去圓亭吃 Endzior。",
+      "note": "以色列烤羊肉串配 pitta 餅，可加 hummus、烤茄子分享。週日 21:30 打烊，訂 19:45 並確認最後點餐；飯後可走去圓亭吃 Endzior。",
       "stepId": "d2-dinner",
       "planStatus": "scheduled"
     },
@@ -65,25 +65,33 @@ export const dayDiningPlans = {
   ],
   "4": [
     {
-      "placeId": "wieliczka-wieliczka-鎮中心午餐",
-      "role": "午餐首選（店家待選）",
+      "placeId": "wieliczka-bistro-posolone",
+      "role": "午餐首選",
       "cityGuide": false,
-      "note": "依既定行程 13:00 在鎮中心午餐，店家尚未選定；鹽礦地下餐廳營業有官方資訊衝突，先不要依賴。地圖只搜尋鎮中心餐廳，不代表已確認營業；出礦後確認店家，保留回克拉科夫取行李的時間。",
+      "note": "出礦後最近的選擇，選湯或簡餐即可；導覽拖到 13:00 後才結束就外帶，直接搭車回克拉科夫取行李。",
       "stepId": "d4-lunch",
       "planStatus": "scheduled"
+    },
+    {
+      "placeId": "wieliczka-wieliczka-鎮中心午餐",
+      "role": "午餐備案（鎮中心，店家待選）",
+      "cityGuide": false,
+      "note": "Bistro Posolone 客滿或想進鎮上時的備案；店家未選定，地圖只搜尋鎮中心餐廳，不代表已確認營業。",
+      "stepId": null,
+      "planStatus": "candidate"
     },
     {
       "placeId": "wieliczka-karczma-gornicza",
       "role": "午餐備案（營業待確認，暫不採用）",
       "cityGuide": false,
-      "note": "2026-09-19 查核：礦場公司波蘭文頁列目前關閉，英文餐飲頁仍有菜單，官方資訊不一致；未獲礦場確認前不採用，依既定 13:00 Wieliczka 鎮中心午餐安排，店家現場再選。",
+      "note": "2026-09-19 查核：礦場公司波蘭文頁列目前關閉，英文餐飲頁仍有菜單，官方資訊不一致；未獲礦場確認前不採用，午餐改用礦方確認每日營業的 Bistro Posolone。",
       "stepId": null,
       "planStatus": "unavailable"
     },
     {
       "placeId": "wroclaw-samarqand",
-      "role": "抵達後候選",
-      "note": "晚抵車站後候選；須計入火車延誤及廚房最後點餐，無法及時到店則改簡餐。",
+      "role": "晚餐首選（抵達後）",
+      "note": "Stawowa 23，車站與 Hotel Piast 旁；週二營業至 23:00、廚房至 22:00，最適合晚抵。換個口味吃烏茲別克牛肉抓飯（plov）＋分享湯餃；火車誤點過 21:45 就改車站簡餐。",
       "stepId": null,
       "planStatus": "candidate"
     }
@@ -92,21 +100,21 @@ export const dayDiningPlans = {
     {
       "placeId": "wroclaw-restauracja-wroclawska",
       "role": "午餐首選",
-      "note": "12:30 預留午餐；官網已確認 12:00 開門。午餐後保留彈性休息時間，16:15 前抵達座堂島。",
+      "note": "12:30 預留午餐；官網已確認 12:00 開門。推薦 Śląskie niebo 與 Bigos Wrocławski。14:05 前離開，接 14:15 國家博物館，16:15 前抵座堂島。",
       "stepId": "d5-lunch",
       "planStatus": "scheduled"
     },
     {
       "placeId": "wroclaw-ida-kuchnia-i-wino",
-      "role": "晚餐首選",
-      "note": "晚餐候選未排時段；座堂島結束後已安排取行李與抵站，須先調整景點／用餐動線，不能直接視為已排妥。",
+      "role": "午餐備選",
+      "note": "Łazienna 4，週三 12:00–22:00；Wrocławska 客滿時的午餐替代，選酸湯、餃子或鴨肉。晚上要趕 19:10 火車，本日不排坐下晚餐，改車站外帶。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "wroclaw-konspira",
-      "role": "替補",
-      "note": "反共主題傳統小館，作午晚餐替補；需配合店家接受訂位的日期。",
+      "role": "午餐替補",
+      "note": "反共主題傳統小館；本日只作午餐替補，晚上趕車不排晚餐。",
       "stepId": null,
       "planStatus": "candidate"
     }
@@ -115,8 +123,15 @@ export const dayDiningPlans = {
     {
       "placeId": "poznan-pyra-bar",
       "role": "午餐首選",
-      "note": "12:30 預留快速午餐；配合山羊秀及牛角麵包博物館實際英語場，排隊太久改外帶。",
+      "note": "12:30 預留快速午餐：Pyry z bzikiem 或 Szare ale jare；排隊太久改外帶，13:45 前出發往帝王城堡。",
       "stepId": "d6-lunch",
+      "planStatus": "scheduled"
+    },
+    {
+      "placeId": "warsaw-cma-hala-koszyki",
+      "role": "晚餐首選（抵華沙後）",
+      "note": "24/7 營業，火車誤點也吃得到；推薦 żurek、餃子或烤肋排。位於 Hala Koszyki 內，由飯店步行約 10–15 分。",
+      "stepId": "d6-dinner",
       "planStatus": "scheduled"
     },
     {
@@ -158,17 +173,17 @@ export const dayDiningPlans = {
     },
     {
       "placeId": "warsaw-u-fukiera",
-      "role": "晚餐首選",
-      "note": "Żurek 酸黑麥湯，老城最後晚餐。",
-      "stepId": "d7-dinner",
-      "planStatus": "scheduled"
+      "role": "替補",
+      "note": "想在老城吃最後晚餐時改這間（Żurek 酸黑麥湯）；從起義博物館過去需搭車約 20–30 分。",
+      "stepId": null,
+      "planStatus": "candidate"
     },
     {
       "placeId": "warsaw-wyraj",
-      "role": "替補",
-      "note": "起義博物館後的斯拉夫料理備案；選這裡就不必特地回老城吃晚餐。",
-      "stepId": null,
-      "planStatus": "candidate"
+      "role": "晚餐首選",
+      "note": "起義博物館步行約 10 分，18:30 入座、先訂位；時令波蘭料理，選野菇前菜、餃子加一道主菜，當作最後一晚的正式晚餐。",
+      "stepId": "d7-dinner",
+      "planStatus": "scheduled"
     },
     {
       "placeId": "warsaw-nuta",
