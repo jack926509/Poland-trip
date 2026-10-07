@@ -217,12 +217,12 @@ export function renderToday({ meta, days, stay, dayDining = {}, daylight = [], s
   // 在精簡版隱藏；非旅途期間版面不變，代表處那一顆（today-sos-compact-only）也不出現。
   const COMPACT_KEEP = new Set(['112', '999']);
   const emergency = (safety?.emergency || [])
-    .map(([label, number]) => `<li${COMPACT_KEEP.has(number) ? '' : ' class="today-sos-extra"'}><a href="tel:${escapeAttr(number.replace(/\s+/g, ''))}">${escapeHtml(number)}</a><span>${escapeHtml(label)}</span></li>`).join('');
+    .map(([label, number]) => `<li${COMPACT_KEEP.has(number) ? '' : ` class="today-sos-extra${number.replace(/\D/g, '').length > 4 ? ' today-sos-wide' : ''}"`}><a href="tel:${escapeAttr(number.replace(/\s+/g, ''))}">${escapeHtml(number)}</a><span>${escapeHtml(label)}</span></li>`).join('');
   const embassyUrgent = (safety?.embassy || []).find(([label]) => /急難救助/.test(label));
   const embassyItem = embassyUrgent
-    ? `<li class="today-sos-compact-only"><a href="tel:${escapeAttr(embassyUrgent[1].replace(/[^\d+]/g, ''))}">${escapeHtml(embassyUrgent[1])}</a><span>駐波蘭代表處急難救助</span></li>` : '';
+    ? `<li class="today-sos-compact-only today-sos-wide"><a href="tel:${escapeAttr(embassyUrgent[1].replace(/[^\d+]/g, ''))}">${escapeHtml(embassyUrgent[1])}</a><span>駐波蘭代表處急難救助</span></li>` : '';
   // 保險救援電話只在使用者填過之後才出現（內容來自這支手機的 localStorage）。
-  const insurerItem = `<li class="today-sos-insurer" data-private-has="insurerPhone" hidden><a data-private-tel="insurerPhone" class="private-tel"></a><span>我的保險救援</span></li>`;
+  const insurerItem = `<li class="today-sos-insurer today-sos-wide" data-private-has="insurerPhone" hidden><a data-private-tel="insurerPhone" class="private-tel"></a><span>我的保險救援</span></li>`;
 
   const bodyHtml = `
     <div data-today-page>
@@ -244,6 +244,14 @@ export function renderToday({ meta, days, stay, dayDining = {}, daylight = [], s
     <p class="today-status" data-today-status>正在判斷今天是旅程的第幾天…</p>
     <noscript><p class="today-status">JavaScript 未啟用時無法自動選日，以下列出全部 ${days.length} 天。</p></noscript>
 
+    <!-- 出發前／旅程結束後的提示原本排在整頁最底，要捲過八張卡才看得到；
+         改放在日期列正下方，一眼就知道「現在看的是預覽」以及下一步去哪。 -->
+    <aside class="today-outside" data-today-outside aria-label="不在旅程期間" hidden>
+      <p class="today-outside-title">不在旅程期間</p>
+      <p data-today-outside-note></p>
+      <p class="today-outside-links"><a href="${pathPrefix}practical/booking.html#countdown">看訂票與查核倒數 →</a><a href="${pathPrefix}practical/todos.html">待辦事項 →</a><a href="${pathPrefix}index.html#days">八日行程目錄 →</a></p>
+    </aside>
+
     <section class="today-sos" data-today-sos aria-label="緊急電話">
       <p class="today-sos-title"><span class="today-sos-tag">SOS</span>緊急電話</p>
       <ul class="today-sos-list">${emergency}${embassyItem}${insurerItem}</ul>
@@ -253,11 +261,6 @@ export function renderToday({ meta, days, stay, dayDining = {}, daylight = [], s
 
     <div data-today-cards>${cards}</div>
 
-    <section class="section" data-today-outside hidden>
-      <div class="section-heading"><span class="section-num">Off-trip</span><h2>不在旅程期間</h2></div>
-      <p data-today-outside-note></p>
-      <p><a class="journal-text-link" href="${pathPrefix}practical/booking.html#countdown">看訂票與查核倒數 →</a>　<a class="journal-text-link" href="${pathPrefix}index.html#days">開啟八日行程目錄 →</a></p>
-    </section>
     </div>
 
     <script>

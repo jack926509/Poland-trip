@@ -310,7 +310,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
     <header class="journal-day-header">
       <div class="journal-day-heading">
         <span class="section-num">Day ${String(day.n).padStart(2, '0')} · ${escapeHtml(day.date)}</span>
-        <h1>${escapeHtml(day.title)}</h1>
+        <h1>${escapeHtml(day.title).replaceAll(' + ', ' +\u00a0')}</h1>
         <p class="hero-dek">${escapeHtml(day.headline)}</p>
       </div>
 ${coverHtml}

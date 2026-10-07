@@ -95,9 +95,9 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
     </nav>
     <header class="journal-cover">
       <div class="journal-cover-copy">
-        <span class="journal-kicker">${escapeHtml(meta.edition)} · PAPER TRAVEL JOURNAL</span>
+        <span class="journal-kicker">${escapeHtml(meta.edition)}</span>
         <h1>POLSKA</h1>
-        <p class="journal-cover-route">${escapeHtml(meta.route)}</p>
+        <p class="journal-cover-route">${meta.route.split(' → ').map(city => `<span>${escapeHtml(city)}</span>`).join(' → ')}</p>
         <dl class="journal-cover-meta">
           <div><dt>航空往返</dt><dd>${escapeHtml(meta.flightDateRange || meta.dateRange)}</dd></div>
           <div><dt>波蘭境內</dt><dd>${escapeHtml(meta.dateRange)}</dd></div>
