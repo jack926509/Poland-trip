@@ -129,7 +129,10 @@ export function initializePrivate(root) {
     const clear = panel.querySelector('[data-private-clear]');
     if (clear) clear.addEventListener('click', () => {
       if (typeof confirm === 'function' && !confirm('確定清除這支手機上存的全部私人資料？清除後無法復原。')) return;
-      privateClear();
+      if (!privateClear()) {
+        say('無法清除這支手機上的私人資料，請到瀏覽器設定清除網站資料。', true);
+        return;
+      }
       say('已清除這支手機上的私人資料。', false);
       render();
       announce();

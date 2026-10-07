@@ -171,7 +171,7 @@ export const mapPins = {
       [52.2242001, 21.0350992, "Rozbrat 20 ★", "米其林一星", diningPlaces['warsaw-rozbrat-20'].map, "star1", null, 'warsaw-rozbrat-20'],
       [52.229941, 20.989348, "WANDAL", "必比登", diningPlaces['warsaw-wandal'].map, "bib", null, 'warsaw-wandal'],
       [52.236622, 20.967709, "Zagoździński", "pączki 名店", diningPlaces['warsaw-cukiernia-zagozdzinski'].map, "food", null, 'warsaw-cukiernia-zagozdzinski'],
-      [52.2333197, 21.0149273, "Pijalnia Czekolady E.Wedel（巧克力）", "伴手禮", "https://www.google.com/maps/place/?q=place_id:ChIJ--12WPTMHkcRgAvh-nOeA94", "shop"],
+      [52.2333197, 21.0149273, "Pijalnia Czekolady E.Wedel（巧克力）", "伴手禮", diningPlaces['warsaw-wedel-szpitalna-8'].map, "shop", null, 'warsaw-wedel-szpitalna-8'],
       [52.2310334, 21.0187045, "Vitkac", "精品百貨", "https://maps.google.com/?cid=6893272886103886879", "luxury"],
       [52.2215267, 21.0204772, "Chylak（波蘭設計師包款）", "精品", "https://maps.google.com/?cid=2015234439722332980", "luxury"],
       [52.2340388, 21.031448, "MEI", "韓式烤肉 · Solec 81B", diningPlaces['warsaw-mei'].map, "food", null, 'warsaw-mei'],

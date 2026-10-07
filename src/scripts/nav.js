@@ -111,7 +111,12 @@
 
   // 搜尋可直達商品卡；目標若位於收合分組，先展開才能正確捲動。
   const revealProductHash = () => {
-    const id = decodeURIComponent(location.hash.slice(1));
+    let id;
+    try {
+      id = decodeURIComponent(location.hash.slice(1));
+    } catch {
+      return;
+    }
     if (!/^product-\d+$/.test(id)) return;
     const target = document.getElementById(id);
     if (!target) return;
