@@ -111,8 +111,7 @@ export function renderSiteSearch({
   const fallbackHref = databaseHref || path('practical/database.html');
   const resolvedIndexUrl = searchIndexJson === null ? (indexUrl || path('assets/search-index.json')) : null;
   return `<section class="site-search-shell" data-site-search data-search-path-prefix="${pathPrefix}"${resolvedIndexUrl ? ` data-search-index-url="${resolvedIndexUrl}"` : ''} aria-label="全站旅遊搜尋">
-    <button class="site-search-toggle" type="button" data-search-toggle aria-expanded="false" aria-controls="site-search-panel"><span aria-hidden="true">⌕</span><span class="site-search-toggle-text">搜尋火車、餐廳、景點、城市</span></button>
-    <div class="site-search-inner" id="site-search-panel">
+    <div class="site-search-inner">
       <div class="site-search-form-row">
         <label class="site-search-label" for="site-search-input">搜尋整個旅遊網站</label>
         <div class="site-search-input-row">

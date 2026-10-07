@@ -383,11 +383,6 @@ summary:focus-visible {
   font-size: 1rem;
 }
 
-/* 外框已有 :focus-within 光圈，輸入框本身再畫一圈會變成雙框 */
-.site-search-input-row input:focus-visible {
-  outline: none;
-}
-
 .site-search-input-row input::placeholder {
   color: var(--ink-soft);
   opacity: 0.82;
@@ -2180,46 +2175,15 @@ figure.media-unavailable > img {
   .site-search-toggle {
     display: flex;
     align-items: center;
-    gap: 0.55rem;
-    width: calc(100% - 2.5rem);
-    min-height: 44px;
-    margin: 0.55rem 1.25rem;
-    padding: 0.5rem 1rem;
-    border: 1px solid rgb(142 126 112 / 38%);
-    border-radius: 999px;
-    background: var(--paper-light);
-    box-shadow: var(--shadow-1);
-    color: var(--ink-soft);
-    font: inherit;
-    font-size: 0.92rem;
-    text-align: left;
+    min-height: 48px;
+    padding: .65rem 1.25rem;
+    color: var(--plum);
+    font-weight: 700;
     cursor: pointer;
   }
 
-  .site-search-toggle > span[aria-hidden] {
-    color: var(--accent-dark);
-    font-family: var(--font-mono);
-    font-size: 1.15rem;
-    font-weight: 700;
-  }
-
-  .site-search-toggle::after { margin-left: auto; color: var(--plum); content: '＋'; }
-  /* 展開後輸入框本身就在下方，搜尋鈕縮成右上角一行「收起搜尋」 */
-  .site-search-shell[open] .site-search-toggle {
-    justify-content: flex-end;
-    min-height: 36px;
-    margin-block: 0.25rem -0.4rem;
-    padding-block: 0;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-    color: var(--plum);
-    font-size: 0.82rem;
-    font-weight: 700;
-  }
-  .site-search-shell[open] .site-search-toggle > span { display: none; }
-  .site-search-shell[open] .site-search-toggle::after { margin-left: 0; content: '收起搜尋 －'; }
-  .site-search-toggle:focus-visible { outline: 3px solid var(--focus-ring-soft); outline-offset: 2px; }
+  .site-search-toggle::after { margin-left: auto; content: '＋'; }
+  .site-search-shell[open] .site-search-toggle::after { content: '－'; }
 
   .site-search-form-row {
     grid-template-columns: 1fr;

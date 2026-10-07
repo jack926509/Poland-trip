@@ -411,11 +411,6 @@ summary:focus-visible {
   font-size: 1rem;
 }
 
-/* 外框已有 :focus-within 光圈，輸入框本身再畫一圈會變成雙框 */
-.site-search-input-row input:focus-visible {
-  outline: none;
-}
-
 .site-search-input-row input::placeholder {
   color: var(--ink-soft);
   opacity: 0.82;
@@ -2208,46 +2203,15 @@ figure.media-unavailable > img {
   .site-search-toggle {
     display: flex;
     align-items: center;
-    gap: 0.55rem;
-    width: calc(100% - 2.5rem);
-    min-height: 44px;
-    margin: 0.55rem 1.25rem;
-    padding: 0.5rem 1rem;
-    border: 1px solid rgb(142 126 112 / 38%);
-    border-radius: 999px;
-    background: var(--paper-light);
-    box-shadow: var(--shadow-1);
-    color: var(--ink-soft);
-    font: inherit;
-    font-size: 0.92rem;
-    text-align: left;
+    min-height: 48px;
+    padding: .65rem 1.25rem;
+    color: var(--plum);
+    font-weight: 700;
     cursor: pointer;
   }
 
-  .site-search-toggle > span[aria-hidden] {
-    color: var(--accent-dark);
-    font-family: var(--font-mono);
-    font-size: 1.15rem;
-    font-weight: 700;
-  }
-
-  .site-search-toggle::after { margin-left: auto; color: var(--plum); content: '＋'; }
-  /* 展開後輸入框本身就在下方，搜尋鈕縮成右上角一行「收起搜尋」 */
-  .site-search-shell[open] .site-search-toggle {
-    justify-content: flex-end;
-    min-height: 36px;
-    margin-block: 0.25rem -0.4rem;
-    padding-block: 0;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-    color: var(--plum);
-    font-size: 0.82rem;
-    font-weight: 700;
-  }
-  .site-search-shell[open] .site-search-toggle > span { display: none; }
-  .site-search-shell[open] .site-search-toggle::after { margin-left: 0; content: '收起搜尋 －'; }
-  .site-search-toggle:focus-visible { outline: 3px solid var(--focus-ring-soft); outline-offset: 2px; }
+  .site-search-toggle::after { margin-left: auto; content: '＋'; }
+  .site-search-shell[open] .site-search-toggle::after { content: '－'; }
 
   .site-search-form-row {
     grid-template-columns: 1fr;
@@ -6927,8 +6891,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
       </details>
   </nav>
   <section class="site-search-shell" data-site-search data-search-path-prefix="" aria-label="全站旅遊搜尋">
-    <button class="site-search-toggle" type="button" data-search-toggle aria-expanded="false" aria-controls="site-search-panel"><span aria-hidden="true">⌕</span><span class="site-search-toggle-text">搜尋火車、餐廳、景點、城市</span></button>
-    <div class="site-search-inner" id="site-search-panel">
+    <div class="site-search-inner">
       <div class="site-search-form-row">
         <label class="site-search-label" for="site-search-input">搜尋整個旅遊網站</label>
         <div class="site-search-input-row">
@@ -10098,7 +10061,7 @@ function initializePrivate(root) {
 <header class="journal-day-header">
       <div class="journal-day-heading">
         <span class="section-num">Day 02 · 10/25 (日)</span>
-        <h1>Wawel + 老城 + 辛德勒工廠 + Kazimierz 晚餐</h1>
+        <h1>Wawel + 老城 + 辛德勒工廠 + Kazimierz 晚餐</h1>
         <p class="hero-dek">EIP 5300 已購票：08:40 由 Warszawa Centralna 出發；抵達時間待查票面</p>
       </div>
 
@@ -11090,7 +11053,7 @@ function initializePrivate(root) {
 <header class="journal-day-header">
       <div class="journal-day-heading">
         <span class="section-num">Day 04 · 10/27 (二)</span>
-        <h1>Wieliczka 鹽礦 + 16:45 轉場</h1>
+        <h1>Wieliczka 鹽礦 + 16:45 轉場</h1>
         <p class="hero-dek">IC 3830 已購票：16:45 由 Kraków Główny 出發；鹽礦後縮短 Kazimierz 停留</p>
       </div>
 
@@ -11616,7 +11579,7 @@ function initializePrivate(root) {
 <header class="journal-day-header">
       <div class="journal-day-heading">
         <span class="section-num">Day 05 · 10/28 (三)</span>
-        <h1>小矮人尋寶 + 點燈儀式 + 晚轉場</h1>
+        <h1>小矮人尋寶 + 點燈儀式 + 晚轉場</h1>
         <p class="hero-dek">IC 260 已購票，19:10 由 Wrocław Główny 出發；午餐與跨區移動先留時間，抵達時間待查票面</p>
       </div>
 
@@ -12143,7 +12106,7 @@ function initializePrivate(root) {
 <header class="journal-day-header">
       <div class="journal-day-heading">
         <span class="section-num">Day 06 · 10/29 (四)</span>
-        <h1>山羊鐘樓秀 + 聖馬丁牛角麵包</h1>
+        <h1>山羊鐘樓秀 + 聖馬丁牛角麵包</h1>
         <p class="hero-dek">EIC 8104 已購票，17:40 發車；兼顧正午山羊秀與下午行程</p>
       </div>
 
@@ -12712,7 +12675,7 @@ function initializePrivate(root) {
 <header class="journal-day-header">
       <div class="journal-day-heading">
         <span class="section-num">Day 07 · 10/30 (五)</span>
-        <h1>皇家城堡 + POLIN + 起義博物館</h1>
+        <h1>皇家城堡 + POLIN + 起義博物館</h1>
         <p class="hero-dek">依閉館時間重排：最早先看皇家城堡</p>
       </div>
 
@@ -18559,27 +18522,14 @@ function createTextElement(tagName, className, text) {
   }
 
 export function initializeSiteSearch(root) {
-    const input = root.querySelector('input[type="search"]');
-    // 手機（≤700px）搜尋面板預設收起，只留一顆搜尋鈕；之前收起後沒有任何
-    // 按鈕能再打開，手機上等於完全沒有全站搜尋。
-    const toggleButton = root.querySelector('[data-search-toggle]');
-    function setPanelOpen(open) {
-      if (open) root.setAttribute('open', '');
-      else root.removeAttribute('open');
-      toggleButton?.setAttribute('aria-expanded', open ? 'true' : 'false');
-    }
-    if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
+    if (typeof window !== 'undefined') {
       const mobileQuery = window.matchMedia('(max-width: 700px)');
-      setPanelOpen(!mobileQuery.matches);
+      if (mobileQuery.matches) root.removeAttribute('open');
       mobileQuery.addEventListener?.('change', event => {
-        if (!event.matches) setPanelOpen(true);
+        if (!event.matches) root.setAttribute('open', '');
       });
     }
-    toggleButton?.addEventListener('click', () => {
-      const willOpen = !root.hasAttribute?.('open');
-      setPanelOpen(willOpen);
-      if (willOpen) input?.focus();
-    });
+    const input = root.querySelector('input[type="search"]');
     const indexElement = root.querySelector('[data-site-search-index]');
     const resultsElement = root.querySelector('[data-search-results]');
     const summaryElement = root.querySelector('[data-search-summary]');

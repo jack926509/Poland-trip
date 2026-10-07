@@ -41,27 +41,14 @@ function createTextElement(tagName, className, text) {
   }
 
 export function initializeSiteSearch(root) {
-    const input = root.querySelector('input[type="search"]');
-    // 手機（≤700px）搜尋面板預設收起，只留一顆搜尋鈕；之前收起後沒有任何
-    // 按鈕能再打開，手機上等於完全沒有全站搜尋。
-    const toggleButton = root.querySelector('[data-search-toggle]');
-    function setPanelOpen(open) {
-      if (open) root.setAttribute('open', '');
-      else root.removeAttribute('open');
-      toggleButton?.setAttribute('aria-expanded', open ? 'true' : 'false');
-    }
-    if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
+    if (typeof window !== 'undefined') {
       const mobileQuery = window.matchMedia('(max-width: 700px)');
-      setPanelOpen(!mobileQuery.matches);
+      if (mobileQuery.matches) root.removeAttribute('open');
       mobileQuery.addEventListener?.('change', event => {
-        if (!event.matches) setPanelOpen(true);
+        if (!event.matches) root.setAttribute('open', '');
       });
     }
-    toggleButton?.addEventListener('click', () => {
-      const willOpen = !root.hasAttribute?.('open');
-      setPanelOpen(willOpen);
-      if (willOpen) input?.focus();
-    });
+    const input = root.querySelector('input[type="search"]');
     const indexElement = root.querySelector('[data-site-search-index]');
     const resultsElement = root.querySelector('[data-search-results]');
     const summaryElement = root.querySelector('[data-search-summary]');
