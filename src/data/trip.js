@@ -265,7 +265,7 @@ export const days = [
     tag: 'Transit',
     intensity: '中高',
     hardConstraints: ['11:45 前抵達老城廣場卡位', '12:00 山羊鐘樓秀', '17:05 前抵 Poznań Główny；搭乘已購 EIC 8104'],
-    mustBook: ['✅ 已購票 · 波茲南 → 華沙 EIC 8104 17:40', '❗尚未訂 · 牛角麵包博物館（10/29 英語場待確認）'],
+    mustBook: ['✅ 已購票 · 波茲南 → 華沙 EIC 8104 17:40'],
     compressible: ['Stary Browar 停留時間', '帝王城堡內部參觀'],
     train: {segmentId:'eic-8104'},
     steps: [
@@ -273,9 +273,9 @@ export const days = [
       {t:'11:00', label:'廣場卡正面位置', dur:'45 min · 提早卡位'},
       {t:'12:00', label:'★ 山羊鐘樓秀', sub:'官方每日 12:00 與 15:00 登場；本次採正午場，兩隻金屬山羊互頂 12 次。錯過可考慮 15:00，但仍須保留取行李與到站時間', cost:'免費', dur:'5 min'},
       {t:'12:15', label:'★ 聖馬丁牛角麵包 (PGI)', sub:'Cukiernia Kandulski；出發前確認分店、當日營業與 PGI 證書', cost:'依門市標價', dur:'15 min'},
-      {t:'12:30', id:'d6-lunch', label:'午餐 · Pyra Bar 候選', sub:'Strzelecka 13，週四 11:00–21:00。2026-10-07 官方菜單：Pyry z bzikiem（烤馬鈴薯配凝乳，36 PLN）或 Szare ale jare（馬鈴薯麵糰配培根酸白菜，38 PLN）。訂到 14:00 英文場就 13:35 前離開走回老城（約 10 分）；排隊太久改外帶。', cost:'依店家', dur:'約 45 min（含來回步行）'},
-      {t:'13:50–15:05 預留', label:'★ 牛角麵包博物館', sub:'2026-10-07 官網：個人旅客的英文「可頌＋山羊」場固定 14:00、約 65 分鐘，散場時可看 15:00 山羊鐘。全年只保證週六日（7–8 月每天），其他日子「很多天也有」但要上售票頁查——10/29 週四不保證有場；另偶有 15:30 不含山羊的英文場，多在週六。英語場 47 PLN／人，開演前 10 分鐘到 Klasztorna 23 報到。沒有英文場就跳過，改走下一站的帝王城堡', cost:'英語場 PLN 47／人', dur:'表演約 65 min'},
-      {t:'15:10', label:'Stary Browar', sub:'有英文場：散場後短逛約 45 分，16:00 準時取行李。沒有英文場：14:00 起先逛帝王城堡（CK ZAMEK 每日 12:00–19:00、售票至 18:00；9/5–12/6 展覽聯票含語音導覽 40／35 PLN、含地圖 35／30 PLN），再來 Stary Browar', cost:'購物另計', dur:'45 min–1 h'},
+      {t:'12:30', id:'d6-lunch', label:'午餐 · Pyra Bar 候選', sub:'Strzelecka 13，週四 11:00–21:00。2026-10-07 官方菜單：Pyry z bzikiem（烤馬鈴薯配凝乳，36 PLN）或 Szare ale jare（馬鈴薯麵糰配培根酸白菜，38 PLN）。排隊太久改外帶，13:45 前出發往帝王城堡。', cost:'依店家', dur:'約 45 min（含來回步行）'},
+      {t:'14:00', label:'★ 帝王城堡', sub:'CK ZAMEK（Święty Marcin 80/82），由老城步行約 15 分；每日 12:00–19:00、售票至 18:00。9/5–12/6 展期售展覽＋城堡聯票：含地圖 35／30 PLN、含語音導覽 40／35 PLN（2026-10-07 官網）。看德皇威廉二世時代的城堡廳室與當期展覽', cost:'聯票 PLN 35–40', dur:'1 h', constraint:{venue:'poznan-ck-zamek'}},
+      {t:'15:10', label:'Stary Browar', sub:'由帝王城堡步行約 10 分；紅磚老啤酒廠改建的商場，短逛約 45 分，16:00 準時取行李', cost:'購物另計', dur:'45 min'},
       {t:'16:00', label:'取行李、前往 Poznań Główny', sub:'先確認公寓行李寄放地點；17:05 前抵站', dur:'約 1 h'},
       {t:'17:05', label:'抵 Poznań Główny', sub:'確認月台、車廂與座位；拖行李保留進站緩衝', dur:'35 min 緩衝'},
       {t:'17:40', label:'EIC 8104 前往華沙', sub:'EIC 8104 已購票；抵達時間、車廂與座位待查票面', cost:'票價未提供', dur:'待查票面'},
@@ -287,8 +287,7 @@ export const days = [
       snack({text:'抵站、放行李後華沙宵夜 @ Hala Koszyki', placeId:'warsaw-hala-koszyki'}),
     ],
     backup: [
-      {label:'雨天想看山羊鐘', where:'可頌博物館官方售票頁', map:'https://www.google.com/maps/search/?api=1&query=Rogalowe%20Muzeum%20Poznania%2C%20Klasztorna%2023%2C%20Pozna%C5%84', why:'英語公開場官方票價 47 PLN／人，但 10/29 有無場次與庫存都須依官方售票系統確認；未確認前改以 Stary Browar 或帝王城堡為室內備案。棕櫚屋已因改建閉館，不能再列為雨天備案'},
-      {label:'無合適英語場', where:'Stary Browar 商場 + 帝王城堡內部', map:'https://www.google.com/maps/search/?api=1&query=Stary%20Browar%2C%20P%C3%B3%C5%82wiejska%2042%2C%20Pozna%C5%84', why:'兩處各有室內空間，但館際移動需走戶外；下雨仍需雨具並預留交通時間。帝王城堡 12:00 才開門、售票至 18:00'},
+      {label:'下雨備案', where:'Stary Browar 商場 + 帝王城堡內部', map:'https://www.google.com/maps/search/?api=1&query=Stary%20Browar%2C%20P%C3%B3%C5%82wiejska%2042%2C%20Pozna%C5%84', why:'兩處都有室內空間，但館際移動需走戶外；下雨可拉長帝王城堡、縮短老城停留，仍需雨具'},
     ],
   },
   {
@@ -493,7 +492,6 @@ export const bookingTiers = [
     {name:'POLIN 波蘭猶太人歷史博物館', url:'https://polin.pl/en'},
     {name:'華沙起義博物館', url:'https://www.1944.pl/en'},
     {name:'皇家城堡（已查證二至日 10:00–18:00，末入 17:00）', url:'https://www.zamek-krolewski.pl/en'},
-    {name:'牛角麵包博物館（10/29 主行程，英語場待確認）', url:'https://rogalowemuzeum.pl/en/'},
     {name:'拉茨瓦維採全景畫', url:'https://mnwr.pl/en/category/branches/panorama-raclawicka/'},
   ]},
   {tier:'餐廳與備案', note:'❗全部尚未訂 · 旅行品質加分', items:[
@@ -539,13 +537,6 @@ export const todoGroups = [
     intro: '餐廳營業與臨時包場以店家訂位頁公告為準。',
     items: [
       {checkedAt:null, recheckAt:null, date:'10/30', name:'華沙最後晚餐 · WYRAJ 18:30', status:'尚未訂位', action:'起義博物館 18:00 閉館後步行到 Krochmalna 59；以店家官網訂 10/30 18:30、2 人。想改在老城吃再訂 U Fukiera。', url:'https://wyraj.net/kontakt/'},
-    ],
-  },
-  {
-    id: 'rainy-day', title: '牛角麵包博物館', eyebrow: 'Tickets · 1 項',
-    intro: '10/29 主行程預留參觀；英語場次尚未確認，沒有合適場次再改室內備案。',
-    items: [
-      {checkedAt:null, recheckAt:null, date:'10/29', name:'波茲南牛角麵包博物館場次', status:'尚未訂', action:'官網英文場固定 14:00（約 65 分，含看山羊），週四不保證開；查 10/29 官方售票頁，有就買 14:00 場，沒有就改帝王城堡＋Stary Browar。', url:'https://rogalowemuzeum.pl/en/'},
     ],
   },
 ];
@@ -605,16 +596,9 @@ export const deadlines = [
     basis: '待辦事項該筆的 recheckAt = 2026-10-12。',
   },
   {
-    id: 'ticket-croissant', date: '2026-10-13', category: '門票',
-    title: '波茲南可頌博物館 10/29 英語場',
-    action: '2026-10-07 官網：個人旅客英文場固定 14:00（約 65 分，含看山羊），只保證週六日與 7–8 月，其他日子要看售票頁；通常演出前 1–30 天開賣。查 10/29（週四）有沒有 14:00 英文場，有就買，沒有就改帝王城堡＋Stary Browar。',
-    status: '尚未訂', url: 'https://rogalowemuzeum.pl/en/buy-ticket/',
-    basis: 'Day 6 主行程預留 13:50–15:05 且英語場未確認；取出發前 10 天為行動下限，留得下改備案的時間。',
-  },
-  {
     id: 'recheck-all', date: '2026-10-16', category: '複查',
     title: '全站票價、開放時間與特別閉館複查',
-    action: '門票速查與城市指南已於 2026-09-17／09-18 全面複查過，但臨時活動與維修仍可能變動；出發前再整批重查一次，重點在仍標「待確認」的項目（可頌博物館 10/29 英語場、Wieliczka 10/27 場次；El Gato Odrzańska 8 已查每日 08:00–20:00）。',
+    action: '門票速查與城市指南已於 2026-09-17／09-18 全面複查過，但臨時活動與維修仍可能變動；出發前再整批重查一次，重點在仍標「待確認」的項目（Wieliczka 10/27 場次、帝王城堡展期聯票；El Gato Odrzańska 8 已查每日 08:00–20:00）。',
     status: '待執行', url: null,
     basis: '訂位與每人預算清單的「出發前 1 週」條目，由 10/23 台灣出發日回推。',
   },

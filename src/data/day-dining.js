@@ -123,7 +123,7 @@ export const dayDiningPlans = {
     {
       "placeId": "poznan-pyra-bar",
       "role": "午餐首選",
-      "note": "12:30 預留快速午餐：Pyry z bzikiem 或 Szare ale jare。訂到 14:00 英文場就 13:35 前離開；排隊太久改外帶。",
+      "note": "12:30 預留快速午餐：Pyry z bzikiem 或 Szare ale jare；排隊太久改外帶，13:45 前出發往帝王城堡。",
       "stepId": "d6-lunch",
       "planStatus": "scheduled"
     },

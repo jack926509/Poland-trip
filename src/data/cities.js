@@ -112,7 +112,7 @@ export const cityStories = [
     onSite:[
       '11:45 前到 Stary Rynek 卡位看山羊（只演一次，錯過等明天）',
       '市政廳文藝復興立面：波蘭最美的市政廳之一，1550s 義大利建築師 di Quadro 之作',
-      '牛角麵包博物館的示範秀會請觀眾上台擀麵——坐前排',
+      '帝王城堡由德皇威廉二世興建，二戰時曾改作希特勒行館——看完再去 Stary Browar 喝咖啡',
     ],
   },
 ];
@@ -359,7 +359,7 @@ export const attractions = {
   poznan: [
     {name:"舊市集廣場 Stary Rynek", tag:"2024 重修", mapUrl:"https://www.google.com/maps/search/?api=1&query=%E8%88%8A%E5%B8%82%E9%9B%86%E5%BB%A3%E5%A0%B4%20Stary%20Rynek%20Pozna%C5%84", venueId:null, extra:"鋪面與無障礙全面翻新 · 彩色商人屋 · 四座神話噴泉 · 免費"},
     {name:"市政廳正午山羊鐘", tag:"免費", mapUrl:venues['poznan-town-hall'].map, venueId:"poznan-town-hall", extra:"官方確認每日 12:00，兩隻機械山羊頂角 12 次；不將非官方的 15:00 說法寫入行程"},
-    {name:"可頌博物館 Rogalowe Muzeum", tag:"場次制展演", mapUrl:venues['poznan-croissant-museum'].map, venueId:"poznan-croissant-museum", extra:"2026-10-07 官網查證：個人旅客英文「可頌＋山羊」場固定 14:00、約 65 分鐘，只保證週六日與 7–8 月；英語場 47 PLN／人（滿 3 歲起）、未滿 3 歲 1 PLN，入口 Klasztorna 23、館內約 50 人。10/29（週四）有無 14:00 英文場要查官方售票頁"},
+    {name:"可頌博物館 Rogalowe Muzeum", tag:"場次制展演", mapUrl:venues['poznan-croissant-museum'].map, venueId:"poznan-croissant-museum", extra:"未列入本次主行程。2026-10-07 官網查證：個人旅客英文「可頌＋山羊」場固定 14:00、約 65 分鐘，只保證週六日與 7–8 月；英語場 47 PLN／人，入口 Klasztorna 23"},
     {name:"古市政廳博物館", tag:"歷史", mapUrl:venues['poznan-old-town-hall-museum'].map, venueId:"poznan-old-town-hall-museum", extra:"2026/7/1–2027/11/30 整修閉館，行程期間無法入內，僅能外觀"},
     {name:"帝王城堡 Zamek Cesarski", tag:"地標", mapUrl:venues['poznan-ck-zamek'].map, venueId:"poznan-ck-zamek", extra:"2026-10-07 官網查證：CK ZAMEK 文化中心，一–日 12:00–19:00、售票至 18:00 · 9/5–12/6 展期售展覽＋城堡聯票，含地圖 35／30 PLN、含語音導覽 40／35 PLN · 室內可參觀空間仍依當日活動公告"},
     {name:"大教堂島 Ostrów Tumski", tag:"古城", mapUrl:"https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E6%95%99%E5%A0%82%E5%B3%B6%20Ostr%C3%B3w%20Tumski%20Pozna%C5%84", venueId:null, extra:"波蘭建國搖籃"},

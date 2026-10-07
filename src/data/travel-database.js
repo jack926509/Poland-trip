@@ -187,8 +187,8 @@ const databaseEntriesBase = [
   },
   {
     id: 'documents-attraction-tickets', section: 'documents', category: 'document', cityKey: 'ROUTE',
-    title: '景點票券：已訂 1 項，其餘 8 項待確認',
-    summary: '現有訂票紀錄已確認 Auschwitz 10/26 10:30 英文官方導覽、2 人；其餘 8 項（含牛角麵包博物館）尚未確認已購票。仍須核對私人票券的參觀日期、入場時段、語言、人數與集合點；公開版不保存票券條碼、姓名或付款資料。',
+    title: '景點票券：已訂 1 項，其餘 7 項待確認',
+    summary: '現有訂票紀錄已確認 Auschwitz 10/26 10:30 英文官方導覽、2 人；其餘 7 項尚未確認已購票。仍須核對私人票券的參觀日期、入場時段、語言、人數與集合點；公開版不保存票券條碼、姓名或付款資料。',
     status: 'private-required', sourceUrl: null, verifiedAt: null, recheckAt: '2026-09-24',
     offlineNote: '先保存已訂 Auschwitz 的票券 PDF 與證件；其餘項目購票後一併核對日期、時段、語言、人數、官方地址、集合點與取消規則，存入私人離線包。', private: true,
   },
@@ -351,9 +351,8 @@ const addressStepLabels = {
   'Poznań Główny': ['抵 Poznań Główny'],
   '波茲南主教座堂': ['★ 教堂島 Ostrów Tumski'],
   '波茲南市政廳': ['廣場卡正面位置', '★ 山羊鐘樓秀'],
-  '帝王城堡': [],
+  '帝王城堡': ['★ 帝王城堡'],
   'Stary Browar': ['Stary Browar'],
-  '牛角麵包博物館': ['★ 牛角麵包博物館'],
   'POLIN 波蘭猶太人歷史博物館': ['前往 POLIN + 安檢緩衝', '★ POLIN 猶太博物館'],
   '華沙起義博物館': ['前往華沙起義博物館 + 安檢緩衝', '★ 華沙起義博物館'],
 };
@@ -494,7 +493,6 @@ export const dayOperations = {
       venueCard('poznan-glowny-station', 'Poznań Główny'),
       venueCard('poznan-cathedral', '波茲南主教座堂'),
       venueCard('poznan-town-hall', '波茲南市政廳', '博物館整修閉館，此地點用於 12:00 山羊鐘樓秀外觀。'),
-      venueCard('poznan-croissant-museum', '牛角麵包博物館', '官方標示實際入口在 Klasztorna 23；10/29 英語場仍須從售票頁確認。'),
       venueCard('poznan-ck-zamek', '帝王城堡'),
       venueCard('poznan-stary-browar', 'Stary Browar'),
       venueCard('warsaw-centralna-station', 'Warszawa Centralna'),
@@ -502,7 +500,7 @@ export const dayOperations = {
       accommodationAddress('warsaw-metropol'),
     ],
     navigation: [
-      { mode: '步行／市內交通', route: '教堂島 → 舊城市場 → 牛角麵包博物館 → Stary Browar → Poznań Główny', action: '11:45 前到市政廳正面；博物館英語場依售票頁調整，16:00 開始取行李與前往車站。' },
+      { mode: '步行／市內交通', route: '教堂島 → 舊城市場 → 帝王城堡 → Stary Browar → Poznań Główny', action: '11:45 前到市政廳正面；午餐後 14:00 帝王城堡、15:10 Stary Browar，16:00 開始取行李與前往車站。' },
       { mode: 'PKP', route: 'Poznań Główny → Warszawa Centralna', action: 'EIC 8104 已購票，17:40 發車；17:05 前到站。抵達時間、車廂與座位待查票面，搭車前再查月台與異動。' },
     ],
     dailyAlerts: [
@@ -586,7 +584,7 @@ const unresolvedStepReasons = {
     'IC 260 前往波茲南': dynamicTransitReason,
   },
   6: {
-    '午餐 · Pyra Bar 候選': '須與牛角麵包博物館實際英語場協調；排隊過久時改為外帶。',
+    '午餐 · Pyra Bar 候選': '店址 Strzelecka 13；排隊過久時改為外帶，13:45 前出發往帝王城堡。',
     '取行李、前往 Poznań Główny': '公寓寄放與取行李地點須先向住宿確認，再前往車站。',
     '★ 聖馬丁牛角麵包 (PGI)': '尚未選定可靠分店，待分店與營業時間確認後補入。',
     'EIC 8104 前往華沙': dynamicTransitReason,

@@ -156,7 +156,6 @@ test('由出發日回推的期限，算術與 basis 敘述一致', () => {
     'ticket-wieliczka': 21,
     'ticket-schindler': 21,
     'ticket-warsaw-trio': 14,
-    'ticket-croissant': 10,
     'recheck-all': 7,
     'etias-check-2': 3,
   };

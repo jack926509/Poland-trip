@@ -302,7 +302,7 @@ export function renderTodos({ todoGroups }) {
     <div class="callout-risk"><span class="tag-todo">${total} 項待辦</span><p>共 ${allItems.length} 項，已完成的仍保留在下表供核對。完成後請將票券與訂位資訊離線保存；未開賣項目仍以官方系統實際可售狀態為準。</p></div>
     ${groupsHtml}`.trim();
 
-  return renderPracticalLayout('待辦事項', 'Action list', '城際交通、景點、餐飲與雨天備案集中在一頁。先處理有日期與指定場次的票，再處理彈性訂位。', content, 'practical/todos.html');
+  return renderPracticalLayout('待辦事項', 'Action list', '城際交通、景點與餐飲訂位集中在一頁。先處理有日期與指定場次的票，再處理彈性訂位。', content, 'practical/todos.html');
 }
 
 export function renderDining({ michelinSummary, michelinReservations, verifiedRestaurantHours = [], fastFoodChains = [], fastFoodBranches = {} }) {

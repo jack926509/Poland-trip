@@ -288,7 +288,8 @@ test('8 天每個行程步驟都有可靠地址或明確待確認原因', () => 
   }
   assert.ok(!dayOperations[4].unresolvedSteps.some(item => item.label.includes('Sukiennice')));
   assert.ok(!dayOperations[4].unresolvedSteps.some(item => item.label === '★ Kazimierz 白天散步'));
-  assert.ok(dayOperations[6].addresses.some(item => item.name === '牛角麵包博物館' && item.stepLabels.includes('★ 牛角麵包博物館')));
+  assert.ok(!dayOperations[6].addresses.some(item => item.name === '牛角麵包博物館'), '牛角麵包博物館已移出 Day 6');
+  assert.ok(dayOperations[6].addresses.some(item => item.name === '帝王城堡' && item.stepLabels.includes('★ 帝王城堡')));
   assert.ok(dayOperations[6].addresses.some(item => item.name === 'Stary Browar' && item.stepLabels.includes('Stary Browar')));
 });
 
@@ -521,14 +522,15 @@ test('2026-08-09 官方盤查會移除未能證實的場次、價格與閉館敘
   assert.ok(cityNotices.wroclaw.some(item => item.text.includes('availability calendar')));
 });
 
-test('待辦事項頁將 15 項依四類整理，並在實用資訊導覽可進入', () => {
+test('待辦事項頁將 14 項依三類整理，並在實用資訊導覽可進入', () => {
+  // 2026-10-07 取消牛角麵包博物館，移除原本只放它的第四類。
   assert.deepEqual(todoGroups.map(group => [group.id, group.items.length]), [
-    ['rail', 5], ['attractions', 8], ['dining', 1], ['rainy-day', 1],
+    ['rail', 5], ['attractions', 8], ['dining', 1],
   ]);
-  assert.equal(todoGroups.flatMap(group => group.items).length, 15);
+  assert.equal(todoGroups.flatMap(group => group.items).length, 14);
 
   const html = read('practical/todos.html');
-  for (const label of ['城際交通', '主要景點', '餐飲訂位', '雨天備案']) {
+  for (const label of ['城際交通', '主要景點', '餐飲訂位']) {
     assert.ok(html.includes(label), `待辦頁缺少分類：${label}`);
   }
   assert.ok(html.includes('辛德勒工廠 17:30'));
@@ -632,7 +634,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   });
 
   assert.equal(trains.length, 5);
-  assert.deepEqual(bookingTiers.map(tier => tier.items.length), [7, 7, 4]);
+  assert.deepEqual(bookingTiers.map(tier => tier.items.length), [7, 6, 4]);
   assert.deepEqual({ out: flights.out.length, back: flights.back.length }, { out: 5, back: 5 });
   assert.equal(stay.length, 5);
   assert.equal(reservations.length, 8);
@@ -817,7 +819,7 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
   const rawTodoCount = todoGroups.reduce((total, group) => total + group.items.length, 0);
   const todoCount = todoGroups.reduce((total, group) =>
     total + group.items.filter(item => !['已訂妥', '已完成', '已購票'].includes(item.status)).length, 0);
-  assert.equal(todoCount, 10, '四段已購火車與 Auschwitz 導覽不可算進待辦');
+  assert.equal(todoCount, 9, '四段已購火車與 Auschwitz 導覽不可算進待辦');
 
   assert.ok(!html.includes('出發準備度'));
   assert.ok(!html.includes('00 / Readiness'));
