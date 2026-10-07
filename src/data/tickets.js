@@ -54,6 +54,7 @@ export const ticketsByCity = [
   {city:'樂斯拉夫', items:[
     venueItem('wroclaw-hala-stulecia'),
     venueItem('wroclaw-panorama'),
+    venueItem('wroclaw-national-museum'),
     venueItem('wroclaw-zoo'),
   ]},
   {city:'波茲南', items:[

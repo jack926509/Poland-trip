@@ -642,7 +642,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   // 2026-09-19 資料精煉切片 1：verifiedRestaurantHours 改由每日餐位（day-dining.js）中
   // 已核實／部分核實的門市直接推導（見 src/lib/dining.mjs 的 plannedVerifiedPlaces），
   // 不再是手寫子集，筆數會隨每日餐位調整自然變動。
-  assert.equal(verifiedRestaurantHours.length, 19);
+  assert.equal(verifiedRestaurantHours.length, 21);
   assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
     warsaw: 5, krakow: 7, wroclaw: 4, poznan: 7,
   });
@@ -653,8 +653,9 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   // 樂斯拉夫動物園、波茲南棕櫚屋閉館與考古博物館開放時間。
   // 精煉切片 4a：fares 改由 venues.js 推導，補上原本只在 ticketsByCity／
   // venueHours 出現的 POLIN、華沙起義博物館，21 → 23。
-  assert.equal(fares.length, 23);
-  assert.deepEqual(ticketsByCity.map(group => group.items.length), [7, 7, 3, 5]);
+  // 2026-10-07：Day 5 加入弗羅茨瓦夫國家博物館（持全景畫票免費），23 → 24。
+  assert.equal(fares.length, 24);
+  assert.deepEqual(ticketsByCity.map(group => group.items.length), [7, 7, 4, 5]);
   assert.deepEqual([
     transitFares.length, airportTransit.length, recommendedApps.length,
     passChecklist.length, usefulRoutes.length, practical.length,
@@ -1199,7 +1200,8 @@ test('舊票價與過時場館資料已從產出頁面移除', () => {
   assert.ok(!html.includes('官網未列 95／71'));
   assert.ok(html.includes('一、二樓合票 95／71') && html.includes('合票末入 15:00'));
   assert.ok(html.includes('單獨二樓 57／43'));
-  assert.ok(html.includes('地圖 10／語音導覽 20'), '帝王城堡應改用官網 2026-09-17 的票價');
+  assert.ok(!html.includes('地圖 10／語音導覽 20'), '帝王城堡 9/5–12/6 展期已改售聯票');
+  assert.ok(html.includes('聯票 地圖 35／語音導覽 40'), '帝王城堡應改用官網 2026-10-07 的聯票票價');
   assert.ok(html.includes('Kolejkowo') && html.includes('線上 39 起／現場 55 起'));
 });
 
@@ -1249,9 +1251,9 @@ test('城市頁不再將 Google 星等與評論數當成固定資料', () => {
   }
 });
 
-test('門票頁含 23 筆新資料、Panorama 優待 35 與 Auschwitz 線上票規則', async () => {
+test('門票頁含 24 筆新資料、Panorama 優待 35 與 Auschwitz 線上票規則', async () => {
   const { fares } = await import('../src/data/tickets.js');
-  assert.equal(fares.length, 23);
+  assert.equal(fares.length, 24);
   const panorama = fares.find(item => item.name.includes('Panorama'));
   assert.equal(panorama.discountPrice, '35');
   const html = read('practical/tickets.html');
@@ -1557,7 +1559,7 @@ test('城市推薦整合完整候選與既有情報，同店不重複', async ()
   const { cityDining, cityFood, snacksAndCafes } = await import('../src/data/dining.js');
   for (const [i, city] of ['warsaw', 'krakow', 'wroclaw', 'poznan'].entries()) {
     const rows = mergeCityDining(city, cityDining[city], cityFood[i].items, snacksAndCafes[city]);
-    assert.equal(rows.filter(row => row.selected).length, [12, 5, 4, 3][i]);
+    assert.equal(rows.filter(row => row.selected).length, [13, 5, 4, 3][i]);
     assert.equal(new Set(rows.map(row => row.name.toLowerCase())).size, rows.length);
     for (const original of cityDining[city]) {
       assert.ok(rows.some(row => row.notes.includes(original.highlight)), `${city}: ${original.name} 情報遺失`);
@@ -1583,7 +1585,8 @@ test('備案與小吃咖啡廳併入同一份清單，排序為候選 → 主推
   for (const [i, city] of cities.entries()) {
     const rows = mergeCityDining(city, cityDining[city], cityFood[i].items, snacksAndCafes[city]);
     // 精煉後每座城市維持在可決策的規模，不再是三份彼此重複的清單。
-    assert.ok(rows.length <= 22, `${city} 餐廳清單過長：${rows.length}`);
+    // 2026-10-07 華沙加入 Day 6 晚抵的 Ćma（24/7），上限 22 → 23。
+    assert.ok(rows.length <= 23, `${city} 餐廳清單過長：${rows.length}`);
     const rank = rows.map(row => (row.selected ? 0 : row.mustEat ? 1 : order[row.role] ?? 2));
     assert.deepEqual(rank, [...rank].sort((a, b) => a - b), `${city} 排序未依候選 → 必吃 → 主推 → 備案 → 小吃`);
     // 小吃名單裡已經是主推或備案的店不得被降級成小吃列。

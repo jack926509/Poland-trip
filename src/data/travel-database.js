@@ -345,6 +345,7 @@ const addressStepLabels = {
   '維利奇卡鹽礦': ['★ Wieliczka 鹽礦 Tourist Route 英文團'],
   'Wrocław Główny': ['抵 Wrocław Główny'],
   '拉茨瓦維採全景畫': ['★ 拉茨瓦維採全景畫'],
+  '弗羅茨瓦夫國家博物館': ['★ 弗羅茨瓦夫國家博物館'],
   '樂斯拉夫中央廣場': ['★ 中央廣場 + 紡織會館'],
   '樂斯拉夫主教座堂': ['★ 座堂島煤氣燈'],
   'Poznań Główny': ['抵 Poznań Główny'],
@@ -470,6 +471,7 @@ export const dayOperations = {
     addresses: [
       venueCard('wroclaw-glowny-station', 'Wrocław Główny'),
       venueCard('wroclaw-panorama', '拉茨瓦維採全景畫'),
+      venueCard('wroclaw-national-museum', '弗羅茨瓦夫國家博物館', '持當天全景畫票免費參觀常設展；週三 16:00 閉館、售票至 15:30。'),
       venueCard('wroclaw-rynek', '樂斯拉夫中央廣場'),
       venueCard('wroclaw-cathedral', '樂斯拉夫主教座堂'),
       venueCard('poznan-glowny-station', 'Poznań Główny'),
@@ -477,7 +479,7 @@ export const dayOperations = {
       accommodationAddress('poznan-towarowa'),
     ],
     navigation: [
-      { mode: '步行／市內交通', route: '老城 → Panorama → 午餐與休息 → 座堂島', action: '午餐後保留彈性休息時間，16:15 前抵座堂島；預留從座堂島回旅館取行李及前往車站的時間。' },
+      { mode: '步行／市內交通', route: '老城 → Panorama → 午餐 → 國家博物館 → 座堂島', action: '午餐後回全景畫旁的國家博物館，15:30 收尾、16:15 前抵座堂島；預留從座堂島回旅館取行李及前往車站的時間。' },
       { mode: 'PKP', route: 'Wrocław Główny → Poznań Główny', action: '已購 IC 260 19:10；18:35 前抵站。抵達時間、車廂與座位待查票面。' },
     ],
     dailyAlerts: [
@@ -521,7 +523,7 @@ export const dayOperations = {
     ],
     navigation: [
       { mode: '步行／市內交通', route: '皇家城堡 → POLIN → 華沙起義博物館', action: '購票後以票面入場時段倒推離館時間；館際移動當日用 Jakdojade 重算。' },
-      { mode: '步行／餐廳', route: '起義博物館 → 華沙晚餐', action: '晚餐地址待訂位／分店確定後填入；不以備選店名臆測導航。' },
+      { mode: '步行／餐廳', route: '起義博物館 → WYRAJ → 老城', action: '18:00 閉館後步行約 10 分到 Krochmalna 59；晚餐後搭車或叫車約 15 分回老城看夜燈。' },
     ],
     dailyAlerts: [
       '三館內容量大；購票後保留票面時段，不為追完所有展區壓縮館際移動。',
@@ -574,7 +576,7 @@ const unresolvedStepReasons = {
   },
   4: {
     '火車到 Wieliczka Rynek-Kopalnia': dynamicTransitReason,
-    'Wieliczka 鎮中心午餐': flexibleStopReason,
+    '午餐 · Bistro Posolone': '礦方餐廳位於 Daniłowicz 立坑旁、與鹽礦同一入口區；礦方未公布門牌，以鹽礦地址卡導航，出礦後依現場指標前往。',
     'Kazimierz 快速散步（有餘裕才去）': '彈性散步路線；鹽礦延誤時跳過，直接回旅館取行李。',
     'IC 3830 前往樂斯拉夫': dynamicTransitReason,
   },
@@ -588,11 +590,11 @@ const unresolvedStepReasons = {
     '取行李、前往 Poznań Główny': '公寓寄放與取行李地點須先向住宿確認，再前往車站。',
     '★ 聖馬丁牛角麵包 (PGI)': '尚未選定可靠分店，待分店與營業時間確認後補入。',
     'EIC 8104 前往華沙': dynamicTransitReason,
-    '放行李後晚餐': '晚班抵達後才選店；Złote Tarasy 與 Hala Koszyki 皆在飯店步行範圍，當日確認個別店家營業與訂位後再導航。',
+    '放行李後晚餐': 'Ćma 位於 Hala Koszyki 內（Koszykowa 63，24/7），由飯店步行前往；Złote Tarasy 為更近的備案，當日依抵達時間擇一。',
   },
   7: {
     '午餐（老城 → POLIN 路上）': flexibleStopReason,
-    '老城最後晚餐': flexibleStopReason,
+    '最後晚餐 · WYRAJ': '店址 Krochmalna 59 已由店家官網查核；尚未訂位，訂妥後依起義博物館出口步行前往。',
   },
   8: {
     '飯店或中央車站附近早餐': '未指定店家；飯店含餐與週六營業時間前一晚確認。',
