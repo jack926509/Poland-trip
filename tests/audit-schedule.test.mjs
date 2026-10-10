@@ -216,9 +216,7 @@ test('venueHours 每筆都有可追溯的出處，fares 引用不得落空', () 
   assert.deepEqual(problems, []);
 });
 
-test('POLIN 公休日使用 10/06 官網查證結果', () => {
-  const polin = venueHours['warsaw-polin'];
-  assert.deepEqual(polin.closedWeekdays, [2]);
-  assert.match(polin.note, /週二/);
-  assert.equal(polin.checkedAt, '2026-10-06');
+test('本趟不進 POLIN：venueHours 不再有 POLIN 場館', () => {
+  assert.equal(venueHours['warsaw-polin'], undefined);
+  assert.ok(venueHours['warsaw-rising-museum']);
 });

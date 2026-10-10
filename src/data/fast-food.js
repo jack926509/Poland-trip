@@ -129,7 +129,7 @@ export const fastFoodHubs = [
     map: chainMap('Galeria Krakowska, Pawia 5, Kraków'),
   },
   {
-    cityKey: 'wroclaw', city: '樂斯拉夫', place: 'Wroclavia', address: 'Sucha 1（中央車站旁）',
+    cityKey: 'wroclaw', city: '樂斯拉夫', place: 'Wroclavia', address: 'Sucha 1, Wrocław（中央車站旁）',
     chains: ['Pasibus', 'MAX Premium Burgers', 'Salad Story'],
     branchIds: ['wroclaw-pasibus-wroclavia', 'wroclaw-max-wroclavia', 'wroclaw-salad-story-wroclavia'],
     map: chainMap('Wroclavia, Sucha 1, Wrocław'),

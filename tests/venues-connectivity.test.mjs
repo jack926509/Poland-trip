@@ -59,33 +59,30 @@ test('矛盾 #12：Wawel 短路線步驟的 constraint 改指王冠寶庫，與�
   assert.match(step.cost, /47／35/);
 });
 
-test('fares／ticketsByCity／venueHours 仍是 tickets.js 既有 export 形狀，且由 venues.js 推導（新增 POLIN、華沙起義博物館兩筆）', () => {
+test('fares／ticketsByCity／venueHours 仍是 tickets.js 既有 export 形狀，且由 venues.js 推導（新增華沙起義博物館一筆；本趟不進 POLIN 已移除）', () => {
   // 切片 4b：venues.js 擴大為景點＋地點共用主檔，fares 只取有 prices 的票券景點。
   assert.equal(fares.length, Object.values(venues).filter(v => v.prices).length);
-  // 2026-10-07 加入弗羅茨瓦夫國家博物館：23 → 24。
-  assert.equal(fares.length, 24);
+  // 2026-10-07 加入弗羅茨瓦夫國家博物館：23 → 24；2026-10-10 移除 POLIN：24 → 23。
+  assert.equal(fares.length, 23);
   for (const item of fares) {
     for (const field of ['name', 'fullPrice', 'discountPrice', 'note', 'officialUrl', 'mapUrl']) {
       assert.ok(field in item, `fares 項目缺欄位 ${field}：${item.name}`);
     }
   }
-  assert.ok(fares.some(item => item.name === '華沙 · POLIN 猶太歷史博物館'));
+  assert.ok(!fares.some(item => /POLIN/.test(item.name)));
   assert.ok(fares.some(item => item.name === '華沙 · 華沙起義博物館'));
 
   const totalTicketsByCity = ticketsByCity.reduce((sum, group) => sum + group.items.length, 0);
-  assert.equal(totalTicketsByCity, 23, 'ticketsByCity 總筆數只隨新增景點改變（2026-10-07 加入國家博物館）');
+  assert.equal(totalTicketsByCity, 22, 'ticketsByCity 總筆數只隨新增景點改變（2026-10-07 加入國家博物館）');
 
   for (const [key, venue] of Object.entries(venueHours)) {
     assert.ok(venues[key]?.hours, `venueHours['${key}'] 在 venues.js 已無對應的結構化 hours`);
   }
 });
 
-test('POLIN 官網已確認週二休，來源與稽核規則一致', () => {
-  const polin = venues['warsaw-polin'];
-  assert.deepEqual(polin.hours.closedWeekdays, [2]);
-  assert.match(polin.hours.note, /週二/);
-  assert.equal(polin.prices.full, '45');
-  assert.equal(polin.prices.discount, '35');
+test('本趟不進 POLIN：venues.js 不再保留 POLIN 場館，且 venueHours 同步消失', () => {
+  assert.equal(venues['warsaw-polin'], undefined);
+  assert.equal(venueHours['warsaw-polin'], undefined);
 });
 
 test('矛盾 #11：辛德勒工廠 hours.opens/closes 已從 prices.note 的官網查證補上，不再是空的結構化欄位', () => {
@@ -152,7 +149,7 @@ test('ticketsByCityExtras 的 4 筆非景點主檔項目仍完整存在（蕭邦
   }
 });
 
-test('切片 4b：辛德勒工廠／皇家城堡／POLIN 三個步驟的 sub 改由 venues.js 的 hours 動態帶出，不是另外手打的固定字串', () => {
+test('切片 4b：辛德勒工廠／皇家城堡兩個步驟的 sub 改由 venues.js 的 hours 動態帶出，不是另外手打的固定字串', () => {
   const findStep = (dayN, label) => days.find(item => item.n === dayN).steps.find(item => item.label === label);
 
   const schindlerStep = findStep(2, '★ 辛德勒工廠');
@@ -167,16 +164,10 @@ test('切片 4b：辛德勒工廠／皇家城堡／POLIN 三個步驟的 sub 改
   assert.ok(royalCastleStep.sub.includes(royalCastleVenue.hours.closes));
   assert.ok(royalCastleStep.sub.includes(royalCastleVenue.hours.lastEntry));
 
-  const polinStep = findStep(7, '★ POLIN 猶太博物館');
-  const polinVenue = resolveVenue('warsaw-polin');
-  assert.ok(polinStep.sub.includes(polinVenue.hours.opens));
-  assert.ok(polinStep.sub.includes(polinVenue.hours.closes));
-  assert.ok(polinStep.sub.includes(polinVenue.hours.lastEntry));
-
-  // 精確檢查「不含票價數字」：這三個步驟的 sub 不應含 PLN 金額（避免誤判無關數字，
+  // 精確檢查「不含票價數字」：這兩個步驟的 sub 不應含 PLN 金額（避免誤判無關數字，
   // 只鎖定「數字＋／＋數字」這種全票／優待並列的票價寫法，例如 47／35）。
   const priceListPattern = /\d+(?:\.\d+)?／\d+(?:\.\d+)?/;
-  for (const step of [schindlerStep, royalCastleStep, polinStep]) {
+  for (const step of [schindlerStep, royalCastleStep]) {
     assert.doesNotMatch(step.sub, priceListPattern, `${step.label} 的 sub 仍殘留全票／優待並列的票價寫法`);
   }
 });

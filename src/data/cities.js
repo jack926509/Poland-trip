@@ -14,7 +14,7 @@ import { venues } from './venues.js';
 import { stayPin } from '../lib/journey.mjs';
 
 export const cities = [
-  {key:'WAW', name:'華沙', pl:'Warszawa', tag:'CAPITAL', vibe:'鋼鐵摩天 × 重建老城', highlights:['POLIN 猶太博物館','起義博物館','皇家城堡','Krakowskie Przedmieście'], photo:{hero:'assets/photos/warszawa-hero.webp',thumb:'assets/photos/warszawa-thumb.webp',og:'assets/og/warszawa-og.jpg'}},
+  {key:'WAW', name:'華沙', pl:'Warszawa', tag:'CAPITAL', vibe:'鋼鐵摩天 × 重建老城', highlights:['起義博物館','皇家城堡','Krakowskie Przedmieście'], photo:{hero:'assets/photos/warszawa-hero.webp',thumb:'assets/photos/warszawa-thumb.webp',og:'assets/og/warszawa-og.jpg'}},
   {key:'KRK', name:'克拉科夫', pl:'Kraków', tag:'OLD WORLD', vibe:'中世紀石板路 × 千年王城', highlights:['Wawel 城堡','中央市集 Rynek','Auschwitz 一日往返','Kazimierz 猶太區'], photo:{hero:'assets/photos/krakow-hero.webp',thumb:'assets/photos/krakow-thumb.webp',og:'assets/og/krakow-og.jpg'}},
   {key:'WRO', name:'樂斯拉夫', pl:'Wrocław', tag:'1000+ DWARFS', vibe:'千尊小矮人 × 煤氣燈點燈', highlights:['百年廳 UNESCO','全景畫 Panorama','座堂島 Ostrów Tumski','糖果屋雙屋'], photo:{hero:'assets/photos/wroclaw-hero.webp',thumb:'assets/photos/wroclaw-thumb.webp',og:'assets/og/wroclaw-og.jpg',detail:'assets/photos/wroclaw-ostrow-tumski-night.webp',detailAlt:'夜色中的樂斯拉夫座堂島與河岸燈光',detailCaption:'座堂島入夜後的河岸燈光 · Day 5 日落前後散步重點',detailHeight:853,detailAuthor:'Jg44.89',detailLicense:'CC BY 4.0',detailLicenseUrl:'https://creativecommons.org/licenses/by/4.0/',detailSource:'https://commons.wikimedia.org/wiki/File:Ostr%C3%B3w_Tumski_Wroc%C5%82aw.jpg'}},
   {key:'POZ', name:'波茲南', pl:'Poznań', tag:'CRADLE', vibe:'波蘭文明發源 × 山羊報時', highlights:['教堂島 Ostrów Tumski','12:00 山羊鐘樓秀','聖馬丁牛角麵包 PGI','帝王城堡'], photo:{hero:'assets/photos/poznan-hero.webp',thumb:'assets/photos/poznan-thumb.webp',og:'assets/og/poznan-og.jpg',detail:'assets/photos/poznan-old-market.webp',detailAlt:'波茲南舊市集廣場周圍的彩色老屋',detailCaption:'舊市集廣場周圍的彩色老屋 · Day 6 正午山羊報時周邊',detailHeight:960,detailAuthor:'Mariochom',detailLicense:'CC BY-SA 4.0',detailLicenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',detailSource:'https://commons.wikimedia.org/wiki/File:Pozna%C5%84-Old_Market_Square.jpg'}},
@@ -66,7 +66,7 @@ export const cityStories = [
     onSite:[
       '老城廣場地面找「重建前 vs 重建後」對照銅牌',
       '聖十字教堂左側第二根柱：蕭邦心臟安放處',
-      '若另排 Praga 區散步，可觀察戰前磚面；Day 7 三館日未排入此區',
+      '若另排 Praga 區散步，可觀察戰前磚面；Day 7 下午自由時段可視體力另排，但須控管跨河交通',
     ],
   },
   {
@@ -162,7 +162,6 @@ export const mapPins = {
     center: [52.235, 21.01], zoom: 13,
     points: [
       [52.247744, 21.014128, "皇家城堡", "景點", "https://maps.google.com/?cid=2313057209867159998", "sight", "warsaw-royal-castle"],
-      [52.249496, 20.993481, "POLIN 猶太史博物館", "景點", "https://maps.google.com/?cid=16292574584610500784", "sight", "warsaw-polin"],
       [52.232394, 20.981018, "華沙起義博物館", "景點", "https://maps.google.com/?cid=12215511195580548645", "sight", "warsaw-rising-museum"],
       [52.231838, 21.005995, "科學文化宮觀景台", "景點", "https://maps.google.com/?cid=14044892037721828802", "sight", "warsaw-pkin-terrace"],
       [52.188512, 20.991414, "Alon Omakase ★", "米其林一星", diningPlaces['warsaw-alon-omakase'].map, "star1", null, 'warsaw-alon-omakase'],
@@ -258,7 +257,6 @@ Object.assign(mapPinChecks.warsaw, {
   'MEI': {status:'coordinate-verified', checkedAt:'2026-09-24', coordinateSource:'https://mei.eatbu.com/?lang=en — 官方 Google Maps 商家連結 !3d52.2340388!4d21.031448', distanceMeters:0},
   'Alon Omakase ★': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:7},
   '皇家城堡': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:80},
-  'POLIN 猶太史博物館': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:26},
   '華沙起義博物館': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:41},
   '科學文化宮觀景台': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:16},
   'hub.praga ★': {status:'coordinate-verified', checkedAt:'2026-08-12', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
@@ -333,7 +331,6 @@ export const attractions = {
     {name:"E.Wedel 巧克力工廠博物館", tag:"2024 開館", mapUrl:venues['warsaw-wedel-chocolate'].map, venueId:"warsaw-wedel-chocolate", extra:"每日 10:00–20:00 · 最後一團 18:15 · 導覽約 90 分 · 票價依官方場次"},
     {name:"皇家城堡", tag:"UNESCO 舊城核心", mapUrl:venues['warsaw-royal-castle'].map, venueId:"warsaw-royal-castle", extra:"2026-09-18 官網查證：二–日 10:00–18:00，最後入場 17:00、週一休館 · Castle Route 95／75（含語音導覽，約 150 分）· Royal Route 60／45（含語音導覽，約 60 分）· 週三免費，但只走皇家寓所與 Lanckoroński 畫廊的限定路線（綠廳、黃廳、大理石廳、瓷器與 Wettin 畫廊、議會廳不開），且只能個人自行參觀、不能預約，當日在售票口領票、數量有限 · 語音導覽租借 10"},
     {name:"華沙起義博物館", tag:"歷史", mapUrl:venues['warsaw-rising-museum'].map, venueId:"warsaw-rising-museum", extra:"2026-09-18 官網查證：PLN 35／30 · 一 08:00–18:00、二休館、三–五 08:00–18:00、六日 10:00–18:00，售票至閉館前 30 分 · 官方明列免費日為週四（10/30 是週五，要買票）· 語音導覽租借 13／自備手機 10 · 英語導覽 250＋門票"},
-    {name:"POLIN 猶太史博物館", tag:"歷史", mapUrl:venues['warsaw-polin'].map, venueId:"warsaw-polin", extra:"週二休；週五 10:00–18:00，主展最後入場 16:00 · 票價與庫存看官方售票頁"},
     {name:"科學文化宮觀景台", tag:"地標", mapUrl:venues['warsaw-pkin-terrace'].map, venueId:"warsaw-pkin-terrace", extra:"2026-09-18 官方售票系統查證：全票 30／優待 25 PLN（10 人以上團體 22）· 每日 10:00–20:00、售票口同時間 · 不接受預約，現場最多買到 7 天後 · 夜間場（35 PLN）只在週五六且官方只排到 9 月底，不套用到 10 月；11/1 閉館"},
     {name:"Łazienki 公園 · Wilanów 宮", tag:"皇家之路", mapUrl:"https://www.google.com/maps/search/?api=1&query=%C5%81azienki%20%E5%85%AC%E5%9C%92%20Warszawa", venueId:null, extra:"公園免費 · 宮殿另購票"},
     {name:"蕭邦博物館", tag:"閉館", mapUrl:"https://www.google.com/maps/search/?api=1&query=%E8%95%AD%E9%82%A6%E5%8D%9A%E7%89%A9%E9%A4%A8%20Warszawa", venueId:null, extra:"2026 整年閉館（整修）"},

@@ -43,7 +43,7 @@ export const daylight = [
   {day:4, date:'2026-10-27', city:'克拉科夫', tz:'CET',    sunrise:'06:20', sunset:'16:27', blueHourEnd:'17:00', note:'Kazimierz 白天散步 14:30 起，日落前約 2 小時是磚牆與窄街的最佳光線。'},
   {day:5, date:'2026-10-28', city:'樂斯拉夫', tz:'CET',    sunrise:'06:36', sunset:'16:34', blueHourEnd:'17:08', note:'座堂島煤氣燈：點燈人沒有對外保證的固定出發分鐘，日落前到場等候即可。'},
   {day:6, date:'2026-10-29', city:'波茲南', tz:'CET',    sunrise:'06:42', sunset:'16:29', blueHourEnd:'17:05', note:'教堂島上午行程；16:00 已在取行李往車站，戶外拍攝要在下午前完成。'},
-  {day:7, date:'2026-10-30', city:'華沙', tz:'CET',    sunrise:'06:27', sunset:'16:12', blueHourEnd:'16:47', note:'三館連看日。19:30 晚餐與 21:00 老城夜燈皆在天黑後，屬夜景而非藍調。'},
+  {day:7, date:'2026-10-30', city:'華沙', tz:'CET',    sunrise:'06:27', sunset:'16:12', blueHourEnd:'16:47', note:'兩館日（皇家城堡、起義博物館）。19:30 晚餐與 21:00 老城夜燈皆在天黑後，屬夜景而非藍調。'},
   {day:8, date:'2026-10-31', city:'華沙', tz:'CET',    sunrise:'06:28', sunset:'16:10', blueHourEnd:'16:45', note:'09:45 出發搭機，不涉及傍晚戶外行程。'},
 ];
 

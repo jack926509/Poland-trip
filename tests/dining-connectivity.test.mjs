@@ -83,7 +83,7 @@ test('餐段引用必須存在；未安排餐段必須明說，不自動假設�
     if(item.stepId)assert.ok(day.steps.some(x=>x.id===item.stepId));
     else assert.match(timing,/未排|不採用/);
   }
-  assert.match(mealTiming(dayDining[5].find(x=>x.placeId==='wroclaw-restauracja-wroclawska'),trip.days[4]),/行程預留 12:30/);
+  assert.match(mealTiming(dayDining[5].find(x=>x.placeId==='wroclaw-restauracja-wroclawska'),trip.days[4]),/行程預留 12:00/);
   assert.match(mealTiming(dayDining[6].find(x=>x.placeId==='poznan-pyra-bar'),trip.days[5]),/行程預留 12:30/);
   const html=fs.readFileSync(new URL('../dist/today.html',import.meta.url),'utf8');
   assert.ok(html.includes('候選未排時段'));

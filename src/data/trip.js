@@ -23,14 +23,13 @@ const lajkonikInboundAdopted = auschwitzBus.inbound.services.find(item => item.d
 const lajkonikInboundBackup = auschwitzBus.inbound.services.find(item => item.decision === '備案');
 const lajkonikInboundRejected = auschwitzBus.inbound.services.find(item => item.decision === '不採用');
 
-// 精煉切片 4b：三個步驟的 sub 裡原本手打了一次開放時間，剛好與 constraint.venue
-// 指到的場館 hours 完全同義（辛德勒工廠、皇家城堡、POLIN）；改成從 venues.js
+// 精煉切片 4b：兩個步驟的 sub 裡原本手打了一次開放時間，剛好與 constraint.venue
+// 指到的場館 hours 完全同義（辛德勒工廠、皇家城堡）；改成從 venues.js
 // 用 template literal 帶出，不再另打一份數字。其餘掛 constraint.venue 的步驟
 // （Wawel 短路線比較四條子路線票價、百年廳的四色日曆說明）不是單一場館 hours
 // 可以乾淨代換的內容，保留原文，不勉強套用。
 const schindlerVenue = resolveVenue('krakow-schindler');
 const royalCastleVenue = resolveVenue('warsaw-royal-castle');
-const polinVenue = resolveVenue('warsaw-polin');
 
 export const meta = {
   edition: '2026 Poland Field Plan',
@@ -102,8 +101,8 @@ export const days = [
       {t:'15:00', label:'★ 中央廣場 + 聖瑪利亞', sub:'本次先看廣場與教堂外觀，登塔改為有餘裕才安排。整點 Hejnał 號角；塔票僅於 Mariacki 廣場 7 號當日現場售票', cost:'外觀免費', dur:'30 min（含由城堡步行）'},
       {t:'15:30', label:'紡織會館 Sukiennice 快速一覽', sub:'採購留到 10/27', cost:'免費入場', dur:'15 min'},
       {t:'15:45', label:'步行經 Kazimierz、Podgórze 前往辛德勒工廠', sub:'保留約 85 分鐘步行與沿途短停，17:10 前到入口；時間不足改用 Jakdojade 查當下交通', dur:'約 1 h 25 min'},
-      {t:'17:30', label:'★ 辛德勒工廠', constraint:{venue:'krakow-schindler'}, sub:`週日 ${schindlerVenue.hours.opens}–${schindlerVenue.hours.closes}、最後入場為閉館前 90 分（${schindlerVenue.hours.lastEntry}）· 常設展線上票一律實名，入場要帶與購票同名的證件正本 · 官方售票頁預約`, cost:'PLN 60 · 優待 45', dur:'2 h'},
-      {t:'19:45', id:'d2-dinner', label:'晚餐 · Hankki（先確認接單）', sub:'辛德勒 17:30 入場、預留 2 小時，結束後前往 Zabłocie 19A；炸雞＋辣湯麵。須確認 19:45 接單；NOAH 留作備選，Endzior 只在順路有餘裕時吃', cost:'依店家', dur:'1 h'},
+      {t:'17:30', label:'★ 辛德勒工廠', constraint:{venue:'krakow-schindler'}, sub:`週日 ${schindlerVenue.hours.opens}–${schindlerVenue.hours.closes}、最後入場為閉館前 90 分（${schindlerVenue.hours.lastEntry}）· 常設展線上票一律實名，入場要帶與購票同名的證件正本 · 官方售票頁預約。為接 19:15 晚餐，預計 19:00 前離館（約 1 h 30 min）`, cost:'PLN 60 · 優待 45', dur:'約 1 h 30 min'},
+      {t:'19:15', id:'d2-dinner', label:'晚餐 · Hankki（先確認接單）', sub:'辛德勒 17:30 入場、預計 19:00 前離館，步行約 5 分到 Zabłocie 19A；炸雞＋辣湯麵。店 21:00 關門，須確認 19:15 仍接單、週日最後收客時間；NOAH 留作備選，Endzior 只在順路有餘裕時吃', cost:'依店家', dur:'1 h'},
     ],
     eat: [
       snack({text:'zapiekanka 街食 @ Endzior', placeId:'krakow-endzior'}),
@@ -248,8 +247,8 @@ export const days = [
       {t:'07:30', id:'d5-breakfast', label:'早餐 · Central Cafe', sub:'Piast 出發先預留前往老城的交通；貝果＋燕麥粥，08:15 收尾；未供餐改附近 Charlotte Pokoyhof', dur:'45 min'},
       {t:'09:00', label:'★ 中央廣場 + 紡織會館', sub:'dwarfsmap.com 找小矮人', cost:'免費', dur:'1.5 h'},
       {t:'10:30', label:'糖果屋雙屋 + 教堂塔樓', sub:'聖伊莉莎白教堂塔高 96m、觀景台 75m、304 階無電梯；10 月 10:00 起、週日 11:00 起，開到黃昏（約 16:30 前）；下雨或雷暴不開，改走廣場與全景畫', cost:'PLN 16／10 · 現金', dur:'45 min'},
-      {t:'11:30', label:'★ 拉茨瓦維採全景畫', sub:'2026-09-24 官方售票系統已查得 10/28 11:30 場，當下顯示 85 個名額；30 分鐘一場，尚未購票，餘額會變動', cost:'PLN 50／優待 35', dur:'1 h'},
-      {t:'12:30', id:'d5-lunch', label:'午餐 · Restauracja Wrocławska 候選', sub:'全景畫後往 Szewska 59/60；Śląskie niebo＋Hekele。主菜約需 30 分鐘，13:45 結帳、14:00 前離店，另留 15 分鐘往國家博物館；排隊久就改快食', cost:'依店家', dur:'1.5 h'},
+      {t:'11:30', label:'★ 拉茨瓦維採全景畫', sub:'2026-09-24 官方售票系統已查得 10/28 11:30 場，當下顯示 85 個名額；30 分鐘一場，尚未購票，餘額會變動；場次約 30 分鐘，12:00 前後散場接午餐', cost:'PLN 50／優待 35', dur:'約 30 min'},
+      {t:'12:00', id:'d5-lunch', label:'午餐 · Restauracja Wrocławska 候選', sub:'全景畫後往 Szewska 59/60（全景畫 30 分鐘場，約 12:00 散場後直接過去）；Śląskie niebo＋Hekele。主菜現做約 30 分鐘，13:15 前結帳、13:30 前離店，另留 15 分鐘往國家博物館；排隊久就改快食', cost:'依店家', dur:'1 h 15 min'},
       {t:'14:15', label:'★ 弗羅茨瓦夫國家博物館', sub:'pl. Powstańców Warszawy 5，全景畫旁。2026-10-07 官網：10/1 起冬季時段週二至週五 10:00–16:00、售票至 15:30，週一休館；全景畫票 3 個月內可免費參觀常設展（單買 20／15 PLN）。挑西里西亞中世紀雕刻與波蘭繪畫重點看，15:30 收尾後步行約 20 分到座堂島', cost:'持全景畫票免費', dur:'1 h 15 min'},
       {t:'16:15', label:'★ 座堂島煤氣燈', sub:'日落約 16:34；點燈人無固定公開出發分鐘，在島上等候與散步', cost:'免費', dur:'1 h'},
       {t:'17:15', label:'座堂島結束後回 Piast 取行李', sub:'座堂島 → 旅館約 25–30 分，取行李再往 Wroclavia；若 18:05 前無法到 MAX，改車站內外帶。已購 IC 260 19:10 發車，18:35 抵站後保留約 35 分鐘緩衝', dur:'約 50 min'},
@@ -303,35 +302,34 @@ export const days = [
   },
   {
     n: 7, date: '10/30 (五)', city: '華沙',
-    title: '皇家城堡 + POLIN + 起義博物館',
-    headline: '依閉館時間重排：最早先看皇家城堡',
+    title: '皇家城堡 + 起義博物館',
+    headline: '上午皇家城堡、午餐 Café Bristol，下午留白再看起義博物館',
     tag: 'Museums',
-    intensity: '高',
-    hardConstraints: ['皇家城堡 10:00 開門、17:00 最後入場', 'POLIN 主展最後入場為閉館前 2 小時', '起義博物館須依官方票頁可售時段', '晚餐建議預約'],
-    mustBook: ['❗尚未訂 · 皇家城堡 10:00', '❗尚未訂 · POLIN 波蘭猶太人歷史博物館 13:15', '❗尚未訂 · 華沙起義博物館 16:00', '❗尚未訂 · 華沙最後晚餐'],
-    compressible: ['POLIN 看主展重點', '起義博物館抓核心展區', '皇家城堡採約 60 分鐘 Royal Route'],
+    intensity: '中',
+    hardConstraints: ['皇家城堡 10:00 開門、17:00 最後入場', '起義博物館須依官方票頁可售時段', '晚餐建議預約'],
+    mustBook: ['❗尚未訂 · 皇家城堡 10:00', '❗尚未訂 · 華沙起義博物館 16:00', '❗尚未訂 · 華沙最後晚餐'],
+    compressible: ['起義博物館抓核心展區', '皇家城堡採約 60 分鐘 Royal Route', '13:00–15:15 自由時段可整段改為回旅館休息'],
     steps: [
       {t:'08:00', id:'d7-breakfast', label:'早餐 · Bar Mleczny Bambino', sub:'Hoża 19，菠菜歐姆蛋與鮮乳酪；08:45 結束，另留交通，09:30 前到皇家城堡入口', dur:'45 min'},
-      {t:'10:00', label:'★ 皇家城堡', constraint:{venue:'warsaw-royal-castle'}, sub:`採 Royal Route，官方標示約 60 分（含語音導覽）；二–日 ${royalCastleVenue.hours.opens}–${royalCastleVenue.hours.closes}、末入 ${royalCastleVenue.hours.lastEntry}、週一休館。10/30 是週五，不適用週三的限定路線免費場`, cost:'PLN 60 · 優待 45', dur:'約 60 min'},
-      {t:'11:15', label:'皇家城堡 → POLIN 館內午餐', sub:'直接前往 POLIN，預留 45 分鐘交通、入館與找餐廳；Café Bristol 保留茶點備選，不在沿途再吃一餐', dur:'45 min'},
-      {t:'12:00', id:'d7-lunch', label:'午餐 · WARSZE（POLIN 館內）', sub:'0 樓餐廳先吃猶太風味當日午餐，12:45 收尾；12:30 仍未能用餐改現成輕食，不延誤 13:15 入展', cost:'依當日菜單', dur:'45 min'},
-      {t:'12:45', label:'前往 POLIN + 安檢緩衝', sub:'已在館內，前往展覽入口與安檢／寄物，保留 30 分鐘；以票券時段為準', dur:'30 min'},
-      {t:'13:15', label:'★ POLIN 猶太博物館', constraint:{venue:'warsaw-polin'}, sub:`週五 ${polinVenue.hours.opens}–${polinVenue.hours.closes}；主展最晚 ${polinVenue.hours.lastEntry} 入場`, cost:'PLN 45 · 優待 35（含語音導覽）', dur:'2 h'},
+      {t:'10:00', label:'★ 皇家城堡', constraint:{venue:'warsaw-royal-castle'}, sub:`採 Royal Route，官方標示約 60 分（含語音導覽）；下午有空檔，想看完整路線可延長到 11:00 後再離開，午餐順延。二–日 ${royalCastleVenue.hours.opens}–${royalCastleVenue.hours.closes}、末入 ${royalCastleVenue.hours.lastEntry}、週一休館。10/30 是週五，不適用週三的限定路線免費場`, cost:'PLN 60 · 優待 45', dur:'約 60 min'},
+      {t:'11:15', label:'皇家城堡 → Café Bristol', sub:'沿 Krakowskie Przedmieście 步行約 10 分，不需搭車', dur:'約 10 min'},
+      {t:'11:30', id:'d7-lunch', label:'午餐 · Café Bristol', sub:'Krakowskie Przedmieście 42/44；先點三明治、Bristol cake 與咖啡，官網湯與主餐自 12:00 起供應，想吃正式主餐就坐到 12:00 再點；13:00 前結帳', cost:'依當日菜單', dur:'約 1 h 30 min'},
+      {t:'13:00', label:'自由時段 · 老城／新城散步或回旅館休息', sub:'13:00–15:15 不排預約。可在老城、新城慢走或回 Hotel Metropol 休息；想多看一站可選 Neon Museum（含科學文化宮觀景台，見下方延伸）', dur:'約 2 h 15 min'},
       {t:'15:15', label:'前往華沙起義博物館 + 安檢緩衝', sub:'依當日交通重算，16:00 僅為規劃目標，以實際可售時段為準', dur:'45 min'},
       {t:'16:00', label:'★ 華沙起義博物館', sub:'35／30 PLN；以官方票頁 10/30 可售時段為準', cost:'PLN 35／30', dur:'2 h'},
       {t:'18:30', id:'d7-dinner', label:'最後晚餐 · WYRAJ', sub:'起義博物館後前往 Krochmalna 59/U2；先確認週五營業、座位與秋季穀物／野味菜單。若改 U Fukiera 須另留往老城交通，用餐時間順延', cost:'依菜單', dur:'1.5 h'},
       {t:'21:00', label:'老城廣場夜燈漫步', sub:'自由收尾'},
     ],
     eat: [],
-    warn: '❗四項皆尚未訂。皇家城堡已由官方確認二–日 10:00–18:00、最後入場 17:00；本行程採約 60 分鐘 Royal Route，避免與午餐及館際移動重疊。POLIN 週五 10:00–18:00，主展最後入場為閉館前 2 小時。起義博物館票價 35／30，2026-09-19 官網複核個人免費日為週四；10/30 是週五，照常收費，實際可售時段仍以官方票頁為準。蕭邦博物館已由蕭邦研究所公告 2026 全年整修閉館、預計 2027 年 1 月重開，本趟不列入行程。',
+    warn: '❗三項皆尚未訂。皇家城堡已由官方確認二–日 10:00–18:00、最後入場 17:00；本行程採約 60 分鐘 Royal Route，午餐銜接 Café Bristol，下午保留自由時段。Café Bristol 官網湯與主餐自 12:00 起供應，11:30 抵達先點輕食與咖啡，想吃主餐可坐到 12:00。起義博物館票價 35／30，2026-09-19 官網複核個人免費日為週四；10/30 是週五，照常收費，實際可售時段仍以官方票頁為準。蕭邦博物館已由蕭邦研究所公告 2026 全年整修閉館、預計 2027 年 1 月重開，本趟不列入行程。',
     extend: [
       {label:'Bulwary Wiślane 維斯瓦河畔', when:'21:00 後老城散步延伸', map:'https://www.google.com/maps/search/?api=1&query=Bulwary%20Wi%C5%9Blane%2C%20Warszawa', why:'河濱步道 + 沙灘酒吧，皇家城堡步行 10–15 分，適合晚餐後收尾散步，免費'},
-      {label:'Neon Museum 霓虹燈博物館', when:'若提前結束起義博物館可插入', map:'https://www.google.com/maps/search/?api=1&query=Neon%20Muzeum%2C%20plac%20Defilad%201%2C%20Warszawa', why:'已遷入科學文化宮 4 樓（Marszałkowska 入口），共產時期霓虹招牌收藏，PLN 25／優待 18，可與觀景台一起看'},
-      {label:'Praga 區塗鴉與 Koneser 舊釀酒廠', when:'僅在取消一館或另一天有完整空檔時', map:'https://www.google.com/maps/search/?api=1&query=Centrum%20Praskie%20Koneser%2C%20plac%20Konesera%202%2C%20Warszawa', why:'位於維斯瓦河對岸；三館日依皇家城堡→POLIN→起義博物館移動，沒有順路跨河時段。若要另訪，須重新安排交通與入場時段'},
+      {label:'Neon Museum 霓虹燈博物館', when:'13:00–15:15 自由時段可插入', map:'https://www.google.com/maps/search/?api=1&query=Neon%20Muzeum%2C%20plac%20Defilad%201%2C%20Warszawa', why:'已遷入科學文化宮 4 樓（Marszałkowska 入口），共產時期霓虹招牌收藏，PLN 25／優待 18，可與觀景台一起看'},
+      {label:'Praga 區塗鴉與 Koneser 舊釀酒廠', when:'13:00–15:15 自由時段，須保留 15:15 前回到市區', map:'https://www.google.com/maps/search/?api=1&query=Centrum%20Praskie%20Koneser%2C%20plac%20Konesera%202%2C%20Warszawa', why:'位於維斯瓦河對岸；下午 13:00–15:15 有空檔可跨河走一圈，但來回交通約需 1 小時，須在 15:15 前回到市區往起義博物館；晚上不建議再過河'},
       {label:'科學文化宮 30F 觀景台夜景版', when:'起義博物館後、晚餐前', map:'https://www.google.com/maps/search/?api=1&query=Pa%C5%82ac%20Kultury%20i%20Nauki%2C%20plac%20Defilad%201%2C%20Warszawa', why:'全票 30／優待 25 PLN · 每日開放與售票皆至 20:00；夜間場（35 PLN）只在週五六且官方只排到 9 月底，10/30 沒有晚間延長場'},
     ],
     backup: [
-      {label:'三館太累', where:'保留已訂時段，POLIN 與起義擇一深看', why:'兩館內容都沉重；不要犧牲已確認的皇家城堡上午時段'},
+      {label:'體力不足', where:'13:00–15:15 回旅館休息', why:'起義博物館內容沉重，下午先休息再去；不要犧牲已確認的皇家城堡上午時段'},
       {label:'天氣轉壞', where:'科學文化宮 30 樓觀景台（室內）', map:'https://www.google.com/maps/search/?api=1&query=Pa%C5%82ac%20Kultury%20i%20Nauki%2C%20plac%20Defilad%201%2C%20Warszawa', why:'全票 30／優待 25 PLN · 45 min · 直通老城地鐵，雨天備案'},
     ],
   },
@@ -506,7 +504,6 @@ export const bookingTiers = [
   {tier:'第二優先', note:'❗全部尚未訂 · 辛德勒工廠現已可查／購，其餘依官方售票頁', items:[
     {name:'辛德勒工廠（10/25 已進個人網路票 90 天窗口；最後入場 18:30）', url:'https://muzeumkrakowa.pl/en/branches/oskar-schindlers-enamel-factory'},
     {name:'Wawel 城堡短路線 14:00 左右時段票', url:'https://wawel.krakow.pl/en/what-to-see'},
-    {name:'POLIN 波蘭猶太人歷史博物館', url:'https://polin.pl/en'},
     {name:'華沙起義博物館', url:'https://www.1944.pl/en'},
     {name:'皇家城堡（已查證二至日 10:00–18:00，末入 17:00）', url:'https://www.zamek-krolewski.pl/en'},
     {name:'拉茨瓦維採全景畫', url:'https://mnwr.pl/en/category/branches/panorama-raclawicka/'},
@@ -536,7 +533,7 @@ export const todoGroups = [
     ],
   },
   {
-    id: 'attractions', title: '主要景點', eyebrow: 'Tickets · 8 項',
+    id: 'attractions', title: '主要景點', eyebrow: 'Tickets · 7 項',
     intro: '指定日期的場次與庫存會變動；付款完成後請下載離線票券並核對入場時間。',
     items: [
       {checkedAt:null, recheckAt:null, date:'10/25', name:'Wawel 城堡 14:00', status:'尚未訂', action:'以官方售票頁選 10/25 14:00 左右、可於 15:00 前結束的短路線；完整 2 小時路線會壓縮步行時間。', url:'https://wawel.krakow.pl/en/what-to-see'},
@@ -545,15 +542,19 @@ export const todoGroups = [
       {checkedAt:null, recheckAt:null, date:'10/27', name:'Wieliczka 鹽礦英文團', status:'需查／購', action:'在官方日期選擇器確認英文場、票價與庫存。', url:'https://www.wieliczka-saltmine.com/'},
       {checkedAt:'2026-09-24', recheckAt:null, date:'10/28', name:'拉茨瓦維採全景畫 11:30', status:'場次已查／尚未訂', action:'9/24 官方 10/28 日期下曾列 11:30 場、85 個名額；這是歷史快照，10/06 未取得目前庫存，付款前重查。', url:'https://bilety.mnwr.pl/?lang=en'},
       {checkedAt:null, recheckAt:null, date:'10/30', name:'華沙皇家城堡 10:00', status:'尚未訂', action:'選擇 10:00 入場，並保留安檢與離館移動時間。', url:'https://www.zamek-krolewski.pl/en'},
-      {checkedAt:null, recheckAt:null, date:'10/30', name:'POLIN 猶太人歷史博物館 13:15', status:'尚未訂', action:'依官方售票頁的指定日庫存選擇 13:15 左右時段（主展最後入場 16:00）。', url:'https://polin.pl/en'},
       {checkedAt:null, recheckAt:null, date:'10/30', name:'華沙起義博物館 16:00', status:'尚未訂', action:'依官方票頁確認 16:00 時段；18:00 關館，前館或交通延後即縮短參觀或調整，不能延後離館。', url:'https://www.1944.pl/en'},
     ],
   },
   {
-    id: 'dining', title: '餐飲訂位', eyebrow: 'Dining · 1 項',
+    id: 'dining', title: '餐飲訂位', eyebrow: 'Dining · 6 項',
     intro: '餐廳營業與臨時包場以店家訂位頁公告為準。',
     items: [
-      {checkedAt:null, recheckAt:null, date:'10/30', name:'華沙最後晚餐 · WYRAJ 18:30', status:'尚未訂位', action:'起義博物館 18:00 閉館後步行到 Krochmalna 59；以店家官網訂 10/30 18:30、2 人。想改在老城吃再訂 U Fukiera。', url:'https://wyraj.net/kontakt/'},
+      {checkedAt:null, recheckAt:null, date:'10/24', name:'Specjały Regionalne 19:00 晚餐', status:'尚未訂位', action:'Nowy Świat 地方料理；出發前向店家確認 10/24 營業與訂位，抵達日不想排隊就先訂。', url:'https://www.google.com/maps/search/?api=1&query=Specja%C5%82y%20Regionalne%20Nowy%20%C5%9Awiat%2044%2C%20Warszawa'},
+      {checkedAt:null, recheckAt:null, date:'10/25', name:'Hankki 19:15 晚餐', status:'待確認營業', action:'向店家確認週日最後收客時間（店 21:00 關門），19:15 能否接單；不行改 NOAH。', url:'https://guide.michelin.com/mx/es/lesser-poland/krakow/restaurante/hankki'},
+      {checkedAt:null, recheckAt:null, date:'10/26', name:'Pod Aniołami 19:00 晚餐', status:'尚未訂位', action:'奧斯威辛返城後的晚餐，透過 TheFork／OpenTable 或餐廳官網訂 10/26 傍晚位子；返程延誤先聯絡餐廳。', url:'https://www.google.com/maps/search/?api=1&query=Pod%20Anio%C5%82ami%2C%20Grodzka%2035%2C%20Krak%C3%B3w'},
+      {checkedAt:null, recheckAt:null, date:'10/27', name:'Bistro Posolone 13:00 午餐', status:'待確認營業', action:'確認能否在 30 分鐘內用完餐，才趕得上返回車站與 16:45 IC 3830；來不及改外帶披薩或自備餐。', url:'https://www.google.com/maps/search/?api=1&query=Bistro%20Posolone%2C%20Wieliczka'},
+      {checkedAt:null, recheckAt:null, date:'10/29', name:'Arirang 晚餐備選（約 20:30）', status:'待確認營業', action:'主晚餐為 Ćma；想改吃韓式時，先確認週四最後接單時間，抵華沙後 20:30 前能到店才去，否則維持 Ćma 或 Złote Tarasy 內快食。', url:'https://www.google.com/maps/search/?api=1&query=Arirang%20Restaurant%20Nowogrodzka%2038%2C%20Warszawa'},
+      {checkedAt:null, recheckAt:null, date:'10/30', name:'華沙最後晚餐 · WYRAJ 18:30', status:'尚未訂位', action:'起義博物館 18:00 閉館後步行到 Krochmalna 59；以店家官網訂 10/30 18:30、2 人。官網與 Michelin 週五營業資訊不一致，須直接問店家確認。想改在老城吃再訂 U Fukiera。', url:'https://wyraj.net/kontakt/'},
     ],
   },
 ];
@@ -564,7 +565,7 @@ export const reservations = [
   {when:'現在可訂', what:'皇家城堡 — 已查證二至日 10:00–18:00、最後入場 17:00；Day 7 已改為 10:00 第一站（zamek-krolewski.pl）'},
   {when:'現在可先訂', what:'米其林與熱門餐廳：Bottiglieria 1881（二星，最搶）、BABA / Most（樂斯拉夫僅停留一晚零彈性）、WANDAL、Pod Aniołami（TheFork / OpenTable / 餐廳官網）'},
   {when:'火車票：已購 4／4 段', what:'App 票券清單已有 10/25 EIP 5300（Warszawa Centralna 08:40）、10/27 IC 3830（Kraków Główny 16:45）、10/28 IC 260（Wrocław Główny 19:10）、10/29 EIC 8104（Poznań Główny 17:40）。四段抵達時間、艙等、車廂、座位與票價待查票券詳細頁。'},
-  {when:'現在可查／訂', what:'辛德勒工廠 10/25 場次已進個人網路票 90 天窗口；POLIN、華沙起義博物館與皇家城堡均以官方售票頁顯示的指定日庫存為準。'},
+  {when:'現在可查／訂', what:'辛德勒工廠 10/25 場次已進個人網路票 90 天窗口；華沙起義博物館與皇家城堡均以官方售票頁顯示的指定日庫存為準。'},
   {when:'出發前 1 週', what:'把上述所有票價、特別閉館與開放時間再確認一次 — 門票速查與城市指南已於 2026-09-17／09-18 全面複查過，臨時活動與維修仍可能變動'},
   {when:'現在查／購 10/25', what:'Wawel 14:00 短路線：優先查王冠寶庫或 Castle Underground 的 10/25 時段；各 47／35 PLN，尚未購票。10/25 才到克拉科夫，不能安排 10/24 在當地購票；無合適時段則只看庭院與外觀，15:00 前離開。'},
 ];
@@ -600,10 +601,10 @@ export const deadlines = [
   },
   {
     id: 'ticket-warsaw-trio', date: '2026-10-09', category: '門票',
-    title: '華沙三館 10/30 指定日票',
-    action: '皇家城堡 10:00（末入 17:00）、POLIN 13:15（主展末入 16:00）、起義博物館 16:00，依各官方售票頁的 10/30 可售時段一次訂齊，避免館際時間互相擠壓。',
+    title: '華沙兩館 10/30 指定日票',
+    action: '皇家城堡 10:00（末入 17:00）、起義博物館 16:00，依各官方售票頁的 10/30 可售時段一次訂齊。',
     status: '尚未訂', url: 'https://www.zamek-krolewski.pl/en',
-    basis: 'Day 7 為自評高風險日（三館連看），三館皆已查得開放時間但均未訂；取出發前 2 週為行動下限。',
+    basis: 'Day 7 兩館（皇家城堡、起義博物館）皆已查得開放時間但均未訂；取出發前 2 週為行動下限。',
   },
   {
     id: 'bus-lajkonik', date: '2026-10-12', category: '交通',

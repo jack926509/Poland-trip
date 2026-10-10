@@ -41,7 +41,7 @@ test('缺少餐廳圖釘清單可逐店續查，涵蓋速食並保留主檔地�
 test('景點票券摘要對齊既有購票紀錄，私人核對尚未完成且保留逾期提醒', () => {
   const items = todoGroups.filter(group => ['attractions', 'rainy-day'].includes(group.id)).flatMap(group => group.items);
   const confirmed = items.filter(item => item.status === '已訂妥');
-  assert.equal(items.length, 8);
+  assert.equal(items.length, 7);
   assert.equal(confirmed.length, 1);
   assert.match(confirmed[0].name, /Auschwitz/);
   assert.match(confirmed[0].action, /10:30.*英文.*2 人/);

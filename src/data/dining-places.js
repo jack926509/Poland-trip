@@ -667,8 +667,8 @@ export const diningPlaces = {
     "checkedAt": "2026-09-19",
     "verificationStatus": "verified",
     "notes": [
-      "Krakowskie Przedmieście（Hotel Bristol 內），保留為皇家大道沿途茶點與午餐備案；Day 8 早餐改排 Charlotte Złota。",
-      "茶點或午餐備案；官網湯與主餐自 12:00 起供應。"
+      "Krakowskie Przedmieście（Hotel Bristol 內），Day 7 午餐首選（皇家城堡步行約 10 分）；Day 8 早餐改排 Charlotte Złota。",
+      "官網湯與主餐自 12:00 起供應，11:30 入座先點輕食與咖啡。"
     ],
     "verificationNote": "營業時間沿用 2026-09-19 官方查核；各日備選共用此筆資料，未代表已訂位。",
     "menuUrl": "https://www.cafebristol.pl/pl/our-menus",
@@ -1369,8 +1369,10 @@ export const diningPlaces = {
     "sourceUrl": "https://www.polin.pl/pl/zaplanuj-wizyte/zapraszamy-do-muzealnej-restauracji",
     "checkedAt": "2026-10-10",
     "verificationStatus": "partial",
+    "role": "reference",
     "notes": [
-      "猶太與華沙風味當日午餐；czulent、kreplach 為官方曾介紹的菜色，非當日保證。"
+      "猶太與華沙風味當日午餐；czulent、kreplach 為官方曾介紹的菜色，非當日保證。",
+      "2026-10-10 使用者決定本趟不進 POLIN，Day 7 午餐改 Café Bristol；此筆僅保留資料，未排入每日餐廳安排。"
     ],
     "menuUrl": "https://www.polin.pl/pl/kolacja-w-warsze-bracia-wisniewscy",
     "verificationNote": "本輪官方頁確認餐廳在 0 樓、進餐廳不必展覽票；10/30 菜單、午餐出餐速度與空位待確認。"
@@ -1459,7 +1461,7 @@ export const diningPlaces = {
     "id": "wroclaw-max-wroclavia",
     "cityKey": "wroclaw",
     "name": "MAX Premium Burgers Wroclavia",
-    "address": "Sucha 1",
+    "address": "Sucha 1, Wrocław",
     "map": "https://www.google.com/maps/search/?api=1&query=MAX%20Premium%20Burgers%20Wroclavia%2C%20Sucha%201%2C%20Wroc%C5%82aw",
     "hours": "週一至週四 08:00–翌日 01:00；週五、六 07:00–翌日 02:00；週日 07:00–翌日 01:00",
     "sourceUrl": "https://www.maxpremiumburgers.pl/znajdz-max/restauracje/wroclaw3/",

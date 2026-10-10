@@ -188,8 +188,8 @@ const databaseEntriesBase = [
   },
   {
     id: 'documents-attraction-tickets', section: 'documents', category: 'document', cityKey: 'ROUTE',
-    title: '景點票券：已訂 1 項，其餘 7 項待確認',
-    summary: '現有訂票紀錄已確認 Auschwitz 10/26 10:30 英文官方導覽、2 人；其餘 7 項尚未確認已購票。仍須核對私人票券的參觀日期、入場時段、語言、人數與集合點；公開版不保存票券條碼、姓名或付款資料。',
+    title: '景點票券：已訂 1 項，其餘 6 項待確認',
+    summary: '現有訂票紀錄已確認 Auschwitz 10/26 10:30 英文官方導覽、2 人；其餘 6 項尚未確認已購票。仍須核對私人票券的參觀日期、入場時段、語言、人數與集合點；公開版不保存票券條碼、姓名或付款資料。',
     status: 'private-required', sourceUrl: null, verifiedAt: null, recheckAt: '2026-09-24',
     offlineNote: '先保存已訂 Auschwitz 的票券 PDF 與證件；其餘項目購票後一併核對日期、時段、語言、人數、官方地址、集合點與取消規則，存入私人離線包。', private: true,
   },
@@ -354,7 +354,6 @@ const addressStepLabels = {
   '波茲南市政廳': ['廣場卡正面位置', '★ 山羊鐘樓秀'],
   '帝王城堡': ['★ 帝王城堡'],
   'Stary Browar': ['Stary Browar'],
-  'POLIN 波蘭猶太人歷史博物館': ['前往 POLIN + 安檢緩衝', '★ POLIN 猶太博物館'],
   '華沙起義博物館': ['前往華沙起義博物館 + 安檢緩衝', '★ 華沙起義博物館'],
 };
 
@@ -508,7 +507,7 @@ export const dayOperations = {
       '市政廳博物館整修閉館；主行程只看官方確認的 12:00 山羊鐘樓秀。',
       '聖馬丁牛角麵包尚未選定分店；待分店與營業確定後再導航，不預填地址。',
     ],
-    nightChecklist: [...standardNightChecklist, '核對 Day 7 三館購票狀態與入場時段，尚未訂者不要當作已購', '確認 WARSZE 12:00 午餐供應與 WYRAJ 週五營業、秋季菜單及訂位；WYRAJ 不適用再選 U Fukiera 並重算交通'],
+    nightChecklist: [...standardNightChecklist, '核對 Day 7 兩館（皇家城堡、起義博物館）購票狀態與入場時段，尚未訂者不要當作已購', '確認 Café Bristol 午餐供應（湯與主餐 12:00 起）與 WYRAJ 週五營業（官網與 Michelin 資訊不一致，須直接問店家）、秋季菜單及訂位；WYRAJ 不適用再選 U Fukiera 並重算交通'],
   },
   7: {
     cityKey: 'warsaw',
@@ -516,16 +515,15 @@ export const dayOperations = {
     addresses: [
       venueCard('warsaw-royal-castle', '華沙皇家城堡'),
       venueCard('warsaw-old-town-square', '華沙老城市場廣場'),
-      venueCard('warsaw-polin', 'POLIN 波蘭猶太人歷史博物館'),
       venueCard('warsaw-rising-museum', '華沙起義博物館'),
       accommodationAddress('warsaw-metropol'),
     ],
     navigation: [
-      { mode: '步行／市內交通', route: '皇家城堡 → POLIN → 華沙起義博物館', action: '購票後以票面入場時段倒推離館時間；館際移動當日用 Jakdojade 重算。' },
+      { mode: '步行／市內交通', route: '皇家城堡 → Café Bristol → 華沙起義博物館', action: '皇家城堡到 Café Bristol 沿 Krakowskie Przedmieście 步行約 10 分；午餐後有自由時段，15:15 前往起義博物館，購票後以票面入場時段倒推，交通當日用 Jakdojade 重算。' },
       { mode: '步行／餐廳', route: '起義博物館 → WYRAJ → 老城', action: '18:00 閉館後步行約 10 分到 Krochmalna 59；晚餐後搭車或叫車約 15 分回老城看夜燈。' },
     ],
     dailyAlerts: [
-      '三館內容量大；購票後保留票面時段，不為追完所有展區壓縮館際移動。',
+      '起義博物館內容沉重且量大；購票後保留票面時段，不為追完所有展區壓縮參觀；下午自由時段可休息。',
       '10/31 為諸聖節前夕，今晚重查明日市區交通、機場與店家特別營運。',
     ],
     nightChecklist: [...standardNightChecklist, '整理 TAX FREE 商品與文件，確認需海關查驗的託運品不先交運', '確認 QR 260 報到、行李額度、機場交通與護照收納位置', '確認 Charlotte Złota 08:00 早餐，預留回飯店取行李；08:15 未入座改外帶，11:00 前到機場'],
@@ -586,7 +584,8 @@ const unresolvedStepReasons = {
     'EIC 8104 前往華沙': dynamicTransitReason,
   },
   7: {
-    '皇家城堡 → POLIN 館內午餐': '沿皇家城堡到 POLIN 的移動段，依當日交通前往餐廳，不在中途加餐。',
+    '皇家城堡 → Café Bristol': '沿 Krakowskie Przedmieście 步行約 10 分，不需搭車；沿途不另加餐。',
+    '自由時段 · 老城／新城散步或回旅館休息': '自由時段不固定地點，不需要導航地址；想去 Neon Museum 或觀景台再用延伸卡的地圖。',
   },
   8: {
     '住宿出發前往 Charlotte Złota': '由 Hotel Metropol 前往 Złota 83，出發前重算交通；早餐導航見當日三餐。',

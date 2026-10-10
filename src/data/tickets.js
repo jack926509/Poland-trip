@@ -10,8 +10,8 @@
 import { venues, ticketsByCityExtras } from './venues.js';
 
 // fares：Object.values 依 venues.js 的 key 插入順序回傳，與原本 fares 陣列的
-// 城市分組順序（華沙→克拉科夫→樂斯拉夫→波茲南）一致；POLIN、華沙起義博物館
-// 兩筆原本只存在於 ticketsByCity／venueHours、fares 表沒有，這裡補上（4a 範圍）。
+// 城市分組順序（華沙→克拉科夫→樂斯拉夫→波茲南）一致；華沙起義博物館
+// 原本只存在於 ticketsByCity／venueHours、fares 表沒有，這裡補上（4a 範圍）。
 export const fares = Object.values(venues).filter(venue => venue.prices).map(venue => ({
   name: venue.name,
   fullPrice: venue.prices.full,
@@ -35,7 +35,6 @@ const venueItem = id => {
 export const ticketsByCity = [
   {city:'華沙', items:[
     venueItem('warsaw-royal-castle'),
-    venueItem('warsaw-polin'),
     venueItem('warsaw-rising-museum'),
     extra('chopinMuseum'),
     venueItem('warsaw-pkin-terrace'),

@@ -43,11 +43,11 @@ export const dayDiningPlans = {
     {
       "placeId": "krakow-hankki",
       "role": "晚餐首選（條件式）",
-      "note": "辛德勒工廠參觀約至 19:30，移動後暫排 19:45。點 Popcorn chicken 炸雞＋Red jjamppong 辣湯麵；飯後不再特地折返吃點心。",
+      "note": "辛德勒工廠預計 19:00 前離館，步行約 5 分，暫排 19:15。點 Popcorn chicken 炸雞＋Red jjamppong 辣湯麵；飯後不再特地折返吃點心。",
       "stepId": "d2-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "須先確認 19:45 仍接單；若工廠改到更晚場，改當時仍營業的快食。"
+      "condition": "須先確認週日 19:15 仍接單（店 21:00 關）；若工廠改到更晚場，改當時仍營業的快食。"
     },
     {
       "placeId": "warsaw-green-caffe-nero-centralny",
@@ -147,7 +147,7 @@ export const dayDiningPlans = {
     {
       "placeId": "wroclaw-restauracja-wroclawska",
       "role": "午餐首選",
-      "note": "沿用全景畫後 12:30 午餐；Śląskie niebo 果乾燉豬肉＋Hekele 鯡魚前菜。主菜約需 30 分鐘，13:45 結帳，14:00 前離店接 14:15 國家博物館。",
+      "note": "沿用全景畫後 12:00 午餐（全景畫 30 分鐘場，約 12:00 散場）；Śląskie niebo 果乾燉豬肉＋Hekele 鯡魚前菜。主菜現做約 30 分鐘，13:15 前結帳，13:30 前離店，緩衝後接 14:15 國家博物館。",
       "stepId": "d5-lunch",
       "planStatus": "scheduled",
       "meal": "lunch"
@@ -279,10 +279,12 @@ export const dayDiningPlans = {
   "7": [
     {
       "placeId": "warsaw-cafe-bristol",
-      "role": "午餐／茶點備選",
-      "note": "原首選保留；主餐與湯自 12:00 起，採用就要重排行程，不與 WARSZE 午餐疊加。",
-      "stepId": null,
-      "planStatus": "candidate"
+      "meal": "lunch",
+      "role": "午餐首選",
+      "note": "皇家城堡結束後沿 Krakowskie Przedmieście 步行約 10 分，11:30 入座；先點三明治、Bristol cake 與咖啡，官網湯與主餐自 12:00 起供應，想吃正式主餐可坐到 12:00 再點。",
+      "stepId": "d7-lunch",
+      "planStatus": "scheduled",
+      "condition": "當日供應與最後接單待確認；11:30 湯與主餐尚未供應時，改點輕食或延到 12:00。"
     },
     {
       "placeId": "warsaw-u-fukiera",
@@ -335,15 +337,6 @@ export const dayDiningPlans = {
       "stepId": "d7-breakfast",
       "planStatus": "scheduled",
       "note": "08:00–08:45 牛奶吧早餐：菠菜歐姆蛋、鮮乳酪配酸奶油與小紅蘿蔔；之後預留交通，09:30 前往皇家城堡入口報到。"
-    },
-    {
-      "placeId": "warsaw-warsze-polin",
-      "meal": "lunch",
-      "role": "午餐首選（條件式）",
-      "stepId": "d7-lunch",
-      "planStatus": "scheduled",
-      "note": "皇家城堡結束後直達 POLIN，12:00–12:45 先吃館內猶太風味當日午餐，再接 13:15 展覽。",
-      "condition": "當日午餐供應與出餐速度先確認；12:30 仍未能用餐就改現成輕食，不延誤入展。"
     },
     {
       "placeId": "warsaw-kieliszki-na-proznej",

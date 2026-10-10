@@ -32,7 +32,7 @@ test('自備餐與條件式餐廳可共同呈現，顯示條件且不冒充訂�
 });
 
 test('初稿更換餐廳後仍保留原主選為備選', () => {
-  for (const [day, id] of [[2,'krakow-noah'],[2,'krakow-bar-mleczny-pod-temida'],[7,'warsaw-cafe-bristol']]) {
+  for (const [day, id] of [[2,'krakow-noah'],[2,'krakow-bar-mleczny-pod-temida']]) {
     const item = dining.dayDining[day].find(item => item.placeId === id);
     assert.ok(item);
     assert.equal(item.meal, undefined);
@@ -53,10 +53,12 @@ test('三處頁面使用同一份三餐呈現，離境與抵站後餐次不漏�
 
 test('關鍵餐段銜接保留已購車次與博物館參觀', () => {
   const step = (day,id) => days[day-1].steps.find(item=>item.id===id);
-  assert.equal(step(2,'d2-dinner').t, '19:45');
+  assert.equal(step(2,'d2-dinner').t, '19:15');
   assert.match(step(2,'d2-prep').sub, /隔日|隔天/);
-  assert.equal(step(7,'d7-lunch').t, '12:00');
-  assert.ok(days[6].steps.some(item=>item.t==='13:15' && /POLIN/.test(item.label)));
+  assert.equal(step(7,'d7-lunch').t, '11:30');
+  assert.match(step(7,'d7-lunch').label, /Café Bristol/);
+  assert.ok(!days[6].steps.some(item=>/POLIN/i.test(item.label)));
+  assert.ok(days[6].steps.some(item=>item.t==='16:00' && /起義博物館/.test(item.label)));
   assert.ok(days[4].steps.some(item=>item.t==='18:35 前'));
   assert.ok(days[3].steps.some(item=>item.t==='16:45'));
 });
