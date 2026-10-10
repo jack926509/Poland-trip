@@ -5,6 +5,7 @@ import { renderJourneyOverview } from './journey.mjs';
 import { renderLayout } from './layout.mjs';
 import { getTaipeiToday, collectDeadlines, nextDeadline, isOpenTodoStatus, hideDeadlineOnTrip, todayIn } from '../scripts/dashboard.js';
 import { taipeiToday } from '../lib/schedule.mjs';
+import { fares } from '../data/tickets.js';
 
 const cityFileKeys = Object.fromEntries(cityRoutes.map(city => [city.key, city.fileKey]));
 
@@ -95,9 +96,9 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
     </nav>
     <header class="journal-cover">
       <div class="journal-cover-copy">
-        <span class="journal-kicker">${escapeHtml(meta.edition)} · PAPER TRAVEL JOURNAL</span>
+        <span class="journal-kicker">${escapeHtml(meta.edition)}</span>
         <h1>POLSKA</h1>
-        <p class="journal-cover-route">${escapeHtml(meta.route)}</p>
+        <p class="journal-cover-route">${meta.route.split(' → ').map(city => `<span>${escapeHtml(city)}</span>`).join(' → ')}</p>
         <dl class="journal-cover-meta">
           <div><dt>航空往返</dt><dd>${escapeHtml(meta.flightDateRange || meta.dateRange)}</dd></div>
           <div><dt>波蘭境內</dt><dd>${escapeHtml(meta.dateRange)}</dd></div>
@@ -158,7 +159,7 @@ ${coverFigure}
       <div class="journal-toolkit">
         <a class="card card-link" href="practical/booking.html"><h3>訂票與交通</h3><p>航班、火車、住宿與分級訂票清單。</p><span>查看 →</span></a>
         <a class="card card-link" href="practical/dining.html"><h3>餐廳與速食</h3><p>2026 星級、必比登、訂位管道與預算，以及四城連鎖速食分店。</p><span>查看 →</span></a>
-        <a class="card card-link" href="practical/tickets.html"><h3>門票速查</h3><p>21 個景點全票、優待與官網。</p><span>查看 →</span></a>
+        <a class="card card-link" href="practical/tickets.html"><h3>門票速查</h3><p>${fares.length} 個景點全票、優待與官網。</p><span>查看 →</span></a>
         <a class="card card-link" href="practical/transit.html"><h3>市內交通</h3><p>四城票價、機場接駁與購票方式。</p><span>查看 →</span></a>
         <a class="card card-link" href="practical/shopping.html"><h3>伴手禮與購物</h3><p>14 種伴手禮、實際店家與 Żabka。</p><span>查看 →</span></a>
         <a class="card card-link" href="practical/notes.html"><h3>出發前提醒</h3><p>夏令時間、日落、閉館與訂票節奏。</p><span>查看 →</span></a>

@@ -25,11 +25,15 @@ async function navigate({ status = 503, stored = [], path = '/today.html', offli
   });
   vm.runInContext(fs.readFileSync(new URL('../sw.js', import.meta.url), 'utf8'), context);
   let response;
+  const lifetimes = [];
   handlers.get('fetch')({
     request: { url: `${origin}${path}`, method: 'GET', mode: 'navigate', destination: 'document' },
     respondWith(promise) { response = promise; },
+    waitUntil(promise) { lifetimes.push(promise); },
   });
-  return { response: await response, puts };
+  const result = await response;
+  await Promise.all(lifetimes);
+  return { response: result, puts };
 }
 
 test('503 導覽請求有原頁快取時顯示離線行程，不儲存伺服器錯誤', async () => {
@@ -63,6 +67,14 @@ test('503 無原頁快取時保留錯誤回應，不以首頁冒充所查的行�
     assert.equal(await result.response.text(), 'NETWORK 503');
     assert.equal(result.puts.length, 0);
   }
+});
+
+test('503 含查詢參數時仍可使用原頁快取，保留 GitHub Pages 子目錄', async () => {
+  const result = await navigate({ path: '/Poland-trip/today.html?date=2026-10-25',
+    stored: [['/Poland-trip/today.html', 'CACHED TODAY']] });
+  assert.equal(result.response.status, 200);
+  assert.equal(await result.response.text(), 'CACHED TODAY');
+  assert.equal(result.puts.length, 0);
 });
 
 test('正常 200 及 404 回應保持網路結果，不被舊快取覆蓋', async () => {

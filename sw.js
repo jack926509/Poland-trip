@@ -143,23 +143,23 @@ async function trimCache(cacheName, limit) {
 }
 
 // 圖磚：先回快取再背景更新，離線時看過的區域仍在
-async function tileStrategy(request) {
+async function tileStrategy(request, event) {
   const cache = await caches.open(TILES);
   const cached = await cache.match(request);
-  const network = fetch(request)
-    .then(response => {
-      if (response && response.ok) {
-        cache.put(request, response.clone()).then(() => trimCache(TILES, TILE_LIMIT));
-      }
-      return response;
-    })
-    .catch(() => null);
+  const network = fetch(request).catch(() => null);
+  // 回應可先交給頁面，但背景更新與容量整理必須延長 worker 的存活時間。
+  event.waitUntil(network.then(async response => {
+    if (response && response.ok) {
+      await cache.put(request, response.clone());
+      await trimCache(TILES, TILE_LIMIT);
+    }
+  }).catch(() => {}));
   return cached || (await network) || Response.error();
 }
 
 // HTML：優先取新版，斷網或伺服器故障時回退原頁快取（含等價網址）。
 // 5xx 沒有原頁快取時保留伺服器錯誤；完全斷網才最後回退首頁。
-async function pageStrategy(request) {
+async function pageStrategy(request, event) {
   const cache = await caches.open(SHELL);
   let response;
   try {
@@ -167,14 +167,17 @@ async function pageStrategy(request) {
     if (response && response.ok) {
       // 不 await：不讓寫快取拖慢回應，但一律存拿掉轉址旗標後的乾淨版本，
       // 否則之後離線時這筆執行期更新一樣會被 Chrome 拒用於導覽。
-      stripRedirectFlag(response).then(plain => cache.put(request, plain));
+      event.waitUntil(stripRedirectFlag(response)
+        .then(plain => cache.put(request, plain))
+        .catch(() => {}));
     }
     if (response && response.status < 500) return response;
   } catch (error) {
     // 網路錯誤與 HTTP 5xx 共用下方原頁快取查找。
   }
   const url = new URL(request.url);
-  const candidates = [request, ...alternatePagePathnames(url.pathname).map(pathname => new URL(pathname, url.origin).toString())];
+  const candidates = [request, new URL(url.pathname, url.origin).toString(),
+    ...alternatePagePathnames(url.pathname).map(pathname => new URL(pathname, url.origin).toString())];
   for (const candidate of candidates) {
     const match = await cache.match(candidate);
     if (match) return match;
@@ -186,14 +189,14 @@ async function pageStrategy(request) {
 }
 
 // 靜態資源：命中快取就直接用，未命中才連線並存起來
-async function assetStrategy(request) {
+async function assetStrategy(request, event) {
   const cached = await caches.match(request);
   if (cached) return cached;
   try {
     const response = await fetch(request);
     if (response && response.ok && request.url.startsWith(self.location.origin)) {
       const cache = await caches.open(RUNTIME);
-      cache.put(request, response.clone());
+      event.waitUntil(cache.put(request, response.clone()).catch(() => {}));
     }
     return response;
   } catch (error) {
@@ -208,17 +211,18 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
   if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
 
+  let strategy;
   if (/tile\.openstreetmap\.org$/.test(url.hostname)) {
-    event.respondWith(tileStrategy(request));
-    return;
+    strategy = tileStrategy;
+  } else if (request.mode === 'navigate' || request.destination === 'document') {
+    strategy = pageStrategy;
+  } else if (url.origin === self.location.origin) {
+    strategy = assetStrategy;
   }
+  if (!strategy) return;
 
-  if (request.mode === 'navigate' || request.destination === 'document') {
-    event.respondWith(pageStrategy(request));
-    return;
-  }
-
-  if (url.origin === self.location.origin) {
-    event.respondWith(assetStrategy(request));
-  }
+  const response = strategy(request, event);
+  // 第一個 waitUntil 必須在 listener 同步呼叫，後續非同步快取工作才能加入。
+  event.waitUntil(response.then(() => {}, () => {}));
+  event.respondWith(response);
 });

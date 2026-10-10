@@ -1,5 +1,10 @@
 import { escapeAttr } from '../lib/html.mjs';
 import { CITY_LINKS, DAY_LINKS, PRACTICAL_LINKS } from '../lib/routes.mjs';
+import { todoGroups } from '../data/trip.js';
+
+// 頁尾的「火車票進度更新」日期改由訂票紀錄推導，避免資料更新後頁尾忘了改。
+const RAIL_CHECKED_AT = (todoGroups.find(group => group.id === 'rail')?.items || [])
+  .map(item => item.checkedAt).filter(Boolean).sort().at(-1) || '';
 function current(activeNav, key) {
   return activeNav === key ? ' aria-current="page"' : '';
 }
@@ -252,7 +257,7 @@ export function renderLayout({
   <footer class="footer">
     <div class="footer-inner">
       <p>POLSKA 波蘭行 · 2026/10/24–10/31</p>
-      <p>火車票進度更新：2026-10-06。各筆資料查核日期見待辦與資料庫；票價、班次異動及開放時間以官方公告與已購票券為準。</p>
+      <p>${RAIL_CHECKED_AT ? `火車票進度更新：${RAIL_CHECKED_AT}。` : ''}各筆資料查核日期見待辦與資料庫；票價、班次異動及開放時間以官方公告與已購票券為準。</p>
     </div>
   </footer>
   <script src="${path('assets/nav.js')}" defer></script>

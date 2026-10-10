@@ -1,107 +1,51 @@
 # POLSKA｜波蘭四城旅行誌
 
-以臺灣繁體中文整理華沙、克拉科夫、弗羅茨瓦夫與波茲南的自由行資訊，提供手機與桌機瀏覽。
+![樂斯拉夫座堂島的夜色與河岸燈光](assets/photos/wroclaw-ostrow-tumski-night.webp)
 
-[正式網站](https://polandtrip.xiehnet.com/) · 航空往返 2026/10/23–11/01 · 波蘭境內 2026/10/24–10/31（8 天 7 夜）
+十月底，搭火車走過波蘭的四座城市。從華沙老城的傍晚開始，走進克拉科夫的廣場與歷史街區，在樂斯拉夫河岸等燈亮起，再到波茲南吃一塊聖馬丁牛角麵包，最後回到華沙。
 
-## 專案功能
+**航空往返｜2026/10/23–11/01**
 
-- 全程動線與過夜總覽、每日行程、今日速查、交通步驟與景點導航。
-- 城市指南與每日行程雙向串接；住宿依日期帶入，已訂妥項目與待處理項目分開顯示。
-- 四座城市指南、餐廳候選、順路美食與拍照建議。
-- 超市與便利商店指南：四城候選門市、地圖搜尋、附來源與照片的採買推薦、星期日採買提醒。
-- 訂票待辦與倒數、交通及門票資訊、自由行資料庫。
-- 全站搜尋、資料更新儀表板、PWA 離線瀏覽與可攜式單檔版。
+**波蘭旅程｜2026/10/24–10/31 · 8 天 7 夜**
 
-## 開始開發
+**旅行路線｜華沙 → 克拉科夫 → 樂斯拉夫 → 波茲南 → 華沙**
 
-使用 Node.js 與 npm；建置採原生 JavaScript ES modules，沒有額外 npm 套件依賴。完整驗收另需 Bash 與 Git。
+[打開旅行誌](https://polandtrip.xiehnet.com/) · [今天怎麼走](https://polandtrip.xiehnet.com/today) · [出發前的準備](https://polandtrip.xiehnet.com/practical/essentials)
 
-```bash
-git clone https://github.com/jack926509/Poland-trip.git
-cd Poland-trip
-npm run build
-```
+## 四座城市，四種風景
 
-建置後產生 `dist/` 多頁網站，以及根目錄的 `poland-travel-guide-2026.html` 單檔版。預覽可使用任一靜態 HTTP 伺服器，例如已安裝 Python 3 時：
+- **[華沙 Warszawa](https://polandtrip.xiehnet.com/city-warszawa)**：老城廣場、皇家大道與皇家城堡；透過 POLIN 和華沙起義博物館，認識城市重建背後的歷史。留一個夜晚給老城燈光與熱巧克力。
+- **[克拉科夫 Kraków](https://polandtrip.xiehnet.com/city-krakow)**：Wawel、中央廣場、Kazimierz 街區與辛德勒工廠。以這裡為落腳點，一日往返 Auschwitz-Birkenau，也安排走入 Wieliczka 鹽礦。
+- **[樂斯拉夫 Wrocław](https://polandtrip.xiehnet.com/city-wroclaw)**：在廣場和巷子裡找小矮人，看拉茨瓦維採全景畫，再到座堂島等煤氣燈點亮，沿河散步。
+- **[波茲南 Poznań](https://polandtrip.xiehnet.com/city-poznan)**：教堂島、老市集廣場與中午的山羊鐘樓秀；把聖馬丁牛角麵包和馬鈴薯料理留給這一天。
 
-```bash
-python3 -m http.server 8000 --directory dist
-```
+七晚分別住在華沙 1 晚、克拉科夫 2 晚、樂斯拉夫 1 晚、波茲南 1 晚，再回華沙 2 晚。城市之間以火車串起，抵達後盡量放下行李再出門。
 
-開啟 <http://localhost:8000>。修改來源後重新執行建置，伺服器不會自動編譯。
+## 八天的旅行輪廓
 
-## 要修改哪裡？
-
-| 內容 | 檔案位置 |
-| --- | --- |
-| 行程、住宿、火車與訂票待辦 | `src/data/trip.js` |
-| 餐飲門市、每日安排與分類 | `src/data/dining-places.js`、`src/data/day-dining.js`、`src/data/dining.js` |
-| 連鎖速食品牌、獨立門市與商場 | `src/data/fast-food.js` |
-| 城市、地圖與照片資料 | `src/data/cities.js`、`src/data/day-maps.js`、`src/data/city-gallery.js` |
-| 門票、交通、伴手禮與實用資訊 | `src/data/tickets.js`、`transit.js`、`shopping.js`、`essentials.js` |
-| 超市品牌、候選地址與採買商品 | `src/data/groceries.js` |
-| 自由行資料庫 | `src/data/travel-database.js` |
-| 頁面版型與共用元件 | `src/templates/` |
-| 樣式與瀏覽器互動 | `src/styles/`、`src/scripts/` |
-| 共用城市／頁面對照、日期與文字處理 | `src/lib/` |
-| 全站搜尋索引 | `src/search/` |
-| 建置、離線快取與驗收 | `build.mjs`、`src/build/`、`sw.js`、`tests/`、`tools/` |
-
-**請修改來源檔，不要直接編輯 `dist/` 或單檔版；下次建置會覆蓋它們。**
-
-## 驗證修改
-
-```bash
-npm test                         # 建置並執行測試
-npm run audit:schedule           # 檢查行程時間與轉場提醒
-npm run audit:map-pins           # 檢查地圖圖釘與資料時效
-```
-
-提交前執行完整驗收：
-
-```bash
-env -u NODE_OPTIONS ./verify.sh
-```
-
-## 部署
-
-**部署＝推送至 `main`，沒有其他手動步驟。** 兩條 GitHub Actions 會同時啟動，各自先跑 `./verify.sh` 驗收、再用 `./prepare-site.sh _site` 組裝發布目錄：
-
-送出指向 `main` 的 Pull Request 時，`.github/workflows/verify-pr.yml` 會先執行 `./verify.sh` 檢查建置、測試與地圖資料；PR 檢查不發布網站。合併後上述兩條部署流程才會啟動。
-
-| 工作流程 | 目的地 | 網址 |
+| 日期 | 落腳與移動 | 這一天想留下的記憶 |
 |---|---|---|
-| `.github/workflows/cloudflare-pages.yml`（wrangler `pages deploy _site --project-name=poland-trip`） | Cloudflare Pages | https://polandtrip.xiehnet.com （別名 https://poland-trip-7wm.pages.dev） |
-| `.github/workflows/deploy.yml` | GitHub Pages | https://jack926509.github.io/Poland-trip/ |
+| [10/24（六）· Day 1](https://polandtrip.xiehnet.com/day-01) | 抵達華沙 | 老城與皇家大道傍晚漫步，吃一餐波蘭地方料理，早點休息倒時差。 |
+| [10/25（日）· Day 2](https://polandtrip.xiehnet.com/day-02) | 華沙 → 克拉科夫 | Wawel、中央廣場與辛德勒工廠；晚間走進 Kazimierz，嚐嚐 Plac Nowy 的烤長麵包。 |
+| [10/26（一）· Day 3](https://polandtrip.xiehnet.com/day-03) | 克拉科夫出發，一日往返 | Auschwitz-Birkenau 導覽。留時間理解歷史，回城後安排安靜的晚餐與休息。 |
+| [10/27（二）· Day 4](https://polandtrip.xiehnet.com/day-04) | 克拉科夫 → 樂斯拉夫 | 上午參觀 Wieliczka 鹽礦，回城取行李，傍晚搭車前往下一座城市。 |
+| [10/28（三）· Day 5](https://polandtrip.xiehnet.com/day-05) | 樂斯拉夫 → 波茲南 | 廣場小矮人、教堂塔樓、全景畫與國家博物館；傍晚在座堂島看點燈，再搭車往波茲南。 |
+| [10/29（四）· Day 6](https://polandtrip.xiehnet.com/day-06) | 波茲南 → 華沙 | 教堂島、山羊鐘樓秀與聖馬丁牛角麵包；午後逛帝王城堡與 Stary Browar，晚間回華沙。 |
+| [10/30（五）· Day 7](https://polandtrip.xiehnet.com/day-07) | 華沙 | 皇家城堡、POLIN 與華沙起義博物館，是較充實的一天；晚餐在起義博物館旁的 WYRAJ，最後留給老城夜景。 |
+| [10/31（六）· Day 8](https://polandtrip.xiehnet.com/day-08) | 華沙 → 返程 | 吃早餐、整理行李，前往蕭邦機場；11/01 回到臺灣。 |
 
-Cloudflare 工作流程使用儲存庫 Secrets 中的 `CLOUDFLARE_API_TOKEN` 與 `CLOUDFLARE_ACCOUNT_ID`。
+這是目前的旅行安排；各館場次與購票進度可在[訂票清單](https://polandtrip.xiehnet.com/practical/todos)查看。
 
-**Cloudflare 專案不得連接 Git 整合**（Dashboard → Workers & Pages → poland-trip → 設定 → 組建 → Git 存放庫必須是「連線」未連接狀態）。一旦連上，Cloudflare 會依 `wrangler.toml` 的 `pages_build_output_dir = "."` 把未建置的 repo 根目錄整包當成第二個 Production 部署，與 GitHub Actions 上傳的正確版本互相覆蓋，導致 `/day-05` 等乾淨網址 404、`sw.js` 沒有版本指紋。2026-09-21 已斷開；若 `npx wrangler pages deployment list --project-name poland-trip` 出現同一 commit 兩個 Production 部署，就是又被連上了。
+## 把休息時間留給一口波蘭味
 
-推送後確認正式站拿到的是這次的建置（版本字串應與本機 `dist/sw.js` 相同）：
+在牛奶吧吃一餐樸實的熱食，試試波蘭餃子 **pierogi**；克拉科夫的夜晚，留給 **zapiekanka** 烤長麵包。到了波茲南，嚐聖馬丁牛角麵包，再把 **Pyra Bar** 的馬鈴薯料理放進午餐候選。
 
-```bash
-grep -o "polska-journal-v[0-9a-z-]*" dist/sw.js
-curl -sL https://polandtrip.xiehnet.com/sw.js | grep -o "polska-journal-v[0-9a-z-]*"
-curl -s -o /dev/null -w "%{http_code}\n" https://polandtrip.xiehnet.com/day-05   # 應為 200
-```
+華沙可以在 **Wedel** 喝熱巧克力，晚班火車回城後到 **Hala Koszyki** 找晚餐。樂斯拉夫若有空檔，就在老城停下喝咖啡、吃甜點。店家與餐段安排整理在[餐飲指南](https://polandtrip.xiehnet.com/practical/dining)，想帶點零食回去，也可以翻翻[超市採買](https://polandtrip.xiehnet.com/practical/groceries)與[伴手禮](https://polandtrip.xiehnet.com/practical/shopping)。
 
-不一致時到 GitHub Actions 重跑「Deploy to Cloudflare Pages」該次執行即可（`gh run rerun <run-id>`）。
+## 十月底，帶著秋天出發
 
-手動組裝發布檔案時，指定一個新建的空目錄：
+保暖外套、圍巾、雨具和好走的鞋，比多排一個景點更實用。**10/25 起切換冬令時間**，天黑得早，把戶外散步和拍照放在白天，晚間留給室內參觀、晚餐或休息。
 
-```bash
-mkdir _site
-./prepare-site.sh _site
-```
+轉城日先想好行李寄放與取回；票券和住宿確認先存好，旅途中的注意力就能留給街景。行程有緊湊的日子，也盡量保留一杯咖啡、一段河岸和不急著趕路的空檔。
 
-發布目錄為 `_site/`。離線快取版本會在建置時附加資源指紋，請保留建置產生的 `sw.js`。
-
-## 維護原則與文件
-
-- 旅遊資料以 `src/data/` 為準；班次、票價與營業時間須保留查核來源及狀態，規劃中的項目不能當作已訂妥。
-- 公開行程與住宿資訊不包含旅客姓名、證件號碼、訂位代碼、票號、付款資料或私人聯絡方式。
-- 詳細操作見[開發與資料維護指南](docs/development.md)，照片授權見[照片來源](assets/photos/CREDITS.md)。
-- 查核資料保留在 [docs/research/](docs/research/)，舊版網站保留在 [archive/](archive/)。
-- README 只說明目前專案與開發方式；逐次修改、測試結果與分支整理紀錄留在 [PR](https://github.com/jack926509/Poland-trip/pulls?q=is%3Apr) 與 [Git 歷史](https://github.com/jack926509/Poland-trip/commits/main/)，不再追加到本頁。
+出門時打開[今日速查](https://polandtrip.xiehnet.com/today)，想知道下一段怎麼走，就看[交通指南](https://polandtrip.xiehnet.com/practical/transit)。讓這份旅行誌陪著走，把真正的回憶留在路上。

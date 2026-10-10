@@ -76,6 +76,14 @@ function sameStore(a, b) {
   return long === short || long.startsWith(`${short} `) || long.endsWith(` ${short}`) || long.includes(` ${short} `);
 }
 
+/** 有門市 ID 時只比同一分店，不能把同名品牌或同棟商場算成同一家。 */
+export function diningPinMatches(row, point) {
+  const rowId = row.placeId || row.id;
+  const pinId = point[7];
+  if (rowId || pinId) return Boolean(rowId && pinId && rowId === pinId);
+  return sameStore(storeKey(row.name), storeKey(point[2]));
+}
+
 /**
  * 餐廳表裡的店有多少放進了地圖圖釘。
  *
@@ -96,19 +104,26 @@ export function auditDiningPinCoverage() {
       snacksAndCafes[city] || [],
       fastFoodDiningEntries({branches:fastFoodBranches[city],chains:fastFoodChains,hub:fastFoodHubs.find(h => h.cityKey === city)}),
     );
-    // 餐廳也可能被歸在 sight／shopping 類（Hala Targowa、Stary Browar），
-    // 只要地圖上找得到就算有涵蓋，因此比對全部圖釘而非只有 food 類。
+    // 餐飲地點也可能被歸在 sight／shop 類（例如 Wedel 巧克力店）。
+    // 比對全部分類，但仍須對上同一門市 ID，商場點不能代替裡面的分店。
     const allPins = mapPins[city]?.points || [];
     const pins = allPins.filter(point => point[5] === 'food');
-    const pinKeys = allPins.map(point => storeKey(point[2]));
-    const rowKeys = rows.map(row => storeKey(row.name));
-    const missing = rows.filter((row, i) => !pinKeys.some(pin => sameStore(pin, rowKeys[i]))).map(row => row.name);
+    const missingRows = rows.filter(row => !allPins.some(point => diningPinMatches(row, point)));
+    const missing = missingRows.map(row => row.name);
+    const missingDetails = missingRows.map(row => ({
+      placeId: row.placeId || row.id || null,
+      name: row.name,
+      address: row.address || '門牌待確認',
+      verificationStatus: row.verificationStatus || 'pending',
+      sourceUrl: row.sourceUrl || row.url || null,
+      selected: Boolean(row.selected),
+    }));
     for (const point of pins) {
-      if (!rowKeys.some(row => sameStore(row, storeKey(point[2])))) orphanPins.push(`${label}／${point[2]}`);
+      if (!rows.some(row => diningPinMatches(row, point))) orphanPins.push(`${label}／${point[2]}`);
     }
     listed += rows.length;
     covered += rows.length - missing.length;
-    byCity[label] = { listed: rows.length, pins: pins.length, missing };
+    byCity[label] = { listed: rows.length, pins: pins.length, missing, missingDetails };
   }
   return { listed, covered, byCity, orphanPins };
 }
@@ -157,6 +172,9 @@ function runCli() {
   console.log(`餐廳圖釘覆蓋：${coverage.covered}/${coverage.listed}（${Math.round(coverage.covered / coverage.listed * 100)}%）`);
   for (const [city, info] of Object.entries(coverage.byCity)) {
     console.log(`  ${city}：餐廳表 ${info.listed} 家、餐飲圖釘 ${info.pins} 個、無圖釘 ${info.missing.length} 家`);
+    if (process.argv.includes('--details')) {
+      for (const row of info.missingDetails) console.log(`    ${JSON.stringify(row)}`);
+    }
   }
   if (coverage.orphanPins.length) {
     console.log(`  圖釘有、餐廳表已無此店：${coverage.orphanPins.join('、')}`);

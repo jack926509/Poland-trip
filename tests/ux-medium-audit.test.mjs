@@ -77,9 +77,9 @@ test('M5：地圖圖釘放大到 radius 12（原 16×16px 太小，難精準點�
 
 test('M9：首頁待辦分類只留計數＋連結，逐項名稱不再與待辦頁重複；nav-today 手機字級提高', () => {
   const home = read('index.html');
-  // 4 個分類都改成 <a class="card card-link"> 摘要卡，不再逐項列出
+  // 3 個分類（2026-10-07 取消牛角麵包博物館後）都是 <a class="card card-link"> 摘要卡，不再逐項列出
   const todosSection = home.slice(home.indexOf('id="todos"'), home.indexOf('</section>', home.indexOf('id="todos"')));
-  assert.equal((todosSection.match(/class="card card-link"/g) || []).length, 4, '待辦分類卡片數不對');
+  assert.equal((todosSection.match(/class="card card-link"/g) || []).length, 3, '待辦分類卡片數不對');
   assert.match(todosSection, /項待處理|已全部完成/);
   // 逐項的「日期 · 狀態」小標不再輸出到首頁
   assert.doesNotMatch(todosSection, /<span class="eyebrow">\d{1,2}\/\d{1,2} ·/);
