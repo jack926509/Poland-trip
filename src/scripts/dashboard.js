@@ -121,17 +121,17 @@ export function initializeCountdown(root, getToday, tripStart) {
         : null;
       let urgency = urgencyOf(daysLeft, open);
       let text = labelOf(daysLeft, open);
-      // 旅途期間（台北日期到了出發日）：出發前的期限都已經過了，再顯示紅色「已逾期 N 天」
-      // 只會製造雜訊；改成中性的「旅途中」，出發前仍維持原樣。
+      // 旅途開始後降低逾期提示的顏色，但未完成的查核仍須處理；
+      // 日期經過不代表票面、保險或住宿資料已核對，旅程結束後也保留待確認。
       const traveling = Boolean(tripStart) && today >= tripStart;
-      if (traveling && urgency === 'overdue') { urgency = 'trip'; text = '旅途中'; }
+      if (traveling && urgency === 'overdue') { urgency = 'trip'; text = '仍待確認'; }
       row.setAttribute('data-urgency', urgency);
       const label = row.querySelector('[data-countdown-label]');
       if (label) label.textContent = text;
       const category = row.querySelector('[data-countdown-category]');
       if (category && category.setAttribute) category.setAttribute('class', traveling && urgency === 'trip' ? 'tag-muted' : category.getAttribute('data-countdown-class'));
       const tag = row.querySelector('[data-countdown-tag]');
-      if (tag) tag.textContent = traveling && urgency === 'trip' ? '旅途中，不需處理' : tag.getAttribute('data-countdown-text');
+      if (tag) tag.textContent = traveling && urgency === 'trip' ? '仍待確認，請完成查核' : tag.getAttribute('data-countdown-text');
     }
   }
   refresh();

@@ -18,7 +18,7 @@
 //   2. 同一頁同時以「.html」與「乾淨網址」兩種 key 存進快取。
 //   3. 離線時的 fallback 除了原始請求網址，也嘗試另一種寫法。
 
-const VERSION = 'polska-journal-v21';
+const VERSION = 'polska-journal-v22';
 const SHELL = `${VERSION}-shell`;
 const RUNTIME = `${VERSION}-runtime`;
 const TILES = `${VERSION}-tiles`;
@@ -157,28 +157,32 @@ async function tileStrategy(request) {
   return cached || (await network) || Response.error();
 }
 
-// HTML：優先取新版，離線回退快取（原始網址與另一種寫法都試），最後回退首頁
+// HTML：優先取新版，斷網或伺服器故障時回退原頁快取（含等價網址）。
+// 5xx 沒有原頁快取時保留伺服器錯誤；完全斷網才最後回退首頁。
 async function pageStrategy(request) {
   const cache = await caches.open(SHELL);
+  let response;
   try {
-    const response = await fetch(request);
+    response = await fetch(request);
     if (response && response.ok) {
       // 不 await：不讓寫快取拖慢回應，但一律存拿掉轉址旗標後的乾淨版本，
       // 否則之後離線時這筆執行期更新一樣會被 Chrome 拒用於導覽。
       stripRedirectFlag(response).then(plain => cache.put(request, plain));
     }
-    return response;
+    if (response && response.status < 500) return response;
   } catch (error) {
-    const url = new URL(request.url);
-    const candidates = [request, ...alternatePagePathnames(url.pathname).map(pathname => new URL(pathname, url.origin).toString())];
-    for (const candidate of candidates) {
-      const match = await cache.match(candidate);
-      if (match) return match;
-    }
-    return (await cache.match('./index.html'))
-      || (await cache.match('./'))
-      || Response.error();
+    // 網路錯誤與 HTTP 5xx 共用下方原頁快取查找。
   }
+  const url = new URL(request.url);
+  const candidates = [request, ...alternatePagePathnames(url.pathname).map(pathname => new URL(pathname, url.origin).toString())];
+  for (const candidate of candidates) {
+    const match = await cache.match(candidate);
+    if (match) return match;
+  }
+  return response
+    || (await cache.match('./index.html'))
+    || (await cache.match('./'))
+    || Response.error();
 }
 
 // 靜態資源：命中快取就直接用，未命中才連線並存起來

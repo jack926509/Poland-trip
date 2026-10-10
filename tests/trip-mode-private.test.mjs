@@ -27,8 +27,9 @@ function fakeRow(date) {
   };
 }
 
-function runCountdown(today) {
-  const row = fakeRow('2026-09-20');
+function runCountdown(today, date = '2026-09-20', open = true) {
+  const row = fakeRow(date);
+  row.attrs['data-countdown-open'] = String(open);
   const root = { querySelector: () => null, querySelectorAll: () => [row] };
   const timers = [];
   globalThis.window = { addEventListener() {} };
@@ -46,13 +47,32 @@ test('出發前（10/23）倒數表仍顯示紅色已逾期', () => {
   assert.equal(row.category.attrs.class, 'tag-red');
 });
 
-test('旅途期間（10/24 起）倒數表不再顯示逾期，改成中性文字', () => {
+test('旅途中到期的未完成車票核對保持待確認，當日與未到期項目不被覆蓋', () => {
+  const expired = runCountdown('2026-10-25', '2026-10-24');
+  assert.equal(expired.label.textContent, '仍待確認');
+  assert.equal(expired.attrs['data-countdown-open'], 'true');
+  assert.equal(expired.tag.textContent, '仍待確認，請完成查核');
+  assert.equal(runCountdown('2026-10-24', '2026-10-24').label.textContent, '就是今天');
+  assert.equal(runCountdown('2026-10-24', '2026-10-31').label.textContent, 'T-7');
+});
+
+test('旅途開始後已完成事項仍為已完成，無期限事項仍為無日期', () => {
+  const done = runCountdown('2026-10-25', '2026-10-24', false);
+  assert.equal(done.label.textContent, '已完成');
+  assert.equal(done.attrs['data-urgency'], 'done');
+  const undated = runCountdown('2026-10-25', '');
+  assert.equal(undated.label.textContent, '無日期');
+  assert.equal(undated.attrs['data-urgency'], 'undated');
+});
+
+test('10/24 起未完成的逾期事項仍待確認，旅程結束也不視為完成', () => {
   for (const today of ['2026-10-24', '2026-10-28', '2026-11-02']) {
     const row = runCountdown(today);
     assert.equal(row.attrs['data-urgency'], 'trip', today);
-    assert.equal(row.label.textContent, '旅途中');
+    assert.equal(row.label.textContent, '仍待確認');
     assert.equal(row.category.attrs.class, 'tag-muted');
     assert.doesNotMatch(row.tag.textContent, /逾期/);
+    assert.equal(row.tag.textContent, '仍待確認，請完成查核');
   }
 });
 
