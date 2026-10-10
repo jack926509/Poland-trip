@@ -206,7 +206,7 @@ export const days = [
     steps: [
       {t:'08:00', id:'d4-breakfast', label:'早餐 + 退房', sub:'前晚備妥麵包、優格與水果，吃完退房，行李寄旅館；09:00 去程為目標班次，出發前重查'},
       {t:'09:00', label:'火車到 Wieliczka Rynek-Kopalnia', sub:'KMŁ；2026-09-17 ZTP 官方票價表載明 70 分鐘 KMK+KMŁ 聯票涵蓋 Wieliczka Bogucice–Wieliczka Rynek Kopalnia 區段與所有站名含「Kraków」的車站，唯一排除的是 Kraków Airport——此程適用。注意是「70 分鐘」有效，逾時要另購', cost:'PLN 10（優待 5）', dur:'約 25 min'},
-      {t:'10:00', label:'★ Wieliczka 鹽礦 Tourist Route 英文團', sub:'3.5 km · 135m 深 · St. Kinga 鹽教堂。10/27 英語 Tourist Route 全票 143／優待 121 PLN，英文場 08:30 起每 30 分鐘一場；尚未購票，餘額會變動，買票前看待辦頁的查核紀錄', cost:'PLN 143（優待 121）· 已查票價／尚未購票', dur:'2–3 h'},
+      {t:'10:00', label:'★ Wieliczka 鹽礦 Tourist Route 英文團', sub:'3.5 km · 135m 深 · St. Kinga 鹽教堂。10/27 英語 Tourist Route 全票 143／優待 121 PLN，英文場 08:30 起每 30 分鐘一場；尚未購票，餘額會變動，買票前看待辦頁該項的說明', cost:'PLN 143（優待 121）· 已查票價／尚未購票', dur:'2–3 h'},
       {t:'出礦後', timingMode:'relative', id:'d4-lunch', label:'午餐 · Bistro Posolone', sub:'13:00 前出礦才坐下吃寬麵或沙拉，13:30 收尾；較晚就外帶披薩／吃自備餐。另預留走回車站及候車，回程延誤就略過 Kazimierz，保住 16:10 抵站', cost:'依店家', dur:'有餘裕才留 30 min'},
       {t:'13:30', label:'前往 Wieliczka 車站候車', sub:'由餐廳／出礦口步行，暫留 30 分鐘含找站與候車；實際出口與班次當日重算', dur:'30 min'},
       {t:'14:00 目標', label:'火車回 Kraków Główny', sub:'當日查 KMŁ 班次；去程票已失效需另購，回城後先保住取行李與 16:10 抵站', cost:'依當日票價', dur:'約 25 min'},
@@ -247,7 +247,7 @@ export const days = [
       {t:'07:30', id:'d5-breakfast', label:'早餐 · Central Cafe', sub:'Piast 出發先預留前往老城的交通；貝果＋燕麥粥，08:15 收尾；未供餐改附近 Charlotte Pokoyhof', dur:'45 min'},
       {t:'09:00', label:'★ 中央廣場 + 紡織會館', sub:'dwarfsmap.com 找小矮人', cost:'免費', dur:'1.5 h'},
       {t:'10:30', label:'糖果屋雙屋 + 教堂塔樓', sub:'聖伊莉莎白教堂塔高 96m、觀景台 75m、304 階無電梯；10 月 10:00 起、週日 11:00 起，開到黃昏（約 16:30 前）；下雨或雷暴不開，改走廣場與全景畫', cost:'PLN 16／10 · 現金', dur:'45 min'},
-      {t:'11:30', label:'★ 拉茨瓦維採全景畫', sub:'11:30 場，約 30 分鐘（30 分鐘一場）；尚未購票，餘額會變動，買票前看待辦頁的查核紀錄；12:00 前後散場接午餐', cost:'PLN 50／優待 35', dur:'約 30 min'},
+      {t:'11:30', label:'★ 拉茨瓦維採全景畫', sub:'11:30 場，約 30 分鐘，每 30 分鐘一場；尚未購票，餘額會變動，買票前看待辦頁該項的說明；12:00 前後散場接午餐', cost:'PLN 50／優待 35', dur:'約 30 min'},
       {t:'12:00', id:'d5-lunch', label:'午餐 · Restauracja Wrocławska 候選', sub:'全景畫後往 Szewska 59/60（全景畫 30 分鐘場，約 12:00 散場後直接過去）；Śląskie niebo＋Hekele。主菜現做約 30 分鐘，13:15 前結帳、13:30 前離店，另留 15 分鐘往國家博物館；排隊久就改快食', cost:'依店家', dur:'1 h 15 min'},
       {t:'14:15', label:'★ 弗羅茨瓦夫國家博物館', sub:'pl. Powstańców Warszawy 5，全景畫旁。2026-10-07 官網：10/1 起冬季時段週二至週五 10:00–16:00、售票至 15:30，週一休館；全景畫票 3 個月內可免費參觀常設展（單買 20／15 PLN）。挑西里西亞中世紀雕刻與波蘭繪畫重點看，15:30 收尾後步行約 20 分到座堂島', cost:'持全景畫票免費', dur:'1 h 15 min'},
       {t:'16:15', label:'★ 座堂島煤氣燈', sub:'日落約 16:34；點燈人無固定公開出發分鐘，在島上等候與散步', cost:'免費', dur:'1 h'},

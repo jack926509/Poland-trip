@@ -366,7 +366,7 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
     return `<article class="card hours-city-group"><h3>${escapeHtml(city)}（${items.length} 家）</h3><ul class="day-food-list">${list}</ul></article>`;
   }).join('');
   const content = `
-    ${renderDisclaimer('資料界線：米其林名單、營業時間與預算的來源', '米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不把它們當成固定資料。高價餐廳預算已於 2026-09-08 對照旅程試算表更新；下表逐筆列出查核日期與來源，查不到一手來源的店家一律標「待確認」，訂位前仍看店家公告。')}
+    ${renderDisclaimer('資料界線：米其林名單、營業時間與預算的來源', '米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不把它們當成固定資料。高價餐廳預算已於 2026-09-08 對照旅程試算表更新；每家的「查核紀錄」逐筆列出查核日期與來源，查不到一手來源的店家一律標「待確認」，訂位前仍看店家公告。')}
     <section class="section" id="daily-meals">
       <div class="section-heading"><span class="section-num">Daily meals</span><h2>八天三餐與備選</h2></div>
       <p class="lead">每日行程與今日卡共用這份安排。時刻為波蘭當地時間，候選不代表已訂位；每餐擇一，依交通與接單情況改備案。</p>
