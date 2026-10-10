@@ -59,6 +59,11 @@ test('trip.js 已知時刻皆可解析，四段未知抵達時間清楚標示', 
   const failures = [];
   for (const day of trip.days) {
     for (const step of day.steps) {
+      if (step.timingMode === 'relative') {
+        assert.equal(parseStepTime(step.t), null);
+        assert.ok(step.sub, '相對時段必須說明採用條件');
+        continue;
+      }
       if (step.t && step.t !== '抵站後' && parseStepTime(step.t) === null) failures.push(`Day ${day.n}：${step.t}`);
     }
   }

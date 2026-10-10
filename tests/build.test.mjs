@@ -644,7 +644,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   // 2026-09-19 資料精煉切片 1：verifiedRestaurantHours 改由每日餐位（day-dining.js）中
   // 已核實／部分核實的門市直接推導（見 src/lib/dining.mjs 的 plannedVerifiedPlaces），
   // 不再是手寫子集，筆數會隨每日餐位調整自然變動。
-  assert.equal(verifiedRestaurantHours.length, 21);
+  assert.equal(verifiedRestaurantHours.length, 32);
   assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
     warsaw: 5, krakow: 7, wroclaw: 4, poznan: 7,
   });
@@ -1014,8 +1014,10 @@ test('高風險校正：皇家城堡與辛德勒工廠已依官方時間修正',
 
 test('Day 7 改為早上皇家城堡，並保留 POLIN 至起義博物館的移動時間', () => {
   const day = days.find(item => item.n === 7);
-  assert.equal(day.steps[0].t, '10:00');
-  assert.ok(day.steps[0].label.includes('皇家城堡'));
+  const firstAttraction = day.steps.find(step => step.label.startsWith('★'));
+  assert.equal(firstAttraction.t, '10:00');
+  assert.ok(firstAttraction.label.includes('皇家城堡'));
+  assert.equal(day.steps.find(step => step.id === 'd7-breakfast').t, '08:00');
   assert.equal(day.steps.find(item => item.label.startsWith('★ POLIN')).dur, '2 h');
   const html = read('day-07.html');
   const main = html.slice(html.indexOf('<main'), html.indexOf('</main>'));
@@ -1561,7 +1563,9 @@ test('城市推薦整合完整候選與既有情報，同店不重複', async ()
   const { cityDining, cityFood, snacksAndCafes } = await import('../src/data/dining.js');
   for (const [i, city] of ['warsaw', 'krakow', 'wroclaw', 'poznan'].entries()) {
     const rows = mergeCityDining(city, cityDining[city], cityFood[i].items, snacksAndCafes[city]);
-    assert.equal(rows.filter(row => row.selected).length, [13, 5, 4, 3][i]);
+    const { dayDining } = await import('../src/data/day-dining.js');
+    const expectedIds = new Set(Object.values(dayDining).flat().filter(item => item.cityKey === city && item.cityGuide !== false).map(item => item.placeId));
+    assert.deepEqual(new Set(rows.filter(row => row.selected).map(row => row.placeId)), expectedIds);
     assert.equal(new Set(rows.map(row => row.name.toLowerCase())).size, rows.length);
     for (const original of cityDining[city]) {
       assert.ok(rows.some(row => row.notes.includes(original.highlight)), `${city}: ${original.name} 情報遺失`);
@@ -1586,9 +1590,8 @@ test('備案與小吃咖啡廳併入同一份清單，排序為候選 → 主推
   const order = { backup: 3, snack: 4 };
   for (const [i, city] of cities.entries()) {
     const rows = mergeCityDining(city, cityDining[city], cityFood[i].items, snacksAndCafes[city]);
-    // 精煉後每座城市維持在可決策的規模，不再是三份彼此重複的清單。
-    // 2026-10-07 華沙加入 Day 6 晚抵的 Ćma（24/7），上限 22 → 23。
-    assert.ok(rows.length <= 23, `${city} 餐廳清單過長：${rows.length}`);
+    // 新增早餐與初稿候選後不限制筆數，但同一門市不可重複。
+    assert.equal(new Set(rows.map(row => row.placeId)).size, rows.length, `${city} 有重複門市`);
     const rank = rows.map(row => (row.selected ? 0 : row.mustEat ? 1 : order[row.role] ?? 2));
     assert.deepEqual(rank, [...rank].sort((a, b) => a - b), `${city} 排序未依候選 → 必吃 → 主推 → 備案 → 小吃`);
     // 小吃名單裡已經是主推或備案的店不得被降級成小吃列。
@@ -1611,13 +1614,13 @@ test('城市頁只輸出一張行程餐廳推薦表', () => {
 });
 
 test('每日餐飲融合成一份清單，導航連結在每列標題右上角', async () => {
-  const { dayDining } = await import('../src/data/day-dining.js');
+  const { dayDining, selfCateredMeals } = await import('../src/data/day-dining.js');
   const { days } = await import('../src/data/trip.js');
   const css = fs.readFileSync(new URL('../src/styles/main.css', import.meta.url), 'utf8');
 
   for (const day of days) {
     const html = read(`day-${String(day.n).padStart(2, '0')}.html`);
-    const entries = (dayDining[day.n] || []).length + (day.eat || []).length;
+    const entries = (dayDining[day.n] || []).length + (day.eat || []).length + (selfCateredMeals[day.n] || []).length;
     assert.equal(html.split('id="day-food"').length - 1, 1, `Day ${day.n} 應只有一張當日餐飲卡`);
     assert.ok(html.includes('<h3 id="day-food-heading">當日餐飲</h3>'), `Day ${day.n} 缺少當日餐飲卡`);
     // 舊的兩個分開清單不得殘留
@@ -2064,7 +2067,7 @@ test('餐飲資料重整：每日正餐候選（day-dining）與順路必吃（e
   }
 });
 
-test('餐飲資料重整：餐飲引用完整，機場日早餐保留飯店／中央車站附近待選', async () => {
+test('餐飲資料重整：餐飲引用完整，機場日早餐採 Charlotte 並保留趕機備案', async () => {
   const { dayDining } = await import('../src/data/day-dining.js');
   for (const [day, items] of Object.entries(dayDining)) {
     for (const item of items) {
@@ -2077,9 +2080,10 @@ test('餐飲資料重整：餐飲引用完整，機場日早餐保留飯店／�
     if (n < 8) assert.ok((dayDining[String(n)] || []).some(item => /首選|早餐/.test(item.role)),
       `Day ${n} 沒有任何正餐首選`);
     else {
-      assert.ok(!dayDining['8'].some(item => item.stepId === 'd8-breakfast'));
+      assert.ok(dayDining['8'].some(item => item.stepId === 'd8-breakfast' && item.placeId === 'warsaw-charlotte-zlota'));
+      assert.ok(days[7].backup.some(item => /早餐備案/.test(item.label)));
       assert.ok(!dayDining['8'].some(item => item.placeId === 'warsaw-cafe-bristol'));
-      assert.match(days[7].steps.find(item => item.id === 'd8-breakfast').label, /飯店|中央車站/);
+      assert.match(days[7].steps.find(item => item.id === 'd8-breakfast').label, /Charlotte/);
     }
     const html = read(`day-${String(n).padStart(2, '0')}.html`);
     assert.ok(html.includes('id="day-food"'), `day-${String(n).padStart(2, '0')}.html 缺少當日餐飲卡`);

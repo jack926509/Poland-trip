@@ -12,7 +12,7 @@ test('真實行程目前沒有結構錯誤', () => {
   // 四段已購車票的抵達時間未顯示，明確用「抵站後」，其餘時刻都要被檢查。
   const untimedArrivals = days.flatMap(day => day.steps).filter(step => step.t === '抵站後' && step.label.startsWith('抵'));
   assert.equal(untimedArrivals.length, 4);
-  const withTime = days.flatMap(day => day.steps).filter(step => step.t && step.t !== '抵站後').length;
+  const withTime = days.flatMap(day => day.steps).filter(step => step.t && step.t !== '抵站後' && step.timingMode !== 'relative').length;
   assert.equal(result.stats.stepsChecked, withTime);
 });
 

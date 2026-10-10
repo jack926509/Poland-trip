@@ -26,7 +26,7 @@
 | 日期 | 落腳與移動 | 這一天想留下的記憶 |
 |---|---|---|
 | [10/24（六）· Day 1](https://polandtrip.xiehnet.com/day-01) | 抵達華沙 | 老城與皇家大道傍晚漫步，吃一餐波蘭地方料理，早點休息倒時差。 |
-| [10/25（日）· Day 2](https://polandtrip.xiehnet.com/day-02) | 華沙 → 克拉科夫 | Wawel、中央廣場與辛德勒工廠；晚間走進 Kazimierz，嚐嚐 Plac Nowy 的烤長麵包。 |
+| [10/25（日）· Day 2](https://polandtrip.xiehnet.com/day-02) | 華沙 → 克拉科夫 | Wawel、中央廣場與辛德勒工廠；白天先備好隔日餐點，晚餐安排 Hankki 韓式料理。 |
 | [10/26（一）· Day 3](https://polandtrip.xiehnet.com/day-03) | 克拉科夫出發，一日往返 | Auschwitz-Birkenau 導覽。留時間理解歷史，回城後安排安靜的晚餐與休息。 |
 | [10/27（二）· Day 4](https://polandtrip.xiehnet.com/day-04) | 克拉科夫 → 樂斯拉夫 | 上午參觀 Wieliczka 鹽礦，回城取行李，傍晚搭車前往下一座城市。 |
 | [10/28（三）· Day 5](https://polandtrip.xiehnet.com/day-05) | 樂斯拉夫 → 波茲南 | 廣場小矮人、教堂塔樓、全景畫與國家博物館；傍晚在座堂島看點燈，再搭車往波茲南。 |
@@ -38,9 +38,9 @@
 
 ## 把休息時間留給一口波蘭味
 
-在牛奶吧吃一餐樸實的熱食，試試波蘭餃子 **pierogi**；克拉科夫的夜晚，留給 **zapiekanka** 烤長麵包。到了波茲南，嚐聖馬丁牛角麵包，再把 **Pyra Bar** 的馬鈴薯料理放進午餐候選。
+八天的早餐、午餐、晚餐已整合到每日行程、今日卡與餐飲指南。克拉科夫安排 **Przypiecek** 餃子與 **Hankki** 韓式料理；波茲南安排 **Pyra Bar** 馬鈴薯料理，另留聖馬丁牛角麵包作為點心。原有餐廳保留為備選，機上餐與自備餐也會列出。
 
-華沙可以在 **Wedel** 喝熱巧克力，晚班火車回城後到 **Hala Koszyki** 找晚餐。樂斯拉夫若有空檔，就在老城停下喝咖啡、吃甜點。店家與餐段安排整理在[餐飲指南](https://polandtrip.xiehnet.com/practical/dining)，想帶點零食回去，也可以翻翻[超市採買](https://polandtrip.xiehnet.com/practical/groceries)與[伴手禮](https://polandtrip.xiehnet.com/practical/shopping)。
+華沙可以在 **Wedel** 喝熱巧克力，晚班火車回城後以 **Ćma** 為晚餐首選，**Hala Koszyki** 保留為備案。樂斯拉夫若有空檔，就在老城停下喝咖啡、吃甜點。店家與餐段安排整理在[餐飲指南](https://polandtrip.xiehnet.com/practical/dining)，想帶點零食回去，也可以翻翻[超市採買](https://polandtrip.xiehnet.com/practical/groceries)與[伴手禮](https://polandtrip.xiehnet.com/practical/shopping)。
 
 ## 十月底，帶著秋天出發
 

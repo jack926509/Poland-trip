@@ -1,4 +1,5 @@
-import { mealTiming, renderDiningFacts } from '../lib/dining.mjs';
+import { mealTiming, renderDiningFacts, renderMealList } from '../lib/dining.mjs';
+import { dayMeals } from '../data/day-dining.js';
 import { escapeAttr, escapeHtml, safeHttpsUrl } from '../lib/html.mjs';
 import { bookingProgress, isDepartureDay, stayForDate } from '../lib/journey.mjs';
 import { segmentForDay } from '../lib/rail.mjs';
@@ -59,10 +60,9 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref }) {
   };
   // 同一天的「首選」其實橫跨不同餐別（午餐＋晚餐＋點心），不是互斥選項。
   // 正餐與點心分開列，避免看起來像「這些全都要吃」或「只能挑一家」。
-  const primary = (dining || []).filter(item => !/替補|備案/.test(item.role));
-  const alternatives = (dining || []).filter(item => /替補|備案/.test(item.role));
-  const mainMeals = primary.filter(item => /早餐|午餐|晚餐/.test(item.role));
-  const snacks = primary.filter(item => !/早餐|午餐|晚餐/.test(item.role));
+  const remaining = (dining || []).filter(item => !item.meal);
+  const alternatives = remaining.filter(item => /替補|備案|備選|不採用|改日/.test(item.role) || item.planStatus === 'unavailable');
+  const snacks = remaining.filter(item => !alternatives.includes(item));
   const steps = day.steps.map(step => {
     const matches = (operation?.addresses || []).filter(item => item.stepLabels?.includes(step.label));
     const place = matches.length === 1 ? matches[0] : null;
@@ -156,7 +156,7 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref }) {
       <a class="today-block-link" href="${escapeHtml(dayHref)}#day-preparation">票務與當日提醒 →</a></section>` : ''}
     <section class="today-block" data-today-food><div class="today-block-head"><h3>今天吃哪</h3></div>
       <p class="source-meta">正餐按餐別各列一家；點心與候選看體力和動線插入，不必全吃。候選不代表已訂位，導航開啟後請再確認營業與最後點餐時間。</p>
-      <ul class="day-food-list">${mainMeals.map(meal).join('') || '<li class="today-empty">今天沒有指定正餐，依現場動線用餐。</li>'}</ul>
+      ${renderMealList(day, dayMeals[day.n])}
       ${snacks.length ? `<p class="today-snack-label"><b>順路點心／候選</b>（${snacks.length} 家，不必全吃）</p>
       <ul class="day-food-list">${snacks.map(meal).join('')}</ul>` : ''}
       ${alternatives.length ? `<details><summary>客滿或想換口味：${alternatives.length} 家替補</summary><ul class="day-food-list">${alternatives.map(meal).join('')}</ul></details>` : ''}

@@ -57,7 +57,7 @@ test('每個門市及每日引用均有查核狀態，事實不在每日重複�
 
 test('拆分後每間速食都有單一地址、ID、導航和可見提醒', () => {
   const branches=Object.values(dining.fastFoodBranches).flat();
-  assert.equal(branches.length,33);
+  assert.equal(branches.length,34);
   assert.equal(new Set(branches.map(x=>x.id)).size,branches.length);
   for (const [city,items] of Object.entries(dining.fastFoodBranches)) {
     const html=renderFastFoodDayList([city],{branches:dining.fastFoodBranches,chains:dining.fastFoodChains,hubs:dining.fastFoodHubs});

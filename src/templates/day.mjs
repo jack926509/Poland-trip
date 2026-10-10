@@ -1,9 +1,9 @@
-import { mealTiming, renderDiningFacts } from '../lib/dining.mjs';
+import { mealTiming, renderDiningFacts, renderMealList } from '../lib/dining.mjs';
 import { escapeHtml, safeHttpsUrl } from '../lib/html.mjs';
 import { bookingProgress } from '../lib/journey.mjs';
 import { segmentForDay } from '../lib/rail.mjs';
 import { renderDayContext } from './journey.mjs';
-import { dayDining } from '../data/day-dining.js';
+import { dayDining, dayMeals } from '../data/day-dining.js';
 import { cityGuides, cityKeysForDay, detectCity } from '../lib/city-guide.mjs';
 import { renderFastFoodDayList } from './fast-food.mjs';
 import { fastFoodBranches, fastFoodChains, fastFoodHubs } from '../data/dining.js';
@@ -69,10 +69,10 @@ function renderDayFoodItem(entry) {
  */
 function renderDayFood(day) {
   const entries = [
-    ...(dayDining[day.n] || []).map(item => diningEntry(item, day)),
+    ...(dayDining[day.n] || []).filter(item => !item.meal).map(item => diningEntry(item, day)),
     ...(day.eat || []).map(eatEntry),
   ];
-  if (!entries.length) return '';
+  if (!entries.length && !dayMeals[day.n]?.length) return '';
   const eatCount = entries.filter(entry => entry.eat).length;
   const summary = [
     entries.length - eatCount ? `${entries.length - eatCount} 家候選` : '',
@@ -81,7 +81,7 @@ function renderDayFood(day) {
 
   // 這一天的餐位落在哪幾座城市，就連到哪幾份城市指南（跨城日會有兩條）。
   // 城市頁的同一家店也會標出是哪一天並連回來，兩邊互相對得上。
-  const guideCities = [...new Set(entries
+  const guideCities = [...new Set([...entries, ...(dayMeals[day.n] || []).map(item => ({...item, meta:item.address}))]
     .map(entry => detectCity(entry.meta, entry.map))
     .filter(Boolean))]
     // 跨城日依當天的移動方向排（day.city 寫成「克拉科夫 → 樂斯拉夫」），而不是資料出現順序
@@ -94,8 +94,9 @@ function renderDayFood(day) {
 
   return `<article class="card day-dining" id="day-food" aria-labelledby="day-food-heading">
     <span class="eyebrow">Dining</span><h3 id="day-food-heading">當日餐飲</h3>
-    <p class="food-map-note">${summary}。依當天動線擇一用餐；候選尚未訂位，出發前確認營業與最後點餐時間。</p>
-    <ul class="day-food-list">${entries.map(renderDayFoodItem).join('')}</ul>
+    <p class="food-map-note">三餐各有一個主安排；條件式餐廳先確認接單，備選取代同餐，不額外加餐。時刻為波蘭當地時間，行程預留不代表已訂位。</p>
+    ${renderMealList(day, dayMeals[day.n])}
+    ${entries.length ? `<details><summary>備選、備餐與順路點心 · ${summary}</summary><ul class="day-food-list">${entries.map(renderDayFoodItem).join('')}</ul></details>` : ''}
     ${guides}
     ${fastFood}
   </article>`;

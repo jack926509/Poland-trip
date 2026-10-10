@@ -1,4 +1,5 @@
 import { days as itineraryDays, stay } from './trip.js';
+import { dayDining, dayMeals } from './day-dining.js';
 import { venueAddress } from '../lib/venues.mjs';
 import { auschwitzBus, segments, lajkonikFare } from './rail.js';
 import fs from 'node:fs';
@@ -340,7 +341,7 @@ const addressStepLabels = {
   '中央廣場 Rynek Główny': ['★ 中央廣場 + 聖瑪利亞', '★ 中央廣場 + 紡織會館'],
   '聖瑪利亞聖殿': ['★ 中央廣場 + 聖瑪利亞'],
   '紡織會館 Sukiennice': ['紡織會館 Sukiennice 快速一覽', '紡織會館 Sukiennice 採購收尾', '★ 中央廣場 + 紡織會館'],
-  'Plac Nowy': ['★ Kazimierz Plac Nowy zapiekanka 晚餐'],
+  'Plac Nowy': [],
   'Auschwitz I 訪客服務中心／入口': ['抵 Auschwitz I', '★ 英文官方導覽（已訂妥）', '導覽結束'],
   '維利奇卡鹽礦': ['★ Wieliczka 鹽礦 Tourist Route 英文團'],
   'Wrocław Główny': ['抵 Wrocław Główny'],
@@ -421,7 +422,7 @@ export const dayOperations = {
       '10/25 為非營業週日，多數一般商店關閉；餐廳與例外店家仍逐店確認。',
       `EIP 5300 已購票，${eip5300.dep} 由 Warszawa Centralna 發車；抵達時間與車廂座位待查票面。`,
     ],
-    nightChecklist: [...standardNightChecklist, '確認 Auschwitz 官方導覽姓名、入場時段、行李限制與往返車票狀態'],
+    nightChecklist: [...standardNightChecklist, '確認 Auschwitz 官方導覽姓名、入場時段、行李限制與往返車票狀態', '確認白天已在 Lajkonik 備妥明日早餐、午餐及飲水並妥善保存；明早 06:00 開始早餐、06:20 出門'],
   },
   3: {
     cityKey: 'krakow',
@@ -440,7 +441,7 @@ export const dayOperations = {
       '所有入場證必須事先線上取得；至少提前 30 分鐘抵達安檢。',
       '行程內容沉重且戶外時間長，帶水、防雨保暖層，晚間不再加排高強度活動。',
     ],
-    nightChecklist: [...standardNightChecklist, '確認鹽礦英文團票券、Kraków Główny 去程交通與退房寄行李安排'],
+    nightChecklist: [...standardNightChecklist, '確認鹽礦英文團票券、Kraków Główny 去程交通與退房寄行李安排', '準備明日早餐及備用麵包，確認 Posolone 導覽後用餐餘裕，查 Samarqand 接單與車站 KFC 備案'],
   },
   4: {
     cityKey: 'wroclaw',
@@ -462,7 +463,7 @@ export const dayOperations = {
       '鹽礦全程階梯多、地下約 17–18°C；穿好走防滑鞋並攜薄外套。',
       '克拉科夫→樂斯拉夫已購 IC 3830 16:45；Kazimierz 最遲 15:00 收尾，鹽礦延誤就跳過。',
     ],
-    nightChecklist: [...standardNightChecklist, '抵達樂斯拉夫後確認隔日 Panorama 時段票、行李寄放與往波茲南的已購車票'],
+    nightChecklist: [...standardNightChecklist, '抵達樂斯拉夫後確認隔日 Panorama 時段票、行李寄放與往波茲南的已購車票', '確認 Central Cafe 早餐供應，準備 Charlotte 備案；MAX 外帶最晚 18:15 取餐，18:35 前進站'],
   },
   5: {
     cityKey: 'poznan',
@@ -484,7 +485,7 @@ export const dayOperations = {
     dailyAlerts: [
       '點燈人沒有對外保證的出發分鐘；日落前到座堂島等待，不把 16:45 當成確定時刻。',
     ],
-    nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票'],
+    nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票', 'Ptasie Radio 08:00 早餐後暫排 09:30 教堂島；若有 09:00 固定安排，改 Charlotte 07:30 早餐'],
   },
   6: {
     cityKey: 'warsaw',
@@ -507,7 +508,7 @@ export const dayOperations = {
       '市政廳博物館整修閉館；主行程只看官方確認的 12:00 山羊鐘樓秀。',
       '聖馬丁牛角麵包尚未選定分店；待分店與營業確定後再導航，不預填地址。',
     ],
-    nightChecklist: [...standardNightChecklist, '確認 Day 7 三館已購時段、入場地址與晚餐訂位狀態'],
+    nightChecklist: [...standardNightChecklist, '核對 Day 7 三館購票狀態與入場時段，尚未訂者不要當作已購', '確認 WARSZE 12:00 午餐供應與 WYRAJ 週五營業、秋季菜單及訂位；WYRAJ 不適用再選 U Fukiera 並重算交通'],
   },
   7: {
     cityKey: 'warsaw',
@@ -527,7 +528,7 @@ export const dayOperations = {
       '三館內容量大；購票後保留票面時段，不為追完所有展區壓縮館際移動。',
       '10/31 為諸聖節前夕，今晚重查明日市區交通、機場與店家特別營運。',
     ],
-    nightChecklist: [...standardNightChecklist, '整理 TAX FREE 商品與文件，確認需海關查驗的託運品不先交運', '確認 QR 260 報到、行李額度、機場交通與護照收納位置'],
+    nightChecklist: [...standardNightChecklist, '整理 TAX FREE 商品與文件，確認需海關查驗的託運品不先交運', '確認 QR 260 報到、行李額度、機場交通與護照收納位置', '確認 Charlotte Złota 08:00 早餐，預留回飯店取行李；08:15 未入座改外帶，11:00 前到機場'],
   },
   8: {
     cityKey: 'warsaw',
@@ -557,12 +558,10 @@ const flexibleStopReason = '未選定可靠分店或為彈性活動，不預填�
 const unresolvedStepReasons = {
   1: {
     'SKM S2／S3 目標班次': dynamicTransitReason,
-    '波蘭地方料理晚餐': flexibleStopReason,
     '早睡倒時差': '休息安排不需要導航地址。',
   },
   2: {
     'EIP 5300 前往克拉科夫': dynamicTransitReason,
-    '老城午餐 · Pod Temidą': '店址 Grodzka 43 與城市主檔圖釘已有查核記錄；午餐時間仍須依已購火車的實際抵達時間調整，營業時段出發前再查。',
     '步行經 Kazimierz、Podgórze 前往辛德勒工廠': '步行沿途短停保持彈性；以辛德勒工廠入口地址為終點，17:10 前到場。',
   },
   3: {
@@ -570,35 +569,52 @@ const unresolvedStepReasons = {
     'Lajkonik · 克拉科夫 → 奧斯威辛': dynamicTransitReason,
     '回程巴士返克拉科夫': '導覽 14:15 結束後才發車，實際班次依當日選定的回程選項；上車點與時刻在售票頁確認後再導航。',
     '抵 Kraków MDA · 休息': '抵達後的休息地點保持彈性，不需要固定導航地址。',
-    '安靜晚餐沉澱情緒': flexibleStopReason,
   },
   4: {
+    '前往 Wieliczka 車站候車': '出礦口至車站需步行，班次與月台當日重算，不以午餐結束時間當作上車時間。',
     '火車到 Wieliczka Rynek-Kopalnia': dynamicTransitReason,
-    '午餐 · Bistro Posolone': '礦方餐廳位於 Daniłowicz 立坑旁、與鹽礦同一入口區；礦方未公布門牌，以鹽礦地址卡導航，出礦後依現場指標前往。',
     'Kazimierz 快速散步（有餘裕才去）': '彈性散步路線；鹽礦延誤時跳過，直接回旅館取行李。',
     'IC 3830 前往樂斯拉夫': dynamicTransitReason,
   },
   5: {
     '糖果屋雙屋 + 教堂塔樓': '教堂塔樓入口與開放狀態須依當日官方公告確認。',
-    '午餐 · Restauracja Wrocławska 候選': '餐廳每日 12:00 開門已查；排隊與實際出餐時間仍待確認，午餐後保留休息與前往座堂島的時間。',
     'IC 260 前往波茲南': dynamicTransitReason,
   },
   6: {
-    '午餐 · Pyra Bar 候選': '店址 Strzelecka 13；排隊過久時改為外帶，13:45 前出發往帝王城堡。',
     '取行李、前往 Poznań Główny': '公寓寄放與取行李地點須先向住宿確認，再前往車站。',
     '★ 聖馬丁牛角麵包 (PGI)': '尚未選定可靠分店，待分店與營業時間確認後補入。',
     'EIC 8104 前往華沙': dynamicTransitReason,
-    '放行李後晚餐': 'Ćma 位於 Hala Koszyki 內（Koszykowa 63，24/7），由飯店步行前往；Złote Tarasy 為更近的備案，當日依抵達時間擇一。',
   },
   7: {
-    '午餐（老城 → POLIN 路上）': flexibleStopReason,
-    '最後晚餐 · WYRAJ': '店址 Krochmalna 59 已由店家官網查核；尚未訂位，訂妥後依起義博物館出口步行前往。',
+    '皇家城堡 → POLIN 館內午餐': '沿皇家城堡到 POLIN 的移動段，依當日交通前往餐廳，不在中途加餐。',
   },
   8: {
-    '飯店或中央車站附近早餐': '未指定店家；飯店含餐與週六營業時間前一晚確認。',
+    '住宿出發前往 Charlotte Złota': '由 Hotel Metropol 前往 Złota 83，出發前重算交通；早餐導航見當日三餐。',
+    '返回 Metropol 取行李': '返回原住宿取行李，地址見住宿卡；不導航至餐廳。',
     'SKM S2／S3 目標班次': dynamicTransitReason,
   },
 };
+
+// 餐廳地址直接取門市主檔；自備餐維持明確的現場安排。
+for (const day of itineraryDays) {
+  const restaurantSteps = (dayDining[day.n] || []).filter(item => item.stepId);
+  for (const item of [...restaurantSteps, ...(dayMeals[day.n] || []).filter(item => !item.placeId)]) {
+    const step = day.steps.find(step => step.id === item.stepId);
+    if (!step) throw new Error(`Day ${day.n} 餐飲步驟不存在：${item.stepId}`);
+    const alreadyCovered = dayOperations[day.n].addresses.some(address => address.reliable && address.stepLabels.includes(step.label));
+    if (alreadyCovered) continue;
+    if (item.placeId && item.sourceUrl && item.verificationStatus !== 'pending' && !/待確認/.test(item.address)) {
+      dayOperations[day.n].addresses.push({ name:item.name, address:item.address, url:item.map,
+        officialUrl:item.sourceUrl, reliable:true, stepLabels:[step.label],
+        entranceNote:'依店家地址與現場招牌找入口；館內／商場店依樓層指標，營業與接單仍須確認。',
+        note:item.condition || '行程預留，不代表已訂位。' });
+    } else {
+      unresolvedStepReasons[day.n][step.label] = item.placeId
+        ? '分店或營業資訊待確認；請先看當日餐飲的來源與備案，不把搜尋結果當成已核實入口。'
+        : item.note;
+    }
+  }
+}
 
 for (const day of itineraryDays) {
   dayOperations[day.n].unresolvedSteps = Object.entries(unresolvedStepReasons[day.n] || {})

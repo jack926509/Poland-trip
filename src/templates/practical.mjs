@@ -1,4 +1,6 @@
-import { renderDiningFacts } from '../lib/dining.mjs';
+import { renderDiningFacts, renderMealList } from '../lib/dining.mjs';
+import { dayMeals, dayDining } from '../data/day-dining.js';
+import { days } from '../data/trip.js';
 import { escapeHtml } from '../lib/html.mjs';
 import { renderLayout } from './layout.mjs';
 import { cityGuideByName, dayPageForDate, cityRoutes } from '../lib/city-guide.mjs';
@@ -318,6 +320,13 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
     <tr><td>${item.city}</td><td><a href="${item.url}" target="_blank" rel="noopener"><b>${item.name}</b></a><br>${item.address}${item.mapUrl ? `<br><a href="${item.mapUrl}" target="_blank" rel="noopener">Google Maps 定位 →</a>` : ''}</td><td>${renderDiningFacts(item)}</td><td>${item.feature}</td></tr>`).join('');
   const content = `
     <div class="callout-note"><b>資料界線：</b>米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不把它們當成固定資料。高價餐廳預算已於 2026-09-08 對照旅程試算表更新；下表逐筆列出查核日期與來源，查不到一手來源的店家一律標「待確認」，訂位前仍看店家公告。</div>
+    <section class="section" id="daily-meals">
+      <div class="section-heading"><span class="section-num">Daily meals</span><h2>八天三餐與備選</h2></div>
+      <p class="lead">每日行程與今日卡共用這份安排。時刻為波蘭當地時間，候選不代表已訂位；每餐擇一，依交通與接單情況改備案。</p>
+      ${days.map(day => `<article class="card" id="meals-day-${day.n}"><h3>Day ${day.n} · ${escapeHtml(day.date)} · ${escapeHtml(day.city)}</h3>${renderMealList(day, dayMeals[day.n])}
+        <details><summary>保留的備選、備餐與點心</summary><ul class="check-list">${dayDining[day.n].filter(item => !item.meal).map(item => `<li><b>${escapeHtml(item.role)} · ${escapeHtml(item.name)}</b><p>${escapeHtml(item.note)}</p></li>`).join('')}</ul></details>
+        <p><a href="../day-${String(day.n).padStart(2,'0')}.html#day-food">當日完整動線與餐廳導航 →</a></p></article>`).join('')}
+    </section>
     <section>
       <div class="section-heading"><span class="section-num">Guide</span><h2>2026 米其林總表</h2></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>星級</th><th>星級餐廳</th><th>Bib Gourmand</th></tr></thead><tbody>${summaryRows}</tbody></table></div>

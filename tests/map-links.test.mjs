@@ -196,7 +196,7 @@ test('速食與每日行程、城市指南互相接得上', async () => {
     }
     const merged = mergeCityDining(cityKey, [], [], [], rows);
     const names = merged.map(item => item.name);
-    for (const row of rows) assert.ok(names.includes(row.name), `${cityKey}「${row.name}」沒有併進餐廳表`);
+    for (const row of rows) assert.ok(merged.some(item => item.placeId === row.placeId), `${cityKey}「${row.name}」沒有併進餐廳表`);
   }
 
   // 每一天都要指得到城市，速食備援才不會在某幾天憑空消失

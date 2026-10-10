@@ -1,3 +1,4 @@
+import { diningPlaces } from './dining-places.js';
 // 連鎖速食資料與一般餐廳分開維護；每筆 branch 只代表一間實體門市。
 // 官方 locator 無法在本輪逐店重現者保留候選，但明確標為 pending。
 const chainMap = query => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
@@ -63,6 +64,12 @@ const verified = ({id, chain, cityKey, address, note, query, hours, sourceUrl, c
   checkedAt, verificationStatus,
 });
 
+// 已排入三餐的分店共用餐飲主檔，避免速食備案與正餐顯示不同時段。
+const plannedBranch = (id, chain, note) => {
+  const place = diningPlaces[id];
+  return {id, chain, cityKey:place.cityKey, address:place.address, note, map:place.map, hours:place.hours, sourceUrl:place.sourceUrl, checkedAt:place.checkedAt, verificationStatus:place.verificationStatus};
+};
+
 export const fastFoodBranches = {
   warsaw: [
     pending({id: 'warsaw-kfc-zlote-tarasy', chain: 'KFC', cityKey: 'warsaw', address: 'Złota 59', note: 'Złote Tarasy，中央車站旁；本輪未能由官方 locator 逐店重現。', query: 'KFC Złote Tarasy, Złota 59, Warszawa', sourceUrl: 'https://kfc.pl/restauracje'}),
@@ -85,12 +92,13 @@ export const fastFoodBranches = {
     pending({id: 'krakow-salad-story-galeria-kazimierz', chain: 'Salad Story', cityKey: 'krakow', address: 'Podgórska 34', note: 'Galeria Kazimierz；本輪未能由官方 locator 逐店重現。', query: 'Salad Story Galeria Kazimierz, Podgórska 34, Kraków', sourceUrl: 'https://saladstory.com/lokale/'}),
   ],
   wroclaw: [
+    plannedBranch('wroclaw-kfc-pkp', 'KFC', 'Wrocław Główny 站內，Samarqand 晚抵或 MAX 久候時的備案。'),
     pending({id: 'wroclaw-kfc-swidnicka', chain: 'KFC', cityKey: 'wroclaw', address: 'Świdnicka 13', note: '老城中心；本輪未能由官方 locator 逐店重現。', query: 'KFC Świdnicka 13, Wrocław', sourceUrl: 'https://kfc.pl/restauracje'}),
     pending({id: 'wroclaw-mcdonalds-rynek', chain: "McDonald's", cityKey: 'wroclaw', address: 'Rynek 30', note: '中央廣場；本輪未能由官方 locator 逐店重現。', query: "McDonald's Rynek 30, Wrocław", sourceUrl: 'https://mcdonalds.pl/restauracje/'}),
     verified({id: 'wroclaw-pasibus-swidnicka', chain: 'Pasibus', cityKey: 'wroclaw', address: 'Świdnicka 11', note: '老城街邊店。', query: 'Pasibus Świdnicka 11, Wrocław', hours: '週一–四 12:00–00:00；週五–六 12:00–02:00；週日 12:00–00:00', sourceUrl: 'https://pasibus.pl/lokalizacje/wroclaw/lokal-pasibus-stacja-swidnicka/', checkedAt: '2026-10-06'}),
     verified({id: 'wroclaw-pasibus-wroclavia', chain: 'Pasibus', cityKey: 'wroclaw', address: 'Sucha 1', note: 'Wroclavia，中央車站旁。', query: 'Pasibus Wroclavia, Sucha 1, Wrocław', hours: '週一–六 09:00–22:00；週日 11:00–21:00', sourceUrl: 'https://pasibus.pl/lokalizacje/wroclaw/lokal-pasibus-wroclavia/'}),
     verified({id: 'wroclaw-max-galeria-dominikanska', chain: 'MAX Premium Burgers', cityKey: 'wroclaw', address: 'plac Dominikański 3', note: 'Galeria Dominikańska，市中心深夜保底。', query: 'MAX Premium Burgers Galeria Dominikańska, plac Dominikański 3, Wrocław', hours: '週一–四、週日 09:00–04:00；週五–六 09:00–05:00', sourceUrl: 'https://www.maxpremiumburgers.pl/znajdz-max/restauracje/wroclaw/'}),
-    verified({id: 'wroclaw-max-wroclavia', chain: 'MAX Premium Burgers', cityKey: 'wroclaw', address: 'Sucha 1', note: 'Wroclavia，中央車站旁。', query: 'MAX Premium Burgers Wroclavia, Sucha 1, Wrocław', hours: '週一–四 08:00–01:00；週五–六 07:00–02:00；週日 07:00–01:00', sourceUrl: 'https://www.maxpremiumburgers.pl/znajdz-max/restauracje/wroclaw3/'}),
+    plannedBranch('wroclaw-max-wroclavia', 'MAX Premium Burgers', 'Wroclavia，中央車站旁；取行李後外帶，勿壓縮進站時間。'),
     verified({id: 'wroclaw-berlin-doner-pasaz-grunwaldzki', chain: 'Berlin Döner Kebap', cityKey: 'wroclaw', address: 'plac Grunwaldzki 22', note: 'Pasaż Grunwaldzki，大學區，離老城稍遠。', query: 'Berlin Döner Kebap Pasaż Grunwaldzki, plac Grunwaldzki 22, Wrocław', hours: '週一–六 10:00–22:00；週日 12:00–20:00', sourceUrl: 'https://www.berlindonerkebap.com/restauracje/wrocaw/pasaz_grunwaldzki/'}),
     pending({id: 'wroclaw-salad-story-wroclavia', chain: 'Salad Story', cityKey: 'wroclaw', address: 'Sucha 1', note: 'Wroclavia，中央車站旁；本輪未能由官方 locator 逐店重現。', query: 'Salad Story Wroclavia, Sucha 1, Wrocław', sourceUrl: 'https://saladstory.com/lokale/'}),
   ],
