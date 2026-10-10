@@ -152,7 +152,13 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref }) {
     ${trainSegment ? `<section class="today-block today-transport"><div class="today-block-head"><h3>今天的城際移動</h3></div>
       <p class="today-transport-status"><b>${escapeHtml(trainSegment.leg || '訂票狀態待確認')}</b></p>
       <p class="today-transport-route"><b>${escapeHtml(trainSegment.from)}</b> → <b>${escapeHtml(trainSegment.to)}</b></p>
-      <p class="today-transport-time"><b>${escapeHtml(trainSegment.dep)} – ${escapeHtml(trainSegment.arr)}</b><span>${escapeHtml(trainSegment.type)} · ${escapeHtml(trainSegment.dur)}</span></p>
+      ${(() => {
+        // 抵達時間／車程未知（「待查票面」）時大字只寫「發車」，「待查票面」只在上面狀態列出現一次
+        // （UX 審查第 6 項：原本同一區塊連寫三次）。
+        const arrKnown = /^\d{1,2}:\d{2}/.test(trainSegment.arr || '');
+        const durKnown = trainSegment.dur && !/待查/.test(trainSegment.dur);
+        return `<p class="today-transport-time"><b>${escapeHtml(trainSegment.dep)}${arrKnown ? ` – ${escapeHtml(trainSegment.arr)}` : ' 發車'}</b><span>${escapeHtml(trainSegment.type)}${durKnown ? ` · ${escapeHtml(trainSegment.dur)}` : ''}</span></p>`;
+      })()}
       <a class="today-block-link" href="${escapeHtml(dayHref)}#day-preparation">票務與當日提醒 →</a></section>` : ''}
     <section class="today-block" data-today-food><div class="today-block-head"><h3>今天吃哪</h3></div>
       <p class="source-meta">正餐按餐別各列一家；點心與候選看體力和動線插入，不必全吃。候選不代表已訂位，導航開啟後請再確認營業與最後點餐時間。</p>

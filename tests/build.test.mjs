@@ -771,7 +771,10 @@ test('手機每日時間表提供卡片欄位標籤，不依賴橫向捲動', ()
   assert.match(day, /data-label="時間"/);
   assert.match(day, /data-label="時長"/);
   assert.match(css, /@media\s*\(max-width:\s*700px\)[\s\S]*\.table-schedule\s+thead\s*\{[^}]*display\s*:\s*none/s);
-  assert.match(css, /\.table-schedule\s+td::before\s*\{[^}]*content\s*:\s*attr\(data-label\)/s);
+  // 2026-10-10 UX 審查第 3 項：時間表手機版改精簡版，不再逐欄顯示欄名，
+  // 改由左欄大字時間＋右欄行程；其他表格仍沿用 data-label 欄名。
+  assert.match(css, /\.table-editorial\.table-schedule\s+td\[data-label\]::before\s*\{[^}]*content\s*:\s*none/s);
+  assert.match(css, /\.table-editorial\s+td\[data-label\]::before\s*\{[^}]*content\s*:\s*attr\(data-label\)/s);
 });
 
 test('所有本機連結都能解析，且沒有破壞 GitHub Pages 的根路徑連結', () => {

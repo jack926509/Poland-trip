@@ -1496,5 +1496,5 @@ export function resolveDining(item) {
   if (!place) throw new Error('找不到餐廳門市：' + item.placeId);
   return {...place, ...item, name:place.name, address:place.address, map:place.map, mapUrl:place.map,
     hours:place.hours, url:place.sourceUrl, note:item.note ?? place.notes.map(note => note.replace(/[；。]+$/, '')).join('；'),
-    highlight:place.notes.map(note => note.replace(/[；。]+$/, '')).join('；'), feature:[...place.notes,place.verificationNote].filter(Boolean).join('；')};
+    highlight:place.notes.map(note => note.replace(/[；。]+$/, '')).join('；'), feature:[...place.notes.map(note => note.replace(/[；。]+$/, '')),place.verificationNote].filter(Boolean).join('；')};
 }

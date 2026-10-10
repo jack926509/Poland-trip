@@ -66,8 +66,20 @@ function renderFlightTable(legs) {
   </table></div>`;
 }
 
-function renderBookingNotice() {
-  return '<div class="callout-note"><b>訂票狀態由人工維護，未連線查詢即時庫存。</b><p>「可查／購」只表示可前往售票頁查詢，不代表有票或已訂妥。付款前請核對指定日期、場次與價格；各項最近查核日期列於<a href="../practical/todos.html">待辦事項</a>，未記錄日期的狀態請重新確認。</p></div>';
+/**
+ * 實用資訊頁開頭的資料聲明（UX 審查第 9 項）：原本是一整段框，手機第一個螢幕
+ * 被它和刊頭佔滿。改成一行可收合的小字，內容一字不少，點開才看。
+ */
+function renderDisclaimer(title, bodyHtml) {
+  return `<details class="callout-note practical-disclaimer"><summary>${title}</summary><p>${bodyHtml}</p></details>`;
+}
+
+/** 在待辦頁本身時不輸出連回待辦頁的連結（原本按了沒反應）。 */
+function renderBookingNotice({ onTodosPage = false } = {}) {
+  const where = onTodosPage
+    ? '各項最近查核日期列在本頁每一項下方'
+    : '各項最近查核日期列於<a href="../practical/todos.html">待辦事項</a>';
+  return renderDisclaimer('訂票狀態由人工維護，未連線查詢即時庫存。', `「可查／購」只表示可前往售票頁查詢，不代表有票或已訂妥。付款前請核對指定日期、場次與價格；${where}，未記錄日期的狀態請重新確認。`);
 }
 
 const URGENCY_TAGS = {
@@ -282,26 +294,43 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
   return renderPracticalLayout('訂票與交通', 'Booking plan', '先看最急的票，再核對火車、航班與已確認住宿。尚未確認的時段保留原樣，不用猜。', content, 'practical/booking.html');
 }
 
+// 待辦日期寫成「10/25」；轉成可排序的數字，沒有日期的排最後。
+function todoSortKey(item) {
+  const match = String(item.date || '').match(/(\d{1,2})\/(\d{1,2})/);
+  return match ? Number(match[1]) * 100 + Number(match[2]) : 9999;
+}
+
+function renderTodoItem(item) {
+  const open = isOpenTodoStatus(item.status);
+  const checked = toComparableDate(item.checkedAt);
+  const recheck = toComparableDate(item.recheckAt);
+  return `<li class="todo-item${open ? '' : ' is-done'}">
+        <div class="todo-head"><span class="todo-date">${item.date}</span><b class="todo-name">${item.name}</b><span class="${open ? 'tag-todo' : 'tag-muted'}">${item.status}</span></div>
+        <p class="todo-action">${item.action}${item.url ? ` <a href="${item.url}" target="_blank" rel="noopener">開啟處理頁 →</a>` : ''}</p>
+        <p class="source-meta todo-checked">最近人工查核：${checked ? `<time datetime="${checked}">${checked}</time>` : '未記錄，請重查'}${recheck ? ` · 下次查核：<time datetime="${recheck}">${recheck}</time>` : ''}</p>
+      </li>`;
+}
+
 export function renderTodos({ todoGroups }) {
   const allItems = todoGroups.flatMap(group => group.items);
   const total = allItems.filter(item => isOpenTodoStatus(item.status)).length;
-  const groupsHtml = todoGroups.map((group, index) => {
-    const rows = group.items.map(item => `<tr>
-      <td class="number"><b>${item.date}</b></td>
-      <td><b>${item.name}</b><br><span class="${item.status === '已購票' || item.status === '已訂妥' ? 'tag-muted' : 'tag-todo'}">${item.status}</span></td>
-      <td>${toComparableDate(item.checkedAt) ? `<time datetime="${toComparableDate(item.checkedAt)}">${toComparableDate(item.checkedAt)}</time>` : '未記錄，請重查'}${toComparableDate(item.recheckAt) ? `<br>下次查核：<time datetime="${toComparableDate(item.recheckAt)}">${toComparableDate(item.recheckAt)}</time>` : ''}</td>
-      <td>${item.action}${item.url ? `<br><a href="${item.url}" target="_blank" rel="noopener">開啟處理頁 →</a>` : ''}</td>
-    </tr>`).join('');
+  // UX 審查第 5 項：每類先列未完成（依日期），已完成的收進「已完成 N 項」；
+  // 每項改成「日期＋事項＋狀態」一行標題、下一步一段文字、查核日期一行小字。
+  const groupsHtml = todoGroups.map(group => {
+    const byDate = [...group.items].sort((a, b) => todoSortKey(a) - todoSortKey(b));
+    const openItems = byDate.filter(item => isOpenTodoStatus(item.status));
+    const doneItems = byDate.filter(item => !isOpenTodoStatus(item.status));
     return `<section class="section" id="todo-${group.id}">
       <div class="section-heading"><span class="section-num">${group.eyebrow}</span><h2>${group.title}</h2></div>
       <p class="lead">${group.intro}</p>
-      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>日期</th><th>事項／狀態</th><th>最近人工查核</th><th>下一步</th></tr></thead><tbody>${rows}</tbody></table></div>
+      ${openItems.length ? `<ul class="todo-list" data-todo-open>${openItems.map(renderTodoItem).join('')}</ul>` : '<p class="source-meta">這一類已全部完成。</p>'}
+      ${doneItems.length ? `<details class="todo-done"><summary>已完成 ${doneItems.length} 項</summary><ul class="todo-list" data-todo-done>${doneItems.map(renderTodoItem).join('')}</ul></details>` : ''}
     </section>`;
   }).join('');
 
   const content = `
-    ${renderBookingNotice()}
-    <div class="callout-risk"><span class="tag-todo">${total} 項待辦</span><p>共 ${allItems.length} 項，已完成的仍保留在下表供核對。完成後請將票券與訂位資訊離線保存；未開賣項目仍以官方系統實際可售狀態為準。</p></div>
+    ${renderBookingNotice({ onTodosPage: true })}
+    <div class="callout-risk"><span class="tag-todo">${total} 項待辦</span><p>共 ${allItems.length} 項；每類先列未完成，已完成的收在「已完成」裡供核對。完成後請將票券與訂位資訊離線保存；未開賣項目仍以官方系統實際可售狀態為準。</p></div>
     ${groupsHtml}`.trim();
 
   return renderPracticalLayout('待辦事項', 'Action list', '城際交通、景點與餐飲訂位集中在一頁。先處理有日期與指定場次的票，再處理彈性訂位。', content, 'practical/todos.html');
@@ -316,10 +345,28 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
     </tr>`).join('');
   const reservationRows = michelinReservations.map(item => `
     <tr><td>${item.mapUrl ? `<a href="${item.mapUrl}" target="_blank" rel="noopener"><b>${item.restaurant}</b></a>` : `<b>${item.restaurant}</b>`}</td><td class="number">${item.perPerson}</td><td>${item.channel}${item.mapUrl ? `<br><a href="${item.mapUrl}" target="_blank" rel="noopener">Google Maps 定位 →</a>` : ''}${cityLink(item.restaurant, '#city-dining') ? `<br>${cityLink(item.restaurant, '#city-dining')}` : ''}</td></tr>`).join('');
-  const hoursRows = verifiedRestaurantHours.map(item => `
-    <tr><td>${item.city}</td><td><a href="${item.url}" target="_blank" rel="noopener"><b>${item.name}</b></a><br>${item.address}${item.mapUrl ? `<br><a href="${item.mapUrl}" target="_blank" rel="noopener">Google Maps 定位 →</a>` : ''}</td><td>${renderDiningFacts(item)}</td><td>${item.feature}</td></tr>`).join('');
+  // 營業時間（UX 審查第 4 項）：原本 4 欄表格在手機一家一張長卡、約 20,000px。
+  // 改為依城市分組，每家只露「店名＋導航＋營業時間＋行程安排＋特色一行」，
+  // 地址、查核狀態與日期、來源、菜單說明全部收進「查核紀錄」，資料一筆不少。
+  const hoursCities = [...new Set(verifiedRestaurantHours.map(item => item.city))];
+  const hoursHtml = hoursCities.map(city => {
+    const items = verifiedRestaurantHours.filter(item => item.city === city);
+    const list = items.map(item => {
+      const day = days.find(day => day.n === item.dayN);
+      const step = day?.steps.find(step => step.id === item.stepId);
+      const plan = day ? `Day ${day.n} · ${escapeHtml(item.role)}${step ? ` · ${escapeHtml(step.t)}` : ''}` : escapeHtml(item.role);
+      return `<li class="day-food-item hours-item">
+        <div class="day-food-head"><div class="day-food-title"><span class="eyebrow">${plan}</span><h4><a href="${item.url}" target="_blank" rel="noopener">${item.name}</a></h4></div>
+        ${item.mapUrl ? `<a class="day-food-map" href="${item.mapUrl}" target="_blank" rel="noopener" aria-label="在新視窗開啟 ${escapeHtml(item.name)} 的 Google Maps 導航">導航 ↗</a>` : ''}</div>
+        <p class="hours-line"><b>營業：</b>${item.hours}</p>
+        ${item.highlight ? `<p class="food-map-note">${item.highlight}</p>` : ''}
+        <details><summary>查核紀錄、地址與菜單</summary><p class="food-map-note">${item.address}</p>${renderDiningFacts(item, { includeHours: false })}</details>
+      </li>`;
+    }).join('');
+    return `<article class="card hours-city-group"><h3>${escapeHtml(city)}（${items.length} 家）</h3><ul class="day-food-list">${list}</ul></article>`;
+  }).join('');
   const content = `
-    <div class="callout-note"><b>資料界線：</b>米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不把它們當成固定資料。高價餐廳預算已於 2026-09-08 對照旅程試算表更新；下表逐筆列出查核日期與來源，查不到一手來源的店家一律標「待確認」，訂位前仍看店家公告。</div>
+    ${renderDisclaimer('資料界線：米其林名單、營業時間與預算的來源', '米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不把它們當成固定資料。高價餐廳預算已於 2026-09-08 對照旅程試算表更新；下表逐筆列出查核日期與來源，查不到一手來源的店家一律標「待確認」，訂位前仍看店家公告。')}
     <section class="section" id="daily-meals">
       <div class="section-heading"><span class="section-num">Daily meals</span><h2>八天三餐與備選</h2></div>
       <p class="lead">每日行程與今日卡共用這份安排。時刻為波蘭當地時間，候選不代表已訂位；每餐擇一，依交通與接單情況改備案。</p>
@@ -331,9 +378,10 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
       <div class="section-heading"><span class="section-num">Guide</span><h2>2026 米其林總表</h2></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>星級</th><th>星級餐廳</th><th>Bib Gourmand</th></tr></thead><tbody>${summaryRows}</tbody></table></div>
     </section>
-    <section class="section">
+    <section class="section" id="restaurant-hours">
       <div class="section-heading"><span class="section-num">Hours</span><h2>行程餐廳營業時間</h2></div>
-      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>餐廳／地址</th><th>店家公告時間</th><th>特色與限制</th></tr></thead><tbody>${hoursRows}</tbody></table></div>
+      <p class="lead">依城市分組；店名連到店家公告，「導航」開 Google Maps。查核日期、來源與菜單說明收在每家的「查核紀錄」裡。</p>
+      <div class="hours-city-list">${hoursHtml}</div>
     </section>
     <section class="section">
       <div class="section-heading"><span class="section-num">Reserve</span><h2>訂位與每人預算</h2></div>
@@ -401,7 +449,7 @@ export function renderTransit({ transitFares, airportTransit, recommendedApps, p
   const appCards = recommendedApps.map(item => `<article class="card"><h3>${item.name}</h3><p>${item.desc}</p></article>`).join('');
   const practicalCards = practical.map(item => `<article class="card"><span class="eyebrow">${item.tag}</span><h3>${item.name}</h3><p>${item.note}</p></article>`).join('');
   const content = `
-    <div class="callout-note"><b>2026/09/08 複核：</b>華沙、克拉科夫與波茲南票價已對照各城市官方價目；樂斯拉夫保留現行票價並明確標示出發前重查。班次、改道與售票機規則仍屬動態資料。</div>
+    ${renderDisclaimer('2026/09/08 複核：票價來源與仍會變動的部分', '華沙、克拉科夫與波茲南票價已對照各城市官方價目；樂斯拉夫保留現行票價並明確標示出發前重查。班次、改道與售票機規則仍屬動態資料。')}
     <section>
       <div class="section-heading"><span class="section-num">Fares</span><h2>四城市內票價</h2></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>短程</th><th>90 分</th><th>24 小時</th><th>備註</th></tr></thead><tbody>${fareRows}</tbody></table></div>

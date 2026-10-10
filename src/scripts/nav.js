@@ -127,6 +127,33 @@
   window.addEventListener('hashchange', revealProductHash);
 
   /**
+   * 手機時間表：說明超過 2 行先收成 2 行，按「展開全文」才看完整內容
+   * （UX 審查第 3 項）。沒有 JS 或桌機時照樣顯示全文，不會丟資訊。
+   */
+  const clampScheduleNotes = () => {
+    if (typeof window.matchMedia !== 'function' || !window.matchMedia('(max-width: 700px)').matches) return;
+    document.querySelectorAll('.table-schedule .timeline-note').forEach(note => {
+      note.classList.add('is-clamped');
+      if (note.scrollHeight <= note.clientHeight + 2) {
+        note.classList.remove('is-clamped');
+        return;
+      }
+      const toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'note-toggle';
+      toggle.textContent = '展開全文';
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.addEventListener('click', () => {
+        const clamped = note.classList.toggle('is-clamped');
+        toggle.textContent = clamped ? '展開全文' : '收合';
+        toggle.setAttribute('aria-expanded', String(!clamped));
+      });
+      note.after(toggle);
+    });
+  };
+  clampScheduleNotes();
+
+  /**
    * 資料庫等頁面超過 19000px，捲到底沒有回頭路。
    */
   const toTop = document.createElement('button');

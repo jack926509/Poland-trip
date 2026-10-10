@@ -2573,13 +2573,13 @@ figure.media-unavailable > img {
 }
 
 /* 旅途中優先查日期、時程與導航，保留原旅行誌色彩。 */
-.trip-day-picker, .day-shortcuts {
+.trip-day-picker {
   display: flex;
   flex-wrap: wrap;
   gap: .5rem;
   margin: 0 0 1.25rem;
 }
-.trip-day-picker a, .day-shortcuts a {
+.trip-day-picker a {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2595,7 +2595,7 @@ figure.media-unavailable > img {
 }
 .trip-day-picker a { flex: 1 1 7rem; }
 .trip-day-picker span { color: var(--ink-soft); }
-.trip-day-picker a:hover, .day-shortcuts a:hover {
+.trip-day-picker a:hover {
   background: var(--accent-pale);
 }
 .journal-day-header { min-height: 18rem; }
@@ -2628,7 +2628,6 @@ figure.media-unavailable > img {
   .journal-day-heading h1 { font-size: clamp(1.65rem, 6.8vw, 2.2rem); }
   .journal-day-cover img { height: 9rem; width: 100%; object-fit: cover; }
   .journal-day-cover figcaption { font-size: .75rem; }
-  .day-shortcuts a { flex: 1 1 auto; padding: .65rem .5rem; }
   .journal-cover { min-height: 0; }
   .journal-cover-copy { min-height: 0; gap: 1rem; padding: 1.5rem; }
   .journal-cover-photo { max-height: 12rem; object-fit: cover; }
@@ -2700,17 +2699,6 @@ figure.media-unavailable > img {
   height: 100%;
 }
 
-/* --- 每日快速導覽：吸附在頂端，時間表／導航／訂票隨時一按 --- */
-.day-shortcuts {
-  position: sticky;
-  z-index: 40;
-  top: 72px;
-  margin: 0 -3rem 1.5rem;
-  padding: 0.5rem 3rem;
-  border-bottom: 1px solid var(--line);
-  background: var(--paper);
-}
-
 .journal-day .section,
 .journal-city .section,
 .journal-practical .section {
@@ -2720,11 +2708,6 @@ figure.media-unavailable > img {
 @media (max-width: 920px) {
   .journal-cover h1 {
     font-size: clamp(3rem, 11vw, 6rem);
-  }
-
-  .day-shortcuts {
-    margin-inline: -1.5rem;
-    padding-inline: 1.5rem;
   }
 }
 
@@ -2779,14 +2762,6 @@ figure.media-unavailable > img {
   .site-search-summary:empty {
     min-height: 0;
     margin: 0;
-  }
-
-  /* 手機上主導覽不吸附，快速導覽貼齊視窗頂端 */
-  .day-shortcuts {
-    top: 0;
-    margin-inline: -1.5rem;
-    padding-inline: 1.5rem;
-    box-shadow: 0 6px 16px rgb(44 37 34 / 8%);
   }
 
   /* 保留原本手機封面高度，別讓填滿規則把圖片撐高 */
@@ -3068,6 +3043,90 @@ a[href^="tel:"]:focus-visible {
   }
 }
 
+/* --- 當日時間表手機精簡版（UX 審查第 3 項）：上面通用卡片規則讓每個時段
+       「時間／行程／花費／時長」各佔兩行，一站 300～500px。時間表改成
+       左欄大字時間、右欄行程＋說明，「花費 · 時長」併成一行小字，不顯示欄名。
+       說明超過 2 行由 nav.js 加上 .is-clamped 與「展開全文」按鈕。 --- */
+@media (max-width: 700px) {
+  .table-editorial.table-schedule tbody {
+    gap: 0.6rem;
+  }
+
+  .table-editorial.table-schedule tr {
+    display: grid;
+    grid-template-columns: 4.4rem auto minmax(0, 1fr);
+    padding: 0.7rem 0.85rem;
+  }
+
+  .table-editorial.table-schedule td {
+    padding: 0;
+    border-top: 0;
+  }
+
+  .table-editorial.table-schedule td[data-label]::before {
+    display: none;
+    content: none;
+  }
+
+  .table-editorial.table-schedule td:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    padding-right: 0.6rem;
+    color: var(--accent-dark);
+    font-size: 1.15rem;
+    line-height: 1.35;
+  }
+
+  .table-editorial.table-schedule td:nth-child(2) {
+    grid-column: 2 / -1;
+    grid-row: 1;
+  }
+
+  .table-editorial.table-schedule td:nth-child(3),
+  .table-editorial.table-schedule td:nth-child(4) {
+    grid-row: 2;
+    margin-top: 0.3rem;
+    color: var(--ink-soft);
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+
+  .table-editorial.table-schedule td:nth-child(3) { grid-column: 2; }
+  .table-editorial.table-schedule td:nth-child(4) { grid-column: 3; }
+
+  .table-editorial.table-schedule td:nth-child(3):not([data-empty]) + td:not([data-empty])::before {
+    display: inline;
+    padding: 0 0.35rem;
+    content: "·";
+    font: inherit;
+    letter-spacing: 0;
+  }
+
+  .table-schedule .timeline-note.is-clamped {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .table-schedule .note-toggle {
+    display: block;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--accent-dark);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-align: left;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
 /* --- 日期捷徑標出「今天」（波蘭當地日期，由 nav.js 加上）--- */
 .trip-day-picker a.is-today {
   border-color: var(--accent);
@@ -3129,9 +3188,11 @@ a[href^="tel:"]:focus-visible {
 }
 
 @media (max-width: 700px) {
+  /* 手機底部快捷列（.mobile-quick-nav，z-index 900、高約 65px）固定在
+     max(.75rem, safe-area) 的位置，回頂端要整顆浮在它上方才按得到。 */
   .to-top {
     right: 0.9rem;
-    bottom: 0.9rem;
+    bottom: calc(max(0.75rem, env(safe-area-inset-bottom)) + 65px + 0.75rem);
   }
 }
 
@@ -4030,13 +4091,11 @@ nav.section-heading > a:hover {
 }
 
 /* --- 日期捷徑與當日捷徑：分段控制器 --- */
-.trip-day-picker,
-.day-shortcuts {
+.trip-day-picker {
   gap: 0.5rem;
 }
 
-.trip-day-picker a,
-.day-shortcuts a {
+.trip-day-picker a {
   border: 1px solid rgb(142 126 112 / 30%);
   border-radius: var(--radius-md);
   background: rgb(255 253 248 / 78%);
@@ -4045,14 +4104,9 @@ nav.section-heading > a:hover {
     transform 160ms var(--ease), box-shadow 160ms var(--ease);
 }
 
-.trip-day-picker a:hover,
-.day-shortcuts a:hover {
+.trip-day-picker a:hover {
   box-shadow: var(--shadow-2);
   transform: translateY(-2px);
-}
-
-.day-shortcuts a {
-  border-radius: 999px;
 }
 
 /* --- 地圖 --- */
@@ -4153,24 +4207,6 @@ nav.section-heading > a:hover {
 }
 
 /* --- Edition 03 續：現場操作元件 --- */
-
-/* 當日捷徑固定在刊頭下方，長頁面隨時可跳章節 */
-.day-shortcuts {
-  position: sticky;
-  z-index: 60;
-  top: 0;
-  margin-inline: calc(clamp(0.5rem, 2vw, 1.25rem) * -1);
-  padding: 0.6rem clamp(0.5rem, 2vw, 1.25rem);
-  border-radius: var(--radius-lg);
-  background: rgb(248 242 231 / 92%);
-  backdrop-filter: blur(10px);
-}
-
-@media (min-width: 701px) {
-  .day-shortcuts {
-    top: 76px;
-  }
-}
 
 /* 地址簿與移動步驟：導航連結做成可按的小膠囊 */
 .operation-address a,
@@ -4278,11 +4314,6 @@ nav.section-heading > a:hover {
 }
 
 @media (max-width: 700px) {
-  .day-shortcuts {
-    margin-inline: 0;
-    border-radius: 0;
-  }
-
   .operation-routes li {
     padding-left: 2.2rem;
   }
@@ -4610,17 +4641,77 @@ h3 {
   padding-top: 0.5rem;
 }
 
-/* --- sticky 當日捷徑：半透明底會讓底下的標題透出來（實測手機捲動時
-       「當日時間表」浮在膠囊後面），改為幾乎不透明並加下緣陰影分層。 --- */
+/* --- 當日捷徑（.day-shortcuts）：全站唯一一處定義（2026-10-10 由原本
+       散落 8 處、後蓋前的規則合併而來，最終樣式不變）。
+       吸附在刊頭下方，長頁面隨時可跳章節；門票頁的城市 chip 也共用。
+       手機版改成一行四格等寬（UX 審查第 2 項），吸頂時只佔約 60px。 --- */
 .day-shortcuts {
+  position: sticky;
+  z-index: 60;
+  top: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 calc(clamp(0.5rem, 2vw, 1.25rem) * -1) 1.5rem;
+  padding: 0.6rem clamp(0.5rem, 2vw, 1.25rem);
+  border-bottom: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  /* 半透明底會讓底下的標題透出來（實測手機捲動時「當日時間表」浮在
+     膠囊後面），改為幾乎不透明並加下緣陰影分層。 */
   background: rgb(247 241 230 / 97%);
   box-shadow: 0 8px 18px rgb(60 45 34 / 7%);
+  backdrop-filter: blur(10px);
+}
+
+.day-shortcuts a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid rgb(142 126 112 / 30%);
+  border-radius: 999px;
+  background: rgb(255 253 248 / 78%);
+  box-shadow: var(--shadow-1);
+  color: var(--ink);
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: background-color 160ms var(--ease), border-color 160ms var(--ease),
+    transform 160ms var(--ease), box-shadow 160ms var(--ease);
+}
+
+.day-shortcuts a:hover {
+  background: var(--accent-pale);
+  box-shadow: var(--shadow-2);
+  transform: translateY(-2px);
+}
+
+@media (min-width: 701px) {
+  .day-shortcuts {
+    top: 76px;
+  }
 }
 
 @media (max-width: 700px) {
   .day-shortcuts {
+    flex-wrap: nowrap;
+    gap: 0.3rem;
+    margin-inline: 0;
+    padding: 0.4rem 0.35rem;
+    border-radius: 0;
     background: var(--paper);
     box-shadow: 0 6px 14px rgb(60 45 34 / 10%);
+  }
+
+  .day-shortcuts a {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 0.4rem 0.15rem;
+    font-size: 0.8125rem;
+    line-height: 1.25;
+    text-align: center;
+    white-space: nowrap;
   }
 }
 
@@ -4734,10 +4825,79 @@ h3 {
   text-underline-offset: 3px;
 }
 
-/* 窄欄時標題容易被 44px 的膠囊擠成一字一行，改為連結換到下一行靠左。 */
+/* 窄欄：導航膠囊一律固定在右上角、不換行，店名在左欄自行換行
+   （UX 審查第 8 項：原本店名長時膠囊掉到下一行靠左，同一張卡位置忽左忽右）。
+   390px 寬時左欄仍有約 200px，不會被擠成一字一行。 */
 @media (max-width: 480px) {
-  .day-food-head { flex-wrap: wrap; }
-  .day-food-map { margin-top: .2rem; }
+  .day-food-head { flex-wrap: nowrap; gap: .5rem; }
+  .day-food-map { padding: .3rem .65rem; }
+}
+
+/* 收合標題（UX 審查第 7 項）：原本只有 22～28px 高、只靠小三角形，
+   戶外單手難按。統一 44px 觸控高度，前面用「＋／－」標示展開狀態。 */
+.day-food-item details > summary,
+#daily-meals .card > details > summary,
+.day-food-fastfood > summary,
+.today-fastfood > summary,
+.todo-done > summary,
+.practical-disclaimer > summary,
+.day-dining > details > summary,
+.city-map-unpinned > summary {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  min-height: 44px;
+  color: var(--accent-dark);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: .85rem;
+  font-weight: 700;
+  list-style: none;
+}
+.day-food-item details > summary::-webkit-details-marker,
+#daily-meals .card > details > summary::-webkit-details-marker,
+.day-food-fastfood > summary::-webkit-details-marker,
+.today-fastfood > summary::-webkit-details-marker,
+.todo-done > summary::-webkit-details-marker,
+.practical-disclaimer > summary::-webkit-details-marker,
+.day-dining > details > summary::-webkit-details-marker,
+.city-map-unpinned > summary::-webkit-details-marker { display: none; }
+.day-food-item details > summary::before,
+#daily-meals .card > details > summary::before,
+.day-food-fastfood > summary::before,
+.today-fastfood > summary::before,
+.todo-done > summary::before,
+.practical-disclaimer > summary::before,
+.day-dining > details > summary::before,
+.city-map-unpinned > summary::before {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  content: "＋";
+  font-size: .8rem;
+  line-height: 1;
+}
+.day-food-item details[open] > summary::before,
+#daily-meals .card > details[open] > summary::before,
+.day-food-fastfood[open] > summary::before,
+.today-fastfood[open] > summary::before,
+.todo-done[open] > summary::before,
+.practical-disclaimer[open] > summary::before,
+.day-dining > details[open] > summary::before,
+.city-map-unpinned[open] > summary::before { content: "－"; }
+
+/* 餐飲指南八天三餐（UX 審查第 11 項）：卡片原本上下貼在一起，分不清是不是同一天。
+   每天之間留 1.25rem，並在卡片上緣加一條主色線當日期分隔。 */
+#daily-meals > .card {
+  border-top: 4px solid var(--accent);
+}
+#daily-meals > .card + .card,
+.hours-city-list > .card + .card {
+  margin-top: 1.25rem;
 }
 
 /* 城市餐飲列表：候選置頂，手機保留表頭與欄位對照。 */
@@ -5185,11 +5345,14 @@ h3 {
 }
 
 .today-sos-list a[href^='tel:'] {
-  padding: 0.25rem 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.25rem 0.8rem;
   border-color: rgb(163 58 50 / 40%);
   color: var(--red);
   font-family: var(--font-mono);
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   font-variant-numeric: tabular-nums;
 }
 
@@ -5873,8 +6036,9 @@ h3 {
     grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: .4rem; margin: .5rem 0 0;
   }
   .today-compact .today-date-controls .today-field { font-size: 0; }
-  .today-compact .today-date-controls .today-field select { margin-top: 0; min-height: 40px; padding-block: .4rem; font-size: .9rem; }
-  .today-compact .today-date-controls button { min-height: 40px; padding: .4rem .55rem; font-size: .8rem; }
+  /* UX 審查第 10 項：日期切換與 SOS 電話原本 40px／35px，統一回到 44px 觸控高度。 */
+  .today-compact .today-date-controls .today-field select { margin-top: 0; min-height: 44px; padding-block: .4rem; font-size: .9rem; }
+  .today-compact .today-date-controls button { min-height: 44px; padding: .4rem .55rem; font-size: .8rem; }
   /* 自動模式（看今天）時「回到今天」已停用，精簡版直接收掉；手動切日後才出現。 */
   .today-compact [data-date-reset]:disabled { display: none; }
   .today-live .today-status { display: none; }
@@ -5886,7 +6050,7 @@ h3 {
   .today-compact .today-sos-title { flex: none; margin: 0; font-size: 0; }
   .today-compact .today-sos-list { flex: 1 1 auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .25rem .5rem; margin: 0; }
   .today-compact .today-sos-list li { flex: none; min-width: 0; }
-  .today-compact .today-sos-list a[href^='tel:'] { padding: .2rem .55rem; font-size: .95rem; min-height: 32px; display: inline-flex; align-items: center; }
+  .today-compact .today-sos-list a[href^='tel:'] { padding: .2rem .7rem; font-size: 1.1rem; min-height: 44px; display: inline-flex; align-items: center; }
   .today-compact .today-sos-list span { font-size: .68rem; }
   .today-compact .today-sos-list a[href^='tel:'] { white-space: nowrap; }
   .today-compact .today-sos-extra { display: none; }
@@ -5970,4 +6134,112 @@ h3 {
   min-height: 44px;
   color: var(--accent-dark);
   font-weight: 700;
+}
+
+/* --- 待辦清單（UX 審查第 5 項）：原本 4 欄表格在手機每項 500～800px，
+       已完成與未完成同樣大。改為「日期＋事項＋狀態」一行標題、下一步一段、
+       查核日期一行小字；未完成依日期在上，已完成收進 .todo-done。 --- */
+.todo-list {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.todo-item {
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-md);
+  background: var(--paper-light);
+}
+
+.todo-item.is-done {
+  border-left-color: var(--line-strong);
+}
+
+.todo-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3rem 0.6rem;
+}
+
+.todo-date {
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+
+.todo-name {
+  flex: 1 1 12rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.todo-action {
+  margin: 0.45rem 0 0;
+  overflow-wrap: anywhere;
+}
+
+.todo-checked {
+  margin: 0.35rem 0 0;
+  font-size: 0.78rem;
+}
+
+.todo-done {
+  margin-top: 1rem;
+}
+
+/* --- 餐飲指南營業時間（UX 審查第 4 項）：依城市分組的精簡清單 --- */
+.hours-line {
+  font-weight: 600;
+}
+
+/* --- 實用資訊頁資料聲明：收成一行，點開才看全文（UX 審查第 9 項）。
+       收合標題自帶「＋／－」，不再顯示 callout 的「›」圖示，左內距跟著縮。 --- */
+.callout-note.practical-disclaimer {
+  padding: 0.25rem 1rem;
+}
+
+.callout-note.practical-disclaimer::before {
+  content: none;
+}
+
+.practical-disclaimer > summary {
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.practical-disclaimer > p {
+  margin: 0.35rem 0 0.5rem;
+}
+
+/* 實用資訊頁手機第一個螢幕（UX 審查第 9 項）：拿掉「APPENDIX」字樣、
+   縮小大標與上下留白，讓內容在第一個螢幕就出現。今日卡另有自己的規則。 */
+@media (max-width: 700px) {
+  .journal-practical .journal-appendix-header {
+    margin-bottom: 1.25rem;
+    padding-block: 0.9rem;
+  }
+
+  .journal-practical .journal-appendix-header::before {
+    display: none;
+  }
+
+  .journal-practical .journal-appendix-header .section-num {
+    font-size: 0.75rem;
+  }
+
+  .journal-practical .journal-appendix-header h1 {
+    margin-block: 0.2rem;
+    font-size: clamp(2rem, 9vw, 2.5rem);
+    line-height: 1.15;
+  }
+
+  .journal-practical .journal-appendix-header .hero-dek {
+    margin-top: 0.4rem;
+    font-size: 0.92rem;
+  }
 }

@@ -94,7 +94,7 @@ function renderDayFood(day) {
 
   return `<article class="card day-dining" id="day-food" aria-labelledby="day-food-heading">
     <span class="eyebrow">Dining</span><h3 id="day-food-heading">當日餐飲</h3>
-    <p class="food-map-note">三餐各有一個主安排；條件式餐廳先確認接單，備選取代同餐，不額外加餐。時刻為波蘭當地時間，行程預留不代表已訂位。</p>
+    <p class="food-map-note">三餐各有一個主安排；標「先確認」的餐廳先確認接單，備選取代同餐，不額外加餐。時刻為波蘭當地時間，行程預留不代表已訂位。</p>
     ${renderMealList(day, dayMeals[day.n])}
     ${entries.length ? `<details><summary>備選、備餐與順路點心 · ${summary}</summary><ul class="day-food-list">${entries.map(renderDayFoodItem).join('')}</ul></details>` : ''}
     ${guides}
@@ -186,7 +186,12 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
       <article class="card card-accent">
         <span class="eyebrow">${trainSegment.type}${trainSegment.leg ? ` · ${trainSegment.leg}` : ''}</span>
         <h3>${trainSegment.from || ''}${trainSegment.to ? ` → ${trainSegment.to}` : ''}</h3>
-        <p><b>${trainSegment.dep} → ${trainSegment.arr}</b> · ${trainSegment.dur} · ${escapeHtml(trainPrice)}</p>
+        ${(() => {
+          // 抵達時間／車程未知時只寫「發車」，「待查票面」只在上方狀態列出現一次（UX 審查第 6 項）。
+          const arrKnown = /^\d{1,2}:\d{2}/.test(trainSegment.arr || '');
+          const durKnown = trainSegment.dur && !/待查/.test(trainSegment.dur);
+          return `<p><b>${trainSegment.dep}${arrKnown ? ` → ${trainSegment.arr}` : ' 發車'}</b>${durKnown ? ` · ${trainSegment.dur}` : ''} · ${escapeHtml(trainPrice)}</p>`;
+        })()}
         ${trainSegment.saleOpens && !trainSegment.leg?.includes('已購票') ? `<p><b>上次查得 ${escapeHtml(trainSegment.saleOpens)} 起預售（待複核）</b> · PKP Intercity 官方售票系統查核：${escapeHtml(trainSegment.saleCheckedAt)}</p>` : ''}
         <p class="action-links"><a href="practical/booking.html#rail-itinerary">訂票與交通頁的完整班次表 →</a></p>
       </article>

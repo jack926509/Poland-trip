@@ -17,20 +17,20 @@ const CITY_NAMES_BY_KEY = { warsaw: '華沙', krakow: '克拉科夫', wroclaw: '
  */
 export function plannedVerifiedPlaces(dayDiningByDay) {
   const seen = new Map();
-  for (const items of Object.values(dayDiningByDay)) {
+  for (const [dayN, items] of Object.entries(dayDiningByDay)) {
     for (const item of items) {
       if (!['verified', 'partial'].includes(item.verificationStatus)) continue;
-      if (!seen.has(item.placeId)) seen.set(item.placeId, { ...item, city: CITY_NAMES_BY_KEY[item.cityKey] || item.cityKey });
+      if (!seen.has(item.placeId)) seen.set(item.placeId, { ...item, dayN: Number(dayN), city: CITY_NAMES_BY_KEY[item.cityKey] || item.cityKey });
     }
   }
   return [...seen.values()];
 }
 
-export function renderDiningFacts(item) {
+export function renderDiningFacts(item, { includeHours = true } = {}) {
   const status = {verified:'已核實所列資料',partial:'部分核實，仍有缺項',pending:'資料待確認'}[item.verificationStatus] || '資料待確認';
   const source = safeHttpsUrl(item.sourceUrl);
   const menu = safeHttpsUrl(item.menuUrl);
-  return `<p class="food-map-note">營業時間：${escapeHtml(item.hours || '待確認')}</p>
+  return `${includeHours ? `<p class="food-map-note">營業時間：${escapeHtml(item.hours || '待確認')}</p>` : ''}
     <p class="source-meta">${status}${item.checkedAt ? ` · ${escapeHtml(item.checkedAt)}` : ''}${source ? ` · <a href="${source}" target="_blank" rel="noopener noreferrer">查核來源 ↗</a>` : ''}</p>
     ${item.verificationNote ? `<p class="food-map-note">${escapeHtml(item.verificationNote)}</p>` : ''}
     ${menu ? `<p class="food-map-note"><a href="${menu}" target="_blank" rel="noopener noreferrer">菜單／餐點來源 ↗</a>${item.menuNote ? ` · ${escapeHtml(item.menuNote)}` : ''}</p>` : ''}`;
@@ -44,7 +44,7 @@ export function renderMealList(day, meals) {
     if (!step) throw new Error(`Day ${day.n} 找不到三餐步驟 ${item.stepId}`);
     const map = safeHttpsUrl(item.map);
     return `<li class="day-food-item" data-meal="${item.meal}">
-      <div class="day-food-head"><div class="day-food-title"><span class="eyebrow">${labels[item.meal]} · ${escapeHtml(step.t)}${item.condition ? ' · 條件式' : ''}</span><h4>${escapeHtml(item.name)}</h4></div>
+      <div class="day-food-head"><div class="day-food-title"><span class="eyebrow">${labels[item.meal]} · ${escapeHtml(step.t)}${item.condition ? ' · 先確認' : ''}</span><h4>${escapeHtml(item.name)}</h4></div>
       ${map ? `<a class="day-food-map" href="${map}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(item.name)} 的 Google Maps 導航">導航 ↗</a>` : ''}</div>
       <p>${escapeHtml(item.note)}</p>
       ${item.condition ? `<p class="food-map-note"><b>採用／改備案：</b>${escapeHtml(item.condition)}</p>` : ''}
