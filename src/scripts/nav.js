@@ -177,10 +177,28 @@
   progress.setAttribute('aria-hidden', 'true');
   document.body.append(progress);
 
+  /**
+   * 回頂端是浮動的，捲動時可能壓在「導航」按鈕或連結上讓人點不到。
+   * 只要目前畫面上有任何「導航」可點元素與它重疊，就先收起來，移開再出現。
+   */
+  const overlapsNavigateLink = () => {
+    if (window.scrollY < 900) return false;
+    const was = toTop.hidden;
+    toTop.hidden = false;
+    const box = toTop.getBoundingClientRect();
+    toTop.hidden = was;
+    return [...document.querySelectorAll('a, button')].some((el) => {
+      if (el === toTop) return false;
+      if (!(el.textContent + (el.getAttribute('aria-label') || '')).includes('導航')) return false;
+      const r = el.getBoundingClientRect();
+      return r.width > 0 && r.height > 0 && !(r.right <= box.left || r.left >= box.right || r.bottom <= box.top || r.top >= box.bottom);
+    });
+  };
+
   let toTopFrame = 0;
   const syncScrollState = () => {
     toTopFrame = 0;
-    toTop.hidden = window.scrollY < 900;
+    toTop.hidden = window.scrollY < 900 || overlapsNavigateLink();
     const scrollable = document.documentElement.scrollHeight - window.innerHeight;
     const ratio = scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
     progress.style.transform = `scaleX(${ratio})`;

@@ -413,7 +413,7 @@ export const diningPlaces = {
     "notes": [
       "斯拉夫風味與時令穀物、野禽／野味料理；初稿菜單為夏季版，秋季菜色待確認。"
     ],
-    "verificationNote": "本輪官網列週五 12:00–00:00；初稿指出 Michelin 週五表與官網矛盾，須向店家確認 10/30 營業及空位；尚未訂位。",
+    "verificationNote": "2026-10-10 複查：官網與 Michelin 週五皆為 12:00–00:00，10/30 有營業；TheFork 可訂位，尚未訂位。",
     "menuUrl": "https://wyraj.net/wp-content/uploads/2026/06/Wersja-na-strone-www-i-google-ANG-Uczta-Noc-LATO-2026-26.06.pdf"
   },
   "krakow-folga": {

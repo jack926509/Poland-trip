@@ -3191,7 +3191,9 @@ a[href^="tel:"]:focus-visible {
   /* 手機底部快捷列（.mobile-quick-nav，z-index 900、高約 65px）固定在
      max(.75rem, safe-area) 的位置，回頂端要整顆浮在它上方才按得到。 */
   .to-top {
-    right: 0.9rem;
+    /* 「導航」按鈕一律靠卡片右側，回頂端改放左下角，兩者不會在捲動時疊在一起。 */
+    right: auto;
+    left: 0.9rem;
     bottom: calc(max(0.75rem, env(safe-area-inset-bottom)) + 65px + 0.75rem);
   }
 }

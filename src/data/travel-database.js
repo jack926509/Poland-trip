@@ -507,7 +507,7 @@ export const dayOperations = {
       '市政廳博物館整修閉館；主行程只看官方確認的 12:00 山羊鐘樓秀。',
       '聖馬丁牛角麵包尚未選定分店；待分店與營業確定後再導航，不預填地址。',
     ],
-    nightChecklist: [...standardNightChecklist, '核對 Day 7 兩館（皇家城堡、起義博物館）購票狀態與入場時段，尚未訂者不要當作已購', '確認 Café Bristol 午餐供應（湯與主餐 12:00 起）與 WYRAJ 週五營業（官網與 Michelin 資訊不一致，須直接問店家）、秋季菜單及訂位；WYRAJ 不適用再選 U Fukiera 並重算交通'],
+    nightChecklist: [...standardNightChecklist, '核對 Day 7 兩館（皇家城堡、起義博物館）購票狀態與入場時段，尚未訂者不要當作已購', '確認 Café Bristol 午餐供應（湯與主餐 12:00 起）與 WYRAJ 訂位（週五 12:00–00:00 營業，已於 2026-10-10 複查）、秋季菜單及訂位；WYRAJ 不適用再選 U Fukiera 並重算交通'],
   },
   7: {
     cityKey: 'warsaw',

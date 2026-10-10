@@ -153,3 +153,13 @@ test('第 11 項：餐飲指南每日三餐卡片之間有間距與色條分隔'
   assert.match(source, /#daily-meals > \.card \+ \.card,[^{]*\{\s*margin-top: 1\.25rem;/s);
   assert.match(source, /#daily-meals > \.card \{\s*border-top: 4px solid var\(--accent\);/);
 });
+
+test('回頂端按鈕：手機版放左下角、在底部快捷列上方，避開靠右的「導航」按鈕', () => {
+  const source = css();
+  assert.match(source, /@media \(max-width: 700px\) \{[^@]*?\.to-top \{[^}]*right: auto;[^}]*left: 0\.9rem;[^}]*bottom: calc\(max\(0\.75rem, env\(safe-area-inset-bottom\)\) \+ 65px/s);
+});
+
+test('回頂端按鈕：與「導航」按鈕重疊時會先收起來', () => {
+  const nav = fs.readFileSync('src/scripts/nav.js', 'utf8');
+  assert.match(nav, /toTop\.hidden = window\.scrollY < 900 \|\| overlapsNavigateLink\(\)/);
+});
