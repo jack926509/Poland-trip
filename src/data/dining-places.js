@@ -27,7 +27,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-07",
     "verificationStatus": "verified",
     "notes": [
-      "現代小盤：初稿建議 Chipotle 手撕牛肉吐司、Burrata 沙拉或檸檬醬烤鮭魚。"
+      "現代小盤：初稿建議 Chipotle 手撕牛肉吐司、Burrata 沙拉或檸檬醬烤鮭魚。10/29 晚餐改 Arirang 後，作為誤點超過 21:30 的 24 小時備案。"
     ],
     "verificationNote": "店家官網與 Hala Koszyki 店家頁皆標示 24/7；大廳本身週四 08:00–00:00，深夜入口以現場指示為準。 24 小時營業不等於全部菜色全天供應，深夜接單與菜單仍需確認。",
     "menuUrl": "https://www.mateuszgessler.com.pl/wp-content/uploads/2026/03/Menu-Cma-Styczen-2026.pdf"
@@ -57,7 +57,7 @@ export const diningPlaces = {
     "checkedAt": "2026-09-19",
     "verificationStatus": "verified",
     "notes": [
-      "1851 年創立的華沙巧克力老牌，招牌是濃稠熱巧克力"
+      "1851 年創立的華沙巧克力老牌，招牌是濃稠熱巧克力；10/30 晚餐後想喝熱巧克力可來（到 22:00）。"
     ],
     "verificationNote": "官方分店頁確認為 Staroświecki Sklep；不可套用其他 Wedel 分店時段。"
   },
@@ -87,7 +87,7 @@ export const diningPlaces = {
     "checkedAt": null,
     "verificationStatus": "pending",
     "notes": [
-      "酒杯牆名店 · 波蘭菜配酒，WANDAL 訂不到的首替",
+      "酒杯牆名店 · 現代歐陸季節料理配葡萄酒，比 WYRAJ 更接近 Hotel Metropol",
       "招牌：酒杯小酌配歐陸小盤 · 酒吧型小酒館"
     ]
   },
@@ -117,7 +117,7 @@ export const diningPlaces = {
     "verificationStatus": "verified",
     "notes": [
       "燭光氛圍",
-      "地窖燭光的傳統波蘭菜，Day 3（10/26 週一）晚餐首選。",
+      "地窖燭光的傳統波蘭菜；10/26 晚餐改排 Mr. Jerry 後保留為備選。",
       "訂位電話 +48 12 421 39 99 或 +48 12 430 21 13、restauracja@podaniolami.pl。",
       "木火烤山鱒魚與野菇湯；初稿引菜單加 10% 服務費。"
     ],
@@ -365,7 +365,7 @@ export const diningPlaces = {
     "notes": [
       "馬鈴薯佐凝乳",
       "以大波蘭特色的 pyry z gzikiem（水煮馬鈴薯配 twaróg 起司醬）聞名，價位親民；",
-      "Pyry z bzikiem 烤馬鈴薯配凝乳、Szare ale jare 馬鈴薯麵糰配培根酸白菜。"
+      "兩人直接點 Pyry z bzikiem 烤馬鈴薯配 Gzik 香草凝乳（36 PLN）與 Szare ale jare 灰色馬鈴薯麵糰配培根酸白菜（38 PLN）。"
     ],
     "verificationNote": "店家官方訂位頁確認地址與完整週時段；Day 6 週四為 11:00–21:00。",
     "menuUrl": "https://pyrabar.pl/pyrabar-poznan/",
@@ -411,7 +411,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-10",
     "verificationStatus": "partial",
     "notes": [
-      "斯拉夫風味與時令穀物、野禽／野味料理；初稿菜單為夏季版，秋季菜色待確認。"
+      "斯拉夫風味與時令穀物、野禽／野味料理；季節前菜、Pierogi。初稿菜單為夏季版，秋季菜色待確認。10/30 晚餐改 Rusiko 後，人在 Wola 一帶時可升回首選。"
     ],
     "verificationNote": "2026-10-10 複查：官網與 Michelin 週五皆為 12:00–00:00，10/30 有營業；TheFork 可訂位，尚未訂位。",
     "menuUrl": "https://wyraj.net/wp-content/uploads/2026/06/Wersja-na-strone-www-i-google-ANG-Uczta-Noc-LATO-2026-26.06.pdf"
@@ -428,7 +428,7 @@ export const diningPlaces = {
     "verificationStatus": "pending",
     "notes": [
       "招牌：當代創意料理小盤 · 高CP",
-      "海鯛 Ceviche、蝦仁 Rigatoni、白大比目魚候選；初稿列 Wellington 僅週四至週日，週一不採用。"
+      "魚類、海鮮與當季 Sharing Plates，一份主菜＋數份小盤分享；海鯛 Ceviche、蝦仁 Rigatoni、白大比目魚候選。初稿列 Wellington 僅週四至週日，週一不採用。"
     ],
     "verificationNote": "店家官網確認 Estery 12 與訂位電話，但目前可讀頁面未列完整營業時間；不採第三方時段補值。",
     "menuUrl": "https://folgakrakow.pl/wp-content/uploads/2026/09/MENU-Wrzesien%CC%81-GABLOTA-%E2%80%94-2026.pdf",
@@ -489,7 +489,7 @@ export const diningPlaces = {
     "checkedAt": "2026-09-24",
     "verificationStatus": "partial",
     "notes": [
-      "下西里西亞地方菜：Śląskie niebo 果乾燉豬肉、Hekele 鯡魚前菜。",
+      "下西里西亞地方菜：Śląskie niebo 果乾燉豬肉配 Wrocław dumplings（65 PLN）、Bigos Wrocławski 紅甘藍燉肉（41 PLN）、Hekele 鯡魚前菜；胃口夠再加 Crayfish Soup。",
       "Day 5 午餐首選；菜單提醒主菜約需 30 分鐘，另留候位與交通。"
     ],
     "verificationNote": "2026-09-24 已讀出店家 DISH 官網完整週時段；廚房收單時間另以 wroclawska.com.pl/kontakt/ 核對。12:30 可安排午餐，但出餐速度未獲保證。 2026-10-10 英文聯絡頁僅列結束時刻，12:00 開門沿用 9/24 自管頁記錄，出發前再確認。",
@@ -563,7 +563,7 @@ export const diningPlaces = {
     "checkedAt": null,
     "verificationStatus": "pending",
     "notes": [
-      "PGI 聖馬丁可頌 · 白罌粟籽餡 · 四季有售 · Rogalowe Muzeum、Wise Cafe（Mercure 內）公認名版本"
+      "PGI 聖馬丁可頌（Rogal świętomarciński）· 白罌粟籽餡；10/29 12:15 點心站，兩人買一個分享即可。"
     ],
     "verificationNote": "初稿引波茲南觀光局 Stary Rynek 11/17；營業與售完時間仍待確認，僅作順路外帶候選。"
   },
@@ -623,23 +623,23 @@ export const diningPlaces = {
     "checkedAt": "2026-10-10",
     "verificationStatus": "partial",
     "notes": [
-      "波蘭牛奶吧早餐；初稿建議菠菜歐姆蛋、鮮乳酪配酸奶油與小紅蘿蔔。"
+      "波蘭牛奶吧早餐：jajecznica 炒蛋、naleśniki 可麗餅配 kompot，或菠菜歐姆蛋、鮮乳酪配酸奶油與小紅蘿蔔。"
     ],
     "menuUrl": "https://barbambino.pl/sniadanie/",
-    "verificationNote": "本輪官網確認 Hoża 19；早餐品項與當日供應再查菜單。"
+    "verificationNote": "本輪官網確認 Hoża 19（2026-10-12 餐飲 v5 稿列 Krucza 21，以官網為準）；早餐品項與當日供應再查菜單。"
   },
   "warsaw-a-blikle-1869": {
     "id": "warsaw-a-blikle-1869",
     "cityKey": "warsaw",
     "name": "A. Blikle 1869",
-    "address": "門牌待確認",
+    "address": "Nowy Świat 33, Warszawa",
     "map": "https://www.google.com/maps/search/?api=1&query=A.Blikle%2C%20Nowy%20%C5%9Awiat%2033%2C%20Warszawa",
     "hours": "每日 09:00–21:00（資料待確認，非官方查核值）",
     "sourceUrl": null,
     "checkedAt": null,
     "verificationStatus": "pending",
     "notes": [
-      "1869 年創立的波蘭國民甜點店，pączki 玫瑰果醬甜甜圈是招牌。Nowy Świat 本店距飯店步行約 15 分，Day 7 老城行程順路；09:00 開門，退房前想買 pączki 帶走可繞去，不適合當 Day 8 早餐主位。"
+      "1869 年創立的波蘭國民甜點店，pączki 玫瑰果醬甜甜圈是招牌。10/30 早餐後往皇家城堡路上外帶（09:00 開門）；不適合當 Day 8 早餐主位。"
     ]
   },
   "warsaw-cukiernia-zagozdzinski": {
@@ -668,7 +668,7 @@ export const diningPlaces = {
     "verificationStatus": "verified",
     "notes": [
       "Krakowskie Przedmieście（Hotel Bristol 內），Day 7 午餐首選（皇家城堡步行約 10 分）；Day 8 早餐改排 Charlotte Złota。",
-      "官網湯與主餐自 12:00 起供應，11:30 入座先點輕食與咖啡。"
+      "三明治＋咖啡、Bristol cake；官網湯與主餐自 12:00 起供應，11:30 入座先點輕食與咖啡。"
     ],
     "verificationNote": "營業時間沿用 2026-09-19 官方查核；各日備選共用此筆資料，未代表已訂位。",
     "menuUrl": "https://www.cafebristol.pl/pl/our-menus",
@@ -783,7 +783,7 @@ export const diningPlaces = {
     "checkedAt": "2026-09-24",
     "verificationStatus": "verified",
     "notes": [
-      "老城 Odrzańska 8 分店，自家烘豆咖啡；Day 5 有餘裕時安排。"
+      "老城 Odrzańska 8 分店，自家烘豆：Flat White、手沖與當日甜點；Day 5 有餘裕才去，不壓縮座堂島。"
     ],
     "verificationNote": "官方聯絡頁逐分店列時段；先前 09:00–18:00／週末 10:00–18:00 屬 Trzebnica，不能套用 Wrocław 老城分店。"
   },
@@ -813,7 +813,7 @@ export const diningPlaces = {
     "checkedAt": null,
     "verificationStatus": "pending",
     "notes": [
-      "聖馬丁牛角麵包（PGI）認證店家之一，Day 6 12:15 已列為順路必吃；認證店家眾多，也可依官方認證名單就近選。"
+      "聖馬丁牛角麵包（PGI）認證店家之一；10/29 點心改排 Stary Rynek 的 ROGAL 後保留為替代，也可依官方認證名單就近選。"
     ]
   },
   "poznan-weranda-caffe": {
@@ -828,7 +828,8 @@ export const diningPlaces = {
     "verificationStatus": "pending",
     "notes": [
       "Świętosławska 10，就在舊城市場旁，庭院座位安靜，常被列入波茲南最佳早餐；Day 6 等 12:00 山羊鐘樓秀前可先坐。"
-    ]
+    ],
+    "verificationNote": "2026-10-12 餐飲 v5 稿另列 Półwiejska 42（Stary Browar 一帶）分店；兩處門市與開門時間都待確認，開門較晚不作第一順位。"
   },
   "poznan-pijalnia-czekolady-e-wedel-stary-rynek": {
     "id": "poznan-pijalnia-czekolady-e-wedel-stary-rynek",
@@ -855,7 +856,7 @@ export const diningPlaces = {
     "checkedAt": "2026-08-09",
     "verificationStatus": "verified",
     "notes": [
-      "歷史老城波蘭料理；",
+      "歷史老城波蘭料理；綜合 Pierogi、Żurek、波蘭烤鴨，老城收尾的最後一晚氣氛。",
       "官網菜單可確認 żurek、餃子、鯡魚與韃靼牛肉。",
       "秋季菜單候選：番茄南瓜濃湯、Stroganow 牛菲力；供應以當日菜單為準。"
     ],
@@ -905,7 +906,7 @@ export const diningPlaces = {
     "verificationStatus": "partial",
     "notes": [
       "波蘭地方料理。",
-      "酸黑麥湯搭梅醬豬肋排或烤鴨；餃子留隔天。"
+      "Żurek 酸黑麥湯＋綜合 Pierogi，主菜選梅醬豬肋排或半隻烤鴨；還有胃口再加甜點。"
     ],
     "verificationNote": "2026-09-24 品牌門市頁確認 Nowy Świat 44 與上述時段；polishcuisine.pl 另列每日 12:00 開門、週五六至 23:30，其餘至 22:00，仍需訂位確認。10/24 19:00 晚餐在兩版時段交集內；電話 +48 662 254 215。",
     "menuUrl": "https://polishcuisine.pl/pl/menu-2/",
@@ -938,7 +939,7 @@ export const diningPlaces = {
     "verificationStatus": "pending",
     "notes": [
       "韓日料理。",
-      "韓日料理；初稿建議 Popcorn chicken 炸雞與 Red jjamppong 辣湯麵，當晚接單待確認。"
+      "Gyoza 煎餃、Honey Garlic Popcorn Chicken 蜂蜜蒜味炸雞、Kimbap 飯捲與 Bibimbap 拌飯；初稿另列 Red jjamppong 辣湯麵。"
     ],
     "verificationNote": "Michelin 官方指南可確認店名與 Zabłocie 19A，但沒有店家一手營業時間；仍須向餐廳確認當晚收客時間。",
     "menuUrl": "https://guide.michelin.com/cz/en/lesser-poland/krakow/restaurant/hankki",
@@ -1000,7 +1001,7 @@ export const diningPlaces = {
     "checkedAt": "2026-09-19",
     "verificationStatus": "partial",
     "notes": [
-      "烏茲別克／喬治亞料理；牛肉抓飯 Plow fergański，可分享船形起司麵包。"
+      "烏茲別克／喬治亞料理；牛肉抓飯 Plow fergański（Uzbek Plov）、Manti 分享湯餃與湯品，可加船形起司麵包。"
     ],
     "verificationNote": "官網與店家 eatbu 頁時段不一致；關門前 1 小時廚房結束不等於最後接單。約 21:00 前能到店且確認仍接單才採用，否則改車站 KFC。",
     "menuUrl": "https://samarqand.pl/menu"
@@ -1016,7 +1017,7 @@ export const diningPlaces = {
     "checkedAt": "2026-09-17",
     "verificationStatus": "verified",
     "notes": [
-      "韓式料理。"
+      "韓式料理：Kkanpungi、Bulgogi、Kimchijjigae。"
     ],
     "verificationNote": "保留原查核日；10/29 週四預計 20:30 才抵達，不可當晚抵備案。週末時段未納入本次已核實內容。"
   },
@@ -1026,14 +1027,14 @@ export const diningPlaces = {
     "name": "Arirang Restaurant",
     "address": "Nowogrodzka 38, Warszawa",
     "map": "https://www.google.com/maps/search/?api=1&query=Arirang%20Restaurant%20Nowogrodzka%2038%2C%20Warszawa",
-    "hours": "營業時間待確認",
-    "sourceUrl": null,
+    "hours": "週四 12:00–22:00（2026-10-12 餐飲 v5 稿引第三方資料；另有 11:00–23:00 版本）",
+    "sourceUrl": "https://intravel.net/warszawa/restaurants-cafes/arirang",
     "checkedAt": null,
     "verificationStatus": "pending",
     "notes": [
-      "韓式料理候選。"
+      "韓式料理：Bulgogi 韓式烤牛肉、拌飯、Jajangmyeon 炸醬麵、海鮮煎餅或韓式湯鍋。"
     ],
-    "verificationNote": "未找到可稽核的店家一手網站或公告；Nowogrodzka 38 與網路時段不可升級為已核實，晚抵前須電話確認。"
+    "verificationNote": "未找到店家一手網站；時段只有第三方資料且各來源不一。10/29 晚抵前打 +48 22 622 18 86 確認仍接單。"
   },
   "warsaw-mei": {
     "id": "warsaw-mei",
@@ -1203,17 +1204,17 @@ export const diningPlaces = {
     "id": "krakow-molam-thai",
     "cityKey": "krakow",
     "name": "MOLÁM Thai",
-    "address": "門牌待確認",
-    "map": "https://maps.google.com/?cid=14914780693072191645",
-    "hours": "營業時間待確認",
-    "sourceUrl": null,
+    "address": "Rajska 3/4, Kraków",
+    "map": "https://www.google.com/maps/search/?api=1&query=MOL%C3%81M%2C%20Rajska%203%2F4%2C%20Krak%C3%B3w",
+    "hours": "週日 13:00–21:30；週一 16:00–22:00（2026-10-12 餐飲 v5 稿整理，其他日待確認）",
+    "sourceUrl": "https://guide.michelin.com/en/lesser-poland/krakow/restaurant/molam",
     "checkedAt": null,
     "verificationStatus": "pending",
-    "role": "reference",
     "notes": [
       "必比登推介 · 泰式料理",
-      "地圖圖釘參考店，未排入本趟每日餐廳安排"
-    ]
+      "10/25 晚餐想換口味（取代 Hankki）或 10/26 晚餐的異國備選。"
+    ],
+    "verificationNote": "Michelin 指南可確認店名與 Rajska 3/4；營業時段來自2026-10-12 餐飲 v5 稿，本輪未重新查核，前往前確認當晚接單。"
   },
   "krakow-nat-bistro": {
     "id": "krakow-nat-bistro",
@@ -1258,7 +1259,7 @@ export const diningPlaces = {
     "checkedAt": null,
     "verificationStatus": "pending",
     "notes": [
-      "車站外帶法棍與咖啡；初稿推薦鮪魚蛋沙拉或烤地瓜酪梨。"
+      "車站外帶：可頌／甜麵包、火腿起司三明治＋Americano 或 Latte；可多帶一份麵包上火車。"
     ],
     "menuUrl": "https://www.greencaffenero.pl/pl/menu/jedzenie/kanapki",
     "verificationNote": "2026-10-10 初稿提供餐點建議；當日供應與最後接單待確認。 地址與時段沿用初稿，尚待逐店核對。"
@@ -1274,7 +1275,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-10",
     "verificationStatus": "partial",
     "notes": [
-      "Mix tradycyjny 綜合餃子；可配甜菜湯。"
+      "Mix tradycyjny 綜合餃子；可配甜菜湯。10/25 午餐改為備選，24 小時營業可當晚到或 Polonia 客滿時的替代。"
     ],
     "menuUrl": "https://przypiecek.pl/?page_id=14",
     "verificationNote": "本輪官網確認 Sławkowska 32；全天營業為官網標示，當日供餐仍須確認。2026-10-10 初稿提供餐點建議；當日供應與最後接單待確認。"
@@ -1306,7 +1307,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-10",
     "verificationStatus": "partial",
     "notes": [
-      "HUMMUS 鷹嘴豆泥貝果、水果核桃燕麥粥；魚類選 LOX NOVA。"
+      "美式鬆餅、HUMMUS 鷹嘴豆泥貝果、水果核桃燕麥粥；魚類選 LOX NOVA。"
     ],
     "menuUrl": "https://cdn.website.dish.co/media/6b/d4/2420931/Central-Cafe-Menu.pdf",
     "verificationNote": "本輪核對自管頁店址與時段；初稿指出菜單時段涉及自取／配送，不能視為確定開門時間。2026-10-10 初稿提供餐點建議；當日供應與最後接單待確認。"
@@ -1322,7 +1323,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-10",
     "verificationStatus": "partial",
     "notes": [
-      "法式麵包早餐；Central Cafe 不適用時的備選。"
+      "French Breakfast、Breakfast with egg、可頌與咖啡；Central Cafe 未供餐時的同街備案（Świętego Antoniego 2/4）。"
     ],
     "menuUrl": "https://bistrocharlotte.com/pl/lokale/charlotte-pasaz-pokoyhof-wroclaw/",
     "verificationNote": "本輪官網核對地址與時段；16:00 前不接受訂位，早餐候位依現場，趕行程改外帶。"
@@ -1338,7 +1339,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-10",
     "verificationStatus": "partial",
     "notes": [
-      "麵包搭煙燻鱒魚抹醬、蛋沙拉與凝乳，或班尼迪克蛋。"
+      "麵包搭煙燻鱒魚抹醬、蛋沙拉與凝乳，或班尼迪克蛋。10/29 早餐改 Charlotte 後保留為備選。"
     ],
     "menuUrl": "https://www.ptasieradio.pl/menu-restauracji/dania/",
     "verificationNote": "本輪官網確認店址與週四 08:00 開門；採用須另留前往教堂島的交通時間。2026-10-10 初稿提供餐點建議；當日供應與最後接單待確認。"
@@ -1354,7 +1355,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-10",
     "verificationStatus": "partial",
     "notes": [
-      "法式早餐；需要提早出門時的備選。"
+      "French Breakfast、麵包籃、可頌與咖啡；Poznań rugelach（白罌粟籽小可頌）可兩人分享。10/29 早餐首選。"
     ],
     "menuUrl": "https://bistrocharlotte.com/pl/lokale/charlotte-krysiewicza-poznan/",
     "verificationNote": "本輪官網核對地址與時段；16:00 前不接受訂位，早餐候位依現場，趕行程改外帶。"
@@ -1388,7 +1389,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-10",
     "verificationStatus": "partial",
     "notes": [
-      "Pain perdu 布里歐法式吐司，或法式歐姆蛋。"
+      "French Breakfast、可頌、咖啡；想吃飽一點加 Croque-Monsieur。週六 08:00 開門，第一批進店。"
     ],
     "menuUrl": "https://bistrocharlotte.com/pl/lokale/charlotte-bouillon-zlota-warszawa/",
     "verificationNote": "本輪官網核對分店、早餐菜單；離境日需先保留往返住宿取行李的時間。"
@@ -1420,26 +1421,26 @@ export const diningPlaces = {
     "checkedAt": null,
     "verificationStatus": "pending",
     "notes": [
-      "小牛肉捲心菜包或蝦仁義大利麵；午餐備選。"
+      "Kraków Główny 旁的傳統波蘭菜：Schabowy 炸豬排、Pierogi 與湯品；抵站後最省時間的午餐。"
     ],
     "menuUrl": "https://hotel-polonia.com.pl/hotel-polonia/restauracja/menu",
-    "verificationNote": "2026-10-10 初稿提供餐點建議；當日供應與最後接單待確認。"
+    "verificationNote": "2026-10-10 初稿提供餐點建議；當日供應與最後接單待確認。2026-10-12 餐飲 v5 稿列 11:30 入座並註明時間待確認，本專案仍以官網 12:00 開門排程。"
   },
   "poznan-inna-piekarnia": {
     "id": "poznan-inna-piekarnia",
     "cityKey": "poznan",
     "name": "Inna Piekarnia",
-    "address": "具體分店待確認",
-    "map": "https://www.google.com/maps/search/?api=1&query=Inna%20Piekarnia%20Pozna%C5%84",
-    "hours": "開門時間待確認",
-    "sourceUrl": null,
+    "address": "Ratajczaka 39, Poznań",
+    "map": "https://www.google.com/maps/search/?api=1&query=Inna%20Piekarnia%2C%20Ratajczaka%2039%2C%20Pozna%C5%84",
+    "hours": "08:30 起（2026-10-12 餐飲 v5 稿引 Visit Poznań，逐日時段待確認）",
+    "sourceUrl": "https://visitpoznan.pl/en/sniadanie-en",
     "checkedAt": null,
     "verificationStatus": "pending",
     "notes": [
-      "原稿早餐候選，未確認分店前不排固定時段。"
+      "Butter Croissant、麵包與咖啡；08:30 才開，作為 Charlotte 之後的第二順位早餐。"
     ],
     "menuUrl": null,
-    "verificationNote": "保留初稿候選；未取得具體門市證據。"
+    "verificationNote": "門市與開門時間來自波茲南觀光局早餐清單整理，非店家一手資料。"
   },
   "wroclaw-oseyo-25": {
     "id": "wroclaw-oseyo-25",
@@ -1447,15 +1448,15 @@ export const diningPlaces = {
     "name": "Oseyo 25",
     "address": "具體門牌待確認",
     "map": "https://www.google.com/maps/search/?api=1&query=Oseyo%2025%20Wroc%C5%82aw",
-    "hours": "營業與最後接單待確認",
-    "sourceUrl": null,
+    "hours": "每日 12:00–22:00（2026-10-12 餐飲 v5 稿引第三方資料，待確認）",
+    "sourceUrl": "https://intravel.net/wroclaw/restaurants-cafes/oseyo-25",
     "checkedAt": null,
     "verificationStatus": "pending",
     "notes": [
       "原稿韓式候選；替換正餐時需重排交通。"
     ],
     "menuUrl": null,
-    "verificationNote": "保留初稿候選；未取得具體門市證據。"
+    "verificationNote": "保留初稿候選；營業時段僅有第三方資料，門牌與最後接單仍待確認。"
   },
   "wroclaw-max-wroclavia": {
     "id": "wroclaw-max-wroclavia",
@@ -1468,7 +1469,7 @@ export const diningPlaces = {
     "checkedAt": "2026-09-19",
     "verificationStatus": "partial",
     "notes": [
-      "Frisco 牛肉培根漢堡或 Halloumi 起司漢堡；趕車優先外帶。"
+      "Frisco Burger 牛肉培根漢堡、Halloumi 起司漢堡或地瓜薯條；趕車優先外帶。"
     ],
     "menuUrl": "https://www.maxpremiumburgers.pl/jedzenie/nasze-menu/",
     "verificationNote": "時段沿用專案 2026-09-19 官方查核及 2026-10-10 初稿；當日候餐速度待確認。"
@@ -1484,10 +1485,237 @@ export const diningPlaces = {
     "checkedAt": "2026-10-10",
     "verificationStatus": "verified",
     "notes": [
-      "車站內炸雞與捲餅；晚抵或趕車時的備案。"
+      "車站內炸雞與捲餅：Zinger、Twister、Hot Wings 或 Strips；晚抵或趕車時的備案，可內用或外帶上車。"
     ],
     "menuUrl": "https://kfc.pl/menu",
     "verificationNote": "官方分店頁核對；同為翌日 01:00 的店家，不宣稱 MAX 比此店更晚。"
+  },
+  "krakow-mr-jerry": {
+    "id": "krakow-mr-jerry",
+    "cityKey": "krakow",
+    "name": "Mr. Jerry",
+    "address": "Jagiellońska 5, Kraków",
+    "map": "https://www.google.com/maps/search/?api=1&query=Mr.%20Jerry%2C%20Jagiello%C5%84ska%205%2C%20Krak%C3%B3w",
+    "hours": "週一 15:00–22:00、廚房至 21:30（2026-10-12 餐飲 v5 稿引官網，其他日待確認）",
+    "sourceUrl": "https://www.mrjerry.pl/o-nas-krakow/",
+    "checkedAt": null,
+    "verificationStatus": "pending",
+    "notes": [
+      "老城牛排館，官網菜單寫「kultowy Beef Wellington」（招牌威靈頓牛排）；胃口大可加乾式熟成牛排。",
+      "本趟唯一確認吃得到威靈頓牛排的機會，離 ibis 步行約 10 分。"
+    ],
+    "menuUrl": "https://www.mrjerry.pl/o-nas-krakow/",
+    "verificationNote": "官網營業時段與 Wellington 由2026-10-12 餐飲 v5 稿整理，本輪無法連線重查；價格未公開，訂位時一併確認 10/26 當天有供應。"
+  },
+  "krakow-charlotte-plac-szczepanski": {
+    "id": "krakow-charlotte-plac-szczepanski",
+    "cityKey": "krakow",
+    "name": "Charlotte Plac Szczepański",
+    "address": "plac Szczepański 2, Kraków",
+    "map": "https://www.google.com/maps/search/?api=1&query=Charlotte%2C%20plac%20Szczepa%C5%84ski%202%2C%20Krak%C3%B3w",
+    "hours": "07:00 開門（2026-10-12 餐飲 v5 稿整理，逐日時段待確認）",
+    "sourceUrl": "https://bistrocharlotte.com/lokale",
+    "checkedAt": null,
+    "verificationStatus": "pending",
+    "notes": [
+      "French Breakfast、麵包籃配自製果醬、可頌與蛋料理（Breakfast with egg）＋咖啡。"
+    ],
+    "menuUrl": null,
+    "verificationNote": "分店與開門時間來自兩份 10/12 餐飲稿，本輪無法連線 Charlotte 官網重查；出發前確認門牌與週二開門時間。"
+  },
+  "krakow-milkbar-tomasza": {
+    "id": "krakow-milkbar-tomasza",
+    "cityKey": "krakow",
+    "name": "Milkbar Tomasza",
+    "address": "門牌待確認",
+    "map": "https://www.google.com/maps/search/?api=1&query=Milkbar%20Tomasza%2C%20Krak%C3%B3w",
+    "hours": "營業時間待確認",
+    "sourceUrl": null,
+    "checkedAt": null,
+    "verificationStatus": "pending",
+    "notes": [
+      "牛奶吧／平價波蘭料理體驗；10/25 午餐想換口味時替代 Polonia，下午時間緊仍以 Polonia 較省時。"
+    ],
+    "menuUrl": null,
+    "verificationNote": "僅見於 10/12 每日餐飲安排稿，門牌與營業時間未查核。"
+  },
+  "krakow-pasibus-galeria-krakowska": {
+    "id": "krakow-pasibus-galeria-krakowska",
+    "cityKey": "krakow",
+    "name": "Pasibus Galeria Krakowska",
+    "address": "Pawia 5",
+    "map": "https://www.google.com/maps/search/?api=1&query=Pasibus%20Galeria%20Krakowska%2C%20Pawia%205%2C%20Krak%C3%B3w",
+    "hours": "週一–六 09:00–22:00；週日 09:30–21:00",
+    "sourceUrl": "https://pasibus.pl/lokalizacje/krakow/pasibus-krakow-galeria-krakowska/",
+    "checkedAt": "2026-09-19",
+    "verificationStatus": "verified",
+    "notes": [
+      "Galeria Krakowska（中央車站旁）的樂斯拉夫本土漢堡，推薦 Gonzalez；同層另有 Berlin Döner（週日 10:00–21:00）。",
+      "10/25 午餐與 10/26 晚餐太累時的速食備案。"
+    ],
+    "menuUrl": null,
+    "verificationNote": "沿用速食門市 2026-09-19 官網查核；10/25 為非營業週日，商場是否開門當日再確認。"
+  },
+  "wroclaw-pasibus-wroclavia": {
+    "id": "wroclaw-pasibus-wroclavia",
+    "cityKey": "wroclaw",
+    "name": "Pasibus Wroclavia",
+    "address": "Sucha 1, Wrocław",
+    "map": "https://www.google.com/maps/search/?api=1&query=Pasibus%20Wroclavia%2C%20Sucha%201%2C%20Wroc%C5%82aw",
+    "hours": "週一–六 09:00–22:00；週日 11:00–21:00",
+    "sourceUrl": "https://pasibus.pl/lokalizacje/wroclaw/lokal-pasibus-wroclavia/",
+    "checkedAt": "2026-09-19",
+    "verificationStatus": "verified",
+    "notes": [
+      "Wroclavia（中央車站旁）的本土漢堡，推薦 Gonzalez；MAX 排隊時的同商場替代。"
+    ],
+    "menuUrl": null,
+    "verificationNote": "沿用速食門市 2026-09-19 官網查核。"
+  },
+  "poznan-zen-on": {
+    "id": "poznan-zen-on",
+    "cityKey": "poznan",
+    "name": "Zen On",
+    "address": "Święty Marcin 21, Poznań",
+    "map": "https://www.google.com/maps/search/?api=1&query=Zen%20On%2C%20%C5%9Awi%C4%99ty%20Marcin%2021%2C%20Pozna%C5%84",
+    "hours": "週四 12:00–20:00（2026-10-12 餐飲 v5 稿整理，待確認）",
+    "sourceUrl": "https://guide.michelin.com/en/wielkopolskie/poznan_2395985/restaurant/zen-on",
+    "checkedAt": null,
+    "verificationStatus": "pending",
+    "notes": [
+      "Michelin 推薦日式拉麵：拉麵、烏龍麵、bao；Pyra Bar 排隊太久時的同街區備選。"
+    ],
+    "menuUrl": null,
+    "verificationNote": "Michelin 指南收錄；營業時段來自2026-10-12 餐飲 v5 稿，本輪未重新查核。"
+  },
+  "poznan-pasibus-swiety-marcin": {
+    "id": "poznan-pasibus-swiety-marcin",
+    "cityKey": "poznan",
+    "name": "Pasibus Święty Marcin",
+    "address": "Święty Marcin 58/64",
+    "map": "https://www.google.com/maps/search/?api=1&query=Pasibus%20%C5%9Awi%C4%99ty%20Marcin%2058%2F64%2C%20Pozna%C5%84",
+    "hours": "週日–四 12:00–23:00；週五–六 12:00–00:00",
+    "sourceUrl": "https://pasibus.pl/lokalizacje/poznan/lokal-pasibus-sw-marcin/",
+    "checkedAt": "2026-09-19",
+    "verificationStatus": "verified",
+    "notes": [
+      "市中心主街街邊店，推薦 Gonzalez；Pyra Bar 排隊太久時的速食備案，往帝王城堡順路。"
+    ],
+    "menuUrl": null,
+    "verificationNote": "沿用速食門市 2026-09-19 官網查核。"
+  },
+  "warsaw-pasibus-zlote-tarasy": {
+    "id": "warsaw-pasibus-zlote-tarasy",
+    "cityKey": "warsaw",
+    "name": "Pasibus Złote Tarasy",
+    "address": "Złota 59",
+    "map": "https://www.google.com/maps/search/?api=1&query=Pasibus%20Z%C5%82ote%20Tarasy%2C%20Z%C5%82ota%2059%2C%20Warszawa",
+    "hours": "週一–六 09:00–22:00；週日 09:00–21:00",
+    "sourceUrl": "https://pasibus.pl/lokalizacje/warszawa/warszawa-zlote-tarasy/",
+    "checkedAt": "2026-09-19",
+    "verificationStatus": "verified",
+    "notes": [
+      "Złote Tarasy（中央車站對面）；同商場另有 KFC、MAX、Berlin Döner，皆約 22:00 關。10/29 Arirang 來不及時的速食備案。"
+    ],
+    "menuUrl": null,
+    "verificationNote": "沿用速食門市 2026-09-19 官網查核；22:00 關門，誤點過晚改 Ćma。"
+  },
+  "warsaw-mcdonalds-centralna": {
+    "id": "warsaw-mcdonalds-centralna",
+    "cityKey": "warsaw",
+    "name": "McDonald's Warszawa Centralna 周邊",
+    "address": "Warszawa Centralna 周邊（分店待確認）",
+    "map": "https://www.google.com/maps/search/?api=1&query=McDonald's%20Warszawa%20Centralna",
+    "hours": "待確認（建議用 App 篩「Otwarte 24h」）",
+    "sourceUrl": "https://mcdonalds.pl/restauracje/",
+    "checkedAt": null,
+    "verificationStatus": "pending",
+    "notes": [
+      "McMuffin 早餐；Green Caffè Nero 沒開時的車站早餐備案。"
+    ],
+    "menuUrl": null,
+    "verificationNote": "分店與開門時間未查到；當天用 McDonald’s App 確認，不壓縮 08:05 進站。"
+  },
+  "warsaw-bulke-przez-bibulke-zgoda": {
+    "id": "warsaw-bulke-przez-bibulke-zgoda",
+    "cityKey": "warsaw",
+    "name": "Bułkę przez Bibułkę | Zgoda",
+    "address": "Zgoda（門牌待確認）, Warszawa",
+    "map": "https://www.google.com/maps/search/?api=1&query=Bu%C5%82k%C4%99%20przez%20Bibu%C5%82k%C4%99%20Zgoda%2C%20Warszawa",
+    "hours": "營業時間待確認",
+    "sourceUrl": null,
+    "checkedAt": null,
+    "verificationStatus": "pending",
+    "notes": [
+      "市中心早午餐：Bagel、Scrambled Eggs、Avocado Toast＋咖啡；比連鎖咖啡店完整但不太重。"
+    ],
+    "menuUrl": null,
+    "verificationNote": "僅見於 10/12 每日餐飲安排稿，門牌與開門時間未查核。"
+  },
+  "warsaw-rusiko": {
+    "id": "warsaw-rusiko",
+    "cityKey": "warsaw",
+    "name": "Rusiko",
+    "address": "Wierzbowa 11, Warszawa",
+    "map": "https://www.google.com/maps/search/?api=1&query=Rusiko%2C%20Wierzbowa%2011%2C%20Warszawa",
+    "hours": "週二至週六 13:00–00:00（2026-10-12 餐飲 v5 稿整理，待確認）",
+    "sourceUrl": "https://joinpearl.co/restaurants/warsaw/rusiko",
+    "checkedAt": null,
+    "verificationStatus": "pending",
+    "notes": [
+      "Michelin 推薦喬治亞菜：khachapuri 起司船形麵包、khinkali 湯包、chanakhi 燉羊腿。",
+      "10/30 最後晚餐首選；起義博物館後搭電車約 15–20 分。"
+    ],
+    "menuUrl": null,
+    "verificationNote": "營業時段來自2026-10-12 餐飲 v5 稿引用的第三方頁，本輪未重新查核；先訂位並確認 10/30 營業。"
+  },
+  "warsaw-ceviche-bar": {
+    "id": "warsaw-ceviche-bar",
+    "cityKey": "warsaw",
+    "name": "Ceviche Bar",
+    "address": "Twarda 2-4, Warszawa",
+    "map": "https://www.google.com/maps/search/?api=1&query=Ceviche%20Bar%2C%20Twarda%202-4%2C%20Warszawa",
+    "hours": "週五 12:00–23:00（2026-10-12 餐飲 v5 稿整理，待確認）",
+    "sourceUrl": "https://guide.michelin.com/en/masovia/warsaw/restaurant/ceviche-bar",
+    "checkedAt": null,
+    "verificationStatus": "pending",
+    "notes": [
+      "Bib Gourmand 祕魯／南美料理：ceviche 與小盤。"
+    ],
+    "menuUrl": null,
+    "verificationNote": "Michelin 指南收錄；營業時段來自2026-10-12 餐飲 v5 稿，本輪未重新查核。"
+  },
+  "warsaw-soul-kitchen": {
+    "id": "warsaw-soul-kitchen",
+    "cityKey": "warsaw",
+    "name": "Soul Kitchen",
+    "address": "Nowogrodzka 18A, Warszawa",
+    "map": "https://www.google.com/maps/search/?api=1&query=Soul%20Kitchen%2C%20Nowogrodzka%2018A%2C%20Warszawa",
+    "hours": "營業時間待確認",
+    "sourceUrl": "https://joinpearl.co/restaurants/warsaw/soul-kitchen",
+    "checkedAt": null,
+    "verificationStatus": "pending",
+    "notes": [
+      "旅客評論提過威靈頓牛排，但官方菜單查不到；離 Metropol 步行約 8 分，訂位時先問有沒有 Wellington。"
+    ],
+    "menuUrl": null,
+    "verificationNote": "Wellington 供應僅有評論證據，未獲店家確認。"
+  },
+  "warsaw-bydlo-i-powidlo": {
+    "id": "warsaw-bydlo-i-powidlo",
+    "cityKey": "warsaw",
+    "name": "Bydło i Powidło（Wellington Show）",
+    "address": "門牌待確認",
+    "map": "https://www.google.com/maps/search/?api=1&query=Byd%C5%82o%20i%20Powid%C5%82o%2C%20Warszawa",
+    "hours": "Wellington Show 只在週一 17:00–22:00",
+    "sourceUrl": "https://www.bydloipowidlo.pl/wellington-show",
+    "checkedAt": null,
+    "verificationStatus": "pending",
+    "notes": [
+      "桌邊製作威靈頓牛排的 Wellington Show，每人 159 PLN（含韃靼牛肉與甜點）。"
+    ],
+    "menuUrl": null,
+    "verificationNote": "只在週一推出，這趟華沙沒有週一，排不進行程；資訊來自2026-10-12 餐飲 v5 稿。"
   }
 };
 
