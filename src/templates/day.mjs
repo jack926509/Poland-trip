@@ -117,13 +117,18 @@ function renderOperation(operation, day) {
 
   const addresses = operation.addresses?.map(item => {
     const safeUrl = safeHttpsUrl(item.url);
+    // 手機一張地址卡原本約 250px（名稱、地址、說明、入口、兩顆按鈕各一行）。
+    // 改成名稱＋地址＋導航按鈕一眼可見，說明與入口收進「入口與說明」；
+    // 餐廳共用的制式入口句不再重複列出。
+    const entrance = item.entranceNote && !/^依店家地址與現場招牌找入口/.test(item.entranceNote) ? item.entranceNote : '';
+    const official = safeHttpsUrl(item.officialUrl);
     return `
       <li class="operation-address">
-        <div><b>${escapeHtml(item.name)}</b><span>${escapeHtml(item.address)}</span></div>
-        ${item.note ? `<p>${escapeHtml(item.note)}</p>` : ''}
-        ${item.entranceNote ? `<p><b>入口：</b>${escapeHtml(item.entranceNote)}</p>` : ''}
-        ${safeUrl ? `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(item.name)} 導航">開啟導航 ↗</a>` : ''}
-        ${safeHttpsUrl(item.officialUrl) ? ` · <a href="${safeHttpsUrl(item.officialUrl)}" target="_blank" rel="noopener noreferrer">官網 ↗</a>` : ''}
+        <div class="operation-address-head">
+          <div class="operation-address-text"><b>${escapeHtml(item.name)}</b><span>${escapeHtml(item.address)}</span></div>
+          <div class="operation-address-actions">${safeUrl ? `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(item.name)} 導航">導航 ↗</a>` : ''}${official ? `<a href="${official}" target="_blank" rel="noopener noreferrer" aria-label="${escapeHtml(item.name)} 官網">官網 ↗</a>` : ''}</div>
+        </div>
+        ${item.note || entrance ? `<details class="operation-address-more"><summary>入口與說明</summary>${item.note ? `<p>${escapeHtml(item.note)}</p>` : ''}${entrance ? `<p><b>入口：</b>${escapeHtml(entrance)}</p>` : ''}</details>` : ''}
       </li>`;
   }).join('') || '<li>這一天尚無地址資料。</li>';
 
@@ -216,10 +221,17 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
     </div>` : `
     <div class="callout-good"><b>這一天沒有待訂項目。</b></div>`;
 
-  const warnHtml = day.warn ? `
+  // 重要風險原本是一整段 8–12 行的文字牆，手機上很難找到重點：
+  // 依句號拆成條列，一句一行；資料裡的 **粗體** 標記轉成 <b>。
+  const warnItems = (day.warn || '')
+    .split(/(?<=。)/)
+    .map(sentence => sentence.trim())
+    .filter(Boolean)
+    .map(sentence => sentence.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>'));
+  const warnHtml = warnItems.length ? `
     <div class="callout-risk">
       <span class="tag-red">重要風險</span>
-      <p>${day.warn}</p>
+      ${warnItems.length > 1 ? `<ul class="risk-list">${warnItems.map(item => `<li>${item}</li>`).join('')}</ul>` : `<p>${warnItems[0]}</p>`}
     </div>` : '';
 
   // 10 月底的波蘭日落在 16:00 上下，戶外行程排不排得下由這張卡決定；

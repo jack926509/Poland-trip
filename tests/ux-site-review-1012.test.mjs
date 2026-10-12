@@ -39,3 +39,14 @@ test('倒數看板手機版把倒數、日期、類別並排；本頁章節手�
   assert.match(source, /\.countdown-table tbody tr \{\s*display: grid;/);
   assert.match(source, /@media \(max-width: 480px\) \{\s*\.chapter-index ol a > span \{ display: none; \}/);
 });
+
+test('手機閱讀：重要風險逐句條列、粗體標記轉成 <b>、地址卡導航一眼可見、長備註可收合', () => {
+  const day3 = read('day-03.html');
+  const risk = day3.slice(day3.indexOf('<span class="tag-red">重要風險</span>'));
+  assert.match(risk, /^<span class="tag-red">重要風險<\/span>\s*<ul class="risk-list"><li>/);
+  assert.doesNotMatch(day3, /\*\*/, '粗體標記不可原樣露出');
+  const day7 = read('day-07.html');
+  assert.match(day7, /<div class="operation-address-actions"><a href="https:[^"]+"[^>]*>導航 ↗<\/a>/);
+  assert.doesNotMatch(day7, /入口：<\/b>依店家地址與現場招牌找入口/, '餐廳制式入口句不再重複');
+  assert.match(fs.readFileSync('src/scripts/nav.js', 'utf8'), /const clampLongCells = \(\) =>/);
+});

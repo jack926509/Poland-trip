@@ -6477,3 +6477,72 @@ h3 {
   font-size: .8rem;
   font-weight: 700;
 }
+
+/* ══ 2026-10-12 手機閱讀性 ═══════════════════════════════════
+   1. 重要風險改條列：一句一行，句間留白，不再是一整段文字牆。
+   2. 卡片表格的長備註（>140 字）手機先顯示 4 行，nav.js 加「展開全文」。
+   3. 手機內文行高與段距略放寬，長段落較好掃讀。 */
+.risk-list { margin: .5rem 0 0; padding-left: 1.1rem; }
+.risk-list li { margin: 0 0 .45rem; line-height: 1.6; }
+.risk-list li::marker { color: var(--red); }
+
+@media (max-width: 700px) {
+  .cell-clamp.is-clamped {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+  }
+  .table-editorial td .note-toggle {
+    display: block;
+    min-height: 44px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--accent-dark);
+    cursor: pointer;
+    font: inherit;
+    font-size: .8rem;
+    font-weight: 700;
+    text-align: left;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  main p, main li { line-height: 1.7; }
+  .card > p + p { margin-top: .6rem; }
+}
+
+/* 現場地址卡：名稱＋地址在左、導航／官網膠囊在右；說明與入口收合。 */
+.operation-address .operation-address-head { display: flex; align-items: flex-start; justify-content: space-between; gap: .75rem; }
+.operation-address .operation-address-text { display: flex; flex-direction: column; gap: .15rem; min-width: 0; }
+.operation-address .operation-address-text span { overflow-wrap: anywhere; }
+.operation-address-actions { display: flex; flex: 0 0 auto; gap: .35rem; }
+.operation-addresses .operation-address-actions a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: .25rem .7rem;
+  border: 1px solid rgb(142 126 112 / 40%);
+  border-radius: 999px;
+  background: var(--paper-light);
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.operation-address-more > summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  color: var(--accent-dark);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  font-weight: 700;
+}
+@media (max-width: 480px) {
+  .operation-address .operation-address-head { flex-direction: column; gap: .4rem; }
+}
