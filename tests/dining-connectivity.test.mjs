@@ -57,13 +57,13 @@ test('每個門市及每日引用均有查核狀態，事實不在每日重複�
 
 test('拆分後每間速食都有單一地址、ID、導航和可見提醒', () => {
   const branches=Object.values(dining.fastFoodBranches).flat();
-  assert.equal(branches.length,33); // 2026-10-12 移除查無門市的 Salad Story Avenida
+  assert.equal(branches.length,34); // 2026-10-12 移除查無門市的 Salad Story Avenida；同日新增 Pasibus Nowy Świat（10/29 宵夜備案）
   assert.equal(new Set(branches.map(x=>x.id)).size,branches.length);
   for (const [city,items] of Object.entries(dining.fastFoodBranches)) {
     const html=renderFastFoodDayList([city],{branches:dining.fastFoodBranches,chains:dining.fastFoodChains,hubs:dining.fastFoodHubs});
     for(const item of items){
       assert.ok(!item.address.includes('／'),item.id);
-      assert.ok(decodeURIComponent(item.map).includes(item.address),item.id);
+      assert.ok(/\/maps\/place\//.test(item.map)||decodeURIComponent(item.map).includes(item.address),item.id); // 精準 place 連結（Pasibus 等已定案分店）不含地址字串
       assert.ok(html.includes(item.note.replaceAll('&','&amp;')),item.id);
       assert.ok(html.includes(item.hours.replaceAll('&','&amp;')),item.id);
     }
@@ -84,7 +84,9 @@ test('餐段引用必須存在；未安排餐段必須明說，不自動假設�
     else assert.match(timing,/未排|不採用/);
   }
   assert.match(mealTiming(dayDining[5].find(x=>x.placeId==='wroclaw-restauracja-wroclawska'),trip.days[4]),/行程預留 12:00/);
-  assert.match(mealTiming(dayDining[6].find(x=>x.placeId==='poznan-pyra-bar'),trip.days[5]),/行程預留 12:30/);
+  assert.match(mealTiming(dayDining[2].find(x=>x.placeId==='krakow-pimiento-shop-bistro'),trip.days[1]),/行程預留 13:00/);
+  assert.match(mealTiming(dayDining[6].find(x=>x.placeId==='poznan-carla-trattoria-moderna'),trip.days[5]),/行程預留 14:00/);
+  assert.match(mealTiming(dayDining[6].find(x=>x.placeId==='poznan-pyra-bar'),trip.days[5]),/未排|不採用/); // 10/29 午餐改 Carla，Pyra Bar 降為備案
   const html=fs.readFileSync(new URL('../dist/today.html',import.meta.url),'utf8');
   assert.ok(html.includes('候選未排時段'));
 });

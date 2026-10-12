@@ -356,7 +356,6 @@ const addressStepLabels = {
   '波茲南主教座堂': ['★ 教堂島 Ostrów Tumski'],
   '波茲南市政廳': ['廣場卡正面位置', '★ 山羊鐘樓秀'],
   '帝王城堡': ['★ 帝王城堡'],
-  'Stary Browar': ['Stary Browar'],
   '華沙起義博物館': ['★ 華沙起義博物館'],
 };
 
@@ -417,7 +416,7 @@ export const dayOperations = {
     ],
     navigation: [
       { mode: 'PKP', route: 'Warszawa Centralna → Kraków Główny', action: `已購 EIP 5300 ${eip5300.dep} 由 Warszawa Centralna 出發；從 Hotel Metropol 步行約 500 公尺。抵達時間、月台、車廂與座位依票券詳細頁及現場電子牌確認。` },
-      { mode: '步行／市內交通', route: 'Kraków Główny → Wawel → Kazimierz → Podgórze → 辛德勒工廠', action: '先寄放行李；15:45 由老城出發，沿 Kazimierz、Podgórze 步行，17:10 前到辛德勒工廠。若延誤則用 Jakdojade 查即時市內交通。' },
+      { mode: '步行／電車／計程車', route: 'Kraków Główny → 中央廣場 → Pimiento → Wawel → 辛德勒工廠', action: '先寄放行李；午餐 13:00 在 Pimiento，14:30 瓦維爾大教堂、15:15 Wawel 短路線；16:15 由 Wawel 搭電車或計程車到辛德勒工廠，17:10 前到入口。電車車號與轉乘用 Jakdojade 查即時資料。' },
     ],
     dailyAlerts: [
       '10/25 為非營業週日，多數一般商店關閉；餐廳與例外店家仍逐店確認。',
@@ -496,7 +495,6 @@ export const dayOperations = {
       venueCard('poznan-cathedral', '波茲南主教座堂'),
       venueCard('poznan-town-hall', '波茲南市政廳', '博物館整修閉館，此地點用於 12:00 山羊鐘樓秀外觀。'),
       venueCard('poznan-ck-zamek', '帝王城堡'),
-      venueCard('poznan-stary-browar', 'Stary Browar'),
       venueCard('warsaw-centralna-station', 'Warszawa Centralna'),
       {
         name: diningPlaces['poznan-rogal'].name,
@@ -512,7 +510,7 @@ export const dayOperations = {
       accommodationAddress('warsaw-metropol'),
     ],
     navigation: [
-      { mode: '步行／市內交通', route: '教堂島 → 舊城市場 → 帝王城堡 → Stary Browar → Poznań Główny', action: '11:45 前到市政廳正面；午餐後 14:00 帝王城堡、15:10 Stary Browar，16:00 開始取行李與前往車站。' },
+      { mode: '步行／市內交通', route: '教堂島 → 舊城市場 → Carla → 帝王城堡 → Towarowa 取行李 → Poznań Główny', action: '11:45 前到市政廳正面；14:00 Carla 午餐、15:15 前結帳，15:35 帝王城堡（縮短約 40 分），16:15 離開後直接取行李，17:05 前抵站。' },
       { mode: 'PKP', route: 'Poznań Główny → Warszawa Centralna', action: 'EIC 8104 已購票，17:40 發車；17:05 前到站。抵達時間、車廂與座位待查票面，搭車前再查月台與異動。' },
     ],
     dailyAlerts: [
@@ -580,7 +578,7 @@ const unresolvedStepReasons = {
   },
   2: {
     'EIP 5300 前往克拉科夫': dynamicTransitReason,
-    '步行經 Kazimierz、Podgórze 前往辛德勒工廠': '步行沿途短停保持彈性；以辛德勒工廠入口地址為終點，17:10 前到場。',
+    '電車或計程車前往辛德勒工廠': '電車車號與轉乘為動態資料，出發前用 Jakdojade 查；以辛德勒工廠入口地址為終點，17:10 前到場。',
   },
   3: {
     'Kraków MDA 報到': `巴士站地址（Bosacka 18）與 10/26 的 ${lajkonikOutboundAdopted.dep} 班次已在官方售票頁查得，售票頁標示由地下層 ${lajkonikOutboundAdopted.bay} 發車；站位仍以當日電子看板為準，尚未購票。`,
@@ -599,6 +597,7 @@ const unresolvedStepReasons = {
     'IC 260 前往波茲南': dynamicTransitReason,
   },
   6: {
+    '老城自由時間': flexibleStopReason,
     '取行李、前往 Poznań Główny': '公寓寄放與取行李地點須先向住宿確認，再前往車站。',
     'EIC 8104 前往華沙': dynamicTransitReason,
   },

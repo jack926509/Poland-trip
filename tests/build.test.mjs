@@ -290,7 +290,8 @@ test('8 天每個行程步驟都有可靠地址或明確待確認原因', () => 
   assert.ok(!dayOperations[4].unresolvedSteps.some(item => item.label === '★ Kazimierz 白天散步'));
   assert.ok(!dayOperations[6].addresses.some(item => item.name === '牛角麵包博物館'), '牛角麵包博物館已移出 Day 6');
   assert.ok(dayOperations[6].addresses.some(item => item.name === '帝王城堡' && item.stepLabels.includes('★ 帝王城堡')));
-  assert.ok(dayOperations[6].addresses.some(item => item.name === 'Stary Browar' && item.stepLabels.includes('Stary Browar')));
+  // 2026-10-12 使用者決定刪掉 10/29 的 Stary Browar，改為午餐 Carla 14:00 並縮短帝王城堡。
+  assert.ok(!dayOperations[6].addresses.some(item => item.name === 'Stary Browar'), 'Stary Browar 已移出 Day 6');
 });
 
 test('已排定的主要公共地點使用正確地址與官方入口資料', () => {
@@ -300,7 +301,6 @@ test('已排定的主要公共地點使用正確地址與官方入口資料', ()
     [2, '紡織會館 Sukiennice', 'Rynek Główny 3, 31-042 Kraków'],
     [2, 'Plac Nowy', 'Plac Nowy, 31-056 Kraków'],
     [5, '樂斯拉夫中央廣場', 'Rynek, 50-101 Wrocław'],
-    [6, 'Stary Browar', 'Półwiejska 42, 61-888 Poznań'],
     [7, '華沙老城市場廣場', 'Rynek Starego Miasta, 00-272 Warszawa'],
   ];
   for (const [day, name, expectedAddress] of requiredPlaces) {
@@ -525,12 +525,12 @@ test('2026-08-09 官方盤查會移除未能證實的場次、價格與閉館敘
   assert.ok(cityNotices.wroclaw.some(item => item.text.includes('availability calendar')));
 });
 
-test('待辦事項頁將 18 項依三類整理，並在實用資訊導覽可進入', () => {
+test('待辦事項頁將 19 項依三類整理，並在實用資訊導覽可進入', () => {
   // 2026-10-07 取消牛角麵包博物館，移除原本只放它的第四類。
   assert.deepEqual(todoGroups.map(group => [group.id, group.items.length]), [
-    ['rail', 5], ['attractions', 7], ['dining', 6],
+    ['rail', 5], ['attractions', 7], ['dining', 7],
   ]);
-  assert.equal(todoGroups.flatMap(group => group.items).length, 18);
+  assert.equal(todoGroups.flatMap(group => group.items).length, 19);
 
   const html = read('practical/todos.html');
   for (const label of ['城際交通', '主要景點', '餐飲訂位']) {
@@ -637,7 +637,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   });
 
   assert.equal(trains.length, 5);
-  assert.deepEqual(bookingTiers.map(tier => tier.items.length), [7, 5, 4]);
+  assert.deepEqual(bookingTiers.map(tier => tier.items.length), [7, 5, 5]);
   assert.deepEqual({ out: flights.out.length, back: flights.back.length }, { out: 5, back: 5 });
   assert.equal(stay.length, 5);
   assert.equal(reservations.length, 8);
@@ -647,7 +647,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   // 2026-09-19 資料精煉切片 1：verifiedRestaurantHours 改由每日餐位（day-dining.js）中
   // 已核實／部分核實的門市直接推導（見 src/lib/dining.mjs 的 plannedVerifiedPlaces），
   // 不再是手寫子集，筆數會隨每日餐位調整自然變動。
-  assert.equal(verifiedRestaurantHours.length, 59); // 2026-10-12 餐飲 v5 整併加四家 Pasibus（31 → 35），同日逐店複查把 24 家待確認門市升為部分核實（35 → 59）
+  assert.equal(verifiedRestaurantHours.length, 62); // 2026-10-12 新增 Pimiento、Carla、Pasibus Nowy Świat 三筆主檔（59 → 62）；餐飲 v5 整併加四家 Pasibus（31 → 35），同日逐店複查把 24 家待確認門市升為部分核實（35 → 59）
   assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
     warsaw: 5, krakow: 7, wroclaw: 4, poznan: 7,
   });
@@ -826,7 +826,7 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
   const rawTodoCount = todoGroups.reduce((total, group) => total + group.items.length, 0);
   const todoCount = todoGroups.reduce((total, group) =>
     total + group.items.filter(item => !['已訂妥', '已完成', '已購票'].includes(item.status)).length, 0);
-  assert.equal(todoCount, 13, '四段已購火車與 Auschwitz 導覽不可算進待辦');
+  assert.equal(todoCount, 14, '四段已購火車與 Auschwitz 導覽不可算進待辦');
 
   assert.ok(!html.includes('出發準備度'));
   assert.ok(!html.includes('00 / Readiness'));
@@ -1807,7 +1807,7 @@ test('每日餐位全部出現在對應城市指南，且雙向連結對得上',
   for (const [day, items] of Object.entries(dayDining)) {
     for (const item of items) {
       if (item.cityGuide === false) continue;
-      const city = detectCity(item.address, item.map);
+      const city = item.cityKey || detectCity(item.address, item.map); // 與 plannedMealsFor 同一條判斷：主檔有 cityKey 就用它（精準 place 連結不含城市字樣）
       assert.ok(city, `Day ${day}「${item.name}」判斷不出城市，將從城市指南消失`);
       assert.ok(tables[city].some(entry => entry.name === item.name),
         `Day ${day}「${item.name}」沒有進到 ${cityNames[city]} 的餐廳表`);

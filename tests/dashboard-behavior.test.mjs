@@ -116,8 +116,8 @@ test('可查購仍未完成，未記錄查核日期不冒用建置日期', () =>
   const html = renderTodos({ todoGroups });
   assert.ok(html.includes('未連線查詢即時庫存'));
   assert.ok(html.includes('最近人工查核'));
-  assert.ok(html.includes('13 項待辦'));
-  assert.ok(html.includes('共 18 項'));
+  assert.ok(html.includes('14 項待辦'));
+  assert.ok(html.includes('共 19 項'));
   // Auschwitz 導覽與巴士、四段火車、09/24 查過的全景畫、10/10 查過的餐廳，
   // 以及 10/12 複查的 Mr. Jerry、Arirang、Rusiko、華沙皇家城堡與起義博物館時段均已有人工核對日期。
   assert.equal((html.match(/未記錄，請重查/g) || []).length, 3);

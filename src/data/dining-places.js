@@ -434,6 +434,34 @@ export const diningPlaces = {
     "liveCheckedAt": "2026-10-12",
     "hoursNote": "店家 Instagram、Menix 2026"
   },
+  "poznan-carla-trattoria-moderna": {
+    "id": "poznan-carla-trattoria-moderna",
+    "booking": "required",
+    "cityKey": "poznan",
+    "name": "Carla Trattoria Moderna",
+    "address": "Święty Marcin 34, 61-803 Poznań",
+    "map": "https://www.google.com/maps/place/Carla+Trattoria+Moderna/@52.4063215,16.9259795,17z/data=!4m6!3m5!1s0x47045ba3edcbf40b:0x738c9e5bda0ca31!8m2!3d52.4063215!4d16.9259795!16s%2Fg%2F11ml052h1z",
+    "hours": "週一至週四 14:00–22:30；週五 14:00–23:30；週六 13:00–23:30；週日 13:00–20:00（Google 地圖、zjedz.my）",
+    "sourceUrl": "https://zjedz.my/carla-trattoria-moderna",
+    "checkedAt": "2026-10-12",
+    "verificationStatus": "verified",
+    "notes": [
+      "現代義大利菜：手工麵、披薩、小盤分享；10/29 週四 14:00 開門才有位，午餐延後到 14:00，約 17 分步行到帝王城堡。"
+    ],
+    "menuUrl": null,
+    "verificationNote": "2026-10-12 查：Google 地圖與 zjedz.my 一致週四 14:00–22:30；menu.pl 外送時段週四 14:00–21:30；店家 Instagram 表示 10/1 起新營業時間。近期有評論抱怨上菜慢，須保留 17:05 到站緩衝。zjedz.my 可線上訂位，電話 +48 796 200 002。",
+    "phone": "+48 796 200 002",
+    "cuisine": "現代義大利菜",
+    "dishes": [
+      "Spaghetti assassina 46 zł",
+      "Spaghetti carbonara 52 zł",
+      "Papardelle cacio e pepe 49 zł",
+      "Margherita classica 34 zł",
+      "Tiramisu 35 zł",
+      "Panna cotta 32 zł"
+    ],
+    "liveCheckedAt": "2026-10-12"
+  },
   "poznan-brovaria": {
     "id": "poznan-brovaria",
     "cityKey": "poznan",
@@ -1815,6 +1843,32 @@ export const diningPlaces = {
     "liveCheckedAt": "2026-10-12",
     "hoursNote": "飯店官網菜單頁"
   },
+  "krakow-pimiento-shop-bistro": {
+    "id": "krakow-pimiento-shop-bistro",
+    "booking": "recommended",
+    "cityKey": "krakow",
+    "name": "Pimiento Shop and Bistro",
+    "address": "Świętego Filipa 21, 31-150 Kraków",
+    "map": "https://www.google.com/maps/place/Pimiento+Shop+and+Bistro/@50.0678495,19.9419987,17z/data=!4m6!3m5!1s0x47165b801404f333:0x34b6de7597d28894!8m2!3d50.0678495!4d19.9419987!16s%2Fg%2F11shrf9xn_",
+    "hours": "週一至週六 09:00–20:00；週日 09:00–15:00（Google 地圖與 MapQuest）。早餐菜單 09:00–13:00，午餐菜單 13:00 起（官網）",
+    "sourceUrl": "https://pimiento.pl/stary-kleparz/",
+    "checkedAt": "2026-10-12",
+    "verificationStatus": "partial",
+    "notes": [
+      "Stary Kleparz 市場旁的 Pimiento 小型熟食店兼 bistro：阿根廷牛排、Tatar、烤雞、Argentine burger；10/25 週日午餐首選，ibis 步行約 7 分。"
+    ],
+    "menuUrl": "https://pimiento.pl/wp-content/uploads/2025/10/pimiento-shop-and-bistro-menu-calosc.pdf",
+    "verificationNote": "營業時間來源：Google 地圖（2026-10-12 實開）與 MapQuest 皆列週日 09:00–15:00；官網只列菜單時段、未列逐日時間，也查不到 10/25 特殊公告。午餐菜單 13:00 才開始，早餐菜單 09:00–13:00。官網有「ZAREZERWUJ」訂位按鈕（平台未查到），電話 +48 517 475 818。10/22 複查再看一次 Google 地圖。",
+    "phone": "+48 517 475 818",
+    "cuisine": "阿根廷牛排／熟食 bistro",
+    "dishes": [
+      "Tatar z wołowiny argentyńskiej 49 zł",
+      "Argentyński burger wołowy 44 zł",
+      "阿根廷牛排（Rib-eye 36.50 zł／100 g）",
+      "Pajda 麵包片（早餐菜單）"
+    ],
+    "liveCheckedAt": "2026-10-12"
+  },
   "poznan-inna-piekarnia": {
     "id": "poznan-inna-piekarnia",
     "cityKey": "poznan",
@@ -2016,16 +2070,17 @@ export const diningPlaces = {
     "cityKey": "wroclaw",
     "name": "Pasibus Wroclavia",
     "address": "Sucha 1, Wrocław",
-    "map": "https://www.google.com/maps/search/?api=1&query=Pasibus%20Wroclavia%2C%20Sucha%201%2C%20Wroc%C5%82aw",
+    "map": "https://www.google.com/maps/place/Pasibus+%7C+Better+Burger/@51.0961134,17.033663,17z/data=!3m1!4b1!4m6!3m5!1s0x470fc26f5f6e0217:0xcba5f296c1614565!8m2!3d51.0961134!4d17.033663!16s%2Fg%2F11gd1rxd65",
     "hours": "週一–六 09:00–22:00；週日 11:00–21:00",
     "sourceUrl": "https://pasibus.pl/lokalizacje/wroclaw/lokal-pasibus-wroclavia/",
-    "checkedAt": "2026-09-19",
+    "checkedAt": "2026-10-12",
     "verificationStatus": "verified",
     "notes": [
-      "Wroclavia（中央車站旁）的本土漢堡，推薦 Gonzalez；MAX 排隊時的同商場替代。"
+      "Wroclavia（中央車站旁）的本土漢堡，推薦 Gonzalez；MAX 排隊時的同商場替代，也是 10/27 抵樂斯拉夫後的宵夜選項（週二營業到 22:00）。"
     ],
     "menuUrl": null,
-    "verificationNote": "沿用速食門市 2026-09-19 官網查核。",
+    "verificationNote": "2026-10-12 再讀官方分店頁，時間不變（週一至週六 09:00–22:00、週日 11:00–21:00）；Google 地圖未顯示逐日時間，最後點餐時間未查到，宵夜以 21:30 前到店為準。",
+    "phone": "+48 732 192 561",
     "cuisine": "本土漢堡",
     "dishes": [
       "Gonzalez（微辣）",
@@ -2063,16 +2118,17 @@ export const diningPlaces = {
     "cityKey": "poznan",
     "name": "Pasibus Święty Marcin",
     "address": "Święty Marcin 58/64",
-    "map": "https://www.google.com/maps/search/?api=1&query=Pasibus%20%C5%9Awi%C4%99ty%20Marcin%2058%2F64%2C%20Pozna%C5%84",
+    "map": "https://www.google.com/maps/place/Pasibus+%7C+Better+Burger/@52.407038,16.922813,17z/data=!3m1!4b1!4m6!3m5!1s0x47045b880e1b4933:0xfbcc8de511cb1063!8m2!3d52.407038!4d16.922813!16s%2Fg%2F11sx0f3ln7",
     "hours": "週日–四 12:00–23:00；週五–六 12:00–00:00",
     "sourceUrl": "https://pasibus.pl/lokalizacje/poznan/lokal-pasibus-sw-marcin/",
-    "checkedAt": "2026-09-19",
+    "checkedAt": "2026-10-12",
     "verificationStatus": "verified",
     "notes": [
-      "市中心主街街邊店，推薦 Gonzalez；Pyra Bar 排隊太久時的速食備案，往帝王城堡順路。"
+      "市中心主街街邊店，推薦 Gonzalez；Pyra Bar 排隊太久時的速食備案，往帝王城堡順路；也是 10/28 抵波茲南後的宵夜選項（週三營業到 23:00）。"
     ],
     "menuUrl": null,
-    "verificationNote": "沿用速食門市 2026-09-19 官網查核。",
+    "verificationNote": "2026-10-12 再讀官方分店頁，時間不變（週日至週四 12:00–23:00、週五至週六 12:00–24:00）；最後點餐時間未查到，宵夜以 22:30 前到店為準。從 Towarowa 37 步行約 10 分（座標估算）。",
+    "phone": "+48 512 553 285",
     "cuisine": "本土漢堡",
     "dishes": [
       "Gonzalez（微辣）",
@@ -2086,16 +2142,41 @@ export const diningPlaces = {
     "cityKey": "warsaw",
     "name": "Pasibus Złote Tarasy",
     "address": "Złota 59",
-    "map": "https://www.google.com/maps/search/?api=1&query=Pasibus%20Z%C5%82ote%20Tarasy%2C%20Z%C5%82ota%2059%2C%20Warszawa",
+    "map": "https://www.google.com/maps/place/Pasibus+%7C+Better+Burger/@52.230079,21.0024459,17z/data=!3m1!4b1!4m6!3m5!1s0x471ecc8da58f0dd5:0x74c5fc115ab0a7b8!8m2!3d52.230079!4d21.0024459!16s%2Fg%2F11g01_3w_5",
     "hours": "週一–六 09:00–22:00；週日 09:00–21:00",
     "sourceUrl": "https://pasibus.pl/lokalizacje/warszawa/warszawa-zlote-tarasy/",
-    "checkedAt": "2026-09-19",
+    "checkedAt": "2026-10-12",
     "verificationStatus": "verified",
     "notes": [
-      "Złote Tarasy（中央車站對面）；同商場另有 KFC、MAX、Berlin Döner，皆約 22:00 關。10/29 Arirang 來不及時的速食備案。"
+      "Złote Tarasy（中央車站對面）；同商場另有 KFC、MAX、Berlin Döner，皆約 22:00 關。10/29 Arirang 來不及時的速食備案，也是抵華沙後的宵夜選項（週四營業到 22:00）。"
     ],
     "menuUrl": null,
-    "verificationNote": "沿用速食門市 2026-09-19 官網查核；22:00 關門，誤點過晚改 Ćma。",
+    "verificationNote": "2026-10-12 再讀官方分店頁，時間不變；22:00 關門，最後點餐時間未查到，宵夜以 21:30 前到店為準，誤點過晚改 Nowy Świat 分店（營業到翌日 01:00）或 Ćma。",
+    "phone": "+48 518 327 787",
+    "cuisine": "本土漢堡",
+    "dishes": [
+      "Gonzalez（微辣）",
+      "Chorizard",
+      "Triple Smash"
+    ],
+    "liveCheckedAt": "2026-10-12"
+  },
+  "warsaw-pasibus-nowy-swiat": {
+    "id": "warsaw-pasibus-nowy-swiat",
+    "cityKey": "warsaw",
+    "name": "Pasibus Nowy Świat",
+    "address": "Nowy Świat 29, Warszawa",
+    "map": "https://www.google.com/maps/place/Pasibus+%7C+Better+Burger/@52.233142,21.0167101,17z/data=!4m8!3m7!1s0x471ecd8b1d992077:0xfe2d8f626f94676b!8m2!3d52.233142!4d21.019285!9m1!1b1!16s%2Fg%2F11xgnv5wkz",
+    "hours": "週一至週四 10:00–翌日 01:00；週五至週六 10:00–翌日 03:00；週日 10:00–24:00",
+    "sourceUrl": "https://pasibus.pl/lokalizacje/warszawa/nowy-swiat/",
+    "checkedAt": "2026-10-12",
+    "verificationStatus": "verified",
+    "notes": [
+      "Nowy Świat 街邊店，華沙最晚營業的 Pasibus；10/29 週四營業到翌日 01:00，晚餐 Arirang 後或 Złote Tarasy 已關時的宵夜備案。"
+    ],
+    "menuUrl": null,
+    "verificationNote": "2026-10-12 讀官方分店頁（頁面更新 2026-10-01）；Google 地圖未顯示逐日時間，最後點餐時間未查到，宵夜以 00:30 前到店為準。從 Hotel Metropol 步行約 12 分、中央車站約 20 分（座標估算）。",
+    "phone": "+48 510 425 802",
     "cuisine": "本土漢堡",
     "dishes": [
       "Gonzalez（微辣）",

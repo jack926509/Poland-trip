@@ -54,39 +54,46 @@ export const dayDiningPlans = {
     {
       "placeId": "krakow-lajkonik-basztowa",
       "role": "隔日備餐採買",
-      "note": "寄放行李後先買隔日早餐及午餐（三明治、Drożdżówka 甜麵包、可頌、水果），順路接 Polonia；不等晚餐後才去。需冷藏的餐點先確認住宿保存條件，否則選常溫麵包與水果。",
+      "note": "寄放行李後先買隔日早餐及午餐（三明治、Drożdżówka 甜麵包、可頌、水果），接著走去中央廣場；不等晚餐後才去。需冷藏的餐點先確認住宿保存條件，否則選常溫麵包與水果。",
       "stepId": "d2-prep",
       "planStatus": "scheduled",
       "dayHours": "07:00–19:00"
     },
     {
-      "placeId": "krakow-polonia",
+      "placeId": "krakow-pimiento-shop-bistro",
       "role": "午餐首選（條件式）",
-      "note": "Basztowa 25，離 ibis 步行約 5 分：Schabowy 炸豬排、Pierogi 或湯品；12:35 前離店，接 13:00 瓦維爾大教堂。",
+      "note": "Świętego Filipa 21，離 ibis 步行約 7 分、離中央廣場約 12 分；13:00 準時入座才吃得到午餐菜單：Tatar 阿根廷牛韃靼、Argentine burger，或照重量點阿根廷牛排。13:50 前離店，步行約 26 分接 14:30 瓦維爾大教堂。",
       "stepId": "d2-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
-      "condition": "官網 12:00 開門（v5 稿 11:30 待確認）；列車延誤改外帶或 24 小時的 Przypiecek，先保留預定景點時段。",
-      "dayHours": "12:00–22:00"
+      "condition": "午餐菜單 13:00 起才供應（早餐菜單 09:00–13:00）；週日只開到 15:00，資料來自 Google 地圖與 MapQuest，官網未列，10/22 複查再看一次。先用官網「ZAREZERWUJ」或電話 +48 517 475 818 訂 13:00 兩位；客滿、關門或列車延誤改 Polonia 或 24 小時的 Przypiecek。",
+      "dayHours": "09:00–15:00（早餐菜單 09:00–13:00，午餐菜單 13:00 起）"
+    },
+    {
+      "placeId": "krakow-polonia",
+      "role": "午餐備選",
+      "note": "Basztowa 25（Hotel Polonia 內），離 ibis 步行約 5 分，週日 12:00 開門：Schabowy 炸豬排、Pierogi 或湯品。Pimiento 客滿、關門或抵達太晚時改這間，吃完仍接 14:30 瓦維爾大教堂。",
+      "stepId": null,
+      "planStatus": "candidate"
     },
     {
       "placeId": "krakow-przypiecek",
       "role": "午餐備選",
-      "note": "原午餐首選保留；Sławkowska 32，24 小時營業，Polonia 客滿或抵達較晚時改點綜合餃子配甜菜湯。",
+      "note": "原午餐首選保留；Sławkowska 32，24 小時營業，Pimiento 與 Polonia 都不行或抵達較晚時改點綜合餃子配甜菜湯。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "krakow-milkbar-tomasza",
       "role": "午餐備選",
-      "note": "św. Tomasza 24，週日 09:00–18:00 有開；想體驗牛奶吧平價 Pierogi、炸豬排可改這間，但比 Polonia 多走約 10 分，下午時間緊仍以 Polonia 較省時。",
+      "note": "św. Tomasza 24，週日 09:00–18:00 有開；想體驗牛奶吧平價 Pierogi、炸豬排可改這間；Pimiento 客滿或關門時的備選，下午時間緊仍以 Pimiento 或 Polonia 較省時。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "krakow-bar-mleczny-pod-temida",
       "role": "午餐備選",
-      "note": "原首選保留；往 Wawel 路上的牛奶吧，與 Polonia 擇一，不加一餐。",
+      "note": "原首選保留；往 Wawel 路上的牛奶吧，與 Pimiento 擇一，不加一餐。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -223,6 +230,14 @@ export const dayDiningPlans = {
       "note": "車站旁 Wroclavia，營業到翌日 01:00；同商場 Pasibus 到 22:00。",
       "stepId": null,
       "planStatus": "candidate"
+    },
+    {
+      "placeId": "wroclaw-pasibus-wroclavia",
+      "role": "宵夜選項（不取代晚餐）",
+      "note": "Wroclavia（Sucha 1）food court，車站步行約 6 分、到 Piast 約 8 分。10/27 週二營業到 22:00，最晚 21:30 前要到店（最後點餐時間未查到）；Samarqand 吃完還想吃，或晚餐改簡單吃時用。抵達時間待查票面，誤點太久就改 Świdnicka 11 分店（週二到 24:00）。",
+      "stepId": null,
+      "planStatus": "candidate",
+      "dayHours": "09:00–22:00"
     }
   ],
   "5": [
@@ -296,6 +311,14 @@ export const dayDiningPlans = {
       "note": "同在 Wroclavia、到 22:00；MAX 排隊時改這間，一樣外帶上車。",
       "stepId": null,
       "planStatus": "candidate"
+    },
+    {
+      "placeId": "poznan-pasibus-swiety-marcin",
+      "role": "宵夜選項（不取代晚餐）",
+      "note": "Święty Marcin 58/64 街邊店，從 Towarowa 37 步行約 10 分。10/28 週三營業到 23:00，最晚 22:30 前要到店（最後點餐時間未查到）；放行李後約 21:15 到，誤點 60 分鐘仍來得及。車站旁 Avenida 週三 21:00 就關，不當預設。",
+      "stepId": null,
+      "planStatus": "candidate",
+      "dayHours": "12:00–23:00"
     }
   ],
   "6": [
@@ -337,12 +360,21 @@ export const dayDiningPlans = {
       "planStatus": "candidate"
     },
     {
-      "placeId": "poznan-pyra-bar",
-      "role": "午餐首選",
-      "note": "12:30 入座，兩人直接點 Pyry z bzikiem（烤馬鈴薯＋Gzik 香草凝乳）與 Szare ale jare（灰色馬鈴薯麵糰＋培根＋酸白菜）分享；13:15 收尾，另留前往帝王城堡的時間。排隊太久改外帶。",
+      "placeId": "poznan-carla-trattoria-moderna",
+      "role": "午餐首選（條件式）",
+      "note": "Święty Marcin 34，14:00 開門即入座（老城步行約 9 分，到帝王城堡約 17 分）：手工麵、披薩與小盤分享，兩人點兩道麵加一份分享即可。14:00–15:15 用餐，15:15 前結帳；上菜慢就砍帝王城堡內部，先保 17:05 到站。",
       "stepId": "d6-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
+      "condition": "週四 14:00 才開門，12:30 吃不到；先在 zjedz.my 訂 10/29 14:00 兩位（尚未訂）。近期有評論說上菜偏慢，15:30 還沒吃完就放棄城堡內部。客滿或訂不到改 Pyra Bar。",
+      "dayHours": "14:00–22:30"
+    },
+    {
+      "placeId": "poznan-pyra-bar",
+      "role": "午餐備案",
+      "note": "Strzelecka 13，週四 11:00–21:00 全天有開。Carla 客滿或訂不到時改這間：Pyry z bzikiem 與 Szare ale jare 兩人分享；12:30 即可入座，午餐後直接去帝王城堡，時間比 Carla 方案寬鬆。",
+      "stepId": null,
+      "planStatus": "candidate",
       "dayHours": "11:00–21:00"
     },
     {
@@ -355,7 +387,7 @@ export const dayDiningPlans = {
     {
       "placeId": "poznan-pasibus-swiety-marcin",
       "role": "午餐速食備案",
-      "note": "Święty Marcin 58/64，12:00–23:00；Pyra Bar 排隊太久時改這間。",
+      "note": "Święty Marcin 58/64，12:00–23:00；Carla 客滿或訂不到、Pyra Bar 又排隊時改這間。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -378,10 +410,19 @@ export const dayDiningPlans = {
     },
     {
       "placeId": "warsaw-pasibus-zlote-tarasy",
-      "role": "晚餐速食備案",
-      "note": "中央車站對面 Złote Tarasy：Pasibus、MAX、Berlin Döner 到 22:00，另有 KFC；Arirang 來不及時直接吃。",
+      "role": "晚餐速食備案／宵夜選項",
+      "note": "中央車站對面 Złote Tarasy：Pasibus、MAX、Berlin Döner 到 22:00，另有 KFC。10/29 週四 Pasibus 營業到 22:00，最晚 21:30 前要到店（最後點餐時間未查到）；Arirang 來不及，或吃完還想吃點東西時用，不取代 Arirang 晚餐。",
       "stepId": null,
-      "planStatus": "candidate"
+      "planStatus": "candidate",
+      "dayHours": "09:00–22:00"
+    },
+    {
+      "placeId": "warsaw-pasibus-nowy-swiat",
+      "role": "宵夜備案（營業最晚）",
+      "note": "Nowy Świat 29 街邊店，離 Hotel Metropol 步行約 12 分。10/29 週四營業到翌日 01:00，最晚 00:30 前要到店；Złote Tarasy 已關、或 Arirang 後想吃宵夜時去。",
+      "stepId": null,
+      "planStatus": "candidate",
+      "dayHours": "10:00–翌日 01:00"
     },
     {
       "placeId": "warsaw-cma-hala-koszyki",

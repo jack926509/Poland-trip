@@ -87,8 +87,8 @@ export const days = [
     headline: 'EIP 5300 已購票：08:40 由 Warszawa Centralna 出發；抵達時間待查票面',
     tag: 'Transit',
     intensity: '高',
-    hardConstraints: ['08:05 前抵 Warszawa Centralna；EIP 5300 08:40 發車，月台與車廂依票面及現場電子牌確認', '辛德勒工廠 17:30 入場（最後入場 18:30）', '午餐與 Check-in 不能拖太久'],
-    mustBook: ['✅ 已購票 · 華沙 → 克拉科夫 EIP 5300 08:40（Warszawa Centralna 上車）', '❗尚未購票 · Wawel 短路線 14:00 左右時段票（寶庫或地下路線 47／35）', '可立即查／購 · 辛德勒工廠 17:30 時段票'],
+    hardConstraints: ['08:05 前抵 Warszawa Centralna；EIP 5300 08:40 發車，月台與車廂依票面及現場電子牌確認', '辛德勒工廠 17:30 入場（最後入場 18:30）', '13:00 準時入座 Pimiento（午餐菜單 13:00 起才供應），13:50 前離店，14:30 瓦維爾大教堂', '16:15 前離開 Wawel，17:10 前到辛德勒入口'],
+    mustBook: ['✅ 已購票 · 華沙 → 克拉科夫 EIP 5300 08:40（Warszawa Centralna 上車）', '❗尚未購票 · Wawel 短路線 15:15 左右時段票（寶庫或地下路線 47／35）', '可立即查／購 · 辛德勒工廠 17:30 時段票'],
     compressible: ['聖瑪利亞教堂內部參觀', '紡織會館購物時間'],
     train: {segmentId:'eip-5300'},
     steps: [
@@ -98,22 +98,22 @@ export const days = [
       {t:'08:40', label:'EIP 5300 前往克拉科夫', sub:'已購票；票券清單顯示 08:40 Warszawa Centralna → Kraków Główny。抵達時間與車廂座位待查票面', cost:'已購票', dur:'車程待查票面'},
       {t:'抵站後', label:'抵 Kraków Główny', sub:'票券清單未顯示抵達時間；後續 11:10 寄放行李等排程，須依票券詳細頁重核', dur:'5–10 min 拖行李'},
       {t:'11:10', label:'旅館寄放行李', sub:'ibis budget Krakow Stare Miasto，飯店官網標示距車站約 200 公尺', dur:'20 min'},
-      {t:'11:30', id:'d2-prep', label:'Lajkonik 備妥隔日早餐與午餐', sub:'寄放行李後沿路到 Basztowa 15 採買隔日麵包、水果與飲品，再前往同街的 Polonia；含步行與採買暫抓 30 分鐘。需冷藏品先確認保存條件，否則選常溫品；時間依列車實際抵達重算', dur:'30 min'},
-      {t:'12:00', id:'d2-lunch', label:'午餐 · Restauracja Polonia', sub:'Basztowa 25（Hotel Polonia 內），離 ibis 步行約 5 分；Schabowy 炸豬排、Pierogi 或湯品。12:35 前離店，預留 25 分鐘前往瓦維爾大教堂。時刻依已購列車實際抵達重算；客滿或來不及改 24 小時的 Przypiecek、外帶或原備選 Pod Temidą，不壓縮預定景點時段', cost:'依店家', dur:'35 min'},
-      {t:'13:00', label:'★ 瓦維爾大教堂', sub:'2026-10-07 官網：4–10 月時段，週日 12:30–17:00、售票至 16:30（11–3 月才縮為 16:00）；Cathedral Museum 週日休館', cost:'PLN 26／18', dur:'45 min'},
-      {t:'14:00', label:'★ Wawel 城堡短路線', constraint:{venue:'krakow-wawel-treasury'}, sub:'2026-09-17 官網 9–12 月分路線售票，適合一小時空檔的是：王冠寶庫 47／35、Castle Underground 47／35（含語音導覽）、Armoury 47／35；二樓代表廳 57／43 需時較長。不要硬排一、二樓完整路線，會壓縮後續步行', cost:'寶庫或地下路線 PLN 47／35', dur:'1 h'},
-      {t:'15:00', label:'★ 中央廣場 + 聖瑪利亞', sub:'本次先看廣場與教堂外觀，登塔改為有餘裕才安排。整點 Hejnał 號角；塔票僅於 Mariacki 廣場 7 號當日現場售票', cost:'外觀免費', dur:'30 min（含由城堡步行）'},
-      {t:'15:30', label:'紡織會館 Sukiennice 快速一覽', sub:'採購留到 10/27', cost:'免費入場', dur:'15 min'},
-      {t:'15:45', label:'步行經 Kazimierz、Podgórze 前往辛德勒工廠', sub:'保留約 85 分鐘步行與沿途短停，17:10 前到入口；時間不足改用 Jakdojade 查當下交通', dur:'約 1 h 25 min'},
+      {t:'11:30', id:'d2-prep', label:'Lajkonik 備妥隔日早餐與午餐', sub:'寄放行李後沿路到 Basztowa 15 採買隔日麵包、水果與飲品，再步行往中央廣場；含步行與採買暫抓 40 分鐘。需冷藏品先確認保存條件，否則選常溫品；時間依列車實際抵達重算', dur:'40 min'},
+      {t:'12:10', label:'★ 中央廣場 + 聖瑪利亞', sub:'本次先看廣場與教堂外觀，登塔改為有餘裕才安排。整點 Hejnał 號角；塔票僅於 Mariacki 廣場 7 號當日現場售票；午餐改 13:00，所以先在這裡看，不留到下午', cost:'外觀免費', dur:'20 min'},
+      {t:'12:30', label:'紡織會館 Sukiennice 快速一覽', sub:'採購留到 10/27；12:40 前動身，步行約 12 分到 Pimiento', cost:'免費入場', dur:'10 min'},
+      {t:'13:00', id:'d2-lunch', label:'午餐 · Pimiento Shop and Bistro', sub:'Świętego Filipa 21（Stary Kleparz 旁），離 ibis 步行約 7 分；午餐菜單 13:00 起才供應（09:00–13:00 只有早餐菜單），所以 13:00 準時入座：Tatar 阿根廷牛韃靼、Argentine burger 或照重量點阿根廷牛排。週日只開到 15:00（Google 地圖與 MapQuest，官網未列），先用官網或電話訂位。13:50 前離店，預留約 30 分鐘步行去瓦維爾。時刻依已購列車實際抵達重算；客滿或關門改 Restauracja Polonia（Basztowa 25）、24 小時的 Przypiecek 或外帶，不壓縮預定景點時段', cost:'依店家', dur:'50 min'},
+      {t:'14:30', label:'★ 瓦維爾大教堂', sub:'2026-10-07 官網：4–10 月時段，週日 12:30–17:00、售票至 16:30（11–3 月才縮為 16:00）；Cathedral Museum 週日休館', cost:'PLN 26／18', dur:'45 min'},
+      {t:'15:15', label:'★ Wawel 城堡短路線', constraint:{venue:'krakow-wawel-treasury'}, sub:'2026-09-17 官網 9–12 月分路線售票，適合一小時空檔的是：王冠寶庫 47／35、Castle Underground 47／35（含語音導覽）、Armoury 47／35；二樓代表廳 57／43 需時較長。不要硬排一、二樓完整路線，會壓縮前往辛德勒工廠的時間', cost:'寶庫或地下路線 PLN 47／35', dur:'1 h'},
+      {t:'16:15', label:'電車或計程車前往辛德勒工廠', sub:'由 Wawel 搭電車（出發前用 Jakdojade 查當下車號與轉乘）或計程車到 Podgórze，約 20–30 分；17:10 前到入口，剩餘空檔可在 Kazimierz 或 Podgórze 短停', dur:'約 30 min'},
       {t:'17:30', label:'★ 辛德勒工廠', constraint:{venue:'krakow-schindler'}, sub:`週日 ${schindlerVenue.hours.opens}–${schindlerVenue.hours.closes}、最後入場為閉館前 90 分（${schindlerVenue.hours.lastEntry}）· 常設展線上票一律實名，入場要帶與購票同名的證件正本 · 官方售票頁預約。為接 19:15 晚餐，預計 19:00 前離館（約 1 h 30 min）`, cost:'PLN 60 · 優待 45', dur:'約 1 h 30 min'},
       {t:'19:15', id:'d2-dinner', label:'晚餐 · Hankki（先確認接單）', sub:'辛德勒 17:30 入場、預計 19:00 前離館，步行約 5 分到 Zabłocie 19A；Gyoza、Honey Garlic Popcorn Chicken、Kimbap 或 Bibimbap。週日 13:00–21:00 營業，最後點餐時間查不到，建議先在 MojStolik 訂位；想換泰式改 MOLÁM（週日至 21:30），NOAH 留作備選；Endzior 多數來源週日公休，宵夜改 Plac Nowy 圓亭其他窗口', cost:'依店家', dur:'1 h'},
     ],
     eat: [
       snack({text:'zapiekanka 街食（週日可能公休，改圓亭其他窗口） @ Endzior', placeId:'krakow-endzior'}),
     ],
-    warn: '❗EIP 5300 已購票，但截圖未顯示抵達時間；11:10 寄放行李與午後行程須依票券詳細頁重新核對。瓦維爾城堡尚未訂票；辛德勒工廠個人網路票在參觀日前 90 天 09:00 開放，10/25 已可在官方售票頁查／購。瓦維爾大教堂週日 12:30–17:00（售票至 16:30）；城堡改走短路線並於 15:00 前離開，保留經 Kazimierz、Podgórze 步行到辛德勒工廠的時間。辛德勒工廠週二至週日 09:00–20:00、最後入場 18:30，17:30 屬可行時段。10/25 為非營業週日，多數一般商店關閉；餐廳等法定例外是否營業仍以店家公告為準。',
+    warn: '❗EIP 5300 已購票，但截圖未顯示抵達時間；11:10 寄放行李與午後行程須依票券詳細頁重新核對。瓦維爾城堡尚未訂票；辛德勒工廠個人網路票在參觀日前 90 天 09:00 開放，10/25 已可在官方售票頁查／購。瓦維爾大教堂週日 12:30–17:00（售票至 16:30）；午餐改排 Pimiento 13:00（午餐菜單 13:00 起才供應），中央廣場與紡織會館提前到 12:10–12:40，瓦維爾大教堂移到 14:30、Wawel 短路線 15:15，16:15 前離開後搭電車或計程車到辛德勒工廠，不再步行。辛德勒工廠週二至週日 09:00–20:00、最後入場 18:30，17:30 屬可行時段。10/25 為非營業週日，多數一般商店關閉；餐廳等法定例外是否營業仍以店家公告為準。',
     backup: [
-      {label:'辛德勒 17:30 滿場', where:'改訂 18:30 最後入場，或往前壓到下午較早時段（如 14:00）', why:'最後入場其實是 18:30，比原記錄多一小時可調度；mhk.pl/en 開放預約後立即下單'},
+      {label:'辛德勒 17:30 滿場', where:'改訂 18:30 最後入場，或 17:00 前後的可售場次', why:'最後入場其實是 18:30，比原記錄多一小時可調度；mhk.pl/en 開放預約後立即下單'},
       {label:'雨天替代 Wawel', where:'地下市集博物館 Rynek Underground', map:'https://www.google.com/maps/search/?api=1&query=Rynek%20Underground%2C%20Rynek%20G%C5%82%C3%B3wny%201%2C%20Krak%C3%B3w', why:'廣場下方歷史展（Rynek Główny 1），PLN 45／35，最後入場為閉館前 75 分鐘。官方 2026 閉館日不含 10/25；週日時間以官網當日為準。另註：每週二免費（免費日不可預約、現場限量、每人限領 5 張），每月第二個週一休館'},
     ],
     practical: [
@@ -278,9 +278,9 @@ export const days = [
     headline: 'EIC 8104 已購票，17:40 發車；兼顧正午山羊秀與下午行程',
     tag: 'Transit',
     intensity: '中高',
-    hardConstraints: ['11:45 前抵達老城廣場卡位', '12:00 山羊鐘樓秀', '17:05 前抵 Poznań Główny；搭乘已購 EIC 8104'],
-    mustBook: ['✅ 已購票 · 波茲南 → 華沙 EIC 8104 17:40'],
-    compressible: ['Stary Browar 停留時間', '帝王城堡內部參觀'],
+    hardConstraints: ['11:45 前抵達老城廣場卡位', '12:00 山羊鐘樓秀', '14:00 Carla 午餐（14:00 才開門），15:15 前結帳', '16:15 離開帝王城堡取行李', '17:05 前抵 Poznań Główny；搭乘已購 EIC 8104'],
+    mustBook: ['✅ 已購票 · 波茲南 → 華沙 EIC 8104 17:40', '❗尚未訂位 · Carla Trattoria Moderna 10/29 14:00 兩位（zjedz.my）'],
+    compressible: ['帝王城堡內部參觀', '老城自由時間'],
     train: {segmentId:'eic-8104'},
     steps: [
       {t:'08:00', id:'d6-breakfast', label:'早餐 · Charlotte Krysiewicza', sub:'Krysiewicza 3a/27，07:00 開門；French Breakfast、可頌＋咖啡，Poznań rugelach 兩人分享。08:40 收尾，留約 50 分鐘交通；想提早到教堂島就改 07:30 用餐。Inna Piekarnia（08:30 開門、09:30 前要出發，時間太趕）只列備案', dur:'40 min'},
@@ -288,10 +288,10 @@ export const days = [
       {t:'11:00', label:'廣場卡正面位置', dur:'45 min · 提早卡位'},
       {t:'12:00', label:'★ 山羊鐘樓秀', sub:'官方每日 12:00 與 15:00 登場；本次採正午場，兩隻金屬山羊互頂 12 次。錯過可考慮 15:00，但仍須保留取行李與到站時間', cost:'免費', dur:'5 min'},
       {t:'12:15', label:'★ 聖馬丁牛角麵包 (PGI)', sub:'ROGAL Świętomarciński（Stary Rynek）；兩人買一個分享，當點心不另點大量餐食。排隊或售完改往帝王城堡路上的 Cukiernia Kandulski（Plac Ratajskiego 1）', cost:'依門市標價', dur:'15 min'},
-      {t:'12:30', id:'d6-lunch', label:'午餐 · Pyra Bar 候選', sub:'Strzelecka 13，週四 11:00–21:00。2026-10-07 官方菜單：Pyry z bzikiem（烤馬鈴薯配凝乳，36 PLN）或 Szare ale jare（馬鈴薯麵糰配培根酸白菜，38 PLN）。兩人各點一份分享；排隊太久改 Zen On 拉麵或 Pasibus Święty Marcin，13:45 前出發往帝王城堡。', cost:'依店家', dur:'約 45 min（含來回步行）'},
-      {t:'14:00', label:'★ 帝王城堡', sub:'CK ZAMEK（Święty Marcin 80/82），由老城步行約 15 分；每日 12:00–19:00、售票至 18:00。9/5–12/6 展期售展覽＋城堡聯票：含地圖 35／30 PLN、含語音導覽 40／35 PLN（2026-10-07 官網）。看德皇威廉二世時代的城堡廳室與當期展覽', cost:'聯票 PLN 35–40', dur:'1 h', constraint:{venue:'poznan-ck-zamek'}},
-      {t:'15:10', label:'Stary Browar', sub:'由帝王城堡步行約 10 分；紅磚老啤酒廠改建的商場，短逛約 45 分，16:00 準時取行李', cost:'購物另計', dur:'45 min'},
-      {t:'16:00', label:'取行李、前往 Poznań Główny', sub:'先確認公寓行李寄放地點；17:05 前抵站', dur:'約 1 h'},
+      {t:'12:30', label:'老城自由時間', sub:'Carla 14:00 才開門，這段留給老城散步或找咖啡座休息（Weranda caffe 週四 09:00 起）；13:45 出發前往 Carla，步行約 9 分，並確認 zjedz.my 的訂位', dur:'約 1 h 15 min'},
+      {t:'14:00', id:'d6-lunch', label:'午餐 · Carla Trattoria Moderna', sub:'Święty Marcin 34，週四 14:00 開門，14:00 準時入座；先在 zjedz.my 訂 14:00 兩位（尚未訂）。手工麵、披薩與小盤分享，兩人分享即可。15:15 前結帳；上菜慢、15:30 還沒吃完就放棄帝王城堡內部，先保 17:05 到站。客滿或訂不到改 Pyra Bar（Strzelecka 13，週四 11:00–21:00）', cost:'依店家', dur:'75 min'},
+      {t:'15:35', label:'★ 帝王城堡', sub:'CK ZAMEK（Święty Marcin 80/82），由老城步行約 15 分；每日 12:00–19:00、售票至 18:00。9/5–12/6 展期售展覽＋城堡聯票：含地圖 35／30 PLN、含語音導覽 40／35 PLN（2026-10-07 官網）。看德皇威廉二世時代的城堡廳室與當期展覽；本日縮短為約 40 分，16:15 離開', cost:'聯票 PLN 35–40', dur:'40 min', constraint:{venue:'poznan-ck-zamek'}},
+      {t:'16:15', label:'取行李、前往 Poznań Główny', sub:'離開帝王城堡後直接回 Poznan Apartments Towarowa（Towarowa 37）取行李，約 20–25 分；先確認公寓行李寄放地點；17:05 前抵站', dur:'約 50 min'},
       {t:'17:05', label:'抵 Poznań Główny', sub:'確認月台、車廂與座位；拖行李保留進站緩衝', dur:'35 min 緩衝'},
       {t:'17:40', label:'EIC 8104 前往華沙', sub:'EIC 8104 已購票；抵達時間、車廂與座位待查票面', cost:'票價未提供', dur:'待查票面'},
       {t:'抵站後', label:'抵 Warszawa Centralna', sub:'票面抵達時間待查；步行至 Hotel Metropol 約 500 公尺，拖行李預留 10–15 分鐘'},
@@ -302,7 +302,7 @@ export const days = [
       snack({text:'抵站、放行李後華沙宵夜 @ Hala Koszyki', placeId:'warsaw-hala-koszyki'}),
     ],
     backup: [
-      {label:'下雨備案', where:'Stary Browar 商場 + 帝王城堡內部', map:'https://www.google.com/maps/search/?api=1&query=Stary%20Browar%2C%20P%C3%B3%C5%82wiejska%2042%2C%20Pozna%C5%84', why:'兩處都有室內空間，但館際移動需走戶外；下雨可拉長帝王城堡、縮短老城停留，仍需雨具'},
+      {label:'下雨備案', where:'帝王城堡內部 + 老城咖啡座', map:'https://www.google.com/maps/search/?api=1&query=Zamek%20Cesarski%2C%20%C5%9Awi%C4%99ty%20Marcin%2080%2F82%2C%20Pozna%C5%84', why:'兩處都有室內空間；下雨可拉長午餐前的咖啡座時間，Carla 照 14:00，帝王城堡仍以 16:15 離開為準，需雨具'},
     ],
   },
   {
@@ -514,7 +514,7 @@ export const bookingTiers = [
   ]},
   {tier:'第二優先', note:'❗全部尚未訂 · 辛德勒工廠現已可查／購，其餘依官方售票頁', items:[
     {name:'辛德勒工廠（10/25 已進個人網路票 90 天窗口；最後入場 18:30）', url:'https://muzeumkrakowa.pl/en/branches/oskar-schindlers-enamel-factory'},
-    {name:'Wawel 城堡短路線 14:00 左右時段票', url:'https://wawel.krakow.pl/en/what-to-see'},
+    {name:'Wawel 城堡短路線 15:15 左右時段票', url:'https://wawel.krakow.pl/en/what-to-see'},
     {name:'華沙起義博物館', url:'https://www.1944.pl/en'},
     {name:`皇家城堡（官網複查二至日 ${royalCastleVenue.hours.opens}–${royalCastleVenue.hours.closes}，末入 ${royalCastleVenue.hours.lastEntry}）`, url:'https://www.zamek-krolewski.pl/en'},
     {name:'拉茨瓦維採全景畫', url:'https://mnwr.pl/en/category/branches/panorama-raclawicka/'},
@@ -524,6 +524,7 @@ export const bookingTiers = [
     {name:'Rusiko 10/30 18:30（電話 +48 22 629 06 28 訂位）', url:'https://www.rusiko.pl/en/menu/'},
     {name:'Hankki 10/25 19:15（MojStolik 線上訂位）', url:'https://mojstolik.pl/restauracja/Hankki/f733c19bc164a5ad85848d96dc851be9'},
     {name:'Specjały Regionalne 10/24 18:30（TheFork 訂位）', url:'https://www.thefork.com/restaurant/specjaly-regionalne-restauracja-polska-stare-miasto-r858538'},
+    {name:'Carla Trattoria Moderna 10/29 14:00 兩位（zjedz.my 線上訂位）', url:'https://zjedz.my/carla-trattoria-moderna'},
   ]},
 ];
 
@@ -547,7 +548,7 @@ export const todoGroups = [
     id: 'attractions', title: '主要景點', eyebrow: 'Tickets · 7 項',
     intro: '指定日期的場次與庫存會變動；付款完成後請下載離線票券並核對入場時間。',
     items: [
-      {checkedAt:null, recheckAt:null, date:'10/25', name:'Wawel 城堡 14:00', status:'尚未訂', action:'以官方售票頁選 10/25 14:00 左右、可於 15:00 前結束的短路線；完整 2 小時路線會壓縮步行時間。', url:'https://wawel.krakow.pl/en/what-to-see'},
+      {checkedAt:null, recheckAt:null, date:'10/25', name:'Wawel 城堡 15:15', status:'尚未訂', action:'以官方售票頁選 10/25 15:15 左右、可於 16:15 前結束的短路線；完整 2 小時路線會壓縮到辛德勒工廠的移動時間。', url:'https://wawel.krakow.pl/en/what-to-see'},
       {checkedAt:null, recheckAt:null, date:'10/25', name:'辛德勒工廠 17:30', status:'現可查／購', action:'10/25 已進個人網路票 90 天窗口；以官方售票頁的可售時段為準。', url:'https://muzeumkrakowa.pl/en/branches/oskar-schindlers-enamel-factory'},
       {checkedAt:'2026-09-09', recheckAt:null, date:'10/26', name:'Auschwitz 英文官方導覽', status:'已訂妥', action:'10:30 個人 educator 導覽（英文），官方標示約 3 小時 45 分，2 人。電子入場證存離線，入場須同時出示證件。', url:'https://visit.auschwitz.org/'},
       {checkedAt:null, recheckAt:null, date:'10/27', name:'Wieliczka 鹽礦英文團', status:'需查／購', action:'在官方日期選擇器確認英文場、票價與庫存。2026-10-06 官方售票系統查詢時，10/27 英文場自 08:30 起每 30 分鐘一場，10:00 場當時有名額（不保證購票時仍有位）；英語 Tourist Route 全票 143／優待 121 PLN。', url:'https://www.wieliczka-saltmine.com/'},
@@ -557,13 +558,14 @@ export const todoGroups = [
     ],
   },
   {
-    id: 'dining', title: '餐飲訂位', eyebrow: 'Dining · 6 項',
+    id: 'dining', title: '餐飲訂位', eyebrow: 'Dining · 7 項',
     intro: '餐廳營業與臨時包場以店家訂位頁公告為準。',
     items: [
       {checkedAt:'2026-10-10', recheckAt:'2026-10-22', date:'10/24', name:'Specjały Regionalne 18:30 晚餐', status:'尚未訂位', action:'時段以店家卡為準（2026-10-10 查：品牌門市頁週五、週六 11:30–23:00；polishcuisine.pl 列 12:00–23:30），10/24 18:30 兩個版本都有營業。抵達日不想排隊就先在 TheFork 訂位：https://www.thefork.com/restaurant/specjaly-regionalne-restauracja-polska-stare-miasto-r858538', url:'https://www.google.com/maps/search/?api=1&query=Specja%C5%82y%20Regionalne%20Nowy%20%C5%9Awiat%2044%2C%20Warszawa'},
       {checkedAt:'2026-10-10', recheckAt:'2026-10-22', date:'10/25', name:'Hankki 19:15 晚餐', status:'尚未訂位', action:'2026-10-10 查 Michelin 與 MojStolik：週日 13:00–21:00，19:15 在營業時間內；最後點餐時間查不到。建議用 MojStolik 線上訂位（https://mojstolik.pl/restauracja/Hankki/f733c19bc164a5ad85848d96dc851be9）或電話 +48 798 399 851，訂不到改 MOLÁM 或 NOAH。', url:'https://guide.michelin.com/mx/es/lesser-poland/krakow/restaurante/hankki'},
       {checkedAt:'2026-10-12', recheckAt:'2026-10-22', date:'10/26', name:'Mr. Jerry 18:30 晚餐（Beef Wellington）', status:'尚未訂位', action:'奧斯威辛返城後的晚餐。2026-10-12 複查：官網確認 Jagiellońska 5 與招牌 Beef Wellington，週一 15:00–22:00（多數目錄一致，官網各區塊矛盾），價格未公開；訂位時一併確認 10/26 有供應 Wellington（電話 +48 533 836 624）。訂不到改 Pod Aniołami（每日 13:00–23:00）；FOLGA 週一可能休息，要去先打電話。', url:'https://www.mrjerry.pl/rezerwacja-krakow/'},
       {checkedAt:'2026-10-10', recheckAt:'2026-10-22', date:'10/27', name:'Bistro Posolone 出礦後午餐', status:'待確認營業', action:'2026-10-10 查得：位於鹽礦園區 Park Kingi 6，官方寫「每天依鹽礦開放時間」（約 08:00–18:00），確切時刻未查到。菜單有披薩、漢堡、湯、沙拉、薯條，30 分鐘內吃完就點湯、沙拉或漢堡，才趕得上返回車站與 16:45 IC 3830；可電話 +48 12 278 75 20 確認，來不及改自備餐。', url:'https://www.google.com/maps/search/?api=1&query=Bistro%20Posolone%2C%20Wieliczka'},
+      {checkedAt:'2026-10-12', recheckAt:'2026-10-22', date:'10/29', name:'Carla Trattoria Moderna 14:00 午餐', status:'尚未訂位', action:'在 zjedz.my 訂 10/29 14:00 兩位（https://zjedz.my/carla-trattoria-moderna）；店家也有電話 +48 796 200 002。2026-10-12 查：週四 14:00 才開門（Google 地圖與 zjedz.my 一致，menu.pl 外送時段到 21:30），12:30 吃不到。15:15 前結帳，上菜慢就砍帝王城堡內部，先保 17:05 到站；近期有評論說上菜偏慢。訂不到改 Pyra Bar 12:30 午餐。', url:'https://zjedz.my/carla-trattoria-moderna'},
       {checkedAt:'2026-10-12', recheckAt:'2026-10-22', date:'10/29', name:'Arirang 晚餐', status:'待確認營業', action:'10/29 晚餐首選，約 20:30（待查票面）抵華沙。2026-10-12 複查：Yelp 與多個目錄週四 12:00–22:00，沒有店家官網，最後點餐時間與線上訂位都未查到。當天打 22 881 78 51 或 22 622 18 86 問，21:30 前能入座才去，否則改 Złote Tarasy 內快食、Soul Kitchen 或 24 小時的 Ćma。', url:'https://www.google.com/maps/search/?api=1&query=Arirang%20Restaurant%20Nowogrodzka%2038%2C%20Warszawa'},
       {checkedAt:'2026-10-12', recheckAt:'2026-10-22', date:'10/30', name:'華沙最後晚餐 · Rusiko 18:30', status:'尚未訂位', action:'瓦津基或國家博物館之後搭車約 15 分到 Wierzbowa 11。2026-10-12 複查：官網與 Michelin 皆列 Wierzbowa 11，週二至週六 13:00（或 14:00）–24:00；Yelp 仍顯示舊址 Ujazdowskie 22，別走錯。電話 +48 22 629 06 28 訂 10/30 18:30、2 人並確認當天營業。不適用改 WYRAJ（2026-10-10 已查週五 12:00–00:00，TheFork：https://www.thefork.com/restaurant/wyraj-r857032）、Kieliszki na Próżnej 或 U Fukiera。', url:'https://joinpearl.co/restaurants/warsaw/rusiko'},
     ],
@@ -578,7 +580,7 @@ export const reservations = [
   {when:'火車票：已購 4／4 段', what:'App 票券清單已有 10/25 EIP 5300（Warszawa Centralna 08:40）、10/27 IC 3830（Kraków Główny 16:45）、10/28 IC 260（Wrocław Główny 19:10）、10/29 EIC 8104（Poznań Główny 17:40）。四段抵達時間、艙等、車廂、座位與票價待查票券詳細頁。'},
   {when:'現在可查／訂', what:'辛德勒工廠 10/25 場次已進個人網路票 90 天窗口；華沙起義博物館與皇家城堡均以官方售票頁顯示的指定日庫存為準。'},
   {when:'出發前 1 週', what:'把上述所有票價、特別閉館與開放時間再確認一次 — 門票速查與城市指南已於 2026-09-17／09-18 全面複查過，臨時活動與維修仍可能變動'},
-  {when:'現在查／購 10/25', what:'Wawel 14:00 短路線：優先查王冠寶庫或 Castle Underground 的 10/25 時段；各 47／35 PLN，尚未購票。10/25 才到克拉科夫，不能安排 10/24 在當地購票；無合適時段則只看庭院與外觀，15:00 前離開。'},
+  {when:'現在查／購 10/25', what:'Wawel 15:15 短路線：優先查王冠寶庫或 Castle Underground 的 10/25 時段；各 47／35 PLN，尚未購票。10/25 才到克拉科夫，不能安排 10/24 在當地購票；無合適時段則只看庭院與外觀，16:15 前離開。'},
 ];
 
 // 訂票與查核的行動截止日。
