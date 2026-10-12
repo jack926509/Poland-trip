@@ -13,7 +13,7 @@ export const diningPlaces = {
     "notes": [
       "百年美食市集",
       "免訂位 · 多攤集合，可一次吃到多國小吃",
-      "百年市集改建的美食大廳，Day 6（10/29 週四）晚班抵達後最好用的晚餐／宵夜選項；距飯店步行約 10–15 分。官方註明各餐廳與店舖時間可能與大廳不同，抵達前先確認個別店家。地下停車場 200 席、每小時 10 PLN。"
+      "百年市集改建的美食大廳；10/29 晚抵若 Arirang 已收單，可來吃宵夜（內有 24 小時的 Ćma），距飯店步行約 10–15 分。官方註明各店時間可能與大廳不同，抵達前先確認個別店家。"
     ]
   },
   "warsaw-cma-hala-koszyki": {
@@ -87,8 +87,8 @@ export const diningPlaces = {
     "checkedAt": null,
     "verificationStatus": "pending",
     "notes": [
-      "必比登 · 顛覆式波蘭菜，Day 7 晚餐候選",
-      "米其林 2026「年度開幕」· 招牌：顛覆式當代波蘭菜"
+      "必比登 · 顛覆式當代波蘭菜",
+      "米其林 2026「年度開幕」；未排入本趟每日餐位，想吃需另外訂位並重排晚餐。"
     ]
   },
   "warsaw-kieliszki-na-proznej": {
@@ -174,17 +174,23 @@ export const diningPlaces = {
   "krakow-pierozki-u-vincenta": {
     "id": "krakow-pierozki-u-vincenta",
     "cityKey": "krakow",
-    "name": "Pierożki u Vincenta",
-    "address": "門牌待確認",
-    "map": "https://www.google.com/maps/search/?api=1&query=Piero%C5%BCki%20u%20Vincenta%20Krak%C3%B3w",
-    "hours": "營業時間待確認",
-    "sourceUrl": null,
-    "checkedAt": null,
-    "verificationStatus": "pending",
+    "name": "Pierogi MR Vincent（Kazimierz）",
+    "address": "Bożego Ciała 12, Kraków",
+    "map": "https://www.google.com/maps/search/?api=1&query=Pierogi%20MR%20Vincent%2C%20Bo%C5%BCego%20Cia%C5%82a%2012%2C%20Krak%C3%B3w",
+    "hours": "約至 21:00",
+    "sourceUrl": "https://www.yelp.com/biz/pierogi-mr-vincent-krak%C3%B3w",
+    "checkedAt": "2026-10-12",
+    "verificationStatus": "partial",
     "notes": [
-      "餃子店候選，實體分店與現行營業時間待確認；尚未排入 Day 4 動線，不預設位於 Kazimierz 或 Bronisławy。"
+      "Kazimierz 的 Bożego Ciała 12 分店；10/27 只有在鹽礦提早回城、走 Kazimierz 快速散步時才順路。Bronowice 的 Lea 114 本店太遠、平日 16:30 就關，不採用。"
     ],
-    "verificationNote": "2026-10-06 可讀訂餐頁列 Lea 114，但頁面混入無關內容且有舊評論，未足以確認現行分店。保留 pending；前往前確認分店與地址。"
+    "verificationNote": "官網只列 Lea 114；Kazimierz 分店見 Yelp 官方頁（2026-08），出發前確認。",
+    "hoursNote": "Yelp 2026-08；本店 Lea 114 只開週一至週五 11:00–16:30",
+    "liveCheckedAt": "2026-10-12",
+    "cuisine": "餃子",
+    "dishes": [
+      "手工 Pierogi"
+    ]
   },
   "krakow-okraglak-plac-nowy-圓亭": {
     "id": "krakow-okraglak-plac-nowy-圓亭",
@@ -197,8 +203,7 @@ export const diningPlaces = {
     "checkedAt": null,
     "verificationStatus": "pending",
     "notes": [
-      "plac Nowy 4B · 多家 zapiekanka 窗口；Day 2 晚餐順路",
-      "plac Nowy 4B · 圓亭四周聚集多家 zapiekanka 窗口；Day 2 晚餐可直接排在 Kazimierz 動線末段"
+      "plac Nowy 4B · Kazimierz 圓亭四周聚集多家 zapiekanka 窗口；本趟晚餐在 Zabłocie，只在 Kazimierz 有空檔時順路。"
     ]
   },
   "krakow-szalone-widelce": {
@@ -818,34 +823,47 @@ export const diningPlaces = {
     "id": "krakow-endzior",
     "cityKey": "krakow",
     "name": "Endzior · Plac Nowy 圓亭",
-    "address": "門牌待確認",
-    "map": "https://www.google.com/maps/search/?api=1&query=Endzior%20Plac%20Nowy%20Krak%C3%B3w",
-    "hours": "圓亭各攤營業到深夜，個別攤位時間不同",
-    "sourceUrl": null,
-    "checkedAt": null,
-    "verificationStatus": "pending",
+    "address": "plac Nowy 4B, Kraków",
+    "map": "https://www.google.com/maps/search/?api=1&query=Zapiekanki%20u%20Endziora%2C%20plac%20Nowy%204B%2C%20Krak%C3%B3w",
+    "hours": "週一至週六 10:00–翌日 02:00；週日休",
+    "sourceUrl": "https://www.inyourpocket.com/krakow/Mini-Bar-Endzior_19875v",
+    "checkedAt": "2026-10-12",
+    "verificationStatus": "partial",
     "notes": [
-      "Kazimierz 圓亭（Okrąglak）內的 zapiekanka 名攤，長棍麵包烤蘑菇起司，PLN 18–25；僅在 Kazimierz 順路且有餘裕時採用，不為點心特地折返。"
+      "Kazimierz 圓亭（Okrąglak）內的 zapiekanka 名攤，長棍麵包烤蘑菇起司，PLN 18–25。多數來源週日公休，10/25（週日）可能沒開，改買圓亭其他窗口。"
     ],
     "cuisine": "街頭小吃",
     "dishes": [
       "Zapiekanka 長棍披薩"
     ],
-    "liveCheckedAt": "2026-10-12"
+    "liveCheckedAt": "2026-10-12",
+    "hoursNote": "Yelp 2026-03、In Your Pocket；Tripadvisor 另列每日營業",
+    "phone": "+48 12 429 37 54",
+    "verificationNote": "營業時段各來源不一，週日是否營業要現場看。"
   },
   "krakow-karma-coffee-roasters": {
     "id": "krakow-karma-coffee-roasters",
     "cityKey": "krakow",
-    "name": "Karma Coffee Roasters",
-    "address": "門牌待確認",
-    "map": "https://www.google.com/maps/search/?api=1&query=Karma%20Coffee%20Krupnicza%20Krak%C3%B3w",
-    "hours": "一–五 08:00–20:00、六日 10:00–19:00（公開資料，出發前重查）",
-    "sourceUrl": null,
-    "checkedAt": null,
-    "verificationStatus": "pending",
+    "name": "Karma Kawiarnia",
+    "address": "Krupnicza 12/3, Kraków",
+    "map": "https://www.google.com/maps/search/?api=1&query=Karma%20Kawiarnia%2C%20Krupnicza%2012%2C%20Krak%C3%B3w",
+    "hours": "週一至週五 08:00–20:00；週六、日 10:00–19:00",
+    "sourceUrl": "https://www.karmaroasters.com/kontakt",
+    "checkedAt": "2026-10-12",
+    "verificationStatus": "partial",
     "notes": [
       "2010 年開業，克拉科夫第一家精品咖啡店，Kazimierz 自家烘豆。公開資料列一–五 08:00–20:00、六日 10:00–19:00。"
-    ]
+    ],
+    "hoursNote": "店家官網",
+    "liveCheckedAt": "2026-10-12",
+    "phone": "+48 662 387 281",
+    "cuisine": "自家烘焙咖啡",
+    "dishes": [
+      "手沖咖啡",
+      "Flat White",
+      "蛋糕"
+    ],
+    "verificationNote": "官網列 Krupnicza 12/3 咖啡館時段；Świętego Wawrzyńca 9 的烘豆廠只在週末開。"
   },
   "krakow-cafe-camelot": {
     "id": "krakow-cafe-camelot",
@@ -858,22 +876,31 @@ export const diningPlaces = {
     "checkedAt": null,
     "verificationStatus": "pending",
     "notes": [
-      "老城區老牌文青咖啡館，距中央廣場數步，復古內裝、地窖有卡巴萊表演；適合 Day 4 採購後歇腳。"
+      "老城區老牌文青咖啡館，距中央廣場數步，復古內裝、地窖有卡巴萊表演；老城散步時的歇腳點，未排入每日餐位。"
     ]
   },
   "krakow-cukiernia-michalek": {
     "id": "krakow-cukiernia-michalek",
     "cityKey": "krakow",
     "name": "Cukiernia Michałek",
-    "address": "門牌待確認",
-    "map": "https://www.google.com/maps/search/?api=1&query=Cukiernia%20Micha%C5%82ek%20Krak%C3%B3w",
-    "hours": "依店家當日公告",
-    "sourceUrl": null,
-    "checkedAt": null,
-    "verificationStatus": "pending",
+    "address": "Krupnicza 6, Kraków",
+    "map": "https://www.google.com/maps/search/?api=1&query=Cukiernia%20Micha%C5%82ek%2C%20Krupnicza%206%2C%20Krak%C3%B3w",
+    "hours": "週二至週五 08:00–20:00；週六 08:00–16:00；週日、一可能休",
+    "sourceUrl": "https://www.findglocal.com/PL/Krak%C3%B3w/284656445022520/Cukiernia-Micha%C5%82ek",
+    "checkedAt": "2026-10-12",
+    "verificationStatus": "partial",
     "notes": [
-      "在地人推薦的 sernik（波蘭起司蛋糕）與傳統甜點；Day 4 已列為順路必吃。"
-    ]
+      "Krupnicza 6，離 Charlotte（plac Szczepański）步行約 5 分；10/27（週二）早餐後或回城取行李前順路買。"
+    ],
+    "hoursNote": "2026-04 目錄，各來源不一",
+    "liveCheckedAt": "2026-10-12",
+    "phone": "+48 12 422 47 05",
+    "cuisine": "老派甜點",
+    "dishes": [
+      "Sernik 波蘭起司蛋糕",
+      "傳統糕點"
+    ],
+    "verificationNote": "門牌與電話多來源一致；sernik 為在地推薦，供應以櫃台為準。"
   },
   "wroclaw-bar-mleczny-mis": {
     "id": "wroclaw-bar-mleczny-mis",
@@ -980,16 +1007,25 @@ export const diningPlaces = {
     "id": "poznan-weranda-caffe",
     "cityKey": "poznan",
     "name": "Weranda Caffe",
-    "address": "門牌待確認",
+    "address": "Świętosławska 10, Poznań",
     "map": "https://www.google.com/maps/search/?api=1&query=Weranda%20Caffe%2C%20%C5%9Awi%C4%99tos%C5%82awska%2010%2C%20Pozna%C5%84",
-    "hours": "依店家當日公告",
-    "sourceUrl": null,
-    "checkedAt": null,
-    "verificationStatus": "pending",
+    "hours": "週一 10:00–20:00；週二至週四 09:00–22:00；週五、六 09:00–23:00；週日 09:00–20:00",
+    "sourceUrl": "https://werandafamily.com/pl/restaurant/weranda-caffe",
+    "checkedAt": "2026-10-12",
+    "verificationStatus": "partial",
     "notes": [
-      "Świętosławska 10，就在舊城市場旁，庭院座位安靜，常被列入波茲南最佳早餐；Day 6 等 12:00 山羊鐘樓秀前可先坐。"
+      "Świętosławska 10，舊城市場旁，庭院座位安靜，全天供應早餐；週四 09:00 才開，趕 09:30 教堂島來不及，適合等 12:00 山羊秀前坐一下。"
     ],
-    "verificationNote": "2026-10-12 餐飲 v5 稿另列 Półwiejska 42（Stary Browar 一帶）分店；兩處門市與開門時間都待確認，開門較晚不作第一順位。"
+    "verificationNote": "官網確認門市與時段；Stary Browar 另有分店。",
+    "hoursNote": "Weranda Family 官網",
+    "liveCheckedAt": "2026-10-12",
+    "cuisine": "早午餐咖啡館",
+    "dishes": [
+      "全天早餐",
+      "咖啡",
+      "甜點"
+    ],
+    "phone": "+48 61 853 25 87"
   },
   "poznan-pijalnia-czekolady-e-wedel-stary-rynek": {
     "id": "poznan-pijalnia-czekolady-e-wedel-stary-rynek",
@@ -1087,7 +1123,7 @@ export const diningPlaces = {
       "波蘭地方料理。",
       "Żurek 酸黑麥湯＋綜合 Pierogi，主菜選梅醬豬肋排或半隻烤鴨；還有胃口再加甜點。"
     ],
-    "verificationNote": "2026-09-24 品牌門市頁確認 Nowy Świat 44 與上述時段；polishcuisine.pl 另列每日 12:00 開門、週五六至 23:30，其餘至 22:00，仍需訂位確認。10/24 19:00 晚餐在兩版時段交集內；電話 +48 662 254 215。 2026-10-12 網路交叉比對：仍在營業，未見歇業公告。週六時段各來源 11:30–23:00 至 12:00–23:30 不一，18:30 都在營業時間內。",
+    "verificationNote": "2026-09-24 品牌門市頁確認 Nowy Świat 44 與上述時段；polishcuisine.pl 另列每日 12:00 開門、週五六至 23:30，其餘至 22:00，仍需訂位確認。10/24 18:30 晚餐在兩版時段交集內；電話 +48 662 254 215。 2026-10-12 網路交叉比對：仍在營業，未見歇業公告。週六時段各來源 11:30–23:00 至 12:00–23:30 不一，18:30 都在營業時間內。",
     "menuUrl": "https://polishcuisine.pl/pl/menu-2/",
     "menuNote": "2026-10-10 初稿提供餐點建議；當日供應與最後接單待確認。",
     "cuisine": "波蘭地方菜",
@@ -1312,7 +1348,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "抹茶與韓式吐司候選，店址及營業時間待確認。"
+      "Żurawia 32/34 的抹茶與韓式吐司小店；10/30 下午有空檔才去。"
     ],
     "verificationNote": "店家 Instagram 時段；另有目錄列週二休，前往前確認。",
     "cuisine": "韓式吐司 · 抹茶",
@@ -1515,18 +1551,18 @@ export const diningPlaces = {
   "warsaw-green-caffe-nero-centralny": {
     "id": "warsaw-green-caffe-nero-centralny",
     "cityKey": "warsaw",
-    "name": "Green Caffè Nero PKP Centralny",
-    "address": "al. Jerozolimskie 54, Lokal N24, Warszawa",
-    "map": "https://www.google.com/maps/search/?api=1&query=Green%20Caff%C3%A8%20Nero%20PKP%20Centralny%2C%20al.%20Jerozolimskie%2054%2C%20Lokal%20N24%2C%20Warszawa",
-    "hours": "初稿列每日 05:00–22:00；本輪未能從官方動態分店地圖重現，出發前確認",
-    "sourceUrl": "https://www.greencaffenero.pl/pl/stores",
-    "checkedAt": null,
-    "verificationStatus": "pending",
+    "name": "Green Nero Express PKP Centralny",
+    "address": "al. Jerozolimskie 54, Lokal N20（Warszawa Centralna 站內）",
+    "map": "https://www.google.com/maps/search/?api=1&query=Green%20Nero%20Express%2C%20PKP%20Centralny%2C%20al.%20Jerozolimskie%2054%2C%20Warszawa",
+    "hours": "24 小時",
+    "sourceUrl": "https://www.yelp.com/biz/green-nero-express-warszawa-2",
+    "checkedAt": "2026-10-12",
+    "verificationStatus": "partial",
     "notes": [
       "車站外帶：可頌／甜麵包、火腿起司三明治＋Americano 或 Latte；可多帶一份麵包上火車。"
     ],
     "menuUrl": "https://www.greencaffenero.pl/pl/menu/jedzenie/kanapki",
-    "verificationNote": "2026-10-10 初稿提供餐點建議；當日供應與最後接單待確認。 地址與時段沿用初稿，尚待逐店核對。 2026-10-12 搜尋：站內 al. Jerozolimskie 54 分店僅見舊目錄（週日 05:00–22:30），未找到 2026 年資料；站內另有 McDonald’s 備案。",
+    "verificationNote": "2026-10-12 複查：站內門市為 Green Nero Express（Lokal N20，Yelp 2026-03 列 24 小時）；站外公車迴轉道另有一個 Box 店。舊資料寫 Lokal N24，以現場指標為準。",
     "cuisine": "車站咖啡外帶",
     "dishes": [
       "可頌／甜麵包",
@@ -1534,7 +1570,8 @@ export const diningPlaces = {
       "Americano／Latte"
     ],
     "phone": "+48 22 350 70 19",
-    "liveCheckedAt": "2026-10-12"
+    "liveCheckedAt": "2026-10-12",
+    "hoursNote": "Yelp 2026-03；舊目錄另列週日 05:00–22:30"
   },
   "krakow-przypiecek": {
     "id": "krakow-przypiecek",
@@ -1727,15 +1764,19 @@ export const diningPlaces = {
     "name": "Gate One",
     "address": "Chopin Airport, Schengen Gate 25/26、27/28, Warszawa",
     "map": "https://www.google.com/maps/search/?api=1&query=Gate%20One%2C%20Chopin%20Airport%2C%20Schengen%20Gate%2025%2F26%E3%80%8127%2F28%2C%20Warszawa",
-    "hours": "營業與午餐供應時段待確認",
-    "sourceUrl": "https://www.gateone.pl/",
-    "checkedAt": null,
-    "verificationStatus": "pending",
+    "hours": "每日 04:00–22:00",
+    "sourceUrl": "https://lotnisko-chopina.pl/en/service-points/restaurants/gate-one/",
+    "checkedAt": "2026-10-12",
+    "verificationStatus": "partial",
     "notes": [
       "申根區候選：瑞可塔菠菜義式餃或檸檬酸豆醬鱈魚。"
     ],
     "menuUrl": "https://www.gateone.pl/",
-    "verificationNote": "2026-10-10 初稿提供餐點建議；當日供應與最後接單待確認。 初稿列申根區位置；QR 260 往多哈不以此店作主線，依實際可通行區域決定。"
+    "verificationNote": "機場官網確認位於出境層申根區中央碼頭（Gate 25–28 一帶）；QR 260 往多哈走非申根區，過邊檢後到不了，不當首選。",
+    "hoursNote": "蕭邦機場官網",
+    "liveCheckedAt": "2026-10-12",
+    "phone": "+48 781 816 815",
+    "cuisine": "機場餐廳"
   },
   "krakow-polonia": {
     "id": "krakow-polonia",
@@ -2060,7 +2101,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "車站內速食；Green Caffè Nero 沒開時的早餐備案，07:35 一定已開。"
+      "車站內速食；Green Nero Express 沒開或排隊時的早餐備案，第三方目錄列約 05:00 開門。"
     ],
     "menuUrl": null,
     "verificationNote": "站內分店存在；營業時間只有第三方目錄，出發前用 McDonald’s App 確認。",

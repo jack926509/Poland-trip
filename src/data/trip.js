@@ -89,7 +89,7 @@ export const days = [
     train: {segmentId:'eip-5300'},
     steps: [
       {t:'07:15', label:'退房後前往上車站', sub:'Hotel Metropol → Warszawa Centralna，預留約 20 分鐘步行及尋找店家；早餐外帶不壓縮進站緩衝', dur:'20 min'},
-      {t:'07:35', id:'d2-breakfast', label:'早餐 · Green Caffè Nero 車站外帶', sub:'07:55 前買好法棍＋咖啡，接 08:05 進站找月台；未開或久候就用前晚麵包', dur:'20 min'},
+      {t:'07:35', id:'d2-breakfast', label:'早餐 · Green Nero Express 車站外帶', sub:'07:55 前買好法棍＋咖啡，接 08:05 進站找月台；未開或久候就用前晚麵包', dur:'20 min'},
       {t:'08:05', label:'抵 Warszawa Centralna', sub:'已購 EIP 5300 08:40 由本站出發；月台、車廂與座位依票券詳細頁及當日電子牌確認', dur:'35 min 緩衝'},
       {t:'08:40', label:'EIP 5300 前往克拉科夫', sub:'已購票；票券清單顯示 08:40 Warszawa Centralna → Kraków Główny。抵達時間與車廂座位待查票面', cost:'已購票', dur:'車程待查票面'},
       {t:'抵站後', label:'抵 Kraków Główny', sub:'票券清單未顯示抵達時間；後續 11:10 寄放行李等排程，須依票券詳細頁重核', dur:'5–10 min 拖行李'},
@@ -102,10 +102,10 @@ export const days = [
       {t:'15:30', label:'紡織會館 Sukiennice 快速一覽', sub:'採購留到 10/27', cost:'免費入場', dur:'15 min'},
       {t:'15:45', label:'步行經 Kazimierz、Podgórze 前往辛德勒工廠', sub:'保留約 85 分鐘步行與沿途短停，17:10 前到入口；時間不足改用 Jakdojade 查當下交通', dur:'約 1 h 25 min'},
       {t:'17:30', label:'★ 辛德勒工廠', constraint:{venue:'krakow-schindler'}, sub:`週日 ${schindlerVenue.hours.opens}–${schindlerVenue.hours.closes}、最後入場為閉館前 90 分（${schindlerVenue.hours.lastEntry}）· 常設展線上票一律實名，入場要帶與購票同名的證件正本 · 官方售票頁預約。為接 19:15 晚餐，預計 19:00 前離館（約 1 h 30 min）`, cost:'PLN 60 · 優待 45', dur:'約 1 h 30 min'},
-      {t:'19:15', id:'d2-dinner', label:'晚餐 · Hankki（先確認接單）', sub:'辛德勒 17:30 入場、預計 19:00 前離館，步行約 5 分到 Zabłocie 19A；Gyoza、Honey Garlic Popcorn Chicken、Kimbap 或 Bibimbap。週日 13:00–21:00 營業，最後點餐時間查不到，建議先在 MojStolik 訂位；想換泰式改 MOLÁM（週日至 21:30），NOAH 留作備選；Endzior 宵夜只在有力氣時去', cost:'依店家', dur:'1 h'},
+      {t:'19:15', id:'d2-dinner', label:'晚餐 · Hankki（先確認接單）', sub:'辛德勒 17:30 入場、預計 19:00 前離館，步行約 5 分到 Zabłocie 19A；Gyoza、Honey Garlic Popcorn Chicken、Kimbap 或 Bibimbap。週日 13:00–21:00 營業，最後點餐時間查不到，建議先在 MojStolik 訂位；想換泰式改 MOLÁM（週日至 21:30），NOAH 留作備選；Endzior 多數來源週日公休，宵夜改 Plac Nowy 圓亭其他窗口', cost:'依店家', dur:'1 h'},
     ],
     eat: [
-      snack({text:'zapiekanka 街食 @ Endzior', placeId:'krakow-endzior'}),
+      snack({text:'zapiekanka 街食（週日可能公休，改圓亭其他窗口） @ Endzior', placeId:'krakow-endzior'}),
     ],
     warn: '❗EIP 5300 已購票，但截圖未顯示抵達時間；11:10 寄放行李與午後行程須依票券詳細頁重新核對。瓦維爾城堡尚未訂票；辛德勒工廠個人網路票在參觀日前 90 天 09:00 開放，10/25 已可在官方售票頁查／購。瓦維爾大教堂週日 12:30–16:00（最後入場 15:30）；城堡改走短路線並於 15:00 前離開，保留經 Kazimierz、Podgórze 步行到辛德勒工廠的時間。辛德勒工廠週二至週日 09:00–20:00、最後入場 18:30，17:30 屬可行時段。10/25 為非營業週日，多數一般商店關閉；餐廳等法定例外是否營業仍以店家公告為準。',
     backup: [
@@ -220,7 +220,7 @@ export const days = [
     ],
     eat: [
       snack({text:'Sernik @ Cukiernia Michałek', placeId:'krakow-cukiernia-michalek'}),
-      snack({text:'Pierożki u Vincenta（分店待確認，未排入動線）', placeId:'krakow-pierozki-u-vincenta'}),
+      snack({text:'手工餃子（Kazimierz 有空檔才去） @ Pierogi MR Vincent', placeId:'krakow-pierozki-u-vincenta'}),
     ],
     warn: '❗鹽礦尚未購票。10/27 英語 Tourist Route 票價 2026-10-06 已核實為 143／121 PLN，10/06 官網查詢時 10:00 英文場有名額（餘額會變動，不保證有位），建議盡早購票並在官方日期選擇器核對。城際段已購 IC 3830，16:45 發車；若鹽礦延誤，直接跳過 Kazimierz，16:10 前抵 Kraków Główny。抵達樂斯拉夫時間待查票面。',
     backup: [

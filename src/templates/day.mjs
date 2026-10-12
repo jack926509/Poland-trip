@@ -40,7 +40,8 @@ function eatEntry(item) {
 }
 
 function diningEntry(item, day) {
-  return { ...item, meta: item.address, timing:mealTiming(item, day), store: true };
+  const step = item.stepId ? day.steps.find(step => step.id === item.stepId) : null;
+  return { ...item, meta: item.address, timing:mealTiming(item, day), store: true, day, stepTime: step?.t || '' };
 }
 
 /**
@@ -53,7 +54,7 @@ function renderDayFoodItem(entry) {
   if (entry.store) {
     return `<li class="day-food-item${entry.eat ? ' day-food-item-eat' : ''}">
       ${renderStoreHead(entry, entry.role)}
-      ${renderStoreBody(entry, { condition: '', timing: entry.timing })}
+      ${renderStoreBody(entry, { condition: '', timing: entry.timing, day: entry.day, time: entry.stepTime })}
     </li>`;
   }
   const url = safeHttpsUrl(entry.map);

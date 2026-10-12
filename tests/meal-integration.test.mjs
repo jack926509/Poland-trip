@@ -62,3 +62,18 @@ test('關鍵餐段銜接保留已購車次與博物館參觀', () => {
   assert.ok(days[4].steps.some(item=>item.t==='18:35 前'));
   assert.ok(days[3].steps.some(item=>item.t==='16:45'));
 });
+
+test('每個排定餐段都標出當天營業時段，HH:MM 用餐時刻落在營業時間內（留 45 分鐘用餐）', async () => {
+  const { openingCheck } = await import('../src/lib/dining.mjs');
+  for (const day of days) {
+    for (const item of dining.dayDining[day.n].filter(item => item.planStatus === 'scheduled')) {
+      assert.ok(item.dayHours, `Day ${day.n} ${item.name} 缺少當天營業時段`);
+      const step = day.steps.find(step => step.id === item.stepId);
+      const check = openingCheck(item.dayHours, step.t);
+      if (check) assert.ok(check.ok, `Day ${day.n} ${item.name} ${step.t} 不在當天營業時段 ${item.dayHours} 內`);
+    }
+  }
+  assert.equal(openingCheck('08:00–翌日 01:00', '18:05').ok, true);
+  assert.equal(openingCheck('13:00–21:00', '20:30').ok, false);
+  assert.equal(openingCheck('12:00–22:00', '抵站放行李後'), null);
+});
