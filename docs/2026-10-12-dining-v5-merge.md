@@ -49,3 +49,45 @@ MOLÁM、Arirang、Oseyo 25、Inna Piekarnia 依 v5 補上地址或時段；其�
 ## 驗證
 
 `./verify.sh` 全數通過（352 項）；`audit:schedule` 8 天、78 個有時刻步驟結構檢查通過。兩項測試的預期值依本次變更更新：已核實餐段門市 31 → 35（四家 Pasibus），未記錄查核日的待辦 6 → 7（Mr. Jerry、Rusiko 取代已查核的 WYRAJ 與 Pod Aniołami）。
+
+## 第二輪：逐店複查、三餐動線盤點與店家卡改版（2026-10-12）
+
+建置環境無法直接連線店家網站，改以網路搜尋交叉比對官網、Michelin、Yelp、Tripadvisor 與在地目錄。每家結果寫進餐飲主檔：`liveCheckedAt`（確認仍營業的日期）、`hours`（只留時段）、`hoursNote`（時段出處，收在查核紀錄）、`cuisine`、`dishes`（推薦菜色）、`phone`。
+
+### 複查結果
+
+- 排入八天的 59 家餐廳全部仍在營業，沒有發現倒閉。
+- 速食分店：Poznań Stary Rynek 87 的 McDonald's 仍在改建，**尚未開幕**，換成 Półwiejska 2A；Salad Story Avenida 查無門市，移除（34 → 33 間）。其餘 14 間原本待確認的分店都已確認營業並補上時段。
+- 待確認升為部分核實 21 家（例如 Mr. Jerry、Rusiko、Charlotte Plac Szczepański、Arirang、Polonia、Hankki、Milkbar Tomasza、Zen On、Ceviche Bar、Kieliszki），已核實／部分核實的行程餐廳從 35 家增為 56 家。
+
+### 地址更正
+
+| 店家 | 原資料 | 更正 |
+|---|---|---|
+| Rusiko | Wierzbowa 11 | 確認 Wierzbowa 11；Yelp 顯示的 Al. Ujazdowskie 22 是舊址 |
+| Oseyo 25 | 門牌待確認 | Malarska 25 |
+| Kieliszki na Próżnej | 門牌待確認 | Próżna 12 |
+| Bułkę przez Bibułkę | Zgoda（門牌待確認） | Zgoda 3 |
+| Milkbar Tomasza | 門牌待確認 | Świętego Tomasza 24 |
+| Ceviche Bar | Twarda 2-4 | Twarda 4 |
+| Cukiernia Kandulski | 門牌待確認 | Stary Rynek 沒有分店；最近的是 Plac Ratajskiego 1（往帝王城堡路上） |
+| A. Blikle | Nowy Świat 33 | 甜點店在 Nowy Świat 35 |
+
+### 三餐動線盤點後的調整
+
+- 10/26 晚：FOLGA 週一是否營業來源矛盾，改由每日 13:00–23:00 的 Pod Aniołami 當 Mr. Jerry 首替。
+- 10/28 午：Konspira 週三 13:00 才開，註明只在午餐延後時替補。
+- 10/29：ROGAL 售完時改往帝王城堡路上的 Kandulski（Plac Ratajskiego 1）；Arirang 確認週四營業至 22:00，補兩支電話；新增週四營業、招牌是威靈頓的 Soul Kitchen 為晚餐備選。
+- 10/25 早：McDonald's 確認在 Warszawa Centralna 站內、約 05:00 開門，作為 Green Caffè Nero 的同站備案。
+- 其餘每一餐的用餐時刻都落在店家營業時間內，前後步驟的交通時間不變。
+
+### 店家卡改版
+
+每日行程、今日速查、餐飲指南與城市指南共用同一張店家卡：
+
+- 店名下一列小標：料理類型、查證狀態（已查證／部分查證／待確認）、「10/12 確認仍營業」。
+- 營業時間與推薦菜色直接可見，菜色做成標籤。
+- 菜單與電話是 44px 按鈕，電話可直接撥打。
+- 採用條件用黃底提示框；地址、時段出處、查核日期與來源收在「地址與查核紀錄」。
+- 速食分店：營業時間獨立一行，加上各家推薦三樣；餐飲指南新增依城市分組的「分店與營業時間」名錄。
+- 餐飲指南的營業時間清單，每家都連回排定的那一天；城市指南也順帶修正了手機卡片版店名被擠成窄欄的舊問題。

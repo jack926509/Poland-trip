@@ -65,6 +65,31 @@ export function fastFoodDiningEntries({ branches = [], chains = [], hub = null }
   });
 }
 
+/** 查核狀態的一句話；速食分店與一般餐廳共用三種狀態。 */
+function branchStatus(branch) {
+  if (branch.verificationStatus === 'verified') return `官方門市資料已核對（${escapeHtml(branch.checkedAt)}）；出發前重查`;
+  if (branch.verificationStatus === 'partial') {
+    return /待確認/.test(branch.hours || '待確認') ? '地址已核實，營業時間待確認' : `${escapeHtml(branch.checkedAt)} 確認門市仍營業；時段來自第三方，出發前重查`;
+  }
+  return '門市資料待確認，勿當作可靠保底';
+}
+
+/**
+ * 一間分店：店名就是導航連結，第二行直接寫營業時間，第三行是招牌三樣與位置提示。
+ * 每日行程、今日速查與餐廳頁的分店名錄共用，三處長得一樣。
+ */
+function renderBranchItem(branch, chain) {
+  const source = safeHttpsUrl(branch.sourceUrl);
+  const picks = (chain?.signature || []).slice(0, 3);
+  return `<li>
+          <a href="${escapeHtml(branch.map)}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(branch.chain)} ${escapeHtml(branch.address)} 的 Google Maps 導航">${escapeHtml(branch.chain)}</a>${chain?.kind ? `<span class="fast-food-kind-inline">${escapeHtml(chain.kind)}</span>` : ''}
+          <span class="fast-food-address">${escapeHtml(branch.address)}</span>
+          <p class="fast-food-hours"><b>營業</b> ${escapeHtml(branch.hours || '營業時間待確認')}</p>
+          <p class="food-map-note">${escapeHtml(branch.note)}${picks.length ? ` · 推薦：${picks.map(escapeHtml).join('、')}` : ''}</p>
+          <p class="source-meta">${branchStatus(branch)}${source ? ` · <a href="${source}" target="_blank" rel="noopener noreferrer">來源 ↗</a>` : ''}</p>
+        </li>`;
+}
+
 /**
  * 每日行程與今日速查的一段。
  *
@@ -79,15 +104,7 @@ export function renderFastFoodDayList(cityKeys = [], { branches = {}, chains = [
     const guide = cityGuides[cityKey];
     if (!list.length || !guide) return '';
     const hub = hubs.find(item => item.cityKey === cityKey);
-    const items = list.map(branch => {
-      const chain = index.get(branch.chain);
-      return `<li>
-          <a href="${escapeHtml(branch.map)}" target="_blank" rel="noopener noreferrer">${escapeHtml(branch.chain)}</a>${chain?.kind ? `<span class="fast-food-kind-inline">${escapeHtml(chain.kind)}</span>` : ''}
-          <span class="fast-food-address">${escapeHtml(branch.address)}</span>
-          <p class="food-map-note">${escapeHtml(branch.note)} · ${escapeHtml(branch.hours || '營業時間待確認')}</p>
-          <p class="source-meta">${branch.verificationStatus === 'verified' ? `官方門市資料已核對（${escapeHtml(branch.checkedAt)}）；出發前重查` : branch.verificationStatus === 'partial' ? '地址已核實，營業時間待確認' : '門市資料待確認，勿當作可靠保底'}${safeHttpsUrl(branch.sourceUrl) ? ` · <a href="${safeHttpsUrl(branch.sourceUrl)}" target="_blank" rel="noopener noreferrer">官方來源 ↗</a>` : ''}</p>
-        </li>`;
-    }).join('');
+    const items = list.map(branch => renderBranchItem(branch, index.get(branch.chain))).join('');
     // hub.address 本身就帶括號（「Pawia 5（中央車站旁）」），外面再包一層會變成雙括號
     const hubLine = hub
       ? `<p class="fast-food-fallback-hub">一站吃到多家：${escapeHtml(hub.place)} · ${escapeHtml(hub.address)}，同一棟 ${hub.branchIds.length} 家（各店營業與最後點餐須分別確認）。</p>`
@@ -113,8 +130,9 @@ export function renderFastFoodDayList(cityKeys = [], { branches = {}, chains = [
  * 分店是「人在那座城才用得到」的資訊，和城市指南的動線放在一起才有意義；
  * 菜單則各城相同，適合只寫一次。所以這頁只留招牌，分店歸城市指南，兩邊不重複。
  */
-export function renderFastFoodMenu({ chains = [], branches = {} }) {
+export function renderFastFoodMenu({ chains = [], branches = {}, hubs = [] }) {
   if (!chains.length) return '';
+  const index = chainIndex(chains);
 
   const chainCards = chains.map(chain => `
     <article class="card fast-food-card">
@@ -126,6 +144,19 @@ export function renderFastFoodMenu({ chains = [], branches = {} }) {
       <p class="source-meta">${escapeHtml(chain.note)}</p>
     </article>`).join('');
 
+  // 分店名錄：依城市分組、預設收合，每間直接看到營業時間與招牌，不必再跳去城市頁。
+  const directory = Object.entries(cityGuides)
+    .filter(([cityKey]) => (branches[cityKey] || []).length)
+    .map(([cityKey, guide]) => {
+      const hub = hubs.find(item => item.cityKey === cityKey);
+      return `<details class="fast-food-directory-city">
+        <summary>${escapeHtml(guide.name)} · ${branches[cityKey].length} 間分店與營業時間</summary>
+        ${hub ? `<p class="fast-food-fallback-hub">一站吃到多家：${escapeHtml(hub.place)} · ${escapeHtml(hub.address)}</p>` : ''}
+        <ul class="fast-food-fallback-list">${branches[cityKey].map(branch => renderBranchItem(branch, index.get(branch.chain))).join('')}</ul>
+        <p><a href="../${guide.file}#city-dining">${escapeHtml(guide.name)}城市指南的餐廳總表 →</a></p>
+      </details>`;
+    }).join('');
+
   const cityLinks = Object.entries(cityGuides)
     .filter(([cityKey]) => (branches[cityKey] || []).length)
     .map(([cityKey, guide]) => `<a href="../${guide.file}#city-dining">${escapeHtml(guide.name)} ${branches[cityKey].length} 家 →</a>`)
@@ -134,8 +165,9 @@ export function renderFastFoodMenu({ chains = [], branches = {} }) {
   return `
     <section class="section" id="fast-food">
       <div class="section-heading"><span class="section-num">Fast food</span><h2>連鎖速食招牌</h2></div>
-      <p class="lead">行程趕、太晚或不想踩雷時的落腳點，不做評選。菜單各城相同，這裡只列招牌；分店併在各城市指南的行程餐廳推薦表末段，和其他餐廳一起看動線。門市地址、營業時間與查核狀態由同一份門市資料提供，出發前仍以店家頁面為準。</p>
+      <p class="lead">行程趕、太晚或不想踩雷時的落腳點，不做評選。上面是各家招牌，下面依城市列出每間分店的地址、營業時間與導航；同一份分店資料也出現在每日行程、今日速查與城市指南。出發前仍以店家頁面為準。</p>
       <div class="grid">${chainCards}</div>
+      ${directory ? `<h3 id="fast-food-branches">分店與營業時間</h3><p class="food-map-note">2026-10-12 逐店確認仍營業；原列 Poznań Stary Rynek 87 的 McDonald's 尚在改建、Avenida 的 Salad Story 查無資料，已移除。</p><div class="fast-food-directory">${directory}</div>` : ''}
       ${cityLinks ? `<p class="action-links">${cityLinks}</p>` : ''}
     </section>`;
 }

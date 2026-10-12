@@ -38,7 +38,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-mcdonalds-centralna",
       "role": "早餐備案",
-      "note": "Green Caffè Nero 沒開時改 McMuffin 外帶；開門時間待確認，也可改 EIP 車上餐車。",
+      "note": "同在 Warszawa Centralna 站內，約 05:00 就開；Green Caffè Nero 沒開時改 McMuffin＋咖啡外帶，也可改 EIP 車上餐車。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -68,7 +68,7 @@ export const dayDiningPlans = {
     {
       "placeId": "krakow-milkbar-tomasza",
       "role": "午餐備選",
-      "note": "想體驗牛奶吧平價波蘭菜可改這間；門牌與營業待確認，下午時間緊仍以 Polonia 較省時。",
+      "note": "św. Tomasza 24，週日 09:00–18:00 有開；想體驗牛奶吧平價 Pierogi、炸豬排可改這間，但比 Polonia 多走約 10 分，下午時間緊仍以 Polonia 較省時。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -121,16 +121,16 @@ export const dayDiningPlans = {
       "condition": "建議訂位並確認 10/26 當天供應 Wellington；週一 15:00–22:00、廚房至 21:30。返程延誤先聯絡餐廳。"
     },
     {
-      "placeId": "krakow-folga",
+      "placeId": "krakow-pod-aniolami",
       "role": "晚餐備選",
-      "note": "原備選；魚類、海鮮與當季 Sharing Plates，口味較輕，Mr. Jerry 訂不到時的首替。",
+      "note": "Mr. Jerry 訂不到時的首替：每日 13:00–23:00，老城 Grodzka 35，木火烤山鱒魚＋野菇湯，訂位時確認 10% 服務費。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
-      "placeId": "krakow-pod-aniolami",
-      "role": "晚餐備選",
-      "note": "原首選保留；地窖燭光傳統波蘭菜，木火烤山鱒魚＋野菇湯，訂位時確認 10% 服務費。",
+      "placeId": "krakow-folga",
+      "role": "晚餐備選（週一先電話確認）",
+      "note": "魚類、海鮮與當季 Sharing Plates，口味較輕；但週一是否營業來源矛盾，10/26 要去先打電話。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -244,14 +244,14 @@ export const dayDiningPlans = {
     {
       "placeId": "wroclaw-konspira",
       "role": "午餐替補",
-      "note": "反共主題傳統小館；本日只作午餐替補，晚上趕車不排晚餐。",
+      "note": "反共主題傳統小館，週三 13:00 才開門；只在午餐延後時替補，晚上趕車不排晚餐。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "wroclaw-oseyo-25",
-      "role": "午餐備選（待確認）",
-      "note": "想吃韓式可另選（第三方資料每日 12:00–22:00），但門牌與營業未核實，不當作當日可靠備案。",
+      "role": "午餐備選",
+      "note": "Malarska 25，每日 12:00–22:00，離老城廣場步行約 5 分；Wrocławska 客滿又想吃韓式時改這間。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -291,7 +291,7 @@ export const dayDiningPlans = {
     {
       "placeId": "poznan-inna-piekarnia",
       "role": "早餐第二順位",
-      "note": "Ratajczaka 39，08:30 起：Butter Croissant、麵包與咖啡；Charlotte 客滿時改這間，仍須保留往教堂島的交通。",
+      "note": "Ratajczaka 39，週一至週六 08:30 起：Butter Croissant、麵包與咖啡；Charlotte 客滿時改這間，08:30 開門後吃要縮短，仍保留往教堂島的交通。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -312,7 +312,7 @@ export const dayDiningPlans = {
     {
       "placeId": "poznan-cukiernia-kandulski",
       "role": "點心備選",
-      "note": "PGI 認證店家之一；ROGAL 排隊或售完時改這間。",
+      "note": "Plac Ratajskiego 1（週四 09:00–18:00），在 Pyra Bar 往帝王城堡的路上；ROGAL 排隊或售完時改這間買。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -327,7 +327,7 @@ export const dayDiningPlans = {
     {
       "placeId": "poznan-zen-on",
       "role": "午餐備選",
-      "note": "Michelin 推薦拉麵（Święty Marcin 21，週四 12:00–20:00 待確認）：拉麵、烏龍麵、bao；往帝王城堡順路。",
+      "note": "Michelin 推薦拉麵，Święty Marcin 21，週四 12:00–20:00：拉麵、烏龍麵、bao；往帝王城堡順路，尖峰常排隊。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -352,7 +352,7 @@ export const dayDiningPlans = {
       "stepId": "d6-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "週四營業時間各來源不一（12:00–22:00 或 11:00–23:00），當天先打電話確認仍接單；21:30 前無法入座就改 Złote Tarasy 速食或 24 小時的 Ćma。"
+      "condition": "週四 12:00–22:00（多個目錄一致，無店家官網），當天先打 22 881 78 51 或 22 622 18 86 確認仍接單；21:30 前無法入座就改 Złote Tarasy 速食、Soul Kitchen 或 24 小時的 Ćma。"
     },
     {
       "placeId": "warsaw-pasibus-zlote-tarasy",
@@ -377,8 +377,8 @@ export const dayDiningPlans = {
     },
     {
       "placeId": "warsaw-soul-kitchen",
-      "role": "晚餐候選（威靈頓待確認）",
-      "note": "Nowogrodzka 18A，離 Metropol 步行約 8 分；評論提過 Wellington 但官方菜單查不到，訂位時先問。",
+      "role": "晚餐備選（威靈頓）",
+      "note": "Nowogrodzka 18A，離 Metropol 步行約 8 分，週四至 22:00；多個評論來源列 Beef Wellington 為招牌，Arirang 不接單或想再吃一次威靈頓時改這間，先電話問供應。",
       "stepId": null,
       "planStatus": "candidate"
     }
@@ -395,14 +395,14 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-bulke-przez-bibulke-zgoda",
       "role": "早餐備選",
-      "note": "市中心早午餐：Bagel、Scrambled Eggs、Avocado Toast；門牌與開門時間待確認。",
+      "note": "Zgoda 3，平日 07:30 開門，離 Metropol 步行約 8 分：Bagel、Scrambled Eggs、Avocado Toast；Bambino 客滿時改這間。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "warsaw-a-blikle-1869",
       "role": "咖啡甜點",
-      "note": "Nowy Świat 33，09:00 開門；往城堡路上外帶 pączki 玫瑰果醬甜甜圈。",
+      "note": "Nowy Świat 35，約 09:00 開門（各目錄 09:00／10:00 不一）；往城堡路上外帶 pączki 玫瑰果醬甜甜圈，沒開就略過。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -434,7 +434,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-ceviche-bar",
       "role": "晚餐備選",
-      "note": "Bib Gourmand 南美料理（Twarda 2-4，週五 12:00–23:00 待確認）；離起義博物館較近。",
+      "note": "Bib Gourmand 祕魯菜，Twarda 4，週五 12:00–23:00；離起義博物館較近。",
       "stepId": null,
       "planStatus": "candidate"
     },

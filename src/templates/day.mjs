@@ -1,4 +1,4 @@
-import { mealTiming, renderDiningFacts, renderMealList } from '../lib/dining.mjs';
+import { mealTiming, renderMealList, renderStoreBody, renderStoreHead } from '../lib/dining.mjs';
 import { escapeHtml, safeHttpsUrl } from '../lib/html.mjs';
 import { bookingProgress } from '../lib/journey.mjs';
 import { segmentForDay } from '../lib/rail.mjs';
@@ -27,18 +27,20 @@ function eatEntry(item) {
   const name = dish ? (item.place || shop) : item.text;
   const sameAsName = item.place && (item.text.includes(item.place) || item.place.includes(item.text));
   return {
+    ...(item.placeId ? item : {}),
     role: dish ? `順路必吃 · ${dish}` : '順路必吃',
     name,
     meta: dish ? '' : (sameAsName ? '' : item.place),
     note: item.note,
     map: item.map,
     eat: true,
-    facts: item.placeId ? renderDiningFacts(item) : '',
+    // 有門市的必吃也用店家卡，營業時間與推薦菜色一樣直接看得到。
+    store: Boolean(item.placeId),
   };
 }
 
 function diningEntry(item, day) {
-  return { ...item, meta: item.address, timing:mealTiming(item, day), facts:renderDiningFacts(item) };
+  return { ...item, meta: item.address, timing:mealTiming(item, day), store: true };
 }
 
 /**
@@ -47,6 +49,13 @@ function diningEntry(item, day) {
  * 連結可見文字只有「導航」，因此用 aria-label 帶上店名，螢幕閱讀器才知道是哪一家。
  */
 function renderDayFoodItem(entry) {
+  // 備選餐廳與三餐主安排共用同一種店家卡：營業時間、推薦菜色、菜單與電話直接可見。
+  if (entry.store) {
+    return `<li class="day-food-item${entry.eat ? ' day-food-item-eat' : ''}">
+      ${renderStoreHead(entry, entry.role)}
+      ${renderStoreBody(entry, { condition: '', timing: entry.timing })}
+    </li>`;
+  }
   const url = safeHttpsUrl(entry.map);
   const link = url
     ? `<a class="day-food-map" href="${url}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(entry.name)} 的 Google Maps 導航">導航 ↗</a>`

@@ -1,4 +1,4 @@
-import { renderDiningFacts } from '../lib/dining.mjs';
+import { renderDiningFacts, renderStoreBadges } from '../lib/dining.mjs';
 import { renderCityJourney } from './journey.mjs';
 import { mergeCityDining, dropDuplicateClauses, dedupeNotes, dropRestatedHours } from './city-dining.mjs';
 import { renderLayout } from './layout.mjs';
@@ -83,9 +83,9 @@ export function renderCity({
     ? `<a class="city-dining-name" href="${item.map}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${item.name} 的 Google Maps">${item.name}</a>`
     : `<strong>${item.name}</strong>`);
   const renderDiningRow = item => `<tr class="${item.selected ? 'city-dining-selected' : ''}">
-    <th scope="row">${renderDiningName(item)}${diningBadge(item)}${item.address ? `<p class="food-map-note">${item.address}</p>` : ''}</th>
+    <th scope="row">${renderDiningName(item)}${diningBadge(item)}${item.role === 'fastfood' ? '' : renderStoreBadges(item)}${item.address ? `<p class="food-map-note">${item.address}</p>` : ''}</th>
     <td>${stableTier(item.tier || item.tag || '待補充')}</td>
-    <td>${item.notes.length ? dropDuplicateClauses(dedupeNotes(item.notes, item.address).join('；'), item.address) : '依店家當日菜單確認'}</td>
+    <td>${item.dishes?.length ? `<p class="store-dish-line"><b>推薦：</b>${item.dishes.join('、')}</p>` : ''}${item.notes.length ? dropDuplicateClauses(dedupeNotes(item.notes, item.address).join('；'), item.address) : '依店家當日菜單確認'}${item.phone ? `<p class="food-map-note">電話 <a href="tel:${item.phone.replace(/[^\d+]/g, '')}">${item.phone}</a></p>` : ''}</td>
     <td>${item.plans?.length
       ? item.plans.map(plan => `<p class="city-dining-plan">${dropRestatedHours(dropDuplicateClauses(plan, item.notes.join('；')), item.hours)}</p>`).join('')
       : `<p>${item.positionNote || planFallback[item.role] || '依當天動線與胃口安排'}</p>`}<p class="food-map-note">${bookingLabels[item.book] || '訂位請向店家確認'}</p>${renderDiningFacts(item)}</td>

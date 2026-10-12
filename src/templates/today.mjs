@@ -1,4 +1,4 @@
-import { mealTiming, renderDiningFacts, renderMealList } from '../lib/dining.mjs';
+import { mealTiming, renderMealList, renderStoreBody, renderStoreHead } from '../lib/dining.mjs';
 import { dayMeals } from '../data/day-dining.js';
 import { escapeAttr, escapeHtml, safeHttpsUrl } from '../lib/html.mjs';
 import { bookingProgress, isDepartureDay, stayForDate } from '../lib/journey.mjs';
@@ -46,18 +46,10 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref }) {
   const list = items => items.map(item => `<li>${escapeHtml(item)}</li>`).join('');
   // 餐飲列沿用每日行程頁的 .day-food-item 版式：店名是標題、導航收在標題右上角的膠囊，
   // 不再是「角色：店名」加四段文字的文字牆。同一家店在兩個頁面長得一樣，不必重新學。
-  const meal = item => {
-    const mapUrl = safeHttpsUrl(item.map);
-    return `<li class="day-food-item">
-      <div class="day-food-head">
-        <div class="day-food-title"><span class="eyebrow">${escapeHtml(item.role)}</span><h4>${escapeHtml(item.name)}</h4></div>
-        ${mapUrl ? `<a class="day-food-map" href="${mapUrl}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(item.name)} 的 Google Maps 導航">導航 ↗</a>` : ''}
-      </div>
-      ${item.note ? `<p>${escapeHtml(item.note)}</p>` : ''}
-      ${item.address ? `<p class="source-meta" lang="pl">${escapeHtml(item.address)}</p>` : ''}
-      <p class="food-map-note">${escapeHtml(mealTiming(item, day))}</p>${renderDiningFacts(item)}
+  const meal = item => `<li class="day-food-item">
+      ${renderStoreHead(item, item.role)}
+      ${renderStoreBody(item, { condition: '', timing: mealTiming(item, day) })}
     </li>`;
-  };
   // 同一天的「首選」其實橫跨不同餐別（午餐＋晚餐＋點心），不是互斥選項。
   // 正餐與點心分開列，避免看起來像「這些全都要吃」或「只能挑一家」。
   const remaining = (dining || []).filter(item => !item.meal);

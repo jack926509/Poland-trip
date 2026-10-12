@@ -32,8 +32,69 @@ export function renderDiningFacts(item, { includeHours = true } = {}) {
   const menu = safeHttpsUrl(item.menuUrl);
   return `${includeHours ? `<p class="food-map-note">營業時間：${escapeHtml(item.hours || '待確認')}</p>` : ''}
     <p class="source-meta">${status}${item.checkedAt ? ` · ${escapeHtml(item.checkedAt)}` : ''}${source ? ` · <a href="${source}" target="_blank" rel="noopener noreferrer">查核來源 ↗</a>` : ''}</p>
+    ${item.hoursNote ? `<p class="food-map-note">營業時間來源：${escapeHtml(item.hoursNote)}</p>` : ''}
     ${item.verificationNote ? `<p class="food-map-note">${escapeHtml(item.verificationNote)}</p>` : ''}
     ${menu ? `<p class="food-map-note"><a href="${menu}" target="_blank" rel="noopener noreferrer">菜單／餐點來源 ↗</a>${item.menuNote ? ` · ${escapeHtml(item.menuNote)}` : ''}</p>` : ''}`;
+}
+
+const STATUS_BADGES = {
+  verified: ['已查證', 'verified'],
+  partial: ['部分查證', 'partial'],
+  pending: ['待確認', 'pending'],
+};
+
+/** 2026-10-12 → 10/12；只用在徽章短字，完整日期仍在查核紀錄。 */
+function shortDate(value) {
+  const match = /^\d{4}-(\d{2})-(\d{2})$/.exec(value || '');
+  return match ? `${Number(match[1])}/${Number(match[2])}` : '';
+}
+
+/**
+ * 店名下方的一列小標：料理類型、查證狀態、最近一次確認仍營業的日期。
+ * 用 span 不用 p——導航膠囊必須排在第一個段落之前（標題列），見 day-food 測試。
+ */
+export function renderStoreBadges(item) {
+  if (!item.placeId && !item.cuisine) return '';
+  const [label, key] = STATUS_BADGES[item.verificationStatus] || STATUS_BADGES.pending;
+  const live = shortDate(item.liveCheckedAt);
+  return `<span class="store-badges">${item.cuisine ? `<span class="store-tag">${escapeHtml(item.cuisine)}</span>` : ''}<span class="store-status store-status-${key}">${label}</span>${live ? `<span class="store-live">${live} 確認仍營業</span>` : ''}</span>`;
+}
+
+/** 電話只留數字與加號，避免 tel: 連結夾帶空白或括號。 */
+function telHref(phone) {
+  const digits = String(phone || '').replace(/[^\d+]/g, '');
+  return digits.length >= 9 ? `tel:${digits}` : '';
+}
+
+/**
+ * 店家卡的主體：營業時間與推薦菜色一律直接可見（不收合），
+ * 菜單與電話做成 44px 的按鈕；地址、查核日期與來源收在「地址與查核紀錄」。
+ */
+export function renderStoreBody(item, { note = item.note, condition = item.condition, timing = '', foldFacts = true } = {}) {
+  const dishes = Array.isArray(item.dishes) ? item.dishes : [];
+  const menu = safeHttpsUrl(item.menuUrl);
+  const tel = telHref(item.phone);
+  const facts = `<dl class="store-facts">
+      <div class="store-fact"><dt>營業</dt><dd>${escapeHtml(item.hours || '待確認')}</dd></div>
+      ${dishes.length ? `<div class="store-fact"><dt>推薦</dt><dd><ul class="store-dishes">${dishes.map(dish => `<li>${escapeHtml(dish)}</li>`).join('')}</ul></dd></div>` : ''}
+    </dl>`;
+  const actions = menu || tel ? `<p class="store-actions">${menu ? `<a class="store-action" href="${menu}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(item.name)} 的菜單">菜單 ↗</a>` : ''}${tel ? `<a class="store-action" href="${tel}" aria-label="撥打 ${escapeHtml(item.name)} 電話 ${escapeHtml(item.phone)}">電話 ${escapeHtml(item.phone)}</a>` : ''}</p>` : '';
+  const record = foldFacts
+    ? `<details><summary>地址與查核紀錄</summary><p class="food-map-note">${escapeHtml(item.address)}</p>${renderDiningFacts(item, { includeHours: false })}<p class="source-meta">行程預留不代表已訂位。</p></details>`
+    : '';
+  return `${facts}
+      ${note ? `<p>${escapeHtml(note)}</p>` : ''}
+      ${condition ? `<p class="store-condition"><b>採用／改備案：</b>${escapeHtml(condition)}</p>` : ''}
+      ${timing ? `<p class="food-map-note">${escapeHtml(timing)}</p>` : ''}
+      ${actions}
+      ${record}`;
+}
+
+/** 店名列：標題與小標在左，導航膠囊在右上角。 */
+export function renderStoreHead(item, eyebrow) {
+  const map = safeHttpsUrl(item.map || item.mapUrl);
+  return `<div class="day-food-head"><div class="day-food-title"><span class="eyebrow">${escapeHtml(eyebrow)}</span><h4>${escapeHtml(item.name)}</h4>${renderStoreBadges(item)}</div>
+      ${map ? `<a class="day-food-map" href="${map}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(item.name)} 的 Google Maps 導航">導航 ↗</a>` : ''}</div>`;
 }
 
 /** 每日頁、今日卡與餐飲指南共用；沒有門市的餐次只顯示安排，不產生假導航。 */
@@ -42,13 +103,10 @@ export function renderMealList(day, meals) {
   return `<ul class="day-food-list" data-three-meals="${day.n}">${meals.map(item => {
     const step = day.steps.find(step => step.id === item.stepId);
     if (!step) throw new Error(`Day ${day.n} 找不到三餐步驟 ${item.stepId}`);
-    const map = safeHttpsUrl(item.map);
+    const eyebrow = `${labels[item.meal]} · ${step.t}${item.condition ? ' · 先確認' : ''}`;
     return `<li class="day-food-item" data-meal="${item.meal}">
-      <div class="day-food-head"><div class="day-food-title"><span class="eyebrow">${labels[item.meal]} · ${escapeHtml(step.t)}${item.condition ? ' · 先確認' : ''}</span><h4>${escapeHtml(item.name)}</h4></div>
-      ${map ? `<a class="day-food-map" href="${map}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(item.name)} 的 Google Maps 導航">導航 ↗</a>` : ''}</div>
-      <p>${escapeHtml(item.note)}</p>
-      ${item.condition ? `<p class="food-map-note"><b>採用／改備案：</b>${escapeHtml(item.condition)}</p>` : ''}
-      ${item.placeId ? `<details><summary>地址、菜單與營業查核</summary><p class="food-map-note">${escapeHtml(item.address)}</p>${renderDiningFacts(item)}<p class="source-meta">行程預留不代表已訂位。</p></details>` : ''}
+      ${renderStoreHead(item, eyebrow)}
+      ${item.placeId ? renderStoreBody(item) : `<p>${escapeHtml(item.note)}</p>`}
     </li>`;
   }).join('')}</ul>`;
 }
