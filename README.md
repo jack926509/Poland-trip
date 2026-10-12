@@ -25,13 +25,13 @@
 
 | 日期 | 落腳與移動 | 這一天想留下的記憶 |
 |---|---|---|
-| [10/24（六）· Day 1](https://polandtrip.xiehnet.com/day-01) | 抵達華沙 | 老城與皇家大道傍晚漫步，吃一餐波蘭地方料理，早點休息倒時差。 |
+| [10/24（六）· Day 1](https://polandtrip.xiehnet.com/day-01) | 抵達華沙 | 換好波蘭幣，沿新世界街與皇家大道走到總統府看日落，吃一餐波蘭地方料理，晚上逛 Złote Tarasy。 |
 | [10/25（日）· Day 2](https://polandtrip.xiehnet.com/day-02) | 華沙 → 克拉科夫 | Wawel、中央廣場與辛德勒工廠；白天先備好隔日餐點，晚餐安排 Hankki 韓式料理。 |
 | [10/26（一）· Day 3](https://polandtrip.xiehnet.com/day-03) | 克拉科夫出發，一日往返 | Auschwitz-Birkenau 導覽。留時間理解歷史，回城後安排安靜的晚餐與休息。 |
 | [10/27（二）· Day 4](https://polandtrip.xiehnet.com/day-04) | 克拉科夫 → 樂斯拉夫 | 上午參觀 Wieliczka 鹽礦，回城取行李，傍晚搭車前往下一座城市。 |
 | [10/28（三）· Day 5](https://polandtrip.xiehnet.com/day-05) | 樂斯拉夫 → 波茲南 | 廣場小矮人、教堂塔樓、全景畫與國家博物館；傍晚在座堂島看點燈，再搭車往波茲南。 |
 | [10/29（四）· Day 6](https://polandtrip.xiehnet.com/day-06) | 波茲南 → 華沙 | 教堂島、山羊鐘樓秀與聖馬丁牛角麵包；午後逛帝王城堡與 Stary Browar，晚間回華沙。 |
-| [10/30（五）· Day 7](https://polandtrip.xiehnet.com/day-07) | 華沙 | 皇家城堡、Café Bristol 午餐與華沙起義博物館；最後晚餐吃 Rusiko 喬治亞菜，再留給老城夜景。 |
+| [10/30（五）· Day 7](https://polandtrip.xiehnet.com/day-07) | 華沙 | 一早華沙起義博物館，接無名塚、皇家城堡與老城，下午到瓦津基看水上宮殿；最後晚餐吃 Rusiko 喬治亞菜。 |
 | [10/31（六）· Day 8](https://polandtrip.xiehnet.com/day-08) | 華沙 → 返程 | 吃早餐、整理行李，前往蕭邦機場；11/01 回到臺灣。 |
 
 這是目前的旅行安排；各館場次與購票進度可在[訂票清單](https://polandtrip.xiehnet.com/practical/todos)查看。

@@ -5,7 +5,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-specjaly-regionalne",
       "role": "晚餐首選",
-      "note": "18:30 入座：Żurek 酸黑麥湯＋綜合 Pierogi，主菜選梅醬豬肋排或半隻烤鴨，還有胃口再加甜點。皇家大道散步後順路，先確認座位；抵達晚就縮短散步。",
+      "note": "18:30 入座：Żurek 酸黑麥湯＋綜合 Pierogi，主菜選梅醬豬肋排或半隻烤鴨。皇家大道散步走回 Nowy Świat 就到，先確認座位；抵達晚就縮短散步。飯後步行約 15 分到 Złote Tarasy。",
       "stepId": "d1-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
@@ -21,7 +21,14 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-cafe-bristol",
       "role": "咖啡甜點",
-      "note": "皇家大道途中休息；與 Wedel 擇一優先。",
+      "note": "17:10 總統府隔壁：Bristol cake 配咖啡（週六至 21:00）；累了就略過，或改 Wedel 熱巧克力。",
+      "stepId": null,
+      "planStatus": "candidate"
+    },
+    {
+      "placeId": "warsaw-a-blikle-1869",
+      "role": "甜點外帶",
+      "note": "Nowy Świat 35，16:05 沿新世界街北行時順路外帶 pączki；開門時間各目錄不一，沒開就略過。",
       "stepId": null,
       "planStatus": "candidate"
     }
@@ -400,49 +407,42 @@ export const dayDiningPlans = {
   ],
   "7": [
     {
-      "placeId": "warsaw-bar-mleczny-bambino",
+      "placeId": "warsaw-bulke-przez-bibulke-zgoda",
       "role": "早餐首選",
-      "note": "08:00–08:45 牛奶吧早餐：jajecznica 炒蛋、naleśniki 可麗餅配 kompot，或菠菜歐姆蛋；之後經 Nowy Świat 往皇家城堡，09:30 前到入口。",
+      "note": "07:30 開門就進：Bagel、Scrambled Eggs 或 Avocado Toast＋咖啡，08:05 前結帳，走到 Świętokrzyska 搭 M2 去起義博物館。",
       "stepId": "d7-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
-      "dayHours": "08:00–20:00"
+      "dayHours": "07:30–23:00"
     },
     {
-      "placeId": "warsaw-bulke-przez-bibulke-zgoda",
+      "placeId": "warsaw-bar-mleczny-bambino",
       "role": "早餐備選",
-      "note": "Zgoda 3，平日 07:30 開門，離 Metropol 步行約 8 分：Bagel、Scrambled Eggs、Avocado Toast；Bambino 客滿時改這間。",
+      "note": "Hoża 19，平日 08:00 才開；想吃牛奶吧早餐就把起義博物館延到 09:15 入館，後面全部順延約 45 分。",
       "stepId": null,
       "planStatus": "candidate"
-    },
-    {
-      "placeId": "warsaw-a-blikle-1869",
-      "role": "咖啡甜點",
-      "note": "Nowy Świat 35，約 09:00 開門（各目錄 09:00／10:00 不一）；往城堡路上外帶 pączki 玫瑰果醬甜甜圈，沒開就略過。",
-      "stepId": null,
-      "planStatus": "candidate"
-    },
-    {
-      "placeId": "warsaw-cafe-bristol",
-      "role": "午餐首選",
-      "note": "皇家城堡結束後沿 Krakowskie Przedmieście 步行約 10 分，11:30 入座；先點三明治、Bristol cake 與咖啡，官網湯與主餐自 12:00 起供應，想吃正式主餐可坐到 12:00 再點。",
-      "stepId": "d7-lunch",
-      "planStatus": "scheduled",
-      "meal": "lunch",
-      "condition": "當日供應與最後接單待確認；11:30 湯與主餐尚未供應時，改點輕食或延到 12:00。",
-      "dayHours": "08:00–21:00"
     },
     {
       "placeId": "warsaw-polka",
+      "role": "午餐首選",
+      "note": "12:40 出城堡直接進隔壁：平日 12:00–16:00 午間套餐，或點 Pierogi、Żurek；13:30 前結帳接老城步行。",
+      "stepId": "d7-lunch",
+      "planStatus": "scheduled",
+      "meal": "lunch",
+      "condition": "客滿或候位超過 15 分就改老城廣場的 U Fukiera，或買外帶邊走邊吃。",
+      "dayHours": "12:00–22:00"
+    },
+    {
+      "placeId": "warsaw-cafe-bristol",
       "role": "午餐備選",
-      "note": "皇家城堡旁 Świętojańska 2 的傳統波蘭菜；Café Bristol 客滿時替代。",
+      "note": "想坐下喝咖啡配 Bristol cake 可改這間，但要從城堡往南走約 10 分再折回老城；10/24 傍晚已排過一次。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "warsaw-rusiko",
       "role": "晚餐首選（條件式）",
-      "note": "起義博物館 18:00 閉館後搭電車約 15–20 分到 Wierzbowa 11，18:30 入座：khachapuri 起司船形麵包、khinkali 湯包、chanakhi 燉羊腿。",
+      "note": "國家博物館（或飯店）出發搭車約 15 分到 Wierzbowa 11，18:30 入座：khachapuri 起司船形麵包、khinkali 湯包、chanakhi 燉羊腿。",
       "stepId": "d7-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
@@ -465,15 +465,15 @@ export const dayDiningPlans = {
     },
     {
       "placeId": "warsaw-u-fukiera",
-      "role": "晚餐備選",
-      "note": "老城／皇家城堡收尾時：綜合 Pierogi、Żurek、波蘭烤鴨，最後一晚氣氛；從起義博物館過去需搭車約 20–30 分。",
+      "role": "午／晚餐備選",
+      "note": "老城廣場 27：午餐 Polka 客滿時改這間；晚餐想在老城吃最後一晚也可以，綜合 Pierogi、Żurek、波蘭烤鴨。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "warsaw-wyraj",
       "role": "晚餐備選",
-      "note": "原首選保留；人在 Wola／起義博物館一帶時升為首選，步行約 10 分到 Krochmalna 59，週五 12:00–00:00。",
+      "note": "原首選保留；Krochmalna 59，在起義博物館附近，週五 12:00–00:00。下午若取消瓦津基、人在 Wola 一帶再考慮。",
       "stepId": null,
       "planStatus": "candidate"
     },

@@ -23,7 +23,7 @@ export const cities = [
 Object.assign(cities.find(city => city.key === 'WAW').photo, {
   detail:'assets/photos/warsaw-royal-castle.webp', detailHeight:848,
   detailAlt:'華沙城堡廣場、皇家城堡與周圍彩色建築',
-  detailCaption:'城堡廣場與皇家城堡 · Day 1 老城散步沿途',
+  detailCaption:'城堡廣場與皇家城堡 · Day 7 老城步行段',
   detailAuthor:'Steven Lek', detailLicense:'CC BY-SA 4.0',
   detailLicenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',
   detailSource:'https://commons.wikimedia.org/wiki/File:Castle_Square_Warsaw_2018_2.jpg',

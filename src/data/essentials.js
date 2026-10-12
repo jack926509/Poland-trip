@@ -37,13 +37,13 @@ export const packingDefault = {
 //
 // 仍屬推算值：若要用於趕日落前抵達某拍攝點這類關鍵決策，出發前再以天文表核對。
 export const daylight = [
-  {day:1, date:'2026-10-24', city:'華沙', tz:'CEST',   sunrise:'07:16', sunset:'17:23', blueHourEnd:'17:58', note:'抵達日。夏令時間最後一個完整日，傍晚老城散步有到 17:23 的自然光——這是全程最長的一天。'},
+  {day:1, date:'2026-10-24', city:'華沙', tz:'CEST',   sunrise:'07:16', sunset:'17:23', blueHourEnd:'17:58', note:'抵達日。夏令時間最後一個完整日，皇家大道散步到總統府剛好在 17:23 日落前——這是全程最長的一天。'},
   {day:2, date:'2026-10-25', city:'克拉科夫', tz:'CET',    sunrise:'06:17', sunset:'16:30', blueHourEnd:'17:04', note:'冬令時間首日，日落比昨天早 53 分鐘。辛德勒工廠 17:30 入館時天已黑，屬室內行程不受影響。'},
   {day:3, date:'2026-10-26', city:'克拉科夫', tz:'CET',    sunrise:'06:19', sunset:'16:28', blueHourEnd:'17:02', note:'Auschwitz 回程 16:55 抵克拉科夫時已過日落，當晚不安排戶外拍攝。'},
   {day:4, date:'2026-10-27', city:'克拉科夫', tz:'CET',    sunrise:'06:20', sunset:'16:27', blueHourEnd:'17:00', note:'Kazimierz 白天散步 14:30 起，日落前約 2 小時是磚牆與窄街的最佳光線。'},
   {day:5, date:'2026-10-28', city:'樂斯拉夫', tz:'CET',    sunrise:'06:36', sunset:'16:34', blueHourEnd:'17:08', note:'座堂島煤氣燈：點燈人沒有對外保證的固定出發分鐘，日落前到場等候即可。'},
   {day:6, date:'2026-10-29', city:'波茲南', tz:'CET',    sunrise:'06:42', sunset:'16:29', blueHourEnd:'17:05', note:'教堂島上午行程；16:00 已在取行李往車站，戶外拍攝要在下午前完成。'},
-  {day:7, date:'2026-10-30', city:'華沙', tz:'CET',    sunrise:'06:27', sunset:'16:12', blueHourEnd:'16:47', note:'兩館日（皇家城堡、起義博物館）。18:30 晚餐與 21:00 老城夜燈皆在天黑後，屬夜景而非藍調。'},
+  {day:7, date:'2026-10-30', city:'華沙', tz:'CET',    sunrise:'06:27', sunset:'16:12', blueHourEnd:'16:47', note:'起義博物館、皇家城堡、老城一路到瓦津基。日落 16:12，水上宮殿先拍外觀；18:30 晚餐已是夜景。'},
   {day:8, date:'2026-10-31', city:'華沙', tz:'CET',    sunrise:'06:28', sunset:'16:10', blueHourEnd:'16:45', note:'09:45 出發搭機，不涉及傍晚戶外行程。'},
 ];
 

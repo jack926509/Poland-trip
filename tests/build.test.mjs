@@ -311,10 +311,13 @@ test('已排定的主要公共地點使用正確地址與官方入口資料', ()
     assert.ok(place?.entranceNote, `Day ${day} ${name} 缺入口說明`);
   }
   assert.ok(!JSON.stringify(dayOperations).includes('Rynek Główny, 31-422 Kraków'));
-  const oldTown = dayOperations[1].addresses.find(item => item.name === '華沙老城市場廣場');
-  const castle = dayOperations[1].addresses.find(item => item.name === '華沙皇家城堡');
-  assert.ok(oldTown.stepLabels.includes('★ 老城廣場'));
-  assert.ok(!castle.stepLabels.includes('★ 老城廣場'));
+  // 2026-10-12 華沙一天半改版：Day 1 只走皇家大道，老城與皇家城堡都留到 Day 7。
+  assert.ok(!dayOperations[1].addresses.some(item => ['華沙老城市場廣場', '華沙皇家城堡'].includes(item.name)));
+  assert.ok(dayOperations[1].addresses.find(item => item.name === 'Krakowskie Przedmieście').stepLabels.includes('★ 總統府外觀'));
+  const oldTown = dayOperations[7].addresses.find(item => item.name === '華沙老城市場廣場');
+  const castle = dayOperations[7].addresses.find(item => item.name === '華沙皇家城堡');
+  assert.ok(oldTown.stepLabels.some(label => label.includes('老城廣場')));
+  assert.ok(!castle.stepLabels.some(label => label.includes('老城廣場')));
 });
 
 test('首頁待辦事項會跳脫資料文字', () => {
@@ -656,8 +659,9 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   // 精煉切片 4a：fares 改由 venues.js 推導，補上原本只在 ticketsByCity／
   // venueHours 出現的 POLIN、華沙起義博物館，21 → 23；2026-10-10 移除 POLIN。
   // 2026-10-07：Day 5 加入弗羅茨瓦夫國家博物館（持全景畫票免費），23 → 24。
-  assert.equal(fares.length, 23);
-  assert.deepEqual(ticketsByCity.map(group => group.items.length), [6, 7, 4, 5]);
+  // 2026-10-12 華沙一天半改版加入瓦津基水上宮殿與國家博物館：23 → 25。
+  assert.equal(fares.length, 25);
+  assert.deepEqual(ticketsByCity.map(group => group.items.length), [8, 7, 4, 5]);
   assert.deepEqual([
     transitFares.length, airportTransit.length, recommendedApps.length,
     passChecklist.length, usefulRoutes.length, practical.length,
@@ -1015,18 +1019,20 @@ test('高風險校正：皇家城堡與辛德勒工廠已依官方時間修正',
   assert.doesNotMatch(read('day-07.html'), /17:00[^<]{0,80}皇家城堡內部/);
 });
 
-test('Day 7 改為早上皇家城堡、午餐 Café Bristol、下午自由時段，不再有 POLIN', () => {
+test('Day 7 依華沙一天半規劃：起義博物館 → 無名塚 → 皇家城堡 → 老城 → 瓦津基，不再有 POLIN', () => {
   const day = days.find(item => item.n === 7);
-  const firstAttraction = day.steps.find(step => step.label.startsWith('★'));
-  assert.equal(firstAttraction.t, '10:00');
-  assert.ok(firstAttraction.label.includes('皇家城堡'));
-  assert.equal(day.steps.find(step => step.id === 'd7-breakfast').t, '08:00');
+  const order = ['華沙起義博物館', '無名塚', '皇家城堡', '老城步行', '瓦津基'];
+  const times = order.map(name => day.steps.findIndex(step => step.label.startsWith('★') && step.label.includes(name)));
+  assert.ok(times.every(index => index >= 0), `Day 7 缺少景點：${order.filter((_, i) => times[i] < 0)}`);
+  assert.deepEqual([...times].sort((a, b) => a - b), times, 'Day 7 景點順序不對');
+  assert.equal(day.steps.find(step => step.label.includes('起義博物館') && step.label.startsWith('★')).t, '08:30');
+  assert.equal(day.steps.find(step => step.label === '★ 皇家城堡').t, '11:30');
+  assert.equal(day.steps.find(step => step.id === 'd7-breakfast').t, '07:30');
   const lunch = day.steps.find(item => item.id === 'd7-lunch');
-  assert.equal(lunch.t, '11:30');
-  assert.match(lunch.label, /Café Bristol/);
-  assert.ok(day.steps.some(item => item.t === '13:00' && /自由時段/.test(item.label)));
-  assert.ok(day.steps.some(item => item.t === '16:00' && /起義博物館/.test(item.label)));
-  assert.equal(day.intensity, '中');
+  assert.equal(lunch.t, '12:40');
+  assert.match(lunch.label, /Polka/);
+  assert.ok(day.steps.some(item => /可選 · 華沙國家博物館/.test(item.label)), '國家博物館應為可選');
+  assert.equal(day.intensity, '高');
   assert.ok(!JSON.stringify(day).includes('POLIN 猶太'), 'Day 7 資料不應有 POLIN 行程');
   const dayHtml = read('day-07.html');
   assert.ok(!/POLIN/i.test(dayHtml.slice(dayHtml.indexOf('<main'), dayHtml.indexOf('</main>'))), 'day-07.html 主內容不應出現 POLIN');
@@ -1266,9 +1272,9 @@ test('城市頁不再將 Google 星等與評論數當成固定資料', () => {
   }
 });
 
-test('門票頁含 23 筆資料、Panorama 優待 35 與 Auschwitz 線上票規則', async () => {
+test('門票頁含 25 筆資料、Panorama 優待 35 與 Auschwitz 線上票規則', async () => {
   const { fares } = await import('../src/data/tickets.js');
-  assert.equal(fares.length, 23);
+  assert.equal(fares.length, 25);
   const panorama = fares.find(item => item.name.includes('Panorama'));
   assert.equal(panorama.discountPrice, '35');
   const html = read('practical/tickets.html');
@@ -2130,7 +2136,7 @@ test('餐飲資料重整：24 家自選店全部落在資料層（每日餐位�
   }
 });
 
-test('本趟不進 POLIN：全站產物不再出現 POLIN／WARSZE，Day 7 午餐為 Café Bristol', () => {
+test('本趟不進 POLIN：全站產物不再出現 POLIN／WARSZE，Day 7 午餐為 Polka', () => {
   const walk = dir => fs.readdirSync(dir, { withFileTypes: true }).flatMap(entry => {
     const full = path.join(dir, entry.name);
     return entry.isDirectory() ? walk(full) : [full];
@@ -2141,5 +2147,5 @@ test('本趟不進 POLIN：全站產物不再出現 POLIN／WARSZE，Day 7 午�
   assert.deepEqual(offenders, []);
   const day7 = days.find(item => item.n === 7);
   assert.ok(day7.steps.every(step => !/polin/i.test(`${step.label} ${step.sub || ''}`)));
-  assert.equal(day7.steps.find(step => step.id === 'd7-lunch').label, '午餐 · Café Bristol');
+  assert.equal(day7.steps.find(step => step.id === 'd7-lunch').label, '午餐 · Polka');
 });

@@ -63,7 +63,8 @@ test('fares／ticketsByCity／venueHours 仍是 tickets.js 既有 export 形狀�
   // 切片 4b：venues.js 擴大為景點＋地點共用主檔，fares 只取有 prices 的票券景點。
   assert.equal(fares.length, Object.values(venues).filter(v => v.prices).length);
   // 2026-10-07 加入弗羅茨瓦夫國家博物館：23 → 24；2026-10-10 移除 POLIN：24 → 23。
-  assert.equal(fares.length, 23);
+  // 2026-10-12 華沙一天半改版加入瓦津基水上宮殿與國家博物館：23 → 25。
+  assert.equal(fares.length, 25);
   for (const item of fares) {
     for (const field of ['name', 'fullPrice', 'discountPrice', 'note', 'officialUrl', 'mapUrl']) {
       assert.ok(field in item, `fares 項目缺欄位 ${field}：${item.name}`);
@@ -73,7 +74,7 @@ test('fares／ticketsByCity／venueHours 仍是 tickets.js 既有 export 形狀�
   assert.ok(fares.some(item => item.name === '華沙 · 華沙起義博物館'));
 
   const totalTicketsByCity = ticketsByCity.reduce((sum, group) => sum + group.items.length, 0);
-  assert.equal(totalTicketsByCity, 22, 'ticketsByCity 總筆數只隨新增景點改變（2026-10-07 加入國家博物館）');
+  assert.equal(totalTicketsByCity, 24, 'ticketsByCity 總筆數只隨新增景點改變（2026-10-12 加入瓦津基與華沙國家博物館）');
 
   for (const [key, venue] of Object.entries(venueHours)) {
     assert.ok(venues[key]?.hours, `venueHours['${key}'] 在 venues.js 已無對應的結構化 hours`);

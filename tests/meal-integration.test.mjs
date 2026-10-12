@@ -55,10 +55,10 @@ test('關鍵餐段銜接保留已購車次與博物館參觀', () => {
   const step = (day,id) => days[day-1].steps.find(item=>item.id===id);
   assert.equal(step(2,'d2-dinner').t, '19:15');
   assert.match(step(2,'d2-prep').sub, /隔日|隔天/);
-  assert.equal(step(7,'d7-lunch').t, '11:30');
-  assert.match(step(7,'d7-lunch').label, /Café Bristol/);
+  assert.equal(step(7,'d7-lunch').t, '12:40');
+  assert.match(step(7,'d7-lunch').label, /Polka/);
   assert.ok(!days[6].steps.some(item=>/POLIN/i.test(item.label)));
-  assert.ok(days[6].steps.some(item=>item.t==='16:00' && /起義博物館/.test(item.label)));
+  assert.ok(days[6].steps.some(item=>item.t==='08:30' && /起義博物館/.test(item.label)));
   assert.ok(days[4].steps.some(item=>item.t==='18:35 前'));
   assert.ok(days[3].steps.some(item=>item.t==='16:45'));
 });
