@@ -4790,6 +4790,108 @@ h3 {
 .day-food-map:hover,
 .day-food-map:focus-visible { border-color: var(--accent); background: var(--accent-pale); }
 
+/* 店家卡（2026-10-12）：店名下一列小標（料理類型、查證狀態、最近確認營業日），
+   營業時間與推薦菜色以兩欄定義清單直接可見；菜單與電話是 44px 的膠囊按鈕。
+   地址、查核日期與來源仍收在「地址與查核紀錄」，卡片不會變長。 */
+.store-badges { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .4rem; }
+.store-tag,
+.store-status,
+.store-live {
+  display: inline-flex;
+  align-items: center;
+  padding: .12rem .5rem;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  font-weight: 700;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.store-tag { background: var(--paper-deep); color: var(--plum); }
+.store-status-verified { background: var(--surface-success); color: var(--green); }
+.store-status-partial { background: var(--surface-warning); color: var(--yellow); }
+.store-status-pending { background: var(--surface-danger); color: var(--red); }
+.store-live { border: 1px solid rgb(53 98 72 / 35%); color: var(--green); }
+
+.store-facts {
+  display: grid;
+  gap: .35rem;
+  margin: .6rem 0 0;
+  padding: .6rem .75rem;
+  border-radius: var(--radius-sm, 8px);
+  background: var(--paper-light);
+  border: 1px solid var(--line);
+}
+.store-fact { display: grid; grid-template-columns: 2.6rem 1fr; gap: .5rem; align-items: baseline; }
+.store-fact dt {
+  margin: 0;
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: .76rem;
+  font-weight: 700;
+}
+.store-fact dd { margin: 0; font-size: .9rem; line-height: 1.5; overflow-wrap: anywhere; }
+.store-dishes { display: flex; flex-wrap: wrap; gap: .3rem; margin: 0; padding: 0; list-style: none; }
+.store-dishes li {
+  padding: .1rem .55rem;
+  border: 1px solid rgb(168 75 50 / 28%);
+  border-radius: 999px;
+  background: var(--accent-pale);
+  color: var(--accent-dark);
+  font-size: .82rem;
+}
+.day-food-item p.store-condition {
+  padding: .45rem .65rem;
+  border-left: 3px solid var(--yellow);
+  background: var(--surface-warning);
+  font-size: .86rem;
+}
+.store-actions { display: flex; flex-wrap: wrap; gap: .4rem; }
+.store-action {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: .3rem .8rem;
+  border: 1px solid rgb(142 126 112 / 40%);
+  border-radius: 999px;
+  background: var(--paper-light);
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.store-action:hover,
+.store-action:focus-visible { border-color: var(--accent); background: var(--accent-pale); }
+.store-dish-line { margin: 0 0 .35rem; }
+.city-dining-table .store-badges { margin-bottom: .2rem; }
+
+/* 速食分店：營業時間獨立一行、粗體標籤，掃一眼就知道開不開。 */
+.fast-food-hours { margin: .2rem 0 0; font-size: .86rem; }
+.fast-food-hours b { margin-right: .35rem; color: var(--accent-dark); font-family: var(--font-mono); font-size: .76rem; }
+.fast-food-directory { display: grid; gap: .5rem; margin-top: .5rem; }
+.fast-food-directory-city {
+  padding: .2rem .9rem .6rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm, 8px);
+  background: var(--surface-card);
+}
+.fast-food-directory-city > summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--accent-dark);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: .86rem;
+  font-weight: 700;
+}
+
+@media (max-width: 480px) {
+  .store-fact { grid-template-columns: 2.3rem 1fr; }
+  .store-action { padding: .3rem .65rem; }
+}
+
 /* 實用資料表格裡接回每日行程／城市指南的連結。放在儲存格內，不另佔一欄。 */
 .cross-link {
   display: inline-flex;
@@ -5022,6 +5124,8 @@ h3 {
   .city-dining-table td,
   .city-dining-table tbody th { display: block; width: 100%; padding: .35rem 0; border-bottom: 0; }
   .city-dining-table tbody th { padding-top: 0; font-size: 1.05rem; }
+  /* 桌機欄寬用 th:nth-child(1)（25%）定義，權重比上一條高；卡片版要明確撐回整寬，店名才不會被擠成一字一行。 */
+  .city-dining-table tbody th:nth-child(1) { width: 100%; }
   .city-dining-table td + td { border-top: 1px solid var(--line); }
   .city-dining-table td::before {
     display: block;

@@ -57,7 +57,7 @@ test('每個門市及每日引用均有查核狀態，事實不在每日重複�
 
 test('拆分後每間速食都有單一地址、ID、導航和可見提醒', () => {
   const branches=Object.values(dining.fastFoodBranches).flat();
-  assert.equal(branches.length,34);
+  assert.equal(branches.length,33); // 2026-10-12 移除查無門市的 Salad Story Avenida
   assert.equal(new Set(branches.map(x=>x.id)).size,branches.length);
   for (const [city,items] of Object.entries(dining.fastFoodBranches)) {
     const html=renderFastFoodDayList([city],{branches:dining.fastFoodBranches,chains:dining.fastFoodChains,hubs:dining.fastFoodHubs});
@@ -111,7 +111,9 @@ test('資料遷移保留每日獨有餐廳的料理資訊與點心查核狀態',
   assert.match(rows.find(x=>x.placeId==='wroclaw-samarqand').notes.join(''),/烏茲別克／喬治亞料理/);
   const html=fs.readFileSync(new URL('../dist/day-05.html',import.meta.url),'utf8');
   assert.ok(html.includes('部分核實，仍有缺項'));
-  assert.ok(html.includes('資料待確認'));
+  assert.ok(html.includes('已核實所列資料'));
+  // 仍待確認的門市（例如 Weranda）照樣標示，不因複查而消失
+  assert.ok(fs.readFileSync(new URL('../dist/day-06.html',import.meta.url),'utf8').includes('資料待確認'));
 });
 
 test('餐飲類圖釘（star1/star2/bib/food）都帶 placeId，且導航連結與門市主檔一致', () => {
@@ -138,7 +140,8 @@ test('「行程餐廳營業時間」表 = 每日餐位中已核實／部分核�
   const actual = new Set(dining.verifiedRestaurantHours.map(item => item.placeId));
   assert.deepEqual(actual, expected);
   assert.ok(actual.has('krakow-noah') && actual.has('krakow-pod-aniolami') && actual.has('poznan-pyra-bar') && actual.has('wroclaw-samarqand'));
-  assert.ok(!actual.has('warsaw-polka'), 'Polka 仍是 pending，不該出現在已核實表');
+  assert.ok(actual.has('warsaw-polka'), 'Polka 已於 2026-10-12 由官網確認時段，應列入');
+  assert.ok(!actual.has('poznan-weranda-caffe'), 'Weranda 仍是 pending，不該出現在已核實表');
 });
 
 test('米其林星級名單（star1／star2）每個店名都能對到門市主檔（允許大小寫差異）', () => {

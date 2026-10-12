@@ -31,16 +31,16 @@
 | [10/27（二）· Day 4](https://polandtrip.xiehnet.com/day-04) | 克拉科夫 → 樂斯拉夫 | 上午參觀 Wieliczka 鹽礦，回城取行李，傍晚搭車前往下一座城市。 |
 | [10/28（三）· Day 5](https://polandtrip.xiehnet.com/day-05) | 樂斯拉夫 → 波茲南 | 廣場小矮人、教堂塔樓、全景畫與國家博物館；傍晚在座堂島看點燈，再搭車往波茲南。 |
 | [10/29（四）· Day 6](https://polandtrip.xiehnet.com/day-06) | 波茲南 → 華沙 | 教堂島、山羊鐘樓秀與聖馬丁牛角麵包；午後逛帝王城堡與 Stary Browar，晚間回華沙。 |
-| [10/30（五）· Day 7](https://polandtrip.xiehnet.com/day-07) | 華沙 | 皇家城堡、POLIN 與華沙起義博物館，是較充實的一天；晚餐在起義博物館旁的 WYRAJ，最後留給老城夜景。 |
+| [10/30（五）· Day 7](https://polandtrip.xiehnet.com/day-07) | 華沙 | 皇家城堡、Café Bristol 午餐與華沙起義博物館；最後晚餐吃 Rusiko 喬治亞菜，再留給老城夜景。 |
 | [10/31（六）· Day 8](https://polandtrip.xiehnet.com/day-08) | 華沙 → 返程 | 吃早餐、整理行李，前往蕭邦機場；11/01 回到臺灣。 |
 
 這是目前的旅行安排；各館場次與購票進度可在[訂票清單](https://polandtrip.xiehnet.com/practical/todos)查看。
 
 ## 把休息時間留給一口波蘭味
 
-八天的早餐、午餐、晚餐已整合到每日行程、今日卡與餐飲指南。克拉科夫安排 **Przypiecek** 餃子與 **Hankki** 韓式料理；波茲南安排 **Pyra Bar** 馬鈴薯料理，另留聖馬丁牛角麵包作為點心。原有餐廳保留為備選，機上餐與自備餐也會列出。
+八天的早餐、午餐、晚餐已整合到每日行程、今日卡與餐飲指南。克拉科夫安排 **Restauracja Polonia** 炸豬排、**Hankki** 韓式料理，奧斯威辛回程後到 **Mr. Jerry** 吃威靈頓牛排；樂斯拉夫吃 **Samarqand** 烏茲別克抓飯與 **Restauracja Wrocławska** 地方菜；波茲南安排 **Pyra Bar** 馬鈴薯料理，另留聖馬丁牛角麵包作為點心。原有餐廳保留為備選，機上餐與自備餐也會列出。
 
-華沙可以在 **Wedel** 喝熱巧克力，晚班火車回城後以 **Ćma** 為晚餐首選，**Hala Koszyki** 保留為備案。樂斯拉夫若有空檔，就在老城停下喝咖啡、吃甜點。店家與餐段安排整理在[餐飲指南](https://polandtrip.xiehnet.com/practical/dining)，想帶點零食回去，也可以翻翻[超市採買](https://polandtrip.xiehnet.com/practical/groceries)與[伴手禮](https://polandtrip.xiehnet.com/practical/shopping)。
+華沙可以在 **Wedel** 喝熱巧克力，晚班火車回城後吃 **Arirang** 韓式，來不及就改 **Złote Tarasy** 速食或 24 小時的 **Ćma**；最後一晚是 **Rusiko** 喬治亞菜。樂斯拉夫若有空檔，就在老城停下喝咖啡、吃甜點。店家與餐段安排整理在[餐飲指南](https://polandtrip.xiehnet.com/practical/dining)，想帶點零食回去，也可以翻翻[超市採買](https://polandtrip.xiehnet.com/practical/groceries)與[伴手禮](https://polandtrip.xiehnet.com/practical/shopping)。
 
 ## 十月底，帶著秋天出發
 

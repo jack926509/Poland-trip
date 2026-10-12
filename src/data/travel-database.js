@@ -440,7 +440,7 @@ export const dayOperations = {
       '所有入場證必須事先線上取得；至少提前 30 分鐘抵達安檢。',
       '行程內容沉重且戶外時間長，帶水、防雨保暖層，晚間不再加排高強度活動。',
     ],
-    nightChecklist: [...standardNightChecklist, '確認鹽礦英文團票券、Kraków Główny 去程交通與退房寄行李安排', '準備明日早餐及備用麵包，確認 Posolone 導覽後用餐餘裕，查 Samarqand 接單與車站 KFC 備案'],
+    nightChecklist: [...standardNightChecklist, '確認鹽礦英文團票券、Kraków Główny 去程交通與退房寄行李安排', '確認 Charlotte Plac Szczepański 07:00 開門並備好外帶麵包，確認 Posolone 導覽後用餐餘裕，查 Samarqand 接單與車站 KFC 備案'],
   },
   4: {
     cityKey: 'wroclaw',
@@ -451,7 +451,7 @@ export const dayOperations = {
       venueCard('krakow-plac-nowy', 'Plac Nowy'),
       venueCard('krakow-sukiennice', '紡織會館 Sukiennice'),
       venueCard('wroclaw-glowny-station', 'Wrocław Główny'),
-      accommodationAddress('krakow-stare-miasto', ['早餐 + 退房', '結束 Kazimierz 散步，回 ibis 取行李']),
+      accommodationAddress('krakow-stare-miasto', ['退房 + 行李寄旅館', '結束 Kazimierz 散步，回 ibis 取行李']),
       accommodationAddress('wroclaw-piast'),
     ],
     navigation: [
@@ -484,7 +484,7 @@ export const dayOperations = {
     dailyAlerts: [
       '點燈人沒有對外保證的出發分鐘；日落前到座堂島等待，不把 16:45 當成確定時刻。',
     ],
-    nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票', 'Ptasie Radio 08:00 早餐後暫排 09:30 教堂島；若有 09:00 固定安排，改 Charlotte 07:30 早餐'],
+    nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票', 'Charlotte Krysiewicza 08:00 早餐後暫排 09:30 教堂島；要提早就改 07:30 用餐。晚餐 Arirang 當天先電話確認，21:30 前到不了改 Złote Tarasy 或 Ćma'],
   },
   6: {
     cityKey: 'warsaw',
@@ -507,7 +507,7 @@ export const dayOperations = {
       '市政廳博物館整修閉館；主行程只看官方確認的 12:00 山羊鐘樓秀。',
       '聖馬丁牛角麵包尚未選定分店；待分店與營業確定後再導航，不預填地址。',
     ],
-    nightChecklist: [...standardNightChecklist, '核對 Day 7 兩館（皇家城堡、起義博物館）購票狀態與入場時段，尚未訂者不要當作已購', '確認 Café Bristol 午餐供應（湯與主餐 12:00 起）與 WYRAJ 訂位（週五 12:00–00:00 營業，已於 2026-10-10 複查）、秋季菜單及訂位；WYRAJ 不適用再選 U Fukiera 並重算交通'],
+    nightChecklist: [...standardNightChecklist, '核對 Day 7 兩館（皇家城堡、起義博物館）購票狀態與入場時段，尚未訂者不要當作已購', '確認 Café Bristol 午餐供應（湯與主餐 12:00 起）與 Rusiko 18:30 訂位及 10/30 營業；不適用依所在地改 WYRAJ（週五 12:00–00:00，已於 2026-10-10 複查）、Kieliszki na Próżnej 或 U Fukiera，並重算交通'],
   },
   7: {
     cityKey: 'warsaw',
@@ -520,7 +520,7 @@ export const dayOperations = {
     ],
     navigation: [
       { mode: '步行／市內交通', route: '皇家城堡 → Café Bristol → 華沙起義博物館', action: '皇家城堡到 Café Bristol 沿 Krakowskie Przedmieście 步行約 10 分；午餐後有自由時段，15:15 前往起義博物館，購票後以票面入場時段倒推，交通當日用 Jakdojade 重算。' },
-      { mode: '步行／餐廳', route: '起義博物館 → WYRAJ → 老城', action: '18:00 閉館後步行約 10 分到 Krochmalna 59；晚餐後搭車或叫車約 15 分回老城看夜燈。' },
+      { mode: '電車／餐廳', route: '起義博物館 → Rusiko → 老城', action: '18:00 閉館後搭電車約 15–20 分到 Wierzbowa 11（當日用 Jakdojade 重算）；晚餐後步行約 10–15 分到老城看夜燈。' },
     ],
     dailyAlerts: [
       '起義博物館內容沉重且量大；購票後保留票面時段，不為追完所有展區壓縮參觀；下午自由時段可休息。',

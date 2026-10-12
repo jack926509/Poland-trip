@@ -1,4 +1,4 @@
-import { renderDiningFacts, renderMealList } from '../lib/dining.mjs';
+import { mealTiming, renderMealList, renderStoreBadges, renderStoreBody, renderStoreHead } from '../lib/dining.mjs';
 import { dayMeals, dayDining } from '../data/day-dining.js';
 import { days } from '../data/trip.js';
 import { escapeHtml } from '../lib/html.mjs';
@@ -336,7 +336,7 @@ export function renderTodos({ todoGroups }) {
   return renderPracticalLayout('待辦事項', 'Action list', '城際交通、景點與餐飲訂位集中在一頁。先處理有日期與指定場次的票，再處理彈性訂位。', content, 'practical/todos.html');
 }
 
-export function renderDining({ michelinSummary, michelinReservations, verifiedRestaurantHours = [], fastFoodChains = [], fastFoodBranches = {} }) {
+export function renderDining({ michelinSummary, michelinReservations, verifiedRestaurantHours = [], fastFoodChains = [], fastFoodBranches = {}, fastFoodHubs = [] }) {
   const summaryRows = michelinSummary.map(item => `
     <tr>
       <td><b>${item.city}</b></td><td class="number">${item.stars}</td>
@@ -354,13 +354,12 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
     const list = items.map(item => {
       const day = days.find(day => day.n === item.dayN);
       const step = day?.steps.find(step => step.id === item.stepId);
-      const plan = day ? `Day ${day.n} · ${escapeHtml(item.role)}${step ? ` · ${escapeHtml(step.t)}` : ''}` : escapeHtml(item.role);
+      const plan = day ? `<a href="../day-${String(day.n).padStart(2, '0')}.html#day-food">Day ${day.n}</a> · ${escapeHtml(item.role)}${step ? ` · ${escapeHtml(step.t)}` : ''}` : escapeHtml(item.role);
+      // 店家卡：店名連店家公告、右上角導航；營業時間與推薦菜色直接可見，地址與查核紀錄收合。
       return `<li class="day-food-item hours-item">
-        <div class="day-food-head"><div class="day-food-title"><span class="eyebrow">${plan}</span><h4><a href="${item.url}" target="_blank" rel="noopener">${item.name}</a></h4></div>
+        <div class="day-food-head"><div class="day-food-title"><span class="eyebrow">${plan}</span><h4><a href="${item.url}" target="_blank" rel="noopener">${item.name}</a></h4>${renderStoreBadges(item)}</div>
         ${item.mapUrl ? `<a class="day-food-map" href="${item.mapUrl}" target="_blank" rel="noopener" aria-label="在新視窗開啟 ${escapeHtml(item.name)} 的 Google Maps 導航">導航 ↗</a>` : ''}</div>
-        <p class="hours-line"><b>營業：</b>${item.hours}</p>
-        ${item.highlight ? `<p class="food-map-note">${item.highlight}</p>` : ''}
-        <details><summary>查核紀錄、地址與菜單</summary><p class="food-map-note">${item.address}</p>${renderDiningFacts(item, { includeHours: false })}</details>
+        ${renderStoreBody(item, { note: item.highlight, condition: '' })}
       </li>`;
     }).join('');
     return `<article class="card hours-city-group"><h3>${escapeHtml(city)}（${items.length} 家）</h3><ul class="day-food-list">${list}</ul></article>`;
@@ -371,7 +370,7 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
       <div class="section-heading"><span class="section-num">Daily meals</span><h2>八天三餐與備選</h2></div>
       <p class="lead">每日行程與今日卡共用這份安排。時刻為波蘭當地時間，候選不代表已訂位；每餐擇一，依交通與接單情況改備案。</p>
       ${days.map(day => `<article class="card" id="meals-day-${day.n}"><h3>Day ${day.n} · ${escapeHtml(day.date)} · ${escapeHtml(day.city)}</h3>${renderMealList(day, dayMeals[day.n])}
-        <details><summary>保留的備選、備餐與點心</summary><ul class="check-list">${dayDining[day.n].filter(item => !item.meal).map(item => `<li><b>${escapeHtml(item.role)} · ${escapeHtml(item.name)}</b><p>${escapeHtml(item.note)}</p></li>`).join('')}</ul></details>
+        <details><summary>保留的備選、備餐與點心 · ${dayDining[day.n].filter(item => !item.meal).length} 家</summary><ul class="day-food-list">${dayDining[day.n].filter(item => !item.meal).map(item => `<li class="day-food-item">${renderStoreHead(item, item.role)}${renderStoreBody(item, { condition: '', timing: mealTiming(item, day) })}</li>`).join('')}</ul></details>
         <p><a href="../day-${String(day.n).padStart(2,'0')}.html#day-food">當日完整動線與餐廳導航 →</a></p></article>`).join('')}
     </section>
     <section>
@@ -387,7 +386,7 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
       <div class="section-heading"><span class="section-num">Reserve</span><h2>訂位與每人預算</h2></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>餐廳</th><th>每人 PLN</th><th>訂位管道／備註</th></tr></thead><tbody>${reservationRows}</tbody></table></div>
     </section>
-    ${renderFastFoodMenu({ chains: fastFoodChains, branches: fastFoodBranches })}`;
+    ${renderFastFoodMenu({ chains: fastFoodChains, branches: fastFoodBranches, hubs: fastFoodHubs })}`;
   return renderPracticalLayout('餐廳與速食', 'Michelin 2026', '已把 2026 米其林名單與本行程實際餐廳分開；營業時間只寫能追到店家來源的分店。趕行程時的連鎖速食分店另列一節。', content, 'practical/dining.html');
 }
 
