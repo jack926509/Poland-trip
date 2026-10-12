@@ -742,7 +742,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-10",
     "verificationStatus": "partial",
     "notes": [
-      "波蘭牛奶吧早餐：jajecznica 炒蛋、naleśniki 可麗餅配 kompot，或菠菜歐姆蛋、鮮乳酪配酸奶油與小紅蘿蔔。"
+      "波蘭牛奶吧早餐：jajecznica 炒蛋、naleśniki 可麗餅配 kompot，或菠菜歐姆蛋。平日 08:00 才開，10/30 改為早餐備選（起義博物館 08:30 入場）。"
     ],
     "menuUrl": "https://barbambino.pl/sniadanie/",
     "verificationNote": "本輪官網確認 Hoża 19（2026-10-12 餐飲 v5 稿列 Krucza 21，以官網為準）；早餐品項與當日供應再查菜單。 2026-10-12 網路交叉比對：仍在營業，未見歇業公告。官網平日 08:00–20:00、週末 09:00–18:00。",
@@ -767,7 +767,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "1869 年創立的波蘭國民甜點店，pączki 玫瑰果醬甜甜圈是招牌。10/30 早餐後往皇家城堡路上外帶（09:00 開門）；不適合當 Day 8 早餐主位。"
+      "1869 年創立的波蘭國民甜點店，pączki 玫瑰果醬甜甜圈是招牌。10/24 傍晚沿 Nowy Świat 北行時順路外帶；開門時間各目錄不一，不適合當早餐主位。"
     ],
     "cuisine": "百年甜點",
     "dishes": [
@@ -803,8 +803,8 @@ export const diningPlaces = {
     "checkedAt": "2026-09-19",
     "verificationStatus": "verified",
     "notes": [
-      "Krakowskie Przedmieście（Hotel Bristol 內），Day 7 午餐首選（皇家城堡步行約 10 分）；Day 8 早餐改排 Charlotte Złota。",
-      "三明治＋咖啡、Bristol cake；官網湯與主餐自 12:00 起供應，11:30 入座先點輕食與咖啡。"
+      "Krakowskie Przedmieście 42/44（Hotel Bristol 內），就在總統府隔壁；10/24 傍晚 17:10 皇家大道散步途中的咖啡甜點點，10/30 為午餐備選。",
+      "三明治＋咖啡、Bristol cake；官網湯與主餐自 12:00 起供應。"
     ],
     "verificationNote": "營業時間沿用 2026-09-19 官方查核；各日備選共用此筆資料，未代表已訂位。 2026-10-12 網路交叉比對：仍在營業，未見歇業公告。Marriott 頁與本站官方時段一致（週五、六至 21:00）。",
     "menuUrl": "https://www.cafebristol.pl/pl/our-menus",
@@ -1080,7 +1080,8 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "傳統波蘭料理，位置最適合接皇家城堡；不是 U Fukiera 的同一間店。"
+      "傳統波蘭料理，Świętojańska 2 就在皇家城堡旁；10/30 12:40 出城堡直接進來吃午餐，平日 12:00–16:00 有午間套餐。",
+      "不是 U Fukiera 的同一間店。"
     ],
     "cuisine": "波蘭菜（Magda Gessler）",
     "dishes": [
@@ -2126,7 +2127,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "市中心早午餐：Bagel、Scrambled Eggs、Avocado Toast＋咖啡；比連鎖咖啡店完整但不太重。"
+      "Zgoda 3 市中心早午餐：Bagel、Scrambled Eggs、Avocado Toast；平日 07:30 開門，10/30 起義博物館 08:30 前的早餐首選。"
     ],
     "menuUrl": null,
     "verificationNote": "官網分店頁列 Zgoda 3；第三方目錄週末時段不一。",

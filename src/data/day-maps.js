@@ -3,13 +3,13 @@ import { venuePin } from '../lib/venues.mjs';
 // 每日地圖只以「白天實際遊覽城市」為主。晚間火車抵達城市不納入當日視野，
 // 避免 fitBounds 把兩座城市同時縮到無法辨識；車站與住宿僅在同一主城市且有操作價值時保留。
 export const dayMapPlans = {
-  1: { focus: '華沙 Warszawa', center: [52.247, 21.013], zoom: 15, selections: { warsaw: ['皇家城堡'] } },
+  1: { focus: '華沙 Warszawa', center: [52.236, 21.014], zoom: 14, selections: { warsaw: ['Hotel Metropol', 'Pijalnia Czekolady E.Wedel（巧克力）'] } },
   2: { focus: '克拉科夫 Kraków', center: [50.057, 19.944], zoom: 14, selections: { krakow: ['Wawel 皇家城堡', '中央市集廣場', 'Kazimierz 猶太區', '辛德勒工廠博物館', 'Okrąglak（Plac Nowy zapiekanka）', 'ibis budget Krakow Stare Miasto'] } },
   3: { focus: '奧斯威辛 Oświęcim／Brzezinka', center: [50.033, 19.192], zoom: 13, selections: {} },
   4: { focus: '克拉科夫 Kraków＋Wieliczka', center: [50.040, 19.995], zoom: 12, selections: { krakow: ['Kazimierz 猶太區', 'Sukiennice 布廊（伴手禮攤位）', 'ibis budget Krakow Stare Miasto'] } },
   5: { focus: '樂斯拉夫 Wrocław', center: [51.110, 17.049], zoom: 13, selections: { wroclaw: ['中央市集廣場', '大教堂島 Ostrów Tumski', 'Restauracja Wrocławska', 'Piast'] } },
   6: { focus: '波茲南 Poznań', center: [52.407, 16.930], zoom: 14, selections: { poznan: ['舊市集廣場 Stary Rynek', '大教堂島 Ostrów Tumski', 'Poznan Apartments Towarowa'] } },
-  7: { focus: '華沙 Warszawa', center: [52.241, 20.997], zoom: 13, selections: { warsaw: ['皇家城堡', '華沙起義博物館', 'MEI', 'Hotel Metropol'] } },
+  7: { focus: '華沙 Warszawa', center: [52.236, 21.010], zoom: 13, selections: { warsaw: ['皇家城堡', '華沙起義博物館', 'Hotel Metropol'] } },
   8: { focus: '華沙 Warszawa＋蕭邦機場', center: [52.202, 20.991], zoom: 12, selections: { warsaw: ['Hotel Metropol'] } },
 };
 
@@ -21,8 +21,8 @@ export const dayMapPlans = {
 // 保持原本的字面陣列，不勉強湊一個 venue。
 export const daySupplementaryPins = {
   1: [
-    venuePin('warsaw-old-town-square', { displayName: '華沙老城市場廣場・美人魚像', label: 'Day 1 老城散步中心點', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.249778&mlon=21.012151' }),
-    venuePin('warsaw-krakowskie-przedmiescie', { displayName: '皇家大道・Krakowskie Przedmieście', label: '以聖十字教堂前作為傍晚散步錨點', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.242160&mlon=21.015690' }),
+    venuePin('warsaw-krakowskie-przedmiescie', { displayName: '皇家大道・Krakowskie Przedmieście', label: '聖十字教堂前：傍晚散步北行到總統府的中段', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.242160&mlon=21.015690' }),
+    venuePin('warsaw-centralna-station', { label: 'Złote Tarasy 就在車站旁：晚餐後逛街採買', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.228917&mlon=21.003315' }),
   ],
   2: [
     venuePin('krakow-wawel-cathedral', { label: 'Wawel 3 · 主入口區', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=50.054727&mlon=19.935226' }),
@@ -55,7 +55,7 @@ export const daySupplementaryPins = {
     venuePin('poznan-glowny-station', { label: '17:05 前抵達的城際火車出發站', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.402786&mlon=16.912914' }),
   ],
   7: [
-    venuePin('warsaw-old-town-square', { label: '三館後的老城與晚餐收尾區', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.249778&mlon=21.012151' }),
+    venuePin('warsaw-old-town-square', { label: '13:30 老城步行段：聖若望大教堂、老城廣場、甕城', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.249778&mlon=21.012151' }),
   ],
   8: [
     venuePin('warsaw-centralna-station', { label: '由 Hotel Metropol 前往機場線的市中心交通錨點', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.228917&mlon=21.003315' }),

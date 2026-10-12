@@ -332,8 +332,10 @@ const addressStepLabels = {
   '華沙蕭邦機場': ['抵蕭邦機場', '抵 Chopin 第一航廈', '退稅文件 + 報到 + 安檢', '★ QR 260 起飛'],
   'Warszawa Centralna': ['退房 → Warszawa Centralna', '抵華沙中央車站', '抵 Warszawa Centralna'],
   '華沙皇家城堡': ['★ 皇家城堡'],
-  '華沙老城市場廣場': ['★ 老城廣場', '老城廣場夜燈漫步'],
-  'Krakowskie Przedmieście': ['Krakowskie Przedmieście'],
+  '華沙老城市場廣場': ['★ 老城步行：聖若望大教堂 → 許願鐘 → 老城廣場 → 甕城'],
+  'Krakowskie Przedmieście': ['★ 總統府外觀', '沿皇家大道走回 Nowy Świat'],
+  '瓦津基水上宮殿': ['★ 瓦津基 · 水上宮殿'],
+  '華沙國家博物館': ['可選 · 華沙國家博物館'],
   'Kraków Główny': ['抵 Kraków Główny', '火車回 Kraków Główny'],
   '瓦維爾大教堂': ['★ 瓦維爾大教堂'],
   '瓦維爾皇家城堡': ['★ Wawel 城堡短路線'],
@@ -354,7 +356,7 @@ const addressStepLabels = {
   '波茲南市政廳': ['廣場卡正面位置', '★ 山羊鐘樓秀'],
   '帝王城堡': ['★ 帝王城堡'],
   'Stary Browar': ['Stary Browar'],
-  '華沙起義博物館': ['前往華沙起義博物館 + 安檢緩衝', '★ 華沙起義博物館'],
+  '華沙起義博物館': ['★ 華沙起義博物館'],
 };
 
 // venueId 對 src/data/venues.js 的地點主檔；displayName 是這個步驟要顯示的
@@ -382,17 +384,16 @@ export const dayOperations = {
     addresses: [
       venueCard('warsaw-chopin-airport', '華沙蕭邦機場', '抵達後依航站現場標示前往 SKM 月台。'),
       venueCard('warsaw-centralna-station', 'Warszawa Centralna'),
-      venueCard('warsaw-royal-castle', '華沙皇家城堡'),
-      venueCard('warsaw-old-town-square', '華沙老城市場廣場'),
       venueCard('warsaw-krakowskie-przedmiescie', 'Krakowskie Przedmieście'),
       accommodationAddress('warsaw-metropol-arrival', ['Hotel Metropol Check-in']),
     ],
     navigation: [
       { mode: 'SKM', route: '蕭邦機場 → 華沙市中心', action: '抵達後查 WTP 即時班次、月台與官方票價，使用當日適用的第 1 區時間票。' },
-      { mode: '步行／市內交通', route: '住宿 → 老城廣場', action: '先以已確認的住宿地址建立路線；若拖行李不直接去老城。' },
+      { mode: '步行', route: '住宿 → REDAR 分店 II → Nowy Świat → 總統府 → Nowy Świat 44', action: '全程步行：飯店到 Metro Centrum 地下通道約 5 分，沿 Nowy Świat、Krakowskie Przedmieście 北行約 25 分到總統府，再沿原路走回晚餐，最後步行約 15 分到 Złote Tarasy。' },
     ],
     dailyAlerts: [
-      '抵達日不排室內票券；若入境或行李延誤，直接壓縮老城散步。',
+      '抵達日不排室內票券、不進皇家城堡與老城（留到 10/30）；若入境或行李延誤，直接壓縮皇家大道散步。',
+      'Hotel Metropol 樓下的 REDAR 總店週六未公布營業，換匯走 Metro Centrum 地下通道的分店 II（週六 08:00–20:00）。',
       '離開行李提領區前確認託運行李已到；未到先申報 PIR。',
     ],
     nightChecklist: [...standardNightChecklist, '確認 10/25 華沙 → 克拉科夫車票、車站入口與下車後的行李寄放方案'],
@@ -507,7 +508,7 @@ export const dayOperations = {
       '市政廳博物館整修閉館；主行程只看官方確認的 12:00 山羊鐘樓秀。',
       '聖馬丁牛角麵包尚未選定分店；待分店與營業確定後再導航，不預填地址。',
     ],
-    nightChecklist: [...standardNightChecklist, '核對 Day 7 兩館（皇家城堡、起義博物館）購票狀態與入場時段，尚未訂者不要當作已購', '確認 Café Bristol 午餐供應（湯與主餐 12:00 起）與 Rusiko 18:30 訂位及 10/30 營業；不適用依所在地改 WYRAJ（週五 12:00–00:00，已於 2026-10-10 複查）、Kieliszki na Próżnej 或 U Fukiera，並重算交通'],
+    nightChecklist: [...standardNightChecklist, '核對 Day 7 起義博物館 08:30、皇家城堡 11:30 的購票狀態，尚未訂者不要當作已購', '確認 Polka 午餐與 Rusiko 18:30 訂位及 10/30 營業；不適用依所在地改 WYRAJ（週五 12:00–00:00，已於 2026-10-10 複查）、Kieliszki na Próżnej 或 U Fukiera，並重算交通'],
   },
   7: {
     cityKey: 'warsaw',
@@ -516,14 +517,18 @@ export const dayOperations = {
       venueCard('warsaw-royal-castle', '華沙皇家城堡'),
       venueCard('warsaw-old-town-square', '華沙老城市場廣場'),
       venueCard('warsaw-rising-museum', '華沙起義博物館'),
+      venueCard('warsaw-lazienki-palace', '瓦津基水上宮殿'),
+      venueCard('warsaw-national-museum', '華沙國家博物館'),
       accommodationAddress('warsaw-metropol'),
     ],
     navigation: [
-      { mode: '步行／市內交通', route: '皇家城堡 → Café Bristol → 華沙起義博物館', action: '皇家城堡到 Café Bristol 沿 Krakowskie Przedmieście 步行約 10 分；午餐後有自由時段，15:15 前往起義博物館，購票後以票面入場時段倒推，交通當日用 Jakdojade 重算。' },
-      { mode: '電車／餐廳', route: '起義博物館 → Rusiko → 老城', action: '18:00 閉館後搭電車約 15–20 分到 Wierzbowa 11（當日用 Jakdojade 重算）；晚餐後步行約 10–15 分到老城看夜燈。' },
+      { mode: '地鐵 M2', route: 'Świętokrzyska ⇄ Rondo Daszyńskiego', action: '早上去起義博物館、10:30 回市中心都搭 M2；下車步行約 8 分到 Grzybowska 79。' },
+      { mode: '步行', route: '無名塚 → 皇家城堡 → Polka → 老城 → 甕城 → 起義紀念碑', action: '11:00 後全程步行約 2 公里；時間不夠就把甕城以北改外觀快拍。' },
+      { mode: '公車／叫車', route: '老城 → 瓦津基 → 市中心 → Rusiko', action: '老城到瓦津基約 4 公里，搭公車或叫車約 25–30 分；回市中心與去 Wierzbowa 11 各約 15 分，當日用 Jakdojade 重算。' },
     ],
     dailyAlerts: [
-      '起義博物館內容沉重且量大；購票後保留票面時段，不為追完所有展區壓縮參觀；下午自由時段可休息。',
+      '起義博物館內容沉重，08:30 一開館就進、人最少；看主線約 2 小時，不為追完所有展區壓縮城堡。',
+      '皇家城堡 10 月起最後入場 16:00；水上宮殿日落 16:12，先拍外觀再進室內。',
       '10/31 為諸聖節前夕，今晚重查明日市區交通、機場與店家特別營運。',
     ],
     nightChecklist: [...standardNightChecklist, '整理 TAX FREE 商品與文件，確認需海關查驗的託運品不先交運', '確認 QR 260 報到、行李額度、機場交通與護照收納位置', '確認 Charlotte Złota 08:00 早餐，預留回飯店取行李；08:15 未入座改外帶，11:00 前到機場'],
@@ -556,7 +561,11 @@ const flexibleStopReason = '未選定可靠分店或為彈性活動，不預填�
 const unresolvedStepReasons = {
   1: {
     'SKM S2／S3 目標班次': dynamicTransitReason,
-    '早睡倒時差': '休息安排不需要導航地址。',
+    '換匯 · REDAR.net 分店 II': '地下通道內的店面，Google Maps 搜「Kantor Redar Oddział II Metro Centrum」；入口依現場 Rotunda 指標。',
+    '新世界街 → 哥白尼紀念碑 → 聖十字教堂': '沿 Nowy Świat 北行的戶外街景，全段步行，終點接 Krakowskie Przedmieście 地址卡。',
+    'Café Bristol 咖啡（可略過）': '就在總統府隔壁的 Hotel Bristol（Krakowskie Przedmieście 42/44），餐廳導航見當日餐飲。',
+    'Złote Tarasy 購物中心': 'Złota 59，中央車站旁；導航見當日餐飲的速食段 Złote Tarasy 分店。',
+    '回飯店休息': '返回原住宿，地址見住宿卡。',
   },
   2: {
     'EIP 5300 前往克拉科夫': dynamicTransitReason,
@@ -584,8 +593,14 @@ const unresolvedStepReasons = {
     'EIC 8104 前往華沙': dynamicTransitReason,
   },
   7: {
-    '皇家城堡 → Café Bristol': '沿 Krakowskie Przedmieście 步行約 10 分，不需搭車；沿途不另加餐。',
-    '自由時段 · 老城／新城散步或回旅館休息': '自由時段不固定地點，不需要導航地址；想去 Neon Museum 或觀景台再用延伸卡的地圖。',
+    '地鐵 M2 → Rondo Daszyńskiego': dynamicTransitReason,
+    '前往無名塚': dynamicTransitReason,
+    '★ 無名塚與衛兵': '位於 plac Piłsudskiego 的薩克森花園東側拱廊，開放戶外紀念地，依現場指標前往。',
+    '步行到城堡廣場': '經劇院廣場與 Krakowskie Przedmieście 北段步行，終點即皇家城堡地址卡。',
+    '小小起義者紀念碑 → 華沙起義紀念碑': '兩座戶外紀念碑在甕城外 Podwale 與 plac Krasińskich，沿老城城牆步行即可。',
+    '搭車前往瓦津基公園': dynamicTransitReason,
+    '返回市中心，回飯店稍休': '返回原住宿，地址見住宿卡。',
+    '回飯店整理行李': '返回原住宿，地址見住宿卡。',
   },
   8: {
     '住宿出發前往 Charlotte Złota': '由 Hotel Metropol 前往 Złota 83，出發前重算交通；早餐導航見當日三餐。',

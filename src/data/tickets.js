@@ -36,6 +36,8 @@ export const ticketsByCity = [
   {city:'華沙', items:[
     venueItem('warsaw-royal-castle'),
     venueItem('warsaw-rising-museum'),
+    venueItem('warsaw-lazienki-palace'),
+    venueItem('warsaw-national-museum'),
     extra('chopinMuseum'),
     venueItem('warsaw-pkin-terrace'),
     venueItem('warsaw-wedel-chocolate'),

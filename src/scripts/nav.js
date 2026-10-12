@@ -154,6 +154,38 @@
   clampScheduleNotes();
 
   /**
+   * 手機卡片表格裡的長備註（票價查核紀錄、交通細節）一格就十幾行，
+   * 先收成 4 行，按「展開全文」看完整內容；短的格子不動。沒有 JS 或桌機時照樣全文。
+   */
+  const clampLongCells = () => {
+    if (typeof window.matchMedia !== 'function' || !window.matchMedia('(max-width: 700px)').matches) return;
+    const cells = document.querySelectorAll('.table-editorial:not(.table-schedule):not(.city-dining-table):not(.countdown-table) td');
+    cells.forEach(cell => {
+      if (cell.textContent.trim().length < 140 || cell.querySelector('details, .cell-clamp')) return;
+      const body = document.createElement('div');
+      body.className = 'cell-clamp is-clamped';
+      while (cell.firstChild) body.append(cell.firstChild);
+      cell.append(body);
+      if (body.scrollHeight <= body.clientHeight + 2) {
+        body.classList.remove('is-clamped');
+        return;
+      }
+      const toggle = document.createElement('button');
+      toggle.type = 'button';
+      toggle.className = 'note-toggle';
+      toggle.textContent = '展開全文';
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.addEventListener('click', () => {
+        const clamped = body.classList.toggle('is-clamped');
+        toggle.textContent = clamped ? '展開全文' : '收合';
+        toggle.setAttribute('aria-expanded', String(!clamped));
+      });
+      cell.append(toggle);
+    });
+  };
+  clampLongCells();
+
+  /**
    * 資料庫等頁面超過 19000px，捲到底沒有回頭路。
    */
   const toTop = document.createElement('button');
