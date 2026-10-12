@@ -589,7 +589,7 @@ const unresolvedStepReasons = {
   },
   6: {
     '取行李、前往 Poznań Główny': '公寓寄放與取行李地點須先向住宿確認，再前往車站。',
-    '★ 聖馬丁牛角麵包 (PGI)': '尚未選定可靠分店，待分店與營業時間確認後補入。',
+    '★ 聖馬丁牛角麵包 (PGI)': '分店已選定 ROGAL Świętomarciński（Stary Rynek 11/17）；週四營業時間未查到，出發前看店家 Facebook 確認，售完或未營業改 Cukiernia Kandulski（Plac Ratajskiego 1）。',
     'EIC 8104 前往華沙': dynamicTransitReason,
   },
   7: {

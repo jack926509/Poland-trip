@@ -41,7 +41,7 @@ for (const city of cities) city.gallery = cityGallery.filter(photo => photo.city
 
 export const cityNotices = {
   warsaw: [
-    {status:'已改行程', level:'note', text:'皇家城堡官方確認二–日 10:00–18:00、最後入場 17:00；Day 7 已由原本錯誤的 17:00 改成 10:00 第一站。'},
+    {status:'已改行程', level:'note', text:`皇家城堡 2026-10-12 官網複查：二–日 ${venues['warsaw-royal-castle'].hours.opens}–${venues['warsaw-royal-castle'].hours.closes}、最後入場 ${venues['warsaw-royal-castle'].hours.lastEntry}（夏季 18:00 時段已不適用）；Day 7 排 11:30 入場。`},
   ],
   krakow: [
     {status:'已查證', level:'note', text:'辛德勒工廠週二至週日 09:00–20:00，最後入場為閉館前 90 分鐘；Day 2 的週日 17:30 時段可行，但仍須先取得官方時段票。'},
@@ -329,7 +329,7 @@ export const attractions = {
     {name:"海報博物館 Wilanów", tag:"2026 重啟", mapUrl:"https://www.google.com/maps/search/?api=1&query=%E6%B5%B7%E5%A0%B1%E5%8D%9A%E7%89%A9%E9%A4%A8%20Wilan%C3%B3w%20Warszawa", venueId:null, extra:"2026-03 全新形式 · 常設「Polish Posters. Collection」"},
     {name:"波蘭歷史博物館 · Cytadela", tag:"2023 新館", mapUrl:venues['warsaw-history-museum'].map, venueId:"warsaw-history-museum", extra:"新總部 2023 開館；常設展仍在建置，先查當期臨展與入場資訊"},
     {name:"E.Wedel 巧克力工廠博物館", tag:"2024 開館", mapUrl:venues['warsaw-wedel-chocolate'].map, venueId:"warsaw-wedel-chocolate", extra:"每日 10:00–20:00 · 最後一團 18:15 · 導覽約 90 分 · 票價依官方場次"},
-    {name:"皇家城堡", tag:"UNESCO 舊城核心", mapUrl:venues['warsaw-royal-castle'].map, venueId:"warsaw-royal-castle", extra:"2026-09-18 官網查證：二–日 10:00–18:00，最後入場 17:00、週一休館 · Castle Route 95／75（含語音導覽，約 150 分）· Royal Route 60／45（含語音導覽，約 60 分）· 週三免費，但只走皇家寓所與 Lanckoroński 畫廊的限定路線（綠廳、黃廳、大理石廳、瓷器與 Wettin 畫廊、議會廳不開），且只能個人自行參觀、不能預約，當日在售票口領票、數量有限 · 語音導覽租借 10"},
+    {name:"皇家城堡", tag:"UNESCO 舊城核心", mapUrl:venues['warsaw-royal-castle'].map, venueId:"warsaw-royal-castle", extra:`2026-10-12 官網複查：二–日 ${venues['warsaw-royal-castle'].hours.opens}–${venues['warsaw-royal-castle'].hours.closes}，最後入場 ${venues['warsaw-royal-castle'].hours.lastEntry}、週一休館` + " · Castle Route 95／75（含語音導覽，約 150 分）· Royal Route 60／45（含語音導覽，約 60 分）· 週三免費，但只走皇家寓所與 Lanckoroński 畫廊的限定路線（綠廳、黃廳、大理石廳、瓷器與 Wettin 畫廊、議會廳不開），且只能個人自行參觀、不能預約，當日在售票口領票、數量有限 · 語音導覽租借 10"},
     {name:"華沙起義博物館", tag:"歷史", mapUrl:venues['warsaw-rising-museum'].map, venueId:"warsaw-rising-museum", extra:"2026-09-18 官網查證：PLN 35／30 · 一 08:00–18:00、二休館、三–五 08:00–18:00、六日 10:00–18:00，售票至閉館前 30 分 · 官方明列免費日為週四（10/30 是週五，要買票）· 語音導覽租借 13／自備手機 10 · 英語導覽 250＋門票"},
     {name:"科學文化宮觀景台", tag:"地標", mapUrl:venues['warsaw-pkin-terrace'].map, venueId:"warsaw-pkin-terrace", extra:"2026-09-18 官方售票系統查證：全票 30／優待 25 PLN（10 人以上團體 22）· 每日 10:00–20:00、售票口同時間 · 不接受預約，現場最多買到 7 天後 · 夜間場（35 PLN）只在週五六且官方只排到 9 月底，不套用到 10 月；11/1 閉館"},
     {name:"Łazienki 公園 · Wilanów 宮", tag:"皇家之路", mapUrl:"https://www.google.com/maps/search/?api=1&query=%C5%81azienki%20%E5%85%AC%E5%9C%92%20Warszawa", venueId:null, extra:"公園免費 · 宮殿另購票"},

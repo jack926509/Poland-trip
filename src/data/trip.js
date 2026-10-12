@@ -111,7 +111,7 @@ export const days = [
     eat: [
       snack({text:'zapiekanka 街食（週日可能公休，改圓亭其他窗口） @ Endzior', placeId:'krakow-endzior'}),
     ],
-    warn: '❗EIP 5300 已購票，但截圖未顯示抵達時間；11:10 寄放行李與午後行程須依票券詳細頁重新核對。瓦維爾城堡尚未訂票；辛德勒工廠個人網路票在參觀日前 90 天 09:00 開放，10/25 已可在官方售票頁查／購。瓦維爾大教堂週日 12:30–16:00（最後入場 15:30）；城堡改走短路線並於 15:00 前離開，保留經 Kazimierz、Podgórze 步行到辛德勒工廠的時間。辛德勒工廠週二至週日 09:00–20:00、最後入場 18:30，17:30 屬可行時段。10/25 為非營業週日，多數一般商店關閉；餐廳等法定例外是否營業仍以店家公告為準。',
+    warn: '❗EIP 5300 已購票，但截圖未顯示抵達時間；11:10 寄放行李與午後行程須依票券詳細頁重新核對。瓦維爾城堡尚未訂票；辛德勒工廠個人網路票在參觀日前 90 天 09:00 開放，10/25 已可在官方售票頁查／購。瓦維爾大教堂週日 12:30–17:00（售票至 16:30）；城堡改走短路線並於 15:00 前離開，保留經 Kazimierz、Podgórze 步行到辛德勒工廠的時間。辛德勒工廠週二至週日 09:00–20:00、最後入場 18:30，17:30 屬可行時段。10/25 為非營業週日，多數一般商店關閉；餐廳等法定例外是否營業仍以店家公告為準。',
     backup: [
       {label:'辛德勒 17:30 滿場', where:'改訂 18:30 最後入場，或往前壓到下午較早時段（如 14:00）', why:'最後入場其實是 18:30，比原記錄多一小時可調度；mhk.pl/en 開放預約後立即下單'},
       {label:'雨天替代 Wawel', where:'地下市集博物館 Rynek Underground', map:'https://www.google.com/maps/search/?api=1&query=Rynek%20Underground%2C%20Rynek%20G%C5%82%C3%B3wny%201%2C%20Krak%C3%B3w', why:'廣場下方歷史展（Rynek Główny 1），PLN 45／35，最後入場為閉館前 75 分鐘。官方 2026 閉館日不含 10/25；週日時間以官網當日為準。另註：每週二免費（免費日不可預約、現場限量、每人限領 5 張），每月第二個週一休館'},
@@ -148,7 +148,7 @@ export const days = [
       {t:'18:30', id:'d3-dinner', label:'晚餐 · Mr. Jerry 威靈頓牛排', sub:'Jagiellońska 5（老城），返城休息後前往；招牌 Beef Wellington，胃口大可加乾式熟成牛排。週一 15:00–22:00、廚房至 21:30，建議訂位並確認當天供應 Wellington；返程延誤先聯絡餐廳（+48 533 836 624）。訂不到改 Pod Aniołami；FOLGA 週一可能休息', cost:'依店家菜單', dur:'1 h 15 min'},
     ],
     eat: [
-      snack({text:'回程後的一杯咖啡 @ Karma Coffee Roasters', placeId:'krakow-karma-coffee-roasters'}),
+      snack({text:'回程後的一杯咖啡 @ Karma Kawiarnia（Krupnicza 12）', placeId:'krakow-karma-coffee-roasters'}),
     ],
     warn: `✅ 導覽已訂妥：10/26 10:30 英文個人 educator 導覽（Zwiedzanie indywidualne z edukatorem），官方標示約 3 小時 45 分，2 人。官方明載「入場證需搭配身分證件」，請把電子入場證存離線並帶護照。🚌 巴士去回曾查得班次，指定日庫存待重查、但尚未購票：官方要求至少提前 30 分鐘抵達以留安檢時間，10:30 場應在 10:00 前到場；本行程另採 08:35 早到目標，並非官方要求 10:00 前完成安檢；導覽約 14:15 結束，回程只能挑那之後的班次。去程已於 2026-09-09 在官方售票頁 lajkonikbus.pl 查得 10/26 實際班次並選定 **${lajkonikOutboundAdopted.dep} → ${lajkonikOutboundAdopted.arr}**（${lajkonikOutboundAdopted.bay} 發車，${lajkonikOutboundAdopted.dur}，全票 ${lajkonikFare.full} zł／優待 ${lajkonikFare.discount} zł），抵達後距入場有 1 小時 55 分。當日另一班 ${lajkonikOutboundRejected.dep} → ${lajkonikOutboundRejected.arr} 距官方建議的 10:00 到場時間只剩 10 分鐘，巴士一誤點就來不及，不採用；**沒有 07:35 這班**。回程同日售票頁顯示 10/26 下午可售三班（歷史查價快照，不是完整班表）：${lajkonikInboundRejected.dep}（導覽結束前開走，不可用）、**${lajkonikInboundAdopted.dep} → ${lajkonikInboundAdopted.arr}（採用）**、${lajkonikInboundBackup.dep} → ${lajkonikInboundBackup.arr}（備案），皆 ${lajkonikFare.full} zł、車程 ${lajkonikOutboundAdopted.dur}。去回兩程皆尚未購票，付款前仍以售票頁當下顯示為準。`,
     // 回程選項。導覽約 14:15 結束，全部以「14:15 之後發車」為門檻。
@@ -283,7 +283,7 @@ export const days = [
     compressible: ['Stary Browar 停留時間', '帝王城堡內部參觀'],
     train: {segmentId:'eic-8104'},
     steps: [
-      {t:'08:00', id:'d6-breakfast', label:'早餐 · Charlotte Krysiewicza', sub:'Krysiewicza 3a/27，07:00 開門；French Breakfast、可頌＋咖啡，Poznań rugelach 兩人分享。08:40 收尾，留約 50 分鐘交通；想提早到教堂島就改 07:30 用餐。客滿改 Inna Piekarnia（08:30 起）', dur:'40 min'},
+      {t:'08:00', id:'d6-breakfast', label:'早餐 · Charlotte Krysiewicza', sub:'Krysiewicza 3a/27，07:00 開門；French Breakfast、可頌＋咖啡，Poznań rugelach 兩人分享。08:40 收尾，留約 50 分鐘交通；想提早到教堂島就改 07:30 用餐。Inna Piekarnia（08:30 開門、09:30 前要出發，時間太趕）只列備案', dur:'40 min'},
       {t:'09:30', label:'★ 教堂島 Ostrów Tumski', sub:'依交通可再提早；10:30 收尾後前往老城，11:00 到廣場等山羊秀', cost:'未收費', dur:'1 h'},
       {t:'11:00', label:'廣場卡正面位置', dur:'45 min · 提早卡位'},
       {t:'12:00', label:'★ 山羊鐘樓秀', sub:'官方每日 12:00 與 15:00 登場；本次採正午場，兩隻金屬山羊互頂 12 次。錯過可考慮 15:00，但仍須保留取行李與到站時間', cost:'免費', dur:'5 min'},
@@ -516,14 +516,14 @@ export const bookingTiers = [
     {name:'辛德勒工廠（10/25 已進個人網路票 90 天窗口；最後入場 18:30）', url:'https://muzeumkrakowa.pl/en/branches/oskar-schindlers-enamel-factory'},
     {name:'Wawel 城堡短路線 14:00 左右時段票', url:'https://wawel.krakow.pl/en/what-to-see'},
     {name:'華沙起義博物館', url:'https://www.1944.pl/en'},
-    {name:'皇家城堡（已查證二至日 10:00–18:00，末入 17:00）', url:'https://www.zamek-krolewski.pl/en'},
+    {name:`皇家城堡（官網複查二至日 ${royalCastleVenue.hours.opens}–${royalCastleVenue.hours.closes}，末入 ${royalCastleVenue.hours.lastEntry}）`, url:'https://www.zamek-krolewski.pl/en'},
     {name:'拉茨瓦維採全景畫', url:'https://mnwr.pl/en/category/branches/panorama-raclawicka/'},
   ]},
-  {tier:'餐廳與備案', note:'❗全部尚未訂 · 旅行品質加分', items:[
-    {name:'克拉科夫 Kazimierz 晚餐備選', url:'https://www.google.com/maps/search/?api=1&query=Kazimierz+Krakow+restaurants'},
-    {name:'華沙最後晚餐', url:'https://www.google.com/maps/search/?api=1&query=Warsaw+old+town+Polish+restaurant'},
-    {name:'樂斯拉夫午餐或晚餐', url:'https://www.google.com/maps/search/?api=1&query=Wroclaw+old+town+Polish+restaurant'},
-    {name:'波茲南老城午餐', url:'https://www.google.com/maps/search/?api=1&query=Poznan+old+town+restaurant'},
+  {tier:'餐廳與備案', note:'❗全部尚未訂 · 優先訂 Mr. Jerry 與 Rusiko，再訂 Hankki 與 Specjały', items:[
+    {name:'Mr. Jerry 10/26 18:30（Beef Wellington；官網訂位）', url:'https://www.mrjerry.pl/rezerwacja-krakow/'},
+    {name:'Rusiko 10/30 18:30（電話 +48 22 629 06 28 訂位）', url:'https://www.rusiko.pl/en/menu/'},
+    {name:'Hankki 10/25 19:15（MojStolik 線上訂位）', url:'https://mojstolik.pl/restauracja/Hankki/f733c19bc164a5ad85848d96dc851be9'},
+    {name:'Specjały Regionalne 10/24 18:30（TheFork 訂位）', url:'https://www.thefork.com/restaurant/specjaly-regionalne-restauracja-polska-stare-miasto-r858538'},
   ]},
 ];
 
@@ -560,11 +560,11 @@ export const todoGroups = [
     id: 'dining', title: '餐飲訂位', eyebrow: 'Dining · 6 項',
     intro: '餐廳營業與臨時包場以店家訂位頁公告為準。',
     items: [
-      {checkedAt:'2026-10-10', recheckAt:'2026-10-22', date:'10/24', name:'Specjały Regionalne 18:30 晚餐', status:'尚未訂位', action:'2026-10-10 查官網：週五、週六 12:00–23:30，10/24 18:30 有營業。抵達日不想排隊就先在 TheFork 訂位：https://www.thefork.com/restaurant/specjaly-regionalne-restauracja-polska-stare-miasto-r858538', url:'https://www.google.com/maps/search/?api=1&query=Specja%C5%82y%20Regionalne%20Nowy%20%C5%9Awiat%2044%2C%20Warszawa'},
+      {checkedAt:'2026-10-10', recheckAt:'2026-10-22', date:'10/24', name:'Specjały Regionalne 18:30 晚餐', status:'尚未訂位', action:'時段以店家卡為準（2026-10-10 查：品牌門市頁週五、週六 11:30–23:00；polishcuisine.pl 列 12:00–23:30），10/24 18:30 兩個版本都有營業。抵達日不想排隊就先在 TheFork 訂位：https://www.thefork.com/restaurant/specjaly-regionalne-restauracja-polska-stare-miasto-r858538', url:'https://www.google.com/maps/search/?api=1&query=Specja%C5%82y%20Regionalne%20Nowy%20%C5%9Awiat%2044%2C%20Warszawa'},
       {checkedAt:'2026-10-10', recheckAt:'2026-10-22', date:'10/25', name:'Hankki 19:15 晚餐', status:'尚未訂位', action:'2026-10-10 查 Michelin 與 MojStolik：週日 13:00–21:00，19:15 在營業時間內；最後點餐時間查不到。建議用 MojStolik 線上訂位（https://mojstolik.pl/restauracja/Hankki/f733c19bc164a5ad85848d96dc851be9）或電話 +48 798 399 851，訂不到改 MOLÁM 或 NOAH。', url:'https://guide.michelin.com/mx/es/lesser-poland/krakow/restaurante/hankki'},
       {checkedAt:'2026-10-12', recheckAt:'2026-10-22', date:'10/26', name:'Mr. Jerry 18:30 晚餐（Beef Wellington）', status:'尚未訂位', action:'奧斯威辛返城後的晚餐。2026-10-12 複查：官網確認 Jagiellońska 5 與招牌 Beef Wellington，週一 15:00–22:00（多數目錄一致，官網各區塊矛盾），價格未公開；訂位時一併確認 10/26 有供應 Wellington（電話 +48 533 836 624）。訂不到改 Pod Aniołami（每日 13:00–23:00）；FOLGA 週一可能休息，要去先打電話。', url:'https://www.mrjerry.pl/rezerwacja-krakow/'},
-      {checkedAt:'2026-10-10', recheckAt:'2026-10-22', date:'10/27', name:'Bistro Posolone 13:00 午餐', status:'待確認營業', action:'2026-10-10 查得：位於鹽礦園區 Park Kingi 6，官方寫「每天依鹽礦開放時間」（約 08:00–18:00），確切時刻未查到。菜單有披薩、漢堡、湯、沙拉、薯條，30 分鐘內吃完就點湯、沙拉或漢堡，才趕得上返回車站與 16:45 IC 3830；可電話 +48 12 278 75 20 確認，來不及改自備餐。', url:'https://www.google.com/maps/search/?api=1&query=Bistro%20Posolone%2C%20Wieliczka'},
-      {checkedAt:'2026-10-12', recheckAt:'2026-10-22', date:'10/29', name:'Arirang 晚餐（約 20:30）', status:'待確認營業', action:'10/29 晚餐首選。2026-10-12 複查：Yelp 與多個目錄週四 12:00–22:00，沒有店家官網，最後點餐時間與線上訂位都未查到。當天打 22 881 78 51 或 22 622 18 86 問，21:30 前能入座才去，否則改 Złote Tarasy 內快食、Soul Kitchen 或 24 小時的 Ćma。', url:'https://www.google.com/maps/search/?api=1&query=Arirang%20Restaurant%20Nowogrodzka%2038%2C%20Warszawa'},
+      {checkedAt:'2026-10-10', recheckAt:'2026-10-22', date:'10/27', name:'Bistro Posolone 出礦後午餐', status:'待確認營業', action:'2026-10-10 查得：位於鹽礦園區 Park Kingi 6，官方寫「每天依鹽礦開放時間」（約 08:00–18:00），確切時刻未查到。菜單有披薩、漢堡、湯、沙拉、薯條，30 分鐘內吃完就點湯、沙拉或漢堡，才趕得上返回車站與 16:45 IC 3830；可電話 +48 12 278 75 20 確認，來不及改自備餐。', url:'https://www.google.com/maps/search/?api=1&query=Bistro%20Posolone%2C%20Wieliczka'},
+      {checkedAt:'2026-10-12', recheckAt:'2026-10-22', date:'10/29', name:'Arirang 晚餐', status:'待確認營業', action:'10/29 晚餐首選，約 20:30（待查票面）抵華沙。2026-10-12 複查：Yelp 與多個目錄週四 12:00–22:00，沒有店家官網，最後點餐時間與線上訂位都未查到。當天打 22 881 78 51 或 22 622 18 86 問，21:30 前能入座才去，否則改 Złote Tarasy 內快食、Soul Kitchen 或 24 小時的 Ćma。', url:'https://www.google.com/maps/search/?api=1&query=Arirang%20Restaurant%20Nowogrodzka%2038%2C%20Warszawa'},
       {checkedAt:'2026-10-12', recheckAt:'2026-10-22', date:'10/30', name:'華沙最後晚餐 · Rusiko 18:30', status:'尚未訂位', action:'瓦津基或國家博物館之後搭車約 15 分到 Wierzbowa 11。2026-10-12 複查：官網與 Michelin 皆列 Wierzbowa 11，週二至週六 13:00（或 14:00）–24:00；Yelp 仍顯示舊址 Ujazdowskie 22，別走錯。電話 +48 22 629 06 28 訂 10/30 18:30、2 人並確認當天營業。不適用改 WYRAJ（2026-10-10 已查週五 12:00–00:00，TheFork：https://www.thefork.com/restaurant/wyraj-r857032）、Kieliszki na Próżnej 或 U Fukiera。', url:'https://joinpearl.co/restaurants/warsaw/rusiko'},
     ],
   },
@@ -573,7 +573,7 @@ export const todoGroups = [
 export const reservations = [
   {when:'✅ 已完成', what:'Auschwitz 英文官方導覽 — 10/26 10:30 個人 educator 導覽（約 3 小時 45 分，2 人）已訂妥。入場憑電子入場證＋證件，出發前存離線。'},
   {when:'❗現在就查／訂', what:'Wieliczka 鹽礦英文 Tourist Route 10:00 場 — 10/27 英文場、實際票價與庫存以官方日期選擇器為準；不要用舊價格或開賣週期取代訂票結果。'},
-  {when:'現在可訂', what:'皇家城堡 — 已查證二至日 10:00–18:00、最後入場 17:00；Day 7 已改為 10:00 第一站（zamek-krolewski.pl）'},
+  {when:'現在可訂', what:`皇家城堡 — 2026-10-12 官網複查二至日 ${royalCastleVenue.hours.opens}–${royalCastleVenue.hours.closes}、最後入場 ${royalCastleVenue.hours.lastEntry}；Day 7 排 11:30 入場（zamek-krolewski.pl）`},
   {when:'現在可先訂', what:'行程晚餐：10/26 Mr. Jerry（威靈頓）、10/30 Rusiko 先訂，再訂 10/25 Hankki 與 10/24 Specjały；米其林星級餐廳（Bottiglieria 1881、BABA／Most、WANDAL）未排入行程，想加需另外訂並重排晚餐'},
   {when:'火車票：已購 4／4 段', what:'App 票券清單已有 10/25 EIP 5300（Warszawa Centralna 08:40）、10/27 IC 3830（Kraków Główny 16:45）、10/28 IC 260（Wrocław Główny 19:10）、10/29 EIC 8104（Poznań Główny 17:40）。四段抵達時間、艙等、車廂、座位與票價待查票券詳細頁。'},
   {when:'現在可查／訂', what:'辛德勒工廠 10/25 場次已進個人網路票 90 天窗口；華沙起義博物館與皇家城堡均以官方售票頁顯示的指定日庫存為準。'},

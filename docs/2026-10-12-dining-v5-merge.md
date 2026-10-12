@@ -4,6 +4,8 @@
 
 ## 最終三餐總表
 
+> 注意：10/30 早餐、午餐（Bambino、Café Bristol 11:30）已被第五輪調整取代，現行為 Bułkę 與 Polka；其餘日期以 `src/data/day-dining.js` 為準。
+
 | 日期 | 早餐 | 午餐 | 晚餐 | 點心／咖啡 |
 |---|---|---|---|---|
 | 10/24（六）華沙 | 機上 | 機上／抵達後輕食 | Specjały Regionalne 18:30 | 回飯店路上在 Żabka 買隔天備用早餐 |
@@ -42,7 +44,7 @@ MOLÁM、Arirang、Oseyo 25、Inna Piekarnia 依 v5 補上地址或時段；其�
 ## 查核界線
 
 - 本次建置環境無法連線 Mr. Jerry、Charlotte 等官網，新增門市除四家 Pasibus（沿用 2026-09-19 官網查核）外一律標 `pending`，時段註明出自 v5 稿。
-- 出發前要確認：Mr. Jerry 10/26 是否供應 Wellington 並訂位、Rusiko 10/30 營業與訂位、Arirang 週四最後接單、Charlotte Plac Szczepański 門牌與週二 07:00 開門、Polonia 是否 11:30 就開。
+- 出發前要確認：Mr. Jerry 10/26 是否供應 Wellington 並訂位、Rusiko 10/30 營業與訂位、Arirang 週四最後接單、Charlotte Plac Szczepański（官網已確認 plac Szczepański 2、週二 07:00 開門，免再查）、Polonia 是否 11:30 就開。
 - Bar Bambino 地址：v5 列 Krucza 21，官網為 Hoża 19，以官網為準。
 - 已購車票、Auschwitz 導覽與各館時段不因用餐調整；10/27 早餐改為先退房再吃，仍趕 09:00 往 Wieliczka 的車。
 

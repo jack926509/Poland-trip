@@ -170,7 +170,7 @@ export const dayDiningPlans = {
       "stepId": "d4-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
-      "condition": "07:00 開門與門牌待確認；候位太久就外帶，或改吃前晚在 Lajkonik／Żabka 備妥的麵包。",
+      "condition": "候位太久就外帶，或改吃前晚在 Lajkonik／Żabka 備妥的麵包。",
       "dayHours": "07:00–24:00"
     },
     {
@@ -276,7 +276,7 @@ export const dayDiningPlans = {
     {
       "placeId": "wroclaw-max-wroclavia",
       "role": "晚餐首選（條件式）",
-      "note": "取回行李後買 Frisco Burger 或 Halloumi 漢堡＋地瓜薯條外帶上車；18:15 前取餐，18:35 前到主站找月台。不要等到波茲南再吃：約 22:00 才到，車站旁 Avenida 21:00 就關。",
+      "note": "取回行李後買 Frisco Burger 或 Halloumi 漢堡＋地瓜薯條外帶上車；18:15 前取餐，18:35 前到主站找月台。不要等到波茲南再吃：抵達時間待查票面，但已是晚上，車站旁 Avenida 21:00 就關。",
       "stepId": "d5-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
@@ -310,15 +310,15 @@ export const dayDiningPlans = {
     },
     {
       "placeId": "poznan-inna-piekarnia",
-      "role": "早餐第二順位",
-      "note": "Ratajczaka 39，週一至週六 08:30 起：Butter Croissant、麵包與咖啡；Charlotte 客滿時改這間，08:30 開門後吃要縮短，仍保留往教堂島的交通。",
+      "role": "早餐備案（不列順位）",
+      "note": "Ratajczaka 39，週一至週六 08:30 起：Butter Croissant、麵包與咖啡；08:30 開門、09:30 前要出發，時間太趕，只當備案。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "poznan-weranda-caffe",
-      "role": "早餐第三順位",
-      "note": "適合不趕時間時；開門相對較晚且門市待確認，不作第一順位。",
+      "role": "山羊秀前咖啡備選",
+      "note": "Świętosławska 10，週四 09:00 才開，趕不上 09:30 教堂島，不作早餐；等 12:00 山羊秀前可進來坐一下。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -369,7 +369,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-arirang-restaurant",
       "role": "晚餐首選（條件式）",
-      "note": "約 20:20 抵華沙、放行李後步行約 5 分到 Nowogrodzka 38：Bulgogi 韓式烤牛肉、拌飯，或 Jajangmyeon、海鮮煎餅。",
+      "note": "約 20:30（待查票面）抵華沙、放行李後步行約 5 分到 Nowogrodzka 38：Bulgogi 韓式烤牛肉、拌飯，或 Jajangmyeon、海鮮煎餅。",
       "stepId": "d6-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
@@ -452,7 +452,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-ceviche-bar",
       "role": "晚餐備選",
-      "note": "Bib Gourmand 祕魯菜，Twarda 4，週五 12:00–23:00；離起義博物館較近。",
+      "note": "Bib Gourmand 祕魯菜，Twarda 4，週五 12:00–23:00。",
       "stepId": null,
       "planStatus": "candidate"
     },

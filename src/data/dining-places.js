@@ -65,7 +65,7 @@ export const diningPlaces = {
     "checkedAt": "2026-09-19",
     "verificationStatus": "verified",
     "notes": [
-      "1851 年創立的華沙巧克力老牌，招牌是濃稠熱巧克力；10/30 晚餐後想喝熱巧克力可來（到 22:00）。"
+      "1851 年創立的華沙巧克力老牌，招牌是濃稠熱巧克力；晚餐後或咖啡時間想喝熱巧克力可來（到 22:00）。"
     ],
     "verificationNote": "官方分店頁確認為 Staroświecki Sklep；不可套用其他 Wedel 分店時段。",
     "cuisine": "熱巧克力",
@@ -196,7 +196,7 @@ export const diningPlaces = {
     "id": "krakow-okraglak-plac-nowy-圓亭",
     "cityKey": "krakow",
     "name": "Okrąglak（Plac Nowy 圓亭）",
-    "address": "門牌待確認",
+    "address": "plac Nowy 4B, Kraków",
     "map": "https://maps.app.goo.gl/2Nitej5cqG4VAcbp6?g_st=il",
     "hours": "營業時間待確認",
     "sourceUrl": null,
@@ -210,7 +210,7 @@ export const diningPlaces = {
     "id": "krakow-szalone-widelce",
     "cityKey": "krakow",
     "name": "Szalone Widelce",
-    "address": "門牌待確認",
+    "address": "Szpitalna 40, Kraków",
     "map": "https://maps.app.goo.gl/U3yMsjdSgM3Pwgqe9?g_st=il",
     "hours": "營業時間待確認",
     "sourceUrl": null,
@@ -663,15 +663,15 @@ export const diningPlaces = {
     "cityKey": "poznan",
     "name": "ROGAL Świętomarciński",
     "address": "Stary Rynek 11/17, Poznań",
-    "map": "https://www.google.com/maps/search/?api=1&query=ROGAL%20%C5%9Awi%C4%99tomarci%C5%84ski%20Stary%20Rynek%2011/17%2C%20Pozna%C5%84",
-    "hours": "營業時間待確認",
+    "map": "https://www.google.com/maps/place/ROGAL+%C5%9Awi%C4%99tomarci%C5%84ski/@52.4079727,16.9340286,17z/data=!3m1!4b1!4m6!3m5!1s0x47045be6c6dec08b:0x2738305616ca929f!8m2!3d52.4079727!4d16.9340286!16s%2Fg%2F11wnltgtr4",
+    "hours": "週一 09:00–20:00（Google 地圖）；週四時段未查到，出發前看店家 Facebook 確認",
     "sourceUrl": "https://visitpoznan.pl/en/rogal-swietomarcinski-stary-rynek-en",
     "checkedAt": null,
     "verificationStatus": "pending",
     "notes": [
       "PGI 聖馬丁可頌（Rogal świętomarciński）· 白罌粟籽餡；10/29 12:15 點心站，兩人買一個分享即可。"
     ],
-    "verificationNote": "初稿引波茲南觀光局 Stary Rynek 11/17；營業與售完時間仍待確認，僅作順路外帶候選。 2026-10-12 複查：店內每日烘焙，可外帶或內用；營業時間未查到。不要和 Stary Rynek 41 的 Rogalowe Muzeum 混淆。",
+    "verificationNote": "初稿引波茲南觀光局 Stary Rynek 11/17；營業與售完時間仍待確認，僅作順路外帶候選。 2026-10-12 複查：店內每日烘焙，可外帶或內用；營業時間未查到。 2026-10-12 再查：Google 地圖店家頁確認門牌 Stary Rynek 11/17、座標 52.40797,16.93403，只取得週一 09:00–20:00；週四與 10/29 特殊公告未查到，出發前看 facebook.com/ROGALSTARYRYNEK。不要和 Stary Rynek 41 的 Rogalowe Muzeum 混淆。",
     "phone": "+48 573 465 226",
     "cuisine": "聖馬丁可頌",
     "dishes": [
@@ -906,7 +906,7 @@ export const diningPlaces = {
     "id": "wroclaw-bar-mleczny-mis",
     "cityKey": "wroclaw",
     "name": "Bar Mleczny Miś",
-    "address": "門牌待確認",
+    "address": "Kuźnicza 48, Wrocław",
     "map": "https://maps.google.com/?cid=9100083269168988599",
     "hours": "一–五 07:00–18:00、六 08:00–17:00、日休（2026 公開資料，出發前重查）",
     "sourceUrl": null,
@@ -1281,7 +1281,7 @@ export const diningPlaces = {
     "notes": [
       "韓式料理：Kkanpungi、Bulgogi、Kimchijjigae。"
     ],
-    "verificationNote": "保留原查核日；10/29 週四預計 20:30 才抵達，不可當晚抵備案。週末時段未納入本次已核實內容。 2026-10-12 複查：官網、Wolt、Uber Eats 週四仍為 12:00–20:30。",
+    "verificationNote": "保留原查核日；10/29 週四約 20:30（待查票面）才抵華沙，不可當晚抵備案。週末時段未納入本次已核實內容。 2026-10-12 複查：官網、Wolt、Uber Eats 週四仍為 12:00–20:30。",
     "cuisine": "韓式",
     "dishes": [
       "Kkanpungi 辣炸雞",
@@ -1731,7 +1731,7 @@ export const diningPlaces = {
     "role": "reference",
     "notes": [
       "猶太與華沙風味當日午餐；czulent、kreplach 為官方曾介紹的菜色，非當日保證。",
-      "2026-10-10 使用者決定本趟不進 POLIN，Day 7 午餐改 Café Bristol；此筆僅保留資料，未排入每日餐廳安排。"
+      "2026-10-10 使用者決定本趟不進 POLIN；此筆僅保留資料，未排入每日餐廳安排。"
     ],
     "menuUrl": "https://www.polin.pl/pl/kolacja-w-warsze-bracia-wisniewscy",
     "verificationNote": "本輪官方頁確認餐廳在 0 樓、進餐廳不必展覽票；10/30 菜單、午餐出餐速度與空位待確認。"
@@ -2153,7 +2153,7 @@ export const diningPlaces = {
     "verificationStatus": "partial",
     "notes": [
       "Michelin 推薦喬治亞菜：khachapuri 起司船形麵包、khinkali 湯包、chanakhi 燉羊腿。",
-      "10/30 最後晚餐首選；起義博物館後搭電車約 15–20 分。"
+      "10/30 最後晚餐首選；瓦津基或國家博物館後搭車約 15 分。"
     ],
     "menuUrl": null,
     "verificationNote": "官網與 Michelin 指南皆列 Wierzbowa 11（Michelin 推薦）；Yelp 仍顯示舊址 Al. Ujazdowskie 22，以官網為準。官網留有舊的暫停營業橫幅，但同站列正常時段，訂位時一併確認 10/30 營業。",
