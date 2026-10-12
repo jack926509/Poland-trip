@@ -8,7 +8,8 @@ export const dayDiningPlans = {
       "note": "18:30 入座：Żurek 酸黑麥湯＋綜合 Pierogi，主菜選梅醬豬肋排或半隻烤鴨，還有胃口再加甜點。皇家大道散步後順路，先確認座位；抵達晚就縮短散步。",
       "stepId": "d1-dinner",
       "planStatus": "scheduled",
-      "meal": "dinner"
+      "meal": "dinner",
+      "dayHours": "11:30–23:00"
     },
     {
       "placeId": "warsaw-pyzy-flaki-gorace",
@@ -29,16 +30,17 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-green-caffe-nero-centralny",
       "role": "早餐首選（條件式）",
-      "note": "退房到中央車站後外帶可頌或火腿起司三明治＋Americano／Latte，可多帶一份麵包上車；07:55 結束採買，08:05 起找月台。店未開或排隊就用前晚在 Żabka 買的麵包。",
+      "note": "退房到中央車站後在站內 Green Nero Express（Yelp 列 24 小時）外帶可頌或火腿起司三明治＋Americano／Latte，可多帶一份麵包上車；07:55 結束採買，08:05 起找月台。店未開或排隊就用前晚在 Żabka 買的麵包。",
       "stepId": "d2-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
-      "condition": "分店開門與品項待確認；不壓縮 08:40 發車前的進站緩衝。"
+      "condition": "分店開門與品項待確認；不壓縮 08:40 發車前的進站緩衝。",
+      "dayHours": "24 小時"
     },
     {
       "placeId": "warsaw-mcdonalds-centralna",
       "role": "早餐備案",
-      "note": "同在 Warszawa Centralna 站內，約 05:00 就開；Green Caffè Nero 沒開時改 McMuffin＋咖啡外帶，也可改 EIP 車上餐車。",
+      "note": "同在 Warszawa Centralna 站內，約 05:00 就開；Green Nero Express 沒開或排隊時改 McMuffin＋咖啡外帶，也可改 EIP 車上餐車。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -47,7 +49,8 @@ export const dayDiningPlans = {
       "role": "隔日備餐採買",
       "note": "寄放行李後先買隔日早餐及午餐（三明治、Drożdżówka 甜麵包、可頌、水果），順路接 Polonia；不等晚餐後才去。需冷藏的餐點先確認住宿保存條件，否則選常溫麵包與水果。",
       "stepId": "d2-prep",
-      "planStatus": "scheduled"
+      "planStatus": "scheduled",
+      "dayHours": "07:00–19:00"
     },
     {
       "placeId": "krakow-polonia",
@@ -56,7 +59,8 @@ export const dayDiningPlans = {
       "stepId": "d2-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
-      "condition": "官網 12:00 開門（v5 稿 11:30 待確認）；列車延誤改外帶或 24 小時的 Przypiecek，先保留預定景點時段。"
+      "condition": "官網 12:00 開門（v5 稿 11:30 待確認）；列車延誤改外帶或 24 小時的 Przypiecek，先保留預定景點時段。",
+      "dayHours": "12:00–22:00"
     },
     {
       "placeId": "krakow-przypiecek",
@@ -93,7 +97,8 @@ export const dayDiningPlans = {
       "stepId": "d2-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "須先確認週日 19:15 仍接單（店 21:00 關）；若工廠改到更晚場，改當時仍營業的快食。"
+      "condition": "須先確認週日 19:15 仍接單（店 21:00 關）；若工廠改到更晚場，改當時仍營業的快食。",
+      "dayHours": "13:00–21:00"
     },
     {
       "placeId": "krakow-molam-thai",
@@ -118,7 +123,8 @@ export const dayDiningPlans = {
       "stepId": "d3-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "建議訂位並確認 10/26 當天供應 Wellington；週一 15:00–22:00、廚房至 21:30。返程延誤先聯絡餐廳。"
+      "condition": "建議訂位並確認 10/26 當天供應 Wellington；週一 15:00–22:00、廚房至 21:30。返程延誤先聯絡餐廳。",
+      "dayHours": "15:00–22:00"
     },
     {
       "placeId": "krakow-pod-aniolami",
@@ -157,7 +163,8 @@ export const dayDiningPlans = {
       "stepId": "d4-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
-      "condition": "07:00 開門與門牌待確認；候位太久就外帶，或改吃前晚在 Lajkonik／Żabka 備妥的麵包。"
+      "condition": "07:00 開門與門牌待確認；候位太久就外帶，或改吃前晚在 Lajkonik／Żabka 備妥的麵包。",
+      "dayHours": "07:00–24:00"
     },
     {
       "placeId": "wieliczka-bistro-posolone",
@@ -167,7 +174,8 @@ export const dayDiningPlans = {
       "stepId": "d4-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
-      "condition": "13:00 前出礦且有餘裕才坐下吃；較晚結束就外帶，略過 Kazimierz，保住 16:10 抵站。若取消鹽礦，不特地前往 Wieliczka，改在克拉科夫老城動線上找午餐。"
+      "condition": "13:00 前出礦且有餘裕才坐下吃；較晚結束就外帶，略過 Kazimierz，保住 16:10 抵站。若取消鹽礦，不特地前往 Wieliczka，改在克拉科夫老城動線上找午餐。",
+      "dayHours": "08:00–18:00"
     },
     {
       "placeId": "wieliczka-wieliczka-鎮中心午餐",
@@ -192,7 +200,8 @@ export const dayDiningPlans = {
       "stepId": "d4-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "約 21:00 前能到店且確認仍接單才採用；否則改 KFC Wrocław PKP 或 Wroclavia 的 MAX。抵達時間待查票面。"
+      "condition": "約 21:00 前能到店且確認仍接單才採用；否則改 KFC Wrocław PKP 或 Wroclavia 的 MAX。抵達時間待查票面。",
+      "dayHours": "12:00–22:00"
     },
     {
       "placeId": "wroclaw-kfc-pkp",
@@ -217,7 +226,8 @@ export const dayDiningPlans = {
       "stepId": "d5-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
-      "condition": "先確認早餐供應起始；07:30 尚未供餐或需久候就改同街的 Charlotte Pokoyhof。"
+      "condition": "先確認早餐供應起始；07:30 尚未供餐或需久候就改同街的 Charlotte Pokoyhof。",
+      "dayHours": "07:00–16:00"
     },
     {
       "placeId": "wroclaw-charlotte-pokoyhof",
@@ -232,7 +242,8 @@ export const dayDiningPlans = {
       "note": "全景畫後 12:00 進店（全景畫 30 分鐘場，約 12:00 散場）：必點 Śląskie niebo 果乾燉豬肉配 Wrocław dumplings＋Bigos Wrocławski 紅甘藍燉肉，胃口夠再加 Crayfish Soup。主菜現做約 30 分鐘，13:15 前結帳，13:30 前離店，緩衝後接 14:15 國家博物館。",
       "stepId": "d5-lunch",
       "planStatus": "scheduled",
-      "meal": "lunch"
+      "meal": "lunch",
+      "dayHours": "12:00–22:00"
     },
     {
       "placeId": "wroclaw-ida-kuchnia-i-wino",
@@ -262,7 +273,8 @@ export const dayDiningPlans = {
       "stepId": "d5-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "若取行李或候餐延誤就直接去車站 KFC／買現成麵包，不為用餐壓縮 19:10 火車緩衝。"
+      "condition": "若取行李或候餐延誤就直接去車站 KFC／買現成麵包，不為用餐壓縮 19:10 火車緩衝。",
+      "dayHours": "08:00–翌日 01:00"
     },
     {
       "placeId": "wroclaw-kfc-pkp",
@@ -286,7 +298,8 @@ export const dayDiningPlans = {
       "note": "08:00–08:40：French Breakfast、可頌＋咖啡，Poznań rugelach 白罌粟籽小可頌兩人分享；之後預留約 50 分鐘交通，09:30 教堂島。07:00 開門，想提早到教堂島可改 07:30 用餐。",
       "stepId": "d6-breakfast",
       "planStatus": "scheduled",
-      "meal": "breakfast"
+      "meal": "breakfast",
+      "dayHours": "07:00–24:00"
     },
     {
       "placeId": "poznan-inna-piekarnia",
@@ -322,7 +335,8 @@ export const dayDiningPlans = {
       "note": "12:30 入座，兩人直接點 Pyry z bzikiem（烤馬鈴薯＋Gzik 香草凝乳）與 Szare ale jare（灰色馬鈴薯麵糰＋培根＋酸白菜）分享；13:15 收尾，另留前往帝王城堡的時間。排隊太久改外帶。",
       "stepId": "d6-lunch",
       "planStatus": "scheduled",
-      "meal": "lunch"
+      "meal": "lunch",
+      "dayHours": "11:00–21:00"
     },
     {
       "placeId": "poznan-zen-on",
@@ -352,7 +366,8 @@ export const dayDiningPlans = {
       "stepId": "d6-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "週四 12:00–22:00（多個目錄一致，無店家官網），當天先打 22 881 78 51 或 22 622 18 86 確認仍接單；21:30 前無法入座就改 Złote Tarasy 速食、Soul Kitchen 或 24 小時的 Ćma。"
+      "condition": "週四 12:00–22:00（多個目錄一致，無店家官網），當天先打 22 881 78 51 或 22 622 18 86 確認仍接單；21:30 前無法入座就改 Złote Tarasy 速食、Soul Kitchen 或 24 小時的 Ćma。",
+      "dayHours": "12:00–22:00"
     },
     {
       "placeId": "warsaw-pasibus-zlote-tarasy",
@@ -390,7 +405,8 @@ export const dayDiningPlans = {
       "note": "08:00–08:45 牛奶吧早餐：jajecznica 炒蛋、naleśniki 可麗餅配 kompot，或菠菜歐姆蛋；之後經 Nowy Świat 往皇家城堡，09:30 前到入口。",
       "stepId": "d7-breakfast",
       "planStatus": "scheduled",
-      "meal": "breakfast"
+      "meal": "breakfast",
+      "dayHours": "08:00–20:00"
     },
     {
       "placeId": "warsaw-bulke-przez-bibulke-zgoda",
@@ -413,7 +429,8 @@ export const dayDiningPlans = {
       "stepId": "d7-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
-      "condition": "當日供應與最後接單待確認；11:30 湯與主餐尚未供應時，改點輕食或延到 12:00。"
+      "condition": "當日供應與最後接單待確認；11:30 湯與主餐尚未供應時，改點輕食或延到 12:00。",
+      "dayHours": "08:00–21:00"
     },
     {
       "placeId": "warsaw-polka",
@@ -429,7 +446,8 @@ export const dayDiningPlans = {
       "stepId": "d7-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "營業時間來自第三方（週二至週六 13:00–00:00），先訂位並確認 10/30 營業；不適用時依最後所在地改備選。"
+      "condition": "營業時間來自第三方（週二至週六 13:00–00:00），先訂位並確認 10/30 營業；不適用時依最後所在地改備選。",
+      "dayHours": "14:00–24:00"
     },
     {
       "placeId": "warsaw-ceviche-bar",
@@ -503,7 +521,8 @@ export const dayDiningPlans = {
       "stepId": "d8-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
-      "condition": "08:15 還無法入座就外帶或回住宿／車站沿線用餐；保住 11:00 到機場目標。"
+      "condition": "08:15 還無法入座就外帶或回住宿／車站沿線用餐；保住 11:00 到機場目標。",
+      "dayHours": "08:00–24:00"
     },
     {
       "placeId": "warsaw-bar-mleczny-prasowy-marszalkowska",

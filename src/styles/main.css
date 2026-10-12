@@ -4866,6 +4866,51 @@ h3 {
 .store-dish-line { margin: 0 0 .35rem; }
 .city-dining-table .store-badges { margin-bottom: .2rem; }
 
+/* 三餐卡（2026-10-12 第二版）：三餐各自是一張卡，左緣色條依餐別（早餐金、午餐綠、晚餐紫），
+   餐別與時刻做成膠囊；「當天」那一行直接告訴你這個時間坐不坐得下。
+   寬度夠（卡片內 900px 以上，例如餐飲指南桌機）時三餐並排成三欄，一眼比較同一天。 */
+.day-dining,
+#daily-meals > .card { container-type: inline-size; }
+.day-food-list[data-three-meals] { display: grid; gap: .75rem; margin-top: .75rem; }
+.day-food-list[data-three-meals] > .day-food-item,
+.day-food-list[data-three-meals] > .day-food-item:first-child {
+  padding: .85rem 1rem 1rem;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--meal-accent, var(--accent));
+  border-radius: var(--radius-md, 14px);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-inset-top, none);
+}
+.day-food-list[data-three-meals] > [data-meal="breakfast"] { --meal-accent: var(--gold, #a9803a); }
+.day-food-list[data-three-meals] > [data-meal="lunch"] { --meal-accent: var(--green); }
+.day-food-list[data-three-meals] > [data-meal="dinner"] { --meal-accent: var(--plum); }
+.day-food-list[data-three-meals] > [data-self="true"] {
+  border-style: dashed;
+  border-left-style: solid;
+  background: transparent;
+  box-shadow: none;
+}
+.day-food-list[data-three-meals] > .day-food-item .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  padding: .12rem .6rem;
+  border-radius: 999px;
+  background: var(--meal-accent, var(--accent));
+  color: var(--paper-light);
+  letter-spacing: .04em;
+}
+.day-food-list[data-three-meals] > .day-food-item h4 { font-size: 1.18rem; }
+@container (min-width: 900px) {
+  .day-food-list[data-three-meals] { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
+}
+
+.store-fact-today dd { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem .5rem; }
+.store-fact-today b { font-family: var(--font-mono); font-size: .9rem; }
+.store-fit { font-size: .78rem; font-weight: 700; }
+.store-fit-ok { color: var(--green); }
+.store-fit-warn { color: var(--red); }
+.store-fit-relative { color: var(--ink-soft); font-weight: 500; }
+
 /* 速食分店：營業時間獨立一行、粗體標籤，掃一眼就知道開不開。 */
 .fast-food-hours { margin: .2rem 0 0; font-size: .86rem; }
 .fast-food-hours b { margin-right: .35rem; color: var(--accent-dark); font-family: var(--font-mono); font-size: .76rem; }

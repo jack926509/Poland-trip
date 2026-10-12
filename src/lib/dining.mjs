@@ -60,6 +60,29 @@ export function renderStoreBadges(item) {
   return `<span class="store-badges">${item.cuisine ? `<span class="store-tag">${escapeHtml(item.cuisine)}</span>` : ''}<span class="store-status store-status-${key}">${label}</span>${live ? `<span class="store-live">${live} 確認仍營業</span>` : ''}</span>`;
 }
 
+function toMinutes(value) {
+  const match = /^(\d{1,2}):(\d{2})$/.exec(String(value || '').trim());
+  return match ? Number(match[1]) * 60 + Number(match[2]) : null;
+}
+
+/**
+ * 排定時刻是否落在當天營業時段內，並保留 45 分鐘用餐。
+ * dayHours 寫成「12:00–22:00」「08:00–翌日 01:00」或「24 小時」；
+ * 行程時刻不是 HH:MM（例如「抵站放行李後」）時回傳 null，由卡片改顯示「依抵達時間」。
+ */
+export function openingCheck(dayHours, time, { mealMinutes = 45 } = {}) {
+  const start = toMinutes(time);
+  if (!dayHours) return null;
+  if (/24 小時/.test(dayHours)) return start === null ? null : { ok: true, open: 0, close: 1440 };
+  const match = /(\d{1,2}):(\d{2})–(翌日 )?(\d{1,2}):(\d{2})/.exec(dayHours);
+  if (!match) throw new Error(`無法解析當天營業時段：${dayHours}`);
+  const open = Number(match[1]) * 60 + Number(match[2]);
+  let close = Number(match[4]) * 60 + Number(match[5]);
+  if (match[3] || close <= open) close += 1440;
+  if (start === null) return null;
+  return { ok: start >= open && start + mealMinutes <= close, open, close };
+}
+
 /** 電話只留數字與加號，避免 tel: 連結夾帶空白或括號。 */
 function telHref(phone) {
   const digits = String(phone || '').replace(/[^\d+]/g, '');
@@ -70,17 +93,29 @@ function telHref(phone) {
  * 店家卡的主體：營業時間與推薦菜色一律直接可見（不收合），
  * 菜單與電話做成 44px 的按鈕；地址、查核日期與來源收在「地址與查核紀錄」。
  */
-export function renderStoreBody(item, { note = item.note, condition = item.condition, timing = '', foldFacts = true } = {}) {
+export function renderStoreBody(item, { note = item.note, condition = item.condition, timing = '', foldFacts = true, day = null, time = '' } = {}) {
   const dishes = Array.isArray(item.dishes) ? item.dishes : [];
   const menu = safeHttpsUrl(item.menuUrl);
   const tel = telHref(item.phone);
+  // 排定餐段：先給「當天」那一行（日期＋當天時段＋能不能坐下吃），全週時段收進查核紀錄；
+  // 備選與名錄沒有指定日子，照舊直接列全週時段。
+  // 沒有指定日子（營業時間名錄、今日卡備選）就不顯示「當天」，回到全週時段。
+  const dayHours = day ? item.dayHours : '';
+  const check = dayHours ? openingCheck(dayHours, time) : null;
+  const fit = !dayHours ? ''
+    : check === null ? '<span class="store-fit store-fit-relative">依實際抵達時間</span>'
+    : check.ok ? `<span class="store-fit store-fit-ok">✓ ${escapeHtml(time)} 入座在營業時間內</span>`
+    : `<span class="store-fit store-fit-warn">⚠ ${escapeHtml(time)} 不在營業時間內</span>`;
+  const hoursRow = dayHours
+    ? `<div class="store-fact store-fact-today"><dt>當天</dt><dd><b>${escapeHtml(day.date)} ${escapeHtml(dayHours)}</b>${fit}</dd></div>`
+    : `<div class="store-fact"><dt>營業</dt><dd>${escapeHtml(item.hours || '待確認')}</dd></div>`;
   const facts = `<dl class="store-facts">
-      <div class="store-fact"><dt>營業</dt><dd>${escapeHtml(item.hours || '待確認')}</dd></div>
+      ${hoursRow}
       ${dishes.length ? `<div class="store-fact"><dt>推薦</dt><dd><ul class="store-dishes">${dishes.map(dish => `<li>${escapeHtml(dish)}</li>`).join('')}</ul></dd></div>` : ''}
     </dl>`;
   const actions = menu || tel ? `<p class="store-actions">${menu ? `<a class="store-action" href="${menu}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(item.name)} 的菜單">菜單 ↗</a>` : ''}${tel ? `<a class="store-action" href="${tel}" aria-label="撥打 ${escapeHtml(item.name)} 電話 ${escapeHtml(item.phone)}">電話 ${escapeHtml(item.phone)}</a>` : ''}</p>` : '';
   const record = foldFacts
-    ? `<details><summary>地址與查核紀錄</summary><p class="food-map-note">${escapeHtml(item.address)}</p>${renderDiningFacts(item, { includeHours: false })}<p class="source-meta">行程預留不代表已訂位。</p></details>`
+    ? `<details><summary>地址、全週營業與查核紀錄</summary><p class="food-map-note">${escapeHtml(item.address)}</p>${renderDiningFacts(item, { includeHours: Boolean(dayHours) })}<p class="source-meta">行程預留不代表已訂位。</p></details>`
     : '';
   return `${facts}
       ${note ? `<p>${escapeHtml(note)}</p>` : ''}
@@ -104,9 +139,9 @@ export function renderMealList(day, meals) {
     const step = day.steps.find(step => step.id === item.stepId);
     if (!step) throw new Error(`Day ${day.n} 找不到三餐步驟 ${item.stepId}`);
     const eyebrow = `${labels[item.meal]} · ${step.t}${item.condition ? ' · 先確認' : ''}`;
-    return `<li class="day-food-item" data-meal="${item.meal}">
+    return `<li class="day-food-item" data-meal="${item.meal}"${item.placeId ? '' : ' data-self="true"'}>
       ${renderStoreHead(item, eyebrow)}
-      ${item.placeId ? renderStoreBody(item) : `<p>${escapeHtml(item.note)}</p>`}
+      ${item.placeId ? renderStoreBody(item, { day, time: step.t }) : `<p>${escapeHtml(item.note)}</p>`}
     </li>`;
   }).join('')}</ul>`;
 }
