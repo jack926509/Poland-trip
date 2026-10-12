@@ -1,5 +1,6 @@
 import { days as itineraryDays, stay } from './trip.js';
 import { dayDining, dayMeals } from './day-dining.js';
+import { diningPlaces } from './dining-places.js';
 import { venueAddress } from '../lib/venues.mjs';
 import { auschwitzBus, segments, lajkonikFare } from './rail.js';
 import fs from 'node:fs';
@@ -330,7 +331,7 @@ const accommodationAddress = (id, stepLabels = []) => {
 // 用字串鍵（displayName）比對。
 const addressStepLabels = {
   '華沙蕭邦機場': ['抵蕭邦機場', '抵 Chopin 第一航廈', '退稅文件 + 報到 + 安檢', '★ QR 260 起飛'],
-  'Warszawa Centralna': ['退房 → Warszawa Centralna', '抵華沙中央車站', '抵 Warszawa Centralna'],
+  'Warszawa Centralna': ['退房 → Warszawa Centralna', '退房後前往上車站', '抵華沙中央車站', '抵 Warszawa Centralna'],
   '華沙皇家城堡': ['★ 皇家城堡'],
   '華沙老城市場廣場': ['★ 老城步行：聖若望大教堂 → 許願鐘 → 老城廣場 → 甕城'],
   'Krakowskie Przedmieście': ['★ 總統府外觀', '沿皇家大道走回 Nowy Świat'],
@@ -411,7 +412,7 @@ export const dayOperations = {
       venueCard('krakow-sukiennice', '紡織會館 Sukiennice'),
       venueCard('krakow-schindler', '辛德勒工廠'),
       venueCard('krakow-plac-nowy', 'Plac Nowy'),
-      accommodationAddress('warsaw-metropol-arrival', ['退房後前往上車站']),
+      accommodationAddress('warsaw-metropol-arrival'),
       accommodationAddress('krakow-stare-miasto', ['旅館寄放行李']),
     ],
     navigation: [
@@ -497,6 +498,16 @@ export const dayOperations = {
       venueCard('poznan-ck-zamek', '帝王城堡'),
       venueCard('poznan-stary-browar', 'Stary Browar'),
       venueCard('warsaw-centralna-station', 'Warszawa Centralna'),
+      {
+        name: diningPlaces['poznan-rogal'].name,
+        address: diningPlaces['poznan-rogal'].address,
+        url: diningPlaces['poznan-rogal'].map,
+        note: '週四營業時間未查到，出發前看店家 Facebook；售完改 Cukiernia Kandulski（Plac Ratajskiego 1）。',
+        reliable: true,
+        entranceNote: '依店家地址與現場招牌找入口；營業與售完狀況須現場確認。',
+        officialUrl: diningPlaces['poznan-rogal'].sourceUrl,
+        stepLabels: ['★ 聖馬丁牛角麵包 (PGI)'],
+      },
       accommodationAddress('poznan-towarowa'),
       accommodationAddress('warsaw-metropol'),
     ],
@@ -506,7 +517,7 @@ export const dayOperations = {
     ],
     dailyAlerts: [
       '市政廳博物館整修閉館；主行程只看官方確認的 12:00 山羊鐘樓秀。',
-      '聖馬丁牛角麵包尚未選定分店；待分店與營業確定後再導航，不預填地址。',
+      '聖馬丁牛角麵包已選定 ROGAL Świętomarciński（Stary Rynek 11/17）；週四營業時間未查到，出發前看店家 Facebook 確認，售完改 Cukiernia Kandulski。',
     ],
     nightChecklist: [...standardNightChecklist, '核對 Day 7 起義博物館 08:30、皇家城堡 11:30 的購票狀態，尚未訂者不要當作已購', '確認 Polka 午餐與 Rusiko 18:30 訂位及 10/30 營業；不適用依所在地改 WYRAJ（週五 12:00–00:00，已於 2026-10-10 複查）、Kieliszki na Próżnej 或 U Fukiera，並重算交通'],
   },
@@ -589,7 +600,6 @@ const unresolvedStepReasons = {
   },
   6: {
     '取行李、前往 Poznań Główny': '公寓寄放與取行李地點須先向住宿確認，再前往車站。',
-    '★ 聖馬丁牛角麵包 (PGI)': '分店已選定 ROGAL Świętomarciński（Stary Rynek 11/17）；週四營業時間未查到，出發前看店家 Facebook 確認，售完或未營業改 Cukiernia Kandulski（Plac Ratajskiego 1）。',
     'EIC 8104 前往華沙': dynamicTransitReason,
   },
   7: {

@@ -140,6 +140,8 @@ export function renderStoreHead(item, eyebrow) {
       ${map ? `<a class="day-food-map" href="${map}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(item.name)} 的 Google Maps 導航">導航 ↗</a>` : ''}</div>`;
 }
 
+const LAST_MEAL_CUTOFF_MINUTE = 23 * 60;
+
 /** 每日頁、今日卡與餐飲指南共用；沒有門市的餐次只顯示安排，不產生假導航。 */
 export function renderMealList(day, meals) {
   const labels = { breakfast: '早餐', lunch: '午餐', dinner: '晚餐' };
@@ -151,7 +153,9 @@ export function renderMealList(day, meals) {
     // 「出礦後」「抵站放行李後」這類相對時間沒有分鐘數：改記行程表中它後面第一個有時刻的步驟，
     // 該時刻到了就代表這餐已經錯過（data-meal-before-minute）。
     const minute = toMinutes(step.t);
-    const later = minute === null ? day.steps.slice(day.steps.indexOf(step) + 1).map(next => toMinutes(next.t)).find(value => value !== null) : undefined;
+    const laterStep = minute === null ? day.steps.slice(day.steps.indexOf(step) + 1).map(next => toMinutes(next.t)).find(value => value !== null) : undefined;
+    // 當天最後一餐後面沒有任何有時刻的步驟：保守算華沙時間 23:00 後已過，不讓它永遠停在「下一餐」。
+    const later = minute === null && laterStep === undefined ? LAST_MEAL_CUTOFF_MINUTE : laterStep;
     return `<li class="day-food-item" data-meal="${item.meal}" data-meal-label="${labels[item.meal]}" data-meal-time="${escapeHtml(step.t)}"${minute === null ? '' : ` data-meal-minute="${minute}"`}${later === undefined ? '' : ` data-meal-before-minute="${later}"`}${item.placeId ? '' : ' data-self="true"'}>
       ${renderStoreHead(item, eyebrow)}
       ${item.placeId ? renderStoreBody(item, { day, time: step.t }) : `<p>${escapeHtml(item.note)}</p>`}

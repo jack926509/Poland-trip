@@ -1117,6 +1117,7 @@ export const diningPlaces = {
   },
   "warsaw-specjaly-regionalne": {
     "id": "warsaw-specjaly-regionalne",
+    "booking": "recommended",
     "cityKey": "warsaw",
     "name": "Specjały Regionalne",
     "address": "Nowy Świat 44, Warszawa",
@@ -1167,6 +1168,7 @@ export const diningPlaces = {
   },
   "krakow-hankki": {
     "id": "krakow-hankki",
+    "booking": "recommended",
     "cityKey": "krakow",
     "name": "Hankki",
     "address": "Zabłocie 19A, Kraków",
@@ -1910,6 +1912,7 @@ export const diningPlaces = {
   },
   "krakow-mr-jerry": {
     "id": "krakow-mr-jerry",
+    "booking": "recommended",
     "cityKey": "krakow",
     "name": "Mr. Jerry",
     "address": "Jagiellońska 5, Kraków",
@@ -2153,6 +2156,7 @@ export const diningPlaces = {
   },
   "warsaw-rusiko": {
     "id": "warsaw-rusiko",
+    "booking": "recommended",
     "cityKey": "warsaw",
     "name": "Rusiko",
     "address": "Wierzbowa 11, Warszawa",

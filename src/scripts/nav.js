@@ -254,8 +254,6 @@
   else document.body.append(offlineBanner);
   const syncOffline = () => {
     offlineBanner.hidden = navigator.onLine !== false;
-    // 橫幅吸頂時貼在刊頭下緣，不蓋住選單。
-    if (nav) offlineBanner.style.top = `${nav.offsetHeight}px`;
   };
   syncOffline();
   window.addEventListener('offline', syncOffline);

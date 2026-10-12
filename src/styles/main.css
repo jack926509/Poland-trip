@@ -6617,9 +6617,8 @@ h3 {
 /* F9 離線橫幅：navigator.onLine 為 false 時由 nav.js 顯示。用 [hidden] 搭配明確 display，
    避免 class 選擇器的 display 蓋掉 hidden（稽核教訓）。 */
 .offline-banner {
-  position: sticky;
-  top: 76px; /* nav.js 會依實際刊頭高度改寫 */
-  z-index: 99;
+  /* 放在文件流中、刊頭正下方，不用 sticky／fixed：避免浮在畫面中間或蓋住頁內分頁列。 */
+  position: static;
   margin: 0;
   padding: .6rem 1rem;
   background: #3b2a24;
