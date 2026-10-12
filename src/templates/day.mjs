@@ -1,5 +1,5 @@
 import { mealTiming, renderMealList, renderStoreBody, renderStoreHead } from '../lib/dining.mjs';
-import { escapeHtml, safeHttpsUrl } from '../lib/html.mjs';
+import { escapeHtml, linkifyText, safeHttpsUrl } from '../lib/html.mjs';
 import { bookingProgress } from '../lib/journey.mjs';
 import { segmentForDay } from '../lib/rail.mjs';
 import { renderDayContext } from './journey.mjs';
@@ -131,7 +131,7 @@ function renderOperation(operation, day) {
     <li>
       <span class="operation-mode">${escapeHtml(item.mode)}</span>
       <b>${escapeHtml(item.route)}</b>
-      <p>${escapeHtml(item.action)}</p>
+      <p>${linkifyText(item.action)}</p>
     </li>`).join('') || '<li>這一天尚無移動步驟。</li>';
 
   const alerts = operation.dailyAlerts?.map(item => `<li>${escapeHtml(item)}</li>`).join('') || '<li>這一天尚無特別警示。</li>';

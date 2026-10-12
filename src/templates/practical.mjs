@@ -1,7 +1,7 @@
 import { mealTiming, renderMealList, renderStoreBadges, renderStoreBody, renderStoreHead } from '../lib/dining.mjs';
 import { dayMeals, dayDining } from '../data/day-dining.js';
 import { days } from '../data/trip.js';
-import { escapeHtml } from '../lib/html.mjs';
+import { escapeHtml, linkifyText } from '../lib/html.mjs';
 import { renderLayout } from './layout.mjs';
 import { cityGuideByName, dayPageForDate, cityRoutes } from '../lib/city-guide.mjs';
 import { renderFastFoodMenu } from './fast-food.mjs';
@@ -111,7 +111,7 @@ function renderCountdownSection({ trains, deadlines, databaseEntries }) {
       <td class="number" data-label="倒數"><b data-countdown-label>${escapeHtml(item.label)}</b></td>
       <td data-label="日期"><time datetime="${escapeHtml(item.date || '')}">${escapeHtml(item.date || '—')}</time></td>
       <td data-label="類別"><span class="${tagClass}" data-countdown-category data-countdown-class="${tagClass}">${escapeHtml(item.category)}</span></td>
-      <td data-label="項目">${title}<br><span class="source-meta">${escapeHtml(item.action)}</span></td>
+      <td data-label="項目">${title}<br><span class="source-meta">${linkifyText(item.action)}</span></td>
       <td data-label="現況與依據">${escapeHtml(item.status)}<br><span class="source-meta">依據：${escapeHtml(item.basis)}</span><br><span class="tag-muted" data-countdown-tag data-countdown-text="${escapeHtml(tagText)}">${escapeHtml(tagText)}</span></td>
     </tr>`;
   }).join('');
@@ -306,7 +306,7 @@ function renderTodoItem(item) {
   const recheck = toComparableDate(item.recheckAt);
   return `<li class="todo-item${open ? '' : ' is-done'}">
         <div class="todo-head"><span class="todo-date">${item.date}</span><b class="todo-name">${item.name}</b><span class="${open ? 'tag-todo' : 'tag-muted'}">${item.status}</span></div>
-        <p class="todo-action">${item.action}${item.url ? ` <a href="${item.url}" target="_blank" rel="noopener">開啟處理頁 →</a>` : ''}</p>
+        <p class="todo-action">${linkifyText(item.action)}${item.url ? ` <a href="${item.url}" target="_blank" rel="noopener">開啟處理頁 →</a>` : ''}</p>
         <p class="source-meta todo-checked">最近人工查核：${checked ? `<time datetime="${checked}">${checked}</time>` : '未記錄，請重查'}${recheck ? ` · 下次查核：<time datetime="${recheck}">${recheck}</time>` : ''}</p>
       </li>`;
 }
@@ -362,13 +362,15 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
         ${renderStoreBody(item, { note: item.highlight, condition: '' })}
       </li>`;
     }).join('');
-    return `<article class="card hours-city-group"><h3>${escapeHtml(city)}（${items.length} 家）</h3><ul class="day-food-list">${list}</ul></article>`;
+    // 59 家全展開手機要捲 27,000px；改成依城市收合，摘要列出城市與家數，點開才看店家卡。
+    return `<details class="card hours-city-group"><summary><h3>${escapeHtml(city)}（${items.length} 家）</h3><span class="hours-city-hint">營業時間、推薦菜色與導航</span></summary><ul class="day-food-list">${list}</ul></details>`;
   }).join('');
   const content = `
     ${renderDisclaimer('資料界線：米其林名單、營業時間與預算的來源', '米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不把它們當成固定資料。高價餐廳預算已於 2026-09-08 對照旅程試算表更新；每家的「查核紀錄」逐筆列出查核日期與來源，查不到一手來源的店家一律標「待確認」，訂位前仍看店家公告。')}
     <section class="section" id="daily-meals">
       <div class="section-heading"><span class="section-num">Daily meals</span><h2>八天三餐與備選</h2></div>
       <p class="lead">每日行程與今日卡共用這份安排。時刻為波蘭當地時間，候選不代表已訂位；每餐擇一，依交通與接單情況改備案。</p>
+      <nav class="day-jump" aria-label="跳到某一天的三餐">${days.map(day => `<a href="#meals-day-${day.n}"><b>Day ${day.n}</b><span>${escapeHtml(day.date.replace(/\s*\(.*\)/, ''))}</span></a>`).join('')}</nav>
       ${days.map(day => `<article class="card" id="meals-day-${day.n}"><h3>Day ${day.n} · ${escapeHtml(day.date)} · ${escapeHtml(day.city)}</h3>${renderMealList(day, dayMeals[day.n])}
         <details><summary>保留的備選、備餐與點心 · ${dayDining[day.n].filter(item => !item.meal).length} 家</summary><ul class="day-food-list">${dayDining[day.n].filter(item => !item.meal).map(item => `<li class="day-food-item">${renderStoreHead(item, item.role)}${renderStoreBody(item, { condition: '', timing: mealTiming(item, day) })}</li>`).join('')}</ul></details>
         <p><a href="../day-${String(day.n).padStart(2,'0')}.html#day-food">當日完整動線與餐廳導航 →</a></p></article>`).join('')}
@@ -379,7 +381,7 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
     </section>
     <section class="section" id="restaurant-hours">
       <div class="section-heading"><span class="section-num">Hours</span><h2>行程餐廳營業時間</h2></div>
-      <p class="lead">依城市分組；店名連到店家公告，「導航」開 Google Maps。查核日期、來源與菜單說明收在每家的「查核紀錄」裡。</p>
+      <p class="lead">依城市分組，點城市展開；店名連到店家公告，「導航」開 Google Maps，Day 連回排定的那一天。查核日期、來源與菜單說明收在每家的「查核紀錄」裡。</p>
       <div class="hours-city-list">${hoursHtml}</div>
     </section>
     <section class="section">
@@ -557,7 +559,7 @@ export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups
     .flatMap(group => group.items.map(item => ({ group: group.eyebrow, ...item })))
     .filter(item => isOpenTodoStatus(item.status))
     .slice(0, 12)
-    .map(item => `<li><b>${escapeHtml(item.name)}</b>（${escapeHtml(item.group)}）— ${escapeHtml(item.status)}<br>${escapeHtml(item.action)}</li>`)
+    .map(item => `<li><b>${escapeHtml(item.name)}</b>（${escapeHtml(item.group)}）— ${escapeHtml(item.status)}<br>${linkifyText(item.action)}</li>`)
     .join('');
 
   const workflowSteps = [

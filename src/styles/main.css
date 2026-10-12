@@ -6394,3 +6394,86 @@ h3 {
     font-size: 0.92rem;
   }
 }
+
+/* ══ 2026-10-12 全站 UX 複查 ═══════════════════════════════════
+   1. 本頁章節：手機把英文小標藏起來，標籤縮短後一列可放兩個，不再一個一行佔掉 300px。
+   2. 餐飲指南：八天三餐上方加 Day 1–8 跳轉列；營業時間名錄依城市收合。
+   3. 待辦與儀表板的長網址改成短連結後，仍保險地允許長字斷行。 */
+@media (max-width: 480px) {
+  .chapter-index ol a > span { display: none; }
+  .chapter-index ol a { padding: .35rem .8rem; font-size: .9rem; }
+}
+
+.day-jump {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .4rem;
+  margin: .9rem 0 1.25rem;
+}
+.day-jump a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: .3rem .2rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm, 8px);
+  background: var(--paper-light);
+  color: var(--ink);
+  text-decoration: none;
+  line-height: 1.2;
+}
+.day-jump a b { color: var(--accent-dark); font-family: var(--font-mono); font-size: .82rem; }
+.day-jump a span { color: var(--ink-soft); font-size: .78rem; }
+.day-jump a:hover,
+.day-jump a:focus-visible { border-color: var(--accent); background: var(--accent-pale); }
+@media (min-width: 760px) { .day-jump { grid-template-columns: repeat(8, minmax(0, 1fr)); } }
+#daily-meals > .card { scroll-margin-top: 6rem; }
+
+.hours-city-group > summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .25rem .75rem;
+  min-height: 44px;
+  cursor: pointer;
+  list-style: none;
+}
+.hours-city-group > summary::-webkit-details-marker { display: none; }
+.hours-city-group > summary h3 { margin: 0; }
+.hours-city-group > summary h3::before { content: "＋ "; color: var(--accent); font-family: var(--font-mono); }
+.hours-city-group[open] > summary h3::before { content: "－ "; }
+.hours-city-hint { color: var(--ink-soft); font-size: .85rem; }
+
+.check-list li,
+.todo-action { overflow-wrap: anywhere; }
+
+/* 倒數看板手機版：原本一筆六個欄位各佔一行（約 500px），改成
+   第一行「倒數｜日期｜類別」並排，項目與依據各佔整行；欄名小標只留給長欄位。 */
+@media (max-width: 700px) {
+  .countdown-table tbody tr {
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr);
+    align-items: center;
+    column-gap: .75rem;
+  }
+  .countdown-table td:nth-child(-n+3) { grid-row: 1; padding: .25rem 0; border-top: 0; }
+  .countdown-table td:nth-child(3) { justify-self: end; }
+  .countdown-table td:nth-child(-n+3)::before { display: none; }
+  .countdown-table td:nth-child(n+4) { grid-column: 1 / -1; }
+  .countdown-table td:nth-child(4) { border-top: 1px solid var(--line); }
+  .countdown-table td time { color: var(--ink-soft); font-family: var(--font-mono); font-size: .85rem; }
+}
+
+/* 城市頁餐廳表：查核紀錄收合，營業時間仍直接可見。 */
+.city-dining-record > summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--accent-dark);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  font-weight: 700;
+}
