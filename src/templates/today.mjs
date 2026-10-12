@@ -123,6 +123,7 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref }) {
       <p class="today-next-ended" data-next-ended hidden>今天已沒有更晚的預定行程。可查看其他時段或回住宿休息。</p>
       <label class="today-field">改看其他行程 <select data-step-picker aria-label="選擇要查看的行程">${steps.map((step,index) => `<option value="${index}">${escapeHtml(step.t)} · ${escapeHtml(step.label)}</option>`).join('')}</select></label>
       <p class="source-meta" data-next-mode>依行程表預覽；不是即時定位或交通資訊。</p>
+      <p class="today-next-meal" data-next-meal hidden><span data-next-meal-text></span> <a data-next-meal-nav href="#today-food" hidden>導航 ↗</a></p>
     </section>
     <nav class="today-actions" aria-label="今日快捷操作">
       <button class="today-action today-action-lead" type="button" data-today-action="next">下一站</button><button class="today-action" type="button" data-today-action="food">今天吃哪</button>

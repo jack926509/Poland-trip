@@ -74,6 +74,9 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
   const prev = root.querySelector('[data-date-prev]');
   const next = root.querySelector('[data-date-next]');
   const reset = root.querySelector('[data-date-reset]');
+  // 餐點開始超過這麼多分鐘就視為「已過」（今天吃哪收合）；剛到的餐不會被收掉。
+  // 放在函式內：本函式以 toString() 內嵌進頁面，模組層常數不會跟著進去。
+  const MEAL_DONE_AFTER = 60;
   let manualDate = null;
   let manualStep = null;
   let shown = 0;
@@ -145,6 +148,41 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
     });
     const hardEnded = card.querySelector?.('[data-hard-ended]');
     if (hardEnded) hardEnded.hidden = deadlineIndex !== -1;
+    // 今天吃哪：只在「旅途中且看的就是今天」時依華沙時間整理餐點——已開始超過 MEAL_DONE_AFTER 分鐘的餐
+    // 收成一行，第一個還沒過的餐標為 next 並排第一，「接下來去哪」下方同步顯示下一餐。
+    // 預覽別天、旅途外、手動換日時清掉標記，版面維持原樣。
+    const live = selection.mode === 'during' && !preview;
+    const meals = Array.from(card.querySelectorAll?.('[data-meal-label]') || []);
+    let nextMeal = null;
+    meals.forEach(item => {
+      // 有明確時刻：開始超過 MEAL_DONE_AFTER 分鐘算已過；相對時間（出礦後…）：後面第一個有時刻的步驟到了就算已過。
+      const at = item.getAttribute('data-meal-minute');
+      const before = item.getAttribute('data-meal-before-minute');
+      const past = live && (at !== null ? Number(at) < minute - MEAL_DONE_AFTER : before !== null && Number(before) <= minute);
+      if (live && !past && !nextMeal) nextMeal = item;
+      if (live) item.setAttribute('data-meal-state', past ? 'past' : item === nextMeal ? 'next' : 'upcoming');
+      else item.removeAttribute?.('data-meal-state');
+    });
+    const nextMealRow = card.querySelector?.('[data-next-meal]');
+    if (nextMealRow) {
+      nextMealRow.hidden = !nextMeal;
+      if (nextMeal) {
+        const name = nextMeal.querySelector('h4')?.textContent || '';
+        const map = nextMeal.querySelector('.day-food-map');
+        const text = nextMealRow.querySelector('[data-next-meal-text]');
+        const link = nextMealRow.querySelector('[data-next-meal-nav]');
+        if (text) text.textContent = `下一餐：${nextMeal.getAttribute('data-meal-time')} ${nextMeal.getAttribute('data-meal-label')} · ${name}`;
+        if (link) {
+          link.hidden = !map;
+          if (map) {
+            link.setAttribute('href', map.getAttribute('href'));
+            link.setAttribute('target', '_blank');
+            link.setAttribute('rel', 'noopener noreferrer');
+            link.setAttribute('aria-label', `在新視窗開啟 ${name} 的 Google Maps 導航`);
+          }
+        }
+      }
+    }
     // 已經是自動模式（看今天）時「回到今天」沒有作用，停用它才看得出目前狀態。
     if (reset) reset.disabled = manualDate === null && manualStep === null;
   }

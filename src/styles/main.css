@@ -3054,11 +3054,12 @@ a[href^="tel:"]:focus-visible {
 
   .table-editorial.table-schedule tr {
     display: grid;
-    grid-template-columns: 4.4rem auto minmax(0, 1fr);
+    grid-template-columns: 4.4rem minmax(0, 1fr);
     padding: 0.7rem 0.85rem;
   }
 
   .table-editorial.table-schedule td {
+    min-width: 0;
     padding: 0;
     border-top: 0;
   }
@@ -3078,29 +3079,22 @@ a[href^="tel:"]:focus-visible {
   }
 
   .table-editorial.table-schedule td:nth-child(2) {
-    grid-column: 2 / -1;
+    grid-column: 2;
     grid-row: 1;
   }
 
+  /* 花費與時長併在行程欄下方，可換行：原本 nowrap 把整列撐到 383px，右側被裁掉。 */
   .table-editorial.table-schedule td:nth-child(3),
   .table-editorial.table-schedule td:nth-child(4) {
-    grid-row: 2;
+    grid-column: 2;
     margin-top: 0.3rem;
     color: var(--ink-soft);
-    font-size: 0.8rem;
-    white-space: nowrap;
+    font-size: 0.85rem;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
-  .table-editorial.table-schedule td:nth-child(3) { grid-column: 2; }
-  .table-editorial.table-schedule td:nth-child(4) { grid-column: 3; }
-
-  .table-editorial.table-schedule td:nth-child(3):not([data-empty]) + td:not([data-empty])::before {
-    display: inline;
-    padding: 0 0.35rem;
-    content: "·";
-    font: inherit;
-    letter-spacing: 0;
-  }
+  .table-editorial.table-schedule td:nth-child(4) { margin-top: 0.1rem; }
 
   .table-schedule .timeline-note.is-clamped {
     display: -webkit-box;
@@ -6545,4 +6539,129 @@ h3 {
 }
 @media (max-width: 480px) {
   .operation-address .operation-address-head { flex-direction: column; gap: .4rem; }
+}
+
+/* ============================================================
+   UX 稽核前 8 項（2026-10-12）
+   ============================================================ */
+
+/* F4 時間表每列的導航按鈕：放在時間欄下方，44px 高，拇指好按。
+   文字含「導航」，nav.js 的回頂端按鈕遇到它會自動讓開。 */
+.step-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  margin-top: .35rem;
+  padding: .25rem .6rem;
+  border: 1px solid rgb(142 126 112 / 40%);
+  border-radius: 999px;
+  background: var(--paper-light);
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: .82rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.step-nav:hover,
+.step-nav:focus-visible { border-color: var(--accent); background: var(--accent-pale); }
+.table-schedule td.number .step-nav { display: flex; width: fit-content; }
+
+/* F2 訂位狀態徽章：整列最前面、44px 高，一眼看到要不要訂。文字色對底色皆 >= 4.5:1。 */
+.store-booking {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: .2rem .8rem;
+  border: 1px solid currentcolor;
+  border-radius: 999px;
+  font-size: .95rem;
+  font-weight: 800;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.store-booking-required { background: var(--surface-danger); color: #8a2a24; }
+.store-booking-recommended { background: var(--surface-warning); color: #6b4812; }
+.store-booking-walk-in { background: var(--surface-success); color: #2b5139; }
+.store-booking-booked { background: #2b5139; color: #fff; }
+
+/* F6 早餐膠囊：金底配白字只有 3.46:1，改用深金棕（約 6:1）。 */
+.day-food-list[data-three-meals] > [data-meal="breakfast"] { --meal-accent: #7d5a1f; }
+
+/* F1 今日卡的餐點：已過的餐收成一行，下一餐排第一並加醒目框（today.js 設定 data-meal-state）。 */
+.day-food-list[data-three-meals] > .day-food-item[data-meal-state="next"] {
+  order: -1;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+.day-food-list[data-three-meals] > .day-food-item[data-meal-state="past"] { order: 1; }
+.day-food-list[data-three-meals] > .day-food-item[data-meal-state="past"] > :not(.day-food-head) { display: none; }
+.day-food-list[data-three-meals] > .day-food-item[data-meal-state="past"] .store-badges,
+.day-food-list[data-three-meals] > .day-food-item[data-meal-state="past"] .day-food-map { display: none; }
+.day-food-list[data-three-meals] > .day-food-item[data-meal-state="past"] { padding-block: .5rem; opacity: .8; }
+.day-food-list[data-three-meals] > .day-food-item[data-meal-state="past"] h4 { font-size: 1rem; }
+.day-food-list[data-three-meals] > .day-food-item[data-meal-state="past"] h4::after { content: "（已過）"; color: var(--ink-soft); font-size: .85rem; font-weight: 700; }
+.today-next-meal[hidden],
+.today-next-meal a[hidden] { display: none; }
+.today-next-meal {
+  margin: .5rem 0 0;
+  padding-top: .5rem;
+  border-top: 1px solid var(--line);
+  font-size: .95rem;
+}
+.today-next-meal a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
+
+/* F9 離線橫幅：navigator.onLine 為 false 時由 nav.js 顯示。用 [hidden] 搭配明確 display，
+   避免 class 選擇器的 display 蓋掉 hidden（稽核教訓）。 */
+.offline-banner {
+  position: sticky;
+  top: 76px; /* nav.js 會依實際刊頭高度改寫 */
+  z-index: 99;
+  margin: 0;
+  padding: .6rem 1rem;
+  background: #3b2a24;
+  color: #fff;
+  font-size: .95rem;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
+}
+.offline-banner[hidden] { display: none; }
+
+/* F5 手機小字放大：戶外光線下 11–13px 看不清楚，至少約 13–14px。 */
+@media (max-width: 700px) {
+  .store-tag,
+  .store-status,
+  .store-live { font-family: inherit; font-size: .85rem; }
+  .source-meta,
+  .food-map-note,
+  .city-dining-table .food-map-note { font-size: .9rem; }
+  main li { font-size: max(.9rem, 1em); }
+  .store-dishes li { font-size: .9rem; }
+  .section-num,
+  .section-heading .section-num { font-size: .85rem; }
+}
+
+/* F7 按鈕型連結點擊區 >= 44px（原本 40px 或更小）。 */
+.operation-addresses .operation-address-actions a,
+.operation-address-more > summary { min-height: 44px; }
+
+/* 獨立成一行的按鈕型連結（首頁 Day 列、待處理、當日餐飲、來源、Google Maps 定位）：
+   感應區 44px 高；inline-flex 不改變外觀寬度，只把可點高度撐到 44px。 */
+.table-editorial th[scope="row"] > a,
+.table-editorial td > a:only-child,
+.journey-day-links li > a:last-child,
+.city-dining-plan a,
+.card > p > a:only-child,
+details > p.food-map-note a,
+details > p.source-meta a,
+li > p.source-meta a,
+.link-list a,
+.callout-note > a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }

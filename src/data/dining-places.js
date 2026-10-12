@@ -1,7 +1,10 @@
 // 門市主檔：地址、導航、營業時間與查核證據只在這裡維護。
+// booking（選填）：required 必訂｜recommended 建議訂｜walk-in 免訂｜booked 已訂。
+// 只在店家說明或官方資料有明確依據時才填；沒有依據就不加欄位（不顯示徽章）。目前全部尚未訂位，不得填 booked。
 export const diningPlaces = {
   "warsaw-hala-koszyki": {
     "id": "warsaw-hala-koszyki",
+    "booking": "walk-in",
     "cityKey": "warsaw",
     "name": "Hala Koszyki",
     "address": "ul. Koszykowa 63, Warszawa",
@@ -78,6 +81,7 @@ export const diningPlaces = {
   },
   "warsaw-wandal": {
     "id": "warsaw-wandal",
+    "booking": "required",
     "cityKey": "warsaw",
     "name": "WANDAL",
     "address": "門牌待確認",
@@ -446,6 +450,7 @@ export const diningPlaces = {
   },
   "warsaw-nuta": {
     "id": "warsaw-nuta",
+    "booking": "required",
     "cityKey": "warsaw",
     "name": "NUTA",
     "address": "Plac Trzech Krzyży 10/14, Warszawa",
@@ -1432,6 +1437,7 @@ export const diningPlaces = {
   },
   "warsaw-alon-omakase": {
     "id": "warsaw-alon-omakase",
+    "booking": "required",
     "cityKey": "warsaw",
     "name": "Alon Omakase",
     "address": "門牌待確認",
@@ -1464,6 +1470,7 @@ export const diningPlaces = {
   },
   "warsaw-rozbrat-20": {
     "id": "warsaw-rozbrat-20",
+    "booking": "required",
     "cityKey": "warsaw",
     "name": "Rozbrat 20",
     "address": "門牌待確認",
@@ -1649,6 +1656,7 @@ export const diningPlaces = {
   },
   "wroclaw-charlotte-pokoyhof": {
     "id": "wroclaw-charlotte-pokoyhof",
+    "booking": "walk-in",
     "cityKey": "wroclaw",
     "name": "Charlotte Pasaż Pokoyhof",
     "address": "Świętego Antoniego 2/4, Wrocław",
@@ -1697,6 +1705,7 @@ export const diningPlaces = {
   },
   "poznan-charlotte-krysiewicza": {
     "id": "poznan-charlotte-krysiewicza",
+    "booking": "walk-in",
     "cityKey": "poznan",
     "name": "Charlotte Krysiewicza",
     "address": "Krysiewicza 3a/27, Poznań",
@@ -1927,6 +1936,7 @@ export const diningPlaces = {
   },
   "krakow-charlotte-plac-szczepanski": {
     "id": "krakow-charlotte-plac-szczepanski",
+    "booking": "walk-in",
     "cityKey": "krakow",
     "name": "Charlotte Plac Szczepański",
     "address": "plac Szczepański 2, Kraków",

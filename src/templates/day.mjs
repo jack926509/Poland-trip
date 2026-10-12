@@ -185,13 +185,27 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   // 花費／時長常常沒有資料；手機把每欄拆成一行卡片，「—」照樣佔一整行
   // （稽核 M3：Day 2 20+ 步，每步多兩行約 60px）。桌機仍顯示「—」保留欄位
   // 對齊，手機用 data-empty 讓 CSS 直接不渲染那一行，不留空白。
-  const stepsHtml = day.steps.map(step => `
+  // 時間表每列的導航：沿用「現場地址」(operation.addresses) 與三餐主安排的導航網址，
+  // 不另建資料。一列只在恰好對到一個可靠地點時才給按鈕，對不到就不顯示，不猜。
+  const stepNavigation = step => {
+    const unresolved = operation?.unresolvedSteps?.find(item => item.label === step.label);
+    if (unresolved || /票面/.test(step.label)) return null;
+    const matches = (operation?.addresses || []).filter(item => item.stepLabels?.includes(step.label));
+    const place = matches.length === 1 && matches[0].reliable ? matches[0] : null;
+    const meal = (dayMeals[day.n] || []).find(item => item.stepId && item.stepId === step.id && item.placeId);
+    const href = safeHttpsUrl(place?.url) || safeHttpsUrl(meal?.map || meal?.mapUrl);
+    return href ? { href, name: place?.name || meal?.name || step.label } : null;
+  };
+  const stepsHtml = day.steps.map(step => {
+    const nav = stepNavigation(step);
+    return `
     <tr>
-      <td class="number" data-label="時間"><b>${step.t}</b></td>
+      <td class="number" data-label="時間"><b>${step.t}</b>${nav ? `<a class="step-nav" href="${nav.href}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(nav.name)} 的 Google Maps 導航">導航 ↗</a>` : ''}</td>
       <td data-label="行程"><b>${step.label}</b>${step.sub ? `<br><span class="timeline-note">${step.sub}</span>` : ''}</td>
       <td class="number" data-label="花費"${step.cost ? '' : ' data-empty'}>${step.cost || '—'}</td>
       <td class="number" data-label="時長"${step.dur ? '' : ' data-empty'}>${step.dur || '—'}</td>
-    </tr>`).join('');
+    </tr>`;
+  }).join('');
 
   const trainSegment = segmentForDay(day);
   const trainPrice = trainSegment?.price;

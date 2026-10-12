@@ -43,6 +43,12 @@ const STATUS_BADGES = {
   pending: ['待確認', 'pending'],
 };
 
+/**
+ * 訂位狀態（餐廳主檔 booking 欄位，選填）。只有這四種值；沒有依據就不填、不顯示徽章。
+ * 「已訂」要等使用者真的訂了才能填，目前全部尚未訂位。
+ */
+export const BOOKING_LABELS = { required: '必訂', recommended: '建議訂', 'walk-in': '免訂', booked: '已訂' };
+
 /** 2026-10-12 → 10/12；只用在徽章短字，完整日期仍在查核紀錄。 */
 function shortDate(value) {
   const match = /^\d{4}-(\d{2})-(\d{2})$/.exec(value || '');
@@ -57,7 +63,9 @@ export function renderStoreBadges(item) {
   if (!item.placeId && !item.cuisine) return '';
   const [label, key] = STATUS_BADGES[item.verificationStatus] || STATUS_BADGES.pending;
   const live = shortDate(item.liveCheckedAt);
-  return `<span class="store-badges">${item.cuisine ? `<span class="store-tag">${escapeHtml(item.cuisine)}</span>` : ''}<span class="store-status store-status-${key}">${label}</span>${live ? `<span class="store-live">${live} 確認仍營業</span>` : ''}</span>`;
+  const bookingLabel = Object.hasOwn(BOOKING_LABELS, item.booking) ? BOOKING_LABELS[item.booking] : '';
+  const booking = bookingLabel ? `<span class="store-booking store-booking-${item.booking}" data-booking="${item.booking}">${bookingLabel}</span>` : '';
+  return `<span class="store-badges">${booking}${item.cuisine ? `<span class="store-tag">${escapeHtml(item.cuisine)}</span>` : ''}<span class="store-status store-status-${key}">${label}</span>${live ? `<span class="store-live">${live} 確認仍營業</span>` : ''}</span>`;
 }
 
 function toMinutes(value) {
@@ -139,7 +147,12 @@ export function renderMealList(day, meals) {
     const step = day.steps.find(step => step.id === item.stepId);
     if (!step) throw new Error(`Day ${day.n} 找不到三餐步驟 ${item.stepId}`);
     const eyebrow = `${labels[item.meal]} · ${step.t}${item.condition ? ' · 先確認' : ''}`;
-    return `<li class="day-food-item" data-meal="${item.meal}"${item.placeId ? '' : ' data-self="true"'}>
+    // data-meal-minute：今日卡依華沙時間收合已過的餐用（step.t 不是 HH:MM 時不給，維持原樣）。
+    // 「出礦後」「抵站放行李後」這類相對時間沒有分鐘數：改記行程表中它後面第一個有時刻的步驟，
+    // 該時刻到了就代表這餐已經錯過（data-meal-before-minute）。
+    const minute = toMinutes(step.t);
+    const later = minute === null ? day.steps.slice(day.steps.indexOf(step) + 1).map(next => toMinutes(next.t)).find(value => value !== null) : undefined;
+    return `<li class="day-food-item" data-meal="${item.meal}" data-meal-label="${labels[item.meal]}" data-meal-time="${escapeHtml(step.t)}"${minute === null ? '' : ` data-meal-minute="${minute}"`}${later === undefined ? '' : ` data-meal-before-minute="${later}"`}${item.placeId ? '' : ' data-self="true"'}>
       ${renderStoreHead(item, eyebrow)}
       ${item.placeId ? renderStoreBody(item, { day, time: step.t }) : `<p>${escapeHtml(item.note)}</p>`}
     </li>`;

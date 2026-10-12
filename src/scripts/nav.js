@@ -242,6 +242,25 @@
   window.addEventListener('resize', syncScrollState, { passive: true });
   syncScrollState();
 
+  // 離線橫幅：網路不穩時要知道看到的是快取版。只用 navigator.onLine 與 online/offline 事件，
+  // 不跳 alert／confirm；恢復連線自動收起。
+  const offlineBanner = document.createElement('p');
+  offlineBanner.className = 'offline-banner';
+  offlineBanner.setAttribute('role', 'status');
+  offlineBanner.setAttribute('aria-live', 'polite');
+  offlineBanner.textContent = '目前離線，顯示已存的資料；地圖只有看過的區域';
+  offlineBanner.hidden = navigator.onLine !== false;
+  if (nav) nav.after(offlineBanner);
+  else document.body.append(offlineBanner);
+  const syncOffline = () => {
+    offlineBanner.hidden = navigator.onLine !== false;
+    // 橫幅吸頂時貼在刊頭下緣，不蓋住選單。
+    if (nav) offlineBanner.style.top = `${nav.offsetHeight}px`;
+  };
+  syncOffline();
+  window.addEventListener('offline', syncOffline);
+  window.addEventListener('online', syncOffline);
+
   if ('serviceWorker' in navigator && selfScript) {
     navigator.serviceWorker.register(new URL('../sw.js', selfScript.src)).catch(() => {});
   }
