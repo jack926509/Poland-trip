@@ -524,6 +524,7 @@ export const bookingTiers = [
     {name:'Rusiko 10/30 18:30（電話 +48 22 629 06 28 訂位）', url:'https://www.rusiko.pl/en/menu/'},
     {name:'Hankki 10/25 19:15（MojStolik 線上訂位）', url:'https://mojstolik.pl/restauracja/Hankki/f733c19bc164a5ad85848d96dc851be9'},
     {name:'Specjały Regionalne 10/24 18:30（TheFork 訂位）', url:'https://www.thefork.com/restaurant/specjaly-regionalne-restauracja-polska-stare-miasto-r858538'},
+    {name:'Pimiento 10/25 13:00 兩位（尚未訂；官網 ZAREZERWUJ 或電話 +48 517 475 818）', url:'https://pimiento.pl/stary-kleparz/'},
     {name:'Carla Trattoria Moderna 10/29 14:00 兩位（zjedz.my 線上訂位）', url:'https://zjedz.my/carla-trattoria-moderna'},
   ]},
 ];
@@ -558,10 +559,11 @@ export const todoGroups = [
     ],
   },
   {
-    id: 'dining', title: '餐飲訂位', eyebrow: 'Dining · 7 項',
+    id: 'dining', title: '餐飲訂位', eyebrow: 'Dining · 8 項',
     intro: '餐廳營業與臨時包場以店家訂位頁公告為準。',
     items: [
       {checkedAt:'2026-10-10', recheckAt:'2026-10-22', date:'10/24', name:'Specjały Regionalne 18:30 晚餐', status:'尚未訂位', action:'時段以店家卡為準（2026-10-10 查：品牌門市頁週五、週六 11:30–23:00；polishcuisine.pl 列 12:00–23:30），10/24 18:30 兩個版本都有營業。抵達日不想排隊就先在 TheFork 訂位：https://www.thefork.com/restaurant/specjaly-regionalne-restauracja-polska-stare-miasto-r858538', url:'https://www.google.com/maps/search/?api=1&query=Specja%C5%82y%20Regionalne%20Nowy%20%C5%9Awiat%2044%2C%20Warszawa'},
+      {checkedAt:'2026-10-12', recheckAt:'2026-10-22', date:'10/25', name:'Pimiento 13:00 午餐', status:'尚未訂位', action:'Świętego Filipa 21，午餐菜單 13:00 起才供應，週日只開到 15:00，沒訂到可能吃不到午餐菜單。用官網 ZAREZERWUJ 按鈕（https://pimiento.pl/stary-kleparz/）或電話 +48 517 475 818 訂 10/25 13:00 兩位；訂不到改 Hotel Polonia 餐廳。', url:'https://pimiento.pl/stary-kleparz/'},
       {checkedAt:'2026-10-10', recheckAt:'2026-10-22', date:'10/25', name:'Hankki 19:15 晚餐', status:'尚未訂位', action:'2026-10-10 查 Michelin 與 MojStolik：週日 13:00–21:00，19:15 在營業時間內；最後點餐時間查不到。建議用 MojStolik 線上訂位（https://mojstolik.pl/restauracja/Hankki/f733c19bc164a5ad85848d96dc851be9）或電話 +48 798 399 851，訂不到改 MOLÁM 或 NOAH。', url:'https://guide.michelin.com/mx/es/lesser-poland/krakow/restaurante/hankki'},
       {checkedAt:'2026-10-12', recheckAt:'2026-10-22', date:'10/26', name:'Mr. Jerry 18:30 晚餐（Beef Wellington）', status:'尚未訂位', action:'奧斯威辛返城後的晚餐。2026-10-12 複查：官網確認 Jagiellońska 5 與招牌 Beef Wellington，週一 15:00–22:00（多數目錄一致，官網各區塊矛盾），價格未公開；訂位時一併確認 10/26 有供應 Wellington（電話 +48 533 836 624）。訂不到改 Pod Aniołami（每日 13:00–23:00）；FOLGA 週一可能休息，要去先打電話。', url:'https://www.mrjerry.pl/rezerwacja-krakow/'},
       {checkedAt:'2026-10-10', recheckAt:'2026-10-22', date:'10/27', name:'Bistro Posolone 出礦後午餐', status:'待確認營業', action:'2026-10-10 查得：位於鹽礦園區 Park Kingi 6，官方寫「每天依鹽礦開放時間」（約 08:00–18:00），確切時刻未查到。菜單有披薩、漢堡、湯、沙拉、薯條，30 分鐘內吃完就點湯、沙拉或漢堡，才趕得上返回車站與 16:45 IC 3830；可電話 +48 12 278 75 20 確認，來不及改自備餐。', url:'https://www.google.com/maps/search/?api=1&query=Bistro%20Posolone%2C%20Wieliczka'},

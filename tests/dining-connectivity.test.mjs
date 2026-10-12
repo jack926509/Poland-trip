@@ -63,7 +63,17 @@ test('拆分後每間速食都有單一地址、ID、導航和可見提醒', () 
     const html=renderFastFoodDayList([city],{branches:dining.fastFoodBranches,chains:dining.fastFoodChains,hubs:dining.fastFoodHubs});
     for(const item of items){
       assert.ok(!item.address.includes('／'),item.id);
-      assert.ok(/\/maps\/place\//.test(item.map)||decodeURIComponent(item.map).includes(item.address),item.id); // 精準 place 連結（Pasibus 等已定案分店）不含地址字串
+      if(/\/maps\/place\//.test(item.map)){ // 精準 place 連結不含地址字串：改驗店名主要字詞 + 座標落在該城市框內
+        const norm=t=>t.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/ł/g,'l').toLowerCase();
+        const mainWord=norm(item.chain.split(/\s+/)[0]);
+        assert.ok(norm(decodeURIComponent(item.map).replace(/\+/g,' ')).includes(mainWord),`${item.id}: place 連結不含店名「${mainWord}」`);
+        const m=item.map.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/)||item.map.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/);
+        assert.ok(m,`${item.id}: place 連結缺座標`);
+        const centers={warsaw:[52.23,21.01],krakow:[50.06,19.94],wroclaw:[51.11,17.03],poznan:[52.41,16.93]};
+        const c=centers[item.cityKey];
+        assert.ok(c,`${item.id}: 未知 cityKey`);
+        assert.ok(Math.abs(+m[1]-c[0])<=0.2&&Math.abs(+m[2]-c[1])<=0.2,`${item.id}: place 座標不在 ${item.cityKey} 範圍`);
+      } else assert.ok(decodeURIComponent(item.map).includes(item.address),item.id);
       assert.ok(html.includes(item.note.replaceAll('&','&amp;')),item.id);
       assert.ok(html.includes(item.hours.replaceAll('&','&amp;')),item.id);
     }
@@ -73,7 +83,7 @@ test('拆分後每間速食都有單一地址、ID、導航和可見提醒', () 
   for(const hub of dining.fastFoodHubs) for(const id of hub.branchIds){
     const branch=branches.find(x=>x.id===id);
     assert.ok(branch && branch.cityKey===hub.cityKey);
-    assert.ok(hub.address.startsWith(branch.address),`${hub.place}: ${id}`);
+    assert.ok(hub.address.startsWith(branch.address.split(',')[0]),`${hub.place}: ${id}`);
   }
 });
 

@@ -525,12 +525,12 @@ test('2026-08-09 官方盤查會移除未能證實的場次、價格與閉館敘
   assert.ok(cityNotices.wroclaw.some(item => item.text.includes('availability calendar')));
 });
 
-test('待辦事項頁將 19 項依三類整理，並在實用資訊導覽可進入', () => {
+test('待辦事項頁將 20 項依三類整理，並在實用資訊導覽可進入', () => {
   // 2026-10-07 取消牛角麵包博物館，移除原本只放它的第四類。
   assert.deepEqual(todoGroups.map(group => [group.id, group.items.length]), [
-    ['rail', 5], ['attractions', 7], ['dining', 7],
+    ['rail', 5], ['attractions', 7], ['dining', 8],
   ]);
-  assert.equal(todoGroups.flatMap(group => group.items).length, 19);
+  assert.equal(todoGroups.flatMap(group => group.items).length, 20);
 
   const html = read('practical/todos.html');
   for (const label of ['城際交通', '主要景點', '餐飲訂位']) {
@@ -637,7 +637,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   });
 
   assert.equal(trains.length, 5);
-  assert.deepEqual(bookingTiers.map(tier => tier.items.length), [7, 5, 5]);
+  assert.deepEqual(bookingTiers.map(tier => tier.items.length), [7, 5, 6]);
   assert.deepEqual({ out: flights.out.length, back: flights.back.length }, { out: 5, back: 5 });
   assert.equal(stay.length, 5);
   assert.equal(reservations.length, 8);
@@ -826,7 +826,7 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
   const rawTodoCount = todoGroups.reduce((total, group) => total + group.items.length, 0);
   const todoCount = todoGroups.reduce((total, group) =>
     total + group.items.filter(item => !['已訂妥', '已完成', '已購票'].includes(item.status)).length, 0);
-  assert.equal(todoCount, 14, '四段已購火車與 Auschwitz 導覽不可算進待辦');
+  assert.equal(todoCount, 15, '四段已購火車與 Auschwitz 導覽不可算進待辦');
 
   assert.ok(!html.includes('出發準備度'));
   assert.ok(!html.includes('00 / Readiness'));
@@ -1807,7 +1807,8 @@ test('每日餐位全部出現在對應城市指南，且雙向連結對得上',
   for (const [day, items] of Object.entries(dayDining)) {
     for (const item of items) {
       if (item.cityGuide === false) continue;
-      const city = item.cityKey || detectCity(item.address, item.map); // 與 plannedMealsFor 同一條判斷：主檔有 cityKey 就用它（精準 place 連結不含城市字樣）
+      const city = detectCity(item.address, item.map); // 從地址／連結獨立判斷城市，不拿 cityKey 驗 cityKey
+      if (item.cityKey) assert.equal(city, item.cityKey, `Day ${day}「${item.name}」地址判出的城市與 cityKey 不一致`);
       assert.ok(city, `Day ${day}「${item.name}」判斷不出城市，將從城市指南消失`);
       assert.ok(tables[city].some(entry => entry.name === item.name),
         `Day ${day}「${item.name}」沒有進到 ${cityNames[city]} 的餐廳表`);
