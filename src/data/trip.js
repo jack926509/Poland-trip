@@ -564,7 +564,7 @@ export const reservations = [
   {when:'✅ 已完成', what:'Auschwitz 英文官方導覽 — 10/26 10:30 個人 educator 導覽（約 3 小時 45 分，2 人）已訂妥。入場憑電子入場證＋證件，出發前存離線。'},
   {when:'❗現在就查／訂', what:'Wieliczka 鹽礦英文 Tourist Route 10:00 場 — 10/27 英文場、實際票價與庫存以官方日期選擇器為準；不要用舊價格或開賣週期取代訂票結果。'},
   {when:'現在可訂', what:'皇家城堡 — 已查證二至日 10:00–18:00、最後入場 17:00；Day 7 已改為 10:00 第一站（zamek-krolewski.pl）'},
-  {when:'現在可先訂', what:'米其林與熱門餐廳：Bottiglieria 1881（二星，最搶）、BABA / Most（樂斯拉夫僅停留一晚零彈性）、WANDAL、Mr. Jerry（10/26 威靈頓牛排）、Rusiko（10/30）'},
+  {when:'現在可先訂', what:'行程晚餐：10/26 Mr. Jerry（威靈頓）、10/30 Rusiko 先訂，再訂 10/25 Hankki 與 10/24 Specjały；米其林星級餐廳（Bottiglieria 1881、BABA／Most、WANDAL）未排入行程，想加需另外訂並重排晚餐'},
   {when:'火車票：已購 4／4 段', what:'App 票券清單已有 10/25 EIP 5300（Warszawa Centralna 08:40）、10/27 IC 3830（Kraków Główny 16:45）、10/28 IC 260（Wrocław Główny 19:10）、10/29 EIC 8104（Poznań Główny 17:40）。四段抵達時間、艙等、車廂、座位與票價待查票券詳細頁。'},
   {when:'現在可查／訂', what:'辛德勒工廠 10/25 場次已進個人網路票 90 天窗口；華沙起義博物館與皇家城堡均以官方售票頁顯示的指定日庫存為準。'},
   {when:'出發前 1 週', what:'把上述所有票價、特別閉館與開放時間再確認一次 — 門票速查與城市指南已於 2026-09-17／09-18 全面複查過，臨時活動與維修仍可能變動'},
@@ -581,10 +581,10 @@ export const reservations = [
 export const deadlines = [
   {
     id: 'dining-michelin', date: '2026-10-02', category: '餐飲',
-    title: '米其林與熱門餐廳訂位',
-    action: 'Bottiglieria 1881（二星）最搶，先訂；再處理華沙一星與 BABA／Most（樂斯拉夫只停留一晚，訂不到就沒有第二次機會）。',
-    status: '尚未訂位', url: 'https://guide.michelin.com/en/pl/restaurants',
-    basis: '行前提醒「二星＋各一星出發前 3–4 週訂；華沙 splurge 級 3–5 週」，取窗口下緣 3 週由 10/23 台灣出發日回推；建議窗口自 9/18 起。',
+    title: '行程餐廳訂位（Mr. Jerry、Rusiko、Hankki、Specjały）',
+    action: '先訂兩家晚餐主選：10/26 Mr. Jerry 18:30（電話 +48 533 836 624，順便確認當天有 Beef Wellington）、10/30 Rusiko 18:30（+48 22 629 06 28）；再訂 10/25 Hankki 19:15（MojStolik 或 +48 798 399 851）與 10/24 Specjały Regionalne 18:30（TheFork）。米其林星級餐廳未排入行程，想加再另外訂。',
+    status: '尚未訂位', url: 'https://www.mrjerry.pl/rezerwacja-krakow/',
+    basis: '行前提醒「熱門餐廳出發前 3–4 週訂」，取窗口下緣 3 週由 10/23 台灣出發日回推；2026-10-12 依改排後的每日晚餐更新店名。',
   },
   {
     id: 'ticket-wieliczka', date: '2026-10-02', category: '門票',

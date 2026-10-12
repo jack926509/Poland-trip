@@ -154,8 +154,8 @@ const databaseEntriesBase = [
   {
     id: 'accessibility-station-assistance', section: 'accessibility', category: 'practical', cityKey: 'PL',
     title: '車站無障礙與協助',
-    summary: 'PKP PLK Passenger Portal 可查部分車站對行動不便旅客的設施與可達性；需要協助者應依營運單位規則在訂票前申請。',
-    status: 'recheck', sourceUrl: 'https://portalpasazera.pl/en/KatalogStacji', verifiedAt: '2026-08-08', recheckAt: '2026-10-10',
+    summary: 'PKP PLK Passenger Portal 可查部分車站對行動不便旅客的設施與可達性。搭 PKP Intercity 需要協助者，官網要求至少在出發前 24 小時申請（舊頁面仍寫 48 小時，保守以 48 小時提出），24 小時客服 +48 42 205 45 31 或 19 757。',
+    status: 'recheck', sourceUrl: 'https://www.intercity.pl/en/wyd/informacje-dla-niepelnosprawnych.html', verifiedAt: '2026-10-12', recheckAt: '2026-10-22',
     offlineNote: '每天保留少走路版：叫車或低地板交通，並在出發前確認電梯與協助狀態。', private: false,
   },
   {
