@@ -28,7 +28,8 @@ python3 -m http.server 8000 --directory dist
 | 餐飲門市、每日安排與分類 | `src/data/dining-places.js`、`src/data/day-dining.js`、`src/data/dining.js` |
 | 連鎖速食品牌、獨立門市與商場 | `src/data/fast-food.js` |
 | 城市、地圖與照片資料 | `src/data/cities.js`、`src/data/day-maps.js`、`src/data/city-gallery.js` |
-| 門票、交通、伴手禮與實用資訊 | `src/data/tickets.js`、`transit.js`、`shopping.js`、`essentials.js` |
+| 門票與官方購票入口 | `src/data/venues.js`（票價／時段）、`src/data/ticket-purchases.js`（購票入口／參觀方式）、`src/data/tickets.js`（頁面資料） |
+| 交通、伴手禮與實用資訊 | `src/data/transit.js`、`shopping.js`、`essentials.js` |
 | 超市品牌、候選地址與採買商品 | `src/data/groceries.js` |
 | 自由行資料庫 | `src/data/travel-database.js` |
 | 頁面版型與共用元件 | `src/templates/` |
@@ -94,6 +95,7 @@ mkdir _site
 
 - `src/data/trip.js` 的 `todoGroups` 是人工訂票紀錄。查核後更新 `status`、`checkedAt`（實際查核日）、`recheckAt`（下次查核期限）、`action` 與 `url`，不要用建置或部署日期代填查核日。
 - 「可查／購」仍是未完成。收到訂票確認後才改為「已訂妥」或「已完成」，並同步核對 `days`、`trains`、`reservations` 與 `bookingTiers`。票號、訂位代碼與付款資料另存私人票券。
+- 官方購票入口集中在 `ticket-purchases.js`；`todoGroups` 用 `ticketPurchaseId` 引用同一入口。入口的 `checkedAt` 只表示已核對官方頁，不能取代購票紀錄日期或即時庫存。現場售票、免費、已含與閉館列保持 `purchaseUrl: null`；其他日期／票種入口使用 `otherDatesUrl`。POLIN 僅列附件參考，不加入主行程或票券待辦。完整文件快照見 `docs/poland-attraction-tickets.md`。
 - 餐飲門市事實維護於 `dining-places.js`（`id/cityKey/address/map/hours/sourceUrl/checkedAt/verificationStatus`）；`day-dining.js` 只保存 `placeId/role/note/stepId/planStatus`，`trip.js` 的 `eat` 也引用 `placeId`。地址、時段或店名不要回填到每日安排。`resolveDining` 供各頁共用，城市表與餐廳搜尋使用相同合併資料。
 - 速食品牌與單店維護於 `fast-food.js`；每個分店一個 ID、一個地址與導航，商場以 `branchIds` 關聯；不同分店不得以品牌名合併。
 - `stepId` 只能指向當日既有步驟 ID；未排餐段者保持 null，頁面會明示候選未排時段，不可假設景點間有用餐空檔。

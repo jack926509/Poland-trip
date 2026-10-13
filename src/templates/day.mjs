@@ -379,7 +379,7 @@ ${coverHtml}
       ${confirmed.length ? `<div class="callout-good"><b>已完成預約</b>${renderList(confirmed, item => `<li>${escapeHtml(item)}</li>`)}</div>` : ''}
       ${mustBookHtml}
       ${warnHtml}
-      <p class="action-links"><a href="practical/todos.html">全部待辦與查核狀態 →</a><a href="practical/tickets.html">門票價格與開放時間 →</a></p>
+      <p class="action-links"><a href="practical/todos.html">全部待辦與查核狀態 →</a><a href="practical/tickets.html">官方購票入口、門票價格與開放時間 →</a></p>
     </section>
     ${constraintHtml}
     ${dayMap ? renderInteractiveMap({ id: `map-day-${day.n}`, title: `Day ${day.n} 行程地圖`, mapData: dayMap, mapChecks, legend, note: dayMap.note }) : ''}

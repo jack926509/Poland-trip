@@ -1,6 +1,7 @@
 import { resolveDining } from './dining-places.js';
 import { segments, auschwitzBus, lajkonikFare } from './rail.js';
 import { resolveVenue } from '../lib/venues.mjs';
+import { ticketPurchaseById } from './ticket-purchases.js';
 // trip.js — 行程資料源頭：meta、flights、days×8、stay、trains、bookingTiers、reservations
 // 來源：redesign/data.js（原 window.TRIP 物件字面值），轉為 ES module 具名匯出。
 // 2026-08-09 依景點、博物館與交通營運單位公開資料重新盤查。
@@ -504,8 +505,8 @@ export const railPurchaseSteps = [
 
 export const bookingTiers = [
   {tier:'第一優先', note:'四段城際火車與 Auschwitz 導覽已訂妥；其餘依官方售票系統確認指定日期與庫存', items:[
-    {name:'Auschwitz 官方英文導覽（10/26 10:30 已訂妥）', url:'https://visit.auschwitz.org/'},
-    {name:'Wieliczka 鹽礦英文團（現在即可訂）', url:'https://www.wieliczka-saltmine.com/'},
+    {name:'Auschwitz 官方英文導覽（10/26 10:30 已訂妥）', url:ticketPurchaseById('krakow-auschwitz').purchaseUrl},
+    {name:'Wieliczka 鹽礦英文團（現在即可訂）', url:ticketPurchaseById('krakow-wieliczka').purchaseUrl},
     {name:`Lajkonik 往返巴士（去程 ${lajkonikOutboundAdopted.dep} → ${lajkonikOutboundAdopted.arr}、回程 ${lajkonikInboundAdopted.dep} → ${lajkonikInboundAdopted.arr}，皆曾查得、付款前重查）`, url:'https://www.lajkonikbus.pl/'},
     {name:'華沙 → 克拉科夫 EIP 5300（已購票；核對抵達時間與座位）', url:'https://www.intercity.pl/en/'},
     {name:'克拉科夫 → 樂斯拉夫 IC 3830（已購票；核對抵達時間與座位）', url:'https://www.intercity.pl/en/'},
@@ -513,11 +514,11 @@ export const bookingTiers = [
     {name:'波茲南 → 華沙 EIC 8104（已購票；核對抵達時間與座位）', url:'https://www.intercity.pl/en/'},
   ]},
   {tier:'第二優先', note:'❗全部尚未訂 · 辛德勒工廠現已可查／購，其餘依官方售票頁', items:[
-    {name:'辛德勒工廠（10/25 已進個人網路票 90 天窗口；最後入場 18:30）', url:'https://muzeumkrakowa.pl/en/branches/oskar-schindlers-enamel-factory'},
-    {name:'Wawel 城堡短路線 15:15 左右時段票', url:'https://wawel.krakow.pl/en/what-to-see'},
-    {name:'華沙起義博物館', url:'https://www.1944.pl/en'},
-    {name:`皇家城堡（官網複查二至日 ${royalCastleVenue.hours.opens}–${royalCastleVenue.hours.closes}，末入 ${royalCastleVenue.hours.lastEntry}）`, url:'https://www.zamek-krolewski.pl/en'},
-    {name:'拉茨瓦維採全景畫', url:'https://mnwr.pl/en/category/branches/panorama-raclawicka/'},
+    {name:'辛德勒工廠（10/25 已進個人網路票 90 天窗口；最後入場 18:30）', url:ticketPurchaseById('krakow-schindler').purchaseUrl},
+    {name:'Wawel 城堡短路線 15:15 左右時段票', url:ticketPurchaseById('krakow-wawel-castle').purchaseUrl},
+    {name:'華沙起義博物館', url:ticketPurchaseById('warsaw-rising-museum').purchaseUrl},
+    {name:`皇家城堡（官網複查二至日 ${royalCastleVenue.hours.opens}–${royalCastleVenue.hours.closes}，末入 ${royalCastleVenue.hours.lastEntry}）`, url:ticketPurchaseById('warsaw-royal-castle').purchaseUrl},
+    {name:'拉茨瓦維採全景畫', url:ticketPurchaseById('wroclaw-panorama').purchaseUrl},
   ]},
   {tier:'餐廳與備案', note:'❗全部尚未訂 · 優先訂 Mr. Jerry 與 Soul Kitchen，再訂 Hankki 與 Specjały', items:[
     {name:'Mr. Jerry 10/26 18:30（Beef Wellington；官網訂位）', url:'https://www.mrjerry.pl/rezerwacja-krakow/'},
@@ -549,13 +550,13 @@ export const todoGroups = [
     id: 'attractions', title: '主要景點', eyebrow: 'Tickets · 7 項',
     intro: '指定日期的場次與庫存會變動；付款完成後請下載離線票券並核對入場時間。',
     items: [
-      {checkedAt:null, recheckAt:null, date:'10/25', name:'Wawel 城堡 15:15', status:'尚未訂', action:'以官方售票頁選 10/25 15:15 左右、可於 16:15 前結束的短路線；完整 2 小時路線會壓縮到辛德勒工廠的移動時間。', url:'https://wawel.krakow.pl/en/what-to-see'},
-      {checkedAt:null, recheckAt:null, date:'10/25', name:'辛德勒工廠 17:30', status:'現可查／購', action:'10/25 已進個人網路票 90 天窗口；以官方售票頁的可售時段為準。', url:'https://muzeumkrakowa.pl/en/branches/oskar-schindlers-enamel-factory'},
-      {checkedAt:'2026-09-09', recheckAt:null, date:'10/26', name:'Auschwitz 英文官方導覽', status:'已訂妥', action:'10:30 個人 educator 導覽（英文），官方標示約 3 小時 45 分，2 人。電子入場證存離線，入場須同時出示證件。', url:'https://visit.auschwitz.org/'},
-      {checkedAt:null, recheckAt:null, date:'10/27', name:'Wieliczka 鹽礦英文團', status:'需查／購', action:'在官方日期選擇器確認英文場、票價與庫存。2026-10-06 官方售票系統查詢時，10/27 英文場自 08:30 起每 30 分鐘一場，10:00 場當時有名額（不保證購票時仍有位）；英語 Tourist Route 全票 143／優待 121 PLN。', url:'https://www.wieliczka-saltmine.com/'},
-      {checkedAt:'2026-09-24', recheckAt:null, date:'10/28', name:'拉茨瓦維採全景畫 11:30', status:'場次已查／尚未訂', action:'9/24 官方 10/28 日期下曾列 11:30 場、85 個名額（30 分鐘一場）；這是歷史快照，10/06 未取得目前庫存，付款前重查。', url:'https://bilety.mnwr.pl/?lang=en'},
-      {checkedAt:'2026-10-12', recheckAt:null, date:'10/30', name:'華沙皇家城堡 11:30', status:'尚未訂', action:'選 11:30 入場的 Royal Route；10 月起最後入場 16:00（2026-10-12 官網），起義博物館與無名塚之後接著走。', url:'https://www.zamek-krolewski.pl/en'},
-      {checkedAt:'2026-10-12', recheckAt:null, date:'10/30', name:'華沙起義博物館 08:30', status:'尚未訂', action:'週五 08:00 開館，訂 08:30 入場（一早人最少）；看約 2 小時，10:30 前離館接無名塚與皇家城堡。', url:'https://www.1944.pl/en'},
+      {checkedAt:null, recheckAt:null, date:'10/25', ticketPurchaseId:'krakow-wawel-castle', name:'Wawel 城堡 15:15', status:'尚未訂', action:'以官方售票頁選 10/25 15:15 左右、可於 16:15 前結束的短路線；完整 2 小時路線會壓縮到辛德勒工廠的移動時間。', url:ticketPurchaseById('krakow-wawel-castle').purchaseUrl},
+      {checkedAt:null, recheckAt:null, date:'10/25', ticketPurchaseId:'krakow-schindler', name:'辛德勒工廠 17:30', status:'現可查／購', action:'10/25 已進個人網路票 90 天窗口；以官方售票頁的可售時段為準。', url:ticketPurchaseById('krakow-schindler').purchaseUrl},
+      {checkedAt:'2026-09-09', recheckAt:null, date:'10/26', ticketPurchaseId:'krakow-auschwitz', name:'Auschwitz 英文官方導覽', status:'已訂妥', action:'10:30 個人 educator 導覽（英文），官方標示約 3 小時 45 分，2 人。電子入場證存離線，入場須同時出示證件。', url:ticketPurchaseById('krakow-auschwitz').purchaseUrl},
+      {checkedAt:null, recheckAt:null, date:'10/27', ticketPurchaseId:'krakow-wieliczka', name:'Wieliczka 鹽礦英文團', status:'需查／購', action:'在官方日期選擇器確認英文場、票價與庫存。2026-10-06 官方售票系統查詢時，10/27 英文場自 08:30 起每 30 分鐘一場，10:00 場當時有名額（不保證購票時仍有位）；英語 Tourist Route 全票 143／優待 121 PLN。', url:ticketPurchaseById('krakow-wieliczka').purchaseUrl},
+      {checkedAt:'2026-09-24', recheckAt:null, date:'10/28', ticketPurchaseId:'wroclaw-panorama', name:'拉茨瓦維採全景畫 11:30', status:'場次已查／尚未訂', action:'9/24 官方 10/28 日期下曾列 11:30 場、85 個名額（30 分鐘一場）；這是歷史快照，10/06 未取得目前庫存，付款前重查。', url:ticketPurchaseById('wroclaw-panorama').purchaseUrl},
+      {checkedAt:'2026-10-12', recheckAt:null, date:'10/30', ticketPurchaseId:'warsaw-royal-castle', name:'華沙皇家城堡 11:30', status:'尚未訂', action:'選 11:30 入場的 Royal Route；10 月起最後入場 16:00（2026-10-12 官網），起義博物館與無名塚之後接著走。', url:ticketPurchaseById('warsaw-royal-castle').purchaseUrl},
+      {checkedAt:'2026-10-12', recheckAt:null, date:'10/30', ticketPurchaseId:'warsaw-rising-museum', name:'華沙起義博物館 08:30', status:'尚未訂', action:'週五 08:00 開館，訂 08:30 入場（一早人最少）；看約 2 小時，10:30 前離館接無名塚與皇家城堡。', url:ticketPurchaseById('warsaw-rising-museum').purchaseUrl},
     ],
   },
   {
@@ -604,21 +605,21 @@ export const deadlines = [
     id: 'ticket-wieliczka', date: '2026-10-02', category: '門票',
     title: 'Wieliczka 鹽礦 10/27 英語團',
     action: '於官方日期選擇器確認 10/27 英語場次、票價與庫存後購票；通用頁最低起價不是 10/27 英語場實際票價。',
-    status: '需查／購', url: 'https://www.wieliczka-saltmine.com/individual-tourist/useful-information/ticket-prices-and-visiting-hours',
+    status: '需查／購', url: ticketPurchaseById('krakow-wieliczka').purchaseUrl,
     basis: '訂票優先順序列為第一優先「現在即可訂」；指定日場次有限，取出發前 3 週為行動下限。',
   },
   {
     id: 'ticket-schindler', date: '2026-10-02', category: '門票',
     title: '辛德勒工廠 10/25 場次',
     action: '10/25 已進個人網路票 90 天窗口，依官方售票頁可售時段購票；最後入場 18:30。',
-    status: '現可查／購', url: 'https://muzeumkrakowa.pl/oddzialy/fabryka-emalia-oskara-schindlera',
+    status: '現可查／購', url: ticketPurchaseById('krakow-schindler').purchaseUrl,
     basis: '訂票優先順序第二優先已註記「10/25 已進個人網路票 90 天窗口」；取出發前 3 週為行動下限。',
   },
   {
     id: 'ticket-warsaw-trio', date: '2026-10-09', category: '門票',
     title: '華沙兩館 10/30 指定日票',
     action: '起義博物館 08:30、皇家城堡 11:30（10 月起末入 16:00），依各官方售票頁的 10/30 可售時段一次訂齊；瓦津基水上宮殿週五免費、國家博物館現場買即可。',
-    status: '尚未訂', url: 'https://www.zamek-krolewski.pl/en',
+    status: '尚未訂', url: ticketPurchaseById('warsaw-royal-castle').purchaseUrl,
     basis: 'Day 7 兩館（皇家城堡、起義博物館）皆已查得開放時間但均未訂；取出發前 2 週為行動下限。',
   },
   {

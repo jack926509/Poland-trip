@@ -8,6 +8,8 @@
 // 地址地標也在裡面，供 travel-database.js／day-maps.js 用），fares 只取
 // 有 prices 的票券景點，過濾條件是新加的，其餘邏輯不變。
 import { venues, ticketsByCityExtras } from './venues.js';
+import { ticketPurchaseForVenue } from './ticket-purchases.js';
+export { ticketPurchaseGroups, ticketPurchases, ticketPurchaseCheckedAt } from './ticket-purchases.js';
 
 // fares：Object.values 依 venues.js 的 key 插入順序回傳，與原本 fares 陣列的
 // 城市分組順序（華沙→克拉科夫→樂斯拉夫→波茲南）一致；華沙起義博物館
@@ -19,6 +21,7 @@ export const fares = Object.values(venues).filter(venue => venue.prices).map(ven
   note: venue.prices.note,
   officialUrl: venue.officialUrl,
   mapUrl: venue.map,
+  purchaseUrl: ticketPurchaseForVenue(venue.id)?.purchaseUrl || null,
 }));
 
 // ticketsByCity：原本的「城市分組行程摘要」，多數項目對應到 venues.js 的

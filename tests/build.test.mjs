@@ -1989,7 +1989,7 @@ test('實用資料與每日行程、城市指南互相連結', () => {
   for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
     const body = stripNav(read(file));
     for (const target of ['practical/tickets.html', 'practical/transit.html', 'practical/dining.html']) {
-      assert.match(body, new RegExp(`href="${target.replace('/', '\\/')}"`), `${file} 沒有連到 ${target}`);
+      assert.match(body, new RegExp(`href="${target.replace('/', '\\/')}(?:#[^"]*)?"`), `${file} 沒有連到 ${target}`);
     }
   }
 });
@@ -2141,15 +2141,24 @@ test('餐飲資料重整：24 家自選店全部落在資料層（每日餐位�
   }
 });
 
-test('本趟不進 POLIN：全站產物不再出現 POLIN／WARSZE，Day 7 午餐為 Polka', () => {
+test('POLIN 僅保留購票參考，不回填主行程；Day 7 午餐仍為 Polka', () => {
   const walk = dir => fs.readdirSync(dir, { withFileTypes: true }).flatMap(entry => {
     const full = path.join(dir, entry.name);
     return entry.isDirectory() ? walk(full) : [full];
   });
   const textFiles = walk('dist').filter(file => /\.(html|json|js|css|webmanifest|txt|xml)$/.test(file));
   assert.ok(textFiles.length > 20);
-  const offenders = textFiles.filter(file => /polin|warsze/i.test(fs.readFileSync(file, 'utf8')));
+  const offenders = textFiles.filter(file => /warsze/i.test(fs.readFileSync(file, 'utf8')));
   assert.deepEqual(offenders, []);
+  const itineraryFiles = ['index.html', 'today.html', ...days.map(day => `day-${String(day.n).padStart(2, '0')}.html`), ...['warszawa', 'krakow', 'wroclaw', 'poznan'].map(city => `city-${city}.html`)];
+  for (const file of itineraryFiles) {
+    const main = /<main\b[^>]*>([\s\S]*?)<\/main>/.exec(read(file))?.[1] || '';
+    assert.doesNotMatch(main, /POLIN/i, `${file} 不應把購票參考當作主行程`);
+  }
+  const reference = read('practical/tickets.html').match(/<tr id="purchase-warsaw-polin-reference"[\s\S]*?<\/tr>/)?.[0];
+  assert.ok(reference);
+  assert.match(reference, /data-ticket-plan="reference"/);
+  assert.match(reference, /最新主行程未排/);
   const day7 = days.find(item => item.n === 7);
   assert.ok(day7.steps.every(step => !/polin/i.test(`${step.label} ${step.sub || ''}`)));
   assert.equal(day7.steps.find(step => step.id === 'd7-lunch').label, '午餐 · Polka');

@@ -36,6 +36,8 @@
 
 這是目前的旅行安排；各館場次與購票進度可在[訂票清單](https://polandtrip.xiehnet.com/practical/todos)查看。
 
+[門票速查與官方購票入口](https://polandtrip.xiehnet.com/practical/tickets)已收錄四城主行程、備選及附件參考景點，區分線上購票、現場售票、免費、已含門票與閉館。需要先處理的六項是 Wawel 短路線、辛德勒工廠、鹽礦、全景畫、華沙起義博物館與皇家城堡；Auschwitz 官方導覽已訂妥。完整清單與官方來源也保留在[景點門票購買指南](docs/poland-attraction-tickets.md)。
+
 ## 把休息時間留給一口波蘭味
 
 八天的早餐、午餐、晚餐已整合到每日行程、今日卡與餐飲指南。克拉科夫安排 **Restauracja Polonia** 炸豬排、**Hankki** 韓式料理，奧斯威辛回程後到 **Mr. Jerry** 吃威靈頓牛排；樂斯拉夫吃 **Samarqand** 烏茲別克抓飯與 **Restauracja Wrocławska** 地方菜；波茲南安排 **Pyra Bar** 馬鈴薯料理，另留聖馬丁牛角麵包作為點心。原有餐廳保留為備選，機上餐與自備餐也會列出。

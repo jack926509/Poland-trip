@@ -1,7 +1,7 @@
 import { mealTiming, renderMealList, renderStoreBadges, renderStoreBody, renderStoreHead } from '../lib/dining.mjs';
 import { dayMeals, dayDining } from '../data/day-dining.js';
 import { days } from '../data/trip.js';
-import { escapeHtml, linkifyText } from '../lib/html.mjs';
+import { escapeHtml, linkifyText, safeHttpsUrl } from '../lib/html.mjs';
 import { renderLayout } from './layout.mjs';
 import { cityGuideByName, dayPageForDate, cityRoutes } from '../lib/city-guide.mjs';
 import { renderFastFoodMenu } from './fast-food.mjs';
@@ -330,6 +330,7 @@ export function renderTodos({ todoGroups }) {
 
   const content = `
     ${renderBookingNotice({ onTodosPage: true })}
+    <p class="action-links"><a href="tickets.html#ticket-purchases">所有景點的官方購票入口與現場售票方式 →</a></p>
     <div class="callout-risk"><span class="tag-todo">${total} 項待辦</span><p>共 ${allItems.length} 項；每類先列未完成，已完成的收在「已完成」裡供核對。完成後請將票券與訂位資訊離線保存；未開賣項目仍以官方系統實際可售狀態為準。</p></div>
     ${groupsHtml}`.trim();
 
@@ -398,12 +399,43 @@ function ticketCityFor(name) {
   return cityRoutes.find(city => name.startsWith(city.name)) || cityRoutes.find(city => city.name === cityName) || null;
 }
 
-export function renderTickets({ fares, ticketsByCity, notices = [] }) {
+const ticketPlanLabels = { main: '主行程', optional: '備選／可選', reference: '附件參考', closed: '閉館' };
+const ticketMethodLabels = { online: '線上購票', onsite: '現場購票', free: '本次免費', included: '已含門票', closed: '暫不購票' };
+
+function ticketLink(url, label) {
+  const href = safeHttpsUrl(url);
+  return href ? `<a href="${href}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)} ↗</a>` : '';
+}
+
+function renderTicketPurchases(items, todoGroups) {
+  if (!items.length) return '';
+  const todos = todoGroups.flatMap(group => group.items);
+  const rows = items.map(item => {
+    const todo = todos.find(todo => todo.ticketPurchaseId === item.id);
+    const day = item.day ? days.find(day => day.n === item.day) : null;
+    const date = day?.date.split(' ')[0];
+    const primaryLink = item.method === 'online'
+      ? ticketLink(item.purchaseUrl, '官方購票')
+      : ticketLink(item.sourceUrl, item.method === 'closed' ? '閉館公告' : '官方參觀資訊');
+    const links = [primaryLink];
+    if (item.method === 'online' && item.sourceUrl !== item.purchaseUrl) links.push(ticketLink(item.sourceUrl, '官方說明'));
+    if (item.otherDatesUrl) links.push(ticketLink(item.otherDatesUrl, item.method === 'free' ? '其他日期購票' : '其他票種'));
+    return `<tr id="purchase-${escapeHtml(item.id)}" data-ticket-purchase="${escapeHtml(item.id)}" data-ticket-plan="${escapeHtml(item.plan)}" data-ticket-method="${escapeHtml(item.method)}">
+      <td data-label="景點與行程"><b>${escapeHtml(item.name)}</b><br><span class="tag-muted">${escapeHtml(ticketPlanLabels[item.plan])}</span>${date ? ` <span class="source-meta">${escapeHtml(date)}</span> ${dayLink(date)}` : ''}</td>
+      <td data-label="購票方式"><b>${escapeHtml(ticketMethodLabels[item.method])}</b>${todo ? `<br><span class="${isOpenTodoStatus(todo.status) ? 'tag-todo' : 'tag-muted'}">${escapeHtml(todo.status)}</span> <a href="todos.html#todo-attractions">訂票紀錄 →</a>` : ''}<p>${escapeHtml(item.note)}</p></td>
+      <td data-label="官方入口">${links.filter(Boolean).join('<br>')}<br><span class="source-meta">入口／規則核對 <time datetime="${escapeHtml(item.checkedAt)}">${escapeHtml(item.checkedAt)}</time></span></td>
+    </tr>`;
+  }).join('');
+  return `<h3>購票入口與參觀方式</h3>
+    <div class="table-wrap"><table class="table-editorial ticket-purchase-table"><thead><tr><th>景點與行程</th><th>購票方式</th><th>官方入口</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
+export function renderTickets({ fares, ticketsByCity, notices = [], purchaseGroups = [], todoGroups = [] }) {
   const fareRow = item => `
     <tr>
       <td><a href="${item.mapUrl}" target="_blank" rel="noopener"><b>${item.name}</b></a>${cityLink(item.name) ? `<br>${cityLink(item.name)}` : ''}</td>
       <td class="number">${item.fullPrice}</td><td class="number">${item.discountPrice}</td>
-      <td>${item.note || '—'}<br><a href="${item.officialUrl}" target="_blank" rel="noopener">官網確認 →</a></td>
+      <td>${item.note || '—'}<br><a href="${item.officialUrl}" target="_blank" rel="noopener">官網確認 →</a>${item.purchaseUrl ? `<br>${ticketLink(item.purchaseUrl, '官方購票')}` : ''}</td>
     </tr>`;
   // 14,617px 一路捲、無城市篩選（稽核 M7）：依「城市 · 景點」前綴分組成每城一個
   // <details open>（本來就想全部看到，不像 M4 的餐廳收合），並在表前加一排可跳轉的
@@ -419,10 +451,16 @@ export function renderTickets({ fares, ticketsByCity, notices = [] }) {
   const cityChipsHtml = fareGroups.length > 1 ? `<nav class="day-shortcuts" aria-label="依城市跳到門票分組">
       ${fareGroups.map(group => `<a href="#tickets-${group.key}">${group.label}</a>`).join('')}
     </nav>` : '';
-  const fareGroupsHtml = fareGroups.map(group => `<details class="ticket-city-group" id="tickets-${group.key}" open>
-      <summary>${group.label}（${group.items.length} 項）</summary>
+  const fareGroupsHtml = fareGroups.map(group => {
+    const cityKey = cityRoutes.find(city => city.fileKey === group.key)?.key;
+    const purchaseItems = purchaseGroups.find(purchaseGroup => purchaseGroup.cityKey === cityKey)?.items || [];
+    return `<details class="ticket-city-group" id="tickets-${group.key}" open>
+      <summary>${group.label}（${purchaseItems.length || group.items.length} 項）</summary>
+      ${renderTicketPurchases(purchaseItems, todoGroups)}
+      <h3>票價與開放時間</h3>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>景點</th><th>全票（PLN）</th><th>優待（PLN）</th><th>備註</th></tr></thead><tbody>${group.items.map(fareRow).join('')}</tbody></table></div>
-    </details>`).join('');
+    </details>`;
+  }).join('');
   const quickCards = ticketsByCity.map(group => `
     <article class="card">
       <h3>${group.city}</h3>
@@ -430,9 +468,15 @@ export function renderTickets({ fares, ticketsByCity, notices = [] }) {
     </article>`).join('');
   const content = `
     ${notices.map(item => `<div class="callout-risk"><span class="tag-todo">${item.status}</span><p>${item.text} <a href="${item.url}" target="_blank" rel="noopener">開啟官網 →</a></p></div>`).join('')}
+    <section class="section" id="ticket-purchases">
+      <div class="section-heading"><span class="section-num">Official tickets</span><h2>所有景點購票清單</h2></div>
+      <p class="lead">${purchaseGroups.reduce((count, group) => count + group.items.length, 0)} 組購票與參觀項目，涵蓋主行程、備選、附件參考與閉館景點。先看各城市的購票入口，再對照票價；主行程標記表示已安排，不表示已購票。</p>
+      <p>需要門票不一定需要預約。現場售票項目附官方資訊；本次免費或已含的項目先確認適用規則。官方入口與參觀規則於 2026-10-13 核對，指定日庫存仍須到售票日曆確認。</p>
+      <p class="action-links"><a href="todos.html#todo-attractions">查看待購與已訂導覽紀錄 →</a></p>
+    </section>
     <section>
-      <div class="section-heading"><span class="section-num">2026-09</span><h2>最新門票速查</h2></div>
-      <p class="lead">全票／優待皆為 PLN（zł）。最近一輪逐項回官網複查為 2026-09-17／09-18（各列 note 內自帶該項查證日）；動態票價、指定日場次與臨時閉館，購票前仍以官網為準。</p>
+      <div class="section-heading"><span class="section-num">Prices</span><h2>最新門票速查</h2></div>
+      <p class="lead">全票／優待皆為 PLN（zł），各列保留該項原查證日期；新增購票入口不代表所有票價都已重新核實。動態票價、指定日場次與臨時閉館，購票前以官網為準。</p>
       ${cityChipsHtml}
       ${fareGroupsHtml}
     </section>
@@ -441,7 +485,7 @@ export function renderTickets({ fares, ticketsByCity, notices = [] }) {
       <p class="lead">這組是行程原本的城市分組備忘；若與上表不同，以「最新門票速查」與官網為準。</p>
       <div class="grid-wide">${quickCards}</div>
     </section>`;
-  return renderPracticalLayout('門票速查', 'Tickets', '把景點價格、優待、閉館與官方連結放在同一頁，規劃預算時不必來回找。', content, 'practical/tickets.html');
+  return renderPracticalLayout('門票速查', 'Tickets', '四城所有購票景點、官方售票入口與現場購票方式，連同票價、已含與免費規則集中查看。', content, 'practical/tickets.html');
 }
 
 export function renderTransit({ transitFares, airportTransit, recommendedApps, passChecklist, usefulRoutes, practical = [] }) {

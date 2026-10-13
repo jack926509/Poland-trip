@@ -119,6 +119,8 @@ export function renderPages(distDir) {
     fares: tickets.fares,
     ticketsByCity: tickets.ticketsByCity,
     notices: tickets.ticketNotices,
+    purchaseGroups: tickets.ticketPurchaseGroups,
+    todoGroups: trip.todoGroups,
   }));
   writeHtml('practical/transit.html', renderTransit({
     transitFares: transit.transitFares,
