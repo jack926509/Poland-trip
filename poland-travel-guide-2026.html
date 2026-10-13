@@ -6945,6 +6945,45 @@ li > p.source-meta a,
   white-space: nowrap;
 }
 
+/* 每日行程下拉：Day N 後面直接寫日期與城市，不必回首頁對照哪天是幾號。 */
+.nav-dropdown > ul a .nav-day-label {
+  flex: 0 0 3.6rem;
+  font-weight: 700;
+}
+
+.nav-dropdown > ul a .nav-day-date {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.nav-dropdown > ul a .nav-day-city {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-left: 0.75rem;
+  overflow: hidden;
+  color: var(--ink-soft);
+  font-family: var(--font-body, inherit);
+  font-size: 0.78rem;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-dropdown > ul a:hover .nav-day-city,
+.nav-dropdown > ul a:focus-visible .nav-day-city {
+  color: inherit;
+}
+
+.nav-dropdown > ul.nav-day-list {
+  min-width: 22rem;
+}
+
+@media (max-width: 700px) {
+  .nav-dropdown > ul.nav-day-list {
+    min-width: 0;
+  }
+}
+
   </style>
   <style data-bundled="leaflet.css">
 /* required styles */
@@ -7800,14 +7839,14 @@ svg.leaflet-image-layer.leaflet-interactive path {
       <details class="standalone-menu" name="standalone-primary-nav" data-group="days">
         <summary>每日行程</summary>
         <div class="standalone-menu-panel">
-          <a href="#page-day-01">Day 1</a>
-          <a href="#page-day-02">Day 2</a>
-          <a href="#page-day-03">Day 3</a>
-          <a href="#page-day-04">Day 4</a>
-          <a href="#page-day-05">Day 5</a>
-          <a href="#page-day-06">Day 6</a>
-          <a href="#page-day-07">Day 7</a>
-          <a href="#page-day-08">Day 8</a>
+          <a href="#page-day-01">Day 1 · 10/24（六）</a>
+          <a href="#page-day-02">Day 2 · 10/25（日）</a>
+          <a href="#page-day-03">Day 3 · 10/26（一）</a>
+          <a href="#page-day-04">Day 4 · 10/27（二）</a>
+          <a href="#page-day-05">Day 5 · 10/28（三）</a>
+          <a href="#page-day-06">Day 6 · 10/29（四）</a>
+          <a href="#page-day-07">Day 7 · 10/30（五）</a>
+          <a href="#page-day-08">Day 8 · 10/31（六）</a>
         </div>
       </details>
       <details class="standalone-menu" name="standalone-primary-nav" data-group="cities">

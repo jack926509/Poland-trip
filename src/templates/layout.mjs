@@ -1,5 +1,5 @@
-import { escapeAttr } from '../lib/html.mjs';
-import { CITY_LINKS, DAY_LINKS, PRACTICAL_LINKS } from '../lib/routes.mjs';
+import { escapeAttr, escapeHtml } from '../lib/html.mjs';
+import { CITY_LINKS, DAY_LINKS, DAY_LINK_META, PRACTICAL_LINKS } from '../lib/routes.mjs';
 import { todoGroups } from '../data/trip.js';
 
 // 頁尾的「火車票進度更新」日期改由訂票紀錄推導，避免資料更新後頁尾忘了改。
@@ -188,7 +188,11 @@ export function renderLayout({
     const isCurrent = currentPage === file;
     return `<li><a href="${path(file)}"${isCurrent ? ' aria-current="page" class="nav-link-current"' : ''}>${label}</a></li>`;
   };
-  const dayLinks = DAY_LINKS.map(navLink).join('');
+  const dayNavLink = ([file, label]) => {
+    const meta = DAY_LINK_META[file];
+    return navLink([file, `<span class="nav-day-label">${label}</span><span class="nav-day-date">${escapeHtml(meta.date)}</span><span class="nav-day-city">${escapeHtml(meta.city)}</span>`]);
+  };
+  const dayLinks = DAY_LINKS.map(dayNavLink).join('');
   const cityLinks = CITY_LINKS.map(navLink).join('');
   const practicalLinks = PRACTICAL_LINKS.map(navLink).join('');
 
@@ -238,7 +242,7 @@ export function renderLayout({
     <a class="nav-today" href="${path('today.html')}"${current(activeNav, 'today')}>今日</a>
     <details class="nav-dropdown${activeNav === 'days' ? ' nav-dropdown-current' : ''}" name="primary-navigation">
       <summary${currentGroup(activeNav, 'days')}>每日行程</summary>
-      <ul><li><a href="${path('index.html#days')}">行程總覽</a></li>${dayLinks}</ul>
+      <ul class="nav-day-list"><li><a href="${path('index.html#days')}">行程總覽</a></li>${dayLinks}</ul>
     </details>
     <details class="nav-dropdown${activeNav === 'cities' ? ' nav-dropdown-current' : ''}" name="primary-navigation">
       <summary${currentGroup(activeNav, 'cities')}>城市指南</summary>

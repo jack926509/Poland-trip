@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { standalonePages, standaloneNavGroups } from '../lib/routes.mjs';
+import { standalonePages, standaloneNavGroups, DAY_LINK_META } from '../lib/routes.mjs';
 import { renderSiteSearch } from '../templates/layout.mjs';
 import { serializeSearchIndex } from '../search/site-search-index.mjs';
 
@@ -132,7 +132,7 @@ export function buildStandalone({ distDir, standalonePath, searchRecords }) {
   </nav>`;
   const navMenus = standaloneNavGroups.map(group => {
     const links = group.pages
-      .map(([relativePath, label]) => `<a href="#${standalonePageId(relativePath)}">${label}</a>`)
+      .map(([relativePath, label]) => `<a href="#${standalonePageId(relativePath)}">${label}${DAY_LINK_META[relativePath] ? ` · ${DAY_LINK_META[relativePath].date}` : ''}</a>`)
       .join('\n          ');
     return `<details class="standalone-menu" name="standalone-primary-nav" data-group="${group.key}">
         <summary>${group.label}</summary>
