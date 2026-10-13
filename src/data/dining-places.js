@@ -2248,7 +2248,7 @@ export const diningPlaces = {
     "verificationStatus": "partial",
     "notes": [
       "Michelin 推薦喬治亞菜：khachapuri 起司船形麵包、khinkali 湯包、chanakhi 燉羊腿。",
-      "10/30 最後晚餐首選；瓦津基或國家博物館後搭車約 15 分。"
+      "10/30 晚餐備選（原首選）：Soul Kitchen 沒有威靈頓或訂不到時改這間，國家博物館搭車約 15 分。"
     ],
     "menuUrl": null,
     "verificationNote": "官網與 Michelin 指南皆列 Wierzbowa 11（Michelin 推薦）；Yelp 仍顯示舊址 Al. Ujazdowskie 22，以官網為準。官網留有舊的暫停營業橫幅，但同站列正常時段，訂位時一併確認 10/30 營業。",
@@ -2294,22 +2294,50 @@ export const diningPlaces = {
     "address": "Nowogrodzka 18A, Warszawa",
     "map": "https://www.google.com/maps/search/?api=1&query=Soul%20Kitchen%2C%20Nowogrodzka%2018A%2C%20Warszawa",
     "hours": "週一至週四約 12:00–22:00；週五、六至 23:00",
-    "sourceUrl": "https://www.yelp.com/biz/soul-kitchen-warszawa-3",
-    "checkedAt": "2026-10-12",
+    "sourceUrl": "https://restaurantguru.com/Soul-Kitchen-Warsaw",
+    "checkedAt": "2026-10-13",
     "verificationStatus": "partial",
     "notes": [
-      "Restaurant Guru 與 Tripadvisor 評論都提到招牌 Beef Wellington；離 Metropol 步行約 8 分，10/29 晚抵也來得及（週四至 22:00）。"
+      "10/30 最後晚餐首選：Restaurant Guru 2026 年 7 月華沙威靈頓榜第一、Tripadvisor 威靈頓榜第二，離 Metropol 步行約 8 分、國家博物館步行約 12 分。",
+      "In Your Pocket 與 Warsaw Insider 都列 Nowogrodzka 18A、電話 +48 519 02 08 88；2026 年獲 Wine Spectator Award of Excellence，仍在營業。"
     ],
     "menuUrl": null,
-    "verificationNote": "Wellington 為多個評論來源的招牌菜，官方菜單未確認；訂位時先問當天供應。下午可能有休息時段。",
+    "verificationNote": "Wellington 為多個評論來源的招牌菜，但菜單隨季節換、官方菜單未確認；電話訂位時請店家預留並確認 10/30 供應。下午可能有休息時段。",
     "cuisine": "歐陸／波蘭",
     "dishes": [
-      "Beef Wellington（多來源列為招牌）",
-      "韃靼牛肉"
+      "Beef Wellington（多來源列為招牌，需先確認）",
+      "桌邊韃靼牛肉",
+      "Żurek 酸麵包湯",
+      "鴨肉配蔓越莓紫甘藍"
     ],
     "phone": "+48 519 020 888",
-    "liveCheckedAt": "2026-10-12",
+    "liveCheckedAt": "2026-10-13",
     "hoursNote": "部分來源分段 12:00–16:30、17:30–22:00"
+  },
+  "warsaw-primitivo": {
+    "id": "warsaw-primitivo",
+    "cityKey": "warsaw",
+    "name": "Primitivo Kuchnia i Wino",
+    "address": "Waliców 13, Warszawa",
+    "map": "https://www.google.com/maps/search/?api=1&query=Primitivo%20Kuchnia%20i%20Wino%2C%20Wali%C3%B3w%2013%2C%20Warszawa",
+    "hours": "每日 12:00–22:00；週四至週六至 23:00",
+    "sourceUrl": "https://inyourpocket.com/warsaw/primitivo-kuchnia-i-wino_171792v",
+    "checkedAt": "2026-10-13",
+    "verificationStatus": "partial",
+    "notes": [
+      "Tripadvisor 華沙威靈頓榜第一（4.9），評論稱 Beef Wellington 火候完美；地中海料理與 Primitivo 酒單。",
+      "在 Wola（地鐵 Rondo ONZ），離起義博物館約 1.5 公里；晚上從國家博物館過去要搭車，Soul Kitchen 不能訂時再考慮。"
+    ],
+    "menuUrl": null,
+    "verificationNote": "營業時間來自 In Your Pocket（2026 年 7 月更新）；威靈頓只見於評論，是否常態供應未確認，訂位時先問。",
+    "cuisine": "地中海／歐陸",
+    "dishes": [
+      "Beef Wellington（評論推薦，需先確認）",
+      "義式麵食",
+      "Primitivo 紅酒"
+    ],
+    "phone": "+48 606 44 44 62",
+    "liveCheckedAt": "2026-10-13"
   },
   "warsaw-bydlo-i-powidlo": {
     "id": "warsaw-bydlo-i-powidlo",

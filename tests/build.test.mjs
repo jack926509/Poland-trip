@@ -630,7 +630,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.equal(photoSpots.length, 10);
   assert.equal(photoCredits.length, 20);
   assert.deepEqual(Object.fromEntries(Object.entries(mapPins).map(([city, data]) => [city, data.points.length])), {
-    warsaw: 14, krakow: 18, wroclaw: 10, poznan: 7,
+    warsaw: 14, krakow: 16, wroclaw: 10, poznan: 7,
   });
   assert.deepEqual(Object.fromEntries(Object.entries(attractions).map(([city, items]) => [city, items.length])), {
     warsaw: 11, krakow: 6, wroclaw: 8, poznan: 9,
@@ -647,7 +647,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   // 2026-09-19 資料精煉切片 1：verifiedRestaurantHours 改由每日餐位（day-dining.js）中
   // 已核實／部分核實的門市直接推導（見 src/lib/dining.mjs 的 plannedVerifiedPlaces），
   // 不再是手寫子集，筆數會隨每日餐位調整自然變動。
-  assert.equal(verifiedRestaurantHours.length, 62); // 2026-10-12 新增 Pimiento、Carla、Pasibus Nowy Świat 三筆主檔（59 → 62）；餐飲 v5 整併加四家 Pasibus（31 → 35），同日逐店複查把 24 家待確認門市升為部分核實（35 → 59）
+  assert.equal(verifiedRestaurantHours.length, 63); // 2026-10-13 加威靈頓備選 Primitivo（62 → 63）；2026-10-12 新增 Pimiento、Carla、Pasibus Nowy Świat 三筆主檔（59 → 62）；餐飲 v5 整併加四家 Pasibus（31 → 35），同日逐店複查把 24 家待確認門市升為部分核實（35 → 59）
   assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
     warsaw: 5, krakow: 7, wroclaw: 4, poznan: 7,
   });
@@ -669,7 +669,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.deepEqual([
     souvenirCards.length, luxuryShopping.length, souvenirShops.length,
     shopping.length, zabkaCards.length,
-  ], [13, 2, 8, 7, 7]);
+  ], [11, 2, 5, 5, 7]);
   assert.deepEqual([
     phrases.length, about.length, preDepartureNotes.length,
     safety.emergency.length, safety.embassy.length, safety.tips.length,
@@ -679,7 +679,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
 
 test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', () => {
   const allPins = Object.entries(mapPins).flatMap(([city, data]) => data.points.map((point) => ({city, name:point[2]})));
-  assert.equal(allPins.length, 49);
+  assert.equal(allPins.length, 47);
   for (const pin of allPins) {
     assert.ok(mapPinChecks[pin.city]?.[pin.name], `${pin.city}/${pin.name} 缺少圖釘查證狀態`);
   }
@@ -692,7 +692,7 @@ test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', ()
   });
   const verifiedPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'coordinate-verified');
   const areaPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'area-reference');
-  assert.equal(verifiedPins.length, 46);
+  assert.equal(verifiedPins.length, 44); // 2026-10-13 撤掉琥珀、陶器兩個伴手禮圖釘
   assert.deepEqual(
     areaPins.map(({name}) => name).sort(),
     [
@@ -959,11 +959,12 @@ test('4 個已確認住宿地點皆出現在對應城市地圖，圖釘地址與
   }
 });
 
-test('4 個城市頁含正確 Leaflet 圖釘數，合計 49', () => {
+test('4 個城市頁含正確 Leaflet 圖釘數，合計 47', () => {
   // 2026-09-14：撤掉 5 個「地圖上有、餐廳表已無」的孤兒圖釘後由 53 降為 48
+  // 2026-10-13：伴手禮不列琥珀、Bolesławiec 陶器，克拉科夫撤兩個圖釘（49 → 47）
   const expected = {
     'city-warszawa.html': 14,
-    'city-krakow.html': 18,
+    'city-krakow.html': 16,
     'city-wroclaw.html': 10,
     'city-poznan.html': 7,
   };
@@ -980,7 +981,7 @@ test('4 個城市頁含正確 Leaflet 圖釘數，合計 49', () => {
     assert.equal(points, count, `${file} 圖釘數錯誤`);
     total += points;
   }
-  assert.equal(total, 49);
+  assert.equal(total, 47);
 });
 
 test('城市頁完整呈現故事、景點、行程餐廳推薦與拍照資訊', () => {
@@ -1303,7 +1304,10 @@ test('全站不出現把日落寫成 15:35–15:50 的錯誤敘述', () => {
 
 test('實用頁完整包含店家地圖、安全電話、打包與最新交通資料', () => {
   const shoppingHtml = read('practical/shopping.html');
-  assert.ok(shoppingHtml.includes('World of Amber'));
+  // 2026-10-13 依使用者指示，伴手禮不再列琥珀與 Bolesławiec 陶器。
+  assert.ok(!shoppingHtml.includes('World of Amber'));
+  assert.ok(!shoppingHtml.includes('Bolesławiec'));
+  assert.ok(shoppingHtml.includes('E.Wedel'));
   assert.ok(!shoppingHtml.includes('Kabanosy'));
   assert.ok(read('practical/essentials.html').includes('+48 668 027 574'));
   assert.ok(read('practical/essentials.html').includes('打包清單'));

@@ -440,8 +440,8 @@ export const dayDiningPlans = {
     },
     {
       "placeId": "warsaw-soul-kitchen",
-      "role": "晚餐備選（威靈頓）",
-      "note": "Nowogrodzka 18A，離 Metropol 步行約 8 分，週四至 22:00；多個評論來源列 Beef Wellington 為招牌，Arirang 不接單或想再吃一次威靈頓時改這間，先電話問供應。",
+      "role": "晚餐備選",
+      "note": "Nowogrodzka 18A，離 Metropol 步行約 8 分，週四至 22:00；Arirang 不接單時可改這間，但隔天 10/30 晚餐已排這裡吃威靈頓，避免連吃兩晚。",
       "stepId": null,
       "planStatus": "candidate"
     }
@@ -481,14 +481,28 @@ export const dayDiningPlans = {
       "planStatus": "candidate"
     },
     {
-      "placeId": "warsaw-rusiko",
-      "role": "晚餐首選（條件式）",
-      "note": "國家博物館（或飯店）出發搭車約 15 分到 Wierzbowa 11，18:30 入座：khachapuri 起司船形麵包、khinkali 湯包、chanakhi 燉羊腿。",
+      "placeId": "warsaw-soul-kitchen",
+      "role": "晚餐首選（威靈頓）",
+      "note": "國家博物館 18:10 離館步行約 12 分到 Nowogrodzka 18A，18:30 入座：Beef Wellington 為招牌，前菜可點桌邊韃靼牛肉或 Żurek。飯後步行約 8 分回 Metropol。",
       "stepId": "d7-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "營業時間來自第三方（週二至週六 13:00–00:00），先訂位並確認 10/30 營業；不適用時依最後所在地改備選。",
-      "dayHours": "14:00–24:00"
+      "condition": "菜單隨季節換、官方菜單未確認：電話 +48 519 020 888 訂位時請店家預留 Wellington 並確認 10/30 供應；沒有就改 Rusiko。",
+      "dayHours": "17:30–22:00"
+    },
+    {
+      "placeId": "warsaw-rusiko",
+      "role": "晚餐備選（原首選）",
+      "note": "Wierzbowa 11（劇院廣場旁），週二至週六 13:00–24:00；Soul Kitchen 沒有威靈頓或客滿時改這間：khachapuri、khinkali、chanakhi 燉羊腿，由國家博物館搭車約 15 分。",
+      "stepId": null,
+      "planStatus": "candidate"
+    },
+    {
+      "placeId": "warsaw-primitivo",
+      "role": "威靈頓備選",
+      "note": "Waliców 13（Wola），Tripadvisor 華沙威靈頓榜第一，週五至 23:00；離晚上動線較遠，Soul Kitchen 訂不到又堅持吃威靈頓時再考慮，電話 +48 606 44 44 62 先問供應。",
+      "stepId": null,
+      "planStatus": "candidate"
     },
     {
       "placeId": "warsaw-ceviche-bar",
