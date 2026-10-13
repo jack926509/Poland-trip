@@ -34,6 +34,7 @@ import {
   validateTravelDatabase,
 } from '../src/data/travel-database.js';
 import { renderDatabase } from '../src/templates/database.mjs';
+import { bookingProgress } from '../src/lib/journey.mjs';
 import { renderHome } from '../src/templates/home.mjs';
 import { renderOpsDashboard } from '../src/templates/practical.mjs';
 import { auditMapPins } from '../tools/audit-map-pins.mjs';
@@ -520,7 +521,7 @@ test('2026-08-09 官方盤查會移除未能證實的場次、價格與閉館敘
   for (const unsupportedClaim of ['圓頂展廳不開放', 'PLN 143 · 優待 121', '英文場 47', '多為免費', '約 3 個月前開放']) {
     assert.ok(!publicData.includes(unsupportedClaim), `不應保留未證實敘述：${unsupportedClaim}`);
   }
-  assert.ok(days[1].mustBook.some(item => item.includes('可立即查／購')));
+  assert.ok(bookingProgress(days[1]).pending.some(item => item.status.includes('可查／購')));
   assert.equal(days[6].steps.find(step => /POLIN/.test(step.label)), undefined, '本趟不進 POLIN，Day 7 不應有 POLIN 步驟');
   assert.ok(cityNotices.wroclaw.some(item => item.text.includes('availability calendar')));
 });
@@ -866,8 +867,11 @@ test('8 個每日頁的日期與標題和資料層一致', async () => {
     assert.ok(html.includes(day.date), `Day ${day.n} 缺少日期 ${day.date}`);
     assert.ok(html.includes(day.title), `Day ${day.n} 缺少標題 ${day.title}`);
     assert.ok(html.includes('當日時間表'), `Day ${day.n} 缺少時間表`);
-    for (const booking of day.mustBook) {
-      assert.ok(html.includes(booking), `Day ${day.n} 缺少待訂提醒：${booking}`);
+    // 每日預約列由待辦頁正本推導，每一筆都要出現並連回待辦頁同一筆。
+    const { pending, confirmed } = bookingProgress(day);
+    for (const booking of [...pending, ...confirmed]) {
+      assert.ok(html.includes(booking.name), `Day ${day.n} 缺少待訂提醒：${booking.name}`);
+      assert.ok(html.includes(`practical/todos.html#${booking.anchor}`), `Day ${day.n} 未連到待辦項目：${booking.anchor}`);
     }
   }
 });
@@ -1111,7 +1115,7 @@ test('Auschwitz 導覽已訂 10:30，去回巴士皆已查定但尚未購票', (
   const bus = trains.find(item => item.date === '10/26');
   // 已訂妥的導覽時間必須出現在行程與必訂清單
   assert.ok(day3.steps.some(step => step.t === '10:30' && step.label.includes('已訂妥')));
-  assert.ok(day3.mustBook.some(item => item.includes('已訂妥') && item.includes('10:30')));
+  assert.ok(bookingProgress(day3).confirmed.some(item => item.status === '已訂妥' && item.name.includes('10:30')));
   assert.ok(day3.hardConstraints.some(item => item.includes('10:00')));
   // 去程已由官方售票頁查得 10/26 實際班次 07:10 → 08:35
   const outbound = day3.steps.find(step => step.t === '07:10');

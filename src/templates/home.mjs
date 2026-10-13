@@ -1,7 +1,6 @@
 import { cityRoutes } from '../lib/city-guide.mjs';
 import { escapeHtml } from '../lib/html.mjs';
-import { bookingProgress } from '../lib/journey.mjs';
-import { renderJourneyOverview } from './journey.mjs';
+import { bookingProgress, isDepartureDay, nightStay } from '../lib/journey.mjs';
 import { renderLayout } from './layout.mjs';
 import { getTaipeiToday, collectDeadlines, nextDeadline, isOpenTodoStatus, hideDeadlineOnTrip, todayIn } from '../scripts/dashboard.js';
 import { taipeiToday } from '../lib/schedule.mjs';
@@ -39,6 +38,7 @@ function renderNextDeadline({ trains, deadlines, databaseEntries }) {
 
 export function renderHome({ meta, days, flights, cities, todoGroups = [], databaseEntries = [], trains = [], deadlines = [] }) {
   const todoCount = todoGroups.reduce((total, group) => total + group.items.filter(item => isOpenTodoStatus(item.status)).length, 0);
+  const totalTodos = todoGroups.reduce((total, group) => total + group.items.length, 0);
   const syncItems = databaseEntries.length;
   const pendingCount = databaseEntries.filter(entry => entry.status === 'pending').length;
   const recheckCount = databaseEntries.filter(entry => entry.status === 'recheck').length;
@@ -61,15 +61,23 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
       <span>${pending ? `${pending} 項待處理` : '已全部完成'}（共 ${group.items.length} 項）→</span>
     </a>`;
   }).join('');
-  const dayEntries = days.map(day => `
+  // 八日目錄同時是「全程動線」：每一天一列，白天主題、今晚住哪、強度與待訂數一起看。
+  // 原本另有一張「全程動線與過夜安排」表把同樣八天再列一次，手機上多捲約 2,000px，
+  // 兩份清單也各自取用待訂數；合併後只剩這一份，待訂數與待辦頁同源（lib/journey.mjs）。
+  const dayEntries = days.map(day => {
+    const pending = bookingProgress(day).pending.length;
+    const hotel = nightStay(day);
+    const stayText = hotel ? `今晚 ${hotel.city} · ${hotel.name}` : isDepartureDay(day) ? '離境／機上過夜' : '⚠ 住宿資料缺漏';
+    return `
     <li class="journal-day-entry">
       <a href="day-${String(day.n).padStart(2, '0')}.html">
         <span class="journal-day-number">${String(day.n).padStart(2, '0')}</span>
         <span class="journal-day-date">${escapeHtml(day.date)}</span>
-        <span class="journal-day-copy"><b>${escapeHtml(day.title)}</b><small>${escapeHtml(day.city)} · ${escapeHtml(day.headline)}</small></span>
-        <span class="${bookingProgress(day).pending.length ? 'tag-todo' : 'tag-muted'}">${bookingProgress(day).pending.length ? `待訂 ${bookingProgress(day).pending.length}` : '無待訂'}</span>
+        <span class="journal-day-copy"><b>${escapeHtml(day.title)}</b><small>${escapeHtml(day.city)} · ${escapeHtml(day.headline)}</small><small class="journal-day-stay">${escapeHtml(stayText)}<span>強度 ${escapeHtml(day.intensity)}</span></small></span>
+        <span class="${pending ? 'tag-todo' : 'tag-muted'}">${pending ? `待訂 ${pending}` : '無待訂'}</span>
       </a>
-    </li>`).join('');
+    </li>`;
+  }).join('');
 
   const cityCards = cities.map(city => `
     <article class="journal-city-card">
@@ -113,23 +121,20 @@ ${coverFigure}
     </div>
 
     <nav class="journey-entry" aria-label="依旅行需求查找">
-      <a href="#journey-overview"><b>出發前規劃</b><span>全程動線、過夜與強度</span></a>
+      <a href="#journey-overview"><b>出發前規劃</b><span>八日動線、過夜與強度</span></a>
       <a href="today.html"><b>旅途中速查</b><span>今天行程、導航與餐飲</span></a>
       <a href="practical/todos.html"><b>處理預約</b><span>票券、交通與待確認事項</span></a>
     </nav>
-    ${renderJourneyOverview()}
     <aside class="journal-status-strip" aria-label="旅程準備狀態">
       <a href="#todos" aria-label="${todoCount} 項待辦"><strong>${todoCount}</strong><span>項待辦</span></a>
-      <span><strong>${verifiedCount}</strong><span>已確認</span></span>
-      <span><strong>${recheckCount}</strong><span>待重查</span></span>
-      <span><strong>${pendingCount}</strong><span>待確認</span></span>
-      <a href="practical/database.html"><strong>${syncItems}</strong><span>筆資料</span></a>
+      <a href="practical/todos.html" class="journal-status-sub"><strong>${totalTodos - todoCount}</strong><span>已完成</span></a>
+      <a href="practical/database.html" class="journal-status-db"><span class="journal-status-caption">資料庫查核 ${syncItems} 筆</span><span><b>${verifiedCount}</b> 已確認 · <b>${recheckCount}</b> 待重查 · <b>${pendingCount}</b> 待確認</span></a>
     </aside>
 
     <section class="section" id="days">
       <div class="section-heading"><span class="section-num">01 / Contents</span><h2>八日旅程目錄</h2></div>
-      <p class="lead">從城市轉場到現場提醒，每一天都是一個可獨立翻閱的章節。</p>
-      <ol class="journal-itinerary">${dayEntries}</ol>
+      <p class="lead">白天玩哪裡、晚上住哪裡、還有幾件要先訂，一列看完；點進去是當天完整章節。轉場日先保留取行李與進站時間。</p>
+      <ol class="journal-itinerary" id="journey-overview">${dayEntries}</ol>
     </section>
 
     <section class="section" id="cities">
@@ -140,7 +145,7 @@ ${coverFigure}
 
     <section class="section journal-todo-notes" id="todos">
       <div class="section-heading"><span class="section-num">03 / Field notes</span><h2>出發前待辦</h2></div>
-      <p class="lead">共 ${todoCount} 項。先處理有日期與時段的票務，再完成交通、餐飲及備案。</p>
+      <p class="lead">共 ${totalTodos} 項，還有 ${todoCount} 項待處理。先處理有日期與時段的票務，再完成交通、餐飲及備案。</p>
       ${renderNextDeadline({ trains, deadlines, databaseEntries })}
       <div class="journal-notes-grid">${todoCards}</div>
       <p><a class="journal-text-link" href="practical/todos.html">開啟完整待辦事項 →</a></p>

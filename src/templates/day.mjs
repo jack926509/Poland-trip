@@ -226,14 +226,23 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
       </article>
     </section>` : '';
 
+  // 訂票與訂位項目從待辦頁正本推導（見 lib/journey.mjs 的 dayTodos），
+  // 每一筆連回待辦頁的同一筆，狀態字樣也和待辦頁一致。
   const { pending, confirmed } = bookingProgress(day);
-  const mustBookHtml = pending.length ? `
-    <div class="callout-risk">
+  const bookingItem = item => `<li class="booking-item${item.open ? '' : ' is-done'}">
+        <span class="booking-item-group">${escapeHtml(item.groupTitle)}</span>
+        <b class="booking-item-name">${escapeHtml(item.name)}</b>
+        <span class="${item.open ? 'tag-todo' : 'tag-muted'}">${escapeHtml(item.status)}</span>
+        <a class="booking-item-link" href="practical/todos.html#${item.anchor}">${item.open ? '下一步怎麼訂' : '查看紀錄'} →</a>
+      </li>`;
+  const mustBookHtml = `${pending.length ? `
+    <div class="callout-risk booking-due">
       <span class="tag-todo">尚未完成 ${pending.length} 項</span>
       <h3>這一天要先處理</h3>
-      ${renderList(pending, item => `<li>${item}</li>`)}
+      <ul class="booking-items">${pending.map(bookingItem).join('')}</ul>
     </div>` : `
-    <div class="callout-good"><b>這一天沒有待訂項目。</b></div>`;
+    <div class="callout-good"><b>這一天沒有待訂項目。</b></div>`}
+    ${confirmed.length ? `<details class="booking-done"><summary>已完成預約 ${confirmed.length} 項</summary><ul class="booking-items">${confirmed.map(bookingItem).join('')}</ul></details>` : ''}`;
 
   // 重要風險原本是一整段 8–12 行的文字牆，手機上很難找到重點：
   // 依句號拆成條列，一句一行；資料裡的 **粗體** 標記轉成 <b>。
@@ -376,7 +385,6 @@ ${coverHtml}
     ${trainHtml}
     <section class="section" id="day-preparation">
       <div class="section-heading"><span class="section-num">Preparation</span><h2>訂票與提醒</h2></div>
-      ${confirmed.length ? `<div class="callout-good"><b>已完成預約</b>${renderList(confirmed, item => `<li>${escapeHtml(item)}</li>`)}</div>` : ''}
       ${mustBookHtml}
       ${warnHtml}
       <p class="action-links"><a href="practical/todos.html">全部待辦與查核狀態 →</a><a href="practical/tickets.html">官方購票入口、門票價格與開放時間 →</a></p>

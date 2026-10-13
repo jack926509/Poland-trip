@@ -6763,3 +6763,156 @@ li > p.source-meta a,
   align-items: center;
   min-height: 44px;
 }
+
+/* --- 2026-10-13 資料貫通與版面整理 ---------------------------------------
+   首頁狀態列分「待辦」與「資料庫查核」兩種來源，不再把兩種數字排成同一排；
+   八日目錄併入全程動線（今晚住宿、強度）；每日頁預約列連回待辦頁同一筆。 */
+.journal-status-strip {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr);
+}
+
+.journal-status-strip .journal-status-db {
+  align-content: center;
+}
+
+.journal-status-strip .journal-status-db > span {
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.journal-status-strip .journal-status-db > span b {
+  color: var(--plum);
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.journal-status-strip .journal-status-caption {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+@media (max-width: 920px) {
+  .journal-status-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .journal-status-strip > *:first-child {
+    grid-column: auto;
+  }
+
+  .journal-status-strip .journal-status-db {
+    grid-column: 1 / -1;
+  }
+}
+
+.journal-day-copy .journal-day-stay {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.75rem;
+  color: var(--plum);
+  font-size: 0.92rem;
+}
+
+.journal-day-copy .journal-day-stay > span {
+  color: var(--ink-soft);
+}
+
+/* 路線膠囊在手機換行時，整條大圓角會變成一團；改成小圓角卡片、站點置中。 */
+@media (max-width: 700px) {
+  .route-strip {
+    justify-content: center;
+    gap: 0.45rem 0;
+    border-radius: var(--radius-md);
+  }
+
+  .route-stop:not(:last-child)::after {
+    width: 1.1rem;
+    margin: 0 0.4rem;
+  }
+}
+
+/* 每日頁「訂票與提醒」：每筆一行，分類、名稱、狀態與「下一步」連到待辦頁同一筆。 */
+.booking-items {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.booking-item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.6rem;
+  align-items: center;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm, 8px);
+  background: rgb(255 253 248 / 80%);
+}
+
+.booking-item-group {
+  flex-basis: 100%;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+}
+
+.booking-item-name {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
+.booking-item-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-left: auto;
+  font-weight: 700;
+}
+
+.booking-done {
+  margin: 1rem 0;
+}
+
+.booking-done > summary {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.booking-item.is-done .booking-item-name {
+  color: var(--ink-soft);
+}
+
+/* 待辦頁：從每日頁或今日卡連進來時，那一筆要一眼看得到。 */
+.todo-item {
+  scroll-margin-top: 5.5rem;
+}
+
+.todo-item:target {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.todo-recheck-flag {
+  margin-left: 0.4rem;
+}
+
+.todo-recheck-flag[hidden] {
+  display: none;
+}
+
+.todo-checked[data-recheck-overdue] time:last-of-type {
+  color: var(--poland-red);
+  font-weight: 700;
+}
+
+.todo-day-link {
+  white-space: nowrap;
+}
