@@ -75,6 +75,32 @@ export function withDerivedStatus(deadlines, groups) {
   ));
 }
 
+/**
+ * 「購票」狀態的用字：全部完成 → 已購票；有待辦 → 尚未購票；全是線上已售完 → 線上已售完。
+ * 敘述文字一律用這支帶出狀態，不在各處手寫「尚未購票」。
+ */
+export function purchaseWord(items) {
+  if (!items.length) throw new Error('purchaseWord 沒有項目可引用');
+  if (items.some(isTodoOpen)) return '尚未購票';
+  return items.every(item => item.skip) ? '線上已售完' : '已購票';
+}
+
+/** Lajkonik 回程那筆待辦的引用；要改回程是否已購，只改 todoGroups 該筆的 status。 */
+export const LAJKONIK_INBOUND_REF = { group: 'rail', nameIncludes: ['Lajkonik 回程'] };
+/** 拉茨瓦維採全景畫（day-05）的待辦引用。 */
+export const PANORAMA_REF = { group: 'attractions', ticketPurchaseIds: ['wroclaw-panorama'] };
+
+/** groups 還沒綁定（單獨載入 rail.js）時的中性用詞，不含狀態。 */
+export const UNBOUND_WORD = '購票狀態見待辦事項頁';
+
+export const lajkonikInboundWord = groups => (groups ? purchaseWord(resolveTodoRef(groups, LAJKONIK_INBOUND_REF)) : UNBOUND_WORD);
+export const panoramaWord = groups => (groups ? purchaseWord(resolveTodoRef(groups, PANORAMA_REF)) : UNBOUND_WORD);
+
+/** rail 分類的導言：去程已購是事實，回程狀態由待辦推導。 */
+export function railGroupIntro(groups) {
+  return `四段 PKP 均已出現在旅客 App 票券清單；Lajkonik 去程巴士 2026-10-13 已購票，回程${lajkonikInboundWord(groups)}。四段火車的抵達時間、艙等、車廂、座位與票價仍待票券詳細頁核對。`;
+}
+
 /** 景點票券的一句摘要（資料庫「景點票券」用）。 */
 export function attractionTicketSummary(groups) {
   const { group, open, skipped, done } = groupSummary(groups, 'attractions');

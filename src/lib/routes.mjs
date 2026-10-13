@@ -43,7 +43,7 @@ export const PRACTICAL_NAV_GROUPS = [
 // 導覽上的補充註記：SOS 緊急聯絡藏在資料庫頁，桌機沒有底部 SOS 列，所以在名稱旁標明。
 export const NAV_LINK_NOTES = { 'practical/database.html': '含 SOS' };
 // 旅程期間（華沙日期）：nav.js 與單檔版導覽據此把「旅途中」排第一。
-export const TRIP_DATE_RANGE = { timeZone: 'Europe/Warsaw', start: '2026-10-24', end: '2026-11-01' };
+export const TRIP_DATE_RANGE = { timeZone: 'Europe/Warsaw', start: '2026-10-24', end: '2026-10-31' };
 
 const standaloneLabels = {"餐廳與速食": "餐廳", "門票速查": "門票", "伴手禮與購物": "購物", "安全與基本須知": "安全須知"};
 const withStandaloneLabel = ([file, label]) => [file, standaloneLabels[label] || label];

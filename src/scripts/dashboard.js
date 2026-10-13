@@ -217,22 +217,6 @@ export function initializeDashboard(root, input) {
 }
 
 /**
- * 首頁「下一個期限」提示是建置當天算好的靜態文字，旅途中會變成過時的紅色逾期。
- * 台北日期到了出發日就整句收掉；出發前不動。
- */
-export function hideDeadlineOnTrip(root, getToday, tripStart) {
-  function refresh() {
-    const hide = Boolean(tripStart) && getToday() >= tripStart;
-    root.querySelectorAll('[data-next-deadline]').forEach(el => { el.hidden = hide; });
-  }
-  refresh();
-  setInterval(refresh, 60000);
-  window.addEventListener('pageshow', refresh);
-  window.addEventListener('focus', refresh);
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
-}
-
-/**
  * 待辦頁「下次查核」日期過了就標「重查已逾期」。
  * 建置時算定會在部署後過時，所以和倒數表一樣在瀏覽器以台北日期重算；
  * 已完成的項目不標，避免把已購票的紀錄當成待辦。
@@ -297,6 +281,7 @@ export function initializeHomeStatus(root, config) {
     const state = resolveHomeStatus(warsawToday(), taipeiToday(), config.travelStart, config.tripStart, config.tripEnd);
     const before = root.querySelector('[data-home-status="before"]');
     const during = root.querySelector('[data-home-status="during"]');
+    const after = root.querySelector('[data-home-status="after"]');
     let dayNode = null;
     if (state.mode === 'during') {
       dayNode = Array.from(root.querySelectorAll('[data-home-day]')).find(el => el.getAttribute('data-home-day') === state.date) || null;
@@ -307,6 +292,7 @@ export function initializeHomeStatus(root, config) {
       if (label && state.mode === 'before') label.textContent = departureLabel(state.days);
     }
     if (during) during.hidden = !dayNode;
+    if (after) after.hidden = state.mode !== 'after';
     root.querySelectorAll('[data-home-day]').forEach(el => { el.hidden = el !== dayNode; });
     if (dayNode) {
       let steps = [];

@@ -9,7 +9,7 @@ import * as trip from '../src/data/trip.js';
 import { privateSlots } from '../src/data/private-slots.js';
 import { bookingProgress } from '../src/lib/journey.mjs';
 import { renderPrivatePanel } from '../src/templates/private-panel.mjs';
-import { initializeCountdown, hideDeadlineOnTrip } from '../src/scripts/dashboard.js';
+import { initializeCountdown } from '../src/scripts/dashboard.js';
 import { privateTelHref as telHref } from '../src/scripts/private-data.js';
 
 const dist = new URL('../dist/', import.meta.url);
@@ -77,19 +77,8 @@ test('10/24 起未完成的逾期事項仍待確認，旅程結束也不視為�
   }
 });
 
-test('首頁下一個期限提示：出發前顯示、10/24 起隱藏', () => {
-  const el = { hidden: false };
-  const root = { querySelectorAll: () => [el] };
-  globalThis.window = { addEventListener() {} };
-  globalThis.document = { addEventListener() {}, hidden: false };
-  const realSet = globalThis.setInterval; globalThis.setInterval = () => 0;
-  try {
-    hideDeadlineOnTrip(root, () => '2026-10-23', trip.meta.tripStart);
-    assert.equal(el.hidden, false);
-    hideDeadlineOnTrip(root, () => '2026-10-24', trip.meta.tripStart);
-    assert.equal(el.hidden, true);
-  } finally { globalThis.setInterval = realSet; }
-  assert.match(read('index.html'), /class="next-deadline" data-next-deadline/);
+test('首頁不再有建置當天快照的「下一個期限」（與待辦小卡重複、會過期）', () => {
+  assert.doesNotMatch(read('index.html'), /next-deadline|下一個期限/);
   // 訂票頁的倒數表已由「還沒處理 N 項」精簡卡取代（C2），#countdown 錨點保留給今日卡連結。
   assert.match(read('practical/booking.html'), /id="countdown"/);
 });

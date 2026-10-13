@@ -97,6 +97,7 @@ export function renderPages(distDir) {
     trains: trip.trains,
     stay: trip.stay,
     todoGroups: trip.todoGroups,
+    deadlines: trip.deadlines,
     railOfficialLinks: trip.railOfficialLinks,
     railPurchaseSteps: trip.railPurchaseSteps,
     auschwitzBus: trip.auschwitzBus,

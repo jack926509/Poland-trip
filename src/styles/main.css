@@ -5318,34 +5318,6 @@ h3 {
   color: var(--red);
 }
 
-/* 首頁的下一個截止提示 */
-.next-deadline {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 0.9rem;
-  align-items: baseline;
-  margin-top: 0.9rem;
-  padding: 0.7rem 0.9rem;
-  border-left: 3px solid var(--accent);
-  background: var(--accent-surface);
-}
-
-.next-deadline[data-urgency='overdue'],
-.next-deadline[data-urgency='today'] {
-  border-left-color: var(--red);
-  background: var(--surface-danger);
-}
-
-.next-deadline[data-urgency='soon'] {
-  border-left-color: var(--yellow);
-  background: var(--surface-warning);
-}
-
-.next-deadline strong {
-  font-family: var(--font-mono);
-  font-size: 1.05rem;
-}
-
 /* 首頁日期格下方的狀態小卡（C5）與訂票頁「還沒處理 N 項」精簡卡（C2）。
    [hidden] 另外明寫 display: none，避免 class 的 display 蓋過瀏覽器預設的隱藏。 */
 .home-status {
@@ -5394,6 +5366,10 @@ h3 {
   line-height: 1.5;
 }
 
+.home-status-cat {
+  white-space: nowrap;
+}
+
 .home-status-cta {
   display: inline-flex;
   align-items: center;
@@ -5434,6 +5410,26 @@ h3 {
   border-radius: var(--radius-xs);
   color: var(--ink);
   text-decoration: none;
+}
+
+.booking-status-extra {
+  margin: 0.8rem 0;
+}
+
+.booking-status-extra h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1rem;
+}
+
+.booking-status-extra ul {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.booking-status-extra li {
+  padding: 0.2rem 0;
+  line-height: 1.5;
 }
 
 .booking-status-cta {
@@ -6550,8 +6546,6 @@ h3 {
 .private-clear { min-height: 44px; padding: .5rem 1rem; font: inherit; color: var(--red); background: var(--paper-light); border: 1px solid var(--red); border-radius: var(--radius-xs); cursor: pointer; }
 .sos-hotel-list { margin: .5rem 0 0; padding-left: 1.1rem; }
 .sos-hotel-list li { margin-bottom: .5rem; }
-
-[data-next-deadline][hidden] { display: none !important; }
 
 /* 今日卡：出發前／旅程後的提示卡，放在日期列下方 */
 .today-outside {

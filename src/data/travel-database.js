@@ -3,7 +3,7 @@ import { attractionTicketSummary } from '../lib/todo-status.mjs';
 import { dayDining, dayMeals } from './day-dining.js';
 import { diningPlaces } from './dining-places.js';
 import { venueAddress } from '../lib/venues.mjs';
-import { auschwitzBus, segments, lajkonikFare } from './rail.js';
+import { auschwitzBus, segments, lajkonikFare, lajkonikInboundWord } from './rail.js';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -438,7 +438,7 @@ export const dayOperations = {
       accommodationAddress('krakow-stare-miasto'),
     ],
     navigation: [
-      { mode: 'Lajkonik 巴士', route: 'Kraków MDA ↔ Oświęcim Muzeum Auschwitz', action: `去程已購票（2026-10-13）：${lajkonikOutboundAdopted.dep} 由 ul. Bosacka 18 下層 D9 站位發車、${lajkonikOutboundAdopted.arr} 抵 Więźniów Oświęcimia 55，${lajkonikOutboundAdopted.dur}；業者要求發車前 15 分鐘到站牌，距 10:00 到場要求只剩 10 分鐘。回程尚未購票：在同站反向搭 14:15 之後的班次，9/09 售票頁曾查得 15:30、16:30；14:00 班在導覽結束前開走。可線上或當天向司機買票。` },
+      { mode: 'Lajkonik 巴士', route: 'Kraków MDA ↔ Oświęcim Muzeum Auschwitz', get action() { return `去程已購票（2026-10-13）：${lajkonikOutboundAdopted.dep} 由 ul. Bosacka 18 下層 D9 站位發車、${lajkonikOutboundAdopted.arr} 抵 Więźniów Oświęcimia 55，${lajkonikOutboundAdopted.dur}；業者要求發車前 15 分鐘到站牌，距 10:00 到場要求只剩 10 分鐘。回程${lajkonikInboundWord()}：在同站反向搭 14:15 之後的班次，9/09 售票頁曾查得 15:30、16:30；14:00 班在導覽結束前開走。${lajkonikInboundWord() === '尚未購票' ? '可線上或當天向司機買票。' : ''}`; } },
       { mode: '導覽接駁', route: 'Auschwitz I → Birkenau', action: '參加官方導覽時依當日工作人員指示搭接駁車，不自行跳過集合點。' },
     ],
     dailyAlerts: [

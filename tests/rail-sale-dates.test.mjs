@@ -6,6 +6,8 @@ import { renderBooking } from '../src/templates/practical.mjs';
 import { renderHome } from '../src/templates/home.mjs';
 import { collectDeadlines, calculateCountdown, nextDeadline, isOpenEntryStatus } from '../src/scripts/dashboard.js';
 import { databaseEntries } from '../src/data/travel-database.js';
+import { isOpenTodoStatus } from '../src/scripts/dashboard.js';
+import { escapeHtml } from '../src/lib/html.mjs';
 
 const allSources = { ...trip, databaseEntries };
 
@@ -109,10 +111,25 @@ test('訂票頁以精簡卡取代倒數表，首頁下一個期限不含資料�
   assert.match(booking, /還沒處理 <b[^>]*>\d+<\/b> 項/);
   assert.doesNotMatch(booking, /data-countdown-row|逾期 \d+ 天|訂票優先順序|什麼時候處理/);
 
+  // 首頁的「下一個期限」是建置當天的快照、與待辦小卡重複，已移除（待辦小卡才是首頁入口）。
   const home = renderHome({ ...trip, cities: [], databaseEntries });
-  assert.match(home, /class="next-deadline"/);
-  assert.match(home, /practical\/todos\.html">看待辦事項/);
+  assert.doesNotMatch(home, /next-deadline|下一個期限/);
+  assert.match(home, /practical\/todos\.html/);
   assert.doesNotMatch(home, /看完整倒數/);
+});
+
+test('每一筆未完成、且不由待辦頁管理的期限，都出現在訂票頁（ETIAS、全站複查不可消失）', () => {
+  const booking = renderBooking(allSources);
+  const standalone = trip.deadlines.filter(item => !item.todoRef && isOpenTodoStatus(item.status));
+  assert.ok(standalone.some(item => item.id === 'etias-check-2') && standalone.some(item => item.id === 'recheck-all'), '測試資料應含 ETIAS 與全站複查');
+  for (const deadline of standalone) {
+    assert.ok(booking.includes(escapeHtml(deadline.title)), `訂票頁缺少未完成期限 ${deadline.id}`);
+    const md = deadline.date.slice(5).replace('-', '/');
+    assert.ok(booking.includes(`>${md}</b>`), `訂票頁缺少 ${deadline.id} 的日期 ${md}`);
+  }
+  // 已完成的期限不列：把全部標成已完成就一筆都不該出現。
+  const allDone = renderBooking({ ...allSources, deadlines: trip.deadlines.map(item => ({ ...item, status: '已完成' })) });
+  assert.doesNotMatch(allDone, /data-booking-extra/);
 });
 
 test('倒數看板涵蓋每一筆仍待處理的資料庫重查項目', () => {

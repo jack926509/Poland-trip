@@ -111,7 +111,7 @@
 
   /**
    * 「實用資訊」下拉分三組（出發前／旅途中／購物）。旅程期間（華沙日期落在
-   * 2026-10-24～2026-11-01）把「旅途中」移到第一組；其餘時間維持原順序。
+   * 2026-10-24～2026-10-31）把「旅途中」移到第一組；其餘時間維持原順序。
    * 總覽連結永遠在最上面，所以插在它後面。日期判斷失敗就什麼都不做。
    */
   const reorderPracticalGroups = () => {
@@ -131,8 +131,8 @@
       return;
     }
 
-    // 旅程 10/24–11/1（與 src/lib/routes.mjs 的 TRIP_DATE_RANGE 一致，build 時有測試比對）。
-    if (today < '2026-10-24' || today > '2026-11-01') return;
+    // 旅程 10/24–10/31（與 src/lib/routes.mjs 的 TRIP_DATE_RANGE 一致，build 時有測試比對）。
+    if (today < '2026-10-24' || today > '2026-10-31') return;
     const firstGroup = list.querySelector('[data-nav-group]');
     if (firstGroup && firstGroup !== trip) list.insertBefore(trip, firstGroup);
   };

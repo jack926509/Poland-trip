@@ -57,7 +57,6 @@ function runInline(source) {
 }
 
 const OWNED = [
-  ['dist/index.html', 'hideDeadlineOnTrip', '首頁旅途隱藏逾期'],
   ['dist/index.html', 'initializeHomeStatus', '首頁狀態小卡'],
   ['dist/today.html', 'initializePrivate', '今日卡私人資料'],
   ['dist/practical/database.html', 'initializePrivate', '資料庫私人資料'],

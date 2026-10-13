@@ -12,6 +12,17 @@
 // 時已使用的 `rail-<type-slug>` 規則（該函式的 id 加上 'rail-' 前綴即為
 // 此處的 id），兩邊看到的是同一段資料。
 
+import { lajkonikInboundWord } from '../lib/todo-status.mjs';
+
+// 回程是否已購只有一個正本：trip.js todoGroups 裡 Lajkonik 回程那筆。
+// 本檔在 trip.js 之前載入，所以狀態欄位用 getter，trip.js 建好 todoGroups 後呼叫 bindTodoGroups 綁定；
+// 未綁定時（單獨載入本檔）回中性用詞，不含任何購票狀態。
+let boundGroups = null;
+export function bindTodoGroups(groups) { boundGroups = groups; }
+const inboundWord = () => lajkonikInboundWord(boundGroups);
+/** 供其他資料檔（travel-database）在讀取當下取得回程購票用字。 */
+export { inboundWord as lajkonikInboundWord };
+
 /** 從 auschwitzBus.*.services 取出標記某個 decision 的班次；找不到就是資料本身有誤，直接丟錯不要悄悄回傳空值。 */
 function pickService(services, decision) {
   const service = services.find(item => item.decision === decision);
@@ -21,7 +32,7 @@ function pickService(services, decision) {
 
 // Lajkonik · Auschwitz 往返巴士。
 // 2026-10-13 旅客已在 moj-bus.pl（Lajkonik 線上售票）購得去程 08:25 → 09:50、2 張全票；
-// 回程尚未購票，資料仍為 2026-09-09 售票頁快照與 2026-10-06 公告班表。
+// 回程購票狀態不在此手寫（見 bindTodoGroups）；班次資料為 2026-09-09 售票頁快照與 2026-10-06 公告班表。
 // 票號、乘客姓名、電話與票券管理連結屬私人資料，不寫進公開資料。
 export const auschwitzBus = {
   operator: 'LAJKONIK',
@@ -44,7 +55,7 @@ export const auschwitzBus = {
     note: '2026-09-09 查 10/26 的售票頁只顯示這兩班、沒有 07:35，這是當時的可售快照。2026-10-06 複核官方公告班表（自 2026-03-01 起至變更），Kraków MDA（Bosacka 18）發車為 06:15（11–3 月）／07:10／08:25／09:20／10:40／11:30／13:00／14:00／15:55（4–10 月），多數由 D10 發車（08:25 為 D9）。部分班次有季節／假日代碼，公告班表不代表 10/26 全部可售；班次、座位及線上票價仍須在付款前重查。',
   },
   inbound: {
-    status: '已於官方售票頁查得／尚未購票',
+    get status() { const word = inboundWord(); return word === '尚未購票' ? '已於官方售票頁查得／尚未購票' : word; },
     checkedAt: '2026-09-09',
     threshold: '導覽約 14:15 結束，必須挑 14:15 之後發車的班次',
     query: { from: 'Oświęcim', to: 'Kraków', date: '2026-10-26', passengers: 1 },
@@ -110,7 +121,8 @@ export const segments = [
     id: 'bus-lajkonik', day: 3,
     seg: 'Kraków MDA ⇄ Oświęcim Muzeum Auschwitz', date: '10/26', type: 'BUS · Lajkonik',
     from: `Kraków MDA（ul. Bosacka 18，${lajkonikOutboundAdopted.bay}）`, to: 'Oświęcim, Więźniów Oświęcimia 55（Muzeum Auschwitz）',
-    dayType: 'BUS · Lajkonik', dayLeg: `去程已購票；回程 ${lajkonikInboundAdopted.dep} → ${lajkonikInboundAdopted.arr} 尚未購票`,
+    dayType: 'BUS · Lajkonik',
+    get dayLeg() { return `去程已購票；回程 ${lajkonikInboundAdopted.dep} → ${lajkonikInboundAdopted.arr} ${inboundWord()}`; },
     saleCheckedAt: '2026-09-09',
     dep: `${lajkonikOutboundAdopted.dep}（${lajkonikOutboundAdopted.bay}）／回程 ${lajkonikInboundAdopted.dep}`,
     arr: `${lajkonikOutboundAdopted.arr} ／回程 ${lajkonikInboundAdopted.arr} 抵 Kraków MDA`,
@@ -118,8 +130,8 @@ export const segments = [
     price: `去程已購 2 張 ${auschwitzBus.outbound.booked.total}；回程線上快照 PLN ${lajkonikFare.full}（優待 ${lajkonikFare.discount}，2026-09-09 查得；付款前重查）`,
     dayDep: lajkonikOutboundAdopted.dep, dayArr: lajkonikOutboundAdopted.arr, dayDur: lajkonikOutboundAdopted.dur,
     dayPrice: `去程已購票（2 張全票 ${auschwitzBus.outbound.booked.total}）`,
-    status: '去程已購票／回程尚未購票',
-    note: '2026-10-13 旅客已購去程 08:25（D9，下層 dolna płyta）→ 09:50，2 張全票線上總價 47,50 zł；回程尚未購票。2026-09-09 查 10/26 官方售票頁：去程 07:10（D10）→ 08:35 原為首選，08:25 → 09:50 只比官方要求的 10:00 到場時間早 10 分鐘；回程 14:00 → 15:25 趕不上，15:30 → 16:55 採用，16:30 → 17:55 備案。2026-10-06 複核公告班表：去程發車 06:15（11–3 月）／07:10／08:25／09:20／10:40／11:30／13:00／14:00／15:55（4–10 月）；Muz. Auschwitz 回程 08:10（11–3 月）／09:00／11:00／12:00／14:00／15:30／16:30／17:30／18:30（4–10 月）。公告自 2026-03-01 起至變更，部分班次有季節／假日代碼、中途站為招手停；公告班表與 09/09 可售快照均不保證目前 10/26 庫存。司機售票現行全票 27／優待 22 PLN，線上快照 25／22 PLN 須於付款前重查。',
+    get status() { return `去程已購票／回程${inboundWord()}`; },
+    get note() { return `2026-10-13 旅客已購去程 08:25（D9，下層 dolna płyta）→ 09:50，2 張全票線上總價 47,50 zł；回程${inboundWord()}。2026-09-09 查 10/26 官方售票頁：去程 07:10（D10）→ 08:35 原為首選，08:25 → 09:50 只比官方要求的 10:00 到場時間早 10 分鐘；回程 14:00 → 15:25 趕不上，15:30 → 16:55 採用，16:30 → 17:55 備案。2026-10-06 複核公告班表：去程發車 06:15（11–3 月）／07:10／08:25／09:20／10:40／11:30／13:00／14:00／15:55（4–10 月）；Muz. Auschwitz 回程 08:10（11–3 月）／09:00／11:00／12:00／14:00／15:30／16:30／17:30／18:30（4–10 月）。公告自 2026-03-01 起至變更，部分班次有季節／假日代碼、中途站為招手停；公告班表與 09/09 可售快照均不保證目前 10/26 庫存。司機售票現行全票 27／優待 22 PLN，線上快照 25／22 PLN 須於付款前重查。`; },
   },
   {
     id: 'ic-3830', day: 4,

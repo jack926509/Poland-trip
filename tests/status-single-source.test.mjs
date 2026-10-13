@@ -7,7 +7,8 @@ import { databaseEntries } from '../src/data/travel-database.js';
 import { preDepartureNotes } from '../src/data/essentials.js';
 import { renderHome } from '../src/templates/home.mjs';
 import { renderBooking, renderTodos, renderNotes, todoLinkLabel } from '../src/templates/practical.mjs';
-import { resolveTodoRef, statusOfItems } from '../src/lib/todo-status.mjs';
+import { resolveTodoRef, statusOfItems, lajkonikInboundWord, railGroupIntro, panoramaWord } from '../src/lib/todo-status.mjs';
+import { auschwitzBus, bindTodoGroups } from '../src/data/rail.js';
 import { resolveHomeStatus, nextStepFor, departureLabel } from '../src/scripts/dashboard.js';
 
 // 獨立於 lib/todo-status.mjs 的算法（測試自己的一份判斷），用來驗各頁數字都等於待辦正本。
@@ -42,7 +43,13 @@ test('每類 eyebrow 的「N 項」等於該類實際項目數', () => {
 
 test('首頁狀態小卡的待辦數與分類計數等於正本', () => {
   assert.match(home, new RegExp(`<b data-home-open>${expected.open}</b> 項待辦`));
-  assert.ok(home.includes(`<span class="home-status-sub">${breakdown}</span>`), '分類計數不符');
+  const sub = /<span class="home-status-sub">(.*?)<\/span>\s*<span class="home-status-cta">/s.exec(home);
+  assert.ok(sub, '找不到分類計數');
+  assert.equal(sub[1].replace(/<[^>]+>/g, ''), breakdown, '分類計數不符');
+  // 「分類＋數字」每組包成 nowrap，手機窄版數字才不會被擠到下一行。
+  assert.equal((sub[1].match(/<span class="home-status-cat">/g) || []).length, trip.todoGroups.filter(g => openByGroup[g.id] > 0).length);
+  const css = fs.readFileSync(new URL('../src/styles/main.css', import.meta.url), 'utf8');
+  assert.match(css, /\.home-status-cat\s*\{[^}]*white-space:\s*nowrap/);
   assert.match(home, /data-home-status="before"[^>]*href="practical\/todos\.html"/);
   assert.match(home, /看待辦 →/);
 });
@@ -115,7 +122,16 @@ test('deadlines 的 status 一律由待辦正本推導，且所有引用都對�
 
 test('火車資料的已購狀態與待辦正本一致', () => {
   const railTodos = trip.todoGroups.find(group => group.id === 'rail').items;
-  for (const train of trip.trains.filter(item => !String(item.id).startsWith('bus-'))) {
+  for (const train of trip.trains) {
+    if (String(train.id).startsWith('bus-')) {
+      // 巴士（Lajkonik）去程已購、回程狀態跟著待辦「Lajkonik 回程」那一筆走。
+      const inbound = railTodos.find(item => item.name.includes('Lajkonik 回程'));
+      assert.ok(inbound, '待辦找不到 Lajkonik 回程');
+      const word = isOpen(inbound) ? '尚未購票' : '已購票';
+      assert.equal(train.status, `去程已購票／回程${word}`, 'Lajkonik 的 trains.status 與待辦不一致');
+      assert.ok(train.dayLeg.endsWith(word), `dayLeg 與待辦不一致：${train.dayLeg}`);
+      continue;
+    }
     const todo = railTodos.find(item => item.name.toUpperCase().includes(train.type.toUpperCase()));
     assert.ok(todo, `待辦找不到 ${train.type}`);
     assert.equal(isOpen(todo), train.status !== '已購票', `${train.type} 的 trains.status 與待辦不一致`);
@@ -135,6 +151,18 @@ test('待辦連結按鈕說實話：地圖叫地圖、評論叫店家頁，只�
   assert.ok(todos.includes('>地圖 →<'));
   assert.ok(todos.includes('>店家頁 →<'));
   assert.ok(todos.includes('>訂位 →<'));
+});
+
+test('旅程結束日只有一個：最後一天 Day 8 = 10/31，各處一致；結束後小卡顯示「旅程已結束」而非空殼', async () => {
+  const last = trip.days[trip.days.length - 1];
+  assert.match(last.date, /^10\/31/);
+  assert.equal(trip.meta.tripEnd, '2026-10-31');
+  const { TRIP_DATE_RANGE } = await import('../src/lib/routes.mjs');
+  assert.equal(TRIP_DATE_RANGE.end, trip.meta.tripEnd);
+  assert.equal(TRIP_DATE_RANGE.start, trip.meta.tripStart);
+  const nav = fs.readFileSync(new URL('../src/scripts/nav.js', import.meta.url), 'utf8');
+  assert.ok(nav.includes(`today > '${trip.meta.tripEnd}'`));
+  assert.match(home, /data-home-status="after" hidden>[^]*?旅程已結束/);
 });
 
 test('首頁小卡的日期切換：出發前、旅程期間（華沙日期）、旅程後', () => {
@@ -166,4 +194,51 @@ test('首頁為每個行程日各寫一張旅程期間小卡，Day 1 = 10/24，�
 test('狀態小卡的 hidden 有明寫 display: none，不會被 class 的 display 蓋掉', () => {
   const css = fs.readFileSync(new URL('../src/styles/main.css', import.meta.url), 'utf8');
   assert.match(css, /\.home-status-card\[hidden\]\s*\{\s*display:\s*none;/);
+});
+
+test('Lajkonik 回程的購票狀態只有 todoGroups 一個正本：改成已完成，推導結果不再出現「尚未購票」', () => {
+  const lajkonik = trip.trains.find(item => item.id === 'bus-lajkonik');
+  // 現況：回程未購，各處推導出的字句都說「尚未購票」。
+  assert.equal(lajkonikInboundWord(trip.todoGroups), '尚未購票');
+  assert.match(railGroupIntro(trip.todoGroups), /回程尚未購票/);
+  assert.match(lajkonik.status, /回程尚未購票/);
+
+  // 複製一份 todoGroups，只把 Lajkonik 回程改成已完成。
+  const doneGroups = structuredClone(trip.todoGroups);
+  const inbound = doneGroups.find(g => g.id === 'rail').items.find(item => item.name.includes('Lajkonik 回程'));
+  inbound.status = '已購票';
+  assert.equal(lajkonikInboundWord(doneGroups), '已購票');
+  const derivedIntro = railGroupIntro(doneGroups);
+  assert.doesNotMatch(derivedIntro, /尚未購票/);
+  assert.match(derivedIntro, /回程已購票/);
+
+  // rail.js 的 Lajkonik 欄位（status／dayLeg／note、inbound.status）也跟著走：綁定複製版後重讀。
+  try {
+    bindTodoGroups(doneGroups);
+    for (const text of [lajkonik.status, lajkonik.dayLeg, lajkonik.note, auschwitzBus.inbound.status]) {
+      assert.doesNotMatch(text, /尚未購票/, text.slice(0, 40));
+    }
+    assert.equal(lajkonik.status, '去程已購票／回程已購票');
+    assert.equal(auschwitzBus.inbound.status, '已購票');
+  } finally {
+    bindTodoGroups(trip.todoGroups);
+  }
+  assert.match(lajkonik.status, /回程尚未購票/);
+});
+
+test('全景畫（day-05）的購票說法跟著待辦走', () => {
+  assert.equal(panoramaWord(trip.todoGroups), '尚未購票');
+  const doneGroups = structuredClone(trip.todoGroups);
+  doneGroups.find(g => g.id === 'attractions').items.find(item => item.ticketPurchaseId === 'wroclaw-panorama').status = '已購票';
+  assert.equal(panoramaWord(doneGroups), '已購票');
+  const day5 = trip.days.find(d => d.n === 5);
+  assert.ok(JSON.stringify(day5).includes('尚未購票'), '現況 day-05 應出現由待辦推導的尚未購票');
+});
+
+test('rail.js 單獨載入（未綁定待辦）時不含任何購票狀態字樣', async () => {
+  const fresh = await import('../src/data/rail.js?unbound');
+  const bus = fresh.segments.find(item => item.id === 'bus-lajkonik');
+  for (const text of [bus.status, bus.dayLeg, fresh.auschwitzBus.inbound.status]) {
+    assert.doesNotMatch(text, /尚未購票/);
+  }
 });

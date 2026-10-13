@@ -92,8 +92,18 @@ function renderBookingNotice({ onTodosPage = false } = {}) {
  * 現在狀態只有待辦頁一個正本：這裡的數字由 todoGroups 即時算出，細項請去待辦頁。
  * id="countdown" 保留，今日卡與舊連結仍可跳到這張卡。
  */
-export function renderBookingStatusCard(todoGroups) {
+export function renderBookingStatusCard(todoGroups, deadlines = []) {
   const stats = todoStats(todoGroups);
+  // 還沒完成、又不屬於待辦頁的期限（複查、證件）：待辦頁不會出現，只能在這裡列出，否則旅客看不到。
+  // 有 todoRef 的期限狀態由待辦正本管理，不重複列。
+  const standalone = deadlines
+    .filter(item => !item.todoRef && isOpenTodoStatus(item.status))
+    .sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
+  const standaloneHtml = standalone.length ? `
+        <div class="booking-status-extra" data-booking-extra>
+          <h3>待辦頁以外還要做</h3>
+          <ul>${standalone.map(item => `<li data-deadline-id="${escapeHtml(item.id)}"><b class="number">${escapeHtml(item.date.slice(5).replace('-', '/'))}</b>　${escapeHtml(item.title)}</li>`).join('')}</ul>
+        </div>` : '';
   const rows = stats.groups.map(row => `<li><a href="todos.html#todo-${escapeHtml(row.id)}"><span>${escapeHtml(row.title)}</span><b>${row.open ? `${row.open} 項待處理` : '已完成'}</b></a></li>`).join('');
   return `
     <section class="section booking-status" id="countdown" data-todo-open="${stats.open}" data-todo-total="${stats.total}">
@@ -101,14 +111,14 @@ export function renderBookingStatusCard(todoGroups) {
         <span class="eyebrow">待辦總覽</span>
         <h2>${stats.open ? `還沒處理 <b class="number" data-booking-open>${stats.open}</b> 項` : '待辦已全部處理完畢'}</h2>
         <p>共 ${stats.total} 項，已完成 ${stats.done} 項${stats.skipped ? `，線上已售完 ${stats.skipped} 項（當天現場再試）` : ''}。逐項狀態、查核日期與處理連結只在待辦事項頁維護。</p>
-        <ul class="booking-status-groups">${rows}</ul>
+        <ul class="booking-status-groups">${rows}</ul>${standaloneHtml}
         <p class="action-links"><a class="booking-status-cta" href="todos.html">看待辦事項 →</a></p>
       </div>
     </section>`;
 }
 
-export function renderBooking({ flights, trains, stay, todoGroups = [], railOfficialLinks = [], railPurchaseSteps = [], auschwitzBus = null }) {
-  const statusCardHtml = renderBookingStatusCard(todoGroups);
+export function renderBooking({ flights, trains, stay, todoGroups = [], deadlines = [], railOfficialLinks = [], railPurchaseSteps = [], auschwitzBus = null }) {
+  const statusCardHtml = renderBookingStatusCard(todoGroups, deadlines);
   const railTrains = trains.filter(train => !String(train.id).startsWith('bus-'));
   const bookedTrains = railTrains.filter(train => train.status === '已購票').length;
   const trainRows = trains.map(train => `

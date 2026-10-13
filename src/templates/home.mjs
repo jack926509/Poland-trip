@@ -2,7 +2,7 @@ import { cityRoutes } from '../lib/city-guide.mjs';
 import { escapeHtml } from '../lib/html.mjs';
 import { bookingProgress, dayDate, isDepartureDay, nightStay } from '../lib/journey.mjs';
 import { renderLayout } from './layout.mjs';
-import { getTaipeiToday, collectDeadlines, nextDeadline, hideDeadlineOnTrip, todayIn, warsawToday, departureLabel, resolveHomeStatus, warsawMinutes, nextStepFor, initializeHomeStatus } from '../scripts/dashboard.js';
+import { getTaipeiToday, todayIn, warsawToday, departureLabel, resolveHomeStatus, warsawMinutes, nextStepFor, initializeHomeStatus } from '../scripts/dashboard.js';
 import { taipeiToday, parseStepTime } from '../lib/schedule.mjs';
 import { todoStats, todoBreakdownText } from '../lib/todo-status.mjs';
 import { ticketPurchases } from '../data/tickets.js';
@@ -21,24 +21,6 @@ function renderFlight(direction, legs) {
 }
 
 /**
- * 首頁只顯示「下一個要處理的截止項目」。
- *
- * 完整倒數表在訂票頁；首頁放整張表會把八日目錄往下推，而首頁真正要回答的
- * 只有一句話：現在最該動的是哪一件、還剩幾天。日期在建置時算定，
- * 前端不重算——首頁的提示只是入口，精確倒數以訂票頁為準。
- */
-function renderNextDeadline({ trains, deadlines, databaseEntries }) {
-  // 「資料重查」是維護用的查核日，不是旅客要處理的事；排除，避免首頁出現逾期假警報。
-  const next = nextDeadline(collectDeadlines({ trains, deadlines, databaseEntries }).filter(item => item.category !== '資料重查'), getTaipeiToday());
-  if (!next) return '';
-  return `<p class="next-deadline" data-next-deadline data-urgency="${next.urgency}">
-    <strong>${escapeHtml(next.label)}</strong>
-    <span>下一個期限 ${escapeHtml(next.date)}：${escapeHtml(next.title)}</span>
-    <a class="journal-text-link" href="practical/todos.html">看待辦事項 →</a>
-  </p>`;
-}
-
-/**
  * 日期格下方的狀態小卡（UX 審查 B7）：出發前把「還剩幾項待辦」放進第一屏。
  * 出發前：距出發 N 天・還有 M 項待辦（依分類）→ 看待辦。
  * 旅程期間（華沙日期落在 tripStart–tripEnd）：今天 Day N：主軸＋下一站 → 今日卡。
@@ -47,10 +29,10 @@ function renderNextDeadline({ trains, deadlines, databaseEntries }) {
  */
 function renderHomeStatusCard({ meta, days, stats }) {
   const daysToDeparture = resolveHomeStatus('0000-00-00', getTaipeiToday(), meta.travelStart, meta.tripStart, meta.tripEnd).days;
-  const breakdown = todoBreakdownText(stats);
+  const breakdown = stats.groups.filter(row => row.open > 0).map(row => `<span class="home-status-cat">${escapeHtml(row.title)} ${row.open}</span>`).join('／');
   const before = `<a class="home-status-card home-status-before" data-home-status="before" href="practical/todos.html">
       <span class="home-status-main"><b data-home-departure>${escapeHtml(departureLabel(daysToDeparture))}</b>・${stats.open ? `還有 <b data-home-open>${stats.open}</b> 項待辦` : '待辦已全部完成'}</span>
-      ${stats.open ? `<span class="home-status-sub">${escapeHtml(breakdown)}</span>` : ''}
+      ${stats.open ? `<span class="home-status-sub">${breakdown}</span>` : ''}
       <span class="home-status-cta">看待辦 →</span>
     </a>`;
   const dayCards = days.map(day => {
@@ -66,7 +48,8 @@ function renderHomeStatusCard({ meta, days, stats }) {
       <span class="home-status-cta">今日卡 →</span>
     </a>`;
   }).join('');
-  return `<div class="home-status" aria-label="目前最該做的事" aria-live="polite">${before}<div data-home-status="during" hidden>${dayCards}</div></div>`;
+  const after = `<p class="home-status-card home-status-after" data-home-status="after" hidden><span class="home-status-main">旅程已結束，歡迎回家。</span></p>`;
+  return `<div class="home-status" aria-label="目前最該做的事" aria-live="polite">${before}<div data-home-status="during" hidden>${dayCards}</div>${after}</div>`;
 }
 
 export function renderHome({ meta, days, flights, cities, todoGroups = [], databaseEntries = [], trains = [], deadlines = [] }) {
@@ -183,7 +166,6 @@ ${coverFigure}
     <section class="section journal-todo-notes" id="todos">
       <div class="section-heading"><span class="section-num">03 / Field notes</span><h2>出發前待辦</h2></div>
       <p class="lead">共 ${totalTodos} 項，還有 ${todoCount} 項待處理。先處理有日期與時段的票務，再完成交通、餐飲及備案。</p>
-      ${renderNextDeadline({ trains, deadlines, databaseEntries })}
       <div class="journal-notes-grid">${todoCards}</div>
       <p><a class="journal-text-link" href="practical/todos.html">開啟完整待辦事項 →</a></p>
     </section>
@@ -210,9 +192,8 @@ ${coverFigure}
     </section>
     <script>
       (function() {
-        ${[todayIn, taipeiToday, warsawToday, warsawMinutes, departureLabel, resolveHomeStatus, nextStepFor, hideDeadlineOnTrip, initializeHomeStatus].map(fn => fn.toString()).join('\n')}
+        ${[todayIn, taipeiToday, warsawToday, warsawMinutes, departureLabel, resolveHomeStatus, nextStepFor, initializeHomeStatus].map(fn => fn.toString()).join('\n')}
         const root = document.currentScript.closest('.standalone-page') || document;
-        hideDeadlineOnTrip(root, taipeiToday, ${JSON.stringify(meta.tripStart)});
         initializeHomeStatus(root, ${JSON.stringify({ travelStart: meta.travelStart, tripStart: meta.tripStart, tripEnd: meta.tripEnd })});
       }());
     </script>`;
