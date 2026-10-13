@@ -231,5 +231,96 @@ export const groceryPhotos = {
     "sourceUrl": "https://world.openfoodfacts.org/product/5900597000016",
     "originalUrl": "https://images.openfoodfacts.org/images/products/590/059/700/0016/front_en.3.400.jpg",
     "license": "CC BY-SA 3.0", "checkedAt": "2026-09-23"
+  },
+  // 2026-10-13 牛奶果汁與 Żabka 即食：以卡片 id 為鍵（不是商品編號），照片由 Open Food Facts S3 映像取得並目視核對。
+  "milk-laciate": {
+    "src": "assets/photos/grocery-milk-laciate.webp",
+    "label": "Łaciate 3,2% UHT 1 l 紙盒",
+    "width": 138,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900820000011",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/082/000/0011/12.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-10-13"
+  },
+  "milk-mlekovita": {
+    "src": "assets/photos/grocery-milk-mlekovita.webp",
+    "label": "Mlekovita Mleko Polskie 3,2% 1 l",
+    "width": 300,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900512850016",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/051/285/0016/1.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-10-13"
+  },
+  "milk-kefir": {
+    "src": "assets/photos/grocery-milk-kefir.webp",
+    "label": "Piątnica Kefir 2% 330 g",
+    "width": 139,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900531003776",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/053/100/3776/1.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-10-13"
+  },
+  "milk-maslanka": {
+    "src": "assets/photos/grocery-milk-maslanka.webp",
+    "label": "Mlekovita Maślanka Polska 藍莓口味",
+    "width": 225,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900512901572",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/051/290/1572/1.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-10-13"
+  },
+  "juice-tymbark-100": {
+    "src": "assets/photos/grocery-juice-tymbark-100.webp",
+    "label": "Tymbark Sok 100% jabłko 300 ml",
+    "width": 262,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900334001740",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/033/400/1740/2.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-10-13"
+  },
+  "juice-nfc": {
+    "src": "assets/photos/grocery-juice-nfc.webp",
+    "label": "Vital Fresh 鮮榨混濁蘋果汁 3 l（Biedronka）",
+    "width": 345,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900446013259",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/044/601/3259/5.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-10-13"
+  },
+  "juice-hortex": {
+    "src": "assets/photos/grocery-juice-hortex.webp",
+    "label": "Hortex Sok 100% tłoczony 蘋果汁 1 l",
+    "width": 216,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900500042843",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/050/004/2843/2.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-10-13"
+  },
+  "zabka-szamamm-soup": {
+    "src": "assets/photos/grocery-zabka-szamamm-soup.webp",
+    "label": "Szamamm Zupa grzybowa z makaronem",
+    "width": 245,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900907009296",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/090/700/9296/1.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-10-13"
+  },
+  "zabka-wolowiner": {
+    "src": "assets/photos/grocery-zabka-wolowiner.webp",
+    "label": "Szamamm Wołowiner 牛肉漢堡",
+    "width": 245,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900562456350",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/056/245/6350/1.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-10-13"
   }
 };

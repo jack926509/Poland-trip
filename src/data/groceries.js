@@ -215,10 +215,11 @@ export const groceryBranches = [
 ];
 
 // 牛奶與果汁：2026-10-13 依品牌／零售商資料整理的貨架挑選指南。
-// 這一批沒有可用的 CC 授權照片（Open Food Facts 本輪連不上），所以不進
-// groceryProducts（那邊每項都必須有本機照片），改成只靠波蘭文標示辨識的清單。
+// 照片同樣取自 Open Food Facts（CC BY-SA 3.0），以卡片 id 為鍵存在 groceryPhotos；
+// 不併入 groceryProducts，因為那邊的數字 id 同時是商品錨點與照片檔名。
 // 推薦理由只寫來源能撐住的部分：品牌知名度、包裝、保存方式；沒有找到獨立試喝評比。
-export const groceryDrinkGuide = {
+const withPhoto = pick => ({ ...pick, photo: groceryPhotos[pick.id] });
+const drinkGuide = {
   checkedAt: '2026-10-13',
   milk: [
     {
@@ -263,13 +264,14 @@ export const groceryDrinkGuide = {
     {
       id: 'milk-maslanka',
       name: '水果酪奶',
-      localName: 'Maślanka Mrągowo（brzoskwiniowa 等）',
-      where: '超市冷藏櫃（如 Kaufland）',
-      look: '1 l 塑膠瓶，Mrągowo 字樣，口味寫在瓶身（brzoskwiniowa 水蜜桃）。',
+      localName: 'Maślanka（Mlekovita／Mrągowo 水果口味）',
+      where: '超市冷藏櫃',
+      look: '紙盒或塑膠瓶寫 Maślanka，口味在包裝上：jagodowa 藍莓、truskawkowa 草莓、brzoskwiniowa 水蜜桃。照片是 Mlekovita 藍莓口味。',
       why: '酸甜的發酵乳飲料，波蘭超市冷藏櫃很常見；想試在地乳品又不愛原味克菲爾，可從水果口味開始。',
       tip: '1 l 份量大，兩人分著喝；冷藏保存。',
       sources: [
         { title: 'Kaufland｜Maślanka Mrągowo Brzoskwiniowa 1 l', url: 'https://www.kaufland.pl/product/528830204/', kind: '零售商商品頁' },
+        { title: 'Open Food Facts｜Mlekovita Maślanka Jagodowa', url: 'https://world.openfoodfacts.org/product/5900512901572', kind: '商品資料庫' },
       ],
     },
   ],
@@ -277,9 +279,9 @@ export const groceryDrinkGuide = {
     {
       id: 'juice-tymbark-100',
       name: '100% 蘋果汁小瓶',
-      localName: 'Tymbark Sok 100% Jabłko 200 ml',
-      where: 'Żabka、Biedronka、Lidl',
-      look: '找 Sok 100% 字樣，不要拿到寫 Napój 的果汁飲料；200 ml 小瓶適合帶著走。',
+      localName: 'Tymbark Sok 100% Jabłko',
+      where: '超市果汁區、便利商店飲料櫃',
+      look: '綠色 TYMBARK 字樣與紅蘋果，找 Sok 100% 字樣，不要拿到寫 Napój 的果汁飲料；200–300 ml 小盒適合帶著走。',
       why: 'Tymbark 在 2017 年消費者調查獲選波蘭人最喜愛的果汁品牌；這款標示無添加糖，濃縮還原。',
       tip: 'Tymbark 也有 Jabłko-Mięta（蘋果薄荷）等果汁飲料，見上方採買推薦的 Tymbark 卡。',
       sources: [
@@ -305,7 +307,7 @@ export const groceryDrinkGuide = {
       name: '大盒家庭果汁',
       localName: 'Hortex Sok 100%',
       where: '大型超市果汁區',
-      look: 'Hortex 字樣紙盒，Sok 100% Jabłko（蘋果）、Jabłko-Gruszka（蘋果梨）等；也有 tłoczony 鮮榨系列。',
+      look: 'Hortex 字樣紙盒，Sok 100% Jabłko（蘋果）、Jabłko-Gruszka（蘋果梨）等；照片是 tłoczony 鮮榨的 1 l 寶特瓶版本。',
       why: '波蘭老牌蔬果品牌，果汁口味多；2017 年同一份調查中排名果汁類第二。住宿有冰箱、想多喝幾天時可買 1–2 l 盒。',
       tip: '一般 100% 系列是濃縮還原加維生素 C；想要鮮榨認 tłoczony。',
       sources: [
@@ -315,6 +317,35 @@ export const groceryDrinkGuide = {
     },
   ],
   // 標示對照：讀懂盒子上的字，比記品牌更不會買錯。
+  // Żabka 即食：有包裝、照片可以認的兩樣。熱狗是櫃檯現做、沒有包裝照，留在早餐補給的文字清單。
+  zabka: [
+    {
+      id: 'zabka-szamamm-soup',
+      name: '即食湯',
+      localName: 'Szamamm Zupa（grzybowa 等）',
+      where: 'Żabka 冷藏櫃',
+      look: '透明圓碗、Szamamm 標籤，湯名寫在標籤上（grzybowa 是菇湯）；另有韓式泡菜、泰式雞湯等口味。',
+      why: 'Żabka 自有品牌的即食湯，天冷時當晚餐補一碗；照片是菇湯麵。',
+      tip: '需要加熱；店內能否微波依分店，住宿有微波爐再買最保險。',
+      sources: [
+        { title: 'Wiadomości Handlowe｜Szamamm 湯品與生產（2026/01）', url: 'https://www.wiadomoscihandlowe.pl/franczyza-w-handlu/franczyza-spozywcza/misja-zabki-nieszablonowe-smaki-zup-szamamm-i-kulisy-produkcji-w-zakladzie-nowalijka-2531504', kind: '產業媒體' },
+        { title: 'Open Food Facts｜Szamamm Zupa grzybowa z makaronem', url: 'https://world.openfoodfacts.org/product/5900907009296', kind: '商品資料庫' },
+      ],
+    },
+    {
+      id: 'zabka-wolowiner',
+      name: '加熱即食牛肉漢堡',
+      localName: 'Szamamm Wołowiner',
+      where: 'Żabka 冷藏櫃',
+      look: '紅色紙盒、wołowiner 大字與漢堡圖，標示 100% wołowiny（100% 牛肉）、ser cheddar；右上角 grzej 是「要加熱」。',
+      why: '晚上餐廳收了或趕車時的熱食備案；同系列還有手撕豬肉的 Wieprzowiner。',
+      tip: '要加熱才好吃；包裝與口味以現場為準。',
+      sources: [
+        { title: 'Open Food Facts｜Szamamm Wołowiner', url: 'https://world.openfoodfacts.org/product/5900562456350', kind: '商品資料庫' },
+        { title: 'Open Food Facts｜Szamamm Wieprzowiner', url: 'https://world.openfoodfacts.org/product/5908308911637', kind: '商品資料庫' },
+      ],
+    },
+  ],
   labels: [
     ['Mleko UHT', '常溫保久乳，未開封不用冰'],
     ['Mleko świeże / pasteryzowane', '冷藏鮮奶，要冰'],
@@ -328,6 +359,12 @@ export const groceryDrinkGuide = {
     ['mętny', '混濁（未過濾）'],
     ['bez dodatku cukru', '無添加糖'],
   ],
+};
+export const groceryDrinkGuide = {
+  ...drinkGuide,
+  milk: drinkGuide.milk.map(withPhoto),
+  juice: drinkGuide.juice.map(withPhoto),
+  zabka: drinkGuide.zabka.map(withPhoto),
 };
 
 // rank 僅保留既有商品錨點相容性，不代表排名；新商品使用新的識別碼。
