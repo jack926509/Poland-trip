@@ -243,36 +243,6 @@ export const groceryPhotos = {
     "license": "CC BY-SA 3.0",
     "checkedAt": "2026-10-13"
   },
-  "milk-mlekovita": {
-    "src": "assets/photos/grocery-milk-mlekovita.webp",
-    "label": "Mlekovita Mleko Polskie 3,2% 1 l",
-    "width": 300,
-    "height": 400,
-    "sourceUrl": "https://world.openfoodfacts.org/product/5900512850016",
-    "originalUrl": "https://images.openfoodfacts.org/images/products/590/051/285/0016/1.400.jpg",
-    "license": "CC BY-SA 3.0",
-    "checkedAt": "2026-10-13"
-  },
-  "milk-kefir": {
-    "src": "assets/photos/grocery-milk-kefir.webp",
-    "label": "Piątnica Kefir 2% 330 g",
-    "width": 139,
-    "height": 400,
-    "sourceUrl": "https://world.openfoodfacts.org/product/5900531003776",
-    "originalUrl": "https://images.openfoodfacts.org/images/products/590/053/100/3776/1.400.jpg",
-    "license": "CC BY-SA 3.0",
-    "checkedAt": "2026-10-13"
-  },
-  "milk-maslanka": {
-    "src": "assets/photos/grocery-milk-maslanka.webp",
-    "label": "Mlekovita Maślanka Polska 藍莓口味",
-    "width": 225,
-    "height": 400,
-    "sourceUrl": "https://world.openfoodfacts.org/product/5900512901572",
-    "originalUrl": "https://images.openfoodfacts.org/images/products/590/051/290/1572/1.400.jpg",
-    "license": "CC BY-SA 3.0",
-    "checkedAt": "2026-10-13"
-  },
   "juice-tymbark-100": {
     "src": "assets/photos/grocery-juice-tymbark-100.webp",
     "label": "Tymbark Sok 100% jabłko 300 ml",
@@ -280,26 +250,6 @@ export const groceryPhotos = {
     "height": 400,
     "sourceUrl": "https://world.openfoodfacts.org/product/5900334001740",
     "originalUrl": "https://images.openfoodfacts.org/images/products/590/033/400/1740/2.400.jpg",
-    "license": "CC BY-SA 3.0",
-    "checkedAt": "2026-10-13"
-  },
-  "juice-nfc": {
-    "src": "assets/photos/grocery-juice-nfc.webp",
-    "label": "Vital Fresh 鮮榨混濁蘋果汁 3 l（Biedronka）",
-    "width": 345,
-    "height": 400,
-    "sourceUrl": "https://world.openfoodfacts.org/product/5900446013259",
-    "originalUrl": "https://images.openfoodfacts.org/images/products/590/044/601/3259/5.400.jpg",
-    "license": "CC BY-SA 3.0",
-    "checkedAt": "2026-10-13"
-  },
-  "juice-hortex": {
-    "src": "assets/photos/grocery-juice-hortex.webp",
-    "label": "Hortex Sok 100% tłoczony 蘋果汁 1 l",
-    "width": 216,
-    "height": 400,
-    "sourceUrl": "https://world.openfoodfacts.org/product/5900500042843",
-    "originalUrl": "https://images.openfoodfacts.org/images/products/590/050/004/2843/2.400.jpg",
     "license": "CC BY-SA 3.0",
     "checkedAt": "2026-10-13"
   },
@@ -322,5 +272,45 @@ export const groceryPhotos = {
     "originalUrl": "https://images.openfoodfacts.org/images/products/590/056/245/6350/1.400.jpg",
     "license": "CC BY-SA 3.0",
     "checkedAt": "2026-10-13"
+  },
+  "milk-kefir": {
+    "src": "assets/photos/grocery-milk-kefir.webp",
+    "label": "Krasnystaw Kefir 420 g",
+    "width": 301,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5902057001748",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/205/700/1748/10.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-10-14"
+  },
+  "juice-hortex": {
+    "src": "assets/photos/grocery-juice-hortex.webp",
+    "label": "Hortex Sok jabłkowy 100% 1 l",
+    "width": 128,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900500024337",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/050/002/4337/2.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-10-14"
+  },
+  "juice-riviva": {
+    "src": "assets/photos/grocery-juice-riviva.webp",
+    "label": "Riviva Sok 100% jabłko 1 l（Biedronka）",
+    "width": 127,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5908312137573",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/831/213/7573/1.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-10-14"
+  },
+  "juice-solevita": {
+    "src": "assets/photos/grocery-juice-solevita.webp",
+    "label": "Solevita Pomarańcza Brazylijska 100% 1 l（Lidl）",
+    "width": 300,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/4056489586708",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/405/648/958/6708/1.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-10-14"
   }
 };

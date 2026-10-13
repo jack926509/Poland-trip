@@ -5981,16 +5981,20 @@ h3 {
 /* 分組沿用城市頁餐飲分組的收合慣例（稽核 M4）：第一組展開，其餘收合並標數量。
    摘要列多一行組內商品名，收合時也看得出要找的東西在哪一組；打開後這行就收起來，
    不和下面的卡片重複。箭頭用邊框畫，不放文字字元，螢幕閱讀器只讀展開狀態。 */
-:is(.grocery-product-group, .grocery-fold) { margin-top: 1rem; border-top: 1px solid var(--line); }
-:is(.grocery-product-group, .grocery-fold):last-of-type { border-bottom: 1px solid var(--line); }
-:is(.grocery-product-group, .grocery-fold) > summary {
+.grocery-product-group,
+.grocery-fold { margin-top: 1rem; border-top: 1px solid var(--line); }
+.grocery-product-group:last-of-type,
+.grocery-fold:last-of-type { border-bottom: 1px solid var(--line); }
+.grocery-product-group > summary,
+.grocery-fold > summary {
   display: block;
   min-height: 44px;
   padding: 0.8rem 0.2rem;
   cursor: pointer;
   list-style: none;
 }
-:is(.grocery-product-group, .grocery-fold) > summary::-webkit-details-marker { display: none; }
+.grocery-product-group > summary::-webkit-details-marker,
+.grocery-fold > summary::-webkit-details-marker { display: none; }
 .grocery-group-title {
   display: flex;
   flex-wrap: wrap;
@@ -6009,7 +6013,8 @@ h3 {
   transform: rotate(-45deg);
   transition: transform 160ms var(--ease);
 }
-:is(.grocery-product-group, .grocery-fold)[open] > summary .grocery-group-title::before { transform: rotate(45deg); }
+.grocery-product-group[open] > summary .grocery-group-title::before,
+.grocery-fold[open] > summary .grocery-group-title::before { transform: rotate(45deg); }
 .grocery-group-names {
   display: block;
   margin: 0.3rem 0 0 1.05rem;
@@ -6017,7 +6022,8 @@ h3 {
   font-size: 0.84rem;
   line-height: 1.55;
 }
-:is(.grocery-product-group, .grocery-fold)[open] > summary .grocery-group-names { display: none; }
+.grocery-product-group[open] > summary .grocery-group-names,
+.grocery-fold[open] > summary .grocery-group-names { display: none; }
 .grocery-product-group > .source-meta { margin: 0 0 0.2rem; }
 .grocery-product-group[open] { padding-bottom: 1.1rem; }
 
@@ -6153,7 +6159,17 @@ h3 {
 .grocery-city > .action-links { margin-top: 0.9rem; }
 .grocery-city > .grocery-city-foot { margin-bottom: 1rem; }
 .grocery-drink-group > .grocery-drink-list { margin-top: 0.2rem; }
-.grocery-label-group > .grocery-label-list { margin-top: 0.2rem; }
+.grocery-label-title { margin: 1.2rem 0 0; font-weight: 700; }
+/* 2026 來源標籤：一眼看出這款是依哪一筆 2026 年資料推薦 */
+.grocery-drink-when {
+  flex-basis: 100%;
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
 .grocery-quick-list { margin-top: 1rem; }
 .grocery-sources > p { font-size: 0.92rem; }
 .grocery-sources > p:last-child { margin-bottom: 1rem; }
