@@ -8,6 +8,21 @@ import { todoGroups } from '../src/data/trip.js';
 const html = fs.readFileSync('dist/practical/tickets.html', 'utf8');
 const rowFor = id => html.match(new RegExp(`<tr id="purchase-${id}"[\\s\\S]*?<\\/tr>`))?.[0];
 
+test('克拉科夫各館購票按鈕直達正確分館，不會誤買辛德勒工廠票', () => {
+  for (const [id, location] of [
+    ['krakow-schindler', '1'],
+    ['krakow-rynek-underground', '20'],
+    ['krakow-old-synagogue', '2'],
+  ]) {
+    const url = new URL(ticketPurchaseById(id).purchaseUrl);
+    assert.equal(url.searchParams.get('idl'), location);
+    assert.ok(rowFor(id).includes(`idl=${location}`));
+  }
+  const archaeology = ticketPurchaseById('poznan-archaeological-museum');
+  assert.equal(archaeology.method, 'online');
+  assert.match(rowFor(archaeology.id), /tobilet\.pl\/wystawy-prezentowane-w-muzeum-archeologicznym-w-poznaniu\.html/);
+});
+
 test('所有既有票價景點都能從完整購票清單找到入口或售票方式', () => {
   assert.equal(new Set(ticketPurchases.map(item => item.id)).size, ticketPurchases.length);
   assert.deepEqual(ticketPurchaseGroups.map(group => group.cityKey), ['WAW', 'KRK', 'WRO', 'POZ']);

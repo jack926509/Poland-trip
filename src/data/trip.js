@@ -337,7 +337,7 @@ export const days = [
     warn: '❗三項皆尚未訂：起義博物館 08:30、皇家城堡 11:30、晚餐 Soul Kitchen 18:30（訂位時預留威靈頓）。2026-10-12 官網複查，皇家城堡已由官方確認 10 月起為二–日 10:00–17:00、最後入場 16:00（不是夏季的 18:00／17:00），11:30 入場仍有餘裕。起義博物館週五 08:00–18:00、週二休館，個人免費日為週四，10/30 照常收費。瓦津基公園每日 06:00–22:00 免費，水上宮殿週五免費入內（以館方當日公告為準）；日落 16:12，先拍外觀。國家博物館週五至 20:00、17:00 後半價，屬加碼行程。蕭邦博物館 2026 全年整修閉館，本趟不列入。',
     extend: [
       {label:'Bulwary Wiślane 維斯瓦河畔', when:'晚餐後', map:'https://www.google.com/maps/search/?api=1&query=Bulwary%20Wi%C5%9Blane%2C%20Warszawa', why:'河濱步道，城堡廣場步行 10–15 分，晚餐後想散步再去，免費'},
-      {label:'Neon Museum 霓虹燈博物館', when:'取消瓦津基或國家博物館時替代', map:'https://www.google.com/maps/search/?api=1&query=Neon%20Muzeum%2C%20plac%20Defilad%201%2C%20Warszawa', why:'已遷入科學文化宮 4 樓（Marszałkowska 入口），共產時期霓虹招牌收藏，PLN 25／優待 18，離飯店最近的室內選項'},
+      {label:'Neon Museum 霓虹燈博物館', when:'取消瓦津基或國家博物館時替代', map:'https://www.google.com/maps/search/?api=1&query=Neon%20Muzeum%2C%20plac%20Defilad%201%2C%20Warszawa', why:'已遷入科學文化宮 4 樓（Marszałkowska 入口），共產時期霓虹招牌收藏，PLN 28／優待 18（2026-10-13 官網），離飯店最近的室內選項'},
       {label:'科學文化宮 30F 觀景台', when:'取消國家博物館、晚餐前', map:'https://www.google.com/maps/search/?api=1&query=Pa%C5%82ac%20Kultury%20i%20Nauki%2C%20plac%20Defilad%201%2C%20Warszawa', why:'全票 30／優待 25 PLN · 每日開放與售票皆至 20:00；10/30 沒有晚間延長場，17:00 後已是夜景'},
     ],
     backup: [

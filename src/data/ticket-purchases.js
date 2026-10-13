@@ -5,7 +5,7 @@ import { venues } from './venues.js';
 // 現場售票、免費、已含及閉館項目不提供會誤導旅客的「線上購票」按鈕。
 export const ticketPurchaseCheckedAt = '2026-10-13';
 
-const mkTickets = 'https://bilety.mhk.pl/rezerwacja/wydarzenie.html?idl=1&lang=en';
+const schindlerTickets = 'https://bilety.mhk.pl/rezerwacja/wydarzenie.html?idl=1&lang=en';
 const mnwrTickets = 'https://bilety.mnwr.pl/?lang=en';
 const kolejkowoTickets = 'https://bilety.kolejkowo.pl/';
 
@@ -103,7 +103,7 @@ export const ticketPurchaseGroups = [
         note: '與 Wawel 皇家城堡分開售票；含教堂、齊格蒙特鐘、皇家墓室等開放區域。教堂博物館週日休館，不保證票券列出的所有場館當日都開。',
       }),
       entry('krakow-schindler', '辛德勒工廠', {
-        plan: 'main', day: 2, purchaseUrl: mkTickets,
+        plan: 'main', day: 2, purchaseUrl: schindlerTickets,
         note: '售票頁選 Oskar Schindler’s Enamel Factory 的一般參觀時段；17:30 不是官方固定英語導覽場。線上票實名，入場須帶同名證件正本。',
       }),
       entry('krakow-auschwitz', '奧斯威辛－比克瑙 Auschwitz-Birkenau', {
@@ -112,7 +112,7 @@ export const ticketPurchaseGroups = [
       }),
       entry('krakow-wieliczka', '維利奇卡鹽礦 Wieliczka', {
         plan: 'main', day: 4, purchaseUrl: 'https://bilety.kopalnia.pl/index.html?lang=en',
-        sourceUrl: 'https://www.wieliczka-saltmine.com/individual-tourist/useful-information/important-information/tourist-route',
+        sourceUrl: 'https://www.wieliczka-saltmine.com/individual-tourist/tourist-route',
         note: '選 Tourist Route＋English，按可售場次購票。官方售票通道為 bilety.kopalnia.pl 與礦區現場售票口／售票機。',
       }),
       entry('krakow-st-mary-basilica', '聖瑪利亞教堂內部＋號角塔', {
@@ -120,7 +120,7 @@ export const ticketPurchaseGroups = [
         note: '教堂觀光區與登塔分別收費；登塔無法預約，只能當日在 Mariacki 廣場 7 號購票，名額有限。塔樓 11 月至翌年 4 月關閉。',
       }),
       entry('krakow-rynek-underground', '地下市集博物館 Rynek Underground', {
-        purchaseUrl: mkTickets, sourceUrl: 'https://muzeumkrakowa.pl/en/branches/rynek-underground',
+        purchaseUrl: 'https://bilety.mhk.pl/rezerwacja/wydarzenie.html?idl=20&lang=en', sourceUrl: 'https://muzeumkrakowa.pl/en/branches/rynek-underground',
         note: '雨天替代 Wawel 的備案；售票頁選 Rynek Underground 的指定場次。週二免費日不能預約，需現場領取限量票。',
       }),
       entry('krakow-galicia-museum', 'Galicia 猶太博物館', {
@@ -133,7 +133,7 @@ export const ticketPurchaseGroups = [
         note: '專案提及的延伸景點；週一休館，10/26 不適用。臨展與常設展免費規則不同。',
       }),
       entry('krakow-old-synagogue', '舊猶太會堂 Old Synagogue', {
-        purchaseUrl: mkTickets, sourceUrl: 'https://muzeumkrakowa.pl/en/branches/old-synagogue',
+        purchaseUrl: 'https://bilety.mhk.pl/rezerwacja/wydarzenie.html?idl=2', sourceUrl: 'https://muzeumkrakowa.pl/en/branches/old-synagogue',
         note: '拍照位置提及；若入內看博物館展覽，售票頁選 Old Synagogue。街道散步與外觀拍照不需門票。',
       }),
     ],
@@ -175,7 +175,7 @@ export const ticketPurchaseGroups = [
         note: '購票時選 Wrocław，避免選到 Warszawa 館；同在 Sky Tower，但與觀景台分開售票。',
       }),
       entry('wroclaw-sky-tower', 'Sky Tower 觀景台', {
-        purchaseUrl: 'https://bilety.skytower.pl/index.html?lang=en', sourceUrl: 'https://skytower.pl/en/punkt-widokowy/',
+        purchaseUrl: 'https://bilety.skytower.pl/index.html?lang=en', sourceUrl: 'https://bilety.skytower.pl/regulamin.html?lang=en',
         note: '雨天備案；需選日期與入場時段，付款前留意能見度及退票規則。',
       }),
     ],
@@ -191,8 +191,8 @@ export const ticketPurchaseGroups = [
         note: '附件原規劃有排，最新主行程未排；如加入，需選展演日期、場次與語言。10/29 有無英文場仍待售票日曆確認。',
       }),
       entry('poznan-archaeological-museum', '考古博物館／Genius loci 考古保護區', {
-        method: 'onsite',
-        note: '可買本館票或兩館聯票，兩處是不同地點；官方頁提供票種與現場購票資訊，未確認獨立線上售票流程。',
+        purchaseUrl: 'https://tobilet.pl/wystawy-prezentowane-w-muzeum-archeologicznym-w-poznaniu.html',
+        note: '官網連至 ToBilet 的本館線上售票；本館與 Genius loci 是不同地點，聯票內容依票種確認。官網票價頁列每週二免費；售票平台摘要與官網不一致，10/29 週四先按付費規劃，購票前再查。',
       }),
       entry('poznan-cathedral', '主教座堂地下墓室／觀景塔', {
         method: 'onsite', sourceUrl: 'https://www.katedra.archpoznan.pl/turysci-w-katedrze/',
