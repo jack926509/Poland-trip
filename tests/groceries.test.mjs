@@ -172,10 +172,15 @@ test('手機長度：推薦分組只展開第一組、摘要列出商品名，�
   }
 });
 
-test('牛奶與果汁推薦與 Żabka 即食：每張卡有照片、哪裡買、怎麼認與來源，標示對照表與 Żabka 熱食都在頁面上', () => {
+test('2026 牛奶果汁與 Żabka 即食：每張卡有照片、哪裡買、怎麼認與來源，標示對照表與 Żabka 熱食都在頁面上', () => {
   const html = fs.readFileSync('dist/practical/groceries.html', 'utf8');
   const picks = [...groceryDrinkGuide.milk, ...groceryDrinkGuide.juice, ...groceryDrinkGuide.zabka];
-  assert.ok(groceryDrinkGuide.milk.length >= 3 && groceryDrinkGuide.juice.length >= 3);
+  assert.ok(groceryDrinkGuide.milk.length >= 2 && groceryDrinkGuide.juice.length >= 3);
+  // 2026-10-14：牛奶果汁只收 2026 年有日期的來源，每張卡標出依據
+  for (const pick of [...groceryDrinkGuide.milk, ...groceryDrinkGuide.juice]) {
+    assert.match(pick.when, /2026/, `${pick.id} 缺 2026 依據`);
+    assert.ok(pick.sources.some(source => /2026/.test(source.kind) || /2026/.test(source.title)), `${pick.id} 沒有 2026 年來源`);
+  }
   assert.equal((html.match(/class="grocery-drink" id="/g) || []).length, picks.length);
   for (const pick of picks) {
     assert.ok(pick.sources.length > 0 && pick.sources.every(s => /^https:\/\//.test(s.url)), pick.id);
@@ -183,20 +188,23 @@ test('牛奶與果汁推薦與 Żabka 即食：每張卡有照片、哪裡買、
     assert.ok(pick.photo && fs.existsSync(pick.photo.src), `${pick.id} 缺照片`);
     assert.ok(html.includes(`src="../${pick.photo.src}"`), `${pick.id} 照片沒渲染`);
   }
-  assert.ok(html.includes('href="#drinks"'));
+  assert.ok(html.includes('href="#milk-juice"'));
   for (const word of ['Mleko UHT', 'tłoczony / NFC', 'Nektar', 'Hot Dog', 'Szamamm']) assert.ok(html.includes(word), word);
 });
 
-test('2026-10-13 重整：六節依採買順序排列，四城收成可展開的城市卡，飲料只在「喝什麼」出現一次', () => {
+test('2026-10-13 重整：五節依採買順序排列，四城收成可展開的城市卡，牛奶果汁是「買什麼」的一組', () => {
   const html = fs.readFileSync('dist/practical/groceries.html', 'utf8');
   const order = [...html.matchAll(/<section class="section" id="([^"]+)"/g)].map(match => match[1]);
-  assert.deepEqual(order, ['essentials', 'stores', 'recommendations', 'drinks', 'quick-meals', 'shopping-tips']);
+  assert.deepEqual(order, ['essentials', 'stores', 'recommendations', 'quick-meals', 'shopping-tips']);
   // 城市卡預設收合，城市頁連到 #warsaw 等錨點時由 nav.js 展開
   for (const city of cityRoutes) assert.match(html, new RegExp(`<details class="grocery-city grocery-fold" id="${city.mapKey}">`));
   assert.doesNotMatch(html, /<details class="grocery-city[^"]*" id="[^"]+" open/);
   // 10/25 公休只在「先知道」講一次，不再於城市段落與頁尾重複（各店卡另有自己的星期日標記）
   assert.equal((html.match(/2026\/10\/25/g) || []).length, 1);
-  // 飲料類商品卡放在「喝什麼」一節裡
-  const drinks = html.slice(html.indexOf('id="drinks"'), html.indexOf('id="quick-meals"'));
-  for (const product of groceryProducts.filter(p => p.drink)) assert.ok(drinks.includes(`id="product-${product.id}"`), product.localName);
+  // 牛奶果汁與果汁飲料都收在「買什麼」裡，不另開一節
+  const picks = html.slice(html.indexOf('id="recommendations"'), html.indexOf('id="quick-meals"'));
+  assert.match(picks, /<details class="grocery-drink-group grocery-fold" id="milk-juice">/);
+  for (const pick of [...groceryDrinkGuide.milk, ...groceryDrinkGuide.juice]) assert.ok(picks.includes(`id="${pick.id}"`), pick.id);
+  for (const product of groceryProducts.filter(p => p.drink)) assert.ok(picks.includes(`id="product-${product.id}"`), product.localName);
+  assert.doesNotMatch(html, /喝什麼/);
 });

@@ -53,11 +53,16 @@
 Open Food Facts 主站本輪無法連線，原始照片改由 Open Food Facts 官方 S3 影像映像（openfoodfacts-images）取得；檔名編號與主站原圖網址相同。由 Open Food Facts 貢獻者提供，CC BY-SA 3.0；縮放／WebP 轉檔後同授權分享，2026-10-13 目視核對為包裝正面。
 
 - assets/photos/grocery-milk-laciate.webp：Łaciate 3,2% UHT 1 l 紙盒；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900820000011)；[原圖](https://images.openfoodfacts.org/images/products/590/082/000/0011/12.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-13 核對。
-- assets/photos/grocery-milk-mlekovita.webp：Mlekovita Mleko Polskie 3,2% 1 l；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900512850016)；[原圖](https://images.openfoodfacts.org/images/products/590/051/285/0016/1.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-13 核對。
-- assets/photos/grocery-milk-kefir.webp：Piątnica Kefir 2% 330 g；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900531003776)；[原圖](https://images.openfoodfacts.org/images/products/590/053/100/3776/1.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-13 核對。
-- assets/photos/grocery-milk-maslanka.webp：Mlekovita Maślanka Polska 藍莓口味；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900512901572)；[原圖](https://images.openfoodfacts.org/images/products/590/051/290/1572/1.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-13 核對。
 - assets/photos/grocery-juice-tymbark-100.webp：Tymbark Sok 100% jabłko 300 ml；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900334001740)；[原圖](https://images.openfoodfacts.org/images/products/590/033/400/1740/2.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-13 核對。
-- assets/photos/grocery-juice-nfc.webp：Vital Fresh 鮮榨混濁蘋果汁 3 l（Biedronka）；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900446013259)；[原圖](https://images.openfoodfacts.org/images/products/590/044/601/3259/5.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-13 核對。
-- assets/photos/grocery-juice-hortex.webp：Hortex Sok 100% tłoczony 蘋果汁 1 l；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900500042843)；[原圖](https://images.openfoodfacts.org/images/products/590/050/004/2843/2.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-13 核對。
 - assets/photos/grocery-zabka-szamamm-soup.webp：Szamamm Zupa grzybowa z makaronem；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900907009296)；[原圖](https://images.openfoodfacts.org/images/products/590/090/700/9296/1.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-13 核對。
 - assets/photos/grocery-zabka-wolowiner.webp：Szamamm Wołowiner 牛肉漢堡；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900562456350)；[原圖](https://images.openfoodfacts.org/images/products/590/056/245/6350/1.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-13 核對。
+
+
+## 2026-10-14 牛奶果汁改為 2026 年來源的品項
+
+取得方式同上（Open Food Facts 官方 S3 影像映像，CC BY-SA 3.0），縮放／WebP 轉檔，2026-10-14 目視核對為包裝正面。
+
+- assets/photos/grocery-milk-kefir.webp：Krasnystaw Kefir 420 g；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5902057001748)；[原圖](https://images.openfoodfacts.org/images/products/590/205/700/1748/10.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-14 核對。
+- assets/photos/grocery-juice-hortex.webp：Hortex Sok jabłkowy 100% 1 l；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900500024337)；[原圖](https://images.openfoodfacts.org/images/products/590/050/002/4337/2.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-14 核對。
+- assets/photos/grocery-juice-riviva.webp：Riviva Sok 100% jabłko 1 l（Biedronka）；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5908312137573)；[原圖](https://images.openfoodfacts.org/images/products/590/831/213/7573/1.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-14 核對。
+- assets/photos/grocery-juice-solevita.webp：Solevita Pomarańcza Brazylijska 100% 1 l（Lidl）；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/4056489586708)；[原圖](https://images.openfoodfacts.org/images/products/405/648/958/6708/1.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-14 核對。

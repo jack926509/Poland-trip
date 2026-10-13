@@ -84,7 +84,7 @@ function renderProduct(product, pathPrefix) {
 function renderDrinkPick(pick, pathPrefix) {
   const sources = pick.sources.map(source => `<li>${external(source.url, source.title)}<span class="grocery-source-meta">${e(source.kind)}</span></li>`).join('');
   return `<li class="grocery-drink" id="${e(pick.id)}">
-      <p class="grocery-drink-head"><b lang="pl">${e(pick.localName)}</b><span>${e(pick.name)}</span></p>
+      <p class="grocery-drink-head"><b lang="pl">${e(pick.localName)}</b><span>${e(pick.name)}</span>${pick.when ? `<em class="grocery-drink-when">${e(pick.when)}</em>` : ''}</p>
       <div class="grocery-drink-photo">${renderProductPhoto(pick, pathPrefix)}</div>
       <div class="grocery-drink-info">
         <p class="grocery-drink-where"><span>哪裡買</span>${e(pick.where)}</p>
@@ -98,11 +98,19 @@ function renderDrinkPick(pick, pathPrefix) {
     </li>`;
 }
 
-// 牛奶、果汁各一組，沿用商品分組的收合樣式；摘要列直接列出品名，不打開也知道裡面有什麼。
-const drinkGroup = (heading, picks, pathPrefix, open = false) => `<details class="grocery-drink-group grocery-fold"${open ? ' open' : ''}>
-      <summary><h3 class="grocery-group-title">${e(heading)}<span class="grocery-group-count">${picks.length} 項</span></h3><span class="grocery-group-names" lang="pl">${picks.map(pick => e(pick.localName)).join('・')}</span></summary>
+// 2026 牛奶與果汁：併進「買什麼」成為其中一組（2026-10-14 使用者要求，不再獨立一節）。
+// 卡片之後附一小段盒上波蘭文對照，站在貨架前可以一次對完。
+function milkJuiceGroup(guide, pathPrefix) {
+  const picks = [...guide.milk, ...guide.juice];
+  const labels = guide.labels.map(([pl, zh]) => `<div><dt lang="pl">${e(pl)}</dt><dd>${e(zh)}</dd></div>`).join('');
+  return `<details class="grocery-drink-group grocery-fold" id="milk-juice">
+      <summary><h3 class="grocery-group-title">2026 牛奶與果汁<span class="grocery-group-count">${picks.length} 項</span></h3><span class="grocery-group-names" lang="pl">${picks.map(pick => e(pick.localName)).join('・')}</span></summary>
+      <p class="source-meta">每款都附 2026 年的來源：線上銷售排行或連鎖超市當年特價，證明今年在架上，不是試喝評比。沒冰箱的住宿選 UHT 牛奶與常溫果汁；kefir 要冷藏。</p>
       <ul class="grocery-drink-list">${picks.map(pick => renderDrinkPick(pick, pathPrefix)).join('')}</ul>
+      <p class="grocery-label-title">盒子上的字怎麼讀</p>
+      <dl class="grocery-label-list">${labels}</dl>
     </details>`;
+}
 
 export function renderGroceries({ groceryChains, groceryBranches, groceryProducts, groceryDrinkGuide }) {
   // 這一頁在 practical/ 底下；照片路徑與 renderLayout 用同一個值，不各寫一次。
@@ -115,7 +123,7 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
    * 2026-10-13 重新整理：原本 13 節、手機約 20,600px，同一件事散在好幾處——
    * 星期日公休在開頭提醒、城市段落與最底下各講一次，Tymbark 在推薦與牛奶果汁各一張，
    * Żabka 分在連鎖卡、早餐清單與即食卡三處。改成照採買時的問題排五節：
-   * 先知道什麼 → 去哪買 → 買什麼 → 喝什麼 → 即食，最後才是提醒與來源。
+   * 先知道什麼 → 去哪買 → 買什麼（含 2026 牛奶果汁）→ 即食，最後才是提醒與來源。
    * 四城門市與每組商品都收成 details，摘要列寫出關鍵資訊，不展開也能判斷要不要點。
    */
   const chains = `<ul class="grocery-chain-grid">${groceryChains.map(c => `<li class="grocery-chain-card" data-chain="${e(c.id)}">
@@ -143,7 +151,7 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
 
   // 2026 年文章推薦與歷年經典補充分開，是 c378570 定下的資訊分界，保留。
   // 第一組預設展開，其餘收合並標數量；摘要列直接列出組內商品名。
-  // 「當地喝・果汁飲料」組放到「喝什麼」一節，跟牛奶果汁卡排在一起，不再分兩處找。
+  // 牛奶果汁與果汁飲料都是「買什麼」底下的一組，不另開一節。
   const productGroup = (heading, note, items, open = false) => items.length ? `<details class="grocery-product-group"${open ? ' open' : ''}>
       <summary><h3 class="grocery-group-title">${e(heading)}<span class="grocery-group-count">${items.length} 項</span></h3><span class="grocery-group-names" lang="pl">${items.map(product => e(product.localName)).join('・')}</span></summary>
       <p class="source-meta">${e(note)}</p>
@@ -151,17 +159,16 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
     </details>` : '';
   const is2026 = product => product.sources.some(source => source.kind === '2026 旅遊推薦');
   const products = productGroup('2026 年文章推薦', '來源為 2026 年的旅遊文章；推薦的是品牌或品類，不等於指定照片中的口味。', groceryProducts.filter(is2026), true)
+    + milkJuiceGroup(guide, pathPrefix)
     + productGroup('經典補充', '來源為歷年網友推薦或品牌商品資料，不是 2026 年新文。', groceryProducts.filter(product => !is2026(product) && !product.supplement && !product.drink))
     + productGroup('常溫選品補充', '依提供的採買清單補充，以品牌或零售商資料核對品項；不是人氣排行。是否可攜入台灣仍須依成分與入境規定確認。', groceryProducts.filter(product => product.supplement && !product.localOnly))
-    + productGroup('當地吃・冷藏甜點', '在超市冷藏櫃找品牌與品名，不保證特定連鎖或分店有貨。冷藏品依包裝保存，購買前先確認住宿冰箱。', groceryProducts.filter(product => product.localOnly && !product.drink));
-  const drinkProducts = productGroup('果汁飲料・在地品牌', '在飲料貨架或冷藏櫃找品牌；照片只代表一款口味，各分店是否供貨以現場為準。', groceryProducts.filter(product => product.drink));
+    + productGroup('當地吃・冷藏甜點', '在超市冷藏櫃找品牌與品名，不保證特定連鎖或分店有貨。冷藏品依包裝保存，購買前先確認住宿冰箱。', groceryProducts.filter(product => product.localOnly && !product.drink))
+    + productGroup('當地喝・果汁飲料', '在飲料貨架或冷藏櫃找品牌；照片只代表一款口味，各分店是否供貨以現場為準。', groceryProducts.filter(product => product.drink));
 
-  const labels = guide.labels.map(([pl, zh]) => `<div><dt lang="pl">${e(pl)}</dt><dd>${e(zh)}</dd></div>`).join('');
   const sections = [
     ['essentials', '先知道', 'Before you go'],
     ['stores', '去哪買', 'Where'],
     ['recommendations', '買什麼', 'Picks'],
-    ['drinks', '喝什麼', 'Milk & juice'],
     ['quick-meals', 'Żabka 即食', 'Quick meals'],
     ['shopping-tips', '提醒與來源', 'Notes'],
   ];
@@ -191,23 +198,13 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
       ${products}
       <p class="grocery-priority-foot"><b>行李有限先挑：</b>${groceryProducts.filter(p => p.priority).map(p => e(p.localName)).join('、')}。更多伴手禮店家見<a href="shopping.html">購物頁</a>。</p>
     </section>
-    <section class="section" id="drinks">${heading('drinks', '喝什麼：牛奶與果汁')}
-      <p>沒冰箱的住宿選 <b lang="pl">UHT</b> 牛奶與常溫果汁；kefir、maślanka、鮮榨果汁都要冷藏，買小瓶當天喝完。推薦依品牌與零售商資料（${e(guide.checkedAt)} 整理），沒有找到獨立試喝評比。</p>
-      ${drinkGroup('牛奶與發酵乳', guide.milk, pathPrefix, true)}
-      ${drinkGroup('果汁', guide.juice, pathPrefix)}
-      ${drinkProducts}
-      <details class="grocery-label-group grocery-fold">
-        <summary><h3 class="grocery-group-title">盒子上的字怎麼讀<span class="grocery-group-count">${guide.labels.length} 個</span></h3><span class="grocery-group-names" lang="pl">UHT・Sok 100%・Nektar・Napój・tłoczony / NFC</span></summary>
-        <dl class="grocery-label-list">${labels}</dl>
-      </details>
-    </section>
     <section class="section" id="quick-meals">${heading('quick-meals', 'Żabka 即食與早餐')}
       <ul class="grocery-drink-list">${(guide.zabka || []).map(pick => renderDrinkPick(pick, pathPrefix)).join('')}</ul>
       <ul class="check-list grocery-quick-list">
         <li><b>Hot Dog：</b>Żabka 賣最多的熱食，官方公布 2023 年賣出超過 8,000 萬份；櫃檯現做，可選香腸與醬料，也有無肉版本，2026 年起美式熱狗推到全國門市。${external('https://zabkagroup.com/more-than-80-million-hot-dogs-sold-14-million-paninis-and-6-million-crunchy-snacks-on-offer-prostozpieca/', 'Żabka 集團公告')} · ${external('https://www.wiadomoscihandlowe.pl/handel-i-dystrybucja/sklepy-convenience-i-stacje-paliw/zabka-mocniej-wchodzi-w-street-food-hot-dogi-z-usa-w-12-tys-sklepow-znamy-ceny-2534324', '2026 美式熱狗')}</li>
         <li><b>熱壓吐司（Tosty）、Panini、Zapiekanka：</b>官方早餐列有火腿起司、雞肉培根吐司；Zapiekanka 是波蘭式焗烤長麵包，在有 PROSTO z PIECA 熱食的門市才有。${external('https://www.zabka.pl/sniadania-w-zabce-staly-sie-hitem/', 'Żabka 早餐介紹')} · ${external('https://www.zabka.pl/zabka-menu/', 'Żabka 官方菜單')}</li>
         <li><b>咖啡（Kawa）：</b>官網列有黑咖啡、拿鐵等；是否自助、價格與供應以現場為準。</li>
-        <li><b>麵包與飲品：</b>超市麵包區找可頌或小份麵包，配 Łaciate 小盒牛奶或 Tymbark 小盒果汁（見<a href="#drinks">喝什麼</a>）。</li>
+        <li><b>麵包與飲品：</b>超市麵包區找可頌或小份麵包，配 Łaciate 小盒牛奶或 Tymbark 小盒果汁（見<a href="#milk-juice">2026 牛奶與果汁</a>）。</li>
       </ul>
     </section>
     <section class="section" id="shopping-tips">${heading('shopping-tips', '其他提醒與資料來源')}

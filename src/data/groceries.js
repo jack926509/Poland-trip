@@ -214,110 +214,104 @@ export const groceryBranches = [
   }
 ];
 
-// 牛奶與果汁：2026-10-13 依品牌／零售商資料整理的貨架挑選指南。
+// 牛奶與果汁：2026-10-13 整理、2026-10-14 改為只收 2026 年有日期來源的品項。
 // 照片同樣取自 Open Food Facts（CC BY-SA 3.0），以卡片 id 為鍵存在 groceryPhotos；
 // 不併入 groceryProducts，因為那邊的數字 id 同時是商品錨點與照片檔名。
 // 推薦理由只寫來源能撐住的部分：品牌知名度、包裝、保存方式；沒有找到獨立試喝評比。
 const withPhoto = pick => ({ ...pick, photo: groceryPhotos[pick.id] });
 const drinkGuide = {
-  checkedAt: '2026-10-13',
+  checkedAt: '2026-10-14',
+  // 2026-10-14 依使用者要求改成「2026 年有日期的來源」才收：銷售排行、連鎖超市 2026 年特價，
+  // 沒有 2026 年來源的 Mlekovita、Maślanka、鮮榨 NFC 果汁移除。各款都附來源日期，
+  // 「2026 年特價」只證明當年在架上，不是試喝評比。
   milk: [
     {
       id: 'milk-laciate',
       name: '常溫全脂牛奶',
       localName: 'Łaciate 3,2% UHT',
+      when: '2026/06 Allegro 牛奶類銷售排行第一',
       where: '各大超市牛奶區',
       look: '白底黑色乳牛斑紋紙盒，大字 Łaciate；3,2% 是全脂。',
-      why: '波蘭最常見的牛奶品牌之一，UHT 常溫保存，沒冰箱的住宿也能放；有 0,5 l 小盒，一天喝得完。',
-      tip: '開封後冷藏、約三天內喝完。另有 truskawkowe（草莓）、czekoladowe（巧克力）調味乳，是否有貨看現場。',
+      why: 'UHT 常溫保存，沒冰箱的住宿也能放；有 0,5 l 小盒，一天喝得完。',
+      tip: '開封後冷藏、約三天內喝完。排行是線上銷售量，不是口味評比。',
       sources: [
+        { title: 'Allegro｜牛奶與乳飲品排行（2026/06）', url: 'https://allegro.pl/ranking/mleko-i-napoje-mleczne', kind: '2026 銷售排行' },
         { title: 'Mlekpol｜Łaciate 品牌與 UHT 規格', url: 'https://mlekpol.com.pl/index.php/en/milk-producers/laciate/', kind: '品牌官方' },
-      ],
-    },
-    {
-      id: 'milk-mlekovita',
-      name: '平價牛奶',
-      localName: 'Mlekovita Mleko Polskie',
-      where: 'Biedronka、Lidl 常有多件優惠',
-      look: '找 Mlekovita 字樣；UHT 是常溫紙盒，świeże／pasteryzowane 在冷藏櫃。',
-      why: '波蘭大型乳品合作社，在 Kantar 品牌足跡（消費者購買率）排行名列前茅；超市幾乎都有。',
-      tip: '價牌常寫「przy zakupie 6 szt.」＝買 6 盒才有的單價，只買一盒時別看錯。',
-      sources: [
-        { title: 'ESM Magazine｜Poland 最受歡迎食品品牌', url: 'https://www.esmmagazine.com/a-brands/10-most-popular-food-brands-in-poland-223377', kind: '產業媒體' },
-        { title: 'Pepper.pl｜Mlekovita UHT 3,2% 多件優惠', url: 'https://www.pepper.pl/promocje/mlekovita-mleko-polskie-uht-32-199-zl-przy-zakupie-6-sztuk-1300353', kind: '零售優惠（價格僅示例）' },
       ],
     },
     {
       id: 'milk-kefir',
       name: '克菲爾發酵乳',
-      localName: 'Kefir（Bakoma／Piątnica／Krasnystaw）',
-      where: '超市乳品冷藏櫃',
-      look: '冷藏櫃的杯裝或瓶裝，寫 Kefir naturalny（原味）。',
-      why: '波蘭人日常喝的微酸發酵乳，口感比優酪乳稀；早餐配麵包或搭馬鈴薯菜。Bakoma 的克菲爾有波蘭專欄作家評為國內最好的之一（舊評論）。',
-      tip: '想喝甜一點選 jogurt pitny（優酪飲）；maślanka（酪奶）是更酸的發酵乳，有水果口味。都要冷藏。',
+      localName: 'Kefir Krasnystaw 420 g',
+      when: '2026/08 Biedronka 特價品',
+      where: 'Biedronka 等超市乳品冷藏櫃',
+      look: '白色塑膠瓶、綠色 kefir 大字與 Krasnystaw 藍色標誌；420 g 小瓶。Biedronka 自有品牌 Mleczna Dolina 克菲爾是更便宜的替代。',
+      why: '波蘭人日常喝的微酸發酵乳，比優酪乳稀；早餐配麵包剛好。2026 年 8 月 Biedronka 特價 2.29 zł（原價 2.89 zł）。',
+      tip: '要冷藏，當天喝完。想喝甜一點選 jogurt pitny（優酪飲）。',
       sources: [
-        { title: 'Open Food Facts｜Piątnica Kefir 2%', url: 'https://world.openfoodfacts.org/product/5900531003776', kind: '商品資料庫' },
-        { title: 'Open Food Facts｜Bakoma Kefir naturalny', url: 'https://world.openfoodfacts.org/product/5900197011955', kind: '商品資料庫' },
-        { title: 'Wprost｜Bakoma 克菲爾評論', url: 'https://www.wprost.pl/30828', kind: '舊評論（年份未標示）' },
-      ],
-    },
-    {
-      id: 'milk-maslanka',
-      name: '水果酪奶',
-      localName: 'Maślanka（Mlekovita／Mrągowo 水果口味）',
-      where: '超市冷藏櫃',
-      look: '紙盒或塑膠瓶寫 Maślanka，口味在包裝上：jagodowa 藍莓、truskawkowa 草莓、brzoskwiniowa 水蜜桃。照片是 Mlekovita 藍莓口味。',
-      why: '酸甜的發酵乳飲料，波蘭超市冷藏櫃很常見；想試在地乳品又不愛原味克菲爾，可從水果口味開始。',
-      tip: '1 l 份量大，兩人分著喝；冷藏保存。',
-      sources: [
-        { title: 'Kaufland｜Maślanka Mrągowo Brzoskwiniowa 1 l', url: 'https://www.kaufland.pl/product/528830204/', kind: '零售商商品頁' },
-        { title: 'Open Food Facts｜Mlekovita Maślanka Jagodowa', url: 'https://world.openfoodfacts.org/product/5900512901572', kind: '商品資料庫' },
+        { title: 'Blix｜Biedronka 克菲爾特價（2026/08）', url: 'https://blix.pl/produkty/artykuly-spozywcze/nabial/kefir/biedronka', kind: '2026 超市特價' },
+        { title: 'Open Food Facts｜Krasnystaw Kefir 420 g', url: 'https://world.openfoodfacts.org/product/5902057001748', kind: '商品資料庫' },
       ],
     },
   ],
   juice: [
     {
       id: 'juice-tymbark-100',
-      name: '100% 蘋果汁小瓶',
+      name: '100% 蘋果汁小盒',
       localName: 'Tymbark Sok 100% Jabłko',
+      when: '2026/05 品牌新聞；零售商標示新口味',
       where: '超市果汁區、便利商店飲料櫃',
-      look: '綠色 TYMBARK 字樣與紅蘋果，找 Sok 100% 字樣，不要拿到寫 Napój 的果汁飲料；200–300 ml 小盒適合帶著走。',
-      why: 'Tymbark 在 2017 年消費者調查獲選波蘭人最喜愛的果汁品牌；這款標示無添加糖，濃縮還原。',
-      tip: 'Tymbark 也有 Jabłko-Mięta（蘋果薄荷）等果汁飲料，見上方採買推薦的 Tymbark 卡。',
+      look: '綠色 TYMBARK 字樣與紅蘋果，找 Sok 100%，不要拿到寫 Napój 的果汁飲料；200–300 ml 小盒適合帶著走。',
+      why: '波蘭知名果汁品牌，100% 系列無添加糖；零售商把蘋果水蜜桃（jabłko-brzoskwinia）200 ml 標為新品。',
+      tip: '玻璃瓶裝的 Tymbark 是果汁飲料，瓶蓋內原本印有標語，2026 年 5 月起取消。',
       sources: [
-        { title: 'Gemini｜Tymbark Sok 100% jabłko 200 ml', url: 'https://gemini.pl/tymbark-sok-100-jablko-200-ml-0125209', kind: '零售商商品頁' },
-        { title: 'Wiadomości Kosmetyczne｜Ulubiona Marka Polaków 2017', url: 'https://www.wiadomoscikosmetyczne.pl/producent-kosmetykow/ulubiona-marka-polakow-polek-2017-poznaj-wyniki-badania-2358407', kind: '消費者調查（2017）' },
-      ],
-    },
-    {
-      id: 'juice-nfc',
-      name: '冷藏鮮榨蘋果汁',
-      localName: 'Sok tłoczony / NFC jabłkowy mętny',
-      where: 'Biedronka（Vital Fresh）、Lidl 等冷藏櫃或果汁區',
-      look: '寫 tłoczony 或 NFC（非濃縮還原）、mętny（混濁）；常是 1 l 瓶或 3 l 盒。',
-      why: '直接壓榨、沒經過濃縮還原，蘋果味最濃；超市自有品牌就買得到。',
-      tip: '3 l 盒太大，旅途中選 1 l 或更小瓶；開封後冷藏。',
-      sources: [
-        { title: 'Pepper.pl｜Biedronka Vital Fresh 100% 鮮榨蘋果汁', url: 'https://www.pepper.pl/promocje/sok-tloczony-100-jablkowy-vital-fresh-3l-nfc-cena-za-szt-przy-zakupie-2-sztuk-249-zllitr-at-biedronka-1316251', kind: '零售優惠（價格僅示例）' },
-        { title: 'Pepper.pl｜Biedronka 3 l 混濁鮮榨蘋果汁', url: 'https://www.pepper.pl/promocje/3l-100-sok-jablkowy-metny-bezposrednio-tloczony-biedronka-44128', kind: '零售優惠（價格僅示例）' },
+        { title: 'Gemini｜Tymbark Sok 100% jabłko-brzoskwinia 200 ml（新品）', url: 'https://gemini.pl/tymbark-sok-100-jablko-brzoskwinia-200-ml-0125210', kind: '零售商商品頁' },
+        { title: 'Wiadomości Handlowe｜Tymbark 瓶蓋標語取消（2026/05）', url: 'https://www.wiadomoscihandlowe.pl/branza-po-godzinach/tymbark-bez-kultowych-hasel-maspex-ujawnia-co-stanie-sie-z-kapslami-2535139', kind: '2026 產業新聞' },
       ],
     },
     {
       id: 'juice-hortex',
-      name: '大盒家庭果汁',
-      localName: 'Hortex Sok 100%',
-      where: '大型超市果汁區',
-      look: 'Hortex 字樣紙盒，Sok 100% Jabłko（蘋果）、Jabłko-Gruszka（蘋果梨）等；照片是 tłoczony 鮮榨的 1 l 寶特瓶版本。',
-      why: '波蘭老牌蔬果品牌，果汁口味多；2017 年同一份調查中排名果汁類第二。住宿有冰箱、想多喝幾天時可買 1–2 l 盒。',
-      tip: '一般 100% 系列是濃縮還原加維生素 C；想要鮮榨認 tłoczony。',
+      name: '100% 蘋果汁',
+      localName: 'Hortex Sok jabłkowy 1 l',
+      when: '2026/08 Biedronka 特價品',
+      where: 'Biedronka 等超市果汁區',
+      look: '細長紙盒、Hortex 紅字與大顆紅蘋果，寫 Jabłko Sok 100%。',
+      why: '波蘭老牌蔬果品牌；2026 年 8 月 20–22 日 Biedronka 買 6 盒有特價，平常也很好找。',
+      tip: '濃縮還原、無添加糖；1 l 適合住宿有冰箱時買。',
       sources: [
-        { title: 'Empik｜Hortex Sok 100% jabłko 2 l 成分', url: 'https://www.empik.com/hortex-sok-100-jablko-karton-2-l,p1363041598,delikatesy-p', kind: '零售商商品頁' },
-        { title: 'Wiadomości Kosmetyczne｜Ulubiona Marka Polaków 2017', url: 'https://www.wiadomoscikosmetyczne.pl/producent-kosmetykow/ulubiona-marka-polakow-polek-2017-poznaj-wyniki-badania-2358407', kind: '消費者調查（2017）' },
+        { title: 'Pepper.pl｜Biedronka Hortex 蘋果汁 1 l 特價（2026/08/20–22）', url: 'https://www.pepper.pl/promocje/sok-jablkowy-hortex-1-l-cena-przy-zakupie-6-at-biedronka-1336202', kind: '2026 超市特價' },
+        { title: 'Empik｜Hortex Sok 100% jabłko 成分', url: 'https://www.empik.com/hortex-sok-100-jablko-karton-2-l,p1363041598,delikatesy-p', kind: '零售商商品頁' },
+      ],
+    },
+    {
+      id: 'juice-riviva',
+      name: '超市自有品牌蘋果汁',
+      localName: 'Riviva Sok 100% Jabłko 1 l',
+      when: '2026/08 Biedronka 特價品',
+      where: 'Biedronka（自有品牌）',
+      look: '紅色 Riviva 字樣與蘋果圖，寫 Sok 100% Jabłko；有紙盒與寶特瓶，另有 200 ml 小盒（卡通蘋果）。照片是 1 l 紙盒。',
+      why: 'Biedronka 自有品牌的平價果汁；2026 年 8 月 26 日買 3 送 3，單瓶約 1.49 zł。',
+      tip: '寶特瓶裝另收 0.50 zł 押瓶費（kaucja），價牌上的價格不含押金。',
+      sources: [
+        { title: 'Pepper.pl｜Biedronka Riviva 蘋果汁 1 l 買 3 送 3', url: 'https://www.pepper.pl/promocje/sok-jablkowy-riviva-1-l-33-gratis-at-biedronka-1338501', kind: '2026 超市特價' },
+        { title: 'Open Food Facts｜Riviva Sok 100% jabłko 1 l', url: 'https://world.openfoodfacts.org/product/5908312137573', kind: '商品資料庫' },
+      ],
+    },
+    {
+      id: 'juice-solevita',
+      name: '100% 柳橙汁',
+      localName: 'Solevita Sok 100% Pomarańcza 1 l',
+      when: '2026/10 Lidl 特價品',
+      where: 'Lidl（自有品牌）',
+      look: '紙盒、Solevita 字樣與切半柳橙；Pomarańcza 是柳橙。',
+      why: 'Lidl 自有品牌果汁；2026 年 10 月 9 日買 3 送 3。想喝柳橙汁時在 Lidl 找這款。',
+      tip: 'Solevita 另有冷藏櫃的 tłoczony（鮮榨）系列，要冷藏。',
+      sources: [
+        { title: 'Pepper.pl｜Lidl Solevita 柳橙汁 1 l 買 3 送 3（2026/10/09）', url: 'https://www.pepper.pl/promocje/sok-100-pomarancze-1l-33-gratis-1363701', kind: '2026 超市特價' },
+        { title: 'Open Food Facts｜Solevita Pomarańcza Brazylijska 1 l', url: 'https://world.openfoodfacts.org/product/4056489586708', kind: '商品資料庫' },
       ],
     },
   ],
-  // 標示對照：讀懂盒子上的字，比記品牌更不會買錯。
-  // Żabka 即食：有包裝、照片可以認的兩樣。熱狗是櫃檯現做、沒有包裝照，留在早餐補給的文字清單。
   zabka: [
     {
       id: 'zabka-szamamm-soup',
