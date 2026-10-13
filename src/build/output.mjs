@@ -111,3 +111,30 @@ export function replacePublishedOutputs({
     throw error;
   }
 }
+
+/**
+ * 頁面引用的自家 CSS／JS 網址加上內容指紋（?v=xxxxxxxx）。
+ *
+ * 頁面是 network-first、CSS／JS 是 cache-first：部署後第一次打開，HTML 已是新版，
+ * 樣式卻還是舊 Service Worker 快取裡的舊版，新元件沒有樣式就會擠成一團
+ * （2026-10-13 每日行程下拉的日期、城市就這樣黏在一起）。網址帶指紋後，
+ * 新 HTML 一定要到新檔案；離線時 sw.js 再退回忽略查詢字串的快取比對。
+ * 必須在單檔版打包之後執行：單檔版用固定網址的正則移除這些標籤。
+ */
+export function versionAssetLinks(distDir) {
+  const assets = ['assets/main.css', 'assets/nav.js', 'assets/site-search.js', 'assets/database-filter.js'];
+  const versions = Object.fromEntries(assets.map(asset => [asset,
+    crypto.createHash('sha256').update(fs.readFileSync(path.join(distDir, asset))).digest('hex').slice(0, 8)]));
+  const pages = [
+    ...fs.readdirSync(distDir).filter(name => name.endsWith('.html') && name !== 'poland-travel-guide-2026.html'),
+    ...fs.readdirSync(path.join(distDir, 'practical')).filter(name => name.endsWith('.html')).map(name => `practical/${name}`),
+  ];
+  for (const page of pages) {
+    const file = path.join(distDir, page);
+    const html = fs.readFileSync(file, 'utf8');
+    const versioned = assets.reduce((text, asset) =>
+      text.replace(new RegExp(`((?:\\.\\./)?${asset.replace('.', '\\.')})"`, 'g'), `$1?v=${versions[asset]}"`), html);
+    if (versioned !== html) fs.writeFileSync(file, versioned);
+  }
+  return versions;
+}

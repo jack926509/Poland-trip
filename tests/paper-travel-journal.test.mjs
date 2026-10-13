@@ -22,7 +22,7 @@ test('長頁保留章節索引、目前頁面與目前導覽群組標示', () =>
   // 該機制本身沒壞掉；目前頁面／導覽群組標示仍用 day-02.html 驗證。
   assert.match(read('practical/booking.html'), /class="chapter-index"/);
   const day = read('day-02.html');
-  assert.match(day, /<a href="day-02\.html" aria-current="page" class="nav-link-current"><span class="nav-day-label">Day 2<\/span><span class="nav-day-date">10\/25（日）<\/span><span class="nav-day-city">華沙 → 克拉科夫<\/span><\/a>/);
+  assert.match(day, /<a href="day-02\.html" aria-current="page" class="nav-link-current"><span class="nav-day-label">Day 2<\/span><span class="nav-day-text"><span class="nav-day-date">10\/25（日）<\/span><span class="nav-day-city">華沙 → 克拉科夫<\/span><\/span><\/a>/);
   assert.match(day, /<summary aria-current="true">每日行程<\/summary>/);
 });
 
@@ -110,7 +110,7 @@ test('實用頁採旅行誌附錄版式且資料庫接口不變', () => {
   assert.match(database, /data-db-filter-input="query"/);
   assert.match(database, /data-db-filter-select="city"/);
   assert.match(database, /data-db-clear="filters"/);
-  assert.match(database, /src="\.\.\/assets\/database-filter\.js"/);
+  assert.match(database, /src="\.\.\/assets\/database-filter\.js\?v=[0-9a-f]{8}"/);
 });
 
 test('單檔版使用旅行誌刊頭並完整封裝 25 個章節', () => {
@@ -227,4 +227,20 @@ test('多頁與單檔導覽都支援 Escape 關閉選單', () => {
 
   assert.match(standalone, /addEventListener\('click',[\s\S]*menu\.removeAttribute\('open'\)/s);
   assert.match(standalone, /event\.key !== 'Escape'[\s\S]*openMenu\.open = false/s);
+});
+
+test('部署後新 HTML 一定配新 CSS／JS：自家資源網址帶內容指紋，離線退回預快取', async () => {
+  // 2026-10-13：HTML network-first、CSS cache-first，部署後第一次打開時新元件沒有樣式，
+  // 每日行程下拉的日期與城市擠成一團。網址帶指紋讓新 HTML 必定拿到新檔。
+  const crypto = await import('node:crypto');
+  const version = file => crypto.createHash('sha256').update(fs.readFileSync(path.join(distDir, file))).digest('hex').slice(0, 8);
+  for (const page of ['index.html', 'day-02.html', 'practical/todos.html']) {
+    const html = read(page);
+    assert.ok(html.includes(`assets/main.css?v=${version('assets/main.css')}"`), `${page} 的 main.css 未帶目前指紋`);
+    assert.ok(html.includes(`assets/nav.js?v=${version('assets/nav.js')}"`), `${page} 的 nav.js 未帶目前指紋`);
+  }
+  const sw = fs.readFileSync(path.join(distDir, 'sw.js'), 'utf8');
+  assert.match(sw, /caches\.match\(request, \{ ignoreSearch: true \}\)/, '離線時要能用忽略查詢字串的預快取');
+  // 單檔版內嵌樣式，不應出現帶指紋的外部引用
+  assert.doesNotMatch(read('poland-travel-guide-2026.html'), /assets\/main\.css\?v=/);
 });

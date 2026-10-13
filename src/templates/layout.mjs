@@ -190,7 +190,8 @@ export function renderLayout({
   };
   const dayNavLink = ([file, label]) => {
     const meta = DAY_LINK_META[file];
-    return navLink([file, `<span class="nav-day-label">${label}</span><span class="nav-day-date">${escapeHtml(meta.date)}</span><span class="nav-day-city">${escapeHtml(meta.city)}</span>`]);
+    // 兩行排版：左欄 Day N，右欄上行日期、下行城市——窄螢幕也不必三段擠在同一行。
+    return navLink([file, `<span class="nav-day-label">${label}</span><span class="nav-day-text"><span class="nav-day-date">${escapeHtml(meta.date)}</span><span class="nav-day-city">${escapeHtml(meta.city)}</span></span>`]);
   };
   const dayLinks = DAY_LINKS.map(dayNavLink).join('');
   const cityLinks = CITY_LINKS.map(navLink).join('');

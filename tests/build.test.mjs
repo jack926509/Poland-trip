@@ -758,7 +758,7 @@ test('手機導覽以原生可展開選單呈現，且選單層級高於內容',
   assert.equal((html.match(/<details class="nav-dropdown[^>]* name="primary-navigation">/g) || []).length, 3);
   assert.match(html, /<summary>每日行程<\/summary>/);
   assert.match(html, /<li><a href="index\.html#days">行程總覽<\/a><\/li>/);
-  assert.match(html, /<script src="assets\/nav\.js" defer><\/script>/);
+  assert.match(html, /<script src="assets\/nav\.js\?v=[0-9a-f]{8}" defer><\/script>/);
   assert.match(navScript, /const closeMenu = \(menu, restoreFocus = false\) => \{[^}]*menu\.open = false/s);
   assert.match(navScript, /menu\.addEventListener\('click',[\s\S]*closeMenu\(menu\)/s);
   assert.match(navScript, /event\.key !== 'Escape'[\s\S]*closeMenu\(getOpenMenu\(\), true\)/s);
@@ -791,7 +791,7 @@ test('所有本機連結都能解析，且沒有破壞 GitHub Pages 的根路徑
       const target = match[1];
       if (/^(?:[a-z][a-z0-9+.-]*:|#)/i.test(target)) continue;
       if (target.includes("' + point[")) continue;
-      const withoutFragment = target.split('#')[0];
+      const withoutFragment = target.split('#')[0].split('?')[0];
       if (!withoutFragment) continue;
       const resolved = path.resolve(distDir, path.dirname(file), withoutFragment);
       if (!fs.existsSync(resolved)) missing.push(`${file} → ${target}`);
