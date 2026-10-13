@@ -29,9 +29,9 @@ test('採買指南保留四城 12 個門市與二十四項商品，每筆都標�
   }
   assert.equal((html.match(/營業時間待確認/g) || []).length, 8);
   assert.equal((html.match(/官方門市頁已核對/g) || []).length, 4);
-  // 座標仍未核實：地圖維持搜尋連結。改版後這句話從每列重複 12 次收成
-  // 四個城市各一次，加上「資料來源與查核界線」一次，共 5 次；不能再少。
-  assert.equal((html.match(/沒有取得任何一家的核實座標/g) || []).length, 5);
+  // 座標仍未核實：地圖維持搜尋連結。2026-10-13 重整後四城收進同一節，
+  // 這句話在「去哪買」開頭講一次、「資料來源與查核界線」再講一次；不能再少。
+  assert.equal((html.match(/沒有取得任何一家的核實座標/g) || []).length, 2);
   assert.match(html, /2026\/10\/25/);
 });
 
@@ -184,5 +184,19 @@ test('牛奶與果汁推薦與 Żabka 即食：每張卡有照片、哪裡買、
     assert.ok(html.includes(`src="../${pick.photo.src}"`), `${pick.id} 照片沒渲染`);
   }
   assert.ok(html.includes('href="#drinks"'));
-  for (const word of ['Mleko UHT', 'tłoczony / NFC', 'Nektar', 'Żabka Hot Dog', 'Szamamm']) assert.ok(html.includes(word), word);
+  for (const word of ['Mleko UHT', 'tłoczony / NFC', 'Nektar', 'Hot Dog', 'Szamamm']) assert.ok(html.includes(word), word);
+});
+
+test('2026-10-13 重整：六節依採買順序排列，四城收成可展開的城市卡，飲料只在「喝什麼」出現一次', () => {
+  const html = fs.readFileSync('dist/practical/groceries.html', 'utf8');
+  const order = [...html.matchAll(/<section class="section" id="([^"]+)"/g)].map(match => match[1]);
+  assert.deepEqual(order, ['essentials', 'stores', 'recommendations', 'drinks', 'quick-meals', 'shopping-tips']);
+  // 城市卡預設收合，城市頁連到 #warsaw 等錨點時由 nav.js 展開
+  for (const city of cityRoutes) assert.match(html, new RegExp(`<details class="grocery-city grocery-fold" id="${city.mapKey}">`));
+  assert.doesNotMatch(html, /<details class="grocery-city[^"]*" id="[^"]+" open/);
+  // 10/25 公休只在「先知道」講一次，不再於城市段落與頁尾重複（各店卡另有自己的星期日標記）
+  assert.equal((html.match(/2026\/10\/25/g) || []).length, 1);
+  // 飲料類商品卡放在「喝什麼」一節裡
+  const drinks = html.slice(html.indexOf('id="drinks"'), html.indexOf('id="quick-meals"'));
+  for (const product of groceryProducts.filter(p => p.drink)) assert.ok(drinks.includes(`id="product-${product.id}"`), product.localName);
 });

@@ -5965,9 +5965,7 @@ h3 {
 }
 
 .grocery-branch-hours > b { font-size: 1.02rem; }
-.grocery-branch-sunday-note,
 .grocery-branch-use { margin: 0.4rem 0 0; font-size: 0.92rem; }
-.grocery-branch-sunday-note { color: var(--ink-soft); }
 
 .grocery-branch-actions {
   display: flex;
@@ -5977,23 +5975,22 @@ h3 {
 }
 
 .grocery-branch-status { margin: 0.55rem 0 0; }
-.grocery-city-lead { margin-top: 0.6rem; }
 .grocery-city-foot { margin: 0.8rem 0 0; }
 
 /* ── 採買推薦 ── */
 /* 分組沿用城市頁餐飲分組的收合慣例（稽核 M4）：第一組展開，其餘收合並標數量。
    摘要列多一行組內商品名，收合時也看得出要找的東西在哪一組；打開後這行就收起來，
    不和下面的卡片重複。箭頭用邊框畫，不放文字字元，螢幕閱讀器只讀展開狀態。 */
-.grocery-product-group { margin-top: 1rem; border-top: 1px solid var(--line); }
-.grocery-product-group:last-of-type { border-bottom: 1px solid var(--line); }
-.grocery-product-group > summary {
+:is(.grocery-product-group, .grocery-fold) { margin-top: 1rem; border-top: 1px solid var(--line); }
+:is(.grocery-product-group, .grocery-fold):last-of-type { border-bottom: 1px solid var(--line); }
+:is(.grocery-product-group, .grocery-fold) > summary {
   display: block;
   min-height: 44px;
   padding: 0.8rem 0.2rem;
   cursor: pointer;
   list-style: none;
 }
-.grocery-product-group > summary::-webkit-details-marker { display: none; }
+:is(.grocery-product-group, .grocery-fold) > summary::-webkit-details-marker { display: none; }
 .grocery-group-title {
   display: flex;
   flex-wrap: wrap;
@@ -6012,7 +6009,7 @@ h3 {
   transform: rotate(-45deg);
   transition: transform 160ms var(--ease);
 }
-.grocery-product-group[open] > summary .grocery-group-title::before { transform: rotate(45deg); }
+:is(.grocery-product-group, .grocery-fold)[open] > summary .grocery-group-title::before { transform: rotate(45deg); }
 .grocery-group-names {
   display: block;
   margin: 0.3rem 0 0 1.05rem;
@@ -6020,7 +6017,7 @@ h3 {
   font-size: 0.84rem;
   line-height: 1.55;
 }
-.grocery-product-group[open] > summary .grocery-group-names { display: none; }
+:is(.grocery-product-group, .grocery-fold)[open] > summary .grocery-group-names { display: none; }
 .grocery-product-group > .source-meta { margin: 0 0 0.2rem; }
 .grocery-product-group[open] { padding-bottom: 1.1rem; }
 
@@ -6138,6 +6135,29 @@ h3 {
 
 .grocery-priority-foot { margin-top: 1.4rem; }
 
+/* ── 2026-10-13 重整：先知道四件事、城市收合、跳轉鈕 ── */
+.grocery-essentials {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 1rem 1.1rem 1rem 2.3rem;
+  border: 1px solid rgb(168 75 50 / 35%);
+  border-radius: var(--radius-sm);
+  background: var(--surface-note);
+}
+.grocery-essentials li { padding-left: 0.2rem; }
+.grocery-essentials li > b { display: block; margin-bottom: 0.15rem; }
+.grocery-store-lead { margin: 1.2rem 0 0; }
+.grocery-city-list { margin-top: 0.4rem; }
+.grocery-city > .grocery-branch-list { margin-top: 0.4rem; }
+.grocery-city > .action-links { margin-top: 0.9rem; }
+.grocery-city > .grocery-city-foot { margin-bottom: 1rem; }
+.grocery-drink-group > .grocery-drink-list { margin-top: 0.2rem; }
+.grocery-label-group > .grocery-label-list { margin-top: 0.2rem; }
+.grocery-quick-list { margin-top: 1rem; }
+.grocery-sources > p { font-size: 0.92rem; }
+.grocery-sources > p:last-child { margin-bottom: 1rem; }
+
 /* ── 牛奶與果汁 ──
    沒有照片的辨識卡：波蘭文品名最大，「哪裡買／怎麼認」用跟商品卡同樣的小標籤，
    眼睛在兩種卡之間不必換讀法。標示對照用 dl 兩欄，手機上收成上下排。 */
@@ -6213,7 +6233,6 @@ h3 {
   /* 門市卡：資訊一項不少，只收掉多餘的留白與分隔線 */
   .grocery-branch-head { margin-bottom: 0.45rem; }
   .grocery-branch-hours { margin-top: 0.5rem; padding-top: 0.5rem; }
-  .grocery-branch-sunday-note,
   .grocery-branch-use { margin-top: 0.3rem; font-size: 0.86rem; }
   .grocery-branch-actions { margin-top: 0.55rem; }
   .grocery-branch-list { gap: 0.7rem; }
