@@ -49,12 +49,12 @@
 | 瓦維爾大教堂 | 主行程 · 10/25 | **線上購票**；與 Wawel 皇家城堡分開售票；含教堂、齊格蒙特鐘、皇家墓室等開放區域。教堂博物館週日休館，不保證票券列出的所有場館當日都開。 | [官方購票](https://bilety-wawel.pl/) · [官方說明](https://www.katedra-wawelska.pl/en/katedra-wawelska/zaplanuj-wizyte/) |
 | 辛德勒工廠 | 主行程 · 10/25 · 現可查／購 | **線上購票**；售票頁選 Oskar Schindler’s Enamel Factory 的一般參觀時段；17:30 不是官方固定英語導覽場。線上票實名，入場須帶同名證件正本。 | [官方購票](https://bilety.mhk.pl/rezerwacja/wydarzenie.html?idl=1&lang=en) · [官方說明](https://muzeumkrakowa.pl/oddzialy/fabryka-emalia-oskara-schindlera) |
 | 奧斯威辛－比克瑙 Auschwitz-Birkenau | 主行程 · 10/26 · 已訂妥 | **線上購票**；導覽費涵蓋一館與比克瑙；所有入場證只在線上取得。免費自行參觀也需預約個人入場證，不能到入口買票。購票狀態以訂票待辦為準。 | [官方購票](https://visit.auschwitz.org/) · [官方說明](https://www.auschwitz.org/en/visiting/) |
-| 維利奇卡鹽礦 Wieliczka | 主行程 · 10/27 · 需查／購 | **線上購票**；選 Tourist Route＋English，按可售場次購票。官方售票通道為 bilety.kopalnia.pl 與礦區現場售票口／售票機。 | [官方購票](https://bilety.kopalnia.pl/index.html?lang=en) · [官方說明](https://www.wieliczka-saltmine.com/individual-tourist/useful-information/important-information/tourist-route) |
+| 維利奇卡鹽礦 Wieliczka | 主行程 · 10/27 · 需查／購 | **線上購票**；選 Tourist Route＋English，按可售場次購票。官方售票通道為 bilety.kopalnia.pl 與礦區現場售票口／售票機。 | [官方購票](https://bilety.kopalnia.pl/index.html?lang=en) · [官方說明](https://www.wieliczka-saltmine.com/individual-tourist/tourist-route) |
 | 聖瑪利亞教堂內部＋號角塔 | 備選／可選 | **現場購票**；教堂觀光區與登塔分別收費；登塔無法預約，只能當日在 Mariacki 廣場 7 號購票，名額有限。塔樓 11 月至翌年 4 月關閉。 | [官方說明](https://mariacki.com/en/tourists/) |
-| 地下市集博物館 Rynek Underground | 備選／可選 | **線上購票**；雨天替代 Wawel 的備案；售票頁選 Rynek Underground 的指定場次。週二免費日不能預約，需現場領取限量票。 | [官方購票](https://bilety.mhk.pl/rezerwacja/wydarzenie.html?idl=1&lang=en) · [官方說明](https://muzeumkrakowa.pl/en/branches/rynek-underground) |
+| 地下市集博物館 Rynek Underground | 備選／可選 | **線上購票**；雨天替代 Wawel 的備案；售票頁選 Rynek Underground 的指定場次。週二免費日不能預約，需現場領取限量票。 | [官方購票](https://bilety.mhk.pl/rezerwacja/wydarzenie.html?idl=20&lang=en) · [官方說明](https://muzeumkrakowa.pl/en/branches/rynek-underground) |
 | Galicia 猶太博物館 | 備選／可選 | **線上購票**；奧斯威辛的室內替代備案，仍須另外買博物館門票。 | [官方購票](https://galiciajewishmuseum.org/en/tickets-online/) · [官方說明](https://galiciajewishmuseum.org/en/visit/practical-information/) |
 | MOCAK 當代藝術博物館 | 備選／可選 | **線上購票**；專案提及的延伸景點；週一休館，10/26 不適用。臨展與常設展免費規則不同。 | [官方購票](https://bilety.mocak.pl/) · [官方說明](https://en.mocak.pl/visiting) |
-| 舊猶太會堂 Old Synagogue | 備選／可選 | **線上購票**；拍照位置提及；若入內看博物館展覽，售票頁選 Old Synagogue。街道散步與外觀拍照不需門票。 | [官方購票](https://bilety.mhk.pl/rezerwacja/wydarzenie.html?idl=1&lang=en) · [官方說明](https://muzeumkrakowa.pl/en/branches/old-synagogue) |
+| 舊猶太會堂 Old Synagogue | 備選／可選 | **線上購票**；拍照位置提及；若入內看博物館展覽，售票頁選 Old Synagogue。街道散步與外觀拍照不需門票。 | [官方購票](https://bilety.mhk.pl/rezerwacja/wydarzenie.html?idl=2) · [官方說明](https://muzeumkrakowa.pl/en/branches/old-synagogue) |
 
 ## 樂斯拉夫／弗羅茨瓦夫
 
@@ -68,7 +68,7 @@
 | 動物園＋Afrykarium | 備選／可選 | **線上購票**；動物園票已包含 Afrykarium，不必另買。指定日期採動態定價，以官方售票頁結帳前價格為準。 | [官方購票](https://bilety.zoo.wroclaw.pl/) · [官方說明](https://zoo.wroclaw.pl/en/prices/) |
 | Hydropolis 水知識中心 | 備選／可選 | **線上購票**；室內延伸景點，從官方售票系統選日期與場次。 | [官方購票](https://bilety.hydropolis.pl/cennik.html?lang=en) · [官方說明](https://bilety.hydropolis.pl/cennik.html?lang=en) |
 | Kolejkowo 微縮模型館 | 備選／可選 | **線上購票**；購票時選 Wrocław，避免選到 Warszawa 館；同在 Sky Tower，但與觀景台分開售票。 | [官方購票](https://bilety.kolejkowo.pl/) · [官方說明](https://kolejkowo.pl/) |
-| Sky Tower 觀景台 | 備選／可選 | **線上購票**；雨天備案；需選日期與入場時段，付款前留意能見度及退票規則。 | [官方購票](https://bilety.skytower.pl/index.html?lang=en) · [官方說明](https://skytower.pl/en/punkt-widokowy/) |
+| Sky Tower 觀景台 | 備選／可選 | **線上購票**；雨天備案；需選日期與入場時段，付款前留意能見度及退票規則。 | [官方購票](https://bilety.skytower.pl/index.html?lang=en) · [官方說明](https://bilety.skytower.pl/regulamin.html?lang=en) |
 
 ## 波茲南
 
@@ -76,7 +76,7 @@
 |---|---|---|---|
 | 帝王城堡 CK ZAMEK | 主行程 · 10/29 | **線上購票**；選 Zwiedzanie Zamku 城堡參觀／當期展覽方案，不要買成音樂會票。參觀範圍與聯票內容以當日活動及售票頁為準。 | [官方購票](https://ckzamek.bilety24.pl/) · [官方說明](https://ckzamek.pl/podstrony/6071-zwiedzanie-zamku/) |
 | 牛角麵包博物館 Rogalowe Muzeum | 備選／可選 | **線上購票**；附件原規劃有排，最新主行程未排；如加入，需選展演日期、場次與語言。10/29 有無英文場仍待售票日曆確認。 | [官方購票](https://rogalowemuzeum.pl/en/buy-ticket/) · [官方說明](https://rogalowemuzeum.pl/en/buy-ticket/) |
-| 考古博物館／Genius loci 考古保護區 | 備選／可選 | **現場購票**；可買本館票或兩館聯票，兩處是不同地點；官方頁提供票種與現場購票資訊，未確認獨立線上售票流程。 | [官方說明](https://nowa.muzarp.poznan.pl/pl/bilety) |
+| 考古博物館／Genius loci 考古保護區 | 備選／可選 | **線上購票**；官網連至 ToBilet 的本館售票。兩館地點不同，聯票內容依票種確認。官網票價頁列週二免費，平台摘要與官網不一致；10/29 週四先按付費規劃，購票前再查。 | [官方購票](https://tobilet.pl/wystawy-prezentowane-w-muzeum-archeologicznym-w-poznaniu.html) · [官方說明](https://nowa.muzarp.poznan.pl/pl/bilety) |
 | 主教座堂地下墓室／觀景塔 | 備選／可選 | **現場購票**；教堂島散步不需票；地下墓室與塔樓需在教堂旅客服務處購票，開放依禮拜及季節調整。 | [官方說明](https://www.katedra.archpoznan.pl/turysci-w-katedrze/) |
 | 古市政廳博物館 | 閉館 | **暫不購票**；整修閉館，官方預計 2027 年底至 2028 年初全面重開；本趟只看外觀與免費山羊秀。 | [閉館公告](https://mnp.art.pl/ratusz-muzeum-poznania) |
 | Palmiarnia 棕櫚屋 | 閉館 | **暫不購票**；現代化工程暫時閉館，官方未公布重開日期；本趟不購票，也不作雨天室內備案。 | [閉館公告](https://palmiarnia.poznan.pl/) |

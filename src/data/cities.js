@@ -320,7 +320,7 @@ Object.assign(mapPinChecks.poznan, {
 export const attractions = {
   warsaw: [
     {name:"MSN 當代美術館", tag:"美術館", mapUrl:venues['warsaw-msn'].map, venueId:"warsaw-msn", extra:"Plac Defilad · 展覽 40／30 · 18:00 後 25／15 · Gallery A 免費 · 週一休"},
-    {name:"Neon 霓虹博物館", tag:"遷址", mapUrl:venues['warsaw-neon-museum'].map, venueId:"warsaw-neon-museum", extra:"PLN 25 / 優待 18 · 已遷入科學文化宮 4 樓（Marszałkowska 入口），可與觀景台一起看"},
+    {name:"Neon 霓虹博物館", tag:"遷址", mapUrl:venues['warsaw-neon-museum'].map, venueId:"warsaw-neon-museum", extra:"PLN 28 / 優待 18（2026-10-13 官網）· 已遷入科學文化宮 4 樓（Marszałkowska 入口），可與觀景台一起看"},
     {name:"Kolejkowo Warszawa", tag:"2025 新開", mapUrl:"https://www.google.com/maps/search/?api=1&query=Kolejkowo%20Warszawa", venueId:null, extra:"微縮模型館 · 2025-04 開幕 · 適合親子"},
     {name:"海報博物館 Wilanów", tag:"2026 重啟", mapUrl:"https://www.google.com/maps/search/?api=1&query=%E6%B5%B7%E5%A0%B1%E5%8D%9A%E7%89%A9%E9%A4%A8%20Wilan%C3%B3w%20Warszawa", venueId:null, extra:"2026-03 全新形式 · 常設「Polish Posters. Collection」"},
     {name:"波蘭歷史博物館 · Cytadela", tag:"2023 新館", mapUrl:venues['warsaw-history-museum'].map, venueId:"warsaw-history-museum", extra:"新總部 2023 開館；常設展仍在建置，先查當期臨展與入場資訊"},
@@ -357,7 +357,7 @@ export const attractions = {
     {name:"帝王城堡 Zamek Cesarski", tag:"地標", mapUrl:venues['poznan-ck-zamek'].map, venueId:"poznan-ck-zamek", extra:"2026-10-07 官網查證：CK ZAMEK 文化中心，一–日 12:00–19:00、售票至 18:00 · 9/5–12/6 展期售展覽＋城堡聯票，含地圖 35／30 PLN、含語音導覽 40／35 PLN · 室內可參觀空間仍依當日活動公告"},
     {name:"大教堂島 Ostrów Tumski", tag:"古城", mapUrl:"https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E6%95%99%E5%A0%82%E5%B3%B6%20Ostr%C3%B3w%20Tumski%20Pozna%C5%84", venueId:null, extra:"波蘭建國搖籃"},
     {name:"Palmiarnia 棕櫚屋", tag:"暫時閉館", mapUrl:venues['poznan-palmiarnia'].map, venueId:"poznan-palmiarnia", extra:"2026-09-18 再次複查公告未變（原查 2026-09-17）：因現代化與改建工程對外暫時閉館，官方未公布重開日期（公告見 palmiarnia.poznan.pl，另指向 pim.poznan.pl）。行程期間無法入內，也不要當雨天室內備案"},
-    {name:"考古博物館", tag:"室內", mapUrl:venues['poznan-archaeological-museum'].map, venueId:"poznan-archaeological-museum", extra:"2026-09-18 官方票價頁查證：常設展全票 15／優待 10、家庭票 40，與 Genius loci 的聯票 25／15 · 官方每週二免費（10/29 是週四，要買票）· 學期季（9/1–6/30）二–四 09:00–16:00、五 10:00–17:00、六 11:00–18:00、日 12:00–16:00"},
+    {name:"考古博物館", tag:"室內", mapUrl:venues['poznan-archaeological-museum'].map, venueId:"poznan-archaeological-museum", extra:"2026-10-13 官方票價頁查證：全票 20／優待 15、家庭票 50，與 Genius loci 聯票 30／25 · 官網列週二免費，平台摘要不同；10/29 先按付費規劃、購票前再查 · 學期季（9/1–6/30）二–四 09:00–16:00、五 10:00–17:00、六 11:00–18:00、日 12:00–16:00"},
     {name:"Stary Browar · Malta 湖 · Citadel 公園", tag:"戶外／購物", mapUrl:venues['poznan-stary-browar'].map, venueId:"poznan-stary-browar", extra:"Śródka 有壁畫街拍點"},
   ],
 };
