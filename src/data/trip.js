@@ -2,6 +2,7 @@ import { resolveDining } from './dining-places.js';
 import { segments, auschwitzBus, lajkonikFare } from './rail.js';
 import { resolveVenue } from '../lib/venues.mjs';
 import { ticketPurchaseById } from './ticket-purchases.js';
+import { withDerivedStatus } from '../lib/todo-status.mjs';
 // trip.js — 行程資料源頭：meta、flights、days×8、stay、trains、bookingTiers、reservations
 // 來源：redesign/data.js（原 window.TRIP 物件字面值），轉為 ES module 具名匯出。
 // 2026-08-09 依景點、博物館與交通營運單位公開資料重新盤查。
@@ -587,40 +588,44 @@ export const reservations = [
 //
 // basis 記錄每個日期的來源：官方公告的照抄，由既有規則推算的寫明怎麼算的。
 // 沒有來源基礎的日期不要放進這張表，倒數看板會讓它看起來像官方期限。
-export const deadlines = [
+//
+// status 欄不手寫：有 todoRef 的項目由待辦正本（todoGroups）推導，見 lib/todo-status.mjs 的
+// withDerivedStatus。要改「已訂／未訂」只改 todoGroups 那一處；這裡的 status 值為 null 占位。
+export const deadlines = withDerivedStatus([
   {
     id: 'dining-michelin', date: '2026-10-02', category: '餐飲',
     title: '行程餐廳訂位（Mr. Jerry、Soul Kitchen、Hankki、Specjały、Pimiento、Carla）',
-    action: '先訂兩家晚餐主選：10/26 Mr. Jerry 18:30（電話 +48 533 836 624，順便確認當天有 Beef Wellington）、10/30 Soul Kitchen 18:30（+48 519 020 888，請店家預留 Beef Wellington；沒有就改 Rusiko +48 22 629 06 28）；再訂 10/25 Hankki 19:15（MojStolik 或 +48 798 399 851）與 10/24 Specjały Regionalne 18:30（TheFork）；兩頓午餐 10/25 Pimiento 13:00（官網 ZAREZERWUJ 或 +48 517 475 818）與 10/29 Carla Trattoria Moderna 14:00（zjedz.my）也要訂。2026-10-13 旅客確認六家都還沒訂。米其林星級餐廳未排入行程，想加再另外訂。',
-    status: '尚未訂位', url: 'https://www.mrjerry.pl/rezerwacja-krakow/',
+    action: '先訂兩家晚餐主選：10/26 Mr. Jerry 18:30（電話 +48 533 836 624，順便確認當天有 Beef Wellington）、10/30 Soul Kitchen 18:30（+48 519 020 888，請店家預留 Beef Wellington；沒有就改 Rusiko +48 22 629 06 28）；再訂 10/25 Hankki 19:15（MojStolik 或 +48 798 399 851）與 10/24 Specjały Regionalne 18:30（TheFork）；兩頓午餐 10/25 Pimiento 13:00（官網 ZAREZERWUJ 或 +48 517 475 818）與 10/29 Carla Trattoria Moderna 14:00（zjedz.my）也要訂。米其林星級餐廳未排入行程，想加再另外訂。',
+    status: null, todoRef: {group:'dining', nameIncludes:['Specjały','Pimiento','Hankki','Mr. Jerry','Carla','Soul Kitchen']},
+    url: 'https://www.mrjerry.pl/rezerwacja-krakow/',
     basis: '行前提醒「熱門餐廳出發前 3–4 週訂」，取窗口下緣 3 週由 10/23 台灣出發日回推；2026-10-12 依改排後的每日晚餐更新店名，2026-10-13 補上待辦頁已列的兩家午餐訂位。',
   },
   {
     id: 'ticket-wieliczka', date: '2026-10-02', category: '門票',
     title: 'Wieliczka 鹽礦 10/27 英語團',
-    action: '✅ 2026-10-13 已購 10/27 09:00 英文 Tourist Route；票券 PDF 存離線。',
-    status: '已購票', url: ticketPurchaseById('krakow-wieliczka').purchaseUrl,
+    action: '10/27 09:00 英文 Tourist Route；票券 PDF 存離線，訂單編號只存私人資料。',
+    status: null, todoRef: {group:'attractions', ticketPurchaseIds:['krakow-wieliczka']}, url: ticketPurchaseById('krakow-wieliczka').purchaseUrl,
     basis: '訂票優先順序列為第一優先「現在即可訂」；指定日場次有限，取出發前 3 週為行動下限。',
   },
   {
     id: 'ticket-warsaw-trio', date: '2026-10-09', category: '門票',
     title: '華沙兩館 10/30 指定日票',
     action: '起義博物館 08:30、皇家城堡 11:30（10 月起末入 16:00），依各官方售票頁的 10/30 可售時段一次訂齊；瓦津基水上宮殿週五免費、國家博物館現場買即可。',
-    status: '尚未訂', url: ticketPurchaseById('warsaw-royal-castle').purchaseUrl,
+    status: null, todoRef: {group:'attractions', ticketPurchaseIds:['warsaw-royal-castle','warsaw-rising-museum']}, url: ticketPurchaseById('warsaw-royal-castle').purchaseUrl,
     basis: 'Day 7 兩館（皇家城堡、起義博物館）皆已查得開放時間但均未訂；取出發前 2 週為行動下限。',
   },
   {
     id: 'ticket-panorama', date: '2026-10-09', category: '門票',
     title: '拉茨瓦維採全景畫 10/28 11:30 場次',
-    action: '在官方售票頁選 10/28（週三）11:30 場；9/24 曾列 85 個名額，那是歷史快照，付款前看當下庫存。全景畫票含國家博物館等常設展，3 個月內有效。2026-10-13 旅客確認還沒買。',
-    status: '場次已查／尚未訂', url: ticketPurchaseById('wroclaw-panorama').purchaseUrl,
+    action: '在官方售票頁選 10/28（週三）11:30 場；9/24 曾列 85 個名額，那是歷史快照，付款前看當下庫存。全景畫票含國家博物館等常設展，3 個月內有效。',
+    status: null, todoRef: {group:'attractions', ticketPurchaseIds:['wroclaw-panorama']}, url: ticketPurchaseById('wroclaw-panorama').purchaseUrl,
     basis: '與華沙兩館同屬指定日、限量場次的票，比照 ticket-warsaw-trio 取出發前 2 週為行動下限；2026-10-13 補上——待辦頁原本有這筆，倒數表卻漏列。',
   },
   {
     id: 'bus-lajkonik', date: '2026-10-12', category: '交通',
-    title: 'Lajkonik 回程巴士購票（去程已購）',
-    action: `去程 ${lajkonikOutboundAdopted.dep} → ${lajkonikOutboundAdopted.arr} 已於 2026-10-13 購票；回程仍未買：${lajkonikInboundAdopted.dep} → ${lajkonikInboundAdopted.arr}，備案 ${lajkonikInboundBackup.dep}。可在 moj-bus.pl 線上買，或當天上車向司機買（全票 27 zł）；付款前看售票頁的座位。`,
-    status: '回程尚未購票', url: 'https://www.lajkonikbus.pl/',
+    title: 'Lajkonik 回程巴士購票',
+    action: `回程班次 ${lajkonikInboundAdopted.dep} → ${lajkonikInboundAdopted.arr}，備案 ${lajkonikInboundBackup.dep}。可在 moj-bus.pl 線上買，或當天上車向司機買（全票 27 zł）；付款前看售票頁的座位。`,
+    status: null, todoRef: {group:'rail', nameIncludes:['Lajkonik 回程']}, url: 'https://www.lajkonikbus.pl/',
     basis: '待辦事項該筆的 recheckAt = 2026-10-12。',
   },
   {
@@ -637,4 +642,4 @@ export const deadlines = [
     status: '待確認', url: 'https://travel-europe.europa.eu/etias_en',
     basis: '資料庫項目 entry-etias-and-passport 已於 10/06 重查官方狀態，並排 2026-10-16 複查；本筆是出發前 3 天的最後決策點，兩者互補不重複。',
   },
-];
+], todoGroups);

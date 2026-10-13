@@ -49,7 +49,7 @@ test('景點票券摘要對齊既有購票紀錄，私人核對尚未完成且�
   const entry = databaseEntries.find(item => item.id === 'documents-attraction-tickets');
   assert.ok(entry.title.includes(`已訂 ${confirmed.length} 項`));
   assert.ok(entry.title.includes(`其餘 ${items.length - confirmed.length} 項`));
-  assert.match(entry.summary, /Auschwitz 10\/26 10:30.*2 人/);
+  assert.match(entry.summary, /已訂 10\/26 Auschwitz.*10:30/);
   assert.equal(entry.status, 'private-required');
   assert.equal(entry.verifiedAt, null);
   assert.equal(entry.recheckAt, '2026-09-24');

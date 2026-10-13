@@ -4,9 +4,9 @@
 // 避免同一套日期規則在兩處各自演化。
 // ⚠ 這裡的函式會被 templates/practical.mjs 以 fn.toString() 內嵌進頁面，
 // 內嵌時沒有 import，相依函式必須一起列入該檔的 runtime 陣列。
-import { toIsoDate, taipeiToday, todayIn } from '../lib/schedule.mjs';
+import { toIsoDate, taipeiToday, warsawToday, todayIn } from '../lib/schedule.mjs';
 
-export { toIsoDate as toComparableDate, taipeiToday as getTaipeiToday, todayIn };
+export { toIsoDate as toComparableDate, taipeiToday as getTaipeiToday, warsawToday, todayIn };
 
 export function isOpenTodoStatus(text) {
   return /待|需|尚未|未|指定日|可查|可購/.test(String(text || ''));
@@ -250,5 +250,79 @@ export function markOverdueRechecks(root, getToday) {
   refresh();
   setInterval(refresh, 60000);
   window.addEventListener('pageshow', refresh);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
+}
+
+// ── 首頁狀態小卡（C5）──────────────────────────────────────────────
+// 出發前顯示「距出發 N 天・還有 M 項待辦」，旅程期間（華沙日期落在 tripStart–tripEnd）
+// 改顯示「今天 Day N：主軸＋下一站」。待辦數字由建置時從 todoGroups 算好寫進 HTML，
+// 這裡只負責依日期與時間切換，不重算待辦。
+// ⚠ 以下函式會被 fn.toString() 內嵌進首頁，彼此相依的要一起列入 home.mjs 的 runtime 陣列。
+
+/** 距出發的標籤；days 以台北日期算到台灣啟程日。 */
+export function departureLabel(days) {
+  if (days > 0) return `距出發 ${days} 天`;
+  if (days === 0) return '今天出發';
+  return '已啟程';
+}
+
+/**
+ * 依日期決定小卡模式。before：華沙日期早於抵達日；during：落在 tripStart–tripEnd；after：之後。
+ * days 是台北今天到 travelStart（台灣啟程日）的天數。
+ */
+export function resolveHomeStatus(warsawIso, taipeiIso, travelStart, tripStart, tripEnd) {
+  if (warsawIso < tripStart) {
+    const days = Math.round((Date.parse(`${travelStart}T00:00:00Z`) - Date.parse(`${taipeiIso}T00:00:00Z`)) / 86400000);
+    return { mode: 'before', days };
+  }
+  if (warsawIso <= tripEnd) return { mode: 'during', date: warsawIso };
+  return { mode: 'after' };
+}
+
+/** 華沙當地現在是當日第幾分鐘。 */
+export function warsawMinutes(now = new Date()) {
+  const parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Warsaw', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(now);
+  const part = type => Number(parts.find(value => value.type === type).value);
+  return part('hour') * 60 + part('minute');
+}
+
+/** steps 是 [[分鐘, 標籤], ...]（依時間排序）；回傳現在之後的第一站，沒有則 null。 */
+export function nextStepFor(steps, minutes) {
+  const next = steps.find(step => step[0] >= minutes);
+  return next ? { minutes: next[0], label: next[1] } : null;
+}
+
+export function initializeHomeStatus(root, config) {
+  function refresh() {
+    const state = resolveHomeStatus(warsawToday(), taipeiToday(), config.travelStart, config.tripStart, config.tripEnd);
+    const before = root.querySelector('[data-home-status="before"]');
+    const during = root.querySelector('[data-home-status="during"]');
+    let dayNode = null;
+    if (state.mode === 'during') {
+      dayNode = Array.from(root.querySelectorAll('[data-home-day]')).find(el => el.getAttribute('data-home-day') === state.date) || null;
+    }
+    if (before) {
+      before.hidden = state.mode !== 'before';
+      const label = before.querySelector('[data-home-departure]');
+      if (label && state.mode === 'before') label.textContent = departureLabel(state.days);
+    }
+    if (during) during.hidden = !dayNode;
+    root.querySelectorAll('[data-home-day]').forEach(el => { el.hidden = el !== dayNode; });
+    if (dayNode) {
+      let steps = [];
+      try { steps = JSON.parse(dayNode.getAttribute('data-home-steps') || '[]'); } catch { steps = []; }
+      const next = nextStepFor(steps, warsawMinutes());
+      const target = dayNode.querySelector('[data-home-next]');
+      if (target) {
+        target.textContent = next
+          ? `下一站 ${String(Math.floor(next.minutes / 60)).padStart(2, '0')}:${String(next.minutes % 60).padStart(2, '0')} ${next.label}`
+          : '今天的行程時刻已走完';
+      }
+    }
+  }
+  refresh();
+  setInterval(refresh, 60000);
+  window.addEventListener('pageshow', refresh);
+  window.addEventListener('focus', refresh);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
 }

@@ -96,13 +96,10 @@ export function renderPages(distDir) {
     flights: trip.flights,
     trains: trip.trains,
     stay: trip.stay,
-    bookingTiers: trip.bookingTiers,
-    reservations: trip.reservations,
+    todoGroups: trip.todoGroups,
     railOfficialLinks: trip.railOfficialLinks,
     railPurchaseSteps: trip.railPurchaseSteps,
     auschwitzBus: trip.auschwitzBus,
-    deadlines: trip.deadlines,
-    databaseEntries: travelDatabase.databaseEntries,
   }));
   writeHtml('practical/todos.html', renderTodos({
     todoGroups: trip.todoGroups,

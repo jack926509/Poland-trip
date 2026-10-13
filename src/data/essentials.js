@@ -1,3 +1,6 @@
+import { todoGroups } from './trip.js';
+import { railNoteHtml, bookingNoteHtml } from '../lib/todo-status.mjs';
+
 export const phrases = [
   ['你好（非正式）', 'Cześć', 'chesh-ch'],
   ['您好', 'Dzień dobry', 'jen dob-ri'],
@@ -96,13 +99,14 @@ export const essentialSources = [
   {name:'波蘭 TAX FREE 官方說明', checkedAt:'2026-09-08', note:'同一賣家單筆 TAX FREE 文件含稅金額至少 200 PLN，商品須以旅客個人行李帶離 EU。', url:'https://puesc.gov.pl/en/uslugi/tax-free-informacja-dla-podroznych'},
 ];
 
+// 第 05、07 條（城際交通、先訂清單）的訂票狀態由 todoGroups 自動產生，不手寫。
 export const preDepartureNotes = [
   '10/25（日）夏令時間結束——03:00 回撥為 02:00。當日不是營業週日，多數一般商店不得營業；加油站、值班藥局與符合法定例外的店可開，但不能假設每間 Żabka／小店都營業。',
   '日照——逐日的日出、日落與藍調時刻請看行前提醒頁的「八日日照」表，每日行程頁也各自標示當天數值；本條不再重複列出時間，避免兩處各自漂移。重點是 10/25 凌晨夏令時間結束後日落提前 53 分鐘，戶外行程要往前收。',
   '10/31 諸聖節前日——克拉科夫／華沙人潮多；辛德勒工廠、Wawel 部分展區 11/1、11/11 閉館（Wawel 自身公告的閉館日，不含 11/3）。你的回程班機是 10/31 14:40 起飛（WAW → DOH），不是 11/1，這些閉館日都在你離境之後，對本趟無實質影響。',
   '米其林訂位——二星＋各一星出發前 3–4 週訂；華沙 splurge 級 3–5 週。',
-  'PKP 城際車票——2026-09-28 與 2026-10-06 依旅客 App 票券清單，10/25 EIP 5300、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 均已購票；四段的抵達時間、艙等、車廂、座位及票價仍待票券詳細頁核對。請保存離線票券。',
+  railNoteHtml(todoGroups, 'todos.html'),
   '火車實務——IC／EIP 對號入座；城際段優先使用 PKP Intercity 官方 App／網站購票與選位。上車查票出示離線保存的 PDF 或 App 票券；大件行李放車廂端行李架並自行留意。',
-  '先訂清單——奧斯威辛 10/26 10:30 英文導覽已訂妥（入場須同時出示入場證與證件）；四段 PKP 城際火車、Lajkonik 10/26 去程 08:25 與 Wieliczka 10/27 09:00 英語場已購票。仍待處理：Lajkonik 回程、全景畫、華沙起義博物館、皇家城堡與行程餐廳訂位；10/25 Wawel 與辛德勒工廠線上已售完，當天現場再試。',
+  bookingNoteHtml(todoGroups, 'todos.html'),
   '諸聖節燭海（11/1 Wszystkich Świętych）——波蘭最動人的傳統：墓園在 10/30–11/1 點滿蠟燭成燭海。你 10/30–31 在華沙，可傍晚到 Powązki 老墓園感受；11/1 當天是燭海最盛的高峰日，但你已在 10/31 14:40 搭機離境，只能感受前一晚的氣氛。',
 ];

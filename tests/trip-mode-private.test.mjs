@@ -90,7 +90,8 @@ test('首頁下一個期限提示：出發前顯示、10/24 起隱藏', () => {
     assert.equal(el.hidden, true);
   } finally { globalThis.setInterval = realSet; }
   assert.match(read('index.html'), /class="next-deadline" data-next-deadline/);
-  assert.match(read('practical/booking.html'), /initializeCountdown\(root, taipeiToday, "2026-10-24"\)/);
+  // 訂票頁的倒數表已由「還沒處理 N 項」精簡卡取代（C2），#countdown 錨點保留給今日卡連結。
+  assert.match(read('practical/booking.html'), /id="countdown"/);
 });
 
 test('4 間住宿都有官方電話與來源，並在住宿、SOS、今日卡輸出 tel: 連結', () => {

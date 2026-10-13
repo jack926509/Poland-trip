@@ -1,9 +1,10 @@
 import { cityRoutes } from '../lib/city-guide.mjs';
 import { escapeHtml } from '../lib/html.mjs';
-import { bookingProgress, isDepartureDay, nightStay } from '../lib/journey.mjs';
+import { bookingProgress, dayDate, isDepartureDay, nightStay } from '../lib/journey.mjs';
 import { renderLayout } from './layout.mjs';
-import { getTaipeiToday, collectDeadlines, nextDeadline, isOpenTodoStatus, hideDeadlineOnTrip, todayIn } from '../scripts/dashboard.js';
-import { taipeiToday } from '../lib/schedule.mjs';
+import { getTaipeiToday, collectDeadlines, nextDeadline, hideDeadlineOnTrip, todayIn, warsawToday, departureLabel, resolveHomeStatus, warsawMinutes, nextStepFor, initializeHomeStatus } from '../scripts/dashboard.js';
+import { taipeiToday, parseStepTime } from '../lib/schedule.mjs';
+import { todoStats, todoBreakdownText } from '../lib/todo-status.mjs';
 import { ticketPurchases } from '../data/tickets.js';
 
 const cityFileKeys = Object.fromEntries(cityRoutes.map(city => [city.key, city.fileKey]));
@@ -27,18 +28,52 @@ function renderFlight(direction, legs) {
  * 前端不重算——首頁的提示只是入口，精確倒數以訂票頁為準。
  */
 function renderNextDeadline({ trains, deadlines, databaseEntries }) {
-  const next = nextDeadline(collectDeadlines({ trains, deadlines, databaseEntries }), getTaipeiToday());
+  // 「資料重查」是維護用的查核日，不是旅客要處理的事；排除，避免首頁出現逾期假警報。
+  const next = nextDeadline(collectDeadlines({ trains, deadlines, databaseEntries }).filter(item => item.category !== '資料重查'), getTaipeiToday());
   if (!next) return '';
   return `<p class="next-deadline" data-next-deadline data-urgency="${next.urgency}">
     <strong>${escapeHtml(next.label)}</strong>
     <span>下一個期限 ${escapeHtml(next.date)}：${escapeHtml(next.title)}</span>
-    <a class="journal-text-link" href="practical/booking.html#countdown">看完整倒數 →</a>
+    <a class="journal-text-link" href="practical/todos.html">看待辦事項 →</a>
   </p>`;
 }
 
+/**
+ * 日期格下方的狀態小卡（UX 審查 B7）：出發前把「還剩幾項待辦」放進第一屏。
+ * 出發前：距出發 N 天・還有 M 項待辦（依分類）→ 看待辦。
+ * 旅程期間（華沙日期落在 tripStart–tripEnd）：今天 Day N：主軸＋下一站 → 今日卡。
+ * 待辦數字來自 todoStats（待辦正本）；兩種版本都先寫進 HTML，前端依日期切換，
+ * 所以離線與無 JavaScript 時仍看得到出發前版本。
+ */
+function renderHomeStatusCard({ meta, days, stats }) {
+  const daysToDeparture = resolveHomeStatus('0000-00-00', getTaipeiToday(), meta.travelStart, meta.tripStart, meta.tripEnd).days;
+  const breakdown = todoBreakdownText(stats);
+  const before = `<a class="home-status-card home-status-before" data-home-status="before" href="practical/todos.html">
+      <span class="home-status-main"><b data-home-departure>${escapeHtml(departureLabel(daysToDeparture))}</b>・${stats.open ? `還有 <b data-home-open>${stats.open}</b> 項待辦` : '待辦已全部完成'}</span>
+      ${stats.open ? `<span class="home-status-sub">${escapeHtml(breakdown)}</span>` : ''}
+      <span class="home-status-cta">看待辦 →</span>
+    </a>`;
+  const dayCards = days.map(day => {
+    const iso = dayDate(day);
+    const steps = day.steps
+      .map(step => ({ parsed: parseStepTime(step.t), label: step.label }))
+      .filter(step => step.parsed && step.label)
+      .map(step => [step.parsed.minutes, step.label])
+      .sort((a, b) => a[0] - b[0]);
+    return `<a class="home-status-card home-status-during" data-home-day="${escapeHtml(iso)}" data-home-steps="${escapeHtml(JSON.stringify(steps))}" href="today.html" hidden>
+      <span class="home-status-main"><b>今天 Day ${day.n}</b>：${escapeHtml(day.title)}</span>
+      <span class="home-status-sub" data-home-next></span>
+      <span class="home-status-cta">今日卡 →</span>
+    </a>`;
+  }).join('');
+  return `<div class="home-status" aria-label="目前最該做的事" aria-live="polite">${before}<div data-home-status="during" hidden>${dayCards}</div></div>`;
+}
+
 export function renderHome({ meta, days, flights, cities, todoGroups = [], databaseEntries = [], trains = [], deadlines = [] }) {
-  const todoCount = todoGroups.reduce((total, group) => total + group.items.filter(item => isOpenTodoStatus(item.status)).length, 0);
-  const totalTodos = todoGroups.reduce((total, group) => total + group.items.length, 0);
+  // 待辦數字一律來自 lib/todo-status.mjs（todoGroups 正本），首頁各處共用同一份計算。
+  const stats = todoStats(todoGroups);
+  const todoCount = stats.open;
+  const totalTodos = stats.total;
   const syncItems = databaseEntries.length;
   const pendingCount = databaseEntries.filter(entry => entry.status === 'pending').length;
   const recheckCount = databaseEntries.filter(entry => entry.status === 'recheck').length;
@@ -53,7 +88,7 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
   // 的完整清單（21 項）大面積重複。首頁只留「這類還有幾項要處理」的計數
   // 加連結，項目本身只在待辦頁看一次（稽核 M9）。
   const todoCards = todoGroups.map(group => {
-    const pending = group.items.filter(item => isOpenTodoStatus(item.status)).length;
+    const pending = stats.groups.find(row => row.id === group.id).open;
     return `<a class="card card-link" href="practical/todos.html#todo-${escapeHtml(group.id)}">
       <span class="eyebrow">${escapeHtml(group.eyebrow)}</span>
       <h3>${escapeHtml(group.title)}</h3>
@@ -94,6 +129,7 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
       </a>
     </article>`).join('');
 
+  const statusCardHtml = renderHomeStatusCard({ meta, days, stats });
   const bodyHtml = `
     <nav class="trip-day-picker" aria-label="快速選擇旅行日期" data-trip-timezone="${escapeHtml(meta.timeZone)}">
       ${days.map(day => {
@@ -102,6 +138,7 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
         return `<a href="day-${String(day.n).padStart(2, '0')}.html" data-trip-date="${escapeHtml(iso)}"><b>${escapeHtml(day.date.split(' ')[0])}</b><span>Day ${day.n}</span></a>`;
       }).join('')}
     </nav>
+    ${statusCardHtml}
     <header class="journal-cover">
       <div class="journal-cover-copy">
         <span class="journal-kicker">${escapeHtml(meta.edition)}</span>
@@ -173,9 +210,10 @@ ${coverFigure}
     </section>
     <script>
       (function() {
-        ${[todayIn, taipeiToday, hideDeadlineOnTrip].map(fn => fn.toString()).join('\n')}
+        ${[todayIn, taipeiToday, warsawToday, warsawMinutes, departureLabel, resolveHomeStatus, nextStepFor, hideDeadlineOnTrip, initializeHomeStatus].map(fn => fn.toString()).join('\n')}
         const root = document.currentScript.closest('.standalone-page') || document;
         hideDeadlineOnTrip(root, taipeiToday, ${JSON.stringify(meta.tripStart)});
+        initializeHomeStatus(root, ${JSON.stringify({ travelStart: meta.travelStart, tripStart: meta.tripStart, tripEnd: meta.tripEnd })});
       }());
     </script>`;
 

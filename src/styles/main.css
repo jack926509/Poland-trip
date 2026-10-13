@@ -5248,6 +5248,115 @@ h3 {
   font-size: 1.05rem;
 }
 
+/* 首頁日期格下方的狀態小卡（C5）與訂票頁「還沒處理 N 項」精簡卡（C2）。
+   [hidden] 另外明寫 display: none，避免 class 的 display 蓋過瀏覽器預設的隱藏。 */
+.home-status {
+  margin: 0.75rem 0 1rem;
+}
+
+.home-status [hidden],
+.home-status-card[hidden] {
+  display: none;
+}
+
+.home-status-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.15rem 0.75rem;
+  min-height: 44px;
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--line-strong);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background: var(--paper-light);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.home-status-card:hover,
+.home-status-card:focus-visible {
+  background: var(--accent-pale);
+}
+
+.home-status-main {
+  flex: 1 1 100%;
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.home-status-main b {
+  font-family: var(--font-mono);
+}
+
+.home-status-sub {
+  flex: 1 1 12rem;
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.home-status-cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-left: auto;
+  color: var(--accent-dark);
+  font-weight: 700;
+}
+
+.booking-status-card {
+  padding: 1rem;
+  border: 1px solid var(--line-strong);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background: var(--paper-light);
+}
+
+.booking-status-card h2 {
+  margin: 0.2rem 0 0.4rem;
+}
+
+.booking-status-groups {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.6rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.booking-status-groups a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 44px;
+  padding: 0 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xs);
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.booking-status-cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.booking-howto > summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.todo-link {
+  display: inline-block;
+  padding: 0.6rem 0;
+}
+
 /* 今日卡：旅途中單手拿著看的一頁，字級與間距比其他頁寬鬆一級。 */
 .nav-today {
   padding: 0.3rem 0.7rem;

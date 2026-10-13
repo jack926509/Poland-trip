@@ -103,19 +103,16 @@ test('每個手動維護的截止項目都寫明日期來源', () => {
   }
 });
 
-test('訂票頁與首頁都接上倒數，且無 JavaScript 時仍看得到快照', () => {
+test('訂票頁以精簡卡取代倒數表，首頁下一個期限不含資料重查日', () => {
   const booking = renderBooking(allSources);
-  assert.match(booking, /訂票與查核倒數/);
-  assert.match(booking, /data-countdown-row/);
-  assert.match(booking, /JavaScript 未啟用/);
-  // 每一筆都要能在表上找到，否則靜態快照就不完整。
-  for (const deadline of trip.deadlines) {
-    assert.ok(booking.includes(deadline.title), `訂票頁缺少 ${deadline.id}`);
-  }
+  assert.match(booking, /id="countdown"/);
+  assert.match(booking, /還沒處理 <b[^>]*>\d+<\/b> 項/);
+  assert.doesNotMatch(booking, /data-countdown-row|逾期 \d+ 天|訂票優先順序|什麼時候處理/);
 
   const home = renderHome({ ...trip, cities: [], databaseEntries });
   assert.match(home, /class="next-deadline"/);
-  assert.match(home, /practical\/booking\.html#countdown/);
+  assert.match(home, /practical\/todos\.html">看待辦事項/);
+  assert.doesNotMatch(home, /看完整倒數/);
 });
 
 test('倒數看板涵蓋每一筆仍待處理的資料庫重查項目', () => {

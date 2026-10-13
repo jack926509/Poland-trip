@@ -2,6 +2,7 @@ import { mealTiming, renderMealList, renderStoreBadges, renderStoreBody, renderS
 import { dayMeals, dayDining } from '../data/day-dining.js';
 import { days } from '../data/trip.js';
 import { todoItemId } from '../lib/journey.mjs';
+import { todoStats } from '../lib/todo-status.mjs';
 import { escapeHtml, linkifyText, safeHttpsUrl } from '../lib/html.mjs';
 import { renderLayout } from './layout.mjs';
 import { cityGuideByName, dayPageForDate, cityRoutes } from '../lib/city-guide.mjs';
@@ -83,70 +84,33 @@ function renderBookingNotice({ onTodosPage = false } = {}) {
   return renderDisclaimer('訂票狀態由人工維護，未連線查詢即時庫存。', `「可查／購」只表示可前往售票頁查詢，不代表有票或已訂妥。付款前請核對指定日期、場次與價格；${where}，未記錄日期的狀態請重新確認。`);
 }
 
-const URGENCY_TAGS = {
-  overdue: ['tag-red', '已逾期'],
-  today: ['tag-red', '今天'],
-  soon: ['tag-yellow', '一週內'],
-  planned: ['tag-todo', '尚未到期'],
-  done: ['tag-muted', '已完成'],
-  undated: ['tag-muted', '無日期'],
-};
-
 /**
- * 訂票與查核的倒數看板。
+ * 訂票頁頂端的「還沒處理 N 項」精簡卡。
  *
- * 建置時把整張表連同跳脫處理渲染完成，前端只以 data-countdown-* 屬性更新
- * 剩餘天數——這樣離線開啟、或分頁放著過夜，倒數都還是對的，而 HTML 結構
- * 只有一份。沒有 JavaScript 時看到的是建置當日的快照，仍然可讀。
+ * 原本這頁前三章（倒數表、訂票優先順序、什麼時候處理）都是待辦頁的重述，
+ * 約 12,900 px，而且把「已完成」與「資料重查日」混進倒數，出現「逾期 19 天」這類假警報。
+ * 現在狀態只有待辦頁一個正本：這裡的數字由 todoGroups 即時算出，細項請去待辦頁。
+ * id="countdown" 保留，今日卡與舊連結仍可跳到這張卡。
  */
-function renderCountdownSection({ trains, deadlines, databaseEntries }) {
-  const items = collectDeadlines({ trains, deadlines, databaseEntries });
-  if (!items.length) return '';
-  const today = getTaipeiToday();
-  const rows = calculateCountdown(items, today).map(item => {
-    const [tagClass, tagText] = URGENCY_TAGS[item.urgency] || URGENCY_TAGS.planned;
-    const title = item.url
-      ? `<a href="${escapeHtml(item.url)}" target="_blank" rel="noopener">${escapeHtml(item.title)}</a>`
-      : escapeHtml(item.title);
-    return `<tr data-countdown-row data-countdown-date="${escapeHtml(item.date || '')}" data-countdown-open="${item.open}" data-urgency="${item.urgency}">
-      <td class="number" data-label="倒數"><b data-countdown-label>${escapeHtml(item.label)}</b></td>
-      <td data-label="日期"><time datetime="${escapeHtml(item.date || '')}">${escapeHtml(item.date || '—')}</time></td>
-      <td data-label="類別"><span class="${tagClass}" data-countdown-category data-countdown-class="${tagClass}">${escapeHtml(item.category)}</span></td>
-      <td data-label="項目">${title}<br><span class="source-meta">${linkifyText(item.action)}</span></td>
-      <td data-label="現況與依據">${escapeHtml(item.status)}<br><span class="source-meta">依據：${escapeHtml(item.basis)}</span><br><span class="tag-muted" data-countdown-tag data-countdown-text="${escapeHtml(tagText)}">${escapeHtml(tagText)}</span></td>
-    </tr>`;
-  }).join('');
-
-  const countdownRuntime = [urgencyOf, labelOf, initializeCountdown, todayIn, taipeiToday]
-    .map(fn => fn.toString()).join('\n');
-
+export function renderBookingStatusCard(todoGroups) {
+  const stats = todoStats(todoGroups);
+  const rows = stats.groups.map(row => `<li><a href="todos.html#todo-${escapeHtml(row.id)}"><span>${escapeHtml(row.title)}</span><b>${row.open ? `${row.open} 項待處理` : '已完成'}</b></a></li>`).join('');
   return `
-    <section class="section" id="countdown">
-      <div class="section-heading"><span class="section-num">T-minus</span><h2>訂票與查核倒數</h2></div>
-      <p>以台灣時間 <span data-countdown-today>${escapeHtml(today)}</span> 計算。行程自訂的行動期限與自由行資料庫的重查日列在下表；尚未購買的城際火車若有開賣日，也會列入。各筆的「依據」欄註明出處。這裡看的是「什麼快到期」；已經逾期的統計在資料品質面板。到期不代表已訂妥，狀態仍須人工更新。</p>
-      <noscript><p>JavaScript 未啟用，以下倒數為建置當日的快照。</p></noscript>
-      <div class="table-wrap"><table class="table-editorial countdown-table"><thead><tr><th>倒數</th><th>日期</th><th>類別</th><th>項目</th><th>現況與依據</th></tr></thead><tbody>${rows}</tbody></table></div>
-      <script>
-        (function() {
-          ${countdownRuntime}
-          const root = document.currentScript.closest('.standalone-page') || document;
-          initializeCountdown(root, taipeiToday, ${JSON.stringify(meta.tripStart)});
-        }());
-      </script>
+    <section class="section booking-status" id="countdown" data-todo-open="${stats.open}" data-todo-total="${stats.total}">
+      <div class="booking-status-card">
+        <span class="eyebrow">待辦總覽</span>
+        <h2>${stats.open ? `還沒處理 <b class="number" data-booking-open>${stats.open}</b> 項` : '待辦已全部處理完畢'}</h2>
+        <p>共 ${stats.total} 項，已完成 ${stats.done} 項${stats.skipped ? `，線上已售完 ${stats.skipped} 項（當天現場再試）` : ''}。逐項狀態、查核日期與處理連結只在待辦事項頁維護。</p>
+        <ul class="booking-status-groups">${rows}</ul>
+        <p class="action-links"><a class="booking-status-cta" href="todos.html">看待辦事項 →</a></p>
+      </div>
     </section>`;
 }
 
-export function renderBooking({ flights, trains, stay, bookingTiers, reservations, railOfficialLinks = [], railPurchaseSteps = [], auschwitzBus = null, deadlines = [], databaseEntries = [] }) {
-  const countdownHtml = renderCountdownSection({ trains, deadlines, databaseEntries });
-  const tiersHtml = bookingTiers.map((tier, index) => `
-    <article class="card ${index === 0 ? 'card-accent' : ''}">
-      <span class="eyebrow">Priority ${index + 1}</span>
-      <h3>${tier.tier}</h3>
-      <p>${tier.note}</p>
-      <ul class="link-list">${tier.items.map(item => `<li><a href="${item.url}" target="_blank" rel="noopener">${item.name} →</a></li>`).join('')}</ul>
-    </article>`).join('');
-
-  const reservationRows = reservations.map(item => `<tr><td><b>${item.when}</b></td><td>${item.what}</td></tr>`).join('');
+export function renderBooking({ flights, trains, stay, todoGroups = [], railOfficialLinks = [], railPurchaseSteps = [], auschwitzBus = null }) {
+  const statusCardHtml = renderBookingStatusCard(todoGroups);
+  const railTrains = trains.filter(train => !String(train.id).startsWith('bus-'));
+  const bookedTrains = railTrains.filter(train => train.status === '已購票').length;
   const trainRows = trains.map(train => `
     <tr>
       <td><b>${train.seg}</b>${train.leg ? `<br><span class="timeline-note">${train.leg}</span>` : ''}${train.status ? `<br><span class="${train.status === '已購票' ? 'tag-muted' : 'tag-todo'}">${train.status}</span>` : ''}</td>
@@ -256,29 +220,12 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
 
   const content = `
     ${renderBookingNotice()}
-    ${countdownHtml}
-    <section>
-      <div class="section-heading"><span class="section-num">Do first</span><h2>訂票優先順序</h2></div>
-      <div class="grid">${tiersHtml}</div>
-    </section>
-    <section class="section">
-      <div class="section-heading"><span class="section-num">Timeline</span><h2>什麼時候處理</h2></div>
-      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>事項</th></tr></thead><tbody>${reservationRows}</tbody></table></div>
-    </section>
+    ${statusCardHtml}
     <section class="section" id="rail-itinerary">
       <div class="section-heading"><span class="section-num">Rail</span><h2>城際交通</h2></div>
-      <div class="callout-note"><b>已購 4／4 段城際火車。</b><p>2026-09-28 與 2026-10-06 依旅客提供的 PKP App 票券清單，確認 10/25 EIP 5300、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 的日期、起訖站及發車時間。截圖沒有抵達時間、艙等、車廂、座位與票價；請進票券詳細頁核對並保存離線票券。</p></div>
+      <div class="callout-note"><b>已購 ${bookedTrains}／${railTrains.length} 段城際火車。</b><p>火車與巴士逐段是否已購，以<a href="todos.html#todo-rail">待辦事項</a>為準。2026-09-28 與 2026-10-06 依旅客提供的 PKP App 票券清單，確認 10/25 EIP 5300、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 的日期、起訖站及發車時間。截圖沒有抵達時間、艙等、車廂、座位與票價；請進票券詳細頁核對並保存離線票券。</p></div>
       <p><a href="https://www.intercity.pl/en/site/for-passengers/trains/about-eic.html" target="_blank" rel="noopener">PKP 官方 EIC 服務說明</a>列有一等艙飲品與點心；指定班次的編組、設備、餐飲與票價仍以購票頁為準。</p>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>路段</th><th>日期</th><th>車種</th><th>時刻</th><th>時長</th><th>預售</th><th>票價</th></tr></thead><tbody>${trainRows}</tbody></table></div>
-    </section>
-    <section class="section">
-      <div class="section-heading"><span class="section-num">Official</span><h2>官方購票與時刻表</h2></div>
-      <p class="lead">Passenger Portal 用來查班次與異動；PKP Intercity 官方售票頁用來確認可售價格、車廂與座位。兩者用途不同，建議都保留。</p>
-      <div class="grid">${railLinkCards}</div>
-    </section>
-    <section class="section">
-      <div class="section-heading"><span class="section-num">How to</span><h2>網路購票教學</h2></div>
-      <div class="grid-wide">${railStepCards}</div>
     </section>
     ${busHtml}
     <section class="section">
@@ -290,15 +237,37 @@ export function renderBooking({ flights, trains, stay, bookingTiers, reservation
       <div class="section-heading"><span class="section-num">Stay</span><h2>已確認住宿</h2></div>
       <div class="callout-note"><b>公開資料範圍：</b><p>依旅客授權列出住宿名稱、入住日期、公開地址與地圖座標；不包含住客姓名、訂房代碼、付款資料或房號。Piast 門牌與 Towarowa 實際入住門牌仍以訂房確認為準。</p></div>
       <div class="grid-wide">${stayHtml}</div>
+    </section>
+    <section class="section" id="rail-official">
+      <div class="section-heading"><span class="section-num">Official</span><h2>官方購票與時刻表</h2></div>
+      <p class="lead">Passenger Portal 用來查班次與異動；PKP Intercity 官方售票頁用來確認可售價格、車廂與座位。兩者用途不同，建議都保留。</p>
+      <div class="grid">${railLinkCards}</div>
+      <details class="booking-howto" id="rail-howto">
+        <summary>網路購票教學（${railPurchaseSteps.length} 步，點開查看）</summary>
+        <div class="grid-wide">${railStepCards}</div>
+      </details>
     </section>`;
 
-  return renderPracticalLayout('訂票與交通', 'Booking plan', '先看最急的票，再核對火車、航班與已確認住宿。尚未確認的時段保留原樣，不用猜。', content, 'practical/booking.html');
+  return renderPracticalLayout('訂票與交通', 'Booking plan', '待辦進度看上方卡片與待辦頁；本頁只放火車、巴士、航班、住宿的細節與官方購票教學。尚未確認的時段保留原樣，不用猜。', content, 'practical/booking.html');
 }
 
 // 待辦日期寫成「10/25」；轉成可排序的數字，沒有日期的排最後。
 function todoSortKey(item) {
   const match = String(item.date || '').match(/(\d{1,2})\/(\d{1,2})/);
   return match ? Number(match[1]) * 100 + Number(match[2]) : 9999;
+}
+
+/**
+ * 待辦連結的按鈕文字要說實話：連到 Google 地圖就叫「地圖」，連到評論或米其林頁就叫「店家頁」，
+ * 只有網址真的是訂位入口（官方訂位頁或 TheFork／MojStolik／zjedz 等訂位平台）才叫「訂位」。
+ * 火車與景點的連結是購票入口，叫「購票頁」。
+ */
+export function todoLinkLabel(item, group) {
+  const url = String(item.url || '');
+  if (/google\.[a-z.]+\/maps|maps\.app\.goo\.gl|goo\.gl\/maps/i.test(url)) return '地圖';
+  if (group.id !== 'dining') return '購票頁';
+  if (/rezerwac|reserv|booking|mojstolik|thefork|zjedz/i.test(url)) return '訂位';
+  return '店家頁';
 }
 
 function renderTodoItem(item, group) {
@@ -309,7 +278,7 @@ function renderTodoItem(item, group) {
   const day = dayPageForDate(item.date, '../');
   return `<li class="todo-item${open ? '' : ' is-done'}" id="${todoItemId(group, item)}">
         <div class="todo-head"><span class="todo-date">${item.date}</span><b class="todo-name">${item.name}</b><span class="${open ? 'tag-todo' : 'tag-muted'}">${item.status}</span></div>
-        <p class="todo-action">${linkifyText(item.action)}${item.url ? ` <a href="${item.url}" target="_blank" rel="noopener">開啟處理頁 →</a>` : ''}</p>
+        <p class="todo-action">${linkifyText(item.action)}${item.url ? ` <a class="todo-link" href="${item.url}" target="_blank" rel="noopener">${todoLinkLabel(item, group)} →</a>` : ''}</p>
         <p class="source-meta todo-checked"${recheck ? ` data-recheck-at="${recheck}" data-recheck-open="${open}"` : ''}>最近人工查核：${checked ? `<time datetime="${checked}">${checked}</time>` : '未記錄，請重查'}${recheck ? ` · 下次查核：<time datetime="${recheck}">${recheck}</time><span class="tag-red todo-recheck-flag" data-recheck-flag hidden>重查已逾期</span>` : ''}${day ? ` · <a class="todo-day-link" href="${day.href}#day-preparation">Day ${day.n} 行程 →</a>` : ''}</p>
       </li>`;
 }
