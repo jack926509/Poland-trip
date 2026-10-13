@@ -7,6 +7,7 @@ import vm from 'node:vm';
 
 import * as trip from '../src/data/trip.js';
 import { privateSlots } from '../src/data/private-slots.js';
+import { bookingProgress } from '../src/lib/journey.mjs';
 import { renderPrivatePanel } from '../src/templates/private-panel.mjs';
 import { initializeCountdown, hideDeadlineOnTrip } from '../src/scripts/dashboard.js';
 import { privateTelHref as telHref } from '../src/scripts/private-data.js';
@@ -113,7 +114,7 @@ test('4 間住宿都有官方電話與來源，並在住宿、SOS、今日卡輸
 test('每個已訂妥的當日預約都有票券欄位，今日卡在行程旁邊輸出而不是只在摺疊區', () => {
   const today = read('today.html');
   for (const day of trip.days) {
-    const confirmed = (day.mustBook || []).filter(item => /已訂妥|已購票/.test(item) && !/尚未|未購票/.test(item)).length;
+    const confirmed = bookingProgress(day).confirmed.filter(item => item.groupId !== 'dining').length;
     const slots = privateSlots.filter(slot => slot.day === day.n && slot.kind !== 'flight').length;
     assert.ok(slots >= confirmed, `Day ${day.n} 有 ${confirmed} 筆已訂妥項目但只有 ${slots} 個票券欄位`);
   }

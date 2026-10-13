@@ -36,7 +36,7 @@ function privateProofLine(slot, privateHref) {
     </span>`;
 }
 
-function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref }) {
+function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref, todosHref }) {
   const daySlots = privateSlots.filter(slot => slot.day === day.n);
   const trainSegment = segmentForDay(day);
   const bed = stayForDate(stay, iso);
@@ -44,6 +44,8 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref }) {
   const operation = dayOperations[day.n];
   const progress = bookingProgress(day);
   const list = items => items.map(item => `<li>${escapeHtml(item)}</li>`).join('');
+  // 預約列連到待辦頁的同一筆，狀態字樣與待辦頁一致。
+  const bookingLine = item => `<li><a href="${escapeHtml(todosHref)}#${item.anchor}"><b>${escapeHtml(item.name)}</b></a> · ${escapeHtml(item.status)}</li>`;
   // 餐飲列沿用每日行程頁的 .day-food-item 版式：店名是標題、導航收在標題右上角的膠囊，
   // 不再是「角色：店名」加四段文字的文字牆。同一家店在兩個頁面長得一樣，不必重新學。
   const meal = item => `<li class="day-food-item">
@@ -173,8 +175,8 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref }) {
     </section>
     <details class="today-block today-block-more" data-today-schedule><summary>全天時間表<span class="today-more-meta">${day.steps.length} 個時段</span></summary>${renderSteps(day)}</details>
     <details class="today-block today-block-more"><summary>預約與待辦<span class="today-more-meta">${progress.pending.length} 項待處理</span></summary>
-      <h4>仍未訂妥</h4><ul>${list(progress.pending) || '<li>無待訂項目。</li>'}</ul>
-      ${progress.confirmed.length ? `<h4>已完成預約</h4><ul>${list(progress.confirmed)}</ul>` : ''}
+      <h4>仍未訂妥</h4><ul>${progress.pending.map(bookingLine).join('') || '<li>無待訂項目。</li>'}</ul>
+      ${progress.confirmed.length ? `<h4>已完成預約</h4><ul>${progress.confirmed.map(bookingLine).join('')}</ul>` : ''}
       <a class="today-block-link" href="${escapeHtml(dayHref)}#day-preparation">完整訂票提醒 →</a></details>
     <details class="today-block today-block-more"><summary>日照、備案與晚間準備${sun ? `<span class="today-more-meta">日落 ${escapeHtml(sun.sunset)}</span>` : ''}</summary>
       ${sun ? `<h4>日照</h4><p>日出 ${escapeHtml(sun.sunrise)}／日落 <b>${escapeHtml(sun.sunset)}</b>／藍調至 ${escapeHtml(sun.blueHourEnd)}（${escapeHtml(sun.tz)}）</p><p>${escapeHtml(sun.note)}</p>` : ''}
@@ -204,6 +206,7 @@ export function renderToday({ meta, days, stay, dayDining = {}, daylight = [], s
     sun: daylightByDay.get(day.n),
     dayHref: `${pathPrefix}day-${String(day.n).padStart(2, '0')}.html`,
     privateHref: `${pathPrefix}practical/database.html#my-private`,
+    todosHref: `${pathPrefix}practical/todos.html`,
   })).join('');
 
   // 內嵌時沒有 import；日期與選日函式的相依也必須一起帶入。

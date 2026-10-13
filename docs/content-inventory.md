@@ -20,7 +20,7 @@
 ### 2. `days`（陣列，**8 筆**，Day 1–8）
 用途：逐日行程時刻表，是全站最核心的資料集合。
 每筆物件欄位（並非每天都有全部欄位，見備註）：
-`n, date, city, title, headline, tag, intensity, hardConstraints[], mustBook[], compressible[], weather, train{}(選填), steps[], eat[](選填), backup[], warn(選填,字串), practical[](選填), extend[](選填)`
+`n, date, city, title, headline, tag, intensity, hardConstraints[], compressible[], weather, train{}(選填), steps[], eat[](選填), backup[], warn(選填,字串), practical[](選填), extend[](選填)`
 
 - `steps[]` 子欄位：`t, label, sub(選填), cost(選填), dur(選填)`
 - `backup[]` 子欄位：`label, where, why`

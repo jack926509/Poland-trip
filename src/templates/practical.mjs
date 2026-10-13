@@ -1,6 +1,7 @@
 import { mealTiming, renderMealList, renderStoreBadges, renderStoreBody, renderStoreHead } from '../lib/dining.mjs';
 import { dayMeals, dayDining } from '../data/day-dining.js';
 import { days } from '../data/trip.js';
+import { todoItemId } from '../lib/journey.mjs';
 import { escapeHtml, linkifyText, safeHttpsUrl } from '../lib/html.mjs';
 import { renderLayout } from './layout.mjs';
 import { cityGuideByName, dayPageForDate, cityRoutes } from '../lib/city-guide.mjs';
@@ -22,7 +23,7 @@ function dayLink(date) {
   return day ? `<a class="cross-link" href="${day.href}">Day ${day.n} →</a>` : '';
 }
 
-import { getTaipeiToday, toComparableDate, todayIn, isOpenTodoStatus, isOpenEntryStatus, calculateDashboard, calculateCountdown, collectDeadlines, urgencyOf, labelOf, initializeCountdown, dashboardCsv, initializeDashboard } from '../scripts/dashboard.js';
+import { getTaipeiToday, toComparableDate, todayIn, isOpenTodoStatus, isOpenEntryStatus, calculateDashboard, calculateCountdown, collectDeadlines, urgencyOf, labelOf, initializeCountdown, dashboardCsv, initializeDashboard, markOverdueRechecks } from '../scripts/dashboard.js';
 // 內嵌用的是 fn.toString()，吐出的是函式「自己的名字」而不是 import 的別名。
 // getTaipeiToday 是 taipeiToday 的別名，內嵌後頁面上只會有 taipeiToday，
 // 呼叫端必須用真名，否則在瀏覽器裡是 ReferenceError（靜態輸出看起來正常，
@@ -300,14 +301,16 @@ function todoSortKey(item) {
   return match ? Number(match[1]) * 100 + Number(match[2]) : 9999;
 }
 
-function renderTodoItem(item) {
+function renderTodoItem(item, group) {
   const open = isOpenTodoStatus(item.status);
   const checked = toComparableDate(item.checkedAt);
   const recheck = toComparableDate(item.recheckAt);
-  return `<li class="todo-item${open ? '' : ' is-done'}">
+  // 每筆有固定錨點，每日頁與今日卡的預約列直接連到這裡；反向再連回行程日。
+  const day = dayPageForDate(item.date, '../');
+  return `<li class="todo-item${open ? '' : ' is-done'}" id="${todoItemId(group, item)}">
         <div class="todo-head"><span class="todo-date">${item.date}</span><b class="todo-name">${item.name}</b><span class="${open ? 'tag-todo' : 'tag-muted'}">${item.status}</span></div>
         <p class="todo-action">${linkifyText(item.action)}${item.url ? ` <a href="${item.url}" target="_blank" rel="noopener">開啟處理頁 →</a>` : ''}</p>
-        <p class="source-meta todo-checked">最近人工查核：${checked ? `<time datetime="${checked}">${checked}</time>` : '未記錄，請重查'}${recheck ? ` · 下次查核：<time datetime="${recheck}">${recheck}</time>` : ''}</p>
+        <p class="source-meta todo-checked"${recheck ? ` data-recheck-at="${recheck}" data-recheck-open="${open}"` : ''}>最近人工查核：${checked ? `<time datetime="${checked}">${checked}</time>` : '未記錄，請重查'}${recheck ? ` · 下次查核：<time datetime="${recheck}">${recheck}</time><span class="tag-red todo-recheck-flag" data-recheck-flag hidden>重查已逾期</span>` : ''}${day ? ` · <a class="todo-day-link" href="${day.href}#day-preparation">Day ${day.n} 行程 →</a>` : ''}</p>
       </li>`;
 }
 
@@ -323,8 +326,8 @@ export function renderTodos({ todoGroups }) {
     return `<section class="section" id="todo-${group.id}">
       <div class="section-heading"><span class="section-num">${group.eyebrow}</span><h2>${group.title}</h2></div>
       <p class="lead">${group.intro}</p>
-      ${openItems.length ? `<ul class="todo-list" data-todo-open>${openItems.map(renderTodoItem).join('')}</ul>` : '<p class="source-meta">這一類已全部完成。</p>'}
-      ${doneItems.length ? `<details class="todo-done"><summary>已完成 ${doneItems.length} 項</summary><ul class="todo-list" data-todo-done>${doneItems.map(renderTodoItem).join('')}</ul></details>` : ''}
+      ${openItems.length ? `<ul class="todo-list" data-todo-open>${openItems.map(item => renderTodoItem(item, group)).join('')}</ul>` : '<p class="source-meta">這一類已全部完成。</p>'}
+      ${doneItems.length ? `<details class="todo-done"><summary>已完成 ${doneItems.length} 項</summary><ul class="todo-list" data-todo-done>${doneItems.map(item => renderTodoItem(item, group)).join('')}</ul></details>` : ''}
     </section>`;
   }).join('');
 
@@ -332,7 +335,14 @@ export function renderTodos({ todoGroups }) {
     ${renderBookingNotice({ onTodosPage: true })}
     <p class="action-links"><a href="tickets.html#ticket-purchases">所有景點的官方購票入口與現場售票方式 →</a></p>
     <div class="callout-risk"><span class="tag-todo">${total} 項待辦</span><p>共 ${allItems.length} 項；每類先列未完成，已完成的收在「已完成」裡供核對。完成後請將票券與訂位資訊離線保存；未開賣項目仍以官方系統實際可售狀態為準。</p></div>
-    ${groupsHtml}`.trim();
+    ${groupsHtml}
+    <script>
+      (function() {
+        ${[todayIn, taipeiToday, markOverdueRechecks].map(fn => fn.toString()).join('\n')}
+        const root = document.currentScript.closest('.standalone-page') || document;
+        markOverdueRechecks(root, taipeiToday);
+      }());
+    </script>`.trim();
 
   return renderPracticalLayout('待辦事項', 'Action list', '城際交通、景點與餐飲訂位集中在一頁。先處理有日期與指定場次的票，再處理彈性訂位。', content, 'practical/todos.html');
 }

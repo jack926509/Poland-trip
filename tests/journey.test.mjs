@@ -1,7 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { days } from '../src/data/trip.js';
+import { days, todoGroups } from '../src/data/trip.js';
+import { isOpenTodoStatus } from '../src/scripts/dashboard.js';
 import { nightStay, checkoutStay, bookingProgress, departureIso, isDepartureDay } from '../src/lib/journey.mjs';
 
 test('跨城日住宿按入住區間銜接，離境日不再顯示住宿', () => {
@@ -15,9 +16,24 @@ test('已訂導覽不算待辦，但尚未購票的巴士仍待處理', () => {
   const { confirmed, pending } = bookingProgress(days[2]);
   assert.equal(confirmed.length, 1);
   assert.equal(pending.length, 2);
-  assert.ok(confirmed[0].includes('Auschwitz'));
-  assert.ok(pending.every(item => item.includes('Lajkonik')));
-  assert.equal(bookingProgress({mustBook:['尚未購票', '已購票', '未完成']}).pending.length, 2);
+  assert.ok(confirmed[0].name.includes('Auschwitz'));
+  // Day 3 的待辦＝待辦頁同日的 Lajkonik 巴士與 Mr. Jerry 晚餐訂位，不再另抄一份。
+  assert.deepEqual(pending.map(item => item.groupId), ['rail', 'dining']);
+  assert.ok(pending[0].name.includes('Lajkonik'));
+  assert.ok(pending[1].name.includes('Mr. Jerry'));
+});
+test('每日待訂數與待辦頁同源：八天加總等於待辦頁未完成數，且每筆待辦都歸到某一天', () => {
+  const openTotal = todoGroups.flatMap(group => group.items).filter(item => isOpenTodoStatus(item.status)).length;
+  const dayTotal = days.reduce((sum, day) => sum + bookingProgress(day).pending.length, 0);
+  assert.equal(dayTotal, openTotal);
+  const allTotal = days.reduce((sum, day) => sum + bookingProgress(day).pending.length + bookingProgress(day).confirmed.length, 0);
+  assert.equal(allTotal, todoGroups.flatMap(group => group.items).length, '有待辦項目的日期對不到任何行程日');
+  // Day 1 曾經顯示「沒有待訂」，其實 Specjały 晚餐尚未訂位。
+  assert.ok(bookingProgress(days[0]).pending.some(item => item.name.includes('Specjały')));
+  const anchors = days.flatMap(day => [...bookingProgress(day).pending, ...bookingProgress(day).confirmed].map(item => item.anchor));
+  assert.equal(new Set(anchors).size, anchors.length, '待辦錨點不可重複');
+  const todos = fs.readFileSync('dist/practical/todos.html', 'utf8');
+  for (const anchor of anchors) assert.ok(todos.includes(`id="${anchor}"`), `待辦頁缺少錨點 ${anchor}`);
 });
 test('城市回鏈涵蓋晚上抵達日及白天遊覽日', () => {
   const html = fs.readFileSync('dist/city-wroclaw.html', 'utf8');

@@ -94,7 +94,8 @@ mkdir _site
 - 公開行程與住宿資訊不包含旅客姓名、證件號碼、訂位代碼、票號、付款資料或私人聯絡方式。
 
 - `src/data/trip.js` 的 `todoGroups` 是人工訂票紀錄。查核後更新 `status`、`checkedAt`（實際查核日）、`recheckAt`（下次查核期限）、`action` 與 `url`，不要用建置或部署日期代填查核日。
-- 「可查／購」仍是未完成。收到訂票確認後才改為「已訂妥」或「已完成」，並同步核對 `days`、`trains`、`reservations` 與 `bookingTiers`。票號、訂位代碼與付款資料另存私人票券。
+- 「可查／購」仍是未完成。收到訂票確認後才改為「已訂妥」或「已完成」，並同步核對 `days`、`trains`、`reservations` 與 `bookingTiers`。
+- 每日頁、今日卡與首頁八日目錄的「待訂／已完成預約」一律由 `todoGroups` 依 `date` 推導（`src/lib/journey.mjs` 的 `dayTodos`／`bookingProgress`），`days` 不再另存手寫的 `mustBook`。新增或改狀態只改 `todoGroups`；每筆在待辦頁有固定錨點（`todoItemId`），各頁直接連到同一筆。票號、訂位代碼與付款資料另存私人票券。
 - 官方購票入口集中在 `ticket-purchases.js`；`todoGroups` 用 `ticketPurchaseId` 引用同一入口。入口的 `checkedAt` 只表示已核對官方頁，不能取代購票紀錄日期或即時庫存。現場售票、免費、已含與閉館列保持 `purchaseUrl: null`；其他日期／票種入口使用 `otherDatesUrl`。POLIN 僅列附件參考，不加入主行程或票券待辦。完整文件快照見 `docs/poland-attraction-tickets.md`。
 - 餐飲門市事實維護於 `dining-places.js`（`id/cityKey/address/map/hours/sourceUrl/checkedAt/verificationStatus`）；`day-dining.js` 只保存 `placeId/role/note/stepId/planStatus`，`trip.js` 的 `eat` 也引用 `placeId`。地址、時段或店名不要回填到每日安排。`resolveDining` 供各頁共用，城市表與餐廳搜尋使用相同合併資料。
 - 速食品牌與單店維護於 `fast-food.js`；每個分店一個 ID、一個地址與導航，商場以 `branchIds` 關聯；不同分店不得以品牌名合併。

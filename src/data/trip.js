@@ -52,7 +52,6 @@ export const days = [
     tag: 'Arrival',
     intensity: '低',
     hardConstraints: ['首次 EES 入境登錄與提行李時間不保證；進城延後就縮短皇家大道散步', '換匯用週六有開的 REDAR 分店 II（08:00–20:00），不要等 Hotel Metropol 樓下的總店', '不進皇家城堡、不深入老城（完整留到 10/30）', '21:30 前回飯店，隔天 07:15 出發'],
-    mustBook: [],
     compressible: ['皇家大道散步範圍', 'Café Bristol 咖啡', 'Złote Tarasy 逛街時間'],
     steps: [
       {t:'機上', timingMode:'relative', id:'d1-breakfast', label:'機上早餐／出發前自理', sub:'依實際航段供餐'},
@@ -89,7 +88,6 @@ export const days = [
     tag: 'Transit',
     intensity: '高',
     hardConstraints: ['08:05 前抵 Warszawa Centralna；EIP 5300 08:40 發車，月台與車廂依票面及現場電子牌確認', '辛德勒工廠 17:30 入場（最後入場 18:30）', '13:00 準時入座 Pimiento（午餐菜單 13:00 起才供應），13:50 前離店，14:30 瓦維爾大教堂', '16:15 前離開 Wawel，17:10 前到辛德勒入口'],
-    mustBook: ['✅ 已購票 · 華沙 → 克拉科夫 EIP 5300 08:40（Warszawa Centralna 上車）', '❗尚未購票 · Wawel 短路線 15:15 左右時段票（寶庫或地下路線 47／35）', '可立即查／購 · 辛德勒工廠 17:30 時段票'],
     compressible: ['聖瑪利亞教堂內部參觀', '紡織會館購物時間'],
     train: {segmentId:'eip-5300'},
     steps: [
@@ -130,7 +128,6 @@ export const days = [
     tag: 'Memorial',
     intensity: '中高',
     hardConstraints: ['10:00 前抵 Muzeum Auschwitz 留安檢時間（官方要求至少提前 30 分鐘到場）；本行程採 08:35 早到緩衝', '10:30 英文 educator 導覽已訂妥，遲到不予補場', `回程巴士 ${lajkonikInboundAdopted.dep} 發車，導覽結束後不要走遠`, '晚間不再加博物館或長距離步行'],
-    mustBook: ['✅ 已訂妥 · Auschwitz 官方英文導覽 10/26 10:30（個人 educator 導覽，約 3 小時 45 分，2 人）', `❗尚未購票 · Lajkonik 去程 ${lajkonikOutboundAdopted.dep} → ${lajkonikOutboundAdopted.arr}（曾查得班次，付款前重查）`, `❗尚未購票 · Lajkonik 回程 ${lajkonikInboundAdopted.dep} → ${lajkonikInboundAdopted.arr}（備案 ${lajkonikInboundBackup.dep} → ${lajkonikInboundBackup.arr}）`],
     compressible: ['回克拉科夫後晚餐形式', '晚間自由活動'],
     // 導覽已訂妥 10:30，巴士以「09:45 前抵達」回推。
     // 班次與公開班表正本在 rail.js；9/09 售票頁只代表當時的可售快照。
@@ -205,7 +202,6 @@ export const days = [
     tag: 'Transit',
     intensity: '高',
     hardConstraints: ['早上完成 Wieliczka 鹽礦', '15:00 結束 Kazimierz 並回旅館取行李；若鹽礦延誤，跳過 Kazimierz', '16:10 前抵 Kraków Główny；已購 IC 3830 16:45 發車'],
-    mustBook: ['❗尚未訂 · Wieliczka 鹽礦英文團', '✅ 已購票 · 克拉科夫 → 樂斯拉夫 IC 3830 16:45'],
     compressible: ['Kazimierz 白天散步', '老城補逛與採購'],
     train: {segmentId:'ic-3830'},
     steps: [
@@ -246,7 +242,6 @@ export const days = [
     tag: 'Transit',
     intensity: '很高',
     hardConstraints: ['早餐後早出門', '座堂島點燈人無對外保證的固定出發分鐘，日落前到場等候', '18:35 前抵 Wrocław Główny；已購 IC 260 19:10 發車'],
-    mustBook: ['✅ 已購票 · 樂斯拉夫 → 波茲南 IC 260 19:10', '❗尚未訂 · 拉茨瓦維採全景畫場次'],
     compressible: ['國家博物館可整段取消，改午後咖啡休息', '座堂島改 45–60 分鐘重點散步', '午餐改簡餐或外帶'],
     train: {segmentId:'ic-260'},
     steps: [
@@ -280,7 +275,6 @@ export const days = [
     tag: 'Transit',
     intensity: '中高',
     hardConstraints: ['11:45 前抵達老城廣場卡位', '12:00 山羊鐘樓秀', '14:00 Carla 午餐（14:00 才開門），15:15 前結帳', '16:15 離開帝王城堡取行李', '17:05 前抵 Poznań Główny；搭乘已購 EIC 8104'],
-    mustBook: ['✅ 已購票 · 波茲南 → 華沙 EIC 8104 17:40', '❗尚未訂位 · Carla Trattoria Moderna 10/29 14:00 兩位（zjedz.my）'],
     compressible: ['帝王城堡內部參觀', '老城自由時間'],
     train: {segmentId:'eic-8104'},
     steps: [
@@ -313,7 +307,6 @@ export const days = [
     tag: 'Museums',
     intensity: '高',
     hardConstraints: ['起義博物館 08:00 開門、08:30 入場', '皇家城堡 10:00 開門、16:00 最後入場', '水上宮殿 16:12 日落前先拍外觀再入內', '晚餐 Soul Kitchen 18:30 先訂位並預留威靈頓'],
-    mustBook: ['❗尚未訂 · 華沙起義博物館 08:30', '❗尚未訂 · 皇家城堡 11:30', '❗尚未訂 · 華沙最後晚餐 Soul Kitchen 18:30（威靈頓）'],
     compressible: ['起義博物館抓核心展區（約 1.5 h）', '老城步行段改外觀快拍', '水上宮殿只拍外觀不入內', '國家博物館整段略過'],
     steps: [
       {t:'07:30', id:'d7-breakfast', label:'早餐 · Bułkę przez Bibułkę', sub:'Zgoda 3，離 Metropol 步行約 8 分，平日 07:30 開門；Bagel、炒蛋或 Avocado Toast，08:05 前結帳', dur:'35 min'},
@@ -352,7 +345,6 @@ export const days = [
     tag: 'Departure',
     intensity: '低',
     hardConstraints: ['11:00 前抵達華沙蕭邦機場', '如需退稅需預留更多機場時間', '不排正式景點'],
-    mustBook: [],
     compressible: ['飯店周邊散步', '最後採買'],
     steps: [
       {t:'07:20', label:'住宿出發前往 Charlotte Złota', sub:'行李先留住宿，前往 Złota 83；預留約 40 分鐘步行與找店，天候差就改住宿／車站沿線早餐', dur:'40 min'},
@@ -552,7 +544,7 @@ export const todoGroups = [
     items: [
       {checkedAt:null, recheckAt:null, date:'10/25', ticketPurchaseId:'krakow-wawel-castle', name:'Wawel 城堡 15:15', status:'尚未訂', action:'以官方售票頁選 10/25 15:15 左右、可於 16:15 前結束的短路線；完整 2 小時路線會壓縮到辛德勒工廠的移動時間。', url:ticketPurchaseById('krakow-wawel-castle').purchaseUrl},
       {checkedAt:null, recheckAt:null, date:'10/25', ticketPurchaseId:'krakow-schindler', name:'辛德勒工廠 17:30', status:'現可查／購', action:'10/25 已進個人網路票 90 天窗口；以官方售票頁的可售時段為準。', url:ticketPurchaseById('krakow-schindler').purchaseUrl},
-      {checkedAt:'2026-09-09', recheckAt:null, date:'10/26', ticketPurchaseId:'krakow-auschwitz', name:'Auschwitz 英文官方導覽', status:'已訂妥', action:'10:30 個人 educator 導覽（英文），官方標示約 3 小時 45 分，2 人。電子入場證存離線，入場須同時出示證件。', url:ticketPurchaseById('krakow-auschwitz').purchaseUrl},
+      {checkedAt:'2026-09-09', recheckAt:null, date:'10/26', ticketPurchaseId:'krakow-auschwitz', name:'Auschwitz 英文官方導覽 10:30', status:'已訂妥', action:'10:30 個人 educator 導覽（英文），官方標示約 3 小時 45 分，2 人。電子入場證存離線，入場須同時出示證件。', url:ticketPurchaseById('krakow-auschwitz').purchaseUrl},
       {checkedAt:null, recheckAt:null, date:'10/27', ticketPurchaseId:'krakow-wieliczka', name:'Wieliczka 鹽礦英文團', status:'需查／購', action:'在官方日期選擇器確認英文場、票價與庫存。2026-10-06 官方售票系統查詢時，10/27 英文場自 08:30 起每 30 分鐘一場，10:00 場當時有名額（不保證購票時仍有位）；英語 Tourist Route 全票 143／優待 121 PLN。', url:ticketPurchaseById('krakow-wieliczka').purchaseUrl},
       {checkedAt:'2026-09-24', recheckAt:null, date:'10/28', ticketPurchaseId:'wroclaw-panorama', name:'拉茨瓦維採全景畫 11:30', status:'場次已查／尚未訂', action:'9/24 官方 10/28 日期下曾列 11:30 場、85 個名額（30 分鐘一場）；這是歷史快照，10/06 未取得目前庫存，付款前重查。', url:ticketPurchaseById('wroclaw-panorama').purchaseUrl},
       {checkedAt:'2026-10-12', recheckAt:null, date:'10/30', ticketPurchaseId:'warsaw-royal-castle', name:'華沙皇家城堡 11:30', status:'尚未訂', action:'選 11:30 入場的 Royal Route；10 月起最後入場 16:00（2026-10-12 官網），起義博物館與無名塚之後接著走。', url:ticketPurchaseById('warsaw-royal-castle').purchaseUrl},

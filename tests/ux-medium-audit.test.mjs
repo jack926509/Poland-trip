@@ -9,12 +9,17 @@ const distDir = path.resolve('dist');
 const read = relativePath => fs.readFileSync(path.join(distDir, relativePath), 'utf8');
 const css = () => fs.readFileSync(path.join(distDir, 'assets/main.css'), 'utf8');
 
-test('M10：全程動線「無待訂項目」改為純文字，不再是可點連結', () => {
+test('M10：全程動線併入八日目錄，「無待訂」是標籤而非獨立連結，且每列帶今晚住宿與強度', () => {
   const home = read('index.html');
-  assert.match(home, /<span class="source-meta">無待訂項目<\/span>/);
-  assert.doesNotMatch(home, /<a[^>]*>無待訂項目<\/a>/);
-  // 仍要保留待處理項目的可點連結
-  assert.match(home, /<a href="day-\d\d\.html#day-preparation">待處理 \d+ 項<\/a>/);
+  // 2026-10-13 起首頁不再另放一張全程動線表；錨點 #journey-overview 移到八日目錄。
+  assert.equal((home.match(/id="journey-overview"/g) || []).length, 1);
+  assert.match(home, /<ol class="journal-itinerary" id="journey-overview">/);
+  assert.match(home, /<span class="tag-muted">無待訂<\/span>/);
+  assert.doesNotMatch(home, /<a[^>]*>無待訂[^<]*<\/a>/);
+  assert.match(home, /<span class="tag-todo">待訂 \d+<\/span>/);
+  assert.equal((home.match(/class="journal-day-stay"/g) || []).length, 8);
+  assert.match(home, /今晚 華沙 · Hotel Metropol/);
+  assert.match(home, /離境／機上過夜/);
 });
 
 test('M11：今日頁標題上方顯示 TODAY 而非 APPENDIX，資料庫頁維持原樣', () => {

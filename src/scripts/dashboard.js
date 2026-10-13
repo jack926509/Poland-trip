@@ -231,3 +231,24 @@ export function hideDeadlineOnTrip(root, getToday, tripStart) {
   window.addEventListener('focus', refresh);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
 }
+
+/**
+ * 待辦頁「下次查核」日期過了就標「重查已逾期」。
+ * 建置時算定會在部署後過時，所以和倒數表一樣在瀏覽器以台北日期重算；
+ * 已完成的項目不標，避免把已購票的紀錄當成待辦。
+ */
+export function markOverdueRechecks(root, getToday) {
+  function refresh() {
+    const today = getToday();
+    root.querySelectorAll('[data-recheck-at]').forEach(el => {
+      const overdue = el.getAttribute('data-recheck-open') === 'true' && el.getAttribute('data-recheck-at') < today;
+      el.toggleAttribute('data-recheck-overdue', overdue);
+      const flag = el.querySelector('[data-recheck-flag]');
+      if (flag) flag.hidden = !overdue;
+    });
+  }
+  refresh();
+  setInterval(refresh, 60000);
+  window.addEventListener('pageshow', refresh);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
+}
