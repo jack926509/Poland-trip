@@ -1,5 +1,25 @@
 // 對照 assets/photos/GROCERY-CREDITS.md；照片已目視核對。
 export const groceryPhotos = {
+  "28": {
+    "src": "assets/photos/grocery-28.jpg",
+    "label": "Lajkonik Precelki Chrupkie 鹹味椒鹽脆餅",
+    "width": 267,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900320001334",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/032/000/1334/front_pl.17.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-10-13"
+  },
+  "29": {
+    "src": "assets/photos/grocery-29.jpg",
+    "label": "Piątnica Skyr naturalny 原味冰島式優格",
+    "width": 400,
+    "height": 334,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900531004544",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/053/100/4544/front_pl.59.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-10-13"
+  },
   "1": {
     "src": "assets/photos/grocery-01.webp",
     "label": "E. Wedel Ptasie Mleczko 巧克力口味",
@@ -281,7 +301,7 @@ export const groceryPhotos = {
     "sourceUrl": "https://world.openfoodfacts.org/product/5902057001748",
     "originalUrl": "https://images.openfoodfacts.org/images/products/590/205/700/1748/10.400.jpg",
     "license": "CC BY-SA 3.0",
-    "checkedAt": "2026-10-14"
+    "checkedAt": "2026-10-13"
   },
   "juice-hortex": {
     "src": "assets/photos/grocery-juice-hortex.webp",
@@ -291,7 +311,7 @@ export const groceryPhotos = {
     "sourceUrl": "https://world.openfoodfacts.org/product/5900500024337",
     "originalUrl": "https://images.openfoodfacts.org/images/products/590/050/002/4337/2.400.jpg",
     "license": "CC BY-SA 3.0",
-    "checkedAt": "2026-10-14"
+    "checkedAt": "2026-10-13"
   },
   "juice-riviva": {
     "src": "assets/photos/grocery-juice-riviva.webp",
@@ -301,7 +321,7 @@ export const groceryPhotos = {
     "sourceUrl": "https://world.openfoodfacts.org/product/5908312137573",
     "originalUrl": "https://images.openfoodfacts.org/images/products/590/831/213/7573/1.400.jpg",
     "license": "CC BY-SA 3.0",
-    "checkedAt": "2026-10-14"
+    "checkedAt": "2026-10-13"
   },
   "juice-solevita": {
     "src": "assets/photos/grocery-juice-solevita.webp",
@@ -311,6 +331,6 @@ export const groceryPhotos = {
     "sourceUrl": "https://world.openfoodfacts.org/product/4056489586708",
     "originalUrl": "https://images.openfoodfacts.org/images/products/405/648/958/6708/1.400.jpg",
     "license": "CC BY-SA 3.0",
-    "checkedAt": "2026-10-14"
+    "checkedAt": "2026-10-13"
   }
 };

@@ -51,7 +51,7 @@ function renderBranch(branch, chain) {
 }
 
 /**
- * 商品卡：照片、推薦理由與來源都保留 2026-09-22 重新收錄的內容，一項商品一張卡。
+ * 商品卡：一項商品一張卡，推薦理由與官方商品事實分開標示。
  * 原本同一批商品在表格與 details 各列一次，商品名還互相連結；表格又因為
  * .grocery-table 的 min-width 在手機把整頁撐出視窗，照片欄讓它更擠。
  */
@@ -73,6 +73,7 @@ function renderProduct(product, pathPrefix) {
       </div>
       <details class="grocery-product-more"><summary>怎麼認、什麼口味・推薦來源 ${product.sources.length} 筆</summary>
         <p>${e(product.note)}</p>
+        <p class="source-meta">商品資料查核 ${e(product.checkedAt)}；照片為代表包裝，庫存與價格依現場。</p>
         <ul>${sources}</ul>
       </details>
     </li>`;
@@ -98,14 +99,14 @@ function renderDrinkPick(pick, pathPrefix) {
     </li>`;
 }
 
-// 2026 牛奶與果汁：併進「買什麼」成為其中一組（2026-10-14 使用者要求，不再獨立一節）。
+// 牛奶與果汁併進「買什麼」；個別卡片區分已核對商品與待確認候選。
 // 卡片之後附一小段盒上波蘭文對照，站在貨架前可以一次對完。
 function milkJuiceGroup(guide, pathPrefix) {
   const picks = [...guide.milk, ...guide.juice];
   const labels = guide.labels.map(([pl, zh]) => `<div><dt lang="pl">${e(pl)}</dt><dd>${e(zh)}</dd></div>`).join('');
   return `<details class="grocery-drink-group grocery-fold" id="milk-juice">
-      <summary><h3 class="grocery-group-title">2026 牛奶與果汁<span class="grocery-group-count">${picks.length} 項</span></h3><span class="grocery-group-names" lang="pl">${picks.map(pick => e(pick.localName)).join('・')}</span></summary>
-      <p class="source-meta">每款都附 2026 年的來源：線上銷售排行或連鎖超市當年特價，證明今年在架上，不是試喝評比。沒冰箱的住宿選 UHT 牛奶與常溫果汁；kefir 要冷藏。</p>
+      <summary><h3 class="grocery-group-title">牛奶與果汁<span class="grocery-group-count">${picks.length} 項</span></h3><span class="grocery-group-names" lang="pl">${picks.map(pick => e(pick.localName)).join('・')}</span></summary>
+      <p class="source-meta">商品資料複查 ${e(guide.checkedAt)}，以品牌或零售商來源核對品項，沒有保證門市現貨或旅行期間價格。Solevita 僅列待確認候選。沒冰箱時選小份、未開封可常溫保存的商品；開封後依包裝冷藏。</p>
       <ul class="grocery-drink-list">${picks.map(pick => renderDrinkPick(pick, pathPrefix)).join('')}</ul>
       <p class="grocery-label-title">盒子上的字怎麼讀</p>
       <dl class="grocery-label-list">${labels}</dl>
@@ -149,7 +150,7 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
     </details>`;
   }).join('');
 
-  // 2026 年文章推薦與歷年經典補充分開，是 c378570 定下的資訊分界，保留。
+  // 保留既有分組與錨點；試吃建議以採買用途呈現，歷史旅遊文章留在來源裡。
   // 第一組預設展開，其餘收合並標數量；摘要列直接列出組內商品名。
   // 牛奶果汁與果汁飲料都是「買什麼」底下的一組，不另開一節。
   const productGroup = (heading, note, items, open = false) => items.length ? `<details class="grocery-product-group"${open ? ' open' : ''}>
@@ -158,11 +159,11 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
       <ol class="grocery-product-list">${items.map(product => renderProduct(product, pathPrefix)).join('')}</ol>
     </details>` : '';
   const is2026 = product => product.sources.some(source => source.kind === '2026 旅遊推薦');
-  const products = productGroup('2026 年文章推薦', '來源為 2026 年的旅遊文章；推薦的是品牌或品類，不等於指定照片中的口味。', groceryProducts.filter(is2026), true)
+  const products = productGroup('先買小份試吃', '先試口味，再決定伴手禮數量。推薦理由是旅行採買建議，商品事實另附官方／零售商來源；不代表人氣排行。', groceryProducts.filter(is2026), true)
     + milkJuiceGroup(guide, pathPrefix)
-    + productGroup('經典補充', '來源為歷年網友推薦或品牌商品資料，不是 2026 年新文。', groceryProducts.filter(product => !is2026(product) && !product.supplement && !product.drink))
-    + productGroup('常溫選品補充', '依提供的採買清單補充，以品牌或零售商資料核對品項；不是人氣排行。是否可攜入台灣仍須依成分與入境規定確認。', groceryProducts.filter(product => product.supplement && !product.localOnly))
-    + productGroup('當地吃・冷藏甜點', '在超市冷藏櫃找品牌與品名，不保證特定連鎖或分店有貨。冷藏品依包裝保存，購買前先確認住宿冰箱。', groceryProducts.filter(product => product.localOnly && !product.drink))
+    + productGroup('經典補充', '經典零食已補查品牌或零售商資料；歷年網友推薦保留為參考，不能代表當期銷量或現貨。', groceryProducts.filter(product => !is2026(product) && !product.supplement && !product.drink))
+    + productGroup('常溫選品補充', '依旅行用途挑選常溫零食，並核對品牌／零售商資料。是否可攜入台灣仍須依成分與入境規定確認。', groceryProducts.filter(product => product.supplement && !product.localOnly))
+    + productGroup('當地吃・冷藏乳品', '在超市冷藏櫃找品牌與品名，不保證特定連鎖或分店有貨。冷藏品依包裝保存，購買前先確認住宿冰箱。', groceryProducts.filter(product => product.localOnly && !product.drink))
     + productGroup('當地喝・果汁飲料', '在飲料貨架或冷藏櫃找品牌；照片只代表一款口味，各分店是否供貨以現場為準。', groceryProducts.filter(product => product.drink));
 
   const sections = [
@@ -194,17 +195,17 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
       <p class="source-meta">順路也可以逛：Carrefour（Express、Market 等店型規模不同，${external('https://www.carrefour.pl/sklepy', '門市查詢')}）、Rossmann（零食巧克力區，${external('https://www.rossmann.pl/szukaj?Search=slodycze', '官方甜食商品')}）；Kaufland、Auchan、Netto 未逐店查核。</p>
     </section>
     <section class="section" id="recommendations"><span id="top10" aria-hidden="true"></span>${heading('recommendations', '買什麼：零食與伴手禮')}
-      <p>依用途整理，不代表銷售或人氣排名。<b>建議路線：</b>克拉科夫、樂斯拉夫先買小份試吃，最後回華沙（10/30–31）再集中買常溫伴手禮；巧克力避熱、餅乾防壓。</p>
+      <p>商品資料更新至 2026/10/13；依用途整理，不代表銷售或人氣排名。未確認的品項另有標示，價格與庫存看門市當日資訊。<b>建議路線：</b>克拉科夫、樂斯拉夫先買小份試吃，最後回華沙（10/30–31）再集中買常溫伴手禮；巧克力避熱、餅乾防壓。</p>
       ${products}
       <p class="grocery-priority-foot"><b>行李有限先挑：</b>${groceryProducts.filter(p => p.priority).map(p => e(p.localName)).join('、')}。更多伴手禮店家見<a href="shopping.html">購物頁</a>。</p>
     </section>
     <section class="section" id="quick-meals">${heading('quick-meals', 'Żabka 即食與早餐')}
       <ul class="grocery-drink-list">${(guide.zabka || []).map(pick => renderDrinkPick(pick, pathPrefix)).join('')}</ul>
       <ul class="check-list grocery-quick-list">
-        <li><b>Hot Dog：</b>Żabka 賣最多的熱食，官方公布 2023 年賣出超過 8,000 萬份；櫃檯現做，可選香腸與醬料，也有無肉版本，2026 年起美式熱狗推到全國門市。${external('https://zabkagroup.com/more-than-80-million-hot-dogs-sold-14-million-paninis-and-6-million-crunchy-snacks-on-offer-prostozpieca/', 'Żabka 集團公告')} · ${external('https://www.wiadomoscihandlowe.pl/handel-i-dystrybucja/sklepy-convenience-i-stacje-paliw/zabka-mocniej-wchodzi-w-street-food-hot-dogi-z-usa-w-12-tys-sklepow-znamy-ceny-2534324', '2026 美式熱狗')}</li>
-        <li><b>熱壓吐司（Tosty）、Panini、Zapiekanka：</b>官方早餐列有火腿起司、雞肉培根吐司；Zapiekanka 是波蘭式焗烤長麵包，在有 PROSTO z PIECA 熱食的門市才有。${external('https://www.zabka.pl/sniadania-w-zabce-staly-sie-hitem/', 'Żabka 早餐介紹')} · ${external('https://www.zabka.pl/zabka-menu/', 'Żabka 官方菜單')}</li>
-        <li><b>咖啡（Kawa）：</b>官網列有黑咖啡、拿鐵等；是否自助、價格與供應以現場為準。</li>
-        <li><b>麵包與飲品：</b>超市麵包區找可頌或小份麵包，配 Łaciate 小盒牛奶或 Tymbark 小盒果汁（見<a href="#milk-juice">2026 牛奶與果汁</a>）。</li>
+        <li><b>Hot Dog：</b>可選香腸與醬料。2026 年 4 月官方宣布美式熱狗擴至全國門市，供應與價格依現場；無肉版本目前供應未確認，需詢問門市。${external('https://www.zabka.pl/nowy-gracz-w-druzynie-zabki-hot-dog-amerykanski-debiutuje-obok-kultowych-zapiekanek/', 'Żabka 2026 官方公告')}</li>
+        <li><b>熱壓吐司（Tosty）、Panini、Zapiekanka：</b>官方菜單列有火腿起司、雞肉培根吐司等；Zapiekanka 是波蘭式焗烤長麵包。官方已於 2025 年宣布完成全門市烤爐配置，實際口味仍依當日供應。${external('https://www.zabka.pl/street-food-dostepny-w-kazdej-zabce/', 'Żabka 烤爐公告')} · ${external('https://www.zabka.pl/zabka-menu/', '現行官方菜單')}</li>
+        <li><b>咖啡（Kawa）：</b>官網列有黑咖啡、Latte、Cappuccino 與 Espresso；價格與操作方式看現場。${external('https://www.zabka.pl/zabka-menu/', 'Żabka 官方菜單')}</li>
+        <li><b>麵包與飲品：</b>超市麵包區找可頌或小份麵包，配 Łaciate 小盒牛奶或 Tymbark 小盒果汁（見<a href="#milk-juice">牛奶與果汁</a>）。</li>
       </ul>
     </section>
     <section class="section" id="shopping-tips">${heading('shopping-tips', '其他提醒與資料來源')}
@@ -214,8 +215,10 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
         <li>不想買含酒精甜食時，留意 Adwokat、likier 等字樣並核對成分。</li>
       </ul>
       <details class="grocery-sources grocery-fold" id="sources">
-        <summary><h3 class="grocery-group-title">資料來源與查核界線</h3><span class="grocery-group-names">門市逐店核對 2026-09-22・商品 2026-09-22／23・牛奶果汁 ${e(guide.checkedAt)}</span></summary>
-        <p>門市候選沿用原採買指南；商品清單於 2026/09/22 依網路推薦重新收錄。Becca Daily 原文日期為 2026/07/02；Reddit 討論為 2025/07/29，明列為經典補充；English Wizards 頁面未標示發文日期，不據搜尋引擎收錄時間宣稱為 2026 新文。推薦理由為摘要與採買建議，並非票選結果。2026/09/23 依提供的採買清單補入 6 項常溫選品與 4 項冷藏甜點，另依指定新增 Jeżyki、Frugo、Kubuś、蜂蜜並補充 Żabka 熱食；查閱日期不代表文章發布日期，也不代表商品為波蘭原產。未找到『波蘭 Anna 推薦蜂蜜』原始內容，本站不將特定品牌歸因於她。</p>
+        <summary><h3 class="grocery-group-title">資料來源與查核界線</h3><span class="grocery-group-names">門市逐店核對 2026-09-22・商品 2026-10-13・牛奶果汁 ${e(guide.checkedAt)}</span></summary>
+        <p>2026/10/13 依品牌、製造商與零售商商品資料更新採買清單，新增 Lajkonik 鹹脆結餅與 Piątnica Skyr 原味乳品；推薦理由依小份試吃、早餐補給、保存與攜帶方便性整理，並非銷售排行或試吃評比。商品頁存在不保證各分店現貨。Solevita 只找到歷史官方品項，仍列待確認候選；菇湯照片、無肉熱狗與 Wieprzowiner 也不作當期供應保證。</p>
+        <p>原收錄的 Becca Daily 文章日期是 2026/07/02、Reddit 討論是 2025/07/29，English Wizards 未標示發文日期，這些推薦保留為歷史參考。查核日期不等於文章發布日期、商品上市日期或波蘭原產證明。已移除未核實的促銷價格、動態排行月份與新品推論；沒有找到「波蘭 Anna 推薦蜂蜜」原文，不將特定品牌歸因於她。</p>
+        <p>標籤判讀參考 ${external('https://www.gov.pl/web/wijhars-bydgoszcz/sok-czy-nektar', '波蘭官方果汁說明')}；NFC／壓榨不等於未殺菌鮮榨，是否冷藏仍看包裝。完整商品查核與來源保留於 <code>docs/research/2026-10-13-grocery-recommendation-update.md</code>。</p>
         <p><b>2026/09/22 逐店核對：</b>12 筆地址全部由品牌官方來源確認——4 家 Biedronka 取自官方逐店頁（含逐日營業時間）、4 家 Lidl 取自官方門市頁與官方門市清單 PDF、4 家 Żabka 取自官方門市清單 PDF 與 zabka.pl 的門市說明頁。Lidl 門市頁的營業時間由 JavaScript 載入、Żabka 不逐店公布，因此這 8 筆只核到地址。</p>
         <p><b>仍未核實的部分：</b>沒有取得任何一家的核實座標，地圖按鈕維持搜尋連結；庫存與價格一律以門市當日資訊為準。Żabka 的官方門市清單是 2024/02 版，只能證明當時該址有門市。離線版不會即時更新。逐筆來源記在原始碼庫的 <code>docs/research/2026-09-22-grocery-branch-verification.md</code>。</p>
         <p>商品與牛奶果汁照片取自 Open Food Facts 貢獻者（CC BY-SA 3.0），僅代表包裝，現場版本可能不同。</p>
