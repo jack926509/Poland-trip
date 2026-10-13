@@ -6138,6 +6138,54 @@ h3 {
 
 .grocery-priority-foot { margin-top: 1.4rem; }
 
+/* ── 牛奶與果汁 ──
+   沒有照片的辨識卡：波蘭文品名最大，「哪裡買／怎麼認」用跟商品卡同樣的小標籤，
+   眼睛在兩種卡之間不必換讀法。標示對照用 dl 兩欄，手機上收成上下排。 */
+.grocery-drink-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: 0.9rem;
+  margin: 0.6rem 0 1.2rem;
+  padding: 0;
+  list-style: none;
+}
+.grocery-drink {
+  display: flex;
+  flex-direction: column;
+  padding: 0.95rem 1.05rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper-light);
+  box-shadow: var(--shadow-1);
+  scroll-margin-top: 6rem;
+}
+.grocery-drink-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.6rem; margin: 0; }
+.grocery-drink-head > b { font-size: 1.08rem; line-height: 1.3; overflow-wrap: anywhere; }
+.grocery-drink-head > span { color: var(--ink-soft); font-size: 0.88rem; }
+.grocery-drink-where,
+.grocery-drink-look,
+.grocery-drink-why { margin: 0.35rem 0 0; font-size: 0.9rem; }
+.grocery-drink-where > span,
+.grocery-drink-look > span {
+  margin-right: 0.4rem;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.grocery-drink-more { margin-top: auto; padding-top: 0.2rem; }
+.grocery-drink-why { margin-bottom: 0.4rem; }
+.grocery-label-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 0.4rem 1.2rem;
+  margin: 0.6rem 0 0.8rem;
+}
+.grocery-label-list > div { display: flex; gap: 0.6rem; padding: 0.35rem 0; border-bottom: 1px solid var(--line); }
+.grocery-label-list dt { flex: 0 0 auto; max-width: 55%; font-weight: 700; overflow-wrap: anywhere; }
+.grocery-label-list dd { margin: 0; color: var(--ink-soft); font-size: 0.9rem; }
+
 @media (max-width: 600px) {
   .grocery-branch,
   .grocery-product,
