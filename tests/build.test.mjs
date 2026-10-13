@@ -521,7 +521,9 @@ test('2026-08-09 官方盤查會移除未能證實的場次、價格與閉館敘
   for (const unsupportedClaim of ['圓頂展廳不開放', 'PLN 143 · 優待 121', '英文場 47', '多為免費', '約 3 個月前開放']) {
     assert.ok(!publicData.includes(unsupportedClaim), `不應保留未證實敘述：${unsupportedClaim}`);
   }
-  assert.ok(bookingProgress(days[1]).pending.some(item => item.status.includes('可查／購')));
+  // 2026-10-13 起 Day 2 的 Wawel、辛德勒線上已售完：不算待辦，但仍排在行程、另列「現場再試」。
+  assert.ok(bookingProgress(days[1]).skipped.some(item => item.name.includes('辛德勒')));
+  assert.ok(days[1].steps.some(step => step.label.includes('辛德勒工廠') && step.sub.includes('線上已訂不到')));
   assert.equal(days[6].steps.find(step => /POLIN/.test(step.label)), undefined, '本趟不進 POLIN，Day 7 不應有 POLIN 步驟');
   assert.ok(cityNotices.wroclaw.some(item => item.text.includes('availability calendar')));
 });
@@ -827,8 +829,8 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
   // 首頁實際算出的待處理數。
   const rawTodoCount = todoGroups.reduce((total, group) => total + group.items.length, 0);
   const todoCount = todoGroups.reduce((total, group) =>
-    total + group.items.filter(item => !['已訂妥', '已完成', '已購票'].includes(item.status)).length, 0);
-  assert.equal(todoCount, 14, '四段已購火車、Auschwitz 導覽、Lajkonik 去程與鹽礦不可算進待辦');
+    total + group.items.filter(item => !item.skip && !['已訂妥', '已完成', '已購票'].includes(item.status)).length, 0);
+  assert.equal(todoCount, 12, '已購／已訂妥與線上已售完（不再提醒）的項目不可算進待辦');
 
   assert.ok(!html.includes('出發準備度'));
   assert.ok(!html.includes('00 / Readiness'));
@@ -840,7 +842,7 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
   // 項目本身改到 practical/todos.html 專屬測試驗證。
   for (const group of todoGroups) {
     assert.ok(html.includes(`>${group.title}<`), `首頁缺少待辦分類：${group.title}`);
-    const pending = group.items.filter(item => !['已訂妥', '已完成', '已購票'].includes(item.status)).length;
+    const pending = group.items.filter(item => !item.skip && !['已訂妥', '已完成', '已購票'].includes(item.status)).length;
     const summary = pending ? `${pending} 項待處理` : '已全部完成';
     assert.ok(html.includes(`href="practical/todos.html#todo-${group.id}"`), `首頁缺少待辦分類連結：${group.id}`);
     assert.ok(html.includes(summary), `首頁缺少待辦分類計數：${group.title}`);

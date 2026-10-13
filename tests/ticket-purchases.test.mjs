@@ -46,7 +46,7 @@ test('待辦與購票頁共用官方入口，查得售票入口不能把待購�
     assert.ok(rowFor(item.ticketPurchaseId).includes(item.status));
   }
   assert.match(rowFor('krakow-auschwitz'), /已訂妥/);
-  assert.match(rowFor('krakow-schindler'), /現可查／購/);
+  assert.match(rowFor('krakow-schindler'), /線上已售完/);
   assert.match(rowFor('krakow-wieliczka'), /已購票/);
   assert.notEqual(ticketPurchaseById('krakow-wawel-cathedral').purchaseUrl, ticketPurchaseById('krakow-wawel-castle').purchaseUrl);
 });

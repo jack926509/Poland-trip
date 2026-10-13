@@ -154,7 +154,6 @@ test('由出發日回推的期限，算術與 basis 敘述一致', () => {
   const offsets = {
     'dining-michelin': 21,
     'ticket-wieliczka': 21,
-    'ticket-schindler': 21,
     'ticket-warsaw-trio': 14,
     'recheck-all': 7,
     'etias-check-2': 3,
@@ -180,7 +179,7 @@ test('每個尚未購買的指定日景點票，倒數表都有對應期限', ()
   // 2026-10-13 發現 Wawel 與全景畫在待辦頁是未完成，倒數表卻沒有任何期限，
   // 看板因此只顯示其他項目。用 ticketPurchaseId 把兩邊綁在一起。
   const openTickets = trip.todoGroups.flatMap(group => group.items)
-    .filter(item => item.ticketPurchaseId && !['已訂妥', '已完成', '已購票'].includes(item.status));
+    .filter(item => item.ticketPurchaseId && !item.skip && !['已訂妥', '已完成', '已購票'].includes(item.status));
   const deadlineText = trip.deadlines.map(item => `${item.title} ${item.action}`).join('\n');
   const keyword = { 'krakow-wawel-castle': 'Wawel', 'krakow-schindler': '辛德勒', 'krakow-wieliczka': 'Wieliczka', 'wroclaw-panorama': '全景畫', 'warsaw-royal-castle': '皇家城堡', 'warsaw-rising-museum': '起義博物館' };
   for (const item of openTickets) {

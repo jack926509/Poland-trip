@@ -28,11 +28,14 @@ test('每日待訂數與待辦頁同源：八天加總等於待辦頁未完成�
   const openTotal = todoGroups.flatMap(group => group.items).filter(item => isOpenTodoStatus(item.status)).length;
   const dayTotal = days.reduce((sum, day) => sum + bookingProgress(day).pending.length, 0);
   assert.equal(dayTotal, openTotal);
-  const allTotal = days.reduce((sum, day) => sum + bookingProgress(day).pending.length + bookingProgress(day).confirmed.length, 0);
+  const allTotal = days.reduce((sum, day) => { const p = bookingProgress(day); return sum + p.pending.length + p.confirmed.length + p.skipped.length; }, 0);
   assert.equal(allTotal, todoGroups.flatMap(group => group.items).length, '有待辦項目的日期對不到任何行程日');
   // Day 1 曾經顯示「沒有待訂」，其實 Specjały 晚餐尚未訂位。
   assert.ok(bookingProgress(days[0]).pending.some(item => item.name.includes('Specjały')));
-  const anchors = days.flatMap(day => [...bookingProgress(day).pending, ...bookingProgress(day).confirmed].map(item => item.anchor));
+  const anchors = days.flatMap(day => { const p = bookingProgress(day); return [...p.pending, ...p.confirmed, ...p.skipped].map(item => item.anchor); });
+  // 線上已售完的項目不再提醒，但不能從待辦數裡誤算成「已完成預約」。
+  assert.deepEqual(bookingProgress(days[1]).skipped.map(item => item.name), ['Wawel 城堡 15:15', '辛德勒工廠 17:30']);
+  assert.ok(bookingProgress(days[1]).confirmed.every(item => !item.skip));
   assert.equal(new Set(anchors).size, anchors.length, '待辦錨點不可重複');
   const todos = fs.readFileSync('dist/practical/todos.html', 'utf8');
   for (const anchor of anchors) assert.ok(todos.includes(`id="${anchor}"`), `待辦頁缺少錨點 ${anchor}`);

@@ -80,8 +80,14 @@ test('第 5 項：待辦頁每類先列未完成（依日期），已完成收�
   const html = read('practical/todos.html');
   for (const group of todoGroups) {
     const section = between(html, `id="todo-${group.id}"`, '</section>');
-    const open = group.items.filter(item => isOpenTodoStatus(item.status));
-    const done = group.items.filter(item => !isOpenTodoStatus(item.status));
+    const open = group.items.filter(item => !item.skip && isOpenTodoStatus(item.status));
+    const done = group.items.filter(item => !item.skip && !isOpenTodoStatus(item.status));
+    const skipped = group.items.filter(item => item.skip);
+    if (skipped.length) {
+      assert.match(section, new RegExp(`線上訂不到、不再提醒 ${skipped.length} 項`));
+      const skippedBlock = section.slice(section.indexOf('data-todo-skipped'));
+      for (const item of skipped) assert.ok(skippedBlock.includes(item.name), `${item.name} 應在不再提醒收合內`);
+    }
     if (done.length) {
       assert.match(section, new RegExp(`<details class="todo-done"><summary>已完成 ${done.length} 項</summary>`));
       const doneBlock = section.slice(section.indexOf('class="todo-done"'));

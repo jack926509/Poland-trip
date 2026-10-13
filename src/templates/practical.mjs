@@ -302,7 +302,7 @@ function todoSortKey(item) {
 }
 
 function renderTodoItem(item, group) {
-  const open = isOpenTodoStatus(item.status);
+  const open = !item.skip && isOpenTodoStatus(item.status);
   const checked = toComparableDate(item.checkedAt);
   const recheck = toComparableDate(item.recheckAt);
   // 每筆有固定錨點，每日頁與今日卡的預約列直接連到這裡；反向再連回行程日。
@@ -316,17 +316,20 @@ function renderTodoItem(item, group) {
 
 export function renderTodos({ todoGroups }) {
   const allItems = todoGroups.flatMap(group => group.items);
-  const total = allItems.filter(item => isOpenTodoStatus(item.status)).length;
+  const total = allItems.filter(item => !item.skip && isOpenTodoStatus(item.status)).length;
   // UX 審查第 5 項：每類先列未完成（依日期），已完成的收進「已完成 N 項」；
   // 每項改成「日期＋事項＋狀態」一行標題、下一步一段文字、查核日期一行小字。
   const groupsHtml = todoGroups.map(group => {
     const byDate = [...group.items].sort((a, b) => todoSortKey(a) - todoSortKey(b));
-    const openItems = byDate.filter(item => isOpenTodoStatus(item.status));
-    const doneItems = byDate.filter(item => !isOpenTodoStatus(item.status));
+    // skip：線上訂不到、旅客要求不再提醒，但仍排在行程裡——不算待辦也不算完成。
+    const openItems = byDate.filter(item => !item.skip && isOpenTodoStatus(item.status));
+    const skippedItems = byDate.filter(item => item.skip);
+    const doneItems = byDate.filter(item => !item.skip && !isOpenTodoStatus(item.status));
     return `<section class="section" id="todo-${group.id}">
       <div class="section-heading"><span class="section-num">${group.eyebrow}</span><h2>${group.title}</h2></div>
       <p class="lead">${group.intro}</p>
       ${openItems.length ? `<ul class="todo-list" data-todo-open>${openItems.map(item => renderTodoItem(item, group)).join('')}</ul>` : '<p class="source-meta">這一類已全部完成。</p>'}
+      ${skippedItems.length ? `<details class="todo-done todo-skipped"><summary>線上訂不到、不再提醒 ${skippedItems.length} 項（仍排在行程）</summary><ul class="todo-list" data-todo-skipped>${skippedItems.map(item => renderTodoItem(item, group)).join('')}</ul></details>` : ''}
       ${doneItems.length ? `<details class="todo-done"><summary>已完成 ${doneItems.length} 項</summary><ul class="todo-list" data-todo-done>${doneItems.map(item => renderTodoItem(item, group)).join('')}</ul></details>` : ''}
     </section>`;
   }).join('');

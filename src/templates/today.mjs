@@ -176,6 +176,7 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref, todo
     <details class="today-block today-block-more" data-today-schedule><summary>全天時間表<span class="today-more-meta">${day.steps.length} 個時段</span></summary>${renderSteps(day)}</details>
     <details class="today-block today-block-more"><summary>預約與待辦<span class="today-more-meta">${progress.pending.length} 項待處理</span></summary>
       <h4>仍未訂妥</h4><ul>${progress.pending.map(bookingLine).join('') || '<li>無待訂項目。</li>'}</ul>
+      ${progress.skipped.length ? `<h4>線上訂不到（現場再試）</h4><ul>${progress.skipped.map(bookingLine).join('')}</ul>` : ''}
       ${progress.confirmed.length ? `<h4>已完成預約</h4><ul>${progress.confirmed.map(bookingLine).join('')}</ul>` : ''}
       <a class="today-block-link" href="${escapeHtml(dayHref)}#day-preparation">完整訂票提醒 →</a></details>
     <details class="today-block today-block-more"><summary>日照、備案與晚間準備${sun ? `<span class="today-more-meta">日落 ${escapeHtml(sun.sunset)}</span>` : ''}</summary>
