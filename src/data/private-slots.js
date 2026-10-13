@@ -25,6 +25,16 @@ export const privateSlots = [
     publicNote: '入場憑電子入場證加護照，兩者缺一不可；電子入場證要存離線。',
   },
   {
+    id: 'bus-lajkonik-out', day: 3, kind: 'ticket', label: 'Lajkonik 去程巴士',
+    detail: '10/26 08:25 Kraków MDA 下層 D9 → 09:50 Muzeum Auschwitz，2 張全票', stepPattern: 'Lajkonik · 克拉科夫',
+    publicNote: '上車出示列印票或手機票（螢幕至少 4 吋）；發車前 15 分鐘到站牌。',
+  },
+  {
+    id: 'wieliczka-tour', day: 4, kind: 'ticket', label: 'Wieliczka 鹽礦英文團',
+    detail: '10/27 09:00 Tourist Route（English）', stepPattern: 'Wieliczka 鹽礦',
+    publicNote: '票券 PDF 隨付款確認信附上，先存離線；依票面提早到 Daniłowicz 礦井入口。',
+  },
+  {
     id: 'train-ic3830', day: 4, kind: 'train', label: 'IC 3830 克拉科夫 → 樂斯拉夫',
     detail: '10/27 16:45 Kraków Główny 發車', stepPattern: 'IC 3830',
     publicNote: '車票在 PKP Intercity App 的票券清單，出發前先存離線。',

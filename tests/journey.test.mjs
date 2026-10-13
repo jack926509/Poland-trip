@@ -14,12 +14,14 @@ test('跨城日住宿按入住區間銜接，離境日不再顯示住宿', () =>
 });
 test('已訂導覽不算待辦，但尚未購票的巴士仍待處理', () => {
   const { confirmed, pending } = bookingProgress(days[2]);
-  assert.equal(confirmed.length, 1);
+  // 2026-10-13 起 Lajkonik 去程已購（rail）、Auschwitz 導覽已訂妥（attractions）。
+  assert.deepEqual(confirmed.map(item => item.groupId).sort(), ['attractions', 'rail']);
+  assert.ok(confirmed.some(item => item.name.includes('Auschwitz')));
+  assert.ok(confirmed.some(item => item.name.includes('Lajkonik 去程')));
+  // Day 3 的待辦＝待辦頁同日的 Lajkonik 回程與 Mr. Jerry 晚餐訂位，不再另抄一份。
   assert.equal(pending.length, 2);
-  assert.ok(confirmed[0].name.includes('Auschwitz'));
-  // Day 3 的待辦＝待辦頁同日的 Lajkonik 巴士與 Mr. Jerry 晚餐訂位，不再另抄一份。
   assert.deepEqual(pending.map(item => item.groupId), ['rail', 'dining']);
-  assert.ok(pending[0].name.includes('Lajkonik'));
+  assert.ok(pending[0].name.includes('Lajkonik 回程'));
   assert.ok(pending[1].name.includes('Mr. Jerry'));
 });
 test('每日待訂數與待辦頁同源：八天加總等於待辦頁未完成數，且每筆待辦都歸到某一天', () => {

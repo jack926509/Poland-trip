@@ -526,12 +526,13 @@ test('2026-08-09 官方盤查會移除未能證實的場次、價格與閉館敘
   assert.ok(cityNotices.wroclaw.some(item => item.text.includes('availability calendar')));
 });
 
-test('待辦事項頁將 20 項依三類整理，並在實用資訊導覽可進入', () => {
+test('待辦事項頁將 21 項依三類整理，並在實用資訊導覽可進入', () => {
   // 2026-10-07 取消牛角麵包博物館，移除原本只放它的第四類。
+  // 2026-10-13 Lajkonik 去程已購、回程未購，拆成兩筆。
   assert.deepEqual(todoGroups.map(group => [group.id, group.items.length]), [
-    ['rail', 5], ['attractions', 7], ['dining', 8],
+    ['rail', 6], ['attractions', 7], ['dining', 8],
   ]);
-  assert.equal(todoGroups.flatMap(group => group.items).length, 20);
+  assert.equal(todoGroups.flatMap(group => group.items).length, 21);
 
   const html = read('practical/todos.html');
   for (const label of ['城際交通', '主要景點', '餐飲訂位']) {
@@ -641,7 +642,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.deepEqual(bookingTiers.map(tier => tier.items.length), [7, 5, 6]);
   assert.deepEqual({ out: flights.out.length, back: flights.back.length }, { out: 5, back: 5 });
   assert.equal(stay.length, 5);
-  assert.equal(reservations.length, 8);
+  assert.equal(reservations.length, 9);
 
   assert.equal(michelinSummary.length, 4);
   assert.equal(michelinReservations.length, 9);
@@ -827,7 +828,7 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
   const rawTodoCount = todoGroups.reduce((total, group) => total + group.items.length, 0);
   const todoCount = todoGroups.reduce((total, group) =>
     total + group.items.filter(item => !['已訂妥', '已完成', '已購票'].includes(item.status)).length, 0);
-  assert.equal(todoCount, 15, '四段已購火車與 Auschwitz 導覽不可算進待辦');
+  assert.equal(todoCount, 14, '四段已購火車、Auschwitz 導覽、Lajkonik 去程與鹽礦不可算進待辦');
 
   assert.ok(!html.includes('出發準備度'));
   assert.ok(!html.includes('00 / Readiness'));
@@ -1110,20 +1111,23 @@ test('城際交通提供官方購票、官方時刻表與可操作的購票教�
   assert.ok(html.includes('Poznań Główny'));
 });
 
-test('Auschwitz 導覽已訂 10:30，去回巴士皆已查定但尚未購票', () => {
+test('Auschwitz 導覽已訂 10:30，去程巴士 08:25 已購票、回程 15:30 尚未購票', () => {
   const day3 = days.find(day => day.n === 3);
   const bus = trains.find(item => item.date === '10/26');
   // 已訂妥的導覽時間必須出現在行程與必訂清單
   assert.ok(day3.steps.some(step => step.t === '10:30' && step.label.includes('已訂妥')));
   assert.ok(bookingProgress(day3).confirmed.some(item => item.status === '已訂妥' && item.name.includes('10:30')));
   assert.ok(day3.hardConstraints.some(item => item.includes('10:00')));
-  // 去程已由官方售票頁查得 10/26 實際班次 07:10 → 08:35
-  const outbound = day3.steps.find(step => step.t === '07:10');
-  assert.ok(outbound, '去程未採用官方售票頁查得的 07:10');
-  assert.match(outbound.sub, /lajkonikbus\.pl/, '未註明查證來源');
-  assert.match(outbound.sub, /08:25/, '未說明為何不採用 08:25 那班');
-  assert.match(outbound.cost, /25\.00/);
-  assert.ok(day3.steps.some(step => step.t === '08:35'), '缺少 08:35 抵達步驟');
+  // 2026-10-13 旅客已購去程 08:25 → 09:50（2 張全票 47,50 zł）
+  const outbound = day3.steps.find(step => step.t === '08:25');
+  assert.ok(outbound, '去程未改成已購的 08:25');
+  assert.match(outbound.sub, /已購票/);
+  assert.match(outbound.sub, /07:10/, '未保留緩衝較多的 07:10 改票選項');
+  assert.match(outbound.cost, /47,50/);
+  const arrival = day3.steps.find(step => step.t === '09:50');
+  assert.ok(arrival, '缺少 09:50 抵達步驟');
+  assert.match(arrival.sub, /10 分鐘/, '09:50 抵達只剩 10 分鐘餘裕，必須明講');
+  assert.ok(day3.hardConstraints.some(item => item.includes('08:10') && item.includes('D9')));
   const inbound = day3.steps.find(step => step.t === '15:30');
   assert.ok(inbound, '回程未採用查定的 15:30');
   assert.match(inbound.sub, /14:00/, '未說明 14:00 為何不可用');
@@ -1144,20 +1148,21 @@ test('Auschwitz 導覽已訂 10:30，去回巴士皆已查定但尚未購票', (
   assert.deepEqual(Object.keys(day3.train), ['segmentId']);
   assert.equal(day3.train.segmentId, 'bus-lajkonik');
   const lajkonikSegment = trains.find(item => item.id === 'bus-lajkonik');
-  assert.match(lajkonikSegment.dep, /^07:10/);
-  assert.match(lajkonikSegment.arr, /^08:35/);
+  assert.match(lajkonikSegment.dep, /^08:25/);
+  assert.match(lajkonikSegment.arr, /^09:50/);
   const day3Html = read('day-03.html');
   assert.ok(day3Html.includes('回程選項'));
   for (const option of day3.returnOptions) assert.ok(day3Html.includes(option.name), `Day 3 頁缺回程選項：${option.name}`);
-  // 去回兩程都已用官方售票頁核對，但都還沒買票——警語要把這條界線講清楚
-  assert.match(day3.warn, /官方售票頁 lajkonikbus\.pl 查得 10\/26 實際班次/);
-  assert.match(day3.warn, /尚未購票/);
-  assert.match(bus.status, /尚未購票/);
+  // 去程已購、回程未購——警語要把這條界線講清楚
+  assert.match(day3.warn, /去程巴士已購票/);
+  assert.match(day3.warn, /回程尚未購票/);
+  assert.match(day3.warn, /10:00 前到場/);
+  assert.match(bus.status, /去程已購票／回程尚未購票/);
   assert.equal(bus.saleCheckedAt, '2026-09-09');
-  assert.match(bus.dep, /07:10/);
+  assert.match(bus.dep, /08:25/);
   assert.match(bus.arr, /16:55/);
-  // 已知會趕不上的班次必須明講不可採用
-  assert.match(JSON.stringify(day3.steps), /08:35/);
+  // 原首選 07:10 仍列為改票選項
+  assert.match(JSON.stringify(day3.steps), /07:10/);
 });
 
 test('餐飲、景點與地圖資料不保存無日期的動態 Google 星等', async () => {

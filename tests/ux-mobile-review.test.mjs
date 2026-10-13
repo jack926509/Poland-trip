@@ -109,11 +109,12 @@ test('第 6 項：行程說明不再夾帶查核筆記，資訊移到待辦；�
   assert.equal(panorama.checkedAt, '2026-10-13');
   assert.match(panorama.action, /9\/24 官方 10\/28 日期下曾列 11:30 場、85 個名額/);
   assert.match(panorama.action, /歷史快照/);
-  const d4 = days[3].steps.find(step => step.t === '10:00');
+  // 2026-10-13 鹽礦已購 09:00 英文場；查核筆記不放行程說明，購票紀錄在待辦。
+  const d4 = days[3].steps.find(step => step.t === '09:00' && step.label.includes('Wieliczka'));
   assert.doesNotMatch(d4.sub, /2026-10-06/);
-  const wieliczka = todoGroups.flatMap(group => group.items).find(item => item.name === 'Wieliczka 鹽礦英文團');
-  assert.match(wieliczka.action, /2026-10-06 官方售票系統查詢時/);
-  assert.match(wieliczka.action, /10:00 場當時有名額/);
+  const wieliczka = todoGroups.flatMap(group => group.items).find(item => item.name === 'Wieliczka 鹽礦英文團 09:00');
+  assert.equal(wieliczka.status, '已購票');
+  assert.match(wieliczka.action, /2026-10-13 已付款/);
   const today = read('today.html');
   assert.doesNotMatch(today, /– 待查票面/);
   assert.doesNotMatch(today, /· 待查票面<\/span>/);

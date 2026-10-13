@@ -23,7 +23,7 @@ test('自備餐與條件式餐廳可共同呈現，顯示條件且不冒充訂�
   assert.equal(typeof rendering.renderMealList, 'function');
   const self = rendering.renderMealList(days[2], dining.dayMeals[3]);
   assert.match(self, /自備/);
-  assert.match(self, /06:00/);
+  assert.match(self, /07:15/);
   const conditional = rendering.renderMealList(days[3], dining.dayMeals[4]);
   assert.match(conditional, /Samarqand/);
   assert.match(conditional, /21:00/);
