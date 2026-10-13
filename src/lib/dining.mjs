@@ -156,7 +156,7 @@ export function renderMealList(day, meals) {
     const laterStep = minute === null ? day.steps.slice(day.steps.indexOf(step) + 1).map(next => toMinutes(next.t)).find(value => value !== null) : undefined;
     // 當天最後一餐後面沒有任何有時刻的步驟：保守算華沙時間 23:00 後已過，不讓它永遠停在「下一餐」。
     const later = minute === null && laterStep === undefined ? LAST_MEAL_CUTOFF_MINUTE : laterStep;
-    return `<li class="day-food-item" data-meal="${item.meal}" data-meal-label="${labels[item.meal]}" data-meal-time="${escapeHtml(step.t)}"${minute === null ? '' : ` data-meal-minute="${minute}"`}${later === undefined ? '' : ` data-meal-before-minute="${later}"`}${item.placeId ? '' : ' data-self="true"'}>
+    return `<li class="day-food-item" id="meal-${escapeHtml(item.stepId)}" data-meal="${item.meal}" data-meal-label="${labels[item.meal]}" data-meal-time="${escapeHtml(step.t)}"${minute === null ? '' : ` data-meal-minute="${minute}"`}${later === undefined ? '' : ` data-meal-before-minute="${later}"`}${item.placeId ? '' : ' data-self="true"'}>
       ${renderStoreHead(item, eyebrow)}
       ${item.placeId ? renderStoreBody(item, { day, time: step.t }) : `<p>${escapeHtml(item.note)}</p>`}
     </li>`;

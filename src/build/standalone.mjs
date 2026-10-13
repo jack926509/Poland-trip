@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { standalonePages, standaloneNavGroups, DAY_LINK_META } from '../lib/routes.mjs';
+import { standalonePages, standaloneNavGroups, DAY_LINK_META, NAV_LINK_NOTES, TRIP_DATE_RANGE } from '../lib/routes.mjs';
 import { renderSiteSearch } from '../templates/layout.mjs';
 import { serializeSearchIndex } from '../search/site-search-index.mjs';
 
@@ -131,9 +131,14 @@ export function buildStandalone({ distDir, standalonePath, searchRecords }) {
     <a href="#page-practical-todos"><span aria-hidden="true">✓</span>待辦</a>
   </nav>`;
   const navMenus = standaloneNavGroups.map(group => {
-    const links = group.pages
-      .map(([relativePath, label]) => `<a href="#${standalonePageId(relativePath)}">${label}${DAY_LINK_META[relativePath] ? ` · ${DAY_LINK_META[relativePath].date}` : ''}</a>`)
-      .join('\n          ');
+    const navLinkHtml = ([relativePath, label]) => `<a href="#${standalonePageId(relativePath)}">${label}${DAY_LINK_META[relativePath] ? ` · ${DAY_LINK_META[relativePath].date}` : ''}${NAV_LINK_NOTES[relativePath] ? ` <small>${NAV_LINK_NOTES[relativePath]}</small>` : ''}</a>`;
+    // 實用資訊分三組加小標（出發前／旅途中／購物）；旅程期間下方的 inline script 把「旅途中」移到最前。
+    const links = group.subgroups
+      ? group.subgroups.map(sub => `<div class="standalone-menu-group" data-nav-group="${sub.key}">
+          <p class="standalone-menu-group-label">${sub.label}</p>
+          ${sub.pages.map(navLinkHtml).join('\n          ')}
+        </div>`).join('\n          ')
+      : group.pages.map(navLinkHtml).join('\n          ');
     return `<details class="standalone-menu" name="standalone-primary-nav" data-group="${group.key}">
         <summary>${group.label}</summary>
         <div class="standalone-menu-panel">
@@ -247,6 +252,19 @@ ${leafletCss}
     }
     .standalone-menu-panel a:hover,
     .standalone-menu-panel a:focus-visible { background: #f6f1e8; color: #2b2723; }
+    .standalone-menu-group { display: contents; }
+    .standalone-menu-group-label {
+      grid-column: 1 / -1;
+      margin: .35rem .2rem 0;
+      color: #d9c9a8;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+    }
+    .standalone-menu-group:first-child .standalone-menu-group-label { margin-top: 0; }
+    .standalone-menu-panel a small { margin-left: .4rem; color: #d9c9a8; font-size: .72rem; }
+    .standalone-menu-panel a:hover small,
+    .standalone-menu-panel a:focus-visible small { color: #7e2c1a; }
     .standalone-page {
       display: block;
       min-height: calc(100dvh - 5rem);
@@ -409,6 +427,18 @@ ${standaloneMobileQuickNav}
         openMenu.open = false;
         openMenu.querySelector('summary').focus();
       });
+      // 旅程期間（華沙日期）把「實用資訊」的「旅途中」那組移到最前面（與多頁版 nav.js 同規則）。
+      (function reorderPracticalGroups() {
+        var range = ${JSON.stringify(TRIP_DATE_RANGE)};
+        var panel = document.querySelector('.standalone-menu[data-group="practical"] .standalone-menu-panel');
+        var trip = panel && panel.querySelector('[data-nav-group="trip"]');
+        if (!trip) return;
+        var today;
+        try {
+          today = new Intl.DateTimeFormat('en-CA', { timeZone: range.timeZone, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+        } catch (error) { return; }
+        if (today >= range.start && today <= range.end) panel.insertBefore(trip, panel.firstElementChild);
+      }());
       window.addEventListener('hashchange', activateStandaloneHash);
     activateStandaloneHash();
     }());

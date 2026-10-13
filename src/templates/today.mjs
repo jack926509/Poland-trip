@@ -23,7 +23,7 @@ function renderSteps(day) {
       <td class="number" data-label="時間"><b>${escapeHtml(step.t || '—')}</b></td>
       <td data-label="行程">${escapeHtml(step.label)}${step.sub ? `<br><span class="source-meta">${escapeHtml(step.sub)}</span>` : ''}</td>
     </tr>`).join('');
-  return `<div class="table-wrap"><table class="table-editorial"><thead><tr><th>時間</th><th>行程</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  return `<div class="table-wrap"><table class="table-editorial table-today-steps"><thead><tr><th>時間</th><th>行程</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
 // 票券存放位置：只輸出「空的容器」，內容由瀏覽器端從這支手機的 localStorage 填入
