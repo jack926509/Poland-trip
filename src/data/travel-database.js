@@ -190,7 +190,7 @@ const databaseEntriesBase = [
   {
     id: 'documents-attraction-tickets', section: 'documents', category: 'document', cityKey: 'ROUTE',
     title: '景點票券：已訂 1 項，其餘 6 項待確認',
-    summary: '現有訂票紀錄已確認 Auschwitz 10/26 10:30 英文官方導覽、2 人；其餘 6 項尚未確認已購票。仍須核對私人票券的參觀日期、入場時段、語言、人數與集合點；公開版不保存票券條碼、姓名或付款資料。',
+    summary: '現有訂票紀錄已確認 Auschwitz 10/26 10:30 英文官方導覽、2 人；其餘 6 項 2026-10-13 經旅客確認仍未購票（Wawel、辛德勒工廠、Wieliczka、全景畫、皇家城堡、起義博物館）。仍須核對私人票券的參觀日期、入場時段、語言、人數與集合點；公開版不保存票券條碼、姓名或付款資料。',
     status: 'private-required', sourceUrl: null, verifiedAt: null, recheckAt: '2026-09-24',
     offlineNote: '先保存已訂 Auschwitz 的票券 PDF 與證件；其餘項目購票後一併核對日期、時段、語言、人數、官方地址、集合點與取消規則，存入私人離線包。', private: true,
   },

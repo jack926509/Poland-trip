@@ -175,3 +175,16 @@ test('每筆手動期限都標明是照抄來源還是自行推算', () => {
     assert.ok(deadline.date <= trip.meta.travelStart, `${deadline.id} 的期限不該晚於台灣出發日`);
   }
 });
+
+test('每個尚未購買的指定日景點票，倒數表都有對應期限', () => {
+  // 2026-10-13 發現 Wawel 與全景畫在待辦頁是未完成，倒數表卻沒有任何期限，
+  // 看板因此只顯示其他項目。用 ticketPurchaseId 把兩邊綁在一起。
+  const openTickets = trip.todoGroups.flatMap(group => group.items)
+    .filter(item => item.ticketPurchaseId && !['已訂妥', '已完成', '已購票'].includes(item.status));
+  const deadlineText = trip.deadlines.map(item => `${item.title} ${item.action}`).join('\n');
+  const keyword = { 'krakow-wawel-castle': 'Wawel', 'krakow-schindler': '辛德勒', 'krakow-wieliczka': 'Wieliczka', 'wroclaw-panorama': '全景畫', 'warsaw-royal-castle': '皇家城堡', 'warsaw-rising-museum': '起義博物館' };
+  for (const item of openTickets) {
+    assert.ok(keyword[item.ticketPurchaseId], `新增的票券待辦 ${item.ticketPurchaseId} 需補對照關鍵字`);
+    assert.ok(deadlineText.includes(keyword[item.ticketPurchaseId]), `${item.name} 沒有對應的倒數期限`);
+  }
+});

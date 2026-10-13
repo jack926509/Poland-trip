@@ -104,7 +104,11 @@ test('第 6 項：行程說明不再夾帶查核筆記，資訊移到待辦；�
   const panorama = todoGroups.flatMap(group => group.items).find(item => item.name.startsWith('拉茨瓦維採全景畫'));
   assert.match(panorama.action, /85 個名額/);
   assert.match(panorama.action, /30 分鐘一場/);
-  assert.equal(panorama.checkedAt, '2026-09-24');
+  // checkedAt 記的是訂票狀態最近一次核對（2026-10-13 旅客確認仍未訂）；
+  // 85 個名額是 9/24 的歷史快照，日期必須留在說明文字裡，不能被誤讀成當下庫存。
+  assert.equal(panorama.checkedAt, '2026-10-13');
+  assert.match(panorama.action, /9\/24 官方 10\/28 日期下曾列 11:30 場、85 個名額/);
+  assert.match(panorama.action, /歷史快照/);
   const d4 = days[3].steps.find(step => step.t === '10:00');
   assert.doesNotMatch(d4.sub, /2026-10-06/);
   const wieliczka = todoGroups.flatMap(group => group.items).find(item => item.name === 'Wieliczka 鹽礦英文團');
