@@ -6965,3 +6965,13 @@ li > p.source-meta a,
     min-width: 0;
   }
 }
+
+/* 線上訂不到、仍排在行程的項目（todo.skip）：不算待辦也不算完成，語氣放輕。 */
+.booking-skipped .booking-items {
+  margin-top: 0.5rem;
+}
+
+.booking-item.is-skipped {
+  border-style: dashed;
+  background: transparent;
+}

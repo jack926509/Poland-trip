@@ -228,12 +228,12 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
 
   // 訂票與訂位項目從待辦頁正本推導（見 lib/journey.mjs 的 dayTodos），
   // 每一筆連回待辦頁的同一筆，狀態字樣也和待辦頁一致。
-  const { pending, confirmed } = bookingProgress(day);
-  const bookingItem = item => `<li class="booking-item${item.open ? '' : ' is-done'}">
+  const { pending, confirmed, skipped } = bookingProgress(day);
+  const bookingItem = item => `<li class="booking-item${item.open ? '' : item.skipped ? ' is-skipped' : ' is-done'}">
         <span class="booking-item-group">${escapeHtml(item.groupTitle)}</span>
         <b class="booking-item-name">${escapeHtml(item.name)}</b>
         <span class="${item.open ? 'tag-todo' : 'tag-muted'}">${escapeHtml(item.status)}</span>
-        <a class="booking-item-link" href="practical/todos.html#${item.anchor}">${item.open ? '下一步怎麼訂' : '查看紀錄'} →</a>
+        <a class="booking-item-link" href="practical/todos.html#${item.anchor}">${item.open ? '下一步怎麼訂' : item.skipped ? '現場怎麼試' : '查看紀錄'} →</a>
       </li>`;
   const mustBookHtml = `${pending.length ? `
     <div class="callout-risk booking-due">
@@ -242,6 +242,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
       <ul class="booking-items">${pending.map(bookingItem).join('')}</ul>
     </div>` : `
     <div class="callout-good"><b>這一天沒有待訂項目。</b></div>`}
+    ${skipped.length ? `<div class="callout-note booking-skipped"><b>線上訂不到、仍排在行程：${skipped.length} 項</b><p>不再列入待辦提醒；當天到現場售票處問剩餘票，買不到就照下方說明調整。</p><ul class="booking-items">${skipped.map(bookingItem).join('')}</ul></div>` : ''}
     ${confirmed.length ? `<details class="booking-done"><summary>已完成預約 ${confirmed.length} 項</summary><ul class="booking-items">${confirmed.map(bookingItem).join('')}</ul></details>` : ''}`;
 
   // 重要風險原本是一整段 8–12 行的文字牆，手機上很難找到重點：

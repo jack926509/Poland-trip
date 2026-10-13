@@ -38,14 +38,21 @@ export function dayTodos(day) {
       ...item,
       groupId: group.id,
       groupTitle: group.title,
-      open: isOpenTodoStatus(item.status),
+      // skip：線上訂不到、旅客決定不再提醒但仍保留在行程（例如當天現場再試）。
+      // 既不算待辦也不算已完成預約，各頁另外標示。
+      skipped: Boolean(item.skip),
+      open: !item.skip && isOpenTodoStatus(item.status),
       label: `${item.status} · ${item.name}`,
       anchor: todoItemId(group, item),
     })));
 }
 export function bookingProgress(day) {
   const items = dayTodos(day);
-  return { confirmed: items.filter(item => !item.open), pending: items.filter(item => item.open) };
+  return {
+    confirmed: items.filter(item => !item.open && !item.skipped),
+    pending: items.filter(item => item.open),
+    skipped: items.filter(item => item.skipped),
+  };
 }
 export const dayHref = day => `day-${String(day.n).padStart(2, '0')}.html`;
 

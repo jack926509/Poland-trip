@@ -173,7 +173,7 @@ export const dayDiningPlans = {
     {
       "placeId": "krakow-charlotte-plac-szczepanski",
       "role": "早餐首選（條件式）",
-      "note": "先退房寄行李，07:45 入座：French Breakfast、麵包籃配果醬、可頌或蛋料理＋咖啡；08:30 收尾後步行回 Kraków Główny 搭 09:00 車。",
+      "note": "先退房寄行李，07:05 入座：French Breakfast、可頌或蛋料理＋咖啡；07:35 收尾後步行回 Kraków Główny，搭 08:00 前後的 KMŁ 趕 09:00 鹽礦場次。",
       "stepId": "d4-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
@@ -184,7 +184,7 @@ export const dayDiningPlans = {
       "placeId": "wieliczka-bistro-posolone",
       "role": "午餐首選（條件式）",
       "cityGuide": false,
-      "note": "導覽後點 Soup of the day、Halloumi Salad，或 Pizza 兩人分享，簡餐即可；趕時間改外帶。13:30 收尾，另留走回車站與候車時間。",
+      "note": "09:00 場約 11:30–12:00 出礦，點 Soup of the day、Halloumi Salad，或 Pizza 兩人分享，簡餐即可；12:45 收尾，另留走回車站與候車時間。",
       "stepId": "d4-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
@@ -618,7 +618,7 @@ export const selfCateredMeals = {
       "meal": "breakfast",
       "name": "自備早餐（前一天買好）",
       "stepId": "d3-breakfast",
-      "note": "06:00–06:20 在住宿吃完，06:20 出門；前一天 Lajkonik 採買的麵包搭飲品，06:40 巴士報到。"
+      "note": "07:15–07:35 在住宿吃完，07:35 出門；前一天 Lajkonik 採買的麵包搭飲品，07:55 巴士報到（08:25 發車）。"
     },
     {
       "meal": "lunch",

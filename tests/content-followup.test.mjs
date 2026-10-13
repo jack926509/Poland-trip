@@ -40,11 +40,12 @@ test('缺少餐廳圖釘清單可逐店續查，涵蓋速食並保留主檔地�
 
 test('景點票券摘要對齊既有購票紀錄，私人核對尚未完成且保留逾期提醒', () => {
   const items = todoGroups.filter(group => ['attractions', 'rainy-day'].includes(group.id)).flatMap(group => group.items);
-  const confirmed = items.filter(item => item.status === '已訂妥');
+  const confirmed = items.filter(item => ['已訂妥', '已購票'].includes(item.status));
   assert.equal(items.length, 7);
-  assert.equal(confirmed.length, 1);
+  assert.equal(confirmed.length, 2);
   assert.match(confirmed[0].name, /Auschwitz/);
   assert.match(confirmed[0].action, /10:30.*英文.*2 人/);
+  assert.match(confirmed[1].name, /Wieliczka.*09:00/);
   const entry = databaseEntries.find(item => item.id === 'documents-attraction-tickets');
   assert.ok(entry.title.includes(`已訂 ${confirmed.length} 項`));
   assert.ok(entry.title.includes(`其餘 ${items.length - confirmed.length} 項`));

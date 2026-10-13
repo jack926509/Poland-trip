@@ -77,21 +77,23 @@ for (const [file, standalone] of [['dist/practical/ops-dashboard.html', false], 
     const text = selector => fixture.elements.get(selector).textContent;
     assert.equal(text('[data-dashboard-today]'), '2026-10-25');
     const before = Number.parseInt(text('[data-dashboard-overdue]'));
-    fixture.setNow('2026-10-25T16:00:00Z');
+    // 跨到 10/29：10/28 全景畫（未訂、無重查日）此時才轉為逾期。
+    // （10/25 的 Wawel、辛德勒 2026-10-13 起標為線上已售完，不再列入逾期。）
+    fixture.setNow('2026-10-28T16:00:00Z');
     fixture.timers[0]();
-    assert.equal(text('[data-dashboard-today]'), '2026-10-26');
+    assert.equal(text('[data-dashboard-today]'), '2026-10-29');
     assert.ok(Number.parseInt(text('[data-dashboard-overdue]')) > before);
-    fixture.setNow('2026-10-26T16:00:00Z');
+    fixture.setNow('2026-10-29T16:00:00Z');
     fixture.events.get('pageshow')();
-    assert.equal(text('[data-dashboard-today]'), '2026-10-27');
-    fixture.setNow('2026-10-27T16:00:00Z');
+    assert.equal(text('[data-dashboard-today]'), '2026-10-30');
+    fixture.setNow('2026-10-30T16:00:00Z');
     fixture.elements.get('[data-handover-export="json"]').click();
     fixture.elements.get('[data-handover-export="csv"]').click();
     const [json, csv] = fixture.downloads;
-    assert.equal(json.name, 'handover-2026-10-28.json');
-    assert.equal(csv.name, 'handover-2026-10-28.csv');
+    assert.equal(json.name, 'handover-2026-10-31.json');
+    assert.equal(csv.name, 'handover-2026-10-31.csv');
     const result = JSON.parse(await json.blob.text());
-    assert.equal(result.generatedAt, '2026-10-28');
+    assert.equal(result.generatedAt, '2026-10-31');
     assert.equal(result.metrics.overdue, Number.parseInt(text('[data-dashboard-overdue]')));
     assert.ok((await csv.blob.text()).includes('\r\n'));
     assert.ok(!(await csv.blob.text()).includes('\\n'));
@@ -116,8 +118,8 @@ test('可查購仍未完成，未記錄查核日期不冒用建置日期', () =>
   const html = renderTodos({ todoGroups });
   assert.ok(html.includes('未連線查詢即時庫存'));
   assert.ok(html.includes('最近人工查核'));
-  assert.ok(html.includes('15 項待辦'));
-  assert.ok(html.includes('共 20 項'));
+  assert.ok(html.includes('12 項待辦'));
+  assert.ok(html.includes('共 21 項'));
   // Auschwitz 導覽與巴士、四段火車、09/24 查過的全景畫、10/10 查過的餐廳，
   // 以及 10/12 複查的 Mr. Jerry、Arirang、Rusiko、華沙皇家城堡與起義博物館時段均已有人工核對日期。
   // 2026-10-13 旅客逐項確認 15 項未完成項目仍未訂，原本沒有查核日的 Wawel、辛德勒、鹽礦也有了日期。

@@ -105,10 +105,12 @@ test('訂票頁的 Auschwitz 巴士區塊完整反映官方售票頁查得的資
   assert.ok(!html.includes('lajkonikbus.eu'), '訂票頁仍殘留 lajkonikbus.eu');
   assert.ok(html.includes('lajkonikbus.pl'));
 
-  // 去程：兩班都要列出，且採用／不採用與理由都要在頁面上
-  assert.equal(auschwitzBus.outbound.checkedAt, '2026-09-09');
+  // 去程：兩班都要列出，且採用／不採用與理由都要在頁面上。2026-10-13 旅客已購 08:25。
+  assert.equal(auschwitzBus.outbound.checkedAt, '2026-10-13');
+  assert.equal(auschwitzBus.outbound.status, '已購票');
+  assert.equal(auschwitzBus.outbound.booked.dep, '08:25');
   assert.deepEqual(auschwitzBus.outbound.services.map(item => item.dep), ['07:10', '08:25']);
-  assert.deepEqual(auschwitzBus.outbound.services.map(item => item.decision), ['採用', '不採用']);
+  assert.deepEqual(auschwitzBus.outbound.services.map(item => item.decision), ['不採用', '採用']);
   for (const service of auschwitzBus.outbound.services) {
     for (const field of ['dep', 'arr', 'dur', 'bay', 'fare', 'why']) {
       assert.ok(service[field]?.trim(), `去程班次缺 ${field}`);

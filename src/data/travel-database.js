@@ -189,8 +189,8 @@ const databaseEntriesBase = [
   },
   {
     id: 'documents-attraction-tickets', section: 'documents', category: 'document', cityKey: 'ROUTE',
-    title: '景點票券：已訂 1 項，其餘 6 項待確認',
-    summary: '現有訂票紀錄已確認 Auschwitz 10/26 10:30 英文官方導覽、2 人；其餘 6 項 2026-10-13 經旅客確認仍未購票（Wawel、辛德勒工廠、Wieliczka、全景畫、皇家城堡、起義博物館）。仍須核對私人票券的參觀日期、入場時段、語言、人數與集合點；公開版不保存票券條碼、姓名或付款資料。',
+    title: '景點票券：已訂 2 項，其餘 5 項（3 項待訂、2 項線上已售完）',
+    summary: '現有訂票紀錄已確認 Auschwitz 10/26 10:30 英文官方導覽、2 人，以及 Wieliczka 鹽礦 10/27 09:00 英文 Tourist Route（2026-10-13 付款）；全景畫、皇家城堡、起義博物館 3 項尚未購票；10/25 Wawel 與辛德勒工廠線上已售完，旅客 2026-10-13 決定不再提醒、當天現場再試。仍須核對私人票券的參觀日期、入場時段、語言、人數與集合點；公開版不保存票券條碼、姓名或付款資料。',
     status: 'private-required', sourceUrl: null, verifiedAt: null, recheckAt: '2026-09-24',
     offlineNote: '先保存已訂 Auschwitz 的票券 PDF 與證件；其餘項目購票後一併核對日期、時段、語言、人數、官方地址、集合點與取消規則，存入私人離線包。', private: true,
   },
@@ -422,26 +422,26 @@ export const dayOperations = {
       '10/25 為非營業週日，多數一般商店關閉；餐廳與例外店家仍逐店確認。',
       `EIP 5300 已購票，${eip5300.dep} 由 Warszawa Centralna 發車；抵達時間與車廂座位待查票面。`,
     ],
-    nightChecklist: [...standardNightChecklist, '確認 Auschwitz 官方導覽姓名、入場時段、行李限制與往返車票狀態', '確認白天已在 Lajkonik 備妥明日早餐、午餐及飲水並妥善保存；明早 06:00 開始早餐、06:20 出門'],
+    nightChecklist: [...standardNightChecklist, '確認 Auschwitz 官方導覽姓名、入場時段、行李限制與往返車票狀態', '確認白天已在 Lajkonik 備妥明日早餐、午餐及飲水並妥善保存；明早 07:15 開始早餐、07:35 出門，08:10 前到 MDA 下層 D9'],
   },
   3: {
     cityKey: 'krakow',
     note: '長時間導覽日，保留補水、保暖與醫療聯絡卡。',
     addresses: [
-      venueCard('krakow-mda-bus-station', 'Kraków MDA 客運站', `Kraków Główny 後方步行約 5 分。官方售票頁顯示 10/26 的 ${lajkonikOutboundAdopted.dep} 班次由地下層 ${lajkonikOutboundAdopted.bay} 發車（${lajkonikOutboundRejected.dep} 那班為 ${lajkonikOutboundRejected.bay}）；站位仍以當日電子看板為準。`),
+      venueCard('krakow-mda-bus-station', 'Kraków MDA 客運站', `Kraków Główny 後方步行約 5 分。已購的 10/26 ${lajkonikOutboundAdopted.dep} 班次票面標示下層（dolna płyta）${lajkonikOutboundAdopted.bay} 站位；站位仍以當日電子看板為準。`),
       venueCard('krakow-auschwitz-i-entrance', 'Auschwitz I 訪客服務中心／入口'),
       venueCard('krakow-auschwitz-ii-birkenau', 'Auschwitz II–Birkenau'),
       accommodationAddress('krakow-stare-miasto'),
     ],
     navigation: [
-      { mode: 'Lajkonik 巴士', route: 'Kraków MDA ↔ Oświęcim Muzeum Auschwitz', action: `9/09 官方售票頁曾查得 10/26 班次（歷史快照，付款前重查）：${lajkonikOutboundAdopted.dep} 由 ul. Bosacka 18 的 ${lajkonikOutboundAdopted.bay} 發車、${lajkonikOutboundAdopted.arr} 抵 Więźniów Oświęcimia 55，${lajkonikOutboundAdopted.dur}，全票 ${lajkonikFare.full} zł／優待 ${lajkonikFare.discount} zł；當日另一班 ${lajkonikOutboundRejected.dep} → ${lajkonikOutboundRejected.arr} 距官方建議的 10:00 到場時間只剩 10 分鐘，緩衝不足不採用。回程請在同站反向查 10/26 的 14:15 之後班次；當時查得的 14:00 班在導覽結束前開走；此處不列未確認的其他班次。` },
+      { mode: 'Lajkonik 巴士', route: 'Kraków MDA ↔ Oświęcim Muzeum Auschwitz', action: `去程已購票（2026-10-13）：${lajkonikOutboundAdopted.dep} 由 ul. Bosacka 18 下層 D9 站位發車、${lajkonikOutboundAdopted.arr} 抵 Więźniów Oświęcimia 55，${lajkonikOutboundAdopted.dur}；業者要求發車前 15 分鐘到站牌，距 10:00 到場要求只剩 10 分鐘。回程尚未購票：在同站反向搭 14:15 之後的班次，9/09 售票頁曾查得 15:30、16:30；14:00 班在導覽結束前開走。可線上或當天向司機買票。` },
       { mode: '導覽接駁', route: 'Auschwitz I → Birkenau', action: '參加官方導覽時依當日工作人員指示搭接駁車，不自行跳過集合點。' },
     ],
     dailyAlerts: [
       '所有入場證必須事先線上取得；至少提前 30 分鐘抵達安檢。',
       '行程內容沉重且戶外時間長，帶水、防雨保暖層，晚間不再加排高強度活動。',
     ],
-    nightChecklist: [...standardNightChecklist, '確認鹽礦英文團票券、Kraków Główny 去程交通與退房寄行李安排', '確認 Charlotte Plac Szczepański 07:00 開門並備好外帶麵包，確認 Posolone 導覽後用餐餘裕，查 Samarqand 接單與車站 KFC 備案'],
+    nightChecklist: [...standardNightChecklist, '確認鹽礦 09:00 英文團票券 PDF 已存離線、06:55 退房寄行李、07:55 前到 Kraków Główny', '確認 Charlotte Plac Szczepański 07:00 開門並備好外帶麵包，確認 Posolone 導覽後用餐餘裕，查 Samarqand 接單與車站 KFC 備案'],
   },
   4: {
     cityKey: 'wroclaw',
@@ -581,7 +581,7 @@ const unresolvedStepReasons = {
     '電車或計程車前往辛德勒工廠': '電車車號與轉乘為動態資料，出發前用 Jakdojade 查；以辛德勒工廠入口地址為終點，17:10 前到場。',
   },
   3: {
-    'Kraków MDA 報到': `巴士站地址（Bosacka 18）與 10/26 的 ${lajkonikOutboundAdopted.dep} 班次已在官方售票頁查得，售票頁標示由地下層 ${lajkonikOutboundAdopted.bay} 發車；站位仍以當日電子看板為準，尚未購票。`,
+    'Kraków MDA 報到': `巴士站地址（Bosacka 18）與 10/26 的 ${lajkonikOutboundAdopted.dep} 班次已購票，票面標示下層 ${lajkonikOutboundAdopted.bay} 站位；站位仍以當日電子看板為準。`,
     'Lajkonik · 克拉科夫 → 奧斯威辛': dynamicTransitReason,
     '回程巴士返克拉科夫': '導覽 14:15 結束後才發車，實際班次依當日選定的回程選項；上車點與時刻在售票頁確認後再導航。',
     '抵 Kraków MDA · 休息': '抵達後的休息地點保持彈性，不需要固定導航地址。',

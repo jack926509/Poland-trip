@@ -80,8 +80,14 @@ test('第 5 項：待辦頁每類先列未完成（依日期），已完成收�
   const html = read('practical/todos.html');
   for (const group of todoGroups) {
     const section = between(html, `id="todo-${group.id}"`, '</section>');
-    const open = group.items.filter(item => isOpenTodoStatus(item.status));
-    const done = group.items.filter(item => !isOpenTodoStatus(item.status));
+    const open = group.items.filter(item => !item.skip && isOpenTodoStatus(item.status));
+    const done = group.items.filter(item => !item.skip && !isOpenTodoStatus(item.status));
+    const skipped = group.items.filter(item => item.skip);
+    if (skipped.length) {
+      assert.match(section, new RegExp(`線上訂不到、不再提醒 ${skipped.length} 項`));
+      const skippedBlock = section.slice(section.indexOf('data-todo-skipped'));
+      for (const item of skipped) assert.ok(skippedBlock.includes(item.name), `${item.name} 應在不再提醒收合內`);
+    }
     if (done.length) {
       assert.match(section, new RegExp(`<details class="todo-done"><summary>已完成 ${done.length} 項</summary>`));
       const doneBlock = section.slice(section.indexOf('class="todo-done"'));
@@ -109,11 +115,12 @@ test('第 6 項：行程說明不再夾帶查核筆記，資訊移到待辦；�
   assert.equal(panorama.checkedAt, '2026-10-13');
   assert.match(panorama.action, /9\/24 官方 10\/28 日期下曾列 11:30 場、85 個名額/);
   assert.match(panorama.action, /歷史快照/);
-  const d4 = days[3].steps.find(step => step.t === '10:00');
+  // 2026-10-13 鹽礦已購 09:00 英文場；查核筆記不放行程說明，購票紀錄在待辦。
+  const d4 = days[3].steps.find(step => step.t === '09:00' && step.label.includes('Wieliczka'));
   assert.doesNotMatch(d4.sub, /2026-10-06/);
-  const wieliczka = todoGroups.flatMap(group => group.items).find(item => item.name === 'Wieliczka 鹽礦英文團');
-  assert.match(wieliczka.action, /2026-10-06 官方售票系統查詢時/);
-  assert.match(wieliczka.action, /10:00 場當時有名額/);
+  const wieliczka = todoGroups.flatMap(group => group.items).find(item => item.name === 'Wieliczka 鹽礦英文團 09:00');
+  assert.equal(wieliczka.status, '已購票');
+  assert.match(wieliczka.action, /2026-10-13 已付款/);
   const today = read('today.html');
   assert.doesNotMatch(today, /– 待查票面/);
   assert.doesNotMatch(today, /· 待查票面<\/span>/);

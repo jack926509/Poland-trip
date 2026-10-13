@@ -40,14 +40,14 @@ test('所有既有票價景點都能從完整購票清單找到入口或售票�
 test('待辦與購票頁共用官方入口，查得售票入口不能把待購改成已訂', () => {
   const todos = todoGroups.find(group => group.id === 'attractions').items;
   assert.equal(todos.length, 7);
-  assert.equal(todos.filter(item => item.status === '已訂妥').length, 1);
+  assert.equal(todos.filter(item => ['已訂妥', '已購票'].includes(item.status)).length, 2);
   for (const item of todos) {
     assert.equal(item.url, ticketPurchaseById(item.ticketPurchaseId).purchaseUrl);
     assert.ok(rowFor(item.ticketPurchaseId).includes(item.status));
   }
   assert.match(rowFor('krakow-auschwitz'), /已訂妥/);
-  assert.match(rowFor('krakow-schindler'), /現可查／購/);
-  assert.match(rowFor('krakow-wieliczka'), /需查／購/);
+  assert.match(rowFor('krakow-schindler'), /線上已售完/);
+  assert.match(rowFor('krakow-wieliczka'), /已購票/);
   assert.notEqual(ticketPurchaseById('krakow-wawel-cathedral').purchaseUrl, ticketPurchaseById('krakow-wawel-castle').purchaseUrl);
 });
 
