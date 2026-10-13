@@ -242,6 +242,23 @@ const drinkGuide = {
       ]
     },
     {
+      "id": "milk-mleczna-dolina-swieze",
+      "name": "冷藏鮮奶 1 l",
+      "localName": "Mleczna Dolina Mleko świeże 3,2% 1 l",
+      "when": "商品資料查核 2026/10/13",
+      "where": "Biedronka（Mleczna Dolina 為其自有品牌）；依分店供應",
+      "look": "白色塑膠瓶、藍色 Mleczna Dolina 標籤，認 Mleko świeże 與紅色 3,2%；包裝另有 Polskie mleko 標示。照片為 1 l 瓶裝代表包裝。",
+      "why": "świeże 是冷藏鮮奶，口味比常溫 UHT 新鮮；住宿有冰箱、早餐要配麥片或咖啡時可買。",
+      "tip": "要到冷藏櫃找，不是常溫貨架上的 UHT；開封後冷藏並儘快喝完，保存期限與天數以瓶身為準。品牌是 Biedronka 自有，Żabka 等其他店不一定有。",
+      "sources": [
+        {
+          "title": "Biedronka｜Mleczna Dolina 乳製品（含 Mleko świeże 3,2% 1 l）",
+          "url": "https://www.biedronka.pl/pl/mleczna-dolina",
+          "kind": "品牌／零售商商品資料"
+        }
+      ]
+    },
+    {
       "id": "milk-kefir",
       "name": "克菲爾發酵乳",
       "localName": "Kefir Krasnystaw 420 g",
@@ -278,6 +295,28 @@ const drinkGuide = {
         {
           "title": "Tymbark｜其他容量蘋果汁",
           "url": "https://tymbark.com/produkt/jablko-bez-dodatku-cukru/",
+          "kind": "品牌／零售商商品資料"
+        }
+      ]
+    },
+    {
+      "id": "juice-bracia-sadownicy-mango",
+      "name": "冷壓蘋果芒果汁",
+      "localName": "Bracia Sadownicy Tłoczone jabłko z mango 750 ml",
+      "when": "商品資料查核 2026/10/13",
+      "where": "部分 Żabka 分店（Wolt 有上架）、其他超市；依分店供應",
+      "look": "黃色標籤玻璃瓶，上方白色圓標寫 Bracia Sadownicy，認 tłoczone jabłko z mango 與 750 ml；官方另有 250 ml。",
+      "why": "品牌標示 tłoczony（冷壓）、nie z koncentratu（非濃縮還原）、無添加糖，成分為蘋果汁 90%、芒果泥 10%、維生素 C；想喝帶芒果香的果汁時可選。",
+      "tip": "天然混濁、有沉澱屬正常；官方每 100 ml 糖約 9,8 g，仍是含糖飲品，750 ml 一人喝不完可選 250 ml。保存方式以瓶身為準。",
+      "sources": [
+        {
+          "title": "Bracia Sadownicy｜Tłoczone jabłko z mango（容量 750 ml／250 ml）",
+          "url": "https://braciasadownicy.pl/produkty/tloczone-jablko-z-mango/",
+          "kind": "品牌／零售商商品資料"
+        },
+        {
+          "title": "Wolt｜Żabka 門市 750 ml 上架頁",
+          "url": "https://wolt.com/pl/pol/krakow/venue/zabka-jush-podgorze/sok-tloczony-z-jablek-z-mango-bracia-sadownicy-750-ml-itemid-3199d72288475a6f84c3bbda",
           "kind": "品牌／零售商商品資料"
         }
       ]

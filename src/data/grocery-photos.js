@@ -293,6 +293,26 @@ export const groceryPhotos = {
     "license": "CC BY-SA 3.0",
     "checkedAt": "2026-10-13"
   },
+  "milk-mleczna-dolina-swieze": {
+    "src": "assets/photos/grocery-milk-mleczna-dolina.jpg",
+    "label": "Mleczna Dolina Mleko świeże 3,2% 1 l",
+    "width": 276,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5900512850375",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/051/285/0375/front_pl.4.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-10-13"
+  },
+  "juice-bracia-sadownicy-mango": {
+    "src": "assets/photos/grocery-juice-bracia-sadownicy.jpg",
+    "label": "Bracia Sadownicy Tłoczone jabłko z mango 750 ml",
+    "width": 265,
+    "height": 400,
+    "sourceUrl": "https://world.openfoodfacts.org/product/5904433796446",
+    "originalUrl": "https://images.openfoodfacts.org/images/products/590/443/379/6446/front_pl.9.400.jpg",
+    "license": "CC BY-SA 3.0",
+    "checkedAt": "2026-10-13"
+  },
   "milk-kefir": {
     "src": "assets/photos/grocery-milk-kefir.webp",
     "label": "Krasnystaw Kefir 420 g",

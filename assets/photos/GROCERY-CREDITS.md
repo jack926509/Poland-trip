@@ -73,3 +73,10 @@ Open Food Facts 主站本輪無法連線，原始照片改由 Open Food Facts �
 
 - assets/photos/grocery-28.jpg：Lajkonik Precelki Chrupkie；作者 pyrka；[商品與貢獻紀錄](https://world.openfoodfacts.org/product/5900320001334)；[來源照片](https://images.openfoodfacts.org/images/products/590/032/000/1334/front_pl.17.400.jpg)；CC BY-SA 3.0；下載版本未另修改。
 - assets/photos/grocery-29.jpg：Piątnica Skyr naturalny；作者 summerseal；[商品與貢獻紀錄](https://world.openfoodfacts.org/product/5900531004544)；[來源照片](https://images.openfoodfacts.org/images/products/590/053/100/4544/front_pl.59.400.jpg)；CC BY-SA 3.0；下載版本未另修改。
+
+## 2026-10-13 新增牛奶與果汁（使用者影片所見商品）
+
+以下採用 Open Food Facts 已提供的 400 px JPEG，下載版本未另修改；2026-10-13 已目視核對商品與完整性，照片仍只作代表包裝。
+
+- assets/photos/grocery-milk-mleczna-dolina.jpg：Mleczna Dolina Mleko świeże 3,2% 1 l；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900512850375)；[原圖](https://images.openfoodfacts.org/images/products/590/051/285/0375/front_pl.4.400.jpg)；CC BY-SA 3.0；下載版本未另修改。
+- assets/photos/grocery-juice-bracia-sadownicy.jpg：Bracia Sadownicy Tłoczone jabłko z mango 750 ml；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5904433796446)；[原圖](https://images.openfoodfacts.org/images/products/590/443/379/6446/front_pl.9.400.jpg)；CC BY-SA 3.0；下載版本未另修改。
