@@ -6916,3 +6916,42 @@ li > p.source-meta a,
 .todo-day-link {
   white-space: nowrap;
 }
+
+/* 每日行程下拉：Day N 後面直接寫日期與城市，不必回首頁對照哪天是幾號。 */
+.nav-dropdown > ul a .nav-day-label {
+  flex: 0 0 3.6rem;
+  font-weight: 700;
+}
+
+.nav-dropdown > ul a .nav-day-date {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.nav-dropdown > ul a .nav-day-city {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-left: 0.75rem;
+  overflow: hidden;
+  color: var(--ink-soft);
+  font-family: var(--font-body, inherit);
+  font-size: 0.78rem;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-dropdown > ul a:hover .nav-day-city,
+.nav-dropdown > ul a:focus-visible .nav-day-city {
+  color: inherit;
+}
+
+.nav-dropdown > ul.nav-day-list {
+  min-width: 22rem;
+}
+
+@media (max-width: 700px) {
+  .nav-dropdown > ul.nav-day-list {
+    min-width: 0;
+  }
+}

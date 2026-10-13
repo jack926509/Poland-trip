@@ -4,6 +4,12 @@ import { cityRoutes } from './city-guide.mjs';
 
 export const CITY_LINKS = cityRoutes.map(city => [`city-${city.fileKey}.html`, `${city.name} ${city.localName}`]);
 export const DAY_LINKS = days.map(day => [dayHref(day), `Day ${day.n}`]);
+// 導覽下拉的每日項目要看得到日期與城市（只寫 Day N 得自己換算哪天）；
+// 頁面標題與單檔版章節名仍沿用 DAY_LINKS 的「Day N」。
+export const DAY_LINK_META = Object.fromEntries(days.map(day => [dayHref(day), {
+  date: day.date.replace(/\s*\((.)\)/, '（$1）'),
+  city: day.city,
+}]));
 
 // 全部實用資訊頁——決定 build 出幾頁、單檔版收錄幾個章節，順序與導覽顯示無關。
 export const PRACTICAL_PAGES = [
