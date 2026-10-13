@@ -5,10 +5,10 @@ import { groceryBranches, groceryDrinkGuide, groceryProducts } from '../src/data
 import { cityRoutes } from '../src/lib/city-guide.mjs';
 import { normalizeText } from '../src/search/site-search-index.mjs';
 
-test('採買指南保留四城 12 個門市與二十四項商品，每筆都標出核到哪一層', () => {
+test('採買指南保留四城 12 個門市與二十六項商品，每筆都標出核到哪一層', () => {
   assert.equal(groceryBranches.length, 12);
   assert.equal(new Set(groceryBranches.map(b => b.id)).size, 12);
-  assert.equal(groceryProducts.length, 24);
+  assert.equal(groceryProducts.length, 26);
   for (const city of cityRoutes) assert.equal(groceryBranches.filter(b => b.cityKey === city.mapKey).length, 3);
   // 2026-09-22 逐店核對：Biedronka 四筆有官方逐日時間（verified），
   // Lidl 與 Żabka 八筆只核到地址（partial）。沒有任何一筆可以無來源地宣稱已核實。
@@ -117,9 +117,9 @@ test('採買推薦一項商品只出現一次，照片、理由與來源都留�
     for (const source of product.sources) assert.ok(html.includes(source.url), `缺來源連結 ${source.url}`);
     if (product.photo) assert.ok(html.includes(product.photo.src), `缺照片 ${product.photo.src}`);
   }
-  // 2026 年文章推薦與歷年經典補充仍分成兩組
+  // 先買小份試吃與歷年經典補充仍分成兩組
   assert.equal((html.match(/class="grocery-product-group"(?: open)?>/g) || []).length, 5);
-  assert.match(html, /2026 年文章推薦/);
+  assert.match(html, /先買小份試吃/);
   assert.match(html, /經典補充/);
   // 行李有限先挑的幾樣在卡片上就標出來
   assert.equal((html.match(/class="grocery-priority"/g) || []).length, groceryProducts.filter(p => p.priority).length);
@@ -144,7 +144,7 @@ test('手機長度：推薦分組只展開第一組、摘要列出商品名，�
   const groups = [...html.matchAll(/<details class="grocery-product-group"( open)?>\s*<summary>([\s\S]*?)<\/summary>/g)];
   assert.equal(groups.length, 5);
   assert.deepEqual(groups.map(group => Boolean(group[1])), [true, false, false, false, false], '只有第一組預設展開');
-  assert.match(groups[0][2], /2026 年文章推薦/);
+  assert.match(groups[0][2], /先買小份試吃/);
   // 收合時也要看得出要找的東西在哪一組：摘要列出每項商品的波蘭文名
   const summaries = groups.map(group => group[2]).join('');
   for (const product of groceryProducts) assert.ok(summaries.includes(product.localName.replace(/&/g, '&amp;')), `${product.localName} 沒出現在分組摘要`);
@@ -176,10 +176,10 @@ test('2026 牛奶果汁與 Żabka 即食：每張卡有照片、哪裡買、怎�
   const html = fs.readFileSync('dist/practical/groceries.html', 'utf8');
   const picks = [...groceryDrinkGuide.milk, ...groceryDrinkGuide.juice, ...groceryDrinkGuide.zabka];
   assert.ok(groceryDrinkGuide.milk.length >= 2 && groceryDrinkGuide.juice.length >= 3);
-  // 2026-10-14：牛奶果汁只收 2026 年有日期的來源，每張卡標出依據
+  // 商品查核日期與來源發布日期不同；每卡標示已確認層次或待確認界線。
   for (const pick of [...groceryDrinkGuide.milk, ...groceryDrinkGuide.juice]) {
-    assert.match(pick.when, /2026/, `${pick.id} 缺 2026 依據`);
-    assert.ok(pick.sources.some(source => /2026/.test(source.kind) || /2026/.test(source.title)), `${pick.id} 沒有 2026 年來源`);
+    assert.match(pick.when, /2026/, `${pick.id} 缺查核日期`);
+    assert.ok(pick.sources.every(source => source.title && source.kind), `${pick.id} 缺來源名稱或證據種類`);
   }
   assert.equal((html.match(/class="grocery-drink" id="/g) || []).length, picks.length);
   for (const pick of picks) {

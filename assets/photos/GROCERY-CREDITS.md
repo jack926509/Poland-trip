@@ -58,11 +58,18 @@ Open Food Facts 主站本輪無法連線，原始照片改由 Open Food Facts �
 - assets/photos/grocery-zabka-wolowiner.webp：Szamamm Wołowiner 牛肉漢堡；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900562456350)；[原圖](https://images.openfoodfacts.org/images/products/590/056/245/6350/1.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-13 核對。
 
 
-## 2026-10-14 牛奶果汁改為 2026 年來源的品項
+## 2026-10-13 牛奶果汁照片複查（更正原誤植日期）
 
-取得方式同上（Open Food Facts 官方 S3 影像映像，CC BY-SA 3.0），縮放／WebP 轉檔，2026-10-14 目視核對為包裝正面。
+取得方式同上（Open Food Facts 官方 S3 影像映像，CC BY-SA 3.0），縮放／WebP 轉檔，2026-10-13 目視核對為包裝正面。
 
-- assets/photos/grocery-milk-kefir.webp：Krasnystaw Kefir 420 g；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5902057001748)；[原圖](https://images.openfoodfacts.org/images/products/590/205/700/1748/10.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-14 核對。
-- assets/photos/grocery-juice-hortex.webp：Hortex Sok jabłkowy 100% 1 l；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900500024337)；[原圖](https://images.openfoodfacts.org/images/products/590/050/002/4337/2.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-14 核對。
-- assets/photos/grocery-juice-riviva.webp：Riviva Sok 100% jabłko 1 l（Biedronka）；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5908312137573)；[原圖](https://images.openfoodfacts.org/images/products/590/831/213/7573/1.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-14 核對。
-- assets/photos/grocery-juice-solevita.webp：Solevita Pomarańcza Brazylijska 100% 1 l（Lidl）；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/4056489586708)；[原圖](https://images.openfoodfacts.org/images/products/405/648/958/6708/1.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-14 核對。
+- assets/photos/grocery-milk-kefir.webp：Krasnystaw Kefir 420 g；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5902057001748)；[原圖](https://images.openfoodfacts.org/images/products/590/205/700/1748/10.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-13 核對。
+- assets/photos/grocery-juice-hortex.webp：Hortex Sok jabłkowy 100% 1 l；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900500024337)；[原圖](https://images.openfoodfacts.org/images/products/590/050/002/4337/2.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-13 核對。
+- assets/photos/grocery-juice-riviva.webp：Riviva Sok 100% jabłko 1 l（Biedronka）；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5908312137573)；[原圖](https://images.openfoodfacts.org/images/products/590/831/213/7573/1.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-13 核對。
+- assets/photos/grocery-juice-solevita.webp：Solevita Pomarańcza Brazylijska 100% 1 l（Lidl）；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/4056489586708)；[原圖](https://images.openfoodfacts.org/images/products/405/648/958/6708/1.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-10-13 核對。
+
+## 2026-10-13 新增旅途鹹口與冷藏早餐
+
+以下採用 Open Food Facts 已提供的 400 px JPEG，保留下載版本，不重新繪製或改動包裝。2026-10-13 已目視核對商品、方向與完整性；照片仍只作代表包裝。
+
+- assets/photos/grocery-28.jpg：Lajkonik Precelki Chrupkie；作者 pyrka；[商品與貢獻紀錄](https://world.openfoodfacts.org/product/5900320001334)；[來源照片](https://images.openfoodfacts.org/images/products/590/032/000/1334/front_pl.17.400.jpg)；CC BY-SA 3.0；下載版本未另修改。
+- assets/photos/grocery-29.jpg：Piątnica Skyr naturalny；作者 summerseal；[商品與貢獻紀錄](https://world.openfoodfacts.org/product/5900531004544)；[來源照片](https://images.openfoodfacts.org/images/products/590/053/100/4544/front_pl.59.400.jpg)；CC BY-SA 3.0；下載版本未另修改。
