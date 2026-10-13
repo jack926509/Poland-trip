@@ -3043,70 +3043,147 @@ a[href^="tel:"]:focus-visible {
   }
 }
 
-/* --- 當日時間表手機精簡版（UX 審查第 3 項）：上面通用卡片規則讓每個時段
-       「時間／行程／花費／時長」各佔兩行，一站 300～500px。時間表改成
-       左欄大字時間、右欄行程＋說明，「花費 · 時長」併成一行小字，不顯示欄名。
-       說明超過 2 行由 nav.js 加上 .is-clamped 與「展開全文」按鈕。 --- */
+/* --- 當日時間表手機版（UX 審查 C6）：不再把每個時段轉成「時間／行程」標籤卡，
+       改成緊湊時間軸——左欄時間、中欄行程（含說明）、右欄「導航 ↗」。
+       時間格（td:nth-child(1)）用 display: contents，讓 <b>時間</b> 與 .step-nav
+       直接成為 tr 的 grid 項目；DOM 與桌機表格不變。
+       花費／時長併在行程下方一行小字；說明超過 2 行由 nav.js 加 .is-clamped 與「展開全文」。
+       今日卡的全天時間表（.table-today-steps）共用同一套版式。 --- */
 @media (max-width: 700px) {
+  .table-editorial.table-today-steps tbody,
   .table-editorial.table-schedule tbody {
-    gap: 0.6rem;
+    display: block;
+    padding: 0.25rem 0;
   }
 
+  .table-editorial.table-today-steps tr,
   .table-editorial.table-schedule tr {
     display: grid;
-    grid-template-columns: 4.4rem minmax(0, 1fr);
-    padding: 0.7rem 0.85rem;
+    grid-template-columns: 3.6rem auto auto minmax(0, 1fr) auto;
+    /* 第 2 列用 1fr：時間欄與導航鈕跨兩列，高度不足時多出的空間給第 2 列，不會把標題與說明撐開。 */
+    grid-template-rows: auto 1fr;
+    column-gap: 0.5rem;
+    align-items: start;
+    padding: 0.5rem 0.15rem;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    background: none;
+    box-shadow: none;
   }
 
+  .table-editorial.table-today-steps tr:last-child,
+  .table-editorial.table-schedule tr:last-child {
+    border-bottom: 0;
+  }
+
+  .table-editorial.table-today-steps td,
   .table-editorial.table-schedule td {
     min-width: 0;
     padding: 0;
     border-top: 0;
   }
 
+  .table-editorial.table-today-steps td[data-label]::before,
   .table-editorial.table-schedule td[data-label]::before {
     display: none;
     content: none;
   }
 
+  .table-editorial.table-today-steps td:nth-child(1),
   .table-editorial.table-schedule td:nth-child(1) {
+    display: contents;
+  }
+
+  .table-editorial.table-today-steps td:nth-child(1) > b,
+  .table-editorial.table-schedule td:nth-child(1) > b {
     grid-column: 1;
     grid-row: 1 / span 2;
-    padding-right: 0.6rem;
+    padding-top: 0.1rem;
     color: var(--accent-dark);
-    font-size: 1.15rem;
+    font-size: 0.95rem;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .table-editorial.table-today-steps td:nth-child(2),
+  .table-editorial.table-schedule td:nth-child(2) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-column: 2 / 5;
+    grid-row: 1;
+    gap: 0;
+    align-content: start;
+    align-items: center;
+    padding-top: 0.1rem;
+    font-size: 0.92rem;
     line-height: 1.35;
   }
 
-  .table-editorial.table-schedule td:nth-child(2) {
+  /* 行程標題橫跨兩欄；說明（單行收合）與「展開全文」並排在標題下一行。 */
+  .table-schedule td:nth-child(2) > b,
+  .table-today-steps td:nth-child(2) > b { grid-column: 1 / -1; }
+  .table-schedule td:nth-child(2) > br,
+  .table-today-steps td:nth-child(2) > br { display: none; }
+  .table-schedule td:nth-child(2) > .timeline-note:last-child { grid-column: 1 / -1; }
+
+  /* 今日卡的全天時間表只有「時間／行程」兩欄，沒有導航鈕與花費、時長：用簡單的兩欄 grid。 */
+  .table-editorial.table-today-steps tr {
+    grid-template-columns: 3.6rem minmax(0, 1fr);
+    grid-template-rows: auto;
+  }
+
+  .table-editorial.table-today-steps td:nth-child(2) {
+    display: block;
     grid-column: 2;
-    grid-row: 1;
+  }
+
+  .table-editorial.table-today-steps td:nth-child(1) > b { grid-row: 1; }
+
+  /* 導航鈕在右欄、垂直置中於整列；44px 點擊目標不變（.step-nav 本身 min-height: 44px）。 */
+  .table-editorial.table-schedule .step-nav {
+    grid-column: 5;
+    grid-row: 1 / span 2;
+    align-self: center;
+    margin: 0;
+    padding: 0.25rem 0.55rem;
+    font-size: 0.78rem;
   }
 
   /* 花費與時長併在行程欄下方，可換行：原本 nowrap 把整列撐到 383px，右側被裁掉。 */
   .table-editorial.table-schedule td:nth-child(3),
   .table-editorial.table-schedule td:nth-child(4) {
-    grid-column: 2;
-    margin-top: 0.3rem;
+    grid-row: 2;
+    margin-top: 0.1rem;
     color: var(--ink-soft);
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     white-space: normal;
     overflow-wrap: anywhere;
   }
 
-  .table-editorial.table-schedule td:nth-child(4) { margin-top: 0.1rem; }
+  /* 花費、時長各佔一個 auto 欄，並排在同一行；花費缺資料時（data-empty）整格不渲染。 */
+  .table-editorial.table-schedule td:nth-child(3) { grid-column: 2; }
+  .table-editorial.table-schedule td:nth-child(4) { grid-column: 3; }
+  .table-editorial.table-schedule td:nth-child(3)[data-empty] + td:nth-child(4) { grid-column: 2; }
+
+  .table-schedule .timeline-note {
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
 
   .table-schedule .timeline-note.is-clamped {
     display: -webkit-box;
     overflow: hidden;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
   }
 
-  .table-schedule .note-toggle {
+  /* 「展開全文」版面只佔一行，點擊區用 ::after 外擴到 44px 高（不用 min-height，避免撐高整列）。 */
+  .table-editorial.table-schedule td .note-toggle {
+    position: relative;
     display: block;
-    min-height: 44px;
+    min-height: 0;
+    margin: 0 0 0 0.4rem;
     padding: 0;
     border: 0;
     background: none;
@@ -3115,8 +3192,26 @@ a[href^="tel:"]:focus-visible {
     font: inherit;
     font-size: 0.8rem;
     font-weight: 700;
+    line-height: 1.4;
     text-align: left;
     text-decoration: underline;
+    text-underline-offset: 3px;
+    white-space: nowrap;
+  }
+
+  .table-editorial.table-schedule td .note-toggle::after {
+    position: absolute;
+    inset: -13px -6px;
+    content: '';
+  }
+
+  .table-schedule td .step-meal-link {
+    display: inline;
+    min-height: 0;
+    padding: 0;
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
     text-underline-offset: 3px;
   }
 }
@@ -4692,6 +4787,9 @@ h3 {
 @media (max-width: 700px) {
   .day-shortcuts {
     flex-wrap: nowrap;
+    /* 5 顆（時間表／吃哪／地址／交通／地圖）一列不換行，字數多時可左右滑。 */
+    overflow-x: auto;
+    scrollbar-width: none;
     gap: 0.3rem;
     margin-inline: 0;
     padding: 0.4rem 0.35rem;
@@ -4702,8 +4800,8 @@ h3 {
 
   .day-shortcuts a {
     flex: 1 1 0;
-    min-width: 0;
-    padding: 0.4rem 0.15rem;
+    min-width: max-content;
+    padding: 0.4rem 0.6rem;
     font-size: 0.8125rem;
     line-height: 1.25;
     text-align: center;
@@ -6974,4 +7072,78 @@ li > p.source-meta a,
 .booking-item.is-skipped {
   border-style: dashed;
   background: transparent;
+}
+
+/* ============================================================
+   UX 審查 C3／C4（2026-10-13）
+   ============================================================ */
+
+/* C3 頁首換日：今晚住宿區下方的「← Day N-1｜Day N+1 →」小按鈕。
+   Day 1 只有「後一天」、最後一天只有「前一天」，各自靠自己的那一側。 */
+.day-switch {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+}
+
+.day-switch-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.35rem 1rem;
+  border: 1px solid rgb(142 126 112 / 40%);
+  border-radius: 999px;
+  background: var(--paper-light);
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.day-switch-link.is-next { margin-left: auto; }
+
+.day-switch-link:hover,
+.day-switch-link:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent-pale);
+}
+
+/* C3 快捷列在手機一列不換行、可左右滑；隱藏捲軸（WebKit）。 */
+.day-shortcuts::-webkit-scrollbar { display: none; }
+
+/* C3 錨點落點避開吸頂的快捷列。 */
+.day-food-item[id],
+.day-map-section h2[id],
+#day-addresses,
+#day-route,
+#day-food {
+  scroll-margin-top: 5.5rem;
+}
+
+/* C4 實用資訊下拉的三組小標。 */
+.nav-dropdown > ul.nav-grouped-list { min-width: 17rem; }
+.nav-group { list-style: none; }
+.nav-group > ul { margin: 0; padding: 0; list-style: none; }
+.nav-group > p {
+  margin: 0.5rem 0 0.1rem;
+  padding: 0.35rem 1.2rem 0.2rem;
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+.nav-dropdown > ul a small {
+  margin-left: 0.5rem;
+  padding: 0.05rem 0.4rem;
+  border: 1px solid currentcolor;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
 }

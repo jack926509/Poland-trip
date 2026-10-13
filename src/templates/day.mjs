@@ -1,6 +1,7 @@
 import { mealTiming, renderMealList, renderStoreBody, renderStoreHead } from '../lib/dining.mjs';
 import { escapeHtml, linkifyText, safeHttpsUrl } from '../lib/html.mjs';
-import { bookingProgress } from '../lib/journey.mjs';
+import { bookingProgress, dayHref } from '../lib/journey.mjs';
+import { days as allDays } from '../data/trip.js';
 import { segmentForDay } from '../lib/rail.mjs';
 import { renderDayContext } from './journey.mjs';
 import { dayDining, dayMeals } from '../data/day-dining.js';
@@ -113,7 +114,7 @@ function renderDayFood(day) {
 }
 
 function renderOperation(operation, day) {
-  if (!operation) return renderDayFood(day);
+  if (!operation) return '';
 
   const addresses = operation.addresses?.map(item => {
     const safeUrl = safeHttpsUrl(item.url);
@@ -147,18 +148,17 @@ function renderOperation(operation, day) {
       <div class="section-heading"><span class="section-num">On the ground</span><h2 id="operation-heading">今天怎麼走</h2></div>
       <p class="lead">${escapeHtml(operation.note)}</p>
       <div class="grid-wide operation-grid">
-        <article class="card">
+        <article class="card" id="day-addresses">
           <span class="eyebrow">Address book</span>
           <h3>現場地址</h3>
           <ul class="operation-addresses">${addresses}</ul>
         </article>
         <div class="operation-route-column">
-        <article class="card">
+        <article class="card" id="day-route">
           <span class="eyebrow">Route</span>
           <h3>移動步驟</h3>
           <ol class="operation-routes">${navigation}</ol>
         </article>
-        ${renderDayFood(day)}
         </div>
       </div>
       <div class="callout-risk operation-alerts">
@@ -196,12 +196,25 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
     const href = safeHttpsUrl(place?.url) || safeHttpsUrl(meal?.map || meal?.mapUrl);
     return href ? { href, name: place?.name || meal?.name || step.label } : null;
   };
+  // 時間表裡的餐次列（早餐／午餐／晚餐）連到同頁「當日餐飲」的店家卡（id 由 renderMealList 以 stepId 產生）。
+  // 只連真的有店家卡的餐次；店名優先、其次取「 · 」後面的描述、再不行才整句，不憑空猜。
+  const mealStepIds = new Set((dayMeals[day.n] || []).filter(item => item.stepId).map(item => item.stepId));
+  const stepLabelHtml = step => {
+    const label = String(step.label);
+    if (!step.id || !mealStepIds.has(step.id)) return label;
+    const meal = dayMeals[day.n].find(item => item.stepId === step.id);
+    const href = `#meal-${step.id}`;
+    const wrap = text => `<a class="step-meal-link" href="${href}">${text}</a>`;
+    if (meal?.name && label.includes(meal.name)) return label.replace(meal.name, wrap(meal.name));
+    const separator = label.indexOf(' · ');
+    return separator === -1 ? wrap(label) : `${label.slice(0, separator + 3)}${wrap(label.slice(separator + 3))}`;
+  };
   const stepsHtml = day.steps.map(step => {
     const nav = stepNavigation(step);
     return `
     <tr>
       <td class="number" data-label="時間"><b>${step.t}</b>${nav ? `<a class="step-nav" href="${nav.href}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(nav.name)} 的 Google Maps 導航">導航 ↗</a>` : ''}</td>
-      <td data-label="行程"><b>${step.label}</b>${step.sub ? `<br><span class="timeline-note">${step.sub}</span>` : ''}</td>
+      <td data-label="行程"><b>${stepLabelHtml(step)}</b>${step.sub ? `<br><span class="timeline-note">${step.sub}</span>` : ''}</td>
       <td class="number" data-label="花費"${step.cost ? '' : ' data-empty'}>${step.cost || '—'}</td>
       <td class="number" data-label="時長"${step.dur ? '' : ' data-empty'}>${step.dur || '—'}</td>
     </tr>`;
@@ -345,8 +358,15 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
       </div>
     </section>` : '';
 
+  const lastDay = allDays[allDays.length - 1].n;
   const previous = day.n > 1 ? `<a href="day-${String(day.n - 1).padStart(2, '0')}.html">← Day ${day.n - 1}</a>` : '<span></span>';
-  const next = day.n < 8 ? `<a href="day-${String(day.n + 1).padStart(2, '0')}.html">Day ${day.n + 1} →</a>` : '<a href="index.html">回到總覽 →</a>';
+  const next = day.n < lastDay ? `<a href="day-${String(day.n + 1).padStart(2, '0')}.html">Day ${day.n + 1} →</a>` : '<a href="index.html">回到總覽 →</a>';
+  // 頁首換日：Day 1 沒有前一天、最後一天沒有後一天，只顯示存在的那一邊。
+  const dayNeighbor = (n, arrow) => {
+    const target = allDays.find(item => item.n === n);
+    return target ? `<a class="day-switch-link is-${arrow}" href="${dayHref(target)}">${arrow === 'prev' ? `← Day ${n}` : `Day ${n} →`}</a>` : '';
+  };
+  const daySwitchHtml = `<nav class="day-switch" aria-label="前後一天">${dayNeighbor(day.n - 1, 'prev')}${dayNeighbor(day.n + 1, 'next')}</nav>`;
   const coverHtml = city?.photo?.hero ? `
       <figure class="journal-day-cover">
         <img src="${escapeHtml(city.photo.hero)}" alt="${escapeHtml(city.name)}城市風景" width="1200" height="800" decoding="async" fetchpriority="high">
@@ -357,6 +377,16 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
       <img src="${escapeHtml(detailPhotoCity.photo.detail)}" alt="${escapeHtml(detailPhotoCity.photo.detailAlt)}" width="1280" height="${escapeHtml(detailPhotoCity.photo.detailHeight)}" loading="lazy" decoding="async">
       <figcaption>${escapeHtml(detailPhotoCity.photo.detailCaption)} · ${escapeHtml(detailPhotoCity.photo.detailAuthor)} · <a href="${escapeHtml(detailPhotoCity.photo.detailSource)}" target="_blank" rel="noopener noreferrer">圖片來源 ↗</a> · <a href="${escapeHtml(detailPhotoCity.photo.detailLicenseUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(detailPhotoCity.photo.detailLicense)} 授權 ↗</a></figcaption>
     </figure>` : '';
+
+  // 快捷列：時間表／吃哪／地址／交通／地圖。該區塊當天不存在就不放，不留死連結。
+  const foodHtml = renderDayFood(day);
+  const shortcuts = [
+    ['#schedule', '時間表'],
+    foodHtml ? ['#day-food', '吃哪'] : null,
+    operation ? ['#day-addresses', '地址'] : null,
+    operation ? ['#day-route', '交通'] : null,
+    dayMap ? [`#map-day-${day.n}-heading`, '地圖'] : null,
+  ].filter(Boolean);
 
   const bodyHtml = `
     <header class="journal-day-header">
@@ -369,8 +399,9 @@ ${coverHtml}
     </header>
 
     ${renderDayContext(day)}
+    ${daySwitchHtml}
     <nav class="day-shortcuts" aria-label="當日快速導覽">
-      <a href="#schedule">時間表</a><a href="#day-food">餐飲候選</a><a href="#directions">地址與導航</a><a href="#day-preparation">訂票與提醒</a>
+      ${shortcuts.map(([href, text]) => `<a href="${href}">${text}</a>`).join('')}
     </nav>
 
     <section class="section" id="schedule">
@@ -383,6 +414,7 @@ ${coverHtml}
       </div>
     </section>
 
+    ${foodHtml ? `<section class="section day-food-section">${foodHtml}</section>` : ''}
     ${trainHtml}
     <section class="section" id="day-preparation">
       <div class="section-heading"><span class="section-num">Preparation</span><h2>訂票與提醒</h2></div>

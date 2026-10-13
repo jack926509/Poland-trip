@@ -1,5 +1,5 @@
 import { escapeAttr, escapeHtml } from '../lib/html.mjs';
-import { CITY_LINKS, DAY_LINKS, DAY_LINK_META, PRACTICAL_LINKS } from '../lib/routes.mjs';
+import { CITY_LINKS, DAY_LINKS, DAY_LINK_META, NAV_LINK_NOTES, PRACTICAL_NAV_GROUPS } from '../lib/routes.mjs';
 import { todoGroups } from '../data/trip.js';
 
 // 頁尾的「火車票進度更新」日期改由訂票紀錄推導，避免資料更新後頁尾忘了改。
@@ -195,7 +195,10 @@ export function renderLayout({
   };
   const dayLinks = DAY_LINKS.map(dayNavLink).join('');
   const cityLinks = CITY_LINKS.map(navLink).join('');
-  const practicalLinks = PRACTICAL_LINKS.map(navLink).join('');
+  // 實用資訊分三組加小標：出發前／旅途中／購物。旅程期間 nav.js 會把「旅途中」移到第一組。
+  const practicalNavLink = ([file, label]) => navLink([file, label]).replace('</a>', NAV_LINK_NOTES[file] ? ` <small>${NAV_LINK_NOTES[file]}</small></a>` : '</a>');
+  const practicalGroups = PRACTICAL_NAV_GROUPS.map(group =>
+    `<li class="nav-group" data-nav-group="${group.key}"><p>${group.label}</p><ul>${group.pages.map(practicalNavLink).join('')}</ul></li>`).join('');
 
   return `<!DOCTYPE html>
 <html lang="zh-Hant">
@@ -251,7 +254,7 @@ export function renderLayout({
     </details>
     <details class="nav-dropdown${activeNav === 'practical' ? ' nav-dropdown-current' : ''}" name="primary-navigation">
       <summary${currentGroup(activeNav, 'practical')}>實用資訊</summary>
-      <ul><li><a href="${path('index.html#practical')}">實用資訊總覽</a></li>${practicalLinks}</ul>
+      <ul class="nav-grouped-list"><li><a href="${path('index.html#practical')}">實用資訊總覽</a></li>${practicalGroups}</ul>
     </details>
   </nav>
   ${renderSiteSearch({ pathPrefix })}

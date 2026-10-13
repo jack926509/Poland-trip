@@ -36,12 +36,16 @@ test('第 2 項：.day-shortcuts 只剩一處定義，手機改成一行不換�
   assert.match(read('day-05.html'), /<nav class="day-shortcuts" aria-label="當日快速導覽">/);
 });
 
-test('第 3 項：手機時間表為精簡版（不顯示欄名、時間大字左欄），長說明由 nav.js 收成兩行', () => {
+test('第 3 項：手機時間表為精簡版（不顯示欄名、時間大字左欄），長說明由 nav.js 收成單行（C6）', () => {
   const source = css();
   assert.match(source, /\.table-editorial\.table-schedule td\[data-label\]::before \{\s*display: none;\s*content: none;/s);
-  assert.match(source, /\.table-editorial\.table-schedule tr \{[^}]*display: grid;[^}]*grid-template-columns: 4\.4rem/s);
-  assert.match(source, /\.table-editorial\.table-schedule td:nth-child\(1\) \{[^}]*grid-row: 1 \/ span 2/s);
-  assert.match(source, /\.table-schedule \.timeline-note\.is-clamped \{[^}]*-webkit-line-clamp: 2/s);
+  // C6（2026-10-13）：時間欄寬 4.4rem → 3.6rem，並新增第三欄放「導航 ↗」；時間格改 display: contents，
+  // 讓 <b>時間</b> 與 .step-nav 直接成為 tr 的 grid 項目（時間仍在最左欄、跨兩列）。
+  assert.match(source, /\.table-editorial\.table-schedule tr \{[^}]*display: grid;[^}]*grid-template-columns: 3\.6rem auto auto minmax\(0, 1fr\) auto/s);
+  assert.match(source, /\.table-editorial\.table-schedule td:nth-child\(1\) \{[^}]*display: contents/s);
+  assert.match(source, /\.table-editorial\.table-schedule td:nth-child\(1\) > b \{[^}]*grid-column: 1;[^}]*grid-row: 1 \/ span 2/s);
+  assert.match(source, /\.table-editorial\.table-schedule \.step-nav \{[^}]*grid-column: 5/s);
+  assert.match(source, /\.table-schedule \.timeline-note\.is-clamped \{[^}]*-webkit-line-clamp: 1/s); // C6：2 行 → 1 行，與「展開全文」並排同一行，才擠得進 7 個以上時段
   const nav = fs.readFileSync(path.resolve('src/scripts/nav.js'), 'utf8');
   assert.match(nav, /clampScheduleNotes/);
   assert.match(nav, /展開全文/);

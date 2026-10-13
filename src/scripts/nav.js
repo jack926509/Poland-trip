@@ -109,6 +109,35 @@
 
   markToday();
 
+  /**
+   * 「實用資訊」下拉分三組（出發前／旅途中／購物）。旅程期間（華沙日期落在
+   * 2026-10-24～2026-11-01）把「旅途中」移到第一組；其餘時間維持原順序。
+   * 總覽連結永遠在最上面，所以插在它後面。日期判斷失敗就什麼都不做。
+   */
+  const reorderPracticalGroups = () => {
+    const list = document.querySelector('.nav-grouped-list');
+    const trip = list?.querySelector('[data-nav-group="trip"]');
+    if (!list || !trip) return;
+
+    let today;
+    try {
+      today = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Europe/Warsaw',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      }).format(new Date());
+    } catch {
+      return;
+    }
+
+    // 旅程 10/24–11/1（與 src/lib/routes.mjs 的 TRIP_DATE_RANGE 一致，build 時有測試比對）。
+    if (today < '2026-10-24' || today > '2026-11-01') return;
+    const firstGroup = list.querySelector('[data-nav-group]');
+    if (firstGroup && firstGroup !== trip) list.insertBefore(trip, firstGroup);
+  };
+  reorderPracticalGroups();
+
   // 搜尋與城市頁可直達商品卡或城市門市；目標若位於收合分組，先展開才能正確捲動。
   const revealProductHash = () => {
     let id;
