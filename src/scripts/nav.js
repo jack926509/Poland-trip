@@ -109,7 +109,7 @@
 
   markToday();
 
-  // 搜尋可直達商品卡；目標若位於收合分組，先展開才能正確捲動。
+  // 搜尋與城市頁可直達商品卡或城市門市；目標若位於收合分組，先展開才能正確捲動。
   const revealProductHash = () => {
     let id;
     try {
@@ -117,10 +117,13 @@
     } catch {
       return;
     }
-    if (!/^product-\d+$/.test(id)) return;
-    const target = document.getElementById(id);
+    const target = id && document.getElementById(id);
     if (!target) return;
-    target.closest('.grocery-product-group')?.setAttribute('open', '');
+    // 採買頁的城市、商品與牛奶果汁都收在 details 裡：目標本身或外層分組收合時先展開。
+    // closest 也會比對元素本身，所以直接指向城市 details 時同樣成立。
+    const fold = target.closest('.grocery-product-group, .grocery-fold');
+    if (!fold) return;
+    fold.setAttribute('open', '');
     requestAnimationFrame(() => target.scrollIntoView({ block: 'start' }));
   };
   revealProductHash();

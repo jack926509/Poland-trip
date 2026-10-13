@@ -592,6 +592,7 @@ export const groceryProducts = [
     "id": 8,
     "name": "果汁飲料",
     "localName": "Tymbark",
+    "drink": true,
     "packaging": "玻璃瓶／PET／紙盒",
     "use": "當地食用",
     "priority": false,
