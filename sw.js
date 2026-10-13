@@ -188,7 +188,10 @@ async function pageStrategy(request, event) {
     || Response.error();
 }
 
-// 靜態資源：命中快取就直接用，未命中才連線並存起來
+// 靜態資源：命中快取就直接用，未命中才連線並存起來。
+// 頁面引用的 CSS／JS 帶內容指紋（?v=…，見 build 的 versionAssetLinks）：
+// 新指紋查不到就連線拿新檔，確保新版 HTML 配新版樣式；離線時才退回
+// 忽略查詢字串的預快取版本，寧可樣式舊一點也不要整頁沒有樣式。
 async function assetStrategy(request, event) {
   const cached = await caches.match(request);
   if (cached) return cached;
@@ -200,7 +203,7 @@ async function assetStrategy(request, event) {
     }
     return response;
   } catch (error) {
-    return Response.error();
+    return (await caches.match(request, { ignoreSearch: true })) || Response.error();
   }
 }
 

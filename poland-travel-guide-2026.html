@@ -6945,37 +6945,47 @@ li > p.source-meta a,
   white-space: nowrap;
 }
 
-/* 每日行程下拉：Day N 後面直接寫日期與城市，不必回首頁對照哪天是幾號。 */
-.nav-dropdown > ul a .nav-day-label {
-  flex: 0 0 3.6rem;
+/* 每日行程下拉：Day N 後面直接寫日期與城市，不必回首頁對照哪天是幾號。
+   兩欄兩行：左欄 Day N；右欄上行日期、下行城市（轉場日較長，可換行不截斷）。 */
+.nav-dropdown > ul.nav-day-list {
+  min-width: 17rem;
+}
+
+.nav-dropdown > ul.nav-day-list a:has(.nav-day-label) {
+  display: grid;
+  grid-template-columns: 3.4rem minmax(0, 1fr);
+  column-gap: 0.6rem;
+  align-items: center;
+  padding-block: 0.5rem;
+}
+
+.nav-day-label {
   font-weight: 700;
-}
-
-.nav-dropdown > ul a .nav-day-date {
-  flex: 0 0 auto;
-  font-variant-numeric: tabular-nums;
-}
-
-.nav-dropdown > ul a .nav-day-city {
-  flex: 1 1 auto;
-  min-width: 0;
-  margin-left: 0.75rem;
-  overflow: hidden;
-  color: var(--ink-soft);
-  font-family: var(--font-body, inherit);
-  font-size: 0.78rem;
-  text-align: right;
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.nav-dropdown > ul a:hover .nav-day-city,
-.nav-dropdown > ul a:focus-visible .nav-day-city {
-  color: inherit;
+.nav-day-text {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
 }
 
-.nav-dropdown > ul.nav-day-list {
-  min-width: 22rem;
+.nav-day-date {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.nav-day-city {
+  color: var(--ink-soft);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.nav-dropdown > ul a:hover .nav-day-city,
+.nav-dropdown > ul a:focus-visible .nav-day-city,
+.nav-dropdown > ul a.nav-link-current .nav-day-city {
+  color: inherit;
 }
 
 @media (max-width: 700px) {

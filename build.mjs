@@ -7,7 +7,7 @@ import * as dining from './src/data/dining.js';
 import { groceryProducts } from './src/data/groceries.js';
 import { renderPages } from './src/build/pages.mjs';
 import { buildStandalone } from './src/build/standalone.mjs';
-import { writeServiceWorker, replacePublishedOutputs } from './src/build/output.mjs';
+import { writeServiceWorker, replacePublishedOutputs, versionAssetLinks } from './src/build/output.mjs';
 import { standalonePages } from './src/lib/routes.mjs';
 import { buildPageSearchRecords, buildTravelSearchRecords, serializeSearchIndex } from './src/search/site-search-index.mjs';
 
@@ -91,6 +91,8 @@ function buildIntoStaging(stagingRoot) {
 
   buildStandalone({ distDir, standalonePath, searchRecords });
   fs.copyFileSync(standalonePath, path.join(distDir, 'poland-travel-guide-2026.html'));
+  // 單檔版已打包完，才替多頁版的 CSS／JS 網址加上內容指紋（見 versionAssetLinks）。
+  versionAssetLinks(distDir);
 
   const htmlCount = fs.readdirSync(distDir)
     .filter(name => name.endsWith('.html') && name !== 'poland-travel-guide-2026.html').length
