@@ -311,8 +311,8 @@ export const days = [
     headline: '早上起義博物館，中午皇家城堡與老城，下午瓦津基水上宮殿；國家博物館看體力',
     tag: 'Museums',
     intensity: '高',
-    hardConstraints: ['起義博物館 08:00 開門、08:30 入場', '皇家城堡 10:00 開門、16:00 最後入場', '水上宮殿 16:12 日落前先拍外觀再入內', '晚餐 Rusiko 建議預約'],
-    mustBook: ['❗尚未訂 · 華沙起義博物館 08:30', '❗尚未訂 · 皇家城堡 11:30', '❗尚未訂 · 華沙最後晚餐 Rusiko 18:30'],
+    hardConstraints: ['起義博物館 08:00 開門、08:30 入場', '皇家城堡 10:00 開門、16:00 最後入場', '水上宮殿 16:12 日落前先拍外觀再入內', '晚餐 Soul Kitchen 18:30 先訂位並預留威靈頓'],
+    mustBook: ['❗尚未訂 · 華沙起義博物館 08:30', '❗尚未訂 · 皇家城堡 11:30', '❗尚未訂 · 華沙最後晚餐 Soul Kitchen 18:30（威靈頓）'],
     compressible: ['起義博物館抓核心展區（約 1.5 h）', '老城步行段改外觀快拍', '水上宮殿只拍外觀不入內', '國家博物館整段略過'],
     steps: [
       {t:'07:30', id:'d7-breakfast', label:'早餐 · Bułkę przez Bibułkę', sub:'Zgoda 3，離 Metropol 步行約 8 分，平日 07:30 開門；Bagel、炒蛋或 Avocado Toast，08:05 前結帳', dur:'35 min'},
@@ -329,11 +329,11 @@ export const days = [
       {t:'15:10', label:'★ 瓦津基 · 水上宮殿', constraint:{venue:'warsaw-lazienki-palace'}, sub:'日落 16:12：先在湖邊拍宮殿外觀與倒影，再入內；週五個人參觀免費（以當日公告為準），10 月 10:00–18:00', cost:'週五免費', dur:'約 80 min'},
       {t:'16:30', label:'返回市中心，回飯店稍休', sub:'沿 Aleje Ujazdowskie 搭公車或叫車約 15–20 分回 Metropol 放東西、加外套', dur:'約 45 min'},
       {t:'17:15', label:'可選 · 華沙國家博物館', constraint:{venue:'warsaw-national-museum'}, sub:'Al. Jerozolimskie 3，週五開到 20:00、17:00 後門票半價、售票 19:15 截止；挑波蘭繪畫廳看 45 分鐘，18:10 前離館。下雨、體力不足或老城待久就直接略過', cost:'17:00 後半價', dur:'約 55 min'},
-      {t:'18:30', id:'d7-dinner', label:'最後晚餐 · Rusiko 喬治亞菜', sub:'Wierzbowa 11（劇院廣場旁），由國家博物館或飯店搭車約 15 分；khachapuri 起司船形麵包、khinkali 湯包、chanakhi 燉羊腿。官網與 Michelin 列週二至週六 13:00–24:00（Yelp 舊址 Ujazdowskie 22 勿用），先訂位並確認 10/30 營業。不適用依所在地改選：市中心 Kieliszki na Próżnej、老城 U Fukiera、Wola 一帶 WYRAJ', cost:'依菜單', dur:'1.5 h'},
-      {t:'20:15', label:'回飯店整理行李', sub:'老城下午已走過；想看夜景可由 Rusiko 步行約 10 分到城堡廣場繞一圈再回飯店。隔天早上 08:00 早餐、09:45 退房'},
+      {t:'18:30', id:'d7-dinner', label:'最後晚餐 · Soul Kitchen 威靈頓牛排', sub:'Nowogrodzka 18A，國家博物館步行約 12 分、Metropol 步行約 8 分；多個評論來源列 Beef Wellington 為招牌，配韃靼牛肉或 Żurek。菜單隨季節換，Wellington 常需預留，訂位時一併確認 10/30 有供應並請店家留份；沒有就改原首選 Rusiko（Wierzbowa 11，喬治亞菜）', cost:'依菜單', dur:'1.5 h'},
+      {t:'20:15', label:'回飯店整理行李', sub:'Soul Kitchen 步行約 8 分回 Metropol；想喝熱巧克力可繞 Wedel Szpitalna 8（到 22:00）。隔天早上 08:00 早餐、09:45 退房'},
     ],
     eat: [],
-    warn: '❗三項皆尚未訂：起義博物館 08:30、皇家城堡 11:30、晚餐 Rusiko 18:30。2026-10-12 官網複查，皇家城堡已由官方確認 10 月起為二–日 10:00–17:00、最後入場 16:00（不是夏季的 18:00／17:00），11:30 入場仍有餘裕。起義博物館週五 08:00–18:00、週二休館，個人免費日為週四，10/30 照常收費。瓦津基公園每日 06:00–22:00 免費，水上宮殿週五免費入內（以館方當日公告為準）；日落 16:12，先拍外觀。國家博物館週五至 20:00、17:00 後半價，屬加碼行程。蕭邦博物館 2026 全年整修閉館，本趟不列入。',
+    warn: '❗三項皆尚未訂：起義博物館 08:30、皇家城堡 11:30、晚餐 Soul Kitchen 18:30（訂位時預留威靈頓）。2026-10-12 官網複查，皇家城堡已由官方確認 10 月起為二–日 10:00–17:00、最後入場 16:00（不是夏季的 18:00／17:00），11:30 入場仍有餘裕。起義博物館週五 08:00–18:00、週二休館，個人免費日為週四，10/30 照常收費。瓦津基公園每日 06:00–22:00 免費，水上宮殿週五免費入內（以館方當日公告為準）；日落 16:12，先拍外觀。國家博物館週五至 20:00、17:00 後半價，屬加碼行程。蕭邦博物館 2026 全年整修閉館，本趟不列入。',
     extend: [
       {label:'Bulwary Wiślane 維斯瓦河畔', when:'晚餐後', map:'https://www.google.com/maps/search/?api=1&query=Bulwary%20Wi%C5%9Blane%2C%20Warszawa', why:'河濱步道，城堡廣場步行 10–15 分，晚餐後想散步再去，免費'},
       {label:'Neon Museum 霓虹燈博物館', when:'取消瓦津基或國家博物館時替代', map:'https://www.google.com/maps/search/?api=1&query=Neon%20Muzeum%2C%20plac%20Defilad%201%2C%20Warszawa', why:'已遷入科學文化宮 4 樓（Marszałkowska 入口），共產時期霓虹招牌收藏，PLN 25／優待 18，離飯店最近的室內選項'},
@@ -519,9 +519,9 @@ export const bookingTiers = [
     {name:`皇家城堡（官網複查二至日 ${royalCastleVenue.hours.opens}–${royalCastleVenue.hours.closes}，末入 ${royalCastleVenue.hours.lastEntry}）`, url:'https://www.zamek-krolewski.pl/en'},
     {name:'拉茨瓦維採全景畫', url:'https://mnwr.pl/en/category/branches/panorama-raclawicka/'},
   ]},
-  {tier:'餐廳與備案', note:'❗全部尚未訂 · 優先訂 Mr. Jerry 與 Rusiko，再訂 Hankki 與 Specjały', items:[
+  {tier:'餐廳與備案', note:'❗全部尚未訂 · 優先訂 Mr. Jerry 與 Soul Kitchen，再訂 Hankki 與 Specjały', items:[
     {name:'Mr. Jerry 10/26 18:30（Beef Wellington；官網訂位）', url:'https://www.mrjerry.pl/rezerwacja-krakow/'},
-    {name:'Rusiko 10/30 18:30（電話 +48 22 629 06 28 訂位）', url:'https://www.rusiko.pl/en/menu/'},
+    {name:'Soul Kitchen 10/30 18:30（電話 +48 519 020 888 訂位並預留 Beef Wellington；沒有改 Rusiko +48 22 629 06 28）', url:'https://restaurantguru.com/Soul-Kitchen-Warsaw'},
     {name:'Hankki 10/25 19:15（MojStolik 線上訂位）', url:'https://mojstolik.pl/restauracja/Hankki/f733c19bc164a5ad85848d96dc851be9'},
     {name:'Specjały Regionalne 10/24 18:30（TheFork 訂位）', url:'https://www.thefork.com/restaurant/specjaly-regionalne-restauracja-polska-stare-miasto-r858538'},
     {name:'Pimiento 10/25 13:00 兩位（尚未訂；官網 ZAREZERWUJ 或電話 +48 517 475 818）', url:'https://pimiento.pl/stary-kleparz/'},
@@ -569,7 +569,7 @@ export const todoGroups = [
       {checkedAt:'2026-10-10', recheckAt:'2026-10-22', date:'10/27', name:'Bistro Posolone 出礦後午餐', status:'待確認營業', action:'2026-10-10 查得：位於鹽礦園區 Park Kingi 6，官方寫「每天依鹽礦開放時間」（約 08:00–18:00），確切時刻未查到。菜單有披薩、漢堡、湯、沙拉、薯條，30 分鐘內吃完就點湯、沙拉或漢堡，才趕得上返回車站與 16:45 IC 3830；可電話 +48 12 278 75 20 確認，來不及改自備餐。', url:'https://www.google.com/maps/search/?api=1&query=Bistro%20Posolone%2C%20Wieliczka'},
       {checkedAt:'2026-10-12', recheckAt:'2026-10-22', date:'10/29', name:'Carla Trattoria Moderna 14:00 午餐', status:'尚未訂位', action:'在 zjedz.my 訂 10/29 14:00 兩位（https://zjedz.my/carla-trattoria-moderna）；店家也有電話 +48 796 200 002。2026-10-12 查：週四 14:00 才開門（Google 地圖與 zjedz.my 一致，menu.pl 外送時段到 21:30），12:30 吃不到。15:15 前結帳，上菜慢就砍帝王城堡內部，先保 17:05 到站；近期有評論說上菜偏慢。訂不到改 Pyra Bar 12:30 午餐。', url:'https://zjedz.my/carla-trattoria-moderna'},
       {checkedAt:'2026-10-12', recheckAt:'2026-10-22', date:'10/29', name:'Arirang 晚餐', status:'待確認營業', action:'10/29 晚餐首選，約 20:30（待查票面）抵華沙。2026-10-12 複查：Yelp 與多個目錄週四 12:00–22:00，沒有店家官網，最後點餐時間與線上訂位都未查到。當天打 22 881 78 51 或 22 622 18 86 問，21:30 前能入座才去，否則改 Złote Tarasy 內快食、Soul Kitchen 或 24 小時的 Ćma。', url:'https://www.google.com/maps/search/?api=1&query=Arirang%20Restaurant%20Nowogrodzka%2038%2C%20Warszawa'},
-      {checkedAt:'2026-10-12', recheckAt:'2026-10-22', date:'10/30', name:'華沙最後晚餐 · Rusiko 18:30', status:'尚未訂位', action:'瓦津基或國家博物館之後搭車約 15 分到 Wierzbowa 11。2026-10-12 複查：官網與 Michelin 皆列 Wierzbowa 11，週二至週六 13:00（或 14:00）–24:00；Yelp 仍顯示舊址 Ujazdowskie 22，別走錯。電話 +48 22 629 06 28 訂 10/30 18:30、2 人並確認當天營業。不適用改 WYRAJ（2026-10-10 已查週五 12:00–00:00，TheFork：https://www.thefork.com/restaurant/wyraj-r857032）、Kieliszki na Próżnej 或 U Fukiera。', url:'https://joinpearl.co/restaurants/warsaw/rusiko'},
+      {checkedAt:'2026-10-13', recheckAt:'2026-10-22', date:'10/30', name:'華沙最後晚餐 · Soul Kitchen 18:30（威靈頓）', status:'尚未訂位', action:'國家博物館步行約 12 分到 Nowogrodzka 18A。電話 +48 519 020 888 訂 10/30（週五）18:30、2 人，並請店家預留 Beef Wellington；菜單隨季節換，官方菜單未確認，沒供應就改訂 Rusiko（Wierzbowa 11，+48 22 629 06 28，週二至週六 13:00–24:00）。另一間威靈頓評價高的 Primitivo（Waliców 13，+48 606 44 44 62，週五至 23:00）在 Wola，離晚上動線較遠。', url:'https://restaurantguru.com/Soul-Kitchen-Warsaw'},
     ],
   },
 ];
@@ -578,7 +578,7 @@ export const reservations = [
   {when:'✅ 已完成', what:'Auschwitz 英文官方導覽 — 10/26 10:30 個人 educator 導覽（約 3 小時 45 分，2 人）已訂妥。入場憑電子入場證＋證件，出發前存離線。'},
   {when:'❗現在就查／訂', what:'Wieliczka 鹽礦英文 Tourist Route 10:00 場 — 10/27 英文場、實際票價與庫存以官方日期選擇器為準；不要用舊價格或開賣週期取代訂票結果。'},
   {when:'現在可訂', what:`皇家城堡 — 2026-10-12 官網複查二至日 ${royalCastleVenue.hours.opens}–${royalCastleVenue.hours.closes}、最後入場 ${royalCastleVenue.hours.lastEntry}；Day 7 排 11:30 入場（zamek-krolewski.pl）`},
-  {when:'現在可先訂', what:'行程晚餐：10/26 Mr. Jerry（威靈頓）、10/30 Rusiko 先訂，再訂 10/25 Hankki 與 10/24 Specjały；米其林星級餐廳（Bottiglieria 1881、BABA／Most、WANDAL）未排入行程，想加需另外訂並重排晚餐'},
+  {when:'現在可先訂', what:'行程晚餐：10/26 Mr. Jerry（威靈頓）、10/30 Soul Kitchen（威靈頓）先訂，再訂 10/25 Hankki 與 10/24 Specjały；米其林星級餐廳（Bottiglieria 1881、BABA／Most、WANDAL）未排入行程，想加需另外訂並重排晚餐'},
   {when:'火車票：已購 4／4 段', what:'App 票券清單已有 10/25 EIP 5300（Warszawa Centralna 08:40）、10/27 IC 3830（Kraków Główny 16:45）、10/28 IC 260（Wrocław Główny 19:10）、10/29 EIC 8104（Poznań Główny 17:40）。四段抵達時間、艙等、車廂、座位與票價待查票券詳細頁。'},
   {when:'現在可查／訂', what:'辛德勒工廠 10/25 場次已進個人網路票 90 天窗口；華沙起義博物館與皇家城堡均以官方售票頁顯示的指定日庫存為準。'},
   {when:'出發前 1 週', what:'把上述所有票價、特別閉館與開放時間再確認一次 — 門票速查與城市指南已於 2026-09-17／09-18 全面複查過，臨時活動與維修仍可能變動'},
@@ -595,8 +595,8 @@ export const reservations = [
 export const deadlines = [
   {
     id: 'dining-michelin', date: '2026-10-02', category: '餐飲',
-    title: '行程餐廳訂位（Mr. Jerry、Rusiko、Hankki、Specjały）',
-    action: '先訂兩家晚餐主選：10/26 Mr. Jerry 18:30（電話 +48 533 836 624，順便確認當天有 Beef Wellington）、10/30 Rusiko 18:30（+48 22 629 06 28）；再訂 10/25 Hankki 19:15（MojStolik 或 +48 798 399 851）與 10/24 Specjały Regionalne 18:30（TheFork）。米其林星級餐廳未排入行程，想加再另外訂。',
+    title: '行程餐廳訂位（Mr. Jerry、Soul Kitchen、Hankki、Specjały）',
+    action: '先訂兩家晚餐主選：10/26 Mr. Jerry 18:30（電話 +48 533 836 624，順便確認當天有 Beef Wellington）、10/30 Soul Kitchen 18:30（+48 519 020 888，請店家預留 Beef Wellington；沒有就改 Rusiko +48 22 629 06 28）；再訂 10/25 Hankki 19:15（MojStolik 或 +48 798 399 851）與 10/24 Specjały Regionalne 18:30（TheFork）。米其林星級餐廳未排入行程，想加再另外訂。',
     status: '尚未訂位', url: 'https://www.mrjerry.pl/rezerwacja-krakow/',
     basis: '行前提醒「熱門餐廳出發前 3–4 週訂」，取窗口下緣 3 週由 10/23 台灣出發日回推；2026-10-12 依改排後的每日晚餐更新店名。',
   },

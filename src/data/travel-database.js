@@ -517,7 +517,7 @@ export const dayOperations = {
       '市政廳博物館整修閉館；主行程只看官方確認的 12:00 山羊鐘樓秀。',
       '聖馬丁牛角麵包已選定 ROGAL Świętomarciński（Stary Rynek 11/17）；週四營業時間未查到，出發前看店家 Facebook 確認，售完改 Cukiernia Kandulski。',
     ],
-    nightChecklist: [...standardNightChecklist, '核對 Day 7 起義博物館 08:30、皇家城堡 11:30 的購票狀態，尚未訂者不要當作已購', '確認 Polka 午餐與 Rusiko 18:30 訂位及 10/30 營業；不適用依所在地改 WYRAJ（週五 12:00–00:00，已於 2026-10-10 複查）、Kieliszki na Próżnej 或 U Fukiera，並重算交通'],
+    nightChecklist: [...standardNightChecklist, '核對 Day 7 起義博物館 08:30、皇家城堡 11:30 的購票狀態，尚未訂者不要當作已購', '確認 Polka 午餐與 Soul Kitchen 18:30 訂位、威靈頓已預留；沒供應改 Rusiko（Wierzbowa 11）或 Kieliszki na Próżnej，並重算交通'],
   },
   7: {
     cityKey: 'warsaw',
@@ -533,7 +533,7 @@ export const dayOperations = {
     navigation: [
       { mode: '地鐵 M2', route: 'Świętokrzyska ⇄ Rondo Daszyńskiego', action: '早上去起義博物館、10:30 回市中心都搭 M2；下車步行約 8 分到 Grzybowska 79。' },
       { mode: '步行', route: '無名塚 → 皇家城堡 → Polka → 老城 → 甕城 → 起義紀念碑', action: '11:00 後全程步行約 2 公里；時間不夠就把甕城以北改外觀快拍。' },
-      { mode: '公車／叫車', route: '老城 → 瓦津基 → 市中心 → Rusiko', action: '老城到瓦津基約 4 公里，搭公車或叫車約 25–30 分；回市中心與去 Wierzbowa 11 各約 15 分，當日用 Jakdojade 重算。' },
+      { mode: '公車／叫車', route: '老城 → 瓦津基 → 市中心 → Soul Kitchen', action: '老城到瓦津基約 4 公里，搭公車或叫車約 25–30 分；回市中心約 15–20 分，國家博物館步行約 12 分到 Nowogrodzka 18A，當日用 Jakdojade 重算。' },
     ],
     dailyAlerts: [
       '起義博物館內容沉重，08:30 一開館就進、人最少；看主線約 2 小時，不為追完所有展區壓縮城堡。',

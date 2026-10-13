@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { groceryProducts } from '../data/groceries.js';
+import { groceryDrinkGuide, groceryProducts } from '../data/groceries.js';
 
 /**
  * sw.js 的商品照片預快取清單改由資料推導，不再靠人維護。
@@ -10,11 +10,12 @@ import { groceryProducts } from '../data/groceries.js';
  * install 用 cache.addAll：清單裡只要有一個檔案不存在，整個 Service Worker
  * 就裝不起來，離線功能整份失效。反方向的漂移一樣有代價——2026-09 的採買推薦
  * 換掉三項商品後，三張沒有任何頁面引用的照片仍留在清單裡，每個安裝都照樣
- * 下載、快取，還算進快取指紋。這裡只列 groceryProducts 真的引用的照片，
+ * 下載、快取，還算進快取指紋。這裡只列商品卡與牛奶果汁／Żabka 卡真的引用的照片，
  * 副檔名（.webp／.jpg）也跟著資料走，兩種漂移都不可能發生。
  */
 export function precachedGroceryPhotos() {
-  return [...new Set(groceryProducts.map(product => product.photo?.src).filter(Boolean))].sort();
+  const drinkPicks = [...groceryDrinkGuide.milk, ...groceryDrinkGuide.juice, ...groceryDrinkGuide.zabka];
+  return [...new Set([...groceryProducts, ...drinkPicks].map(item => item.photo?.src).filter(Boolean))].sort();
 }
 
 function injectGroceryPhotos(source, photos) {

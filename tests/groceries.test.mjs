@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { groceryBranches, groceryProducts } from '../src/data/groceries.js';
+import { groceryBranches, groceryDrinkGuide, groceryProducts } from '../src/data/groceries.js';
 import { cityRoutes } from '../src/lib/city-guide.mjs';
 import { normalizeText } from '../src/search/site-search-index.mjs';
 
@@ -170,4 +170,19 @@ test('手機長度：推薦分組只展開第一組、摘要列出商品名，�
   for (const id of [...html.matchAll(/<section class="section" id="([^"]+)"/g)].map(match => match[1])) {
     assert.ok(links.includes(`href="#${id}"`), `頁首跳轉鈕缺少 #${id}`);
   }
+});
+
+test('牛奶與果汁推薦與 Żabka 即食：每張卡有照片、哪裡買、怎麼認與來源，標示對照表與 Żabka 熱食都在頁面上', () => {
+  const html = fs.readFileSync('dist/practical/groceries.html', 'utf8');
+  const picks = [...groceryDrinkGuide.milk, ...groceryDrinkGuide.juice, ...groceryDrinkGuide.zabka];
+  assert.ok(groceryDrinkGuide.milk.length >= 3 && groceryDrinkGuide.juice.length >= 3);
+  assert.equal((html.match(/class="grocery-drink" id="/g) || []).length, picks.length);
+  for (const pick of picks) {
+    assert.ok(pick.sources.length > 0 && pick.sources.every(s => /^https:\/\//.test(s.url)), pick.id);
+    assert.ok(html.includes(`id="${pick.id}"`), pick.id);
+    assert.ok(pick.photo && fs.existsSync(pick.photo.src), `${pick.id} 缺照片`);
+    assert.ok(html.includes(`src="../${pick.photo.src}"`), `${pick.id} 照片沒渲染`);
+  }
+  assert.ok(html.includes('href="#drinks"'));
+  for (const word of ['Mleko UHT', 'tłoczony / NFC', 'Nektar', 'Żabka Hot Dog', 'Szamamm']) assert.ok(html.includes(word), word);
 });

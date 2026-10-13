@@ -156,3 +156,11 @@ MOLÁM、Arirang、Oseyo 25、Inna Piekarnia 依 v5 補上地址或時段；其�
 - 「現場地址」卡改成名稱＋地址＋導航按鈕一眼可見，入口說明收合，餐廳制式入口句不再重複（每張約 250 → 170px）。
 - 卡片表格中超過 140 字的備註（票價查核、交通細節）手機先顯示 4 行，按「展開全文」看完整內容。
 - 手機內文行高放寬到 1.7。
+
+## 第六輪（2026-10-13）：10/30 威靈頓晚餐、伴手禮刪琥珀與陶器
+
+- **10/30 晚餐改 Soul Kitchen（Nowogrodzka 18A）**：Restaurant Guru 2026-07 華沙威靈頓榜第一、Tripadvisor 第二；國家博物館步行約 12 分、Metropol 步行約 8 分。官方菜單未確認，訂位（+48 519 020 888）時請店家預留 Beef Wellington。當天營業時段取保守值 17:30–22:00。
+- **Rusiko 退為備選**（沒有威靈頓或客滿時改這間）；新增 **Primitivo Kuchnia i Wino**（Waliców 13，+48 606 44 44 62，週五至 23:00，Tripadvisor 威靈頓榜第一）為威靈頓備選，因在 Wola、離晚上動線遠，不列首選。
+- 排除：Bydło i Powidło Wellington Show（只在週一，官網標示暫停）、U Wieniawy（威靈頓僅為過去的期間限定）、Europejski Grill（查無威靈頓，只見炭烤菲力）、Warszawa Wschodnia（Praga，太遠）、Warszawski Sen（Hala Koszyki，評論兩極）。
+- 10/29 的 Soul Kitchen 備選改註明隔天已排，避免連吃兩晚。
+- 伴手禮依使用者指示刪除琥珀與 Bolesławiec 陶器：伴手禮卡 2 張、店家 3 家、標籤 2 筆、克拉科夫地圖圖釘 2 個（49 → 47）。

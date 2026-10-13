@@ -1,6 +1,4 @@
 export const souvenirCards = [
-  {title:'波羅的海琥珀 Bursztyn', desc:'「波蘭黃金」；蜂蜜／威士忌色透明系，項鍊／手鍊／耳環。含昆蟲或罕見色澤較貴。各城珠寶店，認明 handmade。'},
-  {title:'Bolesławiec 陶器', desc:'深藍底配白色圓點花紋，手繪炻器，耐用實用。原產地在 Bolesławiec，各城有專賣店。'},
   {title:'伏特加 Wódka（不喝酒可略過）', desc:'透明瓶身，Żubrówka 瓶內有一根綠色野牛草最好認；Wyborowa、Sobieski、Luksusowa、J.A. Baczewski 也常見。'},
   {title:'巧克力 · 糖果', desc:'E. Wedel 老牌深棕包裝；Ptasie Mleczko 藍白紙盒，巧克力棉花糖；Krówki 奶油糖、Michałki、Kukułki 銀色包裝。'},
   {title:'Prince Polo 巧克力威化棒', desc:'紅金配色長條包裝，波蘭國民零食，超商常見隨手包，價格依門市；巧克力／花生／椰子多口味，適合當辦公室伴手禮。'},
@@ -20,9 +18,6 @@ export const luxuryShopping = [
 ];
 
 export const souvenirShops = [
-  {city:'克拉科夫', name:'Stradomska 街 Bolesławiec 陶器店', note:'Stradomska 街陶器購物候選；本輪未核實具體店家與門牌，行前確認後再前往', mapUrl:'https://www.google.com/maps/search/?api=1&query=Stradomska%20Street%20pottery%20shops%20Krak%C3%B3w'},
-  {city:'克拉科夫', name:'S&A Amber', note:'2026-09-19 官網確認 Grodzka 14；索取發票與材質標示，不以 handmade 標示保證真偽', mapUrl:'https://www.google.com/maps/search/?api=1&query=S%26A%20Amber%20Grodzka%20Krak%C3%B3w'},
-  {city:'克拉科夫', name:'World of Amber', note:'2026-09-19 品牌官網列 Floriańska 22、Grodzka 38；前往前確認所選分店營業時間', mapUrl:'https://www.google.com/maps/place/?q=place_id:ChIJPxlI8hJbFkcR7vI2ebLVIDk'},
   {city:'克拉科夫', name:'Sukiennice 布廊', note:'廣場內伴手禮攤位集中', mapUrl:'https://www.google.com/maps/search/?api=1&query=Sukiennice%20Cloth%20Hall%20Krak%C3%B3w'},
   {city:'克拉科夫', name:'Rzeczy Same Podgórze', note:'波蘭設計店候選；本輪未取得現行官方門市資訊，地址與營業狀態待確認', mapUrl:'https://www.google.com/maps/search/?api=1&query=Rzeczy%20Same%20Podg%C3%B3rze%20Krak%C3%B3w'},
   {city:'華沙', name:'E.Wedel 巧克力沙龍', note:'Szpitalna 8 旗艦店', mapUrl:'https://www.google.com/maps/search/?api=1&query=Pijalnia%20Czekolady%20E.Wedel%20Szpitalna%20Warszawa'},
@@ -31,8 +26,6 @@ export const souvenirShops = [
 ];
 
 export const shopping = [
-  {tag:'陶瓷', name:'Bolesławiec', note:'藍底白點手繪餐具，全球收藏家追捧'},
-  {tag:'琥珀', name:'波羅的海琥珀', note:'克拉科夫紡織會館或華沙老城；向店家索取發票與材質、處理方式說明，不用鹽水或靜電測試當作真偽保證'},
   {tag:'伏特加', name:'Żubrówka / Soplica', note:'野牛草 / 果味，伴手首選'},
   {tag:'巧克力', name:'E. Wedel', note:'1851 年華沙百年品牌'},
   {tag:'糖果', name:'Krówki', note:'波蘭奶油糖，超市到處有'},
