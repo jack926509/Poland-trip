@@ -36,7 +36,7 @@ function privateProofLine(slot, privateHref) {
     </span>`;
 }
 
-function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref, todosHref }) {
+function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref, todosHref, anchors = false }) {
   const daySlots = privateSlots.filter(slot => slot.day === day.n);
   const trainSegment = segmentForDay(day);
   const bed = stayForDate(stay, iso);
@@ -155,7 +155,7 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref, todo
         return `<p class="today-transport-time"><b>${escapeHtml(trainSegment.dep)}${arrKnown ? ` – ${escapeHtml(trainSegment.arr)}` : ' 發車'}</b><span>${escapeHtml(trainSegment.type)}${durKnown ? ` · ${escapeHtml(trainSegment.dur)}` : ''}</span></p>`;
       })()}
       <a class="today-block-link" href="${escapeHtml(dayHref)}#day-preparation">票務與當日提醒 →</a></section>` : ''}
-    <section class="today-block" data-today-food><div class="today-block-head"><h3>今天吃哪</h3></div>
+    <section class="today-block"${anchors ? ' id="today-food"' : ''} data-today-food><div class="today-block-head"><h3>今天吃哪</h3></div>
       <p class="source-meta">正餐按餐別各列一家；點心與候選看體力和動線插入，不必全吃。候選不代表已訂位，導航開啟後請再確認營業與最後點餐時間。</p>
       ${renderMealList(day, dayMeals[day.n])}
       ${snacks.length ? `<p class="today-snack-label"><b>順路點心／候選</b>（${snacks.length} 家，不必全吃）</p>
@@ -173,7 +173,7 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref, todo
         ${hotelMap ? `<a class="today-block-link" href="${escapeHtml(hotelMap)}" target="_blank" rel="noopener noreferrer">${bed.id === 'poznan-towarowa' ? '接待處導航' : '住宿導航'} ↗</a>` : ''}` : leaving ? `<p>今晚離境／機上過夜。先確認航班報到、退稅與機場交通。</p><a class="today-block-link" href="${escapeHtml(dayHref)}#directions">開啟機場地址與交通 →</a>`
         : `<p><b>這一天不是離境日，但查不到當晚住宿。</b>這是資料缺漏，不是「不用住」——請先補上訂房或確認安排。</p><a class="today-block-link" href="${escapeHtml(dayHref)}#day-preparation">查看當日訂房與提醒 →</a>`}
     </section>
-    <details class="today-block today-block-more" data-today-schedule><summary>全天時間表<span class="today-more-meta">${day.steps.length} 個時段</span></summary>${renderSteps(day)}</details>
+    <details class="today-block today-block-more"${anchors ? ' id="today-schedule"' : ''} data-today-schedule><summary>全天時間表<span class="today-more-meta">${day.steps.length} 個時段</span></summary>${renderSteps(day)}</details>
     <details class="today-block today-block-more"><summary>預約與待辦<span class="today-more-meta">${progress.pending.length} 項待處理</span></summary>
       <h4>仍未訂妥</h4><ul>${progress.pending.map(bookingLine).join('') || '<li>無待訂項目。</li>'}</ul>
       ${progress.skipped.length ? `<h4>線上訂不到（現場再試）</h4><ul>${progress.skipped.map(bookingLine).join('')}</ul>` : ''}
@@ -200,7 +200,8 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref, todo
  */
 export function renderToday({ meta, days, stay, dayDining = {}, daylight = [], safety, pathPrefix = '' }) {
   const daylightByDay = new Map(daylight.map(item => [item.day, item]));
-  const cards = days.map(day => renderDayCard(day, {
+  const cards = days.map((day, index) => renderDayCard(day, {
+    anchors: index === 0,
     iso: dayIsoDate(day.date, meta.tripStart),
     stay,
     dining: dayDining[String(day.n)],

@@ -322,6 +322,11 @@ ${leafletCss}
     .standalone-page > nav.section-heading { width: min(1180px, calc(100% - 2rem)); margin-inline: auto; }
     .standalone-page > .hero { padding-top: 4rem; }
     .standalone-page > nav.section-heading { padding-bottom: 3rem; }
+    /* 每日頁快捷列在一般站靠負邊距貼齊內容區；單檔版的頁面直接是全寬，
+       負邊距會讓它比視窗寬 40px（1280px 時溢出），桌機改為不外推。 */
+    @media (min-width: 701px) {
+      .standalone-page > .day-shortcuts { margin-inline: 0; }
+    }
     @media (max-width: 640px) {
       .standalone-nav {
         display: grid;

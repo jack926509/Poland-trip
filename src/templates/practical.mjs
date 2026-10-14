@@ -92,7 +92,7 @@ function renderBookingNotice({ onTodosPage = false } = {}) {
  * 現在狀態只有待辦頁一個正本：這裡的數字由 todoGroups 即時算出，細項請去待辦頁。
  * id="countdown" 保留，今日卡與舊連結仍可跳到這張卡。
  */
-export function renderBookingStatusCard(todoGroups, deadlines = []) {
+export function renderBookingStatusCard(todoGroups, deadlines = [], today = taipeiToday()) {
   const stats = todoStats(todoGroups);
   // 還沒完成、又不屬於待辦頁的期限（複查、證件）：待辦頁不會出現，只能在這裡列出，否則旅客看不到。
   // 有 todoRef 的期限狀態由待辦正本管理，不重複列。
@@ -102,7 +102,14 @@ export function renderBookingStatusCard(todoGroups, deadlines = []) {
   const standaloneHtml = standalone.length ? `
         <div class="booking-status-extra" data-booking-extra>
           <h3>待辦頁以外還要做</h3>
-          <ul>${standalone.map(item => `<li data-deadline-id="${escapeHtml(item.id)}"><b class="number">${escapeHtml(item.date.slice(5).replace('-', '/'))}</b>　${escapeHtml(item.title)}</li>`).join('')}</ul>
+          <ul>${standalone.map(item => `<li data-deadline-id="${escapeHtml(item.id)}" data-recheck-at="${escapeHtml(item.date)}" data-recheck-open="true"><b class="number">${escapeHtml(item.date.slice(5).replace('-', '/'))}</b>　${escapeHtml(item.title)}<span class="tag-red todo-recheck-flag" data-recheck-flag${item.date < today ? '' : ' hidden'}>已逾期</span></li>`).join('')}</ul>
+          <script>
+            (function() {
+              ${[todayIn, taipeiToday, markOverdueRechecks].map(fn => fn.toString()).join('\n')}
+              const root = document.currentScript.closest('.standalone-page') || document;
+              markOverdueRechecks(root.querySelector('[data-booking-extra]') || root, taipeiToday);
+            }());
+          </script>
         </div>` : '';
   const rows = stats.groups.map(row => `<li><a href="todos.html#todo-${escapeHtml(row.id)}"><span>${escapeHtml(row.title)}</span><b>${row.open ? `${row.open} 項待處理` : '已完成'}</b></a></li>`).join('');
   return `

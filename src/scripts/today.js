@@ -99,6 +99,12 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
       : selection.mode === 'after' ? cards.length - 1 : 0;
     const preview = dates[shown] !== today;
     cards.forEach((card,index) => { card.hidden = index !== shown; });
+    // 八張卡同時渲染，id 只能有一份：#today-food／#today-schedule 永遠掛在目前顯示的那張卡上。
+    cards.forEach((card,index) => ['food','schedule'].forEach(key => {
+      const block = card.querySelector?.(`[data-today-${key}]`);
+      if (!block) return;
+      if (index === shown) block.setAttribute('id', `today-${key}`); else if (block.getAttribute('id') === `today-${key}`) block.removeAttribute('id');
+    }));
     if (picker) picker.value = dates[shown];
     if (prev) prev.disabled = shown === 0;
     if (next) next.disabled = shown === cards.length - 1;
