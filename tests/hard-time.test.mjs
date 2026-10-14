@@ -28,12 +28,13 @@ test('發車、報到與最後入場分屬不同類別，且開門不算期限',
   assert.deepEqual(parseHardTimes(''), []);
 });
 
-test('Day 7 皇家城堡的 16:00 最後入場有獨立提醒，不會在 10:00 過後消失', () => {
+// 2026-10-14 新行程不進皇家城堡；Day 7 的最後入場改由水上宮殿（週五免費、17:30 最後入場）承擔。
+test('Day 7 水上宮殿的 17:30 最後入場有獨立提醒，不會在 10:00 過後消失', () => {
   const rows = hardRows('2026-10-30');
   const minutes = rows.map(r => r.minute);
-  assert.ok(minutes.includes(16 * 60), '16:00 最後入場必須自成一筆提醒');
+  assert.ok(minutes.includes(17 * 60 + 30), '17:30 最後入場必須自成一筆提醒');
   assert.ok(minutes.includes(10 * 60), '10:00 開門仍列出，但只是資訊');
-  assert.match(rows.find(r => r.minute === 16 * 60).body, /最後入場/);
+  assert.match(rows.find(r => r.minute === 17 * 60 + 30).body, /最後入場/);
   assert.match(rows.find(r => r.minute === 10 * 60).body, /開門/);
 });
 
@@ -53,10 +54,10 @@ test('出發時間只在行程表對得上同一地點時推導，否則標待�
   assert.match(trainDep.body, /依行程表，這段移動由 08:05/);
   assert.match(trainDep.body, /行程表估時/);
 
-  // 場館類期限：Day 7 最後入場之前最近的移動是去瓦津基，不可拿來當去城堡的出發時間。
-  const castle = hardRows('2026-10-30').find(r => r.minute === 16 * 60);
-  assert.match(castle.body, /最晚出發時間待確認/);
-  assert.ok(!/瓦津基/.test(castle.body), '不可把別的目的地當成這段移動');
+  // 場館類期限：Day 7 水上宮殿最後入場的前一段移動，不可拿之後「走回飯店」那段來推導出發時間。
+  const palace = hardRows('2026-10-30').find(r => r.minute === 17 * 60 + 30);
+  assert.match(palace.body, /最晚出發時間待確認|依行程表/);
+  assert.ok(!/回飯店/.test(palace.body), '不可把別的目的地當成這段移動');
 
   // 開門不是期限，不推導出發時間。
   assert.ok(!/today-move/.test(hardRows('2026-10-30').find(r => r.minute === 600).body));

@@ -23,12 +23,12 @@ export const ticketPurchaseGroups = [
   {
     cityKey: 'WAW', items: [
       entry('warsaw-royal-castle', '皇家城堡 Royal Castle', {
-        plan: 'main', day: 7, purchaseUrl: 'https://bilety.zamek-krolewski.pl/index.html?lang=en',
-        note: '主行程選 Royal Route，注意不要選成較長的 Castle Route；按官方可售日期與入場時段購票。',
+        purchaseUrl: 'https://bilety.zamek-krolewski.pl/index.html?lang=en',
+        note: '2026-10-14 新行程只看外觀、不進館，不用買票；10/24 傍晚與 10/30 上午只在城堡廣場拍外觀。想入內才選 Royal Route，注意不要選成較長的 Castle Route；按官方可售日期與入場時段購票。',
       }),
       entry('warsaw-rising-museum', '華沙起義博物館', {
-        plan: 'main', day: 7, purchaseUrl: 'https://bilety.1944.pl/?lang=en',
-        note: '建議提前購票；週四免費，主行程參觀的週五需買票。',
+        purchaseUrl: 'https://bilety.1944.pl/?lang=en',
+        note: '2026-10-14 新行程只看外觀、不進館，不用買票；想入內就提前購票；週四免費，週五需買票。',
       }),
       entry('warsaw-lazienki-palace', '瓦津基水上宮殿 Palace on the Isle', {
         plan: 'main', day: 7, method: 'free',
@@ -37,8 +37,8 @@ export const ticketPurchaseGroups = [
         note: '主行程 10/30 是週五，個人參觀宮殿免費，直接入場、不必領票；其他日期依票種購買。公園散步免費。',
       }),
       entry('warsaw-national-museum', '華沙國家博物館', {
-        day: 7, purchaseUrl: 'https://bilety.mnw.art.pl/',
-        note: '10/30 可選行程；週五 17:00 後門票半價，1 PLN 票除外。臨展票亦包含常設展，依想看的展覽選票。',
+        purchaseUrl: 'https://bilety.mnw.art.pl/',
+        note: '2026-10-14 新行程只看外觀、不進館，不用買票；10/24 經過戴高樂圓環時看外觀。想入內：週五 17:00 後門票半價，1 PLN 票除外。臨展票亦包含常設展，依想看的展覽選票。',
       }),
       entry('warsaw-pkin-terrace', '科學文化宮 30 樓觀景台', {
         purchaseUrl: 'https://www.bilety.pkin.pl/', sourceUrl: 'https://www.bilety.pkin.pl/',
@@ -83,7 +83,7 @@ export const ticketPurchaseGroups = [
       }),
       entry('warsaw-polin-reference', 'POLIN 波蘭猶太人歷史博物館', {
         plan: 'reference', purchaseUrl: 'https://bilety.polin.pl/', sourceUrl: 'https://polin.pl/en',
-        note: '附件原規劃有列；最新主行程未排。只保留購票參考，若要加入須重新安排博物館時間。',
+        note: '附件原規劃有列；最新主行程未排入館，2026-10-14 新行程只在 10/30 08:30 看建築外觀。只保留購票參考，若要入館須重新安排博物館時間。',
       }),
       entry('warsaw-chopin-museum', '蕭邦博物館', {
         plan: 'closed', method: 'closed', sourceUrl: 'https://muzeum.nifc.pl/en/muzeum/wizyta-informacje-miejsce/1_kontakt/',
@@ -141,18 +141,18 @@ export const ticketPurchaseGroups = [
   {
     cityKey: 'WRO', items: [
       entry('wroclaw-panorama', '拉茨瓦維採全景畫 Panorama Racławicka', {
-        plan: 'main', day: 5, purchaseUrl: mnwrTickets,
+        purchaseUrl: mnwrTickets,
         sourceUrl: 'https://mnwr.pl/oddzialy/panorama-raclawicka/bilety-informacje-praktyczne/',
-        note: '選指定日期與場次，每場約 30 分鐘。全景畫票含國家博物館、民族誌博物館與四穹頂館常設展，限參觀全景畫後 3 個月內使用。',
+        note: '2026-10-14 新行程只看外觀、不進館，不用買票；10/28 13:10 只看圓形館外觀。想入內：選指定日期與場次，每場約 30 分鐘。全景畫票含國家博物館、民族誌博物館與四穹頂館常設展，限參觀全景畫後 3 個月內使用。',
       }),
       entry('wroclaw-national-museum', '樂斯拉夫國家博物館', {
-        plan: 'main', day: 5, method: 'included', otherDatesUrl: mnwrTickets,
-        note: '主行程持全景畫票免費參觀常設展，不必重買；未持全景畫票或想看另收費的臨展時，再查適用票種。',
+        method: 'included', otherDatesUrl: mnwrTickets,
+        note: '2026-10-14 新行程只看外觀、不進館，不用買票；10/28 只看爬藤外牆。持全景畫票可免費參觀常設展，不必重買；未持全景畫票或想看另收費的臨展時，再查適用票種。',
       }),
       entry('wroclaw-st-elizabeth-tower', '聖伊莉莎白教堂塔樓', {
-        plan: 'main', day: 5, method: 'onsite',
+        method: 'onsite',
         sourceUrl: 'https://www.wroclaw.pl/dla-mieszkanca/kosciol-elzbiety-bazylika-mniejsza-poznaj-wroclaw',
-        note: '現場售票，未找到官方線上售票；下雨或雷暴可能關閉。糖果屋外觀與老城散步免費。',
+        note: '2026-10-14 新行程不上塔，10/28 只從糖果屋拱門往上拍高塔。想上塔：現場售票，未找到官方線上售票；下雨或雷暴可能關閉。糖果屋外觀與老城散步免費。',
       }),
       entry('wroclaw-cathedral', '座堂島主教座堂塔樓／巴洛克小堂', {
         method: 'onsite', sourceUrl: 'https://katedra.wroclaw.pl/ZWIEDZANIE/',
@@ -160,7 +160,7 @@ export const ticketPurchaseGroups = [
       }),
       entry('wroclaw-hala-stulecia', '百年廳 Visitor Centre', {
         method: 'onsite',
-        note: '最新主行程未排；多媒體展與含廳內看台的票種不同。先查官方 availability calendar，當日活動可能限制入內範圍。',
+        note: '2026-10-14 新行程 10/28 13:45 只看外觀、尖塔、柱廊與公園，不買票；多媒體噴泉大概率已停。想入內：多媒體展與含廳內看台的票種不同。先查官方 availability calendar，當日活動可能限制入內範圍。',
       }),
       entry('wroclaw-zoo', '動物園＋Afrykarium', {
         purchaseUrl: 'https://bilety.zoo.wroclaw.pl/',
@@ -183,8 +183,8 @@ export const ticketPurchaseGroups = [
   {
     cityKey: 'POZ', items: [
       entry('poznan-ck-zamek', '帝王城堡 CK ZAMEK', {
-        plan: 'main', day: 6, purchaseUrl: 'https://ckzamek.bilety24.pl/',
-        note: '選 Zwiedzanie Zamku 城堡參觀／當期展覽方案，不要買成音樂會票。參觀範圍與聯票內容以當日活動及售票頁為準。',
+        purchaseUrl: 'https://ckzamek.bilety24.pl/',
+        note: '2026-10-14 新行程只看外觀、不進館，不用買票；10/29 走帝王區時看外觀。想入內：選 Zwiedzanie Zamku 城堡參觀／當期展覽方案，不要買成音樂會票。參觀範圍與聯票內容以當日活動及售票頁為準。',
       }),
       entry('poznan-croissant-museum', '牛角麵包博物館 Rogalowe Muzeum', {
         purchaseUrl: 'https://rogalowemuzeum.pl/en/buy-ticket/',

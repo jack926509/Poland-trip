@@ -51,14 +51,18 @@ test('三處頁面使用同一份三餐呈現，離境與抵站後餐次不漏�
   }
 });
 
-test('關鍵餐段銜接保留已購車次與博物館參觀', () => {
+test('關鍵餐段銜接保留已購車次，付費館只看外觀', () => {
   const step = (day,id) => days[day-1].steps.find(item=>item.id===id);
   assert.equal(step(2,'d2-dinner').t, '19:15');
   assert.match(step(2,'d2-prep').sub, /隔日|隔天/);
-  assert.equal(step(7,'d7-lunch').t, '12:40');
+  // 2026-10-14 新行程：Day 7 Polka 改 12:00 入座、12:45 離開；08:30 改看 POLIN 外觀（不進館），不再排起義博物館。
+  assert.equal(step(7,'d7-lunch').t, '12:00');
   assert.match(step(7,'d7-lunch').label, /Polka/);
-  assert.ok(!days[6].steps.some(item=>/POLIN/i.test(item.label)));
-  assert.ok(days[6].steps.some(item=>item.t==='08:30' && /起義博物館/.test(item.label)));
+  assert.ok(days[6].steps.filter(item=>/POLIN/i.test(item.label)).every(item=>/外觀/.test(item.label) && /不進館/.test(item.sub)));
+  assert.ok(!days[6].steps.some(item=>/起義博物館/.test(item.label)));
+  assert.ok(days[6].steps.some(item=>item.t==='08:30' && /POLIN 外觀/.test(item.label)));
+  assert.equal(step(5,'d5-lunch').t, '12:00');
+  assert.match(step(5,'d5-lunch').sub, /13:10 離開/);
   assert.ok(days[4].steps.some(item=>item.t==='18:35 前'));
   assert.ok(days[3].steps.some(item=>item.t==='16:45'));
 });

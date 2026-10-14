@@ -168,7 +168,6 @@ test('由出發日回推的期限，算術與 basis 敘述一致', () => {
   const offsets = {
     'dining-michelin': 21,
     'ticket-wieliczka': 21,
-    'ticket-warsaw-trio': 14,
     'recheck-all': 7,
     'etias-check-2': 3,
   };

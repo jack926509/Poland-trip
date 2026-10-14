@@ -77,7 +77,8 @@ for (const [file, standalone] of [['dist/practical/ops-dashboard.html', false], 
     const text = selector => fixture.elements.get(selector).textContent;
     assert.equal(text('[data-dashboard-today]'), '2026-10-25');
     const before = Number.parseInt(text('[data-dashboard-overdue]'));
-    // 跨到 10/29：10/28 全景畫（未訂、無重查日）此時才轉為逾期。
+    // 跨到 10/29：10/28 Restauracja Wrocławska（選配、未訂、無重查日）此時才轉為逾期。
+    // （2026-10-14 新行程不進全景畫，原本這裡靠全景畫那筆轉逾期。）
     // （10/25 的 Wawel、辛德勒 2026-10-13 起標為線上已售完，不再列入逾期。）
     fixture.setNow('2026-10-28T16:00:00Z');
     fixture.timers[0]();
@@ -120,8 +121,9 @@ test('可查購仍未完成，未記錄查核日期不冒用建置日期', () =>
   assert.ok(html.includes('最近人工查核'));
   assert.ok(html.includes('12 項待辦'));
   assert.ok(html.includes('共 21 項'));
-  // Auschwitz 導覽與巴士、四段火車、09/24 查過的全景畫、10/10 查過的餐廳，
-  // 以及 10/12 複查的 Mr. Jerry、Arirang、Rusiko、華沙皇家城堡與起義博物館時段均已有人工核對日期。
+  // Auschwitz 導覽與巴士、四段火車、10/10 查過的餐廳，
+  // 以及 10/12 複查的 Mr. Jerry、Arirang、Rusiko 時段均已有人工核對日期；
+  // 2026-10-14 新增的選配午餐與出發前準備兩筆也記了查核日。
   // 2026-10-13 旅客逐項確認 15 項未完成項目仍未訂，原本沒有查核日的 Wawel、辛德勒、鹽礦也有了日期。
   assert.equal((html.match(/未記錄，請重查/g) || []).length, 0);
   const dated = renderTodos({ todoGroups: [{ id: 'test', items: [{ date: '10/25', name: '車票', checkedAt: '2026-09-06', recheckAt: '2026-09-24', status: '需重查', action: '查詢' }] }] });

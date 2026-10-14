@@ -7,7 +7,7 @@ import { databaseEntries } from '../src/data/travel-database.js';
 import { preDepartureNotes } from '../src/data/essentials.js';
 import { renderHome } from '../src/templates/home.mjs';
 import { renderBooking, renderTodos, renderNotes, todoLinkLabel } from '../src/templates/practical.mjs';
-import { resolveTodoRef, statusOfItems, lajkonikInboundWord, railGroupIntro, panoramaWord } from '../src/lib/todo-status.mjs';
+import { resolveTodoRef, statusOfItems, lajkonikInboundWord, railGroupIntro } from '../src/lib/todo-status.mjs';
 import { auschwitzBus, bindTodoGroups } from '../src/data/rail.js';
 import { resolveHomeStatus, nextStepFor, departureLabel } from '../src/scripts/dashboard.js';
 
@@ -106,7 +106,8 @@ test('資料庫「景點票券」標題與摘要等於正本', () => {
 
 test('deadlines 的 status 一律由待辦正本推導，且所有引用都對得到項目', () => {
   const referenced = trip.deadlines.filter(deadline => deadline.todoRef);
-  assert.ok(referenced.length >= 5);
+  // 2026-10-14 新行程不進付費館，拿掉華沙兩館與全景畫兩筆期限：5 → 3。
+  assert.ok(referenced.length >= 3);
   for (const deadline of referenced) {
     const refItems = resolveTodoRef(trip.todoGroups, deadline.todoRef);
     assert.equal(deadline.status, statusOfItems(refItems), `${deadline.id} 的 status 與待辦不符`);
@@ -226,13 +227,14 @@ test('Lajkonik 回程的購票狀態只有 todoGroups 一個正本：改成已�
   assert.match(lajkonik.status, /回程尚未購票/);
 });
 
-test('全景畫（day-05）的購票說法跟著待辦走', () => {
-  assert.equal(panoramaWord(trip.todoGroups), '尚未購票');
-  const doneGroups = structuredClone(trip.todoGroups);
-  doneGroups.find(g => g.id === 'attractions').items.find(item => item.ticketPurchaseId === 'wroclaw-panorama').status = '已購票';
-  assert.equal(panoramaWord(doneGroups), '已購票');
+test('全景畫（day-05）新行程只看外觀：待辦與倒數都不再要求購票', () => {
+  // 2026-10-14 新行程付費景點只在外面拍照，全景畫的待辦、期限與每日頁購票說法一起拿掉。
+  const allTodos = trip.todoGroups.flatMap(group => group.items);
+  assert.ok(!allTodos.some(item => item.ticketPurchaseId === 'wroclaw-panorama'));
+  assert.ok(!trip.deadlines.some(item => item.id === 'ticket-panorama'));
   const day5 = trip.days.find(d => d.n === 5);
-  assert.ok(JSON.stringify(day5).includes('尚未購票'), '現況 day-05 應出現由待辦推導的尚未購票');
+  assert.ok(!JSON.stringify(day5).includes('尚未購票'), 'day-05 不應再催買全景畫票');
+  assert.match(JSON.stringify(day5), /不用買全景畫票/);
 });
 
 test('rail.js 單獨載入（未綁定待辦）時不含任何購票狀態字樣', async () => {

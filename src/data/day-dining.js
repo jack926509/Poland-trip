@@ -5,7 +5,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-specjaly-regionalne",
       "role": "晚餐首選",
-      "note": "18:30 入座：Żurek 酸黑麥湯＋綜合 Pierogi，主菜選梅醬豬肋排或半隻烤鴨。皇家大道散步走回 Nowy Świat 就到，先確認座位；抵達晚就縮短散步。飯後步行約 15 分到 Złote Tarasy。",
+      "note": "18:30 入座（行程稿另寫 18:45，訂位以待辦的 18:30 為準）：Żurek 酸黑麥湯＋綜合 Pierogi，主菜選梅醬豬肋排或半隻烤鴨。城堡廣場拍完、咖啡後沿皇家大道走回 Nowy Świat 就到；入境排太久就先刪城堡廣場。飯後經科學文化宮步行到 Złote Tarasy。",
       "stepId": "d1-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
@@ -21,14 +21,21 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-cafe-bristol",
       "role": "咖啡甜點",
-      "note": "17:10 總統府隔壁：Bristol cake 配咖啡（週六至 21:00）；累了就略過，或改 Wedel 熱巧克力。",
+      "note": "18:00 城堡廣場拍完後的咖啡，和 E.Wedel Krakowskie Przedmieście 45 二選一：總統府隔壁，Bristol cake 配咖啡（週六至 21:00）；累了就略過。",
+      "stepId": null,
+      "planStatus": "candidate"
+    },
+    {
+      "placeId": "warsaw-wedel-krakowskie-45",
+      "role": "咖啡甜點",
+      "note": "18:00 城堡廣場拍完後的咖啡，和 Café Bristol 二選一：Krakowskie Przedmieście 45，週六 10:00–23:00；18:20 前起身走回 Nowy Świat 吃晚餐。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "warsaw-a-blikle-1869",
       "role": "甜點外帶",
-      "note": "Nowy Świat 35，16:05 沿新世界街北行時順路外帶 pączki；開門時間各目錄不一，沒開就略過。",
+      "note": "Nowy Świat 35，16:30 沿新世界街北行時順路外帶一顆 pączek；開門時間各目錄不一，沒開就略過。",
       "stepId": null,
       "planStatus": "candidate"
     }
@@ -210,7 +217,7 @@ export const dayDiningPlans = {
     {
       "placeId": "wroclaw-samarqand",
       "role": "晚餐首選（條件式）",
-      "note": "先到 Piast 放行李，再吃 Uzbek Plov 牛肉抓飯、Manti 湯餃與湯品，可分享船形起司麵包。",
+      "note": "約 19:55（推估）抵站、20:05 Piast 放行李，20:15 入座：Uzbek Plov 牛肉抓飯、Manti 湯餃與湯品，可分享船形起司麵包。關門前 1 小時廚房就不出餐，晚到就改車站 KFC 或 MAX。",
       "stepId": "d4-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
@@ -244,7 +251,7 @@ export const dayDiningPlans = {
     {
       "placeId": "wroclaw-central-cafe",
       "role": "早餐首選（條件式）",
-      "note": "美式鬆餅、貝果或燕麥粥；08:15 前收尾，接 09:00 老城廣場。",
+      "note": "07:00 出門走 Świdnicka 大街，07:30 入座：美式鬆餅、貝果或燕麥粥；08:10 收尾，接 08:15 四教派街區。",
       "stepId": "d5-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
@@ -254,14 +261,14 @@ export const dayDiningPlans = {
     {
       "placeId": "wroclaw-charlotte-pokoyhof",
       "role": "早餐備案",
-      "note": "Central Cafe 尚未供餐時改 French Breakfast 或 Breakfast with egg；兩店擇一，仍於 08:15 前收尾。",
+      "note": "Central Cafe 尚未供餐時改 French Breakfast 或 Breakfast with egg；兩店擇一，仍於 08:10 前收尾。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "wroclaw-restauracja-wroclawska",
       "role": "午餐首選",
-      "note": "全景畫後 12:00 進店（全景畫 30 分鐘場，約 12:00 散場）：必點 Śląskie niebo 果乾燉豬肉配 Wrocław dumplings＋Bigos Wrocławski 紅甘藍燉肉，胃口夠再加 Crayfish Soup。主菜現做約 30 分鐘，13:15 前結帳，13:30 前離店，緩衝後接 14:15 國家博物館。",
+      "note": "逛完 Hala Targowa 市場大廳，12:00 開門就進店、入座就點餐：必點 Śląskie niebo 果乾燉豬肉配 Wrocław dumplings＋Bigos Wrocławski 紅甘藍燉肉，胃口夠再加 Crayfish Soup。主菜現做約 30 分鐘，13:10 離開，接全景畫外觀與 13:20 電車往百年廳。想省排隊可先打 +48 71 305 12 28 訂位（選配）。",
       "stepId": "d5-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
@@ -325,7 +332,7 @@ export const dayDiningPlans = {
     {
       "placeId": "poznan-charlotte-krysiewicza",
       "role": "早餐首選",
-      "note": "08:00–08:40：French Breakfast、可頌＋咖啡，Poznań rugelach 白罌粟籽小可頌兩人分享；之後預留約 50 分鐘交通，09:30 教堂島。07:00 開門，想提早到教堂島可改 07:30 用餐。",
+      "note": "07:00 退房寄行李後，07:15–07:55：French Breakfast、可頌＋咖啡，Poznań rugelach 白罌粟籽小可頌兩人分享；08:00 搭電車去 Cytadela。07:00 開門。",
       "stepId": "d6-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
@@ -334,14 +341,14 @@ export const dayDiningPlans = {
     {
       "placeId": "poznan-inna-piekarnia",
       "role": "早餐備案（不列順位）",
-      "note": "Ratajczaka 39，週一至週六 08:30 起：Butter Croissant、麵包與咖啡；08:30 開門、09:30 前要出發，時間太趕，只當備案。",
+      "note": "Ratajczaka 39，週一至週六 08:30 起：Butter Croissant、麵包與咖啡；08:30 才開門，趕不上 08:00 去 Cytadela，只當備案。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "poznan-weranda-caffe",
-      "role": "山羊秀前咖啡備選",
-      "note": "Świętosławska 10，週四 09:00 才開，趕不上 09:30 教堂島，不作早餐；等 12:00 山羊秀前可進來坐一下。",
+      "role": "山羊秀前咖啡",
+      "note": "Świętosławska 10，週四 09:00 開門；11:05 從皇家城堡山丘下來進來坐，11:45 再去廣場卡位。就在粉紅色 Fara 教堂那條街，從街上拍 Fara。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -355,14 +362,14 @@ export const dayDiningPlans = {
     {
       "placeId": "poznan-cukiernia-kandulski",
       "role": "點心備選",
-      "note": "Plac Ratajskiego 1（週四 09:00–18:00），在老城往 Carla（Święty Marcin）的路上；ROGAL 排隊或售完時改這間買。",
+      "note": "Plac Ratajskiego 1（週四 09:00–18:00），在老城往 Stary Browar、Carla 的路上；ROGAL 週四營業時間沒查到，排隊或售完時改這間買。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "poznan-carla-trattoria-moderna",
       "role": "午餐首選（條件式）",
-      "note": "Święty Marcin 34，14:00 開門即入座（老城步行約 9 分，到帝王城堡約 17 分）：手工麵、披薩與小盤分享，兩人點兩道麵加一份分享即可。14:00–15:15 用餐，15:15 前結帳；上菜慢就砍帝王城堡內部，先保 17:05 到站。",
+      "note": "Święty Marcin 34，14:00 開門即入座（Okrąglak 就在旁邊，到帝王城堡約 17 分）：手工麵、披薩與小盤分享，兩人點兩道麵加一份分享即可。14:00–15:15 用餐，15:15 前結帳；15:30 還沒吃完，就把帝王區縮短到只看帝王城堡外觀、跳過 Kaponiera，先保 17:05 到站。",
       "stepId": "d6-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
@@ -372,7 +379,7 @@ export const dayDiningPlans = {
     {
       "placeId": "poznan-pyra-bar",
       "role": "午餐備案",
-      "note": "Strzelecka 13，週四 11:00–21:00 全天有開。Carla 客滿或訂不到時改這間：Pyry z bzikiem 與 Szare ale jare 兩人分享；12:30 即可入座，午餐後直接去帝王城堡，時間比 Carla 方案寬鬆。",
+      "note": "Strzelecka 13，週四 11:00–21:00 全天有開。Carla 客滿或訂不到時改這間：Pyry z bzikiem 與 Szare ale jare 兩人分享；可改回 12:15 吃午餐，時間比 Carla 方案寬鬆。",
       "stepId": null,
       "planStatus": "candidate",
       "dayHours": "11:00–21:00"
@@ -380,7 +387,7 @@ export const dayDiningPlans = {
     {
       "placeId": "poznan-zen-on",
       "role": "午餐備選",
-      "note": "Michelin 推薦拉麵，Święty Marcin 21，週四 12:00–20:00：拉麵、烏龍麵、bao；往帝王城堡順路，尖峰常排隊。",
+      "note": "Michelin 推薦拉麵，Święty Marcin 21，週四 12:00–20:00（+48 609 116 450）：拉麵、烏龍麵、bao；Carla 客滿或訂不到時的另一個午餐備案，可改回 12:15 吃，尖峰常排隊。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -401,11 +408,11 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-arirang-restaurant",
       "role": "晚餐首選（條件式）",
-      "note": "約 20:30（待查票面）抵華沙、放行李後步行約 5 分到 Nowogrodzka 38：Bulgogi 韓式烤牛肉、拌飯，或 Jajangmyeon、海鮮煎餅。",
+      "note": "約 20:30（推估，待查票面）抵華沙、放行李後步行約 5 分到 Nowogrodzka 38，21:00 到店：Bulgogi 韓式烤牛肉、拌飯，或 Jajangmyeon、海鮮煎餅。21:15 前還沒能入座就改 Złote Tarasy 或 Ćma。",
       "stepId": "d6-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "週四 12:00–22:00（多個目錄一致，無店家官網），當天先打 22 881 78 51 或 22 622 18 86 確認仍接單；21:30 前無法入座就改 Złote Tarasy 速食、Soul Kitchen 或 24 小時的 Ćma。",
+      "condition": "週四 12:00–22:00（多個目錄一致，無店家官網），當天先打 22 881 78 51 或 22 622 18 86 確認仍接單；21:00 到店、21:15 前無法入座就改 Złote Tarasy 速食或 24 小時的 Ćma。",
       "dayHours": "12:00–22:00"
     },
     {
@@ -427,7 +434,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-cma-hala-koszyki",
       "role": "晚餐備案",
-      "note": "原首選保留；24 小時營業，誤點超過 21:30 時改這間（Chipotle 手撕牛肉吐司、Burrata 沙拉或烤鮭魚），深夜先確認菜色。",
+      "note": "原首選保留；24 小時營業，Arirang 21:15 前不能入座或誤點時改這間（Chipotle 手撕牛肉吐司、Burrata 沙拉或烤鮭魚），深夜先確認菜色。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -450,7 +457,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-bulke-przez-bibulke-zgoda",
       "role": "早餐首選",
-      "note": "07:30 開門就進：Bagel、Scrambled Eggs 或 Avocado Toast＋咖啡，08:05 前結帳，走到 Świętokrzyska 搭 M2 去起義博物館。",
+      "note": "07:30 開門就進：Bagel、Scrambled Eggs 或 Avocado Toast＋咖啡，08:05 前結帳，走到 Świętokrzyska 搭 M1 去 Ratusz Arsenał。",
       "stepId": "d7-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
@@ -459,19 +466,26 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-bar-mleczny-bambino",
       "role": "早餐備選",
-      "note": "Hoża 19，平日 08:00 才開；想吃牛奶吧早餐就把起義博物館延到 09:15 入館，後面全部順延約 45 分。",
+      "note": "Hoża 19，平日 08:00 才開；想吃牛奶吧早餐，後面從 08:30 那站開始全部順延約 45 分，並刪掉 BUW 屋頂花園。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "warsaw-polka",
       "role": "午餐首選",
-      "note": "12:40 出城堡直接進隔壁：平日 12:00–16:00 午間套餐，或點 Pierogi、Żurek；13:30 前結帳接老城步行。",
+      "note": "11:15 城堡廣場拍完，12:00 進城堡旁的店：平日 12:00–16:00 午間套餐，或點 Pierogi、Żurek；12:45 離開往劇院廣場。客滿改甕城旁的 Pyzy Flaki Gorące。",
       "stepId": "d7-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
-      "condition": "客滿或候位超過 15 分就改老城廣場的 U Fukiera，或買外帶邊走邊吃。",
+      "condition": "客滿或候位超過 15 分就改甕城旁的 Pyzy Flaki Gorące 或老城廣場的 U Fukiera，或買外帶邊走邊吃。",
       "dayHours": "12:00–22:00"
+    },
+    {
+      "placeId": "warsaw-pyzy-flaki-gorace",
+      "role": "午餐備案",
+      "note": "Podwale 5（甕城旁），週一到週六 12:00 開門；Polka 客滿就改這間，吃華沙在地的 pyzy 馬鈴薯丸子。",
+      "stepId": null,
+      "planStatus": "candidate"
     },
     {
       "placeId": "warsaw-cafe-bristol",
@@ -483,7 +497,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-soul-kitchen",
       "role": "晚餐首選（威靈頓）",
-      "note": "國家博物館 18:10 離館步行約 12 分到 Nowogrodzka 18A，18:30 入座：Beef Wellington 為招牌，前菜可點桌邊韃靼牛肉或 Żurek。飯後步行約 8 分回 Metropol。",
+      "note": "17:15 回 Metropol 休息換衣服，步行約 8 分到 Nowogrodzka 18A，18:30 入座：Beef Wellington 為招牌，前菜可點桌邊韃靼牛肉或 Żurek。飯後可選去 Wedel Szpitalna 8 喝熱巧克力。",
       "stepId": "d7-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
@@ -493,7 +507,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-rusiko",
       "role": "晚餐備選（原首選）",
-      "note": "Wierzbowa 11（劇院廣場旁），週二至週六 13:00–24:00；Soul Kitchen 沒有威靈頓或客滿時改這間：khachapuri、khinkali、chanakhi 燉羊腿，由國家博物館搭車約 15 分。",
+      "note": "Wierzbowa 11（劇院廣場旁），週二至週六 13:00–24:00；Soul Kitchen 沒有威靈頓或客滿時改這間：khachapuri、khinkali、chanakhi 燉羊腿，由 Metropol 搭車約 10 分。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -528,7 +542,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-wyraj",
       "role": "晚餐備選",
-      "note": "原首選保留；Krochmalna 59，在起義博物館附近，週五 12:00–00:00。下午若取消瓦津基、人在 Wola 一帶再考慮。",
+      "note": "原首選保留；Krochmalna 59（Wola），週五 12:00–00:00。新行程白天都在老城與瓦津基，離 Wola 較遠，Soul Kitchen 不能訂時再考慮。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -563,7 +577,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-wedel-szpitalna-8",
       "role": "巧克力甜點",
-      "note": "晚餐後到 Szpitalna 8 喝熱巧克力（到 22:00）；抵達日已喝過可略過。",
+      "note": "20:15 晚餐後到 Szpitalna 8 喝熱巧克力（到 22:00），選配；喝完散步回飯店整理行李。",
       "stepId": null,
       "planStatus": "candidate"
     }

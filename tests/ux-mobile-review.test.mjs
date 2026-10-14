@@ -51,7 +51,7 @@ test('第 3 項：手機時間表為精簡版（不顯示欄名、時間大字�
   assert.match(nav, /展開全文/);
   // 沒有 JS 時全文仍在 HTML 中，收合只是畫面行為
   const day5 = read('day-05.html');
-  const step = days[4].steps.find(item => item.t === '14:15');
+  const step = days[4].steps.find(item => item.t === '13:45'); // 2026-10-14 新行程：百年廳外觀（長說明）
   assert.ok(day5.includes(step.sub), 'Day 5 時間表說明全文必須仍在 HTML 中');
 });
 
@@ -109,16 +109,15 @@ test('第 5 項：待辦頁每類先列未完成（依日期），已完成收�
 });
 
 test('第 6 項：行程說明不再夾帶查核筆記，資訊移到待辦；今日卡抵達時間未知只寫「發車」', () => {
-  const d5 = days[4].steps.find(step => step.t === '11:30');
-  assert.doesNotMatch(d5.sub, /85 個名額|2026-09-24/);
-  const panorama = todoGroups.flatMap(group => group.items).find(item => item.name.startsWith('拉茨瓦維採全景畫'));
-  assert.match(panorama.action, /85 個名額/);
-  assert.match(panorama.action, /30 分鐘一場/);
-  // checkedAt 記的是訂票狀態最近一次核對（2026-10-13 旅客確認仍未訂）；
-  // 85 個名額是 9/24 的歷史快照，日期必須留在說明文字裡，不能被誤讀成當下庫存。
-  assert.equal(panorama.checkedAt, '2026-10-13');
-  assert.match(panorama.action, /9\/24 官方 10\/28 日期下曾列 11:30 場、85 個名額/);
-  assert.match(panorama.action, /歷史快照/);
+  // 2026-10-14 新行程不進全景畫，原本以全景畫為例；改用 10/29 公寓寄放行李：
+  // 行程步驟只寫要做什麼，官網查核日期與內容放在待辦。
+  const d6 = days[5].steps.find(step => step.t === '07:00');
+  assert.doesNotMatch(d6.sub, /2026-10-14|官網聯絡頁/);
+  assert.match(d6.sub, /出發前打電話/);
+  const apartment = todoGroups.flatMap(group => group.items).find(item => item.name.startsWith('打電話給 Poznan Apartments'));
+  assert.equal(apartment.checkedAt, '2026-10-14');
+  assert.match(apartment.action, /官網聯絡頁只有電話和地址，沒寫接待時間和行李寄放（2026-10-14 查）/);
+  assert.match(apartment.action, /07:00/);
   // 2026-10-13 鹽礦已購 09:00 英文場；查核筆記不放行程說明，購票紀錄在待辦。
   const d4 = days[3].steps.find(step => step.t === '09:00' && step.label.includes('Wieliczka'));
   assert.doesNotMatch(d4.sub, /2026-10-06/);

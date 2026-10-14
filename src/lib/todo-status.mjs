@@ -87,14 +87,11 @@ export function purchaseWord(items) {
 
 /** Lajkonik 回程那筆待辦的引用；要改回程是否已購，只改 todoGroups 該筆的 status。 */
 export const LAJKONIK_INBOUND_REF = { group: 'rail', nameIncludes: ['Lajkonik 回程'] };
-/** 拉茨瓦維採全景畫（day-05）的待辦引用。 */
-export const PANORAMA_REF = { group: 'attractions', ticketPurchaseIds: ['wroclaw-panorama'] };
 
 /** groups 還沒綁定（單獨載入 rail.js）時的中性用詞，不含狀態。 */
 export const UNBOUND_WORD = '購票狀態見待辦事項頁';
 
 export const lajkonikInboundWord = groups => (groups ? purchaseWord(resolveTodoRef(groups, LAJKONIK_INBOUND_REF)) : UNBOUND_WORD);
-export const panoramaWord = groups => (groups ? purchaseWord(resolveTodoRef(groups, PANORAMA_REF)) : UNBOUND_WORD);
 
 /** rail 分類的導言：去程已購是事實，回程狀態由待辦推導。 */
 export function railGroupIntro(groups) {

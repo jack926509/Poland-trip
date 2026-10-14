@@ -39,7 +39,8 @@ test('所有既有票價景點都能從完整購票清單找到入口或售票�
 
 test('待辦與購票頁共用官方入口，查得售票入口不能把待購改成已訂', () => {
   const todos = todoGroups.find(group => group.id === 'attractions').items;
-  assert.equal(todos.length, 7);
+  // 2026-10-14 新行程不進付費館：全景畫、皇家城堡、起義博物館三筆拿掉，7 → 4。
+  assert.equal(todos.length, 4);
   assert.equal(todos.filter(item => ['已訂妥', '已購票'].includes(item.status)).length, 2);
   for (const item of todos) {
     assert.equal(item.url, ticketPurchaseById(item.ticketPurchaseId).purchaseUrl);

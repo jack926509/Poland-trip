@@ -7,9 +7,9 @@ export const dayMapPlans = {
   2: { focus: '克拉科夫 Kraków', center: [50.057, 19.944], zoom: 14, selections: { krakow: ['Wawel 皇家城堡', '中央市集廣場', 'Kazimierz 猶太區', '辛德勒工廠博物館', 'Okrąglak（Plac Nowy zapiekanka）', 'ibis budget Krakow Stare Miasto'] } },
   3: { focus: '奧斯威辛 Oświęcim／Brzezinka', center: [50.033, 19.192], zoom: 13, selections: {} },
   4: { focus: '克拉科夫 Kraków＋Wieliczka', center: [50.040, 19.995], zoom: 12, selections: { krakow: ['Kazimierz 猶太區', 'Sukiennice 布廊（伴手禮攤位）', 'ibis budget Krakow Stare Miasto'] } },
-  5: { focus: '樂斯拉夫 Wrocław', center: [51.110, 17.049], zoom: 13, selections: { wroclaw: ['中央市集廣場', '大教堂島 Ostrów Tumski', 'Restauracja Wrocławska', 'Piast'] } },
+  5: { focus: '樂斯拉夫 Wrocław', center: [51.110, 17.049], zoom: 13, selections: { wroclaw: ['中央市集廣場', '大教堂島 Ostrów Tumski', '百年廳 Hala Stulecia', 'Restauracja Wrocławska', 'Piast'] } },
   6: { focus: '波茲南 Poznań', center: [52.407, 16.930], zoom: 14, selections: { poznan: ['舊市集廣場 Stary Rynek', '大教堂島 Ostrów Tumski', 'Poznan Apartments Towarowa'] } },
-  7: { focus: '華沙 Warszawa', center: [52.236, 21.010], zoom: 13, selections: { warsaw: ['皇家城堡', '華沙起義博物館', 'Hotel Metropol'] } },
+  7: { focus: '華沙 Warszawa', center: [52.236, 21.010], zoom: 13, selections: { warsaw: ['皇家城堡', 'Hotel Metropol'] } },
   8: { focus: '華沙 Warszawa＋蕭邦機場', center: [52.202, 20.991], zoom: 12, selections: { warsaw: ['Hotel Metropol'] } },
 };
 
@@ -42,19 +42,20 @@ export const daySupplementaryPins = {
   5: [
     [51.108896, 17.026714, 'Papa Krasnal 小矮人', 'Świdnicka 地下道旁；小矮人尋寶的具體起點', 'https://www.google.com/maps/search/?api=1&query=Papa%20Krasnal%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/?mlat=51.108896&mlon=17.026714'],
     [51.111690, 17.029114, '糖果屋雙屋 Jaś i Małgosia', 'Świętego Mikołaja 1', 'https://www.google.com/maps/search/?api=1&query=Hansel%20and%20Gretel%20Houses%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/?mlat=51.111690&mlon=17.029114'],
-    [51.111492, 17.029774, '聖伊莉莎白教堂塔樓入口', 'Świętej Elżbiety 1/2 · 登塔依當日公告', 'https://www.google.com/maps/search/?api=1&query=St.%20Elizabeth%20Church%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/?mlat=51.111492&mlon=17.029774'],
-    venuePin('wroclaw-panorama', { displayName: '拉茨瓦維採全景畫', label: 'Jana Ewangelisty Purkyniego 11', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=51.110187&mlon=17.044488' }),
+    [51.111492, 17.029774, '聖伊莉莎白教堂', 'Świętej Elżbiety 1/2 · 只拍高塔外觀，不上塔', 'https://www.google.com/maps/search/?api=1&query=St.%20Elizabeth%20Church%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/?mlat=51.111492&mlon=17.029774'],
+    venuePin('wroclaw-panorama', { displayName: '拉茨瓦維採全景畫（外觀）', label: 'Jana Ewangelisty Purkyniego 11 · 13:10 只看圓形館外觀', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=51.110187&mlon=17.044488' }),
     venuePin('wroclaw-cathedral', { label: 'plac Katedralny 18 · 座堂島散步終點', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=51.114616&mlon=17.046989' }),
     venuePin('wroclaw-glowny-station', { label: '18:35 前抵達的晚間轉場車站', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=51.098928&mlon=17.036255' }),
   ],
   6: [
     venuePin('poznan-cathedral', { label: 'Ostrów Tumski 17', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.411873&mlon=16.949286' }),
     venuePin('poznan-town-hall', { displayName: '波茲南市政廳・山羊鐘樓', label: 'Stary Rynek 1 · 12:00 卡位點', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.408265&mlon=16.934560' }),
-    venuePin('poznan-ck-zamek', { displayName: '帝王城堡 Zamek Cesarski', label: 'Święty Marcin 80/82', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.407808&mlon=16.919214' }),
+    venuePin('poznan-stary-browar', { label: 'Półwiejska 42 · 12:45 舊啤酒廠紅磚建築', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.400887&mlon=16.928376' }),
+    venuePin('poznan-ck-zamek', { displayName: '帝王城堡 Zamek Cesarski（外觀）', label: 'Święty Marcin 80/82 · 15:20 帝王區只看外觀', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.407808&mlon=16.919214' }),
     venuePin('poznan-glowny-station', { label: '17:05 前抵達的城際火車出發站', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.402786&mlon=16.912914' }),
   ],
   7: [
-    venuePin('warsaw-old-town-square', { label: '13:30 老城步行段：聖若望大教堂、老城廣場、甕城', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.249778&mlon=21.012151' }),
+    venuePin('warsaw-old-town-square', { label: '10:15 老城廣場；前後是甕城、許願鐘與聖若望大教堂', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.249778&mlon=21.012151' }),
   ],
   8: [
     venuePin('warsaw-centralna-station', { label: '由 Hotel Metropol 前往機場線的市中心交通錨點', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.228917&mlon=21.003315' }),

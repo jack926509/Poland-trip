@@ -14,10 +14,10 @@ import { venues } from './venues.js';
 import { stayPin } from '../lib/journey.mjs';
 
 export const cities = [
-  {key:'WAW', name:'華沙', pl:'Warszawa', tag:'CAPITAL', vibe:'鋼鐵摩天 × 重建老城', highlights:['起義博物館','皇家城堡','Krakowskie Przedmieście'], photo:{hero:'assets/photos/warszawa-hero.webp',thumb:'assets/photos/warszawa-thumb.webp',og:'assets/og/warszawa-og.jpg'}},
+  {key:'WAW', name:'華沙', pl:'Warszawa', tag:'CAPITAL', vibe:'鋼鐵摩天 × 重建老城', highlights:['Krakowskie Przedmieście','老城與城堡廣場','瓦津基水上宮殿（週五免費）'], photo:{hero:'assets/photos/warszawa-hero.webp',thumb:'assets/photos/warszawa-thumb.webp',og:'assets/og/warszawa-og.jpg'}},
   {key:'KRK', name:'克拉科夫', pl:'Kraków', tag:'OLD WORLD', vibe:'中世紀石板路 × 千年王城', highlights:['Wawel 城堡','中央市集 Rynek','Auschwitz 一日往返','Kazimierz 猶太區'], photo:{hero:'assets/photos/krakow-hero.webp',thumb:'assets/photos/krakow-thumb.webp',og:'assets/og/krakow-og.jpg'}},
-  {key:'WRO', name:'樂斯拉夫', pl:'Wrocław', tag:'1000+ DWARFS', vibe:'千尊小矮人 × 煤氣燈點燈', highlights:['百年廳 UNESCO','全景畫 Panorama','座堂島 Ostrów Tumski','糖果屋雙屋'], photo:{hero:'assets/photos/wroclaw-hero.webp',thumb:'assets/photos/wroclaw-thumb.webp',og:'assets/og/wroclaw-og.jpg',detail:'assets/photos/wroclaw-ostrow-tumski-night.webp',detailAlt:'夜色中的樂斯拉夫座堂島與河岸燈光',detailCaption:'座堂島入夜後的河岸燈光 · Day 5 日落前後散步重點',detailHeight:853,detailAuthor:'Jg44.89',detailLicense:'CC BY 4.0',detailLicenseUrl:'https://creativecommons.org/licenses/by/4.0/',detailSource:'https://commons.wikimedia.org/wiki/File:Ostr%C3%B3w_Tumski_Wroc%C5%82aw.jpg'}},
-  {key:'POZ', name:'波茲南', pl:'Poznań', tag:'CRADLE', vibe:'波蘭文明發源 × 山羊報時', highlights:['教堂島 Ostrów Tumski','12:00 山羊鐘樓秀','聖馬丁牛角麵包 PGI','帝王城堡'], photo:{hero:'assets/photos/poznan-hero.webp',thumb:'assets/photos/poznan-thumb.webp',og:'assets/og/poznan-og.jpg',detail:'assets/photos/poznan-old-market.webp',detailAlt:'波茲南舊市集廣場周圍的彩色老屋',detailCaption:'舊市集廣場周圍的彩色老屋 · Day 6 正午山羊報時周邊',detailHeight:960,detailAuthor:'Mariochom',detailLicense:'CC BY-SA 4.0',detailLicenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',detailSource:'https://commons.wikimedia.org/wiki/File:Pozna%C5%84-Old_Market_Square.jpg'}},
+  {key:'WRO', name:'樂斯拉夫', pl:'Wrocław', tag:'1000+ DWARFS', vibe:'千尊小矮人 × 煤氣燈點燈', highlights:['百年廳 UNESCO（外觀）','座堂島 Ostrów Tumski','糖果屋雙屋','大學區'], photo:{hero:'assets/photos/wroclaw-hero.webp',thumb:'assets/photos/wroclaw-thumb.webp',og:'assets/og/wroclaw-og.jpg',detail:'assets/photos/wroclaw-ostrow-tumski-night.webp',detailAlt:'夜色中的樂斯拉夫座堂島與河岸燈光',detailCaption:'座堂島入夜後的河岸燈光 · Day 5 日落前後散步重點',detailHeight:853,detailAuthor:'Jg44.89',detailLicense:'CC BY 4.0',detailLicenseUrl:'https://creativecommons.org/licenses/by/4.0/',detailSource:'https://commons.wikimedia.org/wiki/File:Ostr%C3%B3w_Tumski_Wroc%C5%82aw.jpg'}},
+  {key:'POZ', name:'波茲南', pl:'Poznań', tag:'CRADLE', vibe:'波蘭文明發源 × 山羊報時', highlights:['教堂島 Ostrów Tumski','12:00 山羊鐘樓秀','聖馬丁牛角麵包 PGI','Cytadela 無頭人像'], photo:{hero:'assets/photos/poznan-hero.webp',thumb:'assets/photos/poznan-thumb.webp',og:'assets/og/poznan-og.jpg',detail:'assets/photos/poznan-old-market.webp',detailAlt:'波茲南舊市集廣場周圍的彩色老屋',detailCaption:'舊市集廣場周圍的彩色老屋 · Day 6 正午山羊報時周邊',detailHeight:960,detailAuthor:'Mariochom',detailLicense:'CC BY-SA 4.0',detailLicenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',detailSource:'https://commons.wikimedia.org/wiki/File:Pozna%C5%84-Old_Market_Square.jpg'}},
 ];
 
 Object.assign(cities.find(city => city.key === 'WAW').photo, {
@@ -41,7 +41,7 @@ for (const city of cities) city.gallery = cityGallery.filter(photo => photo.city
 
 export const cityNotices = {
   warsaw: [
-    {status:'已改行程', level:'note', text:`皇家城堡 2026-10-12 官網複查：二–日 ${venues['warsaw-royal-castle'].hours.opens}–${venues['warsaw-royal-castle'].hours.closes}、最後入場 ${venues['warsaw-royal-castle'].hours.lastEntry}（夏季 18:00 時段已不適用）；Day 7 排 11:30 入場。`},
+    {status:'已改行程', level:'note', text:`皇家城堡 2026-10-12 官網複查：二–日 ${venues['warsaw-royal-castle'].hours.opens}–${venues['warsaw-royal-castle'].hours.closes}、最後入場 ${venues['warsaw-royal-castle'].hours.lastEntry}（夏季 18:00 時段已不適用）。2026-10-14 新行程不進城堡，只在城堡廣場拍外觀：10/24 傍晚拍藍調、10/30 11:15 拍白天版。`},
   ],
   krakow: [
     {status:'已查證', level:'note', text:'辛德勒工廠週二至週日 09:00–20:00，最後入場為閉館前 90 分鐘；Day 2 的週日 17:30 時段可行，但仍須先取得官方時段票。'},
@@ -91,7 +91,7 @@ export const cityStories = [
     history:'這座城市 1945 年前叫 Breslau，是德國第六大城。戰後國界西移，德裔居民被遷出，取而代之的是被蘇聯劃走的東部城市利沃夫（Lwów）的波蘭移民——整座城市的人口被「換血」。拉茨瓦維採全景畫正是從利沃夫一起搬來的鎮城之寶，Karczma Lwowska 餐廳的名字也是這段記憶。',
     stories:[
       {title:'小矮人是反抗軍', text:'城裡有逾 1,000 尊銅製小矮人（krasnale），但數量持續增加、無法精確統計。1980 年代反共團體「橙色替代」（Pomarańczowa Alternatywa）以塗鴉小矮人與荒誕街頭劇嘲諷政權——警察逮捕一個扮小矮人的人有多可笑，體制就有多可笑。2005 年起城市以銅像致敬這段歷史，每一尊都有名字與職業。'},
-      {title:'每晚的點燈儀式', text:'日落時分，披斗篷、持長桿的點燈人會逐一點亮 Ostrów Tumski 的瓦斯燈。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，Day 5 以 16:15–17:15 在座堂島等候與散步規劃。'},
+      {title:'每晚的點燈儀式', text:'日落時分，披斗篷、持長桿的點燈人會逐一點亮 Ostrów Tumski 的瓦斯燈。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，Day 5 15:45 經座堂橋上島，16:34 日落前後在燈旁等候，17:15 離開。'},
       {title:'混凝土的世界遺產', text:'百年廳（Hala Stulecia，1913）落成時擁有世界最大跨距的鋼筋混凝土圓頂，直接影響了現代主義建築的走向，2006 年列入 UNESCO——在古蹟之城看一座「未來古蹟」。'},
     ],
     onSite:[
@@ -112,14 +112,14 @@ export const cityStories = [
     onSite:[
       '11:45 前到 Stary Rynek 卡位看山羊（只演一次，錯過等明天）',
       '市政廳文藝復興立面：波蘭最美的市政廳之一，1550s 義大利建築師 di Quadro 之作',
-      '帝王城堡由德皇威廉二世興建，二戰時曾改作希特勒行館——看完直接回 Towarowa 取行李趕車',
+      '帝王城堡由德皇威廉二世興建，二戰時曾改作希特勒行館——這趟只在帝王區步行時看外觀，16:15 從 Kaponiera 回 Towarowa 取行李趕車',
     ],
   },
 ];
 
 export const photoSpots = [
-  {id:'waw-oldtown', lightPhase:'goldenHour', cityKey:'WAW', name:'老城市集廣場彩色立面', day:1, bestTime:'16:45–17:15', viewpoint:'華沙美人魚像西南側約 10 公尺，靠 Dekert Side 一側', direction:'鏡頭朝東北，先以 24–35 mm 收整排彩色立面，再退到拱廊邊拍廣場全景', light:'日落前的斜側光會打在北、東側立面；避免貼著雕像仰拍造成建築傾斜。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.249778%2C21.012151'},
-  {id:'waw-castle', lightPhase:'goldenHour', cityKey:'WAW', name:'城堡廣場與皇家城堡', day:1, bestTime:'16:30–17:00', viewpoint:'齊格蒙特三世紀念柱西側、靠 Krakowskie Przedmieście 的廣場邊緣', direction:'鏡頭朝東北，把紀念柱放左側、皇家城堡紅牆放右側；直幅可同時收柱頂與城堡', light:'低角度光讓城堡紅牆更飽和；廣角請保持手機水平，避免紀念柱向後倒。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.247604%2C21.013455'},
+  {id:'waw-oldtown', lightPhase:'daylight', cityKey:'WAW', name:'老城市集廣場彩色立面', day:7, bestTime:'10:15–10:50', viewpoint:'華沙美人魚像西南側約 10 公尺，靠 Dekert Side 一側', direction:'鏡頭朝東北，先以 24–35 mm 收整排彩色立面，再退到拱廊邊拍廣場全景', light:'10/30 上午的光會打在北側立面；避免貼著雕像仰拍造成建築傾斜。之後從 Kamienne Schodki 石階往下可看到維斯瓦河。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.249778%2C21.012151'},
+  {id:'waw-castle', lightPhase:'night', cityKey:'WAW', name:'城堡廣場與皇家城堡', day:1, bestTime:'17:40–18:00', viewpoint:'齊格蒙特三世紀念柱西側、靠 Krakowskie Przedmieście 的廣場邊緣', direction:'鏡頭朝東北，把紀念柱放左側、皇家城堡紅牆放右側；直幅可同時收柱頂與城堡', light:'10/24 日落 17:23 後的藍調時刻，城堡與圓柱打燈；用夜景模式並保持手機水平，避免紀念柱向後倒。10/30 11:15 會再來拍白天版，只看外觀不進城堡。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.247604%2C21.013455'},
   {id:'waw-culture', cityKey:'WAW', name:'科學文化宮 30 樓城市景觀', day:null, bestTime:'城市延伸', viewpoint:'Pałac Kultury i Nauki 30 樓 Taras Widokowy 觀景台', direction:'先拍東側市中心天際線，再轉西北側拍華沙舊城方向；玻璃反光時把鏡頭貼近玻璃', light:'未排入每日行程；若自行加入，10 月底接近日落時可同時拍藍調與城市燈光，開放時段仍以當日公告為準。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.231838%2C21.005995'},
   {id:'krk-rynek', lightPhase:'daylight', cityKey:'KRK', name:'中央市集廣場與聖瑪利亞聖殿', day:2, bestTime:'15:00–15:30', viewpoint:'亞當・密茨凱維奇紀念碑西南側，靠紡織會館東南角', direction:'鏡頭朝東北，以紀念碑作前景、聖瑪利亞雙塔作背景；再向南走幾步拍紡織會館長廊', light:'午後從廣場中央拍可避開塔樓正逆光；整點前先完成構圖，順便錄下 Hejnał 號角。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.061793%2C19.938098'},
   {id:'krk-wawel', lightPhase:'daylight', cityKey:'KRK', name:'Wawel 城堡河岸全景', day:2, bestTime:'12:30–13:00', viewpoint:'維斯瓦河南岸 Bulwar Poleski 河濱步道，正對 Wawel 南側城牆', direction:'鏡頭朝北偏東，用河面作下方三分之一前景；35–50 mm 可壓縮城牆與大教堂塔樓', light:'正午前後南側城牆受光較完整；河面風大時用連拍挑倒影最乾淨的一張。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.051876%2C19.933617'},
@@ -326,7 +326,7 @@ export const attractions = {
     {name:"波蘭歷史博物館 · Cytadela", tag:"2023 新館", mapUrl:venues['warsaw-history-museum'].map, venueId:"warsaw-history-museum", extra:"新總部 2023 開館；常設展仍在建置，先查當期臨展與入場資訊"},
     {name:"E.Wedel 巧克力工廠博物館", tag:"2024 開館", mapUrl:venues['warsaw-wedel-chocolate'].map, venueId:"warsaw-wedel-chocolate", extra:"每日 10:00–20:00 · 最後一團 18:15 · 導覽約 90 分 · 票價依官方場次"},
     {name:"皇家城堡", tag:"UNESCO 舊城核心", mapUrl:venues['warsaw-royal-castle'].map, venueId:"warsaw-royal-castle", extra:`2026-10-12 官網複查：二–日 ${venues['warsaw-royal-castle'].hours.opens}–${venues['warsaw-royal-castle'].hours.closes}，最後入場 ${venues['warsaw-royal-castle'].hours.lastEntry}、週一休館` + " · Castle Route 95／75（含語音導覽，約 150 分）· Royal Route 60／45（含語音導覽，約 60 分）· 週三免費，但只走皇家寓所與 Lanckoroński 畫廊的限定路線（綠廳、黃廳、大理石廳、瓷器與 Wettin 畫廊、議會廳不開），且只能個人自行參觀、不能預約，當日在售票口領票、數量有限 · 語音導覽租借 10"},
-    {name:"華沙起義博物館", tag:"歷史", mapUrl:venues['warsaw-rising-museum'].map, venueId:"warsaw-rising-museum", extra:"2026-09-18 官網查證：PLN 35／30 · 一 08:00–18:00、二休館、三–五 08:00–18:00、六日 10:00–18:00，售票至閉館前 30 分 · 官方明列免費日為週四（10/30 是週五，要買票）· 語音導覽租借 13／自備手機 10 · 英語導覽 250＋門票"},
+    {name:"華沙起義博物館", tag:"歷史", mapUrl:venues['warsaw-rising-museum'].map, venueId:"warsaw-rising-museum", extra:"2026-09-18 官網查證：PLN 35／30 · 一 08:00–18:00、二休館、三–五 08:00–18:00、六日 10:00–18:00，售票至閉館前 30 分 · 官方明列免費日為週四；2026-10-14 新行程只看外觀不入內，想入內的話 10/30 是週五、要買票 · 語音導覽租借 13／自備手機 10 · 英語導覽 250＋門票"},
     {name:"科學文化宮觀景台", tag:"地標", mapUrl:venues['warsaw-pkin-terrace'].map, venueId:"warsaw-pkin-terrace", extra:"2026-09-18 官方售票系統查證：全票 30／優待 25 PLN（10 人以上團體 22）· 每日 10:00–20:00、售票口同時間 · 不接受預約，現場最多買到 7 天後 · 夜間場（35 PLN）只在週五六且官方只排到 9 月底，不套用到 10 月；11/1 閉館"},
     {name:"Łazienki 公園 · Wilanów 宮", tag:"皇家之路", mapUrl:"https://www.google.com/maps/search/?api=1&query=%C5%81azienki%20%E5%85%AC%E5%9C%92%20Warszawa", venueId:null, extra:"公園免費 · 宮殿另購票"},
     {name:"蕭邦博物館", tag:"閉館", mapUrl:"https://www.google.com/maps/search/?api=1&query=%E8%95%AD%E9%82%A6%E5%8D%9A%E7%89%A9%E9%A4%A8%20Warszawa", venueId:null, extra:"2026 整年閉館（整修）"},

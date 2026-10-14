@@ -775,7 +775,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-10",
     "verificationStatus": "partial",
     "notes": [
-      "波蘭牛奶吧早餐：jajecznica 炒蛋、naleśniki 可麗餅配 kompot，或菠菜歐姆蛋。平日 08:00 才開，10/30 改為早餐備選（起義博物館 08:30 入場）。"
+      "波蘭牛奶吧早餐：jajecznica 炒蛋、naleśniki 可麗餅配 kompot，或菠菜歐姆蛋。平日 08:00 才開，10/30 改為早餐備選（行程 08:10 就要搭地鐵往北）。"
     ],
     "menuUrl": "https://barbambino.pl/sniadanie/",
     "verificationNote": "本輪官網確認 Hoża 19（2026-10-12 餐飲 v5 稿列 Krucza 21，以官網為準）；早餐品項與當日供應再查菜單。 2026-10-12 網路交叉比對：仍在營業，未見歇業公告。官網平日 08:00–20:00、週末 09:00–18:00。",
@@ -1047,7 +1047,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "Świętosławska 10，舊城市場旁，庭院座位安靜，全天供應早餐；週四 09:00 才開，趕 09:30 教堂島來不及，適合等 12:00 山羊秀前坐一下。"
+      "Świętosławska 10，舊城市場旁，庭院座位安靜，全天供應早餐；週四 09:00 才開，不當早餐；10/29 11:05 從皇家城堡山丘下來進來坐，等 12:00 山羊秀。"
     ],
     "verificationNote": "官網確認門市與時段；Stary Browar 另有分店。",
     "hoursNote": "Weranda Family 官網",
@@ -1113,7 +1113,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "傳統波蘭料理，Świętojańska 2 就在皇家城堡旁；10/30 12:40 出城堡直接進來吃午餐，平日 12:00–16:00 有午間套餐。",
+      "傳統波蘭料理，Świętojańska 2 就在皇家城堡旁；10/30 城堡廣場拍完，12:00 進來吃午餐，平日 12:00–16:00 有午間套餐。",
       "不是 U Fukiera 的同一間店。"
     ],
     "cuisine": "波蘭菜（Magda Gessler）",
@@ -2221,7 +2221,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "Zgoda 3 市中心早午餐：Bagel、Scrambled Eggs、Avocado Toast；平日 07:30 開門，10/30 起義博物館 08:30 前的早餐首選。"
+      "Zgoda 3 市中心早午餐：Bagel、Scrambled Eggs、Avocado Toast；平日 07:30 開門，10/30 08:10 搭地鐵往北前的早餐首選。"
     ],
     "menuUrl": null,
     "verificationNote": "官網分店頁列 Zgoda 3；第三方目錄週末時段不一。",
@@ -2248,7 +2248,7 @@ export const diningPlaces = {
     "verificationStatus": "partial",
     "notes": [
       "Michelin 推薦喬治亞菜：khachapuri 起司船形麵包、khinkali 湯包、chanakhi 燉羊腿。",
-      "10/30 晚餐備選（原首選）：Soul Kitchen 沒有威靈頓或訂不到時改這間，國家博物館搭車約 15 分。"
+      "10/30 晚餐備選（原首選）：Soul Kitchen 沒有威靈頓或訂不到時改這間，Metropol 搭車約 10 分。"
     ],
     "menuUrl": null,
     "verificationNote": "官網與 Michelin 指南皆列 Wierzbowa 11（Michelin 推薦）；Yelp 仍顯示舊址 Al. Ujazdowskie 22，以官網為準。官網留有舊的暫停營業橫幅，但同站列正常時段，訂位時一併確認 10/30 營業。",
@@ -2298,7 +2298,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-13",
     "verificationStatus": "partial",
     "notes": [
-      "10/30 最後晚餐首選：Restaurant Guru 2026 年 7 月華沙威靈頓榜第一、Tripadvisor 威靈頓榜第二，離 Metropol 步行約 8 分、國家博物館步行約 12 分。",
+      "10/30 最後晚餐首選：Restaurant Guru 2026 年 7 月華沙威靈頓榜第一、Tripadvisor 威靈頓榜第二，離 Metropol 步行約 8 分。",
       "In Your Pocket 與 Warsaw Insider 都列 Nowogrodzka 18A、電話 +48 519 02 08 88；2026 年獲 Wine Spectator Award of Excellence，仍在營業。"
     ],
     "menuUrl": null,
@@ -2326,7 +2326,7 @@ export const diningPlaces = {
     "verificationStatus": "partial",
     "notes": [
       "Tripadvisor 華沙威靈頓榜第一（4.9），評論稱 Beef Wellington 火候完美；地中海料理與 Primitivo 酒單。",
-      "在 Wola（地鐵 Rondo ONZ），離起義博物館約 1.5 公里；晚上從國家博物館過去要搭車，Soul Kitchen 不能訂時再考慮。"
+      "在 Wola（地鐵 Rondo ONZ），晚上從 Metropol 過去要搭車，Soul Kitchen 不能訂時再考慮。"
     ],
     "menuUrl": null,
     "verificationNote": "營業時間來自 In Your Pocket（2026 年 7 月更新）；威靈頓只見於評論，是否常態供應未確認，訂位時先問。",

@@ -150,7 +150,7 @@ test('ticketsByCityExtras 的 4 筆非景點主檔項目仍完整存在（蕭邦
   }
 });
 
-test('切片 4b：辛德勒工廠／皇家城堡兩個步驟的 sub 改由 venues.js 的 hours 動態帶出，不是另外手打的固定字串', () => {
+test('切片 4b：辛德勒工廠步驟的 sub 改由 venues.js 的 hours 動態帶出，不是另外手打的固定字串（皇家城堡 2026-10-14 起不入內）', () => {
   const findStep = (dayN, label) => days.find(item => item.n === dayN).steps.find(item => item.label === label);
 
   const schindlerStep = findStep(2, '★ 辛德勒工廠');
@@ -159,16 +159,14 @@ test('切片 4b：辛德勒工廠／皇家城堡兩個步驟的 sub 改由 venue
   assert.ok(schindlerStep.sub.includes(schindlerVenue.hours.closes));
   assert.ok(schindlerStep.sub.includes(schindlerVenue.hours.lastEntry));
 
-  const royalCastleStep = findStep(7, '★ 皇家城堡');
-  const royalCastleVenue = resolveVenue('warsaw-royal-castle');
-  assert.ok(royalCastleStep.sub.includes(royalCastleVenue.hours.opens));
-  assert.ok(royalCastleStep.sub.includes(royalCastleVenue.hours.closes));
-  assert.ok(royalCastleStep.sub.includes(royalCastleVenue.hours.lastEntry));
+  // 2026-10-14 新行程只在城堡廣場拍外觀，Day 7 不再有入內步驟。
+  assert.equal(findStep(7, '★ 皇家城堡'), undefined);
+  assert.ok(findStep(7, '★ 城堡廣場（白天版）').sub.includes('不進城堡'));
 
-  // 精確檢查「不含票價數字」：這兩個步驟的 sub 不應含 PLN 金額（避免誤判無關數字，
+  // 精確檢查「不含票價數字」：這個步驟的 sub 不應含 PLN 金額（避免誤判無關數字，
   // 只鎖定「數字＋／＋數字」這種全票／優待並列的票價寫法，例如 47／35）。
   const priceListPattern = /\d+(?:\.\d+)?／\d+(?:\.\d+)?/;
-  for (const step of [schindlerStep, royalCastleStep]) {
+  for (const step of [schindlerStep]) {
     assert.doesNotMatch(step.sub, priceListPattern, `${step.label} 的 sub 仍殘留全票／優待並列的票價寫法`);
   }
 });
