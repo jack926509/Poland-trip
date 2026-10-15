@@ -159,15 +159,21 @@ export function renderCity({
       <figcaption>${city.photo.detailCaption} · ${city.photo.detailAuthor} · <a href="${city.photo.detailSource}" target="_blank" rel="noopener noreferrer">圖片來源 ↗</a> · <a href="${city.photo.detailLicenseUrl}" target="_blank" rel="noopener noreferrer">${city.photo.detailLicense} 授權 ↗</a></figcaption>
     </figure>` : '';
 
-  const legendHtml = Object.entries(legend).map(([key, item]) => `
-    <div><span style="background:${item.fill};border:1.5px solid ${item.line}"></span>${item.label}</div>`).join('');
+  // 圖例只列本城真的有的分類，並兼作篩選鈕：圖釘變多後可以只看景點或只看吃的。
+  const categoryCounts = mapData.points.reduce((counts, point) => {
+    counts[point[5]] = (counts[point[5]] || 0) + 1;
+    return counts;
+  }, {});
+  const legendHtml = Object.entries(legend).filter(([key]) => categoryCounts[key]).map(([key, item]) => `
+    <button type="button" class="map-legend-toggle" data-pin-category="${key}" aria-pressed="true"><span style="background:${item.fill};border:1.5px solid ${item.line}"></span>${item.label}<small>${categoryCounts[key]}</small></button>`).join('');
   const mapCheckSummary = Object.values(mapChecks).reduce((summary, check) => {
     if (check.status === 'coordinate-verified') summary.precise += 1;
     if (check.status === 'area-reference') summary.area += 1;
+    if (check.status === 'unverified') summary.approximate += 1;
     return summary;
-  }, {precise: 0, area: 0});
+  }, {precise: 0, area: 0, approximate: 0});
   const unpinnedDining = mergedDining.filter(item => (item.selected || item.mustEat) && item.map
-    && !mapData.points.some(point => point[2] === item.name));
+    && !mapData.points.some(point => (item.placeId && point[7] === item.placeId) || point[2] === item.name));
   const unpinnedDiningHtml = unpinnedDining.length ? `<details class="city-map-unpinned">
       <summary>其他行程餐廳的導航連結（${unpinnedDining.length} 家）</summary>
       <p>以下店家尚無本站核實的圖釘座標。點店名可用即時地圖查找地址與營業狀態；請先核對分店。</p>
@@ -191,9 +197,11 @@ export function renderCity({
         attribution: '&copy; OpenStreetMap contributors',
         maxZoom: 19
       }).addTo(map);
+      var layers = {};
       mapData.points.forEach(function (point) {
         var category = point[5] || 'sight';
         var color = colors[category] || colors.sight;
+        var layer = layers[category] || (layers[category] = L.layerGroup().addTo(map));
         // 16×16px 圖釘手機上很難精準點到（稽核 M5），放大到接近 Leaflet
         // 預設 marker 的命中區。
         var marker = L.circleMarker([point[0], point[1]], {
@@ -202,12 +210,22 @@ export function renderCity({
           color: color.line,
           fillColor: color.fill,
           fillOpacity: 0.92
-        }).addTo(map);
+        }).addTo(layer);
         var link = point[4] ? '<br><a href="' + point[4] + '" target="_blank" rel="noopener">在 Google Maps 開啟 →</a>' : '';
         var check = mapChecks[point[2]] || {};
-        var locationNote = check.status === 'area-reference' ? '<br><small>範圍代表點，請依實際目的地導航</small>' : '';
+        var locationNote = check.status === 'area-reference' ? '<br><small>範圍代表點，請依實際目的地導航</small>'
+          : check.status === 'unverified' ? '<br><small>約略位置：座標取自公開地圖資料、未逐點比對，導航以 Google Maps 為準</small>' : '';
         var stableDescription = point[3].replace(/★\d(?:\.\d)?(?:\s*\([^)]*\)|\s*（[^）]*）)?\s*/g, '').trim();
         marker.bindPopup('<b>' + point[2] + '</b><br>' + stableDescription + locationNote + link);
+      });
+      var legendBox = element.parentElement.querySelector('.map-legend');
+      if (legendBox) legendBox.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-pin-category]');
+        if (!button || !layers[button.dataset.pinCategory]) return;
+        var show = button.getAttribute('aria-pressed') !== 'true';
+        button.setAttribute('aria-pressed', String(show));
+        if (show) layers[button.dataset.pinCategory].addTo(map);
+        else map.removeLayer(layers[button.dataset.pinCategory]);
       });
       var toolbar = element.parentElement.querySelector('.map-toolbar');
       if (toolbar) toolbar.addEventListener('click', function (event) {
@@ -247,14 +265,14 @@ export function renderCity({
     <section class="section journal-city-map">
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
       <p class="lead">拖曳、滾輪、雙擊或使用按鈕縮放；手機可用雙指縮放，點選圖釘可直接開啟 Google Maps。</p>
-      <div class="callout-note"><b>座標狀態：</b>${mapCheckSummary.precise} 個門牌／場館錨點已比對${mapCheckSummary.area ? `，${mapCheckSummary.area} 個街區或島區採範圍代表點` : ''}。既有座標於 2026/08/11–09/08 查核；MEI 與 Restauracja Wrocławska 於 2026/09/24 採店家官方導航目的地補入；未確認分店的 Żabka 不放精確圖釘，抵達後請用即時地圖搜尋附近分店。</div>
+      <div class="callout-note"><b>座標狀態：</b>${mapCheckSummary.precise} 個門牌／場館錨點已比對${mapCheckSummary.area ? `，${mapCheckSummary.area} 個街區或島區採範圍代表點` : ''}${mapCheckSummary.approximate ? `，${mapCheckSummary.approximate} 個為約略位置（2026/10/15 依公開地圖資料補入行程餐廳、咖啡甜點與採點景點，點開圖釘會註明）` : ''}。既有座標於 2026/08/11–09/08 查核；MEI 與 Restauracja Wrocławska 於 2026/09/24 採店家官方導航目的地補入；未確認分店的 Żabka 不放精確圖釘，抵達後請用即時地圖搜尋附近分店。</div>
       <div class="map-toolbar" role="group" aria-label="${city.name}地圖縮放控制">
         <button type="button" data-map-action="zoom-in">＋ 放大</button>
         <button type="button" data-map-action="zoom-out">－ 縮小</button>
         <button type="button" data-map-action="reset">重設範圍</button>
       </div>
       <div id="map-${cityKey}" class="map-container" data-map-key="${cityKey}" role="region" aria-label="${city.name}互動地圖"><p class="map-fallback">地圖需要網路連線才能載入。離線或載入失敗時，請改用下方景點清單中的 Google Maps 連結。</p></div>
-      <div class="map-legend" aria-label="地圖圖例">${legendHtml}</div>
+      <div class="map-legend" role="group" aria-label="地圖圖例：點分類可隱藏或顯示該類圖釘">${legendHtml}</div>
       ${unpinnedDiningHtml}
       <p class="map-caption">地圖底圖 © OpenStreetMap contributors</p>
     </section>

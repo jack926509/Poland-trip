@@ -12,6 +12,7 @@ import { cityGallery } from './city-gallery.js';
 import { diningPlaces } from './dining-places.js';
 import { venues } from './venues.js';
 import { stayPin } from '../lib/journey.mjs';
+import { daySupplementaryPins } from './day-maps.js';
 
 export const cities = [
   {key:'WAW', name:'華沙', pl:'Warszawa', tag:'CAPITAL', vibe:'鋼鐵摩天 × 重建老城', highlights:['Krakowskie Przedmieście','老城與城堡廣場','瓦津基水上宮殿（週五免費）'], photo:{hero:'assets/photos/warszawa-hero.webp',thumb:'assets/photos/warszawa-thumb.webp',og:'assets/og/warszawa-og.jpg'}},
@@ -227,6 +228,146 @@ export const mapPins = {
   },
 };
 
+// <city-map-additions>
+// 2026-10-15：城市地圖補上這趟行程的餐廳、咖啡甜點與採點景點。
+// 1. 「行程錨點」沿用每日地圖（day-maps.js）已用的座標與來源，查證狀態比照每日地圖。
+// 2. 其餘點的座標由網路搜尋找到的公開地圖資料（店家頁、Tripadvisor／Wolt 結構化資料、
+//    Wikipedia 等）取得，本環境連不到 Nominatim，無法逐點比對距離，所以一律標 unverified，
+//    圖釘彈窗會註明「約略位置」；導航仍以各點的 Google Maps 連結為準。
+//    每點的座標來源寫在 cityMapAdditionChecks 的 coordinateSource。
+const anchorPin = (day, anchorName, venueId) => {
+  const point = venueId
+    ? daySupplementaryPins[day].find(item => item[0] === venues[venueId].coords?.[0] && item[1] === venues[venueId].coords?.[1])
+    : daySupplementaryPins[day].find(item => item[2] === anchorName);
+  if (!point) throw new Error(`城市地圖錨點找不到 Day ${day} 的 ${anchorName || venueId}`);
+  return point;
+};
+const dayAnchor = (day, anchorName, name, label, category, venueId = null) => {
+  const point = anchorPin(day, anchorName, venueId);
+  return {
+    point: [point[0], point[1], name, label, point[4], category, category === 'sight' ? venueId : null],
+    check: {status:'coordinate-verified', checkedAt:'2026-09-08', coordinateSource:point[6], distanceMeters:0, note:`沿用 Day ${day} 每日地圖錨點`},
+  };
+};
+const diningPin = (placeId, label, category, lat, lng, coordinateSource) => ({
+  point: [lat, lng, diningPlaces[placeId].name, label, diningPlaces[placeId].map, category, null, placeId],
+  check: {status:'unverified', checkedAt:'2026-10-15', coordinateSource, note:'約略位置，導航以 Google Maps 為準'},
+});
+const sightPin = (name, label, url, lat, lng, coordinateSource, venueId = null) => ({
+  point: [lat, lng, name, label, venueId ? venues[venueId].map : url, 'sight', venueId],
+  check: {status:'unverified', checkedAt:'2026-10-15', coordinateSource, note:'約略位置，導航以 Google Maps 為準'},
+});
+const cityMapAdditions = {
+  warsaw: [
+    dayAnchor(1, "皇家大道・Krakowskie Przedmieście", "聖十字教堂", "Day 1 採點 · 蕭邦心臟安放處 · 皇家大道中段", "sight", "warsaw-krakowskie-przedmiescie"),
+    dayAnchor(7, null, "老城廣場", "Day 7 採點 · 美人魚像、彩色立面", "sight", "warsaw-old-town-square"),
+    dayAnchor(1, null, "Warszawa Centralna 中央車站", "Day 1 Biedronka 採買 · Day 2／8 搭車", "transport", "warsaw-centralna-station"),
+    diningPin("warsaw-specjaly-regionalne", "Day 1 晚餐 · 波蘭地方料理 · Nowy Świat 44", "food", 52.23458, 21.019, "aroundus 店家頁（Nowy Świat 44）；biznesfinder 相差約 25 m"),
+    diningPin("warsaw-arirang-restaurant", "Day 6 晚餐 · 韓式 · Nowogrodzka 38", "food", 52.2286, 21.010977, "cityon.pl 店家頁（Nowogrodzka 38）；gdziezjesc、Tripadvisor 在 20 m 內"),
+    diningPin("warsaw-polka", "Day 7 午餐 · Świętojańska 2", "food", 52.248227, 21.013811, "konferencje.pl 店家頁（Świętojańska 2）"),
+    diningPin("warsaw-soul-kitchen", "Day 7 最後晚餐 · 威靈頓牛排 · Nowogrodzka 18A", "food", 52.229478, 21.014839, "adres.warszawa.pl 的 Nowogrodzka 18A 門牌點（建物，非店門）"),
+    diningPin("warsaw-a-blikle-1869", "Day 1 外帶 pączek · Nowy Świat 33–35", "cafe", 52.233526, 21.019145, "Wolt 門市頁（Nowy Świat 33）；Pyszne、Uber Eats、Tripadvisor 在 20 m 內"),
+    diningPin("warsaw-wedel-krakowskie-45", "Day 1 熱巧克力 · Krakowskie Przedmieście 45", "cafe", 52.244675, 21.014097, "Tripadvisor 門市頁（Krakowskie Przedmieście 45）；僅一個來源"),
+    diningPin("warsaw-cafe-bristol", "咖啡甜點備選 · Hotel Bristol 一樓", "cafe", 52.242058, 21.015827, "Tripadvisor 店家頁；cafebristol.pl 聯絡頁 52.2420, 21.0158 一致"),
+    diningPin("warsaw-green-caffe-nero-centralny", "Day 2 早餐外帶 · 中央車站站內", "cafe", 52.229618, 21.003939, "Tripadvisor 店家頁（al. Jerozolimskie 54 站內）"),
+    diningPin("warsaw-bulke-przez-bibulke-zgoda", "Day 7 早餐 · Zgoda 3", "cafe", 52.23266, 21.01375, "polskadladzieci.pl 店家地圖點（Zgoda 3）；僅一個來源"),
+    diningPin("warsaw-qq-warsaw-matcha-korean-toasts", "Day 7 下午點心 · 抹茶 · Żurawia 32/34", "cafe", 52.228374, 21.013824, "officelist.pl 的 Żurawia 32/34 建物座標（建物，非店門）"),
+    diningPin("warsaw-charlotte-zlota", "Day 8 早餐 · Złota 83", "cafe", 52.2292, 20.9947, "Wikidata 的 Złota 83 建物座標（建物，非店門）"),
+    sightPin("戴高樂圓環「棕櫚樹」", "Day 1 採點 · Rondo de Gaulle'a", "https://www.google.com/maps/search/?api=1&query=Palma%2C%20Rondo%20de%20Gaulle'a%2C%20Warszawa", 52.231854, 21.020859, "Sygic POI（棕櫚樹本體）"),
+    sightPin("哥白尼紀念碑＋Staszic 宮", "Day 1 採點 · Krakowskie Przedmieście 南端", "https://www.google.com/maps/search/?api=1&query=Pomnik%20Miko%C5%82aja%20Kopernika%2C%20Warszawa", 52.23816, 21.01797, "Wikipedia；aroundus 一致"),
+    sightPin("華沙大學正門", "Day 1 採點 · Krakowskie Przedmieście 26/28", "https://www.google.com/maps/search/?api=1&query=Brama%20G%C5%82%C3%B3wna%20Uniwersytetu%20Warszawskiego", 52.23972, 21.01694, "Wikipedia（52°14′23″N 21°01′01″E）"),
+    sightPin("訪親會教堂", "Day 1 採點 · Krakowskie Przedmieście 34", "https://www.google.com/maps/search/?api=1&query=Ko%C5%9Bci%C3%B3%C5%82%20Wizytek%2C%20Warszawa", 52.241118, 21.017156, "Tripomatic；aroundus 一致"),
+    sightPin("總統府", "Day 1 日落採點 · Krakowskie Przedmieście 48/50", "https://www.google.com/maps/search/?api=1&query=Pa%C5%82ac%20Prezydencki%2C%20Warszawa", 52.243081, 21.015763, "Tripomatic；aroundus 相差約 30 m"),
+    {...sightPin("Złote Tarasy 購物中心", "Day 1 晚上逛街 · Złota 59", "https://www.google.com/maps/search/?api=1&query=Z%C5%82ote%20Tarasy%2C%20Z%C5%82ota%2059%2C%20Warszawa", 52.230164, 21.002414, "Wikipedia（Złota 59）"), point: [52.230164, 21.002414, "Złote Tarasy 購物中心", "Day 1 晚上逛街 · Złota 59", "https://www.google.com/maps/search/?api=1&query=Z%C5%82ote%20Tarasy%2C%20Z%C5%82ota%2059%2C%20Warszawa", 'shop']},
+    sightPin("MSN 現代美術館（外觀）", "Day 7 採點 · 科學文化宮旁", null, 52.233028, 21.008981, "波蘭文 Wikipedia；華沙市府頁 52.2331288, 21.0089838 一致", "warsaw-msn"),
+    sightPin("POLIN 猶太史博物館（外觀）", "Day 7 採點 · 不進館", "https://www.google.com/maps/search/?api=1&query=POLIN%20Museum%2C%20Mordechaja%20Anielewicza%206%2C%20Warszawa", 52.24944, 20.99306, "Wikipedia（52°14′58″N 20°59′35″E）"),
+    sightPin("猶太隔離區英雄紀念碑", "Day 7 採點 · 博物館前廣場", "https://www.google.com/maps/search/?api=1&query=Pomnik%20Bohater%C3%B3w%20Getta%2C%20Warszawa", 52.24972, 20.99389, "Wikipedia（52°14′59″N 20°59′38″E）"),
+    sightPin("克拉辛斯基廣場・華沙起義紀念碑", "Day 7 採點", "https://www.google.com/maps/search/?api=1&query=Pomnik%20Powstania%20Warszawskiego%2C%20plac%20Krasi%C5%84skich", 52.24944, 21.00583, "Wikipedia 華沙起義紀念碑座標"),
+    sightPin("新城廣場＋聖卡齊米日教堂", "Day 7 採點", "https://www.google.com/maps/search/?api=1&query=Rynek%20Nowego%20Miasta%2C%20Warszawa", 52.252778, 21.008056, "Wikidata 新城市集廣場（52°15′10″N 21°0′29″E）"),
+    sightPin("居禮夫人出生地", "Day 7 採點 · Freta 16（博物館不進）", "https://www.google.com/maps/search/?api=1&query=Muzeum%20Marii%20Sk%C5%82odowskiej-Curie%2C%20Freta%2016%2C%20Warszawa", 52.25153, 21.00852, "aroundus 居禮夫人博物館頁（Freta 16）"),
+    sightPin("甕城 Barbakan", "Day 7 採點 · 城牆", "https://www.google.com/maps/search/?api=1&query=Barbakan%20Warszawski", 52.250619, 21.010148, "Sygic POI（52°15′2.2″N 21°0′36.5″E）"),
+    sightPin("Gnojna Góra 觀景點", "Day 7 採點 · 俯瞰維斯瓦河", "https://www.google.com/maps/search/?api=1&query=Gnojna%20G%C3%B3ra%2C%20Warszawa", 52.24996, 21.0141, "aroundus 地點頁"),
+    sightPin("聖若望大教堂", "Day 7 採點 · Świętojańska 8", "https://www.google.com/maps/search/?api=1&query=Archikatedra%20%C5%9Bw.%20Jana%20Chrzciciela%2C%20Warszawa", 52.248889, 21.013611, "Wikipedia（52°14′56″N 21°00′49″E）"),
+    sightPin("城堡廣場・齊格蒙特圓柱", "Day 7 採點", "https://www.google.com/maps/search/?api=1&query=Kolumna%20Zygmunta%2C%20plac%20Zamkowy%2C%20Warszawa", 52.24725, 21.013389, "Wikipedia 齊格蒙特圓柱座標"),
+    sightPin("聖馬丁教堂", "Day 7 採點 · Piwna 9/11", "https://www.google.com/maps/search/?api=1&query=Ko%C5%9Bci%C3%B3%C5%82%20%C5%9Bw.%20Marcina%2C%20Piwna%209%2F11%2C%20Warszawa", 52.248308, 21.012532, "波蘭觀光局 polonia.travel（Piwna 9/11）；Tripomatic 一致"),
+    sightPin("劇院廣場・大劇院", "Day 7 採點", "https://www.google.com/maps/search/?api=1&query=Teatr%20Wielki%2C%20plac%20Teatralny%2C%20Warszawa", 52.243056, 21.011111, "Wikipedia 大劇院座標"),
+    sightPin("薩克森花園", "Day 7 採點", "https://www.google.com/maps/search/?api=1&query=Ogr%C3%B3d%20Saski%2C%20Warszawa", 52.24056, 21.00861, "Wikipedia 公園中心點"),
+    sightPin("無名塚與衛兵", "Day 7 採點 · 整點換崗", "https://www.google.com/maps/search/?api=1&query=Gr%C3%B3b%20Nieznanego%20%C5%BBo%C5%82nierza%2C%20Warszawa", 52.240833, 21.011389, "波蘭文 Wikipedia；英文 Wikipedia 相差約 30 m"),
+    sightPin("BUW 屋頂花園", "Day 7 採點 · Dobra 56/66", "https://www.google.com/maps/search/?api=1&query=Ogr%C3%B3d%20na%20dachu%20BUW%2C%20Dobra%2056%2F66%2C%20Warszawa", 52.242833, 21.024833, "BUW 官網聯絡頁 GPS（Dobra 56/66）"),
+    sightPin("瓦津基公園", "Day 7 採點 · 公園免費", "https://www.google.com/maps/search/?api=1&query=%C5%81azienki%20Kr%C3%B3lewskie%2C%20Warszawa", 52.212776, 21.032778, "museum-digital 地名庫（公園整體代表點）"),
+    sightPin("瓦津基・水上宮殿（外觀）", "Day 7 採點", null, 52.21512, 21.03582, "Wikipedia；museum-digital、Tripomatic 一致", "warsaw-lazienki-palace"),
+    sightPin("三十字廣場・聖亞歷山大教堂", "Day 7 採點", "https://www.google.com/maps/search/?api=1&query=Ko%C5%9Bci%C3%B3%C5%82%20%C5%9Bw.%20Aleksandra%2C%20plac%20Trzech%20Krzy%C5%BCy%2C%20Warszawa", 52.229717, 21.023731, "波蘭觀光局 polonia.travel 聖亞歷山大教堂頁"),
+  ],
+  krakow: [
+    dayAnchor(2, null, "瓦維爾大教堂", "Day 2 採點 · Wawel 3", "sight", "krakow-wawel-cathedral"),
+    dayAnchor(2, null, "聖瑪利亞聖殿", "Day 2 採點 · 整點號角", "sight", "krakow-st-mary-basilica"),
+    dayAnchor(2, "Podgórze・猶太英雄廣場", "Podgórze・猶太英雄廣場", "Day 2 往辛德勒工廠途中", "sight"),
+    dayAnchor(4, null, "Kraków Główny 中央車站", "Day 2 抵達 · Day 4 轉場", "transport", "krakow-glowny-station"),
+    diningPin("krakow-pimiento-shop-bistro", "Day 2 午餐 · Świętego Filipa 21", "food", 50.0678495, 19.9419987, "主檔 Google Maps 商家連結的 !3d／!4d 座標；Tripadvisor 列 50.068367, 19.940136，兩者相差約 145 m"),
+    diningPin("krakow-hankki", "Day 2 晚餐 · 韓式（米其林指南推薦） · Zabłocie 19A", "food", 50.049805, 19.959665, "米其林指南店家頁的 Google Maps 連結（Zabłocie 19A）；joinpearl／restaurantguru 相差約 25 m"),
+    diningPin("krakow-mr-jerry", "Day 3 晚餐 · 威靈頓牛排 · Jagiellońska 5", "food", 50.062753, 19.935019, "TheFork 店家頁 schema.org 座標（Jagiellońska 5）；Tripadvisor 一致"),
+    diningPin("krakow-lajkonik-basztowa", "Day 2 備隔日早午餐 · 麵包店 · Basztowa 15", "cafe", 50.06639, 19.94013, "Tripadvisor 店家頁（Basztowa 15）；cityon.pl 同址 50.06639, 19.940126 一致"),
+    diningPin("krakow-charlotte-plac-szczepanski", "Day 4 早餐 · plac Szczepański 2", "cafe", 50.063523, 19.934895, "Wolt 店家頁 schema.org 座標（plac Szczepański 2）；campingcompass 一致"),
+    diningPin("krakow-cafe-camelot", "咖啡甜點 · 中央廣場散步時 · Św. Tomasza 17", "cafe", 50.062977, 19.939196, "Tripadvisor 店家頁（Św. Tomasza 17）；local-life 相差約 15 m"),
+    diningPin("krakow-massolit-books-cafe", "咖啡甜點 · Wawel 前後 · Felicjanek 4", "cafe", 50.058464, 19.929539, "Tripadvisor 店家頁（Felicjanek 4/2）；laptopfriendly 一致"),
+    diningPin("krakow-karma-coffee-roasters", "精品咖啡 · Krupnicza 12", "cafe", 50.063476, 19.930562, "specialty.hu 烘豆商頁（Krupnicza 12/3）；Tripadvisor、In Your Pocket 皆在 30 m 內"),
+    diningPin("krakow-cukiernia-michalek", "甜點 · Krupnicza 6", "cafe", 50.06339, 19.9313, "Tripadvisor 店家頁（Krupnicza 6）；biznes-top、Panorama Firm 一致"),
+  ],
+  wroclaw: [
+    dayAnchor(5, "Papa Krasnal 小矮人", "Papa Krasnal 小矮人", "Day 5 小矮人尋寶起點 · Świdnicka 地下道旁", "sight"),
+    dayAnchor(5, "糖果屋雙屋 Jaś i Małgosia", "糖果屋雙屋 Jaś i Małgosia", "Day 5 採點 · 屠夫巷旁", "sight"),
+    dayAnchor(5, "聖伊莉莎白教堂", "聖伊莉莎白教堂", "Day 5 採點 · 只拍高塔外觀", "sight"),
+    dayAnchor(5, null, "全景畫圓形館（外觀）", "Day 5 採點 · 不進館", "sight", "wroclaw-panorama"),
+    dayAnchor(5, null, "Wrocław Główny 中央車站", "Day 4 抵達 · Day 5 晚間轉場", "transport", "wroclaw-glowny-station"),
+    diningPin("wroclaw-samarqand", "Day 4 晚餐 · 烏茲別克料理 · Stawowa 23", "food", 51.099916, 17.033567, "Wolt 店家頁座標（Stawowa 23）；Tripadvisor 一致"),
+    diningPin("wroclaw-max-wroclavia", "Day 5 晚餐外帶 · Wroclavia 商場（車站旁）", "food", 51.096431, 17.034842, "MAX 官方門市頁（Sucha 1 Wroclavia）；Pyszne.pl 一致，Wolt 標在同商場北側約 80 m"),
+    diningPin("wroclaw-central-cafe", "Day 5 早餐 · Św. Antoniego 10", "cafe", 51.108937, 17.025855, "店家官網 centralcafe.eatbu.com 所列座標（Św. Antoniego 10）；RestaurantGuru 一致"),
+    diningPin("wroclaw-charlotte-pokoyhof", "Day 5 早餐備案 · Pasaż Pokoyhof", "cafe", 51.108543, 17.02619, "Tripadvisor 店家頁（Pasaż Pokoyhof）；MapQuest 一致"),
+    diningPin("wroclaw-paloma-coffee", "咖啡 · 鹽廣場 · Plac Solny 8–9", "cafe", 51.109406, 17.028637, "Tripadvisor 店家頁（Plac Solny 8–9）；另一筆 Tripadvisor 一致"),
+    diningPin("wroclaw-el-gato-specialty-coffee", "Day 5 咖啡休息 · Odrzańska 8", "cafe", 51.112197, 17.031416, "Wolt 店家頁座標（Odrzańska 8/1）；Maptons 一致"),
+    diningPin("wroclaw-dessert-boutique", "甜點 · Św. Mikołaja 43", "cafe", 51.111362, 17.02352, "Wolt 店家頁座標（Św. Mikołaja 43）；Tripadvisor 相差約 15 m"),
+    sightPin("四教派街區・白鸛猶太會堂", "Day 5 採點", "https://www.google.com/maps/search/?api=1&query=Synagoga%20pod%20Bia%C5%82ym%20Bocianem%2C%20Wroc%C5%82aw", 51.10806, 17.02472, "Wikipedia 白鸛猶太會堂座標（51°06′29″N 17°01′29″E）"),
+    sightPin("Neon Side Gallery", "Day 4 夜景／Day 5 白天 · Ruska 46c 中庭", "https://www.google.com/maps/search/?api=1&query=Neon%20Side%20Gallery%2C%20Ruska%2046%2C%20Wroc%C5%82aw", 51.11, 17.024635, "Outdooractive POI（Ruska 46c 中庭）；Atlas Obscura、GoOut 一致"),
+    sightPin("鹽廣場 Plac Solny", "Day 5 採點 · 24 小時花市", "https://www.google.com/maps/search/?api=1&query=Plac%20Solny%2C%20Wroc%C5%82aw", 51.109313, 17.02884, "nocowanie.pl 地點頁座標"),
+    sightPin("屠夫巷 Stare Jatki", "Day 5 採點 · 動物銅像", "https://www.google.com/maps/search/?api=1&query=Stare%20Jatki%2C%20Wroc%C5%82aw", 51.112144, 17.030634, "樂斯拉夫市旅遊資訊 PIK Wrocław；波蘭文 Wikipedia 一致"),
+    sightPin("樂斯拉夫大學主樓", "Day 5 採點 · 大學區", "https://www.google.com/maps/search/?api=1&query=Uniwersytet%20Wroc%C5%82awski%2C%20plac%20Uniwersytecki%201", 51.113973, 17.034014, "樂斯拉夫會議局官方頁（pl. Uniwersytecki 1）；Wikidata 一致"),
+    sightPin("Hala Targowa 市場大廳", "Day 5 採點 · Piaskowa 17", "https://www.google.com/maps/search/?api=1&query=Hala%20Targowa%2C%20Piaskowa%2017%2C%20Wroc%C5%82aw", 51.112459, 17.040324, "Sygic POI（引 Wikipedia）；Structurae 一致"),
+    sightPin("國家博物館（外觀）", "Day 5 採點 · 爬藤外牆", null, 51.110494, 17.047364, "波蘭觀光局頁（pl. Powstańców Warszawy 5）", "wroclaw-national-museum"),
+    sightPin("沙島 Wyspa Piasek", "Day 5 傍晚採點", "https://www.google.com/maps/search/?api=1&query=Wyspa%20Piasek%2C%20Wroc%C5%82aw", 51.1146, 17.041119, "Wikidata／Commons 沙上聖母教堂座標"),
+    sightPin("Słodowa 島", "Day 5 傍晚採點", "https://www.google.com/maps/search/?api=1&query=Wyspa%20S%C5%82odowa%2C%20Wroc%C5%82aw", 51.116253, 17.0375, "Wikipedia 波蘭島嶼列表；Commons 一致"),
+    sightPin("座堂橋 Most Tumski", "Day 5 點燈前後 · 愛情鎖橋", "https://www.google.com/maps/search/?api=1&query=Most%20Tumski%2C%20Wroc%C5%82aw", 51.114708, 17.042269, "Structurae 橋梁資料庫；Sygic 一致"),
+    sightPin("Przejście「無名行人」", "Day 4 夜間選配 · Świdnicka × Piłsudskiego", "https://www.google.com/maps/search/?api=1&query=Pomnik%20Anonimowych%20Przechodni%C3%B3w%2C%20Wroc%C5%82aw", 51.101389, 17.029167, "Wikimedia Commons／Wikidata；Tripadvisor 一致"),
+    sightPin("Grunwaldzki 橋", "Day 5 往百年廳途中", "https://www.google.com/maps/search/?api=1&query=Most%20Grunwaldzki%2C%20Wroc%C5%82aw", 51.109503, 17.052506, "Bridgemeister 橋梁資料庫；Wikipedia 一致"),
+  ],
+  poznan: [
+    dayAnchor(6, null, "市政廳・山羊鐘樓", "Day 6 12:00 山羊秀", "sight", "poznan-town-hall"),
+    dayAnchor(6, null, "Stary Browar 舊啤酒廠", "Day 6 採點 · Półwiejska 42", "sight", "poznan-stary-browar"),
+    dayAnchor(6, null, "帝王城堡 Zamek Cesarski（外觀）", "Day 6 帝王區採點", "sight", "poznan-ck-zamek"),
+    dayAnchor(6, null, "Poznań Główny 中央車站", "Day 6 搭車往華沙", "transport", "poznan-glowny-station"),
+    diningPin("poznan-carla-trattoria-moderna", "Day 6 午餐 · Święty Marcin 34", "food", 52.4063215, 16.9259795, "主檔 Google Maps 商家連結的 !3d／!4d 座標；pyszne.pl、zjedz.my 一致"),
+    diningPin("poznan-charlotte-krysiewicza", "Day 6 早餐 · Krysiewicza 3a", "cafe", 52.40407, 16.929611, "Tripadvisor 店家頁（Krysiewicza 3a）；Wolt 相差約 10 m"),
+    diningPin("poznan-weranda-caffe", "Day 6 山羊秀前咖啡 · Świętosławska 10", "cafe", 52.406946, 16.934035, "menix.pl 店家頁（Świętosławska 10）；zjedz.my、Tripadvisor 一致"),
+    diningPin("poznan-rogal", "Day 6 聖馬丁牛角麵包 · Stary Rynek", "cafe", 52.4079727, 16.9340286, "主檔 Google Maps 商家連結的 !3d／!4d 座標（Stary Rynek 11/17）；搜尋未找到第二來源"),
+    diningPin("poznan-cukiernia-kandulski", "聖馬丁牛角麵包備案 · plac Cyryla Ratajskiego 1", "cafe", 52.409722, 16.923889, "Wikimapia 的 Plac Cyryla Ratajskiego 廣場中心，不是店門口（約 50–70 m 內）"),
+    diningPin("poznan-lagacca-cafe-by-brisman", "咖啡 · Woźna 21", "cafe", 52.407949, 16.935606, "biznes-top.pl 店家頁（Woźna 21）；僅一個來源"),
+    diningPin("poznan-stragan-kawiarnia", "咖啡 · Ratajczaka 31", "cafe", 52.407031, 16.92506, "cityon.pl 店家頁（Ratajczaka 31）；In Your Pocket、MapQuest 一致"),
+    sightPin("Cytadela「Nierozpoznani」無頭人像", "Day 6 早晨採點", "https://www.google.com/maps/search/?api=1&query=Nierozpoznani%2C%20Cytadela%2C%20Pozna%C5%84", 52.421953, 16.935642, "naszewycieczki.pl；Wikidata、In Your Pocket 一致"),
+    sightPin("Śródka 立體壁畫", "Day 6 採點 · Śródka 3", "https://www.google.com/maps/search/?api=1&query=Mural%20Opowie%C5%9B%C4%87%20%C5%9Br%C3%B3decka%2C%20%C5%9Ar%C3%B3dka%203%2C%20Pozna%C5%84", 52.411261, 16.953487, "In Your Pocket（Śródka 3）"),
+    sightPin("皇家城堡山丘", "Day 6 採點 · Góra Przemysła 1", "https://www.google.com/maps/search/?api=1&query=Zamek%20Kr%C3%B3lewski%2C%20G%C3%B3ra%20Przemys%C5%82a%201%2C%20Pozna%C5%84", 52.409167, 16.931111, "Wikipedia（52°24′33″N 16°55′52″E）"),
+    sightPin("自由廣場 Plac Wolności", "Day 6 採點", "https://www.google.com/maps/search/?api=1&query=Plac%20Wolno%C5%9Bci%2C%20Pozna%C5%84", 52.4077, 16.9273, "aroundus.com 廣場中心點"),
+    sightPin("Okrąglak 圓形百貨（外觀）", "Day 6 採點 · Carla 旁", "https://www.google.com/maps/search/?api=1&query=Okr%C4%85glak%2C%20Miel%C5%BCy%C5%84skiego%2014%2C%20Pozna%C5%84", 52.408333, 16.922222, "波蘭文 Wikipedia（52°24′30″N 16°55′20″E）；Wikidata 一致"),
+    sightPin("Kaponiera 圓環", "Day 6 往車站途中", "https://www.google.com/maps/search/?api=1&query=Rondo%20Kaponiera%2C%20Pozna%C5%84", 52.407778, 16.9125, "波蘭文 Wikipedia；Waze、MapQuest 一致"),
+    sightPin("Chwaliszewo 街", "Day 6 由教堂島走回老城", "https://www.google.com/maps/search/?api=1&query=Chwaliszewo%2C%20Pozna%C5%84", 52.408472, 16.939414, "波蘭文 Wikipedia 舊 Chwaliszewski 橋址（今為 Chwaliszewo 街的一段）"),
+  ],
+};
+for (const [city, additions] of Object.entries(cityMapAdditions)) {
+  mapPins[city].points.push(...additions.map(item => item.point));
+}
+const cityMapAdditionChecks = Object.fromEntries(Object.entries(cityMapAdditions).map(([city, additions]) => [
+  city, Object.fromEntries(additions.map(item => [item.point[2], item.check])),
+]));
+// </city-map-additions>
+
 export const pinCategoryLegend = {
   star2:  {fill:'#B8860B', line:'#3a2a06', label:'米其林二星'},
   star1:  {fill:'#E8A81E', line:'#8a5a00', label:'米其林一星'},
@@ -235,6 +376,7 @@ export const pinCategoryLegend = {
   sight:  {fill:'#3b6ea5', line:'#1c3a58', label:'景點'},
   shop:   {fill:'#8b5cf6', line:'#4c2f8f', label:'伴手禮店家'},
   luxury: {fill:'#d6336c', line:'#7a1a3d', label:'精品購物'},
+  cafe:   {fill:'#9a6a3a', line:'#4f3317', label:'咖啡／甜點／麵包'},
   hotel:  {fill:'#6d597a', line:'#3d2f46', label:'已確認住宿'},
   transport: {fill:'#2f6f73', line:'#173f42', label:'車站／交通'},
 };
@@ -308,6 +450,7 @@ Object.assign(mapPinChecks.poznan, {
   'Na Winklu': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
   'Poznan Apartments Towarowa': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:25},
 });
+for (const [city, checks] of Object.entries(cityMapAdditionChecks)) Object.assign(mapPinChecks[city], checks);
 
 // attractions：逐列轉錄自 poland-travel-guide-final.html 各城「景點 · Sights」表格。
 // 名稱欄含多個連結時（如「Łazienki 公園 · Wilanów 宮」），name 保留完整可讀文字，

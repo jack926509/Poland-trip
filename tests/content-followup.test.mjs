@@ -17,7 +17,10 @@ test('餐廳圖釘覆蓋依分店 ID，同品牌同名門市不得互算', () =>
   assert.equal(wedel[4], diningPlaces['warsaw-wedel-szpitalna-8'].map);
   const report = auditDiningPinCoverage();
   assert.ok(!report.byCity['華沙'].missingDetails.some(row => row.placeId === 'warsaw-wedel-szpitalna-8'));
-  assert.ok(report.byCity['華沙'].missingDetails.some(row => row.placeId === 'warsaw-wedel-krakowskie-45'));
+  // 2026-10-15 起 Krakowskie Przedmieście 45 有自己的圖釘；仍須是另一個 ID 的點，不能靠 Szpitalna 那根算進去。
+  const krakowskie = mapPins.warsaw.points.find(point => point[7] === 'warsaw-wedel-krakowskie-45');
+  assert.ok(krakowskie && krakowskie !== wedel);
+  assert.equal(diningPinMatches({ placeId: 'warsaw-wedel-krakowskie-45', name: wedel[2] }, wedel), false);
 });
 
 test('缺少餐廳圖釘清單可逐店續查，涵蓋速食並保留主檔地址、來源及狀態', () => {

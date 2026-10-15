@@ -128,8 +128,8 @@ test('資料遷移保留每日獨有餐廳的料理資訊與點心查核狀態',
   assert.ok(fs.readFileSync(new URL('../dist/day-04.html',import.meta.url),'utf8').includes('資料待確認'));
 });
 
-test('餐飲類圖釘（star1/star2/bib/food）都帶 placeId，且導航連結與門市主檔一致', () => {
-  const diningCategories = new Set(['star1', 'star2', 'bib', 'food']);
+test('餐飲類圖釘（star1/star2/bib/food/cafe）都帶 placeId，且導航連結與門市主檔一致', () => {
+  const diningCategories = new Set(['star1', 'star2', 'bib', 'food', 'cafe']);
   let checked = 0;
   for (const [city, data] of Object.entries(cities.mapPins)) {
     for (const point of data.points) {
@@ -141,7 +141,7 @@ test('餐飲類圖釘（star1/star2/bib/food）都帶 placeId，且導航連結�
       assert.equal(url, diningPlaces[placeId].map, `${city}／${name} 的圖釘導航連結與門市主檔不一致`);
     }
   }
-  assert.equal(checked, 24);
+  assert.equal(checked, 24 + 10 + 24); // 2026-10-15 城市地圖補上行程餐廳 10 家、咖啡甜點與麵包店 24 家
 });
 
 test('「行程餐廳營業時間」表 = 每日餐位中已核實／部分核實的門市集合', () => {

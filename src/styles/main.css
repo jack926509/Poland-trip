@@ -7482,3 +7482,37 @@ html[data-text-size="xl"] { font-size: 125%; }
   /* 手機瀏覽器（尤其 Android）捲動時 fixed 背景每格都要重繪，改成跟著捲動。 */
   body { background-attachment: scroll; }
 }
+
+/* --- 2026-10-15 城市地圖圖例兼篩選 ---
+   行程餐廳、咖啡甜點與採點景點補進城市地圖後圖釘變多，
+   圖例改成按鈕：點一下隱藏該類圖釘，再點一下顯示。 */
+.map-legend-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 2.25rem;
+  padding: 0 0.4rem;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.map-legend-toggle small {
+  margin-left: auto;
+  color: var(--ink-soft);
+  font-size: 0.85em;
+}
+.map-legend-toggle:hover { border-color: var(--line); }
+.map-legend-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+.map-legend-toggle[aria-pressed="false"] { opacity: 0.45; text-decoration: line-through; }
+.map-legend-toggle span {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.journal-site .map-legend > .map-legend-toggle { font-size: 0.875rem; }

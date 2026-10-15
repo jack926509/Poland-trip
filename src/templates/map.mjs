@@ -41,7 +41,8 @@ export function renderInteractiveMap({ id, title, mapData, mapChecks = {}, legen
       // 16×16px 圖釘手機上很難精準點到（稽核 M5），放大到接近 Leaflet 預設
       // marker 的命中區。
       var marker = L.circleMarker([point[0], point[1]], { radius: 12, color: category.line, fillColor: category.fill, weight: 2, fillOpacity: .92 }).addTo(map);
-      var label = area ? '<br><small>範圍代表點，請依實際目的地導航</small>' : '<br><small>已查證場館／門牌錨點</small>';
+      var label = area ? '<br><small>範圍代表點，請依實際目的地導航</small>'
+        : check.status === 'unverified' ? '<br><small>約略位置，導航以 Google Maps 為準</small>' : '<br><small>已查證場館／門牌錨點</small>';
       var popup = document.createElement('div');
       var heading = document.createElement('b'); heading.textContent = point[2]; popup.appendChild(heading);
       popup.appendChild(document.createElement('br')); popup.appendChild(document.createTextNode(point[3]));

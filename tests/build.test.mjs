@@ -643,7 +643,8 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.equal(photoSpots.length, 10);
   assert.equal(photoCredits.length, 20);
   assert.deepEqual(Object.fromEntries(Object.entries(mapPins).map(([city, data]) => [city, data.points.length])), {
-    warsaw: 14, krakow: 16, wroclaw: 10, poznan: 7,
+    // 2026-10-15 城市地圖補上行程餐廳、咖啡甜點與採點景點（47 → 140）
+    warsaw: 52, krakow: 29, wroclaw: 34, poznan: 25,
   });
   assert.deepEqual(Object.fromEntries(Object.entries(attractions).map(([city, items]) => [city, items.length])), {
     warsaw: 11, krakow: 6, wroclaw: 8, poznan: 9,
@@ -692,7 +693,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
 
 test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', () => {
   const allPins = Object.entries(mapPins).flatMap(([city, data]) => data.points.map((point) => ({city, name:point[2]})));
-  assert.equal(allPins.length, 47);
+  assert.equal(allPins.length, 140); // 2026-10-15 城市地圖補點（47 → 140）
   for (const pin of allPins) {
     assert.ok(mapPinChecks[pin.city]?.[pin.name], `${pin.city}/${pin.name} 缺少圖釘查證狀態`);
   }
@@ -705,7 +706,9 @@ test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', ()
   });
   const verifiedPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'coordinate-verified');
   const areaPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'area-reference');
-  assert.equal(verifiedPins.length, 44); // 2026-10-13 撤掉琥珀、陶器兩個伴手禮圖釘
+  // 2026-10-13 撤掉琥珀、陶器兩個伴手禮圖釘；2026-10-15 沿用每日地圖錨點 16 個（44 → 60），
+  // 其餘 77 個新點座標未逐點比對，維持 unverified。
+  assert.equal(verifiedPins.length, 60);
   assert.deepEqual(
     areaPins.map(({name}) => name).sort(),
     [
@@ -975,14 +978,15 @@ test('4 個已確認住宿地點皆出現在對應城市地圖，圖釘地址與
   }
 });
 
-test('4 個城市頁含正確 Leaflet 圖釘數，合計 47', () => {
+test('4 個城市頁含正確 Leaflet 圖釘數，合計 140', () => {
   // 2026-09-14：撤掉 5 個「地圖上有、餐廳表已無」的孤兒圖釘後由 53 降為 48
   // 2026-10-13：伴手禮不列琥珀、Bolesławiec 陶器，克拉科夫撤兩個圖釘（49 → 47）
+  // 2026-10-15：補上行程餐廳、咖啡甜點與採點景點（47 → 140）
   const expected = {
-    'city-warszawa.html': 14,
-    'city-krakow.html': 16,
-    'city-wroclaw.html': 10,
-    'city-poznan.html': 7,
+    'city-warszawa.html': 52,
+    'city-krakow.html': 29,
+    'city-wroclaw.html': 34,
+    'city-poznan.html': 25,
   };
   let total = 0;
   for (const [file, count] of Object.entries(expected)) {
@@ -997,7 +1001,7 @@ test('4 個城市頁含正確 Leaflet 圖釘數，合計 47', () => {
     assert.equal(points, count, `${file} 圖釘數錯誤`);
     total += points;
   }
-  assert.equal(total, 47);
+  assert.equal(total, 140);
 });
 
 test('城市頁完整呈現故事、景點、行程餐廳推薦與拍照資訊', () => {
@@ -2184,7 +2188,15 @@ test('POLIN 僅保留購票參考，主行程只看外觀不入館；Day 7 午�
   const itineraryFiles = ['index.html', 'today.html', ...days.map(day => `day-${String(day.n).padStart(2, '0')}.html`), ...['warszawa', 'krakow', 'wroclaw', 'poznan'].map(city => `city-${city}.html`)];
   // 2026-10-14 新行程：Day 7 只在 POLIN 館外拍照（10/15 採點版改為 08:35），其他行程頁仍不應出現 POLIN。
   for (const file of itineraryFiles.filter(file => !['index.html', 'today.html', 'day-07.html'].includes(file))) {
-    const main = /<main\b[^>]*>([\s\S]*?)<\/main>/.exec(read(file))?.[1] || '';
+    let main = /<main\b[^>]*>([\s\S]*?)<\/main>/.exec(read(file))?.[1] || '';
+    // 2026-10-15 華沙城市地圖補上 Day 7 採點：POLIN 只能以「外觀、不進館」的圖釘出現。
+    if (file === 'city-warszawa.html') {
+      const pins = JSON.parse(main.match(/var mapData = (\{.*?\});/s)[1]).points.filter(point => /POLIN/i.test(point.join(' ')));
+      assert.equal(pins.length, 1);
+      assert.match(pins[0][2], /外觀/);
+      assert.match(pins[0][3], /不進館/);
+      main = main.replace(/var mapData = \{.*?\};/s, '').replace(/var mapChecks = \{.*?\};/s, '');
+    }
     assert.doesNotMatch(main, /POLIN/i, `${file} 不應把購票參考當作主行程`);
   }
   const reference = read('practical/tickets.html').match(/<tr id="purchase-warsaw-polin-reference"[\s\S]*?<\/tr>/)?.[0];

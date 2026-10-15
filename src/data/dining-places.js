@@ -807,7 +807,7 @@ export const diningPlaces = {
       "Pączki 玫瑰果醬甜甜圈",
       "咖啡外帶"
     ],
-    "verificationNote": "甜點店在 Nowy Świat 35、咖啡館在 33；開門時間各目錄 09:00／10:00 不一，09:00 若未開就略過。",
+    "verificationNote": "甜點店在 Nowy Świat 35、咖啡館在 33；開門時間各目錄 09:00／10:00 不一，09:00 若未開就略過。2026-10-15 網路搜尋：Wolt、TableJourney、In Your Pocket 都把門市寫成 Nowy Świat 33（有資料說 2017 年底由 35 號遷入），城市地圖圖釘放在 33 號；兩門相鄰約 20 m，現場看招牌即可。2026 年有新聞提到 Nowy Świat 店面租金欠款與市府協商分期，出發前再看一次是否照常營業。",
     "liveCheckedAt": "2026-10-12",
     "hoursNote": "目錄"
   },
