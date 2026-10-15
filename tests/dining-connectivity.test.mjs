@@ -107,7 +107,8 @@ test('順路點心引用與門市導航一致，Wedel 不會混到另一分店',
     assert.ok(snack.placeId);
     assert.equal(snack.map,diningPlaces[snack.placeId].map);
   }
-  assert.equal(trip.days[0].eat[0].placeId,'warsaw-wedel-szpitalna-8');
+  // 10/24 行程去的是總統府旁的 Krakowskie Przedmieście 45 分店（已在 day-dining），Day 1 不再掛 Szpitalna 8 本店。
+  assert.ok(!(trip.days[0].eat || []).some(item => item.placeId === 'warsaw-wedel-szpitalna-8'));
 });
 
 test('圖釘覆蓋分母包含每間速食，不漏算新增餐廳',()=>{

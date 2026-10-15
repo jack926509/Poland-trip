@@ -82,8 +82,8 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref, todo
     return step && /前往|出發|退房|搭|轉乘|步行|回旅館|取行李|報到|進站|抵|班次|列車|巴士|火車|SKM/.test(`${step.label} ${step.sub || ''}`)
       ? step : null;
   };
-  // 前一段移動不一定通往同一個地方：Day 7 的「17:00 皇家城堡最後入場」之前
-  // 最近的移動步驟是前往起義博物館，拿它當出發時間會指錯地方。因此交通類
+  // 前一段移動不一定通往同一個地方：例如某個場館「最後入場」之前最近的
+  // 移動步驟，其實是前往另一個景點，拿它當出發時間會指錯地方。因此交通類
   // 期限（發車、報到）才直接採用行程表的進站步驟，場館類期限必須確認步驟與
   // 期限講的是同一個地點，對不上就標待確認。
   const sharedPhrase = (left, right, min = 3) => {

@@ -1,9 +1,10 @@
 import { venuePin } from '../lib/venues.mjs';
+import { diningPlaces } from './dining-places.js';
 
 // 每日地圖只以「白天實際遊覽城市」為主。晚間火車抵達城市不納入當日視野，
 // 避免 fitBounds 把兩座城市同時縮到無法辨識；車站與住宿僅在同一主城市且有操作價值時保留。
 export const dayMapPlans = {
-  1: { focus: '華沙 Warszawa', center: [52.236, 21.014], zoom: 14, selections: { warsaw: ['Hotel Metropol', 'Pijalnia Czekolady E.Wedel（巧克力）'] } },
+  1: { focus: '華沙 Warszawa', center: [52.236, 21.014], zoom: 14, selections: { warsaw: ['Hotel Metropol'] } },
   2: { focus: '克拉科夫 Kraków', center: [50.057, 19.944], zoom: 14, selections: { krakow: ['Wawel 皇家城堡', '中央市集廣場', 'Kazimierz 猶太區', '辛德勒工廠博物館', 'Okrąglak（Plac Nowy zapiekanka）', 'ibis budget Krakow Stare Miasto'] } },
   3: { focus: '奧斯威辛 Oświęcim／Brzezinka', center: [50.033, 19.192], zoom: 13, selections: {} },
   4: { focus: '克拉科夫 Kraków＋Wieliczka', center: [50.040, 19.995], zoom: 12, selections: { krakow: ['Kazimierz 猶太區', 'Sukiennice 布廊（伴手禮攤位）', 'ibis budget Krakow Stare Miasto'] } },
@@ -19,10 +20,15 @@ export const dayMapPlans = {
 // 事實，繼續留在呼叫端。純粹只在地圖上當路標、travel-database.js 與
 // venues.js 都沒有這個地點的（Podgórze 猶太英雄廣場、Papa Krasnal 小矮人等），
 // 保持原本的字面陣列，不勉強湊一個 venue。
+// 2026-10-15 補的 Day 1（Specjały、E.Wedel KP 45）與 Day 7（POLIN、BUW、
+// 瓦津基蕭邦紀念碑、Soul Kitchen）圖釘：座標取自 OpenStreetMap 物件，經
+// Nominatim 查詢確認門牌或名稱與行程地址一致，第 7 欄記 OSM 物件連結。
 export const daySupplementaryPins = {
   1: [
     venuePin('warsaw-krakowskie-przedmiescie', { displayName: '皇家大道・Krakowskie Przedmieście', label: '聖十字教堂前：傍晚散步北行到總統府的中段', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.242160&mlon=21.015690' }),
     venuePin('warsaw-centralna-station', { label: 'Złote Tarasy 就在車站旁：晚餐後逛街採買', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.228917&mlon=21.003315' }),
+    [52.2446285, 21.0137953, 'E.Wedel Pijalnia · Krakowskie Przedmieście 45', '17:35 熱巧克力：今天往北的折返點', diningPlaces['warsaw-wedel-krakowskie-45'].map, 'food', 'https://www.openstreetmap.org/node/5194716723'],
+    [52.2345825, 21.0189984, 'Specjały Regionalne', 'Nowy Świat 44 · 18:30 晚餐', diningPlaces['warsaw-specjaly-regionalne'].map, 'food', 'https://www.openstreetmap.org/node/4408894491'],
   ],
   2: [
     venuePin('krakow-wawel-cathedral', { label: 'Wawel 3 · 主入口區', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=50.054727&mlon=19.935226' }),
@@ -56,6 +62,10 @@ export const daySupplementaryPins = {
   ],
   7: [
     venuePin('warsaw-old-town-square', { label: '10:40 老城廣場；前後是甕城、石階街、許願鐘與聖若望大教堂', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.249778&mlon=21.012151' }),
+    [52.2493716, 20.9931609, 'POLIN 波蘭猶太人歷史博物館（外觀）', 'Mordechaja Anielewicza 6 · 早上第一站，只看外觀', 'https://www.google.com/maps/search/?api=1&query=POLIN%20Museum%2C%20Mordechaja%20Anielewicza%206%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/186141946'],
+    [52.2426428, 21.0250683, 'BUW 華沙大學圖書館屋頂花園', 'Dobra 56/66 · 14:35 屋頂花園＋河岸步道', 'https://www.google.com/maps/search/?api=1&query=Biblioteka%20Uniwersytecka%20w%20Warszawie%2C%20Dobra%2056%2F66%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/relation/6414970'],
+    [52.2147016, 21.0280881, '瓦津基公園 · 蕭邦紀念碑', '15:25 進公園的第一站；水上宮殿在公園中央湖邊', 'https://www.google.com/maps/search/?api=1&query=Chopin%20Monument%2C%20%C5%81azienki%20Kr%C3%B3lewskie%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/1448330230'],
+    [52.2294483, 21.0148815, 'Soul Kitchen', 'Nowogrodzka 18A · 18:30 最後晚餐', diningPlaces['warsaw-soul-kitchen'].map, 'food', 'https://www.openstreetmap.org/node/4373643390'],
   ],
   8: [
     venuePin('warsaw-centralna-station', { label: '由 Hotel Metropol 前往機場線的市中心交通錨點', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.228917&mlon=21.003315' }),

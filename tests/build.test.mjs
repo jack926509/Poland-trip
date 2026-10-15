@@ -317,7 +317,8 @@ test('已排定的主要公共地點使用正確地址與官方入口資料', ()
   assert.ok(!dayOperations[1].addresses.some(item => ['華沙老城市場廣場', '華沙皇家城堡'].includes(item.name)));
   assert.ok(dayOperations[1].addresses.find(item => item.name === 'Krakowskie Przedmieście').stepLabels.includes('★ 總統府＋Hotel Bristol 外觀'));
   assert.ok(!days[0].steps.some(step => /城堡廣場/.test(step.label)), 'Day 1 不再排城堡廣場');
-  assert.ok(dayOperations[1].unresolvedSteps.some(item => /E\.Wedel/.test(item.label) && /折返/.test(item.reason)));
+  // 2026-10-15：E.Wedel 折返點改用 Krakowskie Przedmieście 45 分店的地址卡，不再列為未確認步驟。
+  assert.ok(dayOperations[1].addresses.some(item => /Krakowskie Przedmieście 45/.test(item.address) && item.stepLabels.some(label => /E\.Wedel/.test(label))));
   assert.ok(days[0].steps.some(step => /Biedronka/.test(step.label)), 'Day 1 晚上要排車站 Biedronka 採買');
   const oldTown = dayOperations[7].addresses.find(item => item.name === '華沙老城市場廣場');
   const castle = dayOperations[7].addresses.find(item => item.name === '華沙皇家城堡');

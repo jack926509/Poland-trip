@@ -174,6 +174,9 @@ export function renderCity({
       <ul class="check-list">${unpinnedDining.map(item => `<li><a href="${item.map}" target="_blank" rel="noopener noreferrer">${item.name}</a>${item.address ? ` · ${item.address}` : ''}</li>`).join('')}</ul>
     </details>` : '';
 
+  // 圖釘 radius 12：16×16px 圖釘手機上很難精準點到（稽核 M5），放大到接近
+  // Leaflet 預設 marker 的命中區。註解放在模板外，不隨每個城市頁輸出
+  // （城市頁有 100KB 大小預算）。
   const mapScript = `
     <script src="assets/leaflet/leaflet.js"></script>
     <script>
@@ -194,8 +197,6 @@ export function renderCity({
       mapData.points.forEach(function (point) {
         var category = point[5] || 'sight';
         var color = colors[category] || colors.sight;
-        // 16×16px 圖釘手機上很難精準點到（稽核 M5），放大到接近 Leaflet
-        // 預設 marker 的命中區。
         var marker = L.circleMarker([point[0], point[1]], {
           radius: 12,
           weight: 2,

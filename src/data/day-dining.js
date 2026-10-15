@@ -490,7 +490,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-cafe-bristol",
       "role": "午餐備選",
-      "note": "想坐下喝咖啡配 Bristol cake 可改這間，但要從城堡往南走約 10 分再折回老城；10/24 傍晚已排過一次。",
+      "note": "想坐下喝咖啡配 Bristol cake 可改這間，但要從城堡往南走約 10 分再折回老城；10/24 傍晚也列為候選，當天去過就不必重複。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -570,7 +570,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-qq-warsaw-matcha-korean-toasts",
       "role": "下午點心",
-      "note": "17:05 從瓦津基走回三十字廣場後沿 Żurawia 順路進來：抹茶拿鐵為主，韓式吐司兩人分一份，17:30 起身回飯店，18:30 還有晚餐。週五 11:00–20:00（店家 Instagram，另有目錄列週二休），前往前確認。",
+      "note": "約 17:15 從瓦津基走回三十字廣場後沿 Żurawia 順路進來：抹茶拿鐵為主，韓式吐司兩人分一份，17:35 起身回飯店，18:30 還有晚餐。週五 11:00–20:00（店家 Instagram，另有目錄列週二休），前往前確認。",
       "stepId": null,
       "planStatus": "candidate"
     },
