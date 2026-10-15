@@ -5,7 +5,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-specjaly-regionalne",
       "role": "晚餐首選",
-      "note": "18:30 入座（行程稿另寫 18:45，訂位以待辦的 18:30 為準）：Żurek 酸黑麥湯＋綜合 Pierogi，主菜選梅醬豬肋排或半隻烤鴨。城堡廣場拍完、咖啡後沿皇家大道走回 Nowy Świat 就到；入境排太久就先刪城堡廣場。飯後經科學文化宮步行到 Złote Tarasy。",
+      "note": "18:30 入座（行程稿另寫 18:45，訂位以待辦的 18:30 為準）：Żurek 酸黑麥湯＋綜合 Pierogi，主菜選梅醬豬肋排或半隻烤鴨。城堡廣場拍完沿皇家大道走回 Nowy Świat 就到；入境排太久就先刪城堡廣場。飯後經科學文化宮步行到 Złote Tarasy。",
       "stepId": "d1-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
@@ -21,14 +21,14 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-cafe-bristol",
       "role": "咖啡甜點",
-      "note": "18:00 城堡廣場拍完後的咖啡，和 E.Wedel Krakowskie Przedmieście 45 二選一：總統府隔壁，Bristol cake 配咖啡（週六至 21:00）；累了就略過。",
+      "note": "行程改成沿皇家大道多看幾個外觀點，城堡廣場拍完直接走回晚餐，咖啡不排入；想坐下就把 Potocki 宮到聖安妮教堂那段縮短。總統府隔壁，Bristol cake 配咖啡（週六至 21:00）。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "warsaw-wedel-krakowskie-45",
       "role": "咖啡甜點",
-      "note": "18:00 城堡廣場拍完後的咖啡，和 Café Bristol 二選一：Krakowskie Przedmieście 45，週六 10:00–23:00；18:20 前起身走回 Nowy Świat 吃晚餐。",
+      "note": "行程改成城堡廣場拍完直接走回晚餐，咖啡不排入；Krakowskie Przedmieście 45，週六 10:00–23:00，飯後想回頭喝也還開著。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -457,7 +457,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-bulke-przez-bibulke-zgoda",
       "role": "早餐首選",
-      "note": "07:30 開門就進：Bagel、Scrambled Eggs 或 Avocado Toast＋咖啡，08:05 前結帳，走到 Świętokrzyska 搭 M1 去 Ratusz Arsenał。",
+      "note": "07:30 開門就進：Bagel、Scrambled Eggs 或 Avocado Toast＋咖啡，08:05 前結帳，走到 Świętokrzyska 搭 M1 往北到 Dworzec Gdański。",
       "stepId": "d7-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
@@ -473,7 +473,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-polka",
       "role": "午餐首選",
-      "note": "11:15 城堡廣場拍完，12:00 進城堡旁的店：平日 12:00–16:00 午間套餐，或點 Pierogi、Żurek；12:45 離開往劇院廣場。客滿改甕城旁的 Pyzy Flaki Gorące。",
+      "note": "老城、新城上午走完，12:40 繞 Piwna 街回城堡廣場，12:55 進城堡旁的店：平日 12:00–16:00 午間套餐，或點 Pierogi、Żurek；13:40 離開往劇院廣場。客滿改甕城旁的 Pyzy Flaki Gorące。",
       "stepId": "d7-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
@@ -497,7 +497,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-soul-kitchen",
       "role": "晚餐首選（威靈頓）",
-      "note": "17:15 回 Metropol 休息換衣服，步行約 8 分到 Nowogrodzka 18A，18:30 入座：Beef Wellington 為招牌，前菜可點桌邊韃靼牛肉或 Żurek。飯後可選去 Wedel Szpitalna 8 喝熱巧克力。",
+      "note": "17:25 回 Metropol 休息換衣服，步行約 8 分到 Nowogrodzka 18A，18:30 入座：Beef Wellington 為招牌，前菜可點桌邊韃靼牛肉或 Żurek。飯後可選去 Wedel Szpitalna 8 喝熱巧克力。",
       "stepId": "d7-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",

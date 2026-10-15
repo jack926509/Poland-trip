@@ -1045,21 +1045,22 @@ test('高風險校正：皇家城堡與辛德勒工廠已依官方時間修正',
   assert.doesNotMatch(read('day-07.html'), /17:00[^<]{0,80}皇家城堡內部/);
 });
 
-test('Day 7 從最北邊往回逛：POLIN 外觀 → 老城廣場 → 城堡廣場 → 無名塚 → 瓦津基，付費館都不進', () => {
+test('Day 7 從最北邊往回逛：Umschlagplatz → POLIN 外觀 → 新城 → 老城廣場 → 城堡廣場 → 無名塚 → 瓦津基，付費館都不進', () => {
   // 2026-10-14 新行程：起義博物館、皇家城堡入內、國家博物館（選配）都拿掉。
+  // 2026-10-15 採點版：改坐到 Dworzec Gdański 從 Umschlagplatz 起走，新城、老城上午一次走完，時刻整體後移。
   const day = days.find(item => item.n === 7);
-  const order = ['POLIN 外觀', '老城廣場', '城堡廣場', '無名塚', '瓦津基'];
+  const order = ['Umschlagplatz', 'POLIN 外觀', '新城廣場', '老城廣場', '城堡廣場', '無名塚', '瓦津基'];
   const times = order.map(name => day.steps.findIndex(step => step.label.startsWith('★') && step.label.includes(name)));
   assert.ok(times.every(index => index >= 0), `Day 7 缺少景點：${order.filter((_, i) => times[i] < 0)}`);
   assert.deepEqual([...times].sort((a, b) => a - b), times, 'Day 7 景點順序不對');
-  assert.equal(day.steps.find(step => step.label.includes('POLIN')).t, '08:30');
-  assert.equal(day.steps.find(step => step.label === '★ 城堡廣場（白天版）').t, '11:15');
+  assert.equal(day.steps.find(step => step.label.includes('POLIN')).t, '09:00');
+  assert.equal(day.steps.find(step => step.label === '★ 城堡廣場（白天版）').t, '12:15');
   assert.ok(!day.steps.some(step => /起義博物館|★ 皇家城堡$|國家博物館/.test(step.label)), 'Day 7 不再排付費館');
   assert.equal(day.steps.find(step => step.id === 'd7-breakfast').t, '07:30');
   const lunch = day.steps.find(item => item.id === 'd7-lunch');
-  assert.equal(lunch.t, '12:00');
+  assert.equal(lunch.t, '12:55');
   assert.match(lunch.label, /Polka/);
-  assert.equal(day.steps.find(step => step.label === '★ 瓦津基 · 水上宮殿').t, '15:20');
+  assert.equal(day.steps.find(step => step.label === '★ 瓦津基 · 水上宮殿').t, '15:55');
   assert.equal(day.intensity, '高');
   const html = read('day-07.html');
   const main = html.slice(html.indexOf('<main'), html.indexOf('</main>'));
@@ -2179,7 +2180,7 @@ test('POLIN 僅保留購票參考，主行程只看外觀不入館；Day 7 午�
   const offenders = textFiles.filter(file => /warsze/i.test(fs.readFileSync(file, 'utf8')));
   assert.deepEqual(offenders, []);
   const itineraryFiles = ['index.html', 'today.html', ...days.map(day => `day-${String(day.n).padStart(2, '0')}.html`), ...['warszawa', 'krakow', 'wroclaw', 'poznan'].map(city => `city-${city}.html`)];
-  // 2026-10-14 新行程：Day 7 08:30 只在 POLIN 館外拍照，其他行程頁仍不應出現 POLIN。
+  // 2026-10-14 新行程：Day 7 只在 POLIN 館外拍照（10/15 採點版改為 09:00），其他行程頁仍不應出現 POLIN。
   for (const file of itineraryFiles.filter(file => !['index.html', 'today.html', 'day-07.html'].includes(file))) {
     const main = /<main\b[^>]*>([\s\S]*?)<\/main>/.exec(read(file))?.[1] || '';
     assert.doesNotMatch(main, /POLIN/i, `${file} 不應把購票參考當作主行程`);
