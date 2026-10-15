@@ -546,6 +546,10 @@ export const snacksAndCafes = Object.fromEntries(Object.entries({
   ],
   "krakow": [
     {
+      "placeId": "krakow-massolit-books-cafe",
+      "type": "書店咖啡館"
+    },
+    {
       "placeId": "krakow-bar-mleczny-pod-temida",
       "type": "牛奶吧"
     },
@@ -567,6 +571,10 @@ export const snacksAndCafes = Object.fromEntries(Object.entries({
     }
   ],
   "wroclaw": [
+    {
+      "placeId": "wroclaw-paloma-coffee",
+      "type": "精品咖啡"
+    },
     {
       "placeId": "wroclaw-bar-mleczny-mis",
       "type": "牛奶吧"
@@ -594,6 +602,14 @@ export const snacksAndCafes = Object.fromEntries(Object.entries({
   ],
   "poznan": [
     {
+      "placeId": "poznan-stragan-kawiarnia",
+      "type": "精品咖啡"
+    },
+    {
+      "placeId": "poznan-lagacca-cafe-by-brisman",
+      "type": "精品咖啡"
+    },
+    {
       "placeId": "poznan-cukiernia-kandulski",
       "type": "甜點 · rogal"
     },
@@ -611,6 +627,41 @@ export const snacksAndCafes = Object.fromEntries(Object.entries({
     }
   ]
 }).map(([city,items]) => [city,items.map(resolveDining)]));
+// 咖啡與甜點（餐飲指南「咖啡與甜點」一節）：依城市、依行程先後排；when 寫這家適合排在哪一天哪一段。
+// 門市事實（地址、營業時間、查核來源）一律在 dining-places.js，這裡只放分類與順路時段。
+export const cafeGuide = [
+  { cityKey: 'warsaw', city: '華沙', items: [
+    { placeId: 'warsaw-a-blikle-1869', type: '甜點 · pączek', when: 'Day 1 · 16:30 新世界街順路外帶' },
+    { placeId: 'warsaw-wedel-krakowskie-45', type: '熱巧克力', when: 'Day 1 · 17:35 總統府旁折返點（已排入）' },
+    { placeId: 'warsaw-cafe-bristol', type: '咖啡 · 蛋糕', when: 'Day 1 · 17:35 與 E.Wedel 二選一' },
+    { placeId: 'warsaw-green-caffe-nero-centralny', type: '車站咖啡外帶', when: 'Day 2 · 07:35 上車前外帶（已排入）' },
+    { placeId: 'warsaw-qq-warsaw-matcha-korean-toasts', type: '抹茶 · 韓式吐司', when: 'Day 7 · 17:05 下午點心（已排入）' },
+    { placeId: 'warsaw-wedel-szpitalna-8', type: '熱巧克力', when: 'Day 7 · 20:15 飯後選配' },
+    { placeId: 'warsaw-charlotte-zlota', type: '法式早餐 · 麵包', when: 'Day 8 · 早餐（已排入）' },
+    { placeId: 'warsaw-cukiernia-zagozdzinski', type: '老派 pączek', when: '有半天餘裕才去（Wola 區，需搭電車）' },
+  ] },
+  { cityKey: 'krakow', city: '克拉科夫', items: [
+    { placeId: 'krakow-cafe-camelot', type: '老牌咖啡廳', when: 'Day 2 · 中央廣場散步時歇腳' },
+    { placeId: 'krakow-massolit-books-cafe', type: '書店咖啡館', when: 'Day 2 · Wawel 前後，或 Day 4 回城後' },
+    { placeId: 'krakow-karma-coffee-roasters', type: '精品咖啡', when: 'Day 4 · 回城取行李前（老城西側）' },
+    { placeId: 'krakow-cukiernia-michalek', type: '甜點', when: 'Day 4（週二）· 回城取行李前順路買' },
+  ] },
+  { cityKey: 'wroclaw', city: '樂斯拉夫', items: [
+    { placeId: 'wroclaw-central-cafe', type: '早餐 · 咖啡', when: 'Day 5 · 07:30 早餐（已排入）' },
+    { placeId: 'wroclaw-charlotte-pokoyhof', type: '法式早餐 · 麵包', when: 'Day 5 · Central Cafe 沒供餐時的同街備案' },
+    { placeId: 'wroclaw-paloma-coffee', type: '精品咖啡', when: 'Day 5 · 08:50 鹽廣場順路外帶' },
+    { placeId: 'wroclaw-el-gato-specialty-coffee', type: '精品咖啡', when: 'Day 5 · 11:10 咖啡休息（已排入）' },
+    { placeId: 'wroclaw-dessert-boutique', type: '精緻甜點', when: 'Day 5 · 糖果屋那條街，週三 12:00 起' },
+  ] },
+  { cityKey: 'poznan', city: '波茲南', items: [
+    { placeId: 'poznan-charlotte-krysiewicza', type: '法式早餐 · 可頌', when: 'Day 6 · 07:15 早餐（已排入）' },
+    { placeId: 'poznan-weranda-caffe', type: '咖啡 · 早午餐', when: 'Day 6 · 11:05 山羊秀前（已排入）' },
+    { placeId: 'poznan-lagacca-cafe-by-brisman', type: '精品咖啡', when: 'Day 6 · 舊市集廣場周邊順路' },
+    { placeId: 'poznan-rogal', type: '聖馬丁牛角麵包', when: 'Day 6 · 12:05 山羊秀後點心（已排入）' },
+    { placeId: 'poznan-cukiernia-kandulski', type: '聖馬丁牛角麵包', when: 'Day 6 · ROGAL 售完時改這間' },
+    { placeId: 'poznan-stragan-kawiarnia', type: '精品咖啡', when: 'Day 6 · 12:25 往 Stary Browar 路上外帶' },
+  ] },
+].map(group => ({ ...group, items: group.items.map(resolveDining) }));
 // 舊版是一份手寫子集，容易漏掉新排進行程的已核實門市（也漏掉真正 pending 的店卻被列進來）。
 // 現在改由「當天餐位是否已核實／部分核實」直接推導，見 src/lib/dining.mjs 的 plannedVerifiedPlaces。
 export const verifiedRestaurantHours = plannedVerifiedPlaces(dayDining);

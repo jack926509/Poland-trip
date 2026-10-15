@@ -109,6 +109,7 @@ export function renderPages(distDir) {
     michelinSummary: dining.michelinSummary,
     michelinReservations: dining.michelinReservations,
     verifiedRestaurantHours: dining.verifiedRestaurantHours,
+    cafeGuide: dining.cafeGuide,
     fastFoodChains: dining.fastFoodChains,
     fastFoodBranches: dining.fastFoodBranches,
     fastFoodHubs: dining.fastFoodHubs,

@@ -65,7 +65,8 @@ test('每日備案與延伸選項若是具體地點就要有定位', () => {
 
 test('小吃與咖啡廳推薦四城齊全且每筆都有定位', () => {
   assert.deepEqual(Object.keys(snacksAndCafes), ['warsaw', 'krakow', 'wroclaw', 'poznan']);
-  assert.deepEqual(Object.values(snacksAndCafes).map(list => list.length), [6, 5, 6, 4]);
+  // 2026-10-15 加 Massolit（克拉科夫）、Paloma（樂斯拉夫）、Stragan 與 LAGACCA（波茲南）。
+  assert.deepEqual(Object.values(snacksAndCafes).map(list => list.length), [6, 6, 7, 6]);
   for (const [city, list] of Object.entries(snacksAndCafes)) {
     for (const item of list) {
       assert.ok(isMapUrl(item.map), `${city}「${item.name}」缺定位`);
