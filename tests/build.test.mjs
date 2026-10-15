@@ -313,10 +313,12 @@ test('已排定的主要公共地點使用正確地址與官方入口資料', ()
     assert.ok(place?.entranceNote, `Day ${day} ${name} 缺入口說明`);
   }
   assert.ok(!JSON.stringify(dayOperations).includes('Rynek Główny, 31-422 Kraków'));
-  // 2026-10-14 新行程：Day 1 走皇家大道到城堡廣場拍藍調（不進城堡），老城留到 Day 7。
+  // 2026-10-14 新行程：老城留到 Day 7。2026-10-15 依使用者路線：Day 1 走到總統府旁的 E.Wedel 就折返，城堡廣場也留到 Day 7。
   assert.ok(!dayOperations[1].addresses.some(item => ['華沙老城市場廣場', '華沙皇家城堡'].includes(item.name)));
   assert.ok(dayOperations[1].addresses.find(item => item.name === 'Krakowskie Przedmieście').stepLabels.includes('★ 總統府＋Hotel Bristol 外觀'));
-  assert.ok(dayOperations[1].unresolvedSteps.some(item => item.label === '★ 城堡廣場藍調時刻' && /不進城堡/.test(item.reason)));
+  assert.ok(!days[0].steps.some(step => /城堡廣場/.test(step.label)), 'Day 1 不再排城堡廣場');
+  assert.ok(dayOperations[1].unresolvedSteps.some(item => /E\.Wedel/.test(item.label) && /折返/.test(item.reason)));
+  assert.ok(days[0].steps.some(step => /Biedronka/.test(step.label)), 'Day 1 晚上要排車站 Biedronka 採買');
   const oldTown = dayOperations[7].addresses.find(item => item.name === '華沙老城市場廣場');
   const castle = dayOperations[7].addresses.find(item => item.name === '華沙皇家城堡');
   assert.ok(oldTown.stepLabels.some(label => label.includes('老城廣場')));

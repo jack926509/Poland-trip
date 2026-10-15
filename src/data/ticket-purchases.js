@@ -24,7 +24,7 @@ export const ticketPurchaseGroups = [
     cityKey: 'WAW', items: [
       entry('warsaw-royal-castle', '皇家城堡 Royal Castle', {
         purchaseUrl: 'https://bilety.zamek-krolewski.pl/index.html?lang=en',
-        note: '2026-10-14 新行程只看外觀、不進館，不用買票；10/24 傍晚與 10/30 上午只在城堡廣場拍外觀。想入內才選 Royal Route，注意不要選成較長的 Castle Route；按官方可售日期與入場時段購票。',
+        note: '2026-10-14 新行程只看外觀、不進館，不用買票；10/30 中午只在城堡廣場拍外觀。想入內才選 Royal Route，注意不要選成較長的 Castle Route；按官方可售日期與入場時段購票。',
       }),
       entry('warsaw-rising-museum', '華沙起義博物館', {
         purchaseUrl: 'https://bilety.1944.pl/?lang=en',

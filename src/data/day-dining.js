@@ -5,7 +5,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-specjaly-regionalne",
       "role": "晚餐首選",
-      "note": "18:30 入座（行程稿另寫 18:45，訂位以待辦的 18:30 為準）：Żurek 酸黑麥湯＋綜合 Pierogi，主菜選梅醬豬肋排或半隻烤鴨。城堡廣場拍完沿皇家大道走回 Nowy Świat 就到；入境排太久就先刪城堡廣場。飯後經科學文化宮步行到 Złote Tarasy。",
+      "note": "18:30 入座（行程稿另寫 18:45，訂位以待辦的 18:30 為準）：Żurek 酸黑麥湯＋綜合 Pierogi，主菜選梅醬豬肋排或半隻烤鴨。E.Wedel 喝完沿皇家大道走回 Nowy Świat 就到；入境排太久就把 E.Wedel 改外帶。飯後經科學文化宮步行到 Złote Tarasy。",
       "stepId": "d1-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
@@ -21,14 +21,14 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-cafe-bristol",
       "role": "咖啡甜點",
-      "note": "行程改成沿皇家大道多看幾個外觀點，城堡廣場拍完直接走回晚餐，咖啡不排入；想坐下就把 Potocki 宮到聖安妮教堂那段縮短。總統府隔壁，Bristol cake 配咖啡（週六至 21:00）。",
+      "note": "17:35 的熱巧克力和 E.Wedel Krakowskie Przedmieście 45 二選一：總統府隔壁，Bristol cake 配咖啡（週六至 21:00）；18:05 起身走回 Nowy Świat 吃晚餐。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "warsaw-wedel-krakowskie-45",
       "role": "咖啡甜點",
-      "note": "行程改成城堡廣場拍完直接走回晚餐，咖啡不排入；Krakowskie Przedmieście 45，週六 10:00–23:00，飯後想回頭喝也還開著。",
+      "note": "17:35 總統府拍完日落就在這裡折返：Krakowskie Przedmieście 45，週六 10:00–23:00，熱巧克力約 30 分；18:05 起身走回 Nowy Świat 吃晚餐。和 Café Bristol 二選一。",
       "stepId": null,
       "planStatus": "candidate"
     },

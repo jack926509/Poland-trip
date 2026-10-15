@@ -25,7 +25,7 @@
 
 | 日期 | 落腳與移動 | 這一天想留下的記憶 |
 |---|---|---|
-| [10/24（六）· Day 1](https://polandtrip.xiehnet.com/day-01) | 抵達華沙 | 換好波蘭幣，從棕櫚樹圓環沿新世界街、皇家大道一路採點：聖十字教堂、華沙大學、總統府日落、城堡廣場藍調；吃一餐波蘭地方料理，晚上逛 Złote Tarasy。 |
+| [10/24（六）· Day 1](https://polandtrip.xiehnet.com/day-01) | 抵達華沙 | 換好波蘭幣，從棕櫚樹圓環沿新世界街、皇家大道一路採點：聖十字教堂、華沙大學、總統府日落，在 E.Wedel 喝熱巧克力後折返；吃一餐波蘭地方料理，晚上逛 Złote Tarasy、車站 Biedronka 採買。 |
 | [10/25（日）· Day 2](https://polandtrip.xiehnet.com/day-02) | 華沙 → 克拉科夫 | Wawel、中央廣場與辛德勒工廠；午餐在 Pimiento，白天先備好隔日餐點，晚餐安排 Hankki 韓式料理。 |
 | [10/26（一）· Day 3](https://polandtrip.xiehnet.com/day-03) | 克拉科夫出發，一日往返 | Auschwitz-Birkenau 導覽。留時間理解歷史，回城後安排安靜的晚餐與休息。 |
 | [10/27（二）· Day 4](https://polandtrip.xiehnet.com/day-04) | 克拉科夫 → 樂斯拉夫 | 上午參觀 Wieliczka 鹽礦，回城取行李，傍晚搭車前往下一座城市。 |
