@@ -497,7 +497,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-soul-kitchen",
       "role": "晚餐首選（威靈頓）",
-      "note": "17:25 回 Metropol 休息換衣服，步行約 8 分到 Nowogrodzka 18A，18:30 入座：Beef Wellington 為招牌，前菜可點桌邊韃靼牛肉或 Żurek。飯後可選去 Wedel Szpitalna 8 喝熱巧克力。",
+      "note": "17:45 回 Metropol 休息換衣服，步行約 8 分到 Nowogrodzka 18A，18:30 入座：Beef Wellington 為招牌，前菜可點桌邊韃靼牛肉或 Żurek。飯後可選去 Wedel Szpitalna 8 喝熱巧克力。",
       "stepId": "d7-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
@@ -569,8 +569,8 @@ export const dayDiningPlans = {
     },
     {
       "placeId": "warsaw-qq-warsaw-matcha-korean-toasts",
-      "role": "下午輕食候選",
-      "note": "只有行程有餘裕才安排；門牌與營業時間待確認，不作早出門早餐。",
+      "role": "下午點心",
+      "note": "17:15 從瓦津基走回三十字廣場後沿 Żurawia 順路進來：抹茶拿鐵為主，韓式吐司兩人分一份，17:40 起身回飯店，18:30 還有晚餐。週五 11:00–20:00（店家 Instagram，另有目錄列週二休），前往前確認。",
       "stepId": null,
       "planStatus": "candidate"
     },

@@ -531,12 +531,12 @@ export const dayOperations = {
       venueCard('warsaw-old-town-square', '華沙老城市場廣場'),
       venueCard('warsaw-royal-castle', '華沙皇家城堡', '新行程只在城堡廣場拍白天外觀，不進城堡、不用買票。'),
       venueCard('warsaw-lazienki-palace', '瓦津基水上宮殿'),
-      accommodationAddress('warsaw-metropol', ['往北走回飯店', '回 Metropol 休息、換衣服']),
+      accommodationAddress('warsaw-metropol', ['回 Metropol 休息、換衣服']),
     ],
     navigation: [
       { mode: '地鐵 M1', route: 'Świętokrzyska → Dworzec Gdański', action: '08:10 搭 M1 往北坐 2 站，下車步行約 8 分到 Umschlagplatz（Stawki 10 一帶）。時間不夠就只坐 1 站到 Ratusz Arsenał，直接從 POLIN 開始。' },
       { mode: '步行', route: 'Umschlagplatz → 紀念之路 → POLIN → 克拉辛斯基廣場 → 新城廣場 → Freta → 甕城 → 老城廣場 → 石階街／Gnojna Góra → 聖若望大教堂 → 城堡廣場 → Piwna → Polka → 劇院廣場 → 無名塚 → BUW', action: '08:30 後全程步行，由北往南一路採點、不走回頭路；時間不夠先刪 BUW 屋頂花園，從無名塚直接搭車去瓦津基。' },
-      { mode: '公車／叫車／步行', route: 'BUW → 瓦津基 → Aleje Ujazdowskie → Metropol → Soul Kitchen', action: '15:15 由 BUW 搭公車或叫車約 20 分到瓦津基北門；16:40 沿 Aleje Ujazdowskie 步行約 45 分回 Metropol，天黑、累了或下雨就叫車；Metropol 步行約 8 分到 Nowogrodzka 18A。當日用 Jakdojade 重算。' },
+      { mode: '公車／叫車／步行', route: 'BUW → 瓦津基 → Aleje Ujazdowskie → 三十字廣場 → QQ Warsaw → Metropol → Soul Kitchen', action: '15:15 由 BUW 搭公車或叫車約 20 分到瓦津基北門；16:40 沿 Aleje Ujazdowskie 走到三十字廣場，再沿 Żurawia 到 QQ Warsaw，全程約 2.5 公里，天黑、累了或下雨就叫車；QQ Warsaw 走回 Metropol 約 5 分；Metropol 步行約 8 分到 Nowogrodzka 18A。當日用 Jakdojade 重算。' },
     ],
     dailyAlerts: [
       '付費館只在外面拍照：POLIN、居禮夫人博物館、華沙博物館、皇家城堡都不進；教堂正殿能不能進以現場告示為準，彌撒時不要進去拍照。',
@@ -651,6 +651,8 @@ const unresolvedStepReasons = {
     '往東走到維斯瓦河邊': '戶外步行段，由無名塚往東走到河岸，終點接 BUW。',
     '★ BUW 屋頂花園＋河岸步道': '華沙大學圖書館 Dobra 56/66，屋頂花園入口依現場指標；接著沿河岸步道走。',
     '搭車前往瓦津基公園': dynamicTransitReason,
+    '往北走 → 三十字廣場': '戶外步行段，沿 Aleje Ujazdowskie 往北到 Plac Trzech Krzyży；天黑或下雨改叫車。',
+    '下午點心 · QQ Warsaw 抹茶': 'Żurawia 32/34，餐廳導航見當日餐飲；營業時間為店家 Instagram 的部分核實資料，前往前確認。',
     '可選 · E.Wedel 本店熱巧克力': 'Szpitalna 8，餐廳導航見當日餐飲；選配。',
   },
   8: {
