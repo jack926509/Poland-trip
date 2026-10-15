@@ -117,7 +117,7 @@ export const days = [
     steps: [
       {t:'機上', timingMode:'relative', id:'d1-breakfast', label:'機上早餐／出發前自理', sub:'依實際航段供餐'},
       {t:'抵達前後', timingMode:'relative', id:'d1-lunch', label:'機上、機場或抵達後輕食', sub:'三明治與熱飲即可，依落地及入住情況調整'},
-      {t:'13:30', label:'抵蕭邦機場', sub:'申根入境、EES 首次護照／指紋與臉部登錄 + 提行李約 75 min（規劃估計）；排隊延長即順延進城，先刪城堡廣場那段', cost:'—', dur:'75 min'},
+      {t:'13:30', label:'抵蕭邦機場', sub:'申根入境、EES 首次護照／指紋與臉部登錄 + 提行李約 75 min（規劃估計）；排隊延長即順延進城，改從哥白尼紀念碑開始走、E.Wedel 改外帶', cost:'—', dur:'75 min'},
       {t:'14:45', label:'SKM S2／S3 目標班次', sub:'2026-09-17 WTP 官方機場交通頁：S2 停 Warszawa Śródmieście、S3 停 Warszawa Centralna，兩線都不互停，官方標示買 75 分鐘第 1 區票。上車先看是 S2 還 S3——S2 坐到 Śródmieście 出站即 Metro Centrum、飯店在對街；S3 要在 Centralna 下車再步行。月台與即時班次抵達後查 WTP', cost:'75 分第 1 區票 4.40', dur:'25–30 min'},
       {t:'15:15', label:'Hotel Metropol Check-in', sub:'入住 15:00 起，提早到可先寄放行李再出門；抵達較晚就把後面全部順延', dur:'30 min'},
       {t:'15:45', label:'換匯 · REDAR.net 分店 II', sub:'Metro Centrum／Rotunda 地下通道 Lokal 33，離飯店步行約 5 分；官網週六 08:00–20:00。Hotel Metropol 樓下的 REDAR 總店（Marszałkowska 99A）只列週一至週五，不要等它。現場看現鈔買賣價，線上預訂匯率不等於臨櫃牌告', cost:'—', dur:'20 min'},
