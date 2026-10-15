@@ -55,7 +55,7 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.72;
   text-rendering: optimizeLegibility;
 }
@@ -3047,7 +3047,9 @@ a[href^="tel:"]:focus-visible {
        改成緊湊時間軸——左欄時間、中欄行程（含說明）、右欄「導航 ↗」。
        時間格（td:nth-child(1)）用 display: contents，讓 <b>時間</b> 與 .step-nav
        直接成為 tr 的 grid 項目；DOM 與桌機表格不變。
-       花費／時長併在行程下方一行小字；說明超過 2 行由 nav.js 加 .is-clamped 與「展開全文」。
+       花費／時長併在行程下方一行小字；說明超過 3 行由 nav.js 加 .is-clamped 與「展開全文」。
+       2026-10-15 手機閱讀加強：行程與說明改為橫跨到最右欄（不再被「導航」鈕擠成
+       約 200px 窄欄、只看得到一行十來個字），「導航 ↗」移到下一列與花費、時長並排。
        今日卡的全天時間表（.table-today-steps）共用同一套版式。 --- */
 @media (max-width: 700px) {
   .table-editorial.table-today-steps tbody,
@@ -3107,24 +3109,20 @@ a[href^="tel:"]:focus-visible {
 
   .table-editorial.table-today-steps td:nth-child(2),
   .table-editorial.table-schedule td:nth-child(2) {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-column: 2 / 5;
+    display: block;
+    grid-column: 2 / -1;
     grid-row: 1;
-    gap: 0;
-    align-content: start;
-    align-items: center;
     padding-top: 0.1rem;
-    font-size: 0.92rem;
-    line-height: 1.35;
+    font-size: 0.95rem;
+    line-height: 1.4;
   }
 
-  /* 行程標題橫跨兩欄；說明（單行收合）與「展開全文」並排在標題下一行。 */
+  /* 行程標題一行、說明在下方滿版（最多 3 行），「展開全文」接在說明下方。 */
   .table-schedule td:nth-child(2) > b,
-  .table-today-steps td:nth-child(2) > b { grid-column: 1 / -1; }
+  .table-today-steps td:nth-child(2) > b { display: block; }
   .table-schedule td:nth-child(2) > br,
   .table-today-steps td:nth-child(2) > br { display: none; }
-  .table-schedule td:nth-child(2) > .timeline-note:last-child { grid-column: 1 / -1; }
+  .table-schedule td:nth-child(2) > .timeline-note { display: block; margin-top: 0.15rem; }
 
   /* 今日卡的全天時間表只有「時間／行程」兩欄，沒有導航鈕與花費、時長：用簡單的兩欄 grid。 */
   .table-editorial.table-today-steps tr {
@@ -3139,23 +3137,24 @@ a[href^="tel:"]:focus-visible {
 
   .table-editorial.table-today-steps td:nth-child(1) > b { grid-row: 1; }
 
-  /* 導航鈕在右欄、垂直置中於整列；44px 點擊目標不變（.step-nav 本身 min-height: 44px）。 */
+  /* 導航鈕在第 2 列最右、與花費／時長同一列；44px 點擊目標不變（.step-nav 本身 min-height: 44px）。 */
   .table-editorial.table-schedule .step-nav {
     grid-column: 5;
-    grid-row: 1 / span 2;
+    grid-row: 2;
     align-self: center;
-    margin: 0;
-    padding: 0.25rem 0.55rem;
-    font-size: 0.78rem;
+    margin: 0.2rem 0 0;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.85rem;
   }
 
   /* 花費與時長併在行程欄下方，可換行：原本 nowrap 把整列撐到 383px，右側被裁掉。 */
   .table-editorial.table-schedule td:nth-child(3),
   .table-editorial.table-schedule td:nth-child(4) {
     grid-row: 2;
+    align-self: center;
     margin-top: 0.1rem;
     color: var(--ink-soft);
-    font-size: 0.82rem;
+    font-size: 0.875rem;
     white-space: normal;
     overflow-wrap: anywhere;
   }
@@ -3166,16 +3165,17 @@ a[href^="tel:"]:focus-visible {
   .table-editorial.table-schedule td:nth-child(3)[data-empty] + td:nth-child(4) { grid-column: 2; }
 
   .table-schedule .timeline-note {
-    font-size: 0.82rem;
-    line-height: 1.4;
+    color: #4f4641;
+    font-size: 0.9rem;
+    line-height: 1.55;
   }
 
   .table-schedule .timeline-note.is-clamped {
     display: -webkit-box;
     overflow: hidden;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
-    line-clamp: 1;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
   }
 
   /* 「展開全文」版面只佔一行，點擊區用 ::after 外擴到 44px 高（不用 min-height，避免撐高整列）。 */
@@ -3183,14 +3183,14 @@ a[href^="tel:"]:focus-visible {
     position: relative;
     display: block;
     min-height: 0;
-    margin: 0 0 0 0.4rem;
+    margin: 0.1rem 0 0;
     padding: 0;
     border: 0;
     background: none;
     color: var(--accent-dark);
     cursor: pointer;
     font: inherit;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 700;
     line-height: 1.4;
     text-align: left;
@@ -4818,7 +4818,7 @@ h3 {
       OSM 與 Leaflet 的版權文字保留不動。 */
 .map-legend {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(9.5rem, 100%), 1fr));
   gap: 0.15rem 1rem;
   padding: 0.75rem 0.9rem;
   font-size: 0.82rem;
@@ -4914,7 +4914,7 @@ h3 {
   background: var(--paper-light);
   border: 1px solid var(--line);
 }
-.store-fact { display: grid; grid-template-columns: 2.6rem 1fr; gap: .5rem; align-items: baseline; }
+.store-fact { display: grid; grid-template-columns: 2.6rem minmax(0, 1fr); gap: .5rem; align-items: baseline; }
 .store-fact dt {
   margin: 0;
   color: var(--accent-dark);
@@ -5025,7 +5025,7 @@ h3 {
 }
 
 @media (max-width: 480px) {
-  .store-fact { grid-template-columns: 2.3rem 1fr; }
+  .store-fact { grid-template-columns: 2.3rem minmax(0, 1fr); }
   .store-action { padding: .3rem .65rem; }
 }
 
@@ -6057,7 +6057,7 @@ h3 {
 /* ── 三大連鎖 ── */
 .grocery-chain-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(15rem, 100%), 1fr));
   gap: 0.9rem;
   margin: 0;
   padding: 0;
@@ -6382,7 +6382,7 @@ h3 {
    眼睛在兩種卡之間不必換讀法。標示對照用 dl 兩欄，手機上收成上下排。 */
 .grocery-drink-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
   gap: 0.9rem;
   margin: 0.6rem 0 1.2rem;
   padding: 0;
@@ -6433,7 +6433,7 @@ h3 {
 .grocery-drink-why { margin-bottom: 0.4rem; }
 .grocery-label-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
   gap: 0.4rem 1.2rem;
   margin: 0.6rem 0 0.8rem;
 }
@@ -6535,7 +6535,7 @@ h3 {
 .private-warning { margin-block: .5rem 1rem; }
 .private-status { margin: 0 0 1rem; color: var(--ink-soft); font-size: .9rem; }
 .private-status[data-problem='true'] { color: var(--red); font-weight: 700; }
-.private-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: .75rem; }
+.private-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr)); gap: .75rem; }
 .private-slot { margin: 0 0 .75rem; padding: .75rem .9rem; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: var(--paper-light); min-width: 0; }
 .private-slots .private-slot { margin: 0; }
 .private-slot legend { padding-inline: .3rem; font-weight: 700; }
@@ -7249,4 +7249,236 @@ li > p.source-meta a,
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.04em;
+}
+
+/* ============================================================
+   2026-10-15 手機閱讀加強（PWA）
+   1. 字級切換：刊頭「Aa」鈕依序 標準／大／特大，全站以 rem 計，
+      只改 <html> 基準字級（nav.js 寫入 data-text-size，<head> 內嵌腳本先套用）。
+   2. 手機小字下限：查找用的標籤、按鈕與說明在 390px 實測只有 11–13px，
+      戶外看不清楚；統一拉到約 14px，關鍵資訊（時間、狀態）不低於 13.6px。
+   3. 本頁章節膠囊：手機藏起英文小標後改回垂直置中，字不再貼在膠囊上緣。
+   4. 底部快捷列標出目前所在；iOS 轉向時不自動放大字級；手機不用 fixed 背景。
+   ============================================================ */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+html[data-text-size="lg"] { font-size: 112.5%; }
+html[data-text-size="xl"] { font-size: 125%; }
+
+/* --- 1. 字級切換鈕 --- */
+.nav-text-size {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 44px;
+  min-height: 44px;
+  margin-right: 0.5rem;
+  padding: 0 0.75rem;
+  border: 1px solid rgb(142 126 112 / 40%);
+  border-radius: 999px;
+  background: var(--paper-light);
+  color: var(--ink);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+
+.nav-text-size > span {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+}
+
+.nav-text-size > small {
+  color: var(--ink-soft);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+}
+
+.nav-text-size:hover,
+.nav-text-size:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent-pale);
+  color: var(--accent-dark);
+}
+
+@media (max-width: 700px) {
+  /* 品牌列佔滿第一行，字級鈕浮在同一行右側，不另佔一行。 */
+  .nav-text-size {
+    position: absolute;
+    top: 11px;
+    right: clamp(16px, 4vw, 52px);
+    margin: 0;
+    font-size: 13.6px;
+  }
+
+  .nav-text-size > span { font-size: 16.8px; }
+  .nav-text-size > small { font-size: 12.8px; }
+
+  /* 刊頭是固定的操作列，和底部快捷列一樣不跟著字級放大，
+     否則「實用資訊」會被擠到第二行。下拉選單內的連結仍會放大。 */
+  .nav > a.nav-brand { font-size: 21.6px; }
+  .nav-brand small { font-size: 9.3px; }
+  /* .nav > a（0,1,1）原本把「今日」壓回 .78rem，舊的 .nav-today 規則蓋不過；這裡用同級選擇器。 */
+  .nav > a.nav-today { font-size: 15.2px; }
+  .nav-dropdown > summary { font-size: 14px; }
+  .nav-dropdown > summary::after { margin-left: 5px; }
+  .nav { padding-inline: clamp(16px, 4vw, 52px); }
+  .nav > a,
+  .nav-dropdown > summary { padding-inline: 12px; }
+  .nav > a.nav-brand { padding-left: 24px; }
+}
+
+/* --- 2. 手機小字下限（依 390px 實測清單逐項指定；不用 max(…, 1em)，
+   因為 font-size 的 1em 是父層字級，會把小標籤一起撐成 16px）--- */
+@media (max-width: 700px) {
+  /* 欄名、分類與狀態小標：原 11–12.8px → 13.6px */
+  .journal-site .store-fact dt,
+  .journal-site .fast-food-hours b,
+  .journal-site .booking-item-group,
+  .journal-site .operation-mode,
+  .journal-site .today-day-badge,
+  .journal-site .today-sos-tag,
+  .journal-site .today-next-progress,
+  .journal-site .today-sos-extra > span,
+  .journal-site .today-sos-wide > span,
+  .journal-site .grocery-sunday,
+  .journal-site .grocery-branch-hours > span,
+  .journal-site .grocery-product-pack > span,
+  .journal-site .grocery-drink-look > span,
+  .journal-site .grocery-drink-where > span,
+  .journal-site .grocery-drink-when,
+  .journal-site .grocery-source-meta,
+  .journal-site .chapter-index-label,
+  .journal-site .journal-appendix-header > .section-num,
+  .journal-site .city-dining-role,
+  .journal-site .journal-status-caption,
+  .journal-site .journal-status-sub > span,
+  .journal-site .status-private,
+  .journal-site .status-verified,
+  .journal-site .status-recheck,
+  .journal-site .status-pending,
+  .journal-site .store-fit,
+  .journal-site .grocery-group-count,
+  .journal-site .grocery-priority,
+  .journal-site .grocery-chain-tag,
+  .journal-site .city-dining-choice,
+  .journal-site .today-more-meta,
+  .journal-site .today-field,
+  .journal-site .journal-status-db > span,
+  .journal-site .today-sos-title,
+  .journal-site .today-head-date,
+  .journal-site .today-sos-list li > span,
+  .journal-site .day-jump a span {
+    font-size: 0.85rem;
+  }
+
+  /* 可點的動作（膠囊連結、收合列、展開全文）：原 12.5–13px → 14px */
+  .journal-site .operation-address-actions a,
+  .journal-site .operation-address-more > summary,
+  .journal-site .city-dining-record > summary,
+  .journal-site .grocery-product-more > summary,
+  .journal-site .practical-disclaimer > summary,
+  .journal-site .today-fastfood > summary,
+  .journal-site .today-block-link,
+  .journal-site .today-head-link,
+  .journal-site .today-outside-title,
+  .journal-site .today-block-head > h3,
+  .journal-site .day-food-guides a,
+  .journal-site .day-shortcuts a,
+  .journal-site .grocery-btn,
+  .journal-site main .note-toggle,
+  .journal-site .fast-food-address,
+  .journal-site .fast-food-kind-inline,
+  .journal-site .fast-food-fallback-hub,
+  .journal-site .map-caption,
+  .journal-site .map-legend > div,
+  .journal-site .store-action,
+  .journal-site .day-food-map,
+  .journal-site .today-action,
+  .journal-site .cross-link,
+  .journal-site .route-stop,
+  .journal-site .map-toolbar > button,
+  .journal-site .journal-city-card span,
+  .journal-site .day-jump a b {
+    font-size: 0.875rem;
+  }
+
+  /* 照片圖說與署名：原 10.9–12px → 12.8px（輔助資訊，維持比內文小一級） */
+  .journal-site figcaption,
+  .journal-site figcaption b,
+  .journal-site .grocery-photo-credit,
+  .journal-site .grocery-photo-credit a,
+  .journal-site .grocery-photo figcaption,
+  .journal-site .grocery-photo figcaption b {
+    font-size: 0.8rem;
+  }
+
+  .journal-site figcaption small,
+  .journal-site figcaption small a {
+    font-size: 0.78rem;
+  }
+
+  /* 長段落：手機行高再鬆一點，掃讀時比較容易找到下一行。 */
+  .journal-site main .card > p,
+  .journal-site main .section > p {
+    line-height: 1.78;
+  }
+}
+
+/* --- 3. 本頁章節膠囊置中 --- */
+@media (max-width: 480px) {
+  .chapter-index ol a {
+    align-items: center;
+    min-height: 44px;
+    padding-block: 0.4rem;
+    line-height: 1.35;
+  }
+}
+
+/* --- 4. 底部快捷列：目前所在 --- */
+/* 快捷列是固定在畫面上的操作列，不跟著字級放大：放大後 4 格擠不下，
+   還會把 320px 窄螢幕撐出右緣。字級切換只作用在頁面內容。 */
+@media (max-width: 700px) {
+  .mobile-quick-nav a { min-width: 0; font-size: 14px; }
+  .mobile-quick-nav a span { font-size: 16px; }
+}
+
+.mobile-quick-nav a[aria-current="page"] {
+  border-radius: 10px;
+  background: rgb(255 250 241 / 16%);
+  box-shadow: inset 0 -3px 0 var(--gold);
+}
+
+/* 放大字級後，原本剛好塞得下的不換行按鈕會把版面撐出右緣：
+   允許換行並取消最小內容寬度，寬度仍由容器決定。 */
+@media (max-width: 700px) {
+  /* 日期按鈕寧可整顆換到下一行，也不要把「前一天」拆成兩行。 */
+  .today-date-buttons { flex-wrap: wrap; }
+  .today-date-controls button { flex: 1 1 auto; }
+
+  .today-action {
+    min-width: 0;
+    white-space: normal;
+    line-height: 1.25;
+  }
+
+  .day-food-list[data-three-meals] { grid-template-columns: minmax(0, 1fr); }
+  /* SOS 號碼旁的說明在窄欄放不下時換到號碼下一行，不再擠成 16px 寬溢出。 */
+  .today-sos-list li { flex-wrap: wrap; row-gap: 0; min-width: 0; }
+  .today-sos-list li > span { overflow-wrap: anywhere; }
+  .day-food-head > * { min-width: 0; }
+  .day-food-head h4 { overflow-wrap: anywhere; }
+}
+
+@media (max-width: 700px) {
+  /* 手機瀏覽器（尤其 Android）捲動時 fixed 背景每格都要重繪，改成跟著捲動。 */
+  body { background-attachment: scroll; }
 }

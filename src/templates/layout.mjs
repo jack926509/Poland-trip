@@ -151,8 +151,10 @@ export function renderMobileQuickNav(pathPrefix, pageKind) {
   const scheduleHref = pageKind === 'day' ? '#schedule' : `${todayHref}#today-schedule`;
   const foodHref = pageKind === 'day' ? '#day-food' : pageKind === 'city' ? '#city-dining' : `${todayHref}#today-food`;
   const sosHref = `${path('practical/database.html')}#sos-contacts`;
+  // 今日卡本身就是「今日」這一格：標成目前所在，底部列才看得出自己在哪一頁。
+  const todayCurrent = pageKind === 'today' ? ' aria-current="page"' : '';
   return `<nav class="mobile-quick-nav" aria-label="手機快速導覽">
-    <a href="${todayHref}"><span aria-hidden="true">▣</span>今日</a>
+    <a href="${todayHref}"${todayCurrent}><span aria-hidden="true">▣</span>今日</a>
     <a href="${scheduleHref}"><span aria-hidden="true">▤</span>時間表</a>
     <a href="${foodHref}"><span aria-hidden="true">🍽</span>吃哪</a>
     <a href="${sosHref}"><span aria-hidden="true">☎</span>SOS</a>
@@ -228,6 +230,7 @@ export function renderLayout({
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="POLSKA">
+  <script data-ts>try{var t=localStorage['polska-text-size'];if(t)document.documentElement.dataset.textSize=t}catch(e){}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Noto+Sans+TC:wght@400;500;700&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all';this.onload=null">
