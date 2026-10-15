@@ -31,7 +31,7 @@
 | [10/27（二）· Day 4](https://polandtrip.xiehnet.com/day-04) | 克拉科夫 → 樂斯拉夫 | 上午參觀 Wieliczka 鹽礦，回城取行李，傍晚搭車前往下一座城市。 |
 | [10/28（三）· Day 5](https://polandtrip.xiehnet.com/day-05) | 樂斯拉夫 → 波茲南 | 廣場小矮人、四教派街區、大學區與百年廳，全景畫與國家博物館只看外觀；傍晚在座堂島看點燈，再搭車往波茲南。 |
 | [10/29（四）· Day 6](https://polandtrip.xiehnet.com/day-06) | 波茲南 → 華沙 | 無頭人像、教堂島、山羊鐘樓秀與聖馬丁牛角麵包；午餐 Carla 義大利菜，午後走帝王區看城堡外觀，17:40 搭車回華沙吃 Arirang 韓式。 |
-| [10/30（五）· Day 7](https://polandtrip.xiehnet.com/day-07) | 華沙 | 從 Umschlagplatz、POLIN 外觀一路往南，新城、老城、城堡廣場一次走完，不進付費館；下午無名塚、BUW 屋頂花園與瓦津基湖邊日落，最後晚餐在 Soul Kitchen 吃威靈頓牛排。 |
+| [10/30（五）· Day 7](https://polandtrip.xiehnet.com/day-07) | 華沙 | 從 POLIN 外觀一路往南，新城、老城、城堡廣場一次走完，收費館只路過拍外觀；下午薩克森花園、無名塚、BUW 屋頂花園與瓦津基湖邊日落，最後晚餐在 Soul Kitchen 吃威靈頓牛排。 |
 | [10/31（六）· Day 8](https://polandtrip.xiehnet.com/day-08) | 華沙 → 返程 | 吃早餐、整理行李，前往蕭邦機場；11/01 回到臺灣。 |
 
 這是目前的旅行安排；各館場次與購票進度可在[待辦事項](https://polandtrip.xiehnet.com/practical/todos)查看。每日行程、今日卡與首頁的「待訂」都直接讀同一份待辦清單，在那裡改一筆，各頁一起更新。

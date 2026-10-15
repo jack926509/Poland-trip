@@ -457,7 +457,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-bulke-przez-bibulke-zgoda",
       "role": "早餐首選",
-      "note": "07:30 開門就進：Bagel、Scrambled Eggs 或 Avocado Toast＋咖啡，08:05 前結帳，走到 Świętokrzyska 搭 M1 往北到 Dworzec Gdański。",
+      "note": "07:30 開門就進：Bagel、Scrambled Eggs 或 Avocado Toast＋咖啡，08:05 前結帳，走到 Świętokrzyska 站口拍 MSN 與科學文化宮，再搭 M1 到 Ratusz Arsenał。",
       "stepId": "d7-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
@@ -473,7 +473,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-polka",
       "role": "午餐首選",
-      "note": "老城、新城上午走完，12:40 繞 Piwna 街回城堡廣場，12:55 進城堡旁的店：平日 12:00–16:00 午間套餐，或點 Pierogi、Żurek；13:40 離開往劇院廣場。客滿改甕城旁的 Pyzy Flaki Gorące。",
+      "note": "老城、新城上午走完，12:15 繞 Piwna 街回城堡廣場，12:30 進城堡旁的店：平日 12:00–16:00 午間套餐，或點 Pierogi、Żurek；13:15 離開往劇院廣場。客滿改甕城旁的 Pyzy Flaki Gorące。",
       "stepId": "d7-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
@@ -497,7 +497,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-soul-kitchen",
       "role": "晚餐首選（威靈頓）",
-      "note": "17:45 回 Metropol 休息換衣服，步行約 8 分到 Nowogrodzka 18A，18:30 入座：Beef Wellington 為招牌，前菜可點桌邊韃靼牛肉或 Żurek。飯後可選去 Wedel Szpitalna 8 喝熱巧克力。",
+      "note": "17:35 回 Metropol 休息換衣服，步行約 8 分到 Nowogrodzka 18A，18:30 入座：Beef Wellington 為招牌，前菜可點桌邊韃靼牛肉或 Żurek。飯後可選去 Wedel Szpitalna 8 喝熱巧克力。",
       "stepId": "d7-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
@@ -570,7 +570,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-qq-warsaw-matcha-korean-toasts",
       "role": "下午點心",
-      "note": "17:15 從瓦津基走回三十字廣場後沿 Żurawia 順路進來：抹茶拿鐵為主，韓式吐司兩人分一份，17:40 起身回飯店，18:30 還有晚餐。週五 11:00–20:00（店家 Instagram，另有目錄列週二休），前往前確認。",
+      "note": "17:05 從瓦津基走回三十字廣場後沿 Żurawia 順路進來：抹茶拿鐵為主，韓式吐司兩人分一份，17:30 起身回飯店，18:30 還有晚餐。週五 11:00–20:00（店家 Instagram，另有目錄列週二休），前往前確認。",
       "stepId": null,
       "planStatus": "candidate"
     },
