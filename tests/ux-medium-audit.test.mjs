@@ -104,8 +104,10 @@ test('M6：搜尋索引改成外部檔案，多頁版不再內嵌 526KB、單頁
     // 內嵌 script 應該是空的，索引改成外部 URL
     assert.match(html, /<script type="application\/json" data-site-search-index><\/script>/, `${file} 仍內嵌搜尋索引`);
     assert.match(html, /data-search-index-url="[^"]*assets\/search-index\.json"/, `${file} 缺少外部索引 URL`);
+    // 預算是用來抓「又把 526KB 索引內嵌回來」；城市頁本身內容已長到 99.9KB，
+    // 2026-10-15 加上字級切換的 <head> 內嵌腳本後放寬到 110KB，仍遠低於內嵌索引的量級。
     const sizeKb = Buffer.byteLength(html) / 1024;
-    assert.ok(sizeKb < 100, `${file} 仍有 ${sizeKb.toFixed(1)}KB，未明顯縮小`);
+    assert.ok(sizeKb < 110, `${file} 仍有 ${sizeKb.toFixed(1)}KB，未明顯縮小`);
   }
 
   // 單檔版是唯一例外：本來就要整份下載後離線自足，仍內嵌完整索引

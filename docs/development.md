@@ -121,6 +121,7 @@ mkdir _site
 - 新增頁面時，在 `src/build/pages.mjs` 註冊渲染，並更新 `src/lib/routes.mjs` 的頁面清單；一般導覽、單檔分組、搜尋索引與建置頁數由這份清單推導。每日頁面由 `trip.js` 的 `days` 推導，城市網址與代碼由 `src/lib/city-guide.mjs` 管理。另核對 `sw.js` 預快取、`sitemap.xml` 和 `tests/build.test.mjs` 的頁數斷言。
 - `renderLayout` 會為適用頁面建立章節索引，頁面樣板不需另外維護同一份目錄。
 - 站台採固定淺色主題；修改介面時保留鍵盤焦點、手機觸控尺寸與減少動態效果設定。
+- 刊頭「Aa」字級切換（標準／大／特大）只改 `<html>` 基準字級，因此內容字級一律用 rem，不要寫死 px；固定在畫面上的刊頭與底部快捷列例外，刻意用 px 才不會放大後擠成兩行。手機小字下限約 13.6px（標籤）／14px（可點動作），新元件比照。
 - `sw.js` 頁面採 network-first，靜態資源採 cache-first，OpenStreetMap 圖磚採 stale-while-revalidate，最多保留 400 塊。離線地圖僅能使用已快取圖磚。
 - 建置會為離線快取版本加上資源指紋。不要用根目錄的原始 `sw.js` 覆蓋輸出版本。
 - Leaflet 由 `vendor/leaflet/` 提供，建置時複製到多頁版並內嵌到單檔版。升級時同步更新此目錄並保持 LF 換行。
