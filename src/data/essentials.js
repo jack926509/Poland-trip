@@ -40,7 +40,7 @@ export const packingDefault = {
 //
 // 仍屬推算值：若要用於趕日落前抵達某拍攝點這類關鍵決策，出發前再以天文表核對。
 export const daylight = [
-  {day:1, date:'2026-10-24', city:'華沙', tz:'CEST',   sunrise:'07:16', sunset:'17:23', blueHourEnd:'17:58', note:'抵達日。夏令時間最後一個完整日，皇家大道散步到總統府剛好在 17:23 日落前，17:40 城堡廣場拍藍調——這是全程最長的一天。'},
+  {day:1, date:'2026-10-24', city:'華沙', tz:'CEST',   sunrise:'07:16', sunset:'17:23', blueHourEnd:'17:58', note:'抵達日。夏令時間最後一個完整日，皇家大道散步到總統府剛好在 17:23 日落前，接著在 E.Wedel 喝熱巧克力、往回走時拍皇家大道夜景——這是全程最長的一天。'},
   {day:2, date:'2026-10-25', city:'克拉科夫', tz:'CET',    sunrise:'06:17', sunset:'16:30', blueHourEnd:'17:04', note:'冬令時間首日，日落比昨天早 53 分鐘。辛德勒工廠 17:30 入館時天已黑，屬室內行程不受影響。'},
   {day:3, date:'2026-10-26', city:'克拉科夫', tz:'CET',    sunrise:'06:19', sunset:'16:28', blueHourEnd:'17:02', note:'Auschwitz 回程 16:55 抵克拉科夫時已過日落，當晚不安排戶外拍攝。'},
   {day:4, date:'2026-10-27', city:'克拉科夫', tz:'CET',    sunrise:'06:20', sunset:'16:27', blueHourEnd:'17:00', note:'Kazimierz 白天散步 14:30 起，日落前約 2 小時是磚牆與窄街的最佳光線。'},
