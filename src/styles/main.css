@@ -6484,7 +6484,7 @@ h3 {
   }
   .today-compact .today-date-controls .today-field { font-size: 0; }
   /* UX 審查第 10 項：日期切換與 SOS 電話原本 40px／35px，統一回到 44px 觸控高度。 */
-  .today-compact .today-date-controls .today-field select { margin-top: 0; min-height: 44px; padding-block: .4rem; font-size: .9rem; }
+  .today-compact .today-date-controls .today-field select { margin-top: 0; min-height: 44px; padding-block: .4rem; font-size: max(1rem, 16px); }
   .today-compact .today-date-controls button { min-height: 44px; padding: .4rem .55rem; font-size: .8rem; }
   /* 自動模式（看今天）時「回到今天」已停用，精簡版直接收掉；手動切日後才出現。 */
   .today-compact [data-date-reset]:disabled { display: none; }
@@ -7253,8 +7253,7 @@ li > p.source-meta a,
 
 /* ============================================================
    2026-10-15 手機閱讀加強（PWA）
-   1. 字級切換：刊頭「Aa」鈕依序 標準／大／特大，全站以 rem 計，
-      只改 <html> 基準字級（nav.js 寫入 data-text-size，<head> 內嵌腳本先套用）。
+   1. （刊頭「Aa」字級切換已於 2026-10-16 移除；內容字級仍以 rem 計。）
    2. 手機小字下限：查找用的標籤、按鈕與說明在 390px 實測只有 11–13px，
       戶外看不清楚；統一拉到約 14px，關鍵資訊（時間、狀態）不低於 13.6px。
    3. 本頁章節膠囊：手機藏起英文小標後改回垂直置中，字不再貼在膠囊上緣。
@@ -7266,64 +7265,9 @@ html {
   text-size-adjust: 100%;
 }
 
-html[data-text-size="lg"] { font-size: 112.5%; }
-html[data-text-size="xl"] { font-size: 125%; }
-
-/* --- 1. 字級切換鈕 --- */
-.nav-text-size {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  min-width: 44px;
-  min-height: 44px;
-  margin-right: 0.5rem;
-  padding: 0 0.75rem;
-  border: 1px solid rgb(142 126 112 / 40%);
-  border-radius: 999px;
-  background: var(--paper-light);
-  color: var(--ink);
-  cursor: pointer;
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  font-weight: 700;
-  line-height: 1;
-}
-
-
-.nav-text-size > span {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  letter-spacing: 0.02em;
-}
-
-.nav-text-size > small {
-  color: var(--ink-soft);
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-}
-
-.nav-text-size:hover,
-.nav-text-size:focus-visible {
-  border-color: var(--accent);
-  background: var(--accent-pale);
-  color: var(--accent-dark);
-}
-
 @media (max-width: 700px) {
-  /* 品牌列佔滿第一行，字級鈕浮在同一行右側，不另佔一行。 */
-  .nav-text-size {
-    position: absolute;
-    top: 11px;
-    right: clamp(16px, 4vw, 52px);
-    margin: 0;
-    font-size: 13.6px;
-  }
-
-  .nav-text-size > span { font-size: 16.8px; }
-  .nav-text-size > small { font-size: 12.8px; }
-
-  /* 刊頭是固定的操作列，和底部快捷列一樣不跟著字級放大，
-     否則「實用資訊」會被擠到第二行。下拉選單內的連結仍會放大。 */
+  /* 刊頭是固定的操作列，和底部快捷列一樣用 px 定字級，
+     瀏覽器調大基準字級時「實用資訊」才不會被擠到第二行。 */
   .nav > a.nav-brand { font-size: 21.6px; }
   .nav-brand small { font-size: 9.3px; }
   /* .nav > a（0,1,1）原本把「今日」壓回 .78rem，舊的 .nav-today 規則蓋不過；這裡用同級選擇器。 */
@@ -7444,8 +7388,8 @@ html[data-text-size="xl"] { font-size: 125%; }
 }
 
 /* --- 4. 底部快捷列：目前所在 --- */
-/* 快捷列是固定在畫面上的操作列，不跟著字級放大：放大後 4 格擠不下，
-   還會把 320px 窄螢幕撐出右緣。字級切換只作用在頁面內容。 */
+/* 快捷列是固定在畫面上的操作列，用 px 定字級：跟著放大後 4 格擠不下，
+   還會把 320px 窄螢幕撐出右緣。 */
 @media (max-width: 700px) {
   .mobile-quick-nav a { min-width: 0; font-size: 14px; }
   .mobile-quick-nav a span { font-size: 16px; }
@@ -7457,7 +7401,7 @@ html[data-text-size="xl"] { font-size: 125%; }
   box-shadow: inset 0 -3px 0 var(--gold);
 }
 
-/* 放大字級後，原本剛好塞得下的不換行按鈕會把版面撐出右緣：
+/* 字級較大（瀏覽器基準字級調大）時，原本剛好塞得下的不換行按鈕會把版面撐出右緣：
    允許換行並取消最小內容寬度，寬度仍由容器決定。 */
 @media (max-width: 700px) {
   /* 日期按鈕寧可整顆換到下一行，也不要把「前一天」拆成兩行。 */
@@ -7481,4 +7425,18 @@ html[data-text-size="xl"] { font-size: 125%; }
 @media (max-width: 700px) {
   /* 手機瀏覽器（尤其 Android）捲動時 fixed 背景每格都要重繪，改成跟著捲動。 */
   body { background-attachment: scroll; }
+}
+
+/* 今日卡在手機上滑不動（2026-10-16）：
+   1. iOS Safari 與加到主畫面的 PWA，點到字級小於 16px 的表單控制項會自動放大整頁，
+      選完也不縮回；之後每次上下滑都會被橫向平移帶走，看起來就是「滑不動」。
+      今日卡的「查看日期」「改看其他行程」兩個下拉選單原本 14.4px，是全站唯一低於 16px 的控制項。
+   2. 320px 窄螢幕旅途中，精簡版 SOS 的代表處號碼不換行，把頁面撐寬 15px，整頁可以左右晃；
+      窄到放不下時 SOS 標題自成一行，號碼清單用滿整列。 */
+@media (max-width: 700px) {
+  .today-date-controls select, .today-next select { font-size: max(1rem, 16px); }
+}
+@media (max-width: 360px) {
+  .today-compact .today-sos { flex-wrap: wrap; }
+  .today-compact .today-sos-list { flex-basis: 100%; }
 }

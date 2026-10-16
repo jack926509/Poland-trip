@@ -1,56 +1,28 @@
-// 2026-10-15 手機閱讀加強（PWA）：字級切換、手機時間表說明滿版、小字下限、
-// 底部快捷列目前所在與 manifest 捷徑。
+// 2026-10-15 手機閱讀加強（PWA）：手機時間表說明滿版、小字下限、
+// 底部快捷列目前所在與 manifest 捷徑。（字級切換已於 2026-10-16 移除。）
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import vm from 'node:vm';
 
 const distDir = path.resolve('dist');
 const read = relativePath => fs.readFileSync(path.join(distDir, relativePath), 'utf8');
 const css = () => read('assets/main.css');
 
-test('字級切換：<head> 先套用已存的字級，CSS 以 <html> 基準字級放大', () => {
+test('刊頭「Aa」字級切換已移除（2026-10-16）：沒有按鈕、預先套用腳本與放大規則', () => {
   for (const file of ['index.html', 'today.html', 'day-02.html', 'practical/todos.html']) {
     const html = read(file);
-    const head = html.slice(0, html.indexOf('</head>'));
-    const init = head.match(/<script data-ts>([\s\S]*?)<\/script>/)?.[1];
-    assert.ok(init, `${file} 缺少字級預先套用腳本`);
-    // 必須在主樣式表之前或同時生效，且讀寫失敗不能拋錯中斷頁面
-    assert.match(init, /^try\{[\s\S]*\}catch\(e\)\{\}$/);
+    assert.doesNotMatch(html, /<script data-ts>/, `${file} 仍有字級預先套用腳本`);
+    assert.doesNotMatch(html, /polska-text-size/);
   }
+  const nav = read('assets/nav.js');
+  assert.doesNotMatch(nav, /setupTextSize|nav-text-size|polska-text-size/);
   const source = css();
-  assert.match(source, /html\[data-text-size="lg"\] \{ font-size: 112\.5%; \}/);
-  assert.match(source, /html\[data-text-size="xl"\] \{ font-size: 125%; \}/);
-  // body 改用 rem，基準字級改變時內文才會跟著放大
+  assert.doesNotMatch(source, /data-text-size|\.nav-text-size/);
+  // body 仍用 rem；iOS 轉向不自動放大字級
   assert.match(source, /^body \{[^}]*font-size: 1rem;/m);
   assert.match(source, /-webkit-text-size-adjust: 100%/);
-});
-
-test('字級預先套用腳本：有存值就寫進 data-text-size，localStorage 拋錯時不中斷', () => {
-  const init = read('today.html').match(/<script data-ts>([\s\S]*?)<\/script>/)[1];
-  const run = storage => {
-    const documentElement = { dataset: {} };
-    vm.runInNewContext(init, { localStorage: storage, document: { documentElement } });
-    return documentElement.dataset.textSize;
-  };
-  assert.equal(run({ 'polska-text-size': 'xl' }), 'xl');
-  assert.equal(run({}), undefined);
-  const throwing = new Proxy({}, { get() { throw new Error('SecurityError'); } });
-  assert.equal(run(throwing), undefined);
-});
-
-test('字級切換鈕由 nav.js 產生，依序 標準 → 大 → 特大，並記在 localStorage', () => {
-  const nav = read('assets/nav.js');
-  assert.match(nav, /const setupTextSize = \(\) =>/);
-  assert.match(nav, /className = 'nav-text-size'/);
-  assert.match(nav, /key: '', label: '標準'[\s\S]*key: 'lg', label: '大'[\s\S]*key: 'xl', label: '特大'/);
-  assert.match(nav, /localStorage\.setItem\('polska-text-size', next\.key\)/);
-  assert.match(nav, /aria-label', `字級：\$\{level\.label\}，按一下改為\$\{next\.label\}`/);
-  // 沒有 JS 時不輸出一顆按不動的按鈕
-  assert.doesNotMatch(read('day-02.html'), /class="nav-text-size"/);
-  // 手機上刊頭與底部快捷列不跟著放大，避免擠成兩行或撐出右緣
-  const source = css();
+  // 手機上刊頭與底部快捷列維持 px，不擠成兩行或撐出右緣
   assert.match(source, /\.nav > a\.nav-today \{ font-size: 15\.2px; \}/);
   assert.match(source, /\.mobile-quick-nav a \{ min-width: 0; font-size: 14px; \}/);
 });
