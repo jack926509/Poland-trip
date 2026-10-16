@@ -138,52 +138,6 @@
   };
   reorderPracticalGroups();
 
-  /**
-   * 字級：戶外光線、單手拿手機時常需要更大的字。按一下依序切換
-   * 標準 → 大（112.5%）→ 特大（125%）；全站字級以 rem 計，只改 <html> 的
-   * 基準字級就能整頁一起放大。選擇存在這個瀏覽器（localStorage），
-   * <head> 的小段內嵌腳本在畫面繪出前就套用，換頁不會先閃一下小字。
-   * 讀寫失敗（無痕模式、清除網站資料）時照樣可切換，只是不會記住。
-   * 按鈕由這裡產生：沒有 JS 時切換不了，也就不該出現在頁面上。
-   */
-  const setupTextSize = () => {
-    const anchor = nav?.querySelector('.nav-today');
-    if (!anchor) return;
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'nav-text-size';
-    button.innerHTML = '<span aria-hidden="true">Aa</span><small data-text-size-label></small>';
-    anchor.before(button);
-    const levels = [
-      { key: '', label: '標準' },
-      { key: 'lg', label: '大' },
-      { key: 'xl', label: '特大' },
-    ];
-    const root = document.documentElement;
-    const label = button.querySelector('[data-text-size-label]');
-    const currentIndex = () => Math.max(0, levels.findIndex(level => level.key === (root.getAttribute('data-text-size') || '')));
-    const render = () => {
-      const level = levels[currentIndex()];
-      const next = levels[(currentIndex() + 1) % levels.length];
-      if (label) label.textContent = level.label;
-      button.setAttribute('aria-label', `字級：${level.label}，按一下改為${next.label}`);
-    };
-    button.addEventListener('click', () => {
-      const next = levels[(currentIndex() + 1) % levels.length];
-      if (next.key) root.setAttribute('data-text-size', next.key);
-      else root.removeAttribute('data-text-size');
-      try {
-        if (next.key) localStorage.setItem('polska-text-size', next.key);
-        else localStorage.removeItem('polska-text-size');
-      } catch {
-        // 無法儲存時只影響「記住」，這一頁仍已切換。
-      }
-      render();
-    });
-    render();
-  };
-  setupTextSize();
-
   // 搜尋與城市頁可直達商品卡或城市門市；目標若位於收合分組，先展開才能正確捲動。
   const revealProductHash = () => {
     let id;
