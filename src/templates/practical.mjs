@@ -336,7 +336,7 @@ export function renderTodos({ todoGroups }) {
   return renderPracticalLayout('待辦事項', 'Action list', '城際交通、景點與餐飲訂位集中在一頁。先處理有日期與指定場次的票，再處理彈性訂位。', content, 'practical/todos.html');
 }
 
-export function renderDining({ michelinSummary, michelinReservations, verifiedRestaurantHours = [], fastFoodChains = [], fastFoodBranches = {}, fastFoodHubs = [] }) {
+export function renderDining({ michelinSummary, michelinReservations, verifiedRestaurantHours = [], cafeGuide = [], fastFoodChains = [], fastFoodBranches = {}, fastFoodHubs = [] }) {
   const summaryRows = michelinSummary.map(item => `
     <tr>
       <td><b>${item.city}</b></td><td class="number">${item.stars}</td>
@@ -365,6 +365,9 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
     // 59 家全展開手機要捲 27,000px；改成依城市收合，摘要列出城市與家數，點開才看店家卡。
     return `<details class="card hours-city-group"><summary><h3>${escapeHtml(city)}（${items.length} 家）</h3><span class="hours-city-hint">營業時間、推薦菜色與導航</span></summary><ul class="day-food-list">${list}</ul></details>`;
   }).join('');
+  // 咖啡與甜點：依城市收合，卡片小標寫順路時段；已排入行程的標「已排入」，其餘是順路候選。
+  const cafeTotal = cafeGuide.reduce((sum, group) => sum + group.items.length, 0);
+  const cafeHtml = cafeGuide.map(group => `<details class="card hours-city-group" id="cafes-${escapeHtml(group.cityKey)}"><summary><h3>${escapeHtml(group.city)}（${group.items.length} 家）</h3><span class="hours-city-hint">順路時段、營業時間與導航</span></summary><ul class="day-food-list">${group.items.map(item => `<li class="day-food-item cafe-item">${renderStoreHead(item, `${item.type} · ${item.when}`)}${renderStoreBody(item, { note: item.highlight, condition: '' })}</li>`).join('')}</ul></details>`).join('');
   const content = `
     ${renderDisclaimer('資料界線：米其林名單、營業時間與預算的來源', '米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不把它們當成固定資料。高價餐廳預算已於 2026-09-08 對照旅程試算表更新；每家的「查核紀錄」逐筆列出查核日期與來源，查不到一手來源的店家一律標「待確認」，訂位前仍看店家公告。')}
     <section class="section" id="daily-meals">
@@ -374,6 +377,11 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
       ${days.map(day => `<article class="card" id="meals-day-${day.n}"><h3>Day ${day.n} · ${escapeHtml(day.date)} · ${escapeHtml(day.city)}</h3>${renderMealList(day, dayMeals[day.n])}
         <details><summary>保留的備選、備餐與點心 · ${dayDining[day.n].filter(item => !item.meal).length} 家</summary><ul class="day-food-list">${dayDining[day.n].filter(item => !item.meal).map(item => `<li class="day-food-item">${renderStoreHead(item, item.role)}${renderStoreBody(item, { condition: '', timing: mealTiming(item, day) })}</li>`).join('')}</ul></details>
         <p><a href="../day-${String(day.n).padStart(2,'0')}.html#day-food">當日完整動線與餐廳導航 →</a></p></article>`).join('')}
+    </section>
+    <section class="section" id="cafes">
+      <div class="section-heading"><span class="section-num">Coffee &amp; sweets</span><h2>咖啡與甜點</h2></div>
+      <p class="lead">四城 ${cafeTotal} 家咖啡、熱巧克力與甜點店，依行程先後排，小標寫適合排在哪一天哪一段；標「已排入」的就在每日時間表裡，其餘是順路候選。下方米其林總表的星級與 Bib Gourmand 都是正餐餐廳，沒有咖啡館或甜點店，所以這裡改依觀光局與在地指南整理，查核狀態與來源寫在每家的查核紀錄。</p>
+      <div class="hours-city-list">${cafeHtml}</div>
     </section>
     <section>
       <div class="section-heading"><span class="section-num">Guide</span><h2>2026 米其林總表</h2></div>

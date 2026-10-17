@@ -508,7 +508,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-10",
     "verificationStatus": "partial",
     "notes": [
-      "斯拉夫風味與時令穀物、野禽／野味料理；季節前菜、Pierogi。初稿菜單為夏季版，秋季菜色待確認。10/30 晚餐改 Rusiko 後，人在 Wola 一帶時可升回首選。"
+      "斯拉夫風味與時令穀物、野禽／野味料理；季節前菜、Pierogi。初稿菜單為夏季版，秋季菜色待確認。10/30 晚餐已排 Soul Kitchen，這間保留為晚餐備選；人在 Wola 一帶時可改來。"
     ],
     "verificationNote": "2026-10-10 複查：官網與 Michelin 週五皆為 12:00–00:00，10/30 有營業；TheFork 可訂位，尚未訂位。",
     "menuUrl": "https://wyraj.net/wp-content/uploads/2026/06/Wersja-na-strone-www-i-google-ANG-Uczta-Noc-LATO-2026-26.06.pdf",
@@ -702,7 +702,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-17",
     "verificationStatus": "partial",
     "notes": [
-      "PGI 聖馬丁可頌（Rogal świętomarciński）· 白罌粟籽餡；10/29 12:15 點心站，兩人買一個分享即可。"
+      "PGI 聖馬丁可頌（Rogal świętomarciński）· 白罌粟籽餡；10/29 12:05 山羊秀後的點心站，兩人買一個分享即可。"
     ],
     "verificationNote": "初稿引波茲南觀光局 Stary Rynek 11/17；營業與售完時間仍待確認，僅作順路外帶候選。 2026-10-12 複查：店內每日烘焙，可外帶或內用；營業時間未查到。 2026-10-12 再查：Google 地圖店家頁確認門牌 Stary Rynek 11/17、座標 52.40797,16.93403，只取得週一 09:00–20:00；週四與 10/29 特殊公告未查到，出發前看 facebook.com/ROGALSTARYRYNEK。不要和 Stary Rynek 41 的 Rogalowe Muzeum 混淆。 2026-10-17 複查：Google 地圖週一至四 09:00–20:00、週五 09:00–21:00，10/29 週四 12:05 在營業時間內，未見特殊公告；仍只有 Google 一個來源。",
     "phone": "+48 573 465 226",
@@ -775,7 +775,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-10",
     "verificationStatus": "partial",
     "notes": [
-      "波蘭牛奶吧早餐：jajecznica 炒蛋、naleśniki 可麗餅配 kompot，或菠菜歐姆蛋。平日 08:00 才開，10/30 改為早餐備選（行程 08:10 就要搭地鐵往北）。"
+      "波蘭牛奶吧早餐：jajecznica 炒蛋、naleśniki 可麗餅配 kompot，或菠菜歐姆蛋。平日 08:00 才開，10/30 改為早餐備選（行程 08:05 就要出發搭地鐵往北）。"
     ],
     "menuUrl": "https://barbambino.pl/sniadanie/",
     "verificationNote": "本輪官網確認 Hoża 19（2026-10-12 餐飲 v5 稿列 Krucza 21，以官網為準）；早餐品項與當日供應再查菜單。 2026-10-12 網路交叉比對：仍在營業，未見歇業公告。官網平日 08:00–20:00、週末 09:00–18:00。",
@@ -807,7 +807,7 @@ export const diningPlaces = {
       "Pączki 玫瑰果醬甜甜圈",
       "咖啡外帶"
     ],
-    "verificationNote": "甜點店在 Nowy Świat 35、咖啡館在 33；開門時間各目錄 09:00／10:00 不一，09:00 若未開就略過。",
+    "verificationNote": "甜點店在 Nowy Świat 35、咖啡館在 33；開門時間各目錄 09:00／10:00 不一，09:00 若未開就略過。2026-10-15 網路搜尋：Wolt、TableJourney、In Your Pocket 都把門市寫成 Nowy Świat 33（有資料說 2017 年底由 35 號遷入）；兩門相鄰約 20 m，現場看招牌即可。2026 年有新聞提到 Nowy Świat 店面租金欠款與市府協商分期，出發前再看一次是否照常營業。",
     "liveCheckedAt": "2026-10-12",
     "hoursNote": "目錄"
   },
@@ -836,7 +836,7 @@ export const diningPlaces = {
     "checkedAt": "2026-09-19",
     "verificationStatus": "verified",
     "notes": [
-      "Krakowskie Przedmieście 42/44（Hotel Bristol 內），就在總統府隔壁；10/24 傍晚 17:10 皇家大道散步途中的咖啡甜點點，10/30 為午餐備選。",
+      "Krakowskie Przedmieście 42/44（Hotel Bristol 內），就在總統府隔壁；10/24 17:35 總統府拍完日落後和 E.Wedel 二選一的熱飲甜點點，10/30 為午餐備選。",
       "三明治＋咖啡、Bristol cake；官網湯與主餐自 12:00 起供應。"
     ],
     "verificationNote": "營業時間沿用 2026-09-19 官方查核；各日備選共用此筆資料，未代表已訂位。 2026-10-12 網路交叉比對：仍在營業，未見歇業公告。Marriott 頁與本站官方時段一致（週五、六至 21:00）。",
@@ -902,15 +902,18 @@ export const diningPlaces = {
     "id": "krakow-cafe-camelot",
     "cityKey": "krakow",
     "name": "Café Camelot",
-    "address": "門牌待確認",
+    "address": "Świętego Tomasza 17, Kraków",
     "map": "https://www.google.com/maps/search/?api=1&query=Cafe%20Camelot%2C%20%C5%9Aw.%20Tomasza%2017%2C%20Krak%C3%B3w",
-    "hours": "依店家當日公告",
-    "sourceUrl": null,
-    "checkedAt": null,
-    "verificationStatus": "pending",
+    "hours": "每日 09:00–23:00（2023 年報導）",
+    "sourceUrl": "https://www.gillespudlowski.com/357546/rendez-vous/cracovie-un-verre-et-plus-au-cafe-camelot",
+    "checkedAt": "2026-10-15",
+    "verificationStatus": "partial",
     "notes": [
-      "老城區老牌文青咖啡館，距中央廣場數步，復古內裝、地窖有卡巴萊表演；老城散步時的歇腳點，未排入每日餐位。"
-    ]
+      "老城老牌咖啡館，距中央廣場數步，地窖是卡巴萊劇場；10/25 中央廣場散步時的歇腳點。"
+    ],
+    "verificationNote": "2026-10-15 查核：門牌多來源一致；營業時間僅 2023 年報導，前往前看 Google Maps。",
+    "cuisine": "咖啡廳 · 蛋糕",
+    "dishes": ["蘋果派 szarlotka", "熱紅酒", "咖啡"]
   },
   "krakow-cukiernia-michalek": {
     "id": "krakow-cukiernia-michalek",
@@ -1113,7 +1116,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "傳統波蘭料理，Świętojańska 2 就在皇家城堡旁；10/30 城堡廣場拍完，12:00 進來吃午餐，平日 12:00–16:00 有午間套餐。",
+      "傳統波蘭料理，Świętojańska 2 就在皇家城堡旁；10/30 城堡廣場與 Piwna 街拍完，12:30 進來吃午餐，平日 12:00–16:00 有午間套餐。",
       "不是 U Fukiera 的同一間店。"
     ],
     "cuisine": "波蘭菜（Magda Gessler）",
@@ -1384,7 +1387,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "Żurawia 32/34 的抹茶與韓式吐司小店；10/30 下午有空檔才去。"
+      "Żurawia 32/34 的抹茶與韓式吐司小店；10/30 17:15 從瓦津基走回飯店途中的下午點心。"
     ],
     "verificationNote": "店家 Instagram 時段；另有目錄列週二休，前往前確認。",
     "cuisine": "韓式吐司 · 抹茶",
@@ -1858,7 +1861,7 @@ export const diningPlaces = {
       "Stary Kleparz 市場旁的 Pimiento 小型熟食店兼 bistro：阿根廷牛排、Tatar、烤雞、Argentine burger；10/25 週日午餐首選，ibis 步行約 7 分。"
     ],
     "menuUrl": "https://pimiento.pl/wp-content/uploads/2025/10/pimiento-shop-and-bistro-menu-calosc.pdf",
-    "verificationNote": "營業時間來源：Google 地圖（2026-10-12 實開）與 MapQuest 皆列週日 09:00–15:00；官網只列菜單時段、未列逐日時間，也查不到 10/25 特殊公告。午餐菜單 13:00 才開始，早餐菜單 09:00–13:00。官網訂位表單的線上連結只涵蓋 Kazimierz 與 Stare Miasto 分店，Stary Kleparz 這間須電話 +48 517 475 818（或表單寄信後以回信為準）訂位。10/22 複查再看一次 Google 地圖。",
+    "verificationNote": "營業時間來源：Google 地圖（2026-10-12 實開）與 MapQuest 皆列週日 09:00–15:00；官網只列菜單時段、未列逐日時間，也查不到 10/25 特殊公告。午餐菜單 13:00 才開始，早餐菜單 09:00–13:00。官網線上訂位只涵蓋 Kazimierz 與 Stare Miasto 分店，Stary Kleparz 須電話 +48 517 475 818 訂位。10/22 複查再看一次 Google 地圖。",
     "phone": "+48 517 475 818",
     "cuisine": "阿根廷牛排／熟食 bistro",
     "dishes": [
@@ -2221,7 +2224,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "Zgoda 3 市中心早午餐：Bagel、Scrambled Eggs、Avocado Toast；平日 07:30 開門，10/30 08:10 搭地鐵往北前的早餐首選。"
+      "Zgoda 3 市中心早午餐：Bagel、Scrambled Eggs、Avocado Toast；平日 07:30 開門，10/30 08:15 搭地鐵往北前的早餐首選。"
     ],
     "menuUrl": null,
     "verificationNote": "官網分店頁列 Zgoda 3；第三方目錄週末時段不一。",
@@ -2355,6 +2358,66 @@ export const diningPlaces = {
     ],
     "menuUrl": null,
     "verificationNote": "只在週一推出，這趟華沙沒有週一，排不進行程；資訊來自 2026-10-12 餐飲 v5 稿。"
+  },
+  "wroclaw-paloma-coffee": {
+    "id": "wroclaw-paloma-coffee",
+    "cityKey": "wroclaw",
+    "name": "Paloma Coffee",
+    "address": "Plac Solny 8–9, Wrocław",
+    "map": "https://www.google.com/maps/search/?api=1&query=Paloma%20Coffee%2C%20Plac%20Solny%208%2C%20Wroc%C5%82aw",
+    "hours": "每日 08:00–21:00（TableJourney、CaffeAtlas；另一份較舊目錄列週五、週六至 22:00）",
+    "sourceUrl": "https://tablejourney.com/poland/wroclaw/coffee-roasters/paloma-roasters/",
+    "checkedAt": "2026-10-15",
+    "verificationStatus": "partial",
+    "notes": [
+      "鹽廣場邊的精品咖啡與自家烘豆，烘豆機就在店後；10/28 08:50 走到鹽廣場時順路外帶手沖或 V60。"
+    ],
+    "verificationNote": "2026-10-15 網路查核：門牌與每日 08:00 開門多個來源一致，打烊時間來源不一；未能連上店家官網或樂斯拉夫觀光局頁面確認。",
+    "cuisine": "精品咖啡 · 自家烘豆",
+    "dishes": [
+      "V60 手沖",
+      "Flat White"
+    ]
+  },
+  "poznan-stragan-kawiarnia": {
+    "id": "poznan-stragan-kawiarnia",
+    "cityKey": "poznan",
+    "name": "Stragan Kawiarnia",
+    "address": "Ratajczaka 31, Poznań",
+    "map": "https://www.google.com/maps/search/?api=1&query=Stragan%20Kawiarnia%2C%20Ratajczaka%2031%2C%20Pozna%C5%84",
+    "hours": "週一至週五 08:00 起（打烊各來源列 21:00 或 22:00）；週六 12:00–18:00；週日休（TableJourney）",
+    "sourceUrl": "https://tablejourney.com/poland/poznan/cafes/stragan-kawiarnia/",
+    "checkedAt": "2026-10-15",
+    "verificationStatus": "partial",
+    "notes": [
+      "波茲南精品咖啡的老字號，自有烘豆品牌；Ratajczaka 從自由廣場往 Stary Browar 的路上，10/29 12:25 往南走時可外帶一杯。"
+    ],
+    "verificationNote": "2026-10-15 網路查核：門牌一致；週四 08:00 開門兩個來源都成立，打烊時間不一；未能連上店家官網確認。",
+    "cuisine": "精品咖啡",
+    "dishes": [
+      "單品手沖",
+      "蛋糕"
+    ]
+  },
+  "poznan-lagacca-cafe-by-brisman": {
+    "id": "poznan-lagacca-cafe-by-brisman",
+    "cityKey": "poznan",
+    "name": "LAGACCA Cafe by Brisman",
+    "address": "Woźna 21, Poznań",
+    "map": "https://www.google.com/maps/search/?api=1&query=LAGACCA%20Cafe%20by%20Brisman%2C%20Wo%C5%BAna%2021%2C%20Pozna%C5%84",
+    "hours": "營業時間未查到（前往前看 Google Maps）",
+    "sourceUrl": "https://visitpoznan.pl/en/lagaccacafe-by-brisman-en",
+    "checkedAt": "2026-10-15",
+    "verificationStatus": "partial",
+    "notes": [
+      "波茲南名店 Brisman 搬到老城後的新店，Mateusz Gaca 的微型烘豆咖啡館；在舊市集廣場東南側，10/29 等山羊秀前後可順路。"
+    ],
+    "verificationNote": "2026-10-15 網路查核：波茲南官方觀光網列此店與門牌，並註明 Jeżyce 舊店 Brisman 已遷來；營業時間各來源都沒有列出。",
+    "cuisine": "精品咖啡 · 自家烘豆",
+    "dishes": [
+      "Espresso",
+      "Chemex 手沖"
+    ]
   }
 };
 
