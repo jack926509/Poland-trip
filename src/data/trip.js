@@ -377,7 +377,7 @@ export const days = [
       {t:'12:05', label:'★ 聖馬丁牛角麵包 (PGI)', sub:'ROGAL Świętomarciński（Stary Rynek 11/17）；兩人分一個當點心，撐到 14:00 午餐。週四營業時間沒查到，排隊或售完改 Cukiernia Kandulski（Plac Ratajskiego 1，週四 09:00–17:00，官網 kandulski.pl）', cost:'依門市標價', dur:'20 min'},
       {t:'12:25', label:'自由廣場 Plac Wolności', sub:'從廣場西南角經耶穌會學院（今市政府）與粉紅色 Fara 教堂正面（正殿通常免費看一眼）往南；自由廣場上 Raczyński 圖書館、Arkadia 宮外觀', cost:'免費', dur:'20 min'},
       {t:'12:45', label:'★ Stary Browar', sub:'舊啤酒廠改建的商場，紅磚和工業風建築；有洗手間，下雨可以拉長', cost:'免費', dur:'45 min'},
-      {t:'13:30', label:'Okrąglak 圓形百貨外觀', sub:'現代主義建築，就在 Carla 旁邊', cost:'免費', dur:'20 min'},
+      {t:'13:30', label:'Okrąglak 圓形百貨外觀', sub:'現代主義建築，離 Carla 步行約 5 分鐘', cost:'免費', dur:'20 min'},
       {t:'14:00', id:'d6-lunch', label:'午餐 · Carla Trattoria Moderna', sub:'Święty Marcin 34，週四 14:00 開門，14:00 準時入座；在 zjedz.my 訂 14:00 兩位。手工麵、披薩與小盤分享，兩人分享即可。15:15 前結帳；上菜慢、15:30 還沒吃完，就把帝王區縮短到只看帝王城堡外觀、跳過 Kaponiera，17:05 一定要到站。客滿或訂不到改 Pyra Bar（Strzelecka 13，週四 11:00–21:00）或 Zen On（Święty Marcin 21，週四 12:00–20:00），可改回 12:15 吃午餐', cost:'依店家', dur:'75 min'},
       {t:'15:20', label:'★ 聖馬丁街帝王區', sub:'往西走：Collegium Minus → 密茨凱維奇公園 → 1956 年六月事件紀念碑 → 大劇院 → 帝王城堡外觀（不進去，不用買聯票）', cost:'免費', dur:'40 min'},
       {t:'16:00', label:'Kaponiera 圓環', sub:'Abakanowicz 的另一組無頭人像「5 figur」（ul. Roosevelta 22）、Bałtyk 大樓', cost:'免費', dur:'15 min'},
