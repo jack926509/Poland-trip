@@ -6,13 +6,17 @@ import { escapeHtml as e } from '../lib/html.mjs';
 export function renderProductPhoto(product, pathPrefix = '') {
   const photo = product.photo;
   if (!photo) return '<span class="source-meta">照片待補；請依商品名稱辨識</span>';
+  const own = photo.license === '自行拍攝';
+  const credit = own
+    ? '使用者自行拍攝 · 已裁切'
+    : `<a href="${e(photo.sourceUrl)}" target="_blank" rel="noopener noreferrer">Open Food Facts 貢獻者</a> · <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 3.0</a>${photo.src.endsWith('.webp') ? ' · 縮放及 WebP 轉檔' : ' · 原圖尺寸'}`;
   return `<figure class="grocery-photo">
     <a href="${e(pathPrefix)}${e(photo.src)}" data-product-photo aria-label="放大 ${e(photo.label)} 包裝照片">
       <img src="${e(pathPrefix)}${e(photo.src)}" alt="${e(photo.label)} 包裝正面" width="${photo.width}" height="${photo.height}" loading="lazy" decoding="async">
       <span>點擊放大</span>
     </a>
-    <figcaption><b>${e(photo.label)}</b><br>代表包裝，現場版本可能不同。
-      <span class="grocery-photo-credit"><a href="${e(photo.sourceUrl)}" target="_blank" rel="noopener noreferrer">Open Food Facts 貢獻者</a> · <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 3.0</a>${photo.src.endsWith('.webp') ? ' · 縮放及 WebP 轉檔' : ' · 原圖尺寸'}</span>
+    <figcaption><b>${e(photo.label)}</b><br>${own ? '實拍包裝' : '代表包裝'}，現場版本可能不同。
+      <span class="grocery-photo-credit">${credit}</span>
     </figcaption>
   </figure>`;
 }

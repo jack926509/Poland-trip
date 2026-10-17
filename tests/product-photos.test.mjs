@@ -17,7 +17,7 @@ test('商品皆有本機真實照片、代表包裝說明與授權，單檔照�
   for (const product of [...groceryProducts, ...drinkPicks]) {
     const photo = product.photo;
     assert.ok(photo.width > 0 && photo.height > 0);
-    assert.equal(photo.license, 'CC BY-SA 3.0');
+    assert.ok(['CC BY-SA 3.0', '自行拍攝'].includes(photo.license), `${photo.src} 授權欄位不合法`);
     assert.match(photo.sourceUrl, /^https:\/\/world\.openfoodfacts\.org\/product\/\d+$/);
     const data = fs.readFileSync(photo.src);
     const isWebP = photo.src.endsWith('.webp');
