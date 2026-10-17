@@ -55,8 +55,8 @@ const databaseEntriesBase = [
     id: 'entry-etias-and-passport', section: 'entry', category: 'document', cityKey: 'PL',
     title: '護照、EES 與 ETIAS 出發前複查',
     summary: '10/06 EU 官方確認 EES 已於 4/10 全面運作，短期入境非 EU 旅客首次須在邊境登錄護照及生物辨識。ETIAS 尚未運作、不收申請，確切日期另公告。護照效期須在離開申根區後至少 3 個月，且入境時簽發未滿 10 年；旅客須自行核對私人證件。',
-    status: 'recheck', sourceUrl: 'https://home-affairs.ec.europa.eu/policies/schengen/smart-borders_en', verifiedAt: '2026-10-06', recheckAt: '2026-10-16',
-    offlineNote: '備妥護照、回程票、住宿與保險證明；10/16 複查 EU 狀態，10/20 最終確認。10/24 首次入境留 EES 登錄與排隊時間，不將私人護照核對視為已完成。', private: false,
+    status: 'recheck', sourceUrl: 'https://home-affairs.ec.europa.eu/policies/schengen/smart-borders_en', verifiedAt: '2026-10-06', recheckAt: '2026-10-19',
+    offlineNote: '備妥護照、回程票、住宿與保險證明；10/19 前複查 EU 狀態，10/20 最終確認 EU 官方 EES／ETIAS 狀態。10/24 首次入境留 EES 登錄與排隊時間，不將私人護照核對視為已完成。', private: false,
   },
   {
     id: 'aviation-baggage-rules', section: 'aviation', category: 'transit', cityKey: 'ROUTE',
@@ -147,7 +147,7 @@ const databaseEntriesBase = [
     title: '非營業週日與諸聖節前夕',
     summary: '10/25 為非營業週日，多數一般商店不得營業；10/31 為諸聖節前夕，交通、人潮與店家營業可能調整。餐廳與各店仍須逐店查證。',
     status: 'recheck', sourceUrl: 'https://www.gov.pl/web/family/trade-on-sundays', verifiedAt: '2026-08-08', recheckAt: '2026-10-18',
-    offlineNote: '10/25 手機會自動更新夏令時間，但紙本與手錶要自行確認。', private: false,
+    offlineNote: '10/25 凌晨 03:00 歐洲改為冬令時間（時鐘撥回 02:00），手機會自動更新，但紙本與手錶要自行確認。', private: false,
   },
   {
     id: 'tax-free-vat-refund', section: 'tax-free', category: 'document', cityKey: 'WAW',
@@ -429,12 +429,12 @@ export const dayOperations = {
       accommodationAddress('krakow-stare-miasto', ['旅館寄放行李']),
     ],
     navigation: [
-      { mode: 'PKP', route: 'Warszawa Centralna → Kraków Główny', action: `已購 EIP 5300 ${eip5300.dep} 由 Warszawa Centralna 出發；從 Hotel Metropol 步行約 500 公尺。抵達時間、月台、車廂與座位依票券詳細頁及現場電子牌確認。` },
+      { mode: 'PKP', route: 'Warszawa Centralna → Kraków Główny', action: `已購 EIP 5300 ${eip5300.dep} 由 Warszawa Centralna 出發；從 Hotel Metropol 步行約 500 公尺。月台、車廂與座位依票券詳細頁及現場電子牌確認。` },
       { mode: '步行／電車／計程車', route: 'Kraków Główny → 中央廣場 → Pimiento → Wawel → 辛德勒工廠', action: '先寄放行李；午餐 13:00 在 Pimiento，14:30 瓦維爾大教堂、15:15 Wawel 短路線；16:15 由 Wawel 搭電車或計程車到辛德勒工廠，17:10 前到入口。電車車號與轉乘用 Jakdojade 查即時資料。' },
     ],
     dailyAlerts: [
       '10/25 為非營業週日，多數一般商店關閉；餐廳與例外店家仍逐店確認。',
-      `EIP 5300 已購票，${eip5300.dep} 由 Warszawa Centralna 發車；抵達時間與車廂座位待查票面。`,
+      `EIP 5300 已購票，${eip5300.dep} 由 Warszawa Centralna 發車、${eip5300.arr} 抵 Kraków Główny（Koleo 2026-10-17）；車廂座位依票券詳細頁。`,
     ],
     nightChecklist: [...standardNightChecklist, '確認 Auschwitz 官方導覽姓名、入場時段、行李限制與往返車票狀態', '確認白天已在 Lajkonik 備妥明日早餐、午餐及飲水並妥善保存；明早 07:15 開始早餐、07:35 出門，08:10 前到 MDA 下層 D9'],
   },
@@ -471,7 +471,7 @@ export const dayOperations = {
     ],
     navigation: [
       { mode: 'KMŁ', route: 'Kraków Główny ↔ Wieliczka Rynek-Kopalnia', action: '以當日時刻表與售票頁為準；下車後步行前往 Daniłowicza 立坑入口。' },
-      { mode: 'PKP', route: 'Kraków Główny → Wrocław Główny', action: '已購 IC 3830 16:45；15:00 結束 Kazimierz，16:10 前抵站。抵達時間、車廂與座位待查票面。' },
+      { mode: 'PKP', route: 'Kraków Główny → Wrocław Główny', action: '已購 IC 3830 16:45，預計 19:50 抵 Wrocław Główny（Koleo）；15:00 結束 Kazimierz，16:10 前抵站。車廂與座位依票券詳細頁。' },
     ],
     dailyAlerts: [
       '鹽礦全程階梯多、地下約 17–18°C；穿好走防滑鞋並攜薄外套。',
@@ -494,7 +494,7 @@ export const dayOperations = {
     ],
     navigation: [
       { mode: '步行／電車', route: '老城 → 大學區 → 午餐 → 全景畫外觀 → 百年廳 → 沙島 → 座堂島', action: '上午全程步行；13:10 午餐後看全景畫外觀，13:20 過 Grunwaldzki 橋搭電車往東約 15 分到百年廳，14:50 再搭電車回座堂島一帶；電車車號用 Jakdojade 查。預留從座堂島回旅館取行李及前往車站的時間。' },
-      { mode: 'PKP', route: 'Wrocław Główny → Poznań Główny', action: '已購 IC 260 19:10；18:35 前抵站。抵達時間、車廂與座位待查票面。' },
+      { mode: 'PKP', route: 'Wrocław Główny → Poznań Główny', action: '已購 IC 260 19:10，預計 20:29 抵 Poznań Główny（Koleo）；18:35 前抵站。車廂與座位依票券詳細頁。' },
     ],
     dailyAlerts: [
       '點燈人沒有對外保證的出發分鐘；日落前到座堂島等待，不把 16:45 當成確定時刻。',
@@ -515,7 +515,7 @@ export const dayOperations = {
         name: diningPlaces['poznan-rogal'].name,
         address: diningPlaces['poznan-rogal'].address,
         url: diningPlaces['poznan-rogal'].map,
-        note: '週四營業時間未查到，出發前看店家 Facebook；售完改 Cukiernia Kandulski（Plac Ratajskiego 1）。',
+        note: '週四 09:00–20:00（Google 地圖 2026-10-17），無特殊公告；售完改 Cukiernia Kandulski（Plac Ratajskiego 1，週四 09:00–17:00）。',
         reliable: true,
         entranceNote: '依店家地址與現場招牌找入口；營業與售完狀況須現場確認。',
         officialUrl: diningPlaces['poznan-rogal'].sourceUrl,
@@ -526,11 +526,11 @@ export const dayOperations = {
     ],
     navigation: [
       { mode: '電車／叫車／步行', route: 'Cytadela → Śródka → 教堂島 → 舊城市場 → Stary Browar → Carla → 帝王區 → Kaponiera → Towarowa 取行李 → Poznań Główny', action: '08:00 搭電車到 Armii Poznań 站看 Cytadela，09:00 叫 Bolt 或 Uber 到 Rondo Śródka；之後全程步行。11:45 前到市政廳正面；14:00 Carla 午餐、15:15 前結帳，15:20 走帝王區只看外觀，16:15 從 Kaponiera 走約 300 公尺回 Towarowa 取行李，17:05 前抵站。' },
-      { mode: 'PKP', route: 'Poznań Główny → Warszawa Centralna', action: 'EIC 8104 已購票，17:40 發車；17:05 前到站。抵達時間、車廂與座位待查票面，搭車前再查月台與異動。' },
+      { mode: 'PKP', route: 'Poznań Główny → Warszawa Centralna', action: 'EIC 8104 已購票，17:40 發車；17:05 前到站，預計 19:59 抵 Warszawa Centralna（Koleo）。車廂與座位依票券詳細頁，搭車前再查月台與異動。' },
     ],
     dailyAlerts: [
       '市政廳博物館整修閉館；主行程只看官方確認的 12:00 山羊鐘樓秀。',
-      '聖馬丁牛角麵包已選定 ROGAL Świętomarciński（Stary Rynek 11/17）；週四營業時間未查到，出發前看店家 Facebook 確認，售完改 Cukiernia Kandulski。',
+      '聖馬丁牛角麵包已選定 ROGAL Świętomarciński（Stary Rynek 11/17）；週四 09:00–20:00（Google 地圖 2026-10-17），售完改 Cukiernia Kandulski（週四 09:00–17:00）。',
     ],
     nightChecklist: [...standardNightChecklist, 'Day 7 收費館只路過拍外觀，不用買票；明早 08:05 先在 Świętokrzyska 站口拍 MSN 與科學文化宮，08:15 搭 M1 到 Ratusz Arsenał', 'Polka 午餐不用訂位，客滿改 Pyzy Flaki Gorące；確認 Soul Kitchen 18:30 訂位、威靈頓已預留；沒供應改 Rusiko（Wierzbowa 11）或 Kieliszki na Próżnej，並重算交通'],
   },
@@ -554,7 +554,7 @@ export const dayOperations = {
         name: 'BUW 華沙大學圖書館屋頂花園',
         address: 'Dobra 56/66, Warszawa',
         url: 'https://www.google.com/maps/search/?api=1&query=Biblioteka%20Uniwersytecka%20w%20Warszawie%2C%20Dobra%2056%2F66%2C%20Warszawa',
-        note: '屋頂花園免費、開到 10/31；官網兩頁時段不同（08:00–20:00／08:00–18:00）。時間不夠先刪這段。',
+        note: '屋頂花園免費、開到 10/31；10 月時段 08:00–18:00（官網，2026-10-17 查）；11/1 起不開放屋頂。時間不夠先刪這段。',
         reliable: true,
         entranceNote: '屋頂花園入口依現場指標；接著沿河岸步道走。',
         officialUrl: 'https://www.buw.uw.edu.pl/',
@@ -629,7 +629,7 @@ const unresolvedStepReasons = {
     'IC 3830 前往樂斯拉夫': dynamicTransitReason,
     '★ Przejście「無名行人」雕像（選配）': '戶外雕像，在 Świdnicka 與 Piłsudskiego 路口兩側人行道上，由 Piast 步行即到。',
     '★ 中央廣場夜景（選配）': '戶外夜拍，沿 Świdnicka 往北走到中央廣場；選配行程，累了就略過。',
-    '★ Neon Side Gallery 夜景（選配）': 'Ruska 46c 的中庭，依現場招牌進入；最近有整修傳聞，出發前看最新評論。',
+    '★ Neon Side Gallery 夜景（選配）': 'Ruska 46c 的中庭，依現場招牌進入；整修狀況未查到最新公告，出發前看 Google 地圖最新評論。',
     '搭電車或叫車回 Piast': dynamicTransitReason,
   },
   5: {

@@ -1077,7 +1077,7 @@ test('已購城際火車與未購交通分開標示，未知票面細節不臆�
       assert.match(train.status, /尚未購票/);
       assert.match(train.price, /付款前重查/);
     } else if (train.status === '已購票') {
-      assert.equal(train.arr, '待查票面');
+      assert.match(train.arr, /^\d{2}:\d{2}$/, '抵達時間已由 Koleo 2026-10-17 查得');
       assert.equal(train.price, '票價未提供');
     } else {
       assert.match(train.status, /尚未確認|尚未訂票/);
@@ -1097,10 +1097,10 @@ test('四段跨城火車反映四張已購票券', () => {
   assert.deepEqual(
     trains.filter(item => item.type !== 'BUS · Lajkonik').map(item => [item.date, item.type, item.dep, item.arr]),
     [
-    ['10/25', 'EIP 5300', '08:40', '待查票面'],
-      ['10/27', 'IC 3830', '16:45', '待查票面'],
-      ['10/28', 'IC 260', '19:10', '待查票面'],
-    ['10/29', 'EIC 8104', '17:40', '待查票面'],
+    ['10/25', 'EIP 5300', '08:40', '11:10'],
+      ['10/27', 'IC 3830', '16:45', '19:50'],
+      ['10/28', 'IC 260', '19:10', '20:29'],
+    ['10/29', 'EIC 8104', '17:40', '19:59'],
     ],
   );
   assert.deepEqual(trains.filter(item => item.type !== 'BUS · Lajkonik').map(item => item.status), ['已購票', '已購票', '已購票', '已購票']);

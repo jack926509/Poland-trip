@@ -9,7 +9,7 @@ export const diningPlaces = {
     "name": "Hala Koszyki",
     "address": "ul. Koszykowa 63, Warszawa",
     "map": "https://www.google.com/maps/search/?api=1&query=Hala%20Koszyki%2C%20Koszykowa%2063%2C%20Warszawa",
-    "hours": "大廳一、二 08:00–23:00；三、四 08:00–00:00；五、六 08:00–01:00；日 08:00–23:00（各攤位時間另查）",
+    "hours": "大廳一、二 08:00–23:00；三 08:00–00:00；四、五、六 08:00–01:00；日 08:00–23:00（各攤位時間另查；週四到 01:00 為 Google 地圖 2026-10-17）",
     "sourceUrl": "https://koszyki.com/",
     "checkedAt": "2026-09-23",
     "verificationStatus": "verified",
@@ -532,7 +532,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "招牌：當代創意料理小盤 · 高CP",
+      "招牌：當代創意料理小盤 · 高 CP",
       "魚類、海鮮與當季 Sharing Plates，一份主菜＋數份小盤分享；海鯛 Ceviche、蝦仁 Rigatoni、白大比目魚候選。初稿列 Wellington 僅週四至週日，週一不採用。"
     ],
     "verificationNote": "Michelin Bib Gourmand；週一營業與否來源矛盾，10/26（週一）不當首替，要去先打電話。",
@@ -697,20 +697,20 @@ export const diningPlaces = {
     "name": "ROGAL Świętomarciński",
     "address": "Stary Rynek 11/17, Poznań",
     "map": "https://www.google.com/maps/place/ROGAL+%C5%9Awi%C4%99tomarci%C5%84ski/@52.4079727,16.9340286,17z/data=!3m1!4b1!4m6!3m5!1s0x47045be6c6dec08b:0x2738305616ca929f!8m2!3d52.4079727!4d16.9340286!16s%2Fg%2F11wnltgtr4",
-    "hours": "週一 09:00–20:00（Google 地圖）；週四時段未查到，出發前看店家 Facebook 確認",
+    "hours": "週一至週四 09:00–20:00；週五 09:00–21:00（Google 地圖 2026-10-17）",
     "sourceUrl": "https://visitpoznan.pl/en/rogal-swietomarcinski-stary-rynek-en",
-    "checkedAt": null,
-    "verificationStatus": "pending",
+    "checkedAt": "2026-10-17",
+    "verificationStatus": "partial",
     "notes": [
       "PGI 聖馬丁可頌（Rogal świętomarciński）· 白罌粟籽餡；10/29 12:15 點心站，兩人買一個分享即可。"
     ],
-    "verificationNote": "初稿引波茲南觀光局 Stary Rynek 11/17；營業與售完時間仍待確認，僅作順路外帶候選。 2026-10-12 複查：店內每日烘焙，可外帶或內用；營業時間未查到。 2026-10-12 再查：Google 地圖店家頁確認門牌 Stary Rynek 11/17、座標 52.40797,16.93403，只取得週一 09:00–20:00；週四與 10/29 特殊公告未查到，出發前看 facebook.com/ROGALSTARYRYNEK。不要和 Stary Rynek 41 的 Rogalowe Muzeum 混淆。",
+    "verificationNote": "初稿引波茲南觀光局 Stary Rynek 11/17；營業與售完時間仍待確認，僅作順路外帶候選。 2026-10-12 複查：店內每日烘焙，可外帶或內用；營業時間未查到。 2026-10-12 再查：Google 地圖店家頁確認門牌 Stary Rynek 11/17、座標 52.40797,16.93403，只取得週一 09:00–20:00；週四與 10/29 特殊公告未查到，出發前看 facebook.com/ROGALSTARYRYNEK。不要和 Stary Rynek 41 的 Rogalowe Muzeum 混淆。 2026-10-17 複查：Google 地圖週一至四 09:00–20:00、週五 09:00–21:00，10/29 週四 12:05 在營業時間內，未見特殊公告；仍只有 Google 一個來源。",
     "phone": "+48 573 465 226",
     "cuisine": "聖馬丁可頌",
     "dishes": [
       "Rogal świętomarciński 聖馬丁可頌"
     ],
-    "liveCheckedAt": "2026-10-12"
+    "liveCheckedAt": "2026-10-17"
   },
   "poznan-na-winklu": {
     "id": "poznan-na-winklu",
@@ -1020,9 +1020,9 @@ export const diningPlaces = {
     "name": "Cukiernia Kandulski",
     "address": "Plac Cyryla Ratajskiego 1, Poznań",
     "map": "https://www.google.com/maps/search/?api=1&query=Cukiernia%20Kandulski%2C%20Plac%20Cyryla%20Ratajskiego%201%2C%20Pozna%C5%84",
-    "hours": "週一至週五 09:00–18:00；週六 09:00–14:00；週日休",
+    "hours": "週一至週五 09:00–17:00；週六 09:00–13:00；週日休",
     "sourceUrl": "https://kandulski.pl/lokalizacje/",
-    "checkedAt": "2026-10-12",
+    "checkedAt": "2026-10-17",
     "verificationStatus": "partial",
     "notes": [
       "聖馬丁可頌 PGI 認證店家；Stary Rynek 沒有分店，最近的是 Plac Ratajskiego 1，在往帝王城堡的路上，ROGAL 售完時改這間。"
@@ -1032,8 +1032,8 @@ export const diningPlaces = {
       "Rogal świętomarciński 聖馬丁可頌"
     ],
     "phone": "+48 61 855 34 82",
-    "verificationNote": "官網分店頁確認；10/29 週四 09:00–18:00。",
-    "liveCheckedAt": "2026-10-12",
+    "verificationNote": "官網分店頁 2026-10-17 重查確認；10/29 週四 09:00–17:00（Google 地圖週四 09:00–17:00 一致）。",
+    "liveCheckedAt": "2026-10-17",
     "hoursNote": "官網"
   },
   "poznan-weranda-caffe": {
@@ -1285,7 +1285,7 @@ export const diningPlaces = {
     "address": "Stawowa 23, Wrocław",
     "map": "https://www.google.com/maps/search/?api=1&query=Samarqand%20Stawowa%2023%2C%20Wroc%C5%82aw",
     "hours": "週一至週四、週日 08:00–23:00；週五、週六 08:00–00:00；廚房於關門前 1 小時結束",
-    "sourceUrl": "https://samarqand.pl/regulamin/",
+    "sourceUrl": "https://samarqand.pl",
     "checkedAt": "2026-09-19",
     "verificationStatus": "partial",
     "notes": [
@@ -1316,7 +1316,7 @@ export const diningPlaces = {
     "notes": [
       "韓式料理：Kkanpungi、Bulgogi、Kimchijjigae。"
     ],
-    "verificationNote": "保留原查核日；10/29 週四約 20:30（待查票面）才抵華沙，不可當晚抵備案。週末時段未納入本次已核實內容。 2026-10-12 複查：官網、Wolt、Uber Eats 週四仍為 12:00–20:30。",
+    "verificationNote": "保留原查核日；10/29 週四 19:59（Koleo）才抵華沙，不可當晚抵備案。週末時段未納入本次已核實內容。 2026-10-12 複查：官網、Wolt、Uber Eats 週四仍為 12:00–20:30。",
     "cuisine": "韓式",
     "dishes": [
       "Kkanpungi 辣炸雞",
@@ -1592,7 +1592,7 @@ export const diningPlaces = {
     "name": "Green Nero Express PKP Centralny",
     "address": "al. Jerozolimskie 54, Lokal N20（Warszawa Centralna 站內）",
     "map": "https://www.google.com/maps/search/?api=1&query=Green%20Nero%20Express%2C%20PKP%20Centralny%2C%20al.%20Jerozolimskie%2054%2C%20Warszawa",
-    "hours": "24 小時",
+    "hours": "週日 07:00–19:00；週六 06:00–19:30（Google 地圖 2026-10-17）",
     "sourceUrl": "https://www.yelp.com/biz/green-nero-express-warszawa-2",
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
@@ -1600,7 +1600,7 @@ export const diningPlaces = {
       "車站外帶：可頌／甜麵包、火腿起司三明治＋Americano 或 Latte；可多帶一份麵包上火車。"
     ],
     "menuUrl": "https://www.greencaffenero.pl/pl/menu/jedzenie/kanapki",
-    "verificationNote": "2026-10-12 複查：站內門市為 Green Nero Express（Lokal N20，Yelp 2026-03 列 24 小時）；站外公車迴轉道另有一個 Box 店。舊資料寫 Lokal N24，以現場指標為準。",
+    "verificationNote": "2026-10-12 複查：站內門市為 Green Nero Express（Lokal N20；Yelp 2026-03 曾列 24 小時，2026-10-17 Google 地圖同連鎖車站旁門市為週日 07:00–19:00、週六 06:00–19:30，並非 24 小時，是否為同一間 N20 未能確認）；站外公車迴轉道另有一個 Box 店。舊資料寫 Lokal N24，以現場指標為準。",
     "cuisine": "車站咖啡外帶",
     "dishes": [
       "可頌／甜麵包",
@@ -1609,7 +1609,7 @@ export const diningPlaces = {
     ],
     "phone": "+48 22 350 70 19",
     "liveCheckedAt": "2026-10-12",
-    "hoursNote": "Yelp 2026-03；舊目錄另列週日 05:00–22:30"
+    "hoursNote": "Google 地圖 2026-10-17；Yelp 2026-03 的 24 小時說法未證實，舊目錄另列週日 05:00–22:30"
   },
   "krakow-przypiecek": {
     "id": "krakow-przypiecek",
@@ -1858,7 +1858,7 @@ export const diningPlaces = {
       "Stary Kleparz 市場旁的 Pimiento 小型熟食店兼 bistro：阿根廷牛排、Tatar、烤雞、Argentine burger；10/25 週日午餐首選，ibis 步行約 7 分。"
     ],
     "menuUrl": "https://pimiento.pl/wp-content/uploads/2025/10/pimiento-shop-and-bistro-menu-calosc.pdf",
-    "verificationNote": "營業時間來源：Google 地圖（2026-10-12 實開）與 MapQuest 皆列週日 09:00–15:00；官網只列菜單時段、未列逐日時間，也查不到 10/25 特殊公告。午餐菜單 13:00 才開始，早餐菜單 09:00–13:00。官網有「ZAREZERWUJ」訂位按鈕（平台未查到），電話 +48 517 475 818。10/22 複查再看一次 Google 地圖。",
+    "verificationNote": "營業時間來源：Google 地圖（2026-10-12 實開）與 MapQuest 皆列週日 09:00–15:00；官網只列菜單時段、未列逐日時間，也查不到 10/25 特殊公告。午餐菜單 13:00 才開始，早餐菜單 09:00–13:00。官網訂位表單的線上連結只涵蓋 Kazimierz 與 Stare Miasto 分店，Stary Kleparz 這間須電話 +48 517 475 818（或表單寄信後以回信為準）訂位。10/22 複查再看一次 Google 地圖。",
     "phone": "+48 517 475 818",
     "cuisine": "阿根廷牛排／熟食 bistro",
     "dishes": [
@@ -2289,11 +2289,12 @@ export const diningPlaces = {
   },
   "warsaw-soul-kitchen": {
     "id": "warsaw-soul-kitchen",
+    "booking": "recommended",
     "cityKey": "warsaw",
     "name": "Soul Kitchen",
     "address": "Nowogrodzka 18A, Warszawa",
     "map": "https://www.google.com/maps/search/?api=1&query=Soul%20Kitchen%2C%20Nowogrodzka%2018A%2C%20Warszawa",
-    "hours": "週一至週四約 12:00–22:00；週五、六至 23:00",
+    "hours": "週五 12:00–16:30、17:30–23:00（下午 16:30–17:30 休息，Google 地圖 2026-10-17）；週一至週四約 12:00–22:00",
     "sourceUrl": "https://restaurantguru.com/Soul-Kitchen-Warsaw",
     "checkedAt": "2026-10-13",
     "verificationStatus": "partial",
@@ -2312,7 +2313,7 @@ export const diningPlaces = {
     ],
     "phone": "+48 519 020 888",
     "liveCheckedAt": "2026-10-13",
-    "hoursNote": "部分來源分段 12:00–16:30、17:30–22:00"
+    "hoursNote": "Google 地圖 2026-10-17：週五分段 12:00–16:30、17:30–23:00；Google 另列官網 soulkitchen.pl"
   },
   "warsaw-primitivo": {
     "id": "warsaw-primitivo",
@@ -2353,7 +2354,7 @@ export const diningPlaces = {
       "桌邊製作威靈頓牛排的 Wellington Show，每人 159 PLN（含韃靼牛肉與甜點）。"
     ],
     "menuUrl": null,
-    "verificationNote": "只在週一推出，這趟華沙沒有週一，排不進行程；資訊來自2026-10-12 餐飲 v5 稿。"
+    "verificationNote": "只在週一推出，這趟華沙沒有週一，排不進行程；資訊來自 2026-10-12 餐飲 v5 稿。"
   }
 };
 

@@ -13,10 +13,10 @@ const allSources = { ...trip, databaseEntries };
 
 test('已購四段以截圖車次及發車時間為準，歷史開賣日不掛在已購車次', () => {
   const expected = [
-    ['EIP 5300', undefined, '08:40', '待查票面', '待查票面'],
-    ['IC 3830', undefined, '16:45', '待查票面', '待查票面'],
-    ['IC 260', undefined, '19:10', '待查票面', '待查票面'],
-    ['EIC 8104', undefined, '17:40', '待查票面', '待查票面'],
+    ['EIP 5300', undefined, '08:40', '11:10', '2h30'],
+    ['IC 3830', undefined, '16:45', '19:50', '3h05'],
+    ['IC 260', undefined, '19:10', '20:29', '1h19'],
+    ['EIC 8104', undefined, '17:40', '19:59', '2h19'],
   ];
 
   for (const [type, saleOpens, dep, arr, dur] of expected) {
@@ -166,9 +166,9 @@ test('由出發日回推的期限，算術與 basis 敘述一致', () => {
   // basis 寫「出發前 N 週／天」卻算錯，看板就會給出比預期寬鬆或緊迫的日期。
   // 這裡把每筆的回推天數寫死，讓敘述與日期綁在一起。
   const offsets = {
-    'dining-michelin': 21,
+    'dining-michelin': 4, // 2026-10-17 原 10/02 已過期且仍有 6 項未訂，改為出發前 4 天
     'ticket-wieliczka': 21,
-    'recheck-all': 7,
+    'recheck-all': 1, // 2026-10-17 原 10/16 已過期，改為出發前 1 天（與待辦 recheckAt 一致）
     'etias-check-2': 3,
   };
   const depart = Date.parse(`${trip.meta.travelStart}T00:00:00Z`);

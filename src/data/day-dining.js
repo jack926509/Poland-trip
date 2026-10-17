@@ -5,7 +5,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-specjaly-regionalne",
       "role": "晚餐首選",
-      "note": "18:30 入座（行程稿另寫 18:45，訂位以待辦的 18:30 為準）：Żurek 酸黑麥湯＋綜合 Pierogi，主菜選梅醬豬肋排或半隻烤鴨。E.Wedel 喝完沿皇家大道走回 Nowy Świat 就到；入境排太久就把 E.Wedel 改外帶。飯後經科學文化宮步行到 Złote Tarasy。",
+      "note": "18:30 入座（訂位只訂 18:30 一個時間）：Żurek 酸黑麥湯＋綜合 Pierogi，主菜選梅醬豬肋排或半隻烤鴨。E.Wedel 喝完沿皇家大道走回 Nowy Świat 就到；入境排太久就把 E.Wedel 改外帶。飯後經科學文化宮步行到 Złote Tarasy。",
       "stepId": "d1-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
@@ -44,12 +44,12 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-green-caffe-nero-centralny",
       "role": "早餐首選（條件式）",
-      "note": "退房到中央車站後在站內 Green Nero Express（Yelp 列 24 小時）外帶可頌或火腿起司三明治＋Americano／Latte，可多帶一份麵包上車；07:55 結束採買，08:05 起找月台。店未開或排隊就用前晚在 Żabka 買的麵包。",
+      "note": "退房到中央車站後在站內 Green Nero Express（Google 地圖週日 07:00–19:00，不是 24 小時）外帶可頌或火腿起司三明治＋Americano／Latte，可多帶一份麵包上車；07:55 結束採買，08:05 起找月台。店未開或排隊就用前晚在 Żabka 買的麵包。",
       "stepId": "d2-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
       "condition": "分店開門與品項待確認；不壓縮 08:40 發車前的進站緩衝。",
-      "dayHours": "24 小時"
+      "dayHours": "週日 07:00–19:00（Google 地圖）"
     },
     {
       "placeId": "warsaw-mcdonalds-centralna",
@@ -73,7 +73,7 @@ export const dayDiningPlans = {
       "stepId": "d2-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
-      "condition": "午餐菜單 13:00 起才供應（早餐菜單 09:00–13:00）；週日只開到 15:00，資料來自 Google 地圖與 MapQuest，官網未列，10/22 複查再看一次。先用官網「ZAREZERWUJ」或電話 +48 517 475 818 訂 13:00 兩位；客滿、關門或列車延誤改 Polonia 或 24 小時的 Przypiecek。",
+      "condition": "午餐菜單 13:00 起才供應（早餐菜單 09:00–13:00）；週日只開到 15:00，資料來自 Google 地圖與 MapQuest，官網未列，10/22 複查再看一次。先電話 +48 517 475 818 訂（官網線上連結不含這間分店）訂 13:00 兩位；客滿、關門或列車延誤改 Polonia 或 24 小時的 Przypiecek。",
       "dayHours": "09:00–15:00（早餐菜單 09:00–13:00，午餐菜單 13:00 起）"
     },
     {
@@ -217,12 +217,12 @@ export const dayDiningPlans = {
     {
       "placeId": "wroclaw-samarqand",
       "role": "晚餐首選（條件式）",
-      "note": "約 19:55（推估）抵站、20:05 Piast 放行李，20:15 入座：Uzbek Plov 牛肉抓飯、Manti 湯餃與湯品，可分享船形起司麵包。關門前 1 小時廚房就不出餐，晚到就改車站 KFC 或 MAX。",
+      "note": "19:50 抵站（Koleo）、20:05 Piast 放行李，20:15 入座：Uzbek Plov 牛肉抓飯、Manti 湯餃與湯品，可分享船形起司麵包。關門前 1 小時廚房就不出餐，晚到就改車站 KFC 或 MAX。",
       "stepId": "d4-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "約 21:00 前能到店且確認仍接單才採用；否則改 KFC Wrocław PKP 或 Wroclavia 的 MAX。抵達時間待查票面。",
-      "dayHours": "12:00–22:00"
+      "condition": "約 21:00 前能到店且確認仍接單才採用；否則改 KFC Wrocław PKP 或 Wroclavia 的 MAX。IC 3830 預計 19:50 抵達，誤點再用 PKP App 查。",
+      "dayHours": "08:00–23:00（廚房關門前 1 小時結束）"
     },
     {
       "placeId": "wroclaw-kfc-pkp",
@@ -241,7 +241,7 @@ export const dayDiningPlans = {
     {
       "placeId": "wroclaw-pasibus-wroclavia",
       "role": "宵夜選項（不取代晚餐）",
-      "note": "Wroclavia（Sucha 1）food court，車站步行約 6 分、到 Piast 約 8 分。10/27 週二營業到 22:00，最晚 21:30 前要到店（最後點餐時間未查到）；Samarqand 吃完還想吃，或晚餐改簡單吃時用。抵達時間待查票面，誤點太久就改 Świdnicka 11 分店（週二到 24:00）。",
+      "note": "Wroclavia（Sucha 1）food court，車站步行約 6 分、到 Piast 約 8 分。10/27 週二營業到 22:00，最晚 21:30 前要到店（最後點餐時間未查到）；Samarqand 吃完還想吃，或晚餐改簡單吃時用。IC 3830 預計 19:50 抵達，誤點太久就改 Świdnicka 11 分店（週二到 24:00）。",
       "stepId": null,
       "planStatus": "candidate",
       "dayHours": "09:00–22:00"
@@ -298,7 +298,7 @@ export const dayDiningPlans = {
     {
       "placeId": "wroclaw-max-wroclavia",
       "role": "晚餐首選（條件式）",
-      "note": "取回行李後買 Frisco Burger 或 Halloumi 漢堡＋地瓜薯條外帶上車；18:15 前取餐，18:35 前到主站找月台。不要等到波茲南再吃：抵達時間待查票面，但已是晚上，車站旁 Avenida 21:00 就關。",
+      "note": "取回行李後買 Frisco Burger 或 Halloumi 漢堡＋地瓜薯條外帶上車；18:15 前取餐，18:35 前到主站找月台。不要等到波茲南再吃：IC 260 預計 20:29 抵達，但已是晚上，車站旁 Avenida 21:00 就關。",
       "stepId": "d5-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
@@ -408,7 +408,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-arirang-restaurant",
       "role": "晚餐首選（條件式）",
-      "note": "約 20:30（推估，待查票面）抵華沙、放行李後步行約 5 分到 Nowogrodzka 38，21:00 到店：Bulgogi 韓式烤牛肉、拌飯，或 Jajangmyeon、海鮮煎餅。21:15 前還沒能入座就改 Złote Tarasy 或 Ćma。",
+      "note": "19:59（Koleo）抵華沙、放行李後步行約 5 分到 Nowogrodzka 38，21:00 到店：Bulgogi 韓式烤牛肉、拌飯，或 Jajangmyeon、海鮮煎餅。21:15 前還沒能入座就改 Złote Tarasy 或 Ćma。",
       "stepId": "d6-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
@@ -502,7 +502,7 @@ export const dayDiningPlans = {
       "planStatus": "scheduled",
       "meal": "dinner",
       "condition": "菜單隨季節換、官方菜單未確認：電話 +48 519 020 888 訂位時請店家預留 Wellington 並確認 10/30 供應；沒有就改 Rusiko。",
-      "dayHours": "17:30–22:00"
+      "dayHours": "17:30–23:00（週五另有 12:00–16:30，下午休息）"
     },
     {
       "placeId": "warsaw-rusiko",

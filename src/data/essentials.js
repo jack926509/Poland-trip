@@ -95,7 +95,7 @@ export const essentialSources = [
   {name:'Cathay 行動電源規則', checkedAt:'2026-10-06', note:'每人 2 個；手提且放前座下方，機上不可使用或充電。', url:'https://www.cathaypacific.com/cx/en_US/baggage/controlled-and-banned-items/lithium-batteries.html'},
   {name:'EVA 行動電源規則', checkedAt:'2026-10-06', note:'每人 2 個；僅手提、不放頭頂，進入航空器後不可使用或充電。', url:'https://www.evaair.com/zh-tw/fly-prepare/baggage/additional-baggage-information/restrictions/'},
   {name:'外交部領事事務局・波蘭入境須知', checkedAt:'2026-09-08', note:'核對台灣護照免簽資格、護照條件與可能被要求出示的旅行證明。', url:'https://www.boca.gov.tw/sp-foof-countrycp-01-62-aa8d5-02-1.html'},
-  {name:'波蘭政府・112 緊急電話', checkedAt:'2026-09-08', note:'112 為歐洲通用緊急電話；997／998／999仍分別對應警察、消防與救護。', url:'https://www.gov.pl/web/mswia-en/what-and-how-to-report'},
+  {name:'波蘭政府・112 緊急電話', checkedAt:'2026-09-08', note:'112 為歐洲通用緊急電話；997／998／999 仍分別對應警察、消防與救護。', url:'https://www.gov.pl/web/mswia-en/what-and-how-to-report'},
   {name:'波蘭 TAX FREE 官方說明', checkedAt:'2026-09-08', note:'同一賣家單筆 TAX FREE 文件含稅金額至少 200 PLN，商品須以旅客個人行李帶離 EU。', url:'https://puesc.gov.pl/en/uslugi/tax-free-informacja-dla-podroznych'},
 ];
 

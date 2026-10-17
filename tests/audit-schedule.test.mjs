@@ -9,9 +9,9 @@ test('真實行程目前沒有結構錯誤', () => {
   const result = auditSchedule();
   assert.deepEqual(result.errors, []);
   assert.equal(result.stats.days, 8);
-  // 四段已購車票的抵達時間未顯示，明確用「抵站後」，其餘時刻都要被檢查。
+  // 四段已購車票的抵達時間已於 2026-10-17 由 Koleo 查得並填入，不應再有「抵站後」未定時刻。
   const untimedArrivals = days.flatMap(day => day.steps).filter(step => step.t === '抵站後' && step.label.startsWith('抵'));
-  assert.equal(untimedArrivals.length, 4);
+  assert.equal(untimedArrivals.length, 0);
   const withTime = days.flatMap(day => day.steps).filter(step => step.t && step.t !== '抵站後' && step.timingMode !== 'relative').length;
   assert.equal(result.stats.stepsChecked, withTime);
 });

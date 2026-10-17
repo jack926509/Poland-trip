@@ -14,9 +14,9 @@
 
 ## 四座城市，四種風景
 
-- **[華沙 Warszawa](https://polandtrip.xiehnet.com/city-warszawa)**：老城廣場、皇家大道與皇家城堡；透過 POLIN 和華沙起義博物館，認識城市重建背後的歷史。留一個夜晚給老城燈光與熱巧克力。
+- **[華沙 Warszawa](https://polandtrip.xiehnet.com/city-warszawa)**：老城廣場、皇家大道與皇家城堡；沿路只看 POLIN 與華沙起義博物館的外觀，不進館，從城市重建的痕跡認識這段歷史。留一個夜晚給老城燈光與熱巧克力。
 - **[克拉科夫 Kraków](https://polandtrip.xiehnet.com/city-krakow)**：Wawel、中央廣場、Kazimierz 街區與辛德勒工廠。以這裡為落腳點，一日往返 Auschwitz-Birkenau，也安排走入 Wieliczka 鹽礦。
-- **[樂斯拉夫 Wrocław](https://polandtrip.xiehnet.com/city-wroclaw)**：在廣場和巷子裡找小矮人，看拉茨瓦維採全景畫，再到座堂島等煤氣燈點亮，沿河散步。
+- **[樂斯拉夫 Wrocław](https://polandtrip.xiehnet.com/city-wroclaw)**：在廣場和巷子裡找小矮人，全景畫只看外觀，再到座堂島等煤氣燈點亮，沿河散步。
 - **[波茲南 Poznań](https://polandtrip.xiehnet.com/city-poznan)**：教堂島、老市集廣場與中午的山羊鐘樓秀；把聖馬丁牛角麵包和馬鈴薯料理留給這一天。
 
 七晚分別住在華沙 1 晚、克拉科夫 2 晚、樂斯拉夫 1 晚、波茲南 1 晚，再回華沙 2 晚。城市之間以火車串起，抵達後盡量放下行李再出門。
@@ -36,14 +36,17 @@
 
 這是目前的旅行安排；各館場次與購票進度可在[待辦事項](https://polandtrip.xiehnet.com/practical/todos)查看。每日行程、今日卡與首頁的「待訂」都直接讀同一份待辦清單，在那裡改一筆，各頁一起更新。
 
-[門票速查與官方購票入口](https://polandtrip.xiehnet.com/practical/tickets)已收錄四城主行程、備選及附件參考景點，區分線上購票、現場售票、免費、已含門票與閉館。還要訂的是全景畫、華沙起義博物館與皇家城堡；Auschwitz 官方導覽與 Wieliczka 鹽礦已訂妥。10/25 Wawel 與辛德勒工廠線上已售完，仍排在行程，當天到現場售票處再試。完整清單與官方來源也保留在[景點門票購買指南](docs/poland-attraction-tickets.md)。
+[門票速查與官方購票入口](https://polandtrip.xiehnet.com/practical/tickets)已收錄四城主行程、備選及附件參考景點，區分線上購票、現場售票、免費、已含門票與閉館。全景畫、華沙起義博物館與皇家城堡自 2026-10-14 起只看外觀、不用訂；Auschwitz 官方導覽與 Wieliczka 鹽礦已訂妥。10/25 Wawel 與辛德勒工廠線上已售完，仍排在行程，當天到現場售票處再試。完整清單與官方來源也保留在[景點門票購買指南](docs/poland-attraction-tickets.md)。
 
-**訂票進度（2026-10-13 更新）**：全部 21 項中已完成 7 項——四段城際火車、Auschwitz 導覽、Lajkonik 去程巴士（10/26 08:25 → 09:50）與 Wieliczka 鹽礦（10/27 09:00 英文場）；其餘 14 項中，2 項線上已售完、不再提醒，12 項還沒訂：
+**訂票進度（2026-10-17 更新）**：待辦頁全部 21 項中已完成 7 項——四段城際火車、Auschwitz 導覽、Lajkonik 去程巴士（10/26 08:25 → 09:50）與 Wieliczka 鹽礦（10/27 09:00 英文場）；其餘 14 項中，2 項線上已售完、不再提醒，12 項還沒做：
 
-- **景點票（3 項）**：10/28 全景畫 11:30、10/30 華沙起義博物館 08:30 與皇家城堡 11:30。都是指定日、限量場次，最先處理。
+- **景點票：沒有要訂的了**。全景畫、華沙起義博物館、皇家城堡 2026-10-14 起改成只看外觀，不用買票。
 - **線上已售完（2 項，不再提醒）**：10/25 Wawel 15:15 與辛德勒工廠 17:30 照原時段排在 Day 2，到現場售票處問剩餘票；買不到 Wawel 就逛免費庭院，買不到辛德勒就看外觀後提早吃晚餐。
 - **交通（1 項）**：10/26 Lajkonik 回程 15:30（備案 16:30），可在 moj-bus.pl 線上買或當天向司機買。去程 08:25 班 09:50 抵達，離 10:00 到場要求只剩 10 分鐘，想多留緩衝可改 07:10。
-- **餐廳（8 項）**：先訂 Mr. Jerry（10/26）與 Soul Kitchen（10/30）兩頓威靈頓牛排，再訂 Hankki、Specjały，以及 Pimiento、Carla 兩頓午餐；Bistro Posolone 與 Arirang 不收訂位，當天打電話確認營業。
+- **餐廳（9 項）**：先訂 Mr. Jerry（10/26）與 Soul Kitchen（10/30）兩頓威靈頓牛排，再訂 Hankki、Specjały，以及 Pimiento（須電話）、Carla 兩頓午餐；Bistro Posolone、Arirang 不收訂位，當天打電話確認營業；Restauracja Wrocławska 為選配。
+- **出發前準備（2 項）**：打電話給 Poznan Apartments 問 10/28 晚上取鑰匙與 10/29 寄放行李；手機先裝好 Jakdojade 與 Bolt。
+
+四段火車的抵達時間已用 Koleo 查得（10/25 11:10、10/27 19:50、10/28 20:29、10/29 19:59），仍請以 PKP App 票券詳細頁為準。
 
 另有一筆私人資料待辦：5 張訂房確認存入離線包，並向各住宿確認寄放行李與晚到取鑰匙方式。
 
