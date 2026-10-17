@@ -570,7 +570,7 @@ export const dayOperations = {
     ],
     dailyAlerts: [
       '收費館只路過拍外觀：MSN、POLIN、居禮夫人博物館、華沙博物館、皇家城堡、Zachęta、蕭邦博物館都不進；教堂正殿能不能進以現場告示為準，彌撒時不要進去拍照。',
-      '水上宮殿週五個人參觀免費、只開放一樓，最後入場 17:30；本次只排湖邊外觀，日落 16:12 拍倒影。',
+      '水上宮殿週五個人參觀免費，最後入場 17:30（以館方當日公告為準）；本次只排湖邊外觀，日落 16:12 拍倒影。',
       '10/31 為諸聖節前夕，今晚重查明日市區交通、機場與店家特別營運。',
     ],
     nightChecklist: [...standardNightChecklist, '整理 TAX FREE 商品與文件，確認需海關查驗的託運品不先交運', '確認 QR 260 報到、行李額度、機場交通與護照收納位置', '確認 Charlotte Złota 08:00 早餐，預留回飯店取行李；08:15 未入座改外帶，11:00 前到機場'],
@@ -656,7 +656,7 @@ const unresolvedStepReasons = {
     '皇家城堡山丘': '老城西北側的戶外觀景點，只在外面拍。',
     '咖啡 · Weranda Caffe': 'Świętosławska 10，餐廳導航見當日餐飲。',
     '自由廣場 Plac Wolności': '戶外廣場，由老城往南步行約 5 分。',
-    'Okrąglak 圓形百貨外觀': '戶外建築外觀，就在 Carla（Święty Marcin 34）旁邊。',
+    'Okrąglak 圓形百貨外觀': '戶外建築外觀，離 Carla（Święty Marcin 34）步行約 5 分鐘。',
     'Kaponiera 圓環': '戶外圓環，「5 figur」人像在 ul. Roosevelta 22 附近；由帝王城堡往西步行即到。',
     '取行李、前往 Poznań Główny': '公寓寄放與取行李地點須先向住宿確認，再前往車站。',
     '科學文化宮夜景（選配：Siatkarka 霓虹招牌）': '戶外夜景，回飯店途中經過；Siatkarka 招牌在 Plac Konstytucji。',

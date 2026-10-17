@@ -362,7 +362,7 @@ export const dayDiningPlans = {
     {
       "placeId": "poznan-cukiernia-kandulski",
       "role": "點心備選",
-      "note": "Plac Ratajskiego 1（週四 09:00–18:00），在老城往 Stary Browar、Carla 的路上；ROGAL 週四營業時間沒查到，排隊或售完時改這間買。",
+      "note": "Plac Ratajskiego 1（週四 09:00–17:00），在老城往 Stary Browar、Carla 的路上；ROGAL 排隊或售完時改這間買。",
       "stepId": null,
       "planStatus": "candidate"
     },

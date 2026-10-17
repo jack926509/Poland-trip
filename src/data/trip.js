@@ -36,7 +36,7 @@ const schindlerVenue = resolveVenue('krakow-schindler');
 // 2026-10-13 旅客逐項確認：15 項當時未完成的項目全部仍未購票／未訂位，故記為 10/13（此後陸續完成，現況以下列各筆 status 為準）。
 // recheckAt：下次查核期限 YYYY-MM-DD；null 時儀表板以行程日期判斷逾期。
 // 前三段的 checkedAt 為 2026-09-28，第四段為 2026-10-06 檢視 App 票券清單日期；
-// 截圖未顯示抵達時間、艙等與座位，這些資訊仍需票券詳細頁。
+// 抵達時間已由 Koleo 查得（2026-10-17，見 rail.js）；艙等與座位仍需票券詳細頁。
 const todoGroupsRaw = [
   {
     id: 'rail', title: '城際交通', eyebrow: 'Rail · 6 項',
@@ -167,7 +167,7 @@ export const days = [
       {t:'11:35', id:'d2-prep', label:'Lajkonik 備妥隔日早餐與午餐', sub:'寄放行李後沿路到 Basztowa 15 採買隔日麵包、水果與飲品，再步行往中央廣場；含步行與採買暫抓 35 分鐘。10/25 是波蘭非營業週日，大型超市與便利商店多半休息，這家麵包咖啡店有開，但水果與飲品可能買不到，所以 10/24 在華沙先備好水果與水。需冷藏品先確認保存條件，否則選常溫品', dur:'35 min'},
       {t:'12:10', label:'★ 中央廣場 + 聖瑪利亞', sub:'本次先看廣場與教堂外觀，登塔改為有餘裕才安排。整點 Hejnał 號角；塔票僅於 Mariacki 廣場 7 號當日現場售票；午餐改 13:00，所以先在這裡看，不留到下午', cost:'外觀免費', dur:'20 min'},
       {t:'12:30', label:'紡織會館 Sukiennice 快速一覽', sub:'採購留到 10/27；12:40 前動身，步行約 12 分到 Pimiento', cost:'免費入場', dur:'10 min'},
-      {t:'13:00', id:'d2-lunch', label:'午餐 · Pimiento Shop and Bistro', sub:'Świętego Filipa 21（Stary Kleparz 旁），離 ibis 步行約 7 分；午餐菜單 13:00 起才供應（09:00–13:00 只有早餐菜單），所以 13:00 準時入座：Tatar 阿根廷牛韃靼、Argentine burger 或照重量點阿根廷牛排。週日只開到 15:00（Google 地圖與 MapQuest，官網未列），先用官網或電話訂位。13:50 前離店，預留約 30 分鐘步行去瓦維爾。客滿或關門改 Restauracja Polonia（Basztowa 25）、24 小時的 Przypiecek 或外帶，不壓縮預定景點時段', cost:'依店家', dur:'50 min'},
+      {t:'13:00', id:'d2-lunch', label:'午餐 · Pimiento Shop and Bistro', sub:'Świętego Filipa 21（Stary Kleparz 旁），離 ibis 步行約 7 分；午餐菜單 13:00 起才供應（09:00–13:00 只有早餐菜單），所以 13:00 準時入座：Tatar 阿根廷牛韃靼、Argentine burger 或照重量點阿根廷牛排。週日只開到 15:00（Google 地圖與 MapQuest，官網未列），先打電話 +48 517 475 818 訂位。13:50 前離店，預留約 30 分鐘步行去瓦維爾。客滿或關門改 Restauracja Polonia（Basztowa 25）、24 小時的 Przypiecek 或外帶，不壓縮預定景點時段', cost:'依店家', dur:'50 min'},
       {t:'14:30', label:'★ 瓦維爾大教堂', sub:'2026-10-07 官網：4–10 月時段，週日 12:30–17:00、售票至 16:30（11–3 月才縮為 16:00）；Cathedral Museum 週日休館。另一個訂票站 bilety-wawel.pl 的規章寫 10 月起週日可能 16:00 閉館，14:30 入場兩種版本都來得及，現場以公告為準', cost:'PLN 26／18', dur:'45 min'},
       {t:'15:15', label:'★ Wawel 城堡短路線', constraint:{venue:'krakow-wawel-treasury'}, sub:'線上已訂不到：到售票處問當日剩餘票，買不到就只逛免費的山丘庭院與外觀，16:15 前離開。2026-09-17 官網 9–12 月分路線售票，適合一小時空檔的是：王冠寶庫 47／35、Castle Underground 47／35（含語音導覽）、Armoury 47／35；二樓代表廳 57／43 需時較長。不要硬排一、二樓完整路線，會壓縮前往辛德勒工廠的時間', cost:'寶庫或地下路線 PLN 47／35', dur:'1 h'},
       {t:'16:15', label:'電車或計程車前往辛德勒工廠', sub:'由 Wawel 搭電車（出發前用 Jakdojade 查當下車號與轉乘）或計程車到 Podgórze，約 20–30 分；17:10 前到入口，剩餘空檔可在 Kazimierz 或 Podgórze 短停', dur:'約 30 min'},
@@ -177,7 +177,7 @@ export const days = [
     eat: [
       snack({text:'zapiekanka 街食（週日可能公休，改圓亭其他窗口） @ Endzior', placeId:'krakow-endzior'}),
     ],
-    warn: '❗EIP 5300 已購票，但截圖未顯示抵達時間；11:10 寄放行李與午後行程須依票券詳細頁重新核對。Wawel 城堡與辛德勒工廠 10/25 線上已訂不到（2026-10-13），仍照原時段到現場售票處問剩餘票；買不到 Wawel 就逛免費庭院，買不到辛德勒就看外觀後提早吃晚餐。瓦維爾大教堂週日 12:30–17:00（售票至 16:30）；午餐改排 Pimiento 13:00（午餐菜單 13:00 起才供應），中央廣場與紡織會館提前到 12:10–12:40，瓦維爾大教堂移到 14:30、Wawel 短路線 15:15，16:15 前離開後搭電車或計程車到辛德勒工廠，不再步行。辛德勒工廠週二至週日 09:00–20:00、最後入場 18:30，17:30 屬可行時段。10/25 為非營業週日，多數一般商店關閉；餐廳等法定例外是否營業仍以店家公告為準。',
+    warn: '❗EIP 5300 已購票，11:10 抵 Kraków Główny（Koleo 2026-10-17），11:25 寄放行李；誤點再依 PKP App 調整午後行程。Wawel 城堡與辛德勒工廠 10/25 線上已訂不到（2026-10-13），仍照原時段到現場售票處問剩餘票；買不到 Wawel 就逛免費庭院，買不到辛德勒就看外觀後提早吃晚餐。瓦維爾大教堂週日 12:30–17:00（售票至 16:30）；午餐改排 Pimiento 13:00（午餐菜單 13:00 起才供應），中央廣場與紡織會館提前到 12:10–12:40，瓦維爾大教堂移到 14:30、Wawel 短路線 15:15，16:15 前離開後搭電車或計程車到辛德勒工廠，不再步行。辛德勒工廠週二至週日 09:00–20:00、最後入場 18:30，17:30 屬可行時段。10/25 為非營業週日，多數一般商店關閉；餐廳等法定例外是否營業仍以店家公告為準。',
     backup: [
       {label:'辛德勒現場也沒票', where:'外觀與 Zabłocie 一帶短停，提早往 Hankki', why:'線上 10/25 已售完；現場有沒有當日票以售票處為準，最後入場 18:30'},
       {label:'雨天替代 Wawel', where:'地下市集博物館 Rynek Underground', map:'https://www.google.com/maps/search/?api=1&query=Rynek%20Underground%2C%20Rynek%20G%C5%82%C3%B3wny%201%2C%20Krak%C3%B3w', why:'廣場下方歷史展（Rynek Główny 1），PLN 45／35，最後入場為閉館前 75 分鐘。官方 2026 閉館日不含 10/25；週日時間以官網當日為準。另註：每週二免費（免費日不可預約、現場限量、每人限領 5 張），每月第二個週一休館'},
@@ -374,7 +374,7 @@ export const days = [
       {t:'11:05', label:'咖啡 · Weranda Caffe', sub:'Świętosławska 10，週四 09:00 開門；就在粉紅色 Fara 教堂那條街，從街上拍 Fara', cost:'依店家', dur:'40 min'},
       {t:'11:45', label:'廣場卡正面位置', sub:'彩色商人小屋、四座噴泉、Bamberka 銅像、刑柱與衛兵所 Odwach 外觀；站市政廳正面', dur:'15 min · 提早卡位'},
       {t:'12:00', label:'★ 山羊鐘樓秀', sub:'官方每日 12:00 與 15:00 登場；本次採正午場，兩隻金屬山羊互頂 12 次。錯過還有 15:00 場，但仍須保留取行李與到站時間', cost:'免費', dur:'5 min'},
-      {t:'12:05', label:'★ 聖馬丁牛角麵包 (PGI)', sub:'ROGAL Świętomarciński（Stary Rynek 11/17）；兩人分一個當點心，撐到 14:00 午餐。週四營業時間沒查到，排隊或售完改 Cukiernia Kandulski（Plac Ratajskiego 1，週四 09:00–17:00，官網 kandulski.pl）', cost:'依門市標價', dur:'20 min'},
+      {t:'12:05', label:'★ 聖馬丁牛角麵包 (PGI)', sub:'ROGAL Świętomarciński（Stary Rynek 11/17）；兩人分一個當點心，撐到 14:00 午餐。週四 09:00–20:00（Google 地圖 2026-10-17），排隊或售完改 Cukiernia Kandulski（Plac Ratajskiego 1，週四 09:00–17:00，官網 kandulski.pl）', cost:'依門市標價', dur:'20 min'},
       {t:'12:25', label:'自由廣場 Plac Wolności', sub:'從廣場西南角經耶穌會學院（今市政府）與粉紅色 Fara 教堂正面（正殿通常免費看一眼）往南；自由廣場上 Raczyński 圖書館、Arkadia 宮外觀', cost:'免費', dur:'20 min'},
       {t:'12:45', label:'★ Stary Browar', sub:'舊啤酒廠改建的商場，紅磚和工業風建築；有洗手間，下雨可以拉長', cost:'免費', dur:'45 min'},
       {t:'13:30', label:'Okrąglak 圓形百貨外觀', sub:'現代主義建築，離 Carla 步行約 5 分鐘', cost:'免費', dur:'20 min'},
@@ -402,7 +402,7 @@ export const days = [
     headline: '收費館只路過拍外觀：MSN、科學文化宮、POLIN 一路往南，新城、老城、城堡廣場一次走完；下午薩克森花園、無名塚、蕭邦博物館外觀、BUW 屋頂花園與瓦津基湖邊日落',
     tag: 'City Walk',
     intensity: '高',
-    hardConstraints: ['收費館只路過拍外觀不進：MSN、POLIN、居禮夫人博物館、華沙博物館、皇家城堡、Zachęta、蕭邦博物館', '老城與新城上午一次走完、不回頭；12:30 午餐', '水上宮殿入內是選配：週五個人參觀免費、10:00 開門、只開放一樓，想進要在最後入場 17:30 前；本次只排湖邊外觀', '16:12 日落前先在湖邊拍水上宮殿外觀', '晚餐 Soul Kitchen 18:30 先訂位並預留威靈頓'],
+    hardConstraints: ['收費館只路過拍外觀不進：MSN、POLIN、居禮夫人博物館、華沙博物館、皇家城堡、Zachęta、蕭邦博物館', '老城與新城上午一次走完、不回頭；12:30 午餐', '水上宮殿入內是選配：週五個人參觀免費、10:00 開門，開放範圍以館方當日公告為準，想進要在最後入場 17:30 前；本次只排湖邊外觀', '16:12 日落前先在湖邊拍水上宮殿外觀', '晚餐 Soul Kitchen 18:30 先訂位並預留威靈頓'],
     compressible: ['BUW 屋頂花園（時間不夠先刪，從無名塚直接搭車去瓦津基，多出約 45 分）', '聖母訪親教堂、Piwna 街等小站只拍不停', '走回飯店改叫車'],
     steps: [
       {t:'07:30', id:'d7-breakfast', label:'早餐 · Bułkę przez Bibułkę', sub:'Zgoda 3，離 Metropol 步行約 8 分，平日 07:30 開門；Bagel、炒蛋或 Avocado Toast，08:05 前結帳', dur:'35 min'},
@@ -428,7 +428,7 @@ export const days = [
       {t:'14:35', label:'★ BUW 屋頂花園＋河岸步道', sub:'華沙大學圖書館 Dobra 56/66，屋頂花園免費、開到 10/31；10 月時段 08:00–18:00（官網兩頁一致，08:00–20:00 是 5–9 月夏季時段），14:35 去在開放時間內；11/1 起不開放屋頂。接著走河岸步道、拍哥白尼科學中心外觀。時間不夠先刪這段', cost:'免費', dur:'30 min'},
       {t:'15:05', label:'搭車前往瓦津基公園', sub:'由 BUW 搭公車或叫車往瓦津基北門，約 20 分', cost:'依交通方式', dur:'約 20 min'},
       {t:'15:25', label:'★ 瓦津基公園', sub:'蕭邦紀念碑、紅松鼠、孔雀；花園每日 06:00–21:00 免費（2026-10-14 官網票價頁）', cost:'免費', dur:'20 min'},
-      {t:'15:45', label:'★ 瓦津基 · 水上宮殿', constraint:{venue:'warsaw-lazienki-palace'}, sub:'以湖邊外觀為主：16:12 日落時拍宮殿倒影，順路看湖上圓形劇場、舊橘園與 Myślewicki 宮外觀。宮殿週五個人參觀免費（只開放一樓，最後入場 17:30，以館方當日公告為準），不排入，想進再進', cost:'免費', dur:'45 min'},
+      {t:'15:45', label:'★ 瓦津基 · 水上宮殿', constraint:{venue:'warsaw-lazienki-palace'}, sub:'以湖邊外觀為主：16:12 日落時拍宮殿倒影，順路看湖上圓形劇場、舊橘園與 Myślewicki 宮外觀。宮殿週五個人參觀免費（最後入場 17:30，以館方當日公告為準），不排入，想進再進', cost:'免費', dur:'45 min'},
       {t:'16:30', label:'往北走 → 三十字廣場', sub:'Belweder 外觀 → Aleje Ujazdowskie 林蔭大道 → Ujazdowski 城堡外觀 → 三十字廣場的聖亞歷山大教堂圓頂（米其林 NUTA 就在廣場邊，只路過），約 2 公里。天黑、累了或下雨就叫車', cost:'免費', dur:'約 35 min'},
       {t:'17:15', label:'下午點心 · QQ Warsaw 抹茶', sub:'Żurawia 32/34，從三十字廣場沿 Żurawia 往西走約 8 分；週五 11:00–20:00、廚房至 19:30（店家 Instagram，另有目錄列週二休）。抹茶拿鐵為主，韓式吐司兩人分一份就好，18:30 還有晚餐', cost:'依店家', dur:'20 min'},
       {t:'17:35', label:'回 Metropol 休息、換衣服', sub:'Żurawia 走回 Marszałkowska 約 5 分；放東西、加外套'},

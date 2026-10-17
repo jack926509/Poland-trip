@@ -11,7 +11,7 @@ export function resolveSegment(id) {
  * days[].train 現在只存 {segmentId}；模板一律用這支換回行程頁要顯示的欄位，
  * 沒有當天交通就回 null。回傳形狀對齊原本 days[].train 的欄位名稱
  * （type/leg/from/to/dep/arr/dur/price/saleOpens/saleCheckedAt），
- * 但數字全部來自 rail.js 的 segments，不是另一份手動輸入 的拷貝。
+ * 但數字全部來自 rail.js 的 segments，不是另一份手動輸入的拷貝。
  */
 export function segmentForDay(day) {
   const segmentId = day?.train?.segmentId;
