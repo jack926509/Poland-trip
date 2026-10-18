@@ -117,10 +117,10 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref, todo
       ${steps.map(step => `<div class="today-next-step" data-next-step data-plan-minute="${step.minute}">
         <p class="today-next-clock"><b>${escapeHtml(step.t)}</b><span class="today-next-eta" data-next-eta hidden></span></p>
         <p class="today-next-title">${escapeHtml(step.label)}</p>
+        <a class="today-next-nav" data-next-nav href="${step.navigationHref ? step.navigationHref : escapeHtml(dayHref+'#directions')}" ${step.navigationHref ? 'target="_blank" rel="noopener noreferrer"' : ''}>${step.navigationHref ? '導航到這一站 ↗' : '查看地址與移動方式 →'}</a>
         ${step.sub ? `<p class="today-next-sub">${escapeHtml(step.sub)}</p>` : ''}
         ${(() => { const slot = daySlots.find(item => item.stepPattern && step.label.includes(item.stepPattern)); return slot ? `<p class="today-next-ticket">${privateProofLine(slot, privateHref)}</p>` : ''; })()}
         ${step.place ? `<p class="today-address" lang="pl">${escapeHtml(step.place.address)}</p>${step.place.entranceNote ? `<p class="today-next-entrance">${escapeHtml(step.place.entranceNote)}</p>` : ''}` : `<p class="source-meta">${escapeHtml(step.reason || '此步驟沒有唯一確認的入口，請查看當日地址與移動步驟。')}</p>`}
-        <a class="today-next-nav" data-next-nav href="${step.navigationHref ? step.navigationHref : escapeHtml(dayHref+'#directions')}" ${step.navigationHref ? 'target="_blank" rel="noopener noreferrer"' : ''}>${step.navigationHref ? '導航到這一站 ↗' : '查看地址與移動方式 →'}</a>
       </div>`).join('')}
       <p class="today-next-ended" data-next-ended hidden>今天已沒有更晚的預定行程。可查看其他時段或回住宿休息。</p>
       <label class="today-field">改看其他行程 <select data-step-picker aria-label="選擇要查看的行程">${steps.map((step,index) => `<option value="${index}">${escapeHtml(step.t)} · ${escapeHtml(step.label)}</option>`).join('')}</select></label>

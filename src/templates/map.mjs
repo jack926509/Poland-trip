@@ -10,7 +10,8 @@ export function renderInteractiveMap({ id, title, mapData, mapChecks = {}, legen
     <div class="map-toolbar" role="group" aria-label="${escapeHtml(title)}縮放控制">
       <button type="button" data-map-action="zoom-in" aria-label="放大地圖">＋ 放大</button>
       <button type="button" data-map-action="zoom-out" aria-label="縮小地圖">－ 縮小</button>
-      <button type="button" data-map-action="reset" aria-label="重設地圖範圍">重設範圍</button>
+      <button type="button" data-map-action="reset" aria-label="${escapeHtml(mapData.focusBounds ? `回到主要步行區：${mapData.focus || title}` : '重設地圖範圍')}">${mapData.focusBounds ? '步行區' : '重設範圍'}</button>
+      ${mapData.focusBounds ? '<button type="button" data-map-action="all" aria-label="把全部地點框進畫面">全部地點</button>' : ''}
     </div>
     <div id="${id}" class="map-container" data-trip-map="${id}" role="region" aria-label="${escapeHtml(title)}"><p class="map-fallback">地圖需要網路連線才能載入。離線或載入失敗時，請使用下方導航連結。</p></div>
     <div class="map-legend" aria-label="地圖圖例">${legendHtml}</div>
@@ -31,31 +32,46 @@ export function renderInteractiveMap({ id, title, mapData, mapChecks = {}, legen
     container.textContent = '';
     var data = config.mapData;
     function safeUrl(value) { try { var url = new URL(value); return url.protocol === 'https:' ? url.href : ''; } catch (_) { return ''; } }
-    var map = L.map(container, { scrollWheelZoom: true, touchZoom: true, doubleClickZoom: true, zoomControl: false }).setView(data.center, data.zoom || 13);
+    var map = L.map(container, { scrollWheelZoom: true, touchZoom: true, doubleClickZoom: true, zoomControl: false, zoomSnap: 0.5 }).setView(data.center, data.zoom || 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
     var bounds = [];
     data.points.forEach(function (point) {
       var category = config.legend[point[5]] || config.legend.sight;
       var check = config.mapChecks[point[2]] || {};
       var area = check.status === 'area-reference';
-      // 16×16px 圖釘手機上很難精準點到（稽核 M5），放大到接近 Leaflet 預設
-      // marker 的命中區。
-      var marker = L.circleMarker([point[0], point[1]], { radius: 12, color: category.line, fillColor: category.fill, weight: 2, fillOpacity: .92 }).addTo(map);
+      // UX 1017 H2：圖釘改成 26px 數字圓標，數字＝時間表第幾列（point[8]，建置時算好）；
+      // 對不上時間表的圖釘是較小的無字圓點，不搶編號圖釘的位置。
+      var number = point[8];
+      var icon = L.divIcon({ className: 'trip-pin' + (number ? '' : ' trip-pin-plain'), html: '<span style="background:' + category.fill + ';border-color:' + category.line + '">' + (number || '') + '</span>', iconSize: number ? [26, 26] : [18, 18] });
+      var marker = L.marker([point[0], point[1]], { icon: icon, title: (number ? number + '. ' : '') + point[2], alt: point[2], zIndexOffset: number ? 100 : 0 }).addTo(map);
       var label = area ? '<br><small>範圍代表點，請依實際目的地導航</small>' : '<br><small>已查證場館／門牌錨點</small>';
       var popup = document.createElement('div');
-      var heading = document.createElement('b'); heading.textContent = point[2]; popup.appendChild(heading);
+      var heading = document.createElement('b'); heading.textContent = (number ? number + '. ' : '') + point[2]; popup.appendChild(heading);
       popup.appendChild(document.createElement('br')); popup.appendChild(document.createTextNode(point[3]));
       popup.insertAdjacentHTML('beforeend', label);
       var url = safeUrl(point[4]);
       if (url) { var br = document.createElement('br'); var link = document.createElement('a'); link.href = url; link.target = '_blank'; link.rel = 'noopener'; link.textContent = '在 Google Maps 開啟 →'; popup.append(br, link); }
       var sourceUrl = safeUrl(point[6]);
-      if (sourceUrl) { var separator = document.createTextNode(' · '); var source = document.createElement('a'); source.href = sourceUrl; source.target = '_blank'; source.rel = 'noopener'; source.textContent = '座標來源 ↗'; popup.append(separator, source); }
-      marker.bindPopup(popup);
+      // 座標來源獨立一行、字級降一階，不再和導航鈕並排（UX 1017 H3）。
+      if (sourceUrl) { var source = document.createElement('a'); source.className = 'map-popup-source'; source.href = sourceUrl; source.target = '_blank'; source.rel = 'noopener'; source.textContent = '座標來源 ↗'; popup.append(source); }
+      // 驗收 F1：彈窗寬度跟著「打開當下」的地圖寬度走（單檔版初始隱藏時寬度是 0），
+      // 手機上右上角的關閉鈕才不會被地圖邊緣切掉。
+      marker.bindPopup(popup, { maxWidth: 300, autoPanPadding: [12, 12] });
+      marker.on('popupopen', function (event) {
+        var limit = Math.max(180, Math.min(300, container.clientWidth - 72));
+        if (event.popup.options.maxWidth !== limit) { event.popup.options.maxWidth = limit; event.popup.update(); }
+      });
       bounds.push([point[0], point[1]]);
     });
-    function resetView() {
+    // 預設框住主要步行區（data.focusBounds，建置時由當天時間表的圖釘算出）；
+    // 遠處的車站、住宿與搭車才到的景點按「全部地點」才一起框進來。
+    function showAll() {
       if (bounds.length > 1) map.fitBounds(bounds, { padding: [32, 32], maxZoom: 15 });
       else map.setView(data.center, data.zoom || 13);
+    }
+    function resetView() {
+      if (data.focusBounds) map.fitBounds(data.focusBounds, { padding: [20, 20], maxZoom: 16 });
+      else showAll();
     }
     resetView();
     var toolbar = container.parentElement.querySelector('.map-toolbar');
@@ -65,6 +81,7 @@ export function renderInteractiveMap({ id, title, mapData, mapChecks = {}, legen
       if (button.dataset.mapAction === 'zoom-in') map.zoomIn();
       if (button.dataset.mapAction === 'zoom-out') map.zoomOut();
       if (button.dataset.mapAction === 'reset') resetView();
+      if (button.dataset.mapAction === 'all') showAll();
       container.focus({ preventScroll: true });
     });
     function resizeWhenVisible() { if (container.offsetParent !== null) map.invalidateSize(false); }

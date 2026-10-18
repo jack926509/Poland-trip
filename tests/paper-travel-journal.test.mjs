@@ -102,7 +102,9 @@ test('實用頁採旅行誌附錄版式且資料庫接口不變', () => {
   const todos = read('practical/todos.html');
   const database = read('practical/database.html');
   assert.match(todos, /<body class="journal-site journal-practical">/);
-  assert.match(todos, /class="journal-appendix-header"/);
+  // UX 1017 M5：待辦頁的刊頭加 is-compact（縮小版），其他實用頁維持原版式。
+  assert.match(todos, /class="journal-appendix-header is-compact"/);
+  assert.match(read('practical/booking.html'), /class="journal-appendix-header"/);
   assert.match(database, /class="journal-database"/);
   for (const selector of ['data-db-query', 'data-db-city', 'data-db-category', 'data-db-status', 'data-db-privacy', 'data-db-summary']) {
     assert.ok(database.includes(selector), `資料庫缺少 ${selector}`);

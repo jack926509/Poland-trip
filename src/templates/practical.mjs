@@ -29,7 +29,7 @@ import { getTaipeiToday, toComparableDate, todayIn, isOpenTodoStatus, isOpenEntr
 // getTaipeiToday 是 taipeiToday 的別名，內嵌後頁面上只會有 taipeiToday，
 // 呼叫端必須用真名，否則在瀏覽器裡是 ReferenceError（靜態輸出看起來正常，
 // 但每分鐘的重算完全不會執行）。
-import { taipeiToday } from '../lib/schedule.mjs';
+import { taipeiToday, dayIsoDate } from '../lib/schedule.mjs';
 import { meta } from '../data/trip.js';
 
 function serializeForInlineScript(value) {
@@ -39,17 +39,18 @@ function serializeForInlineScript(value) {
     .replaceAll('\u2029', '\\u2029');
 }
 
-function renderAppendixHeader({ kicker, title, dek }) {
-  return `<header class="journal-appendix-header">
+function renderAppendixHeader({ kicker, title, dek, compact = false }) {
+  return `<header class="journal-appendix-header${compact ? ' is-compact' : ''}">
     <span class="section-num">${escapeHtml(kicker)}</span>
     <h1>${escapeHtml(title)}</h1>
     <p class="hero-dek">${escapeHtml(dek)}</p>
   </header>`;
 }
 
-function renderPracticalLayout(title, eyebrow, intro, content, file) {
+// compactHeader：只有待辦頁使用（UX 1017 M5），刊頭縮小讓第一筆待辦進入第一屏；其他頁輸出不變。
+function renderPracticalLayout(title, eyebrow, intro, content, file, { compactHeader = false } = {}) {
   const bodyHtml = `
-${renderAppendixHeader({ kicker: eyebrow, title, dek: intro })}
+${renderAppendixHeader({ kicker: eyebrow, title, dek: intro, compact: compactHeader })}
     ${content.trim()}`;
   return renderLayout({
     title,
@@ -320,11 +321,13 @@ export function renderTodos({ todoGroups }) {
     </section>`;
   }).join('');
 
+  // UX 1017 M5：「N 項待辦」摘要縮成一列緊接第一個分類；「訂票狀態由人工維護」說明與購票入口連結移到清單最後，
+  // 打開待辦頁第一屏就是待辦本身。文字一字不少。
   const content = `
+    <div class="callout-risk todo-summary"><span class="tag-todo">${total} 項待辦</span><p>共 ${allItems.length} 項；每類先列未完成，已完成的收在「已完成」裡供核對。完成後請將票券與訂位資訊離線保存；未開賣項目仍以官方系統實際可售狀態為準。</p></div>
+    ${groupsHtml}
     ${renderBookingNotice({ onTodosPage: true })}
     <p class="action-links"><a href="tickets.html#ticket-purchases">所有景點的官方購票入口與現場售票方式 →</a></p>
-    <div class="callout-risk"><span class="tag-todo">${total} 項待辦</span><p>共 ${allItems.length} 項；每類先列未完成，已完成的收在「已完成」裡供核對。完成後請將票券與訂位資訊離線保存；未開賣項目仍以官方系統實際可售狀態為準。</p></div>
-    ${groupsHtml}
     <script>
       (function() {
         ${[todayIn, taipeiToday, markOverdueRechecks].map(fn => fn.toString()).join('\n')}
@@ -333,7 +336,7 @@ export function renderTodos({ todoGroups }) {
       }());
     </script>`.trim();
 
-  return renderPracticalLayout('待辦事項', 'Action list', '城際交通、景點與餐飲訂位集中在一頁。先處理有日期與指定場次的票，再處理彈性訂位。', content, 'practical/todos.html');
+  return renderPracticalLayout('待辦事項', 'Action list', '城際交通、景點與餐飲訂位集中在一頁。先處理有日期與指定場次的票，再處理彈性訂位。', content, 'practical/todos.html', { compactHeader: true });
 }
 
 export function renderDining({ michelinSummary, michelinReservations, verifiedRestaurantHours = [], cafeGuide = [], fastFoodChains = [], fastFoodBranches = {}, fastFoodHubs = [] }) {
@@ -373,10 +376,20 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
     <section class="section" id="daily-meals">
       <div class="section-heading"><span class="section-num">Daily meals</span><h2>八天三餐與備選</h2></div>
       <p class="lead">每日行程與今日卡共用這份安排。時刻為波蘭當地時間，候選不代表已訂位；每餐擇一，依交通與接單情況改備案。</p>
-      <nav class="day-jump" aria-label="跳到某一天的三餐">${days.map(day => `<a href="#meals-day-${day.n}"><b>Day ${day.n}</b><span>${escapeHtml(day.date.replace(/\s*\(.*\)/, ''))}</span></a>`).join('')}</nav>
+      <nav class="day-jump" aria-label="跳到某一天的三餐">${days.map(day => `<a href="#meals-day-${day.n}" data-meal-date="${dayIsoDate(day.date, meta.tripStart)}"><b>Day ${day.n}</b><span>${escapeHtml(day.date.replace(/\s*\(.*\)/, ''))}</span></a>`).join('')}</nav>
       ${days.map(day => `<article class="card" id="meals-day-${day.n}"><h3>Day ${day.n} · ${escapeHtml(day.date)} · ${escapeHtml(day.city)}</h3>${renderMealList(day, dayMeals[day.n])}
         <details><summary>保留的備選、備餐與點心 · ${dayDining[day.n].filter(item => !item.meal).length} 家</summary><ul class="day-food-list">${dayDining[day.n].filter(item => !item.meal).map(item => `<li class="day-food-item">${renderStoreHead(item, item.role)}${renderStoreBody(item, { condition: '', timing: mealTiming(item, day) })}</li>`).join('')}</ul></details>
-        <p><a href="../day-${String(day.n).padStart(2,'0')}.html#day-food">當日完整動線與餐廳導航 →</a></p></article>`).join('')}
+        <p><a href="../day-${String(day.n).padStart(2,'0')}.html#day-food">當日完整動線與餐廳導航 →</a></p>
+        <p class="meals-back"><a href="#daily-meals">↑ 換一天</a></p></article>`).join('')}
+      <script>
+        // UX 1017 M6：旅途期間把日期列上的「今天」標出來（華沙當地日期）；不用 id 選取器，單檔版才不會失效。
+        (function () {
+          ${todayIn.toString()}
+          var root = document.currentScript.closest('.standalone-page') || document;
+          var link = root.querySelector('.day-jump [data-meal-date="' + todayIn('Europe/Warsaw', new Date()) + '"]');
+          if (link) link.setAttribute('aria-current', 'date');
+        }());
+      </script>
     </section>
     <section class="section" id="cafes">
       <div class="section-heading"><span class="section-num">Coffee &amp; sweets</span><h2>咖啡與甜點</h2></div>

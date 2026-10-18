@@ -300,8 +300,12 @@
   offlineBanner.hidden = navigator.onLine !== false;
   if (nav) nav.after(offlineBanner);
   else document.body.append(offlineBanner);
+  // UX 1017 M2：橫幅只在頁首，捲到中段就看不到；同步在 <html> 標 data-offline，
+  // 由 CSS 在固定的底部列上緣顯示一行小字（不浮在內容中間、不遮按鈕）。
   const syncOffline = () => {
     offlineBanner.hidden = navigator.onLine !== false;
+    const root = document.documentElement;
+    if (root && typeof root.toggleAttribute === 'function') root.toggleAttribute('data-offline', navigator.onLine === false);
   };
   syncOffline();
   window.addEventListener('offline', syncOffline);

@@ -74,7 +74,8 @@ test('M3：日頁停用自動章節目錄、去除今日主軸重複句、時間
 
 test('M5：地圖圖釘放大到 radius 12（原 16×16px 太小，難精準點擊）', () => {
   const day = read('day-02.html');
-  assert.match(day, /L\.circleMarker\(\[point\[0\], point\[1\]\], \{ radius: 12,/, '日頁地圖圖釘未放大');
+  // UX 1017 H2：日頁改成 26px 數字圖釘（直徑 26px ≥ 原本 radius 12 的 24px），城市頁仍是 radius 12 圓點。
+  assert.match(day, /iconSize: number \? \[26, 26\]/, '日頁地圖數字圖釘未維持 26px');
   const city = read('city-krakow.html');
   assert.match(city, /radius:\s*12,/, '城市頁地圖圖釘未放大');
   assert.doesNotMatch(day + city, /radius:\s*8,/, '仍殘留舊的 radius: 8');

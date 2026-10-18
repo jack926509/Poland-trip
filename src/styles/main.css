@@ -1498,6 +1498,49 @@ td > span.source-meta {
   line-height: 1.5;
 }
 
+/* UX 1017 H3：地圖彈窗是走路時單手點的，連結原本只有 19px 高、
+   「在 Google Maps 開啟」和「座標來源」緊貼，常點錯成查證文件。
+   leaflet.css 在 main.css 之後載入（.leaflet-container a 為 0,1,1），
+   這裡一律加上 .leaflet-container 前綴提高特異度。城市頁與每日頁共用，HTML 不變。 */
+.leaflet-container .leaflet-popup-content {
+  /* 驗收 F1：城市頁的 bindPopup 沒有依地圖寬度設 maxWidth（改它會吃掉 city-krakow 的位元組預算），
+     這裡用 CSS 再上一道上限：地圖約為視窗寬減 48px，再扣彈窗左右邊距與框線。 */
+  max-width: calc(100vw - 132px);
+  margin: 14px 44px 14px 18px;
+  overflow-wrap: anywhere;
+  font-size: 15px;
+}
+.leaflet-container .leaflet-popup-content small { font-size: 13px; }
+/* 彈窗裡除了「座標來源」以外的連結都是導航（城市頁有 google.com/maps 與 maps.google.com/?cid= 兩種網址），
+   所以用 :not(.map-popup-source) 而不是比對網址。 */
+.leaflet-container .leaflet-popup-content a:not(.map-popup-source) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin-top: 0.6rem;
+  padding: 0 0.9rem;
+  border-radius: var(--radius-sm);
+  background: var(--green);
+  color: var(--paper-light);
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.leaflet-container .leaflet-popup-content a.map-popup-source {
+  display: block;
+  margin-top: 8px;
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+.map-container.leaflet-container a.leaflet-popup-close-button {
+  width: 44px;
+  height: 44px;
+  font-size: 22px;
+  line-height: 44px;
+}
+
 .map-container.is-map-unavailable {
   display: grid;
   place-items: center;
@@ -5817,6 +5860,8 @@ h3 {
   transition: background-color 160ms var(--ease);
 }
 .today-next-nav:hover, .today-next-nav:focus-visible { background: #2a4f3a; color: var(--paper-light); }
+/* UX 1017 H1：導航鈕排在站名正下方，後面的說明、地址與它留一點距離。 */
+.today-next-nav + p { margin-top: .65rem; }
 
 .today-transport-status { margin: 0; padding: .5rem .7rem; border: 1px solid var(--line); border-radius: var(--radius-xs); background: var(--paper-light); }
 .today-transport-route { margin: .6rem 0 0; font-size: 1.05rem; }
@@ -6495,13 +6540,24 @@ h3 {
     display: flex; align-items: center; gap: .5rem; margin-top: .5rem; padding: .4rem .6rem;
   }
   .today-compact .today-sos-title { flex: none; margin: 0; font-size: 0; }
-  .today-compact .today-sos-list { flex: 1 1 auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .25rem .5rem; margin: 0; }
+  /* UX 1017 H1：112、999、代表處排成一列 3 欄（原本 2 欄加說明字共 162px 高，把導航鈕擠出第一屏）。
+     號碼下的說明在精簡版只對讀屏軟體保留（視覺隱藏，不是 display:none）；保險電話若有填仍獨佔一列。 */
+  .today-compact .today-sos-list { flex: 1 1 auto; display: grid; grid-template-columns: auto auto minmax(0, 1fr); gap: .25rem .3rem; margin: 0; }
   .today-compact .today-sos-list li { flex: none; min-width: 0; }
   .today-compact .today-sos-list a[href^='tel:'] { padding: .2rem .7rem; font-size: 1.1rem; min-height: 44px; display: inline-flex; align-items: center; }
-  .today-compact .today-sos-list span { font-size: .68rem; }
+  /* 驗收 F7：375／390 寬時代表處號碼膠囊比欄寬多 1px，字級再降一階。 */
+  .today-compact .today-sos-list .today-sos-compact-only a[href^='tel:'] { padding-inline: .4rem; font-size: .78rem; letter-spacing: -0.02em; }
+  .today-compact .today-sos-list li > span {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+    clip: rect(0 0 0 0); border: 0; white-space: nowrap;
+  }
   .today-compact .today-sos-list a[href^='tel:'] { white-space: nowrap; }
   .today-compact .today-sos-extra { display: none; }
-  .today-compact .today-sos-compact-only, .today-compact .today-sos-insurer { grid-column: 1 / -1; }
+  .today-compact .today-sos-compact-only { grid-column: auto; }
+  .today-compact .today-sos-insurer { grid-column: 1 / -1; }
+  /* 精簡版標題只留紅色 SOS 標籤（區塊本身有 aria-label="緊急電話"）；手機小字下限那組 .journal-site 規則在後面，
+     會把「緊急電話」四個字撐回 13.6px、把代表處號碼推出右緣，這裡提高特異度維持原意。 */
+  .journal-site .today-compact .today-sos-title, .today-compact .today-sos-title { font-size: 0; }
   .today-compact .today-sos > .source-meta { display: none; }
 
   .today-compact .today-card { margin-top: .5rem; }
@@ -6512,6 +6568,17 @@ h3 {
 }
 .today-sos-compact-only { display: none; }
 @media (max-width: 600px) { .today-compact .today-sos-compact-only { display: flex; } }
+/* 驗收 F7：375 寬時代表處號碼膠囊仍伸進 SOS 卡右側內距約 5px：窄螢幕收緊 SOS 卡的間距與欄距。 */
+@media (max-width: 380px) {
+  .today-compact .today-sos { gap: .35rem; padding-inline: .45rem; }
+  .today-compact .today-sos-list { column-gap: .2rem; }
+}
+/* 驗收 F2：矮螢幕（375×667 這類 iPhone SE／mini 的可視高度）時，日卡大標題（當天主題）讓位，
+   Day 標籤與日期仍在，「導航到這一站」才落在底部列之上；完整主題在「完整行程」頁。 */
+@media (max-width: 600px) and (max-height: 700px) {
+  .today-compact .today-head h2 { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .today-compact .today-head-meta { margin: 0; }
+}
 .today-sos-insurer[hidden], .today-sos-private[hidden] { display: none !important; }
 .today-sos-private { margin: .4rem 0 0; }
 @media (max-width: 600px) { .today-compact .today-sos-private { display: none; } }
@@ -7440,3 +7507,205 @@ html {
   .today-compact .today-sos { flex-wrap: wrap; }
   .today-compact .today-sos-list { flex-basis: 100%; }
 }
+
+/* ============================================================
+   UX 審查第二輪（2026-10-17）
+   ============================================================ */
+
+/* H2 每日地圖數字圖釘：數字＝時間表第幾列，時間表該列標題前有同一個數字（.step-pin）。
+   對不上時間表的圖釘是較小的無字圓點。 */
+.trip-pin span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  border: 2px solid;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 35%);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 0 2px rgb(0 0 0 / 60%);
+}
+.trip-pin-plain span { opacity: 0.85; }
+
+.step-pin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  margin-right: 0.4rem;
+  padding: 0 0.3rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: 0.1em;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  border: 0;
+  white-space: nowrap;
+}
+
+/* M3 收合提示統一：這三種 summary 用 display:flex 讓原生三角形消失，看起來像一般標題。
+   沿用全站「＋／－」圓圈（UX 審查第 7 項那一組），只加選擇器、不改 HTML——
+   城市頁有 35 個「查核紀錄與來源」，每個加 class 會讓 city-krakow.html 超過 100KB 預算。 */
+.city-dining-record > summary,
+.fast-food-directory-city > summary,
+.booking-done > summary { gap: .45rem; list-style: none; }
+.city-dining-record > summary::-webkit-details-marker,
+.fast-food-directory-city > summary::-webkit-details-marker,
+.booking-done > summary::-webkit-details-marker { display: none; }
+.city-dining-record > summary::before,
+.fast-food-directory-city > summary::before,
+.booking-done > summary::before {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  content: "＋";
+  font-size: .8rem;
+  line-height: 1;
+}
+.city-dining-record[open] > summary::before,
+.fast-food-directory-city[open] > summary::before,
+.booking-done[open] > summary::before { content: "－"; }
+
+/* M1 每日頁手機第一屏：旅途中打開當天頁，第一屏原本只有封面與照片，時間表標題在 1,196px。
+   手機收掉封面照片（同城照片在頁尾「沿途風景」仍看得到）、導言最多 3 行、標題區內距減半，
+   時間表緊接在快捷列下方。只影響每日頁（.journal-day-header、.journal-day #schedule），城市頁封面不受影響。 */
+@media (max-width: 480px) {
+  .journal-day main.page { padding-top: 0.75rem; }
+  .journal-day-header { min-height: 0; margin-bottom: 0.75rem; }
+  .journal-day-header .journal-day-heading { min-height: 0; padding: 0.85rem 1rem; }
+  .journal-day-header .journal-day-heading h1 { margin: 0.35rem 0; font-size: 1.4rem; line-height: 1.25; }
+  .journal-day-header .journal-day-heading .hero-dek {
+    display: -webkit-box;
+    margin-top: 0.4rem;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
+  .journal-day-header .journal-day-cover,
+  .journal-day-header .journal-day-cover-fallback { display: none; }
+  .journal-day #schedule { margin-top: 1.25rem; }
+  /* 封面下的「今晚／行李」卡同樣收緊間距（內容不變），時間表標題才進得了第一屏。 */
+  .journal-day .journey-context { margin: 0.75rem 0; padding: 0.7rem 0.9rem; }
+  .journal-day .journey-context p { margin: 0.3rem 0; }
+}
+
+/* M2 離線狀態：頁首橫幅捲走後仍要知道看到的是快取。nav.js 在 <html> 標 data-offline，
+   這裡在固定的底部列上緣加一行 18px 小字；沿用「橫幅不浮在內容中間」的決定，只貼在既有的底部列上。 */
+[data-offline] .mobile-quick-nav::before {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 50%;
+  height: 18px;
+  padding: 0 0.6rem;
+  border-radius: 999px;
+  background: #3b2a24;
+  color: #fff;
+  content: "離線・顯示已存資料";
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 18px;
+  pointer-events: none;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+/* M4 實用資訊表格裡的「Google Maps 定位 →」原本 23px 高、擠在備註字裡：
+   套用 .day-food-map 的膠囊外觀，撐到 44px。第一欄的店名連結維持文字樣式。
+   桌機時間表的餐次連結（.step-meal-link）補足 44px 點擊高度（手機版另有行內樣式，不受影響）。 */
+.journal-practical .table-editorial td:not(:first-child) a[href*="google.com/maps"] {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin: 0.3rem 0;
+  padding: 0 0.8rem;
+  border: 1px solid rgb(142 126 112 / 40%);
+  border-radius: 999px;
+  background: var(--paper-light);
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+@media (min-width: 701px) {
+  .table-schedule td .step-meal-link { display: inline-flex; align-items: center; min-height: 44px; }
+}
+
+/* M5 待辦頁第一屏：刊頭縮小（只有待辦頁輸出 .is-compact），「N 項待辦」摘要縮成一列並緊接第一個分類；
+   免責說明已移到清單最後。其他實用資訊頁的刊頭不變。 */
+.journal-appendix-header.is-compact {
+  margin-bottom: 1rem;
+  padding: 1rem 0 0.9rem;
+}
+.journal-appendix-header.is-compact::before { display: none; }
+.journal-appendix-header.is-compact h1 {
+  max-width: none;
+  margin: 0.2rem 0;
+  font-size: 1.6rem;
+  line-height: 1.2;
+}
+.journal-appendix-header.is-compact .hero-dek {
+  margin-top: 0.3rem;
+  overflow: hidden;
+  font-size: 0.92rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.journal-practical .page > .todo-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.6rem;
+  margin: 0;
+  padding-block: 0.55rem;
+}
+.todo-summary::before { top: 0.7rem; }
+.todo-summary p { margin: 0; font-size: 0.85rem; line-height: 1.5; }
+/* 摘要與第一個分類之間還有 nav.js 產生的「本頁章節」列，所以用 ~ 而不是 +。 */
+.journal-practical .page:has(> .is-compact) { padding-top: 1.5rem; }
+.journal-practical .page > .todo-summary ~ .chapter-index { margin-block: 0.75rem 1rem; }
+.journal-practical .page > .todo-summary ~ section:first-of-type { margin-top: 1.25rem; padding-top: 0; }
+
+/* M6 八天三餐長達一萬多 px：每天最後一行「↑ 換一天」回到日期列；旅途中日期列標出今天（aria-current="date"）。 */
+.meals-back { margin: 0.4rem 0 0; text-align: right; }
+.meals-back a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.9rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--paper-light);
+  color: var(--accent-dark);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.day-jump a[aria-current='date'] { border: 2px solid var(--accent); background: var(--accent-pale); }
+.day-jump a[aria-current='date'] b::after { content: '・今天'; }

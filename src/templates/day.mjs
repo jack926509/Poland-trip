@@ -209,12 +209,15 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
     const separator = label.indexOf(' · ');
     return separator === -1 ? wrap(label) : `${label.slice(0, separator + 3)}${wrap(label.slice(separator + 3))}`;
   };
-  const stepsHtml = day.steps.map(step => {
+  // UX 1017 H2：地圖圖釘的數字就是時間表第幾列；有圖釘的列在標題前標出同一個數字，方便對照。
+  const pinnedSteps = new Set((dayMap?.points || []).map(point => point[8]).filter(Boolean));
+  const stepsHtml = day.steps.map((step, index) => {
     const nav = stepNavigation(step);
+    const pin = pinnedSteps.has(index + 1) ? `<span class="step-pin" title="地圖上的 ${index + 1} 號圖釘"><span class="visually-hidden">地圖圖釘 </span>${index + 1}</span>` : '';
     return `
     <tr>
       <td class="number" data-label="時間"><b>${step.t}</b>${nav ? `<a class="step-nav" href="${nav.href}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(nav.name)} 的 Google Maps 導航">導航 ↗</a>` : ''}</td>
-      <td data-label="行程"><b>${stepLabelHtml(step)}</b>${step.sub ? `<br><span class="timeline-note">${step.sub}</span>` : ''}</td>
+      <td data-label="行程"><b>${pin}${stepLabelHtml(step)}</b>${step.sub ? `<br><span class="timeline-note">${step.sub}</span>` : ''}</td>
       <td class="number" data-label="花費"${step.cost ? '' : ' data-empty'}>${step.cost || '—'}</td>
       <td class="number" data-label="時長"${step.dur ? '' : ' data-empty'}>${step.dur || '—'}</td>
     </tr>`;
