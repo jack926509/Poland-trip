@@ -35,6 +35,7 @@ export function renderInteractiveMap({ id, title, mapData, mapChecks = {}, legen
     var map = L.map(container, { scrollWheelZoom: true, touchZoom: true, doubleClickZoom: true, zoomControl: false, zoomSnap: 0.5 }).setView(data.center, data.zoom || 13);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
     var bounds = [];
+    var pins = [];
     data.points.forEach(function (point) {
       var category = config.legend[point[5]] || config.legend.sight;
       var check = config.mapChecks[point[2]] || {};
@@ -43,7 +44,8 @@ export function renderInteractiveMap({ id, title, mapData, mapChecks = {}, legen
       // 對不上時間表的圖釘是較小的無字圓點，不搶編號圖釘的位置。
       var number = point[8];
       var icon = L.divIcon({ className: 'trip-pin' + (number ? '' : ' trip-pin-plain'), html: '<span style="background:' + category.fill + ';border-color:' + category.line + '">' + (number || '') + '</span>', iconSize: number ? [26, 26] : [18, 18] });
-      var marker = L.marker([point[0], point[1]], { icon: icon, title: (number ? number + '. ' : '') + point[2], alt: point[2], zIndexOffset: number ? 100 : 0 }).addTo(map);
+      var marker = L.marker([point[0], point[1]], { icon: icon, title: (number ? number + '. ' : '') + point[2], alt: point[2], zIndexOffset: number ? (100 - number) * 100000 : 0 }).addTo(map);
+      pins.push({ marker: marker, number: number || 0, radius: number ? 13 : 9 });
       var label = area ? '<br><small>範圍代表點，請依實際目的地導航</small>' : '<br><small>已查證場館／門牌錨點</small>';
       var popup = document.createElement('div');
       var heading = document.createElement('b'); heading.textContent = (number ? number + '. ' : '') + point[2]; popup.appendChild(heading);
@@ -63,6 +65,36 @@ export function renderInteractiveMap({ id, title, mapData, mapChecks = {}, legen
       });
       bounds.push([point[0], point[1]]);
     });
+    // N1：靠很近的圖釘在預設縮放下會疊住、數字被蓋。依編號（小號先、無字圓點最後）貪婪排位，
+    // 和已排好的撞到（外框相碰：橫或縱向中心距都 < 兩半徑和）就以 CSS transform 把內層 span 往外挪（繞圈找第一個空位），
+    // 真實座標不動，原位留一個小黑點（.is-nudged::after）；放大到不撞時偏移自動歸零。
+    function declutter() {
+      var placed = [], size = map.getSize();
+      pins.slice().sort(function (a, b) { return (a.number || 1e6) - (b.number || 1e6); }).forEach(function (pin) {
+        var base = map.latLngToContainerPoint(pin.marker.getLatLng());
+        var best = null;
+        function free(x, y) { return placed.every(function (o) { return Math.max(Math.abs(o.x - x), Math.abs(o.y - y)) >= o.r + pin.radius; }); }
+        if (free(base.x, base.y)) best = { x: base.x, y: base.y, dx: 0, dy: 0 };
+        for (var ring = 1; !best && ring <= 6; ring++) {
+          for (var k = 0; !best && k < 12; k++) {
+            var angle = (k / 12) * 2 * Math.PI - Math.PI / 2, dist = 14 + ring * 14 + pin.radius;
+            var dx = Math.round(Math.cos(angle) * dist), dy = Math.round(Math.sin(angle) * dist);
+            // 驗收：挪開後的位置不可超出地圖邊界（地圖隱藏、寬度 0 時不檢查）。
+            var x = base.x + dx, y = base.y + dy;
+            if (size.x > 0 && (x < pin.radius || y < pin.radius || x > size.x - pin.radius || y > size.y - pin.radius)) continue;
+            if (free(x, y)) best = { x: base.x + dx, y: base.y + dy, dx: dx, dy: dy };
+          }
+        }
+        if (!best) best = { x: base.x, y: base.y, dx: 0, dy: 0 };
+        placed.push({ x: best.x, y: best.y, r: pin.radius });
+        var el = pin.marker.getElement();
+        var face = el && el.firstChild;
+        if (!face) return;
+        face.style.transform = best.dx || best.dy ? 'translate(' + best.dx + 'px,' + best.dy + 'px)' : '';
+        el.classList.toggle('is-nudged', !!(best.dx || best.dy));
+      });
+    }
+    map.on('zoomend', declutter);
     // 預設框住主要步行區（data.focusBounds，建置時由當天時間表的圖釘算出）；
     // 遠處的車站、住宿與搭車才到的景點按「全部地點」才一起框進來。
     function showAll() {
@@ -70,10 +102,11 @@ export function renderInteractiveMap({ id, title, mapData, mapChecks = {}, legen
       else map.setView(data.center, data.zoom || 13);
     }
     function resetView() {
-      if (data.focusBounds) map.fitBounds(data.focusBounds, { padding: [20, 20], maxZoom: 16 });
+      if (data.focusBounds) map.fitBounds(data.focusBounds, { padding: [30, 30], maxZoom: 16 });
       else showAll();
     }
     resetView();
+    declutter();
     var toolbar = container.parentElement.querySelector('.map-toolbar');
     if (toolbar) toolbar.addEventListener('click', function (event) {
       var button = event.target.closest('[data-map-action]');
@@ -84,7 +117,7 @@ export function renderInteractiveMap({ id, title, mapData, mapChecks = {}, legen
       if (button.dataset.mapAction === 'all') showAll();
       container.focus({ preventScroll: true });
     });
-    function resizeWhenVisible() { if (container.offsetParent !== null) map.invalidateSize(false); }
+    function resizeWhenVisible() { if (container.offsetParent !== null) { map.invalidateSize(false); declutter(); } }
     window.addEventListener('resize', resizeWhenVisible);
     window.addEventListener('hashchange', function () { requestAnimationFrame(resizeWhenVisible); });
     var page = container.closest('.standalone-page');

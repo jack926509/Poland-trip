@@ -222,3 +222,13 @@ test('F2／F7：矮螢幕旅途中隱藏日卡大標題；窄螢幕 SOS 卡收�
   assert.match(source, /@media \(max-width: 600px\) and \(max-height: 700px\) \{\s*\.today-compact \.today-head h2 \{ position: absolute;/);
   assert.match(source, /@media \(max-width: 380px\) \{\s*\.today-compact \.today-sos \{ gap: \.35rem; padding-inline: \.45rem; \}/);
 });
+
+test('N1：數字圖釘依編號疊層並在 zoomend 錯開，不再一律 zIndexOffset 100', () => {
+  const day = read('day-06.html');
+  assert.match(day, /map\.on\('zoomend', declutter\)/);
+  assert.match(day, /function declutter\(\)/);
+  assert.match(day, /face\.style\.transform = /);
+  assert.match(day, /zIndexOffset: number \? \(100 - number\) \* 100000 : 0/);
+  assert.doesNotMatch(day, /zIndexOffset: number \? 100 : 0/, 'zIndexOffset 不可再是固定 100');
+  assert.match(css(), /\.trip-pin\.is-nudged::after \{/);
+});

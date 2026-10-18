@@ -7532,6 +7532,20 @@ html {
   text-shadow: 0 0 2px rgb(0 0 0 / 60%);
 }
 .trip-pin-plain span { opacity: 0.85; }
+/* N1 靠太近的圖釘被錯開：數字圓標外移，真實位置留一個小黑點。 */
+.trip-pin span { transition: transform .15s; }
+.trip-pin.is-nudged::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  background: #1f2937;
+  content: "";
+}
 
 .step-pin {
   display: inline-flex;
