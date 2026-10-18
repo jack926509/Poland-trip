@@ -129,6 +129,21 @@ export function numberPins(points, steps) {
   });
 }
 
+// 同一列共用序號的好幾顆圖釘（規則允許，相距 400 m 內），地圖上改標 7a／7b…，
+// 使用者才不會以為同一頁有兩顆「7」。單獨一顆的仍是純數字；時間表那一列的序號不變。
+export function pinLabels(numbers) {
+  const total = new Map();
+  numbers.forEach(n => { if (n) total.set(n, (total.get(n) || 0) + 1); });
+  const seen = new Map();
+  return numbers.map(n => {
+    if (!n) return null;
+    if (total.get(n) < 2) return String(n);
+    const k = seen.get(n) || 0;
+    seen.set(n, k + 1);
+    return n + String.fromCharCode(97 + k);
+  });
+}
+
 // 主要步行區：以有編號（真的排進時間表）的圖釘取中位數為中心，
 // 1.5 km 內的點框成預設視野；遠處的車站、住宿與搭車才到的景點仍在地圖上，按「全部地點」才一起框進來。
 // 只用既有座標計算，不改任何座標資料。
@@ -162,10 +177,11 @@ export function makeDayMap(day) {
   for (const point of daySupplementaryPins[day.n] || []) checks[point[2]] = { status: 'coordinate-verified', checkedAt: '2026-09-08', coordinateSource: point[6] };
   // point[7] 已被部分圖釘拿來放門市 ID，時間表序號放在 point[8]；複製陣列，不改到共用的城市圖釘資料。
   const numbers = numberPins(points, day.steps);
+  const labels = pinLabels(numbers);
   const numberedPoints = points.map((point, i) => {
     const copy = point.slice(0, 8);
     while (copy.length < 8) copy.push(null);
-    copy.push(numbers[i]);
+    copy.push(numbers[i], labels[i]); // point[9]＝地圖上顯示的標籤（共用序號時為 7a／7b）
     return copy;
   });
   return {

@@ -42,13 +42,14 @@ export function renderInteractiveMap({ id, title, mapData, mapChecks = {}, legen
       var area = check.status === 'area-reference';
       // UX 1017 H2：圖釘改成 26px 數字圓標，數字＝時間表第幾列（point[8]，建置時算好）；
       // 對不上時間表的圖釘是較小的無字圓點，不搶編號圖釘的位置。
-      var number = point[8];
-      var icon = L.divIcon({ className: 'trip-pin' + (number ? '' : ' trip-pin-plain'), html: '<span style="background:' + category.fill + ';border-color:' + category.line + '">' + (number || '') + '</span>', iconSize: number ? [26, 26] : [18, 18] });
-      var marker = L.marker([point[0], point[1]], { icon: icon, title: (number ? number + '. ' : '') + point[2], alt: point[2], zIndexOffset: number ? (100 - number) * 100000 : 0 }).addTo(map);
+      // point[9] 是顯示標籤：同一列有好幾顆圖釘時為 7a／7b，其餘同編號。
+      var number = point[8], tag = point[9] || number;
+      var icon = L.divIcon({ className: 'trip-pin' + (number ? '' : ' trip-pin-plain') + (tag && String(tag).length > 2 ? ' trip-pin-tag' : ''), html: '<i class="trip-leader"></i><span style="background:' + category.fill + ';border-color:' + category.line + '">' + (tag || '') + '</span>', iconSize: number ? [26, 26] : [18, 18] });
+      var marker = L.marker([point[0], point[1]], { icon: icon, title: (number ? tag + '. ' : '') + point[2], alt: point[2], zIndexOffset: number ? (100 - number) * 100000 : 0 }).addTo(map);
       pins.push({ marker: marker, number: number || 0, radius: number ? 13 : 9 });
       var label = area ? '<br><small>範圍代表點，請依實際目的地導航</small>' : '<br><small>已查證場館／門牌錨點</small>';
       var popup = document.createElement('div');
-      var heading = document.createElement('b'); heading.textContent = (number ? number + '. ' : '') + point[2]; popup.appendChild(heading);
+      var heading = document.createElement('b'); heading.textContent = (number ? tag + '. ' : '') + point[2]; popup.appendChild(heading);
       popup.appendChild(document.createElement('br')); popup.appendChild(document.createTextNode(point[3]));
       popup.insertAdjacentHTML('beforeend', label);
       var url = safeUrl(point[4]);
@@ -88,9 +89,16 @@ export function renderInteractiveMap({ id, title, mapData, mapChecks = {}, legen
         if (!best) best = { x: base.x, y: base.y, dx: 0, dy: 0 };
         placed.push({ x: best.x, y: best.y, r: pin.radius });
         var el = pin.marker.getElement();
-        var face = el && el.firstChild;
+        var face = el && el.querySelector('span');
         if (!face) return;
-        face.style.transform = best.dx || best.dy ? 'translate(' + best.dx + 'px,' + best.dy + 'px)' : '';
+        var moved = !!(best.dx || best.dy);
+        face.style.transform = moved ? 'translate(' + best.dx + 'px,' + best.dy + 'px)' : '';
+        // 引線：從原位（錨點）畫到挪開後的圓標中心，讓使用者分得出哪顆小黑點是哪個號碼；沒挪開時隱藏。
+        var leader = el.querySelector('.trip-leader');
+        if (leader) {
+          leader.style.width = moved ? Math.round(Math.hypot(best.dx, best.dy)) + 'px' : '0';
+          leader.style.transform = moved ? 'rotate(' + Math.atan2(best.dy, best.dx) + 'rad)' : '';
+        }
         el.classList.toggle('is-nudged', !!(best.dx || best.dy));
       });
     }

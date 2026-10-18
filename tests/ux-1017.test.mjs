@@ -4,7 +4,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { makeDayMap, stepNumberForPin } from '../src/lib/day-map.mjs';
+import { makeDayMap, stepNumberForPin, pinLabels } from '../src/lib/day-map.mjs';
 import { days } from '../src/data/trip.js';
 import { mapPins } from '../src/data/cities.js';
 import { daySupplementaryPins } from '../src/data/day-maps.js';
@@ -113,6 +113,27 @@ test('F3：同一天內不同地點不共用序號（同一列寫到、相距 40
       }
     }
   }
+});
+
+test('F3：同一列共用序號的圖釘在地圖上標 7a／7b，同一頁不會有兩顆同標籤（Day 6 教堂島與主教座堂）', () => {
+  assert.deepEqual(pinLabels([1, 7, null, 7, 3, 7]), ['1', '7a', null, '7b', '3', '7c']);
+  for (const day of days) {
+    const labels = makeDayMap(day).points.map(point => point[9]).filter(Boolean);
+    assert.equal(new Set(labels).size, labels.length, `Day ${day.n} 有重複的圖釘標籤：${labels.join(',')}`);
+  }
+  const day6 = makeDayMap(days.find(day => day.n === 6)).points;
+  const sevens = day6.filter(point => point[8] === 7);
+  assert.deepEqual(sevens.map(point => point[9]).sort(), ['7a', '7b']);
+  assert.deepEqual(sevens.map(point => point[2]).sort(), ['大教堂島 Ostrów Tumski', '波茲南主教座堂'].sort());
+});
+
+test('N1：錯開的圖釘有引線元素，只在 is-nudged 顯示、不攔截點擊', () => {
+  const css = fs.readFileSync(path.resolve('src/styles/main.css'), 'utf8');
+  assert.match(css, /\.trip-pin \.trip-leader\s*\{[^}]*display:\s*none[^}]*pointer-events:\s*none/);
+  assert.match(css, /\.trip-pin\.is-nudged \.trip-leader\s*\{\s*display:\s*block/);
+  const tpl = fs.readFileSync(path.resolve('src/templates/map.mjs'), 'utf8');
+  assert.match(tpl, /class="trip-leader"/);
+  assert.match(tpl, /Math\.atan2\(best\.dy, best\.dx\)/);
 });
 
 test('F5／F6：別名讓主要停留點有序號；皇家大道對到第一次經過的那一列', () => {

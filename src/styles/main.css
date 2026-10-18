@@ -7547,6 +7547,25 @@ html {
   content: "";
 }
 
+/* 錯開圖釘的引線：起點＝原位（圖釘中心），朝挪開後的圓標延伸；細、半透明、壓在圓標底下、不攔截點擊。
+   長度與旋轉角由 declutter() 依 dx,dy 設定；沒挪開時隱藏。 */
+.trip-pin .trip-leader {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 1.5px;
+  margin-top: -0.75px;
+  background: rgb(31 41 55 / 70%);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+.trip-pin.is-nudged .trip-leader { display: block; }
+.trip-pin.is-nudged span { position: relative; }
+.trip-pin.is-nudged::after { z-index: 1; }
+/* 7a／7b 這類三字標籤字級縮小，才放得進 26px 圓標。 */
+.trip-pin-tag span { font-size: 10.5px; letter-spacing: -0.5px; }
+
 .step-pin {
   display: inline-flex;
   align-items: center;
