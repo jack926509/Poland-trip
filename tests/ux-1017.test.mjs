@@ -285,3 +285,31 @@ test('F3c：補充圖釘各自帶座標查證日期，不再一律寫死 2026-09
   assert.ok(popupRegex, '彈窗應含查證日期正則');
   assert.ok(new RegExp(`^${popupRegex[1]}$`).test('2026-10-19'), `建置後的正則 ${popupRegex[1]} 比對不到日期`);
 });
+
+test('N4：可視高度 600 以下（iPhone SE Safari 分頁）旅途中今日卡再壓縮留白，導航鈕落在底部列之上，375×667 以上不受影響', () => {
+  const source = css();
+  const rule = source.match(/@media \(max-width: 600px\) and \(max-height: 600px\) \{([\s\S]*?)\n\}/);
+  assert.ok(rule, '應有 max-height: 600px 的矮螢幕規則');
+  for (const selector of ['.today-compact { margin-top', '.today-compact .today-sos {', '.today-compact .today-head {', '.today-compact .today-block {', '.today-compact .today-next-clock b {', '.today-compact .today-next-nav {']) {
+    assert.ok(rule[1].includes(selector), `矮螢幕規則應壓縮 ${selector}`);
+  }
+  assert.doesNotMatch(rule[1], /display: none|visibility: hidden/, '只壓縮留白，不隱藏任何內容');
+  assert.match(source, /@media \(max-width: 600px\) and \(max-height: 700px\) \{\s*\.today-compact \.today-head h2 \{ position: absolute;/, '既有 700px 規則仍在');
+  // SOS 仍排在日卡之前（DOM 順序不變）
+  const html = read('today.html');
+  assert.ok(html.indexOf('data-today-sos') < html.indexOf('data-today-cards'));
+});
+
+test('F4：待辦頁刊頭、「本頁章節」、分類大標只在 .is-compact 的頁面縮小；其他實用頁輸出不變、文字不刪', () => {
+  const source = css();
+  assert.match(source, /\.journal-practical \.page:has\(> \.is-compact\) \.chapter-index ol \{ flex-wrap: nowrap;[^}]*overflow-x: auto; \}/);
+  assert.match(source, /\.journal-practical \.page:has\(> \.is-compact\) \.section-heading h2 \{ font-size: 1\.4rem; \}/);
+  assert.match(source, /@media \(min-width: 1000px\) \{\s*\.journal-appendix-header\.is-compact \{ display: flex;/);
+  const todos = read('practical/todos.html');
+  assert.match(todos, /<header class="journal-appendix-header is-compact">/);
+  assert.match(todos, /<p class="chapter-index-label"[^>]*>本頁章節<\/p>/, '「本頁章節」文字仍在');
+  assert.match(todos, /class="section-heading"><span class="section-num">Rail/);
+  for (const page of ['booking', 'dining', 'database', 'tickets', 'transit', 'shopping', 'notes', 'groceries', 'essentials']) {
+    assert.doesNotMatch(read(`practical/${page}.html`), /is-compact/, `${page} 頁不可帶 is-compact`);
+  }
+});
