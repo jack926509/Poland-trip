@@ -255,3 +255,14 @@ test('N1：數字圖釘依編號疊層並在 zoomend 錯開，不再一律 zInde
   assert.doesNotMatch(day, /zIndexOffset: number \? 100 : 0/, 'zIndexOffset 不可再是固定 100');
   assert.match(css(), /\.trip-pin\.is-nudged::after \{/);
 });
+
+test('F3b：同一列的 a／b／c 依時間表文字先後標（Day 5 第 17 列 Słodowa 島 → 沙島；Day 2 城門 → 甕城）', () => {
+  assert.deepEqual(pinLabels([7, 7, 7], [30, 5, Infinity]), ['7b', '7a', '7c'], '依位置排序，找不到位置的排最後');
+  assert.deepEqual(pinLabels([7, 7, 7], [Infinity, Infinity, 3]), ['7b', '7c', '7a'], '同位置或都沒位置時維持原陣列順序');
+  const label = (n, name) => makeDayMap(days.find(day => day.n === n)).points.find(point => point[2].startsWith(name))?.[9];
+  assert.equal(label(5, 'Słodowa 島'), '17a');
+  assert.equal(label(5, '沙上聖母堂'), '17b');
+  assert.equal(label(2, '聖弗洛里安城門'), '8a');
+  assert.equal(label(2, '甕城'), '8b');
+  assert.ok(/^\d+$/.test(label(2, 'Pimiento')), 'Day 2 Pimiento 午餐要有純數字編號');
+});

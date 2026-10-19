@@ -53,21 +53,26 @@ function baseKeys(name) {
 
 // 回傳名稱在文字中最長的可信對應長度；0 代表對不上。
 // 中文名稱允許取 3 字以上的連續片段（「辛德勒工廠博物館」對「★ 辛德勒工廠」），通稱片段不算。
-function matchLength(keys, text, { skipAddress = false } = {}) {
+function matchLength(keys, text, opts) { return matchDetail(keys, text, opts).best; }
+// 同時回傳最長對應片段在文字中的出現位置 at（對不上為 Infinity），供同一列多顆圖釘依文字先後標 a／b。
+function matchDetail(keys, text, { skipAddress = false } = {}) {
   const haystack = String(text || '').toLowerCase();
   let best = 0;
+  let bestAt = Infinity;
   const found = needle => {
     let from = 0;
     for (;;) {
       const at = haystack.indexOf(needle, from);
       if (at === -1) return false;
-      if (!skipAddress || !/^\s*\d/.test(haystack.slice(at + needle.length))) return true;
+      if (!skipAddress || !/^\s*\d/.test(haystack.slice(at + needle.length))) { lastAt = at; return true; }
       from = at + 1;
     }
   };
+  let lastAt = Infinity;
+  const take = (len, at) => { if (len > best || (len === best && at < bestAt)) { best = len; bestAt = at; } };
   for (const key of keys) {
     const lower = key.toLowerCase();
-    if (found(lower)) { best = Math.max(best, key.length); continue; }
+    if (found(lower)) { take(key.length, lastAt); continue; }
     if (!CJK.test(key)) continue;
     for (let len = key.length - 1; len >= 3 && len > best; len -= 1) {
       let hit = false;
@@ -76,15 +81,15 @@ function matchLength(keys, text, { skipAddress = false } = {}) {
         if (GENERIC_KEYS.has(piece) || [...GENERIC_KEYS].some(word => word.includes(piece))) continue;
         if (found(piece)) { hit = true; break; }
       }
-      if (hit) { best = Math.max(best, len); break; }
+      if (hit) { take(len, lastAt); break; }
     }
   }
-  return best;
+  return { best, at: bestAt };
 }
 
 // 回傳 { number, strength }：strength 用來在同一列被好幾顆圖釘搶時決定誰留下（標題對上 > 說明對上，再比對上長度）。
 function matchPin(name, steps, category) {
-  const none = { number: null, strength: 0 };
+  const none = { number: null, strength: 0, at: Infinity };
   const keys = pinNameKeys(name);
   if (!keys.length) return none;
   const allowMovementLabel = DESTINATION_CATEGORIES.has(category);
@@ -97,12 +102,13 @@ function matchPin(name, steps, category) {
     }
     return bestIndex;
   };
-  const labelScores = steps.map(step => (!allowMovementLabel && MOVEMENT.test(step.label) ? 0 : matchLength(keys, step.label, { skipAddress: true })));
-  let index = pick(labelScores);
-  if (index !== -1) return { number: index + 1, strength: 1000 + labelScores[index] };
-  const subScores = steps.map(step => (MOVEMENT.test(step.label) ? 0 : matchLength(keys, step.sub, { skipAddress: true })));
-  index = pick(subScores);
-  return index === -1 ? none : { number: index + 1, strength: subScores[index] };
+  const labelHits = steps.map(step => (!allowMovementLabel && MOVEMENT.test(step.label) ? { best: 0, at: Infinity } : matchDetail(keys, step.label, { skipAddress: true })));
+  let index = pick(labelHits.map(hit => hit.best));
+  if (index !== -1) return { number: index + 1, strength: 1000 + labelHits[index].best, at: labelHits[index].at };
+  const subHits = steps.map(step => (MOVEMENT.test(step.label) ? { best: 0, at: Infinity } : matchDetail(keys, step.sub, { skipAddress: true })));
+  index = pick(subHits.map(hit => hit.best));
+  // 標題沒對上、靠說明文字對上的，位置排在標題之後（加上標題長度），讓「那列文字」的先後仍然成立。
+  return index === -1 ? none : { number: index + 1, strength: subHits[index].best, at: String(steps[index].label || '').length + subHits[index].at };
 }
 
 export function stepNumberForPin(name, steps, category = 'sight') {
@@ -114,7 +120,7 @@ export function stepNumberForPin(name, steps, category = 'sight') {
 // 更遠的就不編號，免得把兩個不同地點標成同一站。
 const SAME_STOP_KM = 0.4;
 const distanceKm = (a, b) => Math.hypot((a[0] - b[0]) * 111.32, (a[1] - b[1]) * 111.32 * Math.cos(a[0] * Math.PI / 180));
-export function numberPins(points, steps) {
+export function numberPins(points, steps, positions) {
   const matches = points.map(point => matchPin(point[2], steps, point[5]));
   const anchors = new Map();
   matches.forEach((match, i) => {
@@ -123,6 +129,7 @@ export function numberPins(points, steps) {
     if (current === undefined || match.strength > matches[current].strength) anchors.set(match.number, i);
   });
   return matches.map((match, i) => {
+    if (positions) positions[i] = match.at;
     if (match.number === null) return null;
     const anchor = anchors.get(match.number);
     return anchor === i || distanceKm(points[i], points[anchor]) <= SAME_STOP_KM ? match.number : null;
@@ -131,15 +138,17 @@ export function numberPins(points, steps) {
 
 // 同一列共用序號的好幾顆圖釘（規則允許，相距 400 m 內），地圖上改標 7a／7b…，
 // 使用者才不會以為同一頁有兩顆「7」。單獨一顆的仍是純數字；時間表那一列的序號不變。
-export function pinLabels(numbers) {
+// positions（選用）＝各圖釘名稱在該列文字出現的位置：a／b／c 依文字先後給（走法順序）；
+// 找不到位置（Infinity／缺漏）的排最後，彼此維持原本的陣列順序。
+export function pinLabels(numbers, positions = []) {
   const total = new Map();
   numbers.forEach(n => { if (n) total.set(n, (total.get(n) || 0) + 1); });
-  const seen = new Map();
-  return numbers.map(n => {
+  const pos = i => (Number.isFinite(positions[i]) ? positions[i] : Infinity);
+  return numbers.map((n, i) => {
     if (!n) return null;
     if (total.get(n) < 2) return String(n);
-    const k = seen.get(n) || 0;
-    seen.set(n, k + 1);
+    let k = 0;
+    numbers.forEach((m, j) => { if (m === n && j !== i && (pos(j) < pos(i) || (pos(j) === pos(i) && j < i))) k += 1; });
     return n + String.fromCharCode(97 + k);
   });
 }
@@ -176,8 +185,9 @@ export function makeDayMap(day) {
   points.push(...(daySupplementaryPins[day.n] || []));
   for (const point of daySupplementaryPins[day.n] || []) checks[point[2]] = { status: 'coordinate-verified', checkedAt: '2026-09-08', coordinateSource: point[6] };
   // point[7] 已被部分圖釘拿來放門市 ID，時間表序號放在 point[8]；複製陣列，不改到共用的城市圖釘資料。
-  const numbers = numberPins(points, day.steps);
-  const labels = pinLabels(numbers);
+  const positions = [];
+  const numbers = numberPins(points, day.steps, positions);
+  const labels = pinLabels(numbers, positions);
   const numberedPoints = points.map((point, i) => {
     const copy = point.slice(0, 8);
     while (copy.length < 8) copy.push(null);

@@ -38,6 +38,12 @@ export const daySupplementaryPins = {
     venuePin('krakow-wawel-cathedral', { label: 'Wawel 3 · 主入口區', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=50.054727&mlon=19.935226' }),
     venuePin('krakow-st-mary-basilica', { label: 'plac Mariacki 5', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=50.061692&mlon=19.939409' }),
     venuePin('krakow-sukiennice', { label: 'Rynek Główny 3', category: 'shop', coordinateSource: 'https://www.openstreetmap.org/?mlat=50.061713&mlon=19.937349' }),
+    // 2026-10-19 補 12:10 城門列與 13:00 Pimiento 午餐列的圖釘：座標取自 OpenStreetMap 物件，
+    // Nominatim 2026-10-19 查得（城門 way 39357538、甕城 relation 13562708、Pimiento node 2628685548，
+    // 門牌 Świętego Filipa 21 與行程地址一致）。Stary Kleparz 只當街景路過，不另立圖釘。
+    [50.0648558, 19.9413527, '聖弗洛里安城門 Brama Floriańska', 'Floriańska 北端 · 只看外觀', 'https://www.google.com/maps/search/?api=1&query=Brama%20Floria%C5%84ska%2C%20Krak%C3%B3w', 'sight', 'https://www.openstreetmap.org/way/39357538'],
+    [50.0654581, 19.9414510, '甕城 Barbakan', 'Basztowa 街旁 · 只看外觀，收費展館不進', 'https://www.google.com/maps/search/?api=1&query=Barbakan%2C%20Basztowa%2C%20Krak%C3%B3w', 'sight', 'https://www.openstreetmap.org/relation/13562708'],
+    [50.0677985, 19.9421352, 'Pimiento Shop and Bistro', 'Świętego Filipa 21 · 13:00 午餐', diningPlaces['krakow-pimiento-shop-bistro'].map, 'food', 'https://www.openstreetmap.org/node/2628685548'],
     [50.046828, 19.954386, 'Podgórze・猶太英雄廣場', '步行往辛德勒工廠的明確中途錨點', 'https://www.google.com/maps/search/?api=1&query=Ghetto%20Heroes%20Square%2C%20Krak%C3%B3w', 'sight', 'https://www.openstreetmap.org/?mlat=50.046828&mlon=19.954386'],
   ],
   3: [
