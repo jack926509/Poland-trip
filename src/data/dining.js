@@ -645,7 +645,7 @@ export const cafeGuide = [
     { placeId: 'wroclaw-central-cafe', type: '早餐 · 咖啡', when: 'Day 5 · 07:30 早餐（已排入）' },
     { placeId: 'wroclaw-charlotte-pokoyhof', type: '法式早餐 · 麵包', when: 'Day 5 · Central Cafe 沒供餐時的同街備案' },
     { placeId: 'wroclaw-paloma-coffee', type: '精品咖啡', when: 'Day 5 · 08:50 鹽廣場順路外帶' },
-    { placeId: 'wroclaw-el-gato-specialty-coffee', type: '精品咖啡', when: 'Day 5 · 11:10 咖啡休息（已排入）' },
+    { placeId: 'wroclaw-el-gato-specialty-coffee', type: '精品咖啡', when: 'Day 5 · 10:20 咖啡休息（已排入）' },
     { placeId: 'wroclaw-dessert-boutique', type: '精緻甜點', when: 'Day 5 · 糖果屋那條街，週三 12:00 起' },
   ] },
   { cityKey: 'poznan', city: '波茲南', items: [

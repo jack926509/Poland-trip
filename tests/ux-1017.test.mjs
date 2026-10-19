@@ -143,7 +143,9 @@ test('F5／F6：別名讓主要停留點有序號；皇家大道對到第一次�
   assert.match(stepLabel(2, pinNumber(2, '中央市集廣場')), /★ 中央廣場/);
   assert.match(stepLabel(4, pinNumber(4, 'ibis budget Krakow Stare Miasto')), /ibis/);
   assert.match(stepLabel(6, pinNumber(6, '舊市集廣場 Stary Rynek')), /廣場卡正面/);
-  assert.equal(pinNumber(1, '皇家大道・Krakowskie Przedmieście'), 10);
+  // 2026-10-19：原「皇家大道」圖釘座標改到聖十字教堂並改名，對到「★ 聖十字教堂」那列；哥白尼紀念碑另有圖釘，仍是第 10 列。
+  assert.match(stepLabel(1, pinNumber(1, '聖十字教堂 Kościół św. Krzyża')), /聖十字教堂/);
+  assert.equal(pinNumber(1, '哥白尼紀念碑 Pomnik Kopernika'), 10);
   assert.match(stepLabel(1, 10), /哥白尼紀念碑/);
 });
 

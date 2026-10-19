@@ -926,7 +926,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "Krupnicza 6，離 Charlotte（plac Szczepański）步行約 5 分；10/27（週二）早餐後或回城取行李前順路買。"
+      "Krupnicza 6，在老城西側；10/27（週二）回城取行李前順路買。"
     ],
     "hoursNote": "2026-04 目錄，各來源不一",
     "liveCheckedAt": "2026-10-12",

@@ -25,7 +25,11 @@ export const dayMapPlans = {
 // Nominatim 查詢確認門牌或名稱與行程地址一致，第 7 欄記 OSM 物件連結。
 export const daySupplementaryPins = {
   1: [
-    venuePin('warsaw-krakowskie-przedmiescie', { displayName: '皇家大道・Krakowskie Przedmieście', label: '聖十字教堂前：傍晚散步北行到總統府的中段', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.242160&mlon=21.015690' }),
+    // 2026-10-19 座標改為聖十字教堂（Krakowskie Przedmieście 3，OSM way 28092628，Nominatim 2026-10-19 查得）；
+    // 原本沿用 venues.js 皇家大道街道點，落在總統府附近，與說明差約 390 m；改名後序號對到「★ 聖十字教堂」那一列。
+    // 哥白尼紀念碑另立一顆（OSM node 282661680，Nominatim 2026-10-19 查得），讓「哥白尼紀念碑＋Staszic 宮」那列保有序號。
+    [52.2381578, 21.0179739, '哥白尼紀念碑 Pomnik Kopernika', 'Krakowskie Przedmieście 南端 · Staszic 宮前', 'https://www.google.com/maps/search/?api=1&query=Pomnik%20Miko%C5%82aja%20Kopernika%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/node/282661680'],
+    [52.2387357, 21.0167603, '聖十字教堂 Kościół św. Krzyża', 'Krakowskie Przedmieście 3 · 皇家大道傍晚散步北行的中段', 'https://www.google.com/maps/search/?api=1&query=Ko%C5%9Bci%C3%B3%C5%82%20%C5%9Awi%C4%99tego%20Krzy%C5%BCa%2C%20Krakowskie%20Przedmie%C5%9Bcie%203%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/28092628'],
     venuePin('warsaw-centralna-station', { label: 'Złote Tarasy 就在車站旁：晚餐後逛街採買', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.228917&mlon=21.003315' }),
     [52.2446285, 21.0137953, 'E.Wedel Pijalnia · Krakowskie Przedmieście 45', '17:35 熱巧克力：今天往北的折返點', diningPlaces['warsaw-wedel-krakowskie-45'].map, 'food', 'https://www.openstreetmap.org/node/5194716723'],
     [52.2345825, 21.0189984, 'Specjały Regionalne', 'Nowy Świat 44 · 18:30 晚餐', diningPlaces['warsaw-specjaly-regionalne'].map, 'food', 'https://www.openstreetmap.org/node/4408894491'],
@@ -70,7 +74,7 @@ export const daySupplementaryPins = {
     venuePin('poznan-cathedral', { label: 'Ostrów Tumski 17', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.411873&mlon=16.949286' }),
     venuePin('poznan-town-hall', { displayName: '波茲南市政廳・山羊鐘樓', label: 'Stary Rynek 1 · 12:00 卡位點', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.408265&mlon=16.934560' }),
     venuePin('poznan-stary-browar', { label: 'Półwiejska 42 · 12:45 舊啤酒廠紅磚建築', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.400887&mlon=16.928376' }),
-    venuePin('poznan-ck-zamek', { displayName: '帝王城堡 Zamek Cesarski（外觀）', label: 'Święty Marcin 80/82 · 15:20 帝王區只看外觀', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.407808&mlon=16.919214' }),
+    venuePin('poznan-ck-zamek', { displayName: '帝王城堡 Zamek Cesarski（外觀）', label: 'Święty Marcin 80/82 · 15:25 帝王區只看外觀', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.407808&mlon=16.919214' }),
     venuePin('poznan-glowny-station', { label: '17:05 前抵達的城際火車出發站', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.402786&mlon=16.912914' }),
     [52.4040190, 16.9295712, 'Charlotte Krysiewicza', 'Krysiewicza 3a/27 · 07:15 早餐', diningPlaces['poznan-charlotte-krysiewicza'].map, 'food', 'https://www.openstreetmap.org/node/13392485412'],
     [52.4218633, 16.9356334, 'Cytadela「Nierozpoznani」', 'Cytadela 公園內 · 雕塑群中心', 'https://www.google.com/maps/search/?api=1&query=Nierozpoznani%20sculptures%2C%20Cytadela%2C%20Pozna%C5%84', 'sight', 'https://www.openstreetmap.org/way/430843991'],
@@ -79,7 +83,7 @@ export const daySupplementaryPins = {
     [52.4091560, 16.9310337, '皇家城堡山丘（Przemysł 王城）', 'Góra Przemysła · 皇家城堡建物', 'https://www.google.com/maps/search/?api=1&query=Royal%20Castle%2C%20G%C3%B3ra%20Przemys%C5%82a%2C%20Pozna%C5%84', 'sight', 'https://www.openstreetmap.org/way/363747422'],
     [52.4079388, 16.9340378, 'ROGAL Świętomarciński', 'Stary Rynek 11/17 · 座標取 11 號門牌，約 20 公尺內', diningPlaces['poznan-rogal'].map, 'food', 'https://www.openstreetmap.org/node/7102833673'],
     [52.4081225, 16.9277159, '自由廣場 Plac Wolności', '廣場範圍中心', 'https://www.google.com/maps/search/?api=1&query=Plac%20Wolno%C5%9Bci%2C%20Pozna%C5%84', 'sight', 'https://www.openstreetmap.org/way/634296533'],
-    [52.4084134, 16.9222469, 'Okrąglak 圓形百貨', 'Seweryna Mielżyńskiego 14 · 離 Carla 步行約 5 分鐘', 'https://www.google.com/maps/search/?api=1&query=Okr%C4%85glak%2C%20Seweryna%20Miel%C5%BCy%C5%84skiego%2014%2C%20Pozna%C5%84', 'sight', 'https://www.openstreetmap.org/way/246117826'],
+    [52.4084134, 16.9222469, 'Okrąglak 圓形百貨', 'Seweryna Mielżyńskiego 14 · 飯後往帝王區順路拍', 'https://www.google.com/maps/search/?api=1&query=Okr%C4%85glak%2C%20Seweryna%20Miel%C5%BCy%C5%84skiego%2014%2C%20Pozna%C5%84', 'sight', 'https://www.openstreetmap.org/way/246117826'],
     [52.4065273, 16.9261119, 'Carla Trattoria Moderna', 'Święty Marcin 34 · 建物中心，實際店門約 30 公尺內', diningPlaces['poznan-carla-trattoria-moderna'].map, 'food', 'https://www.openstreetmap.org/way/130279698'],
     [52.4072699, 16.9119251, 'Kaponiera「5 Figur」', 'Roosevelta 22 附近 · 街頭雕塑', 'https://www.google.com/maps/search/?api=1&query=5%20Figur%20sculpture%2C%20Kaponiera%2C%20Pozna%C5%84', 'sight', 'https://www.openstreetmap.org/node/9107873635'],
   ],
@@ -108,6 +112,7 @@ export const daySupplementaryPins = {
   ],
   8: [
     venuePin('warsaw-centralna-station', { label: '由 Hotel Metropol 前往機場線的市中心交通錨點', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.228917&mlon=21.003315' }),
+    [52.2294024, 21.0075880, 'Warszawa Śródmieście', 'SKM S2 上車站 · Hotel Metropol 旁約 250 公尺', 'https://www.google.com/maps/search/?api=1&query=Warszawa%20%C5%9Ar%C3%B3dmie%C5%9Bcie%20SKM', 'transport', 'https://www.openstreetmap.org/node/2351113017'],
     [52.169709, 20.975785, 'Warszawa Lotnisko Chopina 機場鐵路站', 'PKP PLK 車站目錄座標 · 非航廈報到入口', 'https://www.google.com/maps/search/?api=1&query=Warszawa%20Lotnisko%20Chopina%20railway%20station%2C%20Warszawa%2C%20Poland', 'transport', 'https://portalpasazera.pl/en/KatalogStacji?stacja=Warszawa+Lotnisko+Chopina'],
   ],
 };

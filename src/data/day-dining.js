@@ -61,7 +61,7 @@ export const dayDiningPlans = {
     {
       "placeId": "krakow-lajkonik-basztowa",
       "role": "隔日備餐採買",
-      "note": "寄放行李後先買隔日早餐及午餐（三明治、Drożdżówka 甜麵包、可頌、水果），接著走去中央廣場；不等晚餐後才去。需冷藏的餐點先確認住宿保存條件，否則選常溫麵包與水果。",
+      "note": "寄放行李後先買隔日早餐及午餐（三明治、Drożdżówka 甜麵包、可頌、水果），接著逛旁邊的甕城一帶；不等晚餐後才去。需冷藏的餐點先確認住宿保存條件，否則選常溫麵包與水果。",
       "stepId": "d2-prep",
       "planStatus": "scheduled",
       "dayHours": "07:00–19:00"
@@ -69,7 +69,7 @@ export const dayDiningPlans = {
     {
       "placeId": "krakow-pimiento-shop-bistro",
       "role": "午餐首選（條件式）",
-      "note": "Świętego Filipa 21，離 ibis 步行約 7 分、離中央廣場約 12 分；13:00 準時入座才吃得到午餐菜單：Tatar 阿根廷牛韃靼、Argentine burger，或照重量點阿根廷牛排。13:50 前離店，步行約 26 分接 14:30 瓦維爾大教堂。",
+      "note": "Świętego Filipa 21，離 ibis 步行約 7 分；13:00 準時入座才吃得到午餐菜單：Tatar 阿根廷牛韃靼、Argentine burger，或照重量點阿根廷牛排。13:45 前離店，沿 Floriańska 往南，14:00 中央廣場、14:30 瓦維爾大教堂。",
       "stepId": "d2-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
@@ -179,13 +179,10 @@ export const dayDiningPlans = {
   "4": [
     {
       "placeId": "krakow-charlotte-plac-szczepanski",
-      "role": "早餐首選（條件式）",
-      "note": "先退房寄行李，07:05 入座：French Breakfast、可頌或蛋料理＋咖啡；07:35 收尾後步行回 Kraków Główny，搭 08:00 前後的 KMŁ 趕 09:00 鹽礦場次。",
-      "stepId": "d4-breakfast",
-      "planStatus": "scheduled",
-      "meal": "breakfast",
-      "condition": "候位太久就外帶，或改吃前晚在 Lajkonik／Żabka 備妥的麵包。",
-      "dayHours": "07:00–24:00"
+      "role": "早餐備選（不順路）",
+      "note": "原早餐首選；離 ibis 與車站約 1 公里，來回會吃掉 07:55 到站的緩衝，改在 ibis 吃前晚備妥的麵包。",
+      "stepId": null,
+      "planStatus": "candidate"
     },
     {
       "placeId": "wieliczka-bistro-posolone",
@@ -369,7 +366,7 @@ export const dayDiningPlans = {
     {
       "placeId": "poznan-carla-trattoria-moderna",
       "role": "午餐首選（條件式）",
-      "note": "Święty Marcin 34，14:00 開門即入座（Okrąglak 就在旁邊，到帝王城堡約 17 分）：手工麵、披薩與小盤分享，兩人點兩道麵加一份分享即可。14:00–15:15 用餐，15:15 前結帳；15:30 還沒吃完，就把帝王區縮短到只看帝王城堡外觀、跳過 Kaponiera，先保 17:05 到站。",
+      "note": "Święty Marcin 34，14:00 開門即入座（飯後往西順路拍 Okrąglak，到帝王城堡約 17 分）：手工麵、披薩與小盤分享，兩人點兩道麵加一份分享即可。14:00–15:15 用餐，15:15 前結帳；15:30 還沒吃完，就把帝王區縮短到只看帝王城堡外觀、跳過 Kaponiera，先保 17:05 到站。",
       "stepId": "d6-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
@@ -639,6 +636,14 @@ export const selfCateredMeals = {
       "name": "自備午餐與水",
       "stepId": "d3-lunch",
       "note": "依導覽允許的休息時段與用餐區吃三明治／水果；不在參觀區進食，不為午餐離團。"
+    }
+  ],
+  "4": [
+    {
+      "meal": "breakfast",
+      "name": "自備早餐（前晚買好）",
+      "stepId": "d4-breakfast",
+      "note": "前晚在 Lajkonik（Basztowa 15）或 Żabka 買好麵包與飲品，07:05–07:45 在 ibis 吃完；車站只隔約 200 公尺，07:55 前到站。"
     }
   ],
   "8": [

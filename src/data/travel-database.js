@@ -335,7 +335,7 @@ const accommodationAddress = (id, stepLabels = []) => {
 // 用字串鍵（displayName）比對。
 const addressStepLabels = {
   '華沙蕭邦機場': ['抵蕭邦機場', '抵 Chopin 第一航廈', '退稅文件 + 報到 + 安檢', '★ QR 260 起飛'],
-  'Warszawa Centralna': ['退房 → Warszawa Centralna', '退房後前往上車站', '抵華沙中央車站', '抵 Warszawa Centralna'],
+  'Warszawa Centralna': ['退房 → Śródmieście（S2）或 Warszawa Centralna（S3）', '退房後前往上車站', '抵華沙中央車站', '抵 Warszawa Centralna'],
   '華沙皇家城堡': ['★ 城堡廣場（白天版）'],
   '華沙老城市場廣場': ['★ 老城廣場', 'Kanonia 許願鐘 → 聖若望大教堂'],
   'Krakowskie Przedmieście': ['哥白尼紀念碑＋Staszic 宮', '★ 聖十字教堂', '華沙大學正門', '訪親會教堂＋普魯斯紀念碑', '★ 總統府＋Hotel Bristol 外觀'],
@@ -430,7 +430,7 @@ export const dayOperations = {
     ],
     navigation: [
       { mode: 'PKP', route: 'Warszawa Centralna → Kraków Główny', action: `已購 EIP 5300 ${eip5300.dep} 由 Warszawa Centralna 出發；從 Hotel Metropol 步行約 500 公尺。月台、車廂與座位依票券詳細頁及現場電子牌確認。` },
-      { mode: '步行／電車／計程車', route: 'Kraków Główny → 中央廣場 → Pimiento → Wawel → 辛德勒工廠', action: '先寄放行李；午餐 13:00 在 Pimiento，14:30 瓦維爾大教堂、15:15 Wawel 短路線；16:15 由 Wawel 搭電車或計程車到辛德勒工廠，17:10 前到入口。電車車號與轉乘用 Jakdojade 查即時資料。' },
+      { mode: '步行／電車／計程車', route: 'Kraków Główny → 甕城 → Pimiento → 中央廣場 → Wawel → 辛德勒工廠', action: '先寄放行李、逛北邊甕城一帶；午餐 13:00 在 Pimiento，飯後沿 Floriańska 往南，14:00 中央廣場、14:30 瓦維爾大教堂、15:15 Wawel 短路線；16:15 由 Wawel 搭電車或計程車到辛德勒工廠，17:10 前到入口。電車車號與轉乘用 Jakdojade 查即時資料。' },
     ],
     dailyAlerts: [
       '10/25 為非營業週日，多數一般商店關閉；餐廳與例外店家仍逐店確認。',
@@ -455,7 +455,7 @@ export const dayOperations = {
       '所有入場證必須事先線上取得；至少提前 30 分鐘抵達安檢。',
       '行程內容沉重且戶外時間長，帶水、防雨保暖層，晚間不再加排高強度活動。',
     ],
-    nightChecklist: [...standardNightChecklist, '確認鹽礦 09:00 英文團票券 PDF 已存離線、06:55 退房寄行李、07:55 前到 Kraków Główny', '確認 Charlotte Plac Szczepański 07:00 開門並備好外帶麵包，確認 Posolone 導覽後用餐餘裕，查 Samarqand 接單與車站 KFC 備案'],
+    nightChecklist: [...standardNightChecklist, '確認鹽礦 09:00 英文團票券 PDF 已存離線、06:55 退房寄行李、07:55 前到 Kraków Główny', '今晚在 Lajkonik 或 Żabka 備妥明早麵包，確認 Posolone 導覽後用餐餘裕，查 Samarqand 接單與車站 KFC 備案'],
   },
   4: {
     cityKey: 'wroclaw',
@@ -493,7 +493,7 @@ export const dayOperations = {
       accommodationAddress('poznan-towarowa'),
     ],
     navigation: [
-      { mode: '步行／電車', route: '老城 → 大學區 → 午餐 → 全景畫外觀 → 百年廳 → 沙島 → 座堂島', action: '上午全程步行；13:10 午餐後看全景畫外觀，13:20 過 Grunwaldzki 橋搭電車往東約 15 分到百年廳，14:50 再搭電車回座堂島一帶；電車車號用 Jakdojade 查。預留從座堂島回旅館取行李及前往車站的時間。' },
+      { mode: '步行／電車', route: '老城 → 屠夫巷 → El Gato → 大學區 → 午餐 → 全景畫外觀 → 百年廳 → Słodowa 島 → 沙島 → 座堂島', action: '上午全程步行；13:10 午餐後看全景畫外觀，13:20 過 Grunwaldzki 橋搭電車往東約 15 分到百年廳，14:50 再搭電車回 Słodowa 島一帶，由西往東走過沙島到座堂島；電車車號用 Jakdojade 查。預留從座堂島回旅館取行李及前往車站的時間。' },
       { mode: 'PKP', route: 'Wrocław Główny → Poznań Główny', action: '已購 IC 260 19:10，預計 20:29 抵 Poznań Główny（Koleo）；18:35 前抵站。車廂與座位依票券詳細頁。' },
     ],
     dailyAlerts: [
@@ -525,7 +525,7 @@ export const dayOperations = {
       accommodationAddress('warsaw-metropol'),
     ],
     navigation: [
-      { mode: '電車／叫車／步行', route: 'Cytadela → Śródka → 教堂島 → 舊城市場 → Stary Browar → Carla → 帝王區 → Kaponiera → Towarowa 取行李 → Poznań Główny', action: '08:00 搭電車到 Armii Poznań 站看 Cytadela，09:00 叫 Bolt 或 Uber 到 Rondo Śródka；之後全程步行。11:45 前到市政廳正面；14:00 Carla 午餐、15:15 前結帳，15:20 走帝王區只看外觀，16:15 從 Kaponiera 走約 300 公尺回 Towarowa 取行李，17:05 前抵站。' },
+      { mode: '電車／叫車／步行', route: 'Cytadela → Śródka → 教堂島 → 舊城市場 → Stary Browar → Carla → Okrąglak → 帝王區 → Kaponiera → Towarowa 取行李 → Poznań Główny', action: '08:00 搭電車到 Armii Poznań 站看 Cytadela，09:00 叫 Bolt 或 Uber 到 Rondo Śródka；之後全程步行。11:45 前到市政廳正面；14:00 Carla 午餐、15:15 前結帳，飯後往西順路拍 Okrąglak，15:25 走帝王區只看外觀，16:15 從 Kaponiera 走約 300 公尺回 Towarowa 取行李，17:05 前抵站。' },
       { mode: 'PKP', route: 'Poznań Główny → Warszawa Centralna', action: 'EIC 8104 已購票，17:40 發車；17:05 前到站，預計 19:59 抵 Warszawa Centralna（Koleo）。車廂與座位依票券詳細頁，搭車前再查月台與異動。' },
     ],
     dailyAlerts: [
@@ -582,6 +582,16 @@ export const dayOperations = {
       accommodationAddress('warsaw-metropol'),
       venueCard('warsaw-old-town-square', '華沙老城市場廣場'),
       venueCard('warsaw-centralna-station', 'Warszawa Centralna'),
+      {
+        name: 'Warszawa Śródmieście（SKM S2）',
+        address: 'Al. Jerozolimskie／Pasaż Wisławy Szymborskiej, Warszawa',
+        url: 'https://www.google.com/maps/search/?api=1&query=Warszawa%20%C5%9Ar%C3%B3dmie%C5%9Bcie%20SKM',
+        note: 'S2 往機場的上車站，Hotel Metropol 旁約 250 公尺；先開的是 S3 才改去 Centralna。',
+        reliable: true,
+        entranceNote: '站口在 Marszałkowska 與 Al. Jerozolimskie 路口一帶，往月台依站內 SKM 指標與電子牌；座標為 OSM node 2351113017。',
+        officialUrl: 'https://portalpasazera.pl/en/KatalogStacji?stacja=Warszawa+%C5%9Ar%C3%B3dmie%C5%9Bcie',
+        stepLabels: ['退房 → Śródmieście（S2）或 Warszawa Centralna（S3）'],
+      },
       venueCard('warsaw-chopin-airport', '華沙蕭邦機場'),
       venueCard('taipei-representative-office-warsaw', '駐波蘭台北代表處', '僅供緊急狀況備援，不列為一般行程站點。'),
     ],
@@ -614,6 +624,7 @@ const unresolvedStepReasons = {
   },
   2: {
     'EIP 5300 前往克拉科夫': dynamicTransitReason,
+    '聖弗洛里安城門 → 甕城 Barbakan → Stary Kleparz': '戶外步行段，城門在 Floriańska 北端、甕城在 Basztowa 街旁，Stary Kleparz 在 Pimiento 旁；只看外觀。',
     '電車或計程車前往辛德勒工廠': '電車車號與轉乘為動態資料，出發前用 Jakdojade 查；以辛德勒工廠入口地址為終點，17:10 前到場。',
   },
   3: {
@@ -642,8 +653,8 @@ const unresolvedStepReasons = {
     '咖啡休息 · El Gato Specialty Coffee': 'Odrzańska 8，餐廳導航見當日餐飲的點心段。',
     'Hala Targowa 市場大廳': 'Piaskowa 17 的市場大廳，依現場入口進入。',
     'Grunwaldzki 橋 → 電車往百年廳': dynamicTransitReason,
-    '電車回座堂島一帶': dynamicTransitReason,
-    '★ 沙島 → Słodowa 島': '戶外步行段，沙島在座堂島西側，過橋即到。',
+    '電車回 Słodowa 島一帶': dynamicTransitReason,
+    '★ Słodowa 島 → 沙島': '戶外步行段，由 Słodowa 島過小橋到沙島，再往東接座堂橋。',
     'IC 260 前往波茲南': dynamicTransitReason,
   },
   6: {
@@ -656,7 +667,7 @@ const unresolvedStepReasons = {
     '皇家城堡山丘': '老城西北側的戶外觀景點，只在外面拍。',
     '咖啡 · Weranda Caffe': 'Świętosławska 10，餐廳導航見當日餐飲。',
     '自由廣場 Plac Wolności': '戶外廣場，由老城往南步行約 5 分。',
-    'Okrąglak 圓形百貨外觀': '戶外建築外觀，離 Carla（Święty Marcin 34）步行約 5 分鐘。',
+    'Okrąglak 圓形百貨外觀': '戶外建築外觀，在 Carla（Święty Marcin 34）往西去帝王城堡的路上。',
     'Kaponiera 圓環': '戶外圓環，「5 figur」人像在 ul. Roosevelta 22 附近；由帝王城堡往西步行即到。',
     '取行李、前往 Poznań Główny': '公寓寄放與取行李地點須先向住宿確認，再前往車站。',
     '科學文化宮夜景（選配：Siatkarka 霓虹招牌）': '戶外夜景，回飯店途中經過；Siatkarka 招牌在 Plac Konstytucji。',
