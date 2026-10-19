@@ -313,3 +313,20 @@ test('F4：待辦頁刊頭、「本頁章節」、分類大標只在 .is-compact
     assert.doesNotMatch(read(`practical/${page}.html`), /is-compact/, `${page} 頁不可帶 is-compact`);
   }
 });
+
+test('F5：待辦頁刊頭說明完整換行（不再 nowrap / ellipsis），手機再壓縮留白讓第一筆待辦標題落在底部導覽列之上；只限 .is-compact', () => {
+  const source = css();
+  const dek = source.match(/\.journal-appendix-header\.is-compact \.hero-dek \{([^}]*)\}/);
+  assert.ok(dek, '應有 .is-compact .hero-dek 規則');
+  assert.doesNotMatch(dek[1], /nowrap|ellipsis|overflow: hidden/, '說明文字不可再被截成一行');
+  assert.match(dek[1], /white-space: normal;/);
+  const mobile = source.match(/\/\* 手機第一屏：待辦頁刊頭[\s\S]*?@media \(max-width: 700px\) \{([\s\S]*?)\n\}\n/);
+  assert.ok(mobile, '應有手機第一屏壓縮規則');
+  for (const selector of ['.journal-practical .page:has(> .is-compact) { padding-top: 0.5rem; }', '.journal-appendix-header.is-compact h1 {', '.journal-appendix-header.is-compact .hero-dek {', '.todo-summary p {', '.chapter-index {', '.section .lead {', '.todo-list { margin-top: 0.4rem; }']) {
+    assert.ok(mobile[1].includes(selector), `手機規則應壓縮 ${selector}`);
+  }
+  for (const line of mobile[1].split('\n').filter((l) => l.trim())) {
+    assert.match(line, /\.is-compact/, `手機規則每條都限定在 .is-compact：${line.trim()}`);
+  }
+  assert.doesNotMatch(mobile[1], /display: none|visibility: hidden|nowrap/, '只壓縮留白，不隱藏任何內容');
+});

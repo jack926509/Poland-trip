@@ -7747,10 +7747,8 @@ html {
 }
 .journal-appendix-header.is-compact .hero-dek {
   margin-top: 0.3rem;
-  overflow: hidden;
   font-size: 0.92rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: normal;
 }
 .journal-practical .page > .todo-summary {
   display: flex;
@@ -7783,6 +7781,23 @@ html {
   .journal-practical .page:has(> .is-compact) .todo-list .todo-item .todo-head { grid-column: 1; grid-row: 1; }
   .journal-practical .page:has(> .is-compact) .todo-list .todo-item .todo-checked { grid-column: 1; grid-row: 2; }
   .journal-practical .page:has(> .is-compact) .todo-list .todo-item .todo-action { grid-column: 2; grid-row: 1 / span 2; margin: 0; }
+}
+
+/* 手機第一屏：待辦頁刊頭說明改為完整換行後會變高，所以只在 .is-compact 內進一步壓縮留白與字距，
+   讓第一筆待辦標題落在底部導覽列之上。文字一字不刪，其他實用資訊頁不受影響。 */
+@media (max-width: 700px) {
+  .journal-practical .page:has(> .is-compact) { padding-top: 0.5rem; }
+  .journal-appendix-header.is-compact { margin-bottom: 0.5rem; padding: 0.5rem 0 0.4rem; }
+  .journal-appendix-header.is-compact h1 { font-size: 1.4rem; margin: 0.1rem 0; }
+  .journal-appendix-header.is-compact .hero-dek { margin-top: 0.15rem; font-size: 0.85rem; line-height: 1.45; }
+  .journal-practical .page > .is-compact ~ .todo-summary { padding-block: 0.35rem; padding-right: 0.8rem; }
+  .journal-practical .page > .is-compact ~ .todo-summary p { font-size: 0.8rem; line-height: 1.4; }
+  .journal-practical .page > .is-compact ~ .chapter-index { margin-block: 0.4rem; }
+  .journal-practical .page > .is-compact ~ section:first-of-type { margin-top: 0.6rem; }
+  .journal-practical .page:has(> .is-compact) .section-heading { margin-bottom: 0.3rem; padding-bottom: 0.3rem; }
+  .journal-practical .page:has(> .is-compact) .section-heading h2 { font-size: 1.25rem; }
+  .journal-practical .page:has(> .is-compact) .section .lead { margin-bottom: 0.5rem; font-size: 0.85rem; line-height: 1.5; }
+  .journal-practical .page:has(> .is-compact) .todo-list { margin-top: 0.4rem; }
 }
 
 /* M6 八天三餐長達一萬多 px：每天最後一行「↑ 換一天」回到日期列；旅途中日期列標出今天（aria-current="date"）。 */
