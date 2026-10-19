@@ -1,5 +1,5 @@
 import { mapPins, mapPinChecks } from '../data/cities.js';
-import { dayMapPlans, daySupplementaryPins } from '../data/day-maps.js';
+import { dayMapPlans, daySupplementaryPins, pinCoordinateCheckedAt, defaultPinCheckedAt } from '../data/day-maps.js';
 
 // UX 1017 H2：圖釘編號對回時間表。
 // 編號就是時間表的列序（第 N 列 → N），一顆圖釘取「最能對上它名稱」的那一列：
@@ -183,7 +183,8 @@ export function makeDayMap(day) {
     }
   }
   points.push(...(daySupplementaryPins[day.n] || []));
-  for (const point of daySupplementaryPins[day.n] || []) checks[point[2]] = { status: 'coordinate-verified', checkedAt: '2026-09-08', coordinateSource: point[6] };
+  // 每顆圖釘各自的座標查證日期（對照表見 day-maps.js）；沒登記的才退回預設日期。
+  for (const point of daySupplementaryPins[day.n] || []) checks[point[2]] = { status: 'coordinate-verified', checkedAt: pinCoordinateCheckedAt[day.n]?.[point[2]] || defaultPinCheckedAt, coordinateSource: point[6] };
   // point[7] 已被部分圖釘拿來放門市 ID，時間表序號放在 point[8]；複製陣列，不改到共用的城市圖釘資料。
   const positions = [];
   const numbers = numberPins(points, day.steps, positions);

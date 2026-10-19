@@ -7,7 +7,7 @@ import path from 'node:path';
 import { makeDayMap, stepNumberForPin, pinLabels } from '../src/lib/day-map.mjs';
 import { days } from '../src/data/trip.js';
 import { mapPins } from '../src/data/cities.js';
-import { daySupplementaryPins } from '../src/data/day-maps.js';
+import { daySupplementaryPins, pinCoordinateCheckedAt } from '../src/data/day-maps.js';
 
 const distDir = path.resolve('dist');
 const read = relativePath => fs.readFileSync(path.join(distDir, relativePath), 'utf8');
@@ -265,4 +265,23 @@ test('F3b：同一列的 a／b／c 依時間表文字先後標（Day 5 第 17 �
   assert.equal(label(2, '聖弗洛里安城門'), '8a');
   assert.equal(label(2, '甕城'), '8b');
   assert.ok(/^\d+$/.test(label(2, 'Pimiento')), 'Day 2 Pimiento 午餐要有純數字編號');
+});
+
+test('F3c：補充圖釘各自帶座標查證日期，不再一律寫死 2026-09-08', () => {
+  const checkedAt = (n, name) => makeDayMap(days.find(day => day.n === n)).checks[name].checkedAt;
+  assert.equal(checkedAt(2, 'Pimiento Shop and Bistro'), '2026-10-19');
+  assert.equal(checkedAt(8, 'Warszawa Śródmieście'), '2026-10-19');
+  const all = days.flatMap(day => Object.values(makeDayMap(day).checks).map(check => check.checkedAt));
+  assert.ok(new Set(all).size > 1, '不可每顆圖釘都是同一個日期');
+  for (const [n, pins] of Object.entries(daySupplementaryPins)) {
+    for (const pin of pins) {
+      assert.match(pinCoordinateCheckedAt[n]?.[pin[2]] || '', /^\d{4}-\d{2}-\d{2}$/, `Day ${n} ${pin[2]} 缺座標查證日期`);
+    }
+  }
+  // 建置輸出：Day 2 頁面內嵌的 mapChecks 要帶 Pimiento 的 10-19，而不是共用的 09-08
+  assert.match(read('day-02.html'), /"Pimiento Shop and Bistro":\{"status":"coordinate-verified","checkedAt":"2026-10-19"/);
+  // 彈窗日期正則經 template literal 輸出後反斜線要保留，否則 \d 變 d、日期永遠不顯示
+  const popupRegex = read('day-02.html').match(/\(\/\^(.+?)\$\/\.test\(check\.checkedAt/);
+  assert.ok(popupRegex, '彈窗應含查證日期正則');
+  assert.ok(new RegExp(`^${popupRegex[1]}$`).test('2026-10-19'), `建置後的正則 ${popupRegex[1]} 比對不到日期`);
 });
