@@ -5,10 +5,13 @@ import { escapeHtml as e } from '../lib/html.mjs';
 // 圖片會靜默地連到不存在的路徑。
 export function renderProductPhoto(product, pathPrefix = '') {
   const photo = product.photo;
-  if (!photo) return '<span class="source-meta">照片待補；請依商品名稱辨識</span>';
+  if (!photo) return `<span class="source-meta">照片待補；請依商品名稱辨識</span>`;
   const own = photo.license === '自行拍攝';
+  const shared = photo.license === '網友截圖';
   const credit = own
     ? '使用者自行拍攝 · 已裁切'
+    : shared
+    ? `截圖自 <a href="${e(photo.sourceUrl)}" target="_blank" rel="noopener noreferrer">${e(photo.creditName)}</a> · 已裁切，僅供辨識包裝`
     : `<a href="${e(photo.sourceUrl)}" target="_blank" rel="noopener noreferrer">Open Food Facts 貢獻者</a> · <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener noreferrer">CC BY-SA 3.0</a>${photo.src.endsWith('.webp') ? ' · 縮放及 WebP 轉檔' : ' · 原圖尺寸'}`;
   return `<figure class="grocery-photo">
     <a href="${e(pathPrefix)}${e(photo.src)}" data-product-photo aria-label="放大 ${e(photo.label)} 包裝照片">

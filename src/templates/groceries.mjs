@@ -161,9 +161,10 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
   const is2026 = product => product.sources.some(source => source.kind === '2026 旅遊推薦');
   const products = productGroup('先買小份試吃', '先試口味，再決定伴手禮數量。推薦理由是旅行採買建議，商品事實另附官方／零售商來源；不代表人氣排行。', groceryProducts.filter(is2026), true)
     + milkJuiceGroup(guide, pathPrefix)
-    + productGroup('經典補充', '經典零食已補查品牌或零售商資料；歷年網友推薦保留為參考，不能代表當期銷量或現貨。', groceryProducts.filter(product => !is2026(product) && !product.supplement && !product.drink))
+    + productGroup('經典補充', '經典零食已補查品牌或零售商資料；歷年網友推薦保留為參考，不能代表當期銷量或現貨。', groceryProducts.filter(product => !is2026(product) && !product.supplement && !product.drink && !product.drugstore))
     + productGroup('常溫選品補充', '依旅行用途挑選常溫零食，並核對品牌／零售商資料。是否可攜入台灣仍須依成分與入境規定確認。', groceryProducts.filter(product => product.supplement && !product.localOnly))
     + productGroup('當地吃・冷藏乳品', '在超市冷藏櫃找品牌與品名，不保證特定連鎖或分店有貨。冷藏品依包裝保存，購買前先確認住宿冰箱。', groceryProducts.filter(product => product.localOnly && !product.drink))
+    + productGroup('藥妝伴手禮（Rossmann）', '波蘭本地品牌的唇部保養，在 Rossmann 藥妝店找；色號與款式依門市現貨。', groceryProducts.filter(product => product.drugstore))
     + productGroup('當地喝・果汁飲料', '在飲料貨架或冷藏櫃找品牌；照片只代表一款口味，各分店是否供貨以現場為準。', groceryProducts.filter(product => product.drink));
 
   const sections = [

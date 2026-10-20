@@ -13,12 +13,22 @@ test('商品皆有本機真實照片、代表包裝說明與授權，單檔照�
   const standalone = fs.readFileSync('poland-travel-guide-2026.html', 'utf8');
   const sw = fs.readFileSync('dist/sw.js', 'utf8');
   const drinkPicks = [...groceryDrinkGuide.milk, ...groceryDrinkGuide.juice, ...groceryDrinkGuide.zabka];
-  assert.equal((page.match(/data-product-photo aria-label=/g) || []).length, groceryProducts.length + drinkPicks.length);
-  for (const product of [...groceryProducts, ...drinkPicks]) {
+  const withPhoto = groceryProducts.filter(product => product.photo);
+  assert.ok(groceryProducts.filter(product => !product.photo).every(product => product.photoPending), '沒照片的商品必須標 photoPending');
+  assert.equal((page.match(/data-product-photo aria-label=/g) || []).length, withPhoto.length + drinkPicks.length);
+  assert.ok(page.includes('照片待補；請依商品名稱辨識'));
+  for (const product of [...withPhoto, ...drinkPicks]) {
     const photo = product.photo;
     assert.ok(photo.width > 0 && photo.height > 0);
-    assert.ok(['CC BY-SA 3.0', '自行拍攝'].includes(photo.license), `${photo.src} 授權欄位不合法`);
-    assert.match(photo.sourceUrl, /^https:\/\/world\.openfoodfacts\.org\/product\/\d+$/);
+    assert.ok(['CC BY-SA 3.0', '自行拍攝', '網友截圖'].includes(photo.license), `${photo.src} 授權欄位不合法`);
+    if (photo.license === '網友截圖') {
+      // 使用者提供的網友截圖：必須標出原作者與連結，頁面上註明僅供辨識包裝
+      assert.match(photo.sourceUrl, /^https:\/\//);
+      assert.ok(photo.creditName, `${photo.src} 缺原作者`);
+      assert.ok(page.includes(`截圖自 <a href="${photo.sourceUrl}"`), `${photo.src} 頁面缺截圖來源`);
+    } else {
+      assert.match(photo.sourceUrl, /^https:\/\/world\.openfoodfacts\.org\/product\/\d+$/);
+    }
     const data = fs.readFileSync(photo.src);
     const isWebP = photo.src.endsWith('.webp');
     if (isWebP) assert.equal(data.subarray(8, 12).toString(), 'WEBP');
@@ -85,7 +95,7 @@ test('只更新城市封面也會變更 PWA 快取版本', () => {
 
 test('商品照片沒有孤兒：sw 只預快取引用到的、資料與檔案互相對得上、每張都有署名', () => {
   const drinkPicks = [...groceryDrinkGuide.milk, ...groceryDrinkGuide.juice, ...groceryDrinkGuide.zabka];
-  const referenced = [...new Set([...groceryProducts, ...drinkPicks].map(item => item.photo.src))].sort();
+  const referenced = [...new Set([...groceryProducts.filter(item => item.photo), ...drinkPicks].map(item => item.photo.src))].sort();
 
   // sw.js 的清單由建置推導，必須剛好等於引用清單。上面的測試只檢查
   // 「引用到的都在 sw 裡」；這裡擋反方向——多列的照片每個安裝都會白白下載、
