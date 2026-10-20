@@ -59,7 +59,7 @@ export const daySupplementaryPins = {
     [51.108896, 17.026714, 'Papa Krasnal 小矮人', 'Świdnicka 地下道旁；小矮人尋寶的具體起點', 'https://www.google.com/maps/search/?api=1&query=Papa%20Krasnal%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/?mlat=51.108896&mlon=17.026714'],
     [51.111690, 17.029114, '糖果屋雙屋 Jaś i Małgosia', 'Świętego Mikołaja 1', 'https://www.google.com/maps/search/?api=1&query=Hansel%20and%20Gretel%20Houses%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/?mlat=51.111690&mlon=17.029114'],
     [51.111492, 17.029774, '聖伊莉莎白教堂', 'Świętej Elżbiety 1/2 · 只拍高塔外觀，不上塔', 'https://www.google.com/maps/search/?api=1&query=St.%20Elizabeth%20Church%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/?mlat=51.111492&mlon=17.029774'],
-    venuePin('wroclaw-panorama', { displayName: '拉茨瓦維採全景畫（外觀）', label: 'Jana Ewangelisty Purkyniego 11 · 13:10 只看圓形館外觀', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=51.110187&mlon=17.044488' }),
+    venuePin('wroclaw-panorama', { displayName: '拉茨瓦維採全景畫（外觀）', label: 'Jana Ewangelisty Purkyniego 11 · 13:20 不入內，只拍圓形館外景', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=51.110187&mlon=17.044488' }),
     venuePin('wroclaw-cathedral', { label: 'plac Katedralny 18 · 座堂島散步終點', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=51.114616&mlon=17.046989' }),
     venuePin('wroclaw-glowny-station', { label: '18:35 前抵達的晚間轉場車站', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=51.098928&mlon=17.036255' }),
     [51.1089276, 17.0260020, 'Central Cafe', 'Świętego Antoniego 10 · 07:30 早餐', diningPlaces['wroclaw-central-cafe'].map, 'food', 'https://www.openstreetmap.org/node/1200187952'],

@@ -493,7 +493,7 @@ export const dayOperations = {
       accommodationAddress('poznan-towarowa'),
     ],
     navigation: [
-      { mode: '步行／電車', route: '老城 → 屠夫巷 → El Gato → 大學區 → 午餐 → 全景畫外觀 → 百年廳 → Słodowa 島 → 沙島 → 座堂島', action: '上午全程步行；13:10 午餐後看全景畫外觀，13:20 過 Grunwaldzki 橋搭電車往東約 15 分到百年廳，14:50 再搭電車回 Słodowa 島一帶，由西往東走過沙島到座堂島；電車車號用 Jakdojade 查。預留從座堂島回旅館取行李及前往車站的時間。' },
+      { mode: '步行／電車', route: '老城 → 屠夫巷 → El Gato → 大學區 → 午餐 → 全景畫外觀 → 百年廳 → Słodowa 島 → 沙島 → 座堂島', action: '上午全程步行；13:10 離開午餐、步行約 10 分，13:20 在全景畫外拍外景（不入內），13:30 過 Grunwaldzki 橋搭電車往東約 15 分到百年廳，14:50 再搭電車回 Słodowa 島一帶，由西往東走過沙島到座堂島；電車車號用 Jakdojade 查。預留從座堂島回旅館取行李及前往車站的時間。' },
       { mode: 'PKP', route: 'Wrocław Główny → Poznań Główny', action: '已購 IC 260 19:10，預計 20:29 抵 Poznań Główny（Koleo）；18:35 前抵站。車廂與座位依票券詳細頁。' },
     ],
     dailyAlerts: [
@@ -632,7 +632,7 @@ const unresolvedStepReasons = {
     'Lajkonik · 克拉科夫 → 奧斯威辛': dynamicTransitReason,
     '回程巴士返克拉科夫': '導覽 14:15 結束後才發車，實際班次依當日選定的回程選項；上車點與時刻在售票頁確認後再導航。',
     '抵 Kraków MDA · 休息': '抵達後的休息地點保持彈性，不需要固定導航地址。',
-    '咖啡 · Karma Kawiarnia（選配）': 'Krupnicza 12/3，Karma 官網聯絡頁列咖啡館平日 08:00–20:00；導航見當日餐飲點心。巴士延誤就略過。',
+    '咖啡 · Karma Kawiarnia（選配）': 'Krupnicza 12/3，Karma 官網聯絡頁列咖啡館平日 08:00–20:00（karmakrakow.pl 另列 07:00–18:00，當天電話確認）；導航見當日餐飲點心。巴士延誤就略過。',
   },
   4: {
     '前往 Wieliczka 車站候車': '出礦口至車站需步行，班次與月台當日重算，不以午餐結束時間當作上車時間。',

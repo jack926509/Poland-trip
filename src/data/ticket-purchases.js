@@ -143,7 +143,7 @@ export const ticketPurchaseGroups = [
       entry('wroclaw-panorama', '拉茨瓦維採全景畫 Panorama Racławicka', {
         purchaseUrl: mnwrTickets,
         sourceUrl: 'https://mnwr.pl/oddzialy/panorama-raclawicka/bilety-informacje-praktyczne/',
-        note: '2026-10-14 新行程只看外觀、不進館，不用買票；10/28 13:10 只看圓形館外觀。想入內：選指定日期與場次，每場約 30 分鐘。全景畫票含國家博物館、民族誌博物館與四穹頂館常設展，限參觀全景畫後 3 個月內使用。',
+        note: '2026-10-14 新行程只看外觀、不進館，不用買票；10/28 13:20 不入內，只在圓形館外拍外景。想入內：選指定日期與場次，每場約 30 分鐘。全景畫票含國家博物館、民族誌博物館與四穹頂館常設展，限參觀全景畫後 3 個月內使用。',
       }),
       entry('wroclaw-national-museum', '樂斯拉夫國家博物館', {
         method: 'included', otherDatesUrl: mnwrTickets,

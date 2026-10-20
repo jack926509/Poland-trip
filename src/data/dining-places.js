@@ -887,8 +887,8 @@ export const diningPlaces = {
     "notes": [
       "2010 年開業，克拉科夫第一家精品咖啡店，Kazimierz 自家烘豆。公開資料列一–五 08:00–20:00、六日 10:00–19:00。"
     ],
-    "hoursNote": "店家官網",
-    "liveCheckedAt": "2026-10-12",
+    "hoursNote": "店家官網；2026-10-20 重查：karmaroasters.com 與 Yelp 一致，另一個網站 karmakrakow.pl 列平日 07:00–18:00，Day 3 17:55 到店前電話確認",
+    "liveCheckedAt": "2026-10-20",
     "phone": "+48 662 387 281",
     "cuisine": "自家烘焙咖啡",
     "dishes": [
@@ -986,14 +986,14 @@ export const diningPlaces = {
     "name": "Słodki Chłopak w Muzeum Narodowym",
     "address": "pl. Powstańców Warszawy 5, Wrocław（國家博物館內）",
     "map": "https://www.google.com/maps/search/?api=1&query=S%C5%82odki%20Ch%C5%82opak%20Muzeum%20Narodowe%2C%20pl.%20Powsta%C5%84c%C3%B3w%20Warszawy%205%2C%20Wroc%C5%82aw",
-    "hours": "官網未列營業時間；第三方 2025 年資料列博物館週三 10:00–17:00，前往前確認（電話 +48 669 472 000）",
+    "hours": "跟國家博物館主館開放時間：冬季（10/1–3/31）週二至週五 10:00–16:00、週六日 10:00–17:00，週一休；10/28（週三）10:00–16:00",
     "sourceUrl": "https://slodkichlopak.pl/kawiarnie/muzeum-narodowe/",
     "checkedAt": "2026-10-20",
     "verificationStatus": "partial",
     "notes": [
-      "樂斯拉夫在地甜點連鎖的博物館分店，店家頁註明不需博物館門票即可進入；Day 5 午餐後往全景畫、國家博物館外觀的路上，外帶一塊蛋糕到百年廳吃，不另加時段。"
+      "樂斯拉夫在地甜點連鎖的博物館分店，店家頁註明不需博物館門票即可進入；Day 5 13:20 在全景畫外拍外景、看國家博物館外觀時，外帶一塊蛋糕到百年廳吃，不另加時段。"
     ],
-    "verificationNote": "地址與免票入店取自店家官網門市頁（2026-10-20）；營業時間官網未列，以博物館開放時間推估，屬未查證。",
+    "verificationNote": "地址與免票入店取自店家官網門市頁；國家博物館官網 Cafe 頁說明館內咖啡廳依博物館開放時間營業，冬季時段取自 mnwr.pl 官方參觀資訊頁（2026-10-20 搜尋核對；本環境無法直接開啟官網，屬部分核實）。第三方目錄（Apple 地圖等）仍列夏季 10:00–17:00，以官方冬季時段為準；臨時閉館可打 +48 669 472 000 確認。",
     "cuisine": "甜點 · 咖啡",
     "dishes": [
       "當日蛋糕",

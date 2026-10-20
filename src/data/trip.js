@@ -210,7 +210,7 @@ export const days = [
       {t:'約 14:15', label:'導覽結束', sub:'比克瑙結束後依接駁巴士回一館，再走到停車站牌'},
       {t: lajkonikInboundAdopted.dep, label:'回程巴士返克拉科夫', sub:`2026-09-09 於 lajkonikbus.pl 售票頁當時顯示 10/26 回程可售三班（不是全線完整班表）：${lajkonikInboundRejected.dep}（導覽結束前就開走，不可用）、${lajkonikInboundAdopted.dep}、${lajkonikInboundBackup.dep}。採 ${lajkonikInboundAdopted.dep} 由 Więźniów Oświęcimia 55 發車，導覽結束後有 75 分鐘走回站牌與休息；若導覽延後或接駁排隊，改搭 ${lajkonikInboundBackup.dep}（${lajkonikInboundBackup.arr} 抵）`, cost:`線上快照 PLN ${lajkonikFare.full}（優待 ${lajkonikFare.discount}；付款前重查）`, dur: lajkonikInboundAdopted.dur},
       {t: lajkonikInboundAdopted.arr, label:'抵 Kraków MDA · 休息', sub:'ul. Bosacka 18 Dworzec Autobusowy；先回旅館放東西與休息；回 ibis 前先在 Lajkonik 買明早麵包（20:00 關門）。晚餐暫排 18:30；太累就在巴士站旁 Galeria Krakowska 吃速食'},
-      {t:'17:55', label:'咖啡 · Karma Kawiarnia（選配）', sub:'Krupnicza 12/3，平日 08:00–20:00；由 ibis 步行約 15 分，喝完步行約 5 分到 Jagiellońska 5。巴士延誤或太累就略過，不影響 18:30 晚餐', cost:'依店家', dur:'25 min'},
+      {t:'17:55', label:'咖啡 · Karma Kawiarnia（選配）', sub:'Krupnicza 12/3，Karma Coffee Roasters 官網聯絡頁列平日 08:00–20:00（另一個網站 karmakrakow.pl 寫平日 07:00–18:00，若屬實 17:55 已近打烊，當天先打 +48 662 387 281 確認）；由 ibis 步行約 15 分，喝完步行約 5 分到 Jagiellońska 5。巴士延誤或太累就略過，不影響 18:30 晚餐', cost:'依店家', dur:'25 min'},
       {t:'18:30', id:'d3-dinner', label:'晚餐 · Mr. Jerry 威靈頓牛排', sub:'Jagiellońska 5（老城），返城休息後前往；招牌 Beef Wellington，胃口大可加乾式熟成牛排。週一 15:00–22:00、廚房至 21:30，建議訂位並確認當天供應 Wellington；返程延誤先聯絡餐廳（+48 533 836 624）。訂不到改 Pod Aniołami；FOLGA 週一可能休息', cost:'依店家菜單', dur:'1 h 15 min'},
     ],
     eat: [
@@ -330,7 +330,7 @@ export const days = [
       {t:'10:50', label:'★ 大學區', sub:'劍客噴泉、大學主樓的巴洛克立面（Aula Leopoldina 收費不進）、耶穌會的聖名教堂外觀、大學橋拍河岸、Ossolineum 庭院；只看外觀', cost:'免費', dur:'50 min'},
       {t:'11:40', label:'Hala Targowa 市場大廳', sub:'混凝土拱頂；可以買水果。11:50 起身，往西步行約 10 分回 Szewska 午餐', cost:'免費', dur:'20 min'},
       {t:'12:00', id:'d5-lunch', label:'午餐 · Restauracja Wrocławska', sub:'Szewska 59/60，12:00 開門；入座就點餐：Śląskie niebo＋Bigos Wrocławski。主菜現做約 30 分鐘，13:10 離開（後面的全景畫外觀縮短，19:10 火車不受影響）。想省排隊可先訂位（選配，見待辦）', cost:'依店家', dur:'1 h 10 min'},
-      {t:'13:20', label:'全景畫圓形館＋國家博物館外觀', sub:'午餐後由 Szewska 往東步行約 10 分到 Purkyniego。國家博物館整面爬藤，十月底可能轉紅。兩館都不進去，不用買全景畫票。甜點：國家博物館內的 Słodki Chłopak 不需門票，外帶一塊蛋糕到百年廳吃；官網未列營業時間，沒開或排隊就略過', cost:'免費', dur:'10 min'},
+      {t:'13:20', label:'全景畫圓形館＋國家博物館外觀', sub:'午餐後由 Szewska 往東步行約 10 分到 Purkyniego。全景畫不入內、不用買全景畫票，只在圓形館外拍外景；國家博物館整面爬藤，十月底可能轉紅，也只拍外觀。甜點：國家博物館內的 Słodki Chłopak 不需門票，依博物館時間營業（10/28 週三 10:00–16:00），外帶一塊蛋糕到百年廳吃；排隊就略過', cost:'免費', dur:'10 min'},
       {t:'13:30', label:'Grunwaldzki 橋 → 電車往百年廳', sub:'過橋後搭電車往東約 15 分；用 Jakdojade 查當下車號', cost:'依當日票價', dur:'25 min'},
       {t:'13:55', label:'★ 百年廳 Hala Stulecia（外觀）', sub:'UNESCO 世界遺產：外觀、尖塔 Iglica、Pergola 柱廊、Szczytnicki 公園秋葉，只看外觀不買票。多媒體噴泉大概率已停：官網 2026 的季末之夜「Noc pokazów」排在 10/24，6/20 雷擊後也只能部分運作，只拍建築就好。時間不夠先刪這段', cost:'免費', dur:'55 min'},
       {t:'14:50', label:'電車回 Słodowa 島一帶', sub:'約 15 分，在離 Słodowa 島最近的站下車；站名與車號用 Jakdojade 查', cost:'依當日票價', dur:'20 min'},
