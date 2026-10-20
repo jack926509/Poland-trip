@@ -15,8 +15,8 @@
 ## 四座城市，四種風景
 
 - **[華沙 Warszawa](https://polandtrip.xiehnet.com/city-warszawa)**：老城廣場、皇家大道與皇家城堡；沿路只看 POLIN 的外觀，不進館（華沙起義博物館不在主線上，只當 Day 7 下午的選配），從城市重建的痕跡認識這段歷史。留一個夜晚給老城燈光與熱巧克力。
-- **[克拉科夫 Kraków](https://polandtrip.xiehnet.com/city-krakow)**：Wawel、中央廣場、Kazimierz 街區與辛德勒工廠。以這裡為落腳點，一日往返 Auschwitz-Birkenau，也安排走入 Wieliczka 鹽礦。
-- **[樂斯拉夫 Wrocław](https://polandtrip.xiehnet.com/city-wroclaw)**：在廣場和巷子裡找小矮人，全景畫只看外觀，再到座堂島等煤氣燈點亮，沿河散步。
+- **[克拉科夫 Kraków](https://polandtrip.xiehnet.com/city-krakow)**：Wawel、中央廣場與辛德勒工廠；離開 Wawel 後步行穿過 Kazimierz 街區、Plac Nowy 圓亭與 Bernatek 人行橋到辛德勒工廠。以這裡為落腳點，一日往返 Auschwitz-Birkenau，也安排走入 Wieliczka 鹽礦。紡織會館只路過，不排採購。
+- **[樂斯拉夫 Wrocław](https://polandtrip.xiehnet.com/city-wroclaw)**：在廣場和巷子裡找小矮人；全景畫不入內，只在圓形館外拍外景，順路在國家博物館內的 Słodki Chłopak 外帶蛋糕；下午看百年廳外觀，再到座堂島等煤氣燈點亮，沿河散步。
 - **[波茲南 Poznań](https://polandtrip.xiehnet.com/city-poznan)**：教堂島、老市集廣場與中午的山羊鐘樓秀；聖馬丁牛角麵包當點心，午餐 Carla 義大利菜，訂不到改 Pyra Bar 吃波茲南馬鈴薯料理。
 
 七晚分別住在華沙 1 晚、克拉科夫 2 晚、樂斯拉夫 1 晚、波茲南 1 晚，再回華沙 2 晚。城市之間以火車串起，抵達後盡量放下行李再出門。
@@ -26,35 +26,39 @@
 | 日期 | 落腳與移動 | 這一天想留下的記憶 |
 |---|---|---|
 | [10/24（六）· Day 1](https://polandtrip.xiehnet.com/day-01) | 抵達華沙 | 換好波蘭幣，從棕櫚樹圓環沿新世界街、皇家大道一路採點：聖十字教堂、華沙大學、總統府日落，在 E.Wedel 喝熱巧克力後折返；吃一餐波蘭地方料理，晚上逛 Złote Tarasy、車站 Biedronka 採買。 |
-| [10/25（日）· Day 2](https://polandtrip.xiehnet.com/day-02) | 華沙 → 克拉科夫 | Wawel、中央廣場與辛德勒工廠；午餐在 Pimiento，白天先備好隔日餐點，晚餐安排 Hankki 韓式料理。 |
-| [10/26（一）· Day 3](https://polandtrip.xiehnet.com/day-03) | 克拉科夫出發，一日往返 | Auschwitz-Birkenau 導覽。留時間理解歷史，回城後安排安靜的晚餐與休息。 |
-| [10/27（二）· Day 4](https://polandtrip.xiehnet.com/day-04) | 克拉科夫 → 樂斯拉夫 | 上午參觀 Wieliczka 鹽礦，回城取行李，傍晚搭車前往下一座城市。 |
-| [10/28（三）· Day 5](https://polandtrip.xiehnet.com/day-05) | 樂斯拉夫 → 波茲南 | 廣場小矮人、四教派街區、大學區與百年廳，全景畫與國家博物館只看外觀；傍晚在座堂島看點燈，再搭車往波茲南。 |
+| [10/25（日）· Day 2](https://polandtrip.xiehnet.com/day-02) | 華沙 → 克拉科夫 | 先逛老城北邊城門與甕城，午餐在 Pimiento；中央廣場聽整點號角、Wawel，再步行經 Kazimierz（Plac Nowy 吃 zapiekanka）、Bernatek 橋到辛德勒工廠，晚餐安排 Hankki 韓式料理。 |
+| [10/26（一）· Day 3](https://polandtrip.xiehnet.com/day-03) | 克拉科夫出發，一日往返 | Auschwitz-Birkenau 導覽。留時間理解歷史，回城後先休息，有力氣就到 Karma 喝杯咖啡，晚餐在 Mr. Jerry 吃威靈頓牛排。 |
+| [10/27（二）· Day 4](https://polandtrip.xiehnet.com/day-04) | 克拉科夫 → 樂斯拉夫 | 上午參觀 Wieliczka 鹽礦（09:00 英文場），回城有餘裕就散步 Kazimierz，取行李後搭 16:45 IC 3830，19:50 抵樂斯拉夫吃 Samarqand。 |
+| [10/28（三）· Day 5](https://polandtrip.xiehnet.com/day-05) | 樂斯拉夫 → 波茲南 | 廣場小矮人、四教派街區、大學區與 Restauracja Wrocławska 午餐；全景畫不入內只拍外景，外帶 Słodki Chłopak 蛋糕到百年廳吃；傍晚在座堂島看點燈，19:10 搭車往波茲南。 |
 | [10/29（四）· Day 6](https://polandtrip.xiehnet.com/day-06) | 波茲南 → 華沙 | 無頭人像、教堂島、山羊鐘樓秀與聖馬丁牛角麵包；午餐 Carla 義大利菜，午後走帝王區看城堡外觀，17:40 搭車回華沙吃 Arirang 韓式。 |
 | [10/30（五）· Day 7](https://polandtrip.xiehnet.com/day-07) | 華沙 | 從 POLIN 外觀一路往南，新城、老城、城堡廣場一次走完，收費館只路過拍外觀；下午薩克森花園、無名塚、BUW 屋頂花園與瓦津基湖邊日落，最後晚餐在 Soul Kitchen 吃威靈頓牛排。 |
-| [10/31（六）· Day 8](https://polandtrip.xiehnet.com/day-08) | 華沙 → 返程 | 吃早餐、整理行李，前往蕭邦機場；11/01 回到臺灣。 |
+| [10/31（六）· Day 8](https://polandtrip.xiehnet.com/day-08) | 華沙 → 返程 | 在飯店旁 Bułkę przez Bibułkę 吃早餐，有空到 Złote Tarasy 補伴手禮，09:45 退房搭 SKM S2 前往蕭邦機場；11/01 回到臺灣。 |
 
 這是目前的旅行安排；各館場次與購票進度可在[待辦事項](https://polandtrip.xiehnet.com/practical/todos)查看。每日行程、今日卡與首頁的「待訂」都直接讀同一份待辦清單，在那裡改一筆，各頁一起更新。
 
 [門票速查與官方購票入口](https://polandtrip.xiehnet.com/practical/tickets)已收錄四城主行程、備選及附件參考景點，區分線上購票、現場售票、免費、已含門票與閉館。全景畫、華沙起義博物館與皇家城堡自 2026-10-14 起只看外觀、不用訂；Auschwitz 官方導覽與 Wieliczka 鹽礦已訂妥。10/25 Wawel 與辛德勒工廠線上已售完，仍排在行程，當天到現場售票處再試。完整清單與官方來源也保留在[景點門票購買指南](docs/poland-attraction-tickets.md)。
 
-**訂票進度（2026-10-17 更新）**：待辦頁全部 21 項中已完成 7 項——四段城際火車、Auschwitz 導覽、Lajkonik 去程巴士（10/26 08:25 → 09:50）與 Wieliczka 鹽礦（10/27 09:00 英文場）；其餘 14 項中，2 項線上已售完、不再提醒，12 項還沒做：
+**訂票進度（2026-10-20 更新）**：待辦頁全部 21 項中已完成 7 項——四段城際火車、Auschwitz 導覽、Lajkonik 去程巴士（10/26 08:25 → 09:50）與 Wieliczka 鹽礦（10/27 09:00 英文場）；其餘 14 項中，2 項線上已售完、不再提醒，12 項還沒做：
 
 - **景點票：沒有要訂的了**。全景畫、華沙起義博物館、皇家城堡 2026-10-14 起改成只看外觀，不用買票。
 - **線上已售完（2 項，不再提醒）**：10/25 Wawel 15:15 與辛德勒工廠 17:30 照原時段排在 Day 2，到現場售票處問剩餘票；買不到 Wawel 就逛免費庭院，買不到辛德勒就看外觀後提早吃晚餐。
 - **交通（1 項）**：10/26 Lajkonik 回程 15:30（備案 16:30），可在 moj-bus.pl 線上買或當天向司機買。去程 08:25 班 09:50 抵達，離 10:00 到場要求只剩 10 分鐘，想多留緩衝可改 07:10。
-- **餐廳（9 項）**：先訂 Mr. Jerry（10/26）與 Soul Kitchen（10/30）兩頓威靈頓牛排，再訂 Hankki、Specjały，以及 Pimiento（官網表單或 Email）、Carla 兩頓午餐；Bistro Posolone、Arirang 不收訂位，當天看 Google 地圖營業狀態；Restauracja Wrocławska 為選配。
+- **餐廳（9 項）**：先訂 Mr. Jerry（10/26，官網線上訂位）與 Soul Kitchen（10/30，線上訂位或請 Hotel Metropol 櫃檯代訂）兩頓威靈頓牛排，再訂 Hankki（MojStolik）、Specjały（TheFork），以及 Pimiento（官網表單或 Email）、Carla（zjedz.my）兩頓午餐；Bistro Posolone、Arirang 不收訂位，當天看 Google 地圖營業狀態；Restauracja Wrocławska 為選配。
 - **出發前準備（2 項）**：傳訊息給 Poznan Apartments（訂房平台訊息或 Email）問 10/28 晚上取鑰匙與 10/29 寄放行李；手機先裝好 Jakdojade 與 Bolt。
 
 四段火車的抵達時間已用 Koleo 查得（10/25 11:10、10/27 19:50、10/28 20:29、10/29 19:59），仍請以 PKP App 票券詳細頁為準。
 
-另有一筆私人資料待辦：5 張訂房確認存入離線包，並向各住宿確認寄放行李與晚到取鑰匙方式。
+另有一筆私人資料待辦：5 張訂房確認存入離線包，並用訂房平台訊息或 Email 向各住宿確認寄放行李與晚到取鑰匙方式。
+
+訂位與確認一律走線上或文字：有線上訂位就線上訂，沒有就寄 Email 或請住宿櫃檯代訂；店家當天有沒有開，看 Google 地圖的營業狀態即可。
 
 ## 把休息時間留給一口波蘭味
 
 八天的早餐、午餐、晚餐已整合到每日行程、今日卡與餐飲指南。克拉科夫午餐在 **Pimiento**、晚餐吃 **Hankki** 韓式料理，奧斯威辛回程後到 **Mr. Jerry** 吃威靈頓牛排；樂斯拉夫吃 **Samarqand** 烏茲別克抓飯與 **Restauracja Wrocławska** 地方菜；波茲南午餐是 **Carla Trattoria Moderna** 義大利菜，另留聖馬丁牛角麵包作為點心。**Restauracja Polonia** 炸豬排與 **Pyra Bar** 馬鈴薯料理改為訂不到時的備案。原有餐廳保留為備選，機上餐與自備餐也會列出。
 
-華沙可以在 **Wedel** 喝熱巧克力，晚班火車回城後吃 **Arirang** 韓式，來不及就改 **Złote Tarasy** 速食或 24 小時的 **Ćma**；最後一晚在 **Soul Kitchen** 吃威靈頓牛排，沒供應就改 **Rusiko** 喬治亞菜。樂斯拉夫若有空檔，就在老城停下喝咖啡、吃甜點。店家與餐段安排整理在[餐飲指南](https://polandtrip.xiehnet.com/practical/dining)，想帶點零食回去，也可以翻翻[超市採買](https://polandtrip.xiehnet.com/practical/groceries)與[伴手禮](https://polandtrip.xiehnet.com/practical/shopping)。
+咖啡與甜點也排進時段：克拉科夫 Day 2 路過 Plac Nowy 圓亭吃 zapiekanka，Day 3 晚餐前到 **Karma** 喝咖啡；樂斯拉夫上午在 **El Gato** 休息，午後在國家博物館內的 **Słodki Chłopak** 外帶蛋糕（不需博物館門票，跟博物館時間營業，10/28 為 10:00–16:00）；波茲南有 **Weranda** 咖啡與 ROGAL 聖馬丁牛角麵包。
+
+華沙可以在 **Wedel** 喝熱巧克力，晚班火車回城後吃 **Arirang** 韓式，來不及就改 **Złote Tarasy** 速食或 24 小時的 **Ćma**；最後一晚在 **Soul Kitchen** 吃威靈頓牛排，沒供應就改 **Rusiko** 喬治亞菜。Day 7 與機場日的早餐都在飯店旁的 **Bułkę przez Bibułkę**（Zgoda 3，步行約 8 分）。店家與餐段安排整理在[餐飲指南](https://polandtrip.xiehnet.com/practical/dining)，想帶點零食回去，也可以翻翻[超市採買](https://polandtrip.xiehnet.com/practical/groceries)與[伴手禮](https://polandtrip.xiehnet.com/practical/shopping)。
 
 ## 十月底，帶著秋天出發
 
@@ -63,3 +67,18 @@
 轉城日先想好行李寄放與取回；票券和住宿確認先存好，旅途中的注意力就能留給街景。行程有緊湊的日子，也盡量保留一杯咖啡、一段河岸和不急著趕路的空檔。
 
 出門時打開[今日速查](https://polandtrip.xiehnet.com/today)，想知道下一段怎麼走，就看[交通指南](https://polandtrip.xiehnet.com/practical/transit)。讓這份旅行誌陪著走，把真正的回憶留在路上。
+
+## 最近更新（2026-10-20）
+
+依行程與餐飲動線檢視調整，主要變動：
+
+- **Day 2**：離開 Wawel 後改步行經 Kazimierz、Plac Nowy、Bernatek 人行橋到辛德勒工廠，下雨或腳痠才搭電車；紡織會館取消採購。
+- **Day 3**：晚餐前新增 17:55 Karma 咖啡（選配，巴士延誤就略過）。
+- **Day 5**：補回午餐前後的步行時間，全景畫外景 13:20、百年廳 13:55；點燈人通常在日落前約 30–40 分鐘出發，15:45 上島就留意。
+- **Day 8**：早餐由 Złota 83 改到飯店旁的 Zgoda 3，不用來回走約 85 分鐘，多出的時間可補伴手禮。
+- **文案統一**：百年廳排在 Day 5 下午只看外觀；波茲南山羊鐘每日 12:00 與 15:00 兩場，本次看正午場；華沙起義博物館只是選配。
+- **營業時間核對**：Słodki Chłopak、Karma、Bułkę przez Bibułkę、Dessert Boutique、El Gato、Carla、Pyra Bar、Restauracja Wrocławska、Mr. Jerry、Pimiento、BUW 屋頂花園等已重新查證；Karma 另一個網站列平日 07:00–18:00，出門前看 Google 地圖。
+
+## 維護方式
+
+行程與店家資料都在 `src/data/`（每日行程 `trip.js`、每日餐飲 `day-dining.js`、店家主檔 `dining-places.js`、地圖 `day-maps.js`）。改完執行 `npm run build` 重新產生網站，再跑 `./verify.sh` 驗收（全部測試與地圖圖釘稽核）；`npm run audit:schedule` 可檢查每日時間表。
