@@ -3,7 +3,7 @@ import { dayMeals, dayDining } from '../data/day-dining.js';
 import { days } from '../data/trip.js';
 import { todoItemId } from '../lib/journey.mjs';
 import { todoStats, isTodoOpen } from '../lib/todo-status.mjs';
-import { escapeHtml, linkifyText, safeHttpsUrl } from '../lib/html.mjs';
+import { escapeHtml, linkifyText, safeHttpsUrl, renderDataNote, splitVerification, VERIFICATION_PATTERN } from '../lib/html.mjs';
 import { renderLayout } from './layout.mjs';
 import { cityGuideByName, dayPageForDate, cityRoutes } from '../lib/city-guide.mjs';
 import { renderFastFoodMenu } from './fast-food.mjs';
@@ -61,6 +61,12 @@ ${renderAppendixHeader({ kicker: eyebrow, title, dek: intro, compact: compactHea
     pageKind: 'practical',
     currentPage: file,
   });
+}
+
+/** 2026-10-20 UX F6：純文字欄位拆成「旅客要做的事」與收進「資料說明」的查核句。 */
+function verified(value) {
+  const { main, notes } = splitVerification(value);
+  return { html: escapeHtml(main), notes: notes.map(escapeHtml) };
 }
 
 function renderFlightTable(legs) {
@@ -131,15 +137,19 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
   const statusCardHtml = renderBookingStatusCard(todoGroups, deadlines);
   const railTrains = trains.filter(train => !String(train.id).startsWith('bus-'));
   const bookedTrains = railTrains.filter(train => train.status === '已購票').length;
-  const trainRows = trains.map(train => `
+  const trainRows = trains.map(train => {
+    const leg = splitVerification(train.leg), note = splitVerification(train.note);
+    const price = /未提供/.test(train.price) ? '' : /^\d/.test(train.price) ? `PLN ${train.price}` : train.price;
+    return `
     <tr>
-      <td><b>${train.seg}</b>${train.leg ? `<br><span class="timeline-note">${train.leg}</span>` : ''}${train.status ? `<br><span class="${train.status === '已購票' ? 'tag-muted' : 'tag-todo'}">${train.status}</span>` : ''}</td>
+      <td><b>${train.seg}</b>${leg.main ? `<br><span class="timeline-note">${leg.main}</span>` : ''}${train.status ? `<br><span class="${train.status === '已購票' ? 'tag-muted' : 'tag-todo'}">${train.status}</span>` : ''}</td>
       <td class="number">${train.date}${dayLink(train.date) ? `<br>${dayLink(train.date)}` : ''}</td><td>${train.type}</td>
       <td class="number time-range">${train.dep}&nbsp;→&nbsp;${train.arr}</td>
       <td class="number">${train.dur}</td>
-      <td><b>${train.status === '已購票' ? '已購票' : train.saleOpens ? `${escapeHtml(train.saleOpens)} 起預售` : '官方日期待確認'}</b></td>
-      <td class="number">${/^\d/.test(train.price) ? `PLN ${train.price}` : train.price}${train.note ? `<br><span class="timeline-note">${train.note}</span>` : ''}</td>
-    </tr>`).join('');
+      <td><b>${train.status === '已購票' ? '已購票' : train.saleOpens ? `${escapeHtml(train.saleOpens)} 起預售` : '預售日待確認'}</b></td>
+      <td class="number">${price}${note.main ? `<br><span class="timeline-note">${note.main}</span>` : ''}${renderDataNote([...leg.notes, ...(price ? [] : [escapeHtml(train.price)]), ...note.notes])}</td>
+    </tr>`;
+  }).join('');
   const stayHtml = stay.map(item => {
     const coordinate = item.coordinates;
     const mapUrl = coordinate
@@ -151,38 +161,50 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
       <p><b>${escapeHtml(item.checkIn)}${item.checkInTime ? ` ${escapeHtml(item.checkInTime)}` : ''} → ${escapeHtml(item.checkOut)}${item.checkOutTime ? ` ${escapeHtml(item.checkOutTime)}` : ''}</b> · ${item.nights} 晚 · ${item.rooms} 間房</p>
       <p><b>地址：</b>${escapeHtml(item.address)}${item.addressVerified ? '' : ' <span class="tag-todo">門牌待確認</span>'}</p>
       <p><b>電話：</b>${item.phone ? `<a href="tel:${escapeHtml(item.phone.replace(/[^\d+]/g, ''))}">${escapeHtml(item.phone)}</a>` : '請看訂房確認信'}</p>
-      <p class="timeline-note">${escapeHtml(item.note)}</p>
+      ${(() => { const note = verified(item.note); return `${note.html ? `<p class="timeline-note">${note.html}</p>` : ''}${renderDataNote(note.notes)}`; })()}
       <p class="action-links">${mapUrl ? `<a href="${mapUrl}" target="_blank" rel="noopener noreferrer">地圖導航 →</a>` : ''}<a href="${escapeHtml(item.officialUrl)}" target="_blank" rel="noopener noreferrer">飯店官網 →</a></p>
     </article>`;
   }).join('');
 
 
+  const bus = auschwitzBus ? {
+    site: verified(auschwitzBus.siteNote),
+    fare: verified(auschwitzBus.fare),
+    arriveBy: verified(auschwitzBus.tour?.arriveBy),
+    entryRule: verified(auschwitzBus.tour?.entryRule),
+    outbound: verified(auschwitzBus.outbound.note),
+    inbound: verified(auschwitzBus.inbound.note),
+    // 「已於官方售票頁查得／尚未購票」這類狀態只顯示旅客要知道的那一段。
+    status: value => String(value).split('／').filter(part => !VERIFICATION_PATTERN.test(part)).join('／') || String(value),
+    statusNote: value => String(value).split('／').filter(part => VERIFICATION_PATTERN.test(part)).map(escapeHtml),
+  } : null;
   const busHtml = auschwitzBus ? `
     <section class="section" id="auschwitz-bus">
       <div class="section-heading"><span class="section-num">Bus</span><h2>Auschwitz 往返巴士（${escapeHtml(auschwitzBus.operator)}）</h2></div>
       <div class="callout-note">
-        <b>官方售票站：</b>
+        <b>售票站：</b>
         <p><a href="${escapeHtml(auschwitzBus.site)}" target="_blank" rel="noopener noreferrer">lajkonikbus.pl</a>
-        ${escapeHtml(auschwitzBus.siteNote)}</p>
+        ${bus.site.html}</p>${renderDataNote(bus.site.notes)}
       </div>
       ${auschwitzBus.tour ? `
       <div class="callout-note">
         <b>這一天的錨點 · 已訂妥的參觀場次：</b>
         <p><b>${escapeHtml(auschwitzBus.tour.date)} ${escapeHtml(auschwitzBus.tour.time)}</b>　${escapeHtml(auschwitzBus.tour.name)}<br>
-        ${escapeHtml(auschwitzBus.tour.scope)}　·　${escapeHtml(auschwitzBus.tour.language)}　·　${escapeHtml(auschwitzBus.tour.duration)}　·　${escapeHtml(auschwitzBus.tour.people)}<br>
-        <b>最晚抵達：</b>${escapeHtml(auschwitzBus.tour.arriveBy)}　<b>預計結束：</b>${escapeHtml(auschwitzBus.tour.endsAt)}</p>
-        <p><b>入場規定：</b>${escapeHtml(auschwitzBus.tour.entryRule)}</p>
-        <p class="action-links"><a href="${escapeHtml(auschwitzBus.tour.officialUrl)}" target="_blank" rel="noopener noreferrer">Auschwitz 官方訂票系統 →</a></p>
+        ${escapeHtml(auschwitzBus.tour.scope)}　·　${escapeHtml(auschwitzBus.tour.language)}　·　${escapeHtml(String(auschwitzBus.tour.duration).replace(/^官方標示\s*/, ''))}　·　${escapeHtml(auschwitzBus.tour.people)}<br>
+        <b>最晚抵達：</b>${bus.arriveBy.html}　<b>預計結束：</b>${escapeHtml(auschwitzBus.tour.endsAt)}</p>
+        <p><b>入場規定：</b>${bus.entryRule.html}</p>
+        <p class="action-links"><a href="${escapeHtml(auschwitzBus.tour.officialUrl)}" target="_blank" rel="noopener noreferrer">Auschwitz 訂票系統 →</a></p>
+        ${renderDataNote([/^官方標示/.test(auschwitzBus.tour.duration) ? `導覽時長：${escapeHtml(auschwitzBus.tour.duration)}` : '', ...bus.arriveBy.notes, bus.entryRule.notes.length ? `入場規定原文：${escapeHtml(auschwitzBus.tour.entryRule)}` : ''])}
       </div>` : ''}
       <div class="grid-wide">
         <article class="card"><span class="eyebrow">上下車點</span>
           <p><b>克拉科夫：</b>${escapeHtml(auschwitzBus.stops.krakow)}</p>
           <p><b>奧斯威辛：</b>${escapeHtml(auschwitzBus.stops.oswiecim)}</p>
-          <p class="timeline-note"><b>票價：</b>${escapeHtml(auschwitzBus.fare)}</p>
+          <p class="timeline-note"><b>票價：</b>${bus.fare.html}</p>${renderDataNote(bus.fare.notes)}
         </article>
       </div>
 
-      <h3>去程 · ${escapeHtml(auschwitzBus.outbound.status)}</h3>
+      <h3>去程 · ${escapeHtml(bus.status(auschwitzBus.outbound.status))}</h3>
       <div class="table-wrap"><table class="table-editorial">
         <thead><tr><th>發車</th><th>抵達</th><th>車程</th><th>站位</th><th>票價</th><th>採用</th></tr></thead>
         <tbody>${auschwitzBus.outbound.services.map(item => `
@@ -195,9 +217,9 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
             <td><span class="${item.decision === '採用' ? 'tag-yellow' : 'tag-muted'}">${escapeHtml(item.decision)}</span></td>
           </tr>`).join('')}</tbody>
       </table></div>
-      <p class="timeline-note">${escapeHtml(auschwitzBus.outbound.note)}</p>
+      ${bus.outbound.html ? `<p class="timeline-note">${bus.outbound.html}</p>` : ''}${renderDataNote([...bus.statusNote(auschwitzBus.outbound.status), ...bus.outbound.notes])}
 
-      <h3>回程 · ${escapeHtml(auschwitzBus.inbound.status)}</h3>
+      <h3>回程 · ${escapeHtml(bus.status(auschwitzBus.inbound.status))}</h3>
       <div class="table-wrap"><table class="table-editorial">
         <thead><tr><th>發車</th><th>抵達</th><th>車程</th><th>票價</th><th>採用</th></tr></thead>
         <tbody>${auschwitzBus.inbound.services.map(item => `
@@ -209,7 +231,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
             <td><span class="${item.decision === '採用' ? 'tag-yellow' : 'tag-muted'}">${escapeHtml(item.decision)}</span></td>
           </tr>`).join('')}</tbody>
       </table></div>
-      <p class="timeline-note">${escapeHtml(auschwitzBus.inbound.note)}</p>
+      ${bus.inbound.html ? `<p class="timeline-note">${bus.inbound.html}</p>` : ''}${renderDataNote([...bus.statusNote(auschwitzBus.inbound.status), ...bus.inbound.notes])}
       <p class="action-links"><a href="${escapeHtml(auschwitzBus.site)}" target="_blank" rel="noopener noreferrer">到 lajkonikbus.pl 買票 →</a><a href="https://moj-bus.pl/en" target="_blank" rel="noopener noreferrer">Moj Bus 線上買票 →</a></p>
     </section>` : '';
 
@@ -217,7 +239,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
     ${statusCardHtml}
     <section class="section" id="rail-itinerary">
       <div class="section-heading"><span class="section-num">Rail</span><h2>城際交通</h2></div>
-      <div class="callout-note"><b>已購 ${bookedTrains}／${railTrains.length} 段城際火車。</b><p>火車與巴士逐段是否已購，以<a href="todos.html#todo-rail">待辦事項</a>為準。10/25 EIP 5300、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 都已在 PKP App 票券清單；艙等、車廂與座位看票券詳細頁，並保存離線票券。</p></div>
+      <div class="callout-note"><b>已購 ${bookedTrains}／${railTrains.length} 段城際火車。</b><p>逐段購票狀態看<a href="todos.html#todo-rail">待辦事項</a>。10/25 EIP 5300、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 都已在 PKP App 票券清單；艙等、車廂與座位看票券詳細頁，並保存離線票券。</p></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>路段</th><th>日期</th><th>車種</th><th>時刻</th><th>時長</th><th>預售</th><th>票價</th></tr></thead><tbody>${trainRows}</tbody></table></div>
     </section>
     ${busHtml}
@@ -288,7 +310,7 @@ export function renderTodos({ todoGroups }) {
   // UX 1017 M5：「N 項待辦」摘要縮成一列緊接第一個分類；「訂票狀態由人工維護」說明與購票入口連結移到清單最後，
   // 打開待辦頁第一屏就是待辦本身。文字一字不少。
   const content = `
-    <div class="callout-risk todo-summary"><span class="tag-todo">${total} 項待辦</span><p>共 ${allItems.length} 項；每類先列未完成，已完成的收在「已完成」裡供核對。完成後請將票券與訂位資訊離線保存；未開賣項目仍以官方系統實際可售狀態為準。</p></div>
+    <div class="callout-risk todo-summary"><span class="tag-todo">${total} 項待辦</span><p>共 ${allItems.length} 項；每類先列未完成，已完成的收在「已完成」裡供核對。完成後請將票券與訂位資訊離線保存。</p>${renderDataNote(['未開賣項目仍以官方系統實際可售狀態為準。'])}</div>
     ${groupsHtml}
     ${renderBookingNotice({ onTodosPage: true })}
     <script>

@@ -262,7 +262,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
           // 抵達時間／車程未知時只寫「發車」，「待查票面」只在上方狀態列出現一次（UX 審查第 6 項）。
           const arrKnown = /^\d{1,2}:\d{2}/.test(trainSegment.arr || '');
           const durKnown = trainSegment.dur && !/待查/.test(trainSegment.dur);
-          return `<p><b>${trainSegment.dep}${arrKnown ? ` → ${trainSegment.arr}` : ' 發車'}</b>${durKnown ? ` · ${trainSegment.dur}` : ''} · ${escapeHtml(trainPrice)}</p>`;
+          return `<p><b>${trainSegment.dep}${arrKnown ? ` → ${trainSegment.arr}` : ' 發車'}</b>${durKnown ? ` · ${trainSegment.dur}` : ''}${trainPrice && !/未提供/.test(trainPrice) ? ` · ${escapeHtml(trainPrice)}` : ''}</p>`;
         })()}
         ${trainSegment.saleOpens && !trainSegment.leg?.includes('已購票') ? `<p><b>${escapeHtml(trainSegment.saleOpens)} 起預售</b></p>` : ''}
         <p class="action-links"><a href="practical/booking.html#rail-itinerary">訂票與交通頁的完整班次表 →</a></p>

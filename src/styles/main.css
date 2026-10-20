@@ -7990,3 +7990,16 @@ html {
 .table-schedule .step-more > .timeline-note { display: block; }
 .day-food-back { margin: 0.25rem 0 0.5rem; }
 .day-food-back a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
+
+/* 2026-10-20 UX F6：查核與資料來源說明收進預設收合的灰色「資料說明」，主畫面只留旅客要做的事。 */
+.data-note { margin: 0.35rem 0 0; color: var(--ink-soft); font-size: 0.875rem; }
+.data-note > summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.data-note > p { margin: 0.2rem 0 0.4rem; line-height: 1.6; }
