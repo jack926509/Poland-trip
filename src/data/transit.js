@@ -16,7 +16,7 @@ export const airportTransit = [
 ];
 
 export const recommendedApps = [
-  {name:'📱 Jakdojade（首選）', desc:'四城都可規劃路線，部分城市可直接買票。App 票仍須依畫面指示啟用或掃描車內 QR；各城罰款不同，不在本站寫會變動的固定金額。'},
+  {name:'📱 Jakdojade（首選）', desc:'四城都可規劃路線，部分城市可直接買票；先儲值再買票，剩餘金額可在 Help → Wallet refund 申請退回。華沙可先買票，上車後按 validate 再掃車內 QR（按下後約 20 秒內要掃）；克拉科夫等其他城市買票當下就開始計時，上車後才按「Buy and validate」並輸入車上的車號，所以上車前先查好路線與票種。購票需要網路，操作以 App 當下畫面為準；各城罰款不同，不在本站寫會變動的固定金額。'},
   {name:'💳 車上售票機', desc:'多數車輛可刷卡購票，但操作與票券是否自動啟用依城市和機型不同。畫面若要求「Validate／Skasuj」必須完成；查票時保留原付款卡或裝置。'},
   {name:'🗺️ Google Maps', desc:'路線規劃同樣好用、四城公車電車時刻都有收錄，適合已經很熟悉、只需要「怎麼走」的人；買票仍需搭配 Jakdojade 或現場機台。'},
   {name:'🚗 Bolt', desc:'叫車 App，四城都有涵蓋。深夜、雨天或懶得等車時的備案，價格透明、免小費文化。'},
