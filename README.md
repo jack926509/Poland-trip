@@ -14,10 +14,10 @@
 
 ## 四座城市，四種風景
 
-- **[華沙 Warszawa](https://polandtrip.xiehnet.com/city-warszawa)**：老城廣場、皇家大道與皇家城堡；沿路只看 POLIN 與華沙起義博物館的外觀，不進館，從城市重建的痕跡認識這段歷史。留一個夜晚給老城燈光與熱巧克力。
+- **[華沙 Warszawa](https://polandtrip.xiehnet.com/city-warszawa)**：老城廣場、皇家大道與皇家城堡；沿路只看 POLIN 的外觀，不進館（華沙起義博物館不在主線上，只當 Day 7 下午的選配），從城市重建的痕跡認識這段歷史。留一個夜晚給老城燈光與熱巧克力。
 - **[克拉科夫 Kraków](https://polandtrip.xiehnet.com/city-krakow)**：Wawel、中央廣場、Kazimierz 街區與辛德勒工廠。以這裡為落腳點，一日往返 Auschwitz-Birkenau，也安排走入 Wieliczka 鹽礦。
 - **[樂斯拉夫 Wrocław](https://polandtrip.xiehnet.com/city-wroclaw)**：在廣場和巷子裡找小矮人，全景畫只看外觀，再到座堂島等煤氣燈點亮，沿河散步。
-- **[波茲南 Poznań](https://polandtrip.xiehnet.com/city-poznan)**：教堂島、老市集廣場與中午的山羊鐘樓秀；把聖馬丁牛角麵包和馬鈴薯料理留給這一天。
+- **[波茲南 Poznań](https://polandtrip.xiehnet.com/city-poznan)**：教堂島、老市集廣場與中午的山羊鐘樓秀；聖馬丁牛角麵包當點心，午餐 Carla 義大利菜，訂不到改 Pyra Bar 吃波茲南馬鈴薯料理。
 
 七晚分別住在華沙 1 晚、克拉科夫 2 晚、樂斯拉夫 1 晚、波茲南 1 晚，再回華沙 2 晚。城市之間以火車串起，抵達後盡量放下行李再出門。
 

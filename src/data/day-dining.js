@@ -397,10 +397,10 @@ export const dayDiningPlans = {
     },
     {
       "placeId": "poznan-hycka",
-      "role": "替補",
-      "note": "大波蘭菜、烤鴨配蒸糰；替換午餐時須重排動線。",
+      "role": "不當替補（Śródka 09:25 經過時未開）",
+      "note": "大波蘭菜、烤鴨配蒸糰；店在 Śródka，週四 11:00 才開，上午經過時還沒營業，中午從市中心折回又不順路。Carla 客滿改 Pyra Bar 或 Zen On。",
       "stepId": null,
-      "planStatus": "candidate"
+      "planStatus": "unavailable"
     },
     {
       "placeId": "warsaw-arirang-restaurant",
@@ -581,14 +581,21 @@ export const dayDiningPlans = {
   ],
   "8": [
     {
-      "placeId": "warsaw-charlotte-zlota",
+      "placeId": "warsaw-bulke-przez-bibulke-zgoda",
       "role": "早餐首選（條件式）",
-      "note": "08:00 第一批進店：French Breakfast、可頌＋咖啡，想吃飽一點加 Croque-Monsieur；08:45 收尾，預留 45 分鐘回 Metropol 取行李，09:45 退房出發。",
+      "note": "Zgoda 3，離 Metropol 步行約 8 分，週六 08:00 開門：Bagel、炒蛋或 Avocado Toast；08:50 收尾，回住宿取行李，09:45 退房出發。",
       "stepId": "d8-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
-      "condition": "08:15 還無法入座就外帶或回住宿／車站沿線用餐；保住 11:00 到機場目標。",
-      "dayHours": "08:00–24:00"
+      "condition": "08:15 還無法入座就外帶或改車站沿線用餐；保住 11:00 到機場目標。",
+      "dayHours": "08:00–22:00"
+    },
+    {
+      "placeId": "warsaw-charlotte-zlota",
+      "role": "早餐備選（較遠）",
+      "note": "Złota 83，原機場日早餐首選；來回步行約 85 分鐘，機場日不採用，留作備選。",
+      "stepId": null,
+      "planStatus": "candidate"
     },
     {
       "placeId": "warsaw-bar-mleczny-prasowy-marszalkowska",

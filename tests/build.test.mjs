@@ -1027,7 +1027,7 @@ test('Day 5 百年廳只看外觀、全景畫不入內，保留座堂島點燈�
   // 2026-10-14 新行程：付費景點只在外面拍照；百年廳回到下午（外觀＋電車來回），時間不夠先刪。
   const day = days.find(day => day.n === 5);
   const hala = day.steps.find(step => step.label.startsWith('★') && /百年廳/.test(step.label));
-  assert.equal(hala.t, '13:45');
+  assert.equal(hala.t, '13:55');
   assert.match(hala.label, /外觀/);
   assert.match(hala.sub, /大概率已停/, '噴泉說明改成大概率已停');
   assert.ok(day.compressible.some(item => item.startsWith('百年廳')), '時間不夠先刪百年廳');
@@ -2121,7 +2121,7 @@ test('餐飲資料重整：每日正餐候選（day-dining）與順路必吃（e
   }
 });
 
-test('餐飲資料重整：餐飲引用完整，機場日早餐採 Charlotte 並保留趕機備案', async () => {
+test('餐飲資料重整：餐飲引用完整，機場日早餐改飯店旁 Bułkę przez Bibułkę 並保留趕機備案', async () => {
   const { dayDining } = await import('../src/data/day-dining.js');
   for (const [day, items] of Object.entries(dayDining)) {
     for (const item of items) {
@@ -2134,10 +2134,10 @@ test('餐飲資料重整：餐飲引用完整，機場日早餐採 Charlotte 並
     if (n < 8) assert.ok((dayDining[String(n)] || []).some(item => /首選|早餐/.test(item.role)),
       `Day ${n} 沒有任何正餐首選`);
     else {
-      assert.ok(dayDining['8'].some(item => item.stepId === 'd8-breakfast' && item.placeId === 'warsaw-charlotte-zlota'));
+      assert.ok(dayDining['8'].some(item => item.stepId === 'd8-breakfast' && item.placeId === 'warsaw-bulke-przez-bibulke-zgoda'));
       assert.ok(days[7].backup.some(item => /早餐備案/.test(item.label)));
       assert.ok(!dayDining['8'].some(item => item.placeId === 'warsaw-cafe-bristol'));
-      assert.match(days[7].steps.find(item => item.id === 'd8-breakfast').label, /Charlotte/);
+      assert.match(days[7].steps.find(item => item.id === 'd8-breakfast').label, /Bułkę przez Bibułkę/);
     }
     const html = read(`day-${String(n).padStart(2, '0')}.html`);
     assert.ok(html.includes('id="day-food"'), `day-${String(n).padStart(2, '0')}.html 缺少當日餐飲卡`);

@@ -54,7 +54,7 @@ test('第 3 項：手機時間表為精簡版（不顯示欄名、時間大字�
   assert.match(nav, /展開全文/);
   // 沒有 JS 時全文仍在 HTML 中，收合只是畫面行為
   const day5 = read('day-05.html');
-  const step = days[4].steps.find(item => item.t === '13:45'); // 2026-10-14 新行程：百年廳外觀（長說明）
+  const step = days[4].steps.find(item => item.t === '13:55'); // 2026-10-14 新行程：百年廳外觀（長說明）
   assert.ok(day5.includes(step.sub), 'Day 5 時間表說明全文必須仍在 HTML 中');
 });
 

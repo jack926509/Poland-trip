@@ -430,7 +430,7 @@ export const dayOperations = {
     ],
     navigation: [
       { mode: 'PKP', route: 'Warszawa Centralna → Kraków Główny', action: `已購 EIP 5300 ${eip5300.dep} 由 Warszawa Centralna 出發；從 Hotel Metropol 步行約 500 公尺。月台、車廂與座位依票券詳細頁及現場電子牌確認。` },
-      { mode: '步行／電車／計程車', route: 'Kraków Główny → 甕城 → Pimiento → 中央廣場 → Wawel → 辛德勒工廠', action: '先寄放行李、逛北邊甕城一帶；午餐 13:00 在 Pimiento，飯後沿 Floriańska 往南，14:00 中央廣場、14:30 瓦維爾大教堂、15:15 Wawel 短路線；16:15 由 Wawel 搭電車或計程車到辛德勒工廠，17:10 前到入口。電車車號與轉乘用 Jakdojade 查即時資料。' },
+      { mode: '步行／電車／計程車', route: 'Kraków Główny → 甕城 → Pimiento → 中央廣場 → Wawel → 辛德勒工廠', action: '先寄放行李、逛北邊甕城一帶；午餐 13:00 在 Pimiento，飯後沿 Floriańska 往南，14:00 中央廣場、14:30 瓦維爾大教堂、15:15 Wawel 短路線；16:15 由 Wawel 步行經 Kazimierz（Plac Nowy 圓亭）、Bernatek 人行橋到辛德勒工廠，17:10 前到入口；下雨或腳痠改搭電車，車號與轉乘用 Jakdojade 查即時資料。' },
     ],
     dailyAlerts: [
       '10/25 為非營業週日，多數一般商店關閉；餐廳與例外店家仍逐店確認。',
@@ -573,7 +573,7 @@ export const dayOperations = {
       '水上宮殿週五個人參觀免費，最後入場 17:30（以館方當日公告為準）；本次只排湖邊外觀，日落 16:12 拍倒影。',
       '10/31 為諸聖節前夕，今晚重查明日市區交通、機場與店家特別營運。',
     ],
-    nightChecklist: [...standardNightChecklist, '整理 TAX FREE 商品與文件，確認需海關查驗的託運品不先交運', '確認 QR 260 報到、行李額度、機場交通與護照收納位置', '確認 Charlotte Złota 08:00 早餐，預留回飯店取行李；08:15 未入座改外帶，11:00 前到機場'],
+    nightChecklist: [...standardNightChecklist, '整理 TAX FREE 商品與文件，確認需海關查驗的託運品不先交運', '確認 QR 260 報到、行李額度、機場交通與護照收納位置', '確認 Bułkę przez Bibułkę（Zgoda 3）08:00 早餐，08:50 回飯店取行李；08:15 未入座改外帶，11:00 前到機場'],
   },
   8: {
     cityKey: 'warsaw',
@@ -625,13 +625,14 @@ const unresolvedStepReasons = {
   2: {
     'EIP 5300 前往克拉科夫': dynamicTransitReason,
     '聖弗洛里安城門 → 甕城 Barbakan → Stary Kleparz': '戶外步行段，城門在 Floriańska 北端、甕城在 Basztowa 街旁，Stary Kleparz 在 Pimiento 旁；只看外觀。',
-    '電車或計程車前往辛德勒工廠': '電車車號與轉乘為動態資料，出發前用 Jakdojade 查；以辛德勒工廠入口地址為終點，17:10 前到場。',
+    '步行經 Kazimierz → Bernatek 橋 → 辛德勒工廠': '主案步行；改搭電車時車號與轉乘為動態資料，出發前用 Jakdojade 查；以辛德勒工廠入口地址為終點，17:10 前到場。',
   },
   3: {
     'Kraków MDA 報到': `巴士站地址（Bosacka 18）與 10/26 的 ${lajkonikOutboundAdopted.dep} 班次已購票，票面標示下層 ${lajkonikOutboundAdopted.bay} 站位；站位仍以當日電子看板為準。`,
     'Lajkonik · 克拉科夫 → 奧斯威辛': dynamicTransitReason,
     '回程巴士返克拉科夫': '導覽 14:15 結束後才發車，實際班次依當日選定的回程選項；上車點與時刻在售票頁確認後再導航。',
     '抵 Kraków MDA · 休息': '抵達後的休息地點保持彈性，不需要固定導航地址。',
+    '咖啡 · Karma Kawiarnia（選配）': 'Krupnicza 12/3，Karma 官網聯絡頁列咖啡館平日 08:00–20:00；導航見當日餐飲點心。巴士延誤就略過。',
   },
   4: {
     '前往 Wieliczka 車站候車': '出礦口至車站需步行，班次與月台當日重算，不以午餐結束時間當作上車時間。',
@@ -694,7 +695,7 @@ const unresolvedStepReasons = {
     '可選 · E.Wedel 本店熱巧克力': 'Szpitalna 8，餐廳導航見當日餐飲；選配。',
   },
   8: {
-    '住宿出發前往 Charlotte Złota': '由 Hotel Metropol 前往 Złota 83，出發前重算交通；早餐導航見當日三餐。',
+    '住宿出發前往 Zgoda 3': '由 Hotel Metropol 步行約 8 分到 Zgoda 3；早餐導航見當日三餐。',
     '返回 Metropol 取行李': '返回原住宿取行李，地址見住宿卡；不導航至餐廳。',
     'SKM S2／S3 目標班次': dynamicTransitReason,
   },

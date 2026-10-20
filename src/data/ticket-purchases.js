@@ -160,7 +160,7 @@ export const ticketPurchaseGroups = [
       }),
       entry('wroclaw-hala-stulecia', '百年廳 Visitor Centre', {
         method: 'onsite',
-        note: '2026-10-14 新行程 10/28 13:45 只看外觀、尖塔、柱廊與公園，不買票；多媒體噴泉大概率已停。想入內：多媒體展與含廳內看台的票種不同。先查官方 availability calendar，當日活動可能限制入內範圍。',
+        note: '2026-10-14 新行程 10/28 13:55 只看外觀、尖塔、柱廊與公園，不買票；多媒體噴泉大概率已停。想入內：多媒體展與含廳內看台的票種不同。先查官方 availability calendar，當日活動可能限制入內範圍。',
       }),
       entry('wroclaw-zoo', '動物園＋Afrykarium', {
         purchaseUrl: 'https://bilety.zoo.wroclaw.pl/',

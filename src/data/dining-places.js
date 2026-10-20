@@ -980,6 +980,26 @@ export const diningPlaces = {
       "樂斯拉夫代表性精釀酒廠，不喝酒可略過。"
     ]
   },
+  "wroclaw-slodki-chlopak-muzeum-narodowe": {
+    "id": "wroclaw-slodki-chlopak-muzeum-narodowe",
+    "cityKey": "wroclaw",
+    "name": "Słodki Chłopak w Muzeum Narodowym",
+    "address": "pl. Powstańców Warszawy 5, Wrocław（國家博物館內）",
+    "map": "https://www.google.com/maps/search/?api=1&query=S%C5%82odki%20Ch%C5%82opak%20Muzeum%20Narodowe%2C%20pl.%20Powsta%C5%84c%C3%B3w%20Warszawy%205%2C%20Wroc%C5%82aw",
+    "hours": "官網未列營業時間；第三方 2025 年資料列博物館週三 10:00–17:00，前往前確認（電話 +48 669 472 000）",
+    "sourceUrl": "https://slodkichlopak.pl/kawiarnie/muzeum-narodowe/",
+    "checkedAt": "2026-10-20",
+    "verificationStatus": "partial",
+    "notes": [
+      "樂斯拉夫在地甜點連鎖的博物館分店，店家頁註明不需博物館門票即可進入；Day 5 午餐後往全景畫、國家博物館外觀的路上，外帶一塊蛋糕到百年廳吃，不另加時段。"
+    ],
+    "verificationNote": "地址與免票入店取自店家官網門市頁（2026-10-20）；營業時間官網未列，以博物館開放時間推估，屬未查證。",
+    "cuisine": "甜點 · 咖啡",
+    "dishes": [
+      "當日蛋糕",
+      "咖啡"
+    ]
+  },
   "wroclaw-el-gato-specialty-coffee": {
     "id": "wroclaw-el-gato-specialty-coffee",
     "cityKey": "wroclaw",
