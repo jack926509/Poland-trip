@@ -181,11 +181,12 @@ test('H3：地圖彈窗的 Google Maps 連結 44px、座標來源獨立一行，
   assert.doesNotMatch(day, /createTextNode\(' · '\)/, '座標來源不再和導航連結並排');
 });
 
-test('M1：每日頁手機收掉封面照片、導言最多 3 行；選擇器限定每日頁', () => {
+// 2026-10-20 UX F5：導言改為完整顯示（3 行截斷常把抵達時刻切掉），改驗「不再截斷」。
+test('M1：每日頁手機收掉封面照片、導言完整不截斷；選擇器限定每日頁', () => {
   const source = css();
   const block = source.slice(source.indexOf('/* M1 每日頁手機第一屏'));
   assert.match(block, /\.journal-day-header \.journal-day-cover,\s*\.journal-day-header \.journal-day-cover-fallback \{ display: none; \}/);
-  assert.match(block, /-webkit-line-clamp: 3;/);
+  assert.doesNotMatch(block.slice(0, block.indexOf('}\n}') + 3), /line-clamp/);
   assert.doesNotMatch(block.slice(0, block.indexOf('}\n}') + 3), /journal-city/);
 });
 

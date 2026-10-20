@@ -14,7 +14,8 @@ test('M10：全程動線併入八日目錄，「無待訂」是標籤而非獨�
   // 2026-10-13 起首頁不再另放一張全程動線表；錨點 #journey-overview 移到八日目錄。
   assert.equal((home.match(/id="journey-overview"/g) || []).length, 1);
   assert.match(home, /<ol class="journal-itinerary" id="journey-overview">/);
-  assert.match(home, /<span class="tag-muted">無待訂<\/span>/);
+  // 2026-10-20 UX F11：狀態徽章統一三色，「無待訂」屬於已完成，改用綠色 tag-green。
+  assert.match(home, /<span class="tag-green">無待訂<\/span>/);
   assert.doesNotMatch(home, /<a[^>]*>無待訂[^<]*<\/a>/);
   assert.match(home, /<span class="tag-todo">待訂 \d+<\/span>/);
   assert.equal((home.match(/class="journal-day-stay"/g) || []).length, 8);
@@ -33,12 +34,9 @@ test('M11：今日頁標題上方顯示 TODAY 而非 APPENDIX，實用頁維持�
   assert.match(essentials, /<body class="journal-site journal-practical">/);
 });
 
-test('M1：今日頁手機 sticky 動作列貼齊頂端且改成單行，不再懸空留縫', () => {
-  const source = css();
-  const rule = source.match(/\.journal-today \.today-actions \{([^}]*)\}/)?.[1];
-  assert.ok(rule, '找不到 .journal-today .today-actions 手機覆寫規則');
-  assert.match(rule, /top:\s*0/);
-  assert.match(rule, /flex-wrap:\s*nowrap/);
+test('M1：今日頁不再有卡內 sticky 動作列（2026-10-20 與底部快捷列重複，已移除），也就不會懸空留縫', () => {
+  assert.doesNotMatch(read('today.html'), /today-actions/);
+  assert.doesNotMatch(css(), /\.today-actions\b/);
 });
 
 test('M4：城市頁餐飲區分組收合，候選預設展開、其餘收合並標數量', () => {
@@ -145,10 +143,14 @@ test('M2：手機底部快捷列在各類頁面都輸出，且連結依頁面類
   // 快捷列在 </main> 之後、頁尾之前，不會被單檔版的 <main> 擷取邏輯收進去
   assert.match(home, /<\/main>\s*<nav class="mobile-quick-nav"/);
 
-  // 今日頁本身要有可被快捷列指到的錨點目標
+  // 今日頁的「時間表」「吃哪」改送到當天每日頁的 #schedule／#day-food（2026-10-20），每日頁要有這兩個錨點
   const today = read('today.html');
-  assert.match(today, /<details class="today-block[^"]*" data-today-schedule>/);
-  assert.match(today, /data-today-food/);
+  assert.match(today, /'today-schedule': '#schedule', 'today-food': '#day-food'/);
+  for (const n of ['01', '05', '08']) {
+    const day = read(`day-${n}.html`);
+    assert.match(day, /id="schedule"/);
+    assert.match(day, /id="day-food"/);
+  }
 
   // 手機底部固定列會蓋住頁尾，統一留出底部留白
   const source = css();

@@ -54,7 +54,8 @@ test('天氣：預報網址帶當天日期與華沙時區，只查一天', () =>
 test('今日卡：八天的卡片標題下都有一條天氣細列，帶座標、日期與離線時的平均氣候，內嵌腳本含載入函式', () => {
   assert.deepEqual(Object.keys(weatherPoints).map(Number), days.map(day => day.n));
   const html = fs.readFileSync('dist/today.html', 'utf8');
-  const blocks = [...html.matchAll(/<\/header>\s*<div class="today-weather" data-today-weather data-weather-lat="([\d.]+)" data-weather-lng="([\d.]+)" data-weather-date="(2026-10-\d\d)"/g)];
+  // 2026-10-20 一屏儀表板：天氣壓成一行，排在住宿列之後、主按鈕之前（不再緊接卡頭）。
+  const blocks = [...html.matchAll(/<\/ul>\s*<div class="today-weather" data-today-weather data-weather-lat="([\d.]+)" data-weather-lng="([\d.]+)" data-weather-date="(2026-10-\d\d)"/g)];
   assert.equal(blocks.length, 8);
   assert.deepEqual(blocks.map(match => match[3]), ['2026-10-24', '2026-10-25', '2026-10-26', '2026-10-27', '2026-10-28', '2026-10-29', '2026-10-30', '2026-10-31']);
   assert.equal((html.match(/data-weather-fallback>🌥️ 10 月平均 \d+–\d+°C/g) || []).length, 8);

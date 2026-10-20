@@ -817,7 +817,8 @@ nav.section-heading > a:last-child {
 .timeline-note {
   margin-top: 0.2rem;
   color: var(--ink-soft);
-  font-size: 0.93rem;
+  /* 2026-10-20 UX F2：說明文字 14.4px 太小，提到 1rem。 */
+  font-size: 1rem;
 }
 
 .table-wrap {
@@ -910,6 +911,32 @@ nav.section-heading > a:last-child {
   background: var(--paper-deep);
   color: var(--ink-soft);
 }
+
+/* 2026-10-20 UX F11：狀態徽章三色——紅＝未購／未訂（tag-todo）、黃＝待確認（tag-yellow）、綠＝已完成（tag-green）。 */
+.tag-todo {
+  border-color: #c0392b;
+  background: #fdecea;
+  color: #9b2317;
+}
+
+.tag-green {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0.2rem 0.2rem 0;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid #5d8a4f;
+  border-radius: var(--radius-sm);
+  background: #eaf3e4;
+  color: #2f5a24;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  vertical-align: 0.08em;
+}
+.tag-green::before { width: 0.42rem; height: 0.42rem; border-radius: 999px; background: currentcolor; content: ''; opacity: 0.75; }
 
 .status-verified,
 .status-recheck,
@@ -2651,7 +2678,7 @@ figure.media-unavailable > img {
 .journal-day-cover img { max-height: 23rem; }
 .journal-day .chapter-index ol { max-height: 8rem; overflow-y: auto; }
 .journal-day .chapter-index { margin-block: 1rem; }
-.journal-day-facts dd, .timeline-note, .tag-todo, .tag-muted,
+.journal-day-facts dd, .tag-todo, .tag-muted,
 .tag-red, .tag-yellow, .tag-green, .eyebrow, .section-num,
 .nav-dropdown summary, .journal-day-date, .journal-status-strip span,
 .journal-day-facts dt, .journal-cover-meta dt, .footer p {
@@ -2674,6 +2701,16 @@ figure.media-unavailable > img {
   .journal-cover { min-height: 0; }
   .journal-cover-copy { min-height: 0; gap: 1rem; padding: 1.5rem; }
   .journal-cover-photo { max-height: 12rem; object-fit: cover; }
+  /* 2026-10-20 UX F15：首頁 POLSKA 裝飾卡在手機壓到 300px 以內——路線與下方路線條重複，手機隱藏；
+     日期改成緊湊兩欄、封面照片不顯示。 */
+  .journal-site .journal-cover-copy { min-height: 0; gap: 0.5rem; padding: 1rem 1.1rem; }
+  .journal-site .journal-cover h1 { margin: 0; font-size: 2.6rem; line-height: 1; }
+  .journal-site .journal-cover-route,
+  .journal-site .journal-cover-copy::after,
+  .journal-site .journal-cover-figure { display: none; }
+  .journal-site .journal-cover-meta { gap: 0.2rem; margin: 0; padding-top: 0.5rem; }
+  .journal-site .journal-cover-meta > div { display: flex; gap: 0.75rem; padding: 0; border: 0; }
+  .journal-site .journal-cover-meta dd { margin: 0; font-size: 0.9375rem; }
   .site-search-quick-row { display: flex; flex-wrap: wrap; }
   .site-search-quick-row button { min-height: 44px; }
   .journal-day-facts { gap: .75rem; }
@@ -3197,7 +3234,7 @@ a[href^="tel:"]:focus-visible {
     align-self: center;
     margin-top: 0.1rem;
     color: var(--ink-soft);
-    font-size: 0.875rem;
+    font-size: 0.9375rem;
     white-space: normal;
     overflow-wrap: anywhere;
   }
@@ -3209,7 +3246,7 @@ a[href^="tel:"]:focus-visible {
 
   .table-schedule .timeline-note {
     color: #4f4641;
-    font-size: 0.9rem;
+    font-size: 1rem;
     line-height: 1.55;
   }
 
@@ -3248,10 +3285,11 @@ a[href^="tel:"]:focus-visible {
     content: '';
   }
 
+  /* 2026-10-20 UX F9：行內連結不改排版，用上下透明 padding 把點擊高度撐到 44px 以上。 */
   .table-schedule td .step-meal-link {
     display: inline;
     min-height: 0;
-    padding: 0;
+    padding: 12px 0;
     color: inherit;
     text-decoration: underline;
     text-decoration-color: var(--accent);
@@ -5805,13 +5843,11 @@ h3 {
 /* 今日卡：優先操作，詳細內容按需展開。
    控制項的顏色原本是寫死的 #faf5eb／#bfb19e／#496b57，和全站 token 各走各的
    （#496b57 甚至和 --green 差一階）。這裡一律換回 token，改主題時不會漏掉這一頁。 */
-.today-date-controls, .today-actions, .today-next > label { display: none; }
+.today-date-controls { display: none; }
 .today-date-controls.today-enhanced { display: grid; gap: .5rem; }
-.today-enhanced .today-actions { display: flex; gap: .4rem; }
-.today-enhanced .today-next > label { display: block; }
 .today-date-controls { margin: 1rem 0 0; }
 .today-date-buttons { display: flex; gap: .4rem; }
-.today-date-controls button, .today-action, .today-date-controls select, .today-next select {
+.today-date-controls button, .today-date-controls select, .today-next select {
   min-height: 44px; padding: .6rem .8rem; font: inherit; font-size: .9rem; color: var(--ink);
   background: var(--paper-light); border: 1px solid var(--line-strong); border-radius: var(--radius-xs);
 }
@@ -5819,24 +5855,6 @@ h3 {
 .today-date-controls button:disabled { opacity: .4; cursor: default; }
 .today-field { display: block; color: var(--ink-soft); font-family: var(--font-mono); font-size: .78rem; font-weight: 700; letter-spacing: .06em; }
 .today-field select { display: block; width: 100%; max-width: 100%; margin-top: .3rem; }
-.today-next > .today-field { margin-top: 1rem; }
-
-/* 快捷列：「下一站」是這一頁唯一的主要動作，做成實心綠鍵；其餘維持中性。
-   原本四顆長得一模一樣，等於沒有主次。 */
-.today-actions {
-  position: sticky; top: 76px; z-index: 8; margin-top: 1rem; padding: .4rem;
-  border: 1px solid var(--line); border-radius: var(--radius-sm);
-  background: rgb(244 237 223 / 94%); backdrop-filter: blur(8px); box-shadow: var(--shadow-1);
-}
-.today-action {
-  flex: 1 1 0; display: inline-flex; align-items: center; justify-content: center;
-  text-align: center; white-space: nowrap; text-decoration: none;
-  font-family: var(--font-mono); font-size: .85rem; font-weight: 700;
-  transition: background-color 160ms var(--ease), border-color 160ms var(--ease), color 160ms var(--ease);
-}
-.today-action:hover, .today-action:focus-visible { border-color: var(--accent); background: var(--accent-pale); color: var(--accent-dark); }
-.today-action-lead { border-color: var(--green); background: var(--green); color: var(--paper-light); }
-.today-action-lead:hover, .today-action-lead:focus-visible { border-color: #2a4f3a; background: #2a4f3a; color: var(--paper-light); }
 
 /* 「接下來去哪」是全頁主角：綠色實心導航鍵、放大的時刻，
    外加「還有多久」與「第幾站／共幾站」——現場最常問的兩件事，
@@ -5872,12 +5890,6 @@ h3 {
 /* UX 1017 H1：導航鈕排在站名正下方，後面的說明、地址與它留一點距離。 */
 .today-next-nav + p { margin-top: .65rem; }
 
-.today-transport-status { margin: 0; padding: .5rem .7rem; border: 1px solid var(--line); border-radius: var(--radius-xs); background: var(--paper-light); }
-.today-transport-route { margin: .6rem 0 0; font-size: 1.05rem; }
-.today-transport-time { display: flex; align-items: baseline; flex-wrap: wrap; gap: .5rem; margin: .25rem 0 0; }
-.today-transport-time b { font-family: var(--font-mono); font-size: 1.3rem; }
-.today-transport-time span { color: var(--ink-soft); font-size: .85rem; }
-
 .today-block summary { cursor: pointer; font-family: var(--font-mono); font-size: .85rem; font-weight: 700; min-height: 44px; padding: .5rem 0; }
 .today-block details { margin-top: 1rem; }
 /* 需要時才展開的細節（時間表、待辦、日照備案）降一階：底色更淡、左框不著色，
@@ -5888,9 +5900,8 @@ h3 {
 .today-block-more[open] > summary { margin-bottom: .5rem; }
 .today-block-more h4 { margin: .9rem 0 .3rem; }
 
-.today-actions :focus-visible, .today-date-controls :focus-visible, .today-next :focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
+.today-date-controls :focus-visible, .today-card :focus-visible { outline: 3px solid var(--green); outline-offset: 2px; }
 .today-card [hidden] { display: none !important; }
-@media (max-width: 400px) { .today-actions { gap: .25rem; } .today-action { padding: .55rem .3rem; font-size: .78rem; } }
 
 /* 硬時間：類型與「該幾點開始移動」要一眼分得出來。 */
 .today-hard { margin: 0; }
@@ -5915,20 +5926,12 @@ h3 {
   .today-block { padding: .85rem .9rem; }
   .today-next-clock b { font-size: 2rem; }
   .today-next-title { font-size: 1.3rem; }
-  .today-next-nav { width: 100%; }
   /* 手機改兩欄格線：號碼不換行，長號碼（代表處、保險）獨佔一列，
      說明字不會再被擠到號碼底下或疊在一起。 */
   .today-sos-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .45rem .6rem; }
   .today-sos-list li { min-width: 0; }
   .today-sos-list .today-sos-wide { grid-column: 1 / -1; }
-  /* sticky 動作列的 top: 76px 是假設桌機固定導覽列的高度；手機導覽列不是 fixed，
-     捲動後上方露出 76px 縫隙，內容從縫裡透出（稽核 M1）。手機貼齊視窗頂端，
-     並把四顆按鈕收成單行，避免換成兩列讓列高翻倍。 */
-  .journal-today .today-actions { top: 0; flex-wrap: nowrap; }
-  .today-actions { top: 0; flex-wrap: nowrap; }
-  .today-action { padding: .5rem .3rem; font-size: .8rem; }
 }
-.today-snack-label { margin: 1.1rem 0 .3rem; padding-top: .9rem; border-top: 1px solid var(--line); color: var(--ink-soft); font-size: .88rem; }
 
 /* 這一頁是單欄的查找工具，不是雜誌跨欄版面：桌機讓內容留在一個可掃視的
    欄寬裡，否則日期選單與快捷列會拉成一千多像素寬，眼睛要橫著跑。 */
@@ -6600,8 +6603,8 @@ h3 {
   .today-compact .today-block { margin-top: .4rem; padding: .5rem .8rem; }
   .today-compact .today-block-head { margin-bottom: .2rem; }
   .today-compact .today-next-clock b { font-size: 1.6rem; }
-  .today-compact .today-next-title { margin-top: .2rem; font-size: 1.2rem; line-height: 1.25; }
-  .today-compact .today-next-nav { margin-top: .4rem; }
+  .today-compact .today-next-title { font-size: 1.05rem; line-height: 1.25; }
+  .today-compact .today-next-nav { min-height: 44px; padding-block: .3rem; }
 }
 .today-sos-insurer[hidden], .today-sos-private[hidden] { display: none !important; }
 .today-sos-private { margin: .4rem 0 0; }
@@ -6611,11 +6614,6 @@ h3 {
    所以明確補一條，避免「還沒填」與「已填」兩種文字同時出現。 */
 [data-private-has][hidden], [data-private-missing][hidden] { display: none !important; }
 
-/* 今日卡：當天預約與票券放在行程旁邊，不再藏在最底部的摺疊區。 */
-.today-ticket-list { display: grid; gap: .75rem; margin: 0; padding: 0; list-style: none; }
-.today-ticket-list li { display: grid; gap: .2rem; padding-bottom: .75rem; border-bottom: 1px solid var(--line); }
-.today-ticket-list li:last-child { padding-bottom: 0; border-bottom: 0; }
-.today-ticket-note { font-size: .9rem; }
 .today-proof { display: block; padding: .4rem .6rem; border-left: 3px solid var(--green); border-radius: var(--radius-xs); background: var(--paper-light); font-size: .92rem; line-height: 1.5; }
 .today-proof-code { font-family: var(--font-mono); letter-spacing: .04em; }
 .today-next-ticket { margin: .5rem 0 0; }
@@ -6769,8 +6767,9 @@ h3 {
   }
 
   .journal-practical .journal-appendix-header h1 {
+    max-width: none;
     margin-block: 0.2rem;
-    font-size: clamp(2rem, 9vw, 2.5rem);
+    font-size: clamp(1.75rem, 8vw, 2.25rem);
     line-height: 1.15;
   }
 
@@ -6787,6 +6786,32 @@ h3 {
 @media (max-width: 480px) {
   .chapter-index ol a > span { display: none; }
   .chapter-index ol a { padding: .35rem .8rem; font-size: .9rem; }
+}
+
+/* 2026-10-20 UX F7：實用頁手機首屏原本被章節盒佔 265px。改成一列 44px 高、可橫滑的膠囊，
+   「本頁章節」字樣只給讀屏軟體；桌機不變。 */
+@media (max-width: 700px) {
+  .journal-site .chapter-index { margin-block: 0.5rem 1rem; padding: 0; border: 0; background: none; box-shadow: none; }
+  .journal-site .chapter-index-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .journal-site .chapter-index ol {
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+    margin-inline: -16px;
+    padding: 0 16px 2px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .journal-site .chapter-index ol::-webkit-scrollbar { display: none; }
+  .journal-site .chapter-index li { flex: none; }
+  .journal-site .chapter-index ol a { min-height: 44px; height: 44px; padding-block: 0; white-space: nowrap; }
 }
 
 .day-jump {
@@ -7379,7 +7404,8 @@ html {
   /* 刊頭是固定的操作列，和底部快捷列一樣用 px 定字級，
      瀏覽器調大基準字級時「實用資訊」才不會被擠到第二行。 */
   .nav > a.nav-brand { font-size: 21.6px; }
-  .nav-brand small { font-size: 9.3px; }
+  /* 2026-10-20 UX F18：「Paper Travel Journal」9.3px、對比 3.43，手機看不清也不需要，直接隱藏。 */
+  .nav-brand small { display: none; }
   /* .nav > a（0,1,1）原本把「今日」壓回 .78rem，舊的 .nav-today 規則蓋不過；這裡用同級選擇器。 */
   .nav > a.nav-today { font-size: 15.2px; }
   .nav-dropdown > summary { font-size: 14px; }
@@ -7388,6 +7414,16 @@ html {
   .nav > a,
   .nav-dropdown > summary { padding-inline: 12px; }
   .nav > a.nav-brand { padding-left: 24px; }
+  /* F8：品牌一行、「今日＋三個下拉」一行；390 與 320 寬都不換第二行。 */
+  .nav { flex-wrap: wrap; column-gap: 4px; row-gap: 2px; }
+  .nav > a.nav-today { margin-right: 2px; padding-inline: 10px; }
+  .nav-dropdown > summary { padding-inline: 9px; }
+}
+@media (max-width: 360px) {
+  .nav { padding-inline: 12px; column-gap: 2px; }
+  .nav > a.nav-today { padding-inline: 8px; font-size: 14px; }
+  .nav-dropdown > summary { padding-inline: 6px; font-size: 13.5px; letter-spacing: 0; }
+  .nav-dropdown > summary::after { margin-left: 3px; }
 }
 
 /* --- 2. 手機小字下限（依 390px 實測清單逐項指定；不用 max(…, 1em)，
@@ -7456,7 +7492,7 @@ html {
   .journal-site .map-legend > div,
   .journal-site .store-action,
   .journal-site .day-food-map,
-  .journal-site .today-action,
+  .journal-site .today-glance-nav,
   .journal-site .cross-link,
   .journal-site .route-stop,
   .journal-site .map-toolbar > button,
@@ -7518,12 +7554,6 @@ html {
   .today-date-buttons { flex-wrap: wrap; }
   .today-date-controls button { flex: 1 1 auto; }
 
-  .today-action {
-    min-width: 0;
-    white-space: normal;
-    line-height: 1.25;
-  }
-
   .day-food-list[data-three-meals] { grid-template-columns: minmax(0, 1fr); }
   /* SOS 號碼旁的說明在窄欄放不下時換到號碼下一行，不再擠成 16px 寬溢出。 */
   .today-sos-list li { flex-wrap: wrap; row-gap: 0; min-width: 0; }
@@ -7575,6 +7605,9 @@ html {
   text-shadow: 0 0 2px rgb(0 0 0 / 60%);
 }
 .trip-pin-plain span { opacity: 0.85; }
+/* 2026-10-20 UX F9：圖釘看起來仍是 26px（無字圓點 18px），透明外框把點擊範圍擴到 44px。 */
+.trip-pin::before { position: absolute; inset: -9px; content: ""; }
+.trip-pin-plain::before { inset: -13px; }
 /* N1 靠太近的圖釘被錯開：數字圓標外移，真實位置留一個小黑點。 */
 .trip-pin span { transition: transform .15s; }
 .trip-pin.is-nudged::after {
@@ -7674,21 +7707,19 @@ html {
   .journal-day-header { min-height: 0; margin-bottom: 0.75rem; }
   .journal-day-header .journal-day-heading { min-height: 0; padding: 0.85rem 1rem; }
   .journal-day-header .journal-day-heading h1 { margin: 0.35rem 0; font-size: 1.4rem; line-height: 1.25; }
-  .journal-day-header .journal-day-heading .hero-dek {
-    display: -webkit-box;
-    margin-top: 0.4rem;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-  }
+  /* 2026-10-20 UX F5：導言不再截成 3 行（截掉的常是抵達時刻），完整顯示。 */
+  .journal-day-header .journal-day-heading .hero-dek { margin-top: 0.4rem; font-size: 0.9375rem; line-height: 1.5; }
   .journal-day-header .journal-day-cover,
   .journal-day-header .journal-day-cover-fallback { display: none; }
-  .journal-day #schedule { margin-top: 1.25rem; }
-  /* 封面下的「今晚／行李」卡同樣收緊間距（內容不變），時間表標題才進得了第一屏。 */
+  /* F1：摘要卡 → 捷徑列 → 時間表，時間表標題與第一筆要在第一屏。 */
+  .journal-day #schedule { margin-top: 0.5rem; padding-top: 0.5rem; }
+  .journal-day #schedule > .section-heading { margin-bottom: 0.4rem; }
+  .journal-day .day-shortcuts { margin-block: 0 0.25rem; }
   .journal-day .journey-context { margin: 0.75rem 0; padding: 0.7rem 0.9rem; }
   .journal-day .journey-context p { margin: 0.3rem 0; }
 }
+/* F1：今晚住宿併入摘要卡，一行（放不下時才換行，不截斷）。 */
+.day-stay-line { margin: 0.5rem 0 0; font-size: 0.9375rem; line-height: 1.45; opacity: 0.92; }
 
 /* M2 離線狀態：頁首橫幅捲走後仍要知道看到的是快取。nav.js 在 <html> 標 data-offline，
    這裡在固定的底部列上緣加一行 18px 小字；沿用「橫幅不浮在內容中間」的決定，只貼在既有的底部列上。 */
@@ -7831,3 +7862,248 @@ html {
 .today-weather-tips { display: flex; flex-wrap: wrap; gap: .35rem; margin: .45rem 0 0; padding: 0; list-style: none; }
 .today-weather-tips li { padding: .2rem .55rem; border-radius: 999px; background: var(--accent-pale); font-size: .88rem; line-height: 1.4; }
 .today-weather[data-weather-state="stale"] .today-weather-main > span:first-child { color: var(--ink-soft); }
+
+/* ============================================================
+   今日卡一屏儀表板（2026-10-20）
+   今日卡只回答「現在要做什麼」：下一站、下一餐、下一段車、住宿、天氣，加一顆進每日頁的主按鈕；
+   時間表、餐廳細節、票券清單都在每日頁，不在這裡重複。390×844 不捲動就看完。
+   晚上（今天最後一步已過）改成「回住宿＋明天第一件事」置頂。
+   [data-today-phase] 由 today.js 設定；沒有 JavaScript 時兩組都顯示。
+   ============================================================ */
+.today-enhanced[data-today-phase='day'] .today-evening,
+.today-enhanced[data-today-phase='evening'] .today-day { display: none; }
+.today-day > * + *, .today-evening > * + * { margin-top: .6rem; }
+.today-day > .today-block:first-child, .today-evening > .today-block:first-child { margin-top: .6rem; }
+
+/* 下一站：左欄時刻與倒數、中間站名（最多兩行）、右邊導航，一列看完。 */
+.today-next .today-block-head { margin-bottom: .3rem; }
+.today-next-main { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: .3rem .65rem; }
+.today-next-main .today-next-clock { flex-direction: column; align-items: flex-start; flex-wrap: nowrap; gap: .15rem; margin: 0; }
+.today-next-main .today-next-clock b { font-size: 1.8rem; line-height: 1; }
+.today-next-main .today-next-eta { padding: .05rem .5rem; font-size: .75rem; }
+.today-next-main .today-next-title {
+  display: -webkit-box; margin: 0; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+  font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; line-height: 1.3;
+}
+.today-next-main .today-next-nav { margin: 0; min-height: 44px; padding: .4rem .8rem; white-space: nowrap; }
+.today-stay-main { grid-template-columns: minmax(0, 1fr) auto; }
+.today-stay-main .today-next-title { -webkit-line-clamp: 1; }
+.today-next-ticket, .today-next-sub { margin: .25rem 0 0; font-size: .88rem; line-height: 1.45; }
+.today-next-ticket { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+/* 2026-10-20 UX C：「要帶」與「硬時間」寧可換到第二行，也不要用「…」截掉票名或期限內容。 */
+.today-next-ticket,
+.today-next .today-hard-source,
+.today-glance > li[data-glance-wrap] .today-glance-val { overflow: visible; white-space: normal; text-overflow: clip; overflow-wrap: anywhere; }
+.today-glance > li[data-glance-wrap] { padding-block: .3rem; }
+.today-glance > li[data-glance-wrap] .today-glance-key { width: 3.4em; }
+.today-glance > li[data-glance-wrap] .today-glance-val { font-size: .875rem; line-height: 1.4; }
+.today-next-ticket .today-glance-key { margin-right: .4rem; }
+.today-next-ticket .today-proof { display: inline; margin-left: .4rem; padding: 0; border: 0; background: none; font-size: .82rem; color: var(--ink-soft); }
+.today-next-sub {
+  display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 1;
+  color: var(--ink-soft);
+}
+.today-next .today-block-head { align-items: center; }
+.today-next-mode { flex: 1 1 auto; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--ink-soft); font-size: .72rem; line-height: 1.3; }
+
+/* 硬時間：一行標題＋一行來源＋最多兩行「何時開始移動」。和下一站同時刻時併進下一站，不再另列時刻。 */
+.today-next .today-hard { margin: .35rem 0 0; padding: .25rem .55rem; border-left: 3px solid var(--yellow); border-radius: var(--radius-xs); background: var(--surface-warning); font-size: .85rem; line-height: 1.4; }
+.today-next .today-hard > b { font-size: .92rem; }
+.today-next .today-hard-eta { padding: .05rem .45rem; font-size: .75rem; }
+.today-next .today-hard-source { display: block; margin-top: .1rem; font-size: .85rem; line-height: 1.4; }
+.today-next .today-move {
+  display: -webkit-box; margin-top: .15rem; padding: 0; border: 0; background: none; overflow: hidden;
+  -webkit-box-orient: vertical; -webkit-line-clamp: 1;
+  color: var(--ink-soft); font-size: .78rem; line-height: 1.4;
+}
+.today-next .today-hard[data-hard-same='true'] > b,
+.today-next .today-hard[data-hard-same='true'] .today-move { display: none; }
+
+/* 摘要列：左欄固定寬的小標，右邊一行內容，最右是導航膠囊。 */
+.today-glance { margin: 0; padding: 0; list-style: none; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--surface-card); }
+.today-glance > li { display: flex; align-items: center; gap: .55rem; min-height: 44px; padding: .2rem .75rem; }
+.today-glance > li + li { border-top: 1px solid var(--line); }
+.today-glance > li[hidden] { display: none; }
+.today-glance-key { flex: none; width: 4.4em; color: var(--ink-soft); font-family: var(--font-mono); font-size: .78rem; font-weight: 700; letter-spacing: .04em; }
+.today-next-ticket .today-glance-key { width: auto; }
+.today-glance-val { flex: 1 1 auto; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: .95rem; }
+.today-glance-val b { font-family: var(--font-mono); }
+.today-glance-nav {
+  flex: none; display: inline-flex; align-items: center; min-height: 36px; padding: .2rem .7rem;
+  border: 1px solid rgb(53 98 72 / 40%); border-radius: 999px; color: var(--green);
+  font-family: var(--font-mono); font-size: .82rem; font-weight: 700; text-decoration: none;
+}
+.today-glance-nav::after { position: absolute; inset: 0; content: ''; }
+.today-glance > li { position: relative; }
+.today-glance-nav[hidden] { display: none; }
+.today-tomorrow .today-glance { margin-top: .5rem; }
+.today-tomorrow .today-glance > li { min-height: 34px; }
+.today-tomorrow .today-glance-val { font-size: .88rem; }
+.today-glance-link { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--font-mono); font-size: .85rem; font-weight: 700; }
+
+/* 天氣壓成一行：溫度、地點與日落、短標籤並排，放不下就截掉尾巴。 */
+.today-day .today-weather { display: flex; align-items: center; gap: .5rem; margin: .6rem 0 0; padding: .35rem .75rem; overflow: hidden; white-space: nowrap; }
+.today-day .today-weather-main { flex: none; flex-wrap: nowrap; gap: .5rem; font-size: .92rem; }
+.today-day .today-weather-meta { display: none; }
+.today-day .today-weather-tips { flex: 1 1 auto; flex-wrap: nowrap; min-width: 0; margin: 0; overflow: hidden; }
+.today-day .today-weather-tips li { flex: none; padding: .1rem .45rem; font-size: .8rem; }
+
+/* 主按鈕：進每日頁看完整行程。 */
+.today-full-link {
+  display: flex; align-items: center; justify-content: center; min-height: 48px; padding: .5rem 1rem;
+  border-radius: var(--radius-sm); background: var(--plum); color: var(--paper-light);
+  font-family: var(--font-mono); font-size: .95rem; font-weight: 700; text-decoration: none;
+}
+.today-full-link:hover, .today-full-link:focus-visible { background: var(--ink); color: var(--paper-light); }
+
+/* 晚上：回住宿置頂。 */
+.today-stay { border-left: 5px solid var(--plum); }
+.today-stay h3 { color: var(--plum); }
+.today-stay .today-address { font-size: 1rem; }
+.today-hotel-phone { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .6rem; margin: .45rem 0 0; }
+.today-hotel-phone .source-meta { margin: 0; font-size: .8rem; }
+.today-tomorrow { border-left: 5px solid var(--green); }
+.today-hotel-phone .source-meta { padding: 0; border: 0; line-height: 1.35; }
+.today-evening .today-block-head { margin-bottom: .3rem; }
+.today-stay .today-address { margin-top: .35rem; padding: .3rem .55rem; font-size: .95rem; }
+.today-evening-actions { display: flex; align-items: center; gap: .5rem .9rem; }
+.today-evening-actions .today-glance-link { flex: none; }
+.today-evening-actions .today-full-link { flex: 1 1 auto; }
+.today-tomorrow h3 { color: var(--green); }
+
+@media (max-width: 600px) {
+  .today-compact { margin-top: -1.6rem; }
+  /* 日期已在上方的日期選單，卡頭收成一行：Day 標籤＋當天主題。 */
+  .today-compact .today-head { display: flex; align-items: center; gap: .5rem; padding: .3rem .7rem; }
+  .today-compact .today-head-meta { flex: none; margin: 0; }
+  .today-compact .today-head-date { display: none; }
+  .today-compact .today-head h2 { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 1.05rem; }
+  .today-compact .today-day-badge { padding: .05rem .5rem; }
+  .today-compact .today-block { padding: .5rem .8rem; }
+  .today-compact .today-next-main .today-next-clock b { font-size: 1.6rem; }
+  /* 旅途中日期已在日期選單（Day N · 日期），卡頭只對讀屏軟體保留，空間讓給儀表板。 */
+  .today-compact .today-head { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); border: 0; white-space: nowrap; }
+  .today-compact .today-weather-tips li + li { display: none; }
+  /* 出發前／結束後的「不在旅程期間」框：說明一行、三個連結一列。 */
+  .today-compact .today-outside { margin-top: .5rem; padding: .45rem .7rem; }
+  .today-compact .today-outside-title { display: none; }
+  .today-compact .today-outside [data-today-outside-note] { margin-top: 0; font-size: .9rem; }
+  .today-compact .today-outside-links { gap: 0 .8rem; margin-top: 0 !important; font-size: .85rem; }
+  /* 不在旅程期間只是預覽：硬時間提醒留給每日頁，卡片才放得進一屏。 */
+  .today-outside-mode .today-next .today-hard, .today-outside-mode .today-next-sub { display: none; }
+  .today-compact .today-day > * + *, .today-compact .today-evening > * + * { margin-top: .4rem; }
+}
+
+/* ============================================================
+   2026-10-20 UX F9：點擊目標 ≥ 44px（行內連結用上下透明 padding，不改視覺大小）
+   ============================================================ */
+.journal-site .eyebrow a,
+.journal-site .day-food-title h4 a,
+.journal-site .day-food-guides a,
+.journal-site main p > a[href*="#city-dining"] { padding-block: 12px; }
+.photo-credit { margin-top: 0.25rem; }
+.photo-credit > summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+.photo-credit a { display: inline-flex; align-items: center; min-height: 44px; }
+.photo-gallery-card figcaption > p > a { display: inline-flex; align-items: center; min-height: 44px; }
+
+/* 2026-10-20 UX F3：時間表每一步「第一句＋展開」。展開鈕看起來是一行小字，點擊高度 44px。 */
+.table-schedule .step-more { margin-top: 0.1rem; }
+.table-schedule .step-more > summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-block: -10px;
+  color: var(--accent-dark);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 700;
+  list-style: none;
+}
+.table-schedule .step-more > summary::-webkit-details-marker { display: none; }
+.table-schedule .step-more > summary::after { margin-left: 0.25rem; content: "▾"; }
+.table-schedule .step-more[open] > summary::after { content: "▴"; }
+.table-schedule .step-more[open] > summary { margin-bottom: 0; }
+.table-schedule .step-more > .timeline-note { display: block; }
+.day-food-back { margin: 0.25rem 0 0.5rem; }
+.day-food-back a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }
+
+/* 2026-10-20 UX F6：查核與資料來源說明收進預設收合的灰色「資料說明」，主畫面只留旅客要做的事。 */
+.data-note { margin: 0.35rem 0 0; color: var(--ink-soft); font-size: 0.875rem; }
+.data-note > summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+.data-note > p { margin: 0.2rem 0 0.4rem; line-height: 1.6; }
+
+/* 2026-10-20 UX F10：訂票頁火車與巴士改成兩行精簡卡。 */
+.rail-cards { display: grid; gap: 0.6rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+.rail-card {
+  padding: 0.75rem 0.9rem 0.35rem;
+  border: 1px solid rgb(142 126 112 / 26%);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+}
+.rail-card p { margin: 0; }
+.rail-card-time { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.15rem 0.7rem; font-size: 1.0625rem; }
+.rail-card-time b { color: var(--accent-dark); }
+.rail-card-code { color: var(--ink); font-family: var(--font-mono); font-size: 0.9375rem; font-weight: 700; }
+.rail-card-route { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem 0.5rem; margin-top: 0.3rem !important; font-size: 0.9375rem; }
+.rail-card-route .tag-todo, .rail-card-route .tag-green, .rail-card-route .tag-yellow, .rail-card-route .tag-muted { margin: 0; }
+.rail-card-foot { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 0 1rem; }
+.rail-card-foot > .cross-link { display: inline-flex; align-items: center; min-height: 44px; }
+.rail-card-more { flex: 1 1 100%; }
+.rail-card-more > summary { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink-soft); cursor: pointer; font-size: 0.875rem; font-weight: 700; }
+.rail-card-more > p { margin: 0.25rem 0; font-size: 0.9375rem; line-height: 1.6; }
+.rail-card-foot:has(> .cross-link) > .rail-card-more { flex: 0 1 auto; }
+.rail-card-foot:has(> .cross-link) > .rail-card-more[open] { flex-basis: 100%; }
+.flight-cards .rail-card { padding-bottom: 0.75rem; }
+.flight-layover { padding: 0 0.9rem; color: var(--ink-soft); font-size: 0.875rem; }
+.bus-leg { margin: 0.75rem 0; border-top: 1px solid var(--line); }
+.bus-leg > summary { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0.75rem; min-height: 44px; padding-block: 0.4rem; cursor: pointer; }
+.bus-leg > summary h3 { margin: 0; }
+.bus-leg-hint { color: var(--ink-soft); font-size: 0.875rem; }
+.data-note > summary::before { margin-right: 0.3rem; content: "＋"; }
+.data-note[open] > summary::before { content: "－"; }
+
+/* 2026-10-20 UX F12：SOS 緊急電話改成實心紅底、全寬、56px 高的大按鈕；底部列「SOS」跳進來時上方留白。 */
+#sos-contacts { scroll-margin-top: 1rem; }
+#sos-contacts .database-card-action a[href^="tel:"],
+#sos-contacts .database-card-action a.private-tel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 56px;
+  margin: 0.4rem 0 0;
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: #b3261e;
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  box-shadow: 0 2px 0 rgb(0 0 0 / 18%);
+}
+#sos-contacts .database-card-action a[href^="tel:"]:active { background: #8f1d17; }
+#sos-contacts .database-card-action br { display: none; }
+#sos-contacts .database-card-action { margin-top: 0.5rem; }
+@media (max-width: 700px) {
+  #sos-contacts > .database-card { padding: 0.9rem 1rem; }
+  #sos-contacts > .database-card > h3 { margin: 0; }
+  #sos-contacts > .database-card > p { margin: 0.25rem 0; }
+}

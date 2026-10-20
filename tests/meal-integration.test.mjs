@@ -45,8 +45,16 @@ test('三處頁面使用同一份三餐呈現，離境與抵站後餐次不漏�
   for (const day of days) {
     const normalize = html => html.replace(/>\s+</g, '><');
     const shared = normalize(rendering.renderMealList(day, dining.dayMeals[day.n]));
-    for (const file of [`day-${String(day.n).padStart(2,'0')}.html`, 'today.html', 'practical/dining.html']) {
+    // 2026-10-20 今日卡改一屏儀表板，只顯示「下一餐」一行，完整三餐清單只在每日頁與餐飲頁。
+    for (const file of [`day-${String(day.n).padStart(2,'0')}.html`, 'practical/dining.html']) {
       assert.ok(normalize(fs.readFileSync(`dist/${file}`, 'utf8')).includes(shared), `${file} 缺少 Day ${day.n} 共用三餐`);
+    }
+    // 今日卡的「下一餐」仍讀同一份三餐資料：每一餐都有對應的時刻資料列，餐次不漏。
+    const today = fs.readFileSync('dist/today.html', 'utf8');
+    const card = today.split(`data-today-date="2026-10-${String(23 + day.n).padStart(2, '0')}"`)[1].split('</article>')[0];
+    for (const item of dining.dayMeals[day.n]) {
+      const step = day.steps.find(s => s.id === item.stepId);
+      assert.ok(card.includes(`data-meal-time="${step.t}" data-meal-name="${item.name.replaceAll('&', '&amp;')}"`), `today.html Day ${day.n} 缺少 ${item.name} 的下一餐資料`);
     }
   }
 });

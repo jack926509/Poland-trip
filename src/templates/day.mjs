@@ -1,9 +1,10 @@
 import { mealTiming, renderMealList, renderStoreBody, renderStoreHead } from '../lib/dining.mjs';
 import { escapeHtml, linkifyText, safeHttpsUrl } from '../lib/html.mjs';
 import { bookingProgress, dayHref } from '../lib/journey.mjs';
+import { statusTagClass } from '../lib/todo-status.mjs';
 import { days as allDays } from '../data/trip.js';
 import { segmentForDay } from '../lib/rail.mjs';
-import { renderDayContext } from './journey.mjs';
+import { renderDayContext, renderDayStayLine } from './journey.mjs';
 import { dayDining, dayMeals } from '../data/day-dining.js';
 import { cityGuides, cityKeysForDay, detectCity } from '../lib/city-guide.mjs';
 import { renderFastFoodDayList } from './fast-food.mjs';
@@ -107,6 +108,7 @@ function renderDayFood(day) {
     <span class="eyebrow">Dining</span><h3 id="day-food-heading">當日餐飲</h3>
     <p class="food-map-note">三餐各有一個主安排；標「先確認」的餐廳先確認接單，備選取代同餐，不額外加餐。時刻為波蘭當地時間，行程預留不代表已訂位。</p>
     ${renderMealList(day, dayMeals[day.n])}
+    <p class="day-food-back"><a href="#schedule">↑ 回時間表</a></p>
     ${entries.length ? `<details><summary>備選、備餐與順路點心 · ${summary}</summary><ul class="day-food-list">${entries.map(renderDayFoodItem).join('')}</ul></details>` : ''}
     ${guides}
     ${fastFood}
@@ -218,13 +220,32 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   };
   // UX 1017 H2：地圖圖釘的數字就是時間表第幾列；有圖釘的列在標題前標出同一個數字，方便對照。
   const pinnedSteps = new Set((dayMap?.points || []).map(point => point[8]).filter(Boolean));
+  // 2026-10-20 UX F3／F21：每一步預設只顯示第一句（要做什麼），其餘收進「展開」；
+  // 餐次列只留店名＋時間＋導航，店家細節看「當日餐飲」（店名連到餐廳卡），原說明仍收在「展開」裡不刪。
+  // 第一句以句號／分號為界；超過 40 字時改在第 12 字之後的第一個逗號斷開，手機上維持一到兩行。
+  const splitLead = sub => {
+    const match = /^([\s\S]*?[。；！？])([\s\S]+)$/.exec(sub);
+    let [lead, rest] = match && match[2].trim() ? [match[1], match[2].trim()] : [sub, ''];
+    if (lead.length > 40) {
+      const comma = /^([\s\S]{12,}?，)([\s\S]+)$/.exec(lead);
+      if (comma) [lead, rest] = [comma[1], `${comma[2].trim()}${rest}`];
+    }
+    return [lead, rest];
+  };
+  const stepMore = text => `<details class="step-more"><summary>展開</summary><span class="timeline-note">${text}</span></details>`;
+  const stepSubHtml = step => {
+    if (!step.sub) return '';
+    if (step.id && mealStepIds.has(step.id)) return stepMore(step.sub);
+    const [lead, rest] = splitLead(step.sub);
+    return `<br><span class="timeline-note">${lead}</span>${rest ? stepMore(rest) : ''}`;
+  };
   const stepsHtml = day.steps.map((step, index) => {
     const nav = stepNavigation(step);
     const pin = pinnedSteps.has(index + 1) ? `<span class="step-pin" title="地圖上的 ${index + 1} 號圖釘"><span class="visually-hidden">地圖圖釘 </span>${index + 1}</span>` : '';
     return `
     <tr>
       <td class="number" data-label="時間"><b>${step.t}</b>${nav ? `<a class="step-nav" href="${nav.href}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(nav.name)} 的 Google Maps 導航">導航 ↗</a>` : ''}</td>
-      <td data-label="行程"><b>${pin}${stepLabelHtml(step)}</b>${step.sub ? `<br><span class="timeline-note">${step.sub}</span>` : ''}</td>
+      <td data-label="行程"><b>${pin}${stepLabelHtml(step)}</b>${stepSubHtml(step)}</td>
       <td class="number" data-label="花費"${step.cost ? '' : ' data-empty'}>${step.cost || '—'}</td>
       <td class="number" data-label="時長"${step.dur ? '' : ' data-empty'}>${step.dur || '—'}</td>
     </tr>`;
@@ -242,7 +263,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
           // 抵達時間／車程未知時只寫「發車」，「待查票面」只在上方狀態列出現一次（UX 審查第 6 項）。
           const arrKnown = /^\d{1,2}:\d{2}/.test(trainSegment.arr || '');
           const durKnown = trainSegment.dur && !/待查/.test(trainSegment.dur);
-          return `<p><b>${trainSegment.dep}${arrKnown ? ` → ${trainSegment.arr}` : ' 發車'}</b>${durKnown ? ` · ${trainSegment.dur}` : ''} · ${escapeHtml(trainPrice)}</p>`;
+          return `<p><b>${trainSegment.dep}${arrKnown ? ` → ${trainSegment.arr}` : ' 發車'}</b>${durKnown ? ` · ${trainSegment.dur}` : ''}${trainPrice && !/未提供/.test(trainPrice) ? ` · ${escapeHtml(trainPrice)}` : ''}</p>`;
         })()}
         ${trainSegment.saleOpens && !trainSegment.leg?.includes('已購票') ? `<p><b>${escapeHtml(trainSegment.saleOpens)} 起預售</b></p>` : ''}
         <p class="action-links"><a href="practical/booking.html#rail-itinerary">訂票與交通頁的完整班次表 →</a></p>
@@ -255,7 +276,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   const bookingItem = item => `<li class="booking-item${item.open ? '' : item.skipped ? ' is-skipped' : ' is-done'}">
         <span class="booking-item-group">${escapeHtml(item.groupTitle)}</span>
         <b class="booking-item-name">${escapeHtml(item.name)}</b>
-        <span class="${item.open ? 'tag-todo' : 'tag-muted'}">${escapeHtml(item.status)}</span>
+        <span class="${item.skipped ? 'tag-muted' : statusTagClass(item.status)}">${escapeHtml(item.status)}</span>
         <a class="booking-item-link" href="practical/todos.html#${item.anchor}">${item.open ? '下一步怎麼訂' : item.skipped ? '現場怎麼試' : '查看紀錄'} →</a>
       </li>`;
   const mustBookHtml = `${pending.length ? `
@@ -368,9 +389,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
       </div>
     </section>` : '';
 
-  const lastDay = allDays[allDays.length - 1].n;
-  const previous = day.n > 1 ? `<a href="day-${String(day.n - 1).padStart(2, '0')}.html">← Day ${day.n - 1}</a>` : '<span></span>';
-  const next = day.n < lastDay ? `<a href="day-${String(day.n + 1).padStart(2, '0')}.html">Day ${day.n + 1} →</a>` : '<a href="index.html">回到總覽 →</a>';
+  // 前後一天：2026-10-20 UX F1 移到頁底，取代原本頁底另一組「← Day N｜Day N →」翻頁列。
   // 頁首換日：Day 1 沒有前一天、最後一天沒有後一天，只顯示存在的那一邊。
   const dayNeighbor = (n, arrow) => {
     const target = allDays.find(item => item.n === n);
@@ -385,14 +404,14 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   const detailPhotoHtml = detailPhotoCity?.photo?.detail ? `
     <figure class="city-detail-photo day-detail-photo">
       <img src="${escapeHtml(detailPhotoCity.photo.detail)}" alt="${escapeHtml(detailPhotoCity.photo.detailAlt)}" width="1280" height="${escapeHtml(detailPhotoCity.photo.detailHeight)}" loading="lazy" decoding="async">
-      <figcaption>${escapeHtml(detailPhotoCity.photo.detailCaption)} · ${escapeHtml(detailPhotoCity.photo.detailAuthor)} · <a href="${escapeHtml(detailPhotoCity.photo.detailSource)}" target="_blank" rel="noopener noreferrer">圖片來源 ↗</a> · <a href="${escapeHtml(detailPhotoCity.photo.detailLicenseUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(detailPhotoCity.photo.detailLicense)} 授權 ↗</a></figcaption>
+      <figcaption>${escapeHtml(detailPhotoCity.photo.detailCaption)}<details class="photo-credit"><summary>圖片來源</summary>${escapeHtml(detailPhotoCity.photo.detailAuthor)} · <a href="${escapeHtml(detailPhotoCity.photo.detailSource)}" target="_blank" rel="noopener noreferrer">圖片來源 ↗</a> · <a href="${escapeHtml(detailPhotoCity.photo.detailLicenseUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(detailPhotoCity.photo.detailLicense)} 授權 ↗</a></details></figcaption>
     </figure>` : '';
 
-  // 快捷列：時間表／吃哪／地址／交通／地圖。該區塊當天不存在就不放，不留死連結。
+  // 快捷列：地圖／地址／交通。該區塊當天不存在就不放，不留死連結。
+  // 2026-10-20 UX F4：「時間表／吃哪」由手機底部固定列負責（每日頁指向 #schedule／#day-food），
+  // 捷徑列不再重複，兩列合計少一半按鈕。
   const foodHtml = renderDayFood(day);
   const shortcuts = [
-    ['#schedule', '時間表'],
-    foodHtml ? ['#day-food', '吃哪'] : null,
     dayMap ? [`#map-day-${day.n}-heading`, '地圖'] : null,
     operation ? ['#day-addresses', '地址'] : null,
     operation ? ['#day-route', '交通'] : null,
@@ -404,12 +423,11 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
         <span class="section-num">Day ${String(day.n).padStart(2, '0')} · ${escapeHtml(day.date)}</span>
         <h1>${escapeHtml(day.title).replaceAll(' + ', ' +\u00a0')}</h1>
         <p class="hero-dek">${escapeHtml(day.headline)}</p>
+        ${renderDayStayLine(day)}
       </div>
 ${coverHtml}
     </header>
 
-    ${renderDayContext(day)}
-    ${daySwitchHtml}
     <nav class="day-shortcuts" aria-label="當日快速導覽">
       ${shortcuts.map(([href, text]) => `<a href="${href}">${text}</a>`).join('')}
     </nav>
@@ -444,7 +462,8 @@ ${coverHtml}
     ${renderPhotoGallery(dayGallery.length ? dayGallery : (city?.gallery || []).filter(photo => photo.days?.includes(day.n)), '沿途風景')}
     ${photoHtml}
 
-    <nav class="section-heading" aria-label="每日行程翻頁">${previous}${next}</nav>`;
+    ${renderDayContext(day)}
+    ${daySwitchHtml}`;
 
   return renderLayout({
     title: `Day ${day.n} ${day.title}`,

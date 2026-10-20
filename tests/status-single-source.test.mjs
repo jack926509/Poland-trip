@@ -54,9 +54,11 @@ test('首頁狀態小卡的待辦數與分類計數等於正本', () => {
 });
 
 test('首頁其餘待辦數字（狀態列、區塊導言、各類卡片）等於正本', () => {
-  assert.ok(home.includes(`aria-label="${expected.open} 項待辦"`));
+  // 2026-10-20 UX F15：與頁首狀態列重複的兩張統計卡（N 項待辦／已完成）已移除；
+  // 待辦數改驗頁首狀態列，並確認統計卡不再出現。
+  assert.ok(home.includes(`還有 <b data-home-open>${expected.open}</b> 項待辦`));
   assert.ok(home.includes(`共 ${expected.total} 項，還有 ${expected.open} 項待處理`));
-  assert.ok(home.includes(`<strong>${expected.total - expected.open}</strong><span>已完成</span>`));
+  assert.ok(!home.includes('class="journal-status-strip"'));
   for (const group of trip.todoGroups) {
     const text = openByGroup[group.id] ? `${openByGroup[group.id]} 項待處理` : '已全部完成';
     assert.ok(home.includes(`${text}（共 ${group.items.length} 項）`), `${group.id} 卡片計數不符`);

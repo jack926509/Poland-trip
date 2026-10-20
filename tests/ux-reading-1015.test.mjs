@@ -30,7 +30,8 @@ test('刊頭「Aa」字級切換已移除（2026-10-16）：沒有按鈕、預�
 test('手機時間表：說明橫跨到最右欄、收成 3 行，導航鈕移到第 2 列', () => {
   const source = css();
   assert.match(source, /\.table-editorial\.table-schedule td:nth-child\(2\) \{[^}]*display: block;[^}]*grid-column: 2 \/ -1/s);
-  assert.match(source, /\.table-schedule \.timeline-note \{[^}]*font-size: 0\.9rem;[^}]*line-height: 1\.55/s);
+  // 2026-10-20 UX F2：說明字級 0.9rem → 1rem。
+  assert.match(source, /\.table-schedule \.timeline-note \{[^}]*font-size: 1rem;[^}]*line-height: 1\.55/s);
   assert.match(source, /\.table-schedule \.timeline-note\.is-clamped \{[^}]*line-clamp: 3/s);
   assert.match(source, /\.table-editorial\.table-schedule \.step-nav \{[^}]*grid-row: 2;/s);
   assert.match(read('assets/nav.js'), /說明超過 3 行先收成 3 行/);
@@ -42,7 +43,7 @@ test('手機小字下限：實測 11–13px 的標籤與動作改為 13.6px／14
   for (const selector of ['.store-fact dt', '.grocery-sunday', '.today-sos-tag', '.status-verified', '.booking-item-group']) {
     assert.ok(block.includes(`.journal-site ${selector}`), `小字下限缺少 ${selector}`);
   }
-  for (const selector of ['.operation-address-actions a', '.store-action', '.cross-link', '.day-food-map', '.today-action']) {
+  for (const selector of ['.operation-address-actions a', '.store-action', '.cross-link', '.day-food-map', '.today-glance-nav']) {
     assert.ok(block.includes(`.journal-site ${selector}`), `動作字級缺少 ${selector}`);
   }
   // 不能用 max(…, 1em)：font-size 的 1em 是父層字級，會把小標籤一起撐成 16px
