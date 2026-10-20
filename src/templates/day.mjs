@@ -107,6 +107,7 @@ function renderDayFood(day) {
     <span class="eyebrow">Dining</span><h3 id="day-food-heading">當日餐飲</h3>
     <p class="food-map-note">三餐各有一個主安排；標「先確認」的餐廳先確認接單，備選取代同餐，不額外加餐。時刻為波蘭當地時間，行程預留不代表已訂位。</p>
     ${renderMealList(day, dayMeals[day.n])}
+    <p class="day-food-back"><a href="#schedule">↑ 回時間表</a></p>
     ${entries.length ? `<details><summary>備選、備餐與順路點心 · ${summary}</summary><ul class="day-food-list">${entries.map(renderDayFoodItem).join('')}</ul></details>` : ''}
     ${guides}
     ${fastFood}
@@ -218,13 +219,32 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   };
   // UX 1017 H2：地圖圖釘的數字就是時間表第幾列；有圖釘的列在標題前標出同一個數字，方便對照。
   const pinnedSteps = new Set((dayMap?.points || []).map(point => point[8]).filter(Boolean));
+  // 2026-10-20 UX F3／F21：每一步預設只顯示第一句（要做什麼），其餘收進「展開」；
+  // 餐次列只留店名＋時間＋導航，店家細節看「當日餐飲」（店名連到餐廳卡），原說明仍收在「展開」裡不刪。
+  // 第一句以句號／分號為界；超過 40 字時改在第 12 字之後的第一個逗號斷開，手機上維持一到兩行。
+  const splitLead = sub => {
+    const match = /^([\s\S]*?[。；！？])([\s\S]+)$/.exec(sub);
+    let [lead, rest] = match && match[2].trim() ? [match[1], match[2].trim()] : [sub, ''];
+    if (lead.length > 40) {
+      const comma = /^([\s\S]{12,}?，)([\s\S]+)$/.exec(lead);
+      if (comma) [lead, rest] = [comma[1], `${comma[2].trim()}${rest}`];
+    }
+    return [lead, rest];
+  };
+  const stepMore = text => `<details class="step-more"><summary>展開</summary><span class="timeline-note">${text}</span></details>`;
+  const stepSubHtml = step => {
+    if (!step.sub) return '';
+    if (step.id && mealStepIds.has(step.id)) return stepMore(step.sub);
+    const [lead, rest] = splitLead(step.sub);
+    return `<br><span class="timeline-note">${lead}</span>${rest ? stepMore(rest) : ''}`;
+  };
   const stepsHtml = day.steps.map((step, index) => {
     const nav = stepNavigation(step);
     const pin = pinnedSteps.has(index + 1) ? `<span class="step-pin" title="地圖上的 ${index + 1} 號圖釘"><span class="visually-hidden">地圖圖釘 </span>${index + 1}</span>` : '';
     return `
     <tr>
       <td class="number" data-label="時間"><b>${step.t}</b>${nav ? `<a class="step-nav" href="${nav.href}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(nav.name)} 的 Google Maps 導航">導航 ↗</a>` : ''}</td>
-      <td data-label="行程"><b>${pin}${stepLabelHtml(step)}</b>${step.sub ? `<br><span class="timeline-note">${step.sub}</span>` : ''}</td>
+      <td data-label="行程"><b>${pin}${stepLabelHtml(step)}</b>${stepSubHtml(step)}</td>
       <td class="number" data-label="花費"${step.cost ? '' : ' data-empty'}>${step.cost || '—'}</td>
       <td class="number" data-label="時長"${step.dur ? '' : ' data-empty'}>${step.dur || '—'}</td>
     </tr>`;

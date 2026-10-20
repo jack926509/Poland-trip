@@ -7969,3 +7969,24 @@ html {
 }
 .photo-credit a { display: inline-flex; align-items: center; min-height: 44px; }
 .photo-gallery-card figcaption > p > a { display: inline-flex; align-items: center; min-height: 44px; }
+
+/* 2026-10-20 UX F3：時間表每一步「第一句＋展開」。展開鈕看起來是一行小字，點擊高度 44px。 */
+.table-schedule .step-more { margin-top: 0.1rem; }
+.table-schedule .step-more > summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-block: -10px;
+  color: var(--accent-dark);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 700;
+  list-style: none;
+}
+.table-schedule .step-more > summary::-webkit-details-marker { display: none; }
+.table-schedule .step-more > summary::after { margin-left: 0.25rem; content: "▾"; }
+.table-schedule .step-more[open] > summary::after { content: "▴"; }
+.table-schedule .step-more[open] > summary { margin-bottom: 0; }
+.table-schedule .step-more > .timeline-note { display: block; }
+.day-food-back { margin: 0.25rem 0 0.5rem; }
+.day-food-back a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 700; }

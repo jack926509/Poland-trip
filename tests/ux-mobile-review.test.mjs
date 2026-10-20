@@ -55,7 +55,10 @@ test('第 3 項：手機時間表為精簡版（不顯示欄名、時間大字�
   // 沒有 JS 時全文仍在 HTML 中，收合只是畫面行為
   const day5 = read('day-05.html');
   const step = days[4].steps.find(item => item.t === '13:55'); // 2026-10-14 新行程：百年廳外觀（長說明）
-  assert.ok(day5.includes(step.sub), 'Day 5 時間表說明全文必須仍在 HTML 中');
+  // 2026-10-20 UX F3：說明拆成「第一句」＋「展開」兩段輸出，兩段都必須完整在 HTML 中。
+  const row = day5.match(new RegExp(`<b>${step.t}</b>[\\s\\S]*?</tr>`))?.[0] || '';
+  const notes = [...row.matchAll(/<span class="timeline-note">([^<]*)<\/span>/g)].map(match => match[1]);
+  assert.equal(notes.join('').replace(/\s/g, ''), step.sub.replace(/\s/g, ''), 'Day 5 時間表說明全文必須仍在 HTML 中');
 });
 
 test('第 4 項：餐廳營業時間依城市分組，查核狀態、日期、來源、菜單收在每家的 details 內', () => {

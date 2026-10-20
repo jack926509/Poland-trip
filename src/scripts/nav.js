@@ -166,6 +166,8 @@
   const clampScheduleNotes = () => {
     if (typeof window.matchMedia !== 'function' || !window.matchMedia('(max-width: 700px)').matches) return;
     document.querySelectorAll('.table-schedule .timeline-note').forEach(note => {
+      // 2026-10-20 UX F3：每日頁已改成「第一句＋展開」，有展開區的列與展開區內的全文不再另外收成 3 行。
+      if (note.closest('.step-more') || note.parentElement.querySelector('.step-more')) return;
       note.classList.add('is-clamped');
       if (note.scrollHeight <= note.clientHeight + 2) {
         note.classList.remove('is-clamped');
