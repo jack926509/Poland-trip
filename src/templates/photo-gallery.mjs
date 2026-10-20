@@ -14,7 +14,7 @@ export function renderPhotoGallery(photos = [], title = '城市風景') {
       <img src="${escape(photo.src)}" alt="${escape(photo.alt)}" width="${Number(photo.width)}" height="${Number(photo.height)}" loading="lazy" decoding="async">
       <figcaption><h3>${escape(photo.caption)}</h3>${photo.note ? `<p>${escape(photo.note)}</p>` : ''}
         ${photo.mapUrl ? `<p>${externalLink(photo.mapUrl, '在 Google Maps 查看地點 ↗')}</p>` : ''}
-        <small>${escape(photo.author)} · ${externalLink(photo.sourceUrl, '照片來源')} · ${externalLink(photo.licenseUrl, photo.license)}</small>
+        <details class="photo-credit"><summary>照片來源</summary><small>${escape(photo.author)} · ${externalLink(photo.sourceUrl, '照片來源')} · ${externalLink(photo.licenseUrl, photo.license)}</small></details>
       </figcaption>
     </figure>`).join('')}</div>
   </section>`;

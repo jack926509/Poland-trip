@@ -3,7 +3,7 @@ import { escapeHtml, linkifyText, safeHttpsUrl } from '../lib/html.mjs';
 import { bookingProgress, dayHref } from '../lib/journey.mjs';
 import { days as allDays } from '../data/trip.js';
 import { segmentForDay } from '../lib/rail.mjs';
-import { renderDayContext } from './journey.mjs';
+import { renderDayContext, renderDayStayLine } from './journey.mjs';
 import { dayDining, dayMeals } from '../data/day-dining.js';
 import { cityGuides, cityKeysForDay, detectCity } from '../lib/city-guide.mjs';
 import { renderFastFoodDayList } from './fast-food.mjs';
@@ -368,9 +368,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
       </div>
     </section>` : '';
 
-  const lastDay = allDays[allDays.length - 1].n;
-  const previous = day.n > 1 ? `<a href="day-${String(day.n - 1).padStart(2, '0')}.html">← Day ${day.n - 1}</a>` : '<span></span>';
-  const next = day.n < lastDay ? `<a href="day-${String(day.n + 1).padStart(2, '0')}.html">Day ${day.n + 1} →</a>` : '<a href="index.html">回到總覽 →</a>';
+  // 前後一天：2026-10-20 UX F1 移到頁底，取代原本頁底另一組「← Day N｜Day N →」翻頁列。
   // 頁首換日：Day 1 沒有前一天、最後一天沒有後一天，只顯示存在的那一邊。
   const dayNeighbor = (n, arrow) => {
     const target = allDays.find(item => item.n === n);
@@ -385,14 +383,14 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   const detailPhotoHtml = detailPhotoCity?.photo?.detail ? `
     <figure class="city-detail-photo day-detail-photo">
       <img src="${escapeHtml(detailPhotoCity.photo.detail)}" alt="${escapeHtml(detailPhotoCity.photo.detailAlt)}" width="1280" height="${escapeHtml(detailPhotoCity.photo.detailHeight)}" loading="lazy" decoding="async">
-      <figcaption>${escapeHtml(detailPhotoCity.photo.detailCaption)} · ${escapeHtml(detailPhotoCity.photo.detailAuthor)} · <a href="${escapeHtml(detailPhotoCity.photo.detailSource)}" target="_blank" rel="noopener noreferrer">圖片來源 ↗</a> · <a href="${escapeHtml(detailPhotoCity.photo.detailLicenseUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(detailPhotoCity.photo.detailLicense)} 授權 ↗</a></figcaption>
+      <figcaption>${escapeHtml(detailPhotoCity.photo.detailCaption)}<details class="photo-credit"><summary>圖片來源</summary>${escapeHtml(detailPhotoCity.photo.detailAuthor)} · <a href="${escapeHtml(detailPhotoCity.photo.detailSource)}" target="_blank" rel="noopener noreferrer">圖片來源 ↗</a> · <a href="${escapeHtml(detailPhotoCity.photo.detailLicenseUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(detailPhotoCity.photo.detailLicense)} 授權 ↗</a></details></figcaption>
     </figure>` : '';
 
-  // 快捷列：時間表／吃哪／地址／交通／地圖。該區塊當天不存在就不放，不留死連結。
+  // 快捷列：地圖／地址／交通。該區塊當天不存在就不放，不留死連結。
+  // 2026-10-20 UX F4：「時間表／吃哪」由手機底部固定列負責（每日頁指向 #schedule／#day-food），
+  // 捷徑列不再重複，兩列合計少一半按鈕。
   const foodHtml = renderDayFood(day);
   const shortcuts = [
-    ['#schedule', '時間表'],
-    foodHtml ? ['#day-food', '吃哪'] : null,
     dayMap ? [`#map-day-${day.n}-heading`, '地圖'] : null,
     operation ? ['#day-addresses', '地址'] : null,
     operation ? ['#day-route', '交通'] : null,
@@ -404,12 +402,11 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
         <span class="section-num">Day ${String(day.n).padStart(2, '0')} · ${escapeHtml(day.date)}</span>
         <h1>${escapeHtml(day.title).replaceAll(' + ', ' +\u00a0')}</h1>
         <p class="hero-dek">${escapeHtml(day.headline)}</p>
+        ${renderDayStayLine(day)}
       </div>
 ${coverHtml}
     </header>
 
-    ${renderDayContext(day)}
-    ${daySwitchHtml}
     <nav class="day-shortcuts" aria-label="當日快速導覽">
       ${shortcuts.map(([href, text]) => `<a href="${href}">${text}</a>`).join('')}
     </nav>
@@ -444,7 +441,8 @@ ${coverHtml}
     ${renderPhotoGallery(dayGallery.length ? dayGallery : (city?.gallery || []).filter(photo => photo.days?.includes(day.n)), '沿途風景')}
     ${photoHtml}
 
-    <nav class="section-heading" aria-label="每日行程翻頁">${previous}${next}</nav>`;
+    ${renderDayContext(day)}
+    ${daySwitchHtml}`;
 
   return renderLayout({
     title: `Day ${day.n} ${day.title}`,

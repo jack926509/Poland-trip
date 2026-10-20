@@ -817,7 +817,8 @@ nav.section-heading > a:last-child {
 .timeline-note {
   margin-top: 0.2rem;
   color: var(--ink-soft);
-  font-size: 0.93rem;
+  /* 2026-10-20 UX F2：說明文字 14.4px 太小，提到 1rem。 */
+  font-size: 1rem;
 }
 
 .table-wrap {
@@ -2651,7 +2652,7 @@ figure.media-unavailable > img {
 .journal-day-cover img { max-height: 23rem; }
 .journal-day .chapter-index ol { max-height: 8rem; overflow-y: auto; }
 .journal-day .chapter-index { margin-block: 1rem; }
-.journal-day-facts dd, .timeline-note, .tag-todo, .tag-muted,
+.journal-day-facts dd, .tag-todo, .tag-muted,
 .tag-red, .tag-yellow, .tag-green, .eyebrow, .section-num,
 .nav-dropdown summary, .journal-day-date, .journal-status-strip span,
 .journal-day-facts dt, .journal-cover-meta dt, .footer p {
@@ -3197,7 +3198,7 @@ a[href^="tel:"]:focus-visible {
     align-self: center;
     margin-top: 0.1rem;
     color: var(--ink-soft);
-    font-size: 0.875rem;
+    font-size: 0.9375rem;
     white-space: normal;
     overflow-wrap: anywhere;
   }
@@ -3209,7 +3210,7 @@ a[href^="tel:"]:focus-visible {
 
   .table-schedule .timeline-note {
     color: #4f4641;
-    font-size: 0.9rem;
+    font-size: 1rem;
     line-height: 1.55;
   }
 
@@ -3248,10 +3249,11 @@ a[href^="tel:"]:focus-visible {
     content: '';
   }
 
+  /* 2026-10-20 UX F9：行內連結不改排版，用上下透明 padding 把點擊高度撐到 44px 以上。 */
   .table-schedule td .step-meal-link {
     display: inline;
     min-height: 0;
-    padding: 0;
+    padding: 12px 0;
     color: inherit;
     text-decoration: underline;
     text-decoration-color: var(--accent);
@@ -6729,8 +6731,9 @@ h3 {
   }
 
   .journal-practical .journal-appendix-header h1 {
+    max-width: none;
     margin-block: 0.2rem;
-    font-size: clamp(2rem, 9vw, 2.5rem);
+    font-size: clamp(1.75rem, 8vw, 2.25rem);
     line-height: 1.15;
   }
 
@@ -6747,6 +6750,32 @@ h3 {
 @media (max-width: 480px) {
   .chapter-index ol a > span { display: none; }
   .chapter-index ol a { padding: .35rem .8rem; font-size: .9rem; }
+}
+
+/* 2026-10-20 UX F7：實用頁手機首屏原本被章節盒佔 265px。改成一列 44px 高、可橫滑的膠囊，
+   「本頁章節」字樣只給讀屏軟體；桌機不變。 */
+@media (max-width: 700px) {
+  .journal-site .chapter-index { margin-block: 0.5rem 1rem; padding: 0; border: 0; background: none; box-shadow: none; }
+  .journal-site .chapter-index-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .journal-site .chapter-index ol {
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+    margin-inline: -16px;
+    padding: 0 16px 2px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .journal-site .chapter-index ol::-webkit-scrollbar { display: none; }
+  .journal-site .chapter-index li { flex: none; }
+  .journal-site .chapter-index ol a { min-height: 44px; height: 44px; padding-block: 0; white-space: nowrap; }
 }
 
 .day-jump {
@@ -7339,7 +7368,8 @@ html {
   /* 刊頭是固定的操作列，和底部快捷列一樣用 px 定字級，
      瀏覽器調大基準字級時「實用資訊」才不會被擠到第二行。 */
   .nav > a.nav-brand { font-size: 21.6px; }
-  .nav-brand small { font-size: 9.3px; }
+  /* 2026-10-20 UX F18：「Paper Travel Journal」9.3px、對比 3.43，手機看不清也不需要，直接隱藏。 */
+  .nav-brand small { display: none; }
   /* .nav > a（0,1,1）原本把「今日」壓回 .78rem，舊的 .nav-today 規則蓋不過；這裡用同級選擇器。 */
   .nav > a.nav-today { font-size: 15.2px; }
   .nav-dropdown > summary { font-size: 14px; }
@@ -7348,6 +7378,16 @@ html {
   .nav > a,
   .nav-dropdown > summary { padding-inline: 12px; }
   .nav > a.nav-brand { padding-left: 24px; }
+  /* F8：品牌一行、「今日＋三個下拉」一行；390 與 320 寬都不換第二行。 */
+  .nav { flex-wrap: wrap; column-gap: 4px; row-gap: 2px; }
+  .nav > a.nav-today { margin-right: 2px; padding-inline: 10px; }
+  .nav-dropdown > summary { padding-inline: 9px; }
+}
+@media (max-width: 360px) {
+  .nav { padding-inline: 12px; column-gap: 2px; }
+  .nav > a.nav-today { padding-inline: 8px; font-size: 14px; }
+  .nav-dropdown > summary { padding-inline: 6px; font-size: 13.5px; letter-spacing: 0; }
+  .nav-dropdown > summary::after { margin-left: 3px; }
 }
 
 /* --- 2. 手機小字下限（依 390px 實測清單逐項指定；不用 max(…, 1em)，
@@ -7529,6 +7569,9 @@ html {
   text-shadow: 0 0 2px rgb(0 0 0 / 60%);
 }
 .trip-pin-plain span { opacity: 0.85; }
+/* 2026-10-20 UX F9：圖釘看起來仍是 26px（無字圓點 18px），透明外框把點擊範圍擴到 44px。 */
+.trip-pin::before { position: absolute; inset: -9px; content: ""; }
+.trip-pin-plain::before { inset: -13px; }
 /* N1 靠太近的圖釘被錯開：數字圓標外移，真實位置留一個小黑點。 */
 .trip-pin span { transition: transform .15s; }
 .trip-pin.is-nudged::after {
@@ -7628,21 +7671,19 @@ html {
   .journal-day-header { min-height: 0; margin-bottom: 0.75rem; }
   .journal-day-header .journal-day-heading { min-height: 0; padding: 0.85rem 1rem; }
   .journal-day-header .journal-day-heading h1 { margin: 0.35rem 0; font-size: 1.4rem; line-height: 1.25; }
-  .journal-day-header .journal-day-heading .hero-dek {
-    display: -webkit-box;
-    margin-top: 0.4rem;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-  }
+  /* 2026-10-20 UX F5：導言不再截成 3 行（截掉的常是抵達時刻），完整顯示。 */
+  .journal-day-header .journal-day-heading .hero-dek { margin-top: 0.4rem; font-size: 0.9375rem; line-height: 1.5; }
   .journal-day-header .journal-day-cover,
   .journal-day-header .journal-day-cover-fallback { display: none; }
-  .journal-day #schedule { margin-top: 1.25rem; }
-  /* 封面下的「今晚／行李」卡同樣收緊間距（內容不變），時間表標題才進得了第一屏。 */
+  /* F1：摘要卡 → 捷徑列 → 時間表，時間表標題與第一筆要在第一屏。 */
+  .journal-day #schedule { margin-top: 0.5rem; padding-top: 0.5rem; }
+  .journal-day #schedule > .section-heading { margin-bottom: 0.4rem; }
+  .journal-day .day-shortcuts { margin-block: 0 0.25rem; }
   .journal-day .journey-context { margin: 0.75rem 0; padding: 0.7rem 0.9rem; }
   .journal-day .journey-context p { margin: 0.3rem 0; }
 }
+/* F1：今晚住宿併入摘要卡，一行（放不下時才換行，不截斷）。 */
+.day-stay-line { margin: 0.5rem 0 0; font-size: 0.9375rem; line-height: 1.45; opacity: 0.92; }
 
 /* M2 離線狀態：頁首橫幅捲走後仍要知道看到的是快取。nav.js 在 <html> 標 data-offline，
    這裡在固定的底部列上緣加一行 18px 小字；沿用「橫幅不浮在內容中間」的決定，只貼在既有的底部列上。 */
@@ -7909,3 +7950,22 @@ html {
   .today-outside-mode .today-next .today-hard, .today-outside-mode .today-next-sub { display: none; }
   .today-compact .today-day > * + *, .today-compact .today-evening > * + * { margin-top: .4rem; }
 }
+
+/* ============================================================
+   2026-10-20 UX F9：點擊目標 ≥ 44px（行內連結用上下透明 padding，不改視覺大小）
+   ============================================================ */
+.journal-site .eyebrow a,
+.journal-site .day-food-title h4 a,
+.journal-site .day-food-guides a,
+.journal-site main p > a[href*="#city-dining"] { padding-block: 12px; }
+.photo-credit { margin-top: 0.25rem; }
+.photo-credit > summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+.photo-credit a { display: inline-flex; align-items: center; min-height: 44px; }
+.photo-gallery-card figcaption > p > a { display: inline-flex; align-items: center; min-height: 44px; }

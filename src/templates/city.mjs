@@ -156,7 +156,7 @@ export function renderCity({
   const cityDetailPhoto = city.photo?.detail ? `
     <figure class="city-detail-photo">
       <img src="${city.photo.detail}" alt="${city.photo.detailAlt}" width="1280" height="${city.photo.detailHeight}" loading="lazy" decoding="async">
-      <figcaption>${city.photo.detailCaption} · ${city.photo.detailAuthor} · <a href="${city.photo.detailSource}" target="_blank" rel="noopener noreferrer">圖片來源 ↗</a> · <a href="${city.photo.detailLicenseUrl}" target="_blank" rel="noopener noreferrer">${city.photo.detailLicense} 授權 ↗</a></figcaption>
+      <figcaption>${city.photo.detailCaption}<details class="photo-credit"><summary>圖片來源</summary>${city.photo.detailAuthor} · <a href="${city.photo.detailSource}" target="_blank" rel="noopener noreferrer">圖片來源 ↗</a> · <a href="${city.photo.detailLicenseUrl}" target="_blank" rel="noopener noreferrer">${city.photo.detailLicense} 授權 ↗</a></details></figcaption>
     </figure>` : '';
 
   const legendHtml = Object.entries(legend).map(([key, item]) => `

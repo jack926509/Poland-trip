@@ -13,13 +13,17 @@ const css = () => fs.readFileSync(path.join(distDir, 'assets/main.css'), 'utf8')
 const standalone = () => fs.readFileSync(path.resolve('poland-travel-guide-2026.html'), 'utf8');
 const dayFile = n => `day-${String(n).padStart(2, '0')}.html`;
 
-test('C3：快捷列為「時間表／吃哪／地址／交通／地圖」，每顆都指向頁內真實存在的錨點', () => {
+// 2026-10-20 UX F4：「時間表／吃哪」只留在手機底部固定列（每日頁指向 #schedule／#day-food），捷徑列不再重複。
+test('C3：快捷列為「地圖／地址／交通」，每顆都指向頁內真實存在的錨點；時間表／吃哪由底部列負責', () => {
   for (const day of days) {
     const html = read(dayFile(day.n));
     const nav = html.match(/<nav class="day-shortcuts"[\s\S]*?<\/nav>/)?.[0];
     assert.ok(nav, `Day ${day.n} 缺快捷列`);
     const links = [...nav.matchAll(/<a href="#([^"]+)">([^<]+)<\/a>/g)];
-    assert.deepEqual(links.map(match => match[2]), ['時間表', '吃哪', '地圖', '地址', '交通'], `Day ${day.n} 快捷列文字`);
+    assert.deepEqual(links.map(match => match[2]), ['地圖', '地址', '交通'], `Day ${day.n} 快捷列文字`);
+    const bottom = html.match(/<nav class="mobile-quick-nav"[\s\S]*?<\/nav>/)?.[0] || '';
+    assert.match(bottom, /href="#schedule"/, `Day ${day.n} 底部列缺時間表`);
+    assert.match(bottom, /href="#day-food"/, `Day ${day.n} 底部列缺吃哪`);
     // 2026-10-20 UX 檢視：快捷列順序跟頁面區塊順序一致（地圖與地址交通移到餐飲之後）
     const positions = links.map(([, id]) => html.indexOf(`id="${id}"`));
     assert.deepEqual(positions, [...positions].sort((a, b) => a - b), `Day ${day.n} 快捷列順序要與頁面一致`);
@@ -47,10 +51,13 @@ test('C3：頁首換日按鈕——Day 1 只有後一天、最後一天只有前
   assert.deepEqual(hrefs(1), [dayFile(2)]);
   assert.deepEqual(hrefs(last), [dayFile(last - 1)]);
   assert.deepEqual(hrefs(2), [dayFile(1), dayFile(3)]);
-  // 位置：今晚住宿區（journey-context）之後、快捷列之前
+  // 2026-10-20 UX F1：頁首改成「摘要卡（含今晚住宿一行）→ 捷徑列 → 時間表」，
+  // 行程銜接膠囊（journey-context）與前後一天移到頁底。
   const html = read(dayFile(2));
+  assert.ok(html.indexOf('class="day-stay-line"') < html.indexOf('class="day-shortcuts"'));
+  assert.ok(html.indexOf('class="day-shortcuts"') < html.indexOf('id="schedule"'));
+  assert.ok(html.indexOf('id="schedule"') < html.indexOf('class="journey-context"'));
   assert.ok(html.indexOf('class="journey-context"') < html.indexOf('class="day-switch"'));
-  assert.ok(html.indexOf('class="day-switch"') < html.indexOf('class="day-shortcuts"'));
 });
 
 test('C3：時間表的餐次列連到同頁餐廳卡，連結目標都存在；沒有餐廳卡的列不加連結', () => {
