@@ -24,6 +24,19 @@ export function weatherCodeText(code) {
   return '多雲';
 }
 
+export function weatherIcon(code) {
+  const c = Number(code);
+  if (c === 0) return '☀️';
+  if (c === 1 || c === 2) return '🌤️';
+  if (c === 3) return '☁️';
+  if (c === 45 || c === 48) return '🌫️';
+  if ((c >= 51 && c <= 57) || (c >= 80 && c <= 82)) return '🌦️';
+  if (c >= 61 && c <= 67) return '🌧️';
+  if ((c >= 71 && c <= 77) || c === 85 || c === 86) return '❄️';
+  if (c >= 95) return '⛈️';
+  return '☁️';
+}
+
 export function weatherUrl(lat, lng, iso) {
   const daily = 'weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_min,precipitation_probability_max,precipitation_sum,wind_gusts_10m_max';
   return `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=${daily}&hourly=precipitation_probability&timezone=Europe%2FWarsaw&start_date=${iso}&end_date=${iso}`;
@@ -63,20 +76,23 @@ export function weatherAdvice(data) {
   const pad = value => String(value).padStart(2, '0');
   const rainHours = ranges.map(([from, to]) => `${pad(from)}–${pad(to)} 時`).join('、');
 
+  // 提醒只用短標籤（圖示＋幾個字），一眼看完；細節不寫成段落。
   const tips = [];
   const c = Number(code);
   const wet = (rainChance !== null && rainChance >= 50) || (Number.isFinite(rainSum) && rainSum >= 1);
-  if (c >= 95) tips.push('可能有雷雨：戶外行程留意天色，雷聲出現就先進室內。');
-  if ((c >= 71 && c <= 77) || c === 85 || c === 86) tips.push('可能下雪：穿防滑的鞋，石板路與橋面會滑。');
-  if (wet) tips.push(`可能下雨（${rainChance ?? '—'}%${rainHours ? `，較可能在 ${rainHours}` : ''}）：帶折傘或防水外套，拍照的戶外點盡量排在雨小的時段。`);
-  else if (rainChance !== null && rainChance >= 30) tips.push(`降雨機率 ${rainChance}%：包裡放一把折傘備用。`);
-  if (feels !== null && feels <= 3) tips.push(`最低體感 ${feels}°C：洋蔥式穿搭，帶毛帽、手套與圍巾。`);
-  else if (max <= 10) tips.push('白天也偏冷：外套要夠保暖，室內外溫差大，裡面穿可以脫的薄層。');
-  if (gust !== null && gust >= 40) tips.push(`陣風可達 ${gust} km/h：傘容易翻，改穿有帽子的防風外套。`);
-  if (c === 45 || c === 48) tips.push('早上起霧：遠景與高處視野可能不清楚，拍照點可以往後挪。');
-  if (!tips.length) tips.push('天氣穩定，照原定行程走；早晚溫差大，外套帶著。');
+  if (c >= 95) tips.push('⚡ 雷雨，留意天色');
+  if ((c >= 71 && c <= 77) || c === 85 || c === 86) tips.push('❄️ 穿防滑鞋');
+  // 標籤只寫第一段下雨時段，後面還有就加「起」，避免一顆標籤變成一句話。
+  const firstRain = ranges.length ? `${pad(ranges[0][0])}–${pad(ranges[0][1])} 時${ranges.length > 1 ? '起' : ''}` : '';
+  if (wet) tips.push(firstRain ? `☂️ 帶傘 · ${firstRain}有雨` : `☂️ 帶傘 · 降雨 ${rainChance ?? '—'}%`);
+  else if (rainChance !== null && rainChance >= 30) tips.push(`☂️ 備傘 · 降雨 ${rainChance}%`);
+  if (feels !== null && feels <= 3) tips.push(`🧤 體感 ${feels}°C，帽子手套`);
+  else if (max <= 10) tips.push('🧥 穿厚外套');
+  if (gust !== null && gust >= 40) tips.push('💨 風大，傘易翻');
+  if (c === 45 || c === 48) tips.push('🌫️ 早上起霧');
+  if (!tips.length) tips.push('👍 照常出發');
 
-  const summary = `${weatherCodeText(code)} · ${min}–${max}°C${rainChance !== null ? ` · 降雨 ${rainChance}%` : ''}${gust !== null ? ` · 陣風 ${gust} km/h` : ''}`;
+  const summary = `${weatherIcon(code)} ${weatherCodeText(code)} ${min}–${max}°C`;
   return { summary, tips, rainHours, date: d.time[0] };
 }
 
@@ -95,10 +111,11 @@ export function renderWeatherInto(block, advice, fetchedAt, stale) {
     tips.appendChild(li);
   });
   tips.hidden = false;
+  tips.removeAttribute('data-weather-default');
   if (fallback) fallback.hidden = true;
   if (meta) {
-    const time = new Intl.DateTimeFormat('zh-TW', { timeZone: 'Europe/Warsaw', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date(fetchedAt));
-    meta.textContent = `Open-Meteo 預報 · 更新於華沙時間 ${time}${stale ? '（離線，顯示上次結果）' : ''}；出門前再看一次。`;
+    const time = new Intl.DateTimeFormat('zh-TW', { timeZone: 'Europe/Warsaw', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date(fetchedAt));
+    meta.textContent = stale ? `離線・${time} 的預報` : `${time} 更新`;
     meta.hidden = false;
   }
   block.setAttribute('data-weather-state', stale ? 'stale' : 'live');

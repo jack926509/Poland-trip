@@ -12,7 +12,7 @@ import { toMinutes, parseHardTimes, HARD_TIME_DEADLINES, dayIsoDate, todayIn } f
 import { privateSlots } from '../data/private-slots.js';
 import { renderPrivateRuntime } from './private-panel.mjs';
 import { dayGap, warsawTodayLocal, selectToday, statusText, warsawMinutes, nextPlanIndex, planEta, initializeToday } from '../scripts/today.js';
-import { weatherCodeText, weatherUrl, weatherAdvice, renderWeatherInto, loadWeather } from '../scripts/weather.js';
+import { weatherCodeText, weatherIcon, weatherUrl, weatherAdvice, renderWeatherInto, loadWeather } from '../scripts/weather.js';
 import { weatherPoints } from '../data/weather-points.js';
 
 function navigationLink(url, label) {
@@ -38,17 +38,15 @@ function privateProofLine(slot, privateHref) {
     </span>`;
 }
 
-// 天氣：建置時先放 10 月下旬平均氣候，瀏覽器端抓到預報再換成當天的摘要與提醒（scripts/weather.js）。
+// 天氣：卡片標題下一條細列（圖示＋高低溫＋幾個短標籤），不另開區塊。
+// 建置時先放 10 月下旬平均氣候；瀏覽器端抓到當天預報再換掉（scripts/weather.js）。
 function renderWeather(day, iso) {
   const point = weatherPoints[day.n];
   if (!point) return '';
-  return `<section class="today-block today-weather" data-today-weather data-weather-lat="${point.lat}" data-weather-lng="${point.lng}" data-weather-date="${escapeAttr(iso)}">
-      <div class="today-block-head"><h3>天氣提醒</h3><span class="today-weather-place">${escapeHtml(point.place)}</span></div>
-      <p class="today-weather-summary" data-weather-summary hidden></p>
-      <ul class="today-weather-tips" data-weather-tips hidden></ul>
-      <p class="today-weather-fallback" data-weather-fallback>10 月下旬平均：白天約 ${point.climate.high}°C、清晨約 ${point.climate.low}°C，常陰天、偶有小雨。洋蔥式穿搭，帶折傘。連上網路後會換成當天預報。</p>
-      <p class="source-meta" data-weather-meta hidden></p>
-    </section>`;
+  return `<div class="today-weather" data-today-weather data-weather-lat="${point.lat}" data-weather-lng="${point.lng}" data-weather-date="${escapeAttr(iso)}" role="group" aria-label="${escapeAttr(point.place)}天氣提醒">
+      <p class="today-weather-main"><span data-weather-summary hidden></span><span data-weather-fallback>🌥️ 10 月平均 ${point.climate.low}–${point.climate.high}°C</span><span class="today-weather-place">${escapeHtml(point.place)}</span><span class="today-weather-meta" data-weather-meta hidden></span></p>
+      <ul class="today-weather-tips" data-weather-tips data-weather-default><li>☂️ 備傘</li><li>🧥 帶外套</li></ul>
+    </div>`;
 }
 
 function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref, todosHref, anchors = false }) {
@@ -127,6 +125,7 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref, todo
       <h2>${escapeHtml(day.title)}</h2>
       <p class="today-head-dek">${escapeHtml(day.headline)}</p>
       <a class="today-head-link" href="${escapeHtml(dayHref)}">完整當日行程 →</a></header>
+    ${renderWeather(day, iso)}
     <section class="today-block today-next" data-today-next>
       <div class="today-block-head"><h3>接下來去哪</h3><span class="today-next-progress" data-next-progress hidden></span></div>
       ${steps.map(step => `<div class="today-next-step" data-next-step data-plan-minute="${step.minute}">
@@ -146,7 +145,6 @@ function renderDayCard(day, { iso, stay, dining, sun, dayHref, privateHref, todo
       <button class="today-action today-action-lead" type="button" data-today-action="next">下一站</button><button class="today-action" type="button" data-today-action="food">今天吃哪</button>
       <button class="today-action" type="button" data-today-action="stay">${bed ? '回住宿' : leaving ? '去機場' : '住宿待確認'}</button><a class="today-action" href="${escapeHtml(dayHref)}">完整行程</a>
     </nav>
-    ${renderWeather(day, iso)}
     ${daySlots.length ? `<section class="today-block today-tickets" data-today-tickets>
       <div class="today-block-head"><h3>今天的預約與票券</h3></div>
       <ul class="today-ticket-list">${daySlots.map(slot => `<li><b>${escapeHtml(slot.label)}</b><span class="source-meta">${escapeHtml(slot.detail)}</span><span class="today-ticket-note">${escapeHtml(slot.publicNote)}</span>${privateProofLine(slot, privateHref)}</li>`).join('')}</ul>
@@ -228,7 +226,7 @@ export function renderToday({ meta, days, stay, dayDining = {}, daylight = [], s
   })).join('');
 
   // 內嵌時沒有 import；日期與選日函式的相依也必須一起帶入。
-  const todayRuntime = [todayIn, dayGap, warsawTodayLocal, selectToday, statusText, warsawMinutes, nextPlanIndex, planEta, weatherCodeText, weatherUrl, weatherAdvice, renderWeatherInto, loadWeather, initializeToday]
+  const todayRuntime = [todayIn, dayGap, warsawTodayLocal, selectToday, statusText, warsawMinutes, nextPlanIndex, planEta, weatherCodeText, weatherIcon, weatherUrl, weatherAdvice, renderWeatherInto, loadWeather, initializeToday]
     .map(fn => fn.toString()).join('\n');
 
   // 緊急電話排成一列可點的號碼膠囊：號碼大、說明小，一眼就能按。

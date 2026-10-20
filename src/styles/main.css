@@ -7823,10 +7823,11 @@ html {
 /* 2026-10-20：出發前狀態列沒有內容時整個隱藏（避免留下空白膠囊）。 */
 .today-status[hidden] { display: none; }
 
-/* 今日卡天氣提醒：一行摘要＋條列提醒，抓不到預報時顯示平均氣候 */
-.today-weather-place { color: var(--ink-soft); font-size: .85rem; }
-.today-weather-summary { margin: .25rem 0 .4rem; font-size: 1.05rem; font-weight: 700; }
-.today-weather-tips { margin: 0 0 .4rem; padding-left: 1.2rem; }
-.today-weather-tips li { margin: .2rem 0; }
-.today-weather-fallback { margin: .25rem 0; }
-.today-weather[data-weather-state="stale"] .today-weather-summary { color: var(--ink-soft); }
+/* 今日卡天氣：卡片標題下一條細列，一行溫度＋一排短標籤；不另開區塊 */
+.today-weather { margin: .6rem 0 .2rem; padding: .55rem .75rem; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--paper-light); }
+.today-weather-main { display: flex; flex-wrap: wrap; align-items: baseline; gap: .15rem .6rem; margin: 0; font-weight: 700; font-size: 1.05rem; }
+.today-weather-place, .today-weather-meta { color: var(--ink-soft); font-size: .8rem; font-weight: 400; }
+.today-weather-meta { margin-left: auto; }
+.today-weather-tips { display: flex; flex-wrap: wrap; gap: .35rem; margin: .45rem 0 0; padding: 0; list-style: none; }
+.today-weather-tips li { padding: .2rem .55rem; border-radius: 999px; background: var(--accent-pale); font-size: .88rem; line-height: 1.4; }
+.today-weather[data-weather-state="stale"] .today-weather-main > span:first-child { color: var(--ink-soft); }
