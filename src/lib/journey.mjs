@@ -1,5 +1,5 @@
 import { dayIsoDate } from './schedule.mjs';
-import { meta, stay, flights, todoGroups } from '../data/trip.js';
+import { meta, stay, flights, todoGroups, days } from '../data/trip.js';
 import { isOpenTodoStatus } from '../scripts/dashboard.js';
 
 // 依住宿日期推導過夜城市；跨城日不能拿白天城市代替住宿城市。
@@ -30,10 +30,14 @@ export function todoItemId(group, item) {
  * 待辦頁同日其實有 4 項。現在待辦頁是唯一正本，首頁、全程動線、每日頁與今日卡
  * 讀同一份資料、同一條「未完成」判斷（isOpenTodoStatus）。
  */
+// 'M/D' → 可比較的數字；出發前（早於 Day 1）的待辦一律歸到 Day 1 顯示。
+const monthDay = value => { const [m, d] = String(value).split('/').map(Number); return m * 100 + d; };
 export function dayTodos(day) {
   const date = String(day.date).split(' ')[0];
+  const firstDate = String(days[0].date).split(' ')[0];
+  const belongs = item => item.date === date || (date === firstDate && monthDay(item.date) < monthDay(firstDate));
   return todoGroups.flatMap(group => group.items
-    .filter(item => item.date === date)
+    .filter(belongs)
     .map(item => ({
       ...item,
       groupId: group.id,

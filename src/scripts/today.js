@@ -157,6 +157,8 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
       item.setAttribute?.('data-eta-level', planEta(planMinute, at)?.level || 'none');
       applyEta(item.querySelector?.('[data-hard-eta]'), planMinute, at);
     });
+    // 天氣只抓顯示中的那一天；loadWeather 只在頁面內嵌時存在（單元測試匯入本檔時略過）。
+    if (typeof loadWeather === 'function') loadWeather(card.querySelector?.('[data-today-weather]'));
     const hardEnded = card.querySelector?.('[data-hard-ended]');
     if (hardEnded) hardEnded.hidden = deadlineIndex !== -1;
     // 今天吃哪：只在「旅途中且看的就是今天」時依華沙時間整理餐點——已開始超過 MEAL_DONE_AFTER 分鐘的餐

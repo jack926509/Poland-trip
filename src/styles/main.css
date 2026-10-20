@@ -7822,3 +7822,11 @@ html {
 
 /* 2026-10-20：出發前狀態列沒有內容時整個隱藏（避免留下空白膠囊）。 */
 .today-status[hidden] { display: none; }
+
+/* 今日卡天氣提醒：一行摘要＋條列提醒，抓不到預報時顯示平均氣候 */
+.today-weather-place { color: var(--ink-soft); font-size: .85rem; }
+.today-weather-summary { margin: .25rem 0 .4rem; font-size: 1.05rem; font-weight: 700; }
+.today-weather-tips { margin: 0 0 .4rem; padding-left: 1.2rem; }
+.today-weather-tips li { margin: .2rem 0; }
+.today-weather-fallback { margin: .25rem 0; }
+.today-weather[data-weather-state="stale"] .today-weather-summary { color: var(--ink-soft); }

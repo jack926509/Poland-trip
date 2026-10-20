@@ -500,16 +500,16 @@ test('2026-08-09 官方盤查會移除未能證實的場次、價格與閉館敘
   assert.ok(cityNotices.wroclaw.some(item => item.text.includes('availability calendar')));
 });
 
-test('待辦事項頁將 20 項依四類整理，並在實用資訊導覽可進入', () => {
+test('待辦事項頁將 21 項依四類整理，並在實用資訊導覽可進入', () => {
   // 2026-10-07 取消牛角麵包博物館，移除原本只放它的第四類。
   // 2026-10-13 Lajkonik 去程已購、回程未購，拆成兩筆。
   // 2026-10-14 新行程不進付費館：拿掉全景畫、皇家城堡、起義博物館三筆；
   // 加 Restauracja Wrocławska（選配）與「出發前準備」兩筆（波茲南公寓電話、交通 App）。
   assert.deepEqual(todoGroups.map(group => [group.id, group.items.length]), [
-    ['rail', 6], ['attractions', 4], ['dining', 7], ['prep', 3],
+    ['rail', 6], ['attractions', 4], ['dining', 7], ['prep', 4],
   ]);
-  // 2026-10-20 Bistro Posolone、Arirang 不用訂位，移出待辦；加外交部出國登錄。
-  assert.equal(todoGroups.flatMap(group => group.items).length, 20);
+  // 2026-10-20 Bistro Posolone、Arirang 不用訂位，移出待辦；加外交部出國登錄與 CX 479 線上報到。
+  assert.equal(todoGroups.flatMap(group => group.items).length, 21);
 
   const html = read('practical/todos.html');
   for (const label of ['城際交通', '主要景點', '餐飲訂位', '出發前準備']) {
@@ -737,7 +737,7 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
   const rawTodoCount = todoGroups.reduce((total, group) => total + group.items.length, 0);
   const todoCount = todoGroups.reduce((total, group) =>
     total + group.items.filter(item => !item.skip && !['已訂妥', '已完成', '已購票'].includes(item.status)).length, 0);
-  assert.equal(todoCount, 11, '已購／已訂妥與線上已售完（不再提醒）的項目不可算進待辦');
+  assert.equal(todoCount, 12, '已購／已訂妥與線上已售完（不再提醒）的項目不可算進待辦');
 
   assert.ok(!html.includes('出發準備度'));
   assert.ok(!html.includes('00 / Readiness'));
