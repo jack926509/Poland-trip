@@ -129,7 +129,7 @@ test('採買推薦一項商品只出現一次，照片、理由與來源都留�
 test('id 同時是錨點與照片鍵，不能當成排名', () => {
   const ids = groceryProducts.map(product => product.id);
   assert.equal(new Set(ids).size, ids.length, 'id 重複會讓錨點與照片互相蓋掉');
-  // 照片待補只允許明確標 photoPending 的商品（2026-10-20 Protein 花生糖品牌待找）
+  // 照片待補只允許明確標 photoPending 的商品（2026-10-20 Protein 花生糖）
   for (const product of groceryProducts) assert.ok(product.photo || product.photoPending, `${product.localName} 缺照片`);
   for (const product of groceryProducts.filter(item => item.photo)) {
     const digits = String(product.id).padStart(2, '0');

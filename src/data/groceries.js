@@ -1197,8 +1197,8 @@ export const groceryProducts = [
   {
     "id": 33,
     "name": "白巧克力 Protein 花生糖",
-    "localName": "Protein 花生糖（品牌待找）",
-    "packaging": "品牌待找；找包裝上有 Protein、花生（orzechy ziemne／arachidowe）字樣的糖",
+    "localName": "Protein 花生糖",
+    "packaging": "找包裝上有 Protein、花生（orzechy ziemne／arachidowe）字樣的糖",
     "use": "伴手禮候選",
     "priority": false,
     "photoPending": true,

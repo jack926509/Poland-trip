@@ -16,7 +16,7 @@ test('商品皆有本機真實照片、代表包裝說明與授權，單檔照�
   const withPhoto = groceryProducts.filter(product => product.photo);
   assert.ok(groceryProducts.filter(product => !product.photo).every(product => product.photoPending), '沒照片的商品必須標 photoPending');
   assert.equal((page.match(/data-product-photo aria-label=/g) || []).length, withPhoto.length + drinkPicks.length);
-  assert.ok(page.includes('照片待補（品牌待找）'));
+  assert.ok(page.includes('照片待補；請依商品名稱辨識'));
   for (const product of [...withPhoto, ...drinkPicks]) {
     const photo = product.photo;
     assert.ok(photo.width > 0 && photo.height > 0);
