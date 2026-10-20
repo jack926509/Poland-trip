@@ -98,34 +98,24 @@ test('城市頁以授權照片開章且保留 Leaflet 地圖接口', () => {
   assert.match(city, /class="map-container"/);
 });
 
-test('實用頁採旅行誌附錄版式且資料庫接口不變', () => {
+test('實用頁採旅行誌附錄版式', () => {
   const todos = read('practical/todos.html');
-  const database = read('practical/database.html');
   assert.match(todos, /<body class="journal-site journal-practical">/);
   // UX 1017 M5：待辦頁的刊頭加 is-compact（縮小版），其他實用頁維持原版式。
   assert.match(todos, /class="journal-appendix-header is-compact"/);
   assert.match(read('practical/booking.html'), /class="journal-appendix-header"/);
-  assert.match(database, /class="journal-database"/);
-  for (const selector of ['data-db-query', 'data-db-city', 'data-db-category', 'data-db-status', 'data-db-privacy', 'data-db-summary']) {
-    assert.ok(database.includes(selector), `資料庫缺少 ${selector}`);
-  }
-  assert.match(database, /data-db-filter-input="query"/);
-  assert.match(database, /data-db-filter-select="city"/);
-  assert.match(database, /data-db-clear="filters"/);
-  assert.match(database, /src="\.\.\/assets\/database-filter\.js\?v=[0-9a-f]{8}"/);
 });
 
-test('單檔版使用旅行誌刊頭並完整封裝 25 個章節', () => {
+test('單檔版使用旅行誌刊頭並完整封裝 21 個章節', () => {
   const standalone = fs.readFileSync(path.resolve('poland-travel-guide-2026.html'), 'utf8');
   assert.match(standalone, /<body class="journal-site journal-standalone">/);
   assert.match(standalone, /POLSKA PAPER TRAVEL JOURNAL/);
-  assert.equal((standalone.match(/class="standalone-page"/g) || []).length, 25);
+  assert.equal((standalone.match(/class="standalone-page"/g) || []).length, 21);
   assert.match(standalone, /<style data-bundled="main\.css">/);
   assert.match(standalone, /<style data-bundled="leaflet\.css">/);
   assert.match(standalone, /<script data-bundled="leaflet\.js">/);
-  assert.match(standalone, /<script data-bundled="database-filter\.js">/);
+  assert.doesNotMatch(standalone, /database-filter\.js/);
   assert.doesNotMatch(standalone, /href="assets\/main\.css"/);
-  assert.doesNotMatch(standalone, /src="\.\.\/assets\/database-filter\.js"/);
 });
 
 test('單檔版導覽與下拉連結提供至少 44px 觸控高度', () => {
@@ -174,10 +164,6 @@ test('表格儲存格自動帶入 data-label 供手機卡片版顯示欄名', ()
   const booking = fs.readFileSync(path.join(distDir, 'practical/booking.html'), 'utf8');
   assert.match(booking, /<td[^>]*data-label="路段"/);
   assert.match(booking, /<td[^>]*data-label="票價"/);
-
-  // colspan 的整列訊息不該被硬塞欄名
-  const dashboard = fs.readFileSync(path.join(distDir, 'practical/ops-dashboard.html'), 'utf8');
-  assert.doesNotMatch(dashboard, /<td colspan="4"[^>]*data-label=/);
 
   // 手機把每一欄堆疊顯示，並解除 .number 的 nowrap，避免整頁被撐寬
   const source = css();

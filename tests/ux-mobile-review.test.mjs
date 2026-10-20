@@ -150,8 +150,8 @@ test('第 9 項：實用頁手機刊頭縮小、資料聲明收成一行，待�
   assert.match(todos, /<details class="callout-note practical-disclaimer"><summary>訂票狀態不是即時庫存<\/summary>/);
   const notice = between(todos, 'practical-disclaimer', '</details>');
   assert.doesNotMatch(notice, /href="[^"]*todos\.html"/, '待辦頁的聲明不應連回待辦頁本身');
-  assert.match(read('practical/booking.html'), /practical-disclaimer[\s\S]*?href="\.\.\/practical\/todos\.html"/);
-  // 2026-10-20 起餐飲頁、交通頁不再放查核聲明框，第一屏直接是內容
+  // 2026-10-20 起訂票、餐飲、交通頁不再放查核聲明框，第一屏直接是內容
+  assert.doesNotMatch(read('practical/booking.html'), /practical-disclaimer/);
   assert.doesNotMatch(read('practical/dining.html'), /practical-disclaimer/);
   assert.doesNotMatch(read('practical/transit.html'), /practical-disclaimer|複核/);
 });

@@ -266,7 +266,7 @@ export function renderCity({
         <thead><tr><th>景點</th><th>類型</th><th>票價／備註</th></tr></thead>
         <tbody>${attractionRows}</tbody>
       </table></div>
-      <p class="action-links"><a href="practical/tickets.html#tickets-${cityFile}">官方購票入口、票價與開放時間 →</a><a href="practical/transit.html">${city.name}市區交通票價 →</a></p>
+      <p class="action-links"><a href="practical/transit.html">${city.name}市區交通票價 →</a></p>
     </section>
 
     ${primaryDiningHtml}

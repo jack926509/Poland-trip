@@ -33,10 +33,10 @@ import {
   applyDashboardSync,
   validateTravelDatabase,
 } from '../src/data/travel-database.js';
-import { renderDatabase } from '../src/templates/database.mjs';
+
 import { bookingProgress } from '../src/lib/journey.mjs';
 import { renderHome } from '../src/templates/home.mjs';
-import { renderOpsDashboard } from '../src/templates/practical.mjs';
+
 import { auditMapPins } from '../tools/audit-map-pins.mjs';
 import { normalizeRows, normalizeStatus } from '../tools/sync-dashboard-overrides.mjs';
 
@@ -53,14 +53,10 @@ const expectedFiles = [
   'practical/todos.html',
   'practical/booking.html',
   'practical/dining.html',
-  'practical/tickets.html',
   'practical/transit.html',
   'practical/shopping.html',
   'practical/groceries.html',
   'practical/essentials.html',
-  'practical/notes.html',
-  'practical/ops-dashboard.html',
-  'practical/database.html',
 ];
 
 function walk(directory) {
@@ -142,10 +138,10 @@ test('5 筆已確認住宿區段完整涵蓋 7 晚並保留官方地址', () => 
   assert.equal(stay.find(item => item.name === 'Piast')?.address, 'Piłsudskiego 98, Wrocław');
   for (const booking of stay.filter(item => item.addressVerified)) assert.match(booking.address, /\d/);
 
+  // 2026-10-20 訂票頁不再列座標數字，改為地圖導航連結
   const bookingPage = read('practical/booking.html');
   for (const booking of stay) {
-    assert.ok(bookingPage.includes(booking.coordinates.lat.toFixed(6)));
-    assert.ok(bookingPage.includes(booking.coordinates.lng.toFixed(6)));
+    assert.ok(bookingPage.includes(encodeURIComponent(`${booking.coordinates.lat},${booking.coordinates.lng}`)), `${booking.name} 缺地圖導航`);
   }
 });
 
@@ -342,34 +338,6 @@ test('首頁待辦事項會跳脫資料文字', () => {
   // （改到 practical/todos.html 才會顯示），因此不再驗證它在首頁的跳脫。
 });
 
-test('資料庫模板會跳脫資料文字並拒絕非 HTTPS 官方來源', () => {
-  const html = renderDatabase({
-    entries: [{
-      id: 'unsafe-entry',
-      section: 'unsafe-section',
-      category: '<script>category()</script>',
-      cityKey: null,
-      title: '<img src=x onerror=alert(1)>',
-      summary: '<script>summary()</script>',
-      status: 'pending',
-      sourceUrl: 'javascript:alert(1)',
-      verifiedAt: null,
-      recheckAt: '2026-10-01',
-      offlineNote: 'A & B',
-      private: false,
-    }],
-    sections: [{ id: 'unsafe-section', label: '<b>危險標題</b>' }],
-    statusLabels,
-  });
-
-  // SOS 區現在有內嵌腳本（私人資料），只檢查資料注入的標記。
-  assert.doesNotMatch(html, /<script>(?:category|summary)\(\)|<img src=x|javascript:/);
-  assert.ok(html.includes('&lt;script&gt;summary()&lt;/script&gt;'));
-  assert.ok(html.includes('&lt;b&gt;危險標題&lt;/b&gt;'));
-  assert.ok(html.includes('A &amp; B'));
-  assert.ok(html.includes('尚無安全的 HTTPS 官方來源'));
-});
-
 test('產出不含舊館址、舊 Auschwitz 入口或敏感資料欄位標籤', () => {
   const rendered = expectedFiles.map(read).join('\n');
   for (const forbidden of [
@@ -397,10 +365,13 @@ test('克拉科夫與樂斯拉夫飲水資訊各自保有官方來源', () => {
   assert.equal(wroclawWater?.sourceUrl, 'https://www.mpwik.wroc.pl/csr-2/pij-kranowke/');
 });
 
-test('dist 產出 25 個分頁與可直接部署的單檔版', () => {
+test('dist 產出 21 個分頁與可直接部署的單檔版', () => {
   assert.deepEqual(htmlFiles(), [...expectedFiles, 'poland-travel-guide-2026.html'].sort());
   assert.ok(fs.existsSync(path.join(distDir, 'assets/main.css')), '缺少 assets/main.css');
-  assert.ok(fs.existsSync(path.join(distDir, 'assets/database-filter.js')), '缺少資料庫篩選程式');
+  // 2026-10-20 門票速查、行前提醒、資料庫與儀表板四頁移除
+  for (const removed of ['practical/tickets.html', 'practical/notes.html', 'practical/ops-dashboard.html', 'practical/database.html', 'assets/database-filter.js']) {
+    assert.ok(!fs.existsSync(path.join(distDir, removed)), `${removed} 應已移除`);
+  }
   const deployedStandalone = path.join(distDir, 'poland-travel-guide-2026.html');
   assert.ok(fs.existsSync(deployedStandalone), 'Pages 公開輸出缺少單檔版');
   assert.equal(fs.readFileSync(deployedStandalone, 'utf8'), fs.readFileSync(standalonePath, 'utf8'));
@@ -432,7 +403,7 @@ test('dist 含 Web App Manifest 與三個圖示，可加到主畫面（稽核 H5
   assert.match(prepareScript, /manifest\.json/, 'prepare-site.sh 未明確帶上 manifest.json');
 });
 
-test('單檔旅遊指南封裝全部 25 頁且不依賴本機 CSS 或其他 HTML', () => {
+test('單檔旅遊指南封裝全部 21 頁且不依賴本機 CSS 或其他 HTML', () => {
   assert.ok(fs.existsSync(standalonePath), '缺少 poland-travel-guide-2026.html');
   const html = fs.readFileSync(standalonePath, 'utf8');
 
@@ -443,17 +414,10 @@ test('單檔旅遊指南封裝全部 25 頁且不依賴本機 CSS 或其他 HTML
 
   assert.ok(html.includes('<style data-bundled="main.css">'));
   assert.ok(!html.includes('href="assets/main.css"'));
-  assert.ok(!html.includes('href="practical/database.html'));
   assert.ok(!html.includes('href="day-01.html'));
-  assert.ok(html.includes('href="#page-practical-database"'));
-  assert.ok(html.includes('href="#page-practical-ops-dashboard"'));
+  assert.ok(html.includes('href="#page-practical-essentials'));
   assert.ok(html.includes('href="#page-day-01"'));
-  assert.match(html, /data-db-filter-input="query"/);
-  assert.match(html, /data-db-query="[^"]*wroclaw/);
-  assert.match(html, /data-db-quick="status:recheck"/);
-  assert.match(html, /data-bundled="database-filter\.js"/);
-  assert.match(html, /function applyFilters\(\)/);
-  assert.doesNotMatch(html, /<script[^>]+src="\.\.\/assets\/database-filter\.js"/);
+  assert.doesNotMatch(html, /database-filter\.js|page-practical-database|page-practical-ops-dashboard/);
 });
 
 test('單檔版將過長導覽收納成四組原生下拉選單', () => {
@@ -467,7 +431,7 @@ test('單檔版將過長導覽收納成四組原生下拉選單', () => {
   }
   assert.match(html, /data-group="days"[\s\S]*href="#page-day-01"[\s\S]*href="#page-day-08"/);
   assert.match(html, /data-group="cities"[\s\S]*href="#page-city-warszawa"[\s\S]*href="#page-city-poznan"/);
-  assert.match(html, /data-group="practical"[\s\S]*href="#page-practical-booking"[\s\S]*href="#page-practical-database"/);
+  assert.match(html, /data-group="practical"[\s\S]*href="#page-practical-booking"[\s\S]*href="#page-practical-essentials"/);
   assert.equal((html.match(/class="standalone-home"/g) || []).length, 1);
 });
 
@@ -555,86 +519,19 @@ test('待辦事項頁將 21 項依四類整理，並在實用資訊導覽可進�
   assert.ok(fs.readFileSync(standalonePath, 'utf8').includes('href="#page-practical-todos"'));
 });
 
-test('自由行資料庫頁提供 SOS、主題索引與緊急聯絡資訊', () => {
+test('安全與基本須知頁提供 SOS 緊急聯絡、私人資料與處理流程（2026-10-20 自資料庫頁搬入）', () => {
   assert.equal(htmlFiles().length, expectedFiles.length + 1);
-  const html = read('practical/database.html');
-  for (const heading of ['SOS 離線急救卡', '出入境與 ETIAS', '航班與行李', '醫療與保險', '退稅 TAX FREE']) {
-    assert.ok(html.includes(heading), `資料庫頁缺少 ${heading}`);
-  }
+  const html = read('practical/essentials.html');
+  assert.ok(html.includes('SOS 緊急聯絡'));
+  assert.ok(html.includes('id="sos-contacts"'));
+  assert.ok(html.includes('id="my-private"'));
   assert.ok(html.includes('tel:+48668027574'));
   assert.ok(html.includes('tel:+48222130060'));
   assert.ok(html.includes('tel:+886800085095'));
   assert.ok(html.includes('Taipei%20Representative%20Office%20in%20Poland'));
   assert.ok(!html.includes('盤查日期'), '2026-10-20 起不顯示查核日期');
   assert.ok(html.includes('保險海外救援'));
-  assert.ok(html.includes('需填私人資料'));
   for (const title of ['護照遺失', '緊急就醫', '行李未到', '轉機失接', '卡片遺失']) assert.ok(html.includes(`<h3>${title}</h3>`));
-});
-
-test('資料更新儀表板頁可視覺化同步狀態', () => {
-  const html = read('practical/ops-dashboard.html');
-  assert.ok(html.includes('資料更新儀表板'));
-  assert.ok(html.includes('資料品質面板'));
-  assert.ok(html.includes('最近同步紀錄'));
-  assert.ok(html.includes('今日更新量'));
-  assert.ok(html.includes('未完成項目'));
-  assert.ok(html.includes('逾期項目'));
-  assert.ok(html.includes('交接摘要與匯出'));
-  assert.ok(html.includes('匯出 JSON'));
-  assert.ok(html.includes('匯出 CSV'));
-  assert.ok(html.includes('id="export-handover-json"'));
-  assert.ok(html.includes('id="export-handover-csv"'));
-  assert.ok(html.includes('data-handover-export="json"'));
-  assert.ok(html.includes('data-handover-export="csv"'));
-  assert.ok(html.includes('欄位對應'));
-  assert.equal(htmlFiles().includes('practical/ops-dashboard.html'), true);
-});
-
-test('資料更新儀表板會排除私人同步內容並安全編碼外部文字', () => {
-  const html = renderOpsDashboard({
-    entries: [
-      { id: 'public-entry', title: '公開', status: 'pending', recheckAt: null, private: false },
-      { id: 'private-entry', title: '私人', status: 'private-required', recheckAt: '2026-01-01', private: true },
-    ],
-    statusLabels,
-    syncRows: [
-      { id: 'public-entry', status: 'pending', checkedAt: '2026-08-24', summary: '</script><script>alert(1)</script>', offlineNote: '公開備註' },
-      { id: 'private-entry', status: 'private-required', checkedAt: '2026-08-24', summary: '私人摘要', offlineNote: '私人機密', private: true },
-    ],
-    todoGroups: [],
-  });
-  assert.ok(!html.includes('</script><script>alert(1)</script>'));
-  assert.ok(!html.includes('私人摘要'));
-  assert.ok(!html.includes('私人機密'));
-  assert.ok(html.includes('&lt;/script&gt;&lt;script&gt;alert(1)&lt;/script&gt;'));
-});
-
-test('單檔版匯出按鈕使用不受 id 前綴影響的 data selector', () => {
-  const html = fs.readFileSync(standalonePath, 'utf8');
-  assert.ok(html.includes('id="page-practical-ops-dashboard--export-handover-json"'));
-  assert.ok(html.includes('data-handover-export="json"'));
-  assert.ok(html.includes("root.querySelector('[data-handover-export=\"json\"]')"));
-});
-
-test('自由行資料庫以主題索引導覽，每筆條目都保有可連結錨點', () => {
-  const html = read('practical/database.html');
-
-  // 查找／統計區塊已移除，改由主題索引導覽
-  assert.ok(html.includes('資料庫主題索引'), '缺少主題索引');
-  assert.match(html, /靜態查找與統計/);
-  assert.match(html, /class="database-toolbar"/);
-  assert.match(html, /class="db-chip"/);
-
-  // 條目錨點必須保留，既有深連結才不會失效
-  for (const entry of databaseEntries) {
-    assert.ok(html.includes(`id="entry-${entry.id}"`), `缺少條目錨點 ${entry.id}`);
-  }
-});
-
-test('自由行資料庫全頁 HTML id 不重複', () => {
-  const html = read('practical/database.html');
-  const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map(match => match[1]);
-  assert.equal(new Set(ids).size, ids.length, '資料庫頁存在重複 id');
 });
 
 test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
@@ -821,13 +718,12 @@ test('首頁包含 8 天、4 城與全部實用頁入口', () => {
   for (const city of ['warszawa', 'krakow', 'wroclaw', 'poznan']) {
     assert.ok(html.includes(`city-${city}.html`), `首頁缺少 ${city}`);
   }
-  for (const page of ['booking', 'dining', 'tickets', 'transit', 'shopping', 'notes', 'database']) {
+  for (const page of ['booking', 'dining', 'transit', 'essentials', 'groceries', 'shopping']) {
     assert.ok(html.includes(`practical/${page}.html`), `首頁缺少 practical/${page}`);
   }
-  assert.ok(
-    html.includes('<a class="card card-link" href="practical/database.html"><h3>自由行資料庫</h3>'),
-    '首頁規劃工具缺少自由行資料庫卡片',
-  );
+  for (const page of ['tickets', 'notes', 'database', 'ops-dashboard']) {
+    assert.ok(!html.includes(`practical/${page}.html`), `首頁不應再連到 practical/${page}`);
+  }
 });
 
 test('首頁移除出發準備度與步調，直接列出資料層待辦', () => {
@@ -1011,16 +907,16 @@ test('城市頁完整呈現故事、景點、行程餐廳推薦與拍照資訊',
 });
 
 test('高風險校正：霓虹博物館已搬到科學文化宮', () => {
-  const html = read('practical/tickets.html') + read('day-07.html');
+  const html = read('city-warszawa.html') + read('day-07.html');
   assert.ok(html.includes('科學文化宮 4 樓'));
   assert.ok(!html.includes('Praga 區，共產時期霓虹招牌'));
 });
 
 test('高風險校正：波茲南古市政廳整修閉館，不再顯示可購買 PLN 10', () => {
-  const html = read('practical/tickets.html');
-  assert.ok(html.includes('2027 年底至 2028 年初'));
-  assert.ok(html.includes('閉館中'));
-  assert.doesNotMatch(html, /古市政廳博物館[\s\S]{0,160}<td class="number">10<\/td>/);
+  // 2026-10-20 門票速查頁移除，閉館說明在波茲南城市頁
+  const html = read('city-poznan.html');
+  assert.ok(html.includes('整修閉館'));
+  assert.doesNotMatch(html, /古市政廳博物館[\s\S]{0,160}PLN 10/);
 });
 
 test('Day 5 百年廳只看外觀、全景畫不入內，保留座堂島點燈及已購火車', () => {
@@ -1120,14 +1016,9 @@ test('城際交通提供官方購票、官方時刻表與可操作的購票教�
   assert.ok(railOfficialLinks.some(item => item.url === 'https://ebilet.intercity.pl/'));
   assert.ok(railOfficialLinks.some(item => item.url === 'https://portalpasazera.pl/en/'));
   assert.ok(railOfficialLinks.some(item => item.url.includes('lajkonikbus.pl')));
-  assert.ok(railPurchaseSteps.length >= 5);
+  // 2026-10-20 四段火車都已購票，訂票頁拿掉官方購票教學，只留班次與 Auschwitz 巴士購票連結
   const html = read('practical/booking.html');
-  for (const item of railOfficialLinks) {
-    assert.ok(html.includes(item.url));
-  }
-  for (const step of railPurchaseSteps) {
-    assert.ok(html.includes(step.title));
-  }
+  assert.ok(html.includes('lajkonikbus.pl'));
   assert.ok(html.includes('Warszawa Centralna'));
   assert.ok(html.includes('Kraków Główny'));
   assert.ok(html.includes('Wrocław Główny'));
@@ -1252,11 +1143,7 @@ test('舊票價與過時場館資料已從產出頁面移除', () => {
     assert.ok(!html.includes(stale), `仍出現舊資料：${stale}`);
   }
   assert.ok(!html.includes('官網未列 95／71'));
-  assert.ok(html.includes('一、二樓合票 95／71') && html.includes('合票末入 15:00'));
-  assert.ok(html.includes('單獨二樓 57／43'));
   assert.ok(!html.includes('地圖 10／語音導覽 20'), '帝王城堡 9/5–12/6 展期已改售聯票');
-  assert.ok(html.includes('聯票 地圖 35／語音導覽 40'), '帝王城堡應改用官網 2026-10-07 的聯票票價');
-  assert.ok(html.includes('Kolejkowo') && html.includes('線上 39 起／現場 55 起'));
 });
 
 test('備案景點的票價與開放資訊使用最新官方查證結果', () => {
@@ -1304,16 +1191,6 @@ test('城市頁不再將 Google 星等與評論數當成固定資料', () => {
   }
 });
 
-test('門票頁含 25 筆資料、Panorama 優待 35 與 Auschwitz 線上票規則', async () => {
-  const { fares } = await import('../src/data/tickets.js');
-  assert.equal(fares.length, 25);
-  const panorama = fares.find(item => item.name.includes('Panorama'));
-  assert.equal(panorama.discountPrice, '35');
-  const html = read('practical/tickets.html');
-  assert.ok(html.includes('奧斯威辛') && html.includes('入場證只在線上提供'));
-  assert.ok(html.includes('10:30 英文個人 educator 導覽'), '門票頁未反映已訂妥的導覽場次');
-});
-
 test('全站不出現把日落寫成 15:35–15:50 的錯誤敘述', () => {
   for (const file of expectedFiles) {
     const html = read(file);
@@ -1323,10 +1200,7 @@ test('全站不出現把日落寫成 15:35–15:50 的錯誤敘述', () => {
   // 日落值已由散文改為 essentials.js 的 daylight 結構化表。數值本身的正確性
   // 由 tests/daylight.test.mjs 逐筆比對 tools/sun-times.mjs 的推算負責；
   // 這裡只確認頁面真的把那份資料呈現出來，且各日頁與總表同源。
-  const notes = read('practical/notes.html');
-  assert.ok(notes.includes('八日日照'), '行前提醒缺少日照總表');
   for (const item of daylight) {
-    assert.ok(notes.includes(item.sunset), `行前提醒的日照表缺少 Day ${item.day} 的日落 ${item.sunset}`);
     const dayPage = read(`day-${String(item.day).padStart(2, '0')}.html`);
     assert.ok(dayPage.includes(item.sunset), `Day ${item.day} 頁面的日落時間與日照表不一致`);
     assert.ok(dayPage.includes(item.sunrise), `Day ${item.day} 頁面的日出時間與日照表不一致`);
@@ -1382,7 +1256,7 @@ test('service worker 提供離線快取，且不預快取被歸檔的介面', ()
   for (const file of expectedFiles) {
     assert.ok(worker.includes(`./${file}`), `sw.js 預快取缺少 ${file}`);
   }
-  for (const asset of ['./assets/main.css', './assets/nav.js', './assets/site-search.js', './assets/database-filter.js', './assets/leaflet/leaflet.js',
+  for (const asset of ['./assets/main.css', './assets/nav.js', './assets/site-search.js', './assets/leaflet/leaflet.js',
     './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png']) {
     assert.ok(worker.includes(asset), `sw.js 預快取缺少 ${asset}`);
   }
@@ -1898,7 +1772,7 @@ test('sw.js 的快取版本由建置帶上資源指紋，樣式改了就會失�
   const expected = crypto.createHash('sha256');
   for (const asset of ['manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png',
     'assets/main.css', 'assets/nav.js', 'assets/site-search.js',
-    'assets/database-filter.js', 'assets/leaflet/leaflet.css', 'assets/leaflet/leaflet.js',
+    'assets/leaflet/leaflet.css', 'assets/leaflet/leaflet.js',
     // 中-1：搜尋索引也要納入指紋，否則只改資料（不動樣式／腳本）時 VERSION
     // 不變，已安裝的 PWA 搜尋結果會停在安裝當天（見 build.mjs／output.mjs）。
     'assets/search-index.json']) {
@@ -1923,7 +1797,7 @@ test('中-1：只改搜尋索引內容（資料檔變動的效果），sw.js 的
   // 不會讀到，不用整份 dist 複製。
   const assets = ['manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png',
     'assets/main.css', 'assets/nav.js', 'assets/site-search.js',
-    'assets/database-filter.js', 'assets/leaflet/leaflet.css', 'assets/leaflet/leaflet.js',
+    'assets/leaflet/leaflet.css', 'assets/leaflet/leaflet.js',
     'assets/search-index.json',
     // 商品照片也走 cache-first 並算進指紋，所以暫存 dist 也要有這幾張；
     // 清單跟 writeServiceWorker 讀的是同一個函式。
@@ -2001,10 +1875,8 @@ test('實用資料與每日行程、城市指南互相連結', () => {
 
   // 實用資料 → 每日／城市（原本內文是 0 條，只靠導覽選單）
   const expected = {
-    'practical/tickets.html': { pattern: /href="\.\.\/city-[a-z]+\.html"/g, least: 15, what: '門票景點連回城市指南' },
     'practical/booking.html': { pattern: /href="\.\.\/day-\d\d\.html"/g, least: 5, what: '火車班次連回當日行程' },
     'practical/transit.html': { pattern: /href="\.\.\/city-[a-z]+\.html"/g, least: 4, what: '市區交通票價連回城市指南' },
-    'practical/dining.html': { pattern: /href="\.\.\/city-[a-z]+\.html#city-dining"/g, least: 8, what: '米其林訂位連回城市餐廳表' },
   };
   for (const [file, { pattern, least, what }] of Object.entries(expected)) {
     const found = (stripNav(read(file)).match(pattern) || []).length;
@@ -2015,11 +1887,10 @@ test('實用資料與每日行程、城市指南互相連結', () => {
   for (const day of [1, 2, 3, 4, 5, 6, 7, 8]) {
     const body = stripNav(read(`day-${String(day).padStart(2, '0')}.html`));
     assert.match(body, /href="practical\/todos\.html"/, `Day ${day} 沒有連到待辦頁`);
-    assert.match(body, /href="practical\/tickets\.html"/, `Day ${day} 沒有連到門票頁`);
   }
   for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
     const body = stripNav(read(file));
-    for (const target of ['practical/tickets.html', 'practical/transit.html', 'practical/dining.html']) {
+    for (const target of ['practical/transit.html', 'practical/dining.html']) {
       assert.match(body, new RegExp(`href="${target.replace('/', '\\/')}(?:#[^"]*)?"`), `${file} 沒有連到 ${target}`);
     }
   }
@@ -2075,8 +1946,6 @@ test('車票訂位連結：全為 https、格式正確，且 Moj Bus 已納入',
   // Moj Bus 是 Kraków ⇄ Oświęcim 的另一個巴士訂位入口，
   // 訂票頁的官方售票卡與 Day 3 回程選項都要有，兩處缺一都會讓人找不到替代班次。
   const { railOfficialLinks, days } = modules[0];
-  assert.ok(railOfficialLinks.some(item => item.url === 'https://moj-bus.pl/en'),
-    '訂票頁的官方售票連結缺少 Moj Bus');
   const day3 = days.find(day => day.n === 3);
   assert.ok(day3.returnOptions.some(option => option.url === 'https://moj-bus.pl/en'),
     'Day 3 回程選項缺少 Moj Bus');
@@ -2187,10 +2056,6 @@ test('POLIN 僅保留購票參考，主行程只看外觀不入館；Day 7 午�
     const main = /<main\b[^>]*>([\s\S]*?)<\/main>/.exec(read(file))?.[1] || '';
     assert.doesNotMatch(main, /POLIN/i, `${file} 不應把購票參考當作主行程`);
   }
-  const reference = read('practical/tickets.html').match(/<tr id="purchase-warsaw-polin-reference"[\s\S]*?<\/tr>/)?.[0];
-  assert.ok(reference);
-  assert.match(reference, /data-ticket-plan="reference"/);
-  assert.match(reference, /最新主行程未排入館/);
   const day7 = days.find(item => item.n === 7);
   const polinSteps = day7.steps.filter(step => /polin/i.test(step.label));
   assert.equal(polinSteps.length, 1);

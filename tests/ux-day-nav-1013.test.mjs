@@ -63,11 +63,11 @@ test('C3：時間表的餐次列連到同頁餐廳卡，連結目標都存在；
   }
 });
 
-test('C4：實用資訊下拉分「出發前／旅途中／購物」三組，組內頁面與順序照規格，10 頁不多不少', () => {
+test('C4：實用資訊下拉分「出發前／旅途中／購物」三組，組內頁面與順序照規格，7 頁不多不少', () => {
   const labelsOf = group => group.pages.map(([, label]) => label);
   assert.deepEqual(PRACTICAL_NAV_GROUPS.map(group => group.label), ['出發前', '旅途中', '購物']);
-  assert.deepEqual(labelsOf(PRACTICAL_NAV_GROUPS[0]), ['待辦事項', '訂票與交通', '行前提醒']);
-  assert.deepEqual(labelsOf(PRACTICAL_NAV_GROUPS[1]), ['門票速查', '餐廳與速食', '市內交通', '自由行資料庫', '安全與基本須知']);
+  assert.deepEqual(labelsOf(PRACTICAL_NAV_GROUPS[0]), ['待辦事項', '訂票與交通']);
+  assert.deepEqual(labelsOf(PRACTICAL_NAV_GROUPS[1]), ['餐廳與速食', '市內交通', '安全與基本須知']);
   assert.deepEqual(labelsOf(PRACTICAL_NAV_GROUPS[2]), ['伴手禮與購物', '超市與便利商店']);
   assert.deepEqual(PRACTICAL_NAV_GROUPS.flatMap(group => group.pages.map(([file]) => file)).sort(), PRACTICAL_LINKS.map(([file]) => file).sort());
 
@@ -76,14 +76,14 @@ test('C4：實用資訊下拉分「出發前／旅途中／購物」三組，組
   for (const group of PRACTICAL_NAV_GROUPS) {
     assert.match(section, new RegExp(`data-nav-group="${group.key}"><p>${group.label}</p>`), `多頁版缺小標：${group.label}`);
   }
-  assert.match(section, /自由行資料庫 <small>含 SOS<\/small>/);
+  assert.match(section, /安全與基本須知 <small>含 SOS<\/small>/);
 });
 
-test('C4：單檔版實用資訊分三組、資料庫標「含 SOS」，旅程期間由 inline script 把旅途中排第一', () => {
+test('C4：單檔版實用資訊分三組、安全須知標「含 SOS」，旅程期間由 inline script 把旅途中排第一', () => {
   const html = standalone();
   const panel = html.match(/data-group="practical">[\s\S]*?<\/details>/)?.[0] || '';
   for (const label of ['出發前', '旅途中', '購物']) assert.ok(panel.includes(`standalone-menu-group-label">${label}<`), `單檔版缺小標：${label}`);
-  assert.match(panel, /自由行資料庫 <small>含 SOS<\/small>/);
+  assert.match(panel, /安全須知 <small>含 SOS<\/small>/);
   assert.ok(html.includes('reorderPracticalGroups'));
   assert.ok(html.includes(JSON.stringify(TRIP_DATE_RANGE)));
 });

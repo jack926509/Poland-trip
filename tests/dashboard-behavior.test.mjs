@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import vm from 'node:vm';
 import { test } from 'node:test';
 import { calculateDashboard, dashboardCsv, getTaipeiToday, isOpenTodoStatus, toComparableDate } from '../src/scripts/dashboard.js';
-import { renderOpsDashboard, renderTodos } from '../src/templates/practical.mjs';
+import { renderTodos } from '../src/templates/practical.mjs';
 import { todoGroups } from '../src/data/trip.js';
 
 test('台灣午夜前後重新計算統計，無效日期不視為到期', () => {
@@ -71,45 +71,6 @@ function dashboardFixture(html, standalone) {
   return { elements, timers, events, downloads, setNow(value) { now = value; } };
 }
 
-for (const [file, standalone] of [['dist/practical/ops-dashboard.html', false], ['dist/poland-travel-guide-2026.html', true]]) {
-  test(`${file} 跨日、切回與點擊匯出都使用當下日期`, async () => {
-    const fixture = dashboardFixture(fs.readFileSync(new URL(`../${file}`, import.meta.url), 'utf8'), standalone);
-    const text = selector => fixture.elements.get(selector).textContent;
-    assert.equal(text('[data-dashboard-today]'), '2026-10-25');
-    const before = Number.parseInt(text('[data-dashboard-overdue]'));
-    // 跨到 10/29：10/28 Restauracja Wrocławska（選配、未訂、無重查日）此時才轉為逾期。
-    // （2026-10-14 新行程不進全景畫，原本這裡靠全景畫那筆轉逾期。）
-    // （10/25 的 Wawel、辛德勒 2026-10-13 起標為線上已售完，不再列入逾期。）
-    fixture.setNow('2026-10-28T16:00:00Z');
-    fixture.timers[0]();
-    assert.equal(text('[data-dashboard-today]'), '2026-10-29');
-    assert.ok(Number.parseInt(text('[data-dashboard-overdue]')) > before);
-    fixture.setNow('2026-10-29T16:00:00Z');
-    fixture.events.get('pageshow')();
-    assert.equal(text('[data-dashboard-today]'), '2026-10-30');
-    fixture.setNow('2026-10-30T16:00:00Z');
-    fixture.elements.get('[data-handover-export="json"]').click();
-    fixture.elements.get('[data-handover-export="csv"]').click();
-    const [json, csv] = fixture.downloads;
-    assert.equal(json.name, 'handover-2026-10-31.json');
-    assert.equal(csv.name, 'handover-2026-10-31.csv');
-    const result = JSON.parse(await json.blob.text());
-    assert.equal(result.generatedAt, '2026-10-31');
-    assert.equal(result.metrics.overdue, Number.parseInt(text('[data-dashboard-overdue]')));
-    assert.ok((await csv.blob.text()).includes('\r\n'));
-    assert.ok(!(await csv.blob.text()).includes('\\n'));
-  });
-}
-
-test('未到期私人紀錄也不會因瀏覽器跨日計算而洩漏', () => {
-  const html = renderOpsDashboard({
-    entries: [{ id: 'private-id', title: '私人內容不可匯出', summary: '私人摘要不可匯出', private: true, status: 'pending', recheckAt: '2026-12-31' }],
-    statusLabels: {}, syncRows: [], todoGroups: [],
-  });
-  assert.ok(!html.includes('私人內容不可匯出'));
-  assert.ok(!html.includes('私人摘要不可匯出'));
-  assert.ok(!html.includes('private-id'));
-});
 
 test('可查購仍未完成，未記錄查核日期不冒用建置日期', () => {
   assert.equal(isOpenTodoStatus('現可查／購'), true);

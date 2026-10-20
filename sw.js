@@ -31,10 +31,9 @@ const PAGES = [
   './day-05.html', './day-06.html', './day-07.html', './day-08.html',
   './city-warszawa.html', './city-krakow.html', './city-wroclaw.html', './city-poznan.html',
   './practical/todos.html', './practical/booking.html', './practical/dining.html',
-  './practical/tickets.html', './practical/transit.html', './practical/shopping.html',
+  './practical/transit.html', './practical/shopping.html',
   './practical/groceries.html',
-  './practical/essentials.html', './practical/notes.html',
-  './practical/ops-dashboard.html', './practical/database.html',
+  './practical/essentials.html',
 ];
 
 const ASSETS = [
@@ -42,7 +41,6 @@ const ASSETS = [
   './assets/main.css',
   './assets/nav.js',
   './assets/site-search.js',
-  './assets/database-filter.js',
   // 搜尋索引改成外部檔案（稽核 M6）：預快取起來，離線時搜尋才有資料可查。
   './assets/search-index.json',
   './assets/leaflet/leaflet.css',

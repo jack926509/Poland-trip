@@ -207,7 +207,7 @@ export function renderToday({ meta, days, stay, dayDining = {}, daylight = [], s
     dining: dayDining[String(day.n)],
     sun: daylightByDay.get(day.n),
     dayHref: `${pathPrefix}day-${String(day.n).padStart(2, '0')}.html`,
-    privateHref: `${pathPrefix}practical/database.html#my-private`,
+    privateHref: `${pathPrefix}practical/essentials.html#my-private`,
     todosHref: `${pathPrefix}practical/todos.html`,
   })).join('');
 
@@ -260,7 +260,7 @@ export function renderToday({ meta, days, stay, dayDining = {}, daylight = [], s
       <p class="today-sos-title"><span class="today-sos-tag">SOS</span>緊急電話</p>
       <ul class="today-sos-list">${emergency}${embassyItem}${insurerItem}</ul>
       <p class="source-meta">歐洲通用緊急號碼 112 可直接撥打，不需解鎖或有 SIM 卡餘額。</p>
-      <p class="source-meta today-sos-private" data-private-missing="insurerPhone">保險救援電話還沒填 · <a href="${pathPrefix}practical/database.html#my-private">填入我的私人資料</a>（只存在這支手機）</p>
+      <p class="source-meta today-sos-private" data-private-missing="insurerPhone">保險救援電話還沒填 · <a href="${pathPrefix}practical/essentials.html#my-private">填入我的私人資料</a>（只存在這支手機）</p>
     </section>
 
     <div data-today-cards>${cards}</div>

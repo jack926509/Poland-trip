@@ -223,7 +223,7 @@ test('M5：待辦頁刊頭縮小、摘要緊接清單，免責說明移到清單
   assert.ok(disclaimer > lastGroupEnd, '免責說明應在清單最後');
   assert.match(todos, /<header class="journal-appendix-header is-compact">/);
   assert.match(css(), /\.journal-appendix-header\.is-compact h1 \{[^}]*font-size: 1\.6rem;/);
-  assert.doesNotMatch(read('practical/database.html'), /is-compact/, '資料庫頁刊頭不受影響');
+  assert.doesNotMatch(read('practical/essentials.html'), /is-compact/, '安全須知頁刊頭不受影響');
 });
 
 test('M6：八天三餐每天都有「↑ 換一天」，日期列帶當地日期供標出今天', () => {
@@ -314,7 +314,7 @@ test('F4：待辦頁刊頭、「本頁章節」、分類大標只在 .is-compact
   assert.match(todos, /<header class="journal-appendix-header is-compact">/);
   assert.match(todos, /<p class="chapter-index-label"[^>]*>本頁章節<\/p>/, '「本頁章節」文字仍在');
   assert.match(todos, /class="section-heading"><span class="section-num">Rail/);
-  for (const page of ['booking', 'dining', 'database', 'tickets', 'transit', 'shopping', 'notes', 'groceries', 'essentials']) {
+  for (const page of ['booking', 'dining', 'transit', 'shopping', 'groceries', 'essentials']) {
     assert.doesNotMatch(read(`practical/${page}.html`), /is-compact/, `${page} 頁不可帶 is-compact`);
   }
 });

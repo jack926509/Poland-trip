@@ -22,15 +22,15 @@ test('M10：全程動線併入八日目錄，「無待訂」是標籤而非獨�
   assert.match(home, /離境／機上過夜/);
 });
 
-test('M11：今日頁標題上方顯示 TODAY 而非 APPENDIX，資料庫頁維持原樣', () => {
+test('M11：今日頁標題上方顯示 TODAY 而非 APPENDIX，實用頁維持原樣', () => {
   const source = css();
   assert.match(source, /\.journal-today \.journal-appendix-header::before \{\s*content:\s*'TODAY';\s*\}/);
-  // 今日頁 body class 是 journal-today，資料庫頁是 journal-practical，
+  // 今日頁 body class 是 journal-today，實用頁是 journal-practical，
   // CSS 用 class 範圍區分，不需要各自模板改動。
   const today = read('today.html');
-  const database = read('practical/database.html');
+  const essentials = read('practical/essentials.html');
   assert.match(today, /<body class="journal-site journal-today">/);
-  assert.match(database, /<body class="journal-site journal-practical">/);
+  assert.match(essentials, /<body class="journal-site journal-practical">/);
 });
 
 test('M1：今日頁手機 sticky 動作列貼齊頂端且改成單行，不再懸空留縫', () => {
@@ -100,7 +100,7 @@ test('M6：搜尋索引改成外部檔案，多頁版不再內嵌 526KB、單頁
   const index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
   assert.ok(Array.isArray(index) && index.length > 100, '外部索引內容異常');
 
-  for (const file of ['index.html', 'city-krakow.html', 'practical/database.html']) {
+  for (const file of ['index.html', 'city-krakow.html', 'practical/essentials.html']) {
     const html = read(file);
     // 內嵌 script 應該是空的，索引改成外部 URL
     assert.match(html, /<script type="application\/json" data-site-search-index><\/script>/, `${file} 仍內嵌搜尋索引`);
@@ -121,19 +121,6 @@ test('M6：搜尋索引改成外部檔案，多頁版不再內嵌 526KB、單頁
   assert.match(worker, /\.\/assets\/search-index\.json/, 'sw.js 未預快取搜尋索引');
 });
 
-test('M7：門票速查有城市篩選 chip 與分組，價格欄位標明 PLN', () => {
-  const html = read('practical/tickets.html');
-  const chips = html.match(/<nav class="day-shortcuts"[\s\S]*?<\/nav>/)?.[0];
-  assert.ok(chips, '門票頁缺少城市篩選 chip');
-  for (const city of ['warszawa', 'krakow', 'wroclaw', 'poznan']) {
-    assert.match(chips, new RegExp(`href="#tickets-${city}"`), `城市 chip 缺少 ${city}`);
-  }
-  const groups = Array.from(html.matchAll(/<details class="ticket-city-group" id="tickets-([a-z]+)" open>\s*<summary>([^<]*（\d+ 項）)<\/summary>/g));
-  assert.equal(groups.length, 4, `門票分組數應為 4，實際 ${groups.length}`);
-  assert.match(html, /<th>全票（PLN）<\/th>/);
-  assert.match(html, /<th>優待（PLN）<\/th>/);
-});
-
 test('M2：手機底部快捷列在各類頁面都輸出，且連結依頁面類型指向對的錨點', () => {
   // 首頁（非日／城市頁）：時間表與吃哪都導回今日頁對應區塊
   const home = read('index.html');
@@ -142,7 +129,7 @@ test('M2：手機底部快捷列在各類頁面都輸出，且連結依頁面類
   assert.match(homeNav, /href="today\.html"/);
   assert.match(homeNav, /href="today\.html#today-schedule"/);
   assert.match(homeNav, /href="today\.html#today-food"/);
-  assert.match(homeNav, /href="practical\/database\.html#sos-contacts"/);
+  assert.match(homeNav, /href="practical\/essentials\.html#sos-contacts"/);
 
   // 日頁：時間表／吃哪改成同頁錨點，不必先跳今日頁
   const day = read('day-02.html');
@@ -166,13 +153,4 @@ test('M2：手機底部快捷列在各類頁面都輸出，且連結依頁面類
   // 手機底部固定列會蓋住頁尾，統一留出底部留白
   const source = css();
   assert.match(source, /\.journal-site\s*\{\s*padding-bottom:\s*calc\(4\.25rem \+ env\(safe-area-inset-bottom\)\);?\s*\}/);
-});
-
-test('M8：「資料更新儀表板」從主導覽「實用資訊」下拉移除，但頁面仍存在可連結', () => {
-  const home = read('index.html');
-  const navSection = home.match(/<details class="nav-dropdown[^>]*>\s*<summary[^>]*>實用資訊<\/summary>([\s\S]*?)<\/details>/)?.[1];
-  assert.ok(navSection, '找不到實用資訊下拉區塊');
-  assert.doesNotMatch(navSection, /資料更新儀表板/);
-  // 頁面本身仍要 build 出來，只是不進主導覽
-  assert.equal(fs.existsSync(path.join(distDir, 'practical/ops-dashboard.html')), true);
 });

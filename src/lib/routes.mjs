@@ -13,39 +13,34 @@ export const DAY_LINK_META = Object.fromEntries(days.map(day => [dayHref(day), {
 
 // 全部實用資訊頁——決定 build 出幾頁、單檔版收錄幾個章節，順序與導覽顯示無關。
 export const PRACTICAL_PAGES = [
-  ['practical/tickets.html', '門票速查'],
   ['practical/dining.html', '餐廳與速食'],
   ['practical/transit.html', '市內交通'],
   ['practical/essentials.html', '安全與基本須知'],
   ['practical/todos.html', '待辦事項'],
-  ['practical/notes.html', '行前提醒'],
   ['practical/booking.html', '訂票與交通'],
   ['practical/shopping.html', '伴手禮與購物'],
   ['practical/groceries.html', '超市與便利商店'],
-  ['practical/ops-dashboard.html', '資料更新儀表板'],
-  ['practical/database.html', '自由行資料庫'],
 ];
 
-// 主導覽「實用資訊」下拉依「旅途中會用」排序，且不收「資料更新儀表板」——
-// 那是給維護者看的內部頁，保留頁面本身與連結，只是不進旅客導覽（稽核 M8）。
-export const PRACTICAL_LINKS = PRACTICAL_PAGES.filter(([file]) => file !== 'practical/ops-dashboard.html');
+// 2026-10-20 只留旅途中用得到的頁面；門票速查、行前提醒、資料庫與儀表板已移除。
+export const PRACTICAL_LINKS = PRACTICAL_PAGES;
 
 // 導覽下拉依「使用時機」分三組（UX 審查 C4）。順序即顯示順序；旅程期間由 nav.js 把「旅途中」排第一。
 // 組內只列實際存在於 PRACTICAL_LINKS 的頁面，頁名一律沿用 PRACTICAL_PAGES，不另取名。
 export const PRACTICAL_NAV_GROUPS = [
-  { key: 'before', label: '出發前', files: ['practical/todos.html', 'practical/booking.html', 'practical/notes.html'] },
-  { key: 'trip', label: '旅途中', files: ['practical/tickets.html', 'practical/dining.html', 'practical/transit.html', 'practical/database.html', 'practical/essentials.html'] },
+  { key: 'before', label: '出發前', files: ['practical/todos.html', 'practical/booking.html'] },
+  { key: 'trip', label: '旅途中', files: ['practical/dining.html', 'practical/transit.html', 'practical/essentials.html'] },
   { key: 'shop', label: '購物', files: ['practical/shopping.html', 'practical/groceries.html'] },
 ].map(group => ({
   ...group,
   pages: group.files.map(file => PRACTICAL_LINKS.find(([linkFile]) => linkFile === file)).filter(Boolean),
 }));
-// 導覽上的補充註記：SOS 緊急聯絡藏在資料庫頁，桌機沒有底部 SOS 列，所以在名稱旁標明。
-export const NAV_LINK_NOTES = { 'practical/database.html': '含 SOS' };
+// 導覽上的補充註記：SOS 緊急聯絡在安全須知頁，桌機沒有底部 SOS 列，所以在名稱旁標明。
+export const NAV_LINK_NOTES = { 'practical/essentials.html': '含 SOS' };
 // 旅程期間（華沙日期）：nav.js 與單檔版導覽據此把「旅途中」排第一。
 export const TRIP_DATE_RANGE = { timeZone: 'Europe/Warsaw', start: '2026-10-24', end: '2026-10-31' };
 
-const standaloneLabels = {"餐廳與速食": "餐廳", "門票速查": "門票", "伴手禮與購物": "購物", "安全與基本須知": "安全須知"};
+const standaloneLabels = {"餐廳與速食": "餐廳", "伴手禮與購物": "購物", "安全與基本須知": "安全須知"};
 const withStandaloneLabel = ([file, label]) => [file, standaloneLabels[label] || label];
 
 export const standaloneNavGroups = [
@@ -55,9 +50,9 @@ export const standaloneNavGroups = [
   { key: 'practical', label: '實用資訊', pages: PRACTICAL_LINKS.map(withStandaloneLabel),
     subgroups: PRACTICAL_NAV_GROUPS.map(group => ({ key: group.key, label: group.label, pages: group.pages.map(withStandaloneLabel) })) },
 ];
-// 單檔版仍要打包全部實用頁（含資料更新儀表板），只是導覽選單不顯示它；
+// 單檔版打包全部實用頁；
 // 內容清單因此另外以 PRACTICAL_PAGES（全部）組成，不能只看 standaloneNavGroups
-// （那份只給導覽選單用，已經濾掉儀表板）。
+// （那份只給導覽選單用）。
 export const standalonePages = [
   ['index.html', '旅程首頁'],
   ['today.html', '今日卡'],

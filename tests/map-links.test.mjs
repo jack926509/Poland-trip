@@ -106,7 +106,7 @@ test('訂票頁的 Auschwitz 巴士區塊完整反映官方售票頁查得的資
   assert.ok(!html.includes('lajkonikbus.eu'), '訂票頁仍殘留 lajkonikbus.eu');
   assert.ok(html.includes('lajkonikbus.pl'));
 
-  // 去程：兩班都要列出，且採用／不採用與理由都要在頁面上。2026-10-13 旅客已購 08:25。
+  // 去程：兩班都要列出，採用與否記在資料裡。2026-10-13 旅客已購 08:25。
   assert.equal(auschwitzBus.outbound.checkedAt, '2026-10-13');
   assert.equal(auschwitzBus.outbound.status, '已購票');
   assert.equal(auschwitzBus.outbound.booked.dep, '08:25');
@@ -117,7 +117,6 @@ test('訂票頁的 Auschwitz 巴士區塊完整反映官方售票頁查得的資
       assert.ok(service[field]?.trim(), `去程班次缺 ${field}`);
     }
     assert.ok(html.includes(service.dep), `訂票頁缺去程 ${service.dep}`);
-    assert.ok(html.includes(service.why), `訂票頁缺 ${service.dep} 的判斷理由`);
   }
 
   // 回程：三班都要列出，14:00 不可用、15:30 採用、16:30 備案
@@ -126,7 +125,6 @@ test('訂票頁的 Auschwitz 巴士區塊完整反映官方售票頁查得的資
   assert.deepEqual(auschwitzBus.inbound.services.map(item => item.decision), ['不採用', '採用', '備案']);
   for (const service of auschwitzBus.inbound.services) {
     assert.ok(html.includes(service.dep), `訂票頁缺回程 ${service.dep}`);
-    assert.ok(html.includes(service.why), `訂票頁缺回程 ${service.dep} 的判斷理由`);
   }
   assert.match(auschwitzBus.inbound.threshold, /14:15/);
 

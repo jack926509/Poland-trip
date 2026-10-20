@@ -20,6 +20,6 @@ export function renderCityJourney(city) {
   return `<section class="section" id="city-journey"><div class="section-heading"><span class="section-num">Your itinerary</span><h2>這座城在你的旅程中</h2></div>
     <p class="lead">先選日期查看實際走法；景點清單與餐廳候選供當天取捨，不代表全部都要走完。</p>
     <ul class="journey-day-links">${related.map(day => `<li><a href="${dayHref(day)}"><b>Day ${day.n} · ${esc(day.date)}</b> ${esc(day.title)}</a><span>${nightStay(day)?.city === city.name ? '本晚住這座城' : '當日遊覽／轉場'} · 強度 ${esc(day.intensity)}</span><a href="${dayHref(day)}#day-food">當日餐飲 →</a></li>`).join('')}</ul>
-    <p class="action-links"><a href="#city-dining">餐廳候選</a><a href="practical/tickets.html">景點票務</a><a href="practical/transit.html">市內交通</a><a href="index.html#journey-overview">全程動線</a></p>
+    <p class="action-links"><a href="#city-dining">餐廳候選</a><a href="practical/transit.html">市內交通</a><a href="index.html#journey-overview">全程動線</a></p>
   </section>`;
 }

@@ -104,7 +104,7 @@ export function renderSiteSearch({
   databaseHref = '',
 } = {}) {
   const path = file => `${pathPrefix}${file}`;
-  const fallbackHref = databaseHref || path('practical/database.html');
+  const fallbackHref = databaseHref || path('practical/essentials.html');
   const resolvedIndexUrl = searchIndexJson === null ? (indexUrl || path('assets/search-index.json')) : null;
   return `<section class="site-search-shell" data-site-search data-search-path-prefix="${pathPrefix}"${resolvedIndexUrl ? ` data-search-index-url="${resolvedIndexUrl}"` : ''} aria-label="全站旅遊搜尋">
     <div class="site-search-inner">
@@ -129,7 +129,7 @@ export function renderSiteSearch({
         <p><b>找不到相符資料</b><br>試試城市名、店名或「火車」「地圖」等類型。</p>
         <button type="button" data-search-reset>清除條件</button>
       </div>
-      <noscript><p class="site-search-noscript">瀏覽器未開啟 JavaScript，請改用 <a href="${fallbackHref}">自由行資料庫</a>。</p></noscript>
+      <noscript><p class="site-search-noscript">瀏覽器未開啟 JavaScript，請改用 <a href="${fallbackHref}">安全與基本須知</a>。</p></noscript>
       <script type="application/json" data-site-search-index>${searchIndexJson ?? ''}</script>
     </div>
   </section>`;
@@ -146,7 +146,7 @@ export function renderMobileQuickNav(pathPrefix, pageKind) {
   const todayHref = path('today.html');
   const scheduleHref = pageKind === 'day' ? '#schedule' : `${todayHref}#today-schedule`;
   const foodHref = pageKind === 'day' ? '#day-food' : pageKind === 'city' ? '#city-dining' : `${todayHref}#today-food`;
-  const sosHref = `${path('practical/database.html')}#sos-contacts`;
+  const sosHref = `${path('practical/essentials.html')}#sos-contacts`;
   // 今日卡本身就是「今日」這一格：標成目前所在，底部列才看得出自己在哪一頁。
   const todayCurrent = pageKind === 'today' ? ' aria-current="page"' : '';
   return `<nav class="mobile-quick-nav" aria-label="手機快速導覽">

@@ -11,7 +11,7 @@ test('長網址改成網域短連結，不在手機上把頁面撐寬', () => {
   assert.match(html, /<a href="https:\/\/www\.thefork\.com\/restaurant\/abc-r1" target="_blank" rel="noopener noreferrer">thefork\.com ↗<\/a>/);
   assert.ok(html.endsWith('，或打電話。'));
   assert.equal(linkifyText('<b>x</b>'), '&lt;b&gt;x&lt;/b&gt;');
-  for (const file of ['practical/booking.html', 'practical/todos.html', 'practical/ops-dashboard.html']) {
+  for (const file of ['practical/booking.html', 'practical/todos.html', 'practical/dining.html']) {
     // 匯出用的 JSON（<script> 內）保留原文，只檢查畫面上的文字
     const visible = read(file).replace(/<script[\s\S]*?<\/script>/g, '');
     assert.doesNotMatch(visible, />[^<]*https:\/\/www\.thefork\.com\/restaurant\/[^<]*</, `${file} 仍有裸露長網址`);

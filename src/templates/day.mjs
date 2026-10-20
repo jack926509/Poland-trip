@@ -432,7 +432,7 @@ ${coverHtml}
       <div class="section-heading"><span class="section-num">Preparation</span><h2>訂票與提醒</h2></div>
       ${mustBookHtml}
       ${warnHtml}
-      <p class="action-links"><a href="practical/todos.html">全部待辦 →</a><a href="practical/tickets.html">官方購票入口、門票價格與開放時間 →</a></p>
+      <p class="action-links"><a href="practical/todos.html">全部待辦 →</a></p>
     </section>
     ${constraintHtml}
     ${extendHtml}

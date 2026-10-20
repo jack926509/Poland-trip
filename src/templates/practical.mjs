@@ -7,6 +7,7 @@ import { escapeHtml, linkifyText, safeHttpsUrl } from '../lib/html.mjs';
 import { renderLayout } from './layout.mjs';
 import { cityGuideByName, dayPageForDate, cityRoutes } from '../lib/city-guide.mjs';
 import { renderFastFoodMenu } from './fast-food.mjs';
+import { renderSosSection, renderPrivateRuntime } from './sos.mjs';
 
 /**
  * 實用資料原本與每日行程、城市指南完全沒有內容連結（只靠導覽選單）。
@@ -136,18 +137,8 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
       <td><b>${train.status === '已購票' ? '已購票' : train.saleOpens ? `${escapeHtml(train.saleOpens)} 起預售` : '官方日期待確認'}</b></td>
       <td class="number">${/^\d/.test(train.price) ? `PLN ${train.price}` : train.price}${train.note ? `<br><span class="timeline-note">${train.note}</span>` : ''}</td>
     </tr>`).join('');
-  const railLinkCards = railOfficialLinks.map(item => `
-    <a class="card card-link" href="${item.url}" target="_blank" rel="noopener">
-      <h3>${item.name}</h3><p>${item.note}</p><span>開啟官網 →</span>
-    </a>`).join('');
-  const railStepCards = railPurchaseSteps.map((item, index) => `
-    <article class="card">
-      <span class="section-num">${String(index + 1).padStart(2, '0')}</span>
-      <h3>${item.title}</h3><p>${item.detail}</p>
-    </article>`).join('');
   const stayHtml = stay.map(item => {
     const coordinate = item.coordinates;
-    const coordinateLabel = coordinate ? `${coordinate.lat.toFixed(6)}, ${coordinate.lng.toFixed(6)}` : '尚未提供';
     const mapUrl = coordinate
       ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${coordinate.lat},${coordinate.lng}`)}`
       : null;
@@ -156,20 +147,12 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
       <span class="eyebrow">${escapeHtml(item.status)} · ${escapeHtml(item.city)}</span><h3>${escapeHtml(item.name)}</h3>
       <p><b>${escapeHtml(item.checkIn)}${item.checkInTime ? ` ${escapeHtml(item.checkInTime)}` : ''} → ${escapeHtml(item.checkOut)}${item.checkOutTime ? ` ${escapeHtml(item.checkOutTime)}` : ''}</b> · ${item.nights} 晚 · ${item.rooms} 間房</p>
       <p><b>地址：</b>${escapeHtml(item.address)}${item.addressVerified ? '' : ' <span class="tag-todo">門牌待確認</span>'}</p>
-      <p><b>座標：</b><span class="number">${coordinateLabel}</span></p>
       <p><b>電話：</b>${item.phone ? `<a href="tel:${escapeHtml(item.phone.replace(/[^\d+]/g, ''))}">${escapeHtml(item.phone)}</a>` : '請看訂房確認信'}</p>
       <p class="timeline-note">${escapeHtml(item.note)}</p>
-      <p class="action-links">${mapUrl ? `<a href="${mapUrl}" target="_blank" rel="noopener noreferrer">座標導航 →</a>` : ''}<a href="${escapeHtml(item.officialUrl)}" target="_blank" rel="noopener noreferrer">飯店官網 →</a></p>
+      <p class="action-links">${mapUrl ? `<a href="${mapUrl}" target="_blank" rel="noopener noreferrer">地圖導航 →</a>` : ''}<a href="${escapeHtml(item.officialUrl)}" target="_blank" rel="noopener noreferrer">飯店官網 →</a></p>
     </article>`;
   }).join('');
 
-  const queryRow = query => `
-    <ul class="check-list">
-      <li><b>Departure from</b>：${escapeHtml(query.from)}</li>
-      <li><b>Destination</b>：${escapeHtml(query.to)}</li>
-      <li><b>Date of departure</b>：${escapeHtml(query.date)}</li>
-      <li><b>Normal（人數）</b>：${escapeHtml(String(query.passengers))}（依實際人數調整）</li>
-    </ul>`;
 
   const busHtml = auschwitzBus ? `
     <section class="section" id="auschwitz-bus">
@@ -186,7 +169,6 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
         ${escapeHtml(auschwitzBus.tour.scope)}　·　${escapeHtml(auschwitzBus.tour.language)}　·　${escapeHtml(auschwitzBus.tour.duration)}　·　${escapeHtml(auschwitzBus.tour.people)}<br>
         <b>最晚抵達：</b>${escapeHtml(auschwitzBus.tour.arriveBy)}　<b>預計結束：</b>${escapeHtml(auschwitzBus.tour.endsAt)}</p>
         <p><b>入場規定：</b>${escapeHtml(auschwitzBus.tour.entryRule)}</p>
-        <p class="timeline-note">去程要趕在 ${escapeHtml(auschwitzBus.tour.arriveBy)} 前到、回程要等到 ${escapeHtml(auschwitzBus.tour.endsAt)} 之後，下面兩張表的採用與否都是照這兩條線判斷的。</p>
         <p class="action-links"><a href="${escapeHtml(auschwitzBus.tour.officialUrl)}" target="_blank" rel="noopener noreferrer">Auschwitz 官方訂票系統 →</a></p>
       </div>` : ''}
       <div class="grid-wide">
@@ -198,10 +180,8 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
       </div>
 
       <h3>去程 · ${escapeHtml(auschwitzBus.outbound.status)}</h3>
-      <p class="lead">查詢參數：</p>
-      ${queryRow(auschwitzBus.outbound.query)}
       <div class="table-wrap"><table class="table-editorial">
-        <thead><tr><th>發車</th><th>抵達</th><th>車程</th><th>站位</th><th>票價</th><th>判斷</th><th>理由</th></tr></thead>
+        <thead><tr><th>發車</th><th>抵達</th><th>車程</th><th>站位</th><th>票價</th><th>採用</th></tr></thead>
         <tbody>${auschwitzBus.outbound.services.map(item => `
           <tr>
             <td class="number"><b>${escapeHtml(item.dep)}</b></td>
@@ -210,16 +190,13 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
             <td class="number">${escapeHtml(item.bay)}</td>
             <td class="number">${escapeHtml(item.fare)}</td>
             <td><span class="${item.decision === '採用' ? 'tag-yellow' : 'tag-muted'}">${escapeHtml(item.decision)}</span></td>
-            <td>${escapeHtml(item.why)}</td>
           </tr>`).join('')}</tbody>
       </table></div>
       <p class="timeline-note">${escapeHtml(auschwitzBus.outbound.note)}</p>
 
       <h3>回程 · ${escapeHtml(auschwitzBus.inbound.status)}</h3>
-      <p class="lead">門檻：${escapeHtml(auschwitzBus.inbound.threshold)}。查詢參數：</p>
-      ${queryRow(auschwitzBus.inbound.query)}
       <div class="table-wrap"><table class="table-editorial">
-        <thead><tr><th>發車</th><th>抵達</th><th>車程</th><th>票價</th><th>判斷</th><th>理由</th></tr></thead>
+        <thead><tr><th>發車</th><th>抵達</th><th>車程</th><th>票價</th><th>採用</th></tr></thead>
         <tbody>${auschwitzBus.inbound.services.map(item => `
           <tr>
             <td class="number"><b>${escapeHtml(item.dep)}</b></td>
@@ -227,20 +204,17 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
             <td class="number">${escapeHtml(item.dur)}</td>
             <td class="number">${escapeHtml(item.fare)}</td>
             <td><span class="${item.decision === '採用' ? 'tag-yellow' : 'tag-muted'}">${escapeHtml(item.decision)}</span></td>
-            <td>${escapeHtml(item.why)}</td>
           </tr>`).join('')}</tbody>
       </table></div>
       <p class="timeline-note">${escapeHtml(auschwitzBus.inbound.note)}</p>
-      <p class="action-links"><a href="${escapeHtml(auschwitzBus.site)}" target="_blank" rel="noopener noreferrer">到 lajkonikbus.pl 買票 →</a></p>
+      <p class="action-links"><a href="${escapeHtml(auschwitzBus.site)}" target="_blank" rel="noopener noreferrer">到 lajkonikbus.pl 買票 →</a><a href="https://moj-bus.pl/en" target="_blank" rel="noopener noreferrer">Moj Bus 線上買票 →</a></p>
     </section>` : '';
 
   const content = `
-    ${renderBookingNotice()}
     ${statusCardHtml}
     <section class="section" id="rail-itinerary">
       <div class="section-heading"><span class="section-num">Rail</span><h2>城際交通</h2></div>
       <div class="callout-note"><b>已購 ${bookedTrains}／${railTrains.length} 段城際火車。</b><p>火車與巴士逐段是否已購，以<a href="todos.html#todo-rail">待辦事項</a>為準。10/25 EIP 5300、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 都已在 PKP App 票券清單；艙等、車廂與座位看票券詳細頁，並保存離線票券。</p></div>
-      <p><a href="https://www.intercity.pl/en/site/for-passengers/trains/about-eic.html" target="_blank" rel="noopener">PKP 官方 EIC 服務說明</a>列有一等艙飲品與點心；指定班次的編組、設備、餐飲與票價仍以購票頁為準。</p>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>路段</th><th>日期</th><th>車種</th><th>時刻</th><th>時長</th><th>預售</th><th>票價</th></tr></thead><tbody>${trainRows}</tbody></table></div>
     </section>
     ${busHtml}
@@ -251,20 +225,10 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
     </section>
     <section class="section">
       <div class="section-heading"><span class="section-num">Stay</span><h2>已確認住宿</h2></div>
-      <div class="callout-note"><b>公開資料範圍：</b><p>依旅客授權列出住宿名稱、入住日期、公開地址與地圖座標；不包含住客姓名、訂房代碼、付款資料或房號。Piast 門牌與 Towarowa 實際入住門牌仍以訂房確認為準。</p></div>
       <div class="grid-wide">${stayHtml}</div>
-    </section>
-    <section class="section" id="rail-official">
-      <div class="section-heading"><span class="section-num">Official</span><h2>官方購票與時刻表</h2></div>
-      <p class="lead">Passenger Portal 用來查班次與異動；PKP Intercity 官方售票頁用來確認可售價格、車廂與座位。兩者用途不同，建議都保留。</p>
-      <div class="grid">${railLinkCards}</div>
-      <details class="booking-howto" id="rail-howto">
-        <summary>網路購票教學（${railPurchaseSteps.length} 步，點開查看）</summary>
-        <div class="grid-wide">${railStepCards}</div>
-      </details>
     </section>`;
 
-  return renderPracticalLayout('訂票與交通', 'Booking plan', '待辦進度看上方卡片與待辦頁；本頁只放火車、巴士、航班、住宿的細節與官方購票教學。尚未確認的時段保留原樣，不用猜。', content, 'practical/booking.html');
+  return renderPracticalLayout('訂票與交通', 'Booking plan', '火車、Auschwitz 巴士、航班與住宿一頁看完。', content, 'practical/booking.html');
 }
 
 // 待辦日期寫成「10/25」；轉成可排序的數字，沒有日期的排最後。
@@ -324,7 +288,6 @@ export function renderTodos({ todoGroups }) {
     <div class="callout-risk todo-summary"><span class="tag-todo">${total} 項待辦</span><p>共 ${allItems.length} 項；每類先列未完成，已完成的收在「已完成」裡供核對。完成後請將票券與訂位資訊離線保存；未開賣項目仍以官方系統實際可售狀態為準。</p></div>
     ${groupsHtml}
     ${renderBookingNotice({ onTodosPage: true })}
-    <p class="action-links"><a href="tickets.html#ticket-purchases">所有景點的官方購票入口與現場售票方式 →</a></p>
     <script>
       (function() {
         ${[todayIn, taipeiToday, markOverdueRechecks].map(fn => fn.toString()).join('\n')}
@@ -393,119 +356,16 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
     </section>
     <section class="section" id="cafes">
       <div class="section-heading"><span class="section-num">Coffee &amp; sweets</span><h2>咖啡與甜點</h2></div>
-      <p class="lead">四城 ${cafeTotal} 家咖啡、熱巧克力與甜點店，依行程先後排，小標寫適合排在哪一天哪一段；標「已排入」的就在每日時間表裡，其餘是順路候選。下方米其林總表的星級與 Bib Gourmand 都是正餐餐廳，沒有咖啡館或甜點店，所以這裡改依觀光局與在地指南整理。</p>
+      <p class="lead">四城 ${cafeTotal} 家咖啡、熱巧克力與甜點店，依行程先後排，小標寫適合排在哪一天哪一段；標「已排入」的就在每日時間表裡，其餘是順路候選。</p>
       <div class="hours-city-list">${cafeHtml}</div>
-    </section>
-    <section>
-      <div class="section-heading"><span class="section-num">Guide</span><h2>2026 米其林總表</h2></div>
-      <details class="card hash-fold reference-fold"><summary>本次未排米其林餐廳，展開看四城名單</summary><div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>星級</th><th>星級餐廳</th><th>Bib Gourmand</th></tr></thead><tbody>${summaryRows}</tbody></table></div></details>
     </section>
     <section class="section" id="restaurant-hours">
       <div class="section-heading"><span class="section-num">Hours</span><h2>行程餐廳營業時間</h2></div>
       <p class="lead">依城市分組，點城市展開；店名連到店家公告，「導航」開 Google Maps，Day 連回排定的那一天。地址與菜單收在每家的摺疊區。</p>
       <div class="hours-city-list">${hoursHtml}</div>
     </section>
-    <section class="section">
-      <div class="section-heading"><span class="section-num">Reserve</span><h2>訂位與每人預算</h2></div>
-      <details class="card hash-fold reference-fold"><summary>展開高價餐廳的訂位管道與每人預算</summary><div class="table-wrap"><table class="table-editorial"><thead><tr><th>餐廳</th><th>每人 PLN</th><th>訂位管道／備註</th></tr></thead><tbody>${reservationRows}</tbody></table></div></details>
-    </section>
     ${renderFastFoodMenu({ chains: fastFoodChains, branches: fastFoodBranches, hubs: fastFoodHubs })}`;
-  return renderPracticalLayout('餐廳與速食', 'Food guide', '八天三餐、咖啡甜點與備選都在這頁，依日期找就好；2026 米其林名單與趕行程用的連鎖速食放在後段參考。', content, 'practical/dining.html');
-}
-
-// 每個景點名稱都寫成「城市 · 景點」，用這個前綴分組，不需要另存一份對照表（稽核 M7）。
-function ticketCityFor(name) {
-  const cityName = name.split('·')[0]?.trim();
-  return cityRoutes.find(city => name.startsWith(city.name)) || cityRoutes.find(city => city.name === cityName) || null;
-}
-
-const ticketPlanLabels = { main: '主行程', optional: '備選／可選', reference: '附件參考', closed: '閉館' };
-const ticketMethodLabels = { online: '線上購票', onsite: '現場購票', free: '本次免費', included: '已含門票', closed: '暫不購票' };
-
-function ticketLink(url, label) {
-  const href = safeHttpsUrl(url);
-  return href ? `<a href="${href}" target="_blank" rel="noopener noreferrer">${escapeHtml(label)} ↗</a>` : '';
-}
-
-function renderTicketPurchases(items, todoGroups) {
-  if (!items.length) return '';
-  const todos = todoGroups.flatMap(group => group.items);
-  const rows = items.map(item => {
-    const todo = todos.find(todo => todo.ticketPurchaseId === item.id);
-    const day = item.day ? days.find(day => day.n === item.day) : null;
-    const date = day?.date.split(' ')[0];
-    const primaryLink = item.method === 'online'
-      ? ticketLink(item.purchaseUrl, '官方購票')
-      : ticketLink(item.sourceUrl, item.method === 'closed' ? '閉館公告' : '官方參觀資訊');
-    const links = [primaryLink];
-    if (item.method === 'online' && item.sourceUrl !== item.purchaseUrl) links.push(ticketLink(item.sourceUrl, '官方說明'));
-    if (item.otherDatesUrl) links.push(ticketLink(item.otherDatesUrl, item.method === 'free' ? '其他日期購票' : '其他票種'));
-    return `<tr id="purchase-${escapeHtml(item.id)}" data-ticket-purchase="${escapeHtml(item.id)}" data-ticket-plan="${escapeHtml(item.plan)}" data-ticket-method="${escapeHtml(item.method)}">
-      <td data-label="景點與行程"><b>${escapeHtml(item.name)}</b><br><span class="tag-muted">${escapeHtml(ticketPlanLabels[item.plan])}</span>${date ? ` <span class="source-meta">${escapeHtml(date)}</span> ${dayLink(date)}` : ''}</td>
-      <td data-label="購票方式"><b>${escapeHtml(ticketMethodLabels[item.method])}</b>${todo ? `<br><span class="${isOpenTodoStatus(todo.status) ? 'tag-todo' : 'tag-muted'}">${escapeHtml(todo.status)}</span> <a href="todos.html#todo-attractions">訂票紀錄 →</a>` : ''}<p>${escapeHtml(item.note)}</p></td>
-      <td data-label="官方入口">${links.filter(Boolean).join('<br>')}</td>
-    </tr>`;
-  }).join('');
-  return `<h3>購票入口與參觀方式</h3>
-    <div class="table-wrap"><table class="table-editorial ticket-purchase-table"><thead><tr><th>景點與行程</th><th>購票方式</th><th>官方入口</th></tr></thead><tbody>${rows}</tbody></table></div>`;
-}
-
-export function renderTickets({ fares, ticketsByCity, notices = [], purchaseGroups = [], todoGroups = [] }) {
-  const fareRow = item => `
-    <tr>
-      <td><a href="${item.mapUrl}" target="_blank" rel="noopener"><b>${item.name}</b></a>${cityLink(item.name) ? `<br>${cityLink(item.name)}` : ''}</td>
-      <td class="number">${item.fullPrice}</td><td class="number">${item.discountPrice}</td>
-      <td>${item.note || '—'}<br><a href="${item.officialUrl}" target="_blank" rel="noopener">官網確認 →</a>${item.purchaseUrl ? `<br>${ticketLink(item.purchaseUrl, '官方購票')}` : ''}</td>
-    </tr>`;
-  // 14,617px 一路捲、無城市篩選（稽核 M7）：依「城市 · 景點」前綴分組成每城一個
-  // <details open>（本來就想全部看到，不像 M4 的餐廳收合），並在表前加一排可跳轉的
-  // 城市 chip，重用 .day-shortcuts 的 sticky 樣式。
-  const fareGroups = [];
-  for (const item of fares) {
-    const city = ticketCityFor(item.name);
-    const key = city?.fileKey || 'other';
-    let group = fareGroups.find(g => g.key === key);
-    if (!group) { group = { key, label: city?.name || '其他景點', items: [] }; fareGroups.push(group); }
-    group.items.push(item);
-  }
-  const cityChipsHtml = fareGroups.length > 1 ? `<nav class="day-shortcuts" aria-label="依城市跳到門票分組">
-      ${fareGroups.map(group => `<a href="#tickets-${group.key}">${group.label}</a>`).join('')}
-    </nav>` : '';
-  const fareGroupsHtml = fareGroups.map(group => {
-    const cityKey = cityRoutes.find(city => city.fileKey === group.key)?.key;
-    const purchaseItems = purchaseGroups.find(purchaseGroup => purchaseGroup.cityKey === cityKey)?.items || [];
-    return `<details class="ticket-city-group" id="tickets-${group.key}" open>
-      <summary>${group.label}（${purchaseItems.length || group.items.length} 項）</summary>
-      ${renderTicketPurchases(purchaseItems, todoGroups)}
-      <h3>票價與開放時間</h3>
-      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>景點</th><th>全票（PLN）</th><th>優待（PLN）</th><th>備註</th></tr></thead><tbody>${group.items.map(fareRow).join('')}</tbody></table></div>
-    </details>`;
-  }).join('');
-  const quickCards = ticketsByCity.map(group => `
-    <article class="card">
-      <h3>${group.city}</h3>
-      <ul class="check-list">${group.items.map(item => `<li><b>${item[0]}</b>：${item[1]}</li>`).join('')}</ul>
-    </article>`).join('');
-  const content = `
-    ${notices.map(item => `<div class="callout-risk"><span class="tag-todo">${item.status}</span><p>${item.text} <a href="${item.url}" target="_blank" rel="noopener">開啟官網 →</a></p></div>`).join('')}
-    <section class="section" id="ticket-purchases">
-      <div class="section-heading"><span class="section-num">Official tickets</span><h2>所有景點購票清單</h2></div>
-      <p class="lead">${purchaseGroups.reduce((count, group) => count + group.items.length, 0)} 組購票與參觀項目，涵蓋主行程、備選、附件參考與閉館景點。先看各城市的購票入口，再對照票價；主行程標記表示已安排，不表示已購票。</p>
-      <p>需要門票不一定需要預約。現場售票項目附官方資訊；本次免費或已含的項目先確認適用規則；指定日庫存以售票日曆為準。</p>
-      <p class="action-links"><a href="todos.html#todo-attractions">查看待購與已訂導覽紀錄 →</a></p>
-    </section>
-    <section>
-      <div class="section-heading"><span class="section-num">Prices</span><h2>最新門票速查</h2></div>
-      <p class="lead">全票／優待皆為 PLN（zł）。動態票價、指定日場次與臨時閉館，購票前以官網為準。</p>
-      ${cityChipsHtml}
-      ${fareGroupsHtml}
-    </section>
-    <section class="section">
-      <div class="section-heading"><span class="section-num">By city</span><h2>行程快速清單</h2></div>
-      <p class="lead">這組是行程原本的城市分組備忘；若與上表不同，以「最新門票速查」與官網為準。</p>
-      <div class="grid-wide">${quickCards}</div>
-    </section>`;
-  return renderPracticalLayout('門票速查', 'Tickets', '四城所有購票景點、官方售票入口與現場購票方式，連同票價、已含與免費規則集中查看。', content, 'practical/tickets.html');
+  return renderPracticalLayout('餐廳與速食', 'Food guide', '八天三餐、咖啡甜點與備選都在這頁，依日期找就好；趕行程用的連鎖速食在最後。', content, 'practical/dining.html');
 }
 
 export function renderTransit({ transitFares, airportTransit, recommendedApps, passChecklist, usefulRoutes, practical = [] }) {
@@ -553,189 +413,12 @@ export function renderEssentials({ phrases, packingDefault, about, safety, sourc
   const safetyCards = safety.tips.map(item => `<article class="card"><h3>${item.label}</h3><p>${item.text}</p></article>`).join('');
   const sourceRows = sources.map(item => `<tr><td><a href="${item.url}" target="_blank" rel="noopener"><b>${item.name}</b></a></td><td>${item.note}</td></tr>`).join('');
   const content = `
-    <section><div class="section-heading"><span class="section-num">Basics</span><h2>基本須知</h2></div><div class="grid">${aboutCards}<article class="card"><span class="eyebrow">入境</span><p>EES 已全面運作，首次入境要留登錄時間；ETIAS 仍未啟用、不收申請。Cathay、Qatar、EVA 行動電源規則見下方來源表。</p></article></div></section>
+    ${renderSosSection()}
+    <section class="section"><div class="section-heading"><span class="section-num">Basics</span><h2>基本須知</h2></div><div class="grid">${aboutCards}<article class="card"><span class="eyebrow">入境</span><p>EES 已全面運作，首次入境要留登錄時間；ETIAS 仍未啟用、不收申請。Cathay、Qatar、EVA 行動電源規則見下方來源表。</p></article></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Language</span><h2>常用波蘭語</h2></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>中文</th><th>波蘭語</th><th>音譯</th></tr></thead><tbody>${phraseRows}</tbody></table></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Packing</span><h2>打包清單</h2></div><div class="grid-wide">${packingHtml}</div></section>
-    <section class="section"><div class="section-heading"><span class="section-num">SOS</span><h2>緊急聯絡</h2></div><div class="grid-wide"><div class="table-wrap"><table class="table-editorial"><thead><tr><th>單位</th><th>電話</th></tr></thead><tbody>${emergencyRows}</tbody></table></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>駐波蘭代表處</th><th>資訊</th></tr></thead><tbody>${embassyRows}</tbody></table></div></div>
-      <p class="callout-note"><b>保險救援電話、保單號碼與各預約的訂位代號</b>可填在<a href="database.html#my-private">「我的私人資料」</a>（只存在這支手機的這個瀏覽器，不會上傳）；住宿電話見<a href="database.html#sos-hotels">資料庫 SOS 區</a>。</p></section>
+    <section class="section"><div class="section-heading"><span class="section-num">Phone</span><h2>其他緊急電話</h2></div><div class="grid-wide"><div class="table-wrap"><table class="table-editorial"><thead><tr><th>單位</th><th>電話</th></tr></thead><tbody>${emergencyRows}</tbody></table></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>駐波蘭代表處</th><th>資訊</th></tr></thead><tbody>${embassyRows}</tbody></table></div></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Safety</span><h2>安全與禮儀</h2></div><div class="grid-wide">${safetyCards}</div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Sources</span><h2>官方來源</h2></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>項目</th><th>重點</th></tr></thead><tbody>${sourceRows}</tbody></table></div></section>`;
-  return renderPracticalLayout('安全與基本須知', 'Essentials', '語言、插座、打包、緊急電話與常見陷阱集中在這裡，出發前看一遍就好。', content, 'practical/essentials.html');
-}
-
-export function renderNotes({ preDepartureNotes, daylight = [] }) {
-  const cards = preDepartureNotes.map((item, index) => `<article class="card ${index < 3 || index === 8 ? 'card-accent' : ''}"><span class="section-num">${String(index + 1).padStart(2, '0')}</span><p>${item}</p></article>`).join('');
-  const daylightRows = daylight.map(item => `<tr>
-      <td class="number" data-label="日">Day ${item.day}</td>
-      <td data-label="日期"><time datetime="${escapeHtml(item.date)}">${escapeHtml(item.date)}</time><br><span class="source-meta">${escapeHtml(item.city)} · ${escapeHtml(item.tz)}</span></td>
-      <td class="number" data-label="日出">${escapeHtml(item.sunrise)}</td>
-      <td class="number" data-label="日落">${escapeHtml(item.sunset)}</td>
-      <td class="number" data-label="藍調結束">${escapeHtml(item.blueHourEnd)}</td>
-      <td data-label="備註">${escapeHtml(item.note)}</td>
-    </tr>`).join('');
-  const daylightHtml = daylight.length ? `
-    <section class="section" id="daylight">
-      <div class="section-heading"><span class="section-num">Daylight</span><h2>八日日照</h2></div>
-      <p>10/25 凌晨夏令時間結束（03:00 回撥 02:00），日落從 Day 1 的 ${escapeHtml(daylight[0].sunset)} 掉到 Day 2 的 ${escapeHtml(daylight[1].sunset)}——整趟旅程的戶外可用時間在第二天就少掉約 53 分鐘。排傍晚戶外行程、以及判斷哪些拍照站位還成立，都看這張表。</p>
-      <p class="source-meta">日出日落為天文推算值，各日行程頁顯示同一組數值。</p>
-      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>日</th><th>日期</th><th>日出</th><th>日落</th><th>藍調結束</th><th>備註</th></tr></thead><tbody>${daylightRows}</tbody></table></div>
-    </section>` : '';
-  return renderPracticalLayout('行前提醒', 'Pre-trip', '這些限制直接對應 2026/10/24–10/31 的日期；先處理閉館、日落、夏令時間與訂票節奏。', `<div class="grid-wide">${cards}</div>${daylightHtml}`, 'practical/notes.html');
-}
-
-export function renderOpsDashboard({ entries, statusLabels, syncRows, todoGroups }) {
-  const statusCount = Object.fromEntries(Object.keys(statusLabels).map(status => [status, 0]));
-  entries.forEach((entry) => {
-    if (statusCount[entry.status] === undefined) statusCount[entry.status] = 1;
-    else statusCount[entry.status] += 1;
-  });
-
-  const privateCount = entries.filter(item => item.private).length;
-  const privateEntryIds = new Set(entries.filter(item => item.private).map(item => item.id));
-  const publicSyncRows = (syncRows || []).filter(item => !item.private && !privateEntryIds.has(item.id));
-  const todoCount = todoGroups.reduce((sum, group) => sum + group.items.length, 0);
-  const openTodos = todoGroups
-    .flatMap(group => group.items.map(item => ({ group: group.eyebrow, ...item })))
-    .filter(item => isOpenTodoStatus(item.status));
-  const checkedDates = [...new Set((syncRows || []).map(item => item.checkedAt).filter(Boolean))].sort();
-  const latestCheckedDate = checkedDates.at(-1);
-  const previousCheckedDate = checkedDates.at(-2);
-  const latestSyncCount = latestCheckedDate ? (syncRows || []).filter(item => item.checkedAt === latestCheckedDate).length : 0;
-  const previousSyncCount = previousCheckedDate ? (syncRows || []).filter(item => item.checkedAt === previousCheckedDate).length : null;
-  const latestSyncDelta = previousSyncCount === null ? '—' : `${latestSyncCount - previousSyncCount}`;
-  const latestSyncRows = publicSyncRows.filter(item => item.checkedAt && item.checkedAt === latestCheckedDate);
-
-  const syncHistory = publicSyncRows
-    .slice()
-    .sort((a, b) => (b.checkedAt || '').localeCompare(a.checkedAt || ''))
-    .slice(0, 8)
-    .map(item => `<tr>
-      <td>${escapeHtml(item.id)}</td>
-      <td>${escapeHtml(statusLabels[item.status] || item.status || '—')}</td>
-      <td>${escapeHtml(item.checkedAt || '—')}</td>
-      <td>${escapeHtml(item.summary || '—')}</td>
-    </tr>`)
-    .join('');
-
-  const todoUrgent = todoGroups
-    .flatMap(group => group.items.map(item => ({ group: group.eyebrow, ...item })))
-    .filter(item => isOpenTodoStatus(item.status))
-    .slice(0, 12)
-    .map(item => `<li><b>${escapeHtml(item.name)}</b>（${escapeHtml(item.group)}）— ${escapeHtml(item.status)}<br>${linkifyText(item.action)}</li>`)
-    .join('');
-
-  const workflowSteps = [
-    ['1. 更新網站資料', '以 src/data 內的網站資料為主要來源，維護 id 對應欄位（status、sourceUrl、verifiedAt、recheckAt、summary、offlineNote、private）。'],
-    ['2. 匯入人工盤點', '需要整併 Google Sheet 時，執行 node tools/sync-dashboard-overrides.mjs --source dashboard-export.csv，將盤點差異轉成覆寫檔。'],
-    ['3. 重新建置', '建議直接執行 npm run build，驗證頁面匯出完成後再推送。'],
-    ['4. 驗證公開資料', '檢查自由行資料庫、待辦頁與公開匯出；私人內容不得寫入網站產物。'],
-  ].map((step, index) => {
-    // 小標與標題原本都帶同一個數字（「1」＋「1. 更新網站資料」），看起來像重複編號。
-    // 數字留在小標，標題只留步驟名稱。
-    const title = step[0].replace(/^\d+\.\s*/, '');
-    return `<article class="card"><span class="section-num">Step ${String(index + 1).padStart(2, '0')}</span><h3>${title}</h3><p>${step[1]}</p></article>`;
-  }).join('');
-
-  const dashboardInput = {
-    metrics: {
-      totalEntries: entries.length,
-      verified: statusCount.verified || 0,
-      recheck: statusCount.recheck || 0,
-      pending: statusCount.pending || 0,
-      privateRequired: statusCount['private-required'] || 0,
-      privateCount,
-      todos: todoCount,
-      todoOpen: openTodos.length,
-      latestSyncDate: latestCheckedDate || '—',
-      latestSyncCount,
-      syncDelta: latestSyncDelta,
-    },
-    alertCandidates: [
-      ...openTodos
-        .map(item => ({
-          type: 'todo-overdue',
-          key: `${item.group}-${item.name}`,
-          date: item.recheckAt || item.date,
-          status: item.status,
-          name: item.name,
-          action: item.action,
-        })),
-      ...entries
-        .filter(entry => !entry.private)
-        .filter(entry => isOpenEntryStatus(entry.status))
-        .map(entry => ({
-          type: 'entry-overdue',
-          key: entry.id,
-          date: entry.recheckAt || '',
-          status: entry.status,
-          name: entry.title,
-          action: entry.summary || '',
-        })),
-    ],
-    // Only anonymous dates from private records are needed for aggregate counts.
-    privateDueDates: entries.filter(item => item.private && isOpenEntryStatus(item.status)).map(item => item.recheckAt || null),
-    syncDates: (syncRows || []).map(item => item.checkedAt || null),
-    syncRows: latestSyncRows.map(item => ({
-      id: item.id,
-      status: item.status,
-      checkedAt: item.checkedAt,
-      summary: item.summary || '',
-      offlineNote: item.offlineNote || '',
-    })),
-  };
-
-  const handover = calculateDashboard(dashboardInput);
-  const { todaySyncCount, overdue: overdueCount } = handover.metrics;
-  const dashboardPayload = serializeForInlineScript(dashboardInput);
-  // 內嵌時沒有 import，被呼叫到的相依函式必須一起列入（todayIn 支撐 getTaipeiToday）。
-  const dashboardRuntime = [todayIn, getTaipeiToday, toComparableDate, calculateDashboard, dashboardCsv, initializeDashboard]
-    .map(fn => fn.toString()).join('\n');
-
-  const content = `
-    <section>
-      <div class="section-heading"><span class="section-num">Data Health</span><h2>資料品質面板</h2></div>
-      <p>統計日期（台灣時間）：<span data-dashboard-today>${handover.generatedAt}</span>。依目前載入的紀錄重新計算；訂票狀態仍須人工查核。</p>
-      <noscript><p>JavaScript 未啟用，以下為建置時的統計快照。</p></noscript>
-      <div class="grid">
-        <article class="card"><span class="eyebrow">今日更新量</span><h3 data-dashboard-today-count>${todaySyncCount} 筆</h3><p>最近同步日：${latestCheckedDate || '—'}，該日 ${latestSyncCount} 筆，較前一次 ${latestSyncDelta}</p></article>
-        <article class="card"><span class="eyebrow">公開資料</span><h3>共 ${entries.length} 筆</h3><p>已確認：${statusCount.verified || 0}、重查：${statusCount.recheck || 0}、待確認：${statusCount.pending || 0}、待補資料：${statusCount['private-required'] || 0}</p></article>
-        <article class="card"><span class="eyebrow">私有欄位</span><h3>${privateCount} 筆</h3><p>保留為本次行程所需的敏感欄位，網站不對外展示。</p></article>
-        <article class="card"><span class="eyebrow">未完成項目</span><h3>${openTodos.length} / ${todoCount}</h3><p>含交通、景點、門票、餐飲與備案。建議在待辦頁更新後再同步 dashboard。</p></article>
-        <article class="card"><span class="eyebrow">逾期項目</span><h3 data-dashboard-overdue>${overdueCount} 筆</h3><p>含 dashboard 重查到期 + 待辦日期到期但未完成。</p></article>
-      </div>
-      <div class="grid">
-        ${workflowSteps}
-      </div>
-    </section>
-    <section class="section">
-      <div class="section-heading"><span class="section-num">Sync</span><h2>最近同步紀錄（以 checkedAt 排序）</h2></div>
-      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>id</th><th>狀態</th><th>盤查日期</th><th>摘要</th></tr></thead><tbody>${syncHistory || '<tr><td colspan="4">尚未有 dashboard 同步紀錄</td></tr>'}</tbody></table></div>
-    </section>
-    <section class="section">
-      <div class="section-heading"><span class="section-num">Action list</span><h2>儀表板對齊優先清單</h2></div>
-      <ul class="check-list">${todoUrgent || '<li>目前待辦內容無需即時更新</li>'}</ul>
-    </section>
-    <section class="section">
-      <div class="section-heading"><span class="section-num">Handover</span><h2>交接摘要與匯出</h2></div>
-      <p>可直接輸出不含私人內容的「今日異常清單」與「最近同步清單」，給接手者交接時使用。</p>
-      <div class="grid">
-        <button id="export-handover-json" data-handover-export="json" type="button" class="btn-export">匯出 JSON</button>
-        <button id="export-handover-csv" data-handover-export="csv" type="button" class="btn-export">匯出 CSV</button>
-      </div>
-      <script>
-        (function() {
-          ${dashboardRuntime}
-          const root = document.currentScript.closest('.standalone-page') || document;
-          initializeDashboard(root, ${dashboardPayload});
-        }());
-      </script>
-    </section>
-    <section class="section">
-      <div class="section-heading"><span class="section-num">Rule</span><h2>網站資料維護規則</h2></div>
-      <div class="callout-note"><b>欄位邏輯：</b>網站資料是主要來源，只處理已知欄位與資料庫 entry；需要新增欄位時先修改網站資料契約，再更新 dashboard 對照表、同步與驗證規則。</div>
-      <div class="grid"><article class="card"><p>欄位對應與資料規格已固定為 status、sourceUrl、verifiedAt、recheckAt、checkedAt、summary、offlineNote、private、id。</p><p>建議同步後檢查：待確認/重查比例、待辦 pending 是否下降。</p></article></div>
-    </section>
-  `;
-
-  return renderPracticalLayout('資料更新儀表板', 'Ops', '把 dashboard、待辦與網站三者同步；每次更新都先落在欄位、再看頁面。', content, 'practical/ops-dashboard.html');
+  return renderPracticalLayout('安全與基本須知', 'Essentials', '緊急電話、我的保險與訂位資料、常用波蘭語與打包清單。', content + renderPrivateRuntime(), 'practical/essentials.html');
 }
