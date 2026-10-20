@@ -123,3 +123,16 @@ export function bookingNoteHtml(groups, todoHref) {
   const head = stats.open ? `待辦共 ${stats.total} 項，已完成 ${stats.done} 項，仍待處理 ${stats.open} 項（${breakdown}）` : `待辦共 ${stats.total} 項，已全部處理`;
   return `先訂清單——${head}${skipped}。奧斯威辛入場須同時出示入場證與證件；逐項狀態見<a href="${todoHref}">待辦事項</a>。`;
 }
+
+/**
+ * 2026-10-20 UX F11：全站狀態徽章只用三種顏色。
+ * 紅（tag-todo）＝尚未購票／尚未訂位等還沒做；黃（tag-yellow）＝待確認；綠（tag-green）＝已購票、已訂妥、已確認。
+ * 售完、選配、不再提醒這類不需要再動作的狀態維持灰色（tag-muted）。
+ */
+export function statusTagClass(status) {
+  const text = String(status ?? '');
+  if (/待確認|先確認|待查|確認中/.test(text)) return 'tag-yellow';
+  if (/尚未|未購|未訂|未完成|待訂/.test(text) && !/選配/.test(text)) return 'tag-todo';
+  if (/已購|已訂|已確認|已完成|已報到|已登錄|已安裝|無待訂/.test(text)) return 'tag-green';
+  return 'tag-muted';
+}

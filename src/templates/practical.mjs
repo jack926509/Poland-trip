@@ -2,7 +2,7 @@ import { mealTiming, renderMealList, renderStoreBadges, renderStoreBody, renderS
 import { dayMeals, dayDining } from '../data/day-dining.js';
 import { days } from '../data/trip.js';
 import { todoItemId } from '../lib/journey.mjs';
-import { todoStats, isTodoOpen } from '../lib/todo-status.mjs';
+import { todoStats, isTodoOpen, statusTagClass } from '../lib/todo-status.mjs';
 import { escapeHtml, linkifyText, safeHttpsUrl, renderDataNote, splitVerification, VERIFICATION_PATTERN } from '../lib/html.mjs';
 import { renderLayout } from './layout.mjs';
 import { cityGuideByName, dayPageForDate, cityRoutes } from '../lib/city-guide.mjs';
@@ -69,11 +69,14 @@ function verified(value) {
   return { html: escapeHtml(main), notes: notes.map(escapeHtml) };
 }
 
+// 2026-10-20 UX F10：航班跟火車同一種兩行精簡卡（第一行 日期 時刻→時刻 航班；第二行 路段＋狀態），轉機只佔一行。
 function renderFlightTable(legs) {
-  return `<div class="table-wrap"><table class="table-editorial">
-    <thead><tr><th>航班</th><th>路段</th><th>日期／時間</th><th>時長</th><th>狀態</th></tr></thead>
-    <tbody>${legs.map(leg => `<tr><td>${leg.code}</td><td>${leg.leg}</td><td>${leg.when}</td><td>${leg.dur || '—'}</td><td>${leg.layover ? '轉機' : `<span class="tag-muted">${leg.status || '待確認'}</span>`}</td></tr>`).join('')}</tbody>
-  </table></div>`;
+  return `<ol class="rail-cards flight-cards">${legs.map(leg => leg.layover
+    ? `<li class="flight-layover">${escapeHtml(leg.code)} 轉機 · ${escapeHtml(leg.when)}</li>`
+    : `<li class="rail-card">
+        <p class="rail-card-time"><b class="number">${escapeHtml(leg.when).replace(' → ', '&nbsp;→&nbsp;')}</b><span class="rail-card-code">${escapeHtml(leg.code)}</span></p>
+        <p class="rail-card-route"><span>${escapeHtml(leg.leg)}${leg.dur ? ` · ${escapeHtml(leg.dur)}` : ''}</span><span class="${statusTagClass(leg.status || '待確認')}">${escapeHtml(leg.status || '待確認')}</span></p>
+      </li>`).join('')}</ol>`;
 }
 
 /**
@@ -120,7 +123,7 @@ export function renderBookingStatusCard(todoGroups, deadlines = [], today = taip
   // 還沒買／還沒訂的逐項列出（依日期），點了直接跳到待辦頁那一筆；已完成的不再列。
   const openItems = todoGroups.flatMap(group => group.items.filter(isTodoOpen).map(item => ({ item, group })))
     .sort((a, b) => todoSortKey(a.item) - todoSortKey(b.item));
-  const rows = openItems.map(({ item, group }) => `<li><a href="todos.html#${todoItemId(group, item)}"><span><b class="number">${escapeHtml(item.date)}</b>　${escapeHtml(item.name)}</span><b>${escapeHtml(item.status)}</b></a></li>`).join('');
+  const rows = openItems.map(({ item, group }) => `<li><a href="todos.html#${todoItemId(group, item)}"><span><b class="number">${escapeHtml(item.date)}</b>　${escapeHtml(item.name)}</span><b class="${statusTagClass(item.status)}">${escapeHtml(item.status)}</b></a></li>`).join('');
   return `
     <section class="section booking-status" id="countdown" data-todo-open="${stats.open}" data-todo-total="${stats.total}">
       <div class="booking-status-card">
@@ -137,18 +140,29 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
   const statusCardHtml = renderBookingStatusCard(todoGroups, deadlines);
   const railTrains = trains.filter(train => !String(train.id).startsWith('bus-'));
   const bookedTrains = railTrains.filter(train => train.status === '已購票').length;
-  const trainRows = trains.map(train => {
+  // 2026-10-20 UX F10：每段車程原本是 7 欄表格，手機一段約 600px。改成兩行精簡卡：
+  // 第一行「日期 發車 → 抵達 車次」，第二行「路段＋狀態徽章」；車程、票價、附註與資料說明收進「附註」。
+  const statusBadges = status => String(status || '').split('／').filter(Boolean)
+    .map(part => `<span class="${statusTagClass(part)}">${escapeHtml(part)}</span>`).join('');
+  const trainCards = trains.map(train => {
     const leg = splitVerification(train.leg), note = splitVerification(train.note);
     const price = /未提供/.test(train.price) ? '' : /^\d/.test(train.price) ? `PLN ${train.price}` : train.price;
+    const sale = train.status === '已購票' ? '' : train.saleOpens ? `${escapeHtml(train.saleOpens)} 起預售` : '預售日待確認';
+    const extra = [
+      train.dur ? `<p><b>車程：</b>${train.dur}</p>` : '',
+      leg.main ? `<p>${leg.main}</p>` : '',
+      sale ? `<p><b>預售：</b>${sale}</p>` : '',
+      price ? `<p><b>票價：</b>${price}</p>` : '',
+      note.main ? `<p>${note.main}</p>` : '',
+      renderDataNote([...leg.notes, ...(price ? [] : [escapeHtml(train.price)]), ...note.notes]),
+    ].join('');
+    const link = dayLink(train.date);
     return `
-    <tr>
-      <td><b>${train.seg}</b>${leg.main ? `<br><span class="timeline-note">${leg.main}</span>` : ''}${train.status ? `<br><span class="${train.status === '已購票' ? 'tag-muted' : 'tag-todo'}">${train.status}</span>` : ''}</td>
-      <td class="number">${train.date}${dayLink(train.date) ? `<br>${dayLink(train.date)}` : ''}</td><td>${train.type}</td>
-      <td class="number time-range">${train.dep}&nbsp;→&nbsp;${train.arr}</td>
-      <td class="number">${train.dur}</td>
-      <td><b>${train.status === '已購票' ? '已購票' : train.saleOpens ? `${escapeHtml(train.saleOpens)} 起預售` : '預售日待確認'}</b></td>
-      <td class="number">${price}${note.main ? `<br><span class="timeline-note">${note.main}</span>` : ''}${renderDataNote([...leg.notes, ...(price ? [] : [escapeHtml(train.price)]), ...note.notes])}</td>
-    </tr>`;
+      <li class="rail-card" id="rail-${escapeHtml(train.id)}">
+        <p class="rail-card-time"><b class="number">${train.date}</b><b class="number">${train.dep} → ${train.arr}</b><span class="rail-card-code">${train.type}</span></p>
+        <p class="rail-card-route"><span>${train.seg}</span>${statusBadges(train.status)}</p>
+        <div class="rail-card-foot">${link}<details class="rail-card-more"><summary>附註</summary>${extra}</details></div>
+      </li>`;
   }).join('');
   const stayHtml = stay.map(item => {
     const coordinate = item.coordinates;
@@ -157,9 +171,9 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
       : null;
     return `
     <article class="card">
-      <span class="eyebrow">${escapeHtml(item.status)} · ${escapeHtml(item.city)}</span><h3>${escapeHtml(item.name)}</h3>
+      <span class="eyebrow">${escapeHtml(item.city)}</span><h3>${escapeHtml(item.name)} <span class="${statusTagClass(item.status)}">${escapeHtml(item.status)}</span></h3>
       <p><b>${escapeHtml(item.checkIn)}${item.checkInTime ? ` ${escapeHtml(item.checkInTime)}` : ''} → ${escapeHtml(item.checkOut)}${item.checkOutTime ? ` ${escapeHtml(item.checkOutTime)}` : ''}</b> · ${item.nights} 晚 · ${item.rooms} 間房</p>
-      <p><b>地址：</b>${escapeHtml(item.address)}${item.addressVerified ? '' : ' <span class="tag-todo">門牌待確認</span>'}</p>
+      <p><b>地址：</b>${escapeHtml(item.address)}${item.addressVerified ? '' : ' <span class="tag-yellow">門牌待確認</span>'}</p>
       <p><b>電話：</b>${item.phone ? `<a href="tel:${escapeHtml(item.phone.replace(/[^\d+]/g, ''))}">${escapeHtml(item.phone)}</a>` : '請看訂房確認信'}</p>
       ${(() => { const note = verified(item.note); return `${note.html ? `<p class="timeline-note">${note.html}</p>` : ''}${renderDataNote(note.notes)}`; })()}
       <p class="action-links">${mapUrl ? `<a href="${mapUrl}" target="_blank" rel="noopener noreferrer">地圖導航 →</a>` : ''}<a href="${escapeHtml(item.officialUrl)}" target="_blank" rel="noopener noreferrer">飯店官網 →</a></p>
@@ -183,8 +197,8 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
       <div class="section-heading"><span class="section-num">Bus</span><h2>Auschwitz 往返巴士（${escapeHtml(auschwitzBus.operator)}）</h2></div>
       <div class="callout-note">
         <b>售票站：</b>
-        <p><a href="${escapeHtml(auschwitzBus.site)}" target="_blank" rel="noopener noreferrer">lajkonikbus.pl</a>
-        ${bus.site.html}</p>${renderDataNote(bus.site.notes)}
+        <p><a href="${escapeHtml(auschwitzBus.site)}" target="_blank" rel="noopener noreferrer">lajkonikbus.pl</a></p>
+        <details class="rail-card-more"><summary>網站怎麼操作</summary><p>${bus.site.html}</p>${renderDataNote(bus.site.notes)}</details>
       </div>
       ${auschwitzBus.tour ? `
       <div class="callout-note">
@@ -204,7 +218,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
         </article>
       </div>
 
-      <h3>去程 · ${escapeHtml(bus.status(auschwitzBus.outbound.status))}</h3>
+      <details class="bus-leg"><summary><h3>去程 · <span class="${statusTagClass(bus.status(auschwitzBus.outbound.status))}">${escapeHtml(bus.status(auschwitzBus.outbound.status))}</span></h3><span class="bus-leg-hint">班次表</span></summary>
       <div class="table-wrap"><table class="table-editorial">
         <thead><tr><th>發車</th><th>抵達</th><th>車程</th><th>站位</th><th>票價</th><th>採用</th></tr></thead>
         <tbody>${auschwitzBus.outbound.services.map(item => `
@@ -217,9 +231,9 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
             <td><span class="${item.decision === '採用' ? 'tag-yellow' : 'tag-muted'}">${escapeHtml(item.decision)}</span></td>
           </tr>`).join('')}</tbody>
       </table></div>
-      ${bus.outbound.html ? `<p class="timeline-note">${bus.outbound.html}</p>` : ''}${renderDataNote([...bus.statusNote(auschwitzBus.outbound.status), ...bus.outbound.notes])}
+      ${bus.outbound.html ? `<p class="timeline-note">${bus.outbound.html}</p>` : ''}${renderDataNote([...bus.statusNote(auschwitzBus.outbound.status), ...bus.outbound.notes])}</details>
 
-      <h3>回程 · ${escapeHtml(bus.status(auschwitzBus.inbound.status))}</h3>
+      <details class="bus-leg"><summary><h3>回程 · <span class="${statusTagClass(bus.status(auschwitzBus.inbound.status))}">${escapeHtml(bus.status(auschwitzBus.inbound.status))}</span></h3><span class="bus-leg-hint">班次表</span></summary>
       <div class="table-wrap"><table class="table-editorial">
         <thead><tr><th>發車</th><th>抵達</th><th>車程</th><th>票價</th><th>採用</th></tr></thead>
         <tbody>${auschwitzBus.inbound.services.map(item => `
@@ -231,7 +245,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
             <td><span class="${item.decision === '採用' ? 'tag-yellow' : 'tag-muted'}">${escapeHtml(item.decision)}</span></td>
           </tr>`).join('')}</tbody>
       </table></div>
-      ${bus.inbound.html ? `<p class="timeline-note">${bus.inbound.html}</p>` : ''}${renderDataNote([...bus.statusNote(auschwitzBus.inbound.status), ...bus.inbound.notes])}
+      ${bus.inbound.html ? `<p class="timeline-note">${bus.inbound.html}</p>` : ''}${renderDataNote([...bus.statusNote(auschwitzBus.inbound.status), ...bus.inbound.notes])}</details>
       <p class="action-links"><a href="${escapeHtml(auschwitzBus.site)}" target="_blank" rel="noopener noreferrer">到 lajkonikbus.pl 買票 →</a><a href="https://moj-bus.pl/en" target="_blank" rel="noopener noreferrer">Moj Bus 線上買票 →</a></p>
     </section>` : '';
 
@@ -240,7 +254,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
     <section class="section" id="rail-itinerary">
       <div class="section-heading"><span class="section-num">Rail</span><h2>城際交通</h2></div>
       <div class="callout-note"><b>已購 ${bookedTrains}／${railTrains.length} 段城際火車。</b><p>逐段購票狀態看<a href="todos.html#todo-rail">待辦事項</a>。10/25 EIP 5300、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 都已在 PKP App 票券清單；艙等、車廂與座位看票券詳細頁，並保存離線票券。</p></div>
-      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>路段</th><th>日期</th><th>車種</th><th>時刻</th><th>時長</th><th>預售</th><th>票價</th></tr></thead><tbody>${trainRows}</tbody></table></div>
+      <ol class="rail-cards">${trainCards}</ol>
     </section>
     ${busHtml}
     <section class="section">
@@ -282,7 +296,7 @@ function renderTodoItem(item, group) {
   // 每筆有固定錨點，每日頁與今日卡的預約列直接連到這裡；反向再連回行程日。
   const day = dayPageForDate(item.date, '../');
   return `<li class="todo-item${open ? '' : ' is-done'}" id="${todoItemId(group, item)}">
-        <div class="todo-head"><span class="todo-date">${item.date}</span><b class="todo-name">${item.name}</b><span class="${open ? 'tag-todo' : 'tag-muted'}">${item.status}</span></div>
+        <div class="todo-head"><span class="todo-date">${item.date}</span><b class="todo-name">${item.name}</b><span class="${open ? statusTagClass(item.status) : item.skip ? 'tag-muted' : statusTagClass(item.status)}">${item.status}</span></div>
         <p class="todo-action">${linkifyText(item.action)}${item.url ? ` <a class="todo-link" href="${item.url}" target="_blank" rel="noopener">${todoLinkLabel(item, group)} →</a>` : ''}</p>
       </li>`;
 }

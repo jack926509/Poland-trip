@@ -1,6 +1,7 @@
 import { mealTiming, renderMealList, renderStoreBody, renderStoreHead } from '../lib/dining.mjs';
 import { escapeHtml, linkifyText, safeHttpsUrl } from '../lib/html.mjs';
 import { bookingProgress, dayHref } from '../lib/journey.mjs';
+import { statusTagClass } from '../lib/todo-status.mjs';
 import { days as allDays } from '../data/trip.js';
 import { segmentForDay } from '../lib/rail.mjs';
 import { renderDayContext, renderDayStayLine } from './journey.mjs';
@@ -275,7 +276,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   const bookingItem = item => `<li class="booking-item${item.open ? '' : item.skipped ? ' is-skipped' : ' is-done'}">
         <span class="booking-item-group">${escapeHtml(item.groupTitle)}</span>
         <b class="booking-item-name">${escapeHtml(item.name)}</b>
-        <span class="${item.open ? 'tag-todo' : 'tag-muted'}">${escapeHtml(item.status)}</span>
+        <span class="${item.skipped ? 'tag-muted' : statusTagClass(item.status)}">${escapeHtml(item.status)}</span>
         <a class="booking-item-link" href="practical/todos.html#${item.anchor}">${item.open ? '下一步怎麼訂' : item.skipped ? '現場怎麼試' : '查看紀錄'} →</a>
       </li>`;
   const mustBookHtml = `${pending.length ? `

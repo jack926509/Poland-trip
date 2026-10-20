@@ -14,7 +14,8 @@ test('M10：全程動線併入八日目錄，「無待訂」是標籤而非獨�
   // 2026-10-13 起首頁不再另放一張全程動線表；錨點 #journey-overview 移到八日目錄。
   assert.equal((home.match(/id="journey-overview"/g) || []).length, 1);
   assert.match(home, /<ol class="journal-itinerary" id="journey-overview">/);
-  assert.match(home, /<span class="tag-muted">無待訂<\/span>/);
+  // 2026-10-20 UX F11：狀態徽章統一三色，「無待訂」屬於已完成，改用綠色 tag-green。
+  assert.match(home, /<span class="tag-green">無待訂<\/span>/);
   assert.doesNotMatch(home, /<a[^>]*>無待訂[^<]*<\/a>/);
   assert.match(home, /<span class="tag-todo">待訂 \d+<\/span>/);
   assert.equal((home.match(/class="journal-day-stay"/g) || []).length, 8);

@@ -162,7 +162,8 @@ test('深色模式樣式與 meta 已全數移除', () => {
 
 test('表格儲存格自動帶入 data-label 供手機卡片版顯示欄名', () => {
   const booking = fs.readFileSync(path.join(distDir, 'practical/booking.html'), 'utf8');
-  assert.match(booking, /<td[^>]*data-label="路段"/);
+  // 2026-10-20 UX F10：火車與航班改成兩行精簡卡，訂票頁剩下的表格是 Auschwitz 巴士班次表（發車／票價）。
+  assert.match(booking, /<td[^>]*data-label="發車"/);
   assert.match(booking, /<td[^>]*data-label="票價"/);
 
   // 手機把每一欄堆疊顯示，並解除 .number 的 nowrap，避免整頁被撐寬

@@ -912,6 +912,32 @@ nav.section-heading > a:last-child {
   color: var(--ink-soft);
 }
 
+/* 2026-10-20 UX F11：狀態徽章三色——紅＝未購／未訂（tag-todo）、黃＝待確認（tag-yellow）、綠＝已完成（tag-green）。 */
+.tag-todo {
+  border-color: #c0392b;
+  background: #fdecea;
+  color: #9b2317;
+}
+
+.tag-green {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0.2rem 0.2rem 0;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid #5d8a4f;
+  border-radius: var(--radius-sm);
+  background: #eaf3e4;
+  color: #2f5a24;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  vertical-align: 0.08em;
+}
+.tag-green::before { width: 0.42rem; height: 0.42rem; border-radius: 999px; background: currentcolor; content: ''; opacity: 0.75; }
+
 .status-verified,
 .status-recheck,
 .status-pending,
@@ -8003,3 +8029,33 @@ html {
   font-weight: 700;
 }
 .data-note > p { margin: 0.2rem 0 0.4rem; line-height: 1.6; }
+
+/* 2026-10-20 UX F10：訂票頁火車與巴士改成兩行精簡卡。 */
+.rail-cards { display: grid; gap: 0.6rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+.rail-card {
+  padding: 0.75rem 0.9rem 0.35rem;
+  border: 1px solid rgb(142 126 112 / 26%);
+  border-radius: var(--radius-md);
+  background: var(--surface-card);
+}
+.rail-card p { margin: 0; }
+.rail-card-time { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.15rem 0.7rem; font-size: 1.0625rem; }
+.rail-card-time b { color: var(--accent-dark); }
+.rail-card-code { color: var(--ink); font-family: var(--font-mono); font-size: 0.9375rem; font-weight: 700; }
+.rail-card-route { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem 0.5rem; margin-top: 0.3rem !important; font-size: 0.9375rem; }
+.rail-card-route .tag-todo, .rail-card-route .tag-green, .rail-card-route .tag-yellow, .rail-card-route .tag-muted { margin: 0; }
+.rail-card-foot { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 0 1rem; }
+.rail-card-foot > .cross-link { display: inline-flex; align-items: center; min-height: 44px; }
+.rail-card-more { flex: 1 1 100%; }
+.rail-card-more > summary { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink-soft); cursor: pointer; font-size: 0.875rem; font-weight: 700; }
+.rail-card-more > p { margin: 0.25rem 0; font-size: 0.9375rem; line-height: 1.6; }
+.rail-card-foot:has(> .cross-link) > .rail-card-more { flex: 0 1 auto; }
+.rail-card-foot:has(> .cross-link) > .rail-card-more[open] { flex-basis: 100%; }
+.flight-cards .rail-card { padding-bottom: 0.75rem; }
+.flight-layover { padding: 0 0.9rem; color: var(--ink-soft); font-size: 0.875rem; }
+.bus-leg { margin: 0.75rem 0; border-top: 1px solid var(--line); }
+.bus-leg > summary { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0.75rem; min-height: 44px; padding-block: 0.4rem; cursor: pointer; }
+.bus-leg > summary h3 { margin: 0; }
+.bus-leg-hint { color: var(--ink-soft); font-size: 0.875rem; }
+.data-note > summary::before { margin-right: 0.3rem; content: "＋"; }
+.data-note[open] > summary::before { content: "－"; }

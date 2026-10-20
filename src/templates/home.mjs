@@ -87,7 +87,7 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
         <span class="journal-day-number">${String(day.n).padStart(2, '0')}</span>
         <span class="journal-day-date">${escapeHtml(day.date)}</span>
         <span class="journal-day-copy"><b>${escapeHtml(day.title)}</b><small>${escapeHtml(day.city)} · ${escapeHtml(day.headline)}</small><small class="journal-day-stay">${escapeHtml(stayText)}<span>強度 ${escapeHtml(day.intensity)}</span></small></span>
-        <span class="${pending ? 'tag-todo' : 'tag-muted'}">${pending ? `待訂 ${pending}` : '無待訂'}</span>
+        <span class="${pending ? 'tag-todo' : 'tag-green'}">${pending ? `待訂 ${pending}` : '無待訂'}</span>
       </a>
     </li>`;
   }).join('');
