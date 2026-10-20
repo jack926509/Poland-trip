@@ -4,9 +4,9 @@ import fs from 'node:fs';
 
 import * as trip from '../src/data/trip.js';
 import { databaseEntries } from '../src/data/travel-database.js';
-import { preDepartureNotes } from '../src/data/essentials.js';
+import { escapeHtml } from '../src/lib/html.mjs';
 import { renderHome } from '../src/templates/home.mjs';
-import { renderBooking, renderTodos, renderNotes, todoLinkLabel } from '../src/templates/practical.mjs';
+import { renderBooking, renderTodos, todoLinkLabel } from '../src/templates/practical.mjs';
 import { resolveTodoRef, statusOfItems, lajkonikInboundWord, railGroupIntro } from '../src/lib/todo-status.mjs';
 import { auschwitzBus, bindTodoGroups } from '../src/data/rail.js';
 import { resolveHomeStatus, nextStepFor, departureLabel } from '../src/scripts/dashboard.js';
@@ -27,7 +27,6 @@ const breakdown = trip.todoGroups.filter(group => openByGroup[group.id] > 0).map
 const home = renderHome({ ...trip, cities: [], databaseEntries });
 const booking = renderBooking(trip);
 const todos = renderTodos(trip);
-const notes = renderNotes({ preDepartureNotes, daylight: [] });
 
 test('待辦正本本身有待辦、有已完成，測試才有鑑別力', () => {
   assert.ok(expected.open > 0 && expected.done > 0 && expected.skipped > 0);
@@ -71,27 +70,18 @@ test('待辦頁數字等於正本', () => {
 test('訂票頁精簡卡的待辦數與各類計數等於正本', () => {
   assert.match(booking, new RegExp(`data-todo-open="${expected.open}" data-todo-total="${expected.total}"`));
   assert.match(booking, new RegExp(`還沒處理 <b class="number" data-booking-open>${expected.open}</b> 項`));
-  assert.ok(booking.includes(`共 ${expected.total} 項，已完成 ${expected.done} 項`));
-  for (const group of trip.todoGroups) {
-    const text = openByGroup[group.id] ? `${openByGroup[group.id]} 項待處理` : '已完成';
-    assert.ok(booking.includes(`<span>${group.title}</span><b>${text}</b>`), `${group.id} 計數不符`);
-  }
+  // 2026-10-20 改成逐項列出還沒買／還沒訂的項目，每筆連到待辦頁那一筆
+  const card = booking.slice(booking.indexOf('id="countdown"'), booking.indexOf('</section>', booking.indexOf('id="countdown"')));
+  const openItems = trip.todoGroups.flatMap(group => group.items.filter(isOpen));
+  assert.equal((card.match(/<li><a href="todos\.html#/g) || []).length, openItems.length);
+  for (const item of openItems) assert.ok(card.includes(escapeHtml(item.name)), `訂票頁缺少未完成項目 ${item.name}`);
+  assert.ok(card.includes('Lajkonik 回程'));
 });
 
 test('訂票頁不再重述待辦：沒有倒數表、優先順序、時程表，也沒有逾期假警報', () => {
   assert.doesNotMatch(booking, /訂票優先順序|什麼時候處理|data-countdown-row|逾期 \d+ 天|訂票與查核倒數/);
-  assert.match(booking, /<details class="booking-howto"/);
-  assert.doesNotMatch(booking, /<details class="booking-howto"[^>]*open/);
-});
-
-test('行前提醒第 05、07 條的數字等於正本', () => {
-  const rail = trip.todoGroups.find(group => group.id === 'rail');
-  const railOpen = rail.items.filter(isOpen).length;
-  assert.ok(preDepartureNotes[4].includes(`城際交通共 ${rail.items.length} 項，已購 ${rail.items.length - railOpen} 項，待處理 ${railOpen} 項`));
-  assert.ok(preDepartureNotes[6].includes(`待辦共 ${expected.total} 項，已完成 ${expected.done} 項，仍待處理 ${expected.open} 項（${breakdown}）`));
-  assert.ok(preDepartureNotes[6].includes(`當天現場再試 ${expected.skipped} 項`));
-  for (const index of [4, 6]) assert.match(preDepartureNotes[index], /href="todos\.html"/);
-  assert.ok(notes.includes(preDepartureNotes[6]));
+  // 2026-10-20 四段火車已購，訂票頁拿掉網路購票教學
+  assert.doesNotMatch(booking, /booking-howto/);
 });
 
 test('資料庫「景點票券」標題與摘要等於正本', () => {

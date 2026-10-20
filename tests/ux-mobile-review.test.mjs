@@ -70,14 +70,11 @@ test('第 4 項：餐廳營業時間依城市分組，查核狀態、日期、�
   for (const item of verifiedRestaurantHours) {
     const card = items.find(chunk => chunk.includes(`>${item.name}</a>`));
     assert.ok(card, `找不到 ${item.name}`);
-    const [visible, folded = ''] = card.split('<details>');
-    // 查核狀態列與來源連結只能在收合裡（店家筆記本身提到日期不算查核紀錄）
-    assert.doesNotMatch(visible, /已核實所列資料|部分核實，仍有缺項|查核來源 ↗|菜單／餐點來源 ↗/, `${item.name} 查核紀錄露在外面`);
+    const [visible] = card.split('<details>');
+    // 2026-10-20 起不顯示查核狀態、日期與查核說明
+    assert.doesNotMatch(card, /已核實所列資料|部分核實，仍有缺項|查核來源 ↗|查核紀錄/, `${item.name} 不應顯示查核紀錄`);
     assert.ok(visible.includes(item.hours), `${item.name} 營業時間應直接可見`);
-    if (item.checkedAt) {
-      assert.ok(folded.includes(item.checkedAt), `${item.name} 查核日期應在 details 內`);
-    }
-    if (item.verificationNote) assert.ok(folded.includes(item.verificationNote), `${item.name} 查核說明應在 details 內`);
+    if (item.checkedAt) assert.ok(!card.includes(`· ${item.checkedAt}`), `${item.name} 不應顯示查核日期`);
   }
   assert.doesNotMatch(section, /。；/, '不應再出現「。；」連用');
   for (const item of verifiedRestaurantHours) assert.doesNotMatch(item.feature, /。；/);
@@ -119,15 +116,15 @@ test('第 6 項：行程說明不再夾帶查核筆記，資訊移到待辦；�
   assert.match(d6.sub, /出發前傳訊息/);
   assert.doesNotMatch(d6.sub, /打電話/, '外國旅客不打電話確認，改用訊息');
   const apartment = todoGroups.flatMap(group => group.items).find(item => item.name.startsWith('傳訊息給 Poznan Apartments'));
-  assert.equal(apartment.checkedAt, '2026-10-14');
-  assert.match(apartment.action, /官網聯絡頁沒寫接待時間和行李寄放（2026-10-14 查）/);
+  assert.match(apartment.action, /官網聯絡頁沒寫接待時間和行李寄放/);
+  assert.doesNotMatch(apartment.action, /20\d\d-\d\d-\d\d/);
   assert.match(apartment.action, /07:00/);
   // 2026-10-13 鹽礦已購 09:00 英文場；查核筆記不放行程說明，購票紀錄在待辦。
   const d4 = days[3].steps.find(step => step.t === '09:00' && step.label.includes('Wieliczka'));
   assert.doesNotMatch(d4.sub, /2026-10-06/);
   const wieliczka = todoGroups.flatMap(group => group.items).find(item => item.name === 'Wieliczka 鹽礦英文團 09:00');
   assert.equal(wieliczka.status, '已購票');
-  assert.match(wieliczka.action, /2026-10-13 已付款/);
+  assert.match(wieliczka.action, /已付款/);
   const today = read('today.html');
   assert.doesNotMatch(today, /– 待查票面/);
   assert.doesNotMatch(today, /· 待查票面<\/span>/);
@@ -150,12 +147,13 @@ test('第 9 項：實用頁手機刊頭縮小、資料聲明收成一行，待�
   const source = css();
   assert.match(source, /\.journal-practical \.journal-appendix-header::before \{\s*display: none;/);
   const todos = read('practical/todos.html');
-  assert.match(todos, /<details class="callout-note practical-disclaimer"><summary>訂票狀態由人工維護，未連線查詢即時庫存。<\/summary>/);
+  assert.match(todos, /<details class="callout-note practical-disclaimer"><summary>訂票狀態不是即時庫存<\/summary>/);
   const notice = between(todos, 'practical-disclaimer', '</details>');
   assert.doesNotMatch(notice, /href="[^"]*todos\.html"/, '待辦頁的聲明不應連回待辦頁本身');
-  assert.match(read('practical/booking.html'), /practical-disclaimer[\s\S]*?href="\.\.\/practical\/todos\.html"/);
-  assert.match(read('practical/dining.html'), /<details class="callout-note practical-disclaimer"><summary>資料界線/);
-  assert.match(read('practical/transit.html'), /<details class="callout-note practical-disclaimer"><summary>2026\/09\/08 複核/);
+  // 2026-10-20 起訂票、餐飲、交通頁不再放查核聲明框，第一屏直接是內容
+  assert.doesNotMatch(read('practical/booking.html'), /practical-disclaimer/);
+  assert.doesNotMatch(read('practical/dining.html'), /practical-disclaimer/);
+  assert.doesNotMatch(read('practical/transit.html'), /practical-disclaimer|複核/);
 });
 
 test('第 10 項：今日卡日期切換與 SOS 電話按鈕 44px', () => {
@@ -189,7 +187,7 @@ test('外國旅客不打電話：行程、餐飲、待辦與 README 不出現打
   const { cafeGuide } = await import('../src/data/dining.js');
   const texts = [JSON.stringify(days), JSON.stringify(todoGroups), JSON.stringify(dayDining), JSON.stringify(cafeGuide),
     JSON.stringify(Object.values(diningPlaces).map(({ phone, ...rest }) => rest)), fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'README.md'), 'utf8')];
-  for (const text of texts) assert.doesNotMatch(text, /打電話|電話確認|電話訂|訂位電話|先電話|電話 \+48/);
+  for (const text of texts) assert.doesNotMatch(text, /打電話|電話確認|電話訂|訂位電話|先電話|電話 \+48|打 ?\+48|[（(]\+48|打 ?\d{2} ?\d{3}|打給/);
   for (const file of ['day-02.html', 'day-03.html', 'day-08.html', 'city-krakow.html']) {
     assert.doesNotMatch(read(file), /class="store-action" href="tel:/, `${file} 的店家卡不應有電話鈕`);
   }

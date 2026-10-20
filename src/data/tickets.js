@@ -72,7 +72,7 @@ export const ticketsByCity = [
 
 export const ticketNotices = [
   {status:'已訂妥', level:'reminder', text:'奧斯威辛 10/26 10:30 英文個人 educator 導覽（官方標示約 3 小時 45 分，2 人）已完成訂購。入場證只在線上提供，且官方載明須搭配身分證件；請把入場證存離線並隨身帶護照。', url:'https://www.auschwitz.org/en/visiting/'},
-  {status:'開賣再確認', level:'reminder', text:'博物館活動、臨時閉館與可售場次仍可能調整；本站不把「查證過」誤寫成「已訂到」，購票時請以官方日曆為準。', url:'https://visit.auschwitz.org/'},
+  {status:'開賣再確認', level:'reminder', text:'博物館活動、臨時閉館與可售場次仍可能調整；購票時請以官方日曆為準。', url:'https://visit.auschwitz.org/'},
 ];
 
 // venueHours：只給有結構化開放時間的場館（venues.js 的 hours 不是 null 的那些）。

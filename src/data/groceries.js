@@ -223,7 +223,7 @@ const drinkGuide = {
       "id": "milk-laciate",
       "name": "常溫全脂牛奶",
       "localName": "Łaciate 3,2% UHT",
-      "when": "商品資料查核 2026/10/13",
+      "when": "",
       "where": "超市牛奶區；分店庫存依現場",
       "look": "白底乳牛斑紋紙盒，認 Łaciate、UHT、3,2%；官方有 500 ml 與 1 l，照片為 1 l。",
       "why": "沒冰箱時適合買未開封可常溫保存的 UHT；一人早餐可挑 500 ml，避免開封後喝不完。",
@@ -245,7 +245,7 @@ const drinkGuide = {
       "id": "milk-mleczna-dolina-swieze",
       "name": "冷藏鮮奶 1 l",
       "localName": "Mleczna Dolina Mleko świeże 3,2% 1 l",
-      "when": "商品資料查核 2026/10/13",
+      "when": "",
       "where": "Biedronka（Mleczna Dolina 為其自有品牌）；依分店供應",
       "look": "白色塑膠瓶、藍色 Mleczna Dolina 標籤，認 Mleko świeże 與紅色 3,2%；包裝另有 Polskie mleko 標示。照片為實拍的 1 l 瓶裝。",
       "why": "świeże 是冷藏鮮奶，口味比常溫 UHT 新鮮；住宿有冰箱、早餐要配麥片或咖啡時可買。",
@@ -262,7 +262,7 @@ const drinkGuide = {
       "id": "milk-kefir",
       "name": "克菲爾發酵乳",
       "localName": "Kefir Krasnystaw 420 g",
-      "when": "商品資料查核 2026/10/13",
+      "when": "",
       "where": "超市乳品冷藏櫃；分店庫存依現場",
       "look": "認 Krasnystaw、kefir 與 420 g；不要把其他品牌的優惠價格套用到這瓶。",
       "why": "想試微酸的發酵乳，可買小瓶配早餐麵包，和甜味乳飲換換口味。",
@@ -281,7 +281,7 @@ const drinkGuide = {
       "id": "juice-tymbark-100",
       "name": "100% 蘋果汁小盒",
       "localName": "Tymbark Sok 100% Jabłko",
-      "when": "商品資料查核 2026/10/13",
+      "when": "",
       "where": "超市果汁區、便利商店；依分店供應",
       "look": "認 Tymbark、Jabłko 與 Sok 100%；官方有 200 ml 小盒，照片為 300 ml 代表包裝。",
       "why": "小盒方便搭車或早餐一次喝完；想喝純蘋果汁時按品名挑，不要拿到 Napój 果味飲料。",
@@ -303,7 +303,7 @@ const drinkGuide = {
       "id": "juice-bracia-sadownicy-mango",
       "name": "冷壓蘋果芒果汁",
       "localName": "Bracia Sadownicy Tłoczone jabłko z mango 750 ml",
-      "when": "商品資料查核 2026/10/13",
+      "when": "",
       "where": "部分 Żabka 分店（Wolt 有上架）、其他超市；依分店供應",
       "look": "黃色標籤玻璃瓶，上方白色圓標寫 Bracia Sadownicy，認 tłoczone jabłko z mango 與 750 ml；官方另有 250 ml。照片為實拍的 750 ml 瓶裝。",
       "why": "品牌標示 tłoczony（冷壓）、nie z koncentratu（非濃縮還原）、無添加糖，成分為蘋果汁 90%、芒果泥 10%、維生素 C；想喝帶芒果香的果汁時可選。",
@@ -325,7 +325,7 @@ const drinkGuide = {
       "id": "juice-hortex",
       "name": "100% 蘋果汁",
       "localName": "Hortex Sok jabłkowy 1 l",
-      "when": "商品資料查核 2026/10/13",
+      "when": "",
       "where": "超市果汁區；依分店供應",
       "look": "認 Hortex、Jabłko、Sok 100% 與 1 l。照片是紙盒，零售商也有 1 l 塑膠瓶，外觀可能不同。",
       "why": "住宿有冰箱、兩人分飲時可選 1 l；官方零售資料列濃縮還原蘋果汁。",
@@ -342,7 +342,7 @@ const drinkGuide = {
       "id": "juice-riviva",
       "name": "超市自有品牌蘋果汁",
       "localName": "Riviva Sok 100% Jabłko",
-      "when": "商品資料查核 2026/10/13",
+      "when": "",
       "where": "Biedronka；依分店供應",
       "look": "認 Riviva、Sok 100% 與 Jabłko；官方列多種容量，照片為 1 l 紙盒，另有 200 ml 小盒。",
       "why": "在 Biedronka 順路補給的選擇；單人可找 200 ml，小盒較容易一次喝完。",
@@ -369,7 +369,7 @@ const drinkGuide = {
       "id": "juice-solevita",
       "name": "柳橙汁候選・現行規格待確認",
       "localName": "Solevita Sok 100% Pomarańcza",
-      "when": "2026/10/13 複查：僅有歷史官方品項證據",
+      "when": "僅有歷史官方品項，現場不一定有",
       "where": "Lidl 候選；目前分店供應待確認",
       "look": "找 Solevita、Sok 100% 與 Pomarańcza；照片為舊 1 l 代表紙盒，不保證現在外觀或容量。",
       "why": "逛 Lidl 時可留意自有品牌柳橙汁；本次只找到較舊官方清單，先列候選，不列為已確認的當期推薦。",
@@ -388,7 +388,7 @@ const drinkGuide = {
       "id": "zabka-szamamm-soup",
       "name": "加熱即食湯",
       "localName": "Szamamm Zupa",
-      "when": "商品資料查核 2026/10/13",
+      "when": "",
       "where": "Żabka 冷藏櫃；依當日供應",
       "look": "找 Szamamm 湯名；官方現列 Żurek、Minestrone 等。照片是菇湯麵舊包裝，該口味目前供應未確認。",
       "why": "天冷或晚到住宿時可加一碗湯；想試波蘭風味可找 Żurek，想吃蔬菜湯可找 Minestrone，成分逐款確認。",
@@ -410,7 +410,7 @@ const drinkGuide = {
       "id": "zabka-wolowiner",
       "name": "加熱即食牛肉漢堡",
       "localName": "Szamamm Wołowiner",
-      "when": "商品資料查核 2026/10/13",
+      "when": "",
       "where": "Żabka；依當日供應",
       "look": "認 Wołowiner 品名；官網菜單有 146 g 一般版與 158 g extra cheddar，照片為代表紅盒。",
       "why": "趕車或餐廳已收店時的熱食備案；喜歡起司可比較 extra cheddar 版本，價格看現場單件價。",
@@ -493,7 +493,7 @@ export const groceryProducts = [
       {
         "title": "E. Wedel｜Ptasie Mleczko 香草與系列",
         "url": "https://wedel.pl/nasze-produkty/ptasie-mleczko/ptasie-mleczko-waniliowe",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       },
       {
@@ -524,13 +524,13 @@ export const groceryProducts = [
       {
         "title": "flynowfei1baa6 部落格｜波蘭超市大推系列（Carrefour 採買）",
         "url": "https://flynowfei1baa6.blogspot.com/",
-        "date": "2026-10-20 使用者提供截圖",
+        "date": "使用者提供截圖",
         "kind": "網友分享（截圖）"
       },
       {
         "title": "Colian｜Śliwka Nałęczowska 官方型錄",
         "url": "https://colian.com/nasze-marki/sliwka-naleczowska-2/",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       },
       {
@@ -555,7 +555,7 @@ export const groceryProducts = [
       {
         "title": "Biedronka｜Delicje 柳橙 147 g",
         "url": "https://zakupy.biedronka.pl/delicje-delicje-szampanskie-biszkopty-z-galaretka-pomaranczowa-oblewane-czekolada-147-g-0000005795.html",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       },
       {
@@ -586,7 +586,7 @@ export const groceryProducts = [
       {
         "title": "Lajkonik｜Paluszki 官方系列",
         "url": "https://lajkonik.pl/produkty-kategoria/paluszki/",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       },
       {
@@ -617,7 +617,7 @@ export const groceryProducts = [
       {
         "title": "Nestlé｜Princessa 官方系列",
         "url": "https://www.nestle.pl/brands/slodycze/princessa",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       },
       {
@@ -642,7 +642,7 @@ export const groceryProducts = [
       {
         "title": "Wawel｜Krówka Mleczna 品類範例",
         "url": "https://www.wawel.com.pl/oferta/krowka-mleczna",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       },
       {
@@ -673,13 +673,13 @@ export const groceryProducts = [
       {
         "title": "Threads @snacklips_（歪國零食嘴）｜波蘭經典零食",
         "url": "https://www.threads.com/@snacklips_",
-        "date": "2026-10-20 使用者提供截圖",
+        "date": "使用者提供截圖",
         "kind": "網友分享（截圖）"
       },
       {
         "title": "Mondelēz｜波蘭 Prince Polo 生產與品牌",
         "url": "https://www.mondelezinternational.com/poland-baltics/",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       },
       {
@@ -710,7 +710,7 @@ export const groceryProducts = [
       {
         "title": "Wawel｜Michałki 經典花生巧克力糖",
         "url": "https://www.wawel.com.pl/oferta/michalki-z-wawelu-klasyczne",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       },
       {
@@ -735,7 +735,7 @@ export const groceryProducts = [
       {
         "title": "Tarczyński｜Kabanosy 官方型錄",
         "url": "https://tarczynski.pl/index.php/kategoria/kabanosy",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       },
       {
@@ -767,7 +767,7 @@ export const groceryProducts = [
       {
         "title": "Tymbark｜官方飲料系列",
         "url": "https://tymbark.com/produkty/napoje/",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       },
       {
@@ -794,7 +794,7 @@ export const groceryProducts = [
       {
         "title": "E. Wedel｜官方巧克力系列",
         "url": "https://wedel.com/our-products/chocolates",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       }
     ],
@@ -815,7 +815,7 @@ export const groceryProducts = [
       {
         "title": "Wawel｜Mieszanka Krakowska",
         "url": "https://www.wawel.com.pl/oferta/mieszanka-krakowska",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       }
     ],
@@ -836,7 +836,7 @@ export const groceryProducts = [
       {
         "title": "Colian 自營商店｜Grześki 可可威化 34 g",
         "url": "https://islodycze.pl/goplana-wafelek-mega-grzesiek-kakaowy",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       }
     ],
@@ -857,7 +857,7 @@ export const groceryProducts = [
       {
         "title": "Kopernik｜Katarzynki 現行官方目錄",
         "url": "https://kopernik.com.pl/pl_PL/category/katarzynki-r",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       }
     ],
@@ -878,7 +878,7 @@ export const groceryProducts = [
       {
         "title": "Dr. Oetker｜香草布丁粉與做法",
         "url": "https://www.oetker.pl/produkty/p/budyn-waniliowy",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       }
     ],
@@ -899,7 +899,7 @@ export const groceryProducts = [
       {
         "title": "Foodwell／Bakalland｜5 Bakalii 40 g 與成分",
         "url": "https://b2b.foodwell.pl/baton-bakalland-5-bakalii-40g-p1045",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       }
     ],
@@ -920,7 +920,7 @@ export const groceryProducts = [
       {
         "title": "Zott｜Monte Original 波蘭官方系列",
         "url": "https://www.zott-dairy.com/pl/marki-produkty/monte/monte-original/",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       }
     ],
@@ -941,7 +941,7 @@ export const groceryProducts = [
       {
         "title": "Zott｜Belriso 官方系列",
         "url": "https://www.zott-dairy.com/pl/marki-produkty/belriso/",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       }
     ],
@@ -962,7 +962,7 @@ export const groceryProducts = [
       {
         "title": "Danio｜香草白起司 130 g",
         "url": "https://danio.com.pl/produkty/klasyczne/danio-o-smaku-klasycznej-wanilii/",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       }
     ],
@@ -983,7 +983,7 @@ export const groceryProducts = [
       {
         "title": "Müller｜Riso 櫻桃米布丁 200 g",
         "url": "https://www.mullerpolska.pl/produkty/riso/riso-original/riso-wisnia",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       }
     ],
@@ -1004,7 +1004,7 @@ export const groceryProducts = [
       {
         "title": "Colian 自營商店｜Jeżyki Classic 140 g",
         "url": "https://islodycze.pl/goplana-jezyki-classic",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       }
     ],
@@ -1026,7 +1026,7 @@ export const groceryProducts = [
       {
         "title": "Frugo｜Czarne 官方商品",
         "url": "https://frugo.pl/frugo-czarne",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       }
     ],
@@ -1048,7 +1048,7 @@ export const groceryProducts = [
       {
         "title": "Kubuś｜100% 蘋果胡蘿蔔香蕉 300 ml",
         "url": "https://kubus.pl/produkt/kubus-banan-marchew-jablko/",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       }
     ],
@@ -1069,7 +1069,7 @@ export const groceryProducts = [
       {
         "title": "Sądecki Bartnik｜波蘭百花蜜 50 g",
         "url": "https://sklep.bartnik.pl/pl/produkt/1587-miod-wielokwiatowy-50-g-z-polskich-pasiek.html",
-        "date": "未標示發布日期；2026-10-13 查核",
+        "date": "未標示發布日期；",
         "kind": "官方／零售商商品資料"
       }
     ],
@@ -1087,8 +1087,8 @@ export const groceryProducts = [
     supplement: true,
     localOnly: false,
     sources: [
-      { title: 'Lajkonik｜Precelki 官方商品', url: 'https://lajkonik.pl/produkty/precelki/', date: '未標示發布日期；2026-10-13 查核', kind: '品牌商品資料' },
-      { title: 'E.Leclerc｜Precelki 130 g 與保存標示', url: 'https://leclerc.com.pl/lajkonik-precelki-chrupkie', date: '未標示發布日期；2026-10-13 查核', kind: '零售商商品資料' },
+      { title: 'Lajkonik｜Precelki 官方商品', url: 'https://lajkonik.pl/produkty/precelki/', date: '未標示發布日期；', kind: '品牌商品資料' },
+      { title: 'E.Leclerc｜Precelki 130 g 與保存標示', url: 'https://leclerc.com.pl/lajkonik-precelki-chrupkie', date: '未標示發布日期；', kind: '零售商商品資料' },
     ],
     checkedAt: '2026-10-13',
   },
@@ -1104,8 +1104,8 @@ export const groceryProducts = [
     supplement: true,
     localOnly: true,
     sources: [
-      { title: 'Piątnica｜Skyr naturalny 150 g 官方商品', url: 'https://piatnica.com.pl/produkt/skyr-naturalny-150g/', date: '未標示發布日期；2026-10-13 查核', kind: '品牌商品資料' },
-      { title: 'Auchan｜150 g 杯裝與保存方式', url: 'https://zakupy.auchan.pl/products/skyr-jogurt-typu-islandzkiego-naturalny-pi%C4%85tnica-150-g/00871064', date: '未標示發布日期；2026-10-13 查核', kind: '零售商商品資料' },
+      { title: 'Piątnica｜Skyr naturalny 150 g 官方商品', url: 'https://piatnica.com.pl/produkt/skyr-naturalny-150g/', date: '未標示發布日期；', kind: '品牌商品資料' },
+      { title: 'Auchan｜150 g 杯裝與保存方式', url: 'https://zakupy.auchan.pl/products/skyr-jogurt-typu-islandzkiego-naturalny-pi%C4%85tnica-150-g/00871064', date: '未標示發布日期；', kind: '零售商商品資料' },
     ],
     checkedAt: '2026-10-13',
   }
@@ -1124,19 +1124,19 @@ export const groceryProducts = [
       {
         "title": "Threads @lei_1648｜波蘭超市 Kinder Chocofresh",
         "url": "https://www.threads.com/@lei_1648",
-        "date": "2026-07-21（使用者提供截圖）",
+        "date": "（使用者提供截圖）",
         "kind": "網友分享（截圖）"
       },
       {
         "title": "kb.pl｜Biedronka Kinder 促銷列入 Chocofresh",
         "url": "https://kb.pl/aktualnosci/promocje/to-hit-dla-rodzin-biedronka-rozdaje-znane-slodycze-na-wyjatkowych-zasadach_fg/",
-        "date": "未標示年份；2026-10-20 查核",
+        "date": "未標示年份；",
         "kind": "零售商促銷報導"
       },
       {
         "title": "Sainsbury's｜Kinder Chocofresh 冷藏保存說明",
         "url": "https://www.sainsburys.co.uk/groceries/product/kinder-chocofresh-5-x-20-5g-milk-chocolate-hazelnut-chilled-snack",
-        "date": "未標示發布日期；2026-10-20 查核",
+        "date": "未標示發布日期；",
         "kind": "零售商商品資料"
       }
     ],
@@ -1156,13 +1156,13 @@ export const groceryProducts = [
       {
         "title": "Threads @jestem_li｜波蘭必買伴手禮回覆",
         "url": "https://www.threads.com/@jestem_li",
-        "date": "2025-11-10（使用者提供截圖）",
+        "date": "（使用者提供截圖）",
         "kind": "網友分享（截圖）"
       },
       {
         "title": "Notino｜FaceBoom Nutri Lip Balm 10 g",
         "url": "https://www.notino.pl/bodyboom/faceboom-nutri-lip-balm-odzywczy-balsam-do-ust/",
-        "date": "未標示發布日期；2026-10-20 查核",
+        "date": "未標示發布日期；",
         "kind": "零售商商品資料"
       }
     ],
@@ -1182,13 +1182,13 @@ export const groceryProducts = [
       {
         "title": "Threads @jestem_li｜波蘭必買伴手禮回覆",
         "url": "https://www.threads.com/@jestem_li",
-        "date": "2025-11-10（使用者提供截圖）",
+        "date": "（使用者提供截圖）",
         "kind": "網友分享（截圖）"
       },
       {
         "title": "Gemini｜Your KAYA 唇油 Poppy Glow 10 ml",
         "url": "https://gemini.pl/your-kaya-olejek-do-ust-poppy-glow-10-ml-0107295",
-        "date": "未標示發布日期；2026-10-20 查核",
+        "date": "未標示發布日期；",
         "kind": "零售商商品資料"
       }
     ],
@@ -1208,7 +1208,7 @@ export const groceryProducts = [
       {
         "title": "flynowfei1baa6 部落格｜波蘭超市大推系列（Carrefour 採買）",
         "url": "https://flynowfei1baa6.blogspot.com/",
-        "date": "2026-10-20 使用者提供截圖",
+        "date": "使用者提供截圖",
         "kind": "網友分享（截圖）"
       }
     ],

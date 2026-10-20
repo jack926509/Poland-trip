@@ -298,7 +298,7 @@ function runCli() {
   console.log(`行程時間稽核：${stats.days} 天、${stats.stepsChecked} 個有時刻的步驟`);
   console.log(`  星期標示 ${stats.weekdaysChecked} 天、場館引用 ${stats.venueRefs} 處、開門比對 ${stats.openingChecks} 處、末入場比對 ${stats.lastEntryChecked} 處、停留時長 ${stats.durationChecks} 處、轉場 ${stats.transfersChecked} 段、公休比對 ${stats.closureChecks} 處、拍照光線 ${stats.photoLightChecked} 處`);
   if (stats.unusedVenues.length) {
-    console.log(`  （venueHours 有但行程未引用：${stats.unusedVenues.join('、')}——留著供門票頁使用，非錯誤）`);
+    console.log(`  （venueHours 有但行程未引用：${stats.unusedVenues.join('、')}——留作備案場館時間，非錯誤）`);
   }
 
   if (result.warnings.length) {

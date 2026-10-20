@@ -5,7 +5,6 @@ import { renderLayout } from './layout.mjs';
 import { getTaipeiToday, todayIn, warsawToday, departureLabel, resolveHomeStatus, warsawMinutes, nextStepFor, initializeHomeStatus } from '../scripts/dashboard.js';
 import { taipeiToday, parseStepTime } from '../lib/schedule.mjs';
 import { todoStats, todoBreakdownText } from '../lib/todo-status.mjs';
-import { ticketPurchases } from '../data/tickets.js';
 
 const cityFileKeys = Object.fromEntries(cityRoutes.map(city => [city.key, city.fileKey]));
 
@@ -57,10 +56,6 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
   const stats = todoStats(todoGroups);
   const todoCount = stats.open;
   const totalTodos = stats.total;
-  const syncItems = databaseEntries.length;
-  const pendingCount = databaseEntries.filter(entry => entry.status === 'pending').length;
-  const recheckCount = databaseEntries.filter(entry => entry.status === 'recheck').length;
-  const verifiedCount = databaseEntries.filter(entry => entry.status === 'verified').length;
   const coverCity = cities[0];
   const coverFigure = coverCity?.photo?.hero ? `
       <figure class="journal-cover-figure">
@@ -148,7 +143,6 @@ ${coverFigure}
     <aside class="journal-status-strip" aria-label="旅程準備狀態">
       <a href="#todos" aria-label="${todoCount} 項待辦"><strong>${todoCount}</strong><span>項待辦</span></a>
       <a href="practical/todos.html" class="journal-status-sub"><strong>${totalTodos - todoCount}</strong><span>已完成</span></a>
-      <a href="practical/database.html" class="journal-status-db"><span class="journal-status-caption">資料庫查核 ${syncItems} 筆</span><span><b>${verifiedCount}</b> 已確認 · <b>${recheckCount}</b> 待重查 · <b>${pendingCount}</b> 待確認</span></a>
     </aside>
 
     <section class="section" id="days">
@@ -181,13 +175,12 @@ ${coverFigure}
     <section class="section" id="practical">
       <div class="section-heading"><span class="section-num">05 / Appendix</span><h2>旅行附錄</h2></div>
       <div class="journal-toolkit">
-        <a class="card card-link" href="practical/booking.html"><h3>訂票與交通</h3><p>航班、火車、住宿與分級訂票清單。</p><span>查看 →</span></a>
-        <a class="card card-link" href="practical/dining.html"><h3>餐廳與速食</h3><p>2026 星級、必比登、訂位管道與預算，以及四城連鎖速食分店。</p><span>查看 →</span></a>
-        <a class="card card-link" href="practical/tickets.html"><h3>門票速查</h3><p>${ticketPurchases.length} 組購票與參觀項目、官方售票入口及免費規則。</p><span>查看 →</span></a>
-        <a class="card card-link" href="practical/transit.html"><h3>市內交通</h3><p>四城票價、機場接駁與購票方式。</p><span>查看 →</span></a>
-        <a class="card card-link" href="practical/shopping.html"><h3>伴手禮與購物</h3><p>14 種伴手禮、實際店家與 Żabka。</p><span>查看 →</span></a>
-        <a class="card card-link" href="practical/notes.html"><h3>出發前提醒</h3><p>夏令時間、日落、閉館與訂票節奏。</p><span>查看 →</span></a>
-        <a class="card card-link" href="practical/database.html"><h3>自由行資料庫</h3><p>SOS、行前重查與各主題官方資料集中管理。</p><span>查看 →</span></a>
+        <a class="card card-link" href="practical/booking.html"><h3>訂票與交通</h3><p>航班、火車、Auschwitz 巴士與住宿。</p><span>查看 →</span></a>
+        <a class="card card-link" href="practical/dining.html"><h3>餐廳與速食</h3><p>八天三餐、咖啡甜點與四城連鎖速食。</p><span>查看 →</span></a>
+        <a class="card card-link" href="practical/transit.html"><h3>市內交通</h3><p>四城票價、機場接駁與 Jakdojade。</p><span>查看 →</span></a>
+        <a class="card card-link" href="practical/essentials.html"><h3>SOS 與安全須知</h3><p>緊急電話、保險與訂位資料、常用波蘭語。</p><span>查看 →</span></a>
+        <a class="card card-link" href="practical/groceries.html"><h3>超市與便利商店</h3><p>四城超市、零食與伴手禮清單。</p><span>查看 →</span></a>
+        <a class="card card-link" href="practical/shopping.html"><h3>伴手禮與購物</h3><p>伴手禮、實際店家與 Żabka。</p><span>查看 →</span></a>
       </div>
     </section>
     <script>

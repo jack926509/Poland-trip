@@ -114,7 +114,6 @@ export function buildStandalone({ distDir, standalonePath, searchRecords }) {
   const mainCss = fs.readFileSync(path.join(distDir, 'assets/main.css'), 'utf8');
   const leafletCss = fs.readFileSync(path.join(distDir, 'assets', 'leaflet', 'leaflet.css'), 'utf8');
   const leafletJs = fs.readFileSync(path.join(distDir, 'assets', 'leaflet', 'leaflet.js'), 'utf8');
-  const databaseFilterJs = fs.readFileSync(path.join(distDir, 'assets', 'database-filter.js'), 'utf8');
   const siteSearchJs = fs.readFileSync(path.join(distDir, 'assets/site-search.js'), 'utf8');
   const standaloneSearchRecords = searchRecords.map(record => ({
     ...record,
@@ -122,7 +121,7 @@ export function buildStandalone({ distDir, standalonePath, searchRecords }) {
   }));
   const standaloneSearchHtml = renderSiteSearch({
     searchIndexJson: serializeSearchIndex(standaloneSearchRecords),
-    databaseHref: '#page-practical-database',
+    databaseHref: '#page-practical-essentials',
   });
   const standaloneMobileQuickNav = `<nav class="mobile-quick-nav" aria-label="旅途中快速導覽">
     <a href="#page-index"><span aria-hidden="true">▣</span>行程</a>
@@ -154,14 +153,14 @@ export function buildStandalone({ distDir, standalonePath, searchRecords }) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="2026 波蘭四城 8 天旅遊規劃單檔版：逐日行程、城市、交通、門票、餐廳與自由行資料庫。">
+  <meta name="description" content="2026 波蘭四城 8 天旅遊規劃單檔版：逐日行程、城市、交通、餐廳與 SOS 緊急聯絡。">
   <meta name="color-scheme" content="light">
   <meta name="theme-color" content="#f4eddf">
   <title>POLSKA 波蘭行 · 2026 單檔完整版</title>
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="POLSKA · Paper Travel Journal">
   <meta property="og:title" content="POLSKA 波蘭行 · 2026 單檔完整版">
-  <meta property="og:description" content="2026 波蘭四城 8 天旅遊規劃單檔版：逐日行程、城市、交通、門票、餐廳與自由行資料庫。">
+  <meta property="og:description" content="2026 波蘭四城 8 天旅遊規劃單檔版：逐日行程、城市、交通、餐廳與 SOS 緊急聯絡。">
   <meta property="og:url" content="https://polandtrip.xiehnet.com/poland-travel-guide-2026.html">
   <meta property="og:image" content="https://polandtrip.xiehnet.com/assets/og/polska-og.jpg">
   <meta property="og:image:width" content="1200">
@@ -169,7 +168,7 @@ export function buildStandalone({ distDir, standalonePath, searchRecords }) {
   <meta property="og:image:alt" content="波蘭旅程總覽海報">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="POLSKA 波蘭行 · 2026 單檔完整版">
-  <meta name="twitter:description" content="2026 波蘭四城 8 天旅遊規劃單檔版：逐日行程、城市、交通、門票、餐廳與自由行資料庫。">
+  <meta name="twitter:description" content="2026 波蘭四城 8 天旅遊規劃單檔版：逐日行程、城市、交通、餐廳與 SOS 緊急聯絡。">
   <meta name="twitter:image" content="https://polandtrip.xiehnet.com/assets/og/polska-og.jpg">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%232b2723'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-size='38' font-family='serif' font-weight='700' fill='%23f6f1e8'%3EP%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -447,9 +446,6 @@ ${standaloneMobileQuickNav}
       window.addEventListener('hashchange', activateStandaloneHash);
     activateStandaloneHash();
     }());
-  </script>
-  <script data-bundled="database-filter.js">
-${databaseFilterJs}
   </script>
   <script type="module" data-bundled="site-search.js">
 ${siteSearchJs}

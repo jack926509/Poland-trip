@@ -116,7 +116,7 @@ function renderDayFood(day) {
 function renderOperation(operation, day) {
   if (!operation) return '';
 
-  const addresses = operation.addresses?.map(item => {
+  const addressItems = operation.addresses?.map(item => {
     const safeUrl = safeHttpsUrl(item.url);
     // 手機一張地址卡原本約 250px（名稱、地址、說明、入口、兩顆按鈕各一行）。
     // 改成名稱＋地址＋導航按鈕一眼可見，說明與入口收進「入口與說明」；
@@ -131,7 +131,14 @@ function renderOperation(operation, day) {
         </div>
         ${item.note || entrance ? `<details class="operation-address-more"><summary>入口與說明</summary>${item.note ? `<p>${escapeHtml(item.note)}</p>` : ''}${entrance ? `<p><b>入口：</b>${escapeHtml(entrance)}</p>` : ''}</details>` : ''}
       </li>`;
-  }).join('') || '<li>這一天尚無地址資料。</li>';
+  }) || [];
+  // 地址卡多的日子（Day 5 有 13 張）手機要捲 3,000px；前 4 張直接可見，其餘收進摺疊區。
+  const VISIBLE_ADDRESSES = 4;
+  const addresses = addressItems.length
+    ? addressItems.slice(0, VISIBLE_ADDRESSES).join('') + (addressItems.length > VISIBLE_ADDRESSES
+      ? `<li class="operation-address-rest"><details class="operation-more-addresses"><summary>其餘 ${addressItems.length - VISIBLE_ADDRESSES} 個地址</summary><ul class="operation-addresses">${addressItems.slice(VISIBLE_ADDRESSES).join('')}</ul></details></li>`
+      : '')
+    : '<li>這一天尚無地址資料。</li>';
 
   const navigation = operation.navigation?.map(item => `
     <li>
@@ -237,7 +244,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
           const durKnown = trainSegment.dur && !/待查/.test(trainSegment.dur);
           return `<p><b>${trainSegment.dep}${arrKnown ? ` → ${trainSegment.arr}` : ' 發車'}</b>${durKnown ? ` · ${trainSegment.dur}` : ''} · ${escapeHtml(trainPrice)}</p>`;
         })()}
-        ${trainSegment.saleOpens && !trainSegment.leg?.includes('已購票') ? `<p><b>上次查得 ${escapeHtml(trainSegment.saleOpens)} 起預售（待複核）</b> · PKP Intercity 官方售票系統查核：${escapeHtml(trainSegment.saleCheckedAt)}</p>` : ''}
+        ${trainSegment.saleOpens && !trainSegment.leg?.includes('已購票') ? `<p><b>${escapeHtml(trainSegment.saleOpens)} 起預售</b></p>` : ''}
         <p class="action-links"><a href="practical/booking.html#rail-itinerary">訂票與交通頁的完整班次表 →</a></p>
       </article>
     </section>` : '';
@@ -285,7 +292,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
           <li>藍調時刻至 <b>${escapeHtml(daylightForDay.blueHourEnd)}</b></li>
         </ul>
         <p>${escapeHtml(daylightForDay.note)}</p>
-        <p class="source-meta">天文推算值，出發前以天文表複核；非官方公告時刻。</p>
+        <p class="source-meta">天文推算值。</p>
       </article>` : '';
 
   const constraintHtml = `
@@ -386,9 +393,9 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   const shortcuts = [
     ['#schedule', '時間表'],
     foodHtml ? ['#day-food', '吃哪'] : null,
+    dayMap ? [`#map-day-${day.n}-heading`, '地圖'] : null,
     operation ? ['#day-addresses', '地址'] : null,
     operation ? ['#day-route', '交通'] : null,
-    dayMap ? [`#map-day-${day.n}-heading`, '地圖'] : null,
   ].filter(Boolean);
 
   const bodyHtml = `
@@ -418,16 +425,16 @@ ${coverHtml}
     </section>
 
     ${foodHtml ? `<section class="section day-food-section">${foodHtml}</section>` : ''}
+    ${dayMap ? renderInteractiveMap({ id: `map-day-${day.n}`, title: `Day ${day.n} 行程地圖`, mapData: dayMap, mapChecks, legend, note: dayMap.note }) : ''}
+    ${renderOperation(operation, day)}
     ${trainHtml}
     <section class="section" id="day-preparation">
       <div class="section-heading"><span class="section-num">Preparation</span><h2>訂票與提醒</h2></div>
       ${mustBookHtml}
       ${warnHtml}
-      <p class="action-links"><a href="practical/todos.html">全部待辦與查核狀態 →</a><a href="practical/tickets.html">官方購票入口、門票價格與開放時間 →</a></p>
+      <p class="action-links"><a href="practical/todos.html">全部待辦 →</a></p>
     </section>
     ${constraintHtml}
-    ${dayMap ? renderInteractiveMap({ id: `map-day-${day.n}`, title: `Day ${day.n} 行程地圖`, mapData: dayMap, mapChecks, legend, note: dayMap.note }) : ''}
-    ${renderOperation(operation, day)}
     ${extendHtml}
     ${returnOptionsHtml}
     ${backupHtml}

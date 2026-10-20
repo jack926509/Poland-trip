@@ -41,7 +41,7 @@ export function writeServiceWorker({ projectRoot, distDir }) {
   const cacheFirstAssets = [
     'manifest.json', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png',
     'assets/main.css', 'assets/nav.js', 'assets/site-search.js',
-    'assets/database-filter.js', 'assets/leaflet/leaflet.css', 'assets/leaflet/leaflet.js',
+    'assets/leaflet/leaflet.css', 'assets/leaflet/leaflet.js',
     // 搜尋索引也是 cache-first 資源（sw.js 的 ASSETS）：沒有它，改了資料但
     // CSS/JS 都沒動時 VERSION 指紋不變，已安裝的 PWA 搜尋結果會永遠停在安裝當天。
     'assets/search-index.json',
@@ -122,7 +122,7 @@ export function replacePublishedOutputs({
  * 必須在單檔版打包之後執行：單檔版用固定網址的正則移除這些標籤。
  */
 export function versionAssetLinks(distDir) {
-  const assets = ['assets/main.css', 'assets/nav.js', 'assets/site-search.js', 'assets/database-filter.js'];
+  const assets = ['assets/main.css', 'assets/nav.js', 'assets/site-search.js'];
   const versions = Object.fromEntries(assets.map(asset => [asset,
     crypto.createHash('sha256').update(fs.readFileSync(path.join(distDir, asset))).digest('hex').slice(0, 8)]));
   const pages = [

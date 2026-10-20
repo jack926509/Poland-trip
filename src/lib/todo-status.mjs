@@ -95,7 +95,7 @@ export const lajkonikInboundWord = groups => (groups ? purchaseWord(resolveTodoR
 
 /** rail 分類的導言：去程已購是事實，回程狀態由待辦推導。 */
 export function railGroupIntro(groups) {
-  return `四段 PKP 均已出現在旅客 App 票券清單；Lajkonik 去程巴士 2026-10-13 已購票，回程${lajkonikInboundWord(groups)}。四段火車的抵達時間、艙等、車廂、座位與票價仍待票券詳細頁核對。`;
+  return `四段 PKP 均已出現在旅客 App 票券清單；Lajkonik 去程巴士已購票，回程${lajkonikInboundWord(groups)}。四段火車的抵達時間、艙等、車廂、座位與票價仍待票券詳細頁核對。`;
 }
 
 /** 景點票券的一句摘要（資料庫「景點票券」用）。 */

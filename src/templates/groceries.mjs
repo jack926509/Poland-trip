@@ -7,14 +7,6 @@ const external = (url, label) => `<a href="${e(url)}" target="_blank" rel="noope
 const button = (url, label, aria) => `<a class="grocery-btn" href="${e(url)}" target="_blank" rel="noopener noreferrer"${aria ? ` aria-label="${e(aria)}"` : ''}>${e(label)} ↗</a>`;
 const mapUrl = query => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 
-// 每一列自己說清楚核到哪一層：verified＝官方門市頁同時有地址與時間，
-// partial＝地址已由官方來源確認、時間本輪拿不到。整份都寫「待核對」會讓
-// 已經查過的四筆跟沒查過的混在一起，出門時反而不知道哪一筆可以信。
-const statusLabel = branch => branch.verificationStatus === 'verified'
-  ? `官方門市頁已核對（${branch.verifiedAt}）`
-  : branch.verificationStatus === 'partial'
-    ? `地址已核對（${branch.verifiedAt}）；營業時間待確認`
-    : '待核對候選';
 
 /**
  * 星期日狀態是這一頁最關鍵的判斷：波蘭多數星期日禁止一般商業，
@@ -46,7 +38,7 @@ function renderBranch(branch, chain) {
       <p class="grocery-branch-hours"><span>營業時間</span><b>${e(branch.hours)}</b></p>
       <p class="grocery-branch-use">${e(branch.note)}</p>
       <p class="grocery-branch-actions">${button(branch.sourceUrl, '官方門市資料', `在新視窗開啟 ${branch.name} ${branch.address} 的官方門市資料`)}${button(mapUrl(`${branch.name} ${branch.address}`), '地圖搜尋', `在新視窗以 Google Maps 搜尋 ${branch.name} ${branch.address}`)}</p>
-      <p class="source-meta grocery-branch-status">${e(statusLabel(branch))}・${e(branch.sundayNote)}</p>
+      <p class="source-meta grocery-branch-status">${e(branch.sundayNote)}</p>
     </li>`;
 }
 
@@ -57,7 +49,7 @@ function renderBranch(branch, chain) {
  */
 function renderProduct(product, pathPrefix) {
   const sources = product.sources.map(source =>
-    `<li>${external(source.url, source.title)}<span class="grocery-source-meta">${e(source.date)} · ${e(source.kind)}</span></li>`).join('');
+    `<li>${external(source.url, source.title)}<span class="grocery-source-meta">${e(source.kind)}</span></li>`).join('');
   // 版面（見 main.css 的 .grocery-product）：商品名跨欄置頂，縮圖在左、辨識資訊在右，
   // 照片圖說與 CC 授權收成卡片底下一行小字，細節收在一個 details 裡。
   // 原本照片滿版、圖說三行擺在名字與資訊之間，手機上一張卡平均 602px，
@@ -73,7 +65,7 @@ function renderProduct(product, pathPrefix) {
       </div>
       <details class="grocery-product-more"><summary>怎麼認、什麼口味・推薦來源 ${product.sources.length} 筆</summary>
         <p>${e(product.note)}</p>
-        <p class="source-meta">商品資料查核 ${e(product.checkedAt)}；照片為代表包裝，庫存與價格依現場。</p>
+        <p class="source-meta">照片為代表包裝，庫存與價格依現場。</p>
         <ul>${sources}</ul>
       </details>
     </li>`;
@@ -106,7 +98,7 @@ function milkJuiceGroup(guide, pathPrefix) {
   const labels = guide.labels.map(([pl, zh]) => `<div><dt lang="pl">${e(pl)}</dt><dd>${e(zh)}</dd></div>`).join('');
   return `<details class="grocery-drink-group grocery-fold" id="milk-juice">
       <summary><h3 class="grocery-group-title">牛奶與果汁<span class="grocery-group-count">${picks.length} 項</span></h3><span class="grocery-group-names" lang="pl">${picks.map(pick => e(pick.localName)).join('・')}</span></summary>
-      <p class="source-meta">商品資料複查 ${e(guide.checkedAt)}，以品牌或零售商來源核對品項，沒有保證門市現貨或旅行期間價格。Solevita 僅列待確認候選。沒冰箱時選小份、未開封可常溫保存的商品；開封後依包裝冷藏。</p>
+      <p class="source-meta">門市現貨與價格以現場為準。沒冰箱時選小份、未開封可常溫保存的商品；開封後依包裝冷藏。</p>
       <ul class="grocery-drink-list">${picks.map(pick => renderDrinkPick(pick, pathPrefix)).join('')}</ul>
       <p class="grocery-label-title">盒子上的字怎麼讀</p>
       <dl class="grocery-label-list">${labels}</dl>
@@ -161,8 +153,8 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
   const is2026 = product => product.sources.some(source => source.kind === '2026 旅遊推薦');
   const products = productGroup('先買小份試吃', '先試口味，再決定伴手禮數量。推薦理由是旅行採買建議，商品事實另附官方／零售商來源；不代表人氣排行。', groceryProducts.filter(is2026), true)
     + milkJuiceGroup(guide, pathPrefix)
-    + productGroup('經典補充', '經典零食已補查品牌或零售商資料；歷年網友推薦保留為參考，不能代表當期銷量或現貨。', groceryProducts.filter(product => !is2026(product) && !product.supplement && !product.drink && !product.drugstore))
-    + productGroup('常溫選品補充', '依旅行用途挑選常溫零食，並核對品牌／零售商資料。是否可攜入台灣仍須依成分與入境規定確認。', groceryProducts.filter(product => product.supplement && !product.localOnly))
+    + productGroup('經典補充', '經典零食附品牌或零售商資料；網友推薦僅供參考，不代表當期銷量或現貨。', groceryProducts.filter(product => !is2026(product) && !product.supplement && !product.drink && !product.drugstore))
+    + productGroup('常溫選品補充', '依旅行用途挑選常溫零食。是否可攜入台灣仍須依成分與入境規定確認。', groceryProducts.filter(product => product.supplement && !product.localOnly))
     + productGroup('當地吃・冷藏乳品', '在超市冷藏櫃找品牌與品名，不保證特定連鎖或分店有貨。冷藏品依包裝保存，購買前先確認住宿冰箱。', groceryProducts.filter(product => product.localOnly && !product.drink))
     + productGroup('藥妝伴手禮（Rossmann）', '波蘭本地品牌的唇部保養，在 Rossmann 藥妝店找；色號與款式依門市現貨。', groceryProducts.filter(product => product.drugstore))
     + productGroup('當地喝・果汁飲料', '在飲料貨架或冷藏櫃找品牌；照片只代表一款口味，各分店是否供貨以現場為準。', groceryProducts.filter(product => product.drink));
@@ -185,15 +177,15 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
       <ol class="grocery-essentials">
         <li><b>2026/10/25（Day 2）是非交易星期日，一般超市不開。</b>Biedronka 官方日曆列出 2026 年的交易星期日是 1/25、3/29、4/26、6/28、8/30、12/6、12/13、12/20，十月一天都沒有。前一天先買好早餐與飲水。${external('https://www.biedronka.pl/pl/niedziele-handlowe', 'Biedronka 2026 官方日曆')}</li>
         <li><b>星期日還有機會買的只有兩家車站型 Biedronka：</b>華沙 <a href="#warsaw-1">Al. Jerozolimskie 54</a>（每日 05:00–01:00）與波茲南 <a href="#poznan-1">Dworcowa 2</a>（星期日 06:00–22:00），官方門市頁都標「sklep czynny w niedzielę」。非交易星期日的實際開門仍以門市當日公告為準，別當成唯一計畫。克拉科夫與樂斯拉夫的 Biedronka 星期日不開，Żabka 依各店公告。</li>
-        <li><b>營業時間只核到 ${verifiedCount} 家。</b>Biedronka 的 ${verifiedCount} 家有官方逐日時間，其餘 ${partialCount} 家（Lidl、Żabka）只核到地址，出發前用官方查詢再確認；Biedronka 官網也註明時間僅供參考。</li>
+        <li><b>營業時間：</b>Biedronka 的 ${verifiedCount} 家有官方逐日時間；其餘 ${partialCount} 家（Lidl、Żabka）官方不逐店公布，標「營業時間待確認」，出門前用官方查詢看一次。</li>
         <li><b>結帳前看清價牌。</b>「przy zakupie 6 szt.」是買 6 件才有的單價，另有會員（App）價；自備購物袋。</li>
       </ol>
     </section>
     <section class="section" id="stores">${heading('stores', '去哪買：三大連鎖與四城門市')}
       ${chains}
-      <p class="grocery-store-lead">每城列三家順路候選，地址都在 2026-09-22 由品牌官方來源核對。點城市展開；地圖按鈕是搜尋連結，本輪沒有取得任何一家的核實座標。</p>
+      <p class="grocery-store-lead">每城列三家順路候選，地址取自品牌官方門市資料。點城市展開；地圖按鈕是搜尋連結。</p>
       <div class="grocery-city-list">${cities}</div>
-      <p class="source-meta">順路也可以逛：Carrefour（Express、Market 等店型規模不同，${external('https://www.carrefour.pl/sklepy', '門市查詢')}）、Rossmann（零食巧克力區，${external('https://www.rossmann.pl/szukaj?Search=slodycze', '官方甜食商品')}）；Kaufland、Auchan、Netto 未逐店查核。</p>
+      <p class="source-meta">順路也可以逛：Carrefour（Express、Market 等店型規模不同，${external('https://www.carrefour.pl/sklepy', '門市查詢')}）、Rossmann（零食巧克力區，${external('https://www.rossmann.pl/szukaj?Search=slodycze', '官方甜食商品')}）。</p>
     </section>
     <section class="section" id="recommendations"><span id="top10" aria-hidden="true"></span>${heading('recommendations', '買什麼：零食與伴手禮')}
       <p>商品資料更新至 2026/10/13；依用途整理，不代表銷售或人氣排名。未確認的品項另有標示，價格與庫存看門市當日資訊。<b>建議路線：</b>克拉科夫、樂斯拉夫先買小份試吃，最後回華沙（10/30–31）再集中買常溫伴手禮；巧克力避熱、餅乾防壓。</p>
@@ -216,13 +208,11 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
         <li>不想買含酒精甜食時，留意 Adwokat、likier 等字樣並核對成分。</li>
       </ul>
       <details class="grocery-sources grocery-fold" id="sources">
-        <summary><h3 class="grocery-group-title">資料來源與查核界線</h3><span class="grocery-group-names">門市逐店核對 2026-09-22・商品 2026-10-13・牛奶果汁 ${e(guide.checkedAt)}</span></summary>
-        <p>2026/10/13 依品牌、製造商與零售商商品資料更新採買清單，新增 Lajkonik 鹹脆結餅與 Piątnica Skyr 原味乳品；推薦理由依小份試吃、早餐補給、保存與攜帶方便性整理，並非銷售排行或試吃評比。商品頁存在不保證各分店現貨。Solevita 只找到歷史官方品項，仍列待確認候選；菇湯照片、無肉熱狗與 Wieprzowiner 也不作當期供應保證。</p>
-        <p>原收錄的 Becca Daily 文章日期是 2026/07/02、Reddit 討論是 2025/07/29，English Wizards 未標示發文日期，這些推薦保留為歷史參考。查核日期不等於文章發布日期、商品上市日期或波蘭原產證明。已移除未核實的促銷價格、動態排行月份與新品推論；沒有找到「波蘭 Anna 推薦蜂蜜」原文，不將特定品牌歸因於她。</p>
-        <p>標籤判讀參考 ${external('https://www.gov.pl/web/wijhars-bydgoszcz/sok-czy-nektar', '波蘭官方果汁說明')}；NFC／壓榨不等於未殺菌鮮榨，是否冷藏仍看包裝。完整商品查核與來源保留於 <code>docs/research/2026-10-13-grocery-recommendation-update.md</code>。</p>
-        <p><b>2026/09/22 逐店核對：</b>12 筆地址全部由品牌官方來源確認——4 家 Biedronka 取自官方逐店頁（含逐日營業時間）、4 家 Lidl 取自官方門市頁與官方門市清單 PDF、4 家 Żabka 取自官方門市清單 PDF 與 zabka.pl 的門市說明頁。Lidl 門市頁的營業時間由 JavaScript 載入、Żabka 不逐店公布，因此這 8 筆只核到地址。</p>
-        <p><b>仍未核實的部分：</b>沒有取得任何一家的核實座標，地圖按鈕維持搜尋連結；庫存與價格一律以門市當日資訊為準。Żabka 的官方門市清單是 2024/02 版，只能證明當時該址有門市。離線版不會即時更新。逐筆來源記在原始碼庫的 <code>docs/research/2026-09-22-grocery-branch-verification.md</code>。</p>
-        <p>商品與牛奶果汁照片取自 Open Food Facts 貢獻者（CC BY-SA 3.0），僅代表包裝，現場版本可能不同。</p>
+        <summary><h3 class="grocery-group-title">資料來源</h3><span class="grocery-group-names">品牌、零售商與官方門市資料</span></summary>
+        <p>商品依品牌、製造商與零售商商品資料整理；推薦理由依小份試吃、早餐補給、保存與攜帶方便性挑選，不是銷售排行。商品頁有列不代表各分店都有貨，庫存與價格以門市當日為準。</p>
+        <p>標籤判讀參考 ${external('https://www.gov.pl/web/wijhars-bydgoszcz/sok-czy-nektar', '波蘭官方果汁說明')}；NFC／壓榨不等於未殺菌鮮榨，是否冷藏仍看包裝。</p>
+        <p>門市地址取自品牌官方門市頁與門市清單；Lidl、Żabka 不逐店公布營業時間，標「待確認」的出發前用官方查詢再看一次。地圖按鈕是搜尋連結。</p>
+        <p>商品照片取自 Open Food Facts 貢獻者（CC BY-SA 3.0）、使用者自行拍攝或網友截圖，僅代表包裝，現場版本可能不同。</p>
       </details>
     </section>`;
   return renderLayout({ title: '超市與便利商店', activeNav: 'practical', bodyHtml: content + renderProductPhotoViewer(), pathPrefix, pageKind: 'practical', currentPage: 'practical/groceries.html',

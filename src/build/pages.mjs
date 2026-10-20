@@ -3,7 +3,6 @@ import path from 'node:path';
 import * as trip from '../data/trip.js';
 import * as cities from '../data/cities.js';
 import * as dining from '../data/dining.js';
-import * as tickets from '../data/tickets.js';
 import * as transit from '../data/transit.js';
 import * as shopping from '../data/shopping.js';
 import * as groceries from '../data/groceries.js';
@@ -20,14 +19,10 @@ import {
   renderBooking,
   renderTodos,
   renderDining,
-  renderTickets,
   renderTransit,
   renderShopping,
   renderEssentials,
-  renderNotes,
-  renderOpsDashboard,
 } from '../templates/practical.mjs';
-import { renderDatabase } from '../templates/database.mjs';
 import { makeDayMap } from '../lib/day-map.mjs';
 import { cityRoutes } from '../lib/city-guide.mjs';
 
@@ -114,13 +109,6 @@ export function renderPages(distDir) {
     fastFoodBranches: dining.fastFoodBranches,
     fastFoodHubs: dining.fastFoodHubs,
   }));
-  writeHtml('practical/tickets.html', renderTickets({
-    fares: tickets.fares,
-    ticketsByCity: tickets.ticketsByCity,
-    notices: tickets.ticketNotices,
-    purchaseGroups: tickets.ticketPurchaseGroups,
-    todoGroups: trip.todoGroups,
-  }));
   writeHtml('practical/transit.html', renderTransit({
     transitFares: transit.transitFares,
     airportTransit: transit.airportTransit,
@@ -143,21 +131,6 @@ export function renderPages(distDir) {
     about: essentials.about,
     safety: essentials.safety,
     sources: essentials.essentialSources,
-  }));
-  writeHtml('practical/notes.html', renderNotes({
-    preDepartureNotes: essentials.preDepartureNotes,
-    daylight: essentials.daylight,
-  }));
-  writeHtml('practical/ops-dashboard.html', renderOpsDashboard({
-    entries: travelDatabase.databaseEntries,
-    statusLabels: travelDatabase.statusLabels,
-    syncRows: travelDatabase.syncRows,
-    todoGroups: trip.todoGroups,
-  }));
-  writeHtml('practical/database.html', renderDatabase({
-    entries: travelDatabase.databaseEntries,
-    sections: travelDatabase.databaseSections,
-    statusLabels: travelDatabase.statusLabels,
   }));
 
 }

@@ -1,14 +1,14 @@
 export const transitFares = [
-  {city:'華沙 WTP', short:'20 分 3.40', min90:'75 分 4.40（第 1 區）／90 分 7（第 1+2 區）', hour24:'15（第 1 區）／26（第 1+2 區）', note:'電車／巴士／地鐵／SKM；蕭邦機場在第 1 區。票價為 2026-09-17 官方 Ticket tariff 頁查核值：90 分一、二區 7／3.50，24 小時第 1 區 15／7.50、一、二區 26／13；本輪尚未完成現行票價重查，行前與付款時再確認。2026-10-06 另依 SKM 官方 FAQ 複核機場互認：KM Bilet Lotniskowy 在有效日可於第 1 區 WTP／SKM 使用 75 分鐘，須填啟用時間；S2 機場–Wschodnia、S3 機場–Płudy 互認有效於相應路段的 KM 票，KM RL 機場–Płudy 也接受 ZTM 20／75／90 分鐘票。一般 PKP Intercity 票不適用；本行程仍使用 WTP 75 分鐘第 1 區票，付款前確認票種與啟用方式', checkedAt:'2026-09-17', officialUrl:'https://www.wtp.waw.pl/en/ticket-tariff/'},
-  {city:'克拉科夫 KMK', short:'15 分 4', min90:'90 分 9', hour24:'20（第 I 區）／25（I+II+III）', note:'2026-09-17 以 ZTP 官方票價表複核：15 分 4／2，30 分或單趟 6／3，60 分 8／4，90 分 9／4.50，24 小時第 I 區 20／10、I+II+III 25／12.50；KMK+KMŁ 70 分聯票 10／5', checkedAt:'2026-09-17', officialUrl:'https://ztp.krakow.pl/en/kmk-public-transport/kmk-ticket-guide'},
-  {city:'樂斯拉夫 MPK', short:'15 分 3.20', min90:'90 分 7', hour24:'15', note:'2026-09-17 以市府官方票價頁複核：單次 4.60／2.30，15 分 3.20／1.60，30 分 4／2，60 分 5.20／2.60，90 分 7／3.50，24 小時 15／7.50；時間票可轉乘', checkedAt:'2026-09-17', officialUrl:'https://www.wroclaw.pl/komunikacja/ceny-biletow-mpk-wroclaw'},
-  {city:'波茲南 ZTM', short:'15 分 5', min90:'90 分 9', hour24:'18（A 區）／24（全區）', note:'2026-09-17 以 ZTM 官方 cennik 複核：15 分 5／2.50，45 分 7／3.50，90 分 9／4.50（皆為 A+B+C+D 全區）；24 小時 A 區 18／9、全區 24／12。手機票須輸入車號或掃描車內 QR 啟用', checkedAt:'2026-09-17', officialUrl:'https://www.ztm.poznan.pl/wszystko-o-biletach/cennik-biletow/'},
+  {city:'華沙 WTP', short:'20 分 3.40', min90:'75 分 4.40（第 1 區）／90 分 7（第 1+2 區）', hour24:'15（第 1 區）／26（第 1+2 區）', note:'電車／巴士／地鐵／SKM；蕭邦機場在第 1 區。官方 Ticket tariff 頁：90 分一、二區 7／3.50，24 小時第 1 區 15／7.50、一、二區 26／13；付款時以現場售價為準。另SKM 官方 FAQ：機場互認：KM Bilet Lotniskowy 在有效日可於第 1 區 WTP／SKM 使用 75 分鐘，須填啟用時間；S2 機場–Wschodnia、S3 機場–Płudy 互認有效於相應路段的 KM 票，KM RL 機場–Płudy 也接受 ZTM 20／75／90 分鐘票。一般 PKP Intercity 票不適用；本行程仍使用 WTP 75 分鐘第 1 區票，付款前確認票種與啟用方式', checkedAt:'2026-09-17', officialUrl:'https://www.wtp.waw.pl/en/ticket-tariff/'},
+  {city:'克拉科夫 KMK', short:'15 分 4', min90:'90 分 9', hour24:'20（第 I 區）／25（I+II+III）', note:'以 ZTP 官方票價表15 分 4／2，30 分或單趟 6／3，60 分 8／4，90 分 9／4.50，24 小時第 I 區 20／10、I+II+III 25／12.50；KMK+KMŁ 70 分聯票 10／5', checkedAt:'2026-09-17', officialUrl:'https://ztp.krakow.pl/en/kmk-public-transport/kmk-ticket-guide'},
+  {city:'樂斯拉夫 MPK', short:'15 分 3.20', min90:'90 分 7', hour24:'15', note:'單次 4.60／2.30，15 分 3.20／1.60，30 分 4／2，60 分 5.20／2.60，90 分 7／3.50，24 小時 15／7.50；時間票可轉乘', checkedAt:'2026-09-17', officialUrl:'https://www.wroclaw.pl/komunikacja/ceny-biletow-mpk-wroclaw'},
+  {city:'波茲南 ZTM', short:'15 分 5', min90:'90 分 9', hour24:'18（A 區）／24（全區）', note:'以 ZTM 官方 cennik 15 分 5／2.50，45 分 7／3.50，90 分 9／4.50（皆為 A+B+C+D 全區）；24 小時 A 區 18／9、全區 24／12。手機票須輸入車號或掃描車內 QR 啟用', checkedAt:'2026-09-17', officialUrl:'https://www.ztm.poznan.pl/wszystko-o-biletach/cennik-biletow/'},
 ];
 
 export const airportTransit = [
-  {route:'華沙蕭邦機場 → 市中心', method:'🚆 SKM S2（往 Śródmieście）', price:'75 分第 1 區票 4.40', time:'約 25–30 分', note:'2026-09-17 官方機場交通頁查證：S2 經 Warszawa Zachodnia → Warszawa Śródmieście → Warszawa Wschodnia，官方標示用 75 分鐘票。Hotel Metropol 要在 Śródmieście 下車，出站即 Metro Centrum'},
-  {route:'華沙蕭邦機場 → 市中心', method:'🚆 SKM S3（停 Centralna）', price:'75 分第 1 區票 4.40', time:'約 25–30 分', note:'2026-09-17 官方機場交通頁查證：S3 經 Warszawa Zachodnia → Warszawa Centralna → Warszawa Wschodnia，不停 Śródmieście。搭到 S3 就在 Centralna 下車走過去，不要等 Śródmieście'},
-  {route:'華沙蕭邦機場 → 市中心', method:'🚌 175 路巴士', price:'75 分第 1 區票 4.40', time:'約 30–45 分', note:'2026-09-17 官方機場交通頁同樣標示 75 分鐘票；塞車時火車較穩。離開機場只能在下層 Przyloty 02 站上車，上層出境層不開放上車'},
+  {route:'華沙蕭邦機場 → 市中心', method:'🚆 SKM S2（往 Śródmieście）', price:'75 分第 1 區票 4.40', time:'約 25–30 分', note:'S2 經 Warszawa Zachodnia → Warszawa Śródmieście → Warszawa Wschodnia，官方標示用 75 分鐘票。Hotel Metropol 要在 Śródmieście 下車，出站即 Metro Centrum'},
+  {route:'華沙蕭邦機場 → 市中心', method:'🚆 SKM S3（停 Centralna）', price:'75 分第 1 區票 4.40', time:'約 25–30 分', note:'S3 經 Warszawa Zachodnia → Warszawa Centralna → Warszawa Wschodnia，不停 Śródmieście。搭到 S3 就在 Centralna 下車走過去，不要等 Śródmieście'},
+  {route:'華沙蕭邦機場 → 市中心', method:'🚌 175 路巴士', price:'75 分第 1 區票 4.40', time:'約 30–45 分', note:'官方機場交通頁同樣標示 75 分鐘票；塞車時火車較穩。離開機場只能在下層 Przyloty 02 站上車，上層出境層不開放上車'},
   {route:'華沙蕭邦機場 → 市中心', method:'🚕 計程車／Bolt', price:'依跳錶／App 報價', time:'依路況', note:'機場內認明官方排班計程車，避免搭訕攬客'},
   {route:'克拉科夫 Balice 機場 → 市中心', method:'🚆 SKA1 火車', price:'20', time:'約 20 分', note:'Kraków Airport → Kraków Główny；行李免費，班次以 KMŁ 當日日曆為準'},
   {route:'克拉科夫 Balice 機場 → 市中心', method:'🚌 300／209', price:'6（30 分或單趟）', time:'約 45 分', note:'機場官方列為市郊路線；上車後立即驗票，班次查官方時刻表'},
@@ -33,7 +33,7 @@ export const usefulRoutes = [
   '克拉科夫舊城 → Kazimierz——路線可能因工程改道，出發時用 Jakdojade 查當下可搭電車，不硬記車號。',
   '華沙機場往市中心——有大件行李優先 SKM；175 巴士較少轉乘但受路況影響，目的地靠老城時再比較。',
   '夜間交通——深夜班次與改道最容易變動，直接查 Jakdojade／各城市官方旅運規劃；叫車只作備案。',
-  '需求站才要示意——2026-09-17 華沙 WTP 官方說明：只有「部分」站牌是需求站（站牌會標 na żądanie／on-demand）。要在需求站下車，按車上的「STOP／na żądanie」鈕；要在需求站上車，提早向司機明顯舉手。其餘站牌照常停靠，不是每站都得按鈴。',
+  '需求站才要示意——華沙 WTP 官方說明：只有「部分」站牌是需求站（站牌會標 na żądanie／on-demand）。要在需求站下車，按車上的「STOP／na żądanie」鈕；要在需求站上車，提早向司機明顯舉手。其餘站牌照常停靠，不是每站都得按鈴。',
   '查票員抽查——便服查票員會不定時上車查票，出示手機票券或已感應的卡片即可；電子票務必記得「啟用」這一步，光買票沒啟用等同無票。',
 ];
 

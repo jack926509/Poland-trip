@@ -1,10 +1,6 @@
 import { escapeAttr, escapeHtml } from '../lib/html.mjs';
 import { CITY_LINKS, DAY_LINKS, DAY_LINK_META, NAV_LINK_NOTES, PRACTICAL_NAV_GROUPS } from '../lib/routes.mjs';
-import { todoGroups } from '../data/trip.js';
 
-// 頁尾的「火車票進度更新」日期改由訂票紀錄推導，避免資料更新後頁尾忘了改。
-const RAIL_CHECKED_AT = (todoGroups.find(group => group.id === 'rail')?.items || [])
-  .map(item => item.checkedAt).filter(Boolean).sort().at(-1) || '';
 function current(activeNav, key) {
   return activeNav === key ? ' aria-current="page"' : '';
 }
@@ -108,7 +104,7 @@ export function renderSiteSearch({
   databaseHref = '',
 } = {}) {
   const path = file => `${pathPrefix}${file}`;
-  const fallbackHref = databaseHref || path('practical/database.html');
+  const fallbackHref = databaseHref || path('practical/essentials.html');
   const resolvedIndexUrl = searchIndexJson === null ? (indexUrl || path('assets/search-index.json')) : null;
   return `<section class="site-search-shell" data-site-search data-search-path-prefix="${pathPrefix}"${resolvedIndexUrl ? ` data-search-index-url="${resolvedIndexUrl}"` : ''} aria-label="全站旅遊搜尋">
     <div class="site-search-inner">
@@ -133,7 +129,7 @@ export function renderSiteSearch({
         <p><b>找不到相符資料</b><br>試試城市名、店名或「火車」「地圖」等類型。</p>
         <button type="button" data-search-reset>清除條件</button>
       </div>
-      <noscript><p class="site-search-noscript">瀏覽器未開啟 JavaScript，請改用 <a href="${fallbackHref}">自由行資料庫</a>。</p></noscript>
+      <noscript><p class="site-search-noscript">瀏覽器未開啟 JavaScript，請改用 <a href="${fallbackHref}">安全與基本須知</a>。</p></noscript>
       <script type="application/json" data-site-search-index>${searchIndexJson ?? ''}</script>
     </div>
   </section>`;
@@ -150,7 +146,7 @@ export function renderMobileQuickNav(pathPrefix, pageKind) {
   const todayHref = path('today.html');
   const scheduleHref = pageKind === 'day' ? '#schedule' : `${todayHref}#today-schedule`;
   const foodHref = pageKind === 'day' ? '#day-food' : pageKind === 'city' ? '#city-dining' : `${todayHref}#today-food`;
-  const sosHref = `${path('practical/database.html')}#sos-contacts`;
+  const sosHref = `${path('practical/essentials.html')}#sos-contacts`;
   // 今日卡本身就是「今日」這一格：標成目前所在，底部列才看得出自己在哪一頁。
   const todayCurrent = pageKind === 'today' ? ' aria-current="page"' : '';
   return `<nav class="mobile-quick-nav" aria-label="手機快速導覽">
@@ -267,7 +263,7 @@ export function renderLayout({
   <footer class="footer">
     <div class="footer-inner">
       <p>POLSKA 波蘭行 · 2026/10/24–10/31</p>
-      <p>${RAIL_CHECKED_AT ? `火車票進度更新：${RAIL_CHECKED_AT}。` : ''}各筆資料查核日期見待辦與資料庫；票價、班次異動及開放時間以官方公告與已購票券為準。</p>
+      <p>票價、班次異動及開放時間以官方公告與已購票券為準。</p>
     </div>
   </footer>
   <script src="${path('assets/nav.js')}" defer></script>

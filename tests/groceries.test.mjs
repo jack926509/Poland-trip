@@ -27,11 +27,10 @@ test('採買指南保留四城 12 個門市與三十項商品，每筆都標出�
     assert.ok(html.includes(b.sourceUrl.replace(/&/g, '&amp;')), `${b.id} 缺官方來源連結`);
     assert.ok(html.includes(encodeURIComponent(`${b.name} ${b.address}`)));
   }
-  assert.equal((html.match(/營業時間待確認/g) || []).length, 8);
-  assert.equal((html.match(/官方門市頁已核對/g) || []).length, 4);
-  // 座標仍未核實：地圖維持搜尋連結。2026-10-13 重整後四城收進同一節，
-  // 這句話在「去哪買」開頭講一次、「資料來源與查核界線」再講一次；不能再少。
-  assert.equal((html.match(/沒有取得任何一家的核實座標/g) || []).length, 2);
+  // 2026-10-20 起不顯示查核狀態與日期；只有地址、沒有時間的門市營業時間寫「待確認」
+  assert.equal((html.match(/<p class="grocery-branch-hours"><span>營業時間<\/span><b>待確認<\/b>/g) || []).length, 8);
+  assert.doesNotMatch(html, /官方門市頁已核對|地址已核對|2026-09-22/);
+  assert.match(html, /地圖按鈕是搜尋連結/);
   assert.match(html, /2026\/10\/25/);
 });
 
@@ -179,9 +178,9 @@ test('2026 牛奶果汁與 Żabka 即食：每張卡有照片、哪裡買、怎�
   const html = fs.readFileSync('dist/practical/groceries.html', 'utf8');
   const picks = [...groceryDrinkGuide.milk, ...groceryDrinkGuide.juice, ...groceryDrinkGuide.zabka];
   assert.ok(groceryDrinkGuide.milk.length >= 2 && groceryDrinkGuide.juice.length >= 3);
-  // 商品查核日期與來源發布日期不同；每卡標示已確認層次或待確認界線。
+  // 2026-10-20 起卡片不顯示查核日期；來源仍要有名稱與證據種類。
   for (const pick of [...groceryDrinkGuide.milk, ...groceryDrinkGuide.juice]) {
-    assert.match(pick.when, /2026/, `${pick.id} 缺查核日期`);
+    assert.doesNotMatch(pick.when || '', /查核|20\d\d\/\d/, `${pick.id} 不應顯示查核日期`);
     assert.ok(pick.sources.every(source => source.title && source.kind), `${pick.id} 缺來源名稱或證據種類`);
   }
   assert.equal((html.match(/class="grocery-drink" id="/g) || []).length, picks.length);

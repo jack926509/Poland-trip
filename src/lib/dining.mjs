@@ -27,21 +27,12 @@ export function plannedVerifiedPlaces(dayDiningByDay) {
 }
 
 export function renderDiningFacts(item, { includeHours = true } = {}) {
-  const status = {verified:'已核實所列資料',partial:'部分核實，仍有缺項',pending:'資料待確認'}[item.verificationStatus] || '資料待確認';
   const source = safeHttpsUrl(item.sourceUrl);
   const menu = safeHttpsUrl(item.menuUrl);
   return `${includeHours ? `<p class="food-map-note">營業時間：${escapeHtml(item.hours || '待確認')}</p>` : ''}
-    <p class="source-meta">${status}${item.checkedAt ? ` · ${escapeHtml(item.checkedAt)}` : ''}${source ? ` · <a href="${source}" target="_blank" rel="noopener noreferrer">查核來源 ↗</a>` : ''}</p>
-    ${item.hoursNote ? `<p class="food-map-note">營業時間來源：${escapeHtml(item.hoursNote)}</p>` : ''}
-    ${item.verificationNote ? `<p class="food-map-note">${escapeHtml(item.verificationNote)}</p>` : ''}
-    ${menu ? `<p class="food-map-note"><a href="${menu}" target="_blank" rel="noopener noreferrer">菜單／餐點來源 ↗</a>${item.menuNote ? ` · ${escapeHtml(item.menuNote)}` : ''}</p>` : ''}`;
+    ${source ? `<p class="source-meta"><a href="${source}" target="_blank" rel="noopener noreferrer">店家資訊 ↗</a></p>` : ''}
+    ${menu ? `<p class="food-map-note"><a href="${menu}" target="_blank" rel="noopener noreferrer">菜單 ↗</a></p>` : ''}`;
 }
-
-const STATUS_BADGES = {
-  verified: ['已查證', 'verified'],
-  partial: ['部分查證', 'partial'],
-  pending: ['待確認', 'pending'],
-};
 
 /**
  * 訂位狀態（餐廳主檔 booking 欄位，選填）。只有這四種值；沒有依據就不填、不顯示徽章。
@@ -49,23 +40,15 @@ const STATUS_BADGES = {
  */
 export const BOOKING_LABELS = { required: '必訂', recommended: '建議訂', 'walk-in': '免訂', booked: '已訂' };
 
-/** 2026-10-12 → 10/12；只用在徽章短字，完整日期仍在查核紀錄。 */
-function shortDate(value) {
-  const match = /^\d{4}-(\d{2})-(\d{2})$/.exec(value || '');
-  return match ? `${Number(match[1])}/${Number(match[2])}` : '';
-}
-
 /**
- * 店名下方的一列小標：料理類型、查證狀態、最近一次確認仍營業的日期。
+ * 店名下方的一列小標：訂位需求與料理類型。
  * 用 span 不用 p——導航膠囊必須排在第一個段落之前（標題列），見 day-food 測試。
  */
 export function renderStoreBadges(item) {
   if (!item.placeId && !item.cuisine) return '';
-  const [label, key] = STATUS_BADGES[item.verificationStatus] || STATUS_BADGES.pending;
-  const live = shortDate(item.liveCheckedAt);
   const bookingLabel = Object.hasOwn(BOOKING_LABELS, item.booking) ? BOOKING_LABELS[item.booking] : '';
   const booking = bookingLabel ? `<span class="store-booking store-booking-${item.booking}" data-booking="${item.booking}">${bookingLabel}</span>` : '';
-  return `<span class="store-badges">${booking}${item.cuisine ? `<span class="store-tag">${escapeHtml(item.cuisine)}</span>` : ''}<span class="store-status store-status-${key}">${label}</span>${live ? `<span class="store-live">${live} 確認仍營業</span>` : ''}</span>`;
+  return `<span class="store-badges">${booking}${item.cuisine ? `<span class="store-tag">${escapeHtml(item.cuisine)}</span>` : ''}</span>`;
 }
 
 function toMinutes(value) {
@@ -93,12 +76,12 @@ export function openingCheck(dayHours, time, { mealMinutes = 45 } = {}) {
 
 /**
  * 店家卡的主體：營業時間與推薦菜色一律直接可見（不收合），
- * 菜單做成 44px 的按鈕（店家不放電話鈕，訂位與確認都走線上）；地址、查核日期與來源收在「地址與查核紀錄」。
+ * 菜單做成 44px 的按鈕（店家不放電話鈕，訂位與確認都走線上）；地址與全週營業收在摺疊區。
  */
 export function renderStoreBody(item, { note = item.note, condition = item.condition, timing = '', foldFacts = true, day = null, time = '' } = {}) {
   const dishes = Array.isArray(item.dishes) ? item.dishes : [];
   const menu = safeHttpsUrl(item.menuUrl);
-  // 排定餐段：先給「當天」那一行（日期＋當天時段＋能不能坐下吃），全週時段收進查核紀錄；
+  // 排定餐段：先給「當天」那一行（日期＋當天時段＋能不能坐下吃），全週時段收進摺疊區；
   // 備選與名錄沒有指定日子，照舊直接列全週時段。
   // 沒有指定日子（營業時間名錄、今日卡備選）就不顯示「當天」，回到全週時段。
   const dayHours = day ? item.dayHours : '';
@@ -116,7 +99,7 @@ export function renderStoreBody(item, { note = item.note, condition = item.condi
     </dl>`;
   const actions = menu ? `<p class="store-actions"><a class="store-action" href="${menu}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(item.name)} 的菜單">菜單 ↗</a></p>` : '';
   const record = foldFacts
-    ? `<details><summary>地址、全週營業與查核紀錄</summary><p class="food-map-note">${escapeHtml(item.address)}</p>${renderDiningFacts(item, { includeHours: Boolean(dayHours) })}<p class="source-meta">行程預留不代表已訂位。</p></details>`
+    ? `<details><summary>地址與全週營業</summary><p class="food-map-note">${escapeHtml(item.address)}</p>${renderDiningFacts(item, { includeHours: Boolean(dayHours) })}<p class="source-meta">行程預留不代表已訂位。</p></details>`
     : '';
   return `${facts}
       ${note ? `<p>${escapeHtml(note)}</p>` : ''}

@@ -14,14 +14,14 @@ export const souvenirCards = [
 
 export const luxuryShopping = [
   {shop:'Vitkac', city:'華沙', note:'中東歐最大精品百貨，Gucci／Balenciaga／Saint Laurent／Burberry 等；週日休', mapUrl:'https://maps.google.com/?cid=6893272886103886879'},
-  {shop:'Chylak（Le Petit Trou）', city:'華沙', note:'波蘭設計師精品包款，2026-09-19 品牌官網確認聯合店地址 Koszykowa 5；Mokotowska 街區另有多家波蘭獨立設計師精品店可順路逛', mapUrl:'https://maps.google.com/?cid=2015234439722332980'},
+  {shop:'Chylak（Le Petit Trou）', city:'華沙', note:'波蘭設計師精品包款，品牌官網確認聯合店地址 Koszykowa 5；Mokotowska 街區另有多家波蘭獨立設計師精品店可順路逛', mapUrl:'https://maps.google.com/?cid=2015234439722332980'},
 ];
 
 export const souvenirShops = [
   {city:'克拉科夫', name:'Sukiennice 布廊', note:'廣場內伴手禮攤位集中；本次行程不排採購時段，10/25 路過時順手看即可', mapUrl:'https://www.google.com/maps/search/?api=1&query=Sukiennice%20Cloth%20Hall%20Krak%C3%B3w'},
-  {city:'克拉科夫', name:'Rzeczy Same Podgórze', note:'波蘭設計店候選；本輪未取得現行官方門市資訊，地址與營業狀態待確認', mapUrl:'https://www.google.com/maps/search/?api=1&query=Rzeczy%20Same%20Podg%C3%B3rze%20Krak%C3%B3w'},
+  {city:'克拉科夫', name:'Rzeczy Same Podgórze', note:'波蘭設計店候選；地址與營業狀態待確認', mapUrl:'https://www.google.com/maps/search/?api=1&query=Rzeczy%20Same%20Podg%C3%B3rze%20Krak%C3%B3w'},
   {city:'華沙', name:'E.Wedel 巧克力沙龍', note:'Szpitalna 8 旗艦店', mapUrl:'https://www.google.com/maps/search/?api=1&query=Pijalnia%20Czekolady%20E.Wedel%20Szpitalna%20Warszawa'},
-  {city:'華沙', name:'Cepelia Warszawa', note:'波蘭民藝品牌候選；本輪未核實華沙實體門市，請先確認店址與營業狀態', mapUrl:'https://www.google.com/maps/search/?api=1&query=Cepelia%20Warszawa'},
+  {city:'華沙', name:'Cepelia Warszawa', note:'波蘭民藝品牌候選；請先確認店址與營業狀態', mapUrl:'https://www.google.com/maps/search/?api=1&query=Cepelia%20Warszawa'},
   {city:'華沙', name:'Złote Tarasy（中央車站對面）', note:'距 Hotel Metropol 步行約 500 公尺，一–六約 09:00–22:00、日至 21:00；Day 8 預計 09:45 退房出發，商場 09:00 開門後還要往返與結帳，時間有限；伴手禮優先前一天買齊，不保證比機場便宜。實際營業時間與個別店家以商場官網當日公告為準', mapUrl:'https://www.google.com/maps/search/?api=1&query=Z%C5%82ote%20Tarasy%20Warszawa'},
 ];
 

@@ -197,12 +197,13 @@ test('M2：離線時 nav.js 在 <html> 標 data-offline，底部列上緣顯示�
 
 test('M3：查核紀錄、速食分店、已完成預約的收合列也有「＋／－」，HTML 不加 class', () => {
   const source = css();
-  for (const selector of ['.city-dining-record', '.fast-food-directory-city', '.booking-done']) {
+  for (const selector of ['.fast-food-directory-city', '.booking-done']) {
     const escaped = selector.replace(/[.]/g, '\\.');
     assert.match(source, new RegExp(`${escaped} > summary::before[\\s\\S]{0,400}content: "＋";`));
     assert.match(source, new RegExp(`${escaped}\\[open\\] > summary::before`));
   }
-  assert.ok(read('city-krakow.html').includes('<details class="city-dining-record"><summary>查核紀錄與來源</summary>'));
+  // 2026-10-20 起城市頁不再有「查核紀錄與來源」摺疊區
+  assert.ok(!read('city-krakow.html').includes('查核紀錄與來源'));
   assert.ok(Buffer.byteLength(read('city-krakow.html')) <= 102400);
 });
 
@@ -222,12 +223,15 @@ test('M5：待辦頁刊頭縮小、摘要緊接清單，免責說明移到清單
   assert.ok(disclaimer > lastGroupEnd, '免責說明應在清單最後');
   assert.match(todos, /<header class="journal-appendix-header is-compact">/);
   assert.match(css(), /\.journal-appendix-header\.is-compact h1 \{[^}]*font-size: 1\.6rem;/);
-  assert.doesNotMatch(read('practical/database.html'), /is-compact/, '資料庫頁刊頭不受影響');
+  assert.doesNotMatch(read('practical/essentials.html'), /is-compact/, '安全須知頁刊頭不受影響');
 });
 
 test('M6：八天三餐每天都有「↑ 換一天」，日期列帶當地日期供標出今天', () => {
   const dining = read('practical/dining.html');
-  assert.equal((dining.match(/<p class="meals-back"><a href="#daily-meals">↑ 換一天<\/a><\/p><\/article>/g) || []).length, 8);
+  assert.equal((dining.match(/<p class="meals-back"><a href="#daily-meals">↑ 換一天<\/a><\/p><\/details>/g) || []).length, 8);
+  // 2026-10-20 長頁收合：每天一張可收合卡，出發前只展開 Day 1，旅途中只展開今天
+  assert.equal((dining.match(/<details class="card meals-day hash-fold"/g) || []).length, 8);
+  assert.equal((dining.match(/<details class="card meals-day hash-fold"[^>]*open>/g) || []).length, 1);
   assert.match(dining, /<a href="#meals-day-5" data-meal-date="2026-10-28">/);
   assert.match(dining, /setAttribute\('aria-current', 'date'\)/);
   assert.match(css(), /\.day-jump a\[aria-current='date'\]/);
@@ -280,10 +284,9 @@ test('F3c：補充圖釘各自帶座標查證日期，不再一律寫死 2026-09
   }
   // 建置輸出：Day 2 頁面內嵌的 mapChecks 要帶 Pimiento 的 10-19，而不是共用的 09-08
   assert.match(read('day-02.html'), /"Pimiento Shop and Bistro":\{"status":"coordinate-verified","checkedAt":"2026-10-19"/);
-  // 彈窗日期正則經 template literal 輸出後反斜線要保留，否則 \d 變 d、日期永遠不顯示
-  const popupRegex = read('day-02.html').match(/\(\/\^(.+?)\$\/\.test\(check\.checkedAt/);
-  assert.ok(popupRegex, '彈窗應含查證日期正則');
-  assert.ok(new RegExp(`^${popupRegex[1]}$`).test('2026-10-19'), `建置後的正則 ${popupRegex[1]} 比對不到日期`);
+  // 2026-10-20 起地圖彈窗不再顯示查證日期
+  assert.doesNotMatch(read('day-02.html'), /查證'\s*:/);
+  assert.ok(!read('day-02.html').includes("' 查證'"));
 });
 
 test('N4：可視高度 600 以下（iPhone SE Safari 分頁）旅途中今日卡再壓縮留白，導航鈕落在底部列之上，375×667 以上不受影響', () => {
@@ -302,14 +305,16 @@ test('N4：可視高度 600 以下（iPhone SE Safari 分頁）旅途中今日�
 
 test('F4：待辦頁刊頭、「本頁章節」、分類大標只在 .is-compact 的頁面縮小；其他實用頁輸出不變、文字不刪', () => {
   const source = css();
-  assert.match(source, /\.journal-practical \.page:has\(> \.is-compact\) \.chapter-index ol \{ flex-wrap: nowrap;[^}]*overflow-x: auto; \}/);
+  // 2026-10-20：章節 chip 改換行，不再橫向捲動（最後一顆被切掉看不出能滑）
+  assert.match(source, /\.journal-practical \.page:has\(> \.is-compact\) \.chapter-index ol \{ flex-wrap: wrap;[^}]*\}/);
+  assert.doesNotMatch(source, /\.journal-practical \.page:has\(> \.is-compact\) \.chapter-index ol \{[^}]*overflow-x: auto/);
   assert.match(source, /\.journal-practical \.page:has\(> \.is-compact\) \.section-heading h2 \{ font-size: 1\.4rem; \}/);
   assert.match(source, /@media \(min-width: 1000px\) \{\s*\.journal-appendix-header\.is-compact \{ display: flex;/);
   const todos = read('practical/todos.html');
   assert.match(todos, /<header class="journal-appendix-header is-compact">/);
   assert.match(todos, /<p class="chapter-index-label"[^>]*>本頁章節<\/p>/, '「本頁章節」文字仍在');
   assert.match(todos, /class="section-heading"><span class="section-num">Rail/);
-  for (const page of ['booking', 'dining', 'database', 'tickets', 'transit', 'shopping', 'notes', 'groceries', 'essentials']) {
+  for (const page of ['booking', 'dining', 'transit', 'shopping', 'groceries', 'essentials']) {
     assert.doesNotMatch(read(`practical/${page}.html`), /is-compact/, `${page} 頁不可帶 is-compact`);
   }
 });

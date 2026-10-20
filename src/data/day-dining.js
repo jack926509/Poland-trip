@@ -73,7 +73,7 @@ export const dayDiningPlans = {
       "stepId": "d2-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
-      "condition": "午餐菜單 13:00 起才供應（早餐菜單 09:00–13:00）；週日只開到 15:00，資料來自 Google 地圖與 MapQuest，官網未列，10/22 複查再看一次。先用官網表單或 Email pimiento@pimiento.pl 訂 13:00 兩位（官網線上訂位不含這間分店）；客滿、關門或列車延誤改 Polonia 或 24 小時的 Przypiecek。",
+      "condition": "午餐菜單 13:00 起才供應（早餐菜單 09:00–13:00）；週日只開到 15:00，資料來自 Google 地圖與 MapQuest，官網未列。先用官網表單或 Email pimiento@pimiento.pl 訂 13:00 兩位（官網線上訂位不含這間分店）；客滿、關門或列車延誤改 Polonia 或 24 小時的 Przypiecek。",
       "dayHours": "09:00–15:00（早餐菜單 09:00–13:00，午餐菜單 13:00 起）"
     },
     {
@@ -206,7 +206,7 @@ export const dayDiningPlans = {
     {
       "placeId": "wieliczka-karczma-gornicza",
       "role": "午餐備案（營業待確認，暫不採用）",
-      "note": "2026-09-19 查核：礦場公司波蘭文頁列目前關閉，英文餐飲頁仍有菜單，官方資訊不一致；未獲礦場確認前不採用，午餐改用礦方確認每日營業的 Bistro Posolone。",
+      "note": "礦場公司波蘭文頁列目前關閉，英文餐飲頁仍有菜單，官方資訊不一致；未獲礦場確認前不採用，午餐改用礦方確認每日營業的 Bistro Posolone。",
       "stepId": null,
       "planStatus": "unavailable",
       "cityGuide": false
@@ -265,7 +265,7 @@ export const dayDiningPlans = {
     {
       "placeId": "wroclaw-restauracja-wroclawska",
       "role": "午餐首選",
-      "note": "逛完 Hala Targowa 市場大廳，12:00 開門就進店、入座就點餐：必點 Śląskie niebo 果乾燉豬肉配 Wrocław dumplings＋Bigos Wrocławski 紅甘藍燉肉，胃口夠再加 Crayfish Soup。主菜現做約 30 分鐘，13:10 離開，接全景畫外觀與 13:20 電車往百年廳。想省排隊可先打 +48 71 305 12 28 訂位（選配）。",
+      "note": "逛完 Hala Targowa 市場大廳，12:00 開門就進店、入座就點餐：必點 Śląskie niebo 果乾燉豬肉配 Wrocław dumplings＋Bigos Wrocławski 紅甘藍燉肉，胃口夠再加 Crayfish Soup。主菜現做約 30 分鐘，13:10 離開，接全景畫外觀與 13:20 電車往百年廳。想省排隊可請 Piast 櫃檯代訂（選配）。",
       "stepId": "d5-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
@@ -384,7 +384,7 @@ export const dayDiningPlans = {
     {
       "placeId": "poznan-zen-on",
       "role": "午餐備選",
-      "note": "Michelin 推薦拉麵，Święty Marcin 21，週四 12:00–20:00（+48 609 116 450）：拉麵、烏龍麵、bao；Carla 客滿或訂不到時的另一個午餐備案，可改回 12:15 吃，尖峰常排隊。",
+      "note": "Michelin 推薦拉麵，Święty Marcin 21，週四 12:00–20:00：拉麵、烏龍麵、bao；Carla 客滿或訂不到時的另一個午餐備案，可改回 12:15 吃，尖峰常排隊。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -409,7 +409,7 @@ export const dayDiningPlans = {
       "stepId": "d6-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "週四 12:00–22:00（多個目錄一致，無店家官網），當天先打 22 881 78 51 或 22 622 18 86 確認仍接單；21:00 到店、21:15 前無法入座就改 Złote Tarasy 速食或 24 小時的 Ćma。",
+      "condition": "週四 12:00–22:00（多個目錄一致，無店家官網），不用訂位，當天先看 Google 地圖營業狀態；21:00 到店、21:15 前無法入座就改 Złote Tarasy 速食或 24 小時的 Ćma。",
       "dayHours": "12:00–22:00"
     },
     {
@@ -607,7 +607,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-gate-one-airport",
       "role": "午餐候選（僅申根區）",
-      "note": "初稿候選保留；QR 260 往多哈須走非申根流程，不將 Gate One 當成可直接抵達的首選。",
+      "note": "QR 260 往多哈須走非申根流程，不將 Gate One 當成可直接抵達的首選。",
       "stepId": null,
       "planStatus": "candidate"
     }

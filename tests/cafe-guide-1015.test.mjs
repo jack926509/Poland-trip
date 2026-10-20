@@ -21,7 +21,7 @@ test('咖啡與甜點：四城依行程排，每家都有地址、營業時間�
   const page = html();
   assert.match(page, /<section class="section" id="cafes">/);
   assert.equal((page.match(/class="day-food-item cafe-item"/g) || []).length, cafeGuide.reduce((sum, group) => sum + group.items.length, 0));
-  assert.ok(page.indexOf('id="cafes"') < page.indexOf('<h2>2026 米其林總表'), '咖啡與甜點要排在米其林總表之前');
+  assert.doesNotMatch(page, /2026 米其林總表/, '餐飲頁不再放米其林總表');
 });
 
 test('咖啡與甜點：標「已排入」的時刻必須真的在當天時間表上', () => {

@@ -92,11 +92,11 @@ test('4 間住宿都有官方電話與來源，並在住宿、SOS、今日卡輸
     assert.doesNotMatch(item.phoneSource.url, /booking\.com|agoda|expedia|hotels\.com|tripadvisor/);
   }
   const booking = read('practical/booking.html');
-  const database = read('practical/database.html');
+  const essentials = read('practical/essentials.html');
   const today = read('today.html');
   for (const digits of ['+48223253100', '+48123552950', '+48717966200', '+48531000209']) {
     assert.ok(booking.includes(`href="tel:${digits}"`), `住宿頁缺 ${digits}`);
-    assert.ok(database.includes(`href="tel:${digits}"`), `SOS 缺 ${digits}`);
+    assert.ok(essentials.includes(`href="tel:${digits}"`), `SOS 缺 ${digits}`);
     assert.ok(today.includes(`href="tel:${digits}"`), `今日卡缺 ${digits}`);
   }
 });

@@ -41,7 +41,7 @@ export function fastFoodDiningEntries({ branches = [], chains = [], hub = null }
       : [];
     const positionNote = [
       branch.note,
-      branch.verificationStatus === 'verified' ? `官方門市資料已核對（${branch.checkedAt}）；當日供應仍須確認` : branch.verificationStatus === 'partial' ? '地址已核實，營業時間待確認' : '門市資料待確認，勿當作可靠保底',
+      /待確認/.test(branch.hours || '待確認') ? '營業時間待確認' : '',
       alsoHere.length ? `同在 ${hub.place} 的還有 ${alsoHere.join('、')}，一棟解決` : '',
     ].filter(Boolean).join('；');
     return {
@@ -65,13 +65,9 @@ export function fastFoodDiningEntries({ branches = [], chains = [], hub = null }
   });
 }
 
-/** 查核狀態的一句話；速食分店與一般餐廳共用三種狀態。 */
+/** 只在營業時間未知時提醒一句。 */
 function branchStatus(branch) {
-  if (branch.verificationStatus === 'verified') return `官方門市資料已核對（${escapeHtml(branch.checkedAt)}）；出發前重查`;
-  if (branch.verificationStatus === 'partial') {
-    return /待確認/.test(branch.hours || '待確認') ? '地址已核實，營業時間待確認' : `${escapeHtml(branch.checkedAt)} 確認門市仍營業；時段來自第三方，出發前重查`;
-  }
-  return '門市資料待確認，勿當作可靠保底';
+  return /待確認/.test(branch.hours || '待確認') ? '營業時間待確認' : '';
 }
 
 /**
@@ -86,7 +82,7 @@ function renderBranchItem(branch, chain) {
           <span class="fast-food-address">${escapeHtml(branch.address)}</span>
           <p class="fast-food-hours"><b>營業</b> ${escapeHtml(branch.hours || '營業時間待確認')}</p>
           <p class="food-map-note">${escapeHtml(branch.note)}${picks.length ? ` · 推薦：${picks.map(escapeHtml).join('、')}` : ''}</p>
-          <p class="source-meta">${branchStatus(branch)}${source ? ` · <a href="${source}" target="_blank" rel="noopener noreferrer">來源 ↗</a>` : ''}</p>
+          <p class="source-meta">${[branchStatus(branch), source ? `<a href="${source}" target="_blank" rel="noopener noreferrer">來源 ↗</a>` : ''].filter(Boolean).join(' · ')}</p>
         </li>`;
 }
 
@@ -167,7 +163,7 @@ export function renderFastFoodMenu({ chains = [], branches = {}, hubs = [] }) {
       <div class="section-heading"><span class="section-num">Fast food</span><h2>連鎖速食招牌</h2></div>
       <p class="lead">行程趕、太晚或不想踩雷時的落腳點，不做評選。上面是各家招牌，下面依城市列出每間分店的地址、營業時間與導航；同一份分店資料也出現在每日行程、今日速查與城市指南。出發前仍以店家頁面為準。</p>
       <div class="grid">${chainCards}</div>
-      ${directory ? `<h3 id="fast-food-branches">分店與營業時間</h3><p class="food-map-note">2026-10-12 逐店確認仍營業；原列 Poznań Stary Rynek 87 的 McDonald's 尚在改建、Avenida 的 Salad Story 查無資料，已移除。</p><div class="fast-food-directory">${directory}</div>` : ''}
+      ${directory ? `<h3 id="fast-food-branches">分店與營業時間</h3><div class="fast-food-directory">${directory}</div>` : ''}
       ${cityLinks ? `<p class="action-links">${cityLinks}</p>` : ''}
     </section>`;
 }
