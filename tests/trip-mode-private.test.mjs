@@ -109,10 +109,10 @@ test('每個已訂妥的當日預約都有票券欄位，今日卡在行程旁�
     assert.ok(slots >= confirmed, `Day ${day.n} 有 ${confirmed} 筆已訂妥項目但只有 ${slots} 個票券欄位`);
   }
   assert.ok(privateSlots.some(slot => slot.id === 'auschwitz-guide' && slot.day === 3));
-  assert.ok(today.includes('data-today-tickets'));
-  const block = today.slice(today.indexOf('data-today-tickets'));
-  assert.ok(block.indexOf('data-private-slot="auschwitz-guide"') > -1);
-  assert.ok(today.indexOf('data-today-tickets') < today.indexOf('data-today-schedule'), '票券區應在摺疊區之前');
+  // 2026-10-20 今日卡改一屏儀表板：完整票券清單移到每日頁，今日卡只在「下一站」放這站要帶的票（含存放位置欄位）。
+  const day3 = today.split('data-today-date="2026-10-26"')[1].split('</article>')[0];
+  const step = day3.split('data-next-step ').find(block => block.includes('英文官方導覽'));
+  assert.ok(step && step.includes('data-private-slot="auschwitz-guide"'), '導覽那一站要帶入場證');
 });
 
 test('私人資料不會出現在任何建置產物：欄位全空、沒有 value 屬性、不含填寫內容', () => {

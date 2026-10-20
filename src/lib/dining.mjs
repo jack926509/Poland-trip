@@ -117,21 +117,29 @@ export function renderStoreHead(item, eyebrow) {
 }
 
 const LAST_MEAL_CUTOFF_MINUTE = 23 * 60;
+const MEAL_LABELS = { breakfast: '早餐', lunch: '午餐', dinner: '晚餐' };
+
+/**
+ * 一餐的時刻資訊：每日頁的三餐清單與今日卡的「下一餐」共用，判斷規則只寫一次。
+ * minute：step.t 是 HH:MM 時的分鐘數，否則 null。
+ * before：「出礦後」「抵站放行李後」這類相對時間沒有分鐘數，改記行程表中它後面第一個有時刻的步驟，
+ * 該時刻到了就代表這餐已經錯過；當天最後一餐後面沒有任何有時刻的步驟，保守算華沙時間 23:00 後已過。
+ */
+export function mealSchedule(day, item) {
+  const step = day.steps.find(step => step.id === item.stepId);
+  if (!step) throw new Error(`Day ${day.n} 找不到三餐步驟 ${item.stepId}`);
+  const minute = toMinutes(step.t);
+  const laterStep = minute === null ? day.steps.slice(day.steps.indexOf(step) + 1).map(next => toMinutes(next.t)).find(value => value !== null) : undefined;
+  const before = minute === null && laterStep === undefined ? LAST_MEAL_CUTOFF_MINUTE : laterStep;
+  return { step, label: MEAL_LABELS[item.meal], time: step.t, minute, before };
+}
 
 /** 每日頁、今日卡與餐飲指南共用；沒有門市的餐次只顯示安排，不產生假導航。 */
 export function renderMealList(day, meals) {
-  const labels = { breakfast: '早餐', lunch: '午餐', dinner: '晚餐' };
+  const labels = MEAL_LABELS;
   return `<ul class="day-food-list" data-three-meals="${day.n}">${meals.map(item => {
-    const step = day.steps.find(step => step.id === item.stepId);
-    if (!step) throw new Error(`Day ${day.n} 找不到三餐步驟 ${item.stepId}`);
+    const { step, minute, before: later } = mealSchedule(day, item);
     const eyebrow = `${labels[item.meal]} · ${step.t}${item.condition ? ' · 先確認' : ''}`;
-    // data-meal-minute：今日卡依華沙時間收合已過的餐用（step.t 不是 HH:MM 時不給，維持原樣）。
-    // 「出礦後」「抵站放行李後」這類相對時間沒有分鐘數：改記行程表中它後面第一個有時刻的步驟，
-    // 該時刻到了就代表這餐已經錯過（data-meal-before-minute）。
-    const minute = toMinutes(step.t);
-    const laterStep = minute === null ? day.steps.slice(day.steps.indexOf(step) + 1).map(next => toMinutes(next.t)).find(value => value !== null) : undefined;
-    // 當天最後一餐後面沒有任何有時刻的步驟：保守算華沙時間 23:00 後已過，不讓它永遠停在「下一餐」。
-    const later = minute === null && laterStep === undefined ? LAST_MEAL_CUTOFF_MINUTE : laterStep;
     return `<li class="day-food-item" id="meal-${escapeHtml(item.stepId)}" data-meal="${item.meal}" data-meal-label="${labels[item.meal]}" data-meal-time="${escapeHtml(step.t)}"${minute === null ? '' : ` data-meal-minute="${minute}"`}${later === undefined ? '' : ` data-meal-before-minute="${later}"`}${item.placeId ? '' : ' data-self="true"'}>
       ${renderStoreHead(item, eyebrow)}
       ${item.placeId ? renderStoreBody(item, { day, time: step.t }) : `<p>${escapeHtml(item.note)}</p>`}

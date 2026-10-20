@@ -60,9 +60,10 @@ test('日期切換、手動選站、回到今天與跨午夜更新',()=>{
     assert.equal(cards[1].hidden,false);
     assert.equal(root.nodes['[data-date-next]'].disabled,true);
     assert.match(root.nodes['[data-today-status]'].textContent,/預覽/);
-    const picker=cards[1].nodes['[data-step-picker]'];picker.value='1';picker.trigger('change');
+    // 2026-10-20 移除「改看其他行程」下拉（全部過時後會變空白）；預覽別天固定看第一站，重新聚焦仍保留手動選日。
     windowEvents.focus();
-    assert.equal(cards[1].lists['[data-next-step]'][1].hidden,false,'重新聚焦保留手動選站');
+    assert.equal(cards[1].hidden,false,'重新聚焦保留手動選日');
+    assert.equal(cards[1].lists['[data-next-step]'][0].hidden,false,'預覽別天顯示第一站');
     root.nodes['[data-date-reset]'].trigger('click');
     assert.equal(cards[0].hidden,false);
     now=new Date('2026-10-24T22:05:00Z'); // 波蘭 10/25 00:05
@@ -77,11 +78,12 @@ test('日期切換、手動選站、回到今天與跨午夜更新',()=>{
 
 test('今日卡保留票務狀態、餐廳注意事項及住宿地址限制',()=>{
   const html=renderToday({...trip, dayDining, safety:{emergency:[]}});
-  assert.match(html,/EIC 8104 已購票/);
+  // 2026-10-20 今日卡改一屏儀表板：票務狀態留在「下一段車」一行；餐廳注意事項與替補清單改在每日頁，
+  // 今日卡的「下一餐」在沒有門市導航時連到每日頁餐飲段落。
+  assert.match(html,/EIC 8104 前往華沙 · 已購票/);
   assert.match(html,/此地址為接待與取鑰匙處/);
-  assert.match(html,/客滿或想換口味/);
-  assert.ok(html.includes(dayDining[5][0].note.replaceAll('&','&amp;')));
   const day5=html.split('data-today-date="2026-10-28"')[1].split('</article>')[0];
+  assert.ok(day5.includes('href="day-05.html#day-food"'));
   const stay=day5.split('data-today-stay')[1].split('</section>')[0];
   assert.ok(stay.includes('接待處導航'));
   // Piast 門牌已於切片 2 核對為 addressVerified:true，Day 4（10/27 入住）現在應提供住宿導航。

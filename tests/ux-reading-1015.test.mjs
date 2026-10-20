@@ -42,7 +42,7 @@ test('手機小字下限：實測 11–13px 的標籤與動作改為 13.6px／14
   for (const selector of ['.store-fact dt', '.grocery-sunday', '.today-sos-tag', '.status-verified', '.booking-item-group']) {
     assert.ok(block.includes(`.journal-site ${selector}`), `小字下限缺少 ${selector}`);
   }
-  for (const selector of ['.operation-address-actions a', '.store-action', '.cross-link', '.day-food-map', '.today-action']) {
+  for (const selector of ['.operation-address-actions a', '.store-action', '.cross-link', '.day-food-map', '.today-glance-nav']) {
     assert.ok(block.includes(`.journal-site ${selector}`), `動作字級缺少 ${selector}`);
   }
   // 不能用 max(…, 1em)：font-size 的 1em 是父層字級，會把小標籤一起撐成 16px

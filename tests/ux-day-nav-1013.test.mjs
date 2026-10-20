@@ -102,6 +102,6 @@ test('C6：手機時間表為時間軸（時間左欄、導航右欄），不再
   assert.match(source, /\.step-nav \{[^}]*min-height: 44px/s);
   const nav = fs.readFileSync(path.resolve('src/scripts/nav.js'), 'utf8');
   assert.match(nav, /toTop\.hidden = window\.scrollY < 900 \|\| overlapsNavigateLink\(\)/);
-  // 今日卡的全天時間表共用同一套版式
-  assert.match(read('today.html'), /<table class="table-editorial table-today-steps">/);
+  // 2026-10-20 今日卡不再放全天時間表（改連每日頁 #schedule），不再驗今日卡內的時間表版式。
+  assert.doesNotMatch(read('today.html'), /<table class="table-editorial table-today-steps">/);
 });

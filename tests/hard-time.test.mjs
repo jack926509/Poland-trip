@@ -77,8 +77,9 @@ test('今日卡不掛自動章節目錄：它連到被 JS 隱藏的日卡，且�
   // 也改用 sticky 的 .day-shortcuts 取代自動目錄（見 paper-travel-journal
   // 的專屬測試），這裡改用實用資料頁驗證機制本身沒壞掉。
   assert.ok(fs.readFileSync('dist/practical/booking.html', 'utf8').includes('chapter-index'));
-  // 首屏順序：日期切換 → 當日標題 → 接下來去哪，且都排在快捷操作之前。
-  const order = ['today-date-controls', 'today-head', 'today-next', 'today-actions']
+  // 首屏順序：日期切換 → 當日標題 → 下一站，且都排在「看今天完整行程」主按鈕之前
+  // （2026-10-20 卡內快捷列移除，改由主按鈕連到每日頁）。
+  const order = ['today-date-controls', 'today-head', 'today-next', 'today-full-link']
     .map(cls => html.indexOf(cls));
   assert.deepEqual(order, [...order].sort((a, b) => a - b), '今日卡首屏順序不符優先級');
 });

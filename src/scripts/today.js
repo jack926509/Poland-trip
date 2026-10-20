@@ -31,7 +31,7 @@ export function statusText(selection, total) {
   if (selection.mode === 'before') return selection.daysUntil === 0
     ? '今天搭機出發，下方預覽 Day 1。'
     : `距離出發還有 ${selection.daysUntil} 天，下方預覽 Day 1。`;
-  if (selection.mode === 'after') return `旅程已於 ${selection.daysSince} 天前結束，下方顯示最後一天；完整 ${total} 天請看每日行程頁。`;
+  if (selection.mode === 'after') return `旅程已於 ${selection.daysSince} 天前結束，下方顯示最後一天（共 ${total} 天）。`;
   return '沒有可顯示的行程。';
 }
 
@@ -74,11 +74,13 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
   const prev = root.querySelector('[data-date-prev]');
   const next = root.querySelector('[data-date-next]');
   const reset = root.querySelector('[data-date-reset]');
-  // 餐點開始超過這麼多分鐘就視為「已過」（今天吃哪收合）；剛到的餐不會被收掉。
+  // 餐點開始超過這麼多分鐘就視為「已過」，「下一餐」改指下一頓；剛到的餐不會被跳過。
   // 放在函式內：本函式以 toString() 內嵌進頁面，模組層常數不會跟著進去。
   const MEAL_DONE_AFTER = 60;
+  // 今日卡只放「一屏看完」的摘要；時間表與餐廳細節在每日頁。
+  // 底部快捷列與其他頁連到 today.html#today-schedule／#today-food 時，改送到當天每日頁的對應段落。
+  const JUMPS = { 'today-schedule': '#schedule', 'today-food': '#day-food' };
   let manualDate = null;
-  let manualStep = null;
   let shown = 0;
 
   // 「還有多久」寫進指定的 span：沒有這個節點（舊版 DOM、單元測試）就跳過，
@@ -91,6 +93,22 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
     host.setAttribute?.('data-eta-level', eta ? eta.level : 'none');
   }
 
+  function dayHref(card) {
+    return (card?.querySelector?.('[data-today-full]')?.getAttribute('href') || '').split('#')[0] || null;
+  }
+
+  // 底部快捷列的「時間表」「吃哪」直接指到顯示中那一天的每日頁（用網址片段辨認，不寫死 id）。
+  function retargetQuickNav(card) {
+    const href = dayHref(card);
+    if (!href || typeof document === 'undefined' || typeof document.querySelectorAll !== 'function') return;
+    document.querySelectorAll('.mobile-quick-nav a').forEach(link => {
+      const key = link.getAttribute('data-today-jump') || (link.getAttribute('href') || '').split('#')[1];
+      if (!JUMPS[key]) return;
+      link.setAttribute('data-today-jump', key);
+      link.setAttribute('href', `${href}${JUMPS[key]}`);
+    });
+  }
+
   function refresh() {
     const clock = now();
     const today = warsawTodayLocal(clock);
@@ -99,12 +117,6 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
       : selection.mode === 'after' ? cards.length - 1 : 0;
     const preview = dates[shown] !== today;
     cards.forEach((card,index) => { card.hidden = index !== shown; });
-    // 八張卡同時渲染，id 只能有一份：#today-food／#today-schedule 永遠掛在目前顯示的那張卡上。
-    cards.forEach((card,index) => ['food','schedule'].forEach(key => {
-      const block = card.querySelector?.(`[data-today-${key}]`);
-      if (!block) return;
-      if (index === shown) block.setAttribute('id', `today-${key}`); else if (block.getAttribute('id') === `today-${key}`) block.removeAttribute('id');
-    }));
     if (picker) picker.value = dates[shown];
     if (prev) prev.disabled = shown === 0;
     if (next) next.disabled = shown === cards.length - 1;
@@ -115,27 +127,31 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
       status.hidden = !text;
     }
     if (outside) outside.hidden = selection.mode === 'during';
-    // 旅途期間（華沙時間在行程日內）手機頁首改精簡版，讓「接下來去哪」進首屏；
-    // 非旅途期間不加 class，版面維持原樣。today-live 另外表示「看的就是今天」，
-    // 此時狀態列的「今天是旅程第 N 天」與卡片上的 Day 徽章重複，精簡版會收掉它。
+    // 手機頁首一律改精簡版，讓儀表板一屏看完（2026-10-20 起出發前／結束後也一樣，
+    // 「不在旅程期間」框本身就說明了現在看的是預覽）。today-live 另外表示「看的就是今天」，
+    // 此時狀態列的「今天是旅程第 N 天」與日期選單重複，精簡版會收掉它。
     const page = root.querySelector('[data-today-page]');
     if (page && page.classList) {
-      page.classList.toggle('today-compact', selection.mode === 'during');
+      page.classList.toggle('today-compact', true);
+      page.classList.toggle('today-outside-mode', selection.mode !== 'during');
       page.classList.toggle('today-live', selection.mode === 'during' && !preview);
     }
     if (outsideNote && selection.mode !== 'during') outsideNote.textContent = statusText(selection,cards.length);
     const card = cards[shown];
+    retargetQuickNav(card);
     // 舊版靜態 DOM 與無行程卡片也可正常選日。
     const steps = Array.from(card.querySelectorAll?.('[data-next-step]') || []);
     const minute = preview ? -1 : warsawMinutes(clock);
-    const selected = manualStep?.date === dates[shown] ? manualStep.index : nextPlanIndex(steps.map(item => Number(item.getAttribute('data-plan-minute'))),minute);
+    const selected = nextPlanIndex(steps.map(item => Number(item.getAttribute('data-plan-minute'))),minute);
     steps.forEach((step,index) => { step.hidden = index !== selected; });
-    const stepPicker = card.querySelector?.('[data-step-picker]');
-    if (stepPicker) stepPicker.value = selected < 0 ? '' : String(selected);
     const ended = card.querySelector?.('[data-next-ended]');
     if (ended) ended.hidden = selected !== -1;
+    // 晚上：看的是今天、而且今天最後一步也過了，改成「回住宿＋明天第一件事」置頂。
+    const live = selection.mode === 'during' && !preview;
+    const evening = live && steps.length > 0 && selected === -1;
+    card.setAttribute?.('data-today-phase', evening ? 'evening' : 'day');
     // 只有顯示中的那一站算倒數；其餘一律傳 -1 清空，
-    // 否則手動切站或換日之後，被藏起來的節點會留著上一次算出的舊數字。
+    // 否則換日之後，被藏起來的節點會留著上一次算出的舊數字。
     steps.forEach((step,index) => applyEta(step.querySelector?.('[data-next-eta]'),
       Number(step.getAttribute('data-plan-minute')), index === selected ? minute : -1));
     // 「第幾站／共幾站」讓人知道今天還剩多少，而不是只看到孤立的一站。
@@ -145,50 +161,51 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
       progress.textContent = steps.length && selected >= 0 ? `第 ${selected + 1}／${steps.length} 站` : '';
     }
     const mode = card.querySelector?.('[data-next-mode]');
-    if (mode) mode.textContent = `${manualStep?.date === dates[shown] ? '手動查看此站' : preview ? '預覽當日第一個時間點' : '依波蘭時間顯示下一個預定時間點'}；不代表目前位置或上一站已完成。`;
+    if (mode) mode.textContent = preview ? '預覽：當日第一站' : '依行程表，非即時定位';
+    const selectedMinute = selected >= 0 ? Number(steps[selected].getAttribute('data-plan-minute')) : null;
     const deadlines = Array.from(card.querySelectorAll?.('[data-hard-time]') || []);
     const deadlineIndex = nextPlanIndex(deadlines.map(item => Number(item.getAttribute('data-plan-minute'))),minute);
     deadlines.forEach((item,index) => { item.hidden = index !== deadlineIndex; });
     // 逼近的期限才升級成紅色；離得遠或在預覽別天時維持琥珀色的提示，
     // 紅色留給真的快來不及，才不會每天都紅、看久了就當背景。
+    // 硬時間和下一站同一時刻時併成一行：倒數只在下一站顯示一次。
     deadlines.forEach((item,index) => {
       const planMinute = Number(item.getAttribute('data-plan-minute'));
-      const at = index === deadlineIndex ? minute : -1;
+      const same = index === deadlineIndex && planMinute === selectedMinute;
+      const at = index === deadlineIndex && !same ? minute : -1;
+      item.setAttribute?.('data-hard-same', same ? 'true' : 'false');
       item.setAttribute?.('data-eta-level', planEta(planMinute, at)?.level || 'none');
       applyEta(item.querySelector?.('[data-hard-eta]'), planMinute, at);
     });
-    // 天氣只抓顯示中的那一天；loadWeather 只在頁面內嵌時存在（單元測試匯入本檔時略過）。
-    if (typeof loadWeather === 'function') loadWeather(card.querySelector?.('[data-today-weather]'));
     const hardEnded = card.querySelector?.('[data-hard-ended]');
     if (hardEnded) hardEnded.hidden = deadlineIndex !== -1;
-    // 今天吃哪：只在「旅途中且看的就是今天」時依華沙時間整理餐點——已開始超過 MEAL_DONE_AFTER 分鐘的餐
-    // 收成一行，第一個還沒過的餐標為 next 並排第一，「接下來去哪」下方同步顯示下一餐。
-    // 預覽別天、旅途外、手動換日時清掉標記，版面維持原樣。
-    const live = selection.mode === 'during' && !preview;
+    // 下一段車：只顯示還沒出發的下一段城際移動，全部過了就整列不顯示。
+    const legs = Array.from(card.querySelectorAll?.('[data-today-leg]') || []);
+    const legIndex = nextPlanIndex(legs.map(item => Number(item.getAttribute('data-plan-minute'))),minute);
+    legs.forEach((item,index) => { item.hidden = index !== legIndex; });
+    // 天氣只抓顯示中的那一天；loadWeather 只在頁面內嵌時存在（單元測試匯入本檔時略過）。
+    if (typeof loadWeather === 'function' && !evening) loadWeather(card.querySelector?.('[data-today-weather]'));
+    // 下一餐：看今天時依華沙時間，開始超過 MEAL_DONE_AFTER 分鐘的餐算已過；預覽別天時顯示第一餐。
+    // 相對時間（出礦後…）：後面第一個有時刻的步驟到了就算已過。
     const meals = Array.from(card.querySelectorAll?.('[data-meal-label]') || []);
-    let nextMeal = null;
-    meals.forEach(item => {
-      // 有明確時刻：開始超過 MEAL_DONE_AFTER 分鐘算已過；相對時間（出礦後…）：後面第一個有時刻的步驟到了就算已過。
+    const nextMeal = meals.find(item => {
       const at = item.getAttribute('data-meal-minute');
       const before = item.getAttribute('data-meal-before-minute');
-      const past = live && (at !== null ? Number(at) < minute - MEAL_DONE_AFTER : before !== null && Number(before) <= minute);
-      if (live && !past && !nextMeal) nextMeal = item;
-      if (live) item.setAttribute('data-meal-state', past ? 'past' : item === nextMeal ? 'next' : 'upcoming');
-      else item.removeAttribute?.('data-meal-state');
-    });
+      return !(at !== null ? Number(at) < minute - MEAL_DONE_AFTER : before !== null && Number(before) <= minute);
+    }) || null;
     const nextMealRow = card.querySelector?.('[data-next-meal]');
     if (nextMealRow) {
       nextMealRow.hidden = !nextMeal;
       if (nextMeal) {
-        const name = nextMeal.querySelector('h4')?.textContent || '';
-        const map = nextMeal.querySelector('.day-food-map');
+        const name = nextMeal.getAttribute('data-meal-name') || '';
+        const map = nextMeal.getAttribute('data-meal-map');
         const text = nextMealRow.querySelector('[data-next-meal-text]');
         const link = nextMealRow.querySelector('[data-next-meal-nav]');
-        if (text) text.textContent = `下一餐：${nextMeal.getAttribute('data-meal-time')} ${nextMeal.getAttribute('data-meal-label')} · ${name}`;
+        if (text) text.textContent = `${nextMeal.getAttribute('data-meal-time')} ${nextMeal.getAttribute('data-meal-label')} · ${name}`;
         if (link) {
           link.hidden = !map;
           if (map) {
-            link.setAttribute('href', map.getAttribute('href'));
+            link.setAttribute('href', map);
             link.setAttribute('target', '_blank');
             link.setAttribute('rel', 'noopener noreferrer');
             link.setAttribute('aria-label', `在新視窗開啟 ${name} 的 Google Maps 導航`);
@@ -197,50 +214,28 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
       }
     }
     // 已經是自動模式（看今天）時「回到今天」沒有作用，停用它才看得出目前狀態。
-    if (reset) reset.disabled = manualDate === null && manualStep === null;
+    if (reset) reset.disabled = manualDate === null;
   }
 
   function choose(index) {
     manualDate = dates[Math.max(0,Math.min(cards.length-1,index))];
-    manualStep = null;
     refresh();
   }
   picker?.addEventListener('change', () => choose(dates.indexOf(picker.value)));
   prev?.addEventListener('click', () => choose(shown-1));
   next?.addEventListener('click', () => choose(shown+1));
-  reset?.addEventListener('click', () => { manualDate=null; manualStep=null; refresh(); });
-  function revealTarget(card, key) {
-    const target = card?.querySelector(`[data-${key}]`);
-    if (!target) return null;
-    if (target.tagName === 'DETAILS') target.open = true;
-    target.scrollIntoView({block:'start',behavior:'smooth'});
-    target.setAttribute('tabindex','-1');
-    target.focus({preventScroll:true});
-    return target;
-  }
-  cards.forEach(card => {
-    card.classList?.add('today-enhanced');
-    card.querySelector?.('[data-step-picker]')?.addEventListener('change', event => {
-      manualStep = {date:card.getAttribute('data-today-date'), index:Number(event.target.value)};
-      refresh();
-    });
-    card.querySelectorAll?.('[data-today-action]').forEach(button => button.addEventListener('click', () => {
-      const action = button.getAttribute('data-today-action');
-      if (action === 'next') { manualStep=null; refresh(); }
-      revealTarget(card, `today-${action}`);
-    }));
-  });
+  reset?.addEventListener('click', () => { manualDate=null; refresh(); });
+  cards.forEach(card => card.classList?.add('today-enhanced'));
   if (picker) picker.closest('nav')?.classList.add('today-enhanced');
-  // 手機底部快捷列的「時間表」「吃哪」用網址片段（#today-schedule／#today-food）
-  // 指到目前顯示的那張卡，而不是寫死 id——八張卡是同時渲染、只用 hidden 切換，
-  // 寫死 id 會重複八次。
+  // 從其他頁的「時間表」「吃哪」（today.html#today-schedule／#today-food）進來時，
+  // 直接換到當天每日頁的對應段落；用 replace 不留一筆多餘的上一頁。
   function focusHash() {
     // 內嵌／測試環境不一定有 location（例如單元測試用純物件模擬 DOM），
     // 沒有就當作沒有片段導覽，不影響其餘初始化流程。
-    const hash = typeof location === 'undefined' ? '' : location.hash;
-    const key = hash.replace(/^#/, '');
-    if (key !== 'today-schedule' && key !== 'today-food') return;
-    revealTarget(cards[shown], key);
+    if (typeof location === 'undefined') return;
+    const target = JUMPS[location.hash.replace(/^#/, '')];
+    const href = dayHref(cards[shown]);
+    if (target && href) location.replace(`${href}${target}`);
   }
   refresh();
   focusHash();

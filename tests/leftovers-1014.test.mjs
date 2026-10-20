@@ -40,11 +40,13 @@ test('訂票頁「待辦頁以外」：瀏覽器端沿用 markOverdueRechecks，
 test('今日頁：每個指向 #today-* 的連結在同頁都有對應 id，且 id 不重複', () => {
   const html = fs.readFileSync('dist/today.html', 'utf8');
   const targets = [...html.matchAll(/href="#(today-[\w-]+)"/g)].map(m => m[1]);
-  assert.ok(targets.includes('today-food'), '應至少有一個指向 #today-food 的連結');
+  // 2026-10-20 今日卡改一屏儀表板：時間表與餐飲在每日頁，卡內不再有 #today-* 段落與同頁連結；
+  // 若之後又加了同頁連結，仍須恰有一個對應 id。
   for (const id of new Set(targets)) {
     assert.equal((html.match(new RegExp(`\\sid="${id}"`, 'g')) || []).length, 1, `#${id} 應恰有一個 id`);
   }
-  assert.match(html, /id="today-schedule"/);
+  // 從其他頁連進來的 #today-schedule／#today-food 由內嵌腳本轉到當天每日頁的 #schedule／#day-food。
+  assert.match(html, /'today-schedule': '#schedule', 'today-food': '#day-food'/);
 });
 
 test('單檔版：每日頁快捷列在桌機不用負邊距外推，避免比視窗寬', () => {

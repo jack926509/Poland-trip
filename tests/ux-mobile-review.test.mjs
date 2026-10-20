@@ -186,7 +186,7 @@ test('外國旅客不打電話：行程、餐飲、待辦與 README 不出現打
   const { dayDining } = await import('../src/data/day-dining.js');
   const { cafeGuide } = await import('../src/data/dining.js');
   const texts = [JSON.stringify(days), JSON.stringify(todoGroups), JSON.stringify(dayDining), JSON.stringify(cafeGuide),
-    JSON.stringify(Object.values(diningPlaces).map(({ phone, ...rest }) => rest)), fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'README.md'), 'utf8')];
+    JSON.stringify(Object.values(diningPlaces).map(({ phone, ...rest }) => rest)), fs.readFileSync(new URL('../README.md', import.meta.url), 'utf8')];
   for (const text of texts) assert.doesNotMatch(text, /打電話|電話確認|電話訂|訂位電話|先電話|電話 \+48|打 ?\+48|[（(]\+48|打 ?\d{2} ?\d{3}|打給/);
   for (const file of ['day-02.html', 'day-03.html', 'day-08.html', 'city-krakow.html']) {
     assert.doesNotMatch(read(file), /class="store-action" href="tel:/, `${file} 的店家卡不應有電話鈕`);
