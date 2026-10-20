@@ -230,7 +230,8 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
       const comma = /^([\s\S]{12,}?，)([\s\S]+)$/.exec(lead);
       if (comma) [lead, rest] = [comma[1], `${comma[2].trim()}${rest}`];
     }
-    return [lead, rest];
+    // 第一句尾端的「；」「，」「、」在斷句後多餘，去掉（「。」「！」「？」保留）。
+    return [rest ? lead.replace(/[；，、]\s*$/, '') : lead, rest];
   };
   const stepMore = text => `<details class="step-more"><summary>展開</summary><span class="timeline-note">${text}</span></details>`;
   const stepSubHtml = step => {

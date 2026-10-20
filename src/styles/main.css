@@ -5502,6 +5502,22 @@ h3 {
   padding: 0.45rem 0;
 }
 
+/* 窄螢幕（≤420px）：狀態徽章換到下一行，列內容不再把外框撐出橫向捲動。 */
+@media (max-width: 420px) {
+  .booking-status-groups a {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0 0.75rem;
+    padding: 0.2rem 0.75rem 0.45rem;
+  }
+
+  .booking-status-groups a > span {
+    flex: 1 1 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
 .booking-status-extra {
   margin: 0.8rem 0;
 }

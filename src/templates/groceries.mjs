@@ -207,7 +207,7 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
     <section class="section" id="quick-meals">${heading('quick-meals', 'Żabka 即食與早餐')}
       <ul class="grocery-drink-list">${(guide.zabka || []).map(pick => renderDrinkPick(pick, pathPrefix)).join('')}</ul>
       <ul class="check-list grocery-quick-list">
-        <li><b>Hot Dog：</b>可選香腸與醬料，供應與價格依現場；想吃無肉版本先問門市。${external('https://www.zabka.pl/nowy-gracz-w-druzynie-zabki-hot-dog-amerykanski-debiutuje-obok-kultowych-zapiekanek/', 'Żabka 2026 公告')}${renderDataNote(['2026 年 4 月官方宣布美式熱狗擴至全國門市；無肉版本目前供應未確認。'])}</li>
+        <li><b>Hot Dog：</b>可選香腸與醬料，供應與價格依現場；無肉版本不一定有，要先問門市。${external('https://www.zabka.pl/nowy-gracz-w-druzynie-zabki-hot-dog-amerykanski-debiutuje-obok-kultowych-zapiekanek/', 'Żabka 2026 公告')}${renderDataNote(['2026 年 4 月官方宣布美式熱狗擴至全國門市；無肉版本目前供應未確認。'])}</li>
         <li><b>熱壓吐司（Tosty）、Panini、Zapiekanka：</b>有火腿起司、雞肉培根吐司等；Zapiekanka 是波蘭式焗烤長麵包，口味依當日供應。${external('https://www.zabka.pl/street-food-dostepny-w-kazdej-zabce/', 'Żabka 烤爐公告')} · ${external('https://www.zabka.pl/zabka-menu/', '現行菜單')}${renderDataNote(['品項取自官方菜單；官方已於 2025 年宣布完成全門市烤爐配置。'])}</li>
         <li><b>咖啡（Kawa）：</b>官網列有黑咖啡、Latte、Cappuccino 與 Espresso；價格與操作方式看現場。${external('https://www.zabka.pl/zabka-menu/', 'Żabka 菜單')}</li>
         <li><b>麵包與飲品：</b>超市麵包區找可頌或小份麵包，配 Łaciate 小盒牛奶或 Tymbark 小盒果汁（見<a href="#milk-juice">牛奶與果汁</a>）。</li>

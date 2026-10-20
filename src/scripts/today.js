@@ -77,6 +77,8 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
   // 餐點開始超過這麼多分鐘就視為「已過」，「下一餐」改指下一頓；剛到的餐不會被跳過。
   // 放在函式內：本函式以 toString() 內嵌進頁面，模組層常數不會跟著進去。
   const MEAL_DONE_AFTER = 60;
+  // 今天最後一步時刻過了這麼多分鐘，晚上模式（回住宿）才接手；比照「下一餐」的寬限。
+  const EVENING_AFTER = 60;
   // 今日卡只放「一屏看完」的摘要；時間表與餐廳細節在每日頁。
   // 底部快捷列與其他頁連到 today.html#today-schedule／#today-food 時，改送到當天每日頁的對應段落。
   const JUMPS = { 'today-schedule': '#schedule', 'today-food': '#day-food' };
@@ -148,7 +150,15 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
     if (ended) ended.hidden = selected !== -1;
     // 晚上：看的是今天、而且今天最後一步也過了，改成「回住宿＋明天第一件事」置頂。
     const live = selection.mode === 'during' && !preview;
-    const evening = live && steps.length > 0 && selected === -1;
+    const lastStep = Math.max(...steps.map(item => Number(item.getAttribute('data-plan-minute'))));
+    // 離境日航班起飛後（data-flight-minute）：直接進結束狀態，不再等最後一步的寬限。
+    const flightAttr = card.getAttribute?.('data-flight-minute');
+    const departed = live && flightAttr != null && minute >= Number(flightAttr);
+    const evening = live && steps.length > 0 && (departed || (selected === -1 && minute > lastStep + EVENING_AFTER));
+    card.setAttribute?.('data-trip-ended', departed ? 'true' : 'false');
+    // 起飛後：離境提醒與晚間準備換成一行結束語。
+    card.querySelectorAll?.('[data-leaving-pre],[data-night-link],[data-evening-full]').forEach(item => { item.hidden = departed; });
+    card.querySelectorAll?.('[data-leaving-post]').forEach(item => { item.hidden = !departed; });
     card.setAttribute?.('data-today-phase', evening ? 'evening' : 'day');
     // 只有顯示中的那一站算倒數；其餘一律傳 -1 清空，
     // 否則換日之後，被藏起來的節點會留著上一次算出的舊數字。
@@ -159,6 +169,12 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
     if (progress) {
       progress.hidden = !steps.length || selected < 0;
       progress.textContent = steps.length && selected >= 0 ? `第 ${selected + 1}／${steps.length} 站` : '';
+    }
+    // 主按鈕：看的不是今天（預覽出發前／結束後／手動翻日）時，直接寫出是哪一天。
+    const fullLink = card.querySelector?.('[data-today-full]');
+    if (fullLink) {
+      if (fullLink.getAttribute('data-full-text') == null) fullLink.setAttribute('data-full-text', fullLink.textContent);
+      fullLink.textContent = preview ? `看 Day ${shown + 1} 行程 →` : fullLink.getAttribute('data-full-text');
     }
     const mode = card.querySelector?.('[data-next-mode]');
     if (mode) mode.textContent = preview ? '預覽：當日第一站' : '依行程表，非即時定位';
