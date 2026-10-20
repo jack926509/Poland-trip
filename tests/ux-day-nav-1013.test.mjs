@@ -19,7 +19,10 @@ test('C3：快捷列為「時間表／吃哪／地址／交通／地圖」，每
     const nav = html.match(/<nav class="day-shortcuts"[\s\S]*?<\/nav>/)?.[0];
     assert.ok(nav, `Day ${day.n} 缺快捷列`);
     const links = [...nav.matchAll(/<a href="#([^"]+)">([^<]+)<\/a>/g)];
-    assert.deepEqual(links.map(match => match[2]), ['時間表', '吃哪', '地址', '交通', '地圖'], `Day ${day.n} 快捷列文字`);
+    assert.deepEqual(links.map(match => match[2]), ['時間表', '吃哪', '地圖', '地址', '交通'], `Day ${day.n} 快捷列文字`);
+    // 2026-10-20 UX 檢視：快捷列順序跟頁面區塊順序一致（地圖與地址交通移到餐飲之後）
+    const positions = links.map(([, id]) => html.indexOf(`id="${id}"`));
+    assert.deepEqual(positions, [...positions].sort((a, b) => a - b), `Day ${day.n} 快捷列順序要與頁面一致`);
     for (const [, id] of links) {
       assert.ok(html.includes(`id="${id}"`), `Day ${day.n} 快捷列 #${id} 沒有對應錨點`);
     }

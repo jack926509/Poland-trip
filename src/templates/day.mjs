@@ -386,9 +386,9 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   const shortcuts = [
     ['#schedule', '時間表'],
     foodHtml ? ['#day-food', '吃哪'] : null,
+    dayMap ? [`#map-day-${day.n}-heading`, '地圖'] : null,
     operation ? ['#day-addresses', '地址'] : null,
     operation ? ['#day-route', '交通'] : null,
-    dayMap ? [`#map-day-${day.n}-heading`, '地圖'] : null,
   ].filter(Boolean);
 
   const bodyHtml = `
@@ -418,6 +418,8 @@ ${coverHtml}
     </section>
 
     ${foodHtml ? `<section class="section day-food-section">${foodHtml}</section>` : ''}
+    ${dayMap ? renderInteractiveMap({ id: `map-day-${day.n}`, title: `Day ${day.n} 行程地圖`, mapData: dayMap, mapChecks, legend, note: dayMap.note }) : ''}
+    ${renderOperation(operation, day)}
     ${trainHtml}
     <section class="section" id="day-preparation">
       <div class="section-heading"><span class="section-num">Preparation</span><h2>訂票與提醒</h2></div>
@@ -426,8 +428,6 @@ ${coverHtml}
       <p class="action-links"><a href="practical/todos.html">全部待辦與查核狀態 →</a><a href="practical/tickets.html">官方購票入口、門票價格與開放時間 →</a></p>
     </section>
     ${constraintHtml}
-    ${dayMap ? renderInteractiveMap({ id: `map-day-${day.n}`, title: `Day ${day.n} 行程地圖`, mapData: dayMap, mapChecks, legend, note: dayMap.note }) : ''}
-    ${renderOperation(operation, day)}
     ${extendHtml}
     ${returnOptionsHtml}
     ${backupHtml}

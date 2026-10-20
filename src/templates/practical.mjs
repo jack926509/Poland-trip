@@ -410,7 +410,7 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>餐廳</th><th>每人 PLN</th><th>訂位管道／備註</th></tr></thead><tbody>${reservationRows}</tbody></table></div>
     </section>
     ${renderFastFoodMenu({ chains: fastFoodChains, branches: fastFoodBranches, hubs: fastFoodHubs })}`;
-  return renderPracticalLayout('餐廳與速食', 'Michelin 2026', '已把 2026 米其林名單與本行程實際餐廳分開；營業時間只寫能追到店家來源的分店。趕行程時的連鎖速食分店另列一節。', content, 'practical/dining.html');
+  return renderPracticalLayout('餐廳與速食', 'Food guide', '八天三餐、咖啡甜點與備選都在這頁，依日期找就好；2026 米其林名單與趕行程用的連鎖速食放在後段參考。', content, 'practical/dining.html');
 }
 
 // 每個景點名稱都寫成「城市 · 景點」，用這個前綴分組，不需要另存一份對照表（稽核 M7）。

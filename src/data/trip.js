@@ -396,7 +396,7 @@ export const days = [
     ],
     backup: [
       {label:'下雨備案', where:'Stary Browar + 老城咖啡座', map:'https://www.google.com/maps/search/?api=1&query=Stary%20Browar%2C%20Polwiejska%2042%2C%20Poznan', why:'Stary Browar 和咖啡店都在室內，可以拉長；Carla 照 14:00，帝王區改快拍，16:15 仍要回去取行李'},
-      {label:'Carla 客滿或訂不到', where:'Pyra Bar 或 Zen On', why:'Pyra Bar（Strzelecka 13，週四 11:00–21:00，波茲南馬鈴薯料理）或 Zen On（Święty Marcin 21，週四 12:00–20:00，Michelin 推薦拉麵，+48 609 116 450）；中午就開，可以改回 12:15 吃午餐'},
+      {label:'Carla 客滿或訂不到', where:'Pyra Bar 或 Zen On', why:'Pyra Bar（Strzelecka 13，週四 11:00–21:00，波茲南馬鈴薯料理）或 Zen On（Święty Marcin 21，週四 12:00–20:00，Michelin 推薦拉麵）；中午就開，可以改回 12:15 吃午餐'},
     ],
   },
   {
