@@ -2701,6 +2701,16 @@ figure.media-unavailable > img {
   .journal-cover { min-height: 0; }
   .journal-cover-copy { min-height: 0; gap: 1rem; padding: 1.5rem; }
   .journal-cover-photo { max-height: 12rem; object-fit: cover; }
+  /* 2026-10-20 UX F15：首頁 POLSKA 裝飾卡在手機壓到 300px 以內——路線與下方路線條重複，手機隱藏；
+     日期改成緊湊兩欄、封面照片不顯示。 */
+  .journal-site .journal-cover-copy { min-height: 0; gap: 0.5rem; padding: 1rem 1.1rem; }
+  .journal-site .journal-cover h1 { margin: 0; font-size: 2.6rem; line-height: 1; }
+  .journal-site .journal-cover-route,
+  .journal-site .journal-cover-copy::after,
+  .journal-site .journal-cover-figure { display: none; }
+  .journal-site .journal-cover-meta { gap: 0.2rem; margin: 0; padding-top: 0.5rem; }
+  .journal-site .journal-cover-meta > div { display: flex; gap: 0.75rem; padding: 0; border: 0; }
+  .journal-site .journal-cover-meta dd { margin: 0; font-size: 0.9375rem; }
   .site-search-quick-row { display: flex; flex-wrap: wrap; }
   .site-search-quick-row button { min-height: 44px; }
   .journal-day-facts { gap: .75rem; }
@@ -8059,3 +8069,34 @@ html {
 .bus-leg-hint { color: var(--ink-soft); font-size: 0.875rem; }
 .data-note > summary::before { margin-right: 0.3rem; content: "＋"; }
 .data-note[open] > summary::before { content: "－"; }
+
+/* 2026-10-20 UX F12：SOS 緊急電話改成實心紅底、全寬、56px 高的大按鈕；底部列「SOS」跳進來時上方留白。 */
+#sos-contacts { scroll-margin-top: 1rem; }
+#sos-contacts .database-card-action a[href^="tel:"],
+#sos-contacts .database-card-action a.private-tel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 56px;
+  margin: 0.4rem 0 0;
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: #b3261e;
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  box-shadow: 0 2px 0 rgb(0 0 0 / 18%);
+}
+#sos-contacts .database-card-action a[href^="tel:"]:active { background: #8f1d17; }
+#sos-contacts .database-card-action br { display: none; }
+#sos-contacts .database-card-action { margin-top: 0.5rem; }
+@media (max-width: 700px) {
+  #sos-contacts > .database-card { padding: 0.9rem 1rem; }
+  #sos-contacts > .database-card > h3 { margin: 0; }
+  #sos-contacts > .database-card > p { margin: 0.25rem 0; }
+}

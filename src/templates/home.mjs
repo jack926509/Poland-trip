@@ -140,10 +140,7 @@ ${coverFigure}
       <a href="today.html"><b>旅途中速查</b><span>今天行程、導航與餐飲</span></a>
       <a href="practical/todos.html"><b>處理預約</b><span>票券、交通與待確認事項</span></a>
     </nav>
-    <aside class="journal-status-strip" aria-label="旅程準備狀態">
-      <a href="#todos" aria-label="${todoCount} 項待辦"><strong>${todoCount}</strong><span>項待辦</span></a>
-      <a href="practical/todos.html" class="journal-status-sub"><strong>${totalTodos - todoCount}</strong><span>已完成</span></a>
-    </aside>
+    <!-- 2026-10-20 UX F15：「N 項待辦／已完成」兩張統計大卡與頁首狀態列重複，已移除。 -->
 
     <section class="section" id="days">
       <div class="section-heading"><span class="section-num">01 / Contents</span><h2>八日旅程目錄</h2></div>

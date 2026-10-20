@@ -743,7 +743,8 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
   assert.ok(!html.includes('00 / Readiness'));
   assert.ok(!html.includes('高效率城市探索 · 腳程快 · 重點景點完整走完'));
   assert.ok(!html.includes(`${rawTodoCount} 項尚未訂`));
-  assert.ok(html.includes(`${todoCount} 項待辦`));
+  // 2026-10-20 UX F15：「N 項待辦／已完成」兩張統計卡與頁首狀態列重複已移除，待辦數改驗頁首狀態列。
+  assert.ok(html.includes(`還有 <b data-home-open>${todoCount}</b> 項待辦`));
   // 稽核 M9：首頁每個分類只留計數＋連結，逐項名稱與 practical/todos.html
   // 的完整清單重複，不再需要在首頁重複列出——這裡驗證分類與計數存在，
   // 項目本身改到 practical/todos.html 專屬測試驗證。
@@ -754,7 +755,7 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
     assert.ok(html.includes(`href="practical/todos.html#todo-${group.id}"`), `首頁缺少待辦分類連結：${group.id}`);
     assert.ok(html.includes(summary), `首頁缺少待辦分類計數：${group.title}`);
   }
-  assert.ok(html.includes('href="#todos"'));
+  assert.ok(html.includes('id="todos"'));
   assert.ok(html.includes('href="practical/todos.html"'));
 });
 
