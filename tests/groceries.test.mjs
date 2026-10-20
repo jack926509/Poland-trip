@@ -5,10 +5,10 @@ import { groceryBranches, groceryDrinkGuide, groceryProducts } from '../src/data
 import { cityRoutes } from '../src/lib/city-guide.mjs';
 import { normalizeText } from '../src/search/site-search-index.mjs';
 
-test('採買指南保留四城 12 個門市與二十九項商品，每筆都標出核到哪一層', () => {
+test('採買指南保留四城 12 個門市與三十項商品，每筆都標出核到哪一層', () => {
   assert.equal(groceryBranches.length, 12);
   assert.equal(new Set(groceryBranches.map(b => b.id)).size, 12);
-  assert.equal(groceryProducts.length, 29); // 2026-10-20 加 Kinder Chocofresh、FaceBoom、Your KAYA
+  assert.equal(groceryProducts.length, 30); // 2026-10-20 加 Kinder Chocofresh、FaceBoom、Your KAYA、Protein 花生糖
   for (const city of cityRoutes) assert.equal(groceryBranches.filter(b => b.cityKey === city.mapKey).length, 3);
   // 2026-09-22 逐店核對：Biedronka 四筆有官方逐日時間（verified），
   // Lidl 與 Żabka 八筆只核到地址（partial）。沒有任何一筆可以無來源地宣稱已核實。
@@ -129,7 +129,9 @@ test('採買推薦一項商品只出現一次，照片、理由與來源都留�
 test('id 同時是錨點與照片鍵，不能當成排名', () => {
   const ids = groceryProducts.map(product => product.id);
   assert.equal(new Set(ids).size, ids.length, 'id 重複會讓錨點與照片互相蓋掉');
-  for (const product of groceryProducts) {
+  // 照片待補只允許明確標 photoPending 的商品（2026-10-20 Protein 花生糖品牌待找）
+  for (const product of groceryProducts) assert.ok(product.photo || product.photoPending, `${product.localName} 缺照片`);
+  for (const product of groceryProducts.filter(item => item.photo)) {
     const digits = String(product.id).padStart(2, '0');
     assert.match(product.photo.src, new RegExp(`^assets/photos/grocery-${digits}\\.(?:webp|jpe?g)$`), `${product.localName} 的 id 與照片檔名對不上`);
   }

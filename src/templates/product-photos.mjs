@@ -5,7 +5,7 @@ import { escapeHtml as e } from '../lib/html.mjs';
 // 圖片會靜默地連到不存在的路徑。
 export function renderProductPhoto(product, pathPrefix = '') {
   const photo = product.photo;
-  if (!photo) return '<span class="source-meta">照片待補；請依商品名稱辨識</span>';
+  if (!photo) return `<span class="source-meta">照片待補${product.photoPending ? '（品牌待找）' : ''}；請依商品名稱辨識</span>`;
   const own = photo.license === '自行拍攝';
   const shared = photo.license === '網友截圖';
   const credit = own

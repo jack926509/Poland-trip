@@ -1193,6 +1193,26 @@ export const groceryProducts = [
       }
     ],
     "checkedAt": "2026-10-20"
+  },
+  {
+    "id": 33,
+    "name": "白巧克力 Protein 花生糖",
+    "localName": "Protein 花生糖（品牌待找）",
+    "packaging": "品牌待找；找包裝上有 Protein、花生（orzechy ziemne／arachidowe）字樣的糖",
+    "use": "伴手禮候選",
+    "priority": false,
+    "photoPending": true,
+    "note": "口感像入口即化的中式花生糖，外層裹一層薄白巧克力。部落格沒寫品牌，現場在 Carrefour 等超市的糖果區找。",
+    "reason": "網友自己挖到的小眾選擇，意外好吃；送有在健身的朋友特別受歡迎。",
+    "sources": [
+      {
+        "title": "flynowfei1baa6 部落格｜波蘭超市大推系列（Carrefour 採買）",
+        "url": "https://flynowfei1baa6.blogspot.com/",
+        "date": "2026-10-20 使用者提供截圖",
+        "kind": "網友分享（截圖）"
+      }
+    ],
+    "checkedAt": "2026-10-20"
   }
 // id 同時是錨點（#product-<id>）與照片鍵：groceryPhotos 與 assets/photos/grocery-NN.webp
 // 都以同一個編號對應。這個欄位原本叫 rank，但商品早就不按它排序
