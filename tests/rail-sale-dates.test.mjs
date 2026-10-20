@@ -118,11 +118,11 @@ test('訂票頁以精簡卡取代倒數表，首頁下一個期限不含資料�
   assert.doesNotMatch(home, /看完整倒數/);
 });
 
-test('每一筆未完成、且不由待辦頁管理的期限，都出現在訂票頁（ETIAS 不可消失）', () => {
+test('每一筆未完成、且不由待辦頁管理的期限，都出現在訂票頁', () => {
   const booking = renderBooking(allSources);
   const standalone = trip.deadlines.filter(item => !item.todoRef && isOpenTodoStatus(item.status));
-  // 2026-10-20 全站複查期限移除：資料以目前版本為準
-  assert.ok(standalone.some(item => item.id === 'etias-check-2'), '測試資料應含 ETIAS');
+  // 2026-10-20 全站複查期限移除；ETIAS 確認仍未啟用、本趟不用辦，期限一併移除
+  assert.ok(!trip.deadlines.some(item => item.id.startsWith('etias-')));
   assert.ok(!trip.deadlines.some(item => item.id === 'recheck-all'));
   for (const deadline of standalone) {
     assert.ok(booking.includes(escapeHtml(deadline.title)), `訂票頁缺少未完成期限 ${deadline.id}`);
@@ -154,23 +154,12 @@ test('合併後的項目 id 不重複，三個來源不會互相覆蓋', () => {
   assert.equal(new Set(ids).size, ids.length, `重複的 id：${ids.filter((id, index) => ids.indexOf(id) !== index).join('、')}`);
 });
 
-test('手動期限不得晚於資料庫對同一主題已排定的重查日', () => {
-  // 實際發生過：資料庫的 ETIAS 重查日是 2026-09-24，手動推算的卻排到 10/10，
-  // 等於悄悄把既有期限放寬 16 天。ETIAS 的手動項目現在只保留出發前最後確認。
-  const etiasEntry = databaseEntries.find(entry => entry.id === 'entry-etias-and-passport');
-  const manualEtias = trip.deadlines.filter(item => item.id.startsWith('etias-'));
-  assert.equal(manualEtias.length, 1, 'ETIAS 只應保留一筆出發前最後確認');
-  assert.ok(manualEtias[0].date > etiasEntry.recheckAt, '最後確認應排在資料庫重查之後，而非取代它');
-  assert.ok(manualEtias[0].basis.includes(etiasEntry.id), '最後確認的依據應指明與資料庫項目的關係');
-});
-
 test('由出發日回推的期限，算術與 basis 敘述一致', () => {
   // basis 寫「出發前 N 週／天」卻算錯，看板就會給出比預期寬鬆或緊迫的日期。
   // 這裡把每筆的回推天數寫死，讓敘述與日期綁在一起。
   const offsets = {
     'dining-michelin': 4, // 2026-10-17 原 10/02 已過期且仍有 6 項未訂，改為出發前 4 天
     'ticket-wieliczka': 21,
-    'etias-check-2': 3,
   };
   const depart = Date.parse(`${trip.meta.travelStart}T00:00:00Z`);
   for (const [id, days] of Object.entries(offsets)) {

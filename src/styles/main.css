@@ -5455,6 +5455,15 @@ h3 {
   text-decoration: none;
 }
 
+.booking-status-groups a > b {
+  flex: none;
+  white-space: nowrap;
+}
+
+.booking-status-groups a > span {
+  padding: 0.45rem 0;
+}
+
 .booking-status-extra {
   margin: 0.8rem 0;
 }

@@ -2,7 +2,7 @@ import { mealTiming, renderMealList, renderStoreBadges, renderStoreBody, renderS
 import { dayMeals, dayDining } from '../data/day-dining.js';
 import { days } from '../data/trip.js';
 import { todoItemId } from '../lib/journey.mjs';
-import { todoStats } from '../lib/todo-status.mjs';
+import { todoStats, isTodoOpen } from '../lib/todo-status.mjs';
 import { escapeHtml, linkifyText, safeHttpsUrl } from '../lib/html.mjs';
 import { renderLayout } from './layout.mjs';
 import { cityGuideByName, dayPageForDate, cityRoutes } from '../lib/city-guide.mjs';
@@ -111,13 +111,16 @@ export function renderBookingStatusCard(todoGroups, deadlines = [], today = taip
             }());
           </script>
         </div>` : '';
-  const rows = stats.groups.map(row => `<li><a href="todos.html#todo-${escapeHtml(row.id)}"><span>${escapeHtml(row.title)}</span><b>${row.open ? `${row.open} 項待處理` : '已完成'}</b></a></li>`).join('');
+  // 還沒買／還沒訂的逐項列出（依日期），點了直接跳到待辦頁那一筆；已完成的不再列。
+  const openItems = todoGroups.flatMap(group => group.items.filter(isTodoOpen).map(item => ({ item, group })))
+    .sort((a, b) => todoSortKey(a.item) - todoSortKey(b.item));
+  const rows = openItems.map(({ item, group }) => `<li><a href="todos.html#${todoItemId(group, item)}"><span><b class="number">${escapeHtml(item.date)}</b>　${escapeHtml(item.name)}</span><b>${escapeHtml(item.status)}</b></a></li>`).join('');
   return `
     <section class="section booking-status" id="countdown" data-todo-open="${stats.open}" data-todo-total="${stats.total}">
       <div class="booking-status-card">
         <span class="eyebrow">待辦總覽</span>
         <h2>${stats.open ? `還沒處理 <b class="number" data-booking-open>${stats.open}</b> 項` : '待辦已全部處理完畢'}</h2>
-        <p>共 ${stats.total} 項，已完成 ${stats.done} 項${stats.skipped ? `，線上已售完 ${stats.skipped} 項（當天現場再試）` : ''}。逐項狀態與處理連結在待辦事項頁。</p>
+        <p>火車、Auschwitz 去程、鹽礦與 7 晚住宿都已訂好；下面是出發前還要買、要訂或要做的。</p>
         <ul class="booking-status-groups">${rows}</ul>${standaloneHtml}
         <p class="action-links"><a class="booking-status-cta" href="todos.html">看待辦事項 →</a></p>
       </div>
@@ -414,7 +417,7 @@ export function renderEssentials({ phrases, packingDefault, about, safety, sourc
   const sourceRows = sources.map(item => `<tr><td><a href="${item.url}" target="_blank" rel="noopener"><b>${item.name}</b></a></td><td>${item.note}</td></tr>`).join('');
   const content = `
     ${renderSosSection()}
-    <section class="section"><div class="section-heading"><span class="section-num">Basics</span><h2>基本須知</h2></div><div class="grid">${aboutCards}<article class="card"><span class="eyebrow">入境</span><p>EES 已全面運作，首次入境要留登錄時間；ETIAS 仍未啟用、不收申請。Cathay、Qatar、EVA 行動電源規則見下方來源表。</p></article></div></section>
+    <section class="section"><div class="section-heading"><span class="section-num">Basics</span><h2>基本須知</h2></div><div class="grid">${aboutCards}</div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Language</span><h2>常用波蘭語</h2></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>中文</th><th>波蘭語</th><th>音譯</th></tr></thead><tbody>${phraseRows}</tbody></table></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Packing</span><h2>打包清單</h2></div><div class="grid-wide">${packingHtml}</div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Phone</span><h2>其他緊急電話</h2></div><div class="grid-wide"><div class="table-wrap"><table class="table-editorial"><thead><tr><th>單位</th><th>電話</th></tr></thead><tbody>${emergencyRows}</tbody></table></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>駐波蘭代表處</th><th>資訊</th></tr></thead><tbody>${embassyRows}</tbody></table></div></div></section>

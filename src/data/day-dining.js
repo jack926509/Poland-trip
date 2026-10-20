@@ -409,7 +409,7 @@ export const dayDiningPlans = {
       "stepId": "d6-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "週四 12:00–22:00（多個目錄一致，無店家官網），當天先打 22 881 78 51 或 22 622 18 86 確認仍接單；21:00 到店、21:15 前無法入座就改 Złote Tarasy 速食或 24 小時的 Ćma。",
+      "condition": "週四 12:00–22:00（多個目錄一致，無店家官網），不用訂位，當天先看 Google 地圖營業狀態；21:00 到店、21:15 前無法入座就改 Złote Tarasy 速食或 24 小時的 Ćma。",
       "dayHours": "12:00–22:00"
     },
     {

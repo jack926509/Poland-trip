@@ -4,6 +4,7 @@ import fs from 'node:fs';
 
 import * as trip from '../src/data/trip.js';
 import { databaseEntries } from '../src/data/travel-database.js';
+import { escapeHtml } from '../src/lib/html.mjs';
 import { renderHome } from '../src/templates/home.mjs';
 import { renderBooking, renderTodos, todoLinkLabel } from '../src/templates/practical.mjs';
 import { resolveTodoRef, statusOfItems, lajkonikInboundWord, railGroupIntro } from '../src/lib/todo-status.mjs';
@@ -69,11 +70,12 @@ test('待辦頁數字等於正本', () => {
 test('訂票頁精簡卡的待辦數與各類計數等於正本', () => {
   assert.match(booking, new RegExp(`data-todo-open="${expected.open}" data-todo-total="${expected.total}"`));
   assert.match(booking, new RegExp(`還沒處理 <b class="number" data-booking-open>${expected.open}</b> 項`));
-  assert.ok(booking.includes(`共 ${expected.total} 項，已完成 ${expected.done} 項`));
-  for (const group of trip.todoGroups) {
-    const text = openByGroup[group.id] ? `${openByGroup[group.id]} 項待處理` : '已完成';
-    assert.ok(booking.includes(`<span>${group.title}</span><b>${text}</b>`), `${group.id} 計數不符`);
-  }
+  // 2026-10-20 改成逐項列出還沒買／還沒訂的項目，每筆連到待辦頁那一筆
+  const card = booking.slice(booking.indexOf('id="countdown"'), booking.indexOf('</section>', booking.indexOf('id="countdown"')));
+  const openItems = trip.todoGroups.flatMap(group => group.items.filter(isOpen));
+  assert.equal((card.match(/<li><a href="todos\.html#/g) || []).length, openItems.length);
+  for (const item of openItems) assert.ok(card.includes(escapeHtml(item.name)), `訂票頁缺少未完成項目 ${item.name}`);
+  assert.ok(card.includes('Lajkonik 回程'));
 });
 
 test('訂票頁不再重述待辦：沒有倒數表、優先順序、時程表，也沒有逾期假警報', () => {

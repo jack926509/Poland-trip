@@ -80,8 +80,8 @@ test('可查購仍未完成，未記錄查核日期不冒用建置日期', () =>
   const html = renderTodos({ todoGroups });
   assert.ok(html.includes('訂票狀態不是即時庫存'));
   assert.ok(!html.includes('最近人工查核'), '2026-10-20 起不顯示查核日期');
-  assert.ok(html.includes('12 項待辦'));
-  assert.ok(html.includes('共 21 項'));
+  assert.ok(html.includes('11 項待辦'));
+  assert.ok(html.includes('共 20 項'));
   // Auschwitz 導覽與巴士、四段火車、10/10 查過的餐廳，
   // 以及 10/12 複查的 Mr. Jerry、Arirang、Rusiko 時段均已有人工核對日期；
   // 2026-10-14 新增的選配午餐與出發前準備兩筆也記了查核日。
