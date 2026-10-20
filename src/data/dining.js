@@ -252,6 +252,18 @@ export const cityFood = [
         "tag": "傳統備案",
         "book": "must",
         "role": "backup"
+      },
+      {
+        "placeId": "warsaw-bar-mleczny-bambino",
+        "tag": "牛奶吧",
+        "book": "walk",
+        "role": "backup"
+      },
+      {
+        "placeId": "warsaw-bar-mleczny-prasowy-marszalkowska",
+        "tag": "牛奶吧",
+        "book": "walk",
+        "role": "backup"
       }
     ]
   },

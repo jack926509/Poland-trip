@@ -665,7 +665,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
     warsaw: 5, krakow: 7, wroclaw: 4, poznan: 7,
   });
-  assert.deepEqual(cityFood.map(group => group.items.length), [8, 12, 7, 5]);
+  assert.deepEqual(cityFood.map(group => group.items.length), [10, 12, 7, 5]); // 2026-10-20 華沙加 Bambino、Prasowy 兩家牛奶吧備選（8 → 10）
   assert.equal(foods.length, 12);
 
   // 2026-09-17 複查後新增：華沙 E.Wedel、克拉科夫 Wawel 拆成二樓／寶庫兩列、
