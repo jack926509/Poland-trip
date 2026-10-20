@@ -430,7 +430,7 @@ export const dayOperations = {
     ],
     navigation: [
       { mode: 'PKP', route: 'Warszawa Centralna → Kraków Główny', action: `已購 EIP 5300 ${eip5300.dep} 由 Warszawa Centralna 出發；從 Hotel Metropol 步行約 500 公尺。月台、車廂與座位依票券詳細頁及現場電子牌確認。` },
-      { mode: '步行／電車／計程車', route: 'Kraków Główny → 甕城 → Pimiento → 中央廣場 → Wawel → 辛德勒工廠', action: '先寄放行李、逛北邊甕城一帶；午餐 13:00 在 Pimiento，飯後沿 Floriańska 往南，14:00 中央廣場、14:30 瓦維爾大教堂、15:15 Wawel 短路線；16:15 由 Wawel 搭電車或計程車到辛德勒工廠，17:10 前到入口。電車車號與轉乘用 Jakdojade 查即時資料。' },
+      { mode: '步行／電車／計程車', route: 'Kraków Główny → 甕城 → Pimiento → 中央廣場 → Wawel → 辛德勒工廠', action: '先寄放行李、逛北邊甕城一帶；午餐 13:00 在 Pimiento，飯後沿 Floriańska 往南，14:00 中央廣場、14:30 瓦維爾大教堂、15:15 Wawel 短路線；16:15 由 Wawel 步行經 Kazimierz（Plac Nowy 圓亭）、Bernatek 人行橋到辛德勒工廠，17:10 前到入口；下雨或腳痠改搭電車，車號與轉乘用 Jakdojade 查即時資料。' },
     ],
     dailyAlerts: [
       '10/25 為非營業週日，多數一般商店關閉；餐廳與例外店家仍逐店確認。',
@@ -493,13 +493,13 @@ export const dayOperations = {
       accommodationAddress('poznan-towarowa'),
     ],
     navigation: [
-      { mode: '步行／電車', route: '老城 → 屠夫巷 → El Gato → 大學區 → 午餐 → 全景畫外觀 → 百年廳 → Słodowa 島 → 沙島 → 座堂島', action: '上午全程步行；13:10 午餐後看全景畫外觀，13:20 過 Grunwaldzki 橋搭電車往東約 15 分到百年廳，14:50 再搭電車回 Słodowa 島一帶，由西往東走過沙島到座堂島；電車車號用 Jakdojade 查。預留從座堂島回旅館取行李及前往車站的時間。' },
+      { mode: '步行／電車', route: '老城 → 屠夫巷 → El Gato → 大學區 → 午餐 → 全景畫外觀 → 百年廳 → Słodowa 島 → 沙島 → 座堂島', action: '上午全程步行；13:10 離開午餐、步行約 10 分，13:20 在全景畫外拍外景（不入內），13:30 過 Grunwaldzki 橋搭電車往東約 15 分到百年廳，14:50 再搭電車回 Słodowa 島一帶，由西往東走過沙島到座堂島；電車車號用 Jakdojade 查。預留從座堂島回旅館取行李及前往車站的時間。' },
       { mode: 'PKP', route: 'Wrocław Główny → Poznań Główny', action: '已購 IC 260 19:10，預計 20:29 抵 Poznań Główny（Koleo）；18:35 前抵站。車廂與座位依票券詳細頁。' },
     ],
     dailyAlerts: [
       '點燈人沒有對外保證的出發分鐘；日落前到座堂島等待，不把 16:45 當成確定時刻。',
     ],
-    nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票', '確認 Poznan Apartments 怎麼拿鑰匙、明早 07:00 能不能寄行李；07:15 Charlotte Krysiewicza 早餐、08:00 搭電車去 Cytadela。晚餐 Arirang 當天先電話確認，21:15 前不能入座改 Złote Tarasy 或 Ćma'],
+    nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票', '確認 Poznan Apartments 怎麼拿鑰匙、明早 07:00 能不能寄行李；07:15 Charlotte Krysiewicza 早餐、08:00 搭電車去 Cytadela。晚餐 Arirang 當天先看 Google 地圖營業狀態，21:15 前不能入座改 Złote Tarasy 或 Ćma'],
   },
   6: {
     cityKey: 'warsaw',
@@ -573,7 +573,7 @@ export const dayOperations = {
       '水上宮殿週五個人參觀免費，最後入場 17:30（以館方當日公告為準）；本次只排湖邊外觀，日落 16:12 拍倒影。',
       '10/31 為諸聖節前夕，今晚重查明日市區交通、機場與店家特別營運。',
     ],
-    nightChecklist: [...standardNightChecklist, '整理 TAX FREE 商品與文件，確認需海關查驗的託運品不先交運', '確認 QR 260 報到、行李額度、機場交通與護照收納位置', '確認 Charlotte Złota 08:00 早餐，預留回飯店取行李；08:15 未入座改外帶，11:00 前到機場'],
+    nightChecklist: [...standardNightChecklist, '整理 TAX FREE 商品與文件，確認需海關查驗的託運品不先交運', '確認 QR 260 報到、行李額度、機場交通與護照收納位置', '確認 Bułkę przez Bibułkę（Zgoda 3）08:00 早餐，08:50 回飯店取行李；08:15 未入座改外帶，11:00 前到機場'],
   },
   8: {
     cityKey: 'warsaw',
@@ -625,13 +625,14 @@ const unresolvedStepReasons = {
   2: {
     'EIP 5300 前往克拉科夫': dynamicTransitReason,
     '聖弗洛里安城門 → 甕城 Barbakan → Stary Kleparz': '戶外步行段，城門在 Floriańska 北端、甕城在 Basztowa 街旁，Stary Kleparz 在 Pimiento 旁；只看外觀。',
-    '電車或計程車前往辛德勒工廠': '電車車號與轉乘為動態資料，出發前用 Jakdojade 查；以辛德勒工廠入口地址為終點，17:10 前到場。',
+    '步行經 Kazimierz → Bernatek 橋 → 辛德勒工廠': '主案步行；改搭電車時車號與轉乘為動態資料，出發前用 Jakdojade 查；以辛德勒工廠入口地址為終點，17:10 前到場。',
   },
   3: {
     'Kraków MDA 報到': `巴士站地址（Bosacka 18）與 10/26 的 ${lajkonikOutboundAdopted.dep} 班次已購票，票面標示下層 ${lajkonikOutboundAdopted.bay} 站位；站位仍以當日電子看板為準。`,
     'Lajkonik · 克拉科夫 → 奧斯威辛': dynamicTransitReason,
     '回程巴士返克拉科夫': '導覽 14:15 結束後才發車，實際班次依當日選定的回程選項；上車點與時刻在售票頁確認後再導航。',
     '抵 Kraków MDA · 休息': '抵達後的休息地點保持彈性，不需要固定導航地址。',
+    '咖啡 · Karma Kawiarnia（選配）': 'Krupnicza 12/3，Karma 官網聯絡頁列咖啡館平日 08:00–20:00（karmakrakow.pl 另列 07:00–18:00，出門前看 Google 地圖）；導航見當日餐飲點心。巴士延誤就略過。',
   },
   4: {
     '前往 Wieliczka 車站候車': '出礦口至車站需步行，班次與月台當日重算，不以午餐結束時間當作上車時間。',
@@ -658,7 +659,7 @@ const unresolvedStepReasons = {
     'IC 260 前往波茲南': dynamicTransitReason,
   },
   6: {
-    '退房、寄放行李': '接待時間與行李寄放須出發前打電話向住宿確認；地址見住宿卡。',
+    '退房、寄放行李': '接待時間與行李寄放須出發前傳訊息向住宿確認；地址見住宿卡。',
     '電車往 Armii Poznań 站': dynamicTransitReason,
     '★ Cytadela 公園「Nierozpoznani」': '戶外雕塑群在 Cytadela 公園內，由 Armii Poznań 電車站步行進園，依園內指標前往。',
     '叫 Bolt 或 Uber 到 Rondo Śródka': '叫車上下車點依 App 定位，不預填地址。',
@@ -694,7 +695,7 @@ const unresolvedStepReasons = {
     '可選 · E.Wedel 本店熱巧克力': 'Szpitalna 8，餐廳導航見當日餐飲；選配。',
   },
   8: {
-    '住宿出發前往 Charlotte Złota': '由 Hotel Metropol 前往 Złota 83，出發前重算交通；早餐導航見當日三餐。',
+    '住宿出發前往 Zgoda 3': '由 Hotel Metropol 步行約 8 分到 Zgoda 3；早餐導航見當日三餐。',
     '返回 Metropol 取行李': '返回原住宿取行李，地址見住宿卡；不導航至餐廳。',
     'SKM S2／S3 目標班次': dynamicTransitReason,
   },

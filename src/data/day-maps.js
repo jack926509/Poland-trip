@@ -7,7 +7,7 @@ export const dayMapPlans = {
   1: { focus: '華沙 Warszawa', center: [52.236, 21.014], zoom: 14, selections: { warsaw: ['Hotel Metropol'] } },
   2: { focus: '克拉科夫 Kraków', center: [50.057, 19.944], zoom: 14, selections: { krakow: ['Wawel 皇家城堡', '中央市集廣場', 'Kazimierz 猶太區', '辛德勒工廠博物館', 'Okrąglak（Plac Nowy zapiekanka）', 'ibis budget Krakow Stare Miasto'] } },
   3: { focus: '奧斯威辛 Oświęcim／Brzezinka', center: [50.033, 19.192], zoom: 13, selections: {} },
-  4: { focus: '克拉科夫 Kraków＋Wieliczka', center: [50.040, 19.995], zoom: 12, selections: { krakow: ['Kazimierz 猶太區', 'Sukiennice 布廊（伴手禮攤位）', 'ibis budget Krakow Stare Miasto'] } },
+  4: { focus: '克拉科夫 Kraków＋Wieliczka', center: [50.040, 19.995], zoom: 12, selections: { krakow: ['Kazimierz 猶太區', 'ibis budget Krakow Stare Miasto'] } },
   5: { focus: '樂斯拉夫 Wrocław', center: [51.110, 17.049], zoom: 13, selections: { wroclaw: ['中央市集廣場', '大教堂島 Ostrów Tumski', '百年廳 Hala Stulecia', 'Restauracja Wrocławska', 'Piast'] } },
   6: { focus: '波茲南 Poznań', center: [52.407, 16.930], zoom: 14, selections: { poznan: ['舊市集廣場 Stary Rynek', '大教堂島 Ostrów Tumski', 'Poznan Apartments Towarowa'] } },
   7: { focus: '華沙 Warszawa', center: [52.236, 21.010], zoom: 13, selections: { warsaw: ['皇家城堡', 'Hotel Metropol', '科學文化宮觀景台', 'Pijalnia Czekolady E.Wedel（巧克力）'] } },
@@ -59,7 +59,7 @@ export const daySupplementaryPins = {
     [51.108896, 17.026714, 'Papa Krasnal 小矮人', 'Świdnicka 地下道旁；小矮人尋寶的具體起點', 'https://www.google.com/maps/search/?api=1&query=Papa%20Krasnal%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/?mlat=51.108896&mlon=17.026714'],
     [51.111690, 17.029114, '糖果屋雙屋 Jaś i Małgosia', 'Świętego Mikołaja 1', 'https://www.google.com/maps/search/?api=1&query=Hansel%20and%20Gretel%20Houses%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/?mlat=51.111690&mlon=17.029114'],
     [51.111492, 17.029774, '聖伊莉莎白教堂', 'Świętej Elżbiety 1/2 · 只拍高塔外觀，不上塔', 'https://www.google.com/maps/search/?api=1&query=St.%20Elizabeth%20Church%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/?mlat=51.111492&mlon=17.029774'],
-    venuePin('wroclaw-panorama', { displayName: '拉茨瓦維採全景畫（外觀）', label: 'Jana Ewangelisty Purkyniego 11 · 13:10 只看圓形館外觀', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=51.110187&mlon=17.044488' }),
+    venuePin('wroclaw-panorama', { displayName: '拉茨瓦維採全景畫（外觀）', label: 'Jana Ewangelisty Purkyniego 11 · 13:20 不入內，只拍圓形館外景', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=51.110187&mlon=17.044488' }),
     venuePin('wroclaw-cathedral', { label: 'plac Katedralny 18 · 座堂島散步終點', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=51.114616&mlon=17.046989' }),
     venuePin('wroclaw-glowny-station', { label: '18:35 前抵達的晚間轉場車站', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=51.098928&mlon=17.036255' }),
     [51.1089276, 17.0260020, 'Central Cafe', 'Świętego Antoniego 10 · 07:30 早餐', diningPlaces['wroclaw-central-cafe'].map, 'food', 'https://www.openstreetmap.org/node/1200187952'],
@@ -117,6 +117,7 @@ export const daySupplementaryPins = {
     [52.2282747, 21.0138294, 'QQ Warsaw', 'Żurawia 32/34 · 下午點心', diningPlaces['warsaw-qq-warsaw-matcha-korean-toasts'].map, 'food', 'https://www.openstreetmap.org/node/3429255098'],
   ],
   8: [
+    [52.2325833, 21.0140889, 'Bułkę przez Bibułkę', 'Zgoda 3 · 08:00 早餐，離 Metropol 步行約 8 分', diningPlaces['warsaw-bulke-przez-bibulke-zgoda'].map, 'food', 'https://www.openstreetmap.org/node/316892293'],
     venuePin('warsaw-centralna-station', { label: '由 Hotel Metropol 前往機場線的市中心交通錨點', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.228917&mlon=21.003315' }),
     [52.2294024, 21.0075880, 'Warszawa Śródmieście', 'SKM S2 上車站 · Hotel Metropol 旁約 250 公尺', 'https://www.google.com/maps/search/?api=1&query=Warszawa%20%C5%9Ar%C3%B3dmie%C5%9Bcie%20SKM', 'transport', 'https://www.openstreetmap.org/node/2351113017'],
     [52.169709, 20.975785, 'Warszawa Lotnisko Chopina 機場鐵路站', 'PKP PLK 車站目錄座標 · 非航廈報到入口', 'https://www.google.com/maps/search/?api=1&query=Warszawa%20Lotnisko%20Chopina%20railway%20station%2C%20Warszawa%2C%20Poland', 'transport', 'https://portalpasazera.pl/en/KatalogStacji?stacja=Warszawa+Lotnisko+Chopina'],
@@ -214,6 +215,7 @@ export const pinCoordinateCheckedAt = {
     "QQ Warsaw": '2026-10-17',
   },
   8: {
+    "Bułkę przez Bibułkę": '2026-10-17',
     "Warszawa Centralna": '2026-09-08',
     "Warszawa Śródmieście": '2026-10-19',
     "Warszawa Lotnisko Chopina 機場鐵路站": '2026-09-08',

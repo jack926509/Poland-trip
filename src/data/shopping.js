@@ -18,7 +18,7 @@ export const luxuryShopping = [
 ];
 
 export const souvenirShops = [
-  {city:'克拉科夫', name:'Sukiennice 布廊', note:'廣場內伴手禮攤位集中', mapUrl:'https://www.google.com/maps/search/?api=1&query=Sukiennice%20Cloth%20Hall%20Krak%C3%B3w'},
+  {city:'克拉科夫', name:'Sukiennice 布廊', note:'廣場內伴手禮攤位集中；本次行程不排採購時段，10/25 路過時順手看即可', mapUrl:'https://www.google.com/maps/search/?api=1&query=Sukiennice%20Cloth%20Hall%20Krak%C3%B3w'},
   {city:'克拉科夫', name:'Rzeczy Same Podgórze', note:'波蘭設計店候選；本輪未取得現行官方門市資訊，地址與營業狀態待確認', mapUrl:'https://www.google.com/maps/search/?api=1&query=Rzeczy%20Same%20Podg%C3%B3rze%20Krak%C3%B3w'},
   {city:'華沙', name:'E.Wedel 巧克力沙龍', note:'Szpitalna 8 旗艦店', mapUrl:'https://www.google.com/maps/search/?api=1&query=Pijalnia%20Czekolady%20E.Wedel%20Szpitalna%20Warszawa'},
   {city:'華沙', name:'Cepelia Warszawa', note:'波蘭民藝品牌候選；本輪未核實華沙實體門市，請先確認店址與營業狀態', mapUrl:'https://www.google.com/maps/search/?api=1&query=Cepelia%20Warszawa'},

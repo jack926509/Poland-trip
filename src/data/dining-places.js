@@ -146,7 +146,7 @@ export const diningPlaces = {
     "notes": [
       "燭光氛圍",
       "地窖燭光的傳統波蘭菜；10/26 晚餐改排 Mr. Jerry 後保留為備選。",
-      "訂位電話 +48 12 421 39 99 或 +48 12 430 21 13、restauracja@podaniolami.pl。",
+      "訂位 Email：restauracja@podaniolami.pl。",
       "木火烤山鱒魚與野菇湯；初稿引菜單加 10% 服務費。"
     ],
     "verificationNote": "沿用 2026-09-18 店家官網查核，官方原文為每日營業。 2026-10-12 網路交叉比對：仍在營業，未見歇業公告。官網每日 13:00–23:00。",
@@ -241,7 +241,7 @@ export const diningPlaces = {
       "Grodzka 43，老城區最方便的牛奶吧，pierogi、湯品與馬鈴薯煎餅都便宜；",
       "10/25 週日適用官網每日 09:00–20:00 時段；若臨時休店，可改中央廣場周邊午餐。"
     ],
-    "verificationNote": "2026-09-24 瀏覽器讀取官網頁尾：pon - niedz.: 9-20；頁首確認 Grodzka 43（頁尾街名 Gordzka 為拼字誤植）。電話 +48 12 422 08 74。",
+    "verificationNote": "2026-09-24 瀏覽器讀取官網頁尾：pon - niedz.: 9-20；頁首確認 Grodzka 43（頁尾街名 Gordzka 為拼字誤植）。",
     "cuisine": "牛奶吧",
     "dishes": [
       "Pierogi",
@@ -297,7 +297,7 @@ export const diningPlaces = {
       "現為備案（Day 5 午餐主位改 Restauracja Wrocławska）。",
       "傳統波蘭料理與 1980 年代反共地下運動主題空間。",
       "官方明示週五、週末與假日不接受訂位，依到店順序；",
-      "訂位電話 +48 535 212 586、rezerwacje.konspira@gmail.com。"
+      "訂位 Email：rezerwacje.konspira@gmail.com。"
     ],
     "verificationNote": "沿用 2026-09-19 官方聯絡頁查核；Day 5 週三為 13:00–23:00。 2026-10-12 網路交叉比對：仍在營業，未見歇業公告。週三 13:00 才開門，12:00 午餐不能直接改這間。",
     "cuisine": "波蘭家常菜",
@@ -449,7 +449,7 @@ export const diningPlaces = {
       "現代義大利菜：手工麵、披薩、小盤分享；10/29 週四 14:00 開門才有位，午餐延後到 14:00，約 17 分步行到帝王城堡。"
     ],
     "menuUrl": null,
-    "verificationNote": "2026-10-12 查：Google 地圖與 zjedz.my 一致週四 14:00–22:30；menu.pl 外送時段週四 14:00–21:30；店家 Instagram 表示 10/1 起新營業時間。近期有評論抱怨上菜慢，須保留 17:05 到站緩衝。zjedz.my 可線上訂位，電話 +48 796 200 002。",
+    "verificationNote": "2026-10-12 查：Google 地圖與 zjedz.my 一致週四 14:00–22:30；menu.pl 外送時段週四 14:00–21:30；店家 Instagram 表示 10/1 起新營業時間。近期有評論抱怨上菜慢，須保留 17:05 到站緩衝。zjedz.my 可線上訂位。",
     "phone": "+48 796 200 002",
     "cuisine": "現代義大利菜",
     "dishes": [
@@ -535,7 +535,7 @@ export const diningPlaces = {
       "招牌：當代創意料理小盤 · 高 CP",
       "魚類、海鮮與當季 Sharing Plates，一份主菜＋數份小盤分享；海鯛 Ceviche、蝦仁 Rigatoni、白大比目魚候選。初稿列 Wellington 僅週四至週日，週一不採用。"
     ],
-    "verificationNote": "Michelin Bib Gourmand；週一營業與否來源矛盾，10/26（週一）不當首替，要去先打電話。",
+    "verificationNote": "Michelin Bib Gourmand；週一營業與否來源矛盾，10/26（週一）不當首替，要去先看 Google 地圖當日營業狀態。",
     "menuUrl": "https://folgakrakow.pl/wp-content/uploads/2026/09/MENU-Wrzesien%CC%81-GABLOTA-%E2%80%94-2026.pdf",
     "menuNote": "2026-10-10 初稿提供餐點建議；當日供應與最後接單待確認。",
     "cuisine": "現代小盤",
@@ -739,7 +739,7 @@ export const diningPlaces = {
     "notes": [
       "大波蘭菜 · 招牌：烤鴨配 pyzy 蒸糰（Muga 主廚推薦）"
     ],
-    "verificationNote": "官網列完整週時段與 Rynek Śródecki 17；只接受電話訂位：+48 535 045 035。 2026-10-12 網路交叉比對：仍在營業，未見歇業公告。官網週四 11:00–22:00，只接受電話訂位。",
+    "verificationNote": "官網列完整週時段與 Rynek Śródecki 17；沒有線上訂位。 2026-10-12 網路交叉比對：仍在營業，未見歇業公告。官網週四 11:00–22:00，沒有線上訂位。",
     "cuisine": "大波蘭菜",
     "dishes": [
       "烤鴨配蒸糰",
@@ -887,8 +887,8 @@ export const diningPlaces = {
     "notes": [
       "2010 年開業，克拉科夫第一家精品咖啡店，Kazimierz 自家烘豆。公開資料列一–五 08:00–20:00、六日 10:00–19:00。"
     ],
-    "hoursNote": "店家官網",
-    "liveCheckedAt": "2026-10-12",
+    "hoursNote": "店家官網；2026-10-20 重查：karmaroasters.com 與 Yelp 一致，另一個網站 karmakrakow.pl 列平日 07:00–18:00，Day 3 17:55 出門前看 Google 地圖當日營業時間",
+    "liveCheckedAt": "2026-10-20",
     "phone": "+48 662 387 281",
     "cuisine": "自家烘焙咖啡",
     "dishes": [
@@ -936,7 +936,7 @@ export const diningPlaces = {
       "Sernik 波蘭起司蛋糕",
       "傳統糕點"
     ],
-    "verificationNote": "門牌與電話多來源一致；sernik 為在地推薦，供應以櫃台為準。"
+    "verificationNote": "門牌多來源一致；sernik 為在地推薦，供應以櫃台為準。"
   },
   "wroclaw-bar-mleczny-mis": {
     "id": "wroclaw-bar-mleczny-mis",
@@ -978,6 +978,26 @@ export const diningPlaces = {
     "verificationStatus": "pending",
     "notes": [
       "樂斯拉夫代表性精釀酒廠，不喝酒可略過。"
+    ]
+  },
+  "wroclaw-slodki-chlopak-muzeum-narodowe": {
+    "id": "wroclaw-slodki-chlopak-muzeum-narodowe",
+    "cityKey": "wroclaw",
+    "name": "Słodki Chłopak w Muzeum Narodowym",
+    "address": "pl. Powstańców Warszawy 5, Wrocław（國家博物館內）",
+    "map": "https://www.google.com/maps/search/?api=1&query=S%C5%82odki%20Ch%C5%82opak%20Muzeum%20Narodowe%2C%20pl.%20Powsta%C5%84c%C3%B3w%20Warszawy%205%2C%20Wroc%C5%82aw",
+    "hours": "跟國家博物館主館開放時間：冬季（10/1–3/31）週二至週五 10:00–16:00、週六日 10:00–17:00，週一休；10/28（週三）10:00–16:00",
+    "sourceUrl": "https://slodkichlopak.pl/kawiarnie/muzeum-narodowe/",
+    "checkedAt": "2026-10-20",
+    "verificationStatus": "partial",
+    "notes": [
+      "樂斯拉夫在地甜點連鎖的博物館分店，店家頁註明不需博物館門票即可進入；Day 5 13:20 在全景畫外拍外景、看國家博物館外觀時，外帶一塊蛋糕到百年廳吃，不另加時段。"
+    ],
+    "verificationNote": "地址與免票入店取自店家官網門市頁；國家博物館官網 Cafe 頁說明館內咖啡廳依博物館開放時間營業，冬季時段取自 mnwr.pl 官方參觀資訊頁（2026-10-20 搜尋核對；本環境無法直接開啟官網，屬部分核實）。第三方目錄（Apple 地圖等）仍列夏季 10:00–17:00，以官方冬季時段為準；臨時閉館以博物館官網公告為準。",
+    "cuisine": "甜點 · 咖啡",
+    "dishes": [
+      "當日蛋糕",
+      "咖啡"
     ]
   },
   "wroclaw-el-gato-specialty-coffee": {
@@ -1161,7 +1181,7 @@ export const diningPlaces = {
       "波蘭地方料理。",
       "Żurek 酸黑麥湯＋綜合 Pierogi，主菜選梅醬豬肋排或半隻烤鴨；還有胃口再加甜點。"
     ],
-    "verificationNote": "2026-09-24 品牌門市頁確認 Nowy Świat 44 與上述時段；polishcuisine.pl 另列每日 12:00 開門、週五六至 23:30，其餘至 22:00，仍需訂位確認。10/24 18:30 晚餐在兩版時段交集內；電話 +48 662 254 215。 2026-10-12 網路交叉比對：仍在營業，未見歇業公告。週六時段各來源 11:30–23:00 至 12:00–23:30 不一，18:30 都在營業時間內。",
+    "verificationNote": "2026-09-24 品牌門市頁確認 Nowy Świat 44 與上述時段；polishcuisine.pl 另列每日 12:00 開門、週五六至 23:30，其餘至 22:00，仍需訂位確認。10/24 18:30 晚餐在兩版時段交集內。 2026-10-12 網路交叉比對：仍在營業，未見歇業公告。週六時段各來源 11:30–23:00 至 12:00–23:30 不一，18:30 都在營業時間內。",
     "menuUrl": "https://polishcuisine.pl/pl/menu-2/",
     "menuNote": "2026-10-10 初稿提供餐點建議；當日供應與最後接單待確認。",
     "cuisine": "波蘭地方菜",
@@ -1342,7 +1362,7 @@ export const diningPlaces = {
     "notes": [
       "韓式料理：Bulgogi 韓式烤牛肉、拌飯、Jajangmyeon 炸醬麵、海鮮煎餅或韓式湯鍋。"
     ],
-    "verificationNote": "多個目錄確認週四營業至 22:00；沒有店家官網，最後點餐時間未知。電話各目錄不一（22 881 78 51／22 622 18 86），當天兩支都可試。",
+    "verificationNote": "多個目錄確認週四營業至 22:00；沒有店家官網，最後點餐時間未知；當天先看 Google 地圖營業狀態。",
     "cuisine": "韓式",
     "dishes": [
       "Bulgogi 韓式烤牛肉",
@@ -1367,7 +1387,7 @@ export const diningPlaces = {
     "notes": [
       "韓式烤肉。"
     ],
-    "verificationNote": "2026-09-24 以瀏覽器讀出店家官網動態週時段及官方 Google Maps 商家定位；電話 +48 571 219 973。 2026-10-12 網路交叉比對：仍在營業，未見歇業公告。Yelp 2026-07 列週六 11:30–22:00、週日 12:00–18:00，與本站時段略有差異。",
+    "verificationNote": "2026-09-24 以瀏覽器讀出店家官網動態週時段及官方 Google Maps 商家定位。 2026-10-12 網路交叉比對：仍在營業，未見歇業公告。Yelp 2026-07 列週六 11:30–22:00、週日 12:00–18:00，與本站時段略有差異。",
     "cuisine": "韓式烤肉",
     "dishes": [
       "韓式桌邊烤肉",
@@ -1861,7 +1881,7 @@ export const diningPlaces = {
       "Stary Kleparz 市場旁的 Pimiento 小型熟食店兼 bistro：阿根廷牛排、Tatar、烤雞、Argentine burger；10/25 週日午餐首選，ibis 步行約 7 分。"
     ],
     "menuUrl": "https://pimiento.pl/wp-content/uploads/2025/10/pimiento-shop-and-bistro-menu-calosc.pdf",
-    "verificationNote": "營業時間來源：Google 地圖（2026-10-12 實開）與 MapQuest 皆列週日 09:00–15:00；官網只列菜單時段、未列逐日時間，也查不到 10/25 特殊公告。午餐菜單 13:00 才開始，早餐菜單 09:00–13:00。官網線上訂位只涵蓋 Kazimierz 與 Stare Miasto 分店，Stary Kleparz 須電話 +48 517 475 818 訂位。10/22 複查再看一次 Google 地圖。",
+    "verificationNote": "營業時間來源：Google 地圖（2026-10-12 實開）與 MapQuest 皆列週日 09:00–15:00；官網只列菜單時段、未列逐日時間，也查不到 10/25 特殊公告。午餐菜單 13:00 才開始，早餐菜單 09:00–13:00。官網線上訂位只涵蓋 Kazimierz 與 Stare Miasto 分店，Stary Kleparz 用官網表單或 Email pimiento@pimiento.pl 訂位。10/22 複查再看一次 Google 地圖。",
     "phone": "+48 517 475 818",
     "cuisine": "阿根廷牛排／熟食 bistro",
     "dishes": [
@@ -2303,10 +2323,10 @@ export const diningPlaces = {
     "verificationStatus": "partial",
     "notes": [
       "10/30 最後晚餐首選：Restaurant Guru 2026 年 7 月華沙威靈頓榜第一、Tripadvisor 威靈頓榜第二，離 Metropol 步行約 8 分。",
-      "In Your Pocket 與 Warsaw Insider 都列 Nowogrodzka 18A、電話 +48 519 02 08 88；2026 年獲 Wine Spectator Award of Excellence，仍在營業。"
+      "In Your Pocket 與 Warsaw Insider 都列 Nowogrodzka 18A；2026 年獲 Wine Spectator Award of Excellence，仍在營業。"
     ],
     "menuUrl": null,
-    "verificationNote": "Wellington 為多個評論來源的招牌菜，但菜單隨季節換、官方菜單未確認；電話訂位時請店家預留並確認 10/30 供應。下午可能有休息時段。",
+    "verificationNote": "Wellington 為多個評論來源的招牌菜，但菜單隨季節換、官方菜單未確認；訂位時在備註請店家預留並確認 10/30 供應。下午可能有休息時段。",
     "cuisine": "歐陸／波蘭",
     "dishes": [
       "Beef Wellington（多來源列為招牌，需先確認）",

@@ -76,7 +76,7 @@ export const michelinReservations = [
     "restaurant": "⭐⭐ Bottiglieria 1881（克拉科夫）",
     "mapUrl": "https://maps.google.com/?cid=8570908113421134699",
     "perPerson": "940 / 990",
-    "channel": "官網／電話 +48 660 661 756 · ul. Bocheńska 5 · 僅供 tasting menu，不供單點；另加 12.5% 服務費；價格為 2026-10-06 官網查核"
+    "channel": "官網線上訂位 · ul. Bocheńska 5 · 僅供 tasting menu，不供單點；另加 12.5% 服務費；價格為 2026-10-06 官網查核"
   },
   {
     "restaurant": "⭐ Alon Omakase（華沙）",
@@ -94,7 +94,7 @@ export const michelinReservations = [
     "restaurant": "⭐ Muga（波茲南）",
     "mapUrl": "https://maps.google.com/?cid=2998937238608160974",
     "perPerson": "560 / 685",
-    "channel": "官網／電話 · Reserva 套餐 560 PLN，含魚子醬版本 685 PLN；另加 12.5% 服務費；價格為 2026-10-06 官網查核"
+    "channel": "官網線上訂位 · Reserva 套餐 560 PLN，含魚子醬版本 685 PLN；另加 12.5% 服務費；價格為 2026-10-06 官網查核"
   },
   {
     "restaurant": "⭐ NUTA（華沙）",
@@ -633,7 +633,8 @@ export const cafeGuide = [
     { placeId: 'warsaw-green-caffe-nero-centralny', type: '車站咖啡外帶', when: 'Day 2 · 07:35 上車前外帶（已排入）' },
     { placeId: 'warsaw-qq-warsaw-matcha-korean-toasts', type: '抹茶 · 韓式吐司', when: 'Day 7 · 17:15 下午點心（已排入）' },
     { placeId: 'warsaw-wedel-szpitalna-8', type: '熱巧克力', when: 'Day 7 · 20:15 飯後選配' },
-    { placeId: 'warsaw-charlotte-zlota', type: '法式早餐 · 麵包', when: 'Day 8 · 早餐（已排入）' },
+    { placeId: 'warsaw-bulke-przez-bibulke-zgoda', type: '早午餐 · 貝果', when: 'Day 8 · 08:00 早餐（已排入；Day 7 07:30 早餐也在這家）' },
+    { placeId: 'warsaw-charlotte-zlota', type: '法式早餐 · 麵包', when: 'Day 8 · 早餐備選（Złota 83 較遠，機場日不採用）' },
     { placeId: 'warsaw-cukiernia-zagozdzinski', type: '老派 pączek', when: '有半天餘裕才去（Wola 區，需搭電車）' },
   ] },
   { cityKey: 'krakow', city: '克拉科夫', items: [
@@ -646,7 +647,8 @@ export const cafeGuide = [
     { placeId: 'wroclaw-charlotte-pokoyhof', type: '法式早餐 · 麵包', when: 'Day 5 · Central Cafe 沒供餐時的同街備案' },
     { placeId: 'wroclaw-paloma-coffee', type: '精品咖啡', when: 'Day 5 · 08:50 鹽廣場順路外帶' },
     { placeId: 'wroclaw-el-gato-specialty-coffee', type: '精品咖啡', when: 'Day 5 · 10:20 咖啡休息（已排入）' },
-    { placeId: 'wroclaw-dessert-boutique', type: '精緻甜點', when: 'Day 5 · 糖果屋那條街，週三 12:00 起' },
+    { placeId: 'wroclaw-slodki-chlopak-muzeum-narodowe', type: '蛋糕 · 外帶', when: 'Day 5 · 13:20 國家博物館外觀時順路外帶（已排入）' },
+    { placeId: 'wroclaw-dessert-boutique', type: '精緻甜點', when: 'Day 5 · 有空才去（12:00 才開，與下午動線相反）' },
   ] },
   { cityKey: 'poznan', city: '波茲南', items: [
     { placeId: 'poznan-charlotte-krysiewicza', type: '法式早餐 · 可頌', when: 'Day 6 · 07:15 早餐（已排入）' },

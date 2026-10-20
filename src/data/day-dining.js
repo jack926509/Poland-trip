@@ -73,7 +73,7 @@ export const dayDiningPlans = {
       "stepId": "d2-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
-      "condition": "午餐菜單 13:00 起才供應（早餐菜單 09:00–13:00）；週日只開到 15:00，資料來自 Google 地圖與 MapQuest，官網未列，10/22 複查再看一次。先電話 +48 517 475 818 訂（官網線上連結不含這間分店）訂 13:00 兩位；客滿、關門或列車延誤改 Polonia 或 24 小時的 Przypiecek。",
+      "condition": "午餐菜單 13:00 起才供應（早餐菜單 09:00–13:00）；週日只開到 15:00，資料來自 Google 地圖與 MapQuest，官網未列，10/22 複查再看一次。先用官網表單或 Email pimiento@pimiento.pl 訂 13:00 兩位（官網線上訂位不含這間分店）；客滿、關門或列車延誤改 Polonia 或 24 小時的 Przypiecek。",
       "dayHours": "09:00–15:00（早餐菜單 09:00–13:00，午餐菜單 13:00 起）"
     },
     {
@@ -144,7 +144,7 @@ export const dayDiningPlans = {
       "stepId": "d3-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "建議訂位並確認 10/26 當天供應 Wellington；週一 15:00–22:00、廚房至 21:30。返程延誤先聯絡餐廳。",
+      "condition": "建議官網線上訂位，備註請店家預留 10/26 的 Wellington；週一 15:00–22:00、廚房至 21:30。返程延誤就回覆訂位確認信告知。",
       "dayHours": "15:00–22:00"
     },
     {
@@ -156,8 +156,8 @@ export const dayDiningPlans = {
     },
     {
       "placeId": "krakow-folga",
-      "role": "晚餐備選（週一先電話確認）",
-      "note": "魚類、海鮮與當季 Sharing Plates，口味較輕；但週一是否營業來源矛盾，10/26 要去先打電話。",
+      "role": "晚餐備選（週一先看 Google 地圖營業狀態）",
+      "note": "魚類、海鮮與當季 Sharing Plates，口味較輕；但週一是否營業來源矛盾，10/26 要去先看 Google 地圖當日營業狀態。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -397,10 +397,10 @@ export const dayDiningPlans = {
     },
     {
       "placeId": "poznan-hycka",
-      "role": "替補",
-      "note": "大波蘭菜、烤鴨配蒸糰；替換午餐時須重排動線。",
+      "role": "不當替補（Śródka 09:25 經過時未開）",
+      "note": "大波蘭菜、烤鴨配蒸糰；店在 Śródka，週四 11:00 才開，上午經過時還沒營業，中午從市中心折回又不順路。Carla 客滿改 Pyra Bar 或 Zen On。",
       "stepId": null,
-      "planStatus": "candidate"
+      "planStatus": "unavailable"
     },
     {
       "placeId": "warsaw-arirang-restaurant",
@@ -498,7 +498,7 @@ export const dayDiningPlans = {
       "stepId": "d7-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "菜單隨季節換、官方菜單未確認：電話 +48 519 020 888 訂位時請店家預留 Wellington 並確認 10/30 供應；沒有就改 Rusiko。",
+      "condition": "菜單隨季節換、官方菜單未確認：線上訂位（或請 Hotel Metropol 櫃檯代訂）時在備註請店家預留 Wellington；沒有就改 Rusiko。",
       "dayHours": "17:30–23:00（週五另有 12:00–16:30，下午休息）"
     },
     {
@@ -511,7 +511,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-primitivo",
       "role": "威靈頓備選",
-      "note": "Waliców 13（Wola），Tripadvisor 華沙威靈頓榜第一，週五至 23:00；離晚上動線較遠，Soul Kitchen 訂不到又堅持吃威靈頓時再考慮，電話 +48 606 44 44 62 先問供應。",
+      "note": "Waliców 13（Wola），Tripadvisor 華沙威靈頓榜第一，週五至 23:00；離晚上動線較遠，Soul Kitchen 訂不到又堅持吃威靈頓時再考慮，訂位時在備註問供應。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -581,14 +581,21 @@ export const dayDiningPlans = {
   ],
   "8": [
     {
-      "placeId": "warsaw-charlotte-zlota",
+      "placeId": "warsaw-bulke-przez-bibulke-zgoda",
       "role": "早餐首選（條件式）",
-      "note": "08:00 第一批進店：French Breakfast、可頌＋咖啡，想吃飽一點加 Croque-Monsieur；08:45 收尾，預留 45 分鐘回 Metropol 取行李，09:45 退房出發。",
+      "note": "Zgoda 3，離 Metropol 步行約 8 分，週六 08:00 開門：Bagel、炒蛋或 Avocado Toast；08:50 收尾，回住宿取行李，09:45 退房出發。",
       "stepId": "d8-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
-      "condition": "08:15 還無法入座就外帶或回住宿／車站沿線用餐；保住 11:00 到機場目標。",
-      "dayHours": "08:00–24:00"
+      "condition": "08:15 還無法入座就外帶或改車站沿線用餐；保住 11:00 到機場目標。",
+      "dayHours": "08:00–22:00"
+    },
+    {
+      "placeId": "warsaw-charlotte-zlota",
+      "role": "早餐備選（較遠）",
+      "note": "Złota 83，原機場日早餐首選；來回步行約 85 分鐘，機場日不採用，留作備選。",
+      "stepId": null,
+      "planStatus": "candidate"
     },
     {
       "placeId": "warsaw-bar-mleczny-prasowy-marszalkowska",

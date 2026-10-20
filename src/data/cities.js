@@ -47,7 +47,7 @@ export const cityNotices = {
     {status:'已查證', level:'note', text:'辛德勒工廠週二至週日 09:00–20:00，最後入場為閉館前 90 分鐘；Day 2 的週日 17:30 時段可行，但仍須先取得官方時段票。'},
   ],
   wroclaw: [
-    {status:'一般參觀提醒', level:'risk', text:'百年廳未列入本次主行程；自行前往時，請先查官方 availability calendar 的當日開放範圍。'},
+    {status:'一般參觀提醒', level:'risk', text:'百年廳排在 Day 5 下午，只看外觀、時間不夠先刪；想入內請先查官方 availability calendar 的當日開放範圍。'},
   ],
   poznan: [],
 };
@@ -81,7 +81,7 @@ export const cityStories = [
     ],
     onSite:[
       '整點在廣場任一角落停下來等 Hejnał，注意最後一個音的戛然而止',
-      '紡織會館二樓迴廊看廣場全景（免費），一樓攤位留到 10/27 採買',
+      '紡織會館二樓迴廊看廣場全景（免費），一樓攤位只路過，本次不排採購',
       'Kazimierz Szeroka 街：《辛德勒的名單》多場戲的實景地',
     ],
   },
@@ -91,7 +91,7 @@ export const cityStories = [
     history:'這座城市 1945 年前叫 Breslau，是德國第六大城。戰後國界西移，德裔居民被遷出，取而代之的是被蘇聯劃走的東部城市利沃夫（Lwów）的波蘭移民——整座城市的人口被「換血」。拉茨瓦維採全景畫正是從利沃夫一起搬來的鎮城之寶，Karczma Lwowska 餐廳的名字也是這段記憶。',
     stories:[
       {title:'小矮人是反抗軍', text:'城裡有逾 1,000 尊銅製小矮人（krasnale），但數量持續增加、無法精確統計。1980 年代反共團體「橙色替代」（Pomarańczowa Alternatywa）以塗鴉小矮人與荒誕街頭劇嘲諷政權——警察逮捕一個扮小矮人的人有多可笑，體制就有多可笑。2005 年起城市以銅像致敬這段歷史，每一尊都有名字與職業。'},
-      {title:'每晚的點燈儀式', text:'日落時分，披斗篷、持長桿的點燈人會逐一點亮 Ostrów Tumski 的瓦斯燈。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，Day 5 15:45 經座堂橋上島，16:34 日落前後在燈旁等候，17:15 離開。'},
+      {title:'每晚的點燈儀式', text:'日落時分，披斗篷、持長桿的點燈人會逐一點亮 Ostrów Tumski 的瓦斯燈。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，市立博物館介紹通常在日落前約 30–40 分鐘出發；Day 5 15:45 經座堂橋上島就邊走邊留意，16:34 日落前後在燈旁等候，17:15 離開。'},
       {title:'混凝土的世界遺產', text:'百年廳（Hala Stulecia，1913）落成時擁有世界最大跨距的鋼筋混凝土圓頂，直接影響了現代主義建築的走向，2006 年列入 UNESCO——在古蹟之城看一座「未來古蹟」。'},
     ],
     onSite:[
@@ -125,7 +125,7 @@ export const photoSpots = [
   {id:'krk-wawel', lightPhase:'daylight', cityKey:'KRK', name:'Wawel 城堡河岸全景', day:2, bestTime:'16:00–16:15', viewpoint:'維斯瓦河北岸 Bulwar Czerwieński 河濱步道，Wawel 西南側城牆下（OSM way 114713971）', direction:'鏡頭朝東北仰拍城牆與大教堂塔樓；35 mm 左右可同時收河岸與城牆', light:'16:15 離開 Wawel 前，從北岸 Bulwar Czerwieński 拍；16:30 日落前的側光打在城牆上。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.052653%2C19.933255'},
   {id:'krk-kazimierz', lightPhase:'daylight', cityKey:'KRK', name:'Kazimierz・Szeroka 街', day:4, bestTime:'14:30–15:00', viewpoint:'Szeroka 24 舊猶太會堂前廣場，面向 Szeroka 街北端', direction:'鏡頭朝西北，以老會堂磚牆或街邊招牌作前景；35 mm 比超廣角更能保留街道層次', light:'午後側光適合磚牆、窄街與店面；15:00 前收尾回旅館取行李，鹽礦回程延誤就略過，保留 IC 3830 16:45 上車緩衝。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.051531%2C19.949142'},
   {id:'wro-rynek', lightPhase:'daylight', cityKey:'WRO', name:'市政廳東立面與彩色老屋', day:5, bestTime:'09:00–10:15', viewpoint:'Aleksander Fredro 紀念碑北側、舊市政廳東立面前', direction:'鏡頭朝西北拍市政廳哥德山牆；再移到廣場西側回拍東側彩色商人屋', light:'上午先拍受光的市政廳東立面；彩色屋若逆光，改用 2× 鏡頭壓縮北側立面。', mapUrl:'https://www.google.com/maps/search/?api=1&query=51.109957%2C17.032141'},
-  {id:'wro-dwarfs', lightPhase:'dusk', cityKey:'WRO', name:'座堂島煤氣燈與點燈人', day:5, bestTime:'16:15–17:15', viewpoint:'Most Tumski 東端進入座堂島後，Katedralna 街第一排煤氣燈旁', direction:'鏡頭朝東，以煤氣燈作近景、主教座堂雙塔作消失點；看到點燈人時保持路徑暢通、不貼身跟拍', light:'10/28 日落約 16:34；16:15 先卡位，點燈人沒有固定公開出發分鐘。暗處先用夜景模式並鎖住高光。', mapUrl:'https://www.google.com/maps/search/?api=1&query=51.114364%2C17.045103'},
+  {id:'wro-dwarfs', lightPhase:'dusk', cityKey:'WRO', name:'座堂島煤氣燈與點燈人', day:5, bestTime:'16:15–17:15', viewpoint:'Most Tumski 東端進入座堂島後，Katedralna 街第一排煤氣燈旁', direction:'鏡頭朝東，以煤氣燈作近景、主教座堂雙塔作消失點；看到點燈人時保持路徑暢通、不貼身跟拍', light:'10/28 日落約 16:34；點燈人沒有固定公開出發分鐘，通常日落前約 30–40 分鐘出發，16:15 先卡位。暗處先用夜景模式並鎖住高光。', mapUrl:'https://www.google.com/maps/search/?api=1&query=51.114364%2C17.045103'},
   {id:'poz-rynek', lightPhase:'daylight', cityKey:'POZ', name:'舊市集廣場・市政廳與商人屋', day:6, bestTime:'11:00–12:15', viewpoint:'Prozerpina 噴泉西南側、面向市政廳東立面與彩色商人屋', direction:'鏡頭朝西北；11:45 後不要離開這一側，可同時卡位拍 12:00 山羊從塔樓上方出現', light:'接近正午時市政廳東立面較明亮；山羊很小，建議先準備 2×–3× 鏡頭或長焦。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.408527%2C16.935031'},
   {id:'poz-tumski', lightPhase:'daylight', cityKey:'POZ', name:'Jordan 橋上的波茲南主教座堂', day:6, bestTime:'09:00–10:30', viewpoint:'Most Biskupa Jordana 橋東側約三分之一處，靠 Śródka 一端', direction:'鏡頭朝西南，以橋欄杆引導視線到主教座堂雙塔；直幅可加入橋上行人增加尺度', light:'上午從 Śródka 側取景可得到側光；站在橋邊而非車道中央，避開通行中的單車與行人。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.412619%2C16.951091'},
 ];
@@ -351,7 +351,7 @@ export const attractions = {
   ],
   poznan: [
     {name:"舊市集廣場 Stary Rynek", tag:"2024 重修", mapUrl:"https://www.google.com/maps/search/?api=1&query=%E8%88%8A%E5%B8%82%E9%9B%86%E5%BB%A3%E5%A0%B4%20Stary%20Rynek%20Pozna%C5%84", venueId:null, extra:"鋪面與無障礙全面翻新 · 彩色商人屋 · 四座神話噴泉 · 免費"},
-    {name:"市政廳正午山羊鐘", tag:"免費", mapUrl:venues['poznan-town-hall'].map, venueId:"poznan-town-hall", extra:"官方確認每日 12:00，兩隻機械山羊頂角 12 次；不將非官方的 15:00 說法寫入行程"},
+    {name:"市政廳正午山羊鐘", tag:"免費", mapUrl:venues['poznan-town-hall'].map, venueId:"poznan-town-hall", extra:"Visit Poznań 官方旅遊網列每日 12:00 與 15:00 兩場，兩隻機械山羊頂角 12 次；本次採正午場，15:00 場只當備案"},
     {name:"可頌博物館 Rogalowe Muzeum", tag:"場次制展演", mapUrl:venues['poznan-croissant-museum'].map, venueId:"poznan-croissant-museum", extra:"未列入本次主行程。2026-10-07 官網查證：個人旅客英文「可頌＋山羊」場固定 14:00、約 65 分鐘，只保證週六日與 7–8 月；英語場 47 PLN／人，入口 Klasztorna 23"},
     {name:"古市政廳博物館", tag:"歷史", mapUrl:venues['poznan-old-town-hall-museum'].map, venueId:"poznan-old-town-hall-museum", extra:"2026/7/1–2027/11/30 整修閉館，行程期間無法入內，僅能外觀"},
     {name:"帝王城堡 Zamek Cesarski", tag:"地標", mapUrl:venues['poznan-ck-zamek'].map, venueId:"poznan-ck-zamek", extra:"2026-10-07 官網查證：CK ZAMEK 文化中心，一–日 12:00–19:00、售票至 18:00 · 9/5–12/6 展期售展覽＋城堡聯票，含地圖 35／30 PLN、含語音導覽 40／35 PLN · 室內可參觀空間仍依當日活動公告"},

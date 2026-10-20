@@ -685,7 +685,7 @@ export const venues = {
     map: "https://www.google.com/maps/search/?api=1&query=Taipei%20Representative%20Office%20in%20Poland%2C%20Emilii%20Plater%2053%2C%20Warszawa",
     officialUrl: "https://www.mofa.gov.tw/CountryInfo.aspx?CASN=1&n=164&s=124&sms=33&tabs=08617EE9DB3C61E3",
     address: "30th Floor, Ul. Emilii Plater 53, 00-113 Warsaw, Poland",
-    entranceNote: "僅作緊急聯絡備援；一般領務先於辦公時間電話確認。",
+    entranceNote: "僅作緊急聯絡備援；一般領務先於辦公時間以 Email 聯絡。",
     coords: null,
     prices: null,
     hours: null,

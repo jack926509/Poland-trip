@@ -85,7 +85,7 @@ export function renderCity({
   const renderDiningRow = item => `<tr class="${item.selected ? 'city-dining-selected' : ''}">
     <th scope="row">${renderDiningName(item)}${diningBadge(item)}${item.role === 'fastfood' ? '' : renderStoreBadges(item)}${item.address ? `<p class="food-map-note">${item.address}</p>` : ''}</th>
     <td>${stableTier(item.tier || item.tag || '待補充')}</td>
-    <td>${item.dishes?.length ? `<p class="store-dish-line"><b>推薦：</b>${item.dishes.join('、')}</p>` : ''}${item.notes.length ? dropDuplicateClauses(dedupeNotes(item.notes, item.address).join('；'), item.address) : '依店家當日菜單確認'}${item.phone ? `<p class="food-map-note">電話 <a href="tel:${item.phone.replace(/[^\d+]/g, '')}">${item.phone}</a></p>` : ''}</td>
+    <td>${item.dishes?.length ? `<p class="store-dish-line"><b>推薦：</b>${item.dishes.join('、')}</p>` : ''}${item.notes.length ? dropDuplicateClauses(dedupeNotes(item.notes, item.address).join('；'), item.address) : '依店家當日菜單確認'}</td>
     <td>${item.plans?.length
       ? item.plans.map(plan => `<p class="city-dining-plan">${dropRestatedHours(dropDuplicateClauses(plan, item.notes.join('；')), item.hours)}</p>`).join('')
       : `<p>${item.positionNote || planFallback[item.role] || '依當天動線與胃口安排'}</p>`}<p class="food-map-note">${bookingLabels[item.book] || '訂位請向店家確認'}</p><p class="food-map-note">營業時間：${item.hours || '待確認'}</p><details class="city-dining-record"><summary>查核紀錄與來源</summary>${renderDiningFacts(item, { includeHours: false })}</details></td>
