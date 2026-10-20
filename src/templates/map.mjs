@@ -47,7 +47,7 @@ export function renderInteractiveMap({ id, title, mapData, mapChecks = {}, legen
       var icon = L.divIcon({ className: 'trip-pin' + (number ? '' : ' trip-pin-plain') + (tag && String(tag).length > 2 ? ' trip-pin-tag' : ''), html: '<i class="trip-leader"></i><span style="background:' + category.fill + ';border-color:' + category.line + '">' + (tag || '') + '</span>', iconSize: number ? [26, 26] : [18, 18] });
       var marker = L.marker([point[0], point[1]], { icon: icon, title: (number ? tag + '. ' : '') + point[2], alt: point[2], zIndexOffset: number ? (100 - number) * 100000 : 0 }).addTo(map);
       pins.push({ marker: marker, number: number || 0, radius: number ? 13 : 9 });
-      var label = area ? '<br><small>範圍代表點，請依實際目的地導航</small>' : '<br><small>已查證場館／門牌錨點' + (/^\\d{4}-\\d{2}-\\d{2}$/.test(check.checkedAt || '') ? '・' + check.checkedAt.slice(5).replace('-', '/') + ' 查證' : '') + '</small>';
+      var label = area ? '<br><small>範圍代表點，請依實際目的地導航</small>' : '';
       var popup = document.createElement('div');
       var heading = document.createElement('b'); heading.textContent = (number ? tag + '. ' : '') + point[2]; popup.appendChild(heading);
       popup.appendChild(document.createElement('br')); popup.appendChild(document.createTextNode(point[3]));

@@ -61,7 +61,7 @@ const databaseEntriesBase = [
   {
     id: 'aviation-baggage-rules', section: 'aviation', category: 'transit', cityKey: 'ROUTE',
     title: '航空行李官方規則',
-    summary: '聯運行李額度依電子機票與實際承運航空判讀。10/06 重查行動電源：Cathay／Qatar／EVA 均每人最多 2 個、只能手提且不放頭頂；Qatar 各 ≤100 Wh、機上不得為行動電源充電；Cathay／EVA 另禁止機上使用。各航司來源見行前提醒頁。',
+    summary: '聯運行李額度依電子機票與實際承運航空判讀。行動電源：Cathay／Qatar／EVA 均每人最多 2 個、只能手提且不放頭頂；Qatar 各 ≤100 Wh、機上不得為行動電源充電；Cathay／EVA 另禁止機上使用。各航司來源見行前提醒頁。',
     status: 'verified', sourceUrl: 'https://www.qatarairways.com/en/travel-alerts.html', verifiedAt: '2026-10-06', recheckAt: null,
     offlineNote: '本趟準備每人最多 2 個、各 ≤100 Wh，保護接點且規格清楚；保存各承運航司規則。本次免費行李額度與直掛仍待電子機票確認。', private: false,
   },
@@ -89,7 +89,7 @@ const databaseEntriesBase = [
   {
     id: 'rail-trip-tickets', section: 'rail', category: 'transit', cityKey: 'ROUTE',
     title: '本次城際車票',
-    summary: '2026-09-28 與 2026-10-06 旅客提供的 App 票券清單顯示 10/25 EIP 5300、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 均已購票。四段的抵達時間、艙等、車廂、座位與票價仍待票券詳細頁核對。',
+    summary: '與 旅客提供的 App 票券清單顯示 10/25 EIP 5300、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 均已購票。四段的抵達時間、艙等、車廂、座位與票價仍待票券詳細頁核對。',
     status: 'pending', sourceUrl: null, verifiedAt: '2026-10-06', checkedAt: '2026-10-06', recheckAt: '2026-10-24',
     offlineNote: '請在抵波蘭當日 10/24，也就是 10/25 首段城際火車前一日，保存四段車票離線副本並核對票面詳細資料；這是自行設定的查核期限，非官方期限。搭車前用 Passenger Portal 查月台與異動。', private: false,
   },
@@ -434,7 +434,7 @@ export const dayOperations = {
     ],
     dailyAlerts: [
       '10/25 為非營業週日，多數一般商店關閉；餐廳與例外店家仍逐店確認。',
-      `EIP 5300 已購票，${eip5300.dep} 由 Warszawa Centralna 發車、${eip5300.arr} 抵 Kraków Główny（Koleo 2026-10-17）；車廂座位依票券詳細頁。`,
+      `EIP 5300 已購票，${eip5300.dep} 由 Warszawa Centralna 發車、${eip5300.arr} 抵 Kraków Główny；車廂座位依票券詳細頁。`,
     ],
     nightChecklist: [...standardNightChecklist, '確認 Auschwitz 官方導覽姓名、入場時段、行李限制與往返車票狀態', '確認白天已在 Lajkonik 備妥明日早餐、午餐及飲水並妥善保存；明早 07:15 開始早餐、07:35 出門，08:10 前到 MDA 下層 D9'],
   },
@@ -448,7 +448,7 @@ export const dayOperations = {
       accommodationAddress('krakow-stare-miasto'),
     ],
     navigation: [
-      { mode: 'Lajkonik 巴士', route: 'Kraków MDA ↔ Oświęcim Muzeum Auschwitz', get action() { return `去程已購票（2026-10-13）：${lajkonikOutboundAdopted.dep} 由 ul. Bosacka 18 下層 D9 站位發車、${lajkonikOutboundAdopted.arr} 抵 Więźniów Oświęcimia 55，${lajkonikOutboundAdopted.dur}；業者要求發車前 15 分鐘到站牌，距 10:00 到場要求只剩 10 分鐘。回程${lajkonikInboundWord()}：在同站反向搭 14:15 之後的班次，9/09 售票頁曾查得 15:30、16:30；14:00 班在導覽結束前開走。${lajkonikInboundWord() === '尚未購票' ? '可線上或當天向司機買票。' : ''}`; } },
+      { mode: 'Lajkonik 巴士', route: 'Kraków MDA ↔ Oświęcim Muzeum Auschwitz', get action() { return `去程已購票：${lajkonikOutboundAdopted.dep} 由 ul. Bosacka 18 下層 D9 站位發車、${lajkonikOutboundAdopted.arr} 抵 Więźniów Oświęcimia 55，${lajkonikOutboundAdopted.dur}；業者要求發車前 15 分鐘到站牌，距 10:00 到場要求只剩 10 分鐘。回程${lajkonikInboundWord()}：在同站反向搭 14:15 之後的班次，售票頁有 15:30、16:30；14:00 班在導覽結束前開走。${lajkonikInboundWord() === '尚未購票' ? '可線上或當天向司機買票。' : ''}`; } },
       { mode: '導覽接駁', route: 'Auschwitz I → Birkenau', action: '參加官方導覽時依當日工作人員指示搭接駁車，不自行跳過集合點。' },
     ],
     dailyAlerts: [
@@ -515,7 +515,7 @@ export const dayOperations = {
         name: diningPlaces['poznan-rogal'].name,
         address: diningPlaces['poznan-rogal'].address,
         url: diningPlaces['poznan-rogal'].map,
-        note: '週四 09:00–20:00（Google 地圖 2026-10-17），無特殊公告；售完改 Cukiernia Kandulski（Plac Ratajskiego 1，週四 09:00–17:00）。',
+        note: '週四 09:00–20:00，無特殊公告；售完改 Cukiernia Kandulski（Plac Ratajskiego 1，週四 09:00–17:00）。',
         reliable: true,
         entranceNote: '依店家地址與現場招牌找入口；營業與售完狀況須現場確認。',
         officialUrl: diningPlaces['poznan-rogal'].sourceUrl,
@@ -530,7 +530,7 @@ export const dayOperations = {
     ],
     dailyAlerts: [
       '市政廳博物館整修閉館；主行程只看官方確認的 12:00 山羊鐘樓秀。',
-      '聖馬丁牛角麵包已選定 ROGAL Świętomarciński（Stary Rynek 11/17）；週四 09:00–20:00（Google 地圖 2026-10-17），售完改 Cukiernia Kandulski（週四 09:00–17:00）。',
+      '聖馬丁牛角麵包已選定 ROGAL Świętomarciński（Stary Rynek 11/17）；週四 09:00–20:00，售完改 Cukiernia Kandulski（週四 09:00–17:00）。',
     ],
     nightChecklist: [...standardNightChecklist, 'Day 7 收費館只路過拍外觀，不用買票；明早 08:05 先在 Świętokrzyska 站口拍 MSN 與科學文化宮，08:15 搭 M1 到 Ratusz Arsenał', 'Polka 午餐不用訂位，客滿改 Pyzy Flaki Gorące；確認 Soul Kitchen 18:30 訂位、威靈頓已預留；沒供應改 Rusiko（Wierzbowa 11）或 Kieliszki na Próżnej，並重算交通'],
   },
@@ -554,7 +554,7 @@ export const dayOperations = {
         name: 'BUW 華沙大學圖書館屋頂花園',
         address: 'Dobra 56/66, Warszawa',
         url: 'https://www.google.com/maps/search/?api=1&query=Biblioteka%20Uniwersytecka%20w%20Warszawie%2C%20Dobra%2056%2F66%2C%20Warszawa',
-        note: '屋頂花園免費、開到 10/31；10 月時段 08:00–18:00（官網，2026-10-17 查）；11/1 起不開放屋頂。時間不夠先刪這段。',
+        note: '屋頂花園免費、開到 10/31；10 月時段 08:00–18:00；11/1 起不開放屋頂。時間不夠先刪這段。',
         reliable: true,
         entranceNote: '屋頂花園入口依現場指標；接著沿河岸步道走。',
         officialUrl: 'https://www.buw.uw.edu.pl/',
@@ -691,7 +691,7 @@ const unresolvedStepReasons = {
     '往東走到維斯瓦河邊': '戶外步行段，由無名塚沿 Królewska、Tamka 往東下坡到河岸，沿路的 Zachęta 與 Ostrogski 宮只拍外觀，終點接 BUW。',
     '搭車前往瓦津基公園': dynamicTransitReason,
     '往北走 → 三十字廣場': '戶外步行段，沿 Aleje Ujazdowskie 往北到 Plac Trzech Krzyży；天黑或下雨改叫車。',
-    '下午點心 · QQ Warsaw 抹茶': 'Żurawia 32/34，餐廳導航見當日餐飲；營業時間為店家 Instagram 的部分核實資料，前往前確認。',
+    '下午點心 · QQ Warsaw 抹茶': 'Żurawia 32/34，餐廳導航見當日餐飲；營業時間依店家 Instagram。',
     '可選 · E.Wedel 本店熱巧克力': 'Szpitalna 8，餐廳導航見當日餐飲；選配。',
   },
   8: {

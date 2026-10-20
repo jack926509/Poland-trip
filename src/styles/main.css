@@ -6807,7 +6807,10 @@ h3 {
 @media (min-width: 760px) { .day-jump { grid-template-columns: repeat(8, minmax(0, 1fr)); } }
 #daily-meals > .card { scroll-margin-top: 6rem; }
 
-.hours-city-group > summary {
+.hours-city-group > summary,
+.meals-day > summary,
+.reference-fold > summary,
+.operation-more-addresses > summary {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
@@ -6816,10 +6819,26 @@ h3 {
   cursor: pointer;
   list-style: none;
 }
-.hours-city-group > summary::-webkit-details-marker { display: none; }
-.hours-city-group > summary h3 { margin: 0; }
-.hours-city-group > summary h3::before { content: "＋ "; color: var(--accent); font-family: var(--font-mono); }
-.hours-city-group[open] > summary h3::before { content: "－ "; }
+.hours-city-group > summary::-webkit-details-marker,
+.meals-day > summary::-webkit-details-marker,
+.reference-fold > summary::-webkit-details-marker,
+.operation-more-addresses > summary::-webkit-details-marker { display: none; }
+.hours-city-group > summary h3,
+.meals-day > summary h3 { margin: 0; }
+.hours-city-group > summary h3::before,
+.meals-day > summary h3::before,
+.reference-fold > summary::before,
+.operation-more-addresses > summary::before { content: "＋ "; color: var(--accent); font-family: var(--font-mono); }
+.hours-city-group[open] > summary h3::before,
+.meals-day[open] > summary h3::before,
+.reference-fold[open] > summary::before,
+.operation-more-addresses[open] > summary::before { content: "－ "; }
+/* 2026-10-20 長頁收合：三餐每天一張、米其林與訂位表、每日第 5 張以後的地址 */
+#daily-meals > .meals-day { scroll-margin-top: 6rem; }
+.reference-fold > summary,
+.operation-more-addresses > summary { font-weight: 700; color: var(--accent); }
+.operation-address-rest { list-style: none; border: 0; padding: 0; }
+.operation-more-addresses .operation-addresses { margin-top: .5rem; }
 .hours-city-hint { color: var(--ink-soft); font-size: .85rem; }
 
 .check-list li,
@@ -7737,12 +7756,13 @@ html {
 .journal-practical .page > .todo-summary ~ .chapter-index { margin-block: 0.75rem 1rem; }
 .journal-practical .page > .todo-summary ~ section:first-of-type { margin-top: 1.25rem; padding-top: 0; }
 /* 驗收 F4：桌機 1280×800 第一屏原本看不到任何待辦（刊頭 130px、「本頁章節」卡 111px、分類大標 51px 把第一筆擠到 768 以下）。
-   只對待辦頁（.is-compact）：「本頁章節」縮成一列 chip（手機橫向捲動）、分類 h2 縮成 1.4rem、說明段不再限寬；
+   只對待辦頁（.is-compact）：「本頁章節」縮成小 chip（換行排列）、分類 h2 縮成 1.4rem、說明段不再限寬；
    桌機再把刊頭排成一列、每筆待辦左右分欄。文字一字不刪，其他實用資訊頁不受影響。 */
 .journal-practical .page:has(> .is-compact) .chapter-index { display: flex; align-items: center; gap: 0.6rem; margin-block: 0.5rem; padding: 0.3rem 0.6rem; }
 .journal-practical .page:has(> .is-compact) .chapter-index-label { flex: none; margin: 0; }
-.journal-practical .page:has(> .is-compact) .chapter-index ol { flex-wrap: nowrap; min-width: 0; overflow-x: auto; }
-.journal-practical .page:has(> .is-compact) .chapter-index ol a { white-space: nowrap; }
+/* 2026-10-20：原本手機橫向捲動，最後一顆被切掉看不出能滑；改成換行，chip 縮小一階。 */
+.journal-practical .page:has(> .is-compact) .chapter-index ol { flex-wrap: wrap; gap: 0.35rem; min-width: 0; }
+.journal-practical .page:has(> .is-compact) .chapter-index ol a { white-space: nowrap; min-height: 36px; padding: 0.25rem 0.7rem; font-size: 0.85rem; }
 .journal-practical .page:has(> .is-compact) .section-heading h2 { font-size: 1.4rem; }
 .journal-practical .page:has(> .is-compact) .section .lead { max-width: none; }
 @media (min-width: 1000px) {
@@ -7790,3 +7810,6 @@ html {
 }
 .day-jump a[aria-current='date'] { border: 2px solid var(--accent); background: var(--accent-pale); }
 .day-jump a[aria-current='date'] b::after { content: '・今天'; }
+
+/* 2026-10-20：出發前狀態列沒有內容時整個隱藏（避免留下空白膠囊）。 */
+.today-status[hidden] { display: none; }

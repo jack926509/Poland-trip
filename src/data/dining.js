@@ -76,7 +76,7 @@ export const michelinReservations = [
     "restaurant": "⭐⭐ Bottiglieria 1881（克拉科夫）",
     "mapUrl": "https://maps.google.com/?cid=8570908113421134699",
     "perPerson": "940 / 990",
-    "channel": "官網線上訂位 · ul. Bocheńska 5 · 僅供 tasting menu，不供單點；另加 12.5% 服務費；價格為 2026-10-06 官網查核"
+    "channel": "官網線上訂位 · ul. Bocheńska 5 · 僅供 tasting menu，不供單點；另加 12.5% 服務費"
   },
   {
     "restaurant": "⭐ Alon Omakase（華沙）",
@@ -94,7 +94,7 @@ export const michelinReservations = [
     "restaurant": "⭐ Muga（波茲南）",
     "mapUrl": "https://maps.google.com/?cid=2998937238608160974",
     "perPerson": "560 / 685",
-    "channel": "官網線上訂位 · Reserva 套餐 560 PLN，含魚子醬版本 685 PLN；另加 12.5% 服務費；價格為 2026-10-06 官網查核"
+    "channel": "官網線上訂位 · Reserva 套餐 560 PLN，含魚子醬版本 685 PLN；另加 12.5% 服務費"
   },
   {
     "restaurant": "⭐ NUTA（華沙）",
@@ -111,7 +111,7 @@ export const michelinReservations = [
   {
     "restaurant": "⭐ BABA（樂斯拉夫）",
     "mapUrl": "https://maps.google.com/?cid=9335659011047272773",
-    "perPerson": "主菜約 69–159（2026-02 官網菜單）",
+    "perPerson": "主菜約 69–159",
     "channel": "Michelin 免費線上 · Nożownicza 1D · 主廚 Beata Śniechowska"
   },
   {

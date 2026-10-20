@@ -57,10 +57,6 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
   const stats = todoStats(todoGroups);
   const todoCount = stats.open;
   const totalTodos = stats.total;
-  const syncItems = databaseEntries.length;
-  const pendingCount = databaseEntries.filter(entry => entry.status === 'pending').length;
-  const recheckCount = databaseEntries.filter(entry => entry.status === 'recheck').length;
-  const verifiedCount = databaseEntries.filter(entry => entry.status === 'verified').length;
   const coverCity = cities[0];
   const coverFigure = coverCity?.photo?.hero ? `
       <figure class="journal-cover-figure">
@@ -148,7 +144,6 @@ ${coverFigure}
     <aside class="journal-status-strip" aria-label="旅程準備狀態">
       <a href="#todos" aria-label="${todoCount} 項待辦"><strong>${todoCount}</strong><span>項待辦</span></a>
       <a href="practical/todos.html" class="journal-status-sub"><strong>${totalTodos - todoCount}</strong><span>已完成</span></a>
-      <a href="practical/database.html" class="journal-status-db"><span class="journal-status-caption">資料庫查核 ${syncItems} 筆</span><span><b>${verifiedCount}</b> 已確認 · <b>${recheckCount}</b> 待重查 · <b>${pendingCount}</b> 待確認</span></a>
     </aside>
 
     <section class="section" id="days">
@@ -187,7 +182,7 @@ ${coverFigure}
         <a class="card card-link" href="practical/transit.html"><h3>市內交通</h3><p>四城票價、機場接駁與購票方式。</p><span>查看 →</span></a>
         <a class="card card-link" href="practical/shopping.html"><h3>伴手禮與購物</h3><p>14 種伴手禮、實際店家與 Żabka。</p><span>查看 →</span></a>
         <a class="card card-link" href="practical/notes.html"><h3>出發前提醒</h3><p>夏令時間、日落、閉館與訂票節奏。</p><span>查看 →</span></a>
-        <a class="card card-link" href="practical/database.html"><h3>自由行資料庫</h3><p>SOS、行前重查與各主題官方資料集中管理。</p><span>查看 →</span></a>
+        <a class="card card-link" href="practical/database.html"><h3>自由行資料庫</h3><p>SOS 與各主題官方資料集中管理。</p><span>查看 →</span></a>
       </div>
     </section>
     <script>

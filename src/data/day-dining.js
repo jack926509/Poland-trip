@@ -73,7 +73,7 @@ export const dayDiningPlans = {
       "stepId": "d2-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
-      "condition": "午餐菜單 13:00 起才供應（早餐菜單 09:00–13:00）；週日只開到 15:00，資料來自 Google 地圖與 MapQuest，官網未列，10/22 複查再看一次。先用官網表單或 Email pimiento@pimiento.pl 訂 13:00 兩位（官網線上訂位不含這間分店）；客滿、關門或列車延誤改 Polonia 或 24 小時的 Przypiecek。",
+      "condition": "午餐菜單 13:00 起才供應（早餐菜單 09:00–13:00）；週日只開到 15:00，資料來自 Google 地圖與 MapQuest，官網未列。先用官網表單或 Email pimiento@pimiento.pl 訂 13:00 兩位（官網線上訂位不含這間分店）；客滿、關門或列車延誤改 Polonia 或 24 小時的 Przypiecek。",
       "dayHours": "09:00–15:00（早餐菜單 09:00–13:00，午餐菜單 13:00 起）"
     },
     {
@@ -206,7 +206,7 @@ export const dayDiningPlans = {
     {
       "placeId": "wieliczka-karczma-gornicza",
       "role": "午餐備案（營業待確認，暫不採用）",
-      "note": "2026-09-19 查核：礦場公司波蘭文頁列目前關閉，英文餐飲頁仍有菜單，官方資訊不一致；未獲礦場確認前不採用，午餐改用礦方確認每日營業的 Bistro Posolone。",
+      "note": "礦場公司波蘭文頁列目前關閉，英文餐飲頁仍有菜單，官方資訊不一致；未獲礦場確認前不採用，午餐改用礦方確認每日營業的 Bistro Posolone。",
       "stepId": null,
       "planStatus": "unavailable",
       "cityGuide": false
@@ -607,7 +607,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-gate-one-airport",
       "role": "午餐候選（僅申根區）",
-      "note": "初稿候選保留；QR 260 往多哈須走非申根流程，不將 Gate One 當成可直接抵達的首選。",
+      "note": "QR 260 往多哈須走非申根流程，不將 Gate One 當成可直接抵達的首選。",
       "stepId": null,
       "planStatus": "candidate"
     }

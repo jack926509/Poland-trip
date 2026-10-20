@@ -108,7 +108,12 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
     if (picker) picker.value = dates[shown];
     if (prev) prev.disabled = shown === 0;
     if (next) next.disabled = shown === cards.length - 1;
-    if (status) status.textContent = preview ? `預覽 Day ${shown+1} · ${dates[shown]}（非今天）· 華沙日期 ${today}` : statusText(selection,cards.length);
+    // 出發前「不在旅程期間」框已說明預覽 Day 1，狀態列不再重複；旅途中翻到別天才提示不是今天。
+    if (status) {
+      const text = !preview ? statusText(selection,cards.length) : selection.mode === 'during' ? `預覽 Day ${shown+1}（不是今天）` : '';
+      status.textContent = text;
+      status.hidden = !text;
+    }
     if (outside) outside.hidden = selection.mode === 'during';
     // 旅途期間（華沙時間在行程日內）手機頁首改精簡版，讓「接下來去哪」進首屏；
     // 非旅途期間不加 class，版面維持原樣。today-live 另外表示「看的就是今天」，

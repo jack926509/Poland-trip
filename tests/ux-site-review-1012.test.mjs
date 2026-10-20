@@ -26,11 +26,11 @@ test('餐飲指南：Day 1–8 跳轉列，營業時間名錄依城市收合', (
   assert.ok((hours.match(/<details class="card hours-city-group"><summary><h3>/g) || []).length >= 4);
 });
 
-test('城市頁：三餐主選與其他候選分組，查核紀錄收合但營業時間可見', () => {
+test('城市頁：三餐主選與其他候選分組，營業時間可見、不顯示查核紀錄', () => {
   const html = read('city-warszawa.html');
   assert.match(html, /<details class="city-dining-group" open>\s*<summary>你的候選與順路必吃：三餐主選（\d+ 家）<\/summary>/);
   assert.match(html, /<details class="city-dining-group">\s*<summary>你的候選：備選與點心（\d+ 家）<\/summary>/);
-  assert.ok(html.includes('<details class="city-dining-record"><summary>查核紀錄與來源</summary>'));
+  assert.ok(!html.includes('查核紀錄'));
   assert.match(html, /營業時間：週一休；週二至週六 13:00–24:00/);
 });
 

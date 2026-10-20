@@ -88,7 +88,7 @@ export function renderCity({
     <td>${item.dishes?.length ? `<p class="store-dish-line"><b>推薦：</b>${item.dishes.join('、')}</p>` : ''}${item.notes.length ? dropDuplicateClauses(dedupeNotes(item.notes, item.address).join('；'), item.address) : '依店家當日菜單確認'}</td>
     <td>${item.plans?.length
       ? item.plans.map(plan => `<p class="city-dining-plan">${dropRestatedHours(dropDuplicateClauses(plan, item.notes.join('；')), item.hours)}</p>`).join('')
-      : `<p>${item.positionNote || planFallback[item.role] || '依當天動線與胃口安排'}</p>`}<p class="food-map-note">${bookingLabels[item.book] || '訂位請向店家確認'}</p><p class="food-map-note">營業時間：${item.hours || '待確認'}</p><details class="city-dining-record"><summary>查核紀錄與來源</summary>${renderDiningFacts(item, { includeHours: false })}</details></td>
+      : `<p>${item.positionNote || planFallback[item.role] || '依當天動線與胃口安排'}</p>`}<p class="food-map-note">${bookingLabels[item.book] || '訂位請向店家確認'}</p><p class="food-map-note">營業時間：${item.hours || '待確認'}</p>${renderDiningFacts(item, { includeHours: false })}</td>
   </tr>`;
   // 27 家一路展開要捲 13,800px 以上（稽核 M4）。依既有排序邏輯分成 5 組收合，
   // 「你的候選與順路必吃」預設展開，其餘收合並在 summary 標出家數。
@@ -120,7 +120,7 @@ export function renderCity({
     <section class="section" id="city-dining">
       <div class="section-heading"><span class="section-num">Dining</span><h2>行程餐廳推薦</h2></div>
       <p class="lead" id="city-dining-description">共 ${mergedDining.length} 家，${mergedDining.filter(item => item.selected || item.mustEat).length} 家已列入每日候選。分組展開：排進三餐的主選與順路必吃預設打開並標出日期（點 Day 回當日行程），備選、主推、備案、小吃咖啡、連鎖速食點標題即可展開。</p>
-      <p class="lead"><b>點店名開啟 Google Maps。</b>評分與評論數本站不保存——那是每天在變的快照；營業時間附查核狀態，出發前與現場以官方頁為準，連鎖與同名店先對門牌。</p>
+      <p class="lead"><b>點店名開啟 Google Maps。</b>評分與評論數本站不保存——那是每天在變的快照；出發前與現場以官方頁為準，連鎖與同名店先對門牌。</p>
       <p class="city-dining-scroll-hint">平板可左右滑動看完整欄位，手機自動改為卡片。</p>
       ${diningGroupsHtml}
       <p class="action-links"><a href="practical/dining.html">米其林名單與訂位管道 →</a></p>
@@ -170,7 +170,7 @@ export function renderCity({
     && !mapData.points.some(point => point[2] === item.name));
   const unpinnedDiningHtml = unpinnedDining.length ? `<details class="city-map-unpinned">
       <summary>其他行程餐廳的導航連結（${unpinnedDining.length} 家）</summary>
-      <p>以下店家尚無本站核實的圖釘座標。點店名可用即時地圖查找地址與營業狀態；請先核對分店。</p>
+      <p>以下店家沒有放進地圖。點店名開 Google Maps 查地址與營業狀態。</p>
       <ul class="check-list">${unpinnedDining.map(item => `<li><a href="${item.map}" target="_blank" rel="noopener noreferrer">${item.name}</a>${item.address ? ` · ${item.address}` : ''}</li>`).join('')}</ul>
     </details>` : '';
 
@@ -248,7 +248,7 @@ export function renderCity({
     <section class="section journal-city-map">
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
       <p class="lead">拖曳、滾輪、雙擊或使用按鈕縮放；手機可用雙指縮放，點選圖釘可直接開啟 Google Maps。</p>
-      <div class="callout-note"><b>座標狀態：</b>${mapCheckSummary.precise} 個門牌／場館錨點已比對${mapCheckSummary.area ? `，${mapCheckSummary.area} 個街區或島區採範圍代表點` : ''}。既有座標於 2026/08/11–09/08 查核；MEI 與 Restauracja Wrocławska 於 2026/09/24 採店家官方導航目的地補入；未確認分店的 Żabka 不放精確圖釘，抵達後請用即時地圖搜尋附近分店。</div>
+      <div class="callout-note"><b>地圖：</b>${mapCheckSummary.area ? `${mapCheckSummary.area} 個街區或島區的圖釘是範圍代表點；` : ''}未確認分店的 Żabka 不放精確圖釘，抵達後請用即時地圖搜尋附近分店。</div>
       <div class="map-toolbar" role="group" aria-label="${city.name}地圖縮放控制">
         <button type="button" data-map-action="zoom-in">＋ 放大</button>
         <button type="button" data-map-action="zoom-out">－ 縮小</button>

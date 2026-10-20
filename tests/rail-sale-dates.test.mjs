@@ -37,7 +37,7 @@ test('訂票頁顯示四段已購，並提醒查票面細節', () => {
   assert.match(html, /10\/29 EIC 8104/);
   assert.doesNotMatch(html, /2026-09-25 起預售/);
   assert.doesNotMatch(html, /2026-09-27 起預售|2026-09-28 起預售/);
-  assert.match(html, /2026-10-06 依旅客提供的 PKP App 票券清單/);
+  assert.match(html, /都已在 PKP App 票券清單/);
 });
 
 test('倒數看板不再催四段已購火車', () => {
@@ -118,10 +118,12 @@ test('訂票頁以精簡卡取代倒數表，首頁下一個期限不含資料�
   assert.doesNotMatch(home, /看完整倒數/);
 });
 
-test('每一筆未完成、且不由待辦頁管理的期限，都出現在訂票頁（ETIAS、全站複查不可消失）', () => {
+test('每一筆未完成、且不由待辦頁管理的期限，都出現在訂票頁（ETIAS 不可消失）', () => {
   const booking = renderBooking(allSources);
   const standalone = trip.deadlines.filter(item => !item.todoRef && isOpenTodoStatus(item.status));
-  assert.ok(standalone.some(item => item.id === 'etias-check-2') && standalone.some(item => item.id === 'recheck-all'), '測試資料應含 ETIAS 與全站複查');
+  // 2026-10-20 全站複查期限移除：資料以目前版本為準
+  assert.ok(standalone.some(item => item.id === 'etias-check-2'), '測試資料應含 ETIAS');
+  assert.ok(!trip.deadlines.some(item => item.id === 'recheck-all'));
   for (const deadline of standalone) {
     assert.ok(booking.includes(escapeHtml(deadline.title)), `訂票頁缺少未完成期限 ${deadline.id}`);
     const md = deadline.date.slice(5).replace('-', '/');
@@ -168,7 +170,6 @@ test('由出發日回推的期限，算術與 basis 敘述一致', () => {
   const offsets = {
     'dining-michelin': 4, // 2026-10-17 原 10/02 已過期且仍有 6 項未訂，改為出發前 4 天
     'ticket-wieliczka': 21,
-    'recheck-all': 1, // 2026-10-17 原 10/16 已過期，改為出發前 1 天（與待辦 recheckAt 一致）
     'etias-check-2': 3,
   };
   const depart = Date.parse(`${trip.meta.travelStart}T00:00:00Z`);

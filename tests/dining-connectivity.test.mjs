@@ -123,10 +123,8 @@ test('資料遷移保留每日獨有餐廳的料理資訊與點心查核狀態',
   const rows=mergeCityDining('wroclaw',dining.cityDining.wroclaw,dining.cityFood[2].items,dining.snacksAndCafes.wroclaw);
   assert.match(rows.find(x=>x.placeId==='wroclaw-samarqand').notes.join(''),/烏茲別克／喬治亞料理/);
   const html=fs.readFileSync(new URL('../dist/day-05.html',import.meta.url),'utf8');
-  assert.ok(html.includes('部分核實，仍有缺項'));
-  assert.ok(html.includes('已核實所列資料'));
-  // 仍待確認的門市（例如 Karczma Górnicza）照樣標示，不因複查而消失
-  assert.ok(fs.readFileSync(new URL('../dist/day-04.html',import.meta.url),'utf8').includes('資料待確認'));
+  // 2026-10-20 起不顯示查核狀態
+  assert.doesNotMatch(html, /部分核實|已核實所列資料|資料待確認/);
 });
 
 test('餐飲類圖釘（star1/star2/bib/food）都帶 placeId，且導航連結與門市主檔一致', () => {

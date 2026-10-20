@@ -150,7 +150,7 @@
     if (!target) return;
     // 採買頁的城市、商品與牛奶果汁都收在 details 裡：目標本身或外層分組收合時先展開。
     // closest 也會比對元素本身，所以直接指向城市 details 時同樣成立。
-    const fold = target.closest('.grocery-product-group, .grocery-fold');
+    const fold = target.closest('.grocery-product-group, .grocery-fold, .hash-fold');
     if (!fold) return;
     fold.setAttribute('open', '');
     requestAnimationFrame(() => target.scrollIntoView({ block: 'start' }));

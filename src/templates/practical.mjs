@@ -79,10 +79,8 @@ function renderDisclaimer(title, bodyHtml) {
 
 /** 在待辦頁本身時不輸出連回待辦頁的連結（原本按了沒反應）。 */
 function renderBookingNotice({ onTodosPage = false } = {}) {
-  const where = onTodosPage
-    ? '各項最近查核日期列在本頁每一項下方'
-    : '各項最近查核日期列於<a href="../practical/todos.html">待辦事項</a>';
-  return renderDisclaimer('訂票狀態由人工維護，未連線查詢即時庫存。', `「可查／購」只表示可前往售票頁查詢，不代表有票或已訂妥。付款前請核對指定日期、場次與價格；${where}，未記錄日期的狀態請重新確認。`);
+  const where = onTodosPage ? '' : '；逐項狀態見<a href="../practical/todos.html">待辦事項</a>';
+  return renderDisclaimer('訂票狀態不是即時庫存', `「可查／購」只表示可前往售票頁查詢，不代表有票或已訂妥。付款前請核對指定日期、場次與價格${where}。`);
 }
 
 /**
@@ -118,7 +116,7 @@ export function renderBookingStatusCard(todoGroups, deadlines = [], today = taip
       <div class="booking-status-card">
         <span class="eyebrow">待辦總覽</span>
         <h2>${stats.open ? `還沒處理 <b class="number" data-booking-open>${stats.open}</b> 項` : '待辦已全部處理完畢'}</h2>
-        <p>共 ${stats.total} 項，已完成 ${stats.done} 項${stats.skipped ? `，線上已售完 ${stats.skipped} 項（當天現場再試）` : ''}。逐項狀態、查核日期與處理連結只在待辦事項頁維護。</p>
+        <p>共 ${stats.total} 項，已完成 ${stats.done} 項${stats.skipped ? `，線上已售完 ${stats.skipped} 項（當天現場再試）` : ''}。逐項狀態與處理連結在待辦事項頁。</p>
         <ul class="booking-status-groups">${rows}</ul>${standaloneHtml}
         <p class="action-links"><a class="booking-status-cta" href="todos.html">看待辦事項 →</a></p>
       </div>
@@ -135,7 +133,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
       <td class="number">${train.date}${dayLink(train.date) ? `<br>${dayLink(train.date)}` : ''}</td><td>${train.type}</td>
       <td class="number time-range">${train.dep}&nbsp;→&nbsp;${train.arr}</td>
       <td class="number">${train.dur}</td>
-      <td><b>${train.status === '已購票' ? '已購票' : train.saleOpens ? `上次查得 ${escapeHtml(train.saleOpens)} 起預售（待複核）` : '官方日期待確認'}</b>${train.status !== '已購票' && train.saleCheckedAt ? `<br><span class="timeline-note">PKP Intercity 官方售票系統查核：${escapeHtml(train.saleCheckedAt)}</span>` : ''}</td>
+      <td><b>${train.status === '已購票' ? '已購票' : train.saleOpens ? `${escapeHtml(train.saleOpens)} 起預售` : '官方日期待確認'}</b></td>
       <td class="number">${/^\d/.test(train.price) ? `PLN ${train.price}` : train.price}${train.note ? `<br><span class="timeline-note">${train.note}</span>` : ''}</td>
     </tr>`).join('');
   const railLinkCards = railOfficialLinks.map(item => `
@@ -158,8 +156,8 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
       <span class="eyebrow">${escapeHtml(item.status)} · ${escapeHtml(item.city)}</span><h3>${escapeHtml(item.name)}</h3>
       <p><b>${escapeHtml(item.checkIn)}${item.checkInTime ? ` ${escapeHtml(item.checkInTime)}` : ''} → ${escapeHtml(item.checkOut)}${item.checkOutTime ? ` ${escapeHtml(item.checkOutTime)}` : ''}</b> · ${item.nights} 晚 · ${item.rooms} 間房</p>
       <p><b>地址：</b>${escapeHtml(item.address)}${item.addressVerified ? '' : ' <span class="tag-todo">門牌待確認</span>'}</p>
-      <p><b>座標：</b><span class="number">${coordinateLabel}</span>${coordinate ? `<br><span class="timeline-note">${escapeHtml(coordinate.status)} · ${escapeHtml(coordinate.checkedAt)}</span>` : ''}</p>
-      <p><b>電話：</b>${item.phone ? `<a href="tel:${escapeHtml(item.phone.replace(/[^\d+]/g, ''))}">${escapeHtml(item.phone)}</a><br><span class="timeline-note">來源：<a href="${escapeHtml(item.phoneSource.url)}" target="_blank" rel="noopener noreferrer">飯店官方網站</a> · 查證 ${escapeHtml(item.phoneSource.checkedAt)}</span>` : '請看訂房確認信'}</p>
+      <p><b>座標：</b><span class="number">${coordinateLabel}</span></p>
+      <p><b>電話：</b>${item.phone ? `<a href="tel:${escapeHtml(item.phone.replace(/[^\d+]/g, ''))}">${escapeHtml(item.phone)}</a>` : '請看訂房確認信'}</p>
       <p class="timeline-note">${escapeHtml(item.note)}</p>
       <p class="action-links">${mapUrl ? `<a href="${mapUrl}" target="_blank" rel="noopener noreferrer">座標導航 →</a>` : ''}<a href="${escapeHtml(item.officialUrl)}" target="_blank" rel="noopener noreferrer">飯店官網 →</a></p>
     </article>`;
@@ -199,7 +197,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
         </article>
       </div>
 
-      <h3>去程 · ${escapeHtml(auschwitzBus.outbound.status)}（查核 ${escapeHtml(auschwitzBus.outbound.checkedAt)}）</h3>
+      <h3>去程 · ${escapeHtml(auschwitzBus.outbound.status)}</h3>
       <p class="lead">查詢參數：</p>
       ${queryRow(auschwitzBus.outbound.query)}
       <div class="table-wrap"><table class="table-editorial">
@@ -217,7 +215,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
       </table></div>
       <p class="timeline-note">${escapeHtml(auschwitzBus.outbound.note)}</p>
 
-      <h3>回程 · ${escapeHtml(auschwitzBus.inbound.status)}${auschwitzBus.inbound.checkedAt ? `（查核 ${escapeHtml(auschwitzBus.inbound.checkedAt)}）` : ''}</h3>
+      <h3>回程 · ${escapeHtml(auschwitzBus.inbound.status)}</h3>
       <p class="lead">門檻：${escapeHtml(auschwitzBus.inbound.threshold)}。查詢參數：</p>
       ${queryRow(auschwitzBus.inbound.query)}
       <div class="table-wrap"><table class="table-editorial">
@@ -241,7 +239,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
     ${statusCardHtml}
     <section class="section" id="rail-itinerary">
       <div class="section-heading"><span class="section-num">Rail</span><h2>城際交通</h2></div>
-      <div class="callout-note"><b>已購 ${bookedTrains}／${railTrains.length} 段城際火車。</b><p>火車與巴士逐段是否已購，以<a href="todos.html#todo-rail">待辦事項</a>為準。2026-09-28 與 2026-10-06 依旅客提供的 PKP App 票券清單，確認 10/25 EIP 5300、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 的日期、起訖站及發車時間。截圖沒有抵達時間、艙等、車廂、座位與票價；請進票券詳細頁核對並保存離線票券。</p></div>
+      <div class="callout-note"><b>已購 ${bookedTrains}／${railTrains.length} 段城際火車。</b><p>火車與巴士逐段是否已購，以<a href="todos.html#todo-rail">待辦事項</a>為準。10/25 EIP 5300、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 都已在 PKP App 票券清單；艙等、車廂與座位看票券詳細頁，並保存離線票券。</p></div>
       <p><a href="https://www.intercity.pl/en/site/for-passengers/trains/about-eic.html" target="_blank" rel="noopener">PKP 官方 EIC 服務說明</a>列有一等艙飲品與點心；指定班次的編組、設備、餐飲與票價仍以購票頁為準。</p>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>路段</th><th>日期</th><th>車種</th><th>時刻</th><th>時長</th><th>預售</th><th>票價</th></tr></thead><tbody>${trainRows}</tbody></table></div>
     </section>
@@ -297,7 +295,6 @@ function renderTodoItem(item, group) {
   return `<li class="todo-item${open ? '' : ' is-done'}" id="${todoItemId(group, item)}">
         <div class="todo-head"><span class="todo-date">${item.date}</span><b class="todo-name">${item.name}</b><span class="${open ? 'tag-todo' : 'tag-muted'}">${item.status}</span></div>
         <p class="todo-action">${linkifyText(item.action)}${item.url ? ` <a class="todo-link" href="${item.url}" target="_blank" rel="noopener">${todoLinkLabel(item, group)} →</a>` : ''}</p>
-        <p class="source-meta todo-checked"${recheck ? ` data-recheck-at="${recheck}" data-recheck-open="${open}"` : ''}>最近人工查核：${checked ? `<time datetime="${checked}">${checked}</time>` : '未記錄，請重查'}${recheck ? ` · 下次查核：<time datetime="${recheck}">${recheck}</time><span class="tag-red todo-recheck-flag" data-recheck-flag hidden>重查已逾期</span>` : ''}${day ? ` · <a class="todo-day-link" href="${day.href}#day-preparation">Day ${day.n} 行程 →</a>` : ''}</p>
       </li>`;
 }
 
@@ -372,42 +369,45 @@ export function renderDining({ michelinSummary, michelinReservations, verifiedRe
   const cafeTotal = cafeGuide.reduce((sum, group) => sum + group.items.length, 0);
   const cafeHtml = cafeGuide.map(group => `<details class="card hours-city-group" id="cafes-${escapeHtml(group.cityKey)}"><summary><h3>${escapeHtml(group.city)}（${group.items.length} 家）</h3><span class="hours-city-hint">順路時段、營業時間與導航</span></summary><ul class="day-food-list">${group.items.map(item => `<li class="day-food-item cafe-item">${renderStoreHead(item, `${item.type} · ${item.when}`)}${renderStoreBody(item, { note: item.highlight, condition: '' })}</li>`).join('')}</ul></details>`).join('');
   const content = `
-    ${renderDisclaimer('資料界線：米其林名單、營業時間與預算的來源', '米其林名單以 2026-05-29 官方發布為準；Google 星等與評論數會變，本站不把它們當成固定資料。高價餐廳預算已於 2026-09-08 對照旅程試算表更新；每家的「查核紀錄」逐筆列出查核日期與來源，查不到一手來源的店家一律標「待確認」，訂位前仍看店家公告。')}
     <section class="section" id="daily-meals">
       <div class="section-heading"><span class="section-num">Daily meals</span><h2>八天三餐與備選</h2></div>
       <p class="lead">每日行程與今日卡共用這份安排。時刻為波蘭當地時間，候選不代表已訂位；每餐擇一，依交通與接單情況改備案。</p>
       <nav class="day-jump" aria-label="跳到某一天的三餐">${days.map(day => `<a href="#meals-day-${day.n}" data-meal-date="${dayIsoDate(day.date, meta.tripStart)}"><b>Day ${day.n}</b><span>${escapeHtml(day.date.replace(/\s*\(.*\)/, ''))}</span></a>`).join('')}</nav>
-      ${days.map(day => `<article class="card" id="meals-day-${day.n}"><h3>Day ${day.n} · ${escapeHtml(day.date)} · ${escapeHtml(day.city)}</h3>${renderMealList(day, dayMeals[day.n])}
+      ${days.map(day => `<details class="card meals-day hash-fold" id="meals-day-${day.n}" data-meal-date="${dayIsoDate(day.date, meta.tripStart)}"${day.n === 1 ? ' open' : ''}><summary><h3>Day ${day.n} · ${escapeHtml(day.date)} · ${escapeHtml(day.city)}</h3></summary>${renderMealList(day, dayMeals[day.n])}
         <details><summary>保留的備選、備餐與點心 · ${dayDining[day.n].filter(item => !item.meal).length} 家</summary><ul class="day-food-list">${dayDining[day.n].filter(item => !item.meal).map(item => `<li class="day-food-item">${renderStoreHead(item, item.role)}${renderStoreBody(item, { condition: '', timing: mealTiming(item, day) })}</li>`).join('')}</ul></details>
         <p><a href="../day-${String(day.n).padStart(2,'0')}.html#day-food">當日完整動線與餐廳導航 →</a></p>
-        <p class="meals-back"><a href="#daily-meals">↑ 換一天</a></p></article>`).join('')}
+        <p class="meals-back"><a href="#daily-meals">↑ 換一天</a></p></details>`).join('')}
       <script>
         // UX 1017 M6：旅途期間把日期列上的「今天」標出來（華沙當地日期）；不用 id 選取器，單檔版才不會失效。
         (function () {
           ${todayIn.toString()}
           var root = document.currentScript.closest('.standalone-page') || document;
-          var link = root.querySelector('.day-jump [data-meal-date="' + todayIn('Europe/Warsaw', new Date()) + '"]');
+          var today = todayIn('Europe/Warsaw', new Date());
+          var link = root.querySelector('.day-jump [data-meal-date="' + today + '"]');
           if (link) link.setAttribute('aria-current', 'date');
+          // 旅途中只展開今天那一天的三餐，其餘收合；出發前預設展開 Day 1。
+          var card = root.querySelector('details.meals-day[data-meal-date="' + today + '"]');
+          if (card) root.querySelectorAll('details.meals-day').forEach(function (item) { item.open = item === card; });
         }());
       </script>
     </section>
     <section class="section" id="cafes">
       <div class="section-heading"><span class="section-num">Coffee &amp; sweets</span><h2>咖啡與甜點</h2></div>
-      <p class="lead">四城 ${cafeTotal} 家咖啡、熱巧克力與甜點店，依行程先後排，小標寫適合排在哪一天哪一段；標「已排入」的就在每日時間表裡，其餘是順路候選。下方米其林總表的星級與 Bib Gourmand 都是正餐餐廳，沒有咖啡館或甜點店，所以這裡改依觀光局與在地指南整理，查核狀態與來源寫在每家的查核紀錄。</p>
+      <p class="lead">四城 ${cafeTotal} 家咖啡、熱巧克力與甜點店，依行程先後排，小標寫適合排在哪一天哪一段；標「已排入」的就在每日時間表裡，其餘是順路候選。下方米其林總表的星級與 Bib Gourmand 都是正餐餐廳，沒有咖啡館或甜點店，所以這裡改依觀光局與在地指南整理。</p>
       <div class="hours-city-list">${cafeHtml}</div>
     </section>
     <section>
       <div class="section-heading"><span class="section-num">Guide</span><h2>2026 米其林總表</h2></div>
-      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>星級</th><th>星級餐廳</th><th>Bib Gourmand</th></tr></thead><tbody>${summaryRows}</tbody></table></div>
+      <details class="card hash-fold reference-fold"><summary>本次未排米其林餐廳，展開看四城名單</summary><div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>星級</th><th>星級餐廳</th><th>Bib Gourmand</th></tr></thead><tbody>${summaryRows}</tbody></table></div></details>
     </section>
     <section class="section" id="restaurant-hours">
       <div class="section-heading"><span class="section-num">Hours</span><h2>行程餐廳營業時間</h2></div>
-      <p class="lead">依城市分組，點城市展開；店名連到店家公告，「導航」開 Google Maps，Day 連回排定的那一天。查核日期、來源與菜單說明收在每家的「查核紀錄」裡。</p>
+      <p class="lead">依城市分組，點城市展開；店名連到店家公告，「導航」開 Google Maps，Day 連回排定的那一天。地址與菜單收在每家的摺疊區。</p>
       <div class="hours-city-list">${hoursHtml}</div>
     </section>
     <section class="section">
       <div class="section-heading"><span class="section-num">Reserve</span><h2>訂位與每人預算</h2></div>
-      <div class="table-wrap"><table class="table-editorial"><thead><tr><th>餐廳</th><th>每人 PLN</th><th>訂位管道／備註</th></tr></thead><tbody>${reservationRows}</tbody></table></div>
+      <details class="card hash-fold reference-fold"><summary>展開高價餐廳的訂位管道與每人預算</summary><div class="table-wrap"><table class="table-editorial"><thead><tr><th>餐廳</th><th>每人 PLN</th><th>訂位管道／備註</th></tr></thead><tbody>${reservationRows}</tbody></table></div></details>
     </section>
     ${renderFastFoodMenu({ chains: fastFoodChains, branches: fastFoodBranches, hubs: fastFoodHubs })}`;
   return renderPracticalLayout('餐廳與速食', 'Food guide', '八天三餐、咖啡甜點與備選都在這頁，依日期找就好；2026 米其林名單與趕行程用的連鎖速食放在後段參考。', content, 'practical/dining.html');
@@ -443,7 +443,7 @@ function renderTicketPurchases(items, todoGroups) {
     return `<tr id="purchase-${escapeHtml(item.id)}" data-ticket-purchase="${escapeHtml(item.id)}" data-ticket-plan="${escapeHtml(item.plan)}" data-ticket-method="${escapeHtml(item.method)}">
       <td data-label="景點與行程"><b>${escapeHtml(item.name)}</b><br><span class="tag-muted">${escapeHtml(ticketPlanLabels[item.plan])}</span>${date ? ` <span class="source-meta">${escapeHtml(date)}</span> ${dayLink(date)}` : ''}</td>
       <td data-label="購票方式"><b>${escapeHtml(ticketMethodLabels[item.method])}</b>${todo ? `<br><span class="${isOpenTodoStatus(todo.status) ? 'tag-todo' : 'tag-muted'}">${escapeHtml(todo.status)}</span> <a href="todos.html#todo-attractions">訂票紀錄 →</a>` : ''}<p>${escapeHtml(item.note)}</p></td>
-      <td data-label="官方入口">${links.filter(Boolean).join('<br>')}<br><span class="source-meta">入口／規則核對 <time datetime="${escapeHtml(item.checkedAt)}">${escapeHtml(item.checkedAt)}</time></span></td>
+      <td data-label="官方入口">${links.filter(Boolean).join('<br>')}</td>
     </tr>`;
   }).join('');
   return `<h3>購票入口與參觀方式</h3>
@@ -491,12 +491,12 @@ export function renderTickets({ fares, ticketsByCity, notices = [], purchaseGrou
     <section class="section" id="ticket-purchases">
       <div class="section-heading"><span class="section-num">Official tickets</span><h2>所有景點購票清單</h2></div>
       <p class="lead">${purchaseGroups.reduce((count, group) => count + group.items.length, 0)} 組購票與參觀項目，涵蓋主行程、備選、附件參考與閉館景點。先看各城市的購票入口，再對照票價；主行程標記表示已安排，不表示已購票。</p>
-      <p>需要門票不一定需要預約。現場售票項目附官方資訊；本次免費或已含的項目先確認適用規則。官方入口與參觀規則於 2026-10-13 核對，指定日庫存仍須到售票日曆確認。</p>
+      <p>需要門票不一定需要預約。現場售票項目附官方資訊；本次免費或已含的項目先確認適用規則；指定日庫存以售票日曆為準。</p>
       <p class="action-links"><a href="todos.html#todo-attractions">查看待購與已訂導覽紀錄 →</a></p>
     </section>
     <section>
       <div class="section-heading"><span class="section-num">Prices</span><h2>最新門票速查</h2></div>
-      <p class="lead">全票／優待皆為 PLN（zł），各列保留該項原查證日期；新增購票入口不代表所有票價都已重新核實。動態票價、指定日場次與臨時閉館，購票前以官網為準。</p>
+      <p class="lead">全票／優待皆為 PLN（zł）。動態票價、指定日場次與臨時閉館，購票前以官網為準。</p>
       ${cityChipsHtml}
       ${fareGroupsHtml}
     </section>
@@ -509,12 +509,11 @@ export function renderTickets({ fares, ticketsByCity, notices = [], purchaseGrou
 }
 
 export function renderTransit({ transitFares, airportTransit, recommendedApps, passChecklist, usefulRoutes, practical = [] }) {
-  const fareRows = transitFares.map(item => `<tr><td><a href="${item.officialUrl}" target="_blank" rel="noopener"><b>${item.city}</b></a><br><small>查核 ${item.checkedAt}</small>${cityLink(item.city) ? `<br>${cityLink(item.city)}` : ''}</td><td>${item.short}</td><td>${item.min90}</td><td>${item.hour24}</td><td>${item.note}</td></tr>`).join('');
+  const fareRows = transitFares.map(item => `<tr><td><a href="${item.officialUrl}" target="_blank" rel="noopener"><b>${item.city}</b></a>${cityLink(item.city) ? `<br>${cityLink(item.city)}` : ''}</td><td>${item.short}</td><td>${item.min90}</td><td>${item.hour24}</td><td>${item.note}</td></tr>`).join('');
   const airportRows = airportTransit.map(item => `<tr><td><b>${item.route}</b></td><td>${item.method}</td><td class="number">${item.price}</td><td class="number">${item.time}</td><td>${item.note}</td></tr>`).join('');
   const appCards = recommendedApps.map(item => `<article class="card"><h3>${item.name}</h3><p>${item.desc}</p></article>`).join('');
   const practicalCards = practical.map(item => `<article class="card"><span class="eyebrow">${item.tag}</span><h3>${item.name}</h3><p>${item.note}</p></article>`).join('');
   const content = `
-    ${renderDisclaimer('2026/09/08 複核：票價來源與仍會變動的部分', '華沙、克拉科夫與波茲南票價已對照各城市官方價目；樂斯拉夫保留現行票價並明確標示出發前重查。班次、改道與售票機規則仍屬動態資料。')}
     <section>
       <div class="section-heading"><span class="section-num">Fares</span><h2>四城市內票價</h2></div>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>城市</th><th>短程</th><th>90 分</th><th>24 小時</th><th>備註</th></tr></thead><tbody>${fareRows}</tbody></table></div>
@@ -552,17 +551,16 @@ export function renderEssentials({ phrases, packingDefault, about, safety, sourc
   const emergencyRows = safety.emergency.map(item => `<tr><td>${item[0]}</td><td class="number"><b><a href="tel:${item[1].replace(/\s+/g, '')}">${escapeHtml(item[1])}</a></b></td></tr>`).join('');
   const embassyRows = safety.embassy.map(item => `<tr><td>${item[0]}</td><td><b>${item[1]}</b></td></tr>`).join('');
   const safetyCards = safety.tips.map(item => `<article class="card"><h3>${item.label}</h3><p>${item.text}</p></article>`).join('');
-  const sourceRows = sources.map(item => `<tr><td><a href="${item.url}" target="_blank" rel="noopener"><b>${item.name}</b></a></td><td>${item.checkedAt}</td><td>${item.note}</td></tr>`).join('');
+  const sourceRows = sources.map(item => `<tr><td><a href="${item.url}" target="_blank" rel="noopener"><b>${item.name}</b></a></td><td>${item.note}</td></tr>`).join('');
   const content = `
-    <div class="callout-note"><b>2026/10/06 入境與行動電源複核：</b>EES 已全面運作，首次入境留登錄時間；ETIAS 仍未啟用、不收申請。10/23 自台灣出發前再查啟用日及適用規則；Cathay、Qatar、EVA 行動電源規則見下表。其他資料各自保留查核日期與官方來源。</div>
-    <section><div class="section-heading"><span class="section-num">Basics</span><h2>基本須知</h2></div><div class="grid">${aboutCards}</div></section>
+    <section><div class="section-heading"><span class="section-num">Basics</span><h2>基本須知</h2></div><div class="grid">${aboutCards}<article class="card"><span class="eyebrow">入境</span><p>EES 已全面運作，首次入境要留登錄時間；ETIAS 仍未啟用、不收申請。Cathay、Qatar、EVA 行動電源規則見下方來源表。</p></article></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Language</span><h2>常用波蘭語</h2></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>中文</th><th>波蘭語</th><th>音譯</th></tr></thead><tbody>${phraseRows}</tbody></table></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Packing</span><h2>打包清單</h2></div><div class="grid-wide">${packingHtml}</div></section>
     <section class="section"><div class="section-heading"><span class="section-num">SOS</span><h2>緊急聯絡</h2></div><div class="grid-wide"><div class="table-wrap"><table class="table-editorial"><thead><tr><th>單位</th><th>電話</th></tr></thead><tbody>${emergencyRows}</tbody></table></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>駐波蘭代表處</th><th>資訊</th></tr></thead><tbody>${embassyRows}</tbody></table></div></div>
       <p class="callout-note"><b>保險救援電話、保單號碼與各預約的訂位代號</b>可填在<a href="database.html#my-private">「我的私人資料」</a>（只存在這支手機的這個瀏覽器，不會上傳）；住宿電話見<a href="database.html#sos-hotels">資料庫 SOS 區</a>。</p></section>
     <section class="section"><div class="section-heading"><span class="section-num">Safety</span><h2>安全與禮儀</h2></div><div class="grid-wide">${safetyCards}</div></section>
-    <section class="section"><div class="section-heading"><span class="section-num">Sources</span><h2>官方查核來源</h2></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>項目</th><th>查核日期</th><th>目前結論</th></tr></thead><tbody>${sourceRows}</tbody></table></div></section>`;
-  return renderPracticalLayout('安全與基本須知', 'Essentials', '語言、插座、打包、緊急電話與常見陷阱集中在這裡，出發前可快速複查。', content, 'practical/essentials.html');
+    <section class="section"><div class="section-heading"><span class="section-num">Sources</span><h2>官方來源</h2></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>項目</th><th>重點</th></tr></thead><tbody>${sourceRows}</tbody></table></div></section>`;
+  return renderPracticalLayout('安全與基本須知', 'Essentials', '語言、插座、打包、緊急電話與常見陷阱集中在這裡，出發前看一遍就好。', content, 'practical/essentials.html');
 }
 
 export function renderNotes({ preDepartureNotes, daylight = [] }) {
@@ -579,7 +577,7 @@ export function renderNotes({ preDepartureNotes, daylight = [] }) {
     <section class="section" id="daylight">
       <div class="section-heading"><span class="section-num">Daylight</span><h2>八日日照</h2></div>
       <p>10/25 凌晨夏令時間結束（03:00 回撥 02:00），日落從 Day 1 的 ${escapeHtml(daylight[0].sunset)} 掉到 Day 2 的 ${escapeHtml(daylight[1].sunset)}——整趟旅程的戶外可用時間在第二天就少掉約 53 分鐘。排傍晚戶外行程、以及判斷哪些拍照站位還成立，都看這張表。</p>
-      <div class="callout-note"><b>資料界線：</b>本表為天文推算值，出發前以天文表複核；不是官方公告時刻。各日行程頁也會顯示當天同一組數值，兩處同源。</div>
+      <p class="source-meta">日出日落為天文推算值，各日行程頁顯示同一組數值。</p>
       <div class="table-wrap"><table class="table-editorial"><thead><tr><th>日</th><th>日期</th><th>日出</th><th>日落</th><th>藍調結束</th><th>備註</th></tr></thead><tbody>${daylightRows}</tbody></table></div>
     </section>` : '';
   return renderPracticalLayout('行前提醒', 'Pre-trip', '這些限制直接對應 2026/10/24–10/31 的日期；先處理閉館、日落、夏令時間與訂票節奏。', `<div class="grid-wide">${cards}</div>${daylightHtml}`, 'practical/notes.html');

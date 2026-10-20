@@ -565,7 +565,7 @@ test('自由行資料庫頁提供 SOS、主題索引與緊急聯絡資訊', () =
   assert.ok(html.includes('tel:+48222130060'));
   assert.ok(html.includes('tel:+886800085095'));
   assert.ok(html.includes('Taipei%20Representative%20Office%20in%20Poland'));
-  assert.ok(html.includes('盤查日期'));
+  assert.ok(!html.includes('盤查日期'), '2026-10-20 起不顯示查核日期');
   assert.ok(html.includes('保險海外救援'));
   assert.ok(html.includes('需填私人資料'));
   for (const title of ['護照遺失', '緊急就醫', '行李未到', '轉機失接', '卡片遺失']) assert.ok(html.includes(`<h3>${title}</h3>`));
@@ -1041,10 +1041,10 @@ test('Day 5 百年廳只看外觀、全景畫不入內，保留座堂島點燈�
 
 test('高風險校正：皇家城堡與辛德勒工廠已依官方時間修正', () => {
   // 2026-10-14 新行程不進皇家城堡；官方時間保留在城市頁提醒，Day 7 改寫只拍城堡廣場外觀。
-  assert.ok(read('city-warszawa.html').includes('2026-10-14 新行程不進城堡'));
+  assert.ok(read('city-warszawa.html').includes('新行程不進城堡'));
   assert.ok(read('day-07.html').includes('不進城堡'));
   assert.ok(read('city-warszawa.html').includes('已改行程'));
-  assert.ok(read('city-krakow.html').includes('已查證'));
+  assert.ok(read('city-krakow.html').includes('官方時間'));
   assert.doesNotMatch(read('day-07.html'), /17:00[^<]{0,80}皇家城堡內部/);
 });
 
@@ -1271,14 +1271,14 @@ test('備案景點的票價與開放資訊使用最新官方查證結果', () =>
   assert.match(kolejkowo?.officialUrl ?? '', /kolejkowo\.pl\/wroclaw\/(?:cennik|en\/price-list)/);
   assert.equal(kolejkowo?.fullPrice, '線上 39 起／現場 55 起');
   assert.equal(kolejkowo?.discountPrice, '線上 33 起／現場 45 起');
-  assert.match(kolejkowo?.note ?? '', /2026-08-12 官網查證/);
+  assert.doesNotMatch(kolejkowo?.note ?? '', /20\d\d-\d\d-\d\d/, '2026-10-20 起不寫查核日期');
   assert.match(palmiarnia?.officialUrl ?? '', /^https:\/\/palmiarnia\.poznan\.pl/);
   // 官網公告改建暫時閉館：不得再列票價或開放時間，否則會被當成還能排。
   assert.equal(palmiarnia?.fullPrice, '暫時閉館');
   assert.match(palmiarnia?.note ?? '', /暫時閉館/);
   assert.doesNotMatch(palmiarnia?.note ?? '', /週一休館；二–五/);
-  assert.match(wroclawAttractions.find(item => item.name === 'Hydropolis 水知識中心')?.extra ?? '', /2026-08-11 官網查證/);
-  assert.match(wroclawAttractions.find(item => item.name === 'Kolejkowo 微縮館')?.extra ?? '', /2026-08-12 官網查證/);
+  assert.doesNotMatch(wroclawAttractions.find(item => item.name === 'Hydropolis 水知識中心')?.extra ?? '', /查證|20\d\d-\d\d-\d\d/);
+  assert.doesNotMatch(wroclawAttractions.find(item => item.name === 'Kolejkowo 微縮館')?.extra ?? '', /查證|20\d\d-\d\d-\d\d/);
   assert.match(poznanAttractions.find(item => item.name === 'Palmiarnia 棕櫚屋')?.extra ?? '', /暫時閉館/);
   assert.doesNotMatch(JSON.stringify(cityStories.find(story => story.city === '樂斯拉夫')), /1,040/);
 });
@@ -1290,10 +1290,9 @@ test('餐廳頁只把可追到店家來源的營業時間列為已查', () => {
     assert.ok(html.includes(restaurant.hours));
     assert.ok(html.includes(restaurant.url));
   }
-  // 2026-09-18 起改為指向該輪店家官網複查，並明說查不到一手來源就標「待確認」。
-  assert.ok(html.includes('逐筆列出查核日期與來源'));
-  for (const item of verifiedRestaurantHours.filter(item => item.checkedAt)) assert.ok(html.includes(item.checkedAt));
-  assert.ok(html.includes('查不到一手來源的店家一律標「待確認」'));
+  // 2026-10-20 起不顯示查核日期與查核狀態，只留營業時間與店家連結。
+  for (const item of verifiedRestaurantHours.filter(item => item.checkedAt)) assert.ok(!html.includes(`· ${item.checkedAt}`), `${item.name} 不應顯示查核日期`);
+  assert.doesNotMatch(html, /部分核實|已核實所列資料|查核來源/);
 });
 
 test('城市頁不再將 Google 星等與評論數當成固定資料', () => {

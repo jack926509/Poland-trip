@@ -1,4 +1,5 @@
 import test from 'node:test';
+import fs from 'node:fs';
 import assert from 'node:assert/strict';
 import { initializeToday, warsawMinutes, nextPlanIndex, planEta } from '../src/scripts/today.js';
 import { renderToday } from '../src/templates/today.mjs';
@@ -138,4 +139,10 @@ test('顯示中的那一站才有倒數與站次，預覽別天時兩者都收�
     assert.equal(cards[1].nodes['[data-next-progress]'].hidden,false);
     assert.equal(root.nodes['[data-date-reset]'].disabled,false);
   } finally {Object.assign(globalThis,original);}
+});
+
+test('出發前狀態列不重複「不在旅程期間」框的預覽說明（2026-10-20 UX）', () => {
+  const source = fs.readFileSync(new URL('../src/scripts/today.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(source, /（非今天）· 華沙日期/);
+  assert.match(source, /status\.hidden = !text/);
 });
