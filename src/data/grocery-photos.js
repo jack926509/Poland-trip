@@ -51,14 +51,14 @@ export const groceryPhotos = {
     "checkedAt": "2026-09-22"
   },
   "5": {
-    "src": "assets/photos/grocery-05.webp",
-    "label": "Prince Polo XXL Classic 巧克力威化",
-    "width": 400,
-    "height": 99,
-    "sourceUrl": "https://world.openfoodfacts.org/product/7622210309792",
-    "originalUrl": "https://images.openfoodfacts.org/images/products/762/221/030/9792/front_pl.15.400.jpg",
-    "license": "CC BY-SA 3.0",
-    "checkedAt": "2026-09-22"
+    "src": "assets/photos/grocery-05.jpg",
+    "label": "Olza Prince Polo Classic 巧克力威化",
+    "width": 795,
+    "height": 480,
+    "sourceUrl": "https://www.threads.com/@snacklips_",
+    "creditName": "Threads @snacklips_（歪國零食嘴）",
+    "license": "網友截圖",
+    "checkedAt": "2026-10-20"
   },
   "6": {
     "src": "assets/photos/grocery-06.webp",
@@ -91,14 +91,14 @@ export const groceryPhotos = {
     "checkedAt": "2026-09-22"
   },
   "11": {
-    "src": "assets/photos/grocery-11.webp",
-    "label": "Solidarność Śliwka Nałęczowska 李子巧克力",
-    "width": 300,
-    "height": 400,
-    "sourceUrl": "https://world.openfoodfacts.org/product/5900189009441",
-    "originalUrl": "https://images.openfoodfacts.org/images/products/590/018/900/9441/front_en.4.400.jpg",
-    "license": "CC BY-SA 3.0",
-    "checkedAt": "2026-09-22"
+    "src": "assets/photos/grocery-11.jpg",
+    "label": "Solidarność Śliwka Nałęczowska 李子巧克力袋裝",
+    "width": 564,
+    "height": 480,
+    "sourceUrl": "https://flynowfei1baa6.blogspot.com/",
+    "creditName": "flynowfei1baa6 部落格",
+    "license": "網友截圖",
+    "checkedAt": "2026-10-20"
   },
   "12": {
     "src": "assets/photos/grocery-12.webp",
@@ -350,5 +350,35 @@ export const groceryPhotos = {
     "originalUrl": "https://images.openfoodfacts.org/images/products/405/648/958/6708/1.400.jpg",
     "license": "CC BY-SA 3.0",
     "checkedAt": "2026-10-13"
+  },
+  "30": {
+    "src": "assets/photos/grocery-30.jpg",
+    "label": "Kinder Chocofresh 2 入盒（冷藏）",
+    "width": 512,
+    "height": 480,
+    "sourceUrl": "https://www.threads.com/@lei_1648",
+    "creditName": "Threads @lei_1648",
+    "license": "網友截圖",
+    "checkedAt": "2026-10-20"
+  },
+  "31": {
+    "src": "assets/photos/grocery-31.jpg",
+    "label": "FaceBoom Nutri Lip Balm 潤唇膏",
+    "width": 566,
+    "height": 480,
+    "sourceUrl": "https://www.threads.com/@jestem_li",
+    "creditName": "Threads @jestem_li",
+    "license": "網友截圖",
+    "checkedAt": "2026-10-20"
+  },
+  "32": {
+    "src": "assets/photos/grocery-32.jpg",
+    "label": "Your KAYA 唇油（Nabłyszczający olejek do ust）",
+    "width": 722,
+    "height": 480,
+    "sourceUrl": "https://www.threads.com/@jestem_li",
+    "creditName": "Threads @jestem_li",
+    "license": "網友截圖",
+    "checkedAt": "2026-10-20"
   }
 };

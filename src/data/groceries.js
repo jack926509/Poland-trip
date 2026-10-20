@@ -518,9 +518,15 @@ export const groceryProducts = [
     "packaging": "找 Śliwka Nałęczowska 品名；多種容量與禮盒外觀",
     "use": "伴手禮候選",
     "priority": true,
-    "note": "果乾搭配巧克力，適合喜歡水果風味的人。品牌有不同容量，照片為包裝辨識參考。",
-    "reason": "喜歡果乾搭配巧克力可先買小盒試吃，再決定伴手禮數量。",
+    "note": "裡面是一整顆西梅、外層裹巧克力，酸甜開胃；深藍點點袋上有兩顆李子圖案。品牌與容量很多，部分超市可秤重買。",
+    "reason": "網友推薦當長輩伴手禮：口感軟、牙口不好也能吃。可先買小份試吃再決定數量。",
     "sources": [
+      {
+        "title": "flynowfei1baa6 部落格｜波蘭超市大推系列（Carrefour 採買）",
+        "url": "https://flynowfei1baa6.blogspot.com/",
+        "date": "2026-10-20 使用者提供截圖",
+        "kind": "網友分享（截圖）"
+      },
       {
         "title": "Colian｜Śliwka Nałęczowska 官方型錄",
         "url": "https://colian.com/nasze-marki/sliwka-naleczowska-2/",
@@ -658,12 +664,18 @@ export const groceryProducts = [
     "id": 5,
     "name": "巧克力威化",
     "localName": "Prince Polo",
-    "packaging": "長條單支包裝",
+    "packaging": "金色長條單支包裝，紅色 PRINCE POLO 字樣、OLZA 標誌",
     "use": "伴手禮候選",
     "priority": true,
-    "note": "巧克力威化餅，長條單支包裝；找 Prince Polo 字樣，適合分送。",
-    "reason": "單支威化方便旅途中試吃或分送；照片為 XXL Classic 代表規格，各店容量以貨架為準。",
+    "note": "1955 年就有的經典巧克力威化餅，金色包裝上寫 Classic；找 Prince Polo 字樣，適合分送。",
+    "reason": "單支威化方便旅途中試吃或分送；照片為 Classic 單支，另有 XXL 等容量，以貨架為準。",
     "sources": [
+      {
+        "title": "Threads @snacklips_（歪國零食嘴）｜波蘭經典零食",
+        "url": "https://www.threads.com/@snacklips_",
+        "date": "2026-10-20 使用者提供截圖",
+        "kind": "網友分享（截圖）"
+      },
       {
         "title": "Mondelēz｜波蘭 Prince Polo 生產與品牌",
         "url": "https://www.mondelezinternational.com/poland-baltics/",
@@ -1096,6 +1108,91 @@ export const groceryProducts = [
       { title: 'Auchan｜150 g 杯裝與保存方式', url: 'https://zakupy.auchan.pl/products/skyr-jogurt-typu-islandzkiego-naturalny-pi%C4%85tnica-150-g/00871064', date: '未標示發布日期；2026-10-13 查核', kind: '零售商商品資料' },
     ],
     checkedAt: '2026-10-13',
+  }
+  ,{
+    "id": 30,
+    "name": "冷藏巧克力牛奶夾心蛋糕",
+    "localName": "Kinder Chocofresh",
+    "packaging": "白色小盒、藍字 fresh，盒角標「+2」（兩入，共 41 g）",
+    "use": "當地吃・冷藏",
+    "priority": false,
+    "supplement": true,
+    "localOnly": true,
+    "note": "巧克力外層、牛奶榛果內餡的冷藏點心，放在超市冷藏櫃（優格附近），不是常溫巧克力區。",
+    "reason": "網友連吃六盒的人氣點心；冷藏品不適合帶回台灣，在波蘭當點心吃。",
+    "sources": [
+      {
+        "title": "Threads @lei_1648｜波蘭超市 Kinder Chocofresh",
+        "url": "https://www.threads.com/@lei_1648",
+        "date": "2026-07-21（使用者提供截圖）",
+        "kind": "網友分享（截圖）"
+      },
+      {
+        "title": "kb.pl｜Biedronka Kinder 促銷列入 Chocofresh",
+        "url": "https://kb.pl/aktualnosci/promocje/to-hit-dla-rodzin-biedronka-rozdaje-znane-slodycze-na-wyjatkowych-zasadach_fg/",
+        "date": "未標示年份；2026-10-20 查核",
+        "kind": "零售商促銷報導"
+      },
+      {
+        "title": "Sainsbury's｜Kinder Chocofresh 冷藏保存說明",
+        "url": "https://www.sainsburys.co.uk/groceries/product/kinder-chocofresh-5-x-20-5g-milk-chocolate-hazelnut-chilled-snack",
+        "date": "未標示發布日期；2026-10-20 查核",
+        "kind": "零售商商品資料"
+      }
+    ],
+    "checkedAt": "2026-10-20"
+  },
+  {
+    "id": 31,
+    "name": "潤唇膏",
+    "localName": "FaceBoom Nutri Lip Balm",
+    "packaging": "掛勾紙盒、大字 nutri LIP BALM；粉、白、紅等色",
+    "use": "藥妝伴手禮・Rossmann",
+    "priority": false,
+    "drugstore": true,
+    "note": "波蘭 BodyBoom 旗下 FaceBoom 的胜肽潤唇膏，10 g 軟管；有帶色版本，盒色代表不同款。",
+    "reason": "網友一次買整排送家人朋友；輕巧不怕壓，適合分送。",
+    "sources": [
+      {
+        "title": "Threads @jestem_li｜波蘭必買伴手禮回覆",
+        "url": "https://www.threads.com/@jestem_li",
+        "date": "2025-11-10（使用者提供截圖）",
+        "kind": "網友分享（截圖）"
+      },
+      {
+        "title": "Notino｜FaceBoom Nutri Lip Balm 10 g",
+        "url": "https://www.notino.pl/bodyboom/faceboom-nutri-lip-balm-odzywczy-balsam-do-ust/",
+        "date": "未標示發布日期；2026-10-20 查核",
+        "kind": "零售商商品資料"
+      }
+    ],
+    "checkedAt": "2026-10-20"
+  },
+  {
+    "id": 32,
+    "name": "唇油",
+    "localName": "Your KAYA olejek do ust",
+    "packaging": "霧面細長紙盒、小字 YOUR•KAYA；橘、可可等色",
+    "use": "藥妝伴手禮・Rossmann",
+    "priority": false,
+    "drugstore": true,
+    "note": "波蘭品牌 Your KAYA 的亮澤唇油，10 ml，有 Nude Glow、Poppy Glow 等色與 SPF 50 版。",
+    "reason": "網友推薦和 FaceBoom 一起在 Rossmann 買；價格約 20 多 zł，送人不會太重。",
+    "sources": [
+      {
+        "title": "Threads @jestem_li｜波蘭必買伴手禮回覆",
+        "url": "https://www.threads.com/@jestem_li",
+        "date": "2025-11-10（使用者提供截圖）",
+        "kind": "網友分享（截圖）"
+      },
+      {
+        "title": "Gemini｜Your KAYA 唇油 Poppy Glow 10 ml",
+        "url": "https://gemini.pl/your-kaya-olejek-do-ust-poppy-glow-10-ml-0107295",
+        "date": "未標示發布日期；2026-10-20 查核",
+        "kind": "零售商商品資料"
+      }
+    ],
+    "checkedAt": "2026-10-20"
   }
 // id 同時是錨點（#product-<id>）與照片鍵：groceryPhotos 與 assets/photos/grocery-NN.webp
 // 都以同一個編號對應。這個欄位原本叫 rank，但商品早就不按它排序

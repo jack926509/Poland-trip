@@ -5,10 +5,10 @@ import { groceryBranches, groceryDrinkGuide, groceryProducts } from '../src/data
 import { cityRoutes } from '../src/lib/city-guide.mjs';
 import { normalizeText } from '../src/search/site-search-index.mjs';
 
-test('採買指南保留四城 12 個門市與二十六項商品，每筆都標出核到哪一層', () => {
+test('採買指南保留四城 12 個門市與二十九項商品，每筆都標出核到哪一層', () => {
   assert.equal(groceryBranches.length, 12);
   assert.equal(new Set(groceryBranches.map(b => b.id)).size, 12);
-  assert.equal(groceryProducts.length, 26);
+  assert.equal(groceryProducts.length, 29); // 2026-10-20 加 Kinder Chocofresh、FaceBoom、Your KAYA
   for (const city of cityRoutes) assert.equal(groceryBranches.filter(b => b.cityKey === city.mapKey).length, 3);
   // 2026-09-22 逐店核對：Biedronka 四筆有官方逐日時間（verified），
   // Lidl 與 Żabka 八筆只核到地址（partial）。沒有任何一筆可以無來源地宣稱已核實。
@@ -118,7 +118,8 @@ test('採買推薦一項商品只出現一次，照片、理由與來源都留�
     if (product.photo) assert.ok(html.includes(product.photo.src), `缺照片 ${product.photo.src}`);
   }
   // 先買小份試吃與歷年經典補充仍分成兩組
-  assert.equal((html.match(/class="grocery-product-group"(?: open)?>/g) || []).length, 5);
+  assert.equal((html.match(/class="grocery-product-group"(?: open)?>/g) || []).length, 6); // 2026-10-20 加藥妝伴手禮（Rossmann）一組
+  assert.match(html, /藥妝伴手禮（Rossmann）/);
   assert.match(html, /先買小份試吃/);
   assert.match(html, /經典補充/);
   // 行李有限先挑的幾樣在卡片上就標出來
@@ -142,14 +143,14 @@ test('手機長度：推薦分組只展開第一組、摘要列出商品名，�
   // 補到 24 項後全部攤開，手機整頁約 29,000px。沿用城市頁餐飲分組慣例（稽核 M4）：
   // 第一組展開，其餘收合並標數量。
   const groups = [...html.matchAll(/<details class="grocery-product-group"( open)?>\s*<summary>([\s\S]*?)<\/summary>/g)];
-  assert.equal(groups.length, 5);
-  assert.deepEqual(groups.map(group => Boolean(group[1])), [true, false, false, false, false], '只有第一組預設展開');
+  assert.equal(groups.length, 6); // 2026-10-20 加藥妝伴手禮（Rossmann）
+  assert.deepEqual(groups.map(group => Boolean(group[1])), [true, false, false, false, false, false], '只有第一組預設展開');
   assert.match(groups[0][2], /先買小份試吃/);
   // 收合時也要看得出要找的東西在哪一組：摘要列出每項商品的波蘭文名
   const summaries = groups.map(group => group[2]).join('');
   for (const product of groceryProducts) assert.ok(summaries.includes(product.localName.replace(/&/g, '&amp;')), `${product.localName} 沒出現在分組摘要`);
-  // 標題仍是 h3，螢幕閱讀器的標題導覽不會少掉這五組
-  assert.equal((summaries.match(/<h3 class="grocery-group-title">/g) || []).length, 5);
+  // 標題仍是 h3，螢幕閱讀器的標題導覽不會少掉這六組
+  assert.equal((summaries.match(/<h3 class="grocery-group-title">/g) || []).length, 6);
   // 行李有限先挑的五項至少大半在展開的第一組，收合不會把重點藏起來
   const firstOpen = groups[0].index;
   const secondStart = groups[1].index;

@@ -13,14 +13,12 @@
 | grocery-01.webp | E. Wedel Ptasie Mleczko 巧克力口味 | [Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5901588400310) | [原圖](https://images.openfoodfacts.org/images/products/590/158/840/0310/front_pl.19.400.jpg) |
 | grocery-02.webp | Krówki Milanowskie 牛奶糖 | [Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5901715000734) | [原圖](https://images.openfoodfacts.org/images/products/590/171/500/0734/front_fr.3.400.jpg) |
 | grocery-03.webp | Tarczyński Exclusive 豬肉細香腸 | [Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5908230521485) | [原圖](https://images.openfoodfacts.org/images/products/590/823/052/1485/front_en.35.400.jpg) |
-| grocery-05.webp | Prince Polo XXL Classic 巧克力威化 | [Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/7622210309792) | [原圖](https://images.openfoodfacts.org/images/products/762/221/030/9792/front_pl.15.400.jpg) |
 | grocery-06.webp | Delicje Szampańskie 橘子口味 | [Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5906747308438) | [原圖](https://images.openfoodfacts.org/images/products/590/674/730/8438/front_pl.20.400.jpg) |
 | grocery-07.webp | Wawel Michałki 經典巧克力糖 | [Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900102021130) | [原圖](https://images.openfoodfacts.org/images/products/590/010/202/1130/front_fr.11.400.jpg) |
 | grocery-08.webp | Tymbark 100% 蘋果汁（紙盒） | [Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900334012753) | [原圖](https://images.openfoodfacts.org/images/products/590/033/401/2753/front_pl.18.400.jpg) |
 
 ## 2026-09-22 新增採買推薦照片
 
-- assets/photos/grocery-11.webp：Solidarność Śliwka Nałęczowska 李子巧克力；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900189009441)；[原圖](https://images.openfoodfacts.org/images/products/590/018/900/9441/front_en.4.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-09-22 核對。
 - assets/photos/grocery-12.webp：Lajkonik Paluszki 鹹餅乾棒；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/5900320001303)；[原圖](https://images.openfoodfacts.org/images/products/590/032/000/1303/front_en.31.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-09-22 核對。
 - assets/photos/grocery-13.webp：Princessa Longa 椰子威化餅；[Open Food Facts 貢獻者](https://world.openfoodfacts.org/product/8445291034761)；[原圖](https://images.openfoodfacts.org/images/products/844/529/103/4761/front_pl.3.400.jpg)；CC BY-SA 3.0；轉為 WebP，2026-09-22 核對。
 
@@ -80,3 +78,13 @@ Open Food Facts 主站本輪無法連線，原始照片改由 Open Food Facts �
 
 - assets/photos/grocery-milk-mleczna-dolina.jpg：Mleczna Dolina Mleko świeże 3,2% 1 l；使用者自行拍攝；[商品頁](https://world.openfoodfacts.org/product/5900512850375)。
 - assets/photos/grocery-juice-bracia-sadownicy.jpg：Bracia Sadownicy Tłoczone jabłko z mango 750 ml；使用者自行拍攝；[商品頁](https://world.openfoodfacts.org/product/5904433796446)。
+
+## 2026-10-20 使用者提供的網友截圖
+
+以下五張由使用者提供的 Threads／部落格截圖裁切而成，只留商品包裝並縮放為高 480 px 的 JPEG，頁面上標出原作者並註明僅供辨識包裝。原作者若不同意使用，改回 Open Food Facts 或自行拍攝照片。Prince Polo 與 Śliwka Nałęczowska 原本的 Open Food Facts 照片已由下列兩張取代。
+
+- assets/photos/grocery-05.jpg：Olza Prince Polo Classic；截圖自 [Threads @snacklips_（歪國零食嘴）](https://www.threads.com/@snacklips_)。
+- assets/photos/grocery-11.jpg：Solidarność Śliwka Nałęczowska 袋裝；截圖自 [flynowfei1baa6 部落格](https://flynowfei1baa6.blogspot.com/)。
+- assets/photos/grocery-30.jpg：Kinder Chocofresh 2 入盒；截圖自 [Threads @lei_1648](https://www.threads.com/@lei_1648)。
+- assets/photos/grocery-31.jpg：FaceBoom Nutri Lip Balm；截圖自 [Threads @jestem_li](https://www.threads.com/@jestem_li)。
+- assets/photos/grocery-32.jpg：Your KAYA 唇油；截圖自 [Threads @jestem_li](https://www.threads.com/@jestem_li)。
