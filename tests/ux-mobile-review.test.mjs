@@ -116,10 +116,11 @@ test('第 6 項：行程說明不再夾帶查核筆記，資訊移到待辦；�
   // 行程步驟只寫要做什麼，官網查核日期與內容放在待辦。
   const d6 = days[5].steps.find(step => step.t === '07:00');
   assert.doesNotMatch(d6.sub, /2026-10-14|官網聯絡頁/);
-  assert.match(d6.sub, /出發前打電話/);
-  const apartment = todoGroups.flatMap(group => group.items).find(item => item.name.startsWith('打電話給 Poznan Apartments'));
+  assert.match(d6.sub, /出發前傳訊息/);
+  assert.doesNotMatch(d6.sub, /打電話/, '外國旅客不打電話確認，改用訊息');
+  const apartment = todoGroups.flatMap(group => group.items).find(item => item.name.startsWith('傳訊息給 Poznan Apartments'));
   assert.equal(apartment.checkedAt, '2026-10-14');
-  assert.match(apartment.action, /官網聯絡頁只有電話和地址，沒寫接待時間和行李寄放（2026-10-14 查）/);
+  assert.match(apartment.action, /官網聯絡頁沒寫接待時間和行李寄放（2026-10-14 查）/);
   assert.match(apartment.action, /07:00/);
   // 2026-10-13 鹽礦已購 09:00 英文場；查核筆記不放行程說明，購票紀錄在待辦。
   const d4 = days[3].steps.find(step => step.t === '09:00' && step.label.includes('Wieliczka'));
@@ -179,4 +180,17 @@ test('回頂端按鈕：手機版放左下角、在底部快捷列上方，避�
 test('回頂端按鈕：與「導航」按鈕重疊時會先收起來', () => {
   const nav = fs.readFileSync('src/scripts/nav.js', 'utf8');
   assert.match(nav, /toTop\.hidden = window\.scrollY < 900 \|\| overlapsNavigateLink\(\)/);
+});
+
+test('外國旅客不打電話：行程、餐飲、待辦與 README 不出現打電話或電話訂位的指示，店家卡不放電話鈕', async () => {
+  // 2026-10-20 決定：訂位與確認一律走線上、Email、訂房平台訊息或請飯店櫃檯代訂；緊急與住宿電話不在此限。
+  const { diningPlaces } = await import('../src/data/dining-places.js');
+  const { dayDining } = await import('../src/data/day-dining.js');
+  const { cafeGuide } = await import('../src/data/dining.js');
+  const texts = [JSON.stringify(days), JSON.stringify(todoGroups), JSON.stringify(dayDining), JSON.stringify(cafeGuide),
+    JSON.stringify(Object.values(diningPlaces).map(({ phone, ...rest }) => rest)), fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'README.md'), 'utf8')];
+  for (const text of texts) assert.doesNotMatch(text, /打電話|電話確認|電話訂|訂位電話|先電話|電話 \+48/);
+  for (const file of ['day-02.html', 'day-03.html', 'day-08.html', 'city-krakow.html']) {
+    assert.doesNotMatch(read(file), /class="store-action" href="tel:/, `${file} 的店家卡不應有電話鈕`);
+  }
 });

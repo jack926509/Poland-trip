@@ -43,8 +43,8 @@
 - **景點票：沒有要訂的了**。全景畫、華沙起義博物館、皇家城堡 2026-10-14 起改成只看外觀，不用買票。
 - **線上已售完（2 項，不再提醒）**：10/25 Wawel 15:15 與辛德勒工廠 17:30 照原時段排在 Day 2，到現場售票處問剩餘票；買不到 Wawel 就逛免費庭院，買不到辛德勒就看外觀後提早吃晚餐。
 - **交通（1 項）**：10/26 Lajkonik 回程 15:30（備案 16:30），可在 moj-bus.pl 線上買或當天向司機買。去程 08:25 班 09:50 抵達，離 10:00 到場要求只剩 10 分鐘，想多留緩衝可改 07:10。
-- **餐廳（9 項）**：先訂 Mr. Jerry（10/26）與 Soul Kitchen（10/30）兩頓威靈頓牛排，再訂 Hankki、Specjały，以及 Pimiento（須電話）、Carla 兩頓午餐；Bistro Posolone、Arirang 不收訂位，當天打電話確認營業；Restauracja Wrocławska 為選配。
-- **出發前準備（2 項）**：打電話給 Poznan Apartments 問 10/28 晚上取鑰匙與 10/29 寄放行李；手機先裝好 Jakdojade 與 Bolt。
+- **餐廳（9 項）**：先訂 Mr. Jerry（10/26）與 Soul Kitchen（10/30）兩頓威靈頓牛排，再訂 Hankki、Specjały，以及 Pimiento（官網表單或 Email）、Carla 兩頓午餐；Bistro Posolone、Arirang 不收訂位，當天看 Google 地圖營業狀態；Restauracja Wrocławska 為選配。
+- **出發前準備（2 項）**：傳訊息給 Poznan Apartments（訂房平台訊息或 Email）問 10/28 晚上取鑰匙與 10/29 寄放行李；手機先裝好 Jakdojade 與 Bolt。
 
 四段火車的抵達時間已用 Koleo 查得（10/25 11:10、10/27 19:50、10/28 20:29、10/29 19:59），仍請以 PKP App 票券詳細頁為準。
 

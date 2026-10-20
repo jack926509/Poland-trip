@@ -499,7 +499,7 @@ export const dayOperations = {
     dailyAlerts: [
       '點燈人沒有對外保證的出發分鐘；日落前到座堂島等待，不把 16:45 當成確定時刻。',
     ],
-    nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票', '確認 Poznan Apartments 怎麼拿鑰匙、明早 07:00 能不能寄行李；07:15 Charlotte Krysiewicza 早餐、08:00 搭電車去 Cytadela。晚餐 Arirang 當天先電話確認，21:15 前不能入座改 Złote Tarasy 或 Ćma'],
+    nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票', '確認 Poznan Apartments 怎麼拿鑰匙、明早 07:00 能不能寄行李；07:15 Charlotte Krysiewicza 早餐、08:00 搭電車去 Cytadela。晚餐 Arirang 當天先看 Google 地圖營業狀態，21:15 前不能入座改 Złote Tarasy 或 Ćma'],
   },
   6: {
     cityKey: 'warsaw',
@@ -632,7 +632,7 @@ const unresolvedStepReasons = {
     'Lajkonik · 克拉科夫 → 奧斯威辛': dynamicTransitReason,
     '回程巴士返克拉科夫': '導覽 14:15 結束後才發車，實際班次依當日選定的回程選項；上車點與時刻在售票頁確認後再導航。',
     '抵 Kraków MDA · 休息': '抵達後的休息地點保持彈性，不需要固定導航地址。',
-    '咖啡 · Karma Kawiarnia（選配）': 'Krupnicza 12/3，Karma 官網聯絡頁列咖啡館平日 08:00–20:00（karmakrakow.pl 另列 07:00–18:00，當天電話確認）；導航見當日餐飲點心。巴士延誤就略過。',
+    '咖啡 · Karma Kawiarnia（選配）': 'Krupnicza 12/3，Karma 官網聯絡頁列咖啡館平日 08:00–20:00（karmakrakow.pl 另列 07:00–18:00，出門前看 Google 地圖）；導航見當日餐飲點心。巴士延誤就略過。',
   },
   4: {
     '前往 Wieliczka 車站候車': '出礦口至車站需步行，班次與月台當日重算，不以午餐結束時間當作上車時間。',
@@ -659,7 +659,7 @@ const unresolvedStepReasons = {
     'IC 260 前往波茲南': dynamicTransitReason,
   },
   6: {
-    '退房、寄放行李': '接待時間與行李寄放須出發前打電話向住宿確認；地址見住宿卡。',
+    '退房、寄放行李': '接待時間與行李寄放須出發前傳訊息向住宿確認；地址見住宿卡。',
     '電車往 Armii Poznań 站': dynamicTransitReason,
     '★ Cytadela 公園「Nierozpoznani」': '戶外雕塑群在 Cytadela 公園內，由 Armii Poznań 電車站步行進園，依園內指標前往。',
     '叫 Bolt 或 Uber 到 Rondo Śródka': '叫車上下車點依 App 定位，不預填地址。',

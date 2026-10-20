@@ -91,20 +91,13 @@ export function openingCheck(dayHours, time, { mealMinutes = 45 } = {}) {
   return { ok: start >= open && start + mealMinutes <= close, open, close };
 }
 
-/** 電話只留數字與加號，避免 tel: 連結夾帶空白或括號。 */
-function telHref(phone) {
-  const digits = String(phone || '').replace(/[^\d+]/g, '');
-  return digits.length >= 9 ? `tel:${digits}` : '';
-}
-
 /**
  * 店家卡的主體：營業時間與推薦菜色一律直接可見（不收合），
- * 菜單與電話做成 44px 的按鈕；地址、查核日期與來源收在「地址與查核紀錄」。
+ * 菜單做成 44px 的按鈕（店家不放電話鈕，訂位與確認都走線上）；地址、查核日期與來源收在「地址與查核紀錄」。
  */
 export function renderStoreBody(item, { note = item.note, condition = item.condition, timing = '', foldFacts = true, day = null, time = '' } = {}) {
   const dishes = Array.isArray(item.dishes) ? item.dishes : [];
   const menu = safeHttpsUrl(item.menuUrl);
-  const tel = telHref(item.phone);
   // 排定餐段：先給「當天」那一行（日期＋當天時段＋能不能坐下吃），全週時段收進查核紀錄；
   // 備選與名錄沒有指定日子，照舊直接列全週時段。
   // 沒有指定日子（營業時間名錄、今日卡備選）就不顯示「當天」，回到全週時段。
@@ -121,7 +114,7 @@ export function renderStoreBody(item, { note = item.note, condition = item.condi
       ${hoursRow}
       ${dishes.length ? `<div class="store-fact"><dt>推薦</dt><dd><ul class="store-dishes">${dishes.map(dish => `<li>${escapeHtml(dish)}</li>`).join('')}</ul></dd></div>` : ''}
     </dl>`;
-  const actions = menu || tel ? `<p class="store-actions">${menu ? `<a class="store-action" href="${menu}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(item.name)} 的菜單">菜單 ↗</a>` : ''}${tel ? `<a class="store-action" href="${tel}" aria-label="撥打 ${escapeHtml(item.name)} 電話 ${escapeHtml(item.phone)}">電話 ${escapeHtml(item.phone)}</a>` : ''}</p>` : '';
+  const actions = menu ? `<p class="store-actions"><a class="store-action" href="${menu}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(item.name)} 的菜單">菜單 ↗</a></p>` : '';
   const record = foldFacts
     ? `<details><summary>地址、全週營業與查核紀錄</summary><p class="food-map-note">${escapeHtml(item.address)}</p>${renderDiningFacts(item, { includeHours: Boolean(dayHours) })}<p class="source-meta">行程預留不代表已訂位。</p></details>`
     : '';
