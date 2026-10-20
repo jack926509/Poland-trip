@@ -7890,6 +7890,13 @@ html {
 .today-stay-main .today-next-title { -webkit-line-clamp: 1; }
 .today-next-ticket, .today-next-sub { margin: .25rem 0 0; font-size: .88rem; line-height: 1.45; }
 .today-next-ticket { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+/* 2026-10-20 UX C：「要帶」與「硬時間」寧可換到第二行，也不要用「…」截掉票名或期限內容。 */
+.today-next-ticket,
+.today-next .today-hard-source,
+.today-glance > li[data-glance-wrap] .today-glance-val { overflow: visible; white-space: normal; text-overflow: clip; overflow-wrap: anywhere; }
+.today-glance > li[data-glance-wrap] { padding-block: .3rem; }
+.today-glance > li[data-glance-wrap] .today-glance-key { width: 3.4em; }
+.today-glance > li[data-glance-wrap] .today-glance-val { font-size: .875rem; line-height: 1.4; }
 .today-next-ticket .today-glance-key { margin-right: .4rem; }
 .today-next-ticket .today-proof { display: inline; margin-left: .4rem; padding: 0; border: 0; background: none; font-size: .82rem; color: var(--ink-soft); }
 .today-next-sub {
@@ -7903,7 +7910,7 @@ html {
 .today-next .today-hard { margin: .35rem 0 0; padding: .25rem .55rem; border-left: 3px solid var(--yellow); border-radius: var(--radius-xs); background: var(--surface-warning); font-size: .85rem; line-height: 1.4; }
 .today-next .today-hard > b { font-size: .92rem; }
 .today-next .today-hard-eta { padding: .05rem .45rem; font-size: .75rem; }
-.today-next .today-hard-source { display: block; margin-top: .1rem; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: .85rem; line-height: 1.4; }
+.today-next .today-hard-source { display: block; margin-top: .1rem; font-size: .85rem; line-height: 1.4; }
 .today-next .today-move {
   display: -webkit-box; margin-top: .15rem; padding: 0; border: 0; background: none; overflow: hidden;
   -webkit-box-orient: vertical; -webkit-line-clamp: 1;

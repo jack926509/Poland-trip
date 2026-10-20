@@ -1,6 +1,15 @@
 import { mealSchedule } from '../lib/dining.mjs';
 import { dayMeals } from '../data/day-dining.js';
-import { escapeAttr, escapeHtml, safeHttpsUrl } from '../lib/html.mjs';
+import { escapeAttr, escapeHtml, safeHttpsUrl, splitVerification } from '../lib/html.mjs';
+
+// 2026-10-20 UX C：今日卡的硬時間只留第一句（要做什麼），查核括號（例如「官方要求…」）與後續說明不佔一屏空間；
+// 完整原文在每日頁的「時間彈性」。
+const actionText = value => {
+  const text = splitVerification(value).main || String(value ?? '');
+  const first = text.split(/(?<=；)/)[0].replace(/；$/, '');
+  // 還是太長（手機超過兩行）時再拿掉括號補充說明。
+  return first.length > 36 ? first.replace(/（[^（）]*）/g, '') : first;
+};
 import { isDepartureDay, stayForDate } from '../lib/journey.mjs';
 import { segmentForDay } from '../lib/rail.mjs';
 import { renderLayout } from './layout.mjs';
@@ -132,8 +141,8 @@ function renderDayCard(day, { iso, stay, sun, dayHref, privateHref, tomorrow }) 
       <div class="today-block-head"><h3>明天第一件事</h3><span class="today-next-progress">Day ${tomorrow.day.n} · ${escapeHtml(tomorrow.day.date)}</span></div>
       ${first ? `<div class="today-next-main"><p class="today-next-clock"><b>${escapeHtml(first.t)}</b></p><p class="today-next-title">${escapeHtml(first.label)}</p>${first.navigationHref ? `<a class="today-next-nav" href="${first.navigationHref}" target="_blank" rel="noopener noreferrer">導航 ↗</a>` : ''}</div>` : '<p>明天沒有排定時刻的行程。</p>'}
       <ul class="today-glance">
-        ${hard ? `<li><span class="today-glance-key">硬時間</span><span class="today-glance-val"><b>${escapeHtml(hard.hhmm)} · ${escapeHtml(hard.kindLabel)}</b> ${escapeHtml(hard.text)}</span></li>` : ''}
-        ${slots.length ? `<li><span class="today-glance-key">要帶</span><span class="today-glance-val">${slots.map(slot => escapeHtml(slot.label)).join('、')}</span></li>` : ''}
+        ${hard ? `<li data-glance-wrap><span class="today-glance-key">硬時間</span><span class="today-glance-val"><b>${escapeHtml(hard.hhmm)} · ${escapeHtml(hard.kindLabel)}</b> ${escapeHtml(actionText(hard.text))}</span></li>` : ''}
+        ${slots.length ? `<li data-glance-wrap><span class="today-glance-key">要帶</span><span class="today-glance-val">${slots.map(slot => escapeHtml(slot.label)).join('、')}</span></li>` : ''}
         ${checkout ? `<li><span class="today-glance-key">退房</span><span class="today-glance-val"><b>${escapeHtml(checkout.name)}</b> · ${escapeHtml(checkout.checkOutTime || '依訂房確認')} 前</span></li>` : ''}
       </ul>
     </section>`;
@@ -154,7 +163,7 @@ function renderDayCard(day, { iso, stay, sun, dayHref, privateHref, tomorrow }) 
         ${slot ? `<p class="today-next-ticket"><span class="today-glance-key">要帶</span><b>${escapeHtml(slot.label)}</b>${privateProofLine(slot, privateHref)}</p>` : ''}
         ${step.place ? `<p class="today-next-sub" lang="pl">${escapeHtml(step.place.address)}${step.place.entranceNote ? ` · ${escapeHtml(step.place.entranceNote)}` : ''}</p>` : step.sub ? `<p class="today-next-sub">${escapeHtml(step.sub)}</p>` : ''}
       </div>`; }).join('')}
-      ${timed.map(item => `<p class="today-hard" data-hard-time data-plan-minute="${item.minutes}"><b>${escapeHtml(item.hhmm)} · ${escapeHtml(item.kindLabel)}</b><span class="today-hard-eta" data-hard-eta hidden></span><span class="today-hard-source">${escapeHtml(item.text)}</span>${moveHint(item)}</p>`).join('')}
+      ${timed.map(item => `<p class="today-hard" data-hard-time data-plan-minute="${item.minutes}"><b>${escapeHtml(item.hhmm)} · ${escapeHtml(item.kindLabel)}</b><span class="today-hard-eta" data-hard-eta hidden></span><span class="today-hard-source">${escapeHtml(actionText(item.text))}</span>${moveHint(item)}</p>`).join('')}
       <p class="today-next-ended" data-next-ended hidden>今天已沒有更晚的預定行程。</p>
     </section>
     <ul class="today-glance today-glance-day">
