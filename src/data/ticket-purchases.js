@@ -81,9 +81,18 @@ export const ticketPurchaseGroups = [
         method: 'onsite', sourceUrl: 'https://katedra.mkw.pl/wnetrze/',
         note: '老城步行若增加地下墓室參觀需另外購票；不把地下墓室門票當作老城散步費用。',
       }),
+      entry('warsaw-st-anne-tower', '聖安妮教堂觀景台 Kościół św. Anny', {
+        plan: 'closed', method: 'closed', day: 7,
+        sourceUrl: 'https://swanna.waw.pl/zwiedzanie/',
+        noticeUrl: 'https://swanna.waw.pl/timeline/uwaga/',
+        userReviewUrl: 'https://www.threads.com/@dellyliu/post/DethFgEFFmW',
+        sourceNote: '官方：教區官網 swanna.waw.pl（Zwiedzanie 頁與公告），2026-10-21 讀取。網友評論：Threads 網友 Delly Liu（@dellyliu）〈波蘭自助旅行實戰經驗分享 — 華沙 1〉，2026-10-21 讀取。',
+        checkedAt: '2026-10-21',
+        note: '教區官網公告觀景台 10/6 起整修暫停開放，直到另行公告；本趟 Day 7 只拍教堂外觀。出發前看有沒有重新開放公告；若重新開放，現場購票、不用預約，第三方資訊說只收現金。開放時間與票價出發前再確認。',
+      }),
       entry('warsaw-polin-reference', 'POLIN 波蘭猶太人歷史博物館', {
         plan: 'reference', purchaseUrl: 'https://bilety.polin.pl/', sourceUrl: 'https://polin.pl/en',
-        note: '附件原規劃有列；最新主行程未排入館，新行程只在 10/30 08:30 看建築外觀。只保留購票參考，若要入館須重新安排博物館時間。',
+        note: '附件原規劃有列；最新主行程未排入館，新行程只在 10/30 08:35 看建築外觀。只保留購票參考，若要入館須重新安排博物館時間。',
       }),
       entry('warsaw-chopin-museum', '蕭邦博物館', {
         plan: 'closed', method: 'closed', sourceUrl: 'https://muzeum.nifc.pl/en/muzeum/wizyta-informacje-miejsce/1_kontakt/',

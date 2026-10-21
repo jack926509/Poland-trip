@@ -184,7 +184,7 @@ test('每個尚未購買的指定日景點票，倒數表都有對應期限', ()
   const openTickets = trip.todoGroups.flatMap(group => group.items)
     .filter(item => item.ticketPurchaseId && !item.skip && !['已訂妥', '已完成', '已購票'].includes(item.status));
   const deadlineText = trip.deadlines.map(item => `${item.title} ${item.action}`).join('\n');
-  const keyword = { 'krakow-wawel-castle': 'Wawel', 'krakow-schindler': '辛德勒', 'krakow-wieliczka': 'Wieliczka', 'wroclaw-panorama': '全景畫', 'warsaw-royal-castle': '皇家城堡', 'warsaw-rising-museum': '起義博物館' };
+  const keyword = { 'krakow-wawel-castle': 'Wawel', 'krakow-schindler': '辛德勒', 'krakow-wieliczka': 'Wieliczka', 'wroclaw-panorama': '全景畫', 'warsaw-royal-castle': '皇家城堡', 'warsaw-rising-museum': '起義博物館', 'warsaw-st-anne-tower': '聖安妮' };
   for (const item of openTickets) {
     assert.ok(keyword[item.ticketPurchaseId], `新增的票券待辦 ${item.ticketPurchaseId} 需補對照關鍵字`);
     assert.ok(deadlineText.includes(keyword[item.ticketPurchaseId]), `${item.name} 沒有對應的倒數期限`);

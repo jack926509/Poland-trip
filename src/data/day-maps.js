@@ -108,6 +108,9 @@ export const daySupplementaryPins = {
     [52.2505875, 21.0100170, '甕城 Barbakan', 'Nowomiejska 15/17', 'https://www.google.com/maps/search/?api=1&query=Barbakan%2C%20Nowomiejska%2015%2F17%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/249395313'],
     [52.2488818, 21.0136708, '聖若望大教堂', 'Świętojańska 8', 'https://www.google.com/maps/search/?api=1&query=St.%20John\'s%20Archcathedral%2C%20%C5%9Awi%C4%99toja%C5%84ska%208%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/404052334'],
     [52.2481101, 21.0124709, '聖馬丁教堂', 'Piwna 9/11 門面 · 座標約 30 公尺內', 'https://www.google.com/maps/search/?api=1&query=Piwna%209%2F11%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/128808346'],
+    // 2026-10-21 補聖安妮教堂（觀景台整修暫停開放，只拍外觀）：座標取 OSM way 25865144（Kościół pw. Świętej Anny，門牌 Krakowskie Przedmieście 68，
+    // Nominatim 2026-10-21 以門牌查得），為教堂建物中心，觀景台入口依現場指標。
+    [52.2462123, 21.0143595, '聖安妮教堂（外觀）', 'Krakowskie Przedmieście 68 · 12:25 外觀拍照；座標為教堂建物中心', 'https://www.google.com/maps/search/?api=1&query=Ko%C5%9Bci%C3%B3%C5%82%20%C5%9Bw.%20Anny%2C%20Krakowskie%20Przedmie%C5%9Bcie%2068%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/25865144'],
     [52.2482476, 21.0137690, 'Polka', 'Świętojańska 2 · 12:30 午餐', diningPlaces['warsaw-polka'].map, 'food', 'https://www.openstreetmap.org/node/416560107'],
     [52.2436320, 21.0103460, '劇院廣場・大劇院', 'Plac Teatralny 1 · 建物內座標，非入口', 'https://www.google.com/maps/search/?api=1&query=Teatr%20Wielki%20Opera%20Narodowa%2C%20Plac%20Teatralny%201%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/node/8839947745'],
     [52.2409328, 21.0113096, '無名塚 Grób Nieznanego Żołnierza', 'Plac Piłsudskiego · 薩克森花園東緣', 'https://www.google.com/maps/search/?api=1&query=Tomb%20of%20the%20Unknown%20Soldier%2C%20Plac%20Pi%C5%82sudskiego%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/72833763'],
@@ -206,6 +209,7 @@ export const pinCoordinateCheckedAt = {
     "甕城 Barbakan": '2026-10-17',
     "聖若望大教堂": '2026-10-17',
     "聖馬丁教堂": '2026-10-17',
+    "聖安妮教堂（外觀）": '2026-10-21',
     "Polka": '2026-10-17',
     "劇院廣場・大劇院": '2026-10-17',
     "無名塚 Grób Nieznanego Żołnierza": '2026-10-17',
