@@ -35,7 +35,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-a-blikle-1869",
       "role": "甜點外帶",
-      "note": "Nowy Świat 35，16:30 沿新世界街北行時順路外帶一顆 pączek；開門時間各目錄不一，沒開就略過。",
+      "note": "Nowy Świat 33（品牌官網門市頁，每日 09:00–21:00），16:30 沿新世界街北行時順路外帶一顆 pączek；沒開就略過。",
       "stepId": null,
       "planStatus": "candidate"
     }
@@ -124,7 +124,7 @@ export const dayDiningPlans = {
     {
       "placeId": "krakow-molam-thai",
       "role": "晚餐備選",
-      "note": "想把韓式換成泰式（Bib Gourmand，Rajska 3/4，週日至 21:30）時改這間；離辛德勒工廠較遠，需搭車。",
+      "note": "想把韓式換成泰式（Bib Gourmand，Rajska 3/4；週日營業時間未核實，出門前看 Google 地圖）時改這間；離辛德勒工廠較遠，需搭車。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -164,7 +164,7 @@ export const dayDiningPlans = {
     {
       "placeId": "krakow-molam-thai",
       "role": "晚餐備選",
-      "note": "泰式 Bib Gourmand，週一 16:00–22:00；想吃異國料理時替代。",
+      "note": "泰式 Bib Gourmand，週一營業時間未核實（各來源不一，出門前看 Google 地圖）；想吃異國料理時替代。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -498,13 +498,13 @@ export const dayDiningPlans = {
       "stepId": "d7-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "菜單隨季節換、官方菜單未確認：線上訂位（或請 Hotel Metropol 櫃檯代訂）時在備註請店家預留 Wellington；沒有就改 Rusiko。",
+      "condition": "菜單隨季節換、官方菜單未確認：線上訂位（或請 Hotel Metropol 櫃檯代訂）時在備註請店家預留 Wellington。Rusiko 官網公告 3/24 起停業至另行通知，不再當直接替補，要去先用 Email 或請飯店櫃檯確認。",
       "dayHours": "17:30–23:00（週五另有 12:00–16:30，下午休息）"
     },
     {
       "placeId": "warsaw-rusiko",
       "role": "晚餐備選（原首選）",
-      "note": "Wierzbowa 11（劇院廣場旁），週二至週六 13:00–24:00；Soul Kitchen 沒有威靈頓或客滿時改這間：khachapuri、khinkali、chanakhi 燉羊腿，由 Metropol 搭車約 10 分。",
+      "note": "Wierzbowa 11（劇院廣場旁）。⚠️ 官網聯絡頁 2026-10-21 仍公告「3/24 起停業至另行通知」，不能直接走去，要去先用 Email（rezerwacje@rusiko.pl）或請 Hotel Metropol 櫃檯代為確認。原本是 Soul Kitchen 沒有威靈頓或客滿時的替補：khachapuri、khinkali、chanakhi 燉羊腿，由 Metropol 搭車約 10 分。",
       "stepId": null,
       "planStatus": "candidate"
     },

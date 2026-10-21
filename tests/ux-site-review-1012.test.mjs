@@ -31,7 +31,7 @@ test('城市頁：三餐主選與其他候選分組，營業時間可見、不�
   assert.match(html, /<details class="city-dining-group" open>\s*<summary>你的候選與順路必吃：三餐主選（\d+ 家）<\/summary>/);
   assert.match(html, /<details class="city-dining-group">\s*<summary>你的候選：備選與點心（\d+ 家）<\/summary>/);
   assert.ok(!html.includes('查核紀錄'));
-  assert.match(html, /營業時間：週一休；週二至週六 13:00–24:00/);
+  assert.match(html, /營業時間：官網公告 3\/24 起停業至另行通知（要去先確認是否恢復營業）/);
 });
 
 test('倒數看板手機版把倒數、日期、類別並排；本頁章節手機藏英文小標', () => {
