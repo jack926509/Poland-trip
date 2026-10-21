@@ -41,7 +41,7 @@ for (const city of cities) city.gallery = cityGallery.filter(photo => photo.city
 
 export const cityNotices = {
   warsaw: [
-    {status:'已改行程', level:'note', text:`皇家城堡 二–日 ${venues['warsaw-royal-castle'].hours.opens}–${venues['warsaw-royal-castle'].hours.closes}、最後入場 ${venues['warsaw-royal-castle'].hours.lastEntry}（夏季 18:00 時段已不適用）。新行程不進城堡，只在城堡廣場拍外觀：10/30 11:45 拍白天版（10/24 走到總統府旁的 E.Wedel 就折返）。`},
+    {status:'已改行程', level:'note', text:`皇家城堡 二–日 ${venues['warsaw-royal-castle'].hours.opens}–${venues['warsaw-royal-castle'].hours.closes}、最後入場 ${venues['warsaw-royal-castle'].hours.lastEntry}（夏季 18:00 時段已不適用）。新行程不進城堡，只在城堡廣場拍外觀：10/30 12:00 拍白天版（10/24 走到總統府旁的 E.Wedel 就折返）。`},
   ],
   krakow: [
     {status:'官方時間', level:'note', text:'辛德勒工廠週二至週日 09:00–20:00，最後入場為閉館前 90 分鐘；Day 2 的週日 17:30 時段可行，但仍須先取得官方時段票。'},
@@ -118,8 +118,8 @@ export const cityStories = [
 ];
 
 export const photoSpots = [
-  {id:'waw-oldtown', lightPhase:'daylight', cityKey:'WAW', name:'老城市集廣場彩色立面', day:7, bestTime:'10:40–11:00', viewpoint:'華沙美人魚像西南側約 10 公尺，靠 Dekert Side 一側', direction:'鏡頭朝東北，先以 24–35 mm 收整排彩色立面，再退到拱廊邊拍廣場全景', light:'10/30 上午的光會打在北側立面；避免貼著雕像仰拍造成建築傾斜。之後從 Kamienne Schodki 石階往下可看到維斯瓦河。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.249778%2C21.012151'},
-  {id:'waw-castle', lightPhase:'daylight', cityKey:'WAW', name:'城堡廣場與皇家城堡', day:7, bestTime:'11:45–12:00', viewpoint:'齊格蒙特三世紀念柱西側、靠 Krakowskie Przedmieście 的廣場邊緣', direction:'鏡頭朝東北，把紀念柱放左側、皇家城堡紅牆放右側；直幅可同時收柱頂與城堡', light:'10/30 近中午陽光從南邊照在城堡正面，紅牆顏色最飽和；保持手機水平，避免紀念柱向後倒。10/24 走到總統府旁就折返，這裡只排 10/30 白天這一次，只看外觀不進城堡。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.247604%2C21.013455'},
+  {id:'waw-oldtown', lightPhase:'daylight', cityKey:'WAW', name:'老城市集廣場彩色立面', day:7, bestTime:'10:40–11:05', viewpoint:'華沙美人魚像西南側約 10 公尺，靠 Dekert Side 一側', direction:'鏡頭朝東北，先以 24–35 mm 收整排彩色立面，再退到拱廊邊拍廣場全景', light:'10/30 上午的光會打在北側立面；避免貼著雕像仰拍造成建築傾斜。之後從 Kamienne Schodki 石階往下可看到維斯瓦河。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.249778%2C21.012151'},
+  {id:'waw-castle', lightPhase:'daylight', cityKey:'WAW', name:'城堡廣場與皇家城堡', day:7, bestTime:'12:00–12:25', viewpoint:'齊格蒙特三世紀念柱西側、靠 Krakowskie Przedmieście 的廣場邊緣', direction:'鏡頭朝東北，把紀念柱放左側、皇家城堡紅牆放右側；直幅可同時收柱頂與城堡', light:'10/30 近中午陽光從南邊照在城堡正面，紅牆顏色最飽和；保持手機水平，避免紀念柱向後倒。10/24 走到總統府旁就折返，這裡只排 10/30 白天這一次，只看外觀不進城堡。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.247604%2C21.013455'},
   {id:'waw-culture', cityKey:'WAW', name:'科學文化宮 30 樓城市景觀', day:null, bestTime:'城市延伸', viewpoint:'Pałac Kultury i Nauki 30 樓 Taras Widokowy 觀景台', direction:'先拍東側市中心天際線，再轉西北側拍華沙舊城方向；玻璃反光時把鏡頭貼近玻璃', light:'未排入每日行程；若自行加入，10 月底接近日落時可同時拍藍調與城市燈光，開放時段仍以當日公告為準。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.231838%2C21.005995'},
   {id:'krk-rynek', lightPhase:'daylight', cityKey:'KRK', name:'中央市集廣場與聖瑪利亞聖殿', day:2, bestTime:'14:00–14:15', viewpoint:'亞當・密茨凱維奇紀念碑西南側，靠紡織會館東南角', direction:'鏡頭朝東北，以紀念碑作前景、聖瑪利亞雙塔作背景；再向南走幾步拍紡織會館長廊', light:'午後從廣場中央拍可避開塔樓正逆光；整點前先完成構圖，順便錄下 Hejnał 號角。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.061793%2C19.938098'},
   {id:'krk-wawel', lightPhase:'daylight', cityKey:'KRK', name:'Wawel 城堡河岸全景', day:2, bestTime:'16:00–16:15', viewpoint:'維斯瓦河北岸 Bulwar Czerwieński 河濱步道，Wawel 西南側城牆下（OSM way 114713971）', direction:'鏡頭朝東北仰拍城牆與大教堂塔樓；35 mm 左右可同時收河岸與城牆', light:'16:15 離開 Wawel 前，從北岸 Bulwar Czerwieński 拍；16:30 日落前的側光打在城牆上。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.052653%2C19.933255'},

@@ -509,7 +509,7 @@ test('待辦事項頁將 22 項依四類整理，並在實用資訊導覽可進�
     ['rail', 6], ['attractions', 5], ['dining', 7], ['prep', 4],
   ]);
   // 2026-10-20 Bistro Posolone、Arirang 不用訂位，移出待辦；加外交部出國登錄與 CX 479 線上報到。
-  // 2026-10-21 加 Day 7 聖安妮教堂觀景台（現場購票、出發前確認時間票價）：21 → 22。
+  // 2026-10-21 加 Day 7 聖安妮教堂觀景台（整修暫停開放，出發前確認是否重新開放）：21 → 22。
   assert.equal(todoGroups.flatMap(group => group.items).length, 22);
 
   const html = read('practical/todos.html');
@@ -738,7 +738,7 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
   const rawTodoCount = todoGroups.reduce((total, group) => total + group.items.length, 0);
   const todoCount = todoGroups.reduce((total, group) =>
     total + group.items.filter(item => !item.skip && !['已訂妥', '已完成', '已購票'].includes(item.status)).length, 0);
-  // 2026-10-21 加聖安妮教堂觀景台（現場購票・待確認）：12 → 13。
+  // 2026-10-21 加聖安妮教堂觀景台（暫停開放・出發前待確認是否重新開放）：12 → 13。
   assert.equal(todoCount, 13, '已購／已訂妥與線上已售完（不再提醒）的項目不可算進待辦');
 
   assert.ok(!html.includes('出發準備度'));
@@ -957,8 +957,8 @@ test('Day 7 從最北邊往回逛：POLIN 外觀 → 新城 → 老城廣場 →
   assert.ok(times.every(index => index >= 0), `Day 7 缺少景點：${order.filter((_, i) => times[i] < 0)}`);
   assert.deepEqual([...times].sort((a, b) => a - b), times, 'Day 7 景點順序不對');
   assert.equal(day.steps.find(step => step.label.includes('POLIN')).t, '08:35');
-  // 2026-10-21 加入聖安妮教堂觀景台：Piwna 改在城堡廣場前、城堡廣場改 11:45，Polka 仍 12:30。
-  assert.equal(day.steps.find(step => step.label === '★ 城堡廣場（白天版）').t, '11:45');
+  // 2026-10-21 Piwna 改在城堡廣場前（往南不走回頭路）；觀景台整修暫停開放，城堡廣場後只加 5 分聖安妮外觀，城堡廣場改 12:00，Polka 仍 12:30。
+  assert.equal(day.steps.find(step => step.label === '★ 城堡廣場（白天版）').t, '12:00');
   assert.ok(!day.steps.some(step => /起義博物館|★ 皇家城堡$|國家博物館/.test(step.label)), 'Day 7 不再排付費館');
   assert.equal(day.steps.find(step => step.id === 'd7-breakfast').t, '07:30');
   const lunch = day.steps.find(item => item.id === 'd7-lunch');
@@ -2070,30 +2070,52 @@ test('POLIN 僅保留購票參考，主行程只看外觀不入館；Day 7 午�
   assert.equal(day7.steps.find(step => step.id === 'd7-lunch').label, '午餐 · Polka');
 });
 
-test('Day 7 城堡廣場後、Polka 午餐前加入聖安妮教堂觀景台登塔：時間與票價不寫數字、現場購票、標註網友評論來源', () => {
-  // 2026-10-21 使用者確認（經 Tessa 轉達）：來源為 Threads 網友 Delly Liu（@dellyliu），屬網友評論；開放時間與票價未查證。
+test('Day 7 城堡廣場後、Polka 午餐前只拍聖安妮教堂外觀：觀景台整修暫停開放，登塔改「若重新開放」延伸，不寫票價與觀景台時間', () => {
+  // 2026-10-21 使用者確認（經 Tessa 轉達）。教區官網 swanna.waw.pl：觀景台 10/6 起整修暫停開放、直到另行公告；
+  // 週五 10:00–13:00 教堂打掃、僅能進門廊。登塔心得來源為 Threads 網友 Delly Liu（@dellyliu），屬網友評論。
   const day = days.find(item => item.n === 7);
   const index = label => day.steps.findIndex(step => step.label === label);
+  const piwna = index('Piwna 街 → 聖馬丁教堂');
   const castle = index('★ 城堡廣場（白天版）');
-  const tower = index('聖安妮教堂觀景台登塔');
+  const church = index('聖安妮教堂外觀');
   const lunch = day.steps.findIndex(step => step.id === 'd7-lunch');
-  assert.ok(castle >= 0 && tower === castle + 1 && lunch === tower + 1, '聖安妮教堂觀景台要排在城堡廣場之後、Polka 午餐之前');
-  const step = day.steps[tower];
-  assert.equal(step.t, '12:00');
-  assert.equal(step.dur, '30 min');
+  assert.ok(piwna >= 0 && castle === piwna + 1 && church === castle + 1 && lunch === church + 1, 'Piwna → 城堡廣場 → 聖安妮外觀 → Polka，往南不走回頭路');
+  assert.ok(!day.steps.some(step => /觀景台登塔/.test(step.label)), '觀景台暫停開放，主行程不排登塔');
+  // 前面各站維持原本停留時間，只把 Piwna 改成單向。
+  const at = label => day.steps[index(label)];
+  assert.deepEqual(['★ 老城廣場', '石階街 → Brzozowa → Gnojna Góra 觀景點', 'Kanonia 許願鐘 → 聖若望大教堂', 'Piwna 街 → 聖馬丁教堂', '★ 城堡廣場（白天版）', '聖安妮教堂外觀'].map(label => [at(label).t, at(label).dur]),
+    [['10:40', '25 min'], ['11:05', '25 min'], ['11:30', '20 min'], ['11:50', '10 min'], ['12:00', '25 min'], ['12:25', '5 min']]);
   assert.equal(day.steps[lunch].t, '12:30');
+  assert.equal(day.steps[lunch + 1].t, '13:15');
+  const step = day.steps[church];
   assert.match(step.sub, /Krakowskie Przedmieście 68/);
-  assert.match(step.sub, /未確認，出發前再確認/);
-  assert.match(step.sub, /現場購票/);
+  assert.match(step.sub, /觀景台 10\/6 起整修暫停開放（直到另行公告）/);
+  assert.match(step.sub, /週五 10:00–13:00 教堂打掃、僅能進門廊/);
+  assert.match(step.sub, /swanna\.waw\.pl/);
   assert.match(step.sub, /@dellyliu.*網友評論/);
-  assert.match(step.cost, /^未確認，出發前再確認/);
-  assert.doesNotMatch(`${step.sub}${step.cost}`, /PLN|zł|\d{1,2}:\d{2}[–-]\d{1,2}:\d{2}/, '開放時間與票價未查證，不寫數字');
+  const noNumbers = text => text.replace('10:00–13:00 教堂打掃', '');
+  const optional = day.extend.find(item => /若重新開放/.test(item.label) && /聖安妮/.test(item.label));
+  assert.ok(optional, '延伸行程要有「若重新開放」登塔選項');
+  assert.match(optional.why, /約 25 分/);
+  assert.match(optional.why, /150 階/);
+  assert.match(optional.why, /現金/);
+  assert.match(optional.why, /可壓縮清單/);
+  assert.ok(day.compressible.some(item => /聖安妮/.test(item) && /25 分/.test(item)));
+  for (const text of [step.sub, step.cost, optional.why, optional.when]) {
+    assert.doesNotMatch(noNumbers(text), /PLN|zł|\d{1,2}:\d{2}\s*[–-]\s*\d{1,2}:\d{2}/, '觀景台票價與開放時間不寫數字');
+  }
   const todo = todoGroups.find(group => group.id === 'attractions').items.find(item => item.ticketPurchaseId === 'warsaw-st-anne-tower');
   assert.ok(todo, '門票待辦要列聖安妮教堂觀景台');
-  assert.match(todo.status, /現場購票/);
-  assert.match(todo.action, /不用預約/);
-  assert.doesNotMatch(todo.action, /PLN|zł/);
-  // POLIN 維持只看外觀，不加票券待辦。
+  assert.match(todo.status, /^暫停開放・出發前/);
+  assert.match(todo.status, /確認是否重新開放/);
+  assert.match(todo.url, /^https:\/\/swanna\.waw\.pl\//);
+  assert.doesNotMatch(todo.action, /PLN|zł|\d{1,2}:\d{2}/);
+  // POLIN 維持只看外觀，不加票券待辦；購票參考的外觀時間與行程一致（08:35）。
   assert.ok(!todoGroups.flatMap(group => group.items).some(item => /POLIN/.test(item.name)));
-  assert.match(read('day-07.html'), /聖安妮教堂觀景台登塔/);
+  const ticketSource = fs.readFileSync(path.resolve('src/data/ticket-purchases.js'), 'utf8');
+  assert.match(ticketSource, /10\/30 08:35 看建築外觀/);
+  assert.doesNotMatch(ticketSource, /08:30 看建築外觀/);
+  const html = read('day-07.html');
+  assert.match(html, /聖安妮教堂外觀/);
+  assert.match(html, /若重新開放 · 聖安妮教堂觀景台登塔/);
 });

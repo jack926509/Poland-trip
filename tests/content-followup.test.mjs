@@ -42,7 +42,7 @@ test('景點票券摘要對齊既有購票紀錄，私人核對尚未完成且�
   const items = todoGroups.filter(group => ['attractions', 'rainy-day'].includes(group.id)).flatMap(group => group.items);
   const confirmed = items.filter(item => ['已訂妥', '已購票'].includes(item.status));
   // 2026-10-14 新行程不進付費館：拿掉全景畫、皇家城堡、起義博物館三筆，7 → 4。
-  // 2026-10-21 加 Day 7 聖安妮教堂觀景台（現場購票），4 → 5。
+  // 2026-10-21 加 Day 7 聖安妮教堂觀景台（暫停開放、出發前確認），4 → 5。
   assert.equal(items.length, 5);
   assert.equal(confirmed.length, 2);
   assert.match(confirmed[0].name, /Auschwitz/);
