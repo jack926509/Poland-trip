@@ -565,7 +565,7 @@ export const dayOperations = {
     ],
     navigation: [
       { mode: '地鐵 M1', route: 'Świętokrzyska → Ratusz Arsenał', action: '08:05 在站口拍 MSN 與科學文化宮，08:15 搭 M1 只坐 1 站，下車步行約 10 分到 POLIN。' },
-      { mode: '步行', route: 'POLIN → 克拉辛斯基廣場 → 新城廣場 → Freta → 甕城 → 老城廣場 → 石階街／Gnojna Góra → 聖若望大教堂 → 城堡廣場 → Piwna → Polka → 劇院廣場 → 薩克森花園 → 無名塚 → Zachęta → Ostrogski 宮 → BUW', action: '08:35 後全程步行，由北往南一路採點、不走回頭路；時間不夠先刪 BUW 屋頂花園，從無名塚直接搭車去瓦津基。' },
+      { mode: '步行', route: 'POLIN → 克拉辛斯基廣場 → 新城廣場 → Freta → 甕城 → 老城廣場 → 石階街／Gnojna Góra → 聖若望大教堂 → Piwna → 城堡廣場 → 聖安妮教堂觀景台 → Polka → 劇院廣場 → 薩克森花園 → 無名塚 → Zachęta → Ostrogski 宮 → BUW', action: '08:35 後全程步行，由北往南一路採點、不走回頭路；時間不夠先刪 BUW 屋頂花園，從無名塚直接搭車去瓦津基。' },
       { mode: '公車／叫車／步行', route: 'BUW → 瓦津基 → Aleje Ujazdowskie → 三十字廣場 → QQ Warsaw → Metropol → Soul Kitchen', action: '15:05 由 BUW 搭公車或叫車約 20 分到瓦津基北門；16:30 沿 Aleje Ujazdowskie 走到三十字廣場，再沿 Żurawia 到 QQ Warsaw，全程約 2.5 公里，天黑、累了或下雨就叫車；QQ Warsaw 走回 Metropol 約 5 分；Metropol 步行約 8 分到 Nowogrodzka 18A。當日用 Jakdojade 重算。' },
     ],
     dailyAlerts: [
@@ -685,7 +685,8 @@ const unresolvedStepReasons = {
     '★ 甕城 Barbakan＋城牆': '戶外城牆，在 Freta 街南端；小小起義者像在 Podwale。',
     'Szeroki Dunaj → Wąski Dunaj': '老城西北側的戶外巷弄，由城牆內側往東走即接老城廣場。',
     '石階街 → Brzozowa → Gnojna Góra 觀景點': '戶外步行段：石階由老城廣場東北角往下，Gnojna Góra 在 Brzozowa 與 Celna 交口的高地。',
-    'Piwna 街 → 聖馬丁教堂': '戶外步行段，教堂在 Piwna 9/11，由城堡廣場往北步行約 5 分。',
+    'Piwna 街 → 聖馬丁教堂': '戶外步行段，教堂在 Piwna 9/11，由聖若望大教堂往西步行約 3 分，再沿 Piwna 往南走到城堡廣場。',
+    '聖安妮教堂觀景台登塔': '教堂在 Krakowskie Przedmieście 68（OSM way 25865144），城堡廣場東南角；觀景台入口依現場指標。開放時間與票價未確認，出發前再確認，現場購票。',
     '劇院廣場': '戶外廣場，大劇院在 plac Teatralny 1，由城堡廣場往西南步行約 10 分。',
     '★ 無名塚與衛兵': '位於 plac Piłsudskiego 的薩克森花園東側拱廊，開放戶外紀念地，依現場指標前往。',
     '往東走到維斯瓦河邊': '戶外步行段，由無名塚沿 Królewska、Tamka 往東下坡到河岸，沿路的 Zachęta 與 Ostrogski 宮只拍外觀，終點接 BUW。',

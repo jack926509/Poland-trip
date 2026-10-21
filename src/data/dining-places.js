@@ -1136,7 +1136,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "傳統波蘭料理，Świętojańska 2 就在皇家城堡旁；10/30 城堡廣場與 Piwna 街拍完，12:30 進來吃午餐，平日 12:00–16:00 有午間套餐。",
+      "傳統波蘭料理，Świętojańska 2 就在皇家城堡旁；10/30 走完 Piwna 街、城堡廣場與聖安妮教堂觀景台，12:30 進來吃午餐，平日 12:00–16:00 有午間套餐。",
       "不是 U Fukiera 的同一間店。"
     ],
     "cuisine": "波蘭菜（Magda Gessler）",

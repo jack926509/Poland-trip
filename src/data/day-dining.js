@@ -470,7 +470,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-polka",
       "role": "午餐首選",
-      "note": "老城、新城上午走完，12:15 繞 Piwna 街回城堡廣場，12:30 進城堡旁的店：平日 12:00–16:00 午間套餐，或點 Pierogi、Żurek；13:15 離開往劇院廣場。客滿改甕城旁的 Pyzy Flaki Gorące。",
+      "note": "老城、新城上午走完，12:00 登城堡廣場旁的聖安妮教堂觀景台，12:30 進城堡旁的店：平日 12:00–16:00 午間套餐，或點 Pierogi、Żurek；13:15 離開往劇院廣場。客滿改甕城旁的 Pyzy Flaki Gorące。",
       "stepId": "d7-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",

@@ -81,6 +81,13 @@ export const ticketPurchaseGroups = [
         method: 'onsite', sourceUrl: 'https://katedra.mkw.pl/wnetrze/',
         note: '老城步行若增加地下墓室參觀需另外購票；不把地下墓室門票當作老城散步費用。',
       }),
+      entry('warsaw-st-anne-tower', '聖安妮教堂觀景台 Kościół św. Anny', {
+        plan: 'main', day: 7, method: 'onsite',
+        sourceUrl: 'https://www.threads.com/@dellyliu/post/DethFgEFFmW',
+        sourceNote: 'Threads 網友 Delly Liu（@dellyliu）〈波蘭自助旅行實戰經驗分享 — 華沙 1〉，屬網友評論，2026-10-21 讀取；非官方資訊。',
+        checkedAt: '2026-10-21',
+        note: '10/30 城堡廣場後順路登塔，現場購票、不用預約。開放時間與票價未確認，出發前再確認；網友心得說階梯不多、景色不錯。',
+      }),
       entry('warsaw-polin-reference', 'POLIN 波蘭猶太人歷史博物館', {
         plan: 'reference', purchaseUrl: 'https://bilety.polin.pl/', sourceUrl: 'https://polin.pl/en',
         note: '附件原規劃有列；最新主行程未排入館，新行程只在 10/30 08:30 看建築外觀。只保留購票參考，若要入館須重新安排博物館時間。',
