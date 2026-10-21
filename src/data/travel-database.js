@@ -532,7 +532,7 @@ export const dayOperations = {
       '市政廳博物館整修閉館；主行程只看官方確認的 12:00 山羊鐘樓秀。',
       '聖馬丁牛角麵包已選定 ROGAL Świętomarciński（Stary Rynek 11/17）；週四 09:00–20:00，售完改 Cukiernia Kandulski（週四 09:00–17:00）。',
     ],
-    nightChecklist: [...standardNightChecklist, 'Day 7 收費館只路過拍外觀，不用買票；明早 08:05 先在 Świętokrzyska 站口拍 MSN 與科學文化宮，08:15 搭 M1 到 Ratusz Arsenał', 'Polka 午餐不用訂位，客滿改 Pyzy Flaki Gorące；確認 Soul Kitchen 18:30 訂位、威靈頓已預留；沒供應改 Rusiko（Wierzbowa 11）或 Kieliszki na Próżnej，並重算交通'],
+    nightChecklist: [...standardNightChecklist, 'Day 7 收費館只路過拍外觀，不用買票；明早 08:05 先在 Świętokrzyska 站口拍 MSN 與科學文化宮，08:15 搭 M1 到 Ratusz Arsenał', 'Polka 午餐不用訂位，客滿改 Pyzy Flaki Gorące；確認 Soul Kitchen 18:30 訂位、威靈頓已預留；沒供應改 Kieliszki na Próżnej，並重算交通；Rusiko（Wierzbowa 11）官網公告 3/24 起停業至另行通知，要去先用 Email 或請飯店櫃檯確認'],
   },
   7: {
     cityKey: 'warsaw',
@@ -615,7 +615,7 @@ const unresolvedStepReasons = {
     '換匯 · REDAR.net 分店 II': '地下通道內的店面，Google Maps 搜「Kantor Redar Oddział II Metro Centrum」；入口依現場 Rotunda 指標。',
     '★ 戴高樂圓環「棕櫚樹」': '戶外地標，在 Al. Jerozolimskie 與 Nowy Świat 交叉的圓環中央，從 Rotunda 往東步行即到。',
     '新世界街 Nowy Świat 往北': '沿 Nowy Świat 北行的戶外街景，全段步行，終點接 Krakowskie Przedmieście 地址卡。',
-    'A. Blikle 1869 外帶 pączek': 'Nowy Świat 35 的路邊甜點店，餐廳導航見當日餐飲；沒開就略過。',
+    'A. Blikle 1869 外帶 pączek': 'Nowy Świat 33 的路邊甜點店（品牌官網門市頁），餐廳導航見當日餐飲；沒開就略過。',
     '沿皇家大道走回 Nowy Świat 44': '戶外夜景步行段，沿 Krakowskie Przedmieście、Nowy Świat 原路往南，終點是晚餐餐廳（導航見當日餐飲）。',
     '沿耶路撒冷大道往西 → 科學文化宮夜景': '戶外夜景步行段，Nowy Świat 往南到棕櫚樹圓環，再沿 Al. Jerozolimskie 往西，終點接 Złote Tarasy。',
     'Złote Tarasy 購物中心': 'Złota 59，中央車站旁；導航見當日餐飲的速食段 Złote Tarasy 分店。',

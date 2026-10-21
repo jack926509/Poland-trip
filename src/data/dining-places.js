@@ -793,23 +793,23 @@ export const diningPlaces = {
     "id": "warsaw-a-blikle-1869",
     "cityKey": "warsaw",
     "name": "A. Blikle 1869",
-    "address": "Nowy Świat 35, Warszawa",
-    "map": "https://www.google.com/maps/search/?api=1&query=A.%20Blikle%2C%20Nowy%20%C5%9Awiat%2035%2C%20Warszawa",
-    "hours": "約 09:00–19:00；Yelp 列週五至 21:00；隔壁 33 號咖啡館外送至 20:45",
-    "sourceUrl": "https://www.yelp.com/biz/a-blikle-warszawa",
-    "checkedAt": "2026-10-12",
+    "address": "Nowy Świat 33, Warszawa",
+    "map": "https://www.google.com/maps/search/?api=1&query=A.%20Blikle%2C%20Nowy%20%C5%9Awiat%2033%2C%20Warszawa",
+    "hours": "每日 09:00–21:00（品牌官網門市頁）",
+    "sourceUrl": "https://blikle.pl/lokale/",
+    "checkedAt": "2026-10-21",
     "verificationStatus": "partial",
     "notes": [
-      "1869 年創立的波蘭國民甜點店，pączki 玫瑰果醬甜甜圈是招牌。10/24 傍晚沿 Nowy Świat 北行時順路外帶；開門時間各目錄不一，不適合當早餐主位。"
+      "1869 年創立的波蘭國民甜點店，pączki 玫瑰果醬甜甜圈是招牌。10/24 傍晚沿 Nowy Świat 北行時順路外帶；品牌官網列 Nowy Świat 33 每日 09:00–21:00。"
     ],
     "cuisine": "百年甜點",
     "dishes": [
       "Pączki 玫瑰果醬甜甜圈",
       "咖啡外帶"
     ],
-    "verificationNote": "甜點店在 Nowy Świat 35、咖啡館在 33；開門時間各目錄 09:00／10:00 不一，09:00 若未開就略過。網路搜尋：Wolt、TableJourney、In Your Pocket 都把門市寫成 Nowy Świat 33（有資料說 2017 年底由 35 號遷入）；兩門相鄰約 20 m，現場看招牌即可。2026 年有新聞提到 Nowy Świat 店面租金欠款與市府協商分期，出發前再看一次是否照常營業。",
-    "liveCheckedAt": "2026-10-12",
-    "hoursNote": "目錄"
+    "verificationNote": "品牌官網門市頁（https://blikle.pl/lokale/ ，2026-10-21 讀取）列「Cukiernia Nowy Świat, ul. Nowy Świat 33, pon. – ndz. 9:00-21:00」，導航以 33 號為準。先前資料：Wolt、TableJourney、In Your Pocket 都把門市寫成 Nowy Świat 33（有資料說 2017 年底由 35 號遷入）；兩門相鄰約 20 m，現場看招牌即可。2026 年有新聞提到 Nowy Świat 店面租金欠款與市府協商分期，出發前再看一次是否照常營業。",
+    "liveCheckedAt": "2026-10-21",
+    "hoursNote": "品牌官網"
   },
   "warsaw-cukiernia-zagozdzinski": {
     "id": "warsaw-cukiernia-zagozdzinski",
@@ -858,12 +858,12 @@ export const diningPlaces = {
     "name": "Endzior · Plac Nowy 圓亭",
     "address": "plac Nowy 4B, Kraków",
     "map": "https://www.google.com/maps/search/?api=1&query=Zapiekanki%20u%20Endziora%2C%20plac%20Nowy%204B%2C%20Krak%C3%B3w",
-    "hours": "週一至週六 10:00–翌日 02:00；週日休",
+    "hours": "未核實（各來源不一；有目錄列週一至週六 10:00–翌日 02:00、週日休，也有目錄列週日營業）",
     "sourceUrl": "https://www.inyourpocket.com/krakow/Mini-Bar-Endzior_19875v",
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "Kazimierz 圓亭（Okrąglak）內的 zapiekanka 名攤，長棍麵包烤蘑菇起司，PLN 18–25。多數來源週日公休，10/25（週日）可能沒開，改買圓亭其他窗口。"
+      "Kazimierz 圓亭（Okrąglak）內的 zapiekanka 名攤，長棍麵包烤蘑菇起司，PLN 18–25。週日營業時間未核實（各來源不一），10/25（週日）沒開就改買圓亭其他窗口。"
     ],
     "cuisine": "街頭小吃",
     "dishes": [
@@ -1560,7 +1560,7 @@ export const diningPlaces = {
     "name": "MOLÁM Thai",
     "address": "Rajska 3/4, Kraków",
     "map": "https://www.google.com/maps/search/?api=1&query=MOL%C3%81M%2C%20Rajska%203%2F4%2C%20Krak%C3%B3w",
-    "hours": "週一至週四 16:00–22:00；週五 16:00–23:00；週六 13:00–23:00；週日 13:00–21:30",
+    "hours": "未核實（各來源列的時段不一，出門前看 Google 地圖當日營業）",
     "sourceUrl": "https://www.falstaff.com/en/restaurants/molam",
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
@@ -1568,7 +1568,7 @@ export const diningPlaces = {
       "必比登推介 · 泰式料理",
       "10/25 晚餐想換口味（取代 Hankki）或 10/26 晚餐的異國備選。"
     ],
-    "verificationNote": "Falstaff、Waze（連 molam.pl）等多來源一致；Yelp 另列平日 13:00 起。Michelin Bib Gourmand。",
+    "verificationNote": "營業時間未核實：Falstaff、Waze、Yelp 等來源列的時段不一（2026-10-21 稽核），出門前看 Google 地圖當日營業。Michelin Bib Gourmand。",
     "cuisine": "泰國伊善料理",
     "dishes": [
       "伊善風味小吃（青木瓜沙拉、烤肉）",
@@ -2265,16 +2265,16 @@ export const diningPlaces = {
     "name": "Rusiko",
     "address": "Wierzbowa 11, Warszawa",
     "map": "https://www.google.com/maps/search/?api=1&query=Rusiko%2C%20Wierzbowa%2011%2C%20Warszawa",
-    "hours": "週一休；週二至週六 13:00–24:00；週日 12:00–23:00",
-    "sourceUrl": "https://www.rusiko.pl/en/menu/",
-    "checkedAt": "2026-10-12",
+    "hours": "官網公告 3/24 起停業至另行通知（要去先確認是否恢復營業）",
+    "sourceUrl": "https://www.rusiko.pl/kontakt/",
+    "checkedAt": "2026-10-21",
     "verificationStatus": "partial",
     "notes": [
       "Michelin 推薦喬治亞菜：khachapuri 起司船形麵包、khinkali 湯包、chanakhi 燉羊腿。",
-      "10/30 晚餐備選（原首選）：Soul Kitchen 沒有威靈頓或訂不到時改這間，Metropol 搭車約 10 分。"
+      "10/30 晚餐原備選：官網 2026-10-21 仍公告 3/24 起停業至另行通知，不再當直接替補；要去先用 Email 或請飯店櫃檯確認有沒有營業。"
     ],
     "menuUrl": null,
-    "verificationNote": "官網與 Michelin 指南皆列 Wierzbowa 11（Michelin 推薦）；Yelp 仍顯示舊址 Al. Ujazdowskie 22，以官網為準。官網留有舊的暫停營業橫幅，但同站列正常時段，訂位時一併確認 10/30 營業。",
+    "verificationNote": "官網與 Michelin 指南皆列 Wierzbowa 11（Michelin 推薦）；Yelp 仍顯示舊址 Al. Ujazdowskie 22，以官網為準。官網首頁與聯絡頁 2026-10-21 仍掛「od dnia 24 marca nasza restauracja pozostanie zamknięta do odwołania」（3/24 起停業至另行通知；公告未寫年份），不能依常規時段直接前往，要去先用 Email 或請飯店櫃檯確認。",
     "cuisine": "喬治亞菜",
     "dishes": [
       "Khachapuri 起司船形麵包",
@@ -2283,7 +2283,7 @@ export const diningPlaces = {
     ],
     "phone": "+48 22 629 06 28",
     "liveCheckedAt": "2026-10-12",
-    "hoursNote": "官網另頁列平日 14:00 起"
+    "hoursNote": "官網停業公告優先於頁面上的常規時段"
   },
   "warsaw-ceviche-bar": {
     "id": "warsaw-ceviche-bar",
