@@ -1419,7 +1419,7 @@ test('sw.js 離線時，導覽請求無論用哪種網址寫法（有無 .html�
       fetch: async () => { throw new Error('離線：不應連上網路'); },
       URL,
       Response,
-      console,
+      console, setTimeout, clearTimeout,
     };
     vm.createContext(context);
     vm.runInContext(worker, context);

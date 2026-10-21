@@ -33,7 +33,7 @@ export function renderInteractiveMap({ id, title, mapData, mapChecks = {}, legen
     var data = config.mapData;
     function safeUrl(value) { try { var url = new URL(value); return url.protocol === 'https:' ? url.href : ''; } catch (_) { return ''; } }
     var map = L.map(container, { scrollWheelZoom: true, touchZoom: true, doubleClickZoom: true, zoomControl: false, zoomSnap: 0.5 }).setView(data.center, data.zoom || 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { crossOrigin: true, maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
     var bounds = [];
     var pins = [];
     data.points.forEach(function (point) {

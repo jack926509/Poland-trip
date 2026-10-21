@@ -191,6 +191,7 @@ export function renderCity({
       element.textContent = '';
       var map = L.map(element, { scrollWheelZoom: true, touchZoom: true, doubleClickZoom: true, zoomControl: false }).setView(mapData.center, mapData.zoom);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        crossOrigin: true,
         attribution: '&copy; OpenStreetMap contributors',
         maxZoom: 19
       }).addTo(map);

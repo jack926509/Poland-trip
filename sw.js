@@ -23,6 +23,7 @@ const SHELL = `${VERSION}-shell`;
 const RUNTIME = `${VERSION}-runtime`;
 const TILES = `${VERSION}-tiles`;
 const TILE_LIMIT = 400;
+const PAGE_TIMEOUT_MS = 3500;
 
 const PAGES = [
   './index.html',
@@ -159,27 +160,51 @@ async function tileStrategy(request, event) {
 // 5xx 沒有原頁快取時保留伺服器錯誤；完全斷網才最後回退首頁。
 async function pageStrategy(request, event) {
   const cache = await caches.open(SHELL);
+  async function matchPage() {
+    const url = new URL(request.url);
+    const candidates = [request, new URL(url.pathname, url.origin).toString(),
+      ...alternatePagePathnames(url.pathname).map(pathname => new URL(pathname, url.origin).toString())];
+    for (const candidate of candidates) {
+      const match = await cache.match(candidate);
+      if (match) return match;
+    }
+  }
+  // 不中止慢速請求：先交付原頁快取後，仍可在背景取得新版。
+  const network = (async () => {
+    try {
+      const response = await fetch(request);
+      if (response && response.ok) {
+        const update = stripRedirectFlag(response)
+          .then(plain => cache.put(request, plain))
+          .catch(() => {});
+        event?.waitUntil(update);
+      }
+      return response;
+    } catch (error) {
+      return undefined;
+    }
+  })();
+  event?.waitUntil(network.then(() => {}));
+  const timeout = Symbol('page timeout');
+  let timer;
   let response;
   try {
-    response = await fetch(request);
-    if (response && response.ok) {
-      // 不 await：不讓寫快取拖慢回應，但一律存拿掉轉址旗標後的乾淨版本，
-      // 否則之後離線時這筆執行期更新一樣會被 Chrome 拒用於導覽。
-      event.waitUntil(stripRedirectFlag(response)
-        .then(plain => cache.put(request, plain))
-        .catch(() => {}));
+    response = await Promise.race([
+      network,
+      new Promise(resolve => { timer = setTimeout(() => resolve(timeout), PAGE_TIMEOUT_MS); }),
+    ]);
+    if (response === timeout) {
+      const cached = await matchPage();
+      if (cached) return cached;
+      // 沒有原頁快取時繼續等待，不因逾時而顯示首頁或錯誤。
+      response = await network;
     }
-    if (response && response.status < 500) return response;
-  } catch (error) {
-    // 網路錯誤與 HTTP 5xx 共用下方原頁快取查找。
+  } finally {
+    clearTimeout(timer);
   }
-  const url = new URL(request.url);
-  const candidates = [request, new URL(url.pathname, url.origin).toString(),
-    ...alternatePagePathnames(url.pathname).map(pathname => new URL(pathname, url.origin).toString())];
-  for (const candidate of candidates) {
-    const match = await cache.match(candidate);
-    if (match) return match;
-  }
+  if (response && response.status < 500) return response;
+  const cached = await matchPage();
+  if (cached) return cached;
   return response
     || (await cache.match('./index.html'))
     || (await cache.match('./'))
