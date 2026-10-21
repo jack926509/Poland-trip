@@ -808,8 +808,8 @@ export const diningPlaces = {
       "咖啡外帶"
     ],
     "verificationNote": "品牌官網門市頁（https://blikle.pl/lokale/ ，2026-10-21 讀取）列「Cukiernia Nowy Świat, ul. Nowy Świat 33, pon. – ndz. 9:00-21:00」，導航以 33 號為準。先前資料：Wolt、TableJourney、In Your Pocket 都把門市寫成 Nowy Świat 33（有資料說 2017 年底由 35 號遷入）；兩門相鄰約 20 m，現場看招牌即可。2026 年有新聞提到 Nowy Świat 店面租金欠款與市府協商分期，出發前再看一次是否照常營業。",
-    "liveCheckedAt": "2026-10-12",
-    "hoursNote": "目錄"
+    "liveCheckedAt": "2026-10-21",
+    "hoursNote": "品牌官網"
   },
   "warsaw-cukiernia-zagozdzinski": {
     "id": "warsaw-cukiernia-zagozdzinski",
@@ -1568,7 +1568,7 @@ export const diningPlaces = {
       "必比登推介 · 泰式料理",
       "10/25 晚餐想換口味（取代 Hankki）或 10/26 晚餐的異國備選。"
     ],
-    "verificationNote": "Falstaff、Waze（連 molam.pl）等多來源一致；Yelp 另列平日 13:00 起。Michelin Bib Gourmand。",
+    "verificationNote": "營業時間未核實：Falstaff、Waze、Yelp 等來源列的時段不一（2026-10-21 稽核），出門前看 Google 地圖當日營業。Michelin Bib Gourmand。",
     "cuisine": "泰國伊善料理",
     "dishes": [
       "伊善風味小吃（青木瓜沙拉、烤肉）",
