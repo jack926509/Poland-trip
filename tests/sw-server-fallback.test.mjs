@@ -17,7 +17,7 @@ async function navigate({ status = 503, stored = [], path = '/today.html', offli
   };
   const context = vm.createContext({
     self: { location: { origin }, addEventListener(type, fn) { handlers.set(type, fn); } },
-    caches: { open: async () => cache }, URL, Response,
+    caches: { open: async () => cache }, URL, Response, setTimeout, clearTimeout,
     fetch: async () => {
       if (offline) throw new TypeError('離線');
       return new Response(`NETWORK ${status}`, { status });
