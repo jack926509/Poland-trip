@@ -56,7 +56,7 @@ test('出發時間只在行程表對得上同一地點時推導，否則標待�
 
   // 場館類期限：Day 7 水上宮殿最後入場的前一段移動，不可拿之後「走回飯店」那段來推導出發時間。
   const palace = hardRows('2026-10-30').find(r => r.minute === 17 * 60 + 30);
-  assert.match(palace.body, /最晚出發時間待確認|依行程表/);
+  assert.match(palace.body, /這站沒有估好的移動時間|依行程表/);
   assert.ok(!/回飯店/.test(palace.body), '不可把別的目的地當成這段移動');
 
   // 開門不是期限，不推導出發時間。

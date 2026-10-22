@@ -114,7 +114,7 @@ function renderDayCard(day, { iso, stay, sun, dayHref, privateHref, tomorrow }) 
       || sharedPhrase(item.text, `${step.label} ${step.sub || ''}`));
     return sameTarget
       ? `<span class="today-move">依行程表，這段移動由 ${escapeHtml(step.t)}「${escapeHtml(step.label)}」開始${step.dur ? `（行程表估時 ${escapeHtml(step.dur)}）` : '（行程表未列估時）'}；實際出發仍須加上取行李與現場狀況。</span>`
-      : '<span class="today-move">最晚出發時間待確認：行程表沒有對得上這個地點的移動步驟與估時，請依票券與現場公告自行抓緩衝。</span>';
+      : '<span class="today-move">這站沒有估好的移動時間：照票券時間提早 15 分出門。</span>';
   };
   // 這站要帶的票：步驟名稱命中票券欄位；沒命中但下一步 60 分鐘內就要用票（例如抵達場館後入場、
   // 抵站後上車），也提早一站提醒。

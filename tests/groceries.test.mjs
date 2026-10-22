@@ -27,8 +27,9 @@ test('採買指南保留四城 12 個門市與三十項商品，每筆都標出�
     assert.ok(html.includes(b.sourceUrl.replace(/&/g, '&amp;')), `${b.id} 缺官方來源連結`);
     assert.ok(html.includes(encodeURIComponent(`${b.name} ${b.address}`)));
   }
-  // 2026-10-20 起不顯示查核狀態與日期；只有地址、沒有時間的門市營業時間寫「待確認」
-  assert.equal((html.match(/<p class="grocery-branch-hours"><span>營業時間<\/span><b>待確認<\/b>/g) || []).length, 8);
+  // 2026-10-20 起不顯示查核狀態與日期；只有地址、沒有時間的門市營業時間寫「待確認」，
+  // 2026-10-22 起畫面改顯示「出門前看 Google 地圖」（資料仍記 待確認）。
+  assert.equal((html.match(/<p class="grocery-branch-hours"><span>營業時間<\/span><b>出門前看 Google 地圖<\/b>/g) || []).length, 8);
   assert.doesNotMatch(html, /官方門市頁已核對|地址已核對|2026-09-22/);
   assert.match(html, /地圖按鈕是搜尋連結/);
   assert.match(html, /2026\/10\/25/);

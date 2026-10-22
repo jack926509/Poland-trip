@@ -26,10 +26,14 @@ export function plannedVerifiedPlaces(dayDiningByDay) {
   return [...seen.values()];
 }
 
+// 2026-10-22 出發前收斂：沒查到的營業時間與門牌不再顯示「待確認」，改成旅途中照做的一句話。
+export const displayHours = hours => (!hours || /^(營業時間)?待確認$/.test(String(hours).trim()) ? '出門前看 Google 地圖' : hours);
+export const displayAddress = address => (/^門牌待確認$/.test(String(address ?? '').trim()) ? '點店名開 Google 地圖' : address);
+
 export function renderDiningFacts(item, { includeHours = true } = {}) {
   const source = safeHttpsUrl(item.sourceUrl);
   const menu = safeHttpsUrl(item.menuUrl);
-  return `${includeHours ? `<p class="food-map-note">營業時間：${escapeHtml(item.hours || '待確認')}</p>` : ''}
+  return `${includeHours ? `<p class="food-map-note">營業時間：${escapeHtml(displayHours(item.hours))}</p>` : ''}
     ${source ? `<p class="source-meta"><a href="${source}" target="_blank" rel="noopener noreferrer">店家資訊 ↗</a></p>` : ''}
     ${menu ? `<p class="food-map-note"><a href="${menu}" target="_blank" rel="noopener noreferrer">菜單 ↗</a></p>` : ''}`;
 }
@@ -92,14 +96,14 @@ export function renderStoreBody(item, { note = item.note, condition = item.condi
     : `<span class="store-fit store-fit-warn">⚠ ${escapeHtml(time)} 不在營業時間內</span>`;
   const hoursRow = dayHours
     ? `<div class="store-fact store-fact-today"><dt>當天</dt><dd><b>${escapeHtml(day.date)} ${escapeHtml(dayHours)}</b>${fit}</dd></div>`
-    : `<div class="store-fact"><dt>營業</dt><dd>${escapeHtml(item.hours || '待確認')}</dd></div>`;
+    : `<div class="store-fact"><dt>營業</dt><dd>${escapeHtml(displayHours(item.hours))}</dd></div>`;
   const facts = `<dl class="store-facts">
       ${hoursRow}
       ${dishes.length ? `<div class="store-fact"><dt>推薦</dt><dd><ul class="store-dishes">${dishes.map(dish => `<li>${escapeHtml(dish)}</li>`).join('')}</ul></dd></div>` : ''}
     </dl>`;
   const actions = menu ? `<p class="store-actions"><a class="store-action" href="${menu}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(item.name)} 的菜單">菜單 ↗</a></p>` : '';
   const record = foldFacts
-    ? `<details><summary>地址與全週營業</summary><p class="food-map-note">${escapeHtml(item.address)}</p>${renderDiningFacts(item, { includeHours: Boolean(dayHours) })}<p class="source-meta">行程預留不代表已訂位。</p></details>`
+    ? `<details><summary>地址與全週營業</summary><p class="food-map-note">${escapeHtml(displayAddress(item.address))}</p>${renderDiningFacts(item, { includeHours: Boolean(dayHours) })}<p class="source-meta">不訂位，直接到店。</p></details>`
     : '';
   return `${facts}
       ${note ? `<p>${escapeHtml(note)}</p>` : ''}

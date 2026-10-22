@@ -41,7 +41,7 @@ export function fastFoodDiningEntries({ branches = [], chains = [], hub = null }
       : [];
     const positionNote = [
       branch.note,
-      /待確認/.test(branch.hours || '待確認') ? '營業時間待確認' : '',
+      /待確認/.test(branch.hours || '待確認') ? '營業時間看 Google 地圖' : '',
       alsoHere.length ? `同在 ${hub.place} 的還有 ${alsoHere.join('、')}，一棟解決` : '',
     ].filter(Boolean).join('；');
     return {
@@ -67,7 +67,7 @@ export function fastFoodDiningEntries({ branches = [], chains = [], hub = null }
 
 /** 只在營業時間未知時提醒一句。 */
 function branchStatus(branch) {
-  return /待確認/.test(branch.hours || '待確認') ? '營業時間待確認' : '';
+  return /待確認/.test(branch.hours || '待確認') ? '營業時間看 Google 地圖' : '';
 }
 
 /**
@@ -80,7 +80,7 @@ function renderBranchItem(branch, chain) {
   return `<li>
           <a href="${escapeHtml(branch.map)}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(branch.chain)} ${escapeHtml(branch.address)} 的 Google Maps 導航">${escapeHtml(branch.chain)}</a>${chain?.kind ? `<span class="fast-food-kind-inline">${escapeHtml(chain.kind)}</span>` : ''}
           <span class="fast-food-address">${escapeHtml(branch.address)}</span>
-          <p class="fast-food-hours"><b>營業</b> ${escapeHtml(branch.hours || '營業時間待確認')}</p>
+          <p class="fast-food-hours"><b>營業</b> ${escapeHtml(/待確認/.test(branch.hours || '待確認') ? '出門前看 Google 地圖' : branch.hours)}</p>
           <p class="food-map-note">${escapeHtml(branch.note)}${picks.length ? ` · 推薦：${picks.map(escapeHtml).join('、')}` : ''}</p>
           <p class="source-meta">${[branchStatus(branch), source ? `<a href="${source}" target="_blank" rel="noopener noreferrer">來源 ↗</a>` : ''].filter(Boolean).join(' · ')}</p>
         </li>`;
@@ -161,7 +161,7 @@ export function renderFastFoodMenu({ chains = [], branches = {}, hubs = [] }) {
   return `
     <section class="section" id="fast-food">
       <div class="section-heading"><span class="section-num">Fast food</span><h2>連鎖速食招牌</h2></div>
-      <p class="lead">行程趕、太晚或不想踩雷時的落腳點，不做評選。上面是各家招牌，下面依城市列出每間分店的地址、營業時間與導航；同一份分店資料也出現在每日行程、今日速查與城市指南。出發前仍以店家頁面為準。</p>
+      <p class="lead">行程趕、太晚或不想踩雷時的落腳點，不做評選。上面是各家招牌，下面依城市列出每間分店的地址、營業時間與導航；同一份分店資料也出現在每日行程、今日速查與城市指南。營業狀態出門前看 Google 地圖。</p>
       <div class="grid">${chainCards}</div>
       ${directory ? `<h3 id="fast-food-branches">分店與營業時間</h3><div class="fast-food-directory">${directory}</div>` : ''}
       ${cityLinks ? `<p class="action-links">${cityLinks}</p>` : ''}

@@ -129,7 +129,7 @@ export function renderBookingStatusCard(todoGroups, deadlines = [], today = taip
       <div class="booking-status-card">
         <span class="eyebrow">待辦總覽</span>
         <h2>${stats.open ? `還沒處理 <b class="number" data-booking-open>${stats.open}</b> 項` : '待辦已全部處理完畢'}</h2>
-        <p>火車、Auschwitz 去程、鹽礦與 7 晚住宿都已訂好；下面是出發前還要買、要訂或要做的。</p>
+        <p>火車、Auschwitz 去程、鹽礦與 7 晚住宿都已訂好；下面是還沒處理的。</p>
         <ul class="booking-status-groups">${rows}</ul>${standaloneHtml}
         <p class="action-links"><a class="booking-status-cta" href="todos.html">看待辦事項 →</a></p>
       </div>
@@ -147,7 +147,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
   const trainCards = trains.map(train => {
     const leg = splitVerification(train.leg), note = splitVerification(train.note);
     const price = /未提供/.test(train.price) ? '' : /^\d/.test(train.price) ? `PLN ${train.price}` : train.price;
-    const sale = train.status === '已購票' ? '' : train.saleOpens ? `${escapeHtml(train.saleOpens)} 起預售` : '預售日待確認';
+    const sale = train.status === '已購票' ? '' : train.saleOpens ? `${escapeHtml(train.saleOpens)} 起預售` : '現場購票';
     const extra = [
       train.dur ? `<p><b>車程：</b>${train.dur}</p>` : '',
       leg.main ? `<p>${leg.main}</p>` : '',

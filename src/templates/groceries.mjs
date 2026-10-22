@@ -40,7 +40,7 @@ function renderBranch(branch, chain) {
       ${ownName}
       <p class="grocery-branch-address" lang="pl">${e(branch.address)}</p>
       <p class="grocery-branch-area">${e(branch.area)}</p>
-      <p class="grocery-branch-hours"><span>營業時間</span><b>${e(branch.hours)}</b></p>
+      <p class="grocery-branch-hours"><span>營業時間</span><b>${e(/^待確認$/.test(String(branch.hours).trim()) ? '出門前看 Google 地圖' : branch.hours)}</b></p>
       ${(() => {
         const use = plain(branch.note);
         const sunday = plain(branch.sundayNote);
@@ -189,7 +189,7 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
       <ol class="grocery-essentials">
         <li><b>2026/10/25（Day 2）是非交易星期日，一般超市不開。</b>十月沒有交易星期日，前一天先買好早餐與飲水。${external('https://www.biedronka.pl/pl/niedziele-handlowe', 'Biedronka 2026 日曆')}${renderDataNote(['Biedronka 官方日曆列出 2026 年的交易星期日是 1/25、3/29、4/26、6/28、8/30、12/6、12/13、12/20，十月一天都沒有。'])}</li>
         <li><b>星期日還有機會買的只有兩家車站型 Biedronka：</b>華沙 <a href="#warsaw-1">Al. Jerozolimskie 54</a>（每日 05:00–01:00）與波茲南 <a href="#poznan-1">Dworcowa 2</a>（星期日 06:00–22:00），別當成唯一計畫。克拉科夫與樂斯拉夫的 Biedronka 星期日不開，Żabka 依各店公告。${renderDataNote(['這兩家的官方門市頁都標「sklep czynny w niedzielę」。非交易星期日的實際開門仍以門市當日公告為準。'])}</li>
-        <li><b>營業時間：</b>Biedronka 的 ${verifiedCount} 家有逐日時間；其餘 ${partialCount} 家（Lidl、Żabka）標「營業時間待確認」，出門前用門市查詢看一次。${renderDataNote(['Biedronka 的逐日時間取自官方門市頁；Lidl、Żabka 官方不逐店公布營業時間。'])}</li>
+        <li><b>營業時間：</b>Biedronka 的 ${verifiedCount} 家有逐日時間；其餘 ${partialCount} 家（Lidl、Żabka）不逐店公布，出門前看 Google 地圖。${renderDataNote(['Biedronka 的逐日時間取自官方門市頁；Lidl、Żabka 官方不逐店公布營業時間。'])}</li>
         <li><b>結帳前看清價牌。</b>「przy zakupie 6 szt.」是買 6 件才有的單價，另有會員（App）價；自備購物袋。</li>
       </ol>
     </section>
@@ -223,7 +223,7 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
         <summary><h3 class="grocery-group-title">資料來源</h3><span class="grocery-group-names">品牌、零售商與門市資料</span></summary>
         <p>商品依品牌、製造商與零售商商品資料整理；推薦理由依小份試吃、早餐補給、保存與攜帶方便性挑選，不是銷售排行。商品頁有列不代表各分店都有貨，庫存與價格以門市當日為準。</p>
         <p>標籤判讀參考 ${external('https://www.gov.pl/web/wijhars-bydgoszcz/sok-czy-nektar', '波蘭官方果汁說明')}；NFC／壓榨不等於未殺菌鮮榨，是否冷藏仍看包裝。</p>
-        <p>門市地址取自品牌官方門市頁與門市清單；Lidl、Żabka 不逐店公布營業時間，標「待確認」的出發前用官方查詢再看一次。地圖按鈕是搜尋連結。</p>
+        <p>門市地址取自品牌官方門市頁與門市清單；Lidl、Żabka 不逐店公布營業時間，出門前看 Google 地圖。地圖按鈕是搜尋連結。</p>
         <p>商品照片取自 Open Food Facts 貢獻者（CC BY-SA 3.0）、使用者自行拍攝或網友截圖，僅代表包裝，現場版本可能不同。</p>
       </details>
     </section>`;

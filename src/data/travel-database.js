@@ -89,7 +89,7 @@ const databaseEntriesBase = [
   {
     id: 'rail-trip-tickets', section: 'rail', category: 'transit', cityKey: 'ROUTE',
     title: '本次城際車票',
-    summary: '與 旅客提供的 App 票券清單顯示 10/25 EIP 5300、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 均已購票。四段的抵達時間、艙等、車廂、座位與票價仍待票券詳細頁核對。',
+    summary: '與 旅客提供的 App 票券清單顯示 10/25 EIP 5300、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 均已購票。車廂與座位看 PKP App 票券。',
     status: 'pending', sourceUrl: null, verifiedAt: '2026-10-06', checkedAt: '2026-10-06', recheckAt: '2026-10-24',
     offlineNote: '請在抵波蘭當日 10/24，也就是 10/25 首段城際火車前一日，保存四段車票離線副本並核對票面詳細資料；這是自行設定的查核期限，非官方期限。搭車前用 Passenger Portal 查月台與異動。', private: false,
   },
@@ -625,7 +625,7 @@ const unresolvedStepReasons = {
   2: {
     'EIP 5300 前往克拉科夫': dynamicTransitReason,
     '聖弗洛里安城門 → 甕城 Barbakan → Stary Kleparz': '戶外步行段，城門在 Floriańska 北端、甕城在 Basztowa 街旁，Stary Kleparz 在 Pimiento 旁；只看外觀。',
-    '步行經 Kazimierz → Bernatek 橋 → 辛德勒工廠': '主案步行；改搭電車時車號與轉乘為動態資料，出發前用 Jakdojade 查；以辛德勒工廠入口地址為終點，17:10 前到場。',
+    '步行經 Kazimierz → Bernatek 橋 → 辛德勒工廠': '主案步行；改搭電車時車號與轉乘為動態資料，當天用 Jakdojade 查；以辛德勒工廠入口地址為終點，17:10 前到場。',
   },
   3: {
     'Kraków MDA 報到': `巴士站地址（Bosacka 18）與 10/26 的 ${lajkonikOutboundAdopted.dep} 班次已購票，票面標示下層 ${lajkonikOutboundAdopted.bay} 站位；站位仍以當日電子看板為準。`,
@@ -641,7 +641,7 @@ const unresolvedStepReasons = {
     'IC 3830 前往樂斯拉夫': dynamicTransitReason,
     '★ Przejście「無名行人」雕像（選配）': '戶外雕像，在 Świdnicka 與 Piłsudskiego 路口兩側人行道上，由 Piast 步行即到。',
     '★ 中央廣場夜景（選配）': '戶外夜拍，沿 Świdnicka 往北走到中央廣場；選配行程，累了就略過。',
-    '★ Neon Side Gallery 夜景（選配）': 'Ruska 46c 的中庭，依現場招牌進入；整修狀況未查到最新公告，出發前看 Google 地圖最新評論。',
+    '★ Neon Side Gallery 夜景（選配）': 'Ruska 46c 的中庭，依現場招牌進入；去之前看 Google 地圖最新評論確認有開。',
     '搭電車或叫車回 Piast': dynamicTransitReason,
   },
   5: {

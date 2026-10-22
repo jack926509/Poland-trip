@@ -48,7 +48,7 @@ export const dayDiningPlans = {
       "stepId": "d2-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
-      "condition": "分店開門與品項待確認；不壓縮 08:40 發車前的進站緩衝。",
+      "condition": "分店有沒有開、賣什麼當場看；不壓縮 08:40 發車前的進站緩衝。",
       "dayHours": "週日 07:00–19:00（Google 地圖）"
     },
     {
@@ -124,7 +124,7 @@ export const dayDiningPlans = {
     {
       "placeId": "krakow-molam-thai",
       "role": "晚餐備選",
-      "note": "想把韓式換成泰式（Bib Gourmand，Rajska 3/4；週日營業時間未核實，出門前看 Google 地圖）時改這間；離辛德勒工廠較遠，需搭車。",
+      "note": "想把韓式換成泰式（Bib Gourmand，Rajska 3/4；出門前看 Google 地圖有沒有開）時改這間；離辛德勒工廠較遠，需搭車。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -164,7 +164,7 @@ export const dayDiningPlans = {
     {
       "placeId": "krakow-molam-thai",
       "role": "晚餐備選",
-      "note": "泰式 Bib Gourmand，週一營業時間未核實（各來源不一，出門前看 Google 地圖）；想吃異國料理時替代。",
+      "note": "泰式 Bib Gourmand，出門前看 Google 地圖有沒有開；想吃異國料理時替代。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -205,7 +205,7 @@ export const dayDiningPlans = {
     },
     {
       "placeId": "wieliczka-karczma-gornicza",
-      "role": "午餐備案（營業待確認，暫不採用）",
+      "role": "午餐備案（不優先）",
       "note": "礦場公司波蘭文頁列目前關閉，英文餐飲頁仍有菜單，官方資訊不一致；未獲礦場確認前不採用，午餐改用礦方確認每日營業的 Bistro Posolone。",
       "stepId": null,
       "planStatus": "unavailable",
@@ -498,7 +498,7 @@ export const dayDiningPlans = {
       "stepId": "d7-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "菜單隨季節換、官方菜單未確認；不訂位、現場入座，Wellington 常需預留，點不到就改韃靼牛肉或 Żurek。Rusiko 官網公告 3/24 起停業至另行通知，不再當直接替補，要去先用 Email 或請飯店櫃檯確認。",
+      "condition": "菜單隨季節換；不訂位、現場入座，Wellington 常需預留，點不到就改韃靼牛肉或 Żurek。Rusiko 官網公告 3/24 起停業至另行通知，不再當直接替補，要去先用 Email 或請飯店櫃檯確認。",
       "dayHours": "17:30–23:00（週五另有 12:00–16:30，下午休息）"
     },
     {

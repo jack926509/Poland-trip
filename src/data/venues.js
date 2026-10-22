@@ -218,7 +218,7 @@ export const venues = {
     prices: { full: "50", discount: "35", note: "官網優待價已補上" },
     hours: null,
     checkedAt: null,
-    quickNote: "PLN 50／35 · 每場 30 分鐘 · 10/28 指定時段庫存待確認",
+    quickNote: "PLN 50／35 · 每場 30 分鐘 · 現場買票",
     shortLabel: "拉茨瓦維採全景畫",
   },
   'wroclaw-national-museum': {
