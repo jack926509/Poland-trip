@@ -79,9 +79,9 @@ const todoGroupsRaw = [
     intro: '出發前在台灣做完：航班線上報到、用訊息確認波茲南公寓、手機裝好交通 App、上外交部網站做出國登錄。',
     items: [
       {checkedAt:'2026-10-14', recheckAt:'2026-10-22', date:'10/28', name:'傳訊息給 Poznan Apartments', status:'待確認', action:'出發前用訂房平台的訊息功能或 Email 問兩件事：① 10/28 晚上 20:29（Koleo ）抵達 Poznań Główny 後怎麼拿鑰匙；② 10/29 早上 07:00 退房時接待處開了沒、能不能寄放行李到 16:15。官網聯絡頁沒寫接待時間和行李寄放。不能寄就改用 Poznań Główny 車站的寄物櫃（位置和空位當天再看）。', url:'https://www.poznanapartments.com/kontakt'},
-      {checkedAt:'2026-10-20', recheckAt:'2026-10-22', date:'10/21', name:'CX 479 線上報到（10/23 21:05 桃園起飛）', status:'尚未報到', action:'國泰線上報到在起飛前 24–48 小時開放：10/21 晚上起打開國泰 App 看看，最晚 10/22 21:05 後一定能報到、選位；同時看電子機票上 Qatar 後續三段是否一併報到、行李是否直掛華沙，沒有直掛就在香港重新託運。登機證存手機。', url:'https://www.cathaypacific.com/cx/zh_TW/manage-booking/check-in.html'},
-      {checkedAt:'2026-10-20', recheckAt:'2026-10-22', date:'10/23', name:'外交部出國登錄', status:'尚未登錄', action:'出發前到外交部領事事務局「出國登錄」填行程與住宿，緊急時駐外館處找得到你；同時把行程與住宿地址給家人一份。', url:'https://www.boca.gov.tw/sp-abre-main-1.html'},
-      {checkedAt:'2026-10-14', recheckAt:'2026-10-22', date:'10/24', name:'手機安裝 Jakdojade 與 Bolt', status:'尚未安裝', action:'Jakdojade 查三座城市的電車、地鐵路線並買車票；Bolt 叫車（10/29 早上 Cytadela → Rondo Śródka、雨天或天黑時用）。出發前在台灣先裝好、登入並綁好付款方式。', url:'https://jakdojade.pl/'},
+      {checkedAt:'2026-10-22', recheckAt:null, date:'10/21', name:'CX 479 線上報到（10/23 21:05 桃園起飛）', status:'已報到', action:'國泰線上報到在起飛前 24–48 小時開放：10/21 晚上起打開國泰 App 看看，最晚 10/22 21:05 後一定能報到、選位；同時看電子機票上 Qatar 後續三段是否一併報到、行李是否直掛華沙，沒有直掛就在香港重新託運。登機證存手機。', url:'https://www.cathaypacific.com/cx/zh_TW/manage-booking/check-in.html'},
+      {checkedAt:'2026-10-22', recheckAt:null, date:'10/23', name:'外交部出國登錄', status:'已登錄', action:'出發前到外交部領事事務局「出國登錄」填行程與住宿，緊急時駐外館處找得到你；同時把行程與住宿地址給家人一份。', url:'https://www.boca.gov.tw/sp-abre-main-1.html'},
+      {checkedAt:'2026-10-22', recheckAt:null, date:'10/24', name:'手機安裝 Jakdojade 與 Bolt', status:'已安裝', action:'Jakdojade 查三座城市的電車、地鐵路線並買車票；Bolt 叫車（10/29 早上 Cytadela → Rondo Śródka、雨天或天黑時用）。出發前在台灣先裝好、登入並綁好付款方式。', url:'https://jakdojade.pl/'},
     ],
   },
 ];
