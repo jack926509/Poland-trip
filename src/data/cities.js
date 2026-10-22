@@ -12,6 +12,7 @@ import { cityGallery } from './city-gallery.js';
 import { diningPlaces } from './dining-places.js';
 import { venues } from './venues.js';
 import { stayPin } from '../lib/journey.mjs';
+import { addCityMapPins } from './city-map-additions.js';
 
 export const cities = [
   {key:'WAW', name:'華沙', pl:'Warszawa', tag:'CAPITAL', vibe:'鋼鐵摩天 × 重建老城', highlights:['Krakowskie Przedmieście','老城與城堡廣場','瓦津基水上宮殿（週五免費）'], photo:{hero:'assets/photos/warszawa-hero.webp',thumb:'assets/photos/warszawa-thumb.webp',og:'assets/og/warszawa-og.jpg'}},
@@ -232,6 +233,7 @@ export const pinCategoryLegend = {
   star1:  {fill:'#E8A81E', line:'#8a5a00', label:'米其林一星'},
   bib:    {fill:'#2f6b3f', line:'#173a20', label:'必比登推介'},
   food:   {fill:'#CE2E1E', line:'#7a1a10', label:'街食／小吃／牛奶吧'},
+  cafe:   {fill:'#9a6a3a', line:'#4f3317', label:'咖啡／甜點／麵包'},
   sight:  {fill:'#3b6ea5', line:'#1c3a58', label:'景點'},
   shop:   {fill:'#8b5cf6', line:'#4c2f8f', label:'伴手禮店家'},
   luxury: {fill:'#d6336c', line:'#7a1a3d', label:'精品購物'},
@@ -308,6 +310,9 @@ Object.assign(mapPinChecks.poznan, {
   'Na Winklu': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:4},
   'Poznan Apartments Towarowa': {status:'coordinate-verified', checkedAt:'2026-08-11', coordinateSource:'Nominatim / OpenStreetMap', distanceMeters:25},
 });
+
+// 2026-10-22 逐點 OSM 查證的補點；不更動每日行程或既有座標。
+addCityMapPins(mapPins, mapPinChecks);
 
 // attractions：逐列轉錄自 poland-travel-guide-final.html 各城「景點 · Sights」表格。
 // 名稱欄含多個連結時（如「Łazienki 公園 · Wilanów 宮」），name 保留完整可讀文字，

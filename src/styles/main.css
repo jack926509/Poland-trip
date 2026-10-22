@@ -8123,3 +8123,24 @@ html {
   #sos-contacts > .database-card > h3 { margin: 0; }
   #sos-contacts > .database-card > p { margin: 0.25rem 0; }
 }
+
+/* 城市地圖分類篩選：可換行、觸控與鍵盤操作；刪除線也傳達隱藏狀態。 */
+.map-legend-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.4rem;
+  min-height: 44px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 0.35rem 0.5rem;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 1px solid var(--line);
+  cursor: pointer;
+}
+.map-legend-toggle[aria-pressed="false"] { opacity: 0.6; text-decoration: line-through; }
+.map-legend-toggle:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
