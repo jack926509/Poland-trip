@@ -5964,6 +5964,18 @@ h3 {
    收到雜誌版式的一半，主卡才進得了第一畫面。 */
 .journal-today .journal-appendix-header h1 { font-size: clamp(2.6rem, 5vw, 4.2rem); }
 .journal-today .journal-appendix-header { margin-bottom: 2rem; }
+/* 2026-10-22：桌機上大標題、72px 頁首留白、「今天是第幾天」狀態列與 SOS 疊起來，主卡被推到第一屏外。
+   今日卡刊頭改用 .is-compact 一行版式；桌機頁首留白收到 1rem（手機已有 today-compact 的負邊距，不動）；旅途中（today-compact）連一行標題也收掉、
+   自動看今天（today-live）時狀態列收掉，和手機一致——日期已在日期選單裡。 */
+@media (min-width: 601px) { .journal-today main.page { padding-top: 1rem; } }
+.today-compact .journal-appendix-header {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+  clip: rect(0 0 0 0); border: 0; white-space: nowrap;
+}
+.today-live .today-status { display: none; }
+/* 旅途中桌機的日卡標題也縮一級，「下一站」才進得了第一屏；手機另有更緊的規則（在後面，會覆蓋這裡）。 */
+.today-compact .today-head { padding: .6rem 1rem; }
+.today-compact .today-head h2 { font-size: 1.5rem; }
 
 /* 表格精煉：行高與內距收緊一級。表格是查找用的密集資訊，不需要內文的閱讀行高；
    收緊後同一畫面能多看到幾列，減少來回捲動。 */

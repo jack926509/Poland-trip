@@ -179,10 +179,10 @@ const databaseEntriesBase = [
   },
   {
     id: 'dining-reservation-and-backup', section: 'dining', category: 'dining', cityKey: 'ROUTE',
-    title: '餐廳訂位與當日營業',
-    summary: '主選餐廳只有在分店地址與當日營業時間確認後才標示已查；每餐另備同區與便利備案，不從其他分店套用時間。',
-    status: 'pending', sourceUrl: null, verifiedAt: null, recheckAt: '2026-10-17',
-    offlineNote: '保存訂位姓名、時間與過敏飲食需求的波蘭文／英文卡，但不放到公開網站。', private: false,
+    title: '餐廳現場入座與當日營業',
+    summary: '2026-10-22 旅客決定行程餐廳全部不訂位、現場入座；出門前看當日營業狀態，客滿就改每餐的同區或便利備案，不從其他分店套用時間。',
+    status: 'pending', sourceUrl: null, verifiedAt: null, recheckAt: '2026-10-24',
+    offlineNote: '保存過敏與飲食需求的波蘭文／英文卡，但不放到公開網站。', private: false,
   },
   {
     id: 'documents-travel-registration', section: 'documents', category: 'document', cityKey: 'ROUTE',
@@ -499,7 +499,7 @@ export const dayOperations = {
     dailyAlerts: [
       '點燈人沒有對外保證的出發分鐘；日落前到座堂島等待，不把 16:45 當成確定時刻。',
     ],
-    nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票', '確認 Poznan Apartments 怎麼拿鑰匙、明早 07:00 能不能寄行李；07:15 Charlotte Krysiewicza 早餐、08:00 搭電車去 Cytadela。晚餐 Arirang 當天先看 Google 地圖營業狀態，21:15 前不能入座改 Złote Tarasy 或 Ćma'],
+    nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票', '照訂房確認拿 Poznan Apartments 鑰匙，順便問接待處明早 07:00 能不能寄行李（不能寄就用車站寄物櫃）；07:15 Charlotte Krysiewicza 早餐、08:00 搭電車去 Cytadela。晚餐 Arirang 當天先看 Google 地圖營業狀態，21:15 前不能入座改 Złote Tarasy 或 Ćma'],
   },
   6: {
     cityKey: 'warsaw',
@@ -532,7 +532,7 @@ export const dayOperations = {
       '市政廳博物館整修閉館；主行程只看官方確認的 12:00 山羊鐘樓秀。',
       '聖馬丁牛角麵包已選定 ROGAL Świętomarciński（Stary Rynek 11/17）；週四 09:00–20:00，售完改 Cukiernia Kandulski（週四 09:00–17:00）。',
     ],
-    nightChecklist: [...standardNightChecklist, 'Day 7 收費館只路過拍外觀，不用買票；明早 08:05 先在 Świętokrzyska 站口拍 MSN 與科學文化宮，08:15 搭 M1 到 Ratusz Arsenał', 'Polka 午餐不用訂位，客滿改 Pyzy Flaki Gorące；確認 Soul Kitchen 18:30 訂位、威靈頓已預留；沒供應改 Kieliszki na Próżnej，並重算交通；Rusiko（Wierzbowa 11）官網公告 3/24 起停業至另行通知，要去先用 Email 或請飯店櫃檯確認'],
+    nightChecklist: [...standardNightChecklist, 'Day 7 收費館只路過拍外觀，不用買票；明早 08:05 先在 Świętokrzyska 站口拍 MSN 與科學文化宮，08:15 搭 M1 到 Ratusz Arsenał', 'Polka 午餐不用訂位，客滿改 Pyzy Flaki Gorące；Soul Kitchen 18:30 不訂位、現場入座，威靈頓可能點不到；客滿或想吃威靈頓卻沒有，改 Kieliszki na Próżnej，並重算交通；Rusiko（Wierzbowa 11）官網公告 3/24 起停業至另行通知，要去先用 Email 或請飯店櫃檯確認'],
   },
   7: {
     cityKey: 'warsaw',
@@ -659,7 +659,7 @@ const unresolvedStepReasons = {
     'IC 260 前往波茲南': dynamicTransitReason,
   },
   6: {
-    '退房、寄放行李': '接待時間與行李寄放須出發前傳訊息向住宿確認；地址見住宿卡。',
+    '退房、寄放行李': '接待時間與行李寄放沒有事先確認，到了問接待處；地址見住宿卡。',
     '電車往 Armii Poznań 站': dynamicTransitReason,
     '★ Cytadela 公園「Nierozpoznani」': '戶外雕塑群在 Cytadela 公園內，由 Armii Poznań 電車站步行進園，依園內指標前往。',
     '叫 Bolt 或 Uber 到 Rondo Śródka': '叫車上下車點依 App 定位，不預填地址。',

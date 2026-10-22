@@ -236,7 +236,7 @@ export function renderToday({ meta, days, stay, daylight = [], safety, pathPrefi
 
   const bodyHtml = `
     <div data-today-page>
-    <header class="journal-appendix-header">
+    <header class="journal-appendix-header is-compact">
       <!-- 版式的 ::before 已經印出「TODAY」（稽核 M11）；這裡再放一次 section-num
            會在手機上變成上下兩行一模一樣的 TODAY，白佔一段首屏。 -->
       <h1>今日卡</h1>
