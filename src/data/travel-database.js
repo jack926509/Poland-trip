@@ -89,7 +89,7 @@ const databaseEntriesBase = [
   {
     id: 'rail-trip-tickets', section: 'rail', category: 'transit', cityKey: 'ROUTE',
     title: '本次城際車票',
-    summary: '與 旅客提供的 App 票券清單顯示 10/25 EIP 5300、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 均已購票。四段的抵達時間、艙等、車廂、座位與票價仍待票券詳細頁核對。',
+    summary: '與 旅客提供的 App 票券清單顯示 10/25 EIP 5300、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 均已購票。車廂與座位看 PKP App 票券。',
     status: 'pending', sourceUrl: null, verifiedAt: '2026-10-06', checkedAt: '2026-10-06', recheckAt: '2026-10-24',
     offlineNote: '請在抵波蘭當日 10/24，也就是 10/25 首段城際火車前一日，保存四段車票離線副本並核對票面詳細資料；這是自行設定的查核期限，非官方期限。搭車前用 Passenger Portal 查月台與異動。', private: false,
   },
@@ -179,10 +179,10 @@ const databaseEntriesBase = [
   },
   {
     id: 'dining-reservation-and-backup', section: 'dining', category: 'dining', cityKey: 'ROUTE',
-    title: '餐廳訂位與當日營業',
-    summary: '主選餐廳只有在分店地址與當日營業時間確認後才標示已查；每餐另備同區與便利備案，不從其他分店套用時間。',
-    status: 'pending', sourceUrl: null, verifiedAt: null, recheckAt: '2026-10-17',
-    offlineNote: '保存訂位姓名、時間與過敏飲食需求的波蘭文／英文卡，但不放到公開網站。', private: false,
+    title: '餐廳現場入座與當日營業',
+    summary: '2026-10-22 旅客決定行程餐廳全部不訂位、現場入座；出門前看當日營業狀態，客滿就改每餐的同區或便利備案，不從其他分店套用時間。',
+    status: 'pending', sourceUrl: null, verifiedAt: null, recheckAt: '2026-10-24',
+    offlineNote: '保存過敏與飲食需求的波蘭文／英文卡，但不放到公開網站。', private: false,
   },
   {
     id: 'documents-travel-registration', section: 'documents', category: 'document', cityKey: 'ROUTE',
@@ -499,7 +499,7 @@ export const dayOperations = {
     dailyAlerts: [
       '點燈人沒有對外保證的出發分鐘；日落前到座堂島等待，不把 16:45 當成確定時刻。',
     ],
-    nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票', '確認 Poznan Apartments 怎麼拿鑰匙、明早 07:00 能不能寄行李；07:15 Charlotte Krysiewicza 早餐、08:00 搭電車去 Cytadela。晚餐 Arirang 當天先看 Google 地圖營業狀態，21:15 前不能入座改 Złote Tarasy 或 Ćma'],
+    nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票', '照訂房確認拿 Poznan Apartments 鑰匙，順便問接待處明早 07:00 能不能寄行李（不能寄就用車站寄物櫃）；07:15 Charlotte Krysiewicza 早餐、08:00 搭電車去 Cytadela。晚餐 Arirang 當天先看 Google 地圖營業狀態，21:15 前不能入座改 Złote Tarasy 或 Ćma'],
   },
   6: {
     cityKey: 'warsaw',
@@ -532,7 +532,7 @@ export const dayOperations = {
       '市政廳博物館整修閉館；主行程只看官方確認的 12:00 山羊鐘樓秀。',
       '聖馬丁牛角麵包已選定 ROGAL Świętomarciński（Stary Rynek 11/17）；週四 09:00–20:00，售完改 Cukiernia Kandulski（週四 09:00–17:00）。',
     ],
-    nightChecklist: [...standardNightChecklist, 'Day 7 收費館只路過拍外觀，不用買票；明早 08:05 先在 Świętokrzyska 站口拍 MSN 與科學文化宮，08:15 搭 M1 到 Ratusz Arsenał', 'Polka 午餐不用訂位，客滿改 Pyzy Flaki Gorące；確認 Soul Kitchen 18:30 訂位、威靈頓已預留；沒供應改 Kieliszki na Próżnej，並重算交通；Rusiko（Wierzbowa 11）官網公告 3/24 起停業至另行通知，要去先用 Email 或請飯店櫃檯確認'],
+    nightChecklist: [...standardNightChecklist, 'Day 7 收費館只路過拍外觀，不用買票；明早 08:05 先在 Świętokrzyska 站口拍 MSN 與科學文化宮，08:15 搭 M1 到 Ratusz Arsenał', 'Polka 午餐不用訂位，客滿改 Pyzy Flaki Gorące；Soul Kitchen 18:30 不訂位、現場入座，威靈頓可能點不到；客滿或想吃威靈頓卻沒有，改 Kieliszki na Próżnej，並重算交通；Rusiko（Wierzbowa 11）官網公告 3/24 起停業至另行通知，要去先用 Email 或請飯店櫃檯確認'],
   },
   7: {
     cityKey: 'warsaw',
@@ -625,7 +625,7 @@ const unresolvedStepReasons = {
   2: {
     'EIP 5300 前往克拉科夫': dynamicTransitReason,
     '聖弗洛里安城門 → 甕城 Barbakan → Stary Kleparz': '戶外步行段，城門在 Floriańska 北端、甕城在 Basztowa 街旁，Stary Kleparz 在 Pimiento 旁；只看外觀。',
-    '步行經 Kazimierz → Bernatek 橋 → 辛德勒工廠': '主案步行；改搭電車時車號與轉乘為動態資料，出發前用 Jakdojade 查；以辛德勒工廠入口地址為終點，17:10 前到場。',
+    '步行經 Kazimierz → Bernatek 橋 → 辛德勒工廠': '主案步行；改搭電車時車號與轉乘為動態資料，當天用 Jakdojade 查；以辛德勒工廠入口地址為終點，17:10 前到場。',
   },
   3: {
     'Kraków MDA 報到': `巴士站地址（Bosacka 18）與 10/26 的 ${lajkonikOutboundAdopted.dep} 班次已購票，票面標示下層 ${lajkonikOutboundAdopted.bay} 站位；站位仍以當日電子看板為準。`,
@@ -641,7 +641,7 @@ const unresolvedStepReasons = {
     'IC 3830 前往樂斯拉夫': dynamicTransitReason,
     '★ Przejście「無名行人」雕像（選配）': '戶外雕像，在 Świdnicka 與 Piłsudskiego 路口兩側人行道上，由 Piast 步行即到。',
     '★ 中央廣場夜景（選配）': '戶外夜拍，沿 Świdnicka 往北走到中央廣場；選配行程，累了就略過。',
-    '★ Neon Side Gallery 夜景（選配）': 'Ruska 46c 的中庭，依現場招牌進入；整修狀況未查到最新公告，出發前看 Google 地圖最新評論。',
+    '★ Neon Side Gallery 夜景（選配）': 'Ruska 46c 的中庭，依現場招牌進入；去之前看 Google 地圖最新評論確認有開。',
     '搭電車或叫車回 Piast': dynamicTransitReason,
   },
   5: {
@@ -659,7 +659,7 @@ const unresolvedStepReasons = {
     'IC 260 前往波茲南': dynamicTransitReason,
   },
   6: {
-    '退房、寄放行李': '接待時間與行李寄放須出發前傳訊息向住宿確認；地址見住宿卡。',
+    '退房、寄放行李': '接待時間與行李寄放沒有事先確認，到了問接待處；地址見住宿卡。',
     '電車往 Armii Poznań 站': dynamicTransitReason,
     '★ Cytadela 公園「Nierozpoznani」': '戶外雕塑群在 Cytadela 公園內，由 Armii Poznań 電車站步行進園，依園內指標前往。',
     '叫 Bolt 或 Uber 到 Rondo Śródka': '叫車上下車點依 App 定位，不預填地址。',

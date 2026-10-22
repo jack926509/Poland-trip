@@ -106,7 +106,7 @@ function renderDayFood(day) {
 
   return `<article class="card day-dining" id="day-food" aria-labelledby="day-food-heading">
     <span class="eyebrow">Dining</span><h3 id="day-food-heading">當日餐飲</h3>
-    <p class="food-map-note">三餐各有一個主安排；標「先確認」的餐廳先確認接單，備選取代同餐，不額外加餐。時刻為波蘭當地時間，行程預留不代表已訂位。</p>
+    <p class="food-map-note">三餐各有一個主安排；標「先確認」的餐廳出門前看一下營業時間與條件；行程餐廳都不訂位、直接到店，客滿就改備選；備選取代同餐，不額外加餐。時刻為波蘭當地時間。</p>
     ${renderMealList(day, dayMeals[day.n])}
     <p class="day-food-back"><a href="#schedule">↑ 回時間表</a></p>
     ${entries.length ? `<details><summary>備選、備餐與順路點心 · ${summary}</summary><ul class="day-food-list">${entries.map(renderDayFoodItem).join('')}</ul></details>` : ''}
@@ -344,7 +344,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   const returnOptionsHtml = day.returnOptions?.length ? `
     <section class="section">
       <div class="section-heading"><span class="section-num">Return</span><h2>回程選項</h2></div>
-      <p class="lead">導覽約 14:15 結束，以下全部以「14:15 之後發車」為門檻。第一方售票頁在查詢當下無法連線，時刻均為公開資料彙整，購票前請逐項核對。</p>
+      <p class="lead">導覽約 14:15 結束，以下全部以「14:15 之後發車」為門檻。時刻為公開班表彙整，現場以站牌與司機為準。</p>
       <div class="grid-wide">${day.returnOptions.map(item => `
         <article class="card">
           <span class="eyebrow">${escapeHtml(item.rank)}</span>

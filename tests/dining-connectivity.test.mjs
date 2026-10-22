@@ -75,7 +75,9 @@ test('拆分後每間速食都有單一地址、ID、導航和可見提醒', () 
         assert.ok(Math.abs(+m[1]-c[0])<=0.2&&Math.abs(+m[2]-c[1])<=0.2,`${item.id}: place 座標不在 ${item.cityKey} 範圍`);
       } else assert.ok(decodeURIComponent(item.map).includes(item.address),item.id);
       assert.ok(html.includes(item.note.replaceAll('&','&amp;')),item.id);
-      assert.ok(html.includes(item.hours.replaceAll('&','&amp;')),item.id);
+      // 2026-10-22 起沒查到的營業時間顯示「出門前看 Google 地圖」，不再顯示「待確認」。
+      const shownHours=/待確認/.test(item.hours)?'出門前看 Google 地圖':item.hours;
+      assert.ok(html.includes(shownHours.replaceAll('&','&amp;')),item.id);
     }
     const rows=mergeCityDining(city,dining.cityDining[city],dining.cityFood.find(x=>x.city===({warsaw:'華沙',krakow:'克拉科夫',wroclaw:'樂斯拉夫',poznan:'波茲南'})[city]).items,dining.snacksAndCafes[city],fastFoodDiningEntries({branches:items,chains:dining.fastFoodChains}));
     for(const branch of items)assert.equal(rows.filter(x=>x.placeId===branch.id).length,1);

@@ -523,7 +523,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-10",
     "verificationStatus": "partial",
     "notes": [
-      "斯拉夫風味與時令穀物、野禽／野味料理；季節前菜、Pierogi。菜單為夏季版，秋季菜色待確認。10/30 晚餐已排 Soul Kitchen，這間保留為晚餐備選；人在 Wola 一帶時可改來。"
+      "斯拉夫風味與時令穀物、野禽／野味料理；季節前菜、Pierogi。菜單隨季節換。10/30 晚餐已排 Soul Kitchen，這間保留為晚餐備選；人在 Wola 一帶時可改來。"
     ],
     "verificationNote": "官網與 Michelin 週五皆為 12:00–00:00，10/30 有營業；TheFork 可訂位，尚未訂位。",
     "menuUrl": "https://wyraj.net/wp-content/uploads/2026/06/Wersja-na-strone-www-i-google-ANG-Uczta-Noc-LATO-2026-26.06.pdf",
@@ -873,12 +873,12 @@ export const diningPlaces = {
     "name": "Endzior · Plac Nowy 圓亭",
     "address": "plac Nowy 4B, Kraków",
     "map": "https://www.google.com/maps/search/?api=1&query=Zapiekanki%20u%20Endziora%2C%20plac%20Nowy%204B%2C%20Krak%C3%B3w",
-    "hours": "未核實（各來源不一；有目錄列週一至週六 10:00–翌日 02:00、週日休，也有目錄列週日營業）",
+    "hours": "各來源不一，週日不一定有開，出門前看 Google 地圖",
     "sourceUrl": "https://www.inyourpocket.com/krakow/Mini-Bar-Endzior_19875v",
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "Kazimierz 圓亭（Okrąglak）內的 zapiekanka 名攤，長棍麵包烤蘑菇起司，PLN 18–25。週日營業時間未核實（各來源不一），10/25（週日）沒開就改買圓亭其他窗口。"
+      "Kazimierz 圓亭（Okrąglak）內的 zapiekanka 名攤，長棍麵包烤蘑菇起司，PLN 18–25。週日不一定有開，10/25（週日）沒開就改買圓亭其他窗口。"
     ],
     "cuisine": "街頭小吃",
     "dishes": [
@@ -959,7 +959,7 @@ export const diningPlaces = {
     "name": "Bar Mleczny Miś",
     "address": "Kuźnicza 48, Wrocław",
     "map": "https://maps.google.com/?cid=9100083269168988599",
-    "hours": "一–五 07:00–18:00、六 08:00–17:00、日休（2026 公開資料，出發前重查）",
+    "hours": "一–五 07:00–18:00、六 08:00–17:00、日休（2026 公開資料）",
     "sourceUrl": null,
     "checkedAt": null,
     "verificationStatus": "pending",
@@ -1575,7 +1575,7 @@ export const diningPlaces = {
     "name": "MOLÁM Thai",
     "address": "Rajska 3/4, Kraków",
     "map": "https://www.google.com/maps/search/?api=1&query=MOL%C3%81M%2C%20Rajska%203%2F4%2C%20Krak%C3%B3w",
-    "hours": "未核實（各來源列的時段不一，出門前看 Google 地圖當日營業）",
+    "hours": "出門前看 Google 地圖當日營業",
     "sourceUrl": "https://www.falstaff.com/en/restaurants/molam",
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
@@ -2009,7 +2009,7 @@ export const diningPlaces = {
     "name": "Mr. Jerry",
     "address": "Jagiellońska 5, Kraków",
     "map": "https://www.google.com/maps/search/?api=1&query=Mr.%20Jerry%2C%20Jagiello%C5%84ska%205%2C%20Krak%C3%B3w",
-    "hours": "週一 15:00–22:00；其他日待確認",
+    "hours": "週一 15:00–22:00",
     "sourceUrl": "https://www.mrjerry.pl/mr-jerry-krakow/",
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
@@ -2341,7 +2341,7 @@ export const diningPlaces = {
       "In Your Pocket 與 Warsaw Insider 都列 Nowogrodzka 18A；2026 年獲 Wine Spectator Award of Excellence，仍在營業。"
     ],
     "menuUrl": null,
-    "verificationNote": "Wellington 為多個評論來源的招牌菜，但菜單隨季節換、官方菜單未確認；訂位時在備註請店家預留並確認 10/30 供應。下午可能有休息時段。",
+    "verificationNote": "Wellington 為多個評論來源的招牌菜，但菜單隨季節換；訂位時在備註請店家預留並確認 10/30 供應。下午可能有休息時段。",
     "cuisine": "歐陸／波蘭",
     "dishes": [
       "Beef Wellington（多來源列為招牌，需先確認）",

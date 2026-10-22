@@ -28,7 +28,7 @@ test('自備餐與條件式餐廳可共同呈現，顯示條件且不冒充訂�
   assert.match(conditional, /Samarqand/);
   assert.match(conditional, /21:00/);
   assert.match(conditional, /KFC/);
-  assert.match(conditional, /不代表已訂位/);
+  assert.match(conditional, /不訂位/);
 });
 
 test('初稿更換餐廳後仍保留原主選為備選', () => {

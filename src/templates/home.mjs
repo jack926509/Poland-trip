@@ -132,13 +132,13 @@ ${coverFigure}
     </header>
 
     <div class="route-strip journal-route" aria-label="旅程路線">
-      ${['華沙', '克拉科夫', '樂斯拉夫', '波茲南', '華沙'].map(city => `<span class="route-stop">${city}</span>`).join('')}
+      ${['華沙', '克拉科夫', '樂斯拉夫', '波茲南', '華沙'].map(city => `<span class="route-stop"><span>${city}</span></span>`).join('')}
     </div>
 
     <nav class="journey-entry" aria-label="依旅行需求查找">
       <a href="#journey-overview"><b>出發前規劃</b><span>八日動線、過夜與強度</span></a>
       <a href="today.html"><b>旅途中速查</b><span>今天行程、導航與餐飲</span></a>
-      <a href="practical/todos.html"><b>處理預約</b><span>票券、交通與待確認事項</span></a>
+      <a href="practical/todos.html"><b>處理預約</b><span>票券、交通與待辦</span></a>
     </nav>
     <!-- 2026-10-20 UX F15：「N 項待辦／已完成」兩張統計大卡與頁首狀態列重複，已移除。 -->
 

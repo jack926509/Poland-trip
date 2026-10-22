@@ -118,7 +118,9 @@ test('第 6 項：行程說明不再夾帶查核筆記，資訊移到待辦；�
   // 行程步驟只寫要做什麼，官網查核日期與內容放在待辦。
   const d6 = days[5].steps.find(step => step.t === '07:00');
   assert.doesNotMatch(d6.sub, /2026-10-14|官網聯絡頁/);
-  assert.match(d6.sub, /出發前傳訊息/);
+  // 2026-10-22 旅客決定不傳訊息給公寓：行程改寫「到了先問接待處」，車站寄物櫃為備案。
+  assert.match(d6.sub, /到了先問接待處/);
+  assert.match(d6.sub, /寄物櫃/);
   assert.doesNotMatch(d6.sub, /打電話/, '外國旅客不打電話確認，改用訊息');
   const apartment = todoGroups.flatMap(group => group.items).find(item => item.name.startsWith('傳訊息給 Poznan Apartments'));
   assert.match(apartment.action, /官網聯絡頁沒寫接待時間和行李寄放/);

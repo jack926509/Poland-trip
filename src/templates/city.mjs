@@ -1,4 +1,4 @@
-import { renderDiningFacts, renderStoreBadges } from '../lib/dining.mjs';
+import { displayAddress, displayHours, renderDiningFacts, renderStoreBadges } from '../lib/dining.mjs';
 import { renderCityJourney } from './journey.mjs';
 import { mergeCityDining, dropDuplicateClauses, dedupeNotes, dropRestatedHours } from './city-dining.mjs';
 import { renderLayout } from './layout.mjs';
@@ -84,12 +84,12 @@ export function renderCity({
     ? `<a class="city-dining-name" href="${item.map}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${item.name} 的 Google Maps">${item.name}</a>`
     : `<strong>${item.name}</strong>`);
   const renderDiningRow = item => `<tr class="${item.selected ? 'city-dining-selected' : ''}">
-    <th scope="row">${renderDiningName(item)}${diningBadge(item)}${item.role === 'fastfood' ? '' : renderStoreBadges(item)}${item.address ? `<p class="food-map-note">${item.address}</p>` : ''}</th>
+    <th scope="row">${renderDiningName(item)}${diningBadge(item)}${item.role === 'fastfood' ? '' : renderStoreBadges(item)}${item.address ? `<p class="food-map-note">${displayAddress(item.address)}</p>` : ''}</th>
     <td>${stableTier(item.tier || item.tag || '待補充')}</td>
     <td>${item.dishes?.length ? `<p class="store-dish-line"><b>推薦：</b>${item.dishes.join('、')}</p>` : ''}${item.notes.length ? dropDuplicateClauses(dedupeNotes(item.notes, item.address).join('；'), item.address) : '依店家當日菜單確認'}</td>
     <td>${item.plans?.length
       ? item.plans.map(plan => `<p class="city-dining-plan">${dropRestatedHours(dropDuplicateClauses(plan, item.notes.join('；')), item.hours)}</p>`).join('')
-      : `<p>${item.positionNote || planFallback[item.role] || '依當天動線與胃口安排'}</p>`}<p class="food-map-note">${bookingLabels[item.book] || '訂位請向店家確認'}</p><p class="food-map-note">營業時間：${item.hours || '待確認'}</p>${renderDiningFacts(item, { includeHours: false })}</td>
+      : `<p>${item.positionNote || planFallback[item.role] || '依當天動線與胃口安排'}</p>`}<p class="food-map-note">${bookingLabels[item.book] || '現場前往'}</p><p class="food-map-note">營業時間：${displayHours(item.hours)}</p>${renderDiningFacts(item, { includeHours: false })}</td>
   </tr>`;
   // 27 家一路展開要捲 13,800px 以上（稽核 M4）。依既有排序邏輯分成 5 組收合，
   // 「你的候選與順路必吃」預設展開，其餘收合並在 summary 標出家數。
@@ -121,7 +121,7 @@ export function renderCity({
     <section class="section" id="city-dining">
       <div class="section-heading"><span class="section-num">Dining</span><h2>行程餐廳推薦</h2></div>
       <p class="lead" id="city-dining-description">共 ${mergedDining.length} 家，${mergedDining.filter(item => item.selected || item.mustEat).length} 家已列入每日候選。分組展開：排進三餐的主選與順路必吃預設打開並標出日期（點 Day 回當日行程），備選、主推、備案、小吃咖啡、連鎖速食點標題即可展開。</p>
-      <p class="lead"><b>點店名開啟 Google Maps。</b>評分與評論數本站不保存——那是每天在變的快照；出發前與現場以官方頁為準，連鎖與同名店先對門牌。</p>
+      <p class="lead"><b>點店名開啟 Google Maps。</b>評分與評論數本站不保存；營業狀態出門前看 Google 地圖，連鎖與同名店先對門牌。</p>
       <p class="city-dining-scroll-hint">平板可左右滑動看完整欄位，手機自動改為卡片。</p>
       ${diningGroupsHtml}
       <p class="action-links"><a href="practical/dining.html">米其林名單與訂位管道 →</a></p>
@@ -175,7 +175,7 @@ export function renderCity({
   const unpinnedDiningHtml = unpinnedDining.length ? `<details class="city-map-unpinned">
       <summary>其他行程餐廳的導航連結（${unpinnedDining.length} 家）</summary>
       <p>以下店家沒有放進地圖。點店名開 Google Maps 查地址與營業狀態。</p>
-      <ul class="check-list">${unpinnedDining.map(item => `<li><a href="${item.map}" target="_blank" rel="noopener noreferrer">${item.name}</a>${item.address ? ` · ${item.address}` : ''}</li>`).join('')}</ul>
+      <ul class="check-list">${unpinnedDining.map(item => `<li><a href="${item.map}" target="_blank" rel="noopener noreferrer">${item.name}</a>${item.address ? ` · ${displayAddress(item.address)}` : ''}</li>`).join('')}</ul>
     </details>` : '';
 
   // 圖釘 radius 12：16×16px 圖釘手機上很難精準點到（稽核 M5），放大到接近
@@ -270,7 +270,7 @@ export function renderCity({
     <section class="section journal-city-map">
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
       <p class="lead">拖曳、滾輪、雙擊或使用按鈕縮放；手機可用雙指縮放，點選圖釘可直接開啟 Google Maps。</p>
-      <div class="callout-note"><b>地圖：</b>${mapCheckSummary.area ? `${mapCheckSummary.area} 個街道、廣場、園區或建物群的圖釘是範圍代表點；` : ''}未確認分店的 Żabka 不放精確圖釘，抵達後請用即時地圖搜尋附近分店。</div>
+      <div class="callout-note"><b>地圖：</b>${mapCheckSummary.area ? `${mapCheckSummary.area} 個街道、廣場、園區或建物群的圖釘是範圍代表點；` : ''}Żabka 分店太多不放圖釘，要買時用 Google 地圖搜尋附近分店。</div>
       <div class="map-toolbar" role="group" aria-label="${city.name}地圖縮放控制">
         <button type="button" data-map-action="zoom-in">＋ 放大</button>
         <button type="button" data-map-action="zoom-out">－ 縮小</button>
@@ -292,7 +292,7 @@ export function renderCity({
     </section>
 
     ${primaryDiningHtml}
-    <section class="section" id="city-groceries"><div class="section-heading"><span class="section-num">Groceries</span><h2>超市與便利商店</h2></div><p>飲水、早餐、搭車零食與伴手禮採買：先查附近門市，再確認當天營業。</p><p class="action-links"><a href="practical/groceries.html#${cityKey}">${city.name}採買位置與地圖搜尋 →</a><a href="practical/groceries.html#recommendations">波蘭超市採買推薦 →</a></p></section>
+    <section class="section" id="city-groceries"><div class="section-heading"><span class="section-num">Groceries</span><h2>超市與便利商店</h2></div><p>飲水、早餐、搭車零食與伴手禮採買：用下方門市清單找附近分店。</p><p class="action-links"><a href="practical/groceries.html#${cityKey}">${city.name}採買位置與地圖搜尋 →</a><a href="practical/groceries.html#recommendations">波蘭超市採買推薦 →</a></p></section>
     ${photoHtml}
     ${mapScript}`;
 

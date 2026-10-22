@@ -114,7 +114,7 @@ function renderDayCard(day, { iso, stay, sun, dayHref, privateHref, tomorrow }) 
       || sharedPhrase(item.text, `${step.label} ${step.sub || ''}`));
     return sameTarget
       ? `<span class="today-move">依行程表，這段移動由 ${escapeHtml(step.t)}「${escapeHtml(step.label)}」開始${step.dur ? `（行程表估時 ${escapeHtml(step.dur)}）` : '（行程表未列估時）'}；實際出發仍須加上取行李與現場狀況。</span>`
-      : '<span class="today-move">最晚出發時間待確認：行程表沒有對得上這個地點的移動步驟與估時，請依票券與現場公告自行抓緩衝。</span>';
+      : '<span class="today-move">這站沒有估好的移動時間：照票券時間提早 15 分出門。</span>';
   };
   // 這站要帶的票：步驟名稱命中票券欄位；沒命中但下一步 60 分鐘內就要用票（例如抵達場館後入場、
   // 抵站後上車），也提早一站提醒。
@@ -169,8 +169,8 @@ function renderDayCard(day, { iso, stay, sun, dayHref, privateHref, tomorrow }) 
       <p class="today-next-ended" data-next-ended hidden>今天已沒有更晚的預定行程。</p>
     </section>
     <ul class="today-glance today-glance-day">
-      <li data-next-meal hidden><span class="today-glance-key">下一餐</span><span class="today-glance-val" data-next-meal-text></span><a class="today-glance-nav" data-next-meal-nav href="${escapeHtml(dayHref)}#day-food" hidden>導航 ↗</a></li>
-      ${legs.map(({ step, status }) => `<li data-today-leg data-plan-minute="${step.minute}"><span class="today-glance-key">下一段車</span><span class="today-glance-val"><b>${escapeHtml(step.t)}</b> ${escapeHtml(step.label.replace(/^★\s*/, ''))}${status ? ` · ${escapeHtml(status)}` : ''}</span></li>`).join('')}
+      <li data-next-meal data-glance-wrap hidden><span class="today-glance-key">下一餐</span><span class="today-glance-val" data-next-meal-text></span><a class="today-glance-nav" data-next-meal-nav href="${escapeHtml(dayHref)}#day-food" hidden>導航 ↗</a></li>
+      ${legs.map(({ step, status }) => `<li data-today-leg data-glance-wrap data-plan-minute="${step.minute}"><span class="today-glance-key">下一段車</span><span class="today-glance-val"><b>${escapeHtml(step.t)}</b> ${escapeHtml(step.label.replace(/^★\s*/, ''))}${status ? ` · ${escapeHtml(status)}` : ''}</span></li>`).join('')}
       <li data-today-bed-row><span class="today-glance-key">${bed ? '住宿' : leaving ? '今晚' : '住宿'}</span><span class="today-glance-val">${bed ? `<b>${escapeHtml(bed.name)}</b>` : leaving ? '離境／機上過夜' : '<b>查不到今晚住宿</b>'}</span>${hotelMap ? `<a class="today-glance-nav" href="${escapeHtml(hotelMap)}" target="_blank" rel="noopener noreferrer">導航 ↗</a>` : ''}</li>
     </ul>
     <ul hidden data-today-meals>${meals.map(({ item, label, time, minute, before }) => { const map = safeHttpsUrl(item.map || item.mapUrl); return `<li data-meal-label="${escapeAttr(label)}" data-meal-time="${escapeAttr(time)}" data-meal-name="${escapeAttr(item.name)}"${minute === null ? '' : ` data-meal-minute="${minute}"`}${before === undefined ? '' : ` data-meal-before-minute="${before}"`}${map ? ` data-meal-map="${escapeAttr(map)}"` : ''}></li>`; }).join('')}</ul>
@@ -236,7 +236,7 @@ export function renderToday({ meta, days, stay, daylight = [], safety, pathPrefi
 
   const bodyHtml = `
     <div data-today-page>
-    <header class="journal-appendix-header">
+    <header class="journal-appendix-header is-compact">
       <!-- 版式的 ::before 已經印出「TODAY」（稽核 M11）；這裡再放一次 section-num
            會在手機上變成上下兩行一模一樣的 TODAY，白佔一段首屏。 -->
       <h1>今日卡</h1>

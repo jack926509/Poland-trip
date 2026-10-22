@@ -5,7 +5,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-specjaly-regionalne",
       "role": "晚餐首選",
-      "note": "18:30 入座（訂位只訂 18:30 一個時間）：Żurek 酸黑麥湯＋綜合 Pierogi，主菜選梅醬豬肋排或半隻烤鴨。E.Wedel 喝完沿皇家大道走回 Nowy Świat 就到；入境排太久就把 E.Wedel 改外帶。飯後經科學文化宮步行到 Złote Tarasy。",
+      "note": "18:30 入座（不訂位，直接到店）：Żurek 酸黑麥湯＋綜合 Pierogi，主菜選梅醬豬肋排或半隻烤鴨。E.Wedel 喝完沿皇家大道走回 Nowy Świat 就到；入境排太久就把 E.Wedel 改外帶。飯後經科學文化宮步行到 Złote Tarasy。",
       "stepId": "d1-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
@@ -48,7 +48,7 @@ export const dayDiningPlans = {
       "stepId": "d2-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
-      "condition": "分店開門與品項待確認；不壓縮 08:40 發車前的進站緩衝。",
+      "condition": "分店有沒有開、賣什麼當場看；不壓縮 08:40 發車前的進站緩衝。",
       "dayHours": "週日 07:00–19:00（Google 地圖）"
     },
     {
@@ -73,7 +73,7 @@ export const dayDiningPlans = {
       "stepId": "d2-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
-      "condition": "午餐菜單 13:00 起才供應（早餐菜單 09:00–13:00）；週日只開到 15:00，資料來自 Google 地圖與 MapQuest，官網未列。先用官網表單或 Email pimiento@pimiento.pl 訂 13:00 兩位（官網線上訂位不含這間分店）；客滿、關門或列車延誤改 Polonia 或 24 小時的 Przypiecek。",
+      "condition": "午餐菜單 13:00 起才供應（早餐菜單 09:00–13:00）；週日只開到 15:00，資料來自 Google 地圖與 MapQuest，官網未列。不訂位，13:00 直接到店；客滿、關門或列車延誤改 Polonia 或 24 小時的 Przypiecek。",
       "dayHours": "09:00–15:00（早餐菜單 09:00–13:00，午餐菜單 13:00 起）"
     },
     {
@@ -124,7 +124,7 @@ export const dayDiningPlans = {
     {
       "placeId": "krakow-molam-thai",
       "role": "晚餐備選",
-      "note": "想把韓式換成泰式（Bib Gourmand，Rajska 3/4；週日營業時間未核實，出門前看 Google 地圖）時改這間；離辛德勒工廠較遠，需搭車。",
+      "note": "想把韓式換成泰式（Bib Gourmand，Rajska 3/4；出門前看 Google 地圖有沒有開）時改這間；離辛德勒工廠較遠，需搭車。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -144,13 +144,13 @@ export const dayDiningPlans = {
       "stepId": "d3-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "建議官網線上訂位，備註請店家預留 10/26 的 Wellington；週一 15:00–22:00、廚房至 21:30。返程延誤就回覆訂位確認信告知。",
+      "condition": "不訂位、現場入座；Wellington 常需預留，現場點不到就改乾式熟成牛排。週一 15:00–22:00、廚房至 21:30。",
       "dayHours": "15:00–22:00"
     },
     {
       "placeId": "krakow-pod-aniolami",
       "role": "晚餐備選",
-      "note": "Mr. Jerry 訂不到時的首替：每日 13:00–23:00，老城 Grodzka 35，木火烤山鱒魚＋野菇湯，訂位時確認 10% 服務費。",
+      "note": "Mr. Jerry 客滿時的首替：每日 13:00–23:00，老城 Grodzka 35，木火烤山鱒魚＋野菇湯，點餐前確認 10% 服務費。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -164,7 +164,7 @@ export const dayDiningPlans = {
     {
       "placeId": "krakow-molam-thai",
       "role": "晚餐備選",
-      "note": "泰式 Bib Gourmand，週一營業時間未核實（各來源不一，出門前看 Google 地圖）；想吃異國料理時替代。",
+      "note": "泰式 Bib Gourmand，出門前看 Google 地圖有沒有開；想吃異國料理時替代。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -205,7 +205,7 @@ export const dayDiningPlans = {
     },
     {
       "placeId": "wieliczka-karczma-gornicza",
-      "role": "午餐備案（營業待確認，暫不採用）",
+      "role": "午餐備案（不優先）",
       "note": "礦場公司波蘭文頁列目前關閉，英文餐飲頁仍有菜單，官方資訊不一致；未獲礦場確認前不採用，午餐改用礦方確認每日營業的 Bistro Posolone。",
       "stepId": null,
       "planStatus": "unavailable",
@@ -265,7 +265,7 @@ export const dayDiningPlans = {
     {
       "placeId": "wroclaw-restauracja-wroclawska",
       "role": "午餐首選",
-      "note": "逛完 Hala Targowa 市場大廳，12:00 開門就進店、入座就點餐：必點 Śląskie niebo 果乾燉豬肉配 Wrocław dumplings＋Bigos Wrocławski 紅甘藍燉肉，胃口夠再加 Crayfish Soup。主菜現做約 30 分鐘，13:10 離開，接全景畫外觀與 13:20 電車往百年廳。想省排隊可請 Piast 櫃檯代訂（選配）。",
+      "note": "逛完 Hala Targowa 市場大廳，12:00 開門就進店、入座就點餐：必點 Śląskie niebo 果乾燉豬肉配 Wrocław dumplings＋Bigos Wrocławski 紅甘藍燉肉，胃口夠再加 Crayfish Soup。主菜現做約 30 分鐘，13:10 離開，接全景畫外觀與 13:20 電車往百年廳。",
       "stepId": "d5-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
@@ -370,13 +370,13 @@ export const dayDiningPlans = {
       "stepId": "d6-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
-      "condition": "週四 14:00 才開門，12:30 吃不到；先在 zjedz.my 訂 10/29 14:00 兩位（尚未訂）。近期有評論說上菜偏慢，15:30 還沒吃完就放棄城堡內部。客滿或訂不到改 Pyra Bar。",
+      "condition": "週四 14:00 才開門，12:30 吃不到；不訂位，14:00 開門直接入座。近期有評論說上菜偏慢，15:30 還沒吃完就放棄城堡內部。客滿改 Pyra Bar。",
       "dayHours": "14:00–22:30"
     },
     {
       "placeId": "poznan-pyra-bar",
       "role": "午餐備案",
-      "note": "Strzelecka 13，週四 11:00–21:00 全天有開。Carla 客滿或訂不到時改這間：Pyry z bzikiem 與 Szare ale jare 兩人分享；可改回 12:15 吃午餐，時間比 Carla 方案寬鬆。",
+      "note": "Strzelecka 13，週四 11:00–21:00 全天有開。Carla 客滿時改這間：Pyry z bzikiem 與 Szare ale jare 兩人分享；可改回 12:15 吃午餐，時間比 Carla 方案寬鬆。",
       "stepId": null,
       "planStatus": "candidate",
       "dayHours": "11:00–21:00"
@@ -384,14 +384,14 @@ export const dayDiningPlans = {
     {
       "placeId": "poznan-zen-on",
       "role": "午餐備選",
-      "note": "Michelin 推薦拉麵，Święty Marcin 21，週四 12:00–20:00：拉麵、烏龍麵、bao；Carla 客滿或訂不到時的另一個午餐備案，可改回 12:15 吃，尖峰常排隊。",
+      "note": "Michelin 推薦拉麵，Święty Marcin 21，週四 12:00–20:00：拉麵、烏龍麵、bao；Carla 客滿時的另一個午餐備案，可改回 12:15 吃，尖峰常排隊。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "poznan-pasibus-swiety-marcin",
       "role": "午餐速食備案",
-      "note": "Święty Marcin 58/64，12:00–23:00；Carla 客滿或訂不到、Pyra Bar 又排隊時改這間。",
+      "note": "Święty Marcin 58/64，12:00–23:00；Carla 客滿、Pyra Bar 又排隊時改這間。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -498,7 +498,7 @@ export const dayDiningPlans = {
       "stepId": "d7-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "菜單隨季節換、官方菜單未確認：線上訂位（或請 Hotel Metropol 櫃檯代訂）時在備註請店家預留 Wellington。Rusiko 官網公告 3/24 起停業至另行通知，不再當直接替補，要去先用 Email 或請飯店櫃檯確認。",
+      "condition": "菜單隨季節換；不訂位、現場入座，Wellington 常需預留，點不到就改韃靼牛肉或 Żurek。Rusiko 官網公告 3/24 起停業至另行通知，不再當直接替補，要去先用 Email 或請飯店櫃檯確認。",
       "dayHours": "17:30–23:00（週五另有 12:00–16:30，下午休息）"
     },
     {
@@ -511,7 +511,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-primitivo",
       "role": "威靈頓備選",
-      "note": "Waliców 13（Wola），Tripadvisor 華沙威靈頓榜第一，週五至 23:00；離晚上動線較遠，Soul Kitchen 訂不到又堅持吃威靈頓時再考慮，訂位時在備註問供應。",
+      "note": "Waliców 13（Wola），Tripadvisor 華沙威靈頓榜第一，週五至 23:00；離晚上動線較遠，Soul Kitchen 客滿或點不到威靈頓、又堅持要吃時再考慮。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -539,7 +539,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-wyraj",
       "role": "晚餐備選",
-      "note": "原首選保留；Krochmalna 59（Wola），週五 12:00–00:00。新行程白天都在老城與瓦津基，離 Wola 較遠，Soul Kitchen 不能訂時再考慮。",
+      "note": "原首選保留；Krochmalna 59（Wola），週五 12:00–00:00。新行程白天都在老城與瓦津基，離 Wola 較遠，Soul Kitchen 客滿時再考慮。",
       "stepId": null,
       "planStatus": "candidate"
     },
