@@ -132,7 +132,7 @@ ${coverFigure}
     </header>
 
     <div class="route-strip journal-route" aria-label="旅程路線">
-      ${['華沙', '克拉科夫', '樂斯拉夫', '波茲南', '華沙'].map(city => `<span class="route-stop">${city}</span>`).join('')}
+      ${['華沙', '克拉科夫', '樂斯拉夫', '波茲南', '華沙'].map(city => `<span class="route-stop"><span>${city}</span></span>`).join('')}
     </div>
 
     <nav class="journey-entry" aria-label="依旅行需求查找">

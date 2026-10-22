@@ -113,7 +113,7 @@ export const days = [
     headline: '13:30 抵蕭邦機場，換匯後從棕櫚樹圓環沿皇家大道採點到總統府看日落，E.Wedel 熱巧克力後折返晚餐，晚上逛 Złote Tarasy 與車站 Biedronka',
     tag: 'Arrival',
     intensity: '中',
-    hardConstraints: ['首次 EES 入境登錄與提行李時間不保證；入境排太久就從哥白尼紀念碑開始走，E.Wedel 改外帶或略過', '換匯用週六有開的 REDAR 分店 II（營業時間見下方實用資訊），不要等 Hotel Metropol 樓下的總店', '付費景點只在外面拍照；這天走到總統府旁的 E.Wedel 就折返，城堡廣場與老城留到 10/30', '18:30 Specjały Regionalne 晚餐（訂位時間）', '21:45 前回到飯店'],
+    hardConstraints: ['首次 EES 入境登錄與提行李時間不保證；入境排太久就從哥白尼紀念碑開始走，E.Wedel 改外帶或略過', '換匯用週六有開的 REDAR 分店 II（營業時間見下方實用資訊），不要等 Hotel Metropol 樓下的總店', '付費景點只在外面拍照；這天走到總統府旁的 E.Wedel 就折返，城堡廣場與老城留到 10/30', '18:30 Specjały Regionalne 晚餐（不訂位，現場入座）', '21:45 前回到飯店'],
     compressible: ['E.Wedel 熱巧克力（改外帶或略過）', '訪親會教堂、Czapski 宮等小站只拍不停', 'Złote Tarasy 逛街時間'],
     steps: [
       {t:'機上', timingMode:'relative', id:'d1-breakfast', label:'機上早餐／出發前自理', sub:'依實際航段供餐'},

@@ -4048,10 +4048,15 @@ nav.section-heading > a:hover {
 }
 
 .route-stop {
+  color: var(--plum);
+}
+
+/* 膠囊底色只包站名，站與站之間的連接線留在膠囊外；
+   手機換行時才不會出現「華沙 —」那種線被包進膠囊、行尾掛一截線的樣子。 */
+.route-stop > span {
   padding: 0.3rem 0.75rem;
   border-radius: 999px;
   background: rgb(73 55 71 / 8%);
-  color: var(--plum);
 }
 
 /* --- 八日目錄：翻頁式列表 --- */
@@ -6600,6 +6605,10 @@ h3 {
 @media (max-width: 380px) {
   .today-compact .today-sos { gap: .35rem; padding-inline: .45rem; }
   .today-compact .today-sos-list { column-gap: .2rem; }
+  /* 375 寬時日期選單被兩顆按鈕擠到「Day 2 · 10/25 (日」截字：收窄按鈕與選單內距。 */
+  .today-compact .today-date-controls.today-enhanced { gap: .3rem; }
+  .today-compact .today-date-controls .today-field select { padding-inline: .45rem 1.4rem; }
+  .today-compact .today-date-controls button { padding-inline: .4rem; }
 }
 /* 驗收 F2：矮螢幕（375×667 這類 iPhone SE／mini 的可視高度）時，日卡大標題（當天主題）讓位，
    Day 標籤與日期仍在，「導航到這一站」才落在底部列之上；完整主題在「完整行程」頁。 */
@@ -7179,9 +7188,14 @@ li > p.source-meta a,
     border-radius: var(--radius-md);
   }
 
+  /* 手機會換成兩行：連接線改成「→」，換行時行尾的箭頭讀起來是「接下一站」，不是掛著一截斷線。 */
   .route-stop:not(:last-child)::after {
-    width: 1.1rem;
-    margin: 0 0.4rem;
+    width: auto;
+    height: auto;
+    margin: 0 0.35rem;
+    background: none;
+    color: var(--accent);
+    content: '→';
   }
 }
 
@@ -7435,7 +7449,8 @@ html {
   .nav > a.nav-today { margin-right: 2px; padding-inline: 10px; }
   .nav-dropdown > summary { padding-inline: 9px; }
 }
-@media (max-width: 360px) {
+/* 375（iPhone SE／mini）原本落在 360 與 390 之間，「實用資訊」被擠到第二行；窄版間距延伸到 389px。 */
+@media (max-width: 389px) {
   .nav { padding-inline: 12px; column-gap: 2px; }
   .nav > a.nav-today { padding-inline: 8px; font-size: 14px; }
   .nav-dropdown > summary { padding-inline: 6px; font-size: 13.5px; letter-spacing: 0; }
@@ -7722,6 +7737,8 @@ html {
   .journal-day main.page { padding-top: 0.75rem; }
   .journal-day-header { min-height: 0; margin-bottom: 0.75rem; }
   .journal-day-header .journal-day-heading { min-height: 0; padding: 0.85rem 1rem; }
+  /* 內距減半後，裝飾內框（inset 1rem）壓在 Day 膠囊與導言右緣上；手機把內框收到 0.4rem，留在文字外圈。 */
+  .journal-day-header .journal-day-heading::after { inset: 0.4rem; }
   .journal-day-header .journal-day-heading h1 { margin: 0.35rem 0; font-size: 1.4rem; line-height: 1.25; }
   /* 2026-10-20 UX F5：導言不再截成 3 行（截掉的常是抵達時刻），完整顯示。 */
   .journal-day-header .journal-day-heading .hero-dek { margin-top: 0.4rem; font-size: 0.9375rem; line-height: 1.5; }
@@ -7729,6 +7746,8 @@ html {
   .journal-day-header .journal-day-cover-fallback { display: none; }
   /* F1：摘要卡 → 捷徑列 → 時間表，時間表標題與第一筆要在第一屏。 */
   .journal-day #schedule { margin-top: 0.5rem; padding-top: 0.5rem; }
+  /* 時間表之後的餐飲、地圖、地址等段落原本各隔 80px，手機上捲動距離白白拉長；收到 40px。 */
+  .journal-day .section { margin-top: 2.5rem; }
   .journal-day #schedule > .section-heading { margin-bottom: 0.4rem; }
   .journal-day .day-shortcuts { margin-block: 0 0.25rem; }
   .journal-day .journey-context { margin: 0.75rem 0; padding: 0.7rem 0.9rem; }
@@ -7913,6 +7932,10 @@ html {
 .today-glance > li[data-glance-wrap] { padding-block: .3rem; }
 .today-glance > li[data-glance-wrap] .today-glance-key { width: 3.4em; }
 .today-glance > li[data-glance-wrap] .today-glance-val { font-size: .875rem; line-height: 1.4; }
+/* 2026-10-22：「下一餐」「下一段車」也改換行（375 寬時店名與「尚未購票」被截成「Pimien…」「尚未…」），
+   但和同一張表的「住宿」保持同樣的小標欄寬與字級，四字小標不被擠成兩行。 */
+.today-glance-day > li[data-glance-wrap] .today-glance-key { width: 4.4em; }
+.today-glance-day > li[data-glance-wrap] .today-glance-val { font-size: .95rem; line-height: 1.35; }
 .today-next-ticket .today-glance-key { margin-right: .4rem; }
 .today-next-ticket .today-proof { display: inline; margin-left: .4rem; padding: 0; border: 0; background: none; font-size: .82rem; color: var(--ink-soft); }
 .today-next-sub {
@@ -7957,12 +7980,14 @@ html {
 .today-tomorrow .today-glance-val { font-size: .88rem; }
 .today-glance-link { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--font-mono); font-size: .85rem; font-weight: 700; }
 
-/* 天氣壓成一行：溫度、地點與日落、短標籤並排，放不下就截掉尾巴。 */
-.today-day .today-weather { display: flex; align-items: center; gap: .5rem; margin: .6rem 0 0; padding: .35rem .75rem; overflow: hidden; white-space: nowrap; }
-.today-day .today-weather-main { flex: none; flex-wrap: nowrap; gap: .5rem; font-size: .92rem; }
+/* 天氣條：溫度、地點與日落、短標籤並排；放不下時標籤換到第二行，
+   不再整串截掉（2026-10-22：375／390 寬時「備傘」「帶外套」整個被裁在右側看不到）。 */
+.today-day .today-weather { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .5rem; margin: .6rem 0 0; padding: .35rem .75rem; }
+.today-day .today-weather-main { flex: 0 1 auto; flex-wrap: nowrap; gap: .5rem; min-width: 0; font-size: .92rem; white-space: nowrap; }
+.today-day .today-weather-place { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .today-day .today-weather-meta { display: none; }
-.today-day .today-weather-tips { flex: 1 1 auto; flex-wrap: nowrap; min-width: 0; margin: 0; overflow: hidden; }
-.today-day .today-weather-tips li { flex: none; padding: .1rem .45rem; font-size: .8rem; }
+.today-day .today-weather-tips { flex: 0 1 auto; flex-wrap: wrap; gap: .3rem; margin: 0; }
+.today-day .today-weather-tips li { flex: none; padding: .1rem .45rem; font-size: .8rem; white-space: nowrap; }
 
 /* 主按鈕：進每日頁看完整行程。 */
 .today-full-link {
