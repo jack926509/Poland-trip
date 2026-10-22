@@ -32,7 +32,7 @@ Object.assign(cities.find(city => city.key === 'WAW').photo, {
 Object.assign(cities.find(city => city.key === 'KRK').photo, {
   detail:'assets/photos/krakow-wawel.webp', detailHeight:385,
   detailAlt:'從維斯瓦河對岸望向瓦維爾城堡與河岸全景',
-  detailCaption:'維斯瓦河畔的 Wawel 城堡全景 · Day 2 王城散步重點',
+  detailCaption:'維斯瓦河畔的 Wawel 城堡全景 · 城市延伸參考，改班後未排入 Day 2',
   detailAuthor:'Ingo Mehling', detailLicense:'CC BY-SA 4.0',
   detailLicenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',
   detailSource:'https://commons.wikimedia.org/wiki/File:Krakow_-_Wawel_from_Vistula_-_4.jpg',
@@ -42,10 +42,10 @@ for (const city of cities) city.gallery = cityGallery.filter(photo => photo.city
 
 export const cityNotices = {
   warsaw: [
-    {status:'已改行程', level:'note', text:`皇家城堡 二–日 ${venues['warsaw-royal-castle'].hours.opens}–${venues['warsaw-royal-castle'].hours.closes}、最後入場 ${venues['warsaw-royal-castle'].hours.lastEntry}（夏季 18:00 時段已不適用）。新行程不進城堡，只在城堡廣場拍外觀：10/30 12:00 拍白天版（10/24 走到總統府旁的 E.Wedel 就折返）。`},
+    {status:'已改行程', level:'note', text:`皇家城堡 二–日 ${venues['warsaw-royal-castle'].hours.opens}–${venues['warsaw-royal-castle'].hours.closes}、最後入場 ${venues['warsaw-royal-castle'].hours.lastEntry}（夏季 18:00 時段已不適用）。新行程不進城堡，只在城堡廣場拍外觀：10/30 12:00 拍白天版（10/24 改為桃園出發，當日不在華沙）。`},
   ],
   krakow: [
-    {status:'官方時間', level:'note', text:'辛德勒工廠週二至週日 09:00–20:00，最後入場為閉館前 90 分鐘；Day 2 的週日 17:30 時段可行，但仍須先取得官方時段票。'},
+    {status:'官方時間', level:'note', text:'辛德勒工廠週二至週日 09:00–20:00，最後入場為閉館前 90 分鐘；10/25 18:12 才抵站，Day 2 已不排入；僅保留城市延伸資訊。'},
   ],
   wroclaw: [
     {status:'一般參觀提醒', level:'risk', text:'百年廳排在 Day 5 下午，只看外觀、時間不夠先刪；想入內請先查官方 availability calendar 的當日開放範圍。'},
@@ -60,7 +60,7 @@ export const cityStories = [
     history:'二戰中被系統性夷平的城市：1944 華沙起義失敗後，希特勒下令逐街爆破，市區約 85% 化為瓦礫。戰後波蘭人依 18 世紀宮廷畫家 Bellotto（Canaletto）的城市風景畫逐磚重建老城，1980 年以「非典型完整重建案例」列入 UNESCO——你走的老城廣場每一面牆都不到 80 歲，卻承載 700 年的記憶。',
     stories:[
       {title:'美人魚與雙城傳說', text:'華沙市徽是持劍舉盾的美人魚 Syrenka。傳說她與哥本哈根小美人魚是姊妹，一路游進維斯瓦河，被漁民所救後誓言守護此城——所以華沙美人魚是戰鬥形態，哥本哈根那隻是憂鬱形態。'},
-      {title:'蕭邦的心臟', text:'蕭邦客死巴黎，遺體葬於拉雪茲神父公墓，但遵其遺願，姊姊將他的心臟帶回華沙，封存在聖十字教堂（Krakowskie Przedmieście 上，Day 1 傍晚散步會經過）的柱子裡。二戰期間曾被納粹取走，戰後歸位。'},
+      {title:'蕭邦的心臟', text:'蕭邦客死巴黎，遺體葬於拉雪茲神父公墓，但遵其遺願，姊姊將他的心臟帶回華沙，封存在聖十字教堂（Krakowskie Przedmieście 上，城市延伸參考）的柱子裡。二戰期間曾被納粹取走，戰後歸位。'},
       {title:'一份不受歡迎的禮物', text:'科學文化宮是 1955 年史達林「贈送」的蘇聯式摩天樓，華沙人曾說最棒的觀景點就是它的 30 樓——因為那是全城唯一看不到它的地方。如今旁邊蓋起純白的 MSN 現代美術館（2024 開幕、NYT 2026 必訪 No.2），新舊對峙本身就是展品。'},
       {title:'居禮夫人是華沙人', text:'瑪麗亞·斯克沃多夫斯卡（Maria Skłodowska-Curie）1867 年生於新城區 Freta 街 16 號，是史上唯一在兩個不同科學領域拿諾貝爾獎的人。老城散步腳程內就有她的出生地博物館。'},
     ],
@@ -76,8 +76,8 @@ export const cityStories = [
     history:'1038–1596 年的波蘭王都，歷代國王在 Wawel 加冕與安葬。二戰時因作為納粹總督府所在地而未被戰火摧毀，是波蘭極少數「原裝」的古城——你在克拉科夫摸到的石頭大多是真的中世紀石頭。Kazimierz 原是 1335 年卡齊米日大帝敕建的獨立城市，數百年來是歐洲猶太文化重鎮，戰前 6.5 萬猶太居民戰後僅存數千。',
     stories:[
       {title:'瓦維爾龍', text:'傳說 Wawel 山丘下的洞穴住著噴火龍，吃遍牲口少女。屠龍的不是騎士，而是鞋匠學徒 Skuba——他把硫磺塞進羊皮縫成假羊，龍吞下後渴到狂飲維斯瓦河水，最後爆掉。今日城堡下河畔有一座每隔幾分鐘真的噴火的龍雕像。'},
-      {title:'斷在半空的號角', text:'聖瑪利亞教堂塔頂每小時整點吹奏 Hejnał 號角，旋律永遠在同一個音戛然而止——紀念 1241 年蒙古來襲時，吹號示警的哨兵喉嚨中箭、樂聲中斷的傳說。這是全世界少數「以未完成為完成」的城市儀式，Day 2 14:00 廣場行程剛好對到整點。'},
-      {title:'廣場底下還有一個廣場', text:'Rynek 地面下 4 公尺是 13 世紀的街面。2005–2010 年考古挖掘後原地做成 Rynek Underground 博物館（Day 2 雨備）——你腳下踩的其實是中世紀商路的天花板。'},
+      {title:'斷在半空的號角', text:'聖瑪利亞教堂塔頂每小時整點吹奏 Hejnał 號角，旋律永遠在同一個音戛然而止——紀念 1241 年蒙古來襲時，吹號示警的哨兵喉嚨中箭、樂聲中斷的傳說。這是全世界少數「以未完成為完成」的城市儀式，改班後 Day 2 晚抵，未排廣場白天行程。'},
+      {title:'廣場底下還有一個廣場', text:'Rynek 地面下 4 公尺是 13 世紀的街面。2005–2010 年考古挖掘後原地做成 Rynek Underground 博物館（城市延伸參考）——你腳下踩的其實是中世紀商路的天花板。'},
       {title:'兩顆星的城市', text:'2026 米其林把全波蘭唯一二星留給了這裡的 Bottiglieria 1881（連四年），發布典禮也選在克拉科夫 ICE 會議中心舉行——波蘭美食之都的地位官方蓋章。'},
     ],
     onSite:[
@@ -120,10 +120,10 @@ export const cityStories = [
 
 export const photoSpots = [
   {id:'waw-oldtown', lightPhase:'daylight', cityKey:'WAW', name:'老城市集廣場彩色立面', day:7, bestTime:'10:40–11:05', viewpoint:'華沙美人魚像西南側約 10 公尺，靠 Dekert Side 一側', direction:'鏡頭朝東北，先以 24–35 mm 收整排彩色立面，再退到拱廊邊拍廣場全景', light:'10/30 上午的光會打在北側立面；避免貼著雕像仰拍造成建築傾斜。之後從 Kamienne Schodki 石階往下可看到維斯瓦河。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.249778%2C21.012151'},
-  {id:'waw-castle', lightPhase:'daylight', cityKey:'WAW', name:'城堡廣場與皇家城堡', day:7, bestTime:'12:00–12:25', viewpoint:'齊格蒙特三世紀念柱西側、靠 Krakowskie Przedmieście 的廣場邊緣', direction:'鏡頭朝東北，把紀念柱放左側、皇家城堡紅牆放右側；直幅可同時收柱頂與城堡', light:'10/30 近中午陽光從南邊照在城堡正面，紅牆顏色最飽和；保持手機水平，避免紀念柱向後倒。10/24 走到總統府旁就折返，這裡只排 10/30 白天這一次，只看外觀不進城堡。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.247604%2C21.013455'},
+  {id:'waw-castle', lightPhase:'daylight', cityKey:'WAW', name:'城堡廣場與皇家城堡', day:7, bestTime:'12:00–12:25', viewpoint:'齊格蒙特三世紀念柱西側、靠 Krakowskie Przedmieście 的廣場邊緣', direction:'鏡頭朝東北，把紀念柱放左側、皇家城堡紅牆放右側；直幅可同時收柱頂與城堡', light:'10/30 近中午陽光從南邊照在城堡正面，紅牆顏色最飽和；保持手機水平，避免紀念柱向後倒。10/24 為桃園出發日，這裡只排 10/30 白天這一次，只看外觀不進城堡。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.247604%2C21.013455'},
   {id:'waw-culture', cityKey:'WAW', name:'科學文化宮 30 樓城市景觀', day:null, bestTime:'城市延伸', viewpoint:'Pałac Kultury i Nauki 30 樓 Taras Widokowy 觀景台', direction:'先拍東側市中心天際線，再轉西北側拍華沙舊城方向；玻璃反光時把鏡頭貼近玻璃', light:'未排入每日行程；若自行加入，10 月底接近日落時可同時拍藍調與城市燈光，開放時段仍以當日公告為準。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.231838%2C21.005995'},
-  {id:'krk-rynek', lightPhase:'daylight', cityKey:'KRK', name:'中央市集廣場與聖瑪利亞聖殿', day:2, bestTime:'14:00–14:15', viewpoint:'亞當・密茨凱維奇紀念碑西南側，靠紡織會館東南角', direction:'鏡頭朝東北，以紀念碑作前景、聖瑪利亞雙塔作背景；再向南走幾步拍紡織會館長廊', light:'午後從廣場中央拍可避開塔樓正逆光；整點前先完成構圖，順便錄下 Hejnał 號角。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.061793%2C19.938098'},
-  {id:'krk-wawel', lightPhase:'daylight', cityKey:'KRK', name:'Wawel 城堡河岸全景', day:2, bestTime:'16:00–16:15', viewpoint:'維斯瓦河北岸 Bulwar Czerwieński 河濱步道，Wawel 西南側城牆下（OSM way 114713971）', direction:'鏡頭朝東北仰拍城牆與大教堂塔樓；35 mm 左右可同時收河岸與城牆', light:'16:15 離開 Wawel 前，從北岸 Bulwar Czerwieński 拍；16:30 日落前的側光打在城牆上。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.052653%2C19.933255'},
+  {id:'krk-rynek', lightPhase:'daylight', cityKey:'KRK', name:'中央市集廣場與聖瑪利亞聖殿', day:null, bestTime:'城市延伸', viewpoint:'亞當・密茨凱維奇紀念碑西南側，靠紡織會館東南角', direction:'鏡頭朝東北，以紀念碑作前景、聖瑪利亞雙塔作背景；再向南走幾步拍紡織會館長廊', light:'改班後 10/25 晚抵，未排入每日行程；另行前往時再依當下日光與整點號角安排。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.061793%2C19.938098'},
+  {id:'krk-wawel', lightPhase:'daylight', cityKey:'KRK', name:'Wawel 城堡河岸全景', day:null, bestTime:'城市延伸', viewpoint:'維斯瓦河北岸 Bulwar Czerwieński 河濱步道，Wawel 西南側城牆下（OSM way 114713971）', direction:'鏡頭朝東北仰拍城牆與大教堂塔樓；35 mm 左右可同時收河岸與城牆', light:'改班後 10/25 晚抵，未排入每日行程；如另行前往，以實際日落與現場光線安排。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.052653%2C19.933255'},
   {id:'krk-kazimierz', lightPhase:'daylight', cityKey:'KRK', name:'Kazimierz・Szeroka 街', day:4, bestTime:'14:30–15:00', viewpoint:'Szeroka 24 舊猶太會堂前廣場，面向 Szeroka 街北端', direction:'鏡頭朝西北，以老會堂磚牆或街邊招牌作前景；35 mm 比超廣角更能保留街道層次', light:'午後側光適合磚牆、窄街與店面；15:00 前收尾回旅館取行李，鹽礦回程延誤就略過，保留 IC 3830 16:45 上車緩衝。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.051531%2C19.949142'},
   {id:'wro-rynek', lightPhase:'daylight', cityKey:'WRO', name:'市政廳東立面與彩色老屋', day:5, bestTime:'09:00–10:15', viewpoint:'Aleksander Fredro 紀念碑北側、舊市政廳東立面前', direction:'鏡頭朝西北拍市政廳哥德山牆；再移到廣場西側回拍東側彩色商人屋', light:'上午先拍受光的市政廳東立面；彩色屋若逆光，改用 2× 鏡頭壓縮北側立面。', mapUrl:'https://www.google.com/maps/search/?api=1&query=51.109957%2C17.032141'},
   {id:'wro-dwarfs', lightPhase:'dusk', cityKey:'WRO', name:'座堂島煤氣燈與點燈人', day:5, bestTime:'16:15–17:15', viewpoint:'Most Tumski 東端進入座堂島後，Katedralna 街第一排煤氣燈旁', direction:'鏡頭朝東，以煤氣燈作近景、主教座堂雙塔作消失點；看到點燈人時保持路徑暢通、不貼身跟拍', light:'10/28 日落約 16:34；點燈人沒有固定公開出發分鐘，通常日落前約 30–40 分鐘出發，16:15 先卡位。暗處先用夜景模式並鎖住高光。', mapUrl:'https://www.google.com/maps/search/?api=1&query=51.114364%2C17.045103'},
@@ -175,7 +175,7 @@ export const mapPins = {
       [52.2310334, 21.0187045, "Vitkac", "精品百貨", "https://maps.google.com/?cid=6893272886103886879", "luxury"],
       [52.2215267, 21.0204772, "Chylak（波蘭設計師包款）", "精品", "https://maps.google.com/?cid=2015234439722332980", "luxury"],
       [52.2340388, 21.031448, "MEI", "韓式烤肉 · Solec 81B", diningPlaces['warsaw-mei'].map, "food", null, 'warsaw-mei'],
-      stayPin(['warsaw-metropol-arrival', 'warsaw-metropol']),
+      stayPin(['warsaw-metropol']),
     ],
   },
   krakow: {

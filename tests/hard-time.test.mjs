@@ -50,8 +50,8 @@ test('每個硬時間都標出類型，且來源原文保持不變', () => {
 
 test('出發時間只在行程表對得上同一地點時推導，否則標待確認', () => {
   // 交通類期限：行程表有進站步驟，推導出發時間並標示估時來源。
-  const trainDep = hardRows('2026-10-25').find(r => r.minute === 8 * 60 + 40);
-  assert.match(trainDep.body, /依行程表，這段移動由 08:05/);
+  const trainDep = hardRows('2026-10-25').find(r => r.minute === 15 * 60 + 45);
+  assert.match(trainDep.body, /依行程表，這段移動由 15:10/);
   assert.match(trainDep.body, /行程表估時/);
 
   // 場館類期限：Day 7 水上宮殿最後入場的前一段移動，不可拿之後「走回飯店」那段來推導出發時間。

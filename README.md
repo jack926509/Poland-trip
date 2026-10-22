@@ -4,29 +4,27 @@
 
 十月底，搭火車走過波蘭四座城市：華沙 → 克拉科夫 → 樂斯拉夫 → 波茲南 → 華沙。
 
-**波蘭旅程｜2026/10/24–10/31 · 8 天 7 夜**（航班 10/23 出發、11/01 回到臺灣）
+**波蘭旅程｜2026/10/24–10/31 行程 · 當地 6 晚**（10/24 桃園出發、10/25 抵波蘭、11/01 回到臺灣）
 
 [打開旅行誌](https://polandtrip.xiehnet.com/) · [今天怎麼走](https://polandtrip.xiehnet.com/today) · [餐飲指南](https://polandtrip.xiehnet.com/practical/dining) · [出發前的準備](https://polandtrip.xiehnet.com/practical/essentials)
 
 | 日期 | 城市 | 住宿 |
 |---|---|---|
-| 10/24 | 華沙 | Hotel Metropol |
+| 10/24 | 桃園 → 香港 | 轉機／機上；原 Metropol 訂單退改未確認 |
 | 10/25–10/26 | 克拉科夫 | ibis budget Krakow Stare Miasto |
 | 10/27 | 樂斯拉夫 | Piast |
 | 10/28 | 波茲南 | Poznan Apartments Towarowa |
 | 10/29–10/30 | 華沙 | Hotel Metropol |
 
-## Day 1｜10/24（六）華沙：皇家大道走到總統府
+## Day 1｜10/24（六）桃園出發
 
-下午抵達蕭邦機場，搭 SKM 進城、入住 Hotel Metropol。從戴高樂圓環的棕櫚樹出發，沿新世界街往北：A. Blikle 的 pączek、哥白尼紀念碑、聖十字教堂、華沙大學正門，走到總統府看日落，在 **E.Wedel** 喝一杯熱巧克力。
+18:45 前到桃園第二航廈，搭 **HX 283 21:45–23:45** 到香港第一航廈，轉機 1 小時 40 分接 QR 815。原首晚 Hotel Metropol 訂單仍保留紀錄，退改與未入住處理未確認；原華沙觀光與 Specjały 晚餐不再排入。
 
-晚餐在 **Specjały Regionalne** 吃波蘭地方料理，飯後看科學文化宮夜景，逛 Złote Tarasy 與車站的 Biedronka 超市。
+## Day 2｜10/25（日）抵華沙後轉西站，晚上到克拉科夫
 
-## Day 2｜10/25（日）克拉科夫：老城、Wawel 與辛德勒工廠
+**QR 815 01:25–04:50** 到多哈，轉機 4 小時 20 分；**QR 259 09:10–13:10** 抵華沙（各機場當地時間）。入境與提行李後直接前往 **Warszawa Zachodnia（西站）**，搭 **EIP 1306 15:45–18:12、1 等** 到克拉科夫。落地至火車只有 2 小時 35 分，無法保證接上；不繞中央車站或 Metropol。
 
-搭 EIP 高鐵到克拉科夫。先走老城北邊的聖弗洛里安城門、甕城 Barbakan 與 Stary Kleparz 市場，午餐在 **Pimiento** 吃阿根廷牛排。
-
-下午進中央廣場，在聖瑪利亞教堂下聽整點號角，經紡織會館到 **瓦維爾大教堂** 與 **Wawel 城堡**，從河岸拍城堡全景。接著步行穿過 Kazimierz 猶太區，在 Plac Nowy 圓亭吃一份 zapiekanka，經 Bernatek 人行橋過河到 **辛德勒工廠**。晚餐在 Zabłocie 的 **Hankki** 吃韓式料理。
+入住 ibis 後保留 **Hankki 19:15** 現場入座，晚到就改近站快食，買妥隔日導覽早餐、午餐與水。Pimiento 午餐、Wawel、瓦維爾大教堂與辛德勒白天安排不再排入；餐廳及景點保留城市延伸參考。
 
 ## Day 3｜10/26（一）奧斯威辛－比克瑙
 
@@ -58,18 +56,18 @@
 
 午餐在 **Polka** 吃波蘭菜。下午經劇院廣場、薩克森花園，看無名塚的衛兵換崗，走到維斯瓦河邊上 **BUW 屋頂花園**，再到 **瓦津基公園** 看蕭邦紀念碑，在水上宮殿湖邊等日落。
 
-下午點心是 **QQ Warsaw** 的抹茶與韓式吐司，最後一晚在 **Soul Kitchen** 吃威靈頓牛排，飯後還有力氣就到 **E.Wedel** 本店再喝一杯熱巧克力。
+下午點心是 **QQ Warsaw** 的抹茶與韓式吐司，最後一晚 **Soul Kitchen 18:00–20:00、2 人已訂妥**，店家保留訂位 15 分鐘，已註記 1 份威靈頓牛排（未擴大解讀為供餐保證），飯後還有力氣就到 **E.Wedel** 本店再喝一杯熱巧克力。
 
 ## Day 8｜10/31（六）返程
 
-早上在 **Bułkę przez Bibułkę** 吃早餐，到 Złote Tarasy 補買伴手禮，退房搭 SKM 到蕭邦機場，搭 14:40 QR 260 經多哈回臺灣。
+早上在 **Bułkę przez Bibułkę** 吃早餐，到 Złote Tarasy 補買伴手禮，退房搭 SKM 到蕭邦機場，搭 14:40 QR 260 經多哈回臺灣；11/1 QR 818 改為 01:55–14:50，接 BR 872 19:40–21:25 回桃園。
 
 ## 這趟吃到的
 
 | 城市 | 正餐 | 咖啡與點心 |
 |---|---|---|
-| 華沙 | Specjały Regionalne、Arirang、Polka、Soul Kitchen | E.Wedel 熱巧克力、A. Blikle pączek、QQ Warsaw、Bułkę przez Bibułkę 早餐 |
-| 克拉科夫 | Pimiento、Hankki、Mr. Jerry、Bistro Posolone | Plac Nowy zapiekanka、Karma |
+| 華沙 | Arirang、Polka、Soul Kitchen | E.Wedel 熱巧克力、A. Blikle pączek、QQ Warsaw、Bułkę przez Bibułkę 早餐 |
+| 克拉科夫 | Hankki、Mr. Jerry、Bistro Posolone | Plac Nowy zapiekanka、Karma |
 | 樂斯拉夫 | Samarqand、Restauracja Wrocławska、MAX | Central Cafe、El Gato、Słodki Chłopak |
 | 波茲南 | Carla Trattoria Moderna | Charlotte、Weranda Caffe、聖馬丁牛角麵包 |
 

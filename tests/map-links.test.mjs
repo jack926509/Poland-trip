@@ -203,6 +203,7 @@ test('速食與每日行程、城市指南互相接得上', async () => {
   // 每一天都要指得到城市，速食備援才不會在某幾天憑空消失
   for (const day of days) {
     const keys = cityKeysForDay(day);
+    if (day.overnight) { assert.deepEqual(keys, [], '出發日不應列波蘭速食分店'); continue; }
     assert.ok(keys.length, `Day ${day.n}「${day.city}」對不到任何城市指南`);
     const html = renderFastFoodDayList(keys, { branches: fastFoodBranches, chains: fastFoodChains, hubs: fastFoodHubs });
     assert.ok(html.startsWith('<details'), `Day ${day.n} 的速食清單應預設收合`);

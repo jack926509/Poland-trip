@@ -106,7 +106,7 @@ function renderDayFood(day) {
 
   return `<article class="card day-dining" id="day-food" aria-labelledby="day-food-heading">
     <span class="eyebrow">Dining</span><h3 id="day-food-heading">當日餐飲</h3>
-    <p class="food-map-note">三餐各有一個主安排；標「先確認」的餐廳出門前看一下營業時間與條件；行程餐廳都不訂位、直接到店，客滿就改備選；備選取代同餐，不額外加餐。時刻為波蘭當地時間。</p>
+    <p class="food-map-note">三餐各有一個主安排；標「先確認」的餐廳出門前看一下營業時間與條件；Soul Kitchen 10/30 晚餐已訂妥，其餘維持現場入座，客滿就改備選；備選取代同餐，不額外加餐。地面行程採當地時間；機場轉機時刻另標時區。</p>
     ${renderMealList(day, dayMeals[day.n])}
     <p class="day-food-back"><a href="#schedule">↑ 回時間表</a></p>
     ${entries.length ? `<details><summary>備選、備餐與順路點心 · ${summary}</summary><ul class="day-food-list">${entries.map(renderDayFoodItem).join('')}</ul></details>` : ''}
@@ -278,7 +278,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
         <span class="booking-item-group">${escapeHtml(item.groupTitle)}</span>
         <b class="booking-item-name">${escapeHtml(item.name)}</b>
         <span class="${item.skipped ? 'tag-muted' : statusTagClass(item.status)}">${escapeHtml(item.status)}</span>
-        <a class="booking-item-link" href="practical/todos.html#${item.anchor}">${item.open ? '下一步怎麼訂' : item.skipped ? '現場怎麼試' : '查看紀錄'} →</a>
+        <a class="booking-item-link" href="practical/todos.html#${item.anchor}">${item.open ? '下一步怎麼訂' : item.skipped ? '查看調整' : '查看紀錄'} →</a>
       </li>`;
   const mustBookHtml = `${pending.length ? `
     <div class="callout-risk booking-due">
@@ -287,7 +287,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
       <ul class="booking-items">${pending.map(bookingItem).join('')}</ul>
     </div>` : `
     <div class="callout-good"><b>這一天沒有待訂項目。</b></div>`}
-    ${skipped.length ? `<div class="callout-note booking-skipped"><b>線上訂不到、仍排在行程：${skipped.length} 項</b><p>不再列入待辦提醒；當天到現場售票處問剩餘票，買不到就照下方說明調整。</p><ul class="booking-items">${skipped.map(bookingItem).join('')}</ul></div>` : ''}
+    ${skipped.length ? `<div class="callout-note booking-skipped"><b>不列入待辦提醒：${skipped.length} 項</b><p>改班後不排入的項目與不再提醒的紀錄如下，原因及下一步看各筆說明。</p><ul class="booking-items">${skipped.map(bookingItem).join('')}</ul></div>` : ''}
     ${confirmed.length ? `<details class="booking-done"><summary>已處理 ${confirmed.length} 項</summary><ul class="booking-items">${confirmed.map(bookingItem).join('')}</ul></details>` : ''}`;
 
   // 重要風險原本是一整段 8–12 行的文字牆，手機上很難找到重點：

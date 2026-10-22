@@ -1,6 +1,6 @@
 import { segments, auschwitzBus } from '../data/rail.js';
 
-/** id（如 'eip-5300'）→ 完整交通段；找不到就是資料本身兜不起來，直接丟錯。 */
+/** id（如 'eip-1306'）→ 完整交通段；找不到就是資料本身兜不起來，直接丟錯。 */
 export function resolveSegment(id) {
   const segment = segments.find(item => item.id === id);
   if (!segment) throw new Error(`resolveSegment 找不到交通段：${id}`);

@@ -138,7 +138,7 @@ function renderDayCard(day, { iso, stay, sun, dayHref, privateHref, tomorrow }) 
     const first = timedSteps(tomorrow.day)[0];
     const hard = hardTimes(tomorrow.day, segmentForDay(tomorrow.day)).find(item => HARD_TIME_DEADLINES.has(item.kind));
     const slots = privateSlots.filter(slot => slot.day === tomorrow.day.n && slot.kind !== 'flight');
-    const checkout = stay.find(item => item.checkOut === tomorrow.iso);
+    const checkout = stay.find(item => item.itineraryActive !== false && item.checkOut === tomorrow.iso);
     return `<section class="today-block today-tomorrow" data-today-tomorrow>
       <div class="today-block-head"><h3>明天第一件事</h3><span class="today-next-progress">Day ${tomorrow.day.n} · ${escapeHtml(tomorrow.day.date)}</span></div>
       ${first ? `<div class="today-next-main"><p class="today-next-clock"><b>${escapeHtml(first.t)}</b></p><p class="today-next-title">${escapeHtml(first.label)}</p>${first.navigationHref ? `<a class="today-next-nav" href="${first.navigationHref}" target="_blank" rel="noopener noreferrer">導航 ↗</a>` : ''}</div>` : '<p>明天沒有排定時刻的行程。</p>'}
@@ -150,7 +150,7 @@ function renderDayCard(day, { iso, stay, sun, dayHref, privateHref, tomorrow }) 
     </section>`;
   })();
 
-  return `<article class="today-card" data-today-card data-today-date="${escapeHtml(iso)}"${flightStep ? ` data-flight-minute="${flightStep.minute}"` : ''}>
+  return `<article class="today-card" data-today-card data-today-date="${escapeHtml(iso)}" data-time-zone="${escapeHtml(day.timeZone || 'Europe/Warsaw')}"${flightStep ? ` data-flight-minute="${flightStep.minute}"` : ''}>
     <header class="today-head">
       <p class="today-head-meta"><span class="today-day-badge">Day ${day.n}</span><span class="today-head-date">${escapeHtml(day.date)}</span></p>
       <h2>${escapeHtml(day.title)}</h2>
@@ -171,17 +171,18 @@ function renderDayCard(day, { iso, stay, sun, dayHref, privateHref, tomorrow }) 
     <ul class="today-glance today-glance-day">
       <li data-next-meal data-glance-wrap hidden><span class="today-glance-key">下一餐</span><span class="today-glance-val" data-next-meal-text></span><a class="today-glance-nav" data-next-meal-nav href="${escapeHtml(dayHref)}#day-food" hidden>導航 ↗</a></li>
       ${legs.map(({ step, status }) => `<li data-today-leg data-glance-wrap data-plan-minute="${step.minute}"><span class="today-glance-key">下一段車</span><span class="today-glance-val"><b>${escapeHtml(step.t)}</b> ${escapeHtml(step.label.replace(/^★\s*/, ''))}${status ? ` · ${escapeHtml(status)}` : ''}</span></li>`).join('')}
-      <li data-today-bed-row><span class="today-glance-key">${bed ? '住宿' : leaving ? '今晚' : '住宿'}</span><span class="today-glance-val">${bed ? `<b>${escapeHtml(bed.name)}</b>` : leaving ? '離境／機上過夜' : '<b>查不到今晚住宿</b>'}</span>${hotelMap ? `<a class="today-glance-nav" href="${escapeHtml(hotelMap)}" target="_blank" rel="noopener noreferrer">導航 ↗</a>` : ''}</li>
+      <li data-today-bed-row><span class="today-glance-key">${bed ? '住宿' : leaving ? '今晚' : '住宿'}</span><span class="today-glance-val">${bed ? `<b>${escapeHtml(bed.name)}</b>` : leaving ? '離境／機上過夜' : day.overnight ? escapeHtml(day.overnight) : '<b>查不到今晚住宿</b>'}</span>${hotelMap ? `<a class="today-glance-nav" href="${escapeHtml(hotelMap)}" target="_blank" rel="noopener noreferrer">導航 ↗</a>` : ''}</li>
     </ul>
     <ul hidden data-today-meals>${meals.map(({ item, label, time, minute, before }) => { const map = safeHttpsUrl(item.map || item.mapUrl); return `<li data-meal-label="${escapeAttr(label)}" data-meal-time="${escapeAttr(time)}" data-meal-name="${escapeAttr(item.name)}"${minute === null ? '' : ` data-meal-minute="${minute}"`}${before === undefined ? '' : ` data-meal-before-minute="${before}"`}${map ? ` data-meal-map="${escapeAttr(map)}"` : ''}></li>`; }).join('')}</ul>
     ${renderWeather(day, iso, sun)}
     <a class="today-full-link" data-today-full href="${escapeHtml(dayHref)}#schedule">看今天完整行程 →</a>
     </div>
     <div class="today-evening" data-today-evening>
-    <section class="today-block today-stay${!bed && !leaving ? ' today-block-alert' : ''}" data-today-stay><div class="today-block-head"><h3>${bed ? '回住宿' : leaving ? '離境與行李' : '今晚住宿：資料缺漏'}</h3></div>
+    <section class="today-block today-stay${!bed && !leaving && !day.overnight ? ' today-block-alert' : ''}" data-today-stay><div class="today-block-head"><h3>${bed ? '回住宿' : leaving ? '離境與行李' : day.overnight ? '轉機與行李' : '今晚住宿：資料缺漏'}</h3></div>
       ${bed ? `<div class="today-next-main today-stay-main"><p class="today-next-title">${escapeHtml(bed.name)}</p>${hotelMap ? `<a class="today-next-nav" href="${escapeHtml(hotelMap)}" target="_blank" rel="noopener noreferrer" aria-label="${hotelNavLabel}">${hotelNavLabel} ↗</a>` : ''}</div>
         <p class="today-address" lang="pl">${escapeHtml(bed.address)}</p>
         <p class="today-hotel-phone">${hotelPhone ? `<a href="tel:${escapeAttr(hotelPhone.digits)}">${escapeHtml(bed.phone)}</a>` : '電話請看訂房確認信'}${!bed.addressVerified ? '<span class="source-meta">門牌尚未確認，請先核對私人訂房資料；不提供精確導航。</span>' : bed.id === 'poznan-towarowa' ? '<span class="source-meta">此地址為接待與取鑰匙處；實際公寓門牌依私人訂房確認。</span>' : ''}</p>`
+        : day.overnight ? `<p>${escapeHtml(day.overnight)}。電子機票、登機證存離線，抵香港後直接前往轉機登機門。</p>`
         : leaving ? `<p data-leaving-pre>今晚離境／機上過夜。先確認航班報到、退稅與機場交通。</p><p data-leaving-post hidden><b>旅程結束，一路順風。</b></p>`
         : `<p><b>這一天不是離境日，但查不到當晚住宿。</b>這是資料缺漏，不是「不用住」——請先補上訂房或確認安排。</p>`}
     </section>
@@ -240,7 +241,7 @@ export function renderToday({ meta, days, stay, daylight = [], safety, pathPrefi
       <!-- 版式的 ::before 已經印出「TODAY」（稽核 M11）；這裡再放一次 section-num
            會在手機上變成上下兩行一模一樣的 TODAY，白佔一段首屏。 -->
       <h1>今日卡</h1>
-      <p class="hero-dek">今天該做什麼、住哪、幾點出發、天黑前要收哪一段，集中在這一頁。日期以華沙當地時間判斷。</p>
+      <p class="hero-dek">今天該做什麼、住哪、幾點出發、天黑前要收哪一段，集中在這一頁。出發日以台北時間，其餘日期以華沙時間判斷；轉機航段另標各機場當地時間。</p>
     </header>
 
     <nav class="today-date-controls" aria-label="切換旅行日期">

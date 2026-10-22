@@ -40,7 +40,7 @@ export function renderDiningFacts(item, { includeHours = true } = {}) {
 
 /**
  * 訂位狀態（餐廳主檔 booking 欄位，選填）。只有這四種值；沒有依據就不填、不顯示徽章。
- * 「已訂」要等使用者真的訂了才能填，目前全部尚未訂位。
+ * 「已訂」要等使用者真的訂了才能填，已確認的訂位才標為 booked。
  */
 export const BOOKING_LABELS = { required: '必訂', recommended: '建議訂', 'walk-in': '免訂', booked: '已訂' };
 
@@ -143,7 +143,7 @@ export function renderMealList(day, meals) {
   const labels = MEAL_LABELS;
   return `<ul class="day-food-list" data-three-meals="${day.n}">${meals.map(item => {
     const { step, minute, before: later } = mealSchedule(day, item);
-    const eyebrow = `${labels[item.meal]} · ${step.t}${item.condition ? ' · 先確認' : ''}`;
+    const eyebrow = `${labels[item.meal]} · ${step.t}${item.booking === 'booked' ? ' · 已訂妥' : item.condition ? ' · 先確認' : ''}`;
     return `<li class="day-food-item" id="meal-${escapeHtml(item.stepId)}" data-meal="${item.meal}" data-meal-label="${labels[item.meal]}" data-meal-time="${escapeHtml(step.t)}"${minute === null ? '' : ` data-meal-minute="${minute}"`}${later === undefined ? '' : ` data-meal-before-minute="${later}"`}${item.placeId ? '' : ' data-self="true"'}>
       ${renderStoreHead(item, eyebrow)}
       ${item.placeId ? renderStoreBody(item, { day, time: step.t }) : `<p>${escapeHtml(item.note)}</p>`}

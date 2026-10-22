@@ -38,7 +38,7 @@ export const ticketPurchaseGroups = [
       }),
       entry('warsaw-national-museum', '華沙國家博物館', {
         purchaseUrl: 'https://bilety.mnw.art.pl/',
-        note: '新行程只看外觀、不進館，不用買票；10/24 經過戴高樂圓環時看外觀。想入內：週五 17:00 後門票半價，1 PLN 票除外。臨展票亦包含常設展，依想看的展覽選票。',
+        note: '新行程只看外觀、不進館，不用買票；原 10/24 路線已因航班延後移出。想入內：週五 17:00 後門票半價，1 PLN 票除外。臨展票亦包含常設展，依想看的展覽選票。',
       }),
       entry('warsaw-pkin-terrace', '科學文化宮 30 樓觀景台', {
         purchaseUrl: 'https://www.bilety.pkin.pl/', sourceUrl: 'https://www.bilety.pkin.pl/',
@@ -104,15 +104,15 @@ export const ticketPurchaseGroups = [
     cityKey: 'KRK', items: [
       entry('krakow-wawel-castle', 'Wawel 皇家城堡各展區', {
         venueIds: ['krakow-wawel-castle', 'krakow-wawel-treasury'],
-        plan: 'main', day: 2, purchaseUrl: 'https://bilety.wawel.krakow.pl/',
-        note: '分路線售票：王冠寶庫、Castle Underground、Armoury、一樓、二樓或一二樓合票。主行程選可在一小時內結束的短路線；庭院與外觀散步不需展覽票。',
+        plan: 'reference', day: null, purchaseUrl: 'https://bilety.wawel.krakow.pl/',
+        note: '分路線售票：王冠寶庫、Castle Underground、Armoury、一樓、二樓或一二樓合票。改班後 10/25 晚抵，未排入主行程；僅留城市延伸參考，可選一小時內的短路線；庭院與外觀散步不需展覽票。',
       }),
       entry('krakow-wawel-cathedral', '瓦維爾大教堂', {
-        plan: 'main', day: 2, purchaseUrl: 'https://bilety-wawel.pl/',
+        plan: 'reference', day: null, purchaseUrl: 'https://bilety-wawel.pl/',
         note: '與 Wawel 皇家城堡分開售票；含教堂、齊格蒙特鐘、皇家墓室等開放區域。教堂博物館週日休館，不保證票券列出的所有場館當日都開。',
       }),
       entry('krakow-schindler', '辛德勒工廠', {
-        plan: 'main', day: 2, purchaseUrl: schindlerTickets,
+        plan: 'reference', day: null, purchaseUrl: schindlerTickets,
         note: '售票頁選 Oskar Schindler’s Enamel Factory 的一般參觀時段；17:30 不是官方固定英語導覽場。線上票實名，入場須帶同名證件正本。',
       }),
       entry('krakow-auschwitz', '奧斯威辛－比克瑙 Auschwitz-Birkenau', {

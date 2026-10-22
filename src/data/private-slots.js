@@ -11,12 +11,12 @@
 export const privateSlots = [
   {
     id: 'flight-out', day: 1, kind: 'flight', label: '去程機票',
-    detail: 'CX 479／QR 815／QR 259（10/23–10/24）',
+    detail: 'HX 283／QR 815／QR 259（10/24–10/25）',
     publicNote: '入境與登機都要出示護照。',
   },
   {
-    id: 'train-eip5300', day: 2, kind: 'train', label: 'EIP 5300 華沙 → 克拉科夫',
-    detail: '10/25 08:40 Warszawa Centralna 發車', stepPattern: 'EIP 5300',
+    id: 'train-eip5300', day: 2, kind: 'train', label: 'EIP 1306 華沙西站 → 克拉科夫',
+    detail: '10/25 15:45 Warszawa Zachodnia 發車', stepPattern: 'EIP 1306',
     publicNote: '車票在 PKP Intercity App 的票券清單，出發前先存離線。',
   },
   {

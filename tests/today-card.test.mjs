@@ -33,11 +33,11 @@ test('旅程前後都要有內容，不是空白頁', () => {
 
 test('倒數使用起飛日，出發當天提示搭機而非剩一天', () => {
   const before = selectToday(DATES, '2026-10-22', trip.meta.travelStart);
-  assert.equal(before.daysUntil, 1);
-  const departure = selectToday(DATES, '2026-10-23', trip.meta.travelStart);
-  assert.equal(departure.daysUntil, 0);
-  assert.match(statusText(departure, DATES.length), /今天搭機出發/);
-  assert.match(renderPage(), /initializeToday\(root, undefined, "2026-10-23"\)/);
+  assert.equal(before.daysUntil, 2);
+  const departure = selectToday(DATES, '2026-10-24', trip.meta.travelStart);
+  assert.equal(departure.mode, 'during');
+  assert.match(statusText(departure, DATES.length), /第 1 天/);
+  assert.match(renderPage(), /initializeToday\(root, undefined, "2026-10-24"\)/);
 });
 
 test('dayGap 跨越冬令時轉換仍為整數天', () => {
@@ -108,7 +108,7 @@ test('內嵌腳本在 DOM 中真的選出當天那張卡', () => {
   const html = renderPage();
   const script = html.match(/<script>([\s\S]*?)<\/script>/)[1];
 
-  const cards = DATES.map(date => ({ date, hidden: false, getAttribute: () => date }));
+  const cards = DATES.map(date => ({ date, hidden: false, getAttribute: name => name === 'data-today-date' ? date : name === 'data-time-zone' ? (date === DATES[0] ? 'Asia/Taipei' : 'Europe/Warsaw') : null }));
   const status = { textContent: '' };
   const outside = { hidden: false };
   const outsideNote = { textContent: '' };
@@ -139,7 +139,7 @@ test('內嵌腳本在 DOM 中真的選出當天那張卡', () => {
   vm.createContext(context);
   // 以受控的 root 與時間執行內嵌的 runtime。
   vm.runInContext(`${script.replace(/const root = [^;]+;/, 'const root = globalThis.__root;')
-    .replace(/initializeToday\(root, undefined, "2026-10-23"\);/, 'initializeToday(root, () => globalThis.__now, "2026-10-23");')}`, Object.assign(context, { __root: root }));
+    .replace(/initializeToday\(root, undefined, "2026-10-24"\);/, 'initializeToday(root, () => globalThis.__now, "2026-10-24");')}`, Object.assign(context, { __root: root }));
 
   const visible = cards.filter(card => !card.hidden);
   assert.equal(visible.length, 1, '應只顯示一張卡');
@@ -156,4 +156,10 @@ test('產出的 dist 與單檔版都含今日卡，且單檔版 id 已加前綴'
   const standalone = fs.readFileSync(new URL('../poland-travel-guide-2026.html', import.meta.url), 'utf8');
   assert.match(standalone, /id="page-today"/, '單檔版缺少今日卡章節');
   assert.match(standalone, /data-today-card/, '單檔版缺少今日卡內容');
+});
+
+test('出發日頁面帶台北時區，原首晚不出現在明日退房提醒', () => {
+  const first = renderPage().split('data-today-date="2026-10-24"')[1].split('</article>')[0];
+  assert.match(first, /data-time-zone="Asia\/Taipei"/);
+  assert.doesNotMatch(first, /退房 Hotel Metropol/);
 });

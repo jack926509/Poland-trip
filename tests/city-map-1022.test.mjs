@@ -23,7 +23,7 @@ function coveredOrOmitted(placeId) {
 
 test('scheduled 四城餐廳與 cafeGuide 每家皆有圖釘或明確列出未放原因', () => {
   const scheduled = Object.values(dayDining).flat().filter(item => item.planStatus === 'scheduled' && mapPins[diningPlaces[item.placeId].cityKey]);
-  assert.ok(scheduled.length >= 17);
+  assert.ok(scheduled.length >= 13);
   for (const item of [...scheduled, ...cafeGuide.flatMap(group => group.items)]) coveredOrOmitted(item.placeId);
 });
 

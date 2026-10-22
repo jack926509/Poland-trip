@@ -4,109 +4,45 @@ export const dayDiningPlans = {
   "1": [
     {
       "placeId": "warsaw-specjaly-regionalne",
-      "role": "晚餐首選",
-      "note": "18:30 入座（不訂位，直接到店）：Żurek 酸黑麥湯＋綜合 Pierogi，主菜選梅醬豬肋排或半隻烤鴨。E.Wedel 喝完沿皇家大道走回 Nowy Świat 就到；入境排太久就把 E.Wedel 改外帶。飯後經科學文化宮步行到 Złote Tarasy。",
-      "stepId": "d1-dinner",
-      "planStatus": "scheduled",
-      "meal": "dinner",
+      "role": "城市延伸備選（改班後原時段不排入）",
+      "note": "去程延後，原時段不排入；僅保留自選餐廳作城市延伸參考。",
+      "stepId": null,
+      "planStatus": "candidate",
       "dayHours": "11:30–23:00"
     },
     {
       "placeId": "warsaw-pyzy-flaki-gorace",
-      "role": "替補",
-      "note": "老城店，馬鈴薯糰與牛肚湯；與晚餐首選擇一。",
+      "role": "城市延伸備選（改班後原時段不排入）",
+      "note": "去程延後，原時段不排入；僅保留自選餐廳作城市延伸參考。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "warsaw-cafe-bristol",
-      "role": "咖啡甜點",
-      "note": "17:35 的熱巧克力和 E.Wedel Krakowskie Przedmieście 45 二選一：總統府隔壁，Bristol cake 配咖啡（週六至 21:00）；18:05 起身走回 Nowy Świat 吃晚餐。",
+      "role": "城市延伸備選（改班後原時段不排入）",
+      "note": "去程延後，原時段不排入；僅保留自選餐廳作城市延伸參考。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "warsaw-wedel-krakowskie-45",
-      "role": "咖啡甜點",
-      "note": "17:35 總統府拍完日落就在這裡折返：Krakowskie Przedmieście 45，週六 10:00–23:00，熱巧克力約 30 分；18:05 起身走回 Nowy Świat 吃晚餐。和 Café Bristol 二選一。",
+      "role": "城市延伸備選（改班後原時段不排入）",
+      "note": "去程延後，原時段不排入；僅保留自選餐廳作城市延伸參考。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "warsaw-a-blikle-1869",
-      "role": "甜點外帶",
-      "note": "Nowy Świat 33（品牌官網門市頁，每日 09:00–21:00），16:30 沿新世界街北行時順路外帶一顆 pączek；沒開就略過。",
+      "role": "城市延伸備選（改班後原時段不排入）",
+      "note": "去程延後，原時段不排入；僅保留自選餐廳作城市延伸參考。",
       "stepId": null,
       "planStatus": "candidate"
     }
   ],
   "2": [
     {
-      "placeId": "warsaw-green-caffe-nero-centralny",
-      "role": "早餐首選（條件式）",
-      "note": "退房到中央車站後在站內 Green Nero Express（Google 地圖週日 07:00–19:00，不是 24 小時）外帶可頌或火腿起司三明治＋Americano／Latte，可多帶一份麵包上車；07:55 結束採買，08:05 起找月台。店未開或排隊就用前晚在 Żabka 買的麵包。",
-      "stepId": "d2-breakfast",
-      "planStatus": "scheduled",
-      "meal": "breakfast",
-      "condition": "分店有沒有開、賣什麼當場看；不壓縮 08:40 發車前的進站緩衝。",
-      "dayHours": "週日 07:00–19:00（Google 地圖）"
-    },
-    {
-      "placeId": "warsaw-mcdonalds-centralna",
-      "role": "早餐備案",
-      "note": "同在 Warszawa Centralna 站內，約 05:00 就開；Green Nero Express 沒開或排隊時改 McMuffin＋咖啡外帶，也可改 EIP 車上餐車。",
-      "stepId": null,
-      "planStatus": "candidate"
-    },
-    {
-      "placeId": "krakow-lajkonik-basztowa",
-      "role": "隔日備餐採買",
-      "note": "寄放行李後先買隔日早餐及午餐（三明治、Drożdżówka 甜麵包、可頌、水果），接著逛旁邊的甕城一帶；不等晚餐後才去。需冷藏的餐點先確認住宿保存條件，否則選常溫麵包與水果。",
-      "stepId": "d2-prep",
-      "planStatus": "scheduled",
-      "dayHours": "07:00–19:00"
-    },
-    {
-      "placeId": "krakow-pimiento-shop-bistro",
-      "role": "午餐首選（條件式）",
-      "note": "Świętego Filipa 21，離 ibis 步行約 7 分；13:00 準時入座才吃得到午餐菜單：Tatar 阿根廷牛韃靼、Argentine burger，或照重量點阿根廷牛排。13:45 前離店，沿 Floriańska 往南，14:00 中央廣場、14:30 瓦維爾大教堂。",
-      "stepId": "d2-lunch",
-      "planStatus": "scheduled",
-      "meal": "lunch",
-      "condition": "午餐菜單 13:00 起才供應（早餐菜單 09:00–13:00）；週日只開到 15:00，資料來自 Google 地圖與 MapQuest，官網未列。不訂位，13:00 直接到店；客滿、關門或列車延誤改 Polonia 或 24 小時的 Przypiecek。",
-      "dayHours": "09:00–15:00（早餐菜單 09:00–13:00，午餐菜單 13:00 起）"
-    },
-    {
-      "placeId": "krakow-polonia",
-      "role": "午餐備選",
-      "note": "Basztowa 25（Hotel Polonia 內），離 ibis 步行約 5 分，週日 12:00 開門：Schabowy 炸豬排、Pierogi 或湯品。Pimiento 客滿、關門或抵達太晚時改這間，吃完仍接 14:30 瓦維爾大教堂。",
-      "stepId": null,
-      "planStatus": "candidate"
-    },
-    {
-      "placeId": "krakow-przypiecek",
-      "role": "午餐備選",
-      "note": "原午餐首選保留；Sławkowska 32，24 小時營業，Pimiento 與 Polonia 都不行或抵達較晚時改點綜合餃子配甜菜湯。",
-      "stepId": null,
-      "planStatus": "candidate"
-    },
-    {
-      "placeId": "krakow-milkbar-tomasza",
-      "role": "午餐備選",
-      "note": "św. Tomasza 24，週日 09:00–18:00 有開；想體驗牛奶吧平價 Pierogi、炸豬排可改這間；Pimiento 客滿或關門時的備選，下午時間緊仍以 Pimiento 或 Polonia 較省時。",
-      "stepId": null,
-      "planStatus": "candidate"
-    },
-    {
-      "placeId": "krakow-bar-mleczny-pod-temida",
-      "role": "午餐備選",
-      "note": "原首選保留；往 Wawel 路上的牛奶吧，與 Pimiento 擇一，不加一餐。",
-      "stepId": null,
-      "planStatus": "candidate"
-    },
-    {
       "placeId": "krakow-pasibus-galeria-krakowska",
-      "role": "午餐速食備案",
+      "role": "抵站後速食備案",
       "note": "車站旁 Galeria Krakowska 的 Pasibus／Berlin Döner；10/25 為非營業週日，商場是否開門先確認。",
       "stepId": null,
       "planStatus": "candidate"
@@ -114,17 +50,17 @@ export const dayDiningPlans = {
     {
       "placeId": "krakow-hankki",
       "role": "晚餐首選（條件式）",
-      "note": "辛德勒工廠預計 19:00 前離館，步行約 5 分，暫排 19:15。點 Gyoza、Honey Garlic Popcorn Chicken、Kimbap 或 Bibimbap；飯後不再特地折返吃點心。",
+      "note": "18:12 抵站、先入住 ibis，約 18:45 搭車到 Zabłocie 19A，19:15 現場入座；延誤就改近站快食。",
       "stepId": "d2-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "須先確認週日 19:15 仍接單（店 21:00 關）；若工廠改到更晚場，改當時仍營業的快食。",
+      "condition": "依列車抵達、入住及當晚接單情況；不另外訂位。當晚先備妥隔日導覽餐食。",
       "dayHours": "13:00–21:00"
     },
     {
       "placeId": "krakow-molam-thai",
       "role": "晚餐備選",
-      "note": "想把韓式換成泰式（Bib Gourmand，Rajska 3/4；出門前看 Google 地圖有沒有開）時改這間；離辛德勒工廠較遠，需搭車。",
+      "note": "想把韓式換成泰式（Bib Gourmand，Rajska 3/4；出門前看 Google 地圖有沒有開）時改這間；由住宿出發需搭車，依當晚時間取捨。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -134,13 +70,79 @@ export const dayDiningPlans = {
       "note": "原首選保留；想吃以色列料理才回 Kazimierz，先確認當晚最後接單。",
       "stepId": null,
       "planStatus": "candidate"
+    },
+    {
+      "placeId": "warsaw-green-caffe-nero-centralny",
+      "role": "城市延伸備選（改班後原時段不排入）",
+      "note": "去程延後，原時段不排入；僅保留自選餐廳作城市延伸參考。",
+      "stepId": null,
+      "planStatus": "candidate",
+      "dayHours": "週日 07:00–19:00（Google 地圖）"
+    },
+    {
+      "placeId": "warsaw-mcdonalds-centralna",
+      "role": "城市延伸備選（改班後原時段不排入）",
+      "note": "去程延後，原時段不排入；僅保留自選餐廳作城市延伸參考。",
+      "stepId": null,
+      "planStatus": "candidate"
+    },
+    {
+      "placeId": "krakow-lajkonik-basztowa",
+      "role": "城市延伸備選（改班後原時段不排入）",
+      "note": "去程延後，原時段不排入；僅保留自選餐廳作城市延伸參考。",
+      "stepId": null,
+      "planStatus": "candidate",
+      "dayHours": "07:00–19:00"
+    },
+    {
+      "placeId": "krakow-pimiento-shop-bistro",
+      "role": "城市延伸備選（改班後原時段不排入）",
+      "note": "去程延後，原時段不排入；僅保留自選餐廳作城市延伸參考。",
+      "stepId": null,
+      "planStatus": "candidate",
+      "dayHours": "09:00–15:00（早餐菜單 09:00–13:00，午餐菜單 13:00 起）"
+    },
+    {
+      "placeId": "krakow-polonia",
+      "role": "城市延伸備選（改班後原時段不排入）",
+      "note": "去程延後，原時段不排入；僅保留自選餐廳作城市延伸參考。",
+      "stepId": null,
+      "planStatus": "candidate"
+    },
+    {
+      "placeId": "krakow-przypiecek",
+      "role": "城市延伸備選（改班後原時段不排入）",
+      "note": "去程延後，原時段不排入；僅保留自選餐廳作城市延伸參考。",
+      "stepId": null,
+      "planStatus": "candidate"
+    },
+    {
+      "placeId": "krakow-milkbar-tomasza",
+      "role": "城市延伸備選（改班後原時段不排入）",
+      "note": "去程延後，原時段不排入；僅保留自選餐廳作城市延伸參考。",
+      "stepId": null,
+      "planStatus": "candidate"
+    },
+    {
+      "placeId": "krakow-bar-mleczny-pod-temida",
+      "role": "城市延伸備選（改班後原時段不排入）",
+      "note": "去程延後，原時段不排入；僅保留自選餐廳作城市延伸參考。",
+      "stepId": null,
+      "planStatus": "candidate"
+    },
+    {
+      "placeId": "krakow-endzior",
+      "role": "城市延伸備選（改班後原時段不排入）",
+      "note": "保留原自選店；10/25 晚抵不排白天散步，且 Endzior 週日公休，不當作當日餐食保證。",
+      "stepId": null,
+      "planStatus": "candidate"
     }
   ],
   "3": [
     {
       "placeId": "krakow-mr-jerry",
       "role": "晚餐首選（條件式）",
-      "note": "16:55 回城休息後 18:30 入座：招牌 Beef Wellington，胃口大可加乾式熟成牛排。本趟唯一吃得到威靈頓牛排的機會。",
+      "note": "16:55 回城休息後 18:30 入座：招牌 Beef Wellington，胃口大可加乾式熟成牛排。10/30 Soul Kitchen 另已訂位並註記 1 份威靈頓。",
       "stepId": "d3-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
@@ -487,18 +489,18 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-cafe-bristol",
       "role": "午餐備選",
-      "note": "想坐下喝咖啡配 Bristol cake 可改這間，但要從城堡往南走約 10 分再折回老城；10/24 傍晚也列為候選，當天去過就不必重複。",
+      "note": "午餐備選；需由城堡往南再折返老城，依當天時間取捨。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "warsaw-soul-kitchen",
       "role": "晚餐首選（威靈頓）",
-      "note": "17:35 回 Metropol 休息換衣服，步行約 8 分到 Nowogrodzka 18A，18:30 入座：Beef Wellington 為招牌，前菜可點桌邊韃靼牛肉或 Żurek。飯後可選去 Wedel Szpitalna 8 喝熱巧克力。",
+      "note": "10/30 18:00–20:00、2 人已訂妥；17:50 從 Metropol 步行約 8 分到 Nowogrodzka 18A。店家保留訂位 15 分鐘，已註記 1 份 Beef Wellington。",
       "stepId": "d7-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "菜單隨季節換；不訂位、現場入座，Wellington 常需預留，點不到就改韃靼牛肉或 Żurek。Rusiko 官網公告 3/24 起停業至另行通知，不再當直接替補，要去先用 Email 或請飯店櫃檯確認。",
+      "condition": "店家 10/22 回信已確認訂位，威靈頓為店家已註記，未擴大解讀為供餐保證；確認信存離線。",
       "dayHours": "17:30–23:00（週五另有 12:00–16:30，下午休息）"
     },
     {
@@ -620,15 +622,21 @@ export const selfCateredMeals = {
   "1": [
     {
       "meal": "breakfast",
-      "name": "機上早餐／出發前自理",
+      "name": "早餐 · 自理",
       "stepId": "d1-breakfast",
-      "note": "依實際航段供餐，不另安排市區早餐。"
+      "note": "今天仍在臺灣，依出門時間安排。"
     },
     {
       "meal": "lunch",
-      "name": "機上、機場或抵達後輕食",
+      "name": "午餐 · 自理",
       "stepId": "d1-lunch",
-      "note": "依落地與行李時間買三明治、熱飲即可，保留晚餐食量。"
+      "note": "依出門時間安排。"
+    },
+    {
+      "meal": "dinner",
+      "name": "晚餐 · 桃園機場",
+      "stepId": "d1-dinner",
+      "note": "先完成報到、安檢及登機門確認，再依可用時間用餐。"
     }
   ],
   "3": [
@@ -665,6 +673,20 @@ export const selfCateredMeals = {
       "name": "機上晚餐",
       "stepId": "d8-dinner",
       "note": "依實際航段與航空公司供餐；若需轉機用餐，先確認登機門與截止時間。"
+    }
+  ],
+  "2": [
+    {
+      "meal": "breakfast",
+      "name": "早餐 · 機上或多哈轉機",
+      "stepId": "d2-breakfast",
+      "note": "依實際供餐與登機門時間調整。"
+    },
+    {
+      "meal": "lunch",
+      "name": "午餐 · 機上或機場輕食",
+      "stepId": "d2-lunch",
+      "note": "先入境、提行李與轉西站，不繞路進市中心用餐。"
     }
   ]
 };

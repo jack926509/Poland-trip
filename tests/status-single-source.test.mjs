@@ -162,7 +162,7 @@ test('旅程結束日只有一個：最後一天 Day 8 = 10/31，各處一致；
 
 test('首頁小卡的日期切換：出發前、旅程期間（華沙日期）、旅程後', () => {
   const { travelStart, tripStart, tripEnd } = trip.meta;
-  assert.deepEqual(resolveHomeStatus('2026-10-13', '2026-10-13', travelStart, tripStart, tripEnd), { mode: 'before', days: 10 });
+  assert.deepEqual(resolveHomeStatus('2026-10-13', '2026-10-13', travelStart, tripStart, tripEnd), { mode: 'before', days: 11 });
   assert.equal(resolveHomeStatus('2026-10-23', '2026-10-24', travelStart, tripStart, tripEnd).mode, 'before');
   assert.deepEqual(resolveHomeStatus('2026-10-24', '2026-10-24', travelStart, tripStart, tripEnd), { mode: 'during', date: '2026-10-24' });
   assert.equal(resolveHomeStatus('2026-10-31', '2026-11-01', travelStart, tripStart, tripEnd).mode, 'during');

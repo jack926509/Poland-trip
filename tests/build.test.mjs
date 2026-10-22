@@ -147,7 +147,7 @@ test('5 筆已確認住宿區段完整涵蓋 7 晚並保留官方地址', () => 
 });
 
 test('公開版涵蓋完整航空往返日期，六段航班均標示已購票', () => {
-  assert.equal(meta.travelStart, '2026-10-23');
+  assert.equal(meta.travelStart, '2026-10-24');
   assert.equal(meta.tripStart, '2026-10-24');
   assert.equal(meta.tripEnd, '2026-10-31');
   const actualFlights = [...flights.out, ...flights.back].filter(item => !item.layover);
@@ -295,10 +295,6 @@ test('8 天每個行程步驟都有可靠地址或明確待確認原因', () => 
 
 test('已排定的主要公共地點使用正確地址與官方入口資料', () => {
   const requiredPlaces = [
-    [1, 'Krakowskie Przedmieście', 'Krakowskie Przedmieście, Warszawa'],
-    [2, '中央廣場 Rynek Główny', 'Rynek Główny, 31-042 Kraków'],
-    [2, '紡織會館 Sukiennice', 'Rynek Główny 3, 31-042 Kraków'],
-    [2, 'Plac Nowy', 'Plac Nowy, 31-056 Kraków'],
     [5, '樂斯拉夫中央廣場', 'Rynek, 50-101 Wrocław'],
     [7, '華沙老城市場廣場', 'Rynek Starego Miasta, 00-272 Warszawa'],
   ];
@@ -312,11 +308,12 @@ test('已排定的主要公共地點使用正確地址與官方入口資料', ()
   assert.ok(!JSON.stringify(dayOperations).includes('Rynek Główny, 31-422 Kraków'));
   // 2026-10-14 新行程：老城留到 Day 7。2026-10-15 依使用者路線：Day 1 走到總統府旁的 E.Wedel 就折返，城堡廣場也留到 Day 7。
   assert.ok(!dayOperations[1].addresses.some(item => ['華沙老城市場廣場', '華沙皇家城堡'].includes(item.name)));
-  assert.ok(dayOperations[1].addresses.find(item => item.name === 'Krakowskie Przedmieście').stepLabels.includes('★ 總統府＋Hotel Bristol 外觀'));
+  assert.ok(dayOperations[1].addresses.some(item => item.name === '桃園國際機場第二航廈'));
+  assert.ok(dayOperations[2].addresses.some(item => item.name === 'Warszawa Zachodnia'));
   assert.ok(!days[0].steps.some(step => /城堡廣場/.test(step.label)), 'Day 1 不再排城堡廣場');
   // 2026-10-15：E.Wedel 折返點改用 Krakowskie Przedmieście 45 分店的地址卡，不再列為未確認步驟。
-  assert.ok(dayOperations[1].addresses.some(item => /Krakowskie Przedmieście 45/.test(item.address) && item.stepLabels.some(label => /E\.Wedel/.test(label))));
-  assert.ok(days[0].steps.some(step => /Biedronka/.test(step.label)), 'Day 1 晚上要排車站 Biedronka 採買');
+  assert.ok(!dayOperations[1].addresses.some(item => /E\.Wedel/.test(item.name)));
+  assert.ok(days[1].steps.some(step => /買好隔日早餐/.test(step.label)));
   const oldTown = dayOperations[7].addresses.find(item => item.name === '華沙老城市場廣場');
   const castle = dayOperations[7].addresses.find(item => item.name === '華沙皇家城堡');
   assert.ok(oldTown.stepLabels.some(label => label.includes('老城廣場')));
@@ -493,7 +490,7 @@ test('2026-08-09 官方盤查會移除未能證實的場次、價格與閉館敘
   }
   // 2026-10-13 起 Day 2 的 Wawel、辛德勒線上已售完：不算待辦，但仍排在行程、另列「現場再試」。
   assert.ok(bookingProgress(days[1]).skipped.some(item => item.name.includes('辛德勒')));
-  assert.ok(days[1].steps.some(step => step.label.includes('辛德勒工廠') && step.sub.includes('線上已訂不到')));
+  assert.ok(!days[1].steps.some(step => step.label.includes('辛德勒工廠')));
   // 2026-10-14 新行程：POLIN 只在館外拍照，仍不進館。
   const polinStep = days[6].steps.find(step => /POLIN/.test(step.label));
   assert.match(polinStep.label, /外觀/, '本趟不進 POLIN，Day 7 只看外觀');
@@ -561,7 +558,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   // 2026-09-19 資料精煉切片 1：verifiedRestaurantHours 改由每日餐位（day-dining.js）中
   // 已核實／部分核實的門市直接推導（見 src/lib/dining.mjs 的 plannedVerifiedPlaces），
   // 不再是手寫子集，筆數會隨每日餐位調整自然變動。
-  assert.equal(verifiedRestaurantHours.length, 64); // 2026-10-14 新行程 Day 1 加 E.Wedel Krakowskie Przedmieście 45 咖啡選項（63 → 64）；2026-10-13 加威靈頓備選 Primitivo（62 → 63）；2026-10-12 新增 Pimiento、Carla、Pasibus Nowy Świat 三筆主檔（59 → 62）；餐飲 v5 整併加四家 Pasibus（31 → 35），同日逐店複查把 24 家待確認門市升為部分核實（35 → 59）
+  assert.equal(verifiedRestaurantHours.length, 65); // 2026-10-14 新行程 Day 1 加 E.Wedel Krakowskie Przedmieście 45 咖啡選項（63 → 64）；2026-10-13 加威靈頓備選 Primitivo（62 → 63）；2026-10-12 新增 Pimiento、Carla、Pasibus Nowy Świat 三筆主檔（59 → 62）；餐飲 v5 整併加四家 Pasibus（31 → 35），同日逐店複查把 24 家待確認門市升為部分核實（35 → 59）
   assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
     warsaw: 5, krakow: 7, wroclaw: 4, poznan: 7,
   });
@@ -777,7 +774,7 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
   // 2026-10-21 加聖安妮教堂觀景台（暫停開放・出發前待確認是否重新開放）：12 → 13。
   // 2026-10-22 航班線上報到、出國登錄、安裝 Jakdojade 與 Bolt 完成：13 → 10。
   // 2026-10-22 餐廳不訂位、不傳訊息給波茲南公寓、聖安妮觀景台複查仍暫停開放：10 → 1（只剩 Lajkonik 回程）。
-  assert.equal(todoCount, 1, '已購／已訂妥與線上已售完（不再提醒）的項目不可算進待辦');
+  assert.equal(todoCount, 3, '已購／已訂妥與線上已售完（不再提醒）的項目不可算進待辦');
 
   assert.ok(!html.includes('出發準備度'));
   assert.ok(!html.includes('00 / Readiness'));
@@ -831,10 +828,10 @@ test('Day 1–8 都有現場導航、當日警示與晚間準備', () => {
   for (let day = 1; day <= 8; day += 1) {
     const operation = dayOperations[day];
     assert.ok(operation, `Day ${day} 缺少每日操作資料`);
-    assert.ok(operation.addresses.length >= 3, `Day ${day} 地址不足`);
-    assert.ok(operation.navigation.length >= 2, `Day ${day} 導航步驟不足`);
+    assert.ok(operation.addresses.length >= (day === 1 ? 1 : 3), `Day ${day} 地址不足`);
+    assert.ok(operation.navigation.length >= (day === 1 ? 1 : 2), `Day ${day} 導航步驟不足`);
     assert.ok(operation.dailyAlerts.length >= 1, `Day ${day} 缺少當日警示`);
-    assert.ok(operation.nightChecklist.length >= 4, `Day ${day} 晚間準備少於 4 項`);
+    assert.ok(operation.nightChecklist.length >= (day === 1 ? 1 : 4), `Day ${day} 晚間準備少於 4 項`);
     for (const address of operation.addresses) {
       assert.match(address.url, /^https:\/\//, `Day ${day} 含非 HTTPS 導航連結`);
     }
@@ -1017,7 +1014,7 @@ test('已購城際火車與未購交通分開標示，未知票面細節不臆�
       assert.match(train.price, /付款前重查/);
     } else if (train.status === '已購票') {
       assert.match(train.arr, /^\d{2}:\d{2}$/, '抵達時間已由 Koleo 2026-10-17 查得');
-      assert.equal(train.price, '票價未提供');
+      assert.match(train.price, /PLN（截圖所示金額）/);
     } else {
       assert.match(train.status, /尚未確認|尚未訂票/);
       assert.match(train.price, /待/);
@@ -1036,20 +1033,20 @@ test('四段跨城火車反映四張已購票券', () => {
   assert.deepEqual(
     trains.filter(item => item.type !== 'BUS · Lajkonik').map(item => [item.date, item.type, item.dep, item.arr]),
     [
-    ['10/25', 'EIP 5300', '08:40', '11:10'],
+    ['10/25', 'EIP 1306', '15:45', '18:12'],
       ['10/27', 'IC 3830', '16:45', '19:50'],
       ['10/28', 'IC 260', '19:10', '20:29'],
     ['10/29', 'EIC 8104', '17:40', '19:59'],
     ],
   );
   assert.deepEqual(trains.filter(item => item.type !== 'BUS · Lajkonik').map(item => item.status), ['已購票', '已購票', '已購票', '已購票']);
-  assert.equal(trains[0].from, 'Warszawa Centralna');
-  assert.ok(!dayOperations[2].addresses.some(item => item.name === 'Warszawa Zachodnia'), 'Day 2 已購中央車站上車票，不應再提供西站導航卡');
+  assert.equal(trains[0].from, 'Warszawa Zachodnia');
+  assert.ok(dayOperations[2].addresses.some(item => item.name === 'Warszawa Zachodnia'), '新票從西站上車，必須提供西站導航');
 });
 
 test('城際車票資料庫顯示最新人工盤查日期與自訂票面核對期限', () => {
   const ticketEntry = databaseEntries.find(item => item.id === 'rail-trip-tickets');
-  assert.equal(ticketEntry.checkedAt, '2026-10-06');
+  assert.equal(ticketEntry.checkedAt, '2026-10-22');
   assert.equal(ticketEntry.recheckAt, '2026-10-24');
   assert.match(ticketEntry.offlineNote, /10\/25 首段城際火車前一日/);
   assert.match(ticketEntry.offlineNote, /非官方期限/);
@@ -1518,9 +1515,9 @@ test('所有拍照建議都有精確站位、方向與座標導航', () => {
     const html = read(`day-${String(index + 1).padStart(2, '0')}.html`);
     return html.slice(html.indexOf('<main'), html.indexOf('</main>'));
   }).join('\n');
-  assert.equal((pages.match(/開啟拍照站位 ↗/g) || []).length, 9);
-  assert.equal((pages.match(/精確站位/g) || []).length, 9);
-  assert.equal((pages.match(/拍攝方向/g) || []).length, 9);
+  assert.equal((pages.match(/開啟拍照站位 ↗/g) || []).length, 7);
+  assert.equal((pages.match(/精確站位/g) || []).length, 7);
+  assert.equal((pages.match(/拍攝方向/g) || []).length, 7);
   for (const spot of photoSpots.filter(item => item.day)) {
     assert.match(spot.mapUrl, /^https:\/\/www\.google\.com\/maps\/search\/\?api=1&query=\d{2}\.\d+%2C\d{2}\.\d+$/);
   }
@@ -2042,7 +2039,8 @@ test('餐飲資料重整：餐飲引用完整，機場日早餐改飯店旁 Buł
     }
   }
   for (let n = 1; n <= 8; n += 1) {
-    if (n < 8) assert.ok((dayDining[String(n)] || []).some(item => /首選|早餐/.test(item.role)),
+    if (n === 1) assert.ok(days[0].overnight, '出發日以自理與機場餐為主');
+    else if (n < 8) assert.ok((dayDining[String(n)] || []).some(item => /首選|早餐/.test(item.role)),
       `Day ${n} 沒有任何正餐首選`);
     else {
       assert.ok(dayDining['8'].some(item => item.stepId === 'd8-breakfast' && item.placeId === 'warsaw-bulke-przez-bibulke-zgoda'));

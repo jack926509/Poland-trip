@@ -15,12 +15,12 @@ const overridePath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'tr
 const syncMeta = readSyncOverrides();
 
 // 精煉切片 3 已把 Lajkonik 巴士與四段城際火車的時刻、票價收斂進 rail.js，但
-// 這個檔案裡還留了幾處手抄的 Lajkonik 去程時刻／票價與 EIP 5300 發車時刻
+// 這個檔案裡還留了幾處手抄的 Lajkonik 去程時刻／票價與 EIP 1306 發車時刻
 // （切片 4b 補的殘留，見 data-audit.md 切片 4 說明）；改用 rail.js 的資料，
 // 不再另打一份第二份數字。
 const lajkonikOutboundAdopted = auschwitzBus.outbound.services.find(item => item.decision === '採用');
 const lajkonikOutboundRejected = auschwitzBus.outbound.services.find(item => item.decision === '不採用');
-const eip5300 = segments.find(item => item.id === 'eip-5300');
+const eip1306 = segments.find(item => item.id === 'eip-1306');
 
 // 自由行資料庫：公開事實與私人待填狀態分開，供後續首頁、每日操作卡與 SOS 頁共用。
 // 私人項目只記錄完成狀態，絕不放入訂位代碼、護照、保單或付款資料。
@@ -61,7 +61,7 @@ const databaseEntriesBase = [
   {
     id: 'aviation-baggage-rules', section: 'aviation', category: 'transit', cityKey: 'ROUTE',
     title: '航空行李官方規則',
-    summary: '聯運行李額度依電子機票與實際承運航空判讀。行動電源：Cathay／Qatar／EVA 均每人最多 2 個、只能手提且不放頭頂；Qatar 各 ≤100 Wh、機上不得為行動電源充電；Cathay／EVA 另禁止機上使用。各航司來源見行前提醒頁。',
+    summary: '10/22 電子機票各段標示託運 25 kg，實際直掛終點依報到櫃檯行李條確認。行動電源：香港航空／Qatar／EVA 均每人最多 2 個、只能手提且不放頭頂；Qatar 各 ≤100 Wh、機上不得為行動電源充電；香港航空／EVA 另禁止機上使用。各航司來源見行前提醒頁。',
     status: 'verified', sourceUrl: 'https://www.qatarairways.com/en/travel-alerts.html', verifiedAt: '2026-10-06', recheckAt: null,
     offlineNote: '本趟準備每人最多 2 個、各 ≤100 Wh，保護接點且規格清楚；保存各承運航司規則。本次免費行李額度與直掛仍待電子機票確認。', private: false,
   },
@@ -89,9 +89,9 @@ const databaseEntriesBase = [
   {
     id: 'rail-trip-tickets', section: 'rail', category: 'transit', cityKey: 'ROUTE',
     title: '本次城際車票',
-    summary: '與 旅客提供的 App 票券清單顯示 10/25 EIP 5300、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 均已購票。車廂與座位看 PKP App 票券。',
-    status: 'pending', sourceUrl: null, verifiedAt: '2026-10-06', checkedAt: '2026-10-06', recheckAt: '2026-10-24',
-    offlineNote: '請在抵波蘭當日 10/24，也就是 10/25 首段城際火車前一日，保存四段車票離線副本並核對票面詳細資料；這是自行設定的查核期限，非官方期限。搭車前用 Passenger Portal 查月台與異動。', private: false,
+    summary: '10/22 票券截圖確認四段均已購票，發到時間、艙等與截圖金額見交通主檔；10/25 改為 EIP 1306 西站 15:45–18:12。車廂、座位與金額涵蓋人數看完整票券。',
+    status: 'pending', sourceUrl: null, verifiedAt: '2026-10-22', checkedAt: '2026-10-22', recheckAt: '2026-10-24',
+    offlineNote: '請在臺灣出發日 10/24，也就是 10/25 首段城際火車前一日，保存四段車票離線副本並核對票面詳細資料；這是自行設定的查核期限，非官方期限。搭車前用 Passenger Portal 查月台與異動。', private: false,
   },
   {
     id: 'rail-station-directory', section: 'rail', category: 'transit', cityKey: 'PL',
@@ -180,7 +180,7 @@ const databaseEntriesBase = [
   {
     id: 'dining-reservation-and-backup', section: 'dining', category: 'dining', cityKey: 'ROUTE',
     title: '餐廳現場入座與當日營業',
-    summary: '2026-10-22 旅客決定行程餐廳全部不訂位、現場入座；出門前看當日營業狀態，客滿就改每餐的同區或便利備案，不從其他分店套用時間。',
+    summary: 'Soul Kitchen 10/30 18:00–20:00、2 人已訂妥；其他行程餐廳維持現場入座。出門前看當日營業狀態，客滿就改每餐的同區或便利備案，不從其他分店套用時間。',
     status: 'pending', sourceUrl: null, verifiedAt: null, recheckAt: '2026-10-24',
     offlineNote: '保存過敏與飲食需求的波蘭文／英文卡，但不放到公開網站。', private: false,
   },
@@ -200,8 +200,8 @@ const databaseEntriesBase = [
   },
   {
     id: 'accommodation-confirmations', section: 'accommodation', category: 'practical', cityKey: 'ROUTE',
-    title: '7 晚住宿已確認',
-    summary: '5 筆訂單共 7 晚皆已確認：華沙 Hotel Metropol 兩段住宿（10/24–10/25、10/29–10/31）、克拉科夫 ibis budget Krakow Stare Miasto、樂斯拉夫 Piast、波茲南 Poznan Apartments Towarowa。公開版不保存訂房代碼、姓名或付款證明。',
+    title: '當地 6 晚住宿；原首晚訂單退改另處理',
+    summary: '保留原 5 筆訂單紀錄共 7 晚；改班後 10/24 不在波蘭，當地實際住宿為 6 晚，原 10/24–10/25 Metropol 退改與未入住處理未確認。原訂單：華沙 Hotel Metropol 兩段住宿（10/24–10/25、10/29–10/31）、克拉科夫 ibis budget Krakow Stare Miasto、樂斯拉夫 Piast、波茲南 Poznan Apartments Towarowa。公開版不保存訂房代碼、姓名或付款證明。',
     status: 'private-required', sourceUrl: null, verifiedAt: null, recheckAt: '2026-10-10',
     offlineNote: '公開版已放飯店官網地址；另將 5 張訂房確認存入私人離線包，並向各住宿確認寄放行李與晚到方式。', private: true,
   },
@@ -383,60 +383,28 @@ const venueCard = (venueId, displayName, note = '') => {
 export const dayOperations = {
   1: {
     cityKey: 'warsaw',
-    note: '抵達後啟用網路、確認住宿地址與行李狀態。',
-    addresses: [
-      venueCard('warsaw-chopin-airport', '華沙蕭邦機場', '抵達後依航站現場標示前往 SKM 月台。'),
-      venueCard('warsaw-centralna-station', 'Warszawa Centralna'),
-      venueCard('warsaw-krakowskie-przedmiescie', 'Krakowskie Przedmieście'),
-      {
-        name: diningPlaces['warsaw-wedel-krakowskie-45'].name,
-        address: diningPlaces['warsaw-wedel-krakowskie-45'].address,
-        url: diningPlaces['warsaw-wedel-krakowskie-45'].map,
-        note: '今天往北的折返點，總統府旁；不是 Szpitalna 8 那家本店。入境延誤就改外帶或略過。',
-        reliable: true,
-        entranceNote: '依店家地址與現場招牌找入口；營業時間以官方分店頁為準。',
-        officialUrl: diningPlaces['warsaw-wedel-krakowskie-45'].sourceUrl,
-        stepLabels: ['E.Wedel 熱巧克力 · Krakowskie Przedmieście 45'],
-      },
-      accommodationAddress('warsaw-metropol-arrival', ['Hotel Metropol Check-in']),
-    ],
-    navigation: [
-      { mode: 'SKM', route: '蕭邦機場 → 華沙市中心', action: '抵達後查 WTP 即時班次、月台與官方票價，使用當日適用的第 1 區時間票。' },
-      { mode: '步行', route: '住宿 → REDAR 分店 II → 戴高樂圓環 → Nowy Świat → 總統府 → E.Wedel → Nowy Świat 44 → Złote Tarasy → 中央車站 Biedronka', action: '全程步行：飯店到 Metro Centrum 地下通道約 5 分，再到戴高樂圓環，沿 Nowy Świat、Krakowskie Przedmieście 北行到總統府旁的 E.Wedel 折返，沿原路往南走回晚餐；飯後沿 Al. Jerozolimskie 往西經科學文化宮到 Złote Tarasy，最後在中央車站 Biedronka 採買，步行約 10 分回飯店。' },
-    ],
-    dailyAlerts: [
-      '抵達日不排室內票券；走到總統府旁的 E.Wedel 就折返，城堡廣場與老城留到 10/30。若入境或行李延誤，從哥白尼紀念碑開始走、E.Wedel 改外帶。',
-      '隔天凌晨 03:00 換冬令時間，時鐘撥回 1 小時；手機會自動調，手錶和鬧鐘要手動。',
-      'Hotel Metropol 樓下的 REDAR 總店週六未公布營業，換匯走 Metro Centrum 地下通道的分店 II（週六 08:00–20:00）。',
-      '離開行李提領區前確認託運行李已到；未到先申報 PIR。',
-    ],
-    nightChecklist: [...standardNightChecklist, '確認 10/25 華沙 → 克拉科夫車票、車站入口與下車後的行李寄放方案'],
+    note: '桃園出發日，今天仍未抵波蘭；此處波蘭資料僅供抵達後參考。',
+    addresses: [{ name: '桃園國際機場第二航廈', address: 'TPE 第二航廈（依 10/22 電子機票）', url: 'https://www.taoyuan-airport.com/', reliable: true, officialUrl: 'https://www.taoyuan-airport.com/', entranceNote: '依機票至第二航廈，香港航空報到櫃檯與登機門看當日電子牌。', stepLabels: ['桃園第二航廈報到'] }],
+    navigation: [{ mode: '航空', route: 'TPE 第二航廈 → HKG 第一航廈', action: 'HX 283 10/24 21:45–23:45，香港轉機 1 小時 40 分接 QR 815；依登機證與現場登機門。' }],
+    dailyAlerts: ['原 10/24 華沙觀光不再執行；Hotel Metropol 原首晚訂單退改及未入住處理未確認，勿當作已取消。', '新航班報到與行李直掛依櫃檯確認，電子機票及登機證存離線。'],
+    nightChecklist: ['香港抵達後直接依轉機指標前往 QR 815 登機門，不安排購物'],
   },
   2: {
     cityKey: 'krakow',
-    note: '非營業週日；火車班次與餐廳營業當日確認。',
+    note: '13:10 抵華沙，15:45 西站 EIP 1306，18:12 抵克拉科夫；轉乘不能保證。',
     addresses: [
-      venueCard('warsaw-centralna-station', 'Warszawa Centralna'),
+      venueCard('warsaw-chopin-airport', '華沙蕭邦機場', '13:10 抵達後先入境、提行李，再直接轉西站。'),
+      venueCard('warsaw-zachodnia-station', 'Warszawa Zachodnia', '15:45 EIP 1306 上車站是西站，不是 Centralna。'),
       venueCard('krakow-glowny-station', 'Kraków Główny'),
-      venueCard('krakow-wawel-cathedral', '瓦維爾大教堂'),
-      venueCard('krakow-wawel-castle', '瓦維爾皇家城堡'),
-      venueCard('krakow-rynek-glowny', '中央廣場 Rynek Główny'),
-      venueCard('krakow-st-mary-basilica', '聖瑪利亞聖殿'),
-      venueCard('krakow-sukiennice', '紡織會館 Sukiennice'),
-      venueCard('krakow-schindler', '辛德勒工廠'),
-      venueCard('krakow-plac-nowy', 'Plac Nowy'),
-      accommodationAddress('warsaw-metropol-arrival'),
-      accommodationAddress('krakow-stare-miasto', ['旅館寄放行李']),
+      accommodationAddress('krakow-stare-miasto', ['ibis 入住 · 放行李']),
     ],
     navigation: [
-      { mode: 'PKP', route: 'Warszawa Centralna → Kraków Główny', action: `已購 EIP 5300 ${eip5300.dep} 由 Warszawa Centralna 出發；從 Hotel Metropol 步行約 500 公尺。月台、車廂與座位依票券詳細頁及現場電子牌確認。` },
-      { mode: '步行／電車／計程車', route: 'Kraków Główny → 甕城 → Pimiento → 中央廣場 → Wawel → 辛德勒工廠', action: '先寄放行李、逛北邊甕城一帶；午餐 13:00 在 Pimiento，飯後沿 Floriańska 往南，14:00 中央廣場、14:30 瓦維爾大教堂、15:15 Wawel 短路線；16:15 由 Wawel 步行經 Kazimierz（Plac Nowy 圓亭）、Bernatek 人行橋到辛德勒工廠，17:10 前到入口；下雨或腳痠改搭電車，車號與轉乘用 Jakdojade 查即時資料。' },
+      { mode: '機場鐵路／計程車', route: '華沙蕭邦機場 → Warszawa Zachodnia', action: '入境與提行李後用 Jakdojade 查直達西站班次；等車過久則比較官方計程車或 Bolt 的即時預估，不繞中央車站或 Metropol。' },
+      { mode: 'PKP', route: 'Warszawa Zachodnia → Kraków Główny', action: `EIP 1306 ${eip1306.dep}–${eip1306.arr}，1 等；車廂座位看完整票券，月台看現場電子牌。` },
+      { mode: '步行／叫車', route: 'Kraków Główny → ibis → Hankki', action: '18:12 抵站、步行約 15 分入住 ibis，約 18:45 搭車往 Zabłocie 19A。19:15 晚餐保留，延誤就改近站快食。' },
     ],
-    dailyAlerts: [
-      '10/25 為非營業週日，多數一般商店關閉；餐廳與例外店家仍逐店確認。',
-      `EIP 5300 已購票，${eip5300.dep} 由 Warszawa Centralna 發車、${eip5300.arr} 抵 Kraków Główny；車廂座位依票券詳細頁。`,
-    ],
-    nightChecklist: [...standardNightChecklist, '確認 Auschwitz 官方導覽姓名、入場時段、行李限制與往返車票狀態', '確認白天已在 Lajkonik 備妥明日早餐、午餐及飲水並妥善保存；明早 07:15 開始早餐、07:35 出門，08:10 前到 MDA 下層 D9'],
+    dailyAlerts: ['13:10 落地至 15:45 火車只有 2 小時 35 分，入境、行李或航班延誤可能接不上；無法保證免費改搭下一班。', '原 Wawel、辛德勒與 Pimiento 白天安排不再排入。非營業週日，當晚先找有開的店買隔日導覽早餐、午餐及水。'],
+    nightChecklist: [...standardNightChecklist, '確認 Auschwitz 電子入場證、護照與往返車票，買妥明日三明治、水果及飲水', '明早 07:15 早餐、07:35 出門，08:10 前到 MDA 下層 D9'],
   },
   3: {
     cityKey: 'krakow',
@@ -532,7 +500,7 @@ export const dayOperations = {
       '市政廳博物館整修閉館；主行程只看官方確認的 12:00 山羊鐘樓秀。',
       '聖馬丁牛角麵包已選定 ROGAL Świętomarciński（Stary Rynek 11/17）；週四 09:00–20:00，售完改 Cukiernia Kandulski（週四 09:00–17:00）。',
     ],
-    nightChecklist: [...standardNightChecklist, 'Day 7 收費館只路過拍外觀，不用買票；明早 08:05 先在 Świętokrzyska 站口拍 MSN 與科學文化宮，08:15 搭 M1 到 Ratusz Arsenał', 'Polka 午餐不用訂位，客滿改 Pyzy Flaki Gorące；Soul Kitchen 18:30 不訂位、現場入座，威靈頓可能點不到；客滿或想吃威靈頓卻沒有，改 Kieliszki na Próżnej，並重算交通；Rusiko（Wierzbowa 11）官網公告 3/24 起停業至另行通知，要去先用 Email 或請飯店櫃檯確認'],
+    nightChecklist: [...standardNightChecklist, 'Day 7 收費館只路過拍外觀，不用買票；明早 08:05 先在 Świętokrzyska 站口拍 MSN 與科學文化宮，08:15 搭 M1 到 Ratusz Arsenał', 'Polka 午餐維持現場入座；Soul Kitchen 已訂 10/30 18:00–20:00、2 人，保留 15 分鐘，店家已註記 1 份威靈頓；17:50 從 Metropol 出發，確認信存離線'],
   },
   7: {
     cityKey: 'warsaw',
@@ -611,21 +579,22 @@ export const dayOperations = {
 const dynamicTransitReason = '班次、月台或上下車點為動態資料，依已購票與當日電子牌確認。';
 const unresolvedStepReasons = {
   1: {
-    'SKM S2／S3 目標班次': dynamicTransitReason,
-    '換匯 · REDAR.net 分店 II': '地下通道內的店面，Google Maps 搜「Kantor Redar Oddział II Metro Centrum」；入口依現場 Rotunda 指標。',
-    '★ 戴高樂圓環「棕櫚樹」': '戶外地標，在 Al. Jerozolimskie 與 Nowy Świat 交叉的圓環中央，從 Rotunda 往東步行即到。',
-    '新世界街 Nowy Świat 往北': '沿 Nowy Świat 北行的戶外街景，全段步行，終點接 Krakowskie Przedmieście 地址卡。',
-    'A. Blikle 1869 外帶 pączek': 'Nowy Świat 33 的路邊甜點店（品牌官網門市頁），餐廳導航見當日餐飲；沒開就略過。',
-    '沿皇家大道走回 Nowy Świat 44': '戶外夜景步行段，沿 Krakowskie Przedmieście、Nowy Świat 原路往南，終點是晚餐餐廳（導航見當日餐飲）。',
-    '沿耶路撒冷大道往西 → 科學文化宮夜景': '戶外夜景步行段，Nowy Świat 往南到棕櫚樹圓環，再沿 Al. Jerozolimskie 往西，終點接 Złote Tarasy。',
-    'Złote Tarasy 購物中心': 'Złota 59，中央車站旁；導航見當日餐飲的速食段 Złote Tarasy 分店。',
-    'Biedronka 超市採買 · 中央車站': 'Al. Jerozolimskie 54 中央車站內，官方門市頁每日 05:00–01:00；地址與來源見超市採買頁的華沙門市。',
-    '回飯店休息': '返回原住宿，地址見住宿卡。',
+    '早餐 · 自理': '出發前在臺灣自行安排，沒有指定餐廳地址。',
+    '午餐 · 自理': '出發前自行安排，沒有指定餐廳地址。',
+    '晚餐 · 桃園機場': '先完成安檢與登機門確認，再在可通行區域用餐。',
+    'HX 283 桃園 → 香港': dynamicTransitReason,
+    '香港轉機': '依轉機指標與 QR 815 登機證到當日登機門，不使用固定地面地址。',
   },
   2: {
-    'EIP 5300 前往克拉科夫': dynamicTransitReason,
-    '聖弗洛里安城門 → 甕城 Barbakan → Stary Kleparz': '戶外步行段，城門在 Floriańska 北端、甕城在 Basztowa 街旁，Stary Kleparz 在 Pimiento 旁；只看外觀。',
-    '步行經 Kazimierz → Bernatek 橋 → 辛德勒工廠': '主案步行；改搭電車時車號與轉乘為動態資料，當天用 Jakdojade 查；以辛德勒工廠入口地址為終點，17:10 前到場。',
+    '早餐 · 機上或多哈轉機': '依實際供餐與當日登機門調整，沒有固定地面餐廳地址。',
+    '午餐 · 機上或機場輕食': '先入境、提行李與轉西站，餐食依可用時間安排。',
+    'QR 815 香港 → 多哈': dynamicTransitReason,
+    'QR 259 多哈 → 華沙': dynamicTransitReason,
+    '抵蕭邦機場 · 入境與提行李': '航廈內依入境與行李提領指標，離開機場後直接轉西站。',
+    '蕭邦機場 → Warszawa Zachodnia（西站）': dynamicTransitReason,
+    '抵 Warszawa Zachodnia（西站）': '西站地址見當日地址卡；上車月台看當日電子牌。',
+    'EIP 1306 前往克拉科夫': dynamicTransitReason,
+    '買好隔日早餐、午餐與水': '依當晚仍營業的車站店或便利商店補給；非營業週日無法買齊時詢問旅館。',
   },
   3: {
     'Kraków MDA 報到': `巴士站地址（Bosacka 18）與 10/26 的 ${lajkonikOutboundAdopted.dep} 班次已購票，票面標示下層 ${lajkonikOutboundAdopted.bay} 站位；站位仍以當日電子看板為準。`,
@@ -675,6 +644,7 @@ const unresolvedStepReasons = {
     'EIC 8104 前往華沙': dynamicTransitReason,
   },
   7: {
+    '步行前往 Soul Kitchen': '由 Metropol 步行約 8 分到 Nowogrodzka 18A，餐廳導航見當日已訂晚餐。',
     'MSN 現代美術館＋科學文化宮外觀': '戶外拍照點，在 Świętokrzyska 地鐵站口旁的 Plac Defilad；只拍外觀不進館。',
     '地鐵 M1 → Ratusz Arsenał': dynamicTransitReason,
     '薩克森花園': '戶外公園，由劇院廣場往南步行即到，穿過花園接無名塚。',
