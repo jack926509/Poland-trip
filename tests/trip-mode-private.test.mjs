@@ -104,7 +104,9 @@ test('4 間住宿都有官方電話與來源，並在住宿、SOS、今日卡輸
 test('每個已訂妥的當日預約都有票券欄位，今日卡在行程旁邊輸出而不是只在摺疊區', () => {
   const today = read('today.html');
   for (const day of trip.days) {
-    const confirmed = bookingProgress(day).confirmed.filter(item => item.groupId !== 'dining').length;
+    const confirmed = bookingProgress(day).confirmed
+      // 餐飲訂位與出發前準備（報到、登錄、裝 App）都不是要出示的票券；暫停開放不排的景點也沒有票。
+      .filter(item => !['dining', 'prep'].includes(item.groupId) && /已購|已訂/.test(item.status)).length;
     const slots = privateSlots.filter(slot => slot.day === day.n && slot.kind !== 'flight').length;
     assert.ok(slots >= confirmed, `Day ${day.n} 有 ${confirmed} 筆已訂妥項目但只有 ${slots} 個票券欄位`);
   }

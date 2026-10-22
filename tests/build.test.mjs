@@ -6,6 +6,7 @@ import http from 'node:http';
 import path from 'node:path';
 import vm from 'node:vm';
 import { test } from 'node:test';
+import { isTodoOpen } from '../src/lib/todo-status.mjs';
 import { cities, cityStories, photoSpots, photoCredits, mapPins, mapPinChecks, pinCategoryLegend, attractions, cityNotices } from '../src/data/cities.js';
 import { cityDining, cityFood, foods, michelinSummary, michelinReservations, verifiedRestaurantHours } from '../src/data/dining.js';
 import { about, daylight, packingDefault, phrases, preDepartureNotes, safety } from '../src/data/essentials.js';
@@ -737,9 +738,11 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
   // 首頁實際算出的待處理數。
   const rawTodoCount = todoGroups.reduce((total, group) => total + group.items.length, 0);
   const todoCount = todoGroups.reduce((total, group) =>
-    total + group.items.filter(item => !item.skip && !['已訂妥', '已完成', '已購票'].includes(item.status)).length, 0);
+    total + group.items.filter(isTodoOpen).length, 0);
   // 2026-10-21 加聖安妮教堂觀景台（暫停開放・出發前待確認是否重新開放）：12 → 13。
-  assert.equal(todoCount, 13, '已購／已訂妥與線上已售完（不再提醒）的項目不可算進待辦');
+  // 2026-10-22 航班線上報到、出國登錄、安裝 Jakdojade 與 Bolt 完成：13 → 10。
+  // 2026-10-22 餐廳不訂位、不傳訊息給波茲南公寓、聖安妮觀景台複查仍暫停開放：10 → 1（只剩 Lajkonik 回程）。
+  assert.equal(todoCount, 1, '已購／已訂妥與線上已售完（不再提醒）的項目不可算進待辦');
 
   assert.ok(!html.includes('出發準備度'));
   assert.ok(!html.includes('00 / Readiness'));
@@ -752,7 +755,7 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
   // 項目本身改到 practical/todos.html 專屬測試驗證。
   for (const group of todoGroups) {
     assert.ok(html.includes(`>${group.title}<`), `首頁缺少待辦分類：${group.title}`);
-    const pending = group.items.filter(item => !item.skip && !['已訂妥', '已完成', '已購票'].includes(item.status)).length;
+    const pending = group.items.filter(isTodoOpen).length;
     const summary = pending ? `${pending} 項待處理` : '已全部完成';
     assert.ok(html.includes(`href="practical/todos.html#todo-${group.id}"`), `首頁缺少待辦分類連結：${group.id}`);
     assert.ok(html.includes(summary), `首頁缺少待辦分類計數：${group.title}`);
@@ -2106,8 +2109,10 @@ test('Day 7 城堡廣場後、Polka 午餐前只拍聖安妮教堂外觀：觀�
   }
   const todo = todoGroups.find(group => group.id === 'attractions').items.find(item => item.ticketPurchaseId === 'warsaw-st-anne-tower');
   assert.ok(todo, '門票待辦要列聖安妮教堂觀景台');
-  assert.match(todo.status, /^暫停開放・出發前/);
-  assert.match(todo.status, /確認是否重新開放/);
+  // 2026-10-22 出發前複查仍暫停開放，不再列為待辦。
+  assert.equal(todo.status, '暫停開放・不排登塔');
+  assert.equal(todo.recheckAt, null);
+  assert.match(todo.action, /2026-10-22 出發前複查/);
   assert.match(todo.url, /^https:\/\/swanna\.waw\.pl\//);
   assert.doesNotMatch(todo.action, /PLN|zł|\d{1,2}:\d{2}/);
   // POLIN 維持只看外觀，不加票券待辦；購票參考的外觀時間與行程一致（08:35）。

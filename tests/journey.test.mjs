@@ -15,14 +15,14 @@ test('跨城日住宿按入住區間銜接，離境日不再顯示住宿', () =>
 test('已訂導覽不算待辦，但尚未購票的巴士仍待處理', () => {
   const { confirmed, pending } = bookingProgress(days[2]);
   // 2026-10-13 起 Lajkonik 去程已購（rail）、Auschwitz 導覽已訂妥（attractions）。
-  assert.deepEqual(confirmed.map(item => item.groupId).sort(), ['attractions', 'rail']);
+  // 2026-10-22 起餐廳不訂位，Mr. Jerry 改算已處理。
+  assert.deepEqual(confirmed.map(item => item.groupId).sort(), ['attractions', 'dining', 'rail']);
   assert.ok(confirmed.some(item => item.name.includes('Auschwitz')));
   assert.ok(confirmed.some(item => item.name.includes('Lajkonik 去程')));
-  // Day 3 的待辦＝待辦頁同日的 Lajkonik 回程與 Mr. Jerry 晚餐訂位，不再另抄一份。
-  assert.equal(pending.length, 2);
-  assert.deepEqual(pending.map(item => item.groupId), ['rail', 'dining']);
+  // Day 3 的待辦＝待辦頁同日的 Lajkonik 回程，不再另抄一份。
+  assert.equal(pending.length, 1);
+  assert.deepEqual(pending.map(item => item.groupId), ['rail']);
   assert.ok(pending[0].name.includes('Lajkonik 回程'));
-  assert.ok(pending[1].name.includes('Mr. Jerry'));
 });
 test('每日待訂數與待辦頁同源：八天加總等於待辦頁未完成數，且每筆待辦都歸到某一天', () => {
   const openTotal = todoGroups.flatMap(group => group.items).filter(item => isOpenTodoStatus(item.status)).length;
@@ -30,8 +30,8 @@ test('每日待訂數與待辦頁同源：八天加總等於待辦頁未完成�
   assert.equal(dayTotal, openTotal);
   const allTotal = days.reduce((sum, day) => { const p = bookingProgress(day); return sum + p.pending.length + p.confirmed.length + p.skipped.length; }, 0);
   assert.equal(allTotal, todoGroups.flatMap(group => group.items).length, '有待辦項目的日期對不到任何行程日');
-  // Day 1 曾經顯示「沒有待訂」，其實 Specjały 晚餐尚未訂位。
-  assert.ok(bookingProgress(days[0]).pending.some(item => item.name.includes('Specjały')));
+  // Day 1 曾經顯示「沒有待訂」，其實 Specjały 晚餐尚未訂位；2026-10-22 起不訂位，仍要歸在 Day 1。
+  assert.ok(bookingProgress(days[0]).confirmed.some(item => item.name.includes('Specjały')));
   const anchors = days.flatMap(day => { const p = bookingProgress(day); return [...p.pending, ...p.confirmed, ...p.skipped].map(item => item.anchor); });
   // 線上已售完的項目不再提醒，但不能從待辦數裡誤算成「已完成預約」。
   assert.deepEqual(bookingProgress(days[1]).skipped.map(item => item.name), ['Wawel 城堡 15:15', '辛德勒工廠 17:30']);

@@ -90,9 +90,11 @@ test('資料庫「景點票券」標題與摘要等於正本', () => {
   const group = trip.todoGroups.find(item => item.id === 'attractions');
   const open = group.items.filter(isOpen);
   const skipped = group.items.filter(item => item.skip);
-  const done = group.items.length - open.length - skipped.length;
+  // 不算待辦又沒買票的（2026-10-22 起聖安妮觀景台暫停開放不排）另列「不排入」，不算進已訂。
+  const booked = group.items.filter(item => !item.skip && !isOpen(item) && /已購|已訂/.test(item.status)).length;
+  const dropped = group.items.length - open.length - skipped.length - booked;
   const entry = databaseEntries.find(item => item.id === 'documents-attraction-tickets');
-  assert.equal(entry.title, `景點票券：已訂 ${done} 項，其餘 ${group.items.length - done} 項（${open.length} 項待訂、${skipped.length} 項線上已售完）`);
+  assert.equal(entry.title, `景點票券：已訂 ${booked} 項，其餘 ${group.items.length - booked} 項（${open.length} 項待訂、${skipped.length} 項線上已售完${dropped ? `、${dropped} 項不排入` : ''}）`);
   for (const item of group.items) assert.ok(entry.summary.includes(`${item.date} ${item.name}`), `摘要缺 ${item.name}`);
 });
 
