@@ -48,25 +48,25 @@
 
 早餐在 **Charlotte**。上午到 Cytadela 公園看無頭人像群「Nierozpoznani」，再到 Śródka 看立體壁畫、走 **教堂島** 的波茲南主教座堂，經皇家城堡山丘回老城，在 **Weranda Caffe** 喝咖啡。
 
-中午在 **舊市集廣場** 看 12:00 山羊鐘樓秀，接著吃一個 **聖馬丁牛角麵包**。逛自由廣場與舊啤酒廠改建的 Stary Browar，午餐在 **Carla Trattoria Moderna** 吃義大利菜，再走 Okrąglak 圓形百貨與聖馬丁街帝王區，傍晚搭車回華沙，晚餐吃 **Arirang** 韓式。
+中午在 **舊市集廣場** 看 12:00 山羊鐘樓秀，接著吃一個 **聖馬丁牛角麵包**。逛自由廣場與舊啤酒廠改建的 Stary Browar，午餐在 **Carla Trattoria Moderna** 吃義大利菜，再走 Okrąglak 圓形百貨與聖馬丁街帝王區，傍晚搭車回華沙（先在波茲南站買吃的帶上車），晚上逛 **Złote Tarasy** 與科學文化宮夜景，晚餐吃 **Arirang** 韓式。
 
 ## Day 7｜10/30（五）華沙：新城、老城一路走到瓦津基
 
 早餐在飯店旁的 **Bułkę przez Bibułkę**。從 POLIN 博物館與猶太隔離區英雄紀念碑開始，經克拉辛斯基廣場、新城廣場、居禮夫人出生地所在的 Freta 街、甕城與城牆，走進 **老城廣場**，再到聖若望大教堂與 **城堡廣場**。
 
-午餐在 **Polka** 吃波蘭菜。下午經劇院廣場、薩克森花園，看無名塚的衛兵換崗，走到維斯瓦河邊上 **BUW 屋頂花園**，再到 **瓦津基公園** 看蕭邦紀念碑，在水上宮殿湖邊等日落。
+午餐在 **Polka** 吃波蘭菜。下午沿皇家大道看總統府、聖十字教堂（蕭邦的心臟），經 Tamka 街到河邊看美人魚像、上 **BUW 屋頂花園**，再走回新世界街吃 **Blikle** 甜甜圈，經棕櫚樹圓環、三十字廣場一路往南到 **瓦津基公園** 看蕭邦紀念碑，在水上宮殿湖邊等日落。
 
-下午點心是 **QQ Warsaw** 的抹茶與韓式吐司，最後一晚 **Soul Kitchen 18:00–20:00、2 人已訂妥**，店家保留訂位 15 分鐘，已註記 1 份威靈頓牛排（未擴大解讀為供餐保證），飯後還有力氣就到 **E.Wedel** 本店再喝一杯熱巧克力。
+最後一晚 **Soul Kitchen 18:00–20:00、2 人已訂妥**，店家保留訂位 15 分鐘，已註記 1 份威靈頓牛排（未擴大解讀為供餐保證），飯後還有力氣就到 **E.Wedel** 本店再喝一杯熱巧克力。
 
 ## Day 8｜10/31（六）返程
 
-早上在 **Bułkę przez Bibułkę** 吃早餐，到 Złote Tarasy 補買伴手禮，退房搭 SKM 到蕭邦機場，搭 14:40 QR 260 經多哈回臺灣；11/1 QR 818 改為 01:55–14:50，接 BR 872 19:40–21:25 回桃園。
+一早從飯店走到劇院廣場、薩克森花園，08:00 看無名塚衛兵交接，再到 **Bułkę przez Bibułkę** 吃早餐，回飯店整理行李、09:40 退房，搭 SKM 到蕭邦機場，搭 14:40 QR 260 經多哈回臺灣；11/1 QR 818 改為 01:55–14:50，接 BR 872 19:40–21:25 回桃園。
 
 ## 這趟吃到的
 
 | 城市 | 正餐 | 咖啡與點心 |
 |---|---|---|
-| 華沙 | Arirang、Polka、Soul Kitchen | E.Wedel 熱巧克力、A. Blikle pączek、QQ Warsaw、Bułkę przez Bibułkę 早餐 |
+| 華沙 | Arirang、Polka、Soul Kitchen | E.Wedel 熱巧克力、A. Blikle pączek、Bułkę przez Bibułkę 早餐 |
 | 克拉科夫 | Hankki、Mr. Jerry、Bistro Posolone | Plac Nowy zapiekanka、Karma |
 | 樂斯拉夫 | Samarqand、Restauracja Wrocławska、MAX | Central Cafe、El Gato、Słodki Chłopak |
 | 波茲南 | Carla Trattoria Moderna | Charlotte、Weranda Caffe、聖馬丁牛角麵包 |

@@ -983,11 +983,11 @@ test('高風險校正：皇家城堡與辛德勒工廠已依官方時間修正',
   assert.doesNotMatch(read('day-07.html'), /17:00[^<]{0,80}皇家城堡內部/);
 });
 
-test('Day 7 從最北邊往回逛：POLIN 外觀 → 新城 → 老城廣場 → 城堡廣場 → 無名塚 → 瓦津基，付費館都不進', () => {
+test('Day 7 從最北邊往回逛：POLIN 外觀 → 新城 → 老城廣場 → 城堡廣場 → 瓦津基，付費館都不進', () => {
   // 2026-10-14 新行程：起義博物館、皇家城堡入內、國家博物館（選配）都拿掉。
   // 2026-10-15 採點版：仍坐 M1 到 Ratusz Arsenał 從 POLIN 起走，新城、老城上午一次走完；收費館只路過拍外觀。
   const day = days.find(item => item.n === 7);
-  const order = ['POLIN 外觀', '新城廣場', '老城廣場', '城堡廣場', '無名塚', '瓦津基'];
+  const order = ['POLIN 外觀', '新城廣場', '老城廣場', '城堡廣場', '瓦津基'];
   const times = order.map(name => day.steps.findIndex(step => step.label.startsWith('★') && step.label.includes(name)));
   assert.ok(times.every(index => index >= 0), `Day 7 缺少景點：${order.filter((_, i) => times[i] < 0)}`);
   assert.deepEqual([...times].sort((a, b) => a - b), times, 'Day 7 景點順序不對');
@@ -999,7 +999,7 @@ test('Day 7 從最北邊往回逛：POLIN 外觀 → 新城 → 老城廣場 →
   const lunch = day.steps.find(item => item.id === 'd7-lunch');
   assert.equal(lunch.t, '12:30');
   assert.match(lunch.label, /Polka/);
-  assert.equal(day.steps.find(step => step.label === '★ 瓦津基 · 水上宮殿').t, '15:45');
+  assert.equal(day.steps.find(step => step.label === '★ 瓦津基 · 水上宮殿').t, '16:00');
   assert.equal(day.intensity, '高');
   const html = read('day-07.html');
   const main = html.slice(html.indexOf('<main'), html.indexOf('</main>'));
@@ -1173,7 +1173,7 @@ test('逐日移動不保留已知不可行備案或重疊時刻', () => {
   const day8 = days.find(item => item.n === 8);
   const day8Times = day8.steps.map(item => item.t);
   assert.equal(day8Times.filter(time => time === '10:30').length, 1);
-  assert.ok(day8.steps.some(item => item.label.includes('退房') && item.t === '09:45'));
+  assert.ok(day8.steps.some(item => item.label.includes('退房') && item.t === '09:40'));
 });
 
 test('舊票價與過時場館資料已從產出頁面移除', () => {
