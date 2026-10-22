@@ -103,12 +103,11 @@ export const essentialSources = [
   {name:'波蘭 TAX FREE 官方說明', checkedAt:'2026-09-08', note:'同一賣家單筆 TAX FREE 文件含稅金額至少 200 PLN，商品須以旅客個人行李帶離 EU。', url:'https://puesc.gov.pl/en/uslugi/tax-free-informacja-dla-podroznych'},
 ];
 
-// 第 05、07 條（城際交通、先訂清單）的訂票狀態由 todoGroups 自動產生，不手寫。
+// 第 04、06 條（城際交通、先訂清單）的訂票狀態由 todoGroups 自動產生，不手寫。
 export const preDepartureNotes = [
   '10/25（日）夏令時間結束——03:00 回撥為 02:00。當日不是營業週日，多數一般商店不得營業；加油站、值班藥局與符合法定例外的店可開，但不能假設每間 Żabka／小店都營業。',
   '日照——逐日的日出、日落與藍調時刻請看行前提醒頁的「八日日照」表，每日行程頁也各自標示當天數值；本條不再重複列出時間，避免兩處各自漂移。重點是 10/25 凌晨夏令時間結束後日落提前 53 分鐘，戶外行程要往前收。',
   '10/31 諸聖節前日——克拉科夫／華沙人潮多；辛德勒工廠、Wawel 部分展區 11/1、11/11 閉館（Wawel 自身公告的閉館日，不含 11/3）。你的回程班機是 10/31 14:40 起飛（WAW → DOH），不是 11/1，這些閉館日都在你離境之後，對本趟無實質影響。',
-  '米其林訂位——二星＋各一星出發前 3–4 週訂；華沙 splurge 級 3–5 週。',
   railNoteHtml(todoGroups, 'todos.html'),
   '火車實務——IC／EIP 對號入座；城際段優先使用 PKP Intercity 官方 App／網站購票與選位。上車查票出示離線保存的 PDF 或 App 票券；大件行李放車廂端行李架並自行留意。',
   bookingNoteHtml(todoGroups, 'todos.html'),

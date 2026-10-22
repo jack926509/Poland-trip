@@ -8,7 +8,9 @@ const actionText = value => {
   const text = splitVerification(value).main || String(value ?? '');
   const first = text.split(/(?<=；)/)[0].replace(/；$/, '');
   // 還是太長（手機超過兩行）時再拿掉括號補充說明。
-  return first.length > 36 ? first.replace(/（[^（）]*）/g, '') : first;
+  // 去掉括號後，前後若是英文或數字就補半形空格，避免「Zachodnia為規劃目標」這種黏在一起。
+  const joinGap = (prev = '', next = '') => ((/[A-Za-z0-9]/.test(prev) && /[\u4e00-\u9fff]/.test(next)) || (/[\u4e00-\u9fff]/.test(prev) && /[A-Za-z0-9]/.test(next)) ? ' ' : '');
+  return first.length > 36 ? first.replace(/（[^（）]*）/g, (match, at, whole) => joinGap(whole[at - 1], whole[at + match.length])) : first;
 };
 import { isDepartureDay, stayForDate } from '../lib/journey.mjs';
 import { segmentForDay } from '../lib/rail.mjs';
@@ -135,7 +137,13 @@ function renderDayCard(day, { iso, stay, sun, dayHref, privateHref, tomorrow }) 
   // 晚上的「明天第一件事」：明天第一個有時刻的步驟、最早的硬時間、要帶的票與退房。
   const tomorrowBlock = (() => {
     if (!tomorrow) return '';
-    const first = timedSteps(tomorrow.day)[0];
+    // 明天一早就起飛的班機（例如 QR 815 香港 01:25）步驟時刻寫成相對時間，不在有時刻的清單裡，要先補進來。
+    const earlyFlight = (() => {
+      const step = tomorrow.day.steps[0];
+      const clock = step?.timingMode === 'relative' && /\b[A-Z]{2} \d+/.test(step.label) ? String(step.sub || '').match(/\d{1,2}:\d{2}/)?.[0] : null;
+      return clock ? { ...step, t: `${clock} 起飛` } : null;
+    })();
+    const first = earlyFlight || timedSteps(tomorrow.day)[0];
     const hard = hardTimes(tomorrow.day, segmentForDay(tomorrow.day)).find(item => HARD_TIME_DEADLINES.has(item.kind));
     const slots = privateSlots.filter(slot => slot.day === tomorrow.day.n && slot.kind !== 'flight');
     const checkout = stay.find(item => item.itineraryActive !== false && item.checkOut === tomorrow.iso);

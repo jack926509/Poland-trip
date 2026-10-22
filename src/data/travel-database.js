@@ -56,7 +56,7 @@ const databaseEntriesBase = [
     title: '護照、EES 與 ETIAS 出發前複查',
     summary: '10/06 EU 官方確認 EES 已於 4/10 全面運作，短期入境非 EU 旅客首次須在邊境登錄護照及生物辨識。ETIAS 尚未運作、不收申請，確切日期另公告。護照效期須在離開申根區後至少 3 個月，且入境時簽發未滿 10 年；旅客須自行核對私人證件。',
     status: 'recheck', sourceUrl: 'https://home-affairs.ec.europa.eu/policies/schengen/smart-borders_en', verifiedAt: '2026-10-06', recheckAt: '2026-10-19',
-    offlineNote: '備妥護照、回程票、住宿與保險證明；10/19 前複查 EU 狀態，10/20 最終確認 EU 官方 EES／ETIAS 狀態。10/24 首次入境留 EES 登錄與排隊時間，不將私人護照核對視為已完成。', private: false,
+    offlineNote: '備妥護照、回程票、住宿與保險證明；10/19 前複查 EU 狀態，10/20 最終確認 EU 官方 EES／ETIAS 狀態。10/25 首次入境留 EES 登錄與排隊時間，不將私人護照核對視為已完成。', private: false,
   },
   {
     id: 'aviation-baggage-rules', section: 'aviation', category: 'transit', cityKey: 'ROUTE',
@@ -399,12 +399,12 @@ export const dayOperations = {
       accommodationAddress('krakow-stare-miasto', ['ibis 入住 · 放行李']),
     ],
     navigation: [
-      { mode: '機場鐵路／計程車', route: '華沙蕭邦機場 → Warszawa Zachodnia', action: '入境與提行李後用 Jakdojade 查直達西站班次；等車過久則比較官方計程車或 Bolt 的即時預估，不繞中央車站或 Metropol。' },
+      { mode: '機場鐵路／計程車', route: '華沙蕭邦機場 → Warszawa Zachodnia', action: '入境與提行李後用 Jakdojade 查直達西站班次；等車過久則比較官方計程車或 Bolt 的即時預估，不繞中央車站或 Metropol。15:05 還沒走出行李大廳 → 在 PKP Intercity App 改搭當天下一班 EIP 到克拉科夫（班次以 App 當下顯示為準）。' },
       { mode: 'PKP', route: 'Warszawa Zachodnia → Kraków Główny', action: `EIP 1306 ${eip1306.dep}–${eip1306.arr}，1 等；車廂座位看完整票券，月台看現場電子牌。` },
-      { mode: '步行／叫車', route: 'Kraków Główny → ibis → Hankki', action: '18:12 抵站、步行約 15 分入住 ibis，約 18:45 搭車往 Zabłocie 19A。19:15 晚餐保留，延誤就改近站快食。' },
+      { mode: '步行／叫車', route: 'Kraków Główny → ibis → Hankki', action: '18:12 抵站、約 200 公尺步行約 5 分入住 ibis，約 18:45 搭車往 Zabłocie 19A。19:15 晚餐保留，延誤就改近站快食。' },
     ],
-    dailyAlerts: ['13:10 落地至 15:45 火車只有 2 小時 35 分，入境、行李或航班延誤可能接不上；無法保證免費改搭下一班。', '原 Wawel、辛德勒與 Pimiento 白天安排不再排入。非營業週日，當晚先找有開的店買隔日導覽早餐、午餐及水。'],
-    nightChecklist: [...standardNightChecklist, '確認 Auschwitz 電子入場證、護照與往返車票，買妥明日三明治、水果及飲水', '明早 07:15 早餐、07:35 出門，08:10 前到 MDA 下層 D9'],
+    dailyAlerts: ['13:10 落地至 15:45 火車只有 2 小時 35 分，入境、行李或航班延誤可能接不上；無法保證免費改搭下一班。', '原 Wawel、辛德勒與 Pimiento 白天安排不再排入。10/25 是非營業週日、多數商店不開：10/26 早餐與午餐請在杜哈機場、華沙蕭邦機場或西站先買好；克拉科夫晚上採買只當備案（週日營業時間未查證）。'],
+    nightChecklist: [...standardNightChecklist, '確認 Auschwitz 電子入場證、護照與往返車票，並確認 10/26 早餐、午餐與水已備妥（沒買齊再問旅館輕食）', '明早 07:15 早餐、07:35 出門，08:10 前到 MDA 下層 D9'],
   },
   3: {
     cityKey: 'krakow',
@@ -594,7 +594,7 @@ const unresolvedStepReasons = {
     '蕭邦機場 → Warszawa Zachodnia（西站）': dynamicTransitReason,
     '抵 Warszawa Zachodnia（西站）': '西站地址見當日地址卡；上車月台看當日電子牌。',
     'EIP 1306 前往克拉科夫': dynamicTransitReason,
-    '買好隔日早餐、午餐與水': '依當晚仍營業的車站店或便利商店補給；非營業週日無法買齊時詢問旅館。',
+    '買好隔日早餐、午餐與水': '10/25 是非營業週日，請在杜哈機場、華沙蕭邦機場或西站先買好；克拉科夫晚上採買只當備案，買不齊時詢問旅館。',
   },
   3: {
     'Kraków MDA 報到': `巴士站地址（Bosacka 18）與 10/26 的 ${lajkonikOutboundAdopted.dep} 班次已購票，票面標示下層 ${lajkonikOutboundAdopted.bay} 站位；站位仍以當日電子看板為準。`,

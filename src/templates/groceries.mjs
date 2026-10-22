@@ -187,7 +187,7 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
     <p class="action-links">${sections.map(([id, short]) => `<a href="#${id}">${e(short)}</a>`).join('')}</p>
     <section class="section" id="essentials">${heading('essentials', '出發前先知道四件事')}
       <ol class="grocery-essentials">
-        <li><b>2026/10/25（Day 2）是非交易星期日，一般超市不開。</b>十月沒有交易星期日；10/25 晚抵後找實際有開的車站店或便利商店，先買好隔日導覽早餐、午餐及飲水。${external('https://www.biedronka.pl/pl/niedziele-handlowe', 'Biedronka 2026 日曆')}${renderDataNote(['Biedronka 官方日曆列出 2026 年的交易星期日是 1/25、3/29、4/26、6/28、8/30、12/6、12/13、12/20，十月一天都沒有。'])}</li>
+        <li><b>2026/10/25（Day 2）是非交易星期日，一般超市不開。</b>十月沒有交易星期日；請在抵達克拉科夫前，於杜哈機場、華沙蕭邦機場或西站先買好 10/26 導覽早餐、午餐及飲水；克拉科夫晚上採買只當備案（週日營業時間未查證）。${external('https://www.biedronka.pl/pl/niedziele-handlowe', 'Biedronka 2026 日曆')}${renderDataNote(['Biedronka 官方日曆列出 2026 年的交易星期日是 1/25、3/29、4/26、6/28、8/30、12/6、12/13、12/20，十月一天都沒有。'])}</li>
         <li><b>星期日還有機會買的只有兩家車站型 Biedronka：</b>華沙 <a href="#warsaw-1">Al. Jerozolimskie 54</a>（每日 05:00–01:00）與波茲南 <a href="#poznan-1">Dworcowa 2</a>（星期日 06:00–22:00），別當成唯一計畫。克拉科夫與樂斯拉夫的 Biedronka 星期日不開，Żabka 依各店公告。${renderDataNote(['這兩家的官方門市頁都標「sklep czynny w niedzielę」。非交易星期日的實際開門仍以門市當日公告為準。'])}</li>
         <li><b>營業時間：</b>Biedronka 的 ${verifiedCount} 家有逐日時間；其餘 ${partialCount} 家（Lidl、Żabka）不逐店公布，出門前看 Google 地圖。${renderDataNote(['Biedronka 的逐日時間取自官方門市頁；Lidl、Żabka 官方不逐店公布營業時間。'])}</li>
         <li><b>結帳前看清價牌。</b>「przy zakupie 6 szt.」是買 6 件才有的單價，另有會員（App）價；自備購物袋。</li>

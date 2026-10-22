@@ -451,7 +451,7 @@ export const diningPlaces = {
   },
   "poznan-carla-trattoria-moderna": {
     "id": "poznan-carla-trattoria-moderna",
-    "booking": "required",
+    "booking": "walk-in",
     "cityKey": "poznan",
     "name": "Carla Trattoria Moderna",
     "address": "Święty Marcin 34, 61-803 Poznań",
@@ -464,7 +464,7 @@ export const diningPlaces = {
       "現代義大利菜：手工麵、披薩、小盤分享；10/29 週四 14:00 開門才有位，午餐延後到 14:00，約 17 分步行到帝王城堡。"
     ],
     "menuUrl": null,
-    "verificationNote": "Google 地圖與 zjedz.my 一致週四 14:00–22:30；menu.pl 外送時段週四 14:00–21:30；店家 Instagram 表示 10/1 起新營業時間。近期有評論抱怨上菜慢，須保留 17:05 到站緩衝。zjedz.my 可線上訂位。",
+    "verificationNote": "Google 地圖與 zjedz.my 一致週四 14:00–22:30；menu.pl 外送時段週四 14:00–21:30；店家 Instagram 表示 10/1 起新營業時間。近期有評論抱怨上菜慢，須保留 17:05 到站緩衝。行程決定不訂位、14:00 開門直接入座。",
     "phone": "+48 796 200 002",
     "cuisine": "現代義大利菜",
     "dishes": [
@@ -815,7 +815,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-21",
     "verificationStatus": "partial",
     "notes": [
-      "1869 年創立的波蘭國民甜點店，pączki 玫瑰果醬甜甜圈是招牌。10/24 傍晚沿 Nowy Świat 北行時順路外帶；品牌官網列 Nowy Świat 33 每日 09:00–21:00。"
+      "1869 年創立的波蘭國民甜點店，pączki 玫瑰果醬甜甜圈是招牌。10/30 15:05 沿新世界街走到時外帶；品牌官網列 Nowy Świat 33 每日 09:00–21:00。"
     ],
     "cuisine": "百年甜點",
     "dishes": [
@@ -851,7 +851,7 @@ export const diningPlaces = {
     "checkedAt": "2026-09-19",
     "verificationStatus": "verified",
     "notes": [
-      "Krakowskie Przedmieście 42/44（Hotel Bristol 內），就在總統府隔壁；10/24 17:35 總統府拍完日落後和 E.Wedel 二選一的熱飲甜點點，10/30 為午餐備選。",
+      "Krakowskie Przedmieście 42/44（Hotel Bristol 內），就在總統府隔壁；10/30 為午餐備選，也可和 E.Wedel 二選一當熱飲甜點點。",
       "三明治＋咖啡、Bristol cake；官網湯與主餐自 12:00 起供應。"
     ],
     "verificationNote": "營業時間沿用 官方查核；各日備選共用此筆資料，未代表已訂位。Marriott 頁與本站官方時段一致（週五、六至 21:00）。",
@@ -902,7 +902,7 @@ export const diningPlaces = {
     "notes": [
       "2010 年開業，克拉科夫第一家精品咖啡店，Kazimierz 自家烘豆。公開資料列一–五 08:00–20:00、六日 10:00–19:00。"
     ],
-    "hoursNote": "店家官網；karmaroasters.com 與 Yelp 一致，另一個網站 karmakrakow.pl 列平日 07:00–18:00，Day 3 17:55 出門前看 Google 地圖當日營業時間",
+    "hoursNote": "店家官網；karmaroasters.com 與 Yelp 一致，另一個網站 karmakrakow.pl 列平日 07:00–18:00，Day 3 17:20 出門前看 Google 地圖當日營業時間",
     "liveCheckedAt": "2026-10-20",
     "phone": "+48 662 387 281",
     "cuisine": "自家烘焙咖啡",
@@ -1196,7 +1196,7 @@ export const diningPlaces = {
       "波蘭地方料理。",
       "Żurek 酸黑麥湯＋綜合 Pierogi，主菜選梅醬豬肋排或半隻烤鴨；還有胃口再加甜點。"
     ],
-    "verificationNote": "品牌門市頁確認 Nowy Świat 44 與上述時段；polishcuisine.pl 另列每日 12:00 開門、週五六至 23:30，其餘至 22:00，仍需訂位確認。10/24 18:30 晚餐在兩版時段交集內。週六時段各來源 11:30–23:00 至 12:00–23:30 不一，18:30 都在營業時間內。",
+    "verificationNote": "品牌門市頁確認 Nowy Świat 44 與上述時段；polishcuisine.pl 另列每日 12:00 開門、週五六至 23:30，其餘至 22:00，仍需訂位確認。週六時段各來源 11:30–23:00 至 12:00–23:30 不一，需以現場為準。",
     "menuUrl": "https://polishcuisine.pl/pl/menu-2/",
     "menuNote": "初稿提供餐點建議；當日供應與最後接單待確認。",
     "cuisine": "波蘭地方菜",
@@ -1234,7 +1234,7 @@ export const diningPlaces = {
   },
   "krakow-hankki": {
     "id": "krakow-hankki",
-    "booking": "recommended",
+    "booking": "walk-in",
     "cityKey": "krakow",
     "name": "Hankki",
     "address": "Zabłocie 19A, Kraków",
