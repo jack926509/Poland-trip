@@ -1422,7 +1422,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "Żurawia 32/34 的抹茶與韓式吐司小店；10/30 17:15 從瓦津基走回飯店途中的下午點心。"
+      "Żurawia 32/34 的抹茶與韓式吐司小店；10/30 新路線不排入的下午點心備選。"
     ],
     "verificationNote": "店家 Instagram 時段；另有目錄列週二休，前往前確認。",
     "cuisine": "韓式吐司 · 抹茶",

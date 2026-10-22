@@ -407,11 +407,11 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-arirang-restaurant",
       "role": "晚餐首選（條件式）",
-      "note": "19:59（Koleo）抵華沙、放行李後步行約 5 分到 Nowogrodzka 38，21:00 到店：Bulgogi 韓式烤牛肉、拌飯，或 Jajangmyeon、海鮮煎餅。21:15 前還沒能入座就改 Złote Tarasy 或 Ćma。",
+      "note": "19:59（Koleo）抵華沙、入住放行李、逛過 Złote Tarasy 與科學文化宮夜景後，21:10 到 Nowogrodzka 38（Hotel Metropol 旁約 50 公尺）：Bulgogi 韓式烤牛肉、拌飯，或 Jajangmyeon、海鮮煎餅。21:30 前還沒能入座就改 Złote Tarasy 或 Ćma。",
       "stepId": "d6-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "週四 12:00–22:00（多個目錄一致，無店家官網），不用訂位，當天先看 Google 地圖營業狀態；21:00 到店、21:15 前無法入座就改 Złote Tarasy 速食或 24 小時的 Ćma。",
+      "condition": "週四 12:00–22:00（多個目錄一致，無店家官網），最後點餐時間未查到，可請 Hotel Metropol 櫃檯代為確認；不用訂位，當天先看 Google 地圖營業狀態；21:10 到店、21:30 前無法入座就改 Złote Tarasy 速食或 24 小時的 Ćma。",
       "dayHours": "12:00–22:00"
     },
     {
@@ -568,8 +568,8 @@ export const dayDiningPlans = {
     },
     {
       "placeId": "warsaw-qq-warsaw-matcha-korean-toasts",
-      "role": "下午點心",
-      "note": "約 17:15 從瓦津基走回三十字廣場後沿 Żurawia 順路進來：抹茶拿鐵為主，韓式吐司兩人分一份，17:35 起身回飯店，18:30 還有晚餐。週五 11:00–20:00（店家 Instagram，另有目錄列週二休），前往前確認。",
+      "role": "下午點心備選（10/30 新路線不排入）",
+      "note": "10/30 改走新世界街與瓦津基路線，QQ 不在順路範圍；想吃抹茶與韓式吐司再自行安排。Żurawia 32/34，週五 11:00–20:00（店家 Instagram，另有目錄列週二休），前往前確認。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -585,11 +585,11 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-bulke-przez-bibulke-zgoda",
       "role": "早餐首選（條件式）",
-      "note": "Zgoda 3，離 Metropol 步行約 8 分，週六 08:00 開門：Bagel、炒蛋或 Avocado Toast；08:50 收尾，回住宿取行李，09:45 退房出發。",
+      "note": "Zgoda 3，週六 08:00 開門；看完 08:00 無名塚衛兵交接後步行約 1 公里，08:25 到店：Bagel、炒蛋或 Avocado Toast；09:05 前結帳，回住宿整理行李，09:40 退房、10:00 出門。",
       "stepId": "d8-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
-      "condition": "08:15 還無法入座就外帶或改車站沿線用餐；保住 11:00 到機場目標。",
+      "condition": "08:35 還無法入座就外帶或改車站沿線用餐；保住 11:00 到機場目標。",
       "dayHours": "08:00–22:00"
     },
     {
