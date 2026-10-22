@@ -4,8 +4,8 @@ import { diningPlaces } from './dining-places.js';
 // 每日地圖只以「白天實際遊覽城市」為主。晚間火車抵達城市不納入當日視野，
 // 避免 fitBounds 把兩座城市同時縮到無法辨識；車站與住宿僅在同一主城市且有操作價值時保留。
 export const dayMapPlans = {
-  1: { focus: '華沙 Warszawa', center: [52.236, 21.014], zoom: 14, selections: { warsaw: ['Hotel Metropol'] } },
-  2: { focus: '克拉科夫 Kraków', center: [50.057, 19.944], zoom: 14, selections: { krakow: ['Wawel 皇家城堡', '中央市集廣場', 'Kazimierz 猶太區', '辛德勒工廠博物館', 'Okrąglak（Plac Nowy zapiekanka）', 'ibis budget Krakow Stare Miasto'] } },
+  1: { focus: '出發日 · 波蘭地圖僅供抵達後參考', center: [52.202, 20.991], zoom: 12, selections: {} },
+  2: { focus: '克拉科夫抵達與晚餐', center: [50.057, 19.944], zoom: 13, selections: { krakow: ['ibis budget Krakow Stare Miasto'] } },
   3: { focus: '奧斯威辛 Oświęcim／Brzezinka', center: [50.033, 19.192], zoom: 13, selections: {} },
   4: { focus: '克拉科夫 Kraków＋Wieliczka', center: [50.040, 19.995], zoom: 12, selections: { krakow: ['Kazimierz 猶太區', 'ibis budget Krakow Stare Miasto'] } },
   5: { focus: '樂斯拉夫 Wrocław', center: [51.110, 17.049], zoom: 13, selections: { wroclaw: ['中央市集廣場', '大教堂島 Ostrów Tumski', '百年廳 Hala Stulecia', 'Restauracja Wrocławska', 'Piast'] } },
@@ -24,27 +24,9 @@ export const dayMapPlans = {
 // 瓦津基蕭邦紀念碑、Soul Kitchen）圖釘：座標取自 OpenStreetMap 物件，經
 // Nominatim 查詢確認門牌或名稱與行程地址一致，第 7 欄記 OSM 物件連結。
 export const daySupplementaryPins = {
-  1: [
-    // 2026-10-19 座標改為聖十字教堂（Krakowskie Przedmieście 3，OSM way 28092628，Nominatim 2026-10-19 查得）；
-    // 原本沿用 venues.js 皇家大道街道點，落在總統府附近，與說明差約 390 m；改名後序號對到「★ 聖十字教堂」那一列。
-    // 哥白尼紀念碑另立一顆（OSM node 282661680，Nominatim 2026-10-19 查得），讓「哥白尼紀念碑＋Staszic 宮」那列保有序號。
-    [52.2381578, 21.0179739, '哥白尼紀念碑 Pomnik Kopernika', 'Krakowskie Przedmieście 南端 · Staszic 宮前', 'https://www.google.com/maps/search/?api=1&query=Pomnik%20Miko%C5%82aja%20Kopernika%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/node/282661680'],
-    [52.2387357, 21.0167603, '聖十字教堂 Kościół św. Krzyża', 'Krakowskie Przedmieście 3 · 皇家大道傍晚散步北行的中段', 'https://www.google.com/maps/search/?api=1&query=Ko%C5%9Bci%C3%B3%C5%82%20%C5%9Awi%C4%99tego%20Krzy%C5%BCa%2C%20Krakowskie%20Przedmie%C5%9Bcie%203%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/28092628'],
-    venuePin('warsaw-centralna-station', { label: 'Złote Tarasy 就在車站旁：晚餐後逛街採買', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.228917&mlon=21.003315' }),
-    [52.2446285, 21.0137953, 'E.Wedel Pijalnia · Krakowskie Przedmieście 45', '17:35 熱巧克力：今天往北的折返點', diningPlaces['warsaw-wedel-krakowskie-45'].map, 'food', 'https://www.openstreetmap.org/node/5194716723'],
-    [52.2345825, 21.0189984, 'Specjały Regionalne', 'Nowy Świat 44 · 18:30 晚餐', diningPlaces['warsaw-specjaly-regionalne'].map, 'food', 'https://www.openstreetmap.org/node/4408894491'],
-  ],
+  1: [],
   2: [
-    venuePin('krakow-wawel-cathedral', { label: 'Wawel 3 · 主入口區', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=50.054727&mlon=19.935226' }),
-    venuePin('krakow-st-mary-basilica', { label: 'plac Mariacki 5', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=50.061692&mlon=19.939409' }),
-    venuePin('krakow-sukiennice', { label: 'Rynek Główny 3', category: 'shop', coordinateSource: 'https://www.openstreetmap.org/?mlat=50.061713&mlon=19.937349' }),
-    // 2026-10-19 補 12:10 城門列與 13:00 Pimiento 午餐列的圖釘：座標取自 OpenStreetMap 物件，
-    // Nominatim 2026-10-19 查得（城門 way 39357538、甕城 relation 13562708、Pimiento node 2628685548，
-    // 門牌 Świętego Filipa 21 與行程地址一致）。Stary Kleparz 只當街景路過，不另立圖釘。
-    [50.0648558, 19.9413527, '聖弗洛里安城門 Brama Floriańska', 'Floriańska 北端 · 只看外觀', 'https://www.google.com/maps/search/?api=1&query=Brama%20Floria%C5%84ska%2C%20Krak%C3%B3w', 'sight', 'https://www.openstreetmap.org/way/39357538'],
-    [50.0654581, 19.9414510, '甕城 Barbakan', 'Basztowa 街旁 · 只看外觀，收費展館不進', 'https://www.google.com/maps/search/?api=1&query=Barbakan%2C%20Basztowa%2C%20Krak%C3%B3w', 'sight', 'https://www.openstreetmap.org/relation/13562708'],
-    [50.0677985, 19.9421352, 'Pimiento Shop and Bistro', 'Świętego Filipa 21 · 13:00 午餐', diningPlaces['krakow-pimiento-shop-bistro'].map, 'food', 'https://www.openstreetmap.org/node/2628685548'],
-    [50.046828, 19.954386, 'Podgórze・猶太英雄廣場', '步行往辛德勒工廠的明確中途錨點', 'https://www.google.com/maps/search/?api=1&query=Ghetto%20Heroes%20Square%2C%20Krak%C3%B3w', 'sight', 'https://www.openstreetmap.org/?mlat=50.046828&mlon=19.954386'],
+    venuePin('krakow-glowny-station', { label: '18:12 抵站後入住 ibis', category: 'transport', coordinateSource: 'https://portalpasazera.pl/en/KatalogStacji' }),
   ],
   3: [
     venuePin('krakow-auschwitz-i-entrance', { label: '官方確認入口 · Więźniów Oświęcimia 55', category: 'sight', coordinateSource: 'https://www.auschwitz.org/en/museum/news/new-visitor-services-center-at-the-auschwitz-memorial-change-of-the-place-of-arrival-and-entrance-from-15-june%2C1614.html' }),
@@ -98,7 +80,7 @@ export const daySupplementaryPins = {
     [52.2493716, 20.9931609, 'POLIN 波蘭猶太人歷史博物館（外觀）', 'Mordechaja Anielewicza 6 · 早上第一站，只看外觀', 'https://www.google.com/maps/search/?api=1&query=POLIN%20Museum%2C%20Mordechaja%20Anielewicza%206%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/186141946'],
     [52.2426428, 21.0250683, 'BUW 華沙大學圖書館屋頂花園', 'Dobra 56/66 · 14:35 屋頂花園＋河岸步道', 'https://www.google.com/maps/search/?api=1&query=Biblioteka%20Uniwersytecka%20w%20Warszawie%2C%20Dobra%2056%2F66%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/relation/6414970'],
     [52.2147016, 21.0280881, '瓦津基公園 · 蕭邦紀念碑', '15:25 進公園的第一站；水上宮殿在公園中央湖邊', 'https://www.google.com/maps/search/?api=1&query=Chopin%20Monument%2C%20%C5%81azienki%20Kr%C3%B3lewskie%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/1448330230'],
-    [52.2294483, 21.0148815, 'Soul Kitchen', 'Nowogrodzka 18A · 18:30 最後晚餐', diningPlaces['warsaw-soul-kitchen'].map, 'food', 'https://www.openstreetmap.org/node/4373643390'],
+    [52.2294483, 21.0148815, 'Soul Kitchen', 'Nowogrodzka 18A · 18:00–20:00 已訂妥，2 人', diningPlaces['warsaw-soul-kitchen'].map, 'food', 'https://www.openstreetmap.org/node/4373643390'],
     [52.2325833, 21.0140889, 'Bułkę przez Bibułkę', 'Zgoda 3 · 早餐', diningPlaces['warsaw-bulke-przez-bibulke-zgoda'].map, 'food', 'https://www.openstreetmap.org/node/316892293'],
     [52.2331288, 21.0089838, 'MSN 現代美術館', 'Marszałkowska 103', 'https://www.google.com/maps/search/?api=1&query=Museum%20of%20Modern%20Art%2C%20Marsza%C5%82kowska%20103%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/944207076'],
     [52.2493699, 21.0058184, '克拉辛斯基廣場・起義紀念碑', '華沙起義紀念碑（戶外雕塑）', 'https://www.google.com/maps/search/?api=1&query=Warsaw%20Uprising%20Monument%2C%20plac%20Krasi%C5%84skich%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/1327606552'],
@@ -141,6 +123,7 @@ export const pinCoordinateCheckedAt = {
     "Specjały Regionalne": '2026-10-15',
   },
   2: {
+    'Kraków Główny': '2026-10-22',
     "瓦維爾大教堂": '2026-09-08',
     "聖瑪利亞聖殿": '2026-09-08',
     "紡織會館 Sukiennice": '2026-08-06',

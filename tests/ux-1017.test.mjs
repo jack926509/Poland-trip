@@ -81,15 +81,13 @@ const stepLabel = (dayN, n) => days.find(day => day.n === dayN).steps[n - 1].lab
 const MOVEMENT_LABEL = /前往|搭車|電車|地鐵|火車|巴士|SKM|\bIC\b|EIP|EIC|走回|^回|回 |返回|轉乘/;
 
 test('F3：Day 2 的 Kazimierz 與 Podgórze 不共用序號，也不指到移動列', () => {
-  const kazimierz = pinNumber(2, 'Kazimierz 猶太區');
-  const podgorze = pinNumber(2, 'Podgórze・猶太英雄廣場');
-  assert.ok(!(kazimierz === 13 && podgorze === 13), '兩顆不可都是 13');
-  for (const n of [kazimierz, podgorze]) if (n) assert.doesNotMatch(stepLabel(2, n), MOVEMENT_LABEL);
+  const points = makeDayMap(days[1]).points;
+  assert.ok(!points.some(p => /Kazimierz|Podgórze/.test(p[2])));
+  assert.ok(points.some(p => p[2] === 'Kraków Główny'));
 });
 
 test('F3：Day 1 的 Warszawa Centralna 不指到 SKM 那一列；Day 4 Kraków Główny 指到「抵 Kraków Główny」', () => {
-  const centralna = pinNumber(1, 'Warszawa Centralna');
-  if (centralna) assert.doesNotMatch(stepLabel(1, centralna), /SKM/);
+  assert.equal(makeDayMap(days[0]).points.length, 0, '出發日不顯示波蘭市區景點');
   assert.match(stepLabel(4, pinNumber(4, 'Kraków Główny')), /^抵 Kraków Główny/);
 });
 
@@ -140,13 +138,10 @@ test('F5／F6：別名讓主要停留點有序號；皇家大道對到第一次�
   assert.match(stepLabel(7, pinNumber(7, '華沙老城市場廣場')), /★ 老城廣場/);
   assert.match(stepLabel(5, pinNumber(5, '中央市集廣場')), /★ 中央廣場/);
   assert.match(stepLabel(5, pinNumber(5, '大教堂島 Ostrów Tumski')), /座堂島/);
-  assert.match(stepLabel(2, pinNumber(2, '中央市集廣場')), /★ 中央廣場/);
+  assert.ok(!makeDayMap(days[1]).points.some(p => p[2] === '中央市集廣場'));
   assert.match(stepLabel(4, pinNumber(4, 'ibis budget Krakow Stare Miasto')), /ibis/);
   assert.match(stepLabel(6, pinNumber(6, '舊市集廣場 Stary Rynek')), /廣場卡正面/);
-  // 2026-10-19：原「皇家大道」圖釘座標改到聖十字教堂並改名，對到「★ 聖十字教堂」那列；哥白尼紀念碑另有圖釘，仍是第 10 列。
-  assert.match(stepLabel(1, pinNumber(1, '聖十字教堂 Kościół św. Krzyża')), /聖十字教堂/);
-  assert.equal(pinNumber(1, '哥白尼紀念碑 Pomnik Kopernika'), 10);
-  assert.match(stepLabel(1, 10), /哥白尼紀念碑/);
+  assert.equal(makeDayMap(days[0]).points.length, 0);
 });
 
 test('H2：預設框住主要步行區、提供「全部地點」，座標資料不變', () => {
@@ -267,14 +262,14 @@ test('F3b：同一列的 a／b／c 依時間表文字先後標（Day 5 第 17 �
   const label = (n, name) => makeDayMap(days.find(day => day.n === n)).points.find(point => point[2].startsWith(name))?.[9];
   assert.equal(label(5, 'Słodowa 島'), '17a');
   assert.equal(label(5, '沙上聖母堂'), '17b');
-  assert.equal(label(2, '聖弗洛里安城門'), '8a');
-  assert.equal(label(2, '甕城'), '8b');
-  assert.ok(/^\d+$/.test(label(2, 'Pimiento')), 'Day 2 Pimiento 午餐要有純數字編號');
+  assert.equal(label(2, '聖弗洛里安城門'), undefined);
+  assert.equal(label(2, '甕城'), undefined);
+  assert.equal(label(2, 'Pimiento'), undefined, '改班後白天午餐不再排入地圖');
 });
 
 test('F3c：補充圖釘各自帶座標查證日期，不再一律寫死 2026-09-08', () => {
   const checkedAt = (n, name) => makeDayMap(days.find(day => day.n === n)).checks[name].checkedAt;
-  assert.equal(checkedAt(2, 'Pimiento Shop and Bistro'), '2026-10-19');
+  assert.equal(checkedAt(2, 'Kraków Główny'), '2026-10-22');
   assert.equal(checkedAt(8, 'Warszawa Śródmieście'), '2026-10-19');
   const all = days.flatMap(day => Object.values(makeDayMap(day).checks).map(check => check.checkedAt));
   assert.ok(new Set(all).size > 1, '不可每顆圖釘都是同一個日期');
@@ -284,7 +279,7 @@ test('F3c：補充圖釘各自帶座標查證日期，不再一律寫死 2026-09
     }
   }
   // 建置輸出：Day 2 頁面內嵌的 mapChecks 要帶 Pimiento 的 10-19，而不是共用的 09-08
-  assert.match(read('day-02.html'), /"Pimiento Shop and Bistro":\{"status":"coordinate-verified","checkedAt":"2026-10-19"/);
+  assert.match(read('day-02.html'), /"Kraków Główny":\{"status":"coordinate-verified","checkedAt":"2026-10-22"/);
   // 2026-10-20 起地圖彈窗不再顯示查證日期
   assert.doesNotMatch(read('day-02.html'), /查證'\s*:/);
   assert.ok(!read('day-02.html').includes("' 查證'"));

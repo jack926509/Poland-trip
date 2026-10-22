@@ -9,7 +9,7 @@ import { cityGuides } from '../lib/city-guide.mjs';
  */
 export function renderDayStayLine(day) {
   const hotel = nightStay(day), checkout = checkoutStay(day);
-  const text = hotel ? `${esc(hotel.city)} · ${esc(hotel.name)}（${esc(hotel.status)}）` : isDepartureDay(day) ? '離境／機上過夜' : '⚠ 住宿資料缺漏，請確認';
+  const text = hotel ? `${esc(hotel.city)} · ${esc(hotel.name)}（${esc(hotel.status)}）` : day.overnight ? esc(day.overnight) : isDepartureDay(day) ? '離境／機上過夜' : '⚠ 住宿資料缺漏，請確認';
   return `<p class="day-stay-line"><b>今晚：</b>${text}${hotel && !hotel.addressVerified ? ' · 飯店門牌待確認' : ''}${checkout ? ` · 今天從 ${esc(checkout.name)} 退房` : ''}</p>`;
 }
 

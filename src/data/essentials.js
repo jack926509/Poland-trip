@@ -40,8 +40,8 @@ export const packingDefault = {
 //
 // 仍屬推算值：若要用於趕日落前抵達某拍攝點這類關鍵決策，出發前再以天文表核對。
 export const daylight = [
-  {day:1, date:'2026-10-24', city:'華沙', tz:'CEST',   sunrise:'07:16', sunset:'17:23', blueHourEnd:'17:58', note:'抵達日。夏令時間最後一個完整日，皇家大道散步到總統府剛好在 17:23 日落前，接著在 E.Wedel 喝熱巧克力、往回走時拍皇家大道夜景——這是全程最長的一天。'},
-  {day:2, date:'2026-10-25', city:'克拉科夫', tz:'CET',    sunrise:'06:17', sunset:'16:30', blueHourEnd:'17:04', note:'冬令時間首日，日落比昨天早 53 分鐘。辛德勒工廠 17:30 入館時天已黑，屬室內行程不受影響。'},
+  {day:1, date:'2026-10-24', city:'華沙', tz:'CEST',   sunrise:'07:16', sunset:'17:23', blueHourEnd:'17:58', note:'本日為桃園出發日，尚未抵波蘭；這列只保留華沙日照參考，不代表當天有華沙散步行程。'},
+  {day:2, date:'2026-10-25', city:'克拉科夫', tz:'CET',    sunrise:'06:17', sunset:'16:30', blueHourEnd:'17:04', note:'冬令時間首日；18:12 抵克拉科夫時天已黑，先入住及用餐，白天景點不再排入。'},
   {day:3, date:'2026-10-26', city:'克拉科夫', tz:'CET',    sunrise:'06:19', sunset:'16:28', blueHourEnd:'17:02', note:'Auschwitz 回程 16:55 抵克拉科夫時已過日落，當晚不安排戶外拍攝。'},
   {day:4, date:'2026-10-27', city:'克拉科夫', tz:'CET',    sunrise:'06:20', sunset:'16:27', blueHourEnd:'17:00', note:'Kazimierz 白天散步約 13:45 回城後開始，日落前約 2 小時是磚牆與窄街的最佳光線。'},
   {day:5, date:'2026-10-28', city:'樂斯拉夫', tz:'CET',    sunrise:'06:36', sunset:'16:34', blueHourEnd:'17:08', note:'百年廳 13:55 拍外觀；座堂島煤氣燈：點燈人沒有對外保證的固定出發分鐘，通常在日落前約 30–40 分鐘出發，15:45 上島就邊走邊留意。'},
@@ -58,14 +58,14 @@ export const about = [
   ['物價水位', '依城市與店型差異大，以實際菜單與訂票頁為準'],
   ['小費文化', '餐廳 10%（非強制）'],
   ['刷卡付款', '刷卡機或 ATM 問要不要換成台幣（DCC）時，一律選 PLN（złoty），用台幣結帳匯率較差。'],
-  ['10/25（日）', '凌晨 03:00 改冬令時間，時鐘撥回 02:00，手機會自動調。當天是非營業週日，多數商店不開，超市零食前一天先買。'],
+  ['10/25（日）', '凌晨 03:00 改冬令時間，時鐘撥回 02:00，手機會自動調。當天是非營業週日，多數商店不開，當天抵達後找有開的車站店或便利商店補給。'],
   ['搭火車', 'IC／EIP 對號入座，看票上的車廂（wagon）與座位（miejsce）；大行李放車廂兩端行李架。查票時出示 App 或 PDF 票券。'],
   ['10/30–31 諸聖節前夕', '墓園開始點滿蠟燭，華沙人潮與交通都比平常多；11/1 閉館的景點已在離境之後，不影響行程。'],
   ['台灣簽證', '持載有國民身分證統一編號的有效中華民國護照，可依申根短期停留規則免簽；仍備妥回程票、住宿與行程證明'],
-  ['EES 入境登錄', '已全面運作。非 EU 旅客第一次入境要在邊境登錄護照、指紋與臉部照片，不用事先申請；10/24 華沙入境多留排隊時間。'],
+  ['EES 入境登錄', '已全面運作。非 EU 旅客第一次入境要在邊境登錄護照、指紋與臉部照片，不用事先申請；10/25 華沙入境多留排隊時間。'],
   ['ETIAS', '還沒啟用、不收申請，這趟不用辦。網路上收費「代辦 ETIAS」的網站都是詐騙。'],
-  ['行動電源・本趟準備', '每人最多 2 個、各不超過 100 Wh，符合 Qatar 航段容量上限；只放手提行李，保護接點防短路，規格標示清楚。三家航司均禁止託運及放頭頂置物箱，放前座下方或航司允許的可及位置。'],
-  ['行動電源・Cathay', 'CX 479：最多 2 個，只能手提；機上全程不得使用或為行動電源充電，須收在前方座位下的手提行李。'],
+  ['行動電源・本趟準備', '每人最多 2 個、各不超過 100 Wh，符合香港航空及 Qatar 航段容量上限；只放手提行李，保護接點防短路，規格標示清楚。三家航司均禁止託運及放頭頂置物箱，放前座下方或航司允許的可及位置。'],
+  ['行動電源・香港航空', 'HX 283：每人最多 2 個、各不超過 100 Wh，只能手提；禁止機上使用或充電，不放頭頂置物箱，放前座下方或座椅口袋等可及位置。'],
   ['行動電源・Qatar', 'QR 815／259／260／818：最多 2 個、各 ≤100 Wh，只能手提；禁止在機上為行動電源充電，須保持可及，不放頭頂或側邊收納櫃。使用前仍依機組指示。'],
   ['行動電源・EVA', 'BR 872：最多 2 個，只能手提，不放頭頂置物箱；進入航空器後不得使用行動電源或為行動電源／備用鋰電池充電。超過 100 Wh 的一般備用電池規則不能代替本趟 Qatar 容量上限。'],
 ];
@@ -96,7 +96,7 @@ export const essentialSources = [
   {name:'EU 官方 EES／ETIAS 狀態', checkedAt:'2026-10-06', note:'EES 已全面運作；ETIAS 尚未運作、不收申請，啟用日另行公告。', url:'https://home-affairs.ec.europa.eu/policies/schengen/smart-borders_en'},
   {name:'EU 官方 EES 入境程序', checkedAt:'2026-10-06', note:'首次短期入境登錄護照、指紋與臉部影像；豁免依旅客身分判斷。', url:'https://www.consilium.europa.eu/en/policies/entryexit-system/'},
   {name:'Qatar 行動電源公告', checkedAt:'2026-10-06', note:'每人 2 個、各 ≤100 Wh；僅手提，禁止在機上為行動電源充電，保持可及。', url:'https://www.qatarairways.com/en/travel-alerts.html'},
-  {name:'Cathay 行動電源規則', checkedAt:'2026-10-06', note:'每人 2 個；手提且放前座下方，機上不可使用或充電。', url:'https://www.cathaypacific.com/cx/en_US/baggage/controlled-and-banned-items/lithium-batteries.html'},
+  {name:'香港航空行動電源規則', checkedAt:'2026-10-22', note:'每人 2 個；手提且放前座下方，機上不可使用或充電。', url:'https://content.hongkongairlines.com/en_CA/fly-with-us/baggage/handcarry'},
   {name:'EVA 行動電源規則', checkedAt:'2026-10-06', note:'每人 2 個；僅手提、不放頭頂，進入航空器後不可使用或充電。', url:'https://www.evaair.com/zh-tw/fly-prepare/baggage/additional-baggage-information/restrictions/'},
   {name:'外交部領事事務局・波蘭入境須知', checkedAt:'2026-09-08', note:'核對台灣護照免簽資格、護照條件與可能被要求出示的旅行證明。', url:'https://www.boca.gov.tw/sp-foof-countrycp-01-62-aa8d5-02-1.html'},
   {name:'波蘭政府・112 緊急電話', checkedAt:'2026-09-08', note:'112 為歐洲通用緊急電話；997／998／999 仍分別對應警察、消防與救護。', url:'https://www.gov.pl/web/mswia-en/what-and-how-to-report'},

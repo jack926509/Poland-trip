@@ -80,7 +80,7 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
   const dayEntries = days.map(day => {
     const pending = bookingProgress(day).pending.length;
     const hotel = nightStay(day);
-    const stayText = hotel ? `今晚 ${hotel.city} · ${hotel.name}` : isDepartureDay(day) ? '離境／機上過夜' : '⚠ 住宿資料缺漏';
+    const stayText = hotel ? `今晚 ${hotel.city} · ${hotel.name}` : day.overnight ? escapeHtml(day.overnight) : isDepartureDay(day) ? '離境／機上過夜' : '⚠ 住宿資料缺漏';
     return `
     <li class="journal-day-entry">
       <a href="day-${String(day.n).padStart(2, '0')}.html">
@@ -125,7 +125,7 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
         <dl class="journal-cover-meta">
           <div><dt>航空往返</dt><dd>${escapeHtml(meta.flightDateRange || meta.dateRange)}</dd></div>
           <div><dt>波蘭境內</dt><dd>${escapeHtml(meta.dateRange)}</dd></div>
-          <div><dt>旅程</dt><dd>${meta.days} 天 ${meta.nights} 夜</dd></div>
+          <div><dt>旅程</dt><dd>當地 ${meta.nights} 晚</dd></div>
         </dl>
       </div>
 ${coverFigure}

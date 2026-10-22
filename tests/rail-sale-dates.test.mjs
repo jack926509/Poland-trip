@@ -13,7 +13,7 @@ const allSources = { ...trip, databaseEntries };
 
 test('已購四段以截圖車次及發車時間為準，歷史開賣日不掛在已購車次', () => {
   const expected = [
-    ['EIP 5300', undefined, '08:40', '11:10', '2h30'],
+    ['EIP 1306', undefined, '15:45', '18:12', '2h27'],
     ['IC 3830', undefined, '16:45', '19:50', '3h05'],
     ['IC 260', undefined, '19:10', '20:29', '1h19'],
     ['EIC 8104', undefined, '17:40', '19:59', '2h19'],

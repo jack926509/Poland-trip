@@ -640,10 +640,10 @@ export const snacksAndCafes = Object.fromEntries(Object.entries({
 // 門市事實（地址、營業時間、查核來源）一律在 dining-places.js，這裡只放分類與順路時段。
 export const cafeGuide = [
   { cityKey: 'warsaw', city: '華沙', items: [
-    { placeId: 'warsaw-a-blikle-1869', type: '甜點 · pączek', when: 'Day 1 · 16:30 新世界街順路外帶' },
-    { placeId: 'warsaw-wedel-krakowskie-45', type: '熱巧克力', when: 'Day 1 · 17:35 總統府旁折返點（已排入）' },
-    { placeId: 'warsaw-cafe-bristol', type: '咖啡 · 蛋糕', when: 'Day 1 · 17:35 與 E.Wedel 二選一' },
-    { placeId: 'warsaw-green-caffe-nero-centralny', type: '車站咖啡外帶', when: 'Day 2 · 07:35 上車前外帶（已排入）' },
+    { placeId: 'warsaw-a-blikle-1869', type: '甜點 · pączek', when: '城市延伸備選（改班後 10/24 不在波蘭）' },
+    { placeId: 'warsaw-wedel-krakowskie-45', type: '熱巧克力', when: '城市延伸備選（改班後 10/24 不在波蘭）' },
+    { placeId: 'warsaw-cafe-bristol', type: '咖啡 · 蛋糕', when: '城市延伸備選（改班後 10/24 不在波蘭）' },
+    { placeId: 'warsaw-green-caffe-nero-centralny', type: '車站咖啡外帶', when: '城市延伸備選（改班後機場直接轉西站）' },
     { placeId: 'warsaw-qq-warsaw-matcha-korean-toasts', type: '抹茶 · 韓式吐司', when: 'Day 7 · 17:15 下午點心（已排入）' },
     { placeId: 'warsaw-wedel-szpitalna-8', type: '熱巧克力', when: 'Day 7 · 20:15 飯後選配' },
     { placeId: 'warsaw-bulke-przez-bibulke-zgoda', type: '早午餐 · 貝果', when: 'Day 8 · 08:00 早餐（已排入；Day 7 07:30 早餐也在這家）' },
@@ -652,7 +652,7 @@ export const cafeGuide = [
   ] },
   { cityKey: 'krakow', city: '克拉科夫', items: [
     { placeId: 'krakow-massolit-books-cafe', type: '書店咖啡館', when: 'Day 4 · 回城後有餘裕才繞去（Wawel 西北側；Day 2 行程無空檔）' },
-    { placeId: 'krakow-cafe-camelot', type: '老牌咖啡廳', when: 'Day 2 · 中央廣場散步時歇腳' },
+    { placeId: 'krakow-cafe-camelot', type: '老牌咖啡廳', when: '城市延伸備選（10/25 晚抵，不排白天散步）' },
     { placeId: 'krakow-karma-coffee-roasters', type: '精品咖啡', when: 'Day 4 · 回城取行李前（老城西側）' },
     { placeId: 'krakow-cukiernia-michalek', type: '甜點', when: 'Day 4（週二）· 回城取行李前順路買' },
   ] },

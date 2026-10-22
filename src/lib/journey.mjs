@@ -10,7 +10,7 @@ export function nightStay(day) {
   return stayForDate(stay, dayDate(day));
 }
 export function checkoutStay(day) {
-  return stay.find(item => item.checkOut === dayDate(day)) || null;
+  return stay.find(item => item.itineraryActive !== false && item.checkOut === dayDate(day)) || null;
 }
 /**
  * 待辦頁每一筆的錨點 ID。同類同日有多筆時依資料順序加序號，
@@ -76,7 +76,7 @@ export function isDepartureDay(day) {
 
 /** 入住日包含、退房日不包含；查不到不推定已離境。 */
 export function stayForDate(stays, iso) {
-  return stays.find(item => item.checkIn <= iso && iso < item.checkOut) || null;
+  return stays.find(item => item.itineraryActive !== false && item.checkIn <= iso && iso < item.checkOut) || null;
 }
 
 const isoToShortDate = iso => iso.slice(5).replace('-', '/');

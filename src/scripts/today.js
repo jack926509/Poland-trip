@@ -10,8 +10,8 @@
 
 import { todayIn } from '../lib/schedule.mjs';
 
-export function warsawTodayLocal(now) {
-  return todayIn('Europe/Warsaw', now);
+export function warsawTodayLocal(now, timeZone = 'Europe/Warsaw') {
+  return todayIn(timeZone, now);
 }
 
 export function dayGap(fromIso, toIso) {
@@ -35,8 +35,8 @@ export function statusText(selection, total) {
   return '沒有可顯示的行程。';
 }
 
-export function warsawMinutes(now) {
-  const parts = new Intl.DateTimeFormat('en-GB', { timeZone:'Europe/Warsaw', hour:'2-digit', minute:'2-digit', hourCycle:'h23' }).formatToParts(now);
+export function warsawMinutes(now, timeZone = 'Europe/Warsaw') {
+  const parts = new Intl.DateTimeFormat('en-GB', { timeZone, hour:'2-digit', minute:'2-digit', hourCycle:'h23' }).formatToParts(now);
   return Number(parts.find(p => p.type === 'hour').value) * 60 + Number(parts.find(p => p.type === 'minute').value);
 }
 
@@ -113,7 +113,9 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
 
   function refresh() {
     const clock = now();
-    const today = warsawTodayLocal(clock);
+    const firstZone = cards[0].getAttribute?.('data-time-zone');
+    const firstLocal = firstZone ? warsawTodayLocal(clock, firstZone) : null;
+    const today = firstLocal && firstLocal <= dates[0] ? firstLocal : warsawTodayLocal(clock);
     const selection = selectToday(dates, today, travelStart || dates[0]);
     shown = manualDate !== null ? dates.indexOf(manualDate) : selection.mode === 'during' ? selection.index
       : selection.mode === 'after' ? cards.length - 1 : 0;
@@ -125,7 +127,7 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
     // 出發前「不在旅程期間」框已說明預覽 Day 1，狀態列不再重複；旅途中翻到別天才提示不是今天。
     if (status) {
       const text = !preview ? statusText(selection,cards.length) : selection.mode === 'during' ? `預覽 Day ${shown+1}（不是今天）` : '';
-      status.textContent = text;
+      status.textContent = dates[shown] === dates[0] && firstZone === 'Asia/Taipei' ? text.replace('華沙時間', '台北時間') : text;
       status.hidden = !text;
     }
     if (outside) outside.hidden = selection.mode === 'during';
@@ -143,7 +145,8 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
     retargetQuickNav(card);
     // 舊版靜態 DOM 與無行程卡片也可正常選日。
     const steps = Array.from(card.querySelectorAll?.('[data-next-step]') || []);
-    const minute = preview ? -1 : warsawMinutes(clock);
+    const zone = card.getAttribute?.('data-time-zone') || 'Europe/Warsaw';
+    const minute = preview ? -1 : warsawMinutes(clock, zone) + dayGap(dates[shown], warsawTodayLocal(clock, zone)) * 1440;
     const selected = nextPlanIndex(steps.map(item => Number(item.getAttribute('data-plan-minute'))),minute);
     steps.forEach((step,index) => { step.hidden = index !== selected; });
     const ended = card.querySelector?.('[data-next-ended]');

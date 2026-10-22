@@ -129,7 +129,7 @@ export function renderBookingStatusCard(todoGroups, deadlines = [], today = taip
       <div class="booking-status-card">
         <span class="eyebrow">待辦總覽</span>
         <h2>${stats.open ? `還沒處理 <b class="number" data-booking-open>${stats.open}</b> 項` : '待辦已全部處理完畢'}</h2>
-        <p>火車、Auschwitz 去程、鹽礦與 7 晚住宿都已訂好；下面是還沒處理的。</p>
+        <p>火車、Auschwitz 去程與鹽礦已購票；航班延後後當地住宿為 6 晚，原 10/24 飯店訂單退改另處理。</p>
         <ul class="booking-status-groups">${rows}</ul>${standaloneHtml}
         <p class="action-links"><a class="booking-status-cta" href="todos.html">看待辦事項 →</a></p>
       </div>
@@ -146,7 +146,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
     .map(part => `<span class="${statusTagClass(part)}">${escapeHtml(part)}</span>`).join('');
   const trainCards = trains.map(train => {
     const leg = splitVerification(train.leg), note = splitVerification(train.note);
-    const price = /未提供/.test(train.price) ? '' : /^\d/.test(train.price) ? `PLN ${train.price}` : train.price;
+    const price = /未提供/.test(train.price) ? '' : /^\d/.test(train.price) && !/PLN|zł/.test(train.price) ? `PLN ${train.price}` : train.price;
     const sale = train.status === '已購票' ? '' : train.saleOpens ? `${escapeHtml(train.saleOpens)} 起預售` : '現場購票';
     const extra = [
       train.dur ? `<p><b>車程：</b>${train.dur}</p>` : '',
@@ -171,7 +171,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
       : null;
     return `
     <article class="card">
-      <span class="eyebrow">${escapeHtml(item.city)}</span><h3>${escapeHtml(item.name)} <span class="${statusTagClass(item.status)}">${escapeHtml(item.status)}</span></h3>
+      <span class="eyebrow">${escapeHtml(item.city)}</span><h3>${escapeHtml(item.name)} <span class="${statusTagClass(item.status)}">${escapeHtml(item.itineraryActive === false ? "改班後不入住・退改未確認" : item.status)}</span></h3>
       <p><b>${escapeHtml(item.checkIn)}${item.checkInTime ? ` ${escapeHtml(item.checkInTime)}` : ''} → ${escapeHtml(item.checkOut)}${item.checkOutTime ? ` ${escapeHtml(item.checkOutTime)}` : ''}</b> · ${item.nights} 晚 · ${item.rooms} 間房</p>
       <p><b>地址：</b>${escapeHtml(item.address)}${item.addressVerified ? '' : ' <span class="tag-yellow">門牌待確認</span>'}</p>
       <p><b>電話：</b>${item.phone ? `<a href="tel:${escapeHtml(item.phone.replace(/[^\d+]/g, ''))}">${escapeHtml(item.phone)}</a>` : '請看訂房確認信'}</p>
@@ -253,7 +253,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
     ${statusCardHtml}
     <section class="section" id="rail-itinerary">
       <div class="section-heading"><span class="section-num">Rail</span><h2>城際交通</h2></div>
-      <div class="callout-note"><b>已購 ${bookedTrains}／${railTrains.length} 段城際火車。</b><p>逐段購票狀態看<a href="todos.html#todo-rail">待辦事項</a>。10/25 EIP 5300、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 都已在 PKP App 票券清單；艙等、車廂與座位看票券詳細頁，並保存離線票券。</p></div>
+      <div class="callout-note"><b>已購 ${bookedTrains}／${railTrains.length} 段城際火車。</b><p>逐段購票狀態看<a href="todos.html#todo-rail">待辦事項</a>。10/25 EIP 1306、10/27 IC 3830、10/28 IC 260、10/29 EIC 8104 都已在 PKP App 票券清單；艙等、車廂與座位看票券詳細頁，並保存離線票券。</p></div>
       <ol class="rail-cards">${trainCards}</ol>
     </section>
     ${busHtml}

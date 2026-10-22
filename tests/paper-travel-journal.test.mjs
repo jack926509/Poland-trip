@@ -22,7 +22,7 @@ test('長頁保留章節索引、目前頁面與目前導覽群組標示', () =>
   // 該機制本身沒壞掉；目前頁面／導覽群組標示仍用 day-02.html 驗證。
   assert.match(read('practical/booking.html'), /class="chapter-index"/);
   const day = read('day-02.html');
-  assert.match(day, /<a href="day-02\.html" aria-current="page" class="nav-link-current"><span class="nav-day-label">Day 2<\/span><span class="nav-day-text"><span class="nav-day-date">10\/25（日）<\/span><span class="nav-day-city">華沙 → 克拉科夫<\/span><\/span><\/a>/);
+  assert.match(day, /<a href="day-02\.html" aria-current="page" class="nav-link-current"><span class="nav-day-label">Day 2<\/span><span class="nav-day-text"><span class="nav-day-date">10\/25（日）<\/span><span class="nav-day-city">華沙機場 → 克拉科夫<\/span><\/span><\/a>/);
   assert.match(day, /<summary aria-current="true">每日行程<\/summary>/);
 });
 

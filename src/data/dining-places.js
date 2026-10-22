@@ -2327,24 +2327,24 @@ export const diningPlaces = {
   },
   "warsaw-soul-kitchen": {
     "id": "warsaw-soul-kitchen",
-    "booking": "recommended",
+    "booking": "booked",
     "cityKey": "warsaw",
     "name": "Soul Kitchen",
     "address": "Nowogrodzka 18A, Warszawa",
     "map": "https://www.google.com/maps/search/?api=1&query=Soul%20Kitchen%2C%20Nowogrodzka%2018A%2C%20Warszawa",
     "hours": "週五 12:00–16:30、17:30–23:00（下午 16:30–17:30 休息，Google 地圖）；週一至週四約 12:00–22:00",
     "sourceUrl": "https://restaurantguru.com/Soul-Kitchen-Warsaw",
-    "checkedAt": "2026-10-13",
+    "checkedAt": "2026-10-22",
     "verificationStatus": "partial",
     "notes": [
       "10/30 最後晚餐首選：Restaurant Guru 2026 年 7 月華沙威靈頓榜第一、Tripadvisor 威靈頓榜第二，離 Metropol 步行約 8 分。",
       "In Your Pocket 與 Warsaw Insider 都列 Nowogrodzka 18A；2026 年獲 Wine Spectator Award of Excellence，仍在營業。"
     ],
     "menuUrl": null,
-    "verificationNote": "Wellington 為多個評論來源的招牌菜，但菜單隨季節換；訂位時在備註請店家預留並確認 10/30 供應。下午可能有休息時段。",
+    "verificationNote": "店家 10/22 回信確認 10/30 18:00–20:00、2 人，保留訂位 15 分鐘，已註記 1 份 Beef Wellington；訂位已確認，完整菜單與當天實際供餐仍依店家。",
     "cuisine": "歐陸／波蘭",
     "dishes": [
-      "Beef Wellington（多來源列為招牌，需先確認）",
+      "Beef Wellington（店家已註記 10/30 1 份）",
       "桌邊韃靼牛肉",
       "Żurek 酸麵包湯",
       "鴨肉配蔓越莓紫甘藍"

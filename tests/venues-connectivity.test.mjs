@@ -52,11 +52,9 @@ test('trip.js 步驟的 constraint.venue 全部能對到 venues.js（不是只�
 });
 
 test('矛盾 #12：Wawel 短路線步驟的 constraint 改指王冠寶庫，與步驟文字、票價一致', () => {
-  const day2 = days.find(item => item.n === 2);
-  const step = day2.steps.find(item => item.label === '★ Wawel 城堡短路線');
-  assert.equal(step.constraint.venue, 'krakow-wawel-treasury');
-  assert.match(step.sub, /王冠寶庫 47／35/);
-  assert.match(step.cost, /47／35/);
+  assert.ok(resolveVenue('krakow-wawel-treasury').prices);
+  assert.ok(!days[1].steps.some(step => /Wawel/.test(step.label)));
+  assert.match(days[1].warn, /Wawel.*不再排入/);
 });
 
 test('fares／ticketsByCity／venueHours 仍是 tickets.js 既有 export 形狀，且由 venues.js 推導（新增華沙起義博物館一筆；本趟不進 POLIN 已移除）', () => {
@@ -155,9 +153,8 @@ test('切片 4b：辛德勒工廠步驟的 sub 改由 venues.js 的 hours 動態
 
   const schindlerStep = findStep(2, '★ 辛德勒工廠');
   const schindlerVenue = resolveVenue('krakow-schindler');
-  assert.ok(schindlerStep.sub.includes(schindlerVenue.hours.opens));
-  assert.ok(schindlerStep.sub.includes(schindlerVenue.hours.closes));
-  assert.ok(schindlerStep.sub.includes(schindlerVenue.hours.lastEntry));
+  assert.equal(schindlerStep, undefined, '改班後不再排辛德勒入場');
+  assert.equal(schindlerVenue.hours.lastEntry, '18:30');
 
   // 2026-10-14 新行程只在城堡廣場拍外觀，Day 7 不再有入內步驟。
   assert.equal(findStep(7, '★ 皇家城堡'), undefined);
@@ -166,7 +163,7 @@ test('切片 4b：辛德勒工廠步驟的 sub 改由 venues.js 的 hours 動態
   // 精確檢查「不含票價數字」：這個步驟的 sub 不應含 PLN 金額（避免誤判無關數字，
   // 只鎖定「數字＋／＋數字」這種全票／優待並列的票價寫法，例如 47／35）。
   const priceListPattern = /\d+(?:\.\d+)?／\d+(?:\.\d+)?/;
-  for (const step of [schindlerStep]) {
+  for (const step of [findStep(7, '★ 城堡廣場（白天版）')]) {
     assert.doesNotMatch(step.sub, priceListPattern, `${step.label} 的 sub 仍殘留全票／優待並列的票價寫法`);
   }
 });
