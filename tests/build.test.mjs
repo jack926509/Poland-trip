@@ -544,7 +544,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.equal(photoSpots.length, 10);
   assert.equal(photoCredits.length, 20);
   assert.deepEqual(Object.fromEntries(Object.entries(mapPins).map(([city, data]) => [city, data.points.length])), {
-    warsaw: 14, krakow: 16, wroclaw: 10, poznan: 7,
+    warsaw: 69, krakow: 31, wroclaw: 26, poznan: 18,
   });
   assert.deepEqual(Object.fromEntries(Object.entries(attractions).map(([city, items]) => [city, items.length])), {
     warsaw: 11, krakow: 6, wroclaw: 8, poznan: 9,
@@ -593,7 +593,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
 
 test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', () => {
   const allPins = Object.entries(mapPins).flatMap(([city, data]) => data.points.map((point) => ({city, name:point[2]})));
-  assert.equal(allPins.length, 47);
+  assert.equal(allPins.length, 144);
   for (const pin of allPins) {
     assert.ok(mapPinChecks[pin.city]?.[pin.name], `${pin.city}/${pin.name} 缺少圖釘查證狀態`);
   }
@@ -606,13 +606,48 @@ test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', ()
   });
   const verifiedPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'coordinate-verified');
   const areaPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'area-reference');
-  assert.equal(verifiedPins.length, 44); // 2026-10-13 撤掉琥珀、陶器兩個伴手禮圖釘
+  assert.equal(verifiedPins.length, 106); // 2026-10-22 新增 62 個精確地標，原 44 個不變
   assert.deepEqual(
     areaPins.map(({name}) => name).sort(),
     [
       '中央市集廣場',
       'Kazimierz 猶太區',
       '大教堂島 Ostrów Tumski',
+      "BUW 華沙大學圖書館屋頂花園",
+      "新城廣場 Rynek Nowego Miasta",
+      "三十字廣場 Plac Trzech Krzyży",
+      "Złote Tarasy 購物中心",
+      "Szeroki Dunaj",
+      "Wąski Dunaj",
+      "石階街 Kamienne Schodki",
+      "Brzozowa 街",
+      "城堡廣場 Plac Zamkowy",
+      "薩克森花園 Ogród Saski",
+      "新世界街 Nowy Świat",
+      "瓦津基公園 Łazienki Królewskie",
+      "劇院廣場 Plac Teatralny",
+      "Podgórze・猶太英雄廣場",
+      "Bernatek 人行橋",
+      "Stary Kleparz 市集",
+      "Szeroka 街",
+      "鹽廣場 Plac Solny",
+      "Hala Targowa 市場大廳",
+      "Słodowa 島",
+      "座堂橋 Most Tumski",
+      "屠夫巷 Jatki",
+      "Grunwaldzki 橋",
+      "Stary Browar",
+      "帝王城堡 Zamek Cesarski（外觀）",
+      "Cytadela「Nierozpoznani」",
+      "皇家城堡山丘（Przemysł 王城）",
+      "自由廣場 Plac Wolności",
+      "Chwaliszewo 街",
+      "聖馬丁街 Święty Marcin",
+      "華沙老城市場廣場",
+      "湖上圓形劇場 Teatr na Wyspie",
+      "Floriańska 街",
+      "Grodzka 街",
+      "Bulwar Czerwieński 河岸",
     ].sort(),
   );
 });
@@ -879,14 +914,14 @@ test('4 個已確認住宿地點皆出現在對應城市地圖，圖釘地址與
   }
 });
 
-test('4 個城市頁含正確 Leaflet 圖釘數，合計 47', () => {
+test('4 個城市頁含正確 Leaflet 圖釘數，合計 144', () => {
   // 2026-09-14：撤掉 5 個「地圖上有、餐廳表已無」的孤兒圖釘後由 53 降為 48
   // 2026-10-13：伴手禮不列琥珀、Bolesławiec 陶器，克拉科夫撤兩個圖釘（49 → 47）
   const expected = {
-    'city-warszawa.html': 14,
-    'city-krakow.html': 16,
-    'city-wroclaw.html': 10,
-    'city-poznan.html': 7,
+    'city-warszawa.html': 69,
+    'city-krakow.html': 31,
+    'city-wroclaw.html': 26,
+    'city-poznan.html': 18,
   };
   let total = 0;
   for (const [file, count] of Object.entries(expected)) {
@@ -901,7 +936,7 @@ test('4 個城市頁含正確 Leaflet 圖釘數，合計 47', () => {
     assert.equal(points, count, `${file} 圖釘數錯誤`);
     total += points;
   }
-  assert.equal(total, 47);
+  assert.equal(total, 144);
 });
 
 test('城市頁完整呈現故事、景點、行程餐廳推薦與拍照資訊', () => {

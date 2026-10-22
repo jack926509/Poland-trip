@@ -17,7 +17,13 @@ test('餐廳圖釘覆蓋依分店 ID，同品牌同名門市不得互算', () =>
   assert.equal(wedel[4], diningPlaces['warsaw-wedel-szpitalna-8'].map);
   const report = auditDiningPinCoverage();
   assert.ok(!report.byCity['華沙'].missingDetails.some(row => row.placeId === 'warsaw-wedel-szpitalna-8'));
-  assert.ok(report.byCity['華沙'].missingDetails.some(row => row.placeId === 'warsaw-wedel-krakowskie-45'));
+  // 2026-10-22 已獨立查證 KP 45 分店；兩店仍須各有自己的圖釘與導航。
+  const kp45 = mapPins.warsaw.points.find(point => point[7] === 'warsaw-wedel-krakowskie-45');
+  assert.ok(kp45);
+  assert.notEqual(kp45, wedel);
+  assert.equal(kp45[4], diningPlaces['warsaw-wedel-krakowskie-45'].map);
+  assert.equal(diningPinMatches({ placeId: 'warsaw-wedel-krakowskie-45' }, wedel), false);
+  assert.ok(!report.byCity['華沙'].missingDetails.some(row => row.placeId === 'warsaw-wedel-krakowskie-45'));
 });
 
 test('缺少餐廳圖釘清單可逐店續查，涵蓋速食並保留主檔地址、來源及狀態', () => {

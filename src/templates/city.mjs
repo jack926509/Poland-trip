@@ -4,6 +4,7 @@ import { mergeCityDining, dropDuplicateClauses, dedupeNotes, dropRestatedHours }
 import { renderLayout } from './layout.mjs';
 import { renderPhotoGallery } from './photo-gallery.mjs';
 import { fastFoodDiningEntries } from './fast-food.mjs';
+import { cafeGuide } from '../data/dining.js';
 
 const bookingLabels = {
   must: '建議預約',
@@ -159,15 +160,18 @@ export function renderCity({
       <figcaption>${city.photo.detailCaption}<details class="photo-credit"><summary>圖片來源</summary>${city.photo.detailAuthor} · <a href="${city.photo.detailSource}" target="_blank" rel="noopener noreferrer">圖片來源 ↗</a> · <a href="${city.photo.detailLicenseUrl}" target="_blank" rel="noopener noreferrer">${city.photo.detailLicense} 授權 ↗</a></details></figcaption>
     </figure>` : '';
 
-  const legendHtml = Object.entries(legend).map(([key, item]) => `
-    <div><span style="background:${item.fill};border:1.5px solid ${item.line}"></span>${item.label}</div>`).join('');
+  const categoryCounts = {};
+  for (const point of mapData.points) categoryCounts[point[5] || 'sight'] = (categoryCounts[point[5] || 'sight'] || 0) + 1;
+  const legendHtml = Object.entries(legend).filter(([key]) => categoryCounts[key]).map(([key, item]) => `
+    <button type="button" class="map-legend-toggle" data-pin-category="${key}" aria-pressed="true"><span aria-hidden="true" style="background:${item.fill};border:1.5px solid ${item.line}"></span>${item.label} <small>${categoryCounts[key]}</small></button>`).join('');
   const mapCheckSummary = Object.values(mapChecks).reduce((summary, check) => {
     if (check.status === 'coordinate-verified') summary.precise += 1;
     if (check.status === 'area-reference') summary.area += 1;
     return summary;
   }, {precise: 0, area: 0});
-  const unpinnedDining = mergedDining.filter(item => (item.selected || item.mustEat) && item.map
-    && !mapData.points.some(point => point[2] === item.name));
+  const cafeIds = new Set(cafeGuide.find(group => group.cityKey === cityKey)?.items.map(item => item.placeId));
+  const unpinnedDining = mergedDining.filter(item => (item.selected || item.mustEat || cafeIds.has(item.placeId || item.id)) && item.map
+    && !mapData.points.some(point => (point[7] ? point[7] === (item.placeId || item.id) : point[2] === item.name)));
   const unpinnedDiningHtml = unpinnedDining.length ? `<details class="city-map-unpinned">
       <summary>其他行程餐廳的導航連結（${unpinnedDining.length} 家）</summary>
       <p>以下店家沒有放進地圖。點店名開 Google Maps 查地址與營業狀態。</p>
@@ -181,15 +185,32 @@ export function renderCity({
     <script src="assets/leaflet/leaflet.js"></script>
     <script>
     (function () {
-      var mapData = ${JSON.stringify(mapData)};
-      var mapChecks = ${JSON.stringify(mapChecks)};
+      var mapData = ${JSON.stringify({...mapData, points: mapData.points.map(point => point.slice(0, 6))})};
+      var mapChecks = ${JSON.stringify(Object.keys(mapChecks).filter(name => mapChecks[name].status === 'area-reference'))};
       var colors = ${JSON.stringify(legend)};
       var script = document.currentScript;
       var scope = script ? script.closest('.standalone-page') : null;
       var element = (scope || document).querySelector('[data-map-key="${cityKey}"]');
-      if (!element || typeof L === 'undefined') return;
+      if (!element) return;
+      var layers = {}, map;
+      var filters = element.parentElement.querySelector('.map-legend');
+      if (typeof L === 'undefined') {
+        if (filters) filters.hidden = true;
+        return;
+      }
+      if (filters) filters.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-pin-category]');
+        if (!button) return;
+        var show = button.getAttribute('aria-pressed') !== 'true';
+        button.setAttribute('aria-pressed', String(show));
+        var layer = layers[button.dataset.pinCategory];
+        if (map && layer) {
+          if (show) layer.addTo(map);
+          else map.removeLayer(layer);
+        }
+      });
       element.textContent = '';
-      var map = L.map(element, { scrollWheelZoom: true, touchZoom: true, doubleClickZoom: true, zoomControl: false }).setView(mapData.center, mapData.zoom);
+      map = L.map(element, { scrollWheelZoom: true, touchZoom: true, doubleClickZoom: true, zoomControl: false }).setView(mapData.center, mapData.zoom);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         crossOrigin: true,
         attribution: '&copy; OpenStreetMap contributors',
@@ -198,16 +219,16 @@ export function renderCity({
       mapData.points.forEach(function (point) {
         var category = point[5] || 'sight';
         var color = colors[category] || colors.sight;
+        if (!layers[category]) layers[category] = L.layerGroup().addTo(map);
         var marker = L.circleMarker([point[0], point[1]], {
           radius: 12,
           weight: 2,
           color: color.line,
           fillColor: color.fill,
           fillOpacity: 0.92
-        }).addTo(map);
+        }).addTo(layers[category]);
         var link = point[4] ? '<br><a href="' + point[4] + '" target="_blank" rel="noopener">在 Google Maps 開啟 →</a>' : '';
-        var check = mapChecks[point[2]] || {};
-        var locationNote = check.status === 'area-reference' ? '<br><small>範圍代表點，請依實際目的地導航</small>' : '';
+        var locationNote = mapChecks.includes(point[2]) ? '<br><small>範圍代表點，請依實際目的地導航</small>' : '';
         var stableDescription = point[3].replace(/★\d(?:\.\d)?(?:\s*\([^)]*\)|\s*（[^）]*）)?\s*/g, '').trim();
         marker.bindPopup('<b>' + point[2] + '</b><br>' + stableDescription + locationNote + link);
       });
@@ -249,14 +270,14 @@ export function renderCity({
     <section class="section journal-city-map">
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
       <p class="lead">拖曳、滾輪、雙擊或使用按鈕縮放；手機可用雙指縮放，點選圖釘可直接開啟 Google Maps。</p>
-      <div class="callout-note"><b>地圖：</b>${mapCheckSummary.area ? `${mapCheckSummary.area} 個街區或島區的圖釘是範圍代表點；` : ''}未確認分店的 Żabka 不放精確圖釘，抵達後請用即時地圖搜尋附近分店。</div>
+      <div class="callout-note"><b>地圖：</b>${mapCheckSummary.area ? `${mapCheckSummary.area} 個街道、廣場、園區或建物群的圖釘是範圍代表點；` : ''}未確認分店的 Żabka 不放精確圖釘，抵達後請用即時地圖搜尋附近分店。</div>
       <div class="map-toolbar" role="group" aria-label="${city.name}地圖縮放控制">
         <button type="button" data-map-action="zoom-in">＋ 放大</button>
         <button type="button" data-map-action="zoom-out">－ 縮小</button>
         <button type="button" data-map-action="reset">重設範圍</button>
       </div>
       <div id="map-${cityKey}" class="map-container" data-map-key="${cityKey}" role="region" aria-label="${city.name}互動地圖"><p class="map-fallback">地圖需要網路連線才能載入。離線或載入失敗時，請改用下方景點清單中的 Google Maps 連結。</p></div>
-      <div class="map-legend" aria-label="地圖圖例">${legendHtml}</div>
+      <div class="map-legend" role="group" aria-label="地圖分類篩選：點分類可隱藏或顯示圖釘">${legendHtml}</div>
       ${unpinnedDiningHtml}
       <p class="map-caption">地圖底圖 © OpenStreetMap contributors</p>
     </section>

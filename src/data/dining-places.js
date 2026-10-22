@@ -2,6 +2,21 @@
 // booking（選填）：required 必訂｜recommended 建議訂｜walk-in 免訂｜booked 已訂。
 // 只在店家說明或官方資料有明確依據時才填；沒有依據就不加欄位（不顯示徽章）。目前全部尚未訂位，不得填 booked。
 export const diningPlaces = {
+  "krakow-massolit-books-cafe": {
+    "id": "krakow-massolit-books-cafe",
+    "cityKey": "krakow",
+    "name": "Massolit Books & Café",
+    "address": "Felicjanek 4, 31-104 Kraków",
+    "map": "https://www.google.com/maps/search/?api=1&query=Massolit%20Books%20%26%20Cafe%2C%20Felicjanek%204%2C%20Krak%C3%B3w",
+    "hours": "每日 10:00–20:00（官方咖啡館頁）",
+    "sourceUrl": "https://massolit.pl/cafe",
+    "checkedAt": "2026-10-22",
+    "verificationStatus": "verified",
+    "notes": ["英文書店兼咖啡館；Wawel 西北側、Planty 外圍，有餘裕才繞去歇腳。"],
+    "verificationNote": "2026-10-22 官網 massolit.pl/cafe 與其前端資源確認 Felicjanek 4、每日 10:00–20:00；舊網域 massolit.com 無法連線。",
+    "cuisine": "書店咖啡館",
+    "dishes": ["咖啡", "胡蘿蔔蛋糕", "紐約起司蛋糕"]
+  },
   "warsaw-hala-koszyki": {
     "id": "warsaw-hala-koszyki",
     "booking": "walk-in",

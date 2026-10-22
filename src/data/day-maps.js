@@ -107,7 +107,9 @@ export const daySupplementaryPins = {
     [52.2514555, 21.0085289, 'Freta 16 居禮夫人出生地', 'Freta 16', 'https://www.google.com/maps/search/?api=1&query=Maria%20Sk%C5%82odowska-Curie%20Museum%2C%20Freta%2016%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/node/5171659521'],
     [52.2505875, 21.0100170, '甕城 Barbakan', 'Nowomiejska 15/17', 'https://www.google.com/maps/search/?api=1&query=Barbakan%2C%20Nowomiejska%2015%2F17%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/249395313'],
     [52.2488818, 21.0136708, '聖若望大教堂', 'Świętojańska 8', 'https://www.google.com/maps/search/?api=1&query=St.%20John\'s%20Archcathedral%2C%20%C5%9Awi%C4%99toja%C5%84ska%208%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/404052334'],
-    [52.2481101, 21.0124709, '聖馬丁教堂', 'Piwna 9/11 門面 · 座標約 30 公尺內', 'https://www.google.com/maps/search/?api=1&query=Piwna%209%2F11%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/128808346'],
+    // 2026-10-22 經使用者同意改正：舊 OSM way/128808346 是修院，新 way/128808348 才是聖馬丁教堂本體；
+    // 採 Nominatim 2026-10-22 查得的教堂代表點，與舊座標相距約 22.6 公尺（Haversine）。
+    [52.2482441, 21.0122221, '聖馬丁教堂', 'Piwna 9/11 門面 · 座標為教堂建物中心', 'https://www.google.com/maps/search/?api=1&query=Piwna%209%2F11%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/128808348'],
     // 2026-10-21 補聖安妮教堂（觀景台整修暫停開放，只拍外觀）：座標取 OSM way 25865144（Kościół pw. Świętej Anny，門牌 Krakowskie Przedmieście 68，
     // Nominatim 2026-10-21 以門牌查得），為教堂建物中心，觀景台入口依現場指標。
     [52.2462123, 21.0143595, '聖安妮教堂（外觀）', 'Krakowskie Przedmieście 68 · 12:25 外觀拍照；座標為教堂建物中心', 'https://www.google.com/maps/search/?api=1&query=Ko%C5%9Bci%C3%B3%C5%82%20%C5%9Bw.%20Anny%2C%20Krakowskie%20Przedmie%C5%9Bcie%2068%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/25865144'],
@@ -208,7 +210,7 @@ export const pinCoordinateCheckedAt = {
     "Freta 16 居禮夫人出生地": '2026-10-17',
     "甕城 Barbakan": '2026-10-17',
     "聖若望大教堂": '2026-10-17',
-    "聖馬丁教堂": '2026-10-17',
+    "聖馬丁教堂": '2026-10-22',
     "聖安妮教堂（外觀）": '2026-10-21',
     "Polka": '2026-10-17',
     "劇院廣場・大劇院": '2026-10-17',
