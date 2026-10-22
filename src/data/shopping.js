@@ -22,7 +22,7 @@ export const souvenirShops = [
   {city:'克拉科夫', name:'Rzeczy Same Podgórze', note:'波蘭設計店候選；出門前看 Google 地圖有沒有開', mapUrl:'https://www.google.com/maps/search/?api=1&query=Rzeczy%20Same%20Podg%C3%B3rze%20Krak%C3%B3w'},
   {city:'華沙', name:'E.Wedel 巧克力沙龍', note:'Szpitalna 8 旗艦店', mapUrl:'https://www.google.com/maps/search/?api=1&query=Pijalnia%20Czekolady%20E.Wedel%20Szpitalna%20Warszawa'},
   {city:'華沙', name:'Cepelia Warszawa', note:'波蘭民藝品牌候選；請先確認店址與營業狀態', mapUrl:'https://www.google.com/maps/search/?api=1&query=Cepelia%20Warszawa'},
-  {city:'華沙', name:'Złote Tarasy（中央車站對面）', note:'距 Hotel Metropol 步行約 500 公尺，一–六約 09:00–22:00、日至 21:00；Day 8 預計 09:45 退房出發，商場 09:00 開門後還要往返與結帳，時間有限；伴手禮優先前一天買齊，不保證比機場便宜。實際營業時間與個別店家以商場官網當日公告為準', mapUrl:'https://www.google.com/maps/search/?api=1&query=Z%C5%82ote%20Tarasy%20Warszawa'},
+  {city:'華沙', name:'Złote Tarasy（中央車站對面）', note:'距 Hotel Metropol 步行約 500 公尺，一–六約 09:00–22:00、日至 21:00；Day 8 預計 09:40 退房、10:00 出門，商場 09:00 開門後還要往返與結帳，時間有限；伴手禮優先前一天買齊，不保證比機場便宜。實際營業時間與個別店家以商場官網當日公告為準', mapUrl:'https://www.google.com/maps/search/?api=1&query=Z%C5%82ote%20Tarasy%20Warszawa'},
 ];
 
 export const shopping = [

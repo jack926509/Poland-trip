@@ -520,7 +520,7 @@ export const stay = [
     coordinates:{lat:52.22901, lng:21.01099, status:'已核對', checkedAt:'2026-08-11'},
     officialUrl:'https://www.hotelmetropol.com.pl/pl/',
     phone:'+48 22 32 53 100', phoneSource:{url:'https://www.hotelmetropol.com.pl/pl/', checkedAt:'2026-10-06'},
-    note:'10/29–10/31 華沙住宿；原 10/24 首晚因航班延後不入住，退改另處理。10/29 EIC 8104 抵 Warszawa Centralna 後步行約 500 公尺即到；10/31 退房 12:00 前，當日 09:45 出發搭機不受影響。',
+    note:'10/29–10/31 華沙住宿；原 10/24 首晚因航班延後不入住，退改另處理。10/29 EIC 8104 抵 Warszawa Centralna 後步行約 500 公尺即到；10/31 退房 12:00 前，當日 10:00 出門搭機不受影響。',
   },
 ];
 

@@ -433,7 +433,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-cma-hala-koszyki",
       "role": "晚餐備案",
-      "note": "原首選保留；24 小時營業，Arirang 21:15 前不能入座或誤點時改這間（Chipotle 手撕牛肉吐司、Burrata 沙拉或烤鮭魚），深夜先確認菜色。",
+      "note": "原首選保留；24 小時營業，Arirang 21:30 前不能入座或誤點時改這間（Chipotle 手撕牛肉吐司、Burrata 沙拉或烤鮭魚），深夜先確認菜色。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -472,7 +472,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-polka",
       "role": "午餐首選",
-      "note": "老城、新城上午走完，11:50 經 Piwna 街到城堡廣場，12:25 拍聖安妮教堂外觀，12:30 進城堡旁的店：平日 12:00–16:00 午間套餐，或點 Pierogi、Żurek；13:15 離開往劇院廣場。客滿改甕城旁的 Pyzy Flaki Gorące。",
+      "note": "老城、新城上午走完，11:50 經 Piwna 街到城堡廣場，12:25 拍聖安妮教堂外觀，12:30 進城堡旁的店：平日 12:00–16:00 午間套餐，或點 Pierogi、Żurek；13:10 離開往總統府。客滿改甕城旁的 Pyzy Flaki Gorące。",
       "stepId": "d7-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
