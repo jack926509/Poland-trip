@@ -8142,5 +8142,15 @@ html {
   border: 1px solid var(--line);
   cursor: pointer;
 }
-.map-legend-toggle[aria-pressed="false"] { opacity: 0.6; text-decoration: line-through; }
+.map-legend-toggle[aria-pressed="false"] { text-decoration: line-through; }
+.map-legend-toggle[aria-pressed="false"] > span { opacity: 0.35; }
 .map-legend-toggle:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+.journal-city-map .map-legend[hidden] { display: none; }
+@media (min-width: 340px) {
+  .journal-city-map .map-legend {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.25rem;
+  }
+}

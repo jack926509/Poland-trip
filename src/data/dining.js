@@ -651,7 +651,7 @@ export const cafeGuide = [
     { placeId: 'warsaw-cukiernia-zagozdzinski', type: '老派 pączek', when: '有半天餘裕才去（Wola 區，需搭電車）' },
   ] },
   { cityKey: 'krakow', city: '克拉科夫', items: [
-    { placeId: 'krakow-massolit-books-cafe', type: '書店咖啡館', when: 'Day 2 · Wawel 前後，或 Day 4 回城後有餘裕才順繞' },
+    { placeId: 'krakow-massolit-books-cafe', type: '書店咖啡館', when: 'Day 4 · 回城後有餘裕才繞去（Wawel 西北側；Day 2 行程無空檔）' },
     { placeId: 'krakow-cafe-camelot', type: '老牌咖啡廳', when: 'Day 2 · 中央廣場散步時歇腳' },
     { placeId: 'krakow-karma-coffee-roasters', type: '精品咖啡', when: 'Day 4 · 回城取行李前（老城西側）' },
     { placeId: 'krakow-cukiernia-michalek', type: '甜點', when: 'Day 4（週二）· 回城取行李前順路買' },

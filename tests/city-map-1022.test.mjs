@@ -73,6 +73,7 @@ test('圖例只列實際分類，按鈕含正確計數、aria-pressed、可讀�
     assert.deepEqual(Object.fromEntries(buttons.map(([, k, n]) => [k, +n])), counts);
     assert.match(html, /L\.layerGroup\(\)\.addTo\(map\)/);
     assert.match(html, /map\.removeLayer\(layer\)/);
+    assert.match(html, /個街道、廣場、園區或建物群的圖釘是範圍代表點/);
   }
   const css = read('assets/main.css');
   assert.match(css, /\.map-legend-toggle\s*\{[^}]*min-height: 44px/);
@@ -97,13 +98,14 @@ function setupMap(city, leaflet = true) {
   const context = { document: { currentScript: null, querySelector() { return element; } } };
   if (leaflet) context.L = L;
   vm.runInNewContext(source, context);
-  return { map, layers, click(button) { listeners.click({ target: { closest() { return button; } } }); } };
+  return { map, layers, filters, listeners, click(button) { listeners.click({ target: { closest() { return button; } } }); } };
 }
 const buttonFor = category => ({ dataset: { pinCategory: category }, pressed: 'true', getAttribute() { return this.pressed; }, setAttribute(_, value) { this.pressed = value; } });
 
 test('各城實際執行內嵌腳本，反覆切換只隱藏對應分類（圖磚無載入亦可）', () => {
   for (const city of Object.keys(files)) {
-    const { map, layers, click } = setupMap(city);
+    const { map, layers, filters, click } = setupMap(city);
+    assert.notEqual(filters.hidden, true);
     const categories = [...new Set(mapPins[city].points.map(p => p[5]))];
     assert.equal(layers.reduce((sum, layer) => sum + layer.count, 0), mapPins[city].points.length);
     for (let i = 0; i < categories.length; i++) {
@@ -119,11 +121,12 @@ test('各城實際執行內嵌腳本，反覆切換只隱藏對應分類（圖�
   }
 });
 
-test('離線沒有 Leaflet 時每城按鈕仍可切換 aria-pressed、不丟錯', () => {
+test('離線沒有 Leaflet 時隱藏每城圖例，不註冊無作用的按鈕事件', () => {
   for (const city of Object.keys(files)) {
-    const { click } = setupMap(city, false), button = buttonFor('sight');
-    click(button); assert.equal(button.pressed, 'false');
-    click(button); assert.equal(button.pressed, 'true');
+    const { filters, listeners, layers } = setupMap(city, false);
+    assert.equal(filters.hidden, true);
+    assert.equal(listeners.click, undefined);
+    assert.equal(layers.length, 0);
   }
 });
 
@@ -141,7 +144,7 @@ test('Massolit 主檔、咖啡指南、小吃、圖釘均串接，官方時間�
   const id = 'krakow-massolit-books-cafe', place = diningPlaces[id];
   assert.ok(snacksAndCafes.krakow.some(p => p.placeId === id));
   const cafe = cafeGuide.find(g => g.cityKey === 'krakow').items.find(p => p.placeId === id);
-  assert.equal(cafe.when, 'Day 2 · Wawel 前後，或 Day 4 回城後有餘裕才順繞');
+  assert.equal(cafe.when, 'Day 4 · 回城後有餘裕才繞去（Wawel 西北側；Day 2 行程無空檔）');
   assert.equal(place.checkedAt, '2026-10-22');
   assert.equal(place.verificationStatus, 'verified');
   assert.match(place.address, /Felicjanek 4/);

@@ -194,6 +194,10 @@ export function renderCity({
       if (!element) return;
       var layers = {}, map;
       var filters = element.parentElement.querySelector('.map-legend');
+      if (typeof L === 'undefined') {
+        if (filters) filters.hidden = true;
+        return;
+      }
       if (filters) filters.addEventListener('click', function (event) {
         var button = event.target.closest('[data-pin-category]');
         if (!button) return;
@@ -205,7 +209,6 @@ export function renderCity({
           else map.removeLayer(layer);
         }
       });
-      if (typeof L === 'undefined') return;
       element.textContent = '';
       map = L.map(element, { scrollWheelZoom: true, touchZoom: true, doubleClickZoom: true, zoomControl: false }).setView(mapData.center, mapData.zoom);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -267,7 +270,7 @@ export function renderCity({
     <section class="section journal-city-map">
       <div class="section-heading"><span class="section-num">Map</span><h2>互動地圖</h2></div>
       <p class="lead">拖曳、滾輪、雙擊或使用按鈕縮放；手機可用雙指縮放，點選圖釘可直接開啟 Google Maps。</p>
-      <div class="callout-note"><b>地圖：</b>${mapCheckSummary.area ? `${mapCheckSummary.area} 個街區或島區的圖釘是範圍代表點；` : ''}未確認分店的 Żabka 不放精確圖釘，抵達後請用即時地圖搜尋附近分店。</div>
+      <div class="callout-note"><b>地圖：</b>${mapCheckSummary.area ? `${mapCheckSummary.area} 個街道、廣場、園區或建物群的圖釘是範圍代表點；` : ''}未確認分店的 Żabka 不放精確圖釘，抵達後請用即時地圖搜尋附近分店。</div>
       <div class="map-toolbar" role="group" aria-label="${city.name}地圖縮放控制">
         <button type="button" data-map-action="zoom-in">＋ 放大</button>
         <button type="button" data-map-action="zoom-out">－ 縮小</button>

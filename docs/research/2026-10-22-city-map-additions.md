@@ -52,7 +52,7 @@
 | warsaw | Złote Tarasy 購物中心 | [way/30611687](https://www.openstreetmap.org/way/30611687) | Złote Tarasy | 59, Złota, Żelazna Brama, Śródmieście Północne, Śródmieście, Warszawa, województwo mazowieckie, 00-120, Polska | 52.2300714, 21.0024449 | area-reference |
 | warsaw | 猶太隔離區英雄紀念碑 | [way/231919035](https://www.openstreetmap.org/way/231919035) | Pomnik Bohaterów Getta | Ludwika Zamenhofa, Muranów, Śródmieście, Warszawa, województwo mazowieckie, 00-187, Polska | 52.2497446, 20.9942223 | coordinate-verified |
 | warsaw | 聖卡齊米日教堂 | [way/250177780](https://www.openstreetmap.org/way/250177780) | Kościół pw. św. Kazimierza | 2, Rynek Nowego Miasta, Staromiejskie, Nowe Miasto, Śródmieście, Warszawa, województwo mazowieckie, 00-229, Polska | 52.2532073, 21.0088273 | coordinate-verified |
-| warsaw | 聖雅各教堂 | [way/30064563](https://www.openstreetmap.org/way/30064563) | Kościół pw. Świętego Jacka | 10, Freta, Staromiejskie, Nowe Miasto, Śródmieście, Warszawa, województwo mazowieckie, 00-227, Polska | 52.2513951, 21.0094131 | coordinate-verified |
+| warsaw | 聖雅各教堂 Kościół św. Jacka | [way/30064563](https://www.openstreetmap.org/way/30064563) | Kościół pw. Świętego Jacka | 10, Freta, Staromiejskie, Nowe Miasto, Śródmieście, Warszawa, województwo mazowieckie, 00-227, Polska | 52.2513951, 21.0094131 | coordinate-verified |
 | warsaw | 聖靈教堂 | [way/135770017](https://www.openstreetmap.org/way/135770017) | Kościół pw. Świętego Ducha | 3, Długa, Staromiejskie, Stare Miasto, Śródmieście, Warszawa, województwo mazowieckie, 00-263, Polska | 52.250522, 21.009046 | coordinate-verified |
 | warsaw | Szeroki Dunaj | [way/1566768498](https://www.openstreetmap.org/way/1566768498) | Szeroki Dunaj | Staromiejskie, Stare Miasto, Śródmieście, Warszawa, województwo mazowieckie, 00-255, Polska | 52.2496643, 21.0103927 | area-reference |
 | warsaw | Wąski Dunaj | [way/25866261](https://www.openstreetmap.org/way/25866261) | Wąski Dunaj | Staromiejskie, Stare Miasto, Śródmieście, Warszawa, województwo mazowieckie, 00-268, Polska | 52.2495233, 21.0106759 | area-reference |
@@ -158,7 +158,7 @@
 - 2026-10-22 以 curl 取得官方頁及它載入的 `/assets/index-DjI11GWI.js`。英文翻譯鍵 `footer.address` / `directions.addressValue` 均列 Felicjanek 4；`cafePage.hoursValue` 明列每日 10:00–20:00。地址與營業時間為官方已核實，verificationStatus = verified；沒有採用目錄仍列週五、六 21:00 的舊時間。
 - 官方咖啡館介紹列自製美式糕點、胡蘿蔔蛋糕、紐約起司蛋糕；主檔只列咖啡與這兩項蛋糕，不保存電話。
 - Nominatim lookup node/3519353826：Massolit、Felicjanek 4，50.0584495, 19.9296035，與官方門牌吻合。
-- when 採「Day 2 · Wawel 前後，或 Day 4 回城後有餘裕才順繞」：main Day 2 有 Wawel；Day 4 13:15 目標回城、Kazimierz 只是有餘裕才去，15:00 前結束並取行李，因此不暗示老城已有固定咖啡時段。
+- when 採「Day 4 · 回城後有餘裕才繞去（Wawel 西北側；Day 2 行程無空檔）」：Day 2 14:30–16:15 Wawel 後要趕 17:30 辛德勒工廠，Massolit 在 Wawel 西北側、方向相反，因此拿掉 Day 2。Day 4 13:15 目標回城、Kazimierz 只是有餘裕才去，15:00 前結束並取行李，因此只列回城後有餘裕才繞去，不暗示已有固定咖啡時段。
 
 ## 驗收與大小
 

@@ -38,7 +38,7 @@ const additions = {
     ["Złote Tarasy 購物中心","way/30611687",52.2300714,21.0024449,"範圍代表點；非單一入口","sight",null,true],
     ["猶太隔離區英雄紀念碑","way/231919035",52.2497446,20.9942223,"Ludwika Zamenhofa","sight",null,false],
     ["聖卡齊米日教堂","way/250177780",52.2532073,21.0088273,"Rynek Nowego Miasta 2","sight",null,false],
-    ["聖雅各教堂","way/30064563",52.2513951,21.0094131,"Freta 10","sight",null,false],
+    ["聖雅各教堂 Kościół św. Jacka","way/30064563",52.2513951,21.0094131,"Freta 10","sight",null,false],
     ["聖靈教堂","way/135770017",52.250522,21.009046,"Długa 3","sight",null,false],
     ["Szeroki Dunaj","way/1566768498",52.2496643,21.0103927,"範圍代表點；非單一入口","sight",null,true],
     ["Wąski Dunaj","way/25866261",52.2495233,21.0106759,"範圍代表點；非單一入口","sight",null,true],
