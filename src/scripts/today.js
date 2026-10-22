@@ -115,7 +115,11 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
     const clock = now();
     const firstZone = cards[0].getAttribute?.('data-time-zone');
     const firstLocal = firstZone ? warsawTodayLocal(clock, firstZone) : null;
-    const today = firstLocal && firstLocal <= dates[0] ? firstLocal : warsawTodayLocal(clock);
+    // 台北出發日起，台北日期還在 Day 1～Day 2 之內就以台北日期為準：
+    // 香港轉機跨過台北午夜（10/25 01:25 QR 815）時，華沙仍是前一天，用華沙日期會顯示成 10/24。
+    const warsawDate = warsawTodayLocal(clock);
+    const useFirstZone = Boolean(firstLocal) && firstLocal <= (dates[1] || dates[0]);
+    const today = useFirstZone ? firstLocal : warsawDate;
     const selection = selectToday(dates, today, travelStart || dates[0]);
     shown = manualDate !== null ? dates.indexOf(manualDate) : selection.mode === 'during' ? selection.index
       : selection.mode === 'after' ? cards.length - 1 : 0;
@@ -127,7 +131,7 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
     // 出發前「不在旅程期間」框已說明預覽 Day 1，狀態列不再重複；旅途中翻到別天才提示不是今天。
     if (status) {
       const text = !preview ? statusText(selection,cards.length) : selection.mode === 'during' ? `預覽 Day ${shown+1}（不是今天）` : '';
-      status.textContent = dates[shown] === dates[0] && firstZone === 'Asia/Taipei' ? text.replace('華沙時間', '台北時間') : text;
+      status.textContent = firstZone === 'Asia/Taipei' && (dates[shown] === dates[0] || (useFirstZone && firstLocal !== warsawDate)) ? text.replace('華沙時間', '台北時間') : text;
       status.hidden = !text;
     }
     if (outside) outside.hidden = selection.mode === 'during';
@@ -223,6 +227,8 @@ export function initializeToday(root, now = () => new Date(), travelStart = null
         if (text) text.textContent = `${nextMeal.getAttribute('data-meal-time')} ${nextMeal.getAttribute('data-meal-label')} · ${name}`;
         if (link) {
           link.hidden = !map;
+          // 沒有地點可導航（機上晚餐、自備餐）就不留上一餐的網址，也不顯示按鈕。
+          if (!map) link.removeAttribute?.('href');
           if (map) {
             link.setAttribute('href', map);
             link.setAttribute('target', '_blank');

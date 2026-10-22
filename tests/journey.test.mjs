@@ -15,14 +15,15 @@ test('跨城日住宿按入住區間銜接，離境日不再顯示住宿', () =>
 test('已訂導覽不算待辦，但尚未購票的巴士仍待處理', () => {
   const { confirmed, pending } = bookingProgress(days[2]);
   // 2026-10-13 起 Lajkonik 去程已購（rail）、Auschwitz 導覽已訂妥（attractions）。
-  // 2026-10-22 起餐廳不訂位，Mr. Jerry 改算已處理。
-  assert.deepEqual(confirmed.map(item => item.groupId).sort(), ['attractions', 'dining', 'rail']);
+  // 2026-10-22 起餐廳不訂位；Mr. Jerry 已向店家提出訂位、待店家確認，仍算待處理。
+  assert.deepEqual(confirmed.map(item => item.groupId).sort(), ['attractions', 'rail']);
   assert.ok(confirmed.some(item => item.name.includes('Auschwitz')));
   assert.ok(confirmed.some(item => item.name.includes('Lajkonik 去程')));
   // Day 3 的待辦＝待辦頁同日的 Lajkonik 回程，不再另抄一份。
-  assert.equal(pending.length, 1);
-  assert.deepEqual(pending.map(item => item.groupId), ['rail']);
-  assert.ok(pending[0].name.includes('Lajkonik 回程'));
+  assert.equal(pending.length, 2);
+  assert.deepEqual(pending.map(item => item.groupId).sort(), ['dining', 'rail']);
+  assert.ok(pending.some(item => item.name.includes('Lajkonik 回程')));
+  assert.ok(pending.some(item => item.name.includes('Mr. Jerry')));
 });
 test('每日待訂數與待辦頁同源：八天加總等於待辦頁未完成數，且每筆待辦都歸到某一天', () => {
   const openTotal = todoGroups.flatMap(group => group.items).filter(item => isOpenTodoStatus(item.status)).length;

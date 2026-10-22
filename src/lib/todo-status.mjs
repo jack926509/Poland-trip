@@ -111,14 +111,14 @@ export function attractionTicketSummary(groups) {
   };
 }
 
-/** 行前提醒第 05 條：城際交通。 */
+/** 行前提醒第 04 條：城際交通。 */
 export function railNoteHtml(groups, todoHref) {
   const { group, open, done } = groupSummary(groups, 'rail');
   const pending = open.length ? `待處理 ${open.length} 項（${open.map(itemLabel).join('、')}）` : '全部處理完畢';
   return `城際交通共 ${group.items.length} 項，已購 ${done.length} 項，${pending}。四段 PKP 的抵達時間、艙等、車廂、座位及票價請進票券詳細頁核對，並存離線票券；逐項狀態見<a href="${todoHref}">待辦事項</a>。`;
 }
 
-/** 行前提醒第 07 條：整體先訂清單。 */
+/** 行前提醒第 06 條：整體先訂清單。 */
 export function bookingNoteHtml(groups, todoHref) {
   const stats = todoStats(groups);
   const breakdown = todoBreakdownText(stats);

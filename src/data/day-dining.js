@@ -142,7 +142,7 @@ export const dayDiningPlans = {
     {
       "placeId": "krakow-mr-jerry",
       "role": "晚餐首選（條件式）",
-      "note": "16:55 回城休息後 18:30 入座：招牌 Beef Wellington，胃口大可加乾式熟成牛排。10/30 Soul Kitchen 另已訂位並註記 1 份威靈頓。",
+      "note": "16:55 回城休息後 18:00 入座（已向店家提出訂位，尚未確認；沒確認就在 ibis 附近吃）：招牌 Beef Wellington，胃口大可加乾式熟成牛排。10/30 Soul Kitchen 另已訂位並註記 1 份威靈頓。",
       "stepId": "d3-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",

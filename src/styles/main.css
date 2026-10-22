@@ -8191,3 +8191,7 @@ html {
     gap: 0.25rem;
   }
 }
+
+/* 2026-10-22 審查 L10：點擊目標至少 32 px。只加 padding，不改版面結構。 */
+.rail-card-more > summary { padding-inline: 0.5rem; }
+.table-editorial td a, .table-editorial th a { padding-block: 0.4rem; }
