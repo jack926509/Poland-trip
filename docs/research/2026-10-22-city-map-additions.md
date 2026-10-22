@@ -136,7 +136,7 @@
 | warsaw | Hotel Bristol 外觀 | 本次沒有取得可同時核對名稱與門牌的 OSM 物件，不以鄰近 Café Bristol 的點代替飯店。 |
 | warsaw | Staszic 宮 | relation/11634086 名稱吻合但回傳 Mikołaja Kopernika、無門牌，未確認 Nowy Świat 72。哥白尼紀念碑另有圖釘。 |
 | warsaw | 居禮夫人雕像（Przyrynek） | Maria Skłodowska-Curie / Pomnik Marii Skłodowskiej-Curie 搜尋未命中此雕像；Freta 16 的 node/5171659521 是出生地紀念牌，並非這尊雕像。 |
-| warsaw | 聖馬丁教堂 | 正確教堂為 way/128808348，Piwna、未列門牌。每日資料 way/128808346 實際是修院 Dom Zakonny Sióstr Franciszkanek Służebnic Krzyża、Piwna 9/11；不能沿用為教堂圖釘。本次不改每日地圖。 |
+| warsaw | 聖馬丁教堂 | 正確教堂為 way/128808348，Piwna、未列門牌。每日資料原用的 way/128808346 實際是修院 Dom Zakonny Sióstr Franciszkanek Służebnic Krzyża、Piwna 9/11；已於 2026-10-22 經使用者同意把每日地圖改為 [way/128808348](https://www.openstreetmap.org/way/128808348)，採 Nominatim 同日查得代表點 52.2482441, 21.0122221。 |
 | warsaw | 舊橘園 | way/25748410 名稱 Stara Oranżeria、無門牌，未能核對場館門牌；瓦津基公園保留範圍點。 |
 | warsaw | Myślewicki 宮 | way/25748436 名稱吻合、無門牌，未確認場館地址。 |
 | warsaw | 聖亞歷山大教堂 | way/238713516 名稱吻合，但無街道與門牌，未確認地址。三十字廣場另有範圍點。 |
