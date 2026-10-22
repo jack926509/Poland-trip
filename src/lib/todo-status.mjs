@@ -102,9 +102,12 @@ export function railGroupIntro(groups) {
 export function attractionTicketSummary(groups) {
   const { group, open, skipped, done } = groupSummary(groups, 'attractions');
   const names = items => items.map(itemLabel).join('、') || '無';
+  // 不算待辦的項目不一定買了票：暫停開放、決定不排的也在 done 裡，「已訂」只算真的買到的。
+  const booked = done.filter(item => /已購|已訂/.test(item.status));
+  const dropped = done.filter(item => !booked.includes(item));
   return {
-    title: `景點票券：已訂 ${done.length} 項，其餘 ${group.items.length - done.length} 項（${open.length} 項待訂、${skipped.length} 項線上已售完）`,
-    text: `待辦事項頁為正本，這裡自動摘要：已訂 ${names(done)}；尚未購票 ${names(open)}；線上已售完、當天現場再試 ${names(skipped)}。`,
+    title: `景點票券：已訂 ${booked.length} 項，其餘 ${group.items.length - booked.length} 項（${open.length} 項待訂、${skipped.length} 項線上已售完${dropped.length ? `、${dropped.length} 項不排入` : ''}）`,
+    text: `待辦事項頁為正本，這裡自動摘要：已訂 ${names(booked)}；尚未購票 ${names(open)}；線上已售完、當天現場再試 ${names(skipped)}${dropped.length ? `；不排入 ${names(dropped)}` : ''}。`,
   };
 }
 

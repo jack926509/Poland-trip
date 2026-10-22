@@ -741,7 +741,8 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
     total + group.items.filter(isTodoOpen).length, 0);
   // 2026-10-21 加聖安妮教堂觀景台（暫停開放・出發前待確認是否重新開放）：12 → 13。
   // 2026-10-22 航班線上報到、出國登錄、安裝 Jakdojade 與 Bolt 完成：13 → 10。
-  assert.equal(todoCount, 10, '已購／已訂妥與線上已售完（不再提醒）的項目不可算進待辦');
+  // 2026-10-22 餐廳不訂位、不傳訊息給波茲南公寓、聖安妮觀景台複查仍暫停開放：10 → 1（只剩 Lajkonik 回程）。
+  assert.equal(todoCount, 1, '已購／已訂妥與線上已售完（不再提醒）的項目不可算進待辦');
 
   assert.ok(!html.includes('出發準備度'));
   assert.ok(!html.includes('00 / Readiness'));
@@ -2108,8 +2109,10 @@ test('Day 7 城堡廣場後、Polka 午餐前只拍聖安妮教堂外觀：觀�
   }
   const todo = todoGroups.find(group => group.id === 'attractions').items.find(item => item.ticketPurchaseId === 'warsaw-st-anne-tower');
   assert.ok(todo, '門票待辦要列聖安妮教堂觀景台');
-  assert.match(todo.status, /^暫停開放・出發前/);
-  assert.match(todo.status, /確認是否重新開放/);
+  // 2026-10-22 出發前複查仍暫停開放，不再列為待辦。
+  assert.equal(todo.status, '暫停開放・不排登塔');
+  assert.equal(todo.recheckAt, null);
+  assert.match(todo.action, /2026-10-22 出發前複查/);
   assert.match(todo.url, /^https:\/\/swanna\.waw\.pl\//);
   assert.doesNotMatch(todo.action, /PLN|zł|\d{1,2}:\d{2}/);
   // POLIN 維持只看外觀，不加票券待辦；購票參考的外觀時間與行程一致（08:35）。

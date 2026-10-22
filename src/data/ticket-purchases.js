@@ -86,9 +86,9 @@ export const ticketPurchaseGroups = [
         sourceUrl: 'https://swanna.waw.pl/zwiedzanie/',
         noticeUrl: 'https://swanna.waw.pl/timeline/uwaga/',
         userReviewUrl: 'https://www.threads.com/@dellyliu/post/DethFgEFFmW',
-        sourceNote: '官方：教區官網 swanna.waw.pl（Zwiedzanie 頁與公告），2026-10-21 讀取。網友評論：Threads 網友 Delly Liu（@dellyliu）〈波蘭自助旅行實戰經驗分享 — 華沙 1〉，2026-10-21 讀取。',
-        checkedAt: '2026-10-21',
-        note: '教區官網公告觀景台 10/6 起整修暫停開放，直到另行公告；本趟 Day 7 只拍教堂外觀。出發前看有沒有重新開放公告；若重新開放，現場購票、不用預約，第三方資訊說只收現金。開放時間與票價出發前再確認。',
+        sourceNote: '官方：教區官網 swanna.waw.pl（Zwiedzanie 頁與公告），2026-10-21 讀取；觀景台官網 taraswidokowy.pl 整修公告，2026-10-22 複查。網友評論：Threads 網友 Delly Liu（@dellyliu）〈波蘭自助旅行實戰經驗分享 — 華沙 1〉，2026-10-21 讀取。',
+        checkedAt: '2026-10-22',
+        note: '教區官網公告觀景台 10/6 起整修暫停開放，直到另行公告；2026-10-22 複查觀景台官網仍公告整修不開放，本趟 Day 7 只拍教堂外觀。萬一當天現場看到已開放，現場購票、不用預約，第三方資訊說只收現金。開放時間與票價出發前再確認。',
       }),
       entry('warsaw-polin-reference', 'POLIN 波蘭猶太人歷史博物館', {
         plan: 'reference', purchaseUrl: 'https://bilety.polin.pl/', sourceUrl: 'https://polin.pl/en',

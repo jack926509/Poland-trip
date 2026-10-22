@@ -288,7 +288,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
     </div>` : `
     <div class="callout-good"><b>這一天沒有待訂項目。</b></div>`}
     ${skipped.length ? `<div class="callout-note booking-skipped"><b>線上訂不到、仍排在行程：${skipped.length} 項</b><p>不再列入待辦提醒；當天到現場售票處問剩餘票，買不到就照下方說明調整。</p><ul class="booking-items">${skipped.map(bookingItem).join('')}</ul></div>` : ''}
-    ${confirmed.length ? `<details class="booking-done"><summary>已完成預約 ${confirmed.length} 項</summary><ul class="booking-items">${confirmed.map(bookingItem).join('')}</ul></details>` : ''}`;
+    ${confirmed.length ? `<details class="booking-done"><summary>已處理 ${confirmed.length} 項</summary><ul class="booking-items">${confirmed.map(bookingItem).join('')}</ul></details>` : ''}`;
 
   // 重要風險原本是一整段 8–12 行的文字牆，手機上很難找到重點：
   // 依句號拆成條列，一句一行；資料裡的 **粗體** 標記轉成 <b>。

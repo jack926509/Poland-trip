@@ -43,7 +43,7 @@ export function dayTodos(day) {
       groupId: group.id,
       groupTitle: group.title,
       // skip：線上訂不到、旅客決定不再提醒但仍保留在行程（例如當天現場再試）。
-      // 既不算待辦也不算已完成預約，各頁另外標示。
+      // 既不算待辦也不算已處理，各頁另外標示。
       skipped: Boolean(item.skip),
       open: !item.skip && isOpenTodoStatus(item.status),
       label: `${item.status} · ${item.name}`,

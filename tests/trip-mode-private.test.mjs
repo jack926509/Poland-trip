@@ -105,8 +105,8 @@ test('每個已訂妥的當日預約都有票券欄位，今日卡在行程旁�
   const today = read('today.html');
   for (const day of trip.days) {
     const confirmed = bookingProgress(day).confirmed
-      // 餐飲訂位與出發前準備（報到、登錄、裝 App）都不是要出示的票券，不需要票券欄位。
-      .filter(item => !['dining', 'prep'].includes(item.groupId)).length;
+      // 餐飲訂位與出發前準備（報到、登錄、裝 App）都不是要出示的票券；暫停開放不排的景點也沒有票。
+      .filter(item => !['dining', 'prep'].includes(item.groupId) && /已購|已訂/.test(item.status)).length;
     const slots = privateSlots.filter(slot => slot.day === day.n && slot.kind !== 'flight').length;
     assert.ok(slots >= confirmed, `Day ${day.n} 有 ${confirmed} 筆已訂妥項目但只有 ${slots} 個票券欄位`);
   }
