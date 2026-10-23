@@ -23,13 +23,13 @@ test('餐飲指南：Day 1–8 跳轉列，營業時間名錄依城市收合', (
   const jump = html.slice(html.indexOf('<nav class="day-jump"'), html.indexOf('</nav>', html.indexOf('<nav class="day-jump"')));
   for (let n = 1; n <= 8; n += 1) assert.ok(jump.includes(`href="#meals-day-${n}"`), `缺少 Day ${n} 跳轉`);
   const hours = html.slice(html.indexOf('id="restaurant-hours"'));
-  assert.ok((hours.match(/<details class="card hours-city-group"><summary><h3>/g) || []).length >= 4);
+  assert.ok((hours.match(/<details class="card hours-city-group"><summary\b[^>]*><h3>/g) || []).length >= 4);
 });
 
 test('城市頁：三餐主選與其他候選分組，營業時間可見、不顯示查核紀錄', () => {
   const html = read('city-warszawa.html');
-  assert.match(html, /<details class="city-dining-group" open>\s*<summary>你的候選與順路必吃：三餐主選（\d+ 家）<\/summary>/);
-  assert.match(html, /<details class="city-dining-group">\s*<summary>你的候選：備選與點心（\d+ 家）<\/summary>/);
+  assert.match(html, /<details class="city-dining-group" open>\s*<summary\b[^>]*>你的候選與順路必吃：三餐主選（\d+ 家）<\/summary>/);
+  assert.match(html, /<details class="city-dining-group">\s*<summary\b[^>]*>你的候選：備選與點心（\d+ 家）<\/summary>/);
   assert.ok(!html.includes('查核紀錄'));
   assert.match(html, /營業時間：官網公告 3\/24 起停業至另行通知（要去先確認是否恢復營業）/);
 });

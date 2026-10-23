@@ -29,7 +29,6 @@ export const daySupplementaryPins = {
     venuePin('krakow-glowny-station', { label: '18:12 抵站後入住 ibis', category: 'transport', coordinateSource: 'https://portalpasazera.pl/en/KatalogStacji' }),
   ],
   3: [
-    [50.0628558, 19.93522, "Mr. Jerry", "Jagiellońska 5", "https://www.google.com/maps/search/?api=1&query=50.0628558,19.93522", "food", "https://www.openstreetmap.org/node/475387245"],
     venuePin('krakow-auschwitz-i-entrance', { label: '官方確認入口 · Więźniów Oświęcimia 55', category: 'sight', coordinateSource: 'https://www.auschwitz.org/en/museum/news/new-visitor-services-center-at-the-auschwitz-memorial-change-of-the-place-of-arrival-and-entrance-from-15-june%2C1614.html' }),
     venuePin('krakow-auschwitz-ii-birkenau', { displayName: 'Auschwitz II–Birkenau 主入口', label: 'Ofiar Faszyzmu 12 · 導覽接駁下車後依現場指示集合', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=50.035948&mlon=19.178314' }),
   ],
@@ -127,7 +126,6 @@ export const pinCoordinateCheckedAt = {
   1: {},
   2: { 'Kraków Główny': '2026-10-22' },
   3: {
-    "Mr. Jerry": '2026-10-22',
     "Auschwitz I 訪客服務中心／入口": '2026-09-08',
     "Auschwitz II–Birkenau 主入口": '2026-09-08',
   },

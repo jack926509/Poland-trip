@@ -374,7 +374,7 @@ const venueCard = (venueId, displayName, note = '') => {
     url: venue.url,
     note,
     reliable: Boolean(venue.officialUrl),
-    entranceNote: venue.officialUrl ? (venue.entranceNote || '抵達後依官網預約資訊與現場入口標示進入。') : '待班次、分店或現場集合點確認。',
+    entranceNote: venue.entranceNote || (venue.officialUrl ? '抵達後依官網預約資訊與現場入口標示進入。' : '待班次、分店或現場集合點確認。'),
     officialUrl: venue.officialUrl || null,
     stepLabels: addressStepLabels[displayName] || [],
   };
