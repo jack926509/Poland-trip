@@ -30,13 +30,13 @@ export const shopping = [
   {tag:'巧克力', name:'E. Wedel', note:'1851 年華沙百年品牌'},
   {tag:'糖果', name:'Krówki', note:'波蘭奶油糖，超市到處有'},
   {tag:'剪紙', name:'Wycinanki', note:'庫亞瓦、洛維奇地區傳統'},
-  {tag:'起司', name:'Oscypek', note:'塔特拉山區代表性乳酪；帶回台灣屬動物產品，須先查防檢署當期規定'},
+  {tag:'起司', name:'Oscypek', note:'塔特拉山區代表性乳酪；帶回臺灣屬動物產品，須先查防檢署當期規定'},
 ];
 
 export const zabkaCards = [
   {title:'招牌熱狗', desc:'紅白配色熱狗機台最好認，口味：klasyczna（經典）／kurczak（雞）／grillowana（烤腸）／czarna（黑麵包），可自選醬料。售價與供應品項依門市及官方 App；機器人製作服務僅部分門市提供，時間依現場。'},
   {title:'💳 一般門市免辦 App', desc:'一般有人服務的 Żabka 門市可直接結帳，不需 Żappka 帳號；支付方式依門市。Nano 無人店另有入店驗證，不能當作一般門市直接刷卡結帳。'},
-  {title:'📱 Nano 入店與 App', desc:'Żabka Nano 可用 Żappka App 綁卡後掃 QR code，或感應支付卡入店；感應卡首次須輸入門號及簡訊驗證碼。每次入店會暫扣 15 PLN，再依實際採買結算；台灣門號能否完成驗證尚未確認。'},
+  {title:'📱 Nano 入店與 App', desc:'Żabka Nano 可用 Żappka App 綁卡後掃 QR code，或感應支付卡入店；感應卡首次須輸入門號及簡訊驗證碼。每次入店會暫扣 15 PLN，再依實際採買結算；臺灣門號能否完成驗證尚未確認。'},
   {title:'☕ 咖啡與熱食', desc:'現煮咖啡售價依門市及官方 App，不預設與其他店的價差；另有微波即食餐 Szamamm、三明治 Tomcio Paluch、果汁 Wycisk，適合早餐或宵夜。'},
   {title:'🕐 營業時間', desc:'各店營業時間不同，週日及假日也可能調整；深夜或早班火車前補給，先查官方門市資訊，不預設 24 小時營業。'},
   {title:'🧾 其他服務', desc:'彩券、卡片存提現、繳費、包裹寄取（InPost 智能取件櫃常設在店外）；多數店員英文有限，觸控機台通常有英文介面可切換。'},

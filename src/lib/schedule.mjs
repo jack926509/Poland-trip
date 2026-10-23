@@ -118,7 +118,7 @@ export function warsawToday(now = new Date()) {
 }
 
 /**
- * days[].date（'10/24 (六)'）轉 ISO。年份取自 meta.tripStart，
+ * days[].date（'10/24（六）'）轉 ISO。年份取自 meta.tripStart，
  * 因為行程資料只寫月日。無法解析回 null。
  */
 export function dayIsoDate(dayDate, tripStart) {

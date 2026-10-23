@@ -143,7 +143,7 @@ test('餐飲類圖釘（star1/star2/bib/food）都帶 placeId，且導航連結�
       assert.equal(url, diningPlaces[placeId].map, `${city}／${name} 的圖釘導航連結與門市主檔不一致`);
     }
   }
-  assert.equal(checked, 32);
+  assert.equal(checked, 34);
 });
 
 test('「行程餐廳營業時間」表 = 每日餐位中已核實／部分核實的門市集合', () => {
@@ -166,4 +166,12 @@ test('米其林星級名單（star1／star2）每個店名都能對到門市主�
       assert.ok(resolvable(name), `${group.city} 星級餐廳「${name}」在門市主檔找不到對應`);
     }
   }
+});
+
+test('Lajkonik 巴士搜尋摘要逐段配對去回程時刻', () => {
+  const records = buildTravelSearchRecords({ ...trip });
+  const bus = records.find(record => record.type === 'bus');
+  assert.ok(bus);
+  assert.match(bus.meta, /08:25（D9） → 09:50／回程 15:30 → 16:55/);
+  assert.ok(!bus.meta.includes('15:30 → 09:50'));
 });

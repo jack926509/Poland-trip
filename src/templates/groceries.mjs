@@ -166,7 +166,7 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
   const products = productGroup('先買小份試吃', '先試口味，再決定伴手禮數量。推薦理由是旅行採買建議，商品事實另附官方／零售商來源；不代表人氣排行。', groceryProducts.filter(is2026), true)
     + milkJuiceGroup(guide, pathPrefix)
     + productGroup('經典補充', '經典零食附品牌或零售商資料；網友推薦僅供參考，不代表當期銷量或現貨。', groceryProducts.filter(product => !is2026(product) && !product.supplement && !product.drink && !product.drugstore))
-    + productGroup('常溫選品補充', '依旅行用途挑選常溫零食。是否可攜入台灣仍須依成分與入境規定確認。', groceryProducts.filter(product => product.supplement && !product.localOnly))
+    + productGroup('常溫選品補充', '依旅行用途挑選常溫零食。是否可攜入臺灣仍須依成分與入境規定確認。', groceryProducts.filter(product => product.supplement && !product.localOnly))
     + productGroup('當地吃・冷藏乳品', '在超市冷藏櫃找品牌與品名，不保證特定連鎖或分店有貨。冷藏品依包裝保存，購買前先確認住宿冰箱。', groceryProducts.filter(product => product.localOnly && !product.drink))
     + productGroup('藥妝伴手禮（Rossmann）', '波蘭本地品牌的唇部保養，在 Rossmann 藥妝店找；色號與款式依門市現貨。', groceryProducts.filter(product => product.drugstore))
     + productGroup('當地喝・果汁飲料', '在飲料貨架或冷藏櫃找品牌；照片只代表一款口味，各分店是否供貨以現場為準。', groceryProducts.filter(product => product.drink));
@@ -216,7 +216,7 @@ export function renderGroceries({ groceryChains, groceryBranches, groceryProduct
     <section class="section" id="shopping-tips">${heading('shopping-tips', '其他提醒與資料來源')}
       <ul class="check-list">
         <li>冷藏／冷凍 Pierogi、Żurek 與乳製品先確認保存條件；餃子、湯底不一定能直接吃，住宿沒有加熱設備就改買即食商品。</li>
-        <li>Kabanosy 與含肉食品只在波蘭當地吃，不帶回台灣；攜帶食品前看<a href="essentials.html">安全與基本須知</a>的入境資訊。</li>
+        <li>Kabanosy 與含肉食品只在波蘭當地吃，不帶回臺灣；攜帶食品前看<a href="essentials.html">安全與基本須知</a>的入境資訊。</li>
         <li>不想買含酒精甜食時，留意 Adwokat、likier 等字樣並核對成分。</li>
       </ul>
       <details class="grocery-sources grocery-fold" id="sources">

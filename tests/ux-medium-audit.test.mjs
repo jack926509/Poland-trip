@@ -17,7 +17,7 @@ test('M10：全程動線併入八日目錄，「無待訂」是標籤而非獨�
   // 2026-10-20 UX F11：狀態徽章統一三色，「無待訂」屬於已完成，改用綠色 tag-green。
   assert.match(home, /<span class="tag-green">無待訂<\/span>/);
   assert.doesNotMatch(home, /<a[^>]*>無待訂[^<]*<\/a>/);
-  assert.match(home, /<span class="tag-todo">待訂 \d+<\/span>/);
+  assert.match(home, /<span class="tag-todo">待處理 \d+<\/span>/);
   assert.equal((home.match(/class="journal-day-stay"/g) || []).length, 8);
   assert.match(home, /今晚 華沙 · Hotel Metropol/);
   assert.match(home, /離境／機上過夜/);
@@ -42,7 +42,7 @@ test('M1：今日頁不再有卡內 sticky 動作列（2026-10-20 與底部快�
 test('M4：城市頁餐飲區分組收合，候選預設展開、其餘收合並標數量', () => {
   const html = read('city-krakow.html');
   const section = html.slice(html.indexOf('id="city-dining"'), html.indexOf('</section>', html.indexOf('id="city-dining"')));
-  const groups = Array.from(section.matchAll(/<details class="city-dining-group"( open)?>\s*<summary>([^<]*)<\/summary>/g));
+  const groups = Array.from(section.matchAll(/<details class="city-dining-group"( open)?>\s*<summary\b[^>]*>([^<]*)<\/summary>/g));
   assert.ok(groups.length >= 3, `克拉科夫餐飲分組數異常：${groups.length}`);
   // 第一組（你的候選與順路必吃）預設展開
   assert.match(groups[0][2], /你的候選與順路必吃/);

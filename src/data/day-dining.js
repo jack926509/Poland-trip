@@ -74,7 +74,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-green-caffe-nero-centralny",
       "role": "城市延伸備選（改班後原時段不排入）",
-      "note": "去程延後，原時段不排入；僅保留自選餐廳作城市延伸參考。",
+      "note": "10/25 不經中央車站，原時段不排入；僅保留自選餐廳作城市延伸參考。",
       "stepId": null,
       "planStatus": "candidate",
       "dayHours": "週日 07:00–19:00（Google 地圖）"
@@ -82,14 +82,14 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-mcdonalds-centralna",
       "role": "城市延伸備選（改班後原時段不排入）",
-      "note": "去程延後，原時段不排入；僅保留自選餐廳作城市延伸參考。",
+      "note": "10/25 不經中央車站，原時段不排入；僅保留自選餐廳作城市延伸參考。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "krakow-lajkonik-basztowa",
-      "role": "城市延伸備選（改班後原時段不排入）",
-      "note": "去程延後，原時段不排入；僅保留自選餐廳作城市延伸參考。",
+      "role": "早餐麵包採買備案",
+      "note": "10/26、10/27 早餐麵包採買點（週日 07:00–19:00，18:12 抵站後來得及就先買）；抵達後採買只當備案。",
       "stepId": null,
       "planStatus": "candidate",
       "dayHours": "07:00–19:00"
@@ -133,7 +133,7 @@ export const dayDiningPlans = {
     {
       "placeId": "krakow-endzior",
       "role": "城市延伸備選（改班後原時段不排入）",
-      "note": "保留原自選店；10/25 晚抵不排白天散步，且 Endzior 週日公休，不當作當日餐食保證。",
+      "note": "保留原自選店；10/25 晚抵不排白天散步，且 Endzior 週日不一定有開，不當作當日餐食保證。",
       "stepId": null,
       "planStatus": "candidate"
     }
@@ -187,23 +187,32 @@ export const dayDiningPlans = {
       "planStatus": "candidate"
     },
     {
-      "placeId": "wieliczka-bistro-posolone",
-      "role": "午餐首選（條件式）",
+      "placeId": "wieliczka-sztolnia",
+      "role": "午餐首選",
       "cityGuide": false,
-      "note": "09:00 場約 11:30–12:00 出礦，點 Soup of the day、Halloumi Salad，或 Pizza 兩人分享，簡餐即可；12:45 收尾，另留走回車站與候車時間。",
+      "note": "12:00 吃蜂蜜啤酒或蒜味豬肋排 57 zł，兩人分一份再加湯；第三方價格，以現場菜單為準。13:20 前結帳，未訂位、現場入座；付款方式未查到，卡與少量現金都帶。",
       "stepId": "d4-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
-      "condition": "13:00 前出礦且有餘裕才坐下吃；較晚結束就外帶，略過 Kazimierz，保住 16:10 抵站。若取消鹽礦，不特地前往 Wieliczka，改在克拉科夫老城動線上找午餐。",
+      "dayHours": "11:00–22:00"
+    },
+    {
+      "placeId": "wieliczka-bistro-posolone",
+      "role": "午餐備案",
+      "cityGuide": false,
+      "note": "Sztolnia 客滿或出礦太晚時使用；最晚搭 15:11 SKA1，跳過圈餅。",
+      "stepId": null,
+      "planStatus": "candidate",
       "dayHours": "08:00–18:00"
     },
     {
-      "placeId": "wieliczka-wieliczka-鎮中心午餐",
-      "role": "午餐備案（鎮中心，店家待選）",
-      "note": "Bistro Posolone 客滿或想進鎮上時的備案；店家未選定，地圖只搜尋鎮中心餐廳，不代表已確認營業。",
-      "stepId": null,
-      "planStatus": "candidate",
-      "cityGuide": false
+      "placeId": "krakow-obwarzanek-tunel",
+      "role": "午後點心",
+      "cityGuide": false,
+      "note": "14:10 在 Basztowa／Lubicz 地下道買圈餅；搭 15:11 SKA1 就跳過。",
+      "stepId": "d4-snack",
+      "planStatus": "scheduled",
+      "dayHours": "08:00–18:00"
     },
     {
       "placeId": "wieliczka-karczma-gornicza",
@@ -267,7 +276,7 @@ export const dayDiningPlans = {
     {
       "placeId": "wroclaw-restauracja-wroclawska",
       "role": "午餐首選",
-      "note": "逛完 Hala Targowa 市場大廳，12:00 開門就進店、入座就點餐：必點 Śląskie niebo 果乾燉豬肉配 Wrocław dumplings＋Bigos Wrocławski 紅甘藍燉肉，胃口夠再加 Crayfish Soup。主菜現做約 30 分鐘，13:10 離開，接全景畫外觀與 13:20 電車往百年廳。",
+      "note": "逛完 Hala Targowa 市場大廳，12:00 開門就進店、入座就點餐：必點 Śląskie niebo 果乾燉豬肉配 Wrocław dumplings＋Bigos Wrocławski 紅甘藍燉肉，胃口夠再加 Crayfish Soup。主菜現做約 30 分鐘，13:10 離開，13:20 全景畫外觀，13:30 搭電車往百年廳。",
       "stepId": "d5-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
@@ -372,7 +381,7 @@ export const dayDiningPlans = {
       "stepId": "d6-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
-      "condition": "週四 14:00 才開門，12:30 吃不到；不訂位，14:00 開門直接入座。近期有評論說上菜偏慢，15:30 還沒吃完就放棄城堡內部。客滿改 Pyra Bar。",
+      "condition": "週四 14:00 才開門，12:30 吃不到；不訂位，14:00 開門直接入座。近期有評論說上菜偏慢，15:30 還沒吃完，就把帝王區縮短到只看帝王城堡外觀、跳過 Kaponiera。客滿改 Pyra Bar。",
       "dayHours": "14:00–22:30"
     },
     {
@@ -407,11 +416,11 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-arirang-restaurant",
       "role": "晚餐首選（條件式）",
-      "note": "19:59（Koleo）抵華沙、20:15 入住放行李後，20:20 到 Nowogrodzka 38（從 Hotel Metropol 步行約 3 分／約 150–200 m）：Bulgogi 韓式烤牛肉、拌飯，或 Jajangmyeon、海鮮煎餅。20:40 前還沒能入座就改 Złote Tarasy 或 Ćma。",
+      "note": "19:59（Koleo）抵華沙、20:15 入住放行李後，20:20 到 Nowogrodzka 38（從 Hotel Metropol 步行約 3 分／約 150–200 m）：Bulgogi 韓式烤牛肉、拌飯，或 Jajangmyeon、海鮮煎餅。出發前再確認；20:40 前還沒能入座就改 Złote Tarasy 或 Ćma。",
       "stepId": "d6-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "週四 12:00–22:00（多個目錄一致，無店家官網），最後點餐時間未查到，可請 Hotel Metropol 櫃檯代為確認；不用訂位，當天先看 Google 地圖營業狀態；20:20 到店、20:40 前還沒能入座就改 Złote Tarasy 或 Ćma。",
+      "condition": "週四 12:00–22:00（多個目錄一致，無店家官網），最後點餐時間未查到；不用訂位，當天先看 Google 地圖營業狀態；出發前再確認，20:20 到店；20:40 前還沒能入座就改 Złote Tarasy 或 Ćma。",
       "dayHours": "12:00–22:00"
     },
     {
@@ -433,7 +442,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-cma-hala-koszyki",
       "role": "晚餐備案",
-      "note": "原首選保留；24 小時營業，Arirang 21:30 前不能入座或誤點時改這間（Chipotle 手撕牛肉吐司、Burrata 沙拉或烤鮭魚），深夜先確認菜色。",
+      "note": "原首選保留；24 小時營業，出發前再確認；Arirang 20:40 前不能入座或誤點時改這間（Chipotle 手撕牛肉吐司、Burrata 沙拉或烤鮭魚），深夜先確認菜色。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -465,7 +474,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-bar-mleczny-bambino",
       "role": "早餐備選",
-      "note": "Hoża 19，平日 08:00 才開；想吃牛奶吧早餐，後面從 08:30 那站開始全部順延約 45 分，並刪掉 BUW 屋頂花園。",
+      "note": "Hoża 19，平日 08:00 才開；想吃牛奶吧早餐，後面從 08:35 POLIN 開始全部順延約 45 分，並刪掉 BUW 屋頂花園。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -502,13 +511,6 @@ export const dayDiningPlans = {
       "meal": "dinner",
       "condition": "店家 10/22 回信已確認訂位，威靈頓為店家已註記，未擴大解讀為供餐保證；確認信存離線。",
       "dayHours": "17:30–23:00（週五另有 12:00–16:30，下午休息）"
-    },
-    {
-      "placeId": "warsaw-rusiko",
-      "role": "晚餐備選（原首選）",
-      "note": "Wierzbowa 11（劇院廣場旁）。⚠️ 官網聯絡頁 2026-10-21 仍公告「3/24 起停業至另行通知」，不能直接走去，要去先用 Email（rezerwacje@rusiko.pl）或請 Hotel Metropol 櫃檯代為確認。原本是 Soul Kitchen 沒有威靈頓或客滿時的替補：khachapuri、khinkali、chanakhi 燉羊腿，由 Metropol 搭車約 10 分。",
-      "stepId": null,
-      "planStatus": "candidate"
     },
     {
       "placeId": "warsaw-primitivo",
@@ -610,7 +612,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-gate-one-airport",
       "role": "午餐候選（僅申根區）",
-      "note": "QR 260 往多哈須走非申根流程，不將 Gate One 當成可直接抵達的首選。",
+      "note": "QR 260 往杜哈須走非申根流程，不將 Gate One 當成可直接抵達的首選。",
       "stepId": null,
       "planStatus": "candidate"
     }
@@ -645,7 +647,7 @@ export const selfCateredMeals = {
       "meal": "breakfast",
       "name": "自備早餐（前一天買好）",
       "stepId": "d3-breakfast",
-      "note": "07:15–07:35 在住宿吃完，07:35 出門；前一天 Lajkonik 採買的麵包搭飲品，07:55 巴士報到（08:25 發車）。"
+      "note": "07:15–07:35 在住宿吃完，07:35 出門；前一天在 Lajkonik 麵包店買的麵包搭飲品，07:55 巴士報到（08:25 發車）。"
     },
     {
       "meal": "lunch",
@@ -659,7 +661,7 @@ export const selfCateredMeals = {
       "meal": "breakfast",
       "name": "自備早餐（前晚買好）",
       "stepId": "d4-breakfast",
-      "note": "前晚在 Lajkonik（Basztowa 15）或 Żabka 買好麵包與飲品，07:05–07:45 在 ibis 吃完；車站只隔約 200 公尺，07:55 前到站。"
+      "note": "前晚在 Lajkonik 麵包店（Basztowa 15）或 Żabka 買好麵包與飲品，07:05–07:45 在 ibis 吃完；車站只隔約 200 公尺，07:55 前到站。"
     }
   ],
   "8": [
@@ -667,7 +669,7 @@ export const selfCateredMeals = {
       "meal": "lunch",
       "name": "機場安檢後依登機區選餐",
       "stepId": "d8-lunch",
-      "note": "依實際可通行的登機區、營業與登機截止選擇；QR 260 往多哈，不把申根區 Gate One 當作首選。"
+      "note": "依實際可通行的登機區、營業與登機截止選擇；QR 260 往杜哈，不把申根區 Gate One 當作首選。"
     },
     {
       "meal": "dinner",
@@ -679,7 +681,7 @@ export const selfCateredMeals = {
   "2": [
     {
       "meal": "breakfast",
-      "name": "早餐 · 機上或多哈轉機",
+      "name": "早餐 · 機上或杜哈轉機",
       "stepId": "d2-breakfast",
       "note": "依實際供餐與登機門時間調整。"
     },

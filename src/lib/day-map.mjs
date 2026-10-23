@@ -24,6 +24,10 @@ const DESTINATION_CATEGORIES = new Set(['transport', 'hotel']);
 // 圖釘名稱的比對別名（UX 1017 驗收 F5）：時間表用的是較短的通稱（「★ 老城廣場」「★ 中央廣場」），
 // 圖釘名稱是正式名稱，字面對不上。這裡只補比對用的別名，不改任何圖釘名稱或座標。
 const PIN_ALIASES = {
+  'Poznan Apartments Towarowa': ['退房', '取行李'],
+  'Ostrogski 宮（外觀）': ['蕭邦博物館'],
+  '河岸美人魚像 Syrena': ['美人魚像'],
+  '普魯斯紀念碑': ['Prus'],
   '華沙老城市場廣場': ['老城廣場'],
   '中央市集廣場': ['中央廣場'],
   '大教堂島 Ostrów Tumski': ['座堂島', '教堂島'],

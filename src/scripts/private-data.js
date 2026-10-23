@@ -16,7 +16,16 @@ export function privateRead() {
   try {
     const raw = localStorage.getItem('polska-private-v1');
     const data = raw ? JSON.parse(raw) : {};
-    return data && typeof data === 'object' && !Array.isArray(data) ? data : {};
+    if (!data || typeof data !== 'object' || Array.isArray(data)) return {};
+    // 舊的首晚訂單電話共用到實際入住那筆；新欄位優先，訂房代號仍各自保留。
+    const old = data.slots?.['stay-warsaw-metropol-arrival'];
+    if (typeof old?.phone === 'string' && old.phone.trim()) {
+      const slots = data.slots;
+      const shared = slots['stay-warsaw-metropol'] || (slots['stay-warsaw-metropol'] = {});
+      if (typeof shared.phone !== 'string' || !shared.phone.trim()) shared.phone = old.phone;
+      delete old.phone;
+    }
+    return data;
   } catch {
     return {};
   }

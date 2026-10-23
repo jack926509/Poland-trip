@@ -568,7 +568,7 @@ export const snacksAndCafes = Object.fromEntries(Object.entries({
     },
     {
       "placeId": "krakow-karma-coffee-roasters",
-      "type": "精品咖啡"
+      "type": "選配，未排入行程；營業時間兩個來源不一致，去之前看 Google 地圖"
     },
     {
       "placeId": "krakow-cafe-camelot",
@@ -653,8 +653,8 @@ export const cafeGuide = [
   { cityKey: 'krakow', city: '克拉科夫', items: [
     { placeId: 'krakow-massolit-books-cafe', type: '書店咖啡館', when: 'Day 4 · 回城後有餘裕才繞去（Wawel 西北側；Day 2 行程無空檔）' },
     { placeId: 'krakow-cafe-camelot', type: '老牌咖啡廳', when: '城市延伸備選（10/25 晚抵，不排白天散步）' },
-    { placeId: 'krakow-karma-coffee-roasters', type: '精品咖啡', when: 'Day 4 · 回城取行李前（老城西側）' },
-    { placeId: 'krakow-cukiernia-michalek', type: '甜點', when: 'Day 4（週二）· 回城取行李前順路買' },
+    { placeId: 'krakow-karma-coffee-roasters', type: '精品咖啡', when: '選配，未排入行程；營業時間兩個來源不一致，去之前看 Google 地圖' },
+    { placeId: 'krakow-cukiernia-michalek', type: '甜點', when: '不在 10/27 動線上，城市延伸' },
   ] },
   { cityKey: 'wroclaw', city: '樂斯拉夫', items: [
     { placeId: 'wroclaw-central-cafe', type: '早餐 · 咖啡', when: 'Day 5 · 07:30 早餐（已排入）' },

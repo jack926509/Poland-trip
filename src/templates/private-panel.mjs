@@ -19,7 +19,7 @@ export function renderPrivateRuntime() {
 }
 
 function slotRows() {
-  const rows = privateSlots.map(slot => ({ id: slot.id, title: slot.label, detail: slot.detail, group: '機票、車票與入場證', where: true }));
+  const rows = privateSlots.map(slot => ({ id: slot.id, title: slot.label, detail: slot.detail, group: '機票、車票與入場證', where: true, fields: slot.fields || [] }));
   const seen = new Set();
   for (const item of stay) {
     const key = `${item.name}|${item.checkIn}`;
@@ -28,7 +28,7 @@ function slotRows() {
     rows.push({
       id: stayPrivateSlotId(item.id), title: `${item.name}（${item.city}）`,
       detail: `${item.checkIn.slice(5).replace('-', '/')}–${item.checkOut.slice(5).replace('-', '/')} 住宿`,
-      group: '住宿訂房', where: false,
+      group: '住宿訂房', where: false, fields: item.id === 'warsaw-metropol-arrival' ? [] : [{ name: 'phone', label: '住宿電話', type: 'tel' }],
     });
   }
   return rows;
@@ -51,6 +51,7 @@ export function renderPrivatePanel() {
           <legend>${escapeHtml(row.title)}</legend>
           <p class="source-meta">${escapeHtml(row.detail)}</p>
           <label>訂位代號<input type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" data-private-slot-field="${escapeAttr(row.id)}:code"></label>
+          ${row.fields.map(field => `<label>${escapeHtml(field.label)}<input type="${escapeAttr(field.type)}" autocomplete="off" data-private-slot-field="${escapeAttr(row.id)}:${escapeAttr(field.name)}"></label>`).join('')}
           ${row.where ? `<label>票券／入場證存放位置<input type="text" autocomplete="off" placeholder="例：Gmail 搜尋 visit.auschwitz.org" data-private-slot-field="${escapeAttr(row.id)}:where"></label>` : ''}
         </fieldset>`).join('')}</div>`).join('');
   return `

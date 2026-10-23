@@ -35,9 +35,7 @@ export const cityGallery = [
   {
     "id": "krakow-szeroka-street",
     "cityKey": "KRK",
-    "days": [
-      4
-    ],
+    "days": [],
     "src": "assets/photos/krakow-szeroka-street.webp",
     "width": 960,
     "height": 569,
@@ -53,15 +51,13 @@ export const cityGallery = [
   {
     "id": "krakow-zapiekanki",
     "cityKey": "KRK",
-    "days": [
-      4
-    ],
+    "days": [],
     "src": "assets/photos/krakow-zapiekanki.webp",
     "width": 960,
     "height": 600,
     "alt": "Plac Nowy 街頭美食",
     "caption": "Plac Nowy 街頭美食",
-    "note": "夜間街景參考；本次安排下午遊逛，不另增加晚間停留。",
+    "note": "城市延伸街景參考，未排入本次每日行程。",
     "mapUrl": "https://www.google.com/maps/search/?api=1&query=Plac%20Nowy%20Krak%C3%B3w",
     "author": "Kpalion",
     "license": "CC BY-SA 4.0",

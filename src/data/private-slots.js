@@ -15,13 +15,13 @@ export const privateSlots = [
     publicNote: '入境與登機都要出示護照。',
   },
   {
-    id: 'train-eip5300', day: 2, kind: 'train', label: 'EIP 1306 華沙西站 → 克拉科夫',
-    detail: '10/25 15:45 Warszawa Zachodnia 發車；第 1 車，24、26 號', stepPattern: 'EIP 1306',
+    id: 'train-eip5300', day: 2, kind: 'train', fields: [{ name: 'seat', label: '車廂／座位', type: 'text' }], label: 'EIP 1306 華沙西站 → 克拉科夫',
+    detail: '10/25 15:45 Warszawa Zachodnia 發車；座位見車票', stepPattern: 'EIP 1306',
     publicNote: '車票在 PKP Intercity App 的票券清單，出發前先存離線。',
   },
   {
     id: 'auschwitz-guide', day: 3, kind: 'ticket', label: 'Auschwitz 英文導覽入場證',
-    detail: '10/26 10:30 個人 educator 導覽，2 人', stepPattern: '導覽',
+    detail: '10/26 10:30 個人 educator 導覽，2 人', stepPattern: '官方導覽',
     publicNote: '入場憑電子入場證加護照，兩者缺一不可；電子入場證要存離線。',
   },
   {
@@ -30,22 +30,27 @@ export const privateSlots = [
     publicNote: '上車出示列印票或手機票（螢幕至少 4 吋）；發車前 15 分鐘到站牌。',
   },
   {
+    id: 'bus-lajkonik-in', day: 3, kind: 'ticket', label: 'Lajkonik 回程巴士',
+    detail: '10/26 15:30 Muzeum Auschwitz → 16:55 Kraków MDA，2 張全票', stepPattern: '回程巴士返克拉科夫',
+    publicNote: '上車出示列印票或手機票（螢幕至少 4 吋）；發車前 15 分鐘（15:15）到站牌。',
+  },
+  {
     id: 'wieliczka-tour', day: 4, kind: 'ticket', label: 'Wieliczka 鹽礦英文團',
     detail: '10/27 09:00 Tourist Route（English）', stepPattern: 'Wieliczka 鹽礦',
     publicNote: '票券 PDF 隨付款確認信附上，先存離線；依票面提早到 Daniłowicz 礦井入口。',
   },
   {
-    id: 'train-ic3830', day: 4, kind: 'train', label: 'IC 3830 克拉科夫 → 樂斯拉夫',
+    id: 'train-ic3830', day: 4, kind: 'train', fields: [{ name: 'seat', label: '車廂／座位', type: 'text' }], label: 'IC 3830 克拉科夫 → 樂斯拉夫',
     detail: '10/27 16:45 Kraków Główny 發車', stepPattern: 'IC 3830',
     publicNote: '車票在 PKP Intercity App 的票券清單，出發前先存離線。',
   },
   {
-    id: 'train-ic260', day: 5, kind: 'train', label: 'IC 260 樂斯拉夫 → 波茲南',
+    id: 'train-ic260', day: 5, kind: 'train', fields: [{ name: 'seat', label: '車廂／座位', type: 'text' }], label: 'IC 260 樂斯拉夫 → 波茲南',
     detail: '10/28 19:10 Wrocław Główny 發車', stepPattern: 'IC 260',
     publicNote: '車票在 PKP Intercity App 的票券清單，出發前先存離線。',
   },
   {
-    id: 'train-eic8104', day: 6, kind: 'train', label: 'EIC 8104 波茲南 → 華沙',
+    id: 'train-eic8104', day: 6, kind: 'train', fields: [{ name: 'seat', label: '車廂／座位', type: 'text' }], label: 'EIC 8104 波茲南 → 華沙',
     detail: '10/29 17:40 Poznań Główny 發車', stepPattern: 'EIC 8104',
     publicNote: '車票在 PKP Intercity App 的票券清單，出發前先存離線。',
   },

@@ -262,7 +262,7 @@ export function renderLayout({
   ${renderMobileQuickNav(pathPrefix, pageKind)}
   <footer class="footer">
     <div class="footer-inner">
-      <p>POLSKA 波蘭行 · 2026/10/24–10/31</p>
+      <p>POLSKA 波蘭行 · 2026/10/24–11/01</p>
       <p>票價、班次異動及開放時間以官方公告與已購票券為準。</p>
     </div>
   </footer>

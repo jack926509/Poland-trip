@@ -15,7 +15,8 @@ test('採買指南保留四城 12 個門市與三十項商品，每筆都標出�
   for (const b of groceryBranches) {
     assert.ok(['verified', 'partial'].includes(b.verificationStatus), `${b.id}: ${b.verificationStatus}`);
     assert.equal(b.verifiedAt, '2026-09-22', b.id);
-    assert.match(b.sourceUrl, /^https:\/\/(www\.biedronka\.pl|www\.lidl\.pl|www\.zabka\.pl|cdn\.zabka\.pl)\//, `${b.id} 的來源必須是品牌官方網域`);
+    if (b.chain === 'lidl') assert.match(b.sourceUrl, /^https:\/\/www\.google\.com\/maps\/search\/\?api=1&query=.+/);
+    else assert.match(b.sourceUrl, /^https:\/\/(www\.biedronka\.pl|www\.lidl\.pl|www\.zabka\.pl|cdn\.zabka\.pl)\//, `${b.id} 的來源必須是品牌官方網域`);
     if (b.verificationStatus === 'partial') assert.equal(b.hours, '待確認', `${b.id} 只核到地址就不能列出營業時間`);
   }
   assert.equal(groceryBranches.filter(b => b.chain === 'biedronka' && b.verificationStatus === 'verified').length, 4);

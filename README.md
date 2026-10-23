@@ -10,7 +10,7 @@
 
 | 日期 | 城市 | 住宿 |
 |---|---|---|
-| 10/24 | 桃園 → 香港 | 轉機／機上；原 Metropol 訂單退改未確認 |
+| 10/24 | 桃園 → 香港 | 轉機／機上；10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認 |
 | 10/25–10/26 | 克拉科夫 | ibis budget Krakow Stare Miasto |
 | 10/27 | 樂斯拉夫 | Piast |
 | 10/28 | 波茲南 | Poznan Apartments Towarowa |
@@ -18,7 +18,7 @@
 
 ## Day 1｜10/24（六）桃園出發
 
-18:45 前到桃園第二航廈，搭 **HX 283 21:45–23:45** 到香港第一航廈，轉機 1 小時 40 分接 QR 815。原首晚 Hotel Metropol 訂單仍保留紀錄，退改與未入住處理未確認；原華沙觀光與 Specjały 晚餐不再排入。
+18:45 前到桃園第二航廈，搭 **HX 283 21:45–23:45** 到香港第一航廈，轉機 1 小時 40 分接 QR 815。10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認；原華沙觀光與 Specjały 晚餐不再排入。
 
 ## Day 2｜10/25（日）抵華沙後轉西站，晚上到克拉科夫
 
@@ -28,11 +28,11 @@
 
 ## Day 3｜10/26（一）奧斯威辛－比克瑙
 
-搭 Lajkonik 巴士到 **Auschwitz-Birkenau**，參加英文官方導覽，走過奧斯威辛一館與比克瑙。回到克拉科夫後先休息，到 **Karma** 喝杯咖啡，晚餐在老城的 **Mr. Jerry** 吃威靈頓牛排。
+搭 Lajkonik 巴士到 **Auschwitz-Birkenau**，參加英文官方導覽，走過奧斯威辛一館與比克瑙。回到克拉科夫後先休息，晚餐在老城的 **Mr. Jerry** 吃威靈頓牛排。
 
 ## Day 4｜10/27（二）Wieliczka 鹽礦，晚上到樂斯拉夫
 
-一早搭火車到 **Wieliczka 鹽礦**，走英文 Tourist Route，看地底的鹽雕禮拜堂，在礦區的 **Bistro Posolone** 吃午餐。回城後到 Kazimierz 散步，取行李搭城際火車往樂斯拉夫。
+一早搭火車到 **Wieliczka 鹽礦**，走英文 Tourist Route，看地底的鹽雕禮拜堂，到 **Sztolnia Wieliczka** 吃豬肋排午餐。回城買圈餅後回 ibis 取行李休息，16:45 搭 IC 3830。
 
 晚上抵達，晚餐吃 **Samarqand** 烏茲別克抓飯，再去看「無名行人」銅像、夜晚的中央廣場與 Neon Side Gallery 霓虹招牌。
 
@@ -67,7 +67,7 @@
 | 城市 | 正餐 | 咖啡與點心 |
 |---|---|---|
 | 華沙 | Arirang、Polka、Soul Kitchen | E.Wedel 熱巧克力、A. Blikle pączek、Bułkę przez Bibułkę 早餐 |
-| 克拉科夫 | Hankki、Mr. Jerry、Bistro Posolone | Plac Nowy zapiekanka、Karma |
+| 克拉科夫 | Hankki、Mr. Jerry、Sztolnia Wieliczka | Karma、圈餅（Plac Nowy zapiekanka 為城市延伸） |
 | 樂斯拉夫 | Samarqand、Restauracja Wrocławska、MAX | Central Cafe、El Gato、Słodki Chłopak |
 | 波茲南 | Carla Trattoria Moderna | Charlotte、Weranda Caffe、聖馬丁牛角麵包 |
 

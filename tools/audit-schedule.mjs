@@ -204,7 +204,7 @@ export function auditVenueReferences(tripDays, venues, report) {
 export function auditWeekdayLabels(tripDays, tripStart, report) {
   let checked = 0;
   for (const day of tripDays) {
-    const written = /\(([日一二三四五六])\)/.exec(day.date)?.[1];
+    const written = /[（(]([日一二三四五六])[）)]/.exec(day.date)?.[1];
     if (!written) continue;
     const iso = dayIsoDate(day.date, tripStart);
     const weekday = weekdayOf(iso);

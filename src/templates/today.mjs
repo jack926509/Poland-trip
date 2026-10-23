@@ -25,10 +25,11 @@ import { weatherPoints } from '../data/weather-points.js';
 
 // 票券存放位置：只輸出「空的容器」，內容由瀏覽器端從這支手機的 localStorage 填入
 // （見 scripts/private-data.js）。公開資料只有提醒文字，不含任何私人內容。
-function privateProofLine(slot, privateHref) {
+export function privateProofLine(slot, privateHref) {
   return `<span class="today-proof" data-private-slot="${escapeAttr(slot.id)}">
       <span data-private-has="where" hidden>票券在：<b data-private-text="where"></b></span>
       <span data-private-missing="where">存放位置還沒填 · <a href="${escapeAttr(privateHref)}">填寫</a></span>
+      ${slot.kind === 'train' ? '<span data-private-has="seat" hidden> · 車廂／座位：<b data-private-text="seat"></b></span>' : ''}
       <span data-private-has="code" hidden> · 訂位代號 <b class="today-proof-code" data-private-text="code"></b></span>
     </span>`;
 }
@@ -82,6 +83,7 @@ function renderDayCard(day, { iso, stay, sun, dayHref, privateHref, tomorrow }) 
   const daySlots = privateSlots.filter(slot => slot.day === day.n);
   const trainSegment = segmentForDay(day);
   const bed = stayForDate(stay, iso);
+  const checkout = !bed && stay.find(item => item.itineraryActive !== false && item.checkOut === iso);
   const operation = dayOperations[day.n];
   const steps = timedSteps(day);
   const timed = hardTimes(day, trainSegment);
@@ -128,7 +130,6 @@ function renderDayCard(day, { iso, stay, sun, dayHref, privateHref, tomorrow }) 
   const leaving = isDepartureDay(day);
   // 離境日的班機起飛時刻：從行程步驟（QR 000 起飛）推導，起飛後今日卡改顯示結束語。
   const flightStep = leaving ? steps.find(step => /起飛/.test(step.label) && /\b[A-Z]{2} \d+/.test(step.label)) : null;
-  const hotelPhone = bed?.phone ? { digits: bed.phone.replace(/[^\d+]/g, '') } : null;
   const hotelMap = bed?.addressVerified ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(bed.name+' '+bed.address)}` : null;
   const hotelNavLabel = bed?.id === 'poznan-towarowa' ? '接待處導航' : '住宿導航';
   const meals = (dayMeals[day.n] || []).map(item => ({ item, ...mealSchedule(day, item) }));
@@ -183,13 +184,14 @@ function renderDayCard(day, { iso, stay, sun, dayHref, privateHref, tomorrow }) 
     </ul>
     <ul hidden data-today-meals>${meals.map(({ item, label, time, minute, before }) => { const map = safeHttpsUrl(item.map || item.mapUrl); return `<li data-meal-label="${escapeAttr(label)}" data-meal-time="${escapeAttr(time)}" data-meal-name="${escapeAttr(item.name)}"${minute === null ? '' : ` data-meal-minute="${minute}"`}${before === undefined ? '' : ` data-meal-before-minute="${before}"`}${map ? ` data-meal-map="${escapeAttr(map)}"` : ''}></li>`; }).join('')}</ul>
     ${renderWeather(day, iso, sun)}
+    ${checkout ? `<p class="today-hotel-phone" data-private-slot="stay-${escapeAttr(checkout.id)}" data-private-has="phone" hidden>${escapeHtml(checkout.name)} 退房聯絡：<a data-private-tel="phone" class="private-tel"></a></p>` : ''}
     <a class="today-full-link" data-today-full href="${escapeHtml(dayHref)}#schedule">看今天完整行程 →</a>
     </div>
     <div class="today-evening" data-today-evening>
     <section class="today-block today-stay${!bed && !leaving && !day.overnight ? ' today-block-alert' : ''}" data-today-stay><div class="today-block-head"><h3>${bed ? '回住宿' : leaving ? '離境與行李' : day.overnight ? '轉機與行李' : '今晚住宿：資料缺漏'}</h3></div>
       ${bed ? `<div class="today-next-main today-stay-main"><p class="today-next-title">${escapeHtml(bed.name)}</p>${hotelMap ? `<a class="today-next-nav" href="${escapeHtml(hotelMap)}" target="_blank" rel="noopener noreferrer" aria-label="${hotelNavLabel}">${hotelNavLabel} ↗</a>` : ''}</div>
         <p class="today-address" lang="pl">${escapeHtml(bed.address)}</p>
-        <p class="today-hotel-phone">${hotelPhone ? `<a href="tel:${escapeAttr(hotelPhone.digits)}">${escapeHtml(bed.phone)}</a>` : '電話請看訂房確認信'}${!bed.addressVerified ? '<span class="source-meta">門牌尚未確認，請先核對私人訂房資料；不提供精確導航。</span>' : bed.id === 'poznan-towarowa' ? '<span class="source-meta">此地址為接待與取鑰匙處；實際公寓門牌依私人訂房確認。</span>' : ''}</p>`
+        <p class="today-hotel-phone" data-private-slot="stay-${escapeAttr(bed.id)}"><span data-private-missing="phone">住宿電話：填在「我的私人資料」（只存在這支手機）</span><a data-private-has="phone" data-private-tel="phone" hidden class="private-tel"></a>${!bed.addressVerified ? '<span class="source-meta">門牌尚未確認，請先核對私人訂房資料；不提供精確導航。</span>' : bed.id === 'poznan-towarowa' ? '<span class="source-meta">此地址為接待與取鑰匙處；實際公寓門牌依私人訂房確認。</span>' : ''}</p>`
         : day.overnight ? `<p>${escapeHtml(day.overnight)}。電子機票、登機證存離線，抵香港後直接前往轉機登機門。</p>`
         : leaving ? `<p data-leaving-pre>今晚離境／機上過夜。先確認航班報到、退稅與機場交通。</p><p data-leaving-post hidden><b>旅程結束，一路順風。</b></p>`
         : `<p><b>這一天不是離境日，但查不到當晚住宿。</b>這是資料缺漏，不是「不用住」——請先補上訂房或確認安排。</p>`}
@@ -268,7 +270,7 @@ export function renderToday({ meta, days, stay, daylight = [], safety, pathPrefi
     <aside class="today-outside" data-today-outside aria-label="不在旅程期間" hidden>
       <p class="today-outside-title">不在旅程期間</p>
       <p data-today-outside-note></p>
-      <p class="today-outside-links"><a href="${pathPrefix}practical/booking.html#countdown">看訂票倒數 →</a><a href="${pathPrefix}practical/todos.html">待辦事項 →</a><a href="${pathPrefix}index.html#days">八日行程目錄 →</a></p>
+      <p class="today-outside-links"><a href="${pathPrefix}practical/booking.html#countdown">看待辦總覽 →</a><a href="${pathPrefix}practical/todos.html">待辦事項 →</a><a href="${pathPrefix}index.html#days">八日行程目錄 →</a></p>
     </aside>
 
     <section class="today-sos" data-today-sos aria-label="緊急電話">

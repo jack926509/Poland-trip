@@ -85,7 +85,7 @@ export function renderCity({
     : `<strong>${item.name}</strong>`);
   const renderDiningRow = item => `<tr class="${item.selected ? 'city-dining-selected' : ''}">
     <th scope="row">${renderDiningName(item)}${diningBadge(item)}${item.role === 'fastfood' ? '' : renderStoreBadges(item)}${item.address ? `<p class="food-map-note">${displayAddress(item.address)}</p>` : ''}</th>
-    <td>${stableTier(item.tier || item.tag || '待補充')}</td>
+    <td>${stableTier(item.tier || item.tag || '')}</td>
     <td>${item.dishes?.length ? `<p class="store-dish-line"><b>推薦：</b>${item.dishes.join('、')}</p>` : ''}${item.notes.length ? dropDuplicateClauses(dedupeNotes(item.notes, item.address).join('；'), item.address) : '依店家當日菜單確認'}</td>
     <td>${item.plans?.length
       ? item.plans.map(plan => `<p class="city-dining-plan">${dropRestatedHours(dropDuplicateClauses(plan, item.notes.join('；')), item.hours)}</p>`).join('')
@@ -107,10 +107,9 @@ export function renderCity({
     const items = mergedDining.filter(group.match);
     if (!items.length) return '';
     return `<details class="city-dining-group"${group.open ? ' open' : ''}>
-      <summary>${group.label}（${items.length} 家）</summary>
+      <summary id="city-dining-${group.key}-heading">${group.label}（${items.length} 家）</summary>
       <div class="table-wrap city-dining-table-wrap" role="region" aria-label="${group.label}列表" tabindex="0">
-        <table class="table-editorial city-dining-table" aria-describedby="city-dining-description">
-          <caption>${group.label}</caption>
+        <table class="table-editorial city-dining-table" aria-labelledby="city-dining-${group.key}-heading" aria-describedby="city-dining-description">
           ${diningTableHead}
           <tbody>${items.map(renderDiningRow).join('')}</tbody>
         </table>
@@ -283,8 +282,8 @@ export function renderCity({
     </section>
 
     <section class="section">
-      <div class="section-heading"><span class="section-num">Sights</span><h2>景點清單</h2></div>
-      <div class="table-wrap"><table class="table-editorial sights-table">
+      <div class="section-heading"><span class="section-num">Sights</span><h2 id="city-sights-heading">景點清單</h2></div>
+      <div class="table-wrap"><table class="table-editorial sights-table" aria-labelledby="city-sights-heading">
         <thead><tr><th>景點</th><th>類型</th><th>票價／備註</th></tr></thead>
         <tbody>${attractionRows}</tbody>
       </table></div>

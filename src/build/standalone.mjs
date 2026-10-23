@@ -384,7 +384,7 @@ ${standaloneMobileQuickNav}
   </main>
   <footer class="footer">
     <div class="footer-inner">
-      <p>POLSKA 波蘭行 · 2026/10/24–10/31 · 單檔完整版</p>
+      <p>POLSKA 波蘭行 · 2026/10/24–11/01 · 單檔完整版</p>
       <p>各筆資料依頁面標示的查核日期與狀態管理；推薦班次不代表指定日已確認，實際以官網與已購票券為準。</p>
     </div>
   </footer>

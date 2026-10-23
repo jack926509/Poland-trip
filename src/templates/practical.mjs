@@ -90,7 +90,7 @@ function renderDisclaimer(title, bodyHtml) {
 /** 在待辦頁本身時不輸出連回待辦頁的連結（原本按了沒反應）。 */
 function renderBookingNotice({ onTodosPage = false } = {}) {
   const where = onTodosPage ? '' : '；逐項狀態見<a href="../practical/todos.html">待辦事項</a>';
-  return renderDisclaimer('訂票狀態不是即時庫存', `「可查／購」只表示可前往售票頁查詢，不代表有票或已訂妥。付款前請核對指定日期、場次與價格${where}。`);
+  return '';
 }
 
 /**
@@ -129,7 +129,7 @@ export function renderBookingStatusCard(todoGroups, deadlines = [], today = taip
       <div class="booking-status-card">
         <span class="eyebrow">待辦總覽</span>
         <h2>${stats.open ? `還沒處理 <b class="number" data-booking-open>${stats.open}</b> 項` : '待辦已全部處理完畢'}</h2>
-        <p>火車、Auschwitz 去程與鹽礦已購票；航班延後後當地住宿為 6 晚，原 10/24 飯店訂單退改另處理。</p>
+        <p>火車、Auschwitz 去回程巴士與鹽礦已購票；航班延後後當地住宿為 6 晚，10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認。</p>
         <ul class="booking-status-groups">${rows}</ul>${standaloneHtml}
         <p class="action-links"><a class="booking-status-cta" href="todos.html">看待辦事項 →</a></p>
       </div>
@@ -147,7 +147,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
   const trainCards = trains.map(train => {
     const leg = splitVerification(train.leg), note = splitVerification(train.note);
     const price = /未提供/.test(train.price) ? '' : /^\d/.test(train.price) && !/PLN|zł/.test(train.price) ? `PLN ${train.price}` : train.price;
-    const sale = train.status === '已購票' ? '' : train.saleOpens ? `${escapeHtml(train.saleOpens)} 起預售` : '現場購票';
+    const sale = String(train.status).split('／').every(part => /已購票$/.test(part.trim())) ? '' : train.saleOpens ? `${escapeHtml(train.saleOpens)} 起預售` : '現場購票';
     const extra = [
       train.dur ? `<p><b>車程：</b>${train.dur}</p>` : '',
       leg.main ? `<p>${leg.main}</p>` : '',
@@ -156,10 +156,13 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
       note.main ? `<p>${note.main}</p>` : '',
       renderDataNote([...leg.notes, ...(price ? [] : [escapeHtml(train.price)]), ...note.notes]),
     ].join('');
+    const time = train.id === 'bus-lajkonik' && auschwitzBus
+      ? `去程 ${auschwitzBus.outbound.booked.dep}（${auschwitzBus.outbound.booked.bay.split('（')[0]}）→ ${auschwitzBus.outbound.booked.arr}／回程 ${auschwitzBus.inbound.booked.dep} → ${auschwitzBus.inbound.booked.arr}`
+      : `${train.dep} → ${train.arr}`;
     const link = dayLink(train.date);
     return `
       <li class="rail-card" id="rail-${escapeHtml(train.id)}">
-        <p class="rail-card-time"><b class="number">${train.date}</b><b class="number">${train.dep} → ${train.arr}</b><span class="rail-card-code">${train.type}</span></p>
+        <p class="rail-card-time"><b class="number">${train.date}</b><b class="number">${time}</b><span class="rail-card-code">${train.type}</span></p>
         <p class="rail-card-route"><span>${train.seg}</span>${statusBadges(train.status)}</p>
         <div class="rail-card-foot">${link}<details class="rail-card-more"><summary>附註</summary>${extra}</details></div>
       </li>`;
@@ -174,7 +177,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
       <span class="eyebrow">${escapeHtml(item.city)}</span><h3>${escapeHtml(item.name)} <span class="${statusTagClass(item.status)}">${escapeHtml(item.status)}</span></h3>
       <p><b>${escapeHtml(item.checkIn)}${item.checkInTime ? ` ${escapeHtml(item.checkInTime)}` : ''} → ${escapeHtml(item.checkOut)}${item.checkOutTime ? ` ${escapeHtml(item.checkOutTime)}` : ''}</b> · ${item.nights} 晚 · ${item.rooms} 間房</p>
       <p><b>地址：</b>${escapeHtml(item.address)}${item.addressVerified ? '' : ' <span class="tag-yellow">門牌待確認</span>'}</p>
-      <p><b>電話：</b>${item.phone ? `<a href="tel:${escapeHtml(item.phone.replace(/[^\d+]/g, ''))}">${escapeHtml(item.phone)}</a>` : '請看訂房確認信'}</p>
+      <p>住宿電話：填在「我的私人資料」（只存在這支手機）</p>
       ${(() => { const note = verified(item.note); return `${note.html ? `<p class="timeline-note">${note.html}</p>` : ''}${renderDataNote(note.notes)}`; })()}
       <p class="action-links">${mapUrl ? `<a href="${mapUrl}" target="_blank" rel="noopener noreferrer">地圖導航 →</a>` : ''}<a href="${escapeHtml(item.officialUrl)}" target="_blank" rel="noopener noreferrer">飯店官網 →</a></p>
     </article>`;
@@ -228,7 +231,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
             <td class="number">${escapeHtml(item.dur)}</td>
             <td class="number">${escapeHtml(item.bay)}</td>
             <td class="number">${escapeHtml(item.fare)}</td>
-            <td><span class="${item.decision === '採用' ? 'tag-yellow' : 'tag-muted'}">${escapeHtml(item.decision)}</span></td>
+            <td><span class="${item.decision === '採用' ? 'tag-green' : 'tag-muted'}">${escapeHtml(item.decision === '採用' ? '已購' : item.decision)}</span></td>
           </tr>`).join('')}</tbody>
       </table></div>
       ${bus.outbound.html ? `<p class="timeline-note">${bus.outbound.html}</p>` : ''}${renderDataNote([...bus.statusNote(auschwitzBus.outbound.status), ...bus.outbound.notes])}</details>
@@ -242,11 +245,13 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
             <td class="number">${escapeHtml(item.arr)}</td>
             <td class="number">${escapeHtml(item.dur)}</td>
             <td class="number">${escapeHtml(item.fare)}</td>
-            <td><span class="${item.decision === '採用' ? 'tag-yellow' : 'tag-muted'}">${escapeHtml(item.decision)}</span></td>
+            <td><span class="${item.decision === '採用' ? 'tag-green' : 'tag-muted'}">${escapeHtml(item.decision === '採用' ? '已購' : item.decision)}</span></td>
           </tr>`).join('')}</tbody>
       </table></div>
       ${bus.inbound.html ? `<p class="timeline-note">${bus.inbound.html}</p>` : ''}${renderDataNote([...bus.statusNote(auschwitzBus.inbound.status), ...bus.inbound.notes])}</details>
-      <p class="action-links"><a href="${escapeHtml(auschwitzBus.site)}" target="_blank" rel="noopener noreferrer">到 lajkonikbus.pl 買票 →</a><a href="https://moj-bus.pl/en" target="_blank" rel="noopener noreferrer">Moj Bus 線上買票 →</a></p>
+      <p class="timeline-note"><b>退票規則：</b>去程：${escapeHtml(auschwitzBus.outbound.booked.refundRules)}<br>回程：${escapeHtml(auschwitzBus.inbound.booked.refundRules)}</p>
+      <p class="timeline-note">16:30 備案需另買新票時，也使用下列公開售票網站。</p>
+      <p class="action-links"><a href="${escapeHtml(auschwitzBus.site)}" target="_blank" rel="noopener noreferrer">查已購票券（My Ticket）→</a><a href="https://moj-bus.pl/en" target="_blank" rel="noopener noreferrer">Moj Bus 公開售票平台 →</a></p>
     </section>` : '';
 
   const content = `
@@ -267,7 +272,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
       <div class="grid-wide">${stayHtml}</div>
     </section>`;
 
-  return renderPracticalLayout('訂票與交通', 'Booking plan', '火車、Auschwitz 巴士、航班與住宿一頁看完。', content, 'practical/booking.html');
+  return renderPracticalLayout('訂票與交通', 'Booking plan', '火車、Auschwitz 巴士、航班與住宿一頁看完。', content.replaceAll('退票規則見『訂票與交通』頁', '見下方退票規則'), 'practical/booking.html');
 }
 
 // 待辦日期寫成「10/25」；轉成可排序的數字，沒有日期的排最後。
@@ -284,6 +289,7 @@ function todoSortKey(item) {
 export function todoLinkLabel(item, group) {
   const url = String(item.url || '');
   if (/google\.[a-z.]+\/maps|maps\.app\.goo\.gl|goo\.gl\/maps/i.test(url)) return '地圖';
+  if (group.id === 'prep' || item.name.includes('Carla')) return '官網';
   if (group.id !== 'dining') return '購票頁';
   if (/rezerwac|reserv|booking|mojstolik|thefork|zjedz/i.test(url)) return '訂位';
   return '店家頁';
@@ -316,7 +322,7 @@ export function renderTodos({ todoGroups }) {
       <div class="section-heading"><span class="section-num">${group.eyebrow}</span><h2>${group.title}</h2></div>
       <p class="lead">${group.intro}</p>
       ${openItems.length ? `<ul class="todo-list" data-todo-open>${openItems.map(item => renderTodoItem(item, group)).join('')}</ul>` : '<p class="source-meta">這一類已全部完成。</p>'}
-      ${skippedItems.length ? `<details class="todo-done todo-skipped"><summary>線上訂不到、不再提醒 ${skippedItems.length} 項（仍排在行程）</summary><ul class="todo-list" data-todo-skipped>${skippedItems.map(item => renderTodoItem(item, group)).join('')}</ul></details>` : ''}
+      ${skippedItems.length ? `<details class="todo-done todo-skipped"><summary>改班後不排入，不需處理 ${skippedItems.length} 項</summary><ul class="todo-list" data-todo-skipped>${skippedItems.map(item => renderTodoItem(item, group)).join('')}</ul></details>` : ''}
       ${doneItems.length ? `<details class="todo-done"><summary>已完成 ${doneItems.length} 項</summary><ul class="todo-list" data-todo-done>${doneItems.map(item => renderTodoItem(item, group)).join('')}</ul></details>` : ''}
     </section>`;
   }).join('');
@@ -324,7 +330,7 @@ export function renderTodos({ todoGroups }) {
   // UX 1017 M5：「N 項待辦」摘要縮成一列緊接第一個分類；「訂票狀態由人工維護」說明與購票入口連結移到清單最後，
   // 打開待辦頁第一屏就是待辦本身。文字一字不少。
   const content = `
-    <div class="callout-risk todo-summary"><span class="tag-todo">${total} 項待辦</span><p>共 ${allItems.length} 項；每類先列未完成，已完成的收在「已完成」裡供核對。完成後請將票券與訂位資訊離線保存。</p>${renderDataNote(['未開賣項目仍以官方系統實際可售狀態為準。'])}</div>
+    <div class="callout-risk todo-summary"><span class="tag-todo">${total} 項待辦</span><p>共 ${allItems.length} 項；每類先列未完成，已完成的收在「已完成」裡供核對。完成後請將票券與訂位資訊離線保存。</p></div>
     ${groupsHtml}
     ${renderBookingNotice({ onTodosPage: true })}
     <script>
@@ -440,7 +446,7 @@ export function renderShopping({ souvenirCards, luxuryShopping, souvenirShops = 
     <section class="section"><div class="section-heading"><span class="section-num">Quick list</span><h2>傳統伴手禮備忘</h2></div><div class="grid">${legacyCards}</div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Luxury</span><h2>精品購物</h2></div><div class="table-wrap"><table class="table-editorial"><thead><tr><th>店家</th><th>城市</th><th>備註</th></tr></thead><tbody>${luxuryRows}</tbody></table></div></section>
     <section class="section"><div class="section-heading"><span class="section-num">Żabka</span><h2>超商怎麼逛</h2></div><p class="action-links"><a href="groceries.html">四城超市與便利商店・採買推薦 →</a></p><div class="grid">${zabkaHtml}</div></section>`;
-  return renderPracticalLayout('伴手禮與購物', 'Shopping', '先決定要買什麼，再直接打開店家地圖；肉製品入境台灣限制也已標出。', content, 'practical/shopping.html');
+  return renderPracticalLayout('伴手禮與購物', 'Shopping', '先決定要買什麼，再直接打開店家地圖；肉製品入境臺灣限制也已標出。', content, 'practical/shopping.html');
 }
 
 export function renderEssentials({ phrases, packingDefault, about, safety, sources = [] }) {

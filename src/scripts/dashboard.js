@@ -243,7 +243,7 @@ export function markOverdueRechecks(root, getToday) {
 // 這裡只負責依日期與時間切換，不重算待辦。
 // ⚠ 以下函式會被 fn.toString() 內嵌進首頁，彼此相依的要一起列入 home.mjs 的 runtime 陣列。
 
-/** 距出發的標籤；days 以台北日期算到台灣啟程日。 */
+/** 距出發的標籤；days 以台北日期算到臺灣啟程日。 */
 export function departureLabel(days) {
   if (days > 0) return `距出發 ${days} 天`;
   if (days === 0) return '今天出發';
@@ -252,7 +252,7 @@ export function departureLabel(days) {
 
 /**
  * 依日期決定小卡模式。before：華沙日期早於抵達日；during：落在 tripStart–tripEnd；after：之後。
- * days 是台北今天到 travelStart（台灣啟程日）的天數。
+ * days 是台北今天到 travelStart（臺灣啟程日）的天數。
  */
 export function resolveHomeStatus(warsawIso, taipeiIso, travelStart, tripStart, tripEnd) {
   if (warsawIso < tripStart) {
