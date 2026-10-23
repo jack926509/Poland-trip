@@ -25,10 +25,11 @@ import { weatherPoints } from '../data/weather-points.js';
 
 // 票券存放位置：只輸出「空的容器」，內容由瀏覽器端從這支手機的 localStorage 填入
 // （見 scripts/private-data.js）。公開資料只有提醒文字，不含任何私人內容。
-function privateProofLine(slot, privateHref) {
+export function privateProofLine(slot, privateHref) {
   return `<span class="today-proof" data-private-slot="${escapeAttr(slot.id)}">
       <span data-private-has="where" hidden>票券在：<b data-private-text="where"></b></span>
       <span data-private-missing="where">存放位置還沒填 · <a href="${escapeAttr(privateHref)}">填寫</a></span>
+      ${slot.kind === 'train' ? '<span data-private-has="seat" hidden> · 車廂／座位：<b data-private-text="seat"></b></span>' : ''}
       <span data-private-has="code" hidden> · 訂位代號 <b class="today-proof-code" data-private-text="code"></b></span>
     </span>`;
 }
@@ -82,6 +83,7 @@ function renderDayCard(day, { iso, stay, sun, dayHref, privateHref, tomorrow }) 
   const daySlots = privateSlots.filter(slot => slot.day === day.n);
   const trainSegment = segmentForDay(day);
   const bed = stayForDate(stay, iso);
+  const checkout = !bed && stay.find(item => item.itineraryActive !== false && item.checkOut === iso);
   const operation = dayOperations[day.n];
   const steps = timedSteps(day);
   const timed = hardTimes(day, trainSegment);
@@ -182,6 +184,7 @@ function renderDayCard(day, { iso, stay, sun, dayHref, privateHref, tomorrow }) 
     </ul>
     <ul hidden data-today-meals>${meals.map(({ item, label, time, minute, before }) => { const map = safeHttpsUrl(item.map || item.mapUrl); return `<li data-meal-label="${escapeAttr(label)}" data-meal-time="${escapeAttr(time)}" data-meal-name="${escapeAttr(item.name)}"${minute === null ? '' : ` data-meal-minute="${minute}"`}${before === undefined ? '' : ` data-meal-before-minute="${before}"`}${map ? ` data-meal-map="${escapeAttr(map)}"` : ''}></li>`; }).join('')}</ul>
     ${renderWeather(day, iso, sun)}
+    ${checkout ? `<p class="today-hotel-phone" data-private-slot="stay-${escapeAttr(checkout.id)}" data-private-has="phone" hidden>${escapeHtml(checkout.name)} 退房聯絡：<a data-private-tel="phone" class="private-tel"></a></p>` : ''}
     <a class="today-full-link" data-today-full href="${escapeHtml(dayHref)}#schedule">看今天完整行程 →</a>
     </div>
     <div class="today-evening" data-today-evening>

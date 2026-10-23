@@ -48,7 +48,7 @@ test('Karma 未排入任何一天，Day 3 保留指定回程休息說明', () =>
 
 test('私人住宿電話與座位欄位空白輸出，填寫後僅從 localStorage 顯示連結', () => {
   const panelHtml = renderPrivatePanel();
-  for (const item of stay) assert.ok(panelHtml.includes(`data-private-slot-field="stay-${item.id}:phone"`));
+  for (const item of stay.filter(item => item.id !== 'warsaw-metropol-arrival')) assert.ok(panelHtml.includes(`data-private-slot-field="stay-${item.id}:phone"`));
   for (const slot of privateSlots.filter(slot => slot.kind === 'train')) {
     assert.ok(panelHtml.includes(`data-private-slot-field="${slot.id}:seat"`));
   }

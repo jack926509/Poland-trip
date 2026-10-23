@@ -28,7 +28,7 @@ function slotRows() {
     rows.push({
       id: stayPrivateSlotId(item.id), title: `${item.name}（${item.city}）`,
       detail: `${item.checkIn.slice(5).replace('-', '/')}–${item.checkOut.slice(5).replace('-', '/')} 住宿`,
-      group: '住宿訂房', where: false, fields: [{ name: 'phone', label: '住宿電話', type: 'tel' }],
+      group: '住宿訂房', where: false, fields: item.id === 'warsaw-metropol-arrival' ? [] : [{ name: 'phone', label: '住宿電話', type: 'tel' }],
     });
   }
   return rows;

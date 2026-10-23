@@ -442,7 +442,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-cma-hala-koszyki",
       "role": "晚餐備案",
-      "note": "原首選保留；24 小時營業，Arirang 20:40 前不能入座或誤點時改這間（Chipotle 手撕牛肉吐司、Burrata 沙拉或烤鮭魚），深夜先確認菜色。",
+      "note": "原首選保留；24 小時營業，出發前再確認；Arirang 20:40 前不能入座或誤點時改這間（Chipotle 手撕牛肉吐司、Burrata 沙拉或烤鮭魚），深夜先確認菜色。",
       "stepId": null,
       "planStatus": "candidate"
     },

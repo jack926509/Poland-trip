@@ -87,7 +87,7 @@ test('住宿電話僅有私人欄位，公開緊急電話保留', () => {
   for (const item of trip.stay) {
     assert.equal(item.phone, undefined);
     assert.equal(item.phoneSource, undefined);
-    assert.ok(renderPrivatePanel().includes(`data-private-slot-field="stay-${item.id}:phone"`));
+    if (item.id !== 'warsaw-metropol-arrival') assert.ok(renderPrivatePanel().includes(`data-private-slot-field="stay-${item.id}:phone"`));
   }
   const essentials = read('practical/essentials.html');
   for (const number of ['112', '999', '+48222130060', '+48668027574', '+886800085095']) {

@@ -1,3 +1,6 @@
+import { privateSlots } from '../data/private-slots.js';
+import { privateProofLine } from './today.mjs';
+import { renderPrivateRuntime } from './private-panel.mjs';
 import { mealTiming, renderMealList, renderStoreBody, renderStoreHead } from '../lib/dining.mjs';
 import { escapeHtml, linkifyText, safeHttpsUrl } from '../lib/html.mjs';
 import { bookingProgress, dayHref } from '../lib/journey.mjs';
@@ -253,12 +256,14 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
     return `<br><span class="timeline-note">${lead}</span>${rest ? stepMore(rest) : ''}`;
   };
   const stepsHtml = day.steps.map((step, index) => {
+    const slot = privateSlots.find(slot => slot.day === day.n && slot.stepPattern && step.label.includes(slot.stepPattern));
+    const proof = slot ? privateProofLine(slot, 'practical/essentials.html#my-private') : '';
     const nav = stepNavigation(step);
     const pin = pinnedSteps.has(index + 1) ? `<span class="step-pin" title="地圖上的 ${index + 1} 號圖釘"><span class="visually-hidden">地圖圖釘 </span>${index + 1}</span>` : '';
     return `
     <tr>
       <td class="number" data-label="時間"><b>${step.t}</b>${nav ? `<a class="step-nav" href="${nav.href}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${escapeHtml(nav.name)} 的 Google Maps 導航">導航 ↗</a>` : ''}</td>
-      <td data-label="行程"><b>${pin}${stepLabelHtml(step)}</b>${stepSubHtml(step)}</td>
+      <td data-label="行程"><b>${pin}${stepLabelHtml(step)}</b>${stepSubHtml(step)}${proof}</td>
       <td class="number" data-label="花費"${step.cost ? '' : ' data-empty'}>${step.cost || '—'}</td>
       <td class="number" data-label="時長"${step.dur ? '' : ' data-empty'}>${step.dur || '—'}</td>
     </tr>`;
@@ -476,7 +481,8 @@ ${coverHtml}
     ${photoHtml}
 
     ${renderDayContext(day)}
-    ${daySwitchHtml}`;
+    ${daySwitchHtml}
+    ${renderPrivateRuntime()}`;
 
   return renderLayout({
     title: `Day ${day.n} ${day.title}`,

@@ -7,7 +7,7 @@ import { renderPrivatePanel, renderPrivateRuntime } from './private-panel.mjs';
 export { renderPrivateRuntime };
 
 function hotelPhoneItems() {
-  return stay.map(item => `<li data-private-slot="stay-${escapeHtml(item.id)}"><b>${escapeHtml(item.name)}</b>（${escapeHtml(item.city)}）<br><span data-private-missing="phone">住宿電話：填在「我的私人資料」（只存在這支手機）</span><a data-private-has="phone" data-private-tel="phone" hidden class="private-tel"></a></li>`).join('');
+  return stay.filter(item => item.itineraryActive !== false).map(item => `<li data-private-slot="stay-${escapeHtml(item.id)}"><b>${escapeHtml(item.name)}</b>（${escapeHtml(item.city)}）<br><span data-private-missing="phone">住宿電話：填在「我的私人資料」（只存在這支手機）</span><a data-private-has="phone" data-private-tel="phone" hidden class="private-tel"></a></li>`).join('');
 }
 
 export function renderSosSection() {
