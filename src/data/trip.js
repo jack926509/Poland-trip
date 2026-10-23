@@ -83,7 +83,7 @@ const todoGroupsRaw = [
       {checkedAt:'2026-10-22', recheckAt:null, date:"10/24", name:"HX 283 改票後報到（10/24 21:45 桃園起飛）", status:'已完成', action:'旅客 10/23 確認已完成報到；登機證存離線。', url:"https://www.hongkongairlines.com/"},
       {checkedAt:'2026-10-22', recheckAt:null, date:"10/24", name:'外交部出國登錄', status:'已完成', action:'旅客 10/23 確認已更新出國登錄行程。', url:'https://www.boca.gov.tw/sp-abre-main-1.html'},
       {checkedAt:'2026-10-22', recheckAt:null, date:'10/24', name:'手機安裝 Jakdojade 與 Bolt', status:'已安裝', action:'Jakdojade 查三座城市的電車、地鐵路線並買車票；Bolt 叫車（10/29 早上 Cytadela → Rondo Śródka、雨天或天黑時用）。出發前在臺灣先裝好、登入並綁好付款方式。', url:'https://jakdojade.pl/'},
-      {checkedAt:'2026-10-22', recheckAt:null, date:'10/24', name:'Agoda 預付 Metropol 10/24 那晚（約 NT$3,818）', status:'已通知飯店', action:'10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認', url:'https://www.agoda.com/'},
+      {checkedAt:'2026-10-22', recheckAt:null, date:'10/24', name:'Agoda 預付 Metropol 10/24 那晚（約 NT$3,818）', status:'已完成', action:'10/24 這晚因航班改期不入住，已通知飯店；不退款（使用者 10/24 確認）', url:'https://www.agoda.com/'},
     ],
   },
 ];
@@ -114,7 +114,7 @@ export const days = [
     title: '桃園出發 · HX 283 經香港轉杜哈',
     headline: '21:45 桃園第二航廈起飛，23:45 抵香港第一航廈；去程延後一天，10/25 才抵華沙',
     tag: 'Flight', intensity: '中',
-    hardConstraints: ['18:45 前到桃園第二航廈（起飛前 3 小時規劃目標）', 'HX 283 21:45 起飛；香港轉機只有 1 小時 40 分，抵達後直接找 QR 815 登機門', '10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認'],
+    hardConstraints: ['18:45 前到桃園第二航廈（起飛前 3 小時規劃目標）', 'HX 283 21:45 起飛；香港轉機只有 1 小時 40 分，抵達後直接找 QR 815 登機門', '10/24 這晚因航班改期不入住，已通知飯店；不退款（使用者 10/24 確認）'],
     compressible: ['機場購物'],
     steps: [
       {t:'出發前', timingMode:'relative', id:'d1-breakfast', label:'早餐 · 自理', sub:'今天仍在臺灣，依出門時間安排'},
@@ -125,7 +125,7 @@ export const days = [
       {t:'23:45', label:'香港轉機', sub:'轉機 1 小時 40 分，接 10/25 01:25 QR 815；依轉機指標與登機證前往，不安排購物或離開機場', dur:'1 h 40 min'},
     ],
     eat: [], backup: [], practical: [],
-    warn: '去程已延後一天，原 10/24 華沙觀光與 Specjały 晚餐不再排入。10/24–10/25 Hotel Metropol 訂單仍保留紀錄，10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認。香港轉機時間只有 1 小時 40 分，若首段延誤，依航空公司轉機服務處指示處理。',
+    warn: '去程已延後一天，原 10/24 華沙觀光與 Specjały 晚餐不再排入。10/24–10/25 Hotel Metropol 訂單仍保留紀錄，10/24 這晚因航班改期不入住，已通知飯店；不退款（使用者 10/24 確認）。香港轉機時間只有 1 小時 40 分，若首段延誤，依航空公司轉機服務處指示處理。',
   },
   {
     n: 2, date: '10/25（日）', city: '華沙機場 → 克拉科夫',
@@ -476,10 +476,10 @@ export const stay = [
   {
     id:'warsaw-metropol-arrival', city:'華沙', name:'Hotel Metropol', itineraryActive:false,
     checkIn:'2026-10-24', checkOut:'2026-10-25', checkInTime:'15:00', checkOutTime:'12:00', nights:1,
-    address:'ul. Marszałkowska 99a, 00-693 Warszawa', addressVerified:true, rooms:1, status:'已通知飯店（不入住）',
+    address:'ul. Marszałkowska 99a, 00-693 Warszawa', addressVerified:true, rooms:1, status:'已通知飯店（不入住、不退款）',
     coordinates:{lat:52.22901, lng:21.01099, status:'已核對', checkedAt:'2026-08-11'},
     officialUrl:'https://www.hotelmetropol.com.pl/pl/',
-    note:'原 10/24 訂單保留紀錄；去程改為 10/25 抵達後直接往克拉科夫。10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認。位置在 Marszałkowska／Metro Centrum 出口正對面，步行至 Warszawa Centralna 約 500 公尺；入住 15:00 起、退房 12:00 前，櫃檯可寄放行李。',
+    note:'原 10/24 訂單保留紀錄；去程改為 10/25 抵達後直接往克拉科夫。10/24 這晚因航班改期不入住，已通知飯店；不退款（使用者 10/24 確認）。位置在 Marszałkowska／Metro Centrum 出口正對面，步行至 Warszawa Centralna 約 500 公尺；入住 15:00 起、退房 12:00 前，櫃檯可寄放行李。',
   },
   {
     id:'krakow-stare-miasto', city:'克拉科夫', name:'ibis budget Krakow Stare Miasto',
@@ -511,7 +511,7 @@ export const stay = [
     address:'ul. Marszałkowska 99a, 00-693 Warszawa', addressVerified:true, rooms:1, status:'已確認',
     coordinates:{lat:52.22901, lng:21.01099, status:'已核對', checkedAt:'2026-08-11'},
     officialUrl:'https://www.hotelmetropol.com.pl/pl/',
-    note:'10/29–10/31 華沙住宿照常入住；10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認。10/29 EIC 8104 抵 Warszawa Centralna 後步行約 500 公尺即到；10/31 退房 12:00 前，當日 10:05 出門搭機不受影響。',
+    note:'10/29–10/31 華沙住宿照常入住；10/24 這晚因航班改期不入住，已通知飯店；不退款（使用者 10/24 確認）。10/29 EIC 8104 抵 Warszawa Centralna 後步行約 500 公尺即到；10/31 退房 12:00 前，當日 10:05 出門搭機不受影響。',
   },
 ];
 

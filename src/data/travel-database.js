@@ -200,8 +200,8 @@ const databaseEntriesBase = [
   },
   {
     id: 'accommodation-confirmations', section: 'accommodation', category: 'practical', cityKey: 'ROUTE',
-    title: '當地 6 晚住宿；10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認',
-    summary: '保留原 5 筆訂單紀錄共 7 晚；改班後 10/24 不在波蘭，當地實際住宿為 6 晚，原 Metropol 首晚：10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認。原訂單：華沙 Hotel Metropol 兩段住宿（10/24–10/25、10/29–10/31）、克拉科夫 ibis budget Krakow Stare Miasto、樂斯拉夫 Piast、波茲南 Poznan Apartments Towarowa。公開版不保存訂房代碼、姓名或付款證明。',
+    title: '當地 6 晚住宿；10/24 這晚因航班改期不入住，已通知飯店；不退款（使用者 10/24 確認）',
+    summary: '保留原 5 筆訂單紀錄共 7 晚；改班後 10/24 不在波蘭，當地實際住宿為 6 晚，原 Metropol 首晚：10/24 這晚因航班改期不入住，已通知飯店；不退款（使用者 10/24 確認）。原訂單：華沙 Hotel Metropol 兩段住宿（10/24–10/25、10/29–10/31）、克拉科夫 ibis budget Krakow Stare Miasto、樂斯拉夫 Piast、波茲南 Poznan Apartments Towarowa。公開版不保存訂房代碼、姓名或付款證明。',
     status: 'private-required', sourceUrl: null, verifiedAt: null, recheckAt: '2026-10-10',
     offlineNote: '公開版已放飯店官網地址；另將 5 張訂房確認存入私人離線包，並向各住宿確認寄放行李與晚到方式。', private: true,
   },
@@ -386,7 +386,7 @@ export const dayOperations = {
     note: '桃園出發日，今天仍未抵波蘭；此處波蘭資料僅供抵達後參考。',
     addresses: [{ name: '桃園國際機場第二航廈', address: 'TPE 第二航廈（依 10/22 電子機票）', url: 'https://www.taoyuan-airport.com/', reliable: true, officialUrl: 'https://www.taoyuan-airport.com/', entranceNote: '依機票至第二航廈，香港航空報到櫃檯與登機門看當日電子牌。', stepLabels: ['桃園第二航廈報到'] }],
     navigation: [{ mode: '航空', route: 'TPE 第二航廈 → HKG 第一航廈', action: 'HX 283 10/24 21:45–23:45，香港轉機 1 小時 40 分接 QR 815；依登機證與現場登機門。' }],
-    dailyAlerts: ['原 10/24 華沙觀光不再執行；Hotel Metropol 原首晚訂單：10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認。', '新航班報到與行李直掛依櫃檯確認，電子機票及登機證存離線。'],
+    dailyAlerts: ['原 10/24 華沙觀光不再執行；Hotel Metropol 原首晚訂單：10/24 這晚因航班改期不入住，已通知飯店；不退款（使用者 10/24 確認）。', '新航班報到與行李直掛依櫃檯確認，電子機票及登機證存離線。'],
     nightChecklist: ['香港抵達後直接依轉機指標前往 QR 815 登機門，不安排購物'],
   },
   2: {
