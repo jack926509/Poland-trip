@@ -33,8 +33,8 @@ export function todoItemId(group, item) {
 // 'M/D' → 可比較的數字；出發前（早於 Day 1）的待辦一律歸到 Day 1 顯示。
 const monthDay = value => { const [m, d] = String(value).split('/').map(Number); return m * 100 + d; };
 export function dayTodos(day) {
-  const date = String(day.date).split(' ')[0];
-  const firstDate = String(days[0].date).split(' ')[0];
+  const date = String(day.date).split(/[ （(]/)[0];
+  const firstDate = String(days[0].date).split(/[ （(]/)[0];
   const belongs = item => item.date === date || (date === firstDate && monthDay(item.date) < monthDay(firstDate));
   return todoGroups.flatMap(group => group.items
     .filter(belongs)

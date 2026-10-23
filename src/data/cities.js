@@ -179,7 +179,7 @@ export const mapPins = {
     ],
   },
   krakow: {
-    center: [50.058, 19.94], zoom: 13,
+    center: [50.062, 19.939], zoom: 15,
     points: [
       [50.054112, 19.935423, "Wawel 皇家城堡", "景點", "https://maps.google.com/?cid=12446225081720350104", "sight", "krakow-wawel-castle"],
       [50.061897, 19.936756, "中央市集廣場", "景點", "https://maps.google.com/?cid=14107513768635600179", "sight", "krakow-rynek-glowny"],
@@ -235,7 +235,7 @@ export const pinCategoryLegend = {
   food:   {fill:'#CE2E1E', line:'#7a1a10', label:'街食／小吃／牛奶吧'},
   cafe:   {fill:'#9a6a3a', line:'#4f3317', label:'咖啡／甜點／麵包'},
   sight:  {fill:'#3b6ea5', line:'#1c3a58', label:'景點'},
-  shop:   {fill:'#8b5cf6', line:'#4c2f8f', label:'伴手禮店家'},
+  shop:   {fill:'#7c3aed', line:'#4c2f8f', label:'伴手禮店家'},
   luxury: {fill:'#d6336c', line:'#7a1a3d', label:'精品購物'},
   hotel:  {fill:'#6d597a', line:'#3d2f46', label:'已確認住宿'},
   transport: {fill:'#2f6f73', line:'#173f42', label:'車站／交通'},

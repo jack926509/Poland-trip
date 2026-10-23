@@ -106,11 +106,11 @@ export function renderInteractiveMap({ id, title, mapData, mapChecks = {}, legen
     // 預設框住主要步行區（data.focusBounds，建置時由當天時間表的圖釘算出）；
     // 遠處的車站、住宿與搭車才到的景點按「全部地點」才一起框進來。
     function showAll() {
-      if (bounds.length > 1) map.fitBounds(bounds, { padding: [32, 32], maxZoom: 15 });
+      if (bounds.length > 1) map.fitBounds(bounds, { padding: [48, 48], maxZoom: 15 });
       else map.setView(data.center, data.zoom || 13);
     }
     function resetView() {
-      if (data.focusBounds) map.fitBounds(data.focusBounds, { padding: [30, 30], maxZoom: 16 });
+      if (data.focusBounds) map.fitBounds(data.focusBounds, { padding: [48, 48], maxZoom: 16 });
       else showAll();
     }
     resetView();

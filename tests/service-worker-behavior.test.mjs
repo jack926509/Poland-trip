@@ -185,7 +185,7 @@ test('CORS 圖磚寫入後持續修剪至 400 筆，opaque 不寫入', async () 
 });
 
 test('日程、城市及單檔產物的所有圖磚圖層皆啟用 crossOrigin', () => {
-  for (const path of ['dist/day-01.html', 'dist/city-warszawa.html', 'poland-travel-guide-2026.html']) {
+  for (const path of ['dist/day-02.html', 'dist/city-warszawa.html', 'poland-travel-guide-2026.html']) {
     const html = fs.readFileSync(path, 'utf8');
     const layers = [...html.matchAll(/L\.tileLayer\([^,]+,\s*\{([^}]+)\}/g)];
     assert.ok(layers.length, path);

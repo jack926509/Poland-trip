@@ -268,7 +268,7 @@ export function renderToday({ meta, days, stay, daylight = [], safety, pathPrefi
     <aside class="today-outside" data-today-outside aria-label="不在旅程期間" hidden>
       <p class="today-outside-title">不在旅程期間</p>
       <p data-today-outside-note></p>
-      <p class="today-outside-links"><a href="${pathPrefix}practical/booking.html#countdown">看訂票倒數 →</a><a href="${pathPrefix}practical/todos.html">待辦事項 →</a><a href="${pathPrefix}index.html#days">八日行程目錄 →</a></p>
+      <p class="today-outside-links"><a href="${pathPrefix}practical/booking.html#countdown">看待辦總覽 →</a><a href="${pathPrefix}practical/todos.html">待辦事項 →</a><a href="${pathPrefix}index.html#days">八日行程目錄 →</a></p>
     </aside>
 
     <section class="today-sos" data-today-sos aria-label="緊急電話">

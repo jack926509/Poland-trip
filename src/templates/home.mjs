@@ -12,9 +12,9 @@ function renderFlight(direction, legs) {
   const actualLegs = legs.filter(leg => !leg.layover);
   return `<article class="journal-flight">
     <span class="eyebrow">${escapeHtml(direction)}</span>
-    <h3>${actualLegs.map(leg => escapeHtml(leg.code)).join(' · ')}</h3>
+    <h3>${actualLegs.map(leg => `<span class="nowrap">${escapeHtml(leg.code)}</span>`).join(' · ')}</h3>
     <ul class="link-list">
-      ${legs.map(leg => `<li><b>${escapeHtml(leg.leg)}</b>　${escapeHtml(leg.when)}${leg.dur ? ` · ${escapeHtml(leg.dur)}` : ''}${leg.status ? ` · <span class="tag-muted">${escapeHtml(leg.status)}</span>` : ''}</li>`).join('')}
+      ${legs.map(leg => `<li><b>${escapeHtml(leg.leg)}</b>　${escapeHtml(leg.when)}${leg.dur ? ` · ${escapeHtml(leg.dur)}` : ''}${leg.status ? `<span class="nowrap"> · <span class="tag-muted">${escapeHtml(leg.status)}</span></span>` : ''}</li>`).join('')}
     </ul>
   </article>`;
 }
@@ -87,7 +87,7 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
         <span class="journal-day-number">${String(day.n).padStart(2, '0')}</span>
         <span class="journal-day-date">${escapeHtml(day.date)}</span>
         <span class="journal-day-copy"><b>${escapeHtml(day.title)}</b><small>${escapeHtml(day.city)} · ${escapeHtml(day.headline)}</small><small class="journal-day-stay">${escapeHtml(stayText)}<span>強度 ${escapeHtml(day.intensity)}</span></small></span>
-        <span class="${pending ? 'tag-todo' : 'tag-green'}">${pending ? `待訂 ${pending}` : '無待訂'}</span>
+        <span class="${pending ? 'tag-todo' : 'tag-green'}">${pending ? `待處理 ${pending}` : '無待訂'}</span>
       </a>
     </li>`;
   }).join('');
@@ -111,9 +111,9 @@ export function renderHome({ meta, days, flights, cities, todoGroups = [], datab
   const bodyHtml = `
     <nav class="trip-day-picker" aria-label="快速選擇旅行日期" data-trip-timezone="${escapeHtml(meta.timeZone)}">
       ${days.map(day => {
-        const [month, date] = day.date.split(' ')[0].split('/');
+        const [month, date] = day.date.split(/[ （(]/)[0].split('/');
         const iso = `${meta.tripStart.slice(0, 4)}-${month.padStart(2, '0')}-${date.padStart(2, '0')}`;
-        return `<a href="day-${String(day.n).padStart(2, '0')}.html" data-trip-date="${escapeHtml(iso)}"><b>${escapeHtml(day.date.split(' ')[0])}</b><span>Day ${day.n}</span></a>`;
+        return `<a href="day-${String(day.n).padStart(2, '0')}.html" data-trip-date="${escapeHtml(iso)}"><b>${escapeHtml(day.date.split(/[ （(]/)[0])}</b><span>Day ${day.n}</span></a>`;
       }).join('')}
     </nav>
     ${statusCardHtml}
@@ -156,7 +156,7 @@ ${coverFigure}
 
     <section class="section journal-todo-notes" id="todos">
       <div class="section-heading"><span class="section-num">03 / Field notes</span><h2>出發前待辦</h2></div>
-      <p class="lead">共 ${totalTodos} 項，還有 ${todoCount} 項待處理。先處理有日期與時段的票務，再完成交通、餐飲及備案。</p>
+      <p class="lead">共 ${totalTodos} 項，還有 ${todoCount} 項待處理。之後聯絡 Poznan Apartments。</p>
       <div class="journal-notes-grid">${todoCards}</div>
       <p><a class="journal-text-link" href="practical/todos.html">開啟完整待辦事項 →</a></p>
     </section>

@@ -579,7 +579,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.deepEqual([
     transitFares.length, airportTransit.length, recommendedApps.length,
     passChecklist.length, usefulRoutes.length, practical.length,
-  ], [4, 7, 4, 4, 5, 6]);
+  ], [4, 8, 4, 4, 5, 6]);
   assert.deepEqual([
     souvenirCards.length, luxuryShopping.length, souvenirShops.length,
     shopping.length, zabkaCards.length,
@@ -1491,8 +1491,8 @@ test('每頁都註冊 service worker，且 sw.js 一起輸出到站台根目錄'
   assert.ok(fs.existsSync(path.join(distDir, 'assets/leaflet/leaflet.js')), 'dist 缺少本地 Leaflet');
   assert.ok(fs.existsSync(path.join(distDir, 'assets/leaflet/leaflet.css')), 'dist 缺少本地 Leaflet CSS');
 });
-test('8 個每日頁都有白天主城市地圖、單點導航與縮放控制', () => {
-  for (let day = 1; day <= 8; day += 1) {
+test('遊覽日都有白天主城市地圖、單點導航與縮放控制', () => {
+  for (let day = 2; day <= 8; day += 1) {
     const file = `day-${String(day).padStart(2, '0')}.html`;
     const html = read(file);
     assert.match(html, new RegExp(`id="map-day-${day}"`), `${file} 缺少每日地圖`);
@@ -2100,7 +2100,7 @@ test('POLIN 僅保留購票參考，主行程只看外觀不入館；Day 7 午�
   assert.deepEqual(offenders, []);
   const itineraryFiles = ['index.html', 'today.html', ...days.map(day => `day-${String(day.n).padStart(2, '0')}.html`), ...['warszawa', 'krakow', 'wroclaw', 'poznan'].map(city => `city-${city}.html`)];
   // 2026-10-14 新行程：Day 7 只在 POLIN 館外拍照（10/15 採點版改為 08:35），其他行程頁仍不應出現 POLIN。
-  for (const file of itineraryFiles.filter(file => !['index.html', 'today.html', 'day-07.html'].includes(file))) {
+  for (const file of itineraryFiles.filter(file => !['index.html', 'today.html', 'day-07.html', 'city-warszawa.html'].includes(file))) {
     const main = /<main\b[^>]*>([\s\S]*?)<\/main>/.exec(read(file))?.[1] || '';
     assert.doesNotMatch(main, /POLIN/i, `${file} 不應把購票參考當作主行程`);
   }
@@ -2132,7 +2132,7 @@ test('Day 7 城堡廣場後、Polka 午餐前只拍聖安妮教堂外觀：觀�
   assert.equal(day.steps[lunch + 1].t, '13:30');
   const step = day.steps[church];
   assert.match(step.sub, /Krakowskie Przedmieście 68/);
-  assert.match(step.sub, /觀景台 10\/6 起整修暫停開放（直到另行公告）/);
+  assert.match(step.sub, /觀景台 10 月上旬起整修暫停開放（直到另行公告）/);
   assert.match(step.sub, /週五 10:00–13:00 教堂打掃、僅能進門廊/);
   assert.match(step.sub, /swanna\.waw\.pl/);
   assert.match(step.sub, /@dellyliu.*網友評論/);

@@ -38,7 +38,7 @@ export const auschwitzBus = {
   operator: 'LAJKONIK',
   site: 'https://www.lajkonikbus.pl/',
   siteNote: '首頁右上可切 English；表單四欄依序為 Departure from／Destination／Date of departure／Normal（人數），按 Search courses 查班次，每筆班次可直接 Buy ticket。另有 Where is my bus? 查即時車輛位置、My Ticket 查已購票券。',
-  fare: '全票 25.00 zł／優待 22.00 zł（每人，2026-10-26 的線上票價快照，付款前重查）；司機售票全票 27.00 zł／優待 22.00 zł，線上可能另有折扣，優待須符合資格並出示證明',
+  fare: '已購 2 張全票每段 47,50 zł（每人 23,75 zł）；司機售票全票 27 zł／優待 22 zł，優待須符合資格並出示證明',
   stops: {
     krakow: 'Kraków · ul. Bosacka 18, Dworzec Autobusowy（MDA，Kraków Główny 後方步行約 5 分；站位 D9／D10）',
     oswiecim: 'Oświęcim · Więźniów Oświęcimia 55（Muzeum Auschwitz，下車處在博物館停車場對面）',
@@ -52,7 +52,7 @@ export const auschwitzBus = {
       { dep: '07:10', arr: '08:35', dur: '1h25', bay: 'D10', fare: '25,00 zł', decision: '不採用', why: '原規劃首選；已定案 08:25 班' },
       { dep: '08:25', arr: '09:50', dur: '1h25', bay: 'D9', fare: '23,75 zł', decision: '採用', why: '已購 2 張全票（線上總價 47,50 zł）。官方要求導覽前至少 30 分鐘、即 10:00 前到場，此班 09:50 抵達只剩 10 分鐘餘裕：下車直接寄物、安檢，不再逛書店。' },
     ],
-    note: '10/26 的售票頁只顯示這兩班、沒有 07:35，這是當時的可售快照。官方公告班表（公告至另行變更為止），Kraków MDA（Bosacka 18）發車為 06:15（11–3 月）／07:10／08:25／09:20／10:40／11:30／13:00／14:00／15:55（4–10 月），多數由 D10 發車（08:25 為 D9）。部分班次有季節／假日代碼，公告班表不代表 10/26 全部可售；已購 08:25 → 09:50、2 張全票 47,50 zł。線上票不能改期改班；已定案 08:25 班。',
+    note: '10/26 的售票頁只顯示這兩班，這是當時的可售快照。官方公告班表（公告至另行變更為止），Kraków MDA（Bosacka 18）發車為 06:15（11–3 月）／07:10／08:25／09:20／10:40／11:30／13:00／14:00／15:55（4–10 月），多數由 D10 發車（08:25 為 D9）。部分班次有季節／假日代碼，公告班表不代表 10/26 全部可售；已購 08:25 → 09:50、2 張全票 47,50 zł。線上票不能改期改班；已定案 08:25 班。',
   },
   inbound: {
     get status() { const word = inboundWord(); return word === '尚未購票' ? '已於官方售票頁查得／尚未購票' : word; },

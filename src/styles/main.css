@@ -2376,7 +2376,8 @@ figure.media-unavailable > img {
   }
 
   .journal-day-entry .tag-todo,
-  .journal-day-entry .tag-muted {
+  .journal-day-entry .tag-muted,
+  .journal-day-entry .tag-green {
     grid-column: 3;
     grid-row: 2;
     white-space: nowrap;
@@ -3146,7 +3147,7 @@ a[href^="tel:"]:focus-visible {
     grid-template-rows: auto 1fr;
     column-gap: 0.5rem;
     align-items: start;
-    padding: 0.5rem 0.15rem;
+    padding: 0.6rem 0.75rem;
     border: 0;
     border-bottom: 1px solid var(--line);
     background: none;
@@ -8195,3 +8196,16 @@ html {
 /* 2026-10-22 審查 L10：點擊目標至少 32 px。只加 padding，不改版面結構。 */
 .rail-card-more > summary { padding-inline: 0.5rem; }
 .table-editorial td a, .table-editorial th a { padding-block: 0.4rem; }
+
+/* 出發前整站稽核：可讀性、展開提示與觸控範圍。 */
+.nowrap { white-space: nowrap; }
+.nav-brand small { color: var(--ink-soft); font-size: 11px; }
+.note-toggle, .day-food-map, .map-link, .store-action, .food-map-link, .fast-food-list a { min-height: 44px; min-width: 44px; }
+.card > summary::after, .bus-leg > summary::after { content: '▸'; margin-left: .5rem; }
+.card[open] > summary::after, .bus-leg[open] > summary::after { content: '▾'; }
+@media (max-width: 600px) {
+  .today-compact .today-date-controls { display: grid; grid-template-columns: 1fr 1fr; }
+  .today-compact .today-date-controls select[data-date-picker] { grid-column: 1 / -1; grid-row: 1; width: 100%; }
+}
+
+.food-map-links a, .grocery-branch-actions a, .fast-food-fallback-list a, .step-more > summary, a[aria-label*="Google Maps"] { min-height: 44px; min-width: 44px; }

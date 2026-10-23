@@ -85,7 +85,7 @@ export function renderCity({
     : `<strong>${item.name}</strong>`);
   const renderDiningRow = item => `<tr class="${item.selected ? 'city-dining-selected' : ''}">
     <th scope="row">${renderDiningName(item)}${diningBadge(item)}${item.role === 'fastfood' ? '' : renderStoreBadges(item)}${item.address ? `<p class="food-map-note">${displayAddress(item.address)}</p>` : ''}</th>
-    <td>${stableTier(item.tier || item.tag || '待補充')}</td>
+    <td>${stableTier(item.tier || item.tag || '')}</td>
     <td>${item.dishes?.length ? `<p class="store-dish-line"><b>推薦：</b>${item.dishes.join('、')}</p>` : ''}${item.notes.length ? dropDuplicateClauses(dedupeNotes(item.notes, item.address).join('；'), item.address) : '依店家當日菜單確認'}</td>
     <td>${item.plans?.length
       ? item.plans.map(plan => `<p class="city-dining-plan">${dropRestatedHours(dropDuplicateClauses(plan, item.notes.join('；')), item.hours)}</p>`).join('')
@@ -110,7 +110,6 @@ export function renderCity({
       <summary>${group.label}（${items.length} 家）</summary>
       <div class="table-wrap city-dining-table-wrap" role="region" aria-label="${group.label}列表" tabindex="0">
         <table class="table-editorial city-dining-table" aria-describedby="city-dining-description">
-          <caption>${group.label}</caption>
           ${diningTableHead}
           <tbody>${items.map(renderDiningRow).join('')}</tbody>
         </table>

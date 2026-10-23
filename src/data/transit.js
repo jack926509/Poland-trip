@@ -6,7 +6,8 @@ export const transitFares = [
 ];
 
 export const airportTransit = [
-  {route:'華沙蕭邦機場 → 市中心', method:'🚆 SKM S2（往 Śródmieście）', price:'75 分第 1 區票 4.40', time:'約 25–30 分', note:'S2 經 Warszawa Zachodnia → Warszawa Śródmieście → Warszawa Wschodnia，官方標示用 75 分鐘票。Hotel Metropol 要在 Śródmieście 下車，出站即 Metro Centrum'},
+  {route:'蕭邦機場 → Warszawa Zachodnia（10/25 用）', method:'🚆 SKM S2／S3', price:'75 分第 1 區票 4.40', time:'依當下班次', note:'S2、S3 都停西站，在 Warszawa Zachodnia 下車，轉 15:45 EIP 1306；不要搭到 Centralna，也不繞 Metropol。'},
+  {route:'華沙蕭邦機場 → 市中心', method:'🚆 SKM S2（往 Śródmieście）', price:'75 分第 1 區票 4.40', time:'約 25–30 分', note:'S2 經 Warszawa Zachodnia → Warszawa Śródmieście → Warszawa Wschodnia，官方標示用 75 分鐘票。10/29 之後往返 Hotel Metropol 要在 Śródmieście 下車，出站即 Metro Centrum'},
   {route:'華沙蕭邦機場 → 市中心', method:'🚆 SKM S3（停 Centralna）', price:'75 分第 1 區票 4.40', time:'約 25–30 分', note:'S3 經 Warszawa Zachodnia → Warszawa Centralna → Warszawa Wschodnia，不停 Śródmieście。搭到 S3 就在 Centralna 下車走過去，不要等 Śródmieście'},
   {route:'華沙蕭邦機場 → 市中心', method:'🚌 175 路巴士', price:'75 分第 1 區票 4.40', time:'約 30–45 分', note:'官方機場交通頁同樣標示 75 分鐘票；塞車時火車較穩。離開機場只能在下層 Przyloty 02 站上車，上層出境層不開放上車'},
   {route:'華沙蕭邦機場 → 市中心', method:'🚕 計程車／Bolt', price:'依跳錶／App 報價', time:'依路況', note:'機場內認明官方排班計程車，避免搭訕攬客'},

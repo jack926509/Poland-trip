@@ -82,7 +82,7 @@ test('可查購仍未完成，未記錄查核日期不冒用建置日期', () =>
   const open = todoGroups.flatMap(group => group.items).filter(item => !item.skip && isOpenTodoStatus(item.status));
   assert.deepEqual(open.map(item => item.name), ['之後聯絡 Poznan Apartments']);
   const html = renderTodos({ todoGroups });
-  assert.ok(html.includes('訂票狀態不是即時庫存'));
+  assert.ok(!html.includes('訂票狀態不是即時庫存'));
   assert.ok(!html.includes('最近人工查核'), '2026-10-20 起不顯示查核日期');
   // 2026-10-21 加聖安妮教堂觀景台：12 → 13 項待辦、21 → 22 項。
   assert.ok(html.includes('1 項待辦'));

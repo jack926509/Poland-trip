@@ -1119,7 +1119,7 @@ export const groceryProducts = [
     "supplement": true,
     "localOnly": true,
     "note": "巧克力外層、牛奶榛果內餡的冷藏點心，放在超市冷藏櫃（優格附近），不是常溫巧克力區。",
-    "reason": "網友連吃六盒的人氣點心；冷藏品不適合帶回台灣，在波蘭當點心吃。",
+    "reason": "網友連吃六盒的人氣點心；冷藏品不適合帶回臺灣，在波蘭當點心吃。",
     "sources": [
       {
         "title": "Threads @lei_1648｜波蘭超市 Kinder Chocofresh",

@@ -254,7 +254,7 @@ export const diningPlaces = {
       "Grodzka 43 · 中央廣場往 Wawel 的順路平價選擇",
       "Grodzka 43 · 在中央廣場與 Wawel 之間，適合排平價早餐或午餐；",
       "Grodzka 43，老城區最方便的牛奶吧，pierogi、湯品與馬鈴薯煎餅都便宜；",
-      "10/25 週日適用官網每日 09:00–20:00 時段；若臨時休店，可改中央廣場周邊午餐。"
+      "官網每日 09:00–20:00 時段；若臨時休店，可改中央廣場周邊午餐。"
     ],
     "verificationNote": "瀏覽器讀取官網頁尾：pon - niedz.: 9-20；頁首確認 Grodzka 43（頁尾街名 Gordzka 為拼字誤植）。",
     "cuisine": "牛奶吧",
@@ -822,7 +822,7 @@ export const diningPlaces = {
       "Pączki 玫瑰果醬甜甜圈",
       "咖啡外帶"
     ],
-    "verificationNote": "品牌官網門市頁（https://blikle.pl/lokale/ ，2026-10-21 讀取）列「Cukiernia Nowy Świat, ul. Nowy Świat 33, pon. – ndz. 9:00-21:00」，導航以 33 號為準。先前資料：Wolt、TableJourney、In Your Pocket 都把門市寫成 Nowy Świat 33（有資料說 2017 年底由 35 號遷入）；兩門相鄰約 20 m，現場看招牌即可。2026 年有新聞提到 Nowy Świat 店面租金欠款與市府協商分期，出發前再看一次是否照常營業。",
+    "verificationNote": "品牌官網門市頁（https://blikle.pl/lokale/，2026-10-21 讀取）列「Cukiernia Nowy Świat, ul. Nowy Świat 33, pon. – ndz. 9:00-21:00」，導航以 33 號為準。先前資料：Wolt、TableJourney、In Your Pocket 都把門市寫成 Nowy Świat 33（有資料說 2017 年底由 35 號遷入）；兩門相鄰約 20 m，現場看招牌即可。2026 年有新聞提到 Nowy Świat 店面租金欠款與市府協商分期，出發前再看一次是否照常營業。",
     "liveCheckedAt": "2026-10-21",
     "hoursNote": "品牌官網"
   },
@@ -1624,7 +1624,7 @@ export const diningPlaces = {
     "verificationStatus": "partial",
     "notes": [
       "必比登推介 · 泰式料理",
-      "10/25 晚餐想換口味（取代 Hankki）或 10/26 晚餐的異國備選。"
+      "異國料理城市延伸參考。"
     ],
     "verificationNote": "營業時間未核實：Falstaff、Waze、Yelp 等來源列的時段不一（2026-10-21 稽核），出門前看 Google 地圖當日營業。Michelin Bib Gourmand。",
     "cuisine": "泰國伊善料理",
@@ -1678,7 +1678,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "車站外帶：可頌／甜麵包、火腿起司三明治＋Americano 或 Latte；可多帶一份麵包上火車。"
+      "車站外帶：可頌／甜麵包、火腿起司三明治＋Americano 或 Latte；10/25 不經中央車站，僅作城市延伸參考。"
     ],
     "menuUrl": "https://www.greencaffenero.pl/pl/menu/jedzenie/kanapki",
     "verificationNote": "站內門市為 Green Nero Express（Lokal N20；Yelp 2026-03 曾列 24 小時，Google 地圖同連鎖車站旁門市為週日 07:00–19:00、週六 06:00–19:30，並非 24 小時，是否為同一間 N20 未能確認）；站外公車迴轉道另有一個 Box 店。舊資料寫 Lokal N24，以現場指標為準。",
@@ -1703,7 +1703,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "Mix tradycyjny 綜合餃子；可配甜菜湯。10/25 午餐改為備選，24 小時營業可當晚到或 Polonia 客滿時的替代。"
+      "Mix tradycyjny 綜合餃子；可配甜菜湯。24 小時營業，可作晚到時的替代。"
     ],
     "menuUrl": "https://przypiecek.pl/?page_id=14",
     "verificationNote": "多數來源為 24 小時；當日供餐仍須確認。",
@@ -1893,7 +1893,7 @@ export const diningPlaces = {
       "申根區候選：瑞可塔菠菜義式餃或檸檬酸豆醬鱈魚。"
     ],
     "menuUrl": "https://www.gateone.pl/",
-    "verificationNote": "機場官網確認位於出境層申根區中央碼頭（Gate 25–28 一帶）；QR 260 往多哈走非申根區，過邊檢後到不了，不當首選。",
+    "verificationNote": "機場官網確認位於出境層申根區中央碼頭（Gate 25–28 一帶）；QR 260 往杜哈走非申根區，過邊檢後到不了，不當首選。",
     "hoursNote": "蕭邦機場官網",
     "liveCheckedAt": "2026-10-12",
     "phone": "+48 781 816 815",
@@ -1910,7 +1910,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "Kraków Główny 旁的傳統波蘭菜：Schabowy 炸豬排、Pierogi 與湯品；抵站後最省時間的午餐。"
+      "Kraków Główny 旁的傳統波蘭菜：Schabowy 炸豬排、Pierogi 與湯品；車站旁用餐參考。"
     ],
     "menuUrl": "https://hotel-polonia.com.pl/hotel-polonia/restauracja/menu",
     "verificationNote": "飯店官網與在地指南列 12:00–22:00；舊目錄的 06:30／07:00 是飯店早餐時段。不要和另一家同名的 Hotel Polonia Park 搞混。",
@@ -1936,7 +1936,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "Stary Kleparz 市場旁的 Pimiento 小型熟食店兼 bistro：阿根廷牛排、Tatar、烤雞、Argentine burger；10/25 週日午餐首選，ibis 步行約 7 分。"
+      "Stary Kleparz 市場旁的 Pimiento 小型熟食店兼 bistro：阿根廷牛排、Tatar、烤雞、Argentine burger；城市延伸參考，ibis 步行約 7 分。"
     ],
     "menuUrl": "https://pimiento.pl/wp-content/uploads/2025/10/pimiento-shop-and-bistro-menu-calosc.pdf",
     "verificationNote": "營業時間來源：Google 地圖與 MapQuest 皆列週日 09:00–15:00；官網只列菜單時段、未列逐日時間，也查不到 10/25 特殊公告。午餐菜單 13:00 才開始，早餐菜單 09:00–13:00。官網線上訂位只涵蓋 Kazimierz 與 Stare Miasto 分店，Stary Kleparz 用官網表單或 Email pimiento@pimiento.pl 訂位。",
@@ -2108,7 +2108,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "牛奶吧／平價波蘭料理體驗；10/25 午餐想換口味時替代 Polonia，下午時間緊仍以 Polonia 較省時。"
+      "牛奶吧／平價波蘭料理體驗；可作城市延伸參考。"
     ],
     "menuUrl": null,
     "verificationNote": "官網確認門牌與時段；10/25 週日 09:00–18:00 有開。",
@@ -2134,7 +2134,7 @@ export const diningPlaces = {
     "verificationStatus": "verified",
     "notes": [
       "Galeria Krakowska（中央車站旁）的樂斯拉夫本土漢堡，推薦 Gonzalez；同層另有 Berlin Döner（週日 10:00–21:00）。",
-      "10/25 午餐與 10/26 晚餐太累時的速食備案。"
+      "車站旁的速食備案。"
     ],
     "menuUrl": null,
     "verificationNote": "沿用速食門市 官網查核；10/25 為非營業週日，商場是否開門當日再確認。",

@@ -93,7 +93,7 @@ test('第 5 項：待辦頁每類先列未完成（依日期），已完成收�
     const done = group.items.filter(item => !item.skip && !isOpenTodoStatus(item.status));
     const skipped = group.items.filter(item => item.skip);
     if (skipped.length) {
-      assert.match(section, new RegExp(`線上售完／不排入，不需處理 ${skipped.length} 項`));
+      assert.match(section, new RegExp(`改班後不排入，不需處理 ${skipped.length} 項`));
       const skippedBlock = section.slice(section.indexOf('data-todo-skipped'));
       for (const item of skipped) assert.ok(skippedBlock.includes(item.name), `${item.name} 應在不再提醒收合內`);
     }
@@ -153,8 +153,8 @@ test('第 9 項：實用頁手機刊頭縮小、資料聲明收成一行，待�
   const source = css();
   assert.match(source, /\.journal-practical \.journal-appendix-header::before \{\s*display: none;/);
   const todos = read('practical/todos.html');
-  assert.match(todos, /<details class="callout-note practical-disclaimer"><summary>訂票狀態不是即時庫存<\/summary>/);
-  const notice = between(todos, 'practical-disclaimer', '</details>');
+  assert.doesNotMatch(todos, /practical-disclaimer/);
+  const notice = ''; // 已移除不適用的庫存聲明。
   assert.doesNotMatch(notice, /href="[^"]*todos\.html"/, '待辦頁的聲明不應連回待辦頁本身');
   // 2026-10-20 起訂票、餐飲、交通頁不再放查核聲明框，第一屏直接是內容
   assert.doesNotMatch(read('practical/booking.html'), /practical-disclaimer/);

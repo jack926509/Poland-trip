@@ -20,7 +20,7 @@ test('C3：快捷列為「地圖／地址／交通」，每顆都指向頁內真
     const nav = html.match(/<nav class="day-shortcuts"[\s\S]*?<\/nav>/)?.[0];
     assert.ok(nav, `Day ${day.n} 缺快捷列`);
     const links = [...nav.matchAll(/<a href="#([^"]+)">([^<]+)<\/a>/g)];
-    assert.deepEqual(links.map(match => match[2]), ['地圖', '地址', '交通'], `Day ${day.n} 快捷列文字`);
+    assert.deepEqual(links.map(match => match[2]), (day.n === 1 ? ['地址', '交通'] : ['地圖', '地址', '交通']), `Day ${day.n} 快捷列文字`);
     const bottom = html.match(/<nav class="mobile-quick-nav"[\s\S]*?<\/nav>/)?.[0] || '';
     assert.match(bottom, /href="#schedule"/, `Day ${day.n} 底部列缺時間表`);
     assert.match(bottom, /href="#day-food"/, `Day ${day.n} 底部列缺吃哪`);

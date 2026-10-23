@@ -216,7 +216,7 @@ test('M5：待辦頁刊頭縮小、摘要緊接清單，免責說明移到清單
   const disclaimer = todos.indexOf('practical-disclaimer');
   const lastGroupEnd = todos.lastIndexOf('<section class="section" id="todo-');
   assert.ok(summary !== -1 && summary < firstGroup, '摘要應在第一個分類之前');
-  assert.ok(disclaimer > lastGroupEnd, '免責說明應在清單最後');
+  assert.equal(disclaimer, -1, '移除已不適用的免責說明');
   assert.match(todos, /<header class="journal-appendix-header is-compact">/);
   assert.match(css(), /\.journal-appendix-header\.is-compact h1 \{[^}]*font-size: 1\.6rem;/);
   assert.doesNotMatch(read('practical/essentials.html'), /is-compact/, '安全須知頁刊頭不受影響');

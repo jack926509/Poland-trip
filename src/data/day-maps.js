@@ -29,6 +29,7 @@ export const daySupplementaryPins = {
     venuePin('krakow-glowny-station', { label: '18:12 抵站後入住 ibis', category: 'transport', coordinateSource: 'https://portalpasazera.pl/en/KatalogStacji' }),
   ],
   3: [
+    [50.0628558, 19.93522, "Mr. Jerry", "Jagiellońska 5", "https://www.google.com/maps/search/?api=1&query=50.0628558,19.93522", "food", "https://www.openstreetmap.org/node/475387245"],
     venuePin('krakow-auschwitz-i-entrance', { label: '官方確認入口 · Więźniów Oświęcimia 55', category: 'sight', coordinateSource: 'https://www.auschwitz.org/en/museum/news/new-visitor-services-center-at-the-auschwitz-memorial-change-of-the-place-of-arrival-and-entrance-from-15-june%2C1614.html' }),
     venuePin('krakow-auschwitz-ii-birkenau', { displayName: 'Auschwitz II–Birkenau 主入口', label: 'Ofiar Faszyzmu 12 · 導覽接駁下車後依現場指示集合', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=50.035948&mlon=19.178314' }),
   ],
@@ -78,6 +79,14 @@ export const daySupplementaryPins = {
     [52.4072699, 16.9119251, 'Kaponiera「5 Figur」', 'Roosevelta 22 附近 · 街頭雕塑', 'https://www.google.com/maps/search/?api=1&query=5%20Figur%20sculpture%2C%20Kaponiera%2C%20Pozna%C5%84', 'sight', 'https://www.openstreetmap.org/node/9107873635'],
   ],
   7: [
+    [52.2381578, 21.0179739, "哥白尼紀念碑 Pomnik Kopernika", "Mikołaja Kopernika", "https://www.google.com/maps/search/?api=1&query=52.2381578,21.0179739", "sight", "https://www.openstreetmap.org/node/282661680"],
+    [52.2387357, 21.0167603, "聖十字教堂 Kościół św. Krzyża", "Krakowskie Przedmieście 3", "https://www.google.com/maps/search/?api=1&query=52.2387357,21.0167603", "sight", "https://www.openstreetmap.org/way/28092628"],
+    [52.2430186, 21.0151657, "總統府（外觀）", "Krakowskie Przedmieście 46/48", "https://www.google.com/maps/search/?api=1&query=52.2430186,21.0151657", "sight", "https://www.openstreetmap.org/way/855256739"],
+    [52.2421169, 21.015898, "Café Bristol", "Krakowskie Przedmieście 42/44", "https://www.google.com/maps/search/?api=1&query=52.2421169,21.015898", "cafe", "https://www.openstreetmap.org/node/4551462797"],
+    [52.2411839, 21.017317, "訪親會教堂 Kościół Wizytek", "Krakowskie Przedmieście 34", "https://www.google.com/maps/search/?api=1&query=52.2411839,21.017317", "sight", "https://www.openstreetmap.org/way/320592658"],
+    [52.2417276, 21.0163642, "普魯斯紀念碑", "Karowa", "https://www.google.com/maps/search/?api=1&query=52.2417276,21.0163642", "sight", "https://www.openstreetmap.org/way/1449391820"],
+    [52.23648, 21.0229695, "Ostrogski 宮（外觀）", "Okólnik 1", "https://www.google.com/maps/search/?api=1&query=52.23648,21.0229695", "sight", "https://www.openstreetmap.org/way/188250947"],
+    [52.2402594, 21.0320788, "河岸美人魚像 Syrena", "Tunel Wisłostrady", "https://www.google.com/maps/search/?api=1&query=52.2402594,21.0320788", "sight", "https://www.openstreetmap.org/way/432808623"],
     venuePin('warsaw-old-town-square', { label: '10:40 老城廣場；前後是甕城、石階街、許願鐘與聖若望大教堂', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.249778&mlon=21.012151' }),
     [52.2493716, 20.9931609, 'POLIN 波蘭猶太人歷史博物館（外觀）', 'Mordechaja Anielewicza 6 · 早上第一站，只看外觀', 'https://www.google.com/maps/search/?api=1&query=POLIN%20Museum%2C%20Mordechaja%20Anielewicza%206%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/186141946'],
     [52.2426428, 21.0250683, 'BUW 華沙大學圖書館屋頂花園', 'Dobra 56/66 · 14:45 屋頂花園＋河岸步道', 'https://www.google.com/maps/search/?api=1&query=Biblioteka%20Uniwersytecka%20w%20Warszawie%2C%20Dobra%2056%2F66%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/relation/6414970'],
@@ -115,24 +124,10 @@ export const daySupplementaryPins = {
 // 依據：註解明寫的日期優先；其餘取目前這組座標在 git 歷史中第一次出現的 commit 日期（台北時間）；
 // 帝王城堡取 venues.js 的 checkedAt。逐顆依據見 git 歷史與 venues.js，新增或改座標的圖釘請同步補上日期。
 export const pinCoordinateCheckedAt = {
-  1: {
-    "哥白尼紀念碑 Pomnik Kopernika": '2026-10-19',
-    "聖十字教堂 Kościół św. Krzyża": '2026-10-19',
-    "Warszawa Centralna": '2026-09-08',
-    "E.Wedel Pijalnia · Krakowskie Przedmieście 45": '2026-10-15',
-    "Specjały Regionalne": '2026-10-15',
-  },
-  2: {
-    'Kraków Główny': '2026-10-22',
-    "瓦維爾大教堂": '2026-09-08',
-    "聖瑪利亞聖殿": '2026-09-08',
-    "紡織會館 Sukiennice": '2026-08-06',
-    "聖弗洛里安城門 Brama Floriańska": '2026-10-19',
-    "甕城 Barbakan": '2026-10-19',
-    "Pimiento Shop and Bistro": '2026-10-19',
-    "Podgórze・猶太英雄廣場": '2026-09-08',
-  },
+  1: {},
+  2: { 'Kraków Główny': '2026-10-22' },
   3: {
+    "Mr. Jerry": '2026-10-22',
     "Auschwitz I 訪客服務中心／入口": '2026-09-08',
     "Auschwitz II–Birkenau 主入口": '2026-09-08',
   },
@@ -182,6 +177,14 @@ export const pinCoordinateCheckedAt = {
     "Kaponiera「5 Figur」": '2026-10-17',
   },
   7: {
+    "哥白尼紀念碑 Pomnik Kopernika": '2026-10-19',
+    "聖十字教堂 Kościół św. Krzyża": '2026-10-19',
+    "總統府（外觀）": '2026-10-22',
+    "Café Bristol": '2026-10-22',
+    "訪親會教堂 Kościół Wizytek": '2026-10-22',
+    "普魯斯紀念碑": '2026-10-22',
+    "Ostrogski 宮（外觀）": '2026-10-22',
+    "河岸美人魚像 Syrena": '2026-10-22',
     "華沙老城市場廣場": '2026-09-08',
     "POLIN 波蘭猶太人歷史博物館（外觀）": '2026-10-15',
     "BUW 華沙大學圖書館屋頂花園": '2026-10-15',

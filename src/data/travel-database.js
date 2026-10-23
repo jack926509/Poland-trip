@@ -196,7 +196,7 @@ const databaseEntriesBase = [
     title: attractionTickets.title,
     summary: `${attractionTickets.text}仍須核對私人票券的參觀日期、入場時段、語言、人數與集合點；公開版不保存票券條碼、姓名或付款資料。`,
     status: 'private-required', sourceUrl: null, verifiedAt: null, recheckAt: '2026-09-24',
-    offlineNote: '先保存已訂 Auschwitz 的票券 PDF 與證件；其餘項目購票後一併核對日期、時段、語言、人數、官方地址、集合點與取消規則，存入私人離線包。', private: true,
+    offlineNote: '先保存已訂 Auschwitz 與鹽礦的票券 PDF 與證件；一併核對日期、時段、語言、人數、官方地址、集合點與取消規則，存入私人離線包。', private: true,
   },
   {
     id: 'accommodation-confirmations', section: 'accommodation', category: 'practical', cityKey: 'ROUTE',
@@ -466,7 +466,7 @@ export const dayOperations = {
       { mode: 'PKP', route: 'Wrocław Główny → Poznań Główny', action: '已購 IC 260 19:10，預計 20:29 抵 Poznań Główny（Koleo）；18:35 前抵站。車廂與座位依票券詳細頁。' },
     ],
     dailyAlerts: [
-      '點燈人沒有對外保證的出發分鐘；日落前到座堂島等待，不把 16:45 當成確定時刻。',
+      '點燈人沒有對外保證的出發分鐘；日落前到座堂島等待，不把任何固定分鐘當成確定時刻；15:45 上島就邊走邊留意（日落 16:34）。',
     ],
     nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票', '照訂房確認拿 Poznan Apartments 鑰匙，入住時問隔天寄放行李方式（預計約 20:45 到；接待到 22:00、平日 08:00 起，均出發前再確認；寄放方式之後傳訊息確認；不能寄就用車站寄物櫃備案）；07:15 Charlotte Krysiewicza 早餐、08:00 搭電車去 Cytadela。晚餐 Arirang 當天先看 Google 地圖營業狀態，21:30 前不能入座改 Złote Tarasy 或 Ćma'],
   },
@@ -539,7 +539,7 @@ export const dayOperations = {
       { mode: '叫車／步行', route: 'BUW → 瓦津基北門 → 水上宮殿 → Agrykola → Metropol → Soul Kitchen', action: '15:10 從 BUW 搭計程車／Bolt 約 15 分直達北門，15:30 蕭邦紀念碑、15:45 抵水上宮殿等 16:12 日落；16:40 從 Agrykola 叫車回飯店，17:50 步行約 8 分到 Soul Kitchen，18:00 已訂位。' },
     ],
     dailyAlerts: [
-      '收費館只路過拍外觀：MSN、POLIN、居禮夫人博物館、華沙博物館、皇家城堡、Zachęta、蕭邦博物館都不進；教堂正殿能不能進以現場告示為準，彌撒時不要進去拍照。',
+      '收費館只路過拍外觀：MSN、POLIN、居禮夫人博物館、華沙博物館、皇家城堡、蕭邦博物館都不進；教堂正殿能不能進以現場告示為準，彌撒時不要進去拍照。',
       '水上宮殿週五個人參觀免費，最後入場 17:30（以館方當日公告為準）；本次只排湖邊外觀，15:45 抵湖邊等日落 16:12 拍倒影。',
       '10/31 為諸聖節前夕，今晚重查明日市區交通、機場與店家特別營運。SKM 10 月班表未查證，需前一晚用 Jakdojade 確認 Śródmieście 往機場 S2 的確切時刻；錯過一班約晚 30 分，仍約 11:30 到機場。',
     ],
@@ -550,7 +550,7 @@ export const dayOperations = {
     note: '離開 EU 前處理退稅；託運商品若需查驗，先完成海關程序。',
     addresses: [
       accommodationAddress('warsaw-metropol', ['回 Metropol、整理行李', '辦理退房']),
-      venueCard('warsaw-old-town-square', '華沙老城市場廣場'),
+      { name: 'Blikle', stepLabels: ['Blikle 外帶甜甜圈'], address: 'Nowy Świat 33, Warszawa', url: diningPlaces['warsaw-a-blikle-1869'].map, note: '09:10 外帶甜甜圈，沒開就略過。', reliable: false },
       venueCard('warsaw-centralna-station', 'Warszawa Centralna'),
       {
         name: 'Warszawa Śródmieście（SKM S2）',
@@ -590,10 +590,10 @@ const unresolvedStepReasons = {
     '香港轉機': '依轉機指標與 QR 815 登機證到當日登機門，不使用固定地面地址。',
   },
   2: {
-    '早餐 · 機上或多哈轉機': '依實際供餐與當日登機門調整，沒有固定地面餐廳地址。',
+    '早餐 · 機上或杜哈轉機': '依實際供餐與當日登機門調整，沒有固定地面餐廳地址。',
     '午餐 · 機上或機場輕食': '先入境、提行李與轉西站，餐食依可用時間安排。',
-    'QR 815 香港 → 多哈': dynamicTransitReason,
-    'QR 259 多哈 → 華沙': dynamicTransitReason,
+    'QR 815 香港 → 杜哈': dynamicTransitReason,
+    'QR 259 杜哈 → 華沙': dynamicTransitReason,
     '抵蕭邦機場 · 入境與提行李': '航廈內依入境與行李提領指標，離開機場後直接轉西站。',
     '蕭邦機場 → Warszawa Zachodnia（西站）': dynamicTransitReason,
     '抵 Warszawa Zachodnia（西站）': '西站地址見當日地址卡；上車月台看當日電子牌。',

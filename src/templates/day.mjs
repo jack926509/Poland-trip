@@ -111,7 +111,7 @@ function renderDayFood(day) {
 
   return `<article class="card day-dining" id="day-food" aria-labelledby="day-food-heading">
     <span class="eyebrow">Dining</span><h3 id="day-food-heading">當日餐飲</h3>
-    <p class="food-map-note">三餐各有一個主安排；標「先確認」的餐廳出門前看一下營業時間與條件；Soul Kitchen 10/30 晚餐已訂妥，其餘維持現場入座，客滿就改備選；備選取代同餐，不額外加餐。地面行程採當地時間；機場轉機時刻另標時區。</p>
+    <p class="food-map-note">三餐各有一個主安排；標「先確認」的餐廳出門前看一下營業時間與條件；Soul Kitchen 10/30 與 Mr. Jerry 10/26 晚餐已訂位，其餘維持現場入座，客滿就改備選；備選取代同餐，不額外加餐。地面行程採當地時間；機場轉機時刻另標時區。</p>
     ${renderMealList(day, dayMeals[day.n])}
     <p class="day-food-back"><a href="#schedule">↑ 回時間表</a></p>
     ${entries.length ? `<details><summary>備選、備餐與順路點心 · ${summary}</summary><ul class="day-food-list">${entries.map(renderDayFoodItem).join('')}</ul></details>` : ''}
@@ -202,6 +202,11 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   // 時間表每列的導航：沿用「現場地址」(operation.addresses) 與三餐主安排的導航網址，
   // 不另建資料。一列只在恰好對到一個可靠地點時才給按鈕，對不到就不顯示，不猜。
   const stepNavigation = step => {
+    if (day.n === 6 && ['退房、寄放行李', '取行李、前往 Poznań Główny'].includes(step.label)) {
+      const apartment = operation.addresses.find(item => /Poznan Apartments/.test(item.name));
+      const href = safeHttpsUrl(apartment?.url);
+      if (href) return { href, name: apartment.name };
+    }
     const unresolved = operation?.unresolvedSteps?.find(item => item.label === step.label);
     if (unresolved || /票面/.test(step.label)) return null;
     const matches = (operation?.addresses || []).filter(item => item.stepLabels?.includes(step.label));
@@ -213,9 +218,10 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   // 時間表裡的餐次列（早餐／午餐／晚餐）連到同頁「當日餐飲」的店家卡（id 由 renderMealList 以 stepId 產生）。
   // 只連真的有店家卡的餐次；店名優先、其次取「 · 」後面的描述、再不行才整句，不憑空猜。
   const mealStepIds = new Set((dayMeals[day.n] || []).filter(item => item.stepId).map(item => item.stepId));
+  const keepShort = text => String(text).replace(/\b(?:HX|QR|BR) \d{3}\b|（選配）|（外觀）/g, '<span class="nowrap">$&</span>');
   const stepLabelHtml = step => {
     const label = String(step.label);
-    if (!step.id || !mealStepIds.has(step.id)) return label;
+    if (!step.id || !mealStepIds.has(step.id)) return keepShort(label);
     const meal = dayMeals[day.n].find(item => item.stepId === step.id);
     const href = `#meal-${step.id}`;
     const wrap = text => `<a class="step-meal-link" href="${href}">${text}</a>`;
@@ -224,6 +230,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
     return separator === -1 ? wrap(label) : `${label.slice(0, separator + 3)}${wrap(label.slice(separator + 3))}`;
   };
   // UX 1017 H2：地圖圖釘的數字就是時間表第幾列；有圖釘的列在標題前標出同一個數字，方便對照。
+  if (dayMap && !dayMap.points.length) dayMap = null;
   const pinnedSteps = new Set((dayMap?.points || []).map(point => point[8]).filter(Boolean));
   // 2026-10-20 UX F3／F21：每一步預設只顯示第一句（要做什麼），其餘收進「展開」；
   // 餐次列只留店名＋時間＋導航，店家細節看「當日餐飲」（店名連到餐廳卡），原說明仍收在「展開」裡不刪。
@@ -427,7 +434,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
     <header class="journal-day-header">
       <div class="journal-day-heading">
         <span class="section-num">Day ${String(day.n).padStart(2, '0')} · ${escapeHtml(day.date)}</span>
-        <h1>${escapeHtml(day.title).replaceAll(' + ', ' +\u00a0')}</h1>
+        <h1>${keepShort(escapeHtml(day.title)).replaceAll(' + ', ' +\u00a0')}</h1>
         <p class="hero-dek">${escapeHtml(day.headline)}</p>
         ${renderDayStayLine(day)}
       </div>

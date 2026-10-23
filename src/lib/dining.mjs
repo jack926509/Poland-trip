@@ -1,7 +1,7 @@
 import { escapeHtml, safeHttpsUrl } from './html.mjs';
 
 export function mealTiming(item, day) {
-  if (item.planStatus === 'unavailable') return '本日不採用；保留作其他時段參考';
+  if ((item.planStatus === 'unavailable' || /改班後原時段不排入/.test(item.role || ''))) return '本日不採用；保留作其他時段參考';
   if (!item.stepId) return /早餐|午餐|晚餐/.test(item.role) ? '候選未排時段，須先調整行程' : '彈性候選，未排定時段';
   const step = day.steps.find(step => step.id === item.stepId);
   if (!step) throw new Error(`Day ${day.n} 找不到用餐步驟 ${item.stepId}`);
@@ -50,7 +50,7 @@ export const BOOKING_LABELS = { required: '必訂', recommended: '建議訂', 'w
  */
 export function renderStoreBadges(item) {
   if (!item.placeId && !item.cuisine) return '';
-  const bookingLabel = Object.hasOwn(BOOKING_LABELS, item.booking) ? BOOKING_LABELS[item.booking] : '';
+  const bookingLabel = (item.planStatus === 'unavailable' || /改班後原時段不排入/.test(item.role || '')) ? '' : item.placeId === 'warsaw-soul-kitchen' ? '10/30 已訂' : Object.hasOwn(BOOKING_LABELS, item.booking) ? BOOKING_LABELS[item.booking] : '';
   const booking = bookingLabel ? `<span class="store-booking store-booking-${item.booking}" data-booking="${item.booking}">${bookingLabel}</span>` : '';
   return `<span class="store-badges">${booking}${item.cuisine ? `<span class="store-tag">${escapeHtml(item.cuisine)}</span>` : ''}</span>`;
 }
@@ -88,7 +88,7 @@ export function renderStoreBody(item, { note = item.note, condition = item.condi
   // 排定餐段：先給「當天」那一行（日期＋當天時段＋能不能坐下吃），全週時段收進摺疊區；
   // 備選與名錄沒有指定日子，照舊直接列全週時段。
   // 沒有指定日子（營業時間名錄、今日卡備選）就不顯示「當天」，回到全週時段。
-  const dayHours = day ? item.dayHours : '';
+  const dayHours = day && item.planStatus !== 'unavailable' && !/改班後原時段不排入/.test(item.role || '') ? item.dayHours : '';
   const check = dayHours ? openingCheck(dayHours, time) : null;
   const fit = !dayHours ? ''
     : check === null ? '<span class="store-fit store-fit-relative">依實際抵達時間</span>'

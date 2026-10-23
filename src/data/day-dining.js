@@ -74,7 +74,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-green-caffe-nero-centralny",
       "role": "城市延伸備選（改班後原時段不排入）",
-      "note": "去程延後，原時段不排入；僅保留自選餐廳作城市延伸參考。",
+      "note": "10/25 不經中央車站，原時段不排入；僅保留自選餐廳作城市延伸參考。",
       "stepId": null,
       "planStatus": "candidate",
       "dayHours": "週日 07:00–19:00（Google 地圖）"
@@ -82,14 +82,14 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-mcdonalds-centralna",
       "role": "城市延伸備選（改班後原時段不排入）",
-      "note": "去程延後，原時段不排入；僅保留自選餐廳作城市延伸參考。",
+      "note": "10/25 不經中央車站，原時段不排入；僅保留自選餐廳作城市延伸參考。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "krakow-lajkonik-basztowa",
-      "role": "城市延伸備選（改班後原時段不排入）",
-      "note": "去程延後，原時段不排入；僅保留自選餐廳作城市延伸參考。",
+      "role": "早餐麵包採買備案",
+      "note": "10/26、10/27 早餐麵包採買點（週日 07:00–19:00，18:12 抵站後來得及就先買）；抵達後採買只當備案。",
       "stepId": null,
       "planStatus": "candidate",
       "dayHours": "07:00–19:00"
@@ -133,7 +133,7 @@ export const dayDiningPlans = {
     {
       "placeId": "krakow-endzior",
       "role": "城市延伸備選（改班後原時段不排入）",
-      "note": "保留原自選店；10/25 晚抵不排白天散步，且 Endzior 週日公休，不當作當日餐食保證。",
+      "note": "保留原自選店；10/25 晚抵不排白天散步，且 Endzior 週日不一定有開，不當作當日餐食保證。",
       "stepId": null,
       "planStatus": "candidate"
     }
@@ -276,7 +276,7 @@ export const dayDiningPlans = {
     {
       "placeId": "wroclaw-restauracja-wroclawska",
       "role": "午餐首選",
-      "note": "逛完 Hala Targowa 市場大廳，12:00 開門就進店、入座就點餐：必點 Śląskie niebo 果乾燉豬肉配 Wrocław dumplings＋Bigos Wrocławski 紅甘藍燉肉，胃口夠再加 Crayfish Soup。主菜現做約 30 分鐘，13:10 離開，接全景畫外觀與 13:20 電車往百年廳。",
+      "note": "逛完 Hala Targowa 市場大廳，12:00 開門就進店、入座就點餐：必點 Śląskie niebo 果乾燉豬肉配 Wrocław dumplings＋Bigos Wrocławski 紅甘藍燉肉，胃口夠再加 Crayfish Soup。主菜現做約 30 分鐘，13:10 離開，13:20 全景畫外觀，13:30 搭電車往百年廳。",
       "stepId": "d5-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
@@ -381,7 +381,7 @@ export const dayDiningPlans = {
       "stepId": "d6-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
-      "condition": "週四 14:00 才開門，12:30 吃不到；不訂位，14:00 開門直接入座。近期有評論說上菜偏慢，15:30 還沒吃完就放棄城堡內部。客滿改 Pyra Bar。",
+      "condition": "週四 14:00 才開門，12:30 吃不到；不訂位，14:00 開門直接入座。近期有評論說上菜偏慢，15:30 還沒吃完，就把帝王區縮短到只看帝王城堡外觀、跳過 Kaponiera。客滿改 Pyra Bar。",
       "dayHours": "14:00–22:30"
     },
     {
@@ -420,7 +420,7 @@ export const dayDiningPlans = {
       "stepId": "d6-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "週四 12:00–22:00（多個目錄一致，無店家官網），最後點餐時間未查到，可請 Hotel Metropol 櫃檯代為確認；不用訂位，當天先看 Google 地圖營業狀態；20:20 到店、20:40 前還沒能入座就改 Złote Tarasy 或 Ćma。",
+      "condition": "週四 12:00–22:00（多個目錄一致，無店家官網），最後點餐時間未查到；不用訂位，當天先看 Google 地圖營業狀態；20:20 到店、20:40 前還沒能入座就改 Złote Tarasy 或 Ćma。",
       "dayHours": "12:00–22:00"
     },
     {
@@ -474,7 +474,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-bar-mleczny-bambino",
       "role": "早餐備選",
-      "note": "Hoża 19，平日 08:00 才開；想吃牛奶吧早餐，後面從 08:30 那站開始全部順延約 45 分，並刪掉 BUW 屋頂花園。",
+      "note": "Hoża 19，平日 08:00 才開；想吃牛奶吧早餐，後面從 08:35 POLIN開始全部順延約 45 分，並刪掉 BUW 屋頂花園。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -515,7 +515,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-rusiko",
       "role": "晚餐備選（原首選）",
-      "note": "Wierzbowa 11（劇院廣場旁）。⚠️ 官網聯絡頁 2026-10-21 仍公告「3/24 起停業至另行通知」，不能直接走去，要去先用 Email（rezerwacje@rusiko.pl）或請 Hotel Metropol 櫃檯代為確認。原本是 Soul Kitchen 沒有威靈頓或客滿時的替補：khachapuri、khinkali、chanakhi 燉羊腿，由 Metropol 搭車約 10 分。",
+      "note": "Wierzbowa 11（劇院廣場旁）。⚠️ 官網聯絡頁 2026-10-21 仍公告「3/24 起停業至另行通知」，不能直接走去，當天先看 Google 地圖營業狀態。原本是 Soul Kitchen 沒有威靈頓或客滿時的替補：khachapuri、khinkali、chanakhi 燉羊腿，由 Metropol 搭車約 10 分。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -619,7 +619,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-gate-one-airport",
       "role": "午餐候選（僅申根區）",
-      "note": "QR 260 往多哈須走非申根流程，不將 Gate One 當成可直接抵達的首選。",
+      "note": "QR 260 往杜哈須走非申根流程，不將 Gate One 當成可直接抵達的首選。",
       "stepId": null,
       "planStatus": "candidate"
     }
@@ -676,7 +676,7 @@ export const selfCateredMeals = {
       "meal": "lunch",
       "name": "機場安檢後依登機區選餐",
       "stepId": "d8-lunch",
-      "note": "依實際可通行的登機區、營業與登機截止選擇；QR 260 往多哈，不把申根區 Gate One 當作首選。"
+      "note": "依實際可通行的登機區、營業與登機截止選擇；QR 260 往杜哈，不把申根區 Gate One 當作首選。"
     },
     {
       "meal": "dinner",
@@ -688,7 +688,7 @@ export const selfCateredMeals = {
   "2": [
     {
       "meal": "breakfast",
-      "name": "早餐 · 機上或多哈轉機",
+      "name": "早餐 · 機上或杜哈轉機",
       "stepId": "d2-breakfast",
       "note": "依實際供餐與登機門時間調整。"
     },
