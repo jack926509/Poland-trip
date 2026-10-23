@@ -14,9 +14,9 @@ test('餐廳主檔的 booking 欄位只能是 required／recommended／walk-in�
   assert.deepEqual(Object.keys(BOOKING_LABELS).sort(), [...ALLOWED].sort());
 });
 
-test('10/22 回信只有 Soul Kitchen 已訂妥', () => {
+test('Soul Kitchen 與 Mr. Jerry 均已訂妥', () => {
   const booked = Object.entries(diningPlaces).filter(([, place]) => place.booking === 'booked').map(([id]) => id);
-  assert.deepEqual(booked, ['warsaw-soul-kitchen']);
+  assert.deepEqual(booked, ['krakow-mr-jerry', 'warsaw-soul-kitchen']);
 });
 
 test('有 booking 才顯示徽章，沒有欄位就不顯示', () => {

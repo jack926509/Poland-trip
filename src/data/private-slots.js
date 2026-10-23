@@ -16,7 +16,7 @@ export const privateSlots = [
   },
   {
     id: 'train-eip5300', day: 2, kind: 'train', label: 'EIP 1306 華沙西站 → 克拉科夫',
-    detail: '10/25 15:45 Warszawa Zachodnia 發車', stepPattern: 'EIP 1306',
+    detail: '10/25 15:45 Warszawa Zachodnia 發車；第 1 車，24、26 號', stepPattern: 'EIP 1306',
     publicNote: '車票在 PKP Intercity App 的票券清單，出發前先存離線。',
   },
   {

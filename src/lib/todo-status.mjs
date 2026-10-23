@@ -134,7 +134,7 @@ export function bookingNoteHtml(groups, todoHref) {
  */
 export function statusTagClass(status) {
   const text = String(status ?? '');
-  if (/待確認|先確認|待查|確認中/.test(text)) return 'tag-yellow';
+  if (/待確認|先確認|待查|確認中|取消申請中|待回覆/.test(text)) return 'tag-yellow';
   if (/尚未|未購|未訂|未完成|待訂/.test(text) && !/選配/.test(text)) return 'tag-todo';
   if (/已購|已訂|已確認|已完成|已報到|已登錄|已安裝|無待訂/.test(text)) return 'tag-green';
   return 'tag-muted';

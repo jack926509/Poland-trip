@@ -815,7 +815,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-21",
     "verificationStatus": "partial",
     "notes": [
-      "1869 年創立的波蘭國民甜點店，pączki 玫瑰果醬甜甜圈是招牌。10/30 15:05 沿新世界街走到時外帶；品牌官網列 Nowy Świat 33 每日 09:00–21:00。"
+      "1869 年創立的波蘭國民甜點店，pączki 玫瑰果醬甜甜圈是招牌。10/31 09:10 早餐後外帶；品牌官網列 Nowy Świat 33 每日 09:00–21:00。"
     ],
     "cuisine": "百年甜點",
     "dishes": [
@@ -2004,7 +2004,7 @@ export const diningPlaces = {
   },
   "krakow-mr-jerry": {
     "id": "krakow-mr-jerry",
-    "booking": "recommended",
+    "booking": "booked",
     "cityKey": "krakow",
     "name": "Mr. Jerry",
     "address": "Jagiellońska 5, Kraków",
@@ -2015,10 +2015,10 @@ export const diningPlaces = {
     "verificationStatus": "partial",
     "notes": [
       "老城牛排館，官網菜單寫「kultowy Beef Wellington」（招牌威靈頓牛排）；胃口大可加乾式熟成牛排。",
-      "本趟唯一確認吃得到威靈頓牛排的機會，離 ibis 步行約 10 分。"
+      "10/26 18:00 已訂位（2 位、無訂金）；Beef Wellington 無法預點，到店再點；離 ibis 步行約 10 分。"
     ],
     "menuUrl": "https://www.mrjerry.pl/o-nas-krakow/",
-    "verificationNote": "官網確認 2024 年 5 月開幕、Jagiellońska 5、菜單有招牌 Beef Wellington；In Your Pocket 與 Tripadvisor 評論也提到。Tripadvisor 另列 Szewska 13 地址，訂位時確認分店。週一時段以多數來源為準。",
+    "verificationNote": "官網確認 2024 年 5 月開幕、Jagiellońska 5、菜單有招牌 Beef Wellington；In Your Pocket 與 Tripadvisor 評論也提到。週一時段以多數來源為準。",
     "cuisine": "牛排館",
     "dishes": [
       "Beef Wellington 威靈頓牛排（份量大）",

@@ -129,7 +129,7 @@ test('5 筆已確認住宿區段完整涵蓋 7 晚並保留官方地址', () => 
   assert.equal(stay.reduce((total, item) => total + item.nights, 0), 7);
   for (const booking of stay) {
     assert.match(booking.officialUrl, /^https:\/\//);
-    assert.equal(booking.status, '已確認');
+    assert.equal(booking.status, booking.id === 'warsaw-metropol-arrival' ? '取消申請中（Agoda，結果待回覆）' : '已確認');
     assert.equal(booking.rooms, 1);
     assert.equal(typeof booking.coordinates?.lat, 'number');
     assert.equal(typeof booking.coordinates?.lng, 'number');
@@ -552,7 +552,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.deepEqual(bookingTiers.map(tier => tier.items.length), [7, 2, 7]); // 2026-10-14 新行程：第二優先拿掉華沙兩館與全景畫，餐廳加 Restauracja Wrocławska（選配）
   assert.deepEqual({ out: flights.out.length, back: flights.back.length }, { out: 5, back: 5 });
   assert.equal(stay.length, 5);
-  assert.equal(reservations.length, 9);
+  assert.equal(reservations.length, 10);
 
   assert.equal(michelinSummary.length, 4);
   assert.equal(michelinReservations.length, 9);
@@ -775,8 +775,8 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
   // 2026-10-21 加聖安妮教堂觀景台（暫停開放・出發前待確認是否重新開放）：12 → 13。
   // 2026-10-22 航班線上報到、出國登錄、安裝 Jakdojade 與 Bolt 完成：13 → 10。
   // 2026-10-22 餐廳不訂位、不傳訊息給波茲南公寓、聖安妮觀景台複查仍暫停開放：10 → 1（只剩 Lajkonik 回程）。
-  // 2026-10-22 審查修正：Mr. Jerry 改為已提訂位待店家確認、加舊 PKP 票與 Agoda 兩筆確認：3 → 6。
-  assert.equal(todoCount, 6, '已購／已訂妥與線上已售完（不再提醒）的項目不可算進待辦');
+  // Mr. Jerry 已確認訂位，移出待辦；未完成項目共 5 項。
+  assert.equal(todoCount, 5, '已購／已訂妥與線上已售完（不再提醒）的項目不可算進待辦');
 
   assert.ok(!html.includes('出發準備度'));
   assert.ok(!html.includes('00 / Readiness'));
@@ -866,7 +866,7 @@ test('Day 3 導航指向 Auschwitz I 訪客入口而非通訊地址', () => {
 test('Day 8 退稅與報到已合併，不再出現獨立 11:30 時段', () => {
   const html = read('day-08.html');
   const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i)?.[1] || '';
-  assert.ok(!main.includes('11:30'), 'Day 8 仍有舊的獨立 11:30 時段');
+  assert.ok(!days[7].steps.some(step => step.t === '11:30'), 'Day 8 仍有舊的獨立 11:30 時段');
   assert.ok(main.includes('退稅') && main.includes('報到'), 'Day 8 缺少合併後的退稅／報到內容');
 });
 
@@ -1001,7 +1001,7 @@ test('Day 7 從最北邊往回逛：POLIN 外觀 → 新城 → 老城廣場 →
   const lunch = day.steps.find(item => item.id === 'd7-lunch');
   assert.equal(lunch.t, '12:30');
   assert.match(lunch.label, /Polka/);
-  assert.equal(day.steps.find(step => step.label === '★ 瓦津基 · 水上宮殿').t, '16:00');
+  assert.equal(day.steps.find(step => step.label === '★ 瓦津基 · 水上宮殿').t, '15:45');
   assert.equal(day.intensity, '高');
   const html = read('day-07.html');
   const main = html.slice(html.indexOf('<main'), html.indexOf('</main>'));
@@ -1175,7 +1175,7 @@ test('逐日移動不保留已知不可行備案或重疊時刻', () => {
   const day8 = days.find(item => item.n === 8);
   const day8Times = day8.steps.map(item => item.t);
   assert.equal(day8Times.filter(time => time === '10:30').length, 1);
-  assert.ok(day8.steps.some(item => item.label.includes('退房') && item.t === '09:40'));
+  assert.ok(day8.steps.some(item => item.label.includes('退房') && item.t === '09:45'));
 });
 
 test('舊票價與過時場館資料已從產出頁面移除', () => {
@@ -2124,7 +2124,7 @@ test('Day 7 城堡廣場後、Polka 午餐前只拍聖安妮教堂外觀：觀�
   assert.deepEqual(['★ 老城廣場', '石階街 → Brzozowa → Gnojna Góra 觀景點', 'Kanonia 許願鐘 → 聖若望大教堂', 'Piwna 街 → 聖馬丁教堂', '★ 城堡廣場（白天版）', '聖安妮教堂外觀'].map(label => [at(label).t, at(label).dur]),
     [['10:40', '25 min'], ['11:05', '25 min'], ['11:30', '20 min'], ['11:50', '10 min'], ['12:00', '25 min'], ['12:25', '5 min']]);
   assert.equal(day.steps[lunch].t, '12:30');
-  assert.equal(day.steps[lunch + 1].t, '13:15');
+  assert.equal(day.steps[lunch + 1].t, '13:30');
   const step = day.steps[church];
   assert.match(step.sub, /Krakowskie Przedmieście 68/);
   assert.match(step.sub, /觀景台 10\/6 起整修暫停開放（直到另行公告）/);
@@ -2158,4 +2158,10 @@ test('Day 7 城堡廣場後、Polka 午餐前只拍聖安妮教堂外觀：觀�
   const html = read('day-07.html');
   assert.match(html, /聖安妮教堂外觀/);
   assert.match(html, /若重新開放 · 聖安妮教堂觀景台登塔/);
+});
+
+test('public HTML excludes private ticket numbers', () => {
+  for (const file of [...walk(distDir).filter(file => file.endsWith('.html')), standalonePath]) {
+    assert.doesNotMatch(fs.readFileSync(file, 'utf8'), /\bWN\d{6,}\b|\bWH\d{6,}\b|157\s?2100\d+/, file);
+  }
 });

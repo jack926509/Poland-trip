@@ -141,18 +141,18 @@ export const dayDiningPlans = {
   "3": [
     {
       "placeId": "krakow-mr-jerry",
-      "role": "晚餐首選（條件式）",
-      "note": "16:55 回城休息後 18:00 入座（已向店家提出訂位，尚未確認；沒確認就在 ibis 附近吃）：招牌 Beef Wellington，胃口大可加乾式熟成牛排。10/30 Soul Kitchen 另已訂位並註記 1 份威靈頓。",
+      "role": "晚餐首選（已訂位）",
+      "note": "10/26 18:00 已訂位（2 位、無訂金）；Beef Wellington 無法預點，到店再點。",
       "stepId": "d3-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "不訂位、現場入座；Wellington 常需預留，現場點不到就改乾式熟成牛排。週一 15:00–22:00、廚房至 21:30。",
+      "condition": "18:00 已訂位（2 位、無訂金）；Beef Wellington 無法預點，到店再點。週一 15:00–22:00、廚房至 21:30。",
       "dayHours": "15:00–22:00"
     },
     {
       "placeId": "krakow-pod-aniolami",
       "role": "晚餐備選",
-      "note": "Mr. Jerry 客滿時的首替：每日 13:00–23:00，老城 Grodzka 35，木火烤山鱒魚＋野菇湯，點餐前確認 10% 服務費。",
+      "note": "Mr. Jerry 備案：每日 13:00–23:00，老城 Grodzka 35，木火烤山鱒魚＋野菇湯，點餐前確認 10% 服務費。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -407,11 +407,11 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-arirang-restaurant",
       "role": "晚餐首選（條件式）",
-      "note": "19:59（Koleo）抵華沙、入住放行李、逛過 Złote Tarasy 與科學文化宮夜景後，21:10 到 Nowogrodzka 38（Hotel Metropol 旁約 50 公尺）：Bulgogi 韓式烤牛肉、拌飯，或 Jajangmyeon、海鮮煎餅。21:30 前還沒能入座就改 Złote Tarasy 或 Ćma。",
+      "note": "19:59（Koleo）抵華沙、20:15 入住放行李後，20:20 到 Nowogrodzka 38（從 Hotel Metropol 步行約 3 分／約 150–200 m）：Bulgogi 韓式烤牛肉、拌飯，或 Jajangmyeon、海鮮煎餅。20:40 前還沒能入座就改 Złote Tarasy 或 Ćma。",
       "stepId": "d6-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "週四 12:00–22:00（多個目錄一致，無店家官網），最後點餐時間未查到，可請 Hotel Metropol 櫃檯代為確認；不用訂位，當天先看 Google 地圖營業狀態；21:10 到店、21:30 前無法入座就改 Złote Tarasy 速食或 24 小時的 Ćma。",
+      "condition": "週四 12:00–22:00（多個目錄一致，無店家官網），最後點餐時間未查到，可請 Hotel Metropol 櫃檯代為確認；不用訂位，當天先看 Google 地圖營業狀態；20:20 到店、20:40 前還沒能入座就改 Złote Tarasy 或 Ćma。",
       "dayHours": "12:00–22:00"
     },
     {
@@ -472,7 +472,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-polka",
       "role": "午餐首選",
-      "note": "老城、新城上午走完，11:50 經 Piwna 街到城堡廣場，12:25 拍聖安妮教堂外觀，12:30 進城堡旁的店：平日 12:00–16:00 午間套餐，或點 Pierogi、Żurek；13:10 離開往總統府。客滿改甕城旁的 Pyzy Flaki Gorące。",
+      "note": "老城、新城上午走完，11:50 經 Piwna 街到城堡廣場，12:25 拍聖安妮教堂外觀，12:30 進城堡旁的店：平日 12:00–16:00 午間套餐，或點 Pierogi、Żurek；13:20 離開往總統府。客滿改甕城旁的 Pyzy Flaki Gorące。",
       "stepId": "d7-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
@@ -569,7 +569,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-qq-warsaw-matcha-korean-toasts",
       "role": "下午點心備選（10/30 新路線不排入）",
-      "note": "10/30 改走新世界街與瓦津基路線，QQ 不在順路範圍；想吃抹茶與韓式吐司再自行安排。Żurawia 32/34，週五 11:00–20:00（店家 Instagram，另有目錄列週二休），前往前確認。",
+      "note": "10/30 改為 BUW 後叫車到瓦津基，QQ 不在順路範圍；想吃抹茶與韓式吐司再自行安排。Żurawia 32/34，週五 11:00–20:00（店家 Instagram，另有目錄列週二休），前往前確認。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -585,13 +585,14 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-bulke-przez-bibulke-zgoda",
       "role": "早餐首選（條件式）",
-      "note": "Zgoda 3，週六 08:00 開門；看完 08:00 無名塚衛兵交接後步行約 1 公里，08:25 到店：Bagel、炒蛋或 Avocado Toast；09:05 前結帳，回住宿整理行李，09:40 退房、10:00 出門。",
+      "note": "Zgoda 3，週六 08:00 開門；看完 08:00 無名塚衛兵交接與劇院廣場後，08:15 往東南步行約 1.4 km，08:35 到店：Bagel、炒蛋或 Avocado Toast；09:05 結帳，09:10 Blikle、09:20 棕櫚樹，09:35 回住宿整理行李，09:45 退房、10:05 出門。",
       "stepId": "d8-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
-      "condition": "08:35 還無法入座就外帶或改車站沿線用餐；保住 11:00 到機場目標。",
+      "condition": "08:40 還無法入座就外帶或改車站沿線用餐；保住 11:00 到機場目標。",
       "dayHours": "08:00–22:00"
     },
+    {"placeId":"warsaw-a-blikle-1869", "role":"早餐後甜點", "dayHours":"09:00–21:00", "note":"10/31 09:10 早餐後到 Nowy Świat 33 外帶甜甜圈，09:00 開門；有目錄寫 10:00 開門，沒開就略過", "stepId":"d8-dessert", "planStatus":"scheduled"},
     {
       "placeId": "warsaw-charlotte-zlota",
       "role": "早餐備選（較遠）",

@@ -171,7 +171,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
       : null;
     return `
     <article class="card">
-      <span class="eyebrow">${escapeHtml(item.city)}</span><h3>${escapeHtml(item.name)} <span class="${statusTagClass(item.status)}">${escapeHtml(item.itineraryActive === false ? "改班後不入住・退改未確認" : item.status)}</span></h3>
+      <span class="eyebrow">${escapeHtml(item.city)}</span><h3>${escapeHtml(item.name)} <span class="${statusTagClass(item.status)}">${escapeHtml(item.status)}</span></h3>
       <p><b>${escapeHtml(item.checkIn)}${item.checkInTime ? ` ${escapeHtml(item.checkInTime)}` : ''} → ${escapeHtml(item.checkOut)}${item.checkOutTime ? ` ${escapeHtml(item.checkOutTime)}` : ''}</b> · ${item.nights} 晚 · ${item.rooms} 間房</p>
       <p><b>地址：</b>${escapeHtml(item.address)}${item.addressVerified ? '' : ' <span class="tag-yellow">門牌待確認</span>'}</p>
       <p><b>電話：</b>${item.phone ? `<a href="tel:${escapeHtml(item.phone.replace(/[^\d+]/g, ''))}">${escapeHtml(item.phone)}</a>` : '請看訂房確認信'}</p>
@@ -263,7 +263,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
       <h3>回程</h3>${renderFlightTable(flights.back)}
     </section>
     <section class="section">
-      <div class="section-heading"><span class="section-num">Stay</span><h2>已確認住宿</h2></div>
+      <div class="section-heading"><span class="section-num">Stay</span><h2>住宿</h2></div>
       <div class="grid-wide">${stayHtml}</div>
     </section>`;
 

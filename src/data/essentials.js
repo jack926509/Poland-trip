@@ -47,7 +47,7 @@ export const daylight = [
   {day:5, date:'2026-10-28', city:'樂斯拉夫', tz:'CET',    sunrise:'06:36', sunset:'16:34', blueHourEnd:'17:08', note:'百年廳 13:55 拍外觀；座堂島煤氣燈：點燈人沒有對外保證的固定出發分鐘，通常在日落前約 30–40 分鐘出發，15:45 上島就邊走邊留意。'},
   {day:6, date:'2026-10-29', city:'波茲南', tz:'CET',    sunrise:'06:42', sunset:'16:29', blueHourEnd:'17:05', note:'Cytadela 與教堂島排在上午；16:00 Kaponiera 圓環是最後一站，16:15 就回去取行李往車站。'},
   {day:7, date:'2026-10-30', city:'華沙', tz:'CET',    sunrise:'06:27', sunset:'16:12', blueHourEnd:'16:47', note:'從 POLIN、新城、老城一路往南到瓦津基，付費館只看外觀。日落 16:12，在水上宮殿湖邊拍倒影；16:40 從 Agrykola 出口叫車回飯店，天色已暗。'},
-  {day:8, date:'2026-10-31', city:'華沙', tz:'CET',    sunrise:'06:28', sunset:'16:10', blueHourEnd:'16:45', note:'10:00 出門搭機，不涉及傍晚戶外行程。'},
+  {day:8, date:'2026-10-31', city:'華沙', tz:'CET',    sunrise:'06:28', sunset:'16:10', blueHourEnd:'16:45', note:'10:05 出門搭機，不涉及傍晚戶外行程。'},
 ];
 
 export const about = [
