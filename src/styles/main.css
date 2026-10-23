@@ -7999,8 +7999,8 @@ html {
 .today-day .today-weather-main { flex: 0 1 auto; flex-wrap: nowrap; gap: .5rem; min-width: 0; font-size: .92rem; white-space: nowrap; }
 .today-day .today-weather-place { display: flex; min-width: 0; }
 /* 地點名稱可被省略，日落時間不縮（2026-10-24：320 寬日落被截 3–6px）。 */
-.today-day .today-weather-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-.today-day .today-weather-sun { flex: none; }
+.today-day .today-weather-name { min-width: 2em; overflow: hidden; text-overflow: ellipsis; }
+.today-day .today-weather-sun { flex: none; margin-left: .3em; }
 .today-day .today-weather-meta { display: none; }
 .today-day .today-weather-tips { flex: 0 1 auto; flex-wrap: wrap; gap: .3rem; margin: 0; }
 .today-day .today-weather-tips li { flex: none; padding: .1rem .45rem; font-size: .8rem; white-space: nowrap; }
