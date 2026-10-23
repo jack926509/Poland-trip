@@ -474,7 +474,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-bar-mleczny-bambino",
       "role": "早餐備選",
-      "note": "Hoża 19，平日 08:00 才開；想吃牛奶吧早餐，後面從 08:35 POLIN開始全部順延約 45 分，並刪掉 BUW 屋頂花園。",
+      "note": "Hoża 19，平日 08:00 才開；想吃牛奶吧早餐，後面從 08:35 POLIN 開始全部順延約 45 分，並刪掉 BUW 屋頂花園。",
       "stepId": null,
       "planStatus": "candidate"
     },

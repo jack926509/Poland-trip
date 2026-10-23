@@ -8209,3 +8209,9 @@ html {
 }
 
 .food-map-links a, .grocery-branch-actions a, .fast-food-fallback-list a, .step-more > summary, a[aria-label*="Google Maps"] { min-height: 44px; min-width: 44px; }
+
+/* 整站盤查必修 14：375px 時日期選單獨佔一列，前一天／後一天按鈕移到下一列，避免「（六）」被截斷。 */
+@media (max-width: 600px) {
+  .today-compact .today-date-controls.today-enhanced { grid-template-columns: minmax(0, 1fr); }
+  .today-compact .today-date-controls .today-field select { text-overflow: clip; }
+}
