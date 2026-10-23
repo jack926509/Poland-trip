@@ -8215,3 +8215,11 @@ html {
   .today-compact .today-date-controls.today-enhanced { grid-template-columns: minmax(0, 1fr); }
   .today-compact .today-date-controls .today-field select { text-overflow: clip; }
 }
+
+/* 2026-10-24 出發前檢查：320 寬時下一站的站名被擠成 2 個字寬（「桃 園…」），「下一站」也折行；
+   導航鈕改獨立一列、站名拿到整欄，「下一站」不折行。 */
+@media (max-width: 340px) {
+  .today-next-main:not(.today-stay-main) { grid-template-columns: auto minmax(0, 1fr); }
+  .today-next-main:not(.today-stay-main) .today-next-nav { grid-column: 1 / -1; justify-self: stretch; text-align: center; }
+  .today-next .today-block-head h3 { white-space: nowrap; }
+}
