@@ -7997,7 +7997,10 @@ html {
    不再整串截掉（2026-10-22：375／390 寬時「備傘」「帶外套」整個被裁在右側看不到）。 */
 .today-day .today-weather { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .5rem; margin: .6rem 0 0; padding: .35rem .75rem; }
 .today-day .today-weather-main { flex: 0 1 auto; flex-wrap: nowrap; gap: .5rem; min-width: 0; font-size: .92rem; white-space: nowrap; }
-.today-day .today-weather-place { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.today-day .today-weather-place { display: flex; min-width: 0; }
+/* 地點名稱可被省略，日落時間不縮（2026-10-24：320 寬日落被截 3–6px）。 */
+.today-day .today-weather-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.today-day .today-weather-sun { flex: none; }
 .today-day .today-weather-meta { display: none; }
 .today-day .today-weather-tips { flex: 0 1 auto; flex-wrap: wrap; gap: .3rem; margin: 0; }
 .today-day .today-weather-tips li { flex: none; padding: .1rem .45rem; font-size: .8rem; white-space: nowrap; }
@@ -8216,9 +8219,9 @@ html {
   .today-compact .today-date-controls .today-field select { text-overflow: clip; }
 }
 
-/* 2026-10-24 出發前檢查：320 寬時下一站的站名被擠成 2 個字寬（「桃 園…」），「下一站」也折行；
+/* 2026-10-24 出發前檢查：380 寬以下（含 360 Android）下一站的站名被擠窄（320 寬僅剩 2 個字寬）（「桃 園…」），「下一站」也折行；
    導航鈕改獨立一列、站名拿到整欄，「下一站」不折行。 */
-@media (max-width: 340px) {
+@media (max-width: 380px) {
   .today-next-main:not(.today-stay-main) { grid-template-columns: auto minmax(0, 1fr); }
   .today-next-main:not(.today-stay-main) .today-next-nav { grid-column: 1 / -1; justify-self: stretch; text-align: center; }
   .today-next .today-block-head h3 { white-space: nowrap; }

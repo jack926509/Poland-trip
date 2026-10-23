@@ -2214,14 +2214,14 @@ test('Metropol 首晚已通知且不退款結論可見，首頁與待辦維持�
   const todo = todoGroups.flatMap(group => group.items).find(item => item.name.includes('Agoda 預付 Metropol'));
   assert.equal(todo.status, '已完成');
   assert.equal(isTodoOpen(todo), false);
-  assert.match(todo.action, /10\/24 這晚因航班改期不入住，已通知飯店；不退款（使用者 10\/24 確認）/);
+  assert.match(todo.action, /10\/24 這晚因航班改期不入住，已通知飯店；不退款（旅客 10\/24 確認）/);
   const arrival = stay.find(item => item.id === 'warsaw-metropol-arrival');
   assert.equal(arrival.status, '已通知飯店（不入住、不退款）');
-  assert.match(arrival.note, /不退款（使用者 10\/24 確認）/);
+  assert.match(arrival.note, /不退款（旅客 10\/24 確認）/);
   assert.match(read('index.html'), /data-home-open>1<\/b>/);
   assert.match(read('practical/todos.html'), /1 項待辦<\/span>/);
-  assert.match(read('practical/todos.html'), /不退款（使用者 10\/24 確認）/);
-  assert.match(read('practical/booking.html'), /不退款（使用者 10\/24 確認）/);
+  assert.match(read('practical/todos.html'), /不退款（旅客 10\/24 確認）/);
+  assert.match(read('practical/booking.html'), /不退款（旅客 10\/24 確認）/);
 });
 
 test('Lajkonik 退票規則只保留指定規則與各程截止時間', () => {

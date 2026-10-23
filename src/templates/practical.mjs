@@ -129,7 +129,7 @@ export function renderBookingStatusCard(todoGroups, deadlines = [], today = taip
       <div class="booking-status-card">
         <span class="eyebrow">待辦總覽</span>
         <h2>${stats.open ? `還沒處理 <b class="number" data-booking-open>${stats.open}</b> 項` : '待辦已全部處理完畢'}</h2>
-        <p>火車、Auschwitz 去回程巴士與鹽礦已購票；航班延後後當地住宿為 6 晚，10/24 這晚因航班改期不入住，已通知飯店；不退款（使用者 10/24 確認）。</p>
+        <p>火車、Auschwitz 去回程巴士與鹽礦已購票；航班延後後當地住宿為 6 晚，10/24 這晚因航班改期不入住，已通知飯店；不退款（旅客 10/24 確認）。</p>
         <ul class="booking-status-groups">${rows}</ul>${standaloneHtml}
         <p class="action-links"><a class="booking-status-cta" href="todos.html">看待辦事項 →</a></p>
       </div>

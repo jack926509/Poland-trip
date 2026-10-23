@@ -40,7 +40,7 @@ function renderWeather(day, iso, sun) {
   const point = weatherPoints[day.n];
   if (!point) return '';
   return `<div class="today-weather" data-today-weather data-weather-lat="${point.lat}" data-weather-lng="${point.lng}" data-weather-date="${escapeAttr(iso)}" role="group" aria-label="${escapeAttr(point.place)}天氣提醒">
-      <p class="today-weather-main"><span data-weather-summary hidden></span><span data-weather-fallback>🌥️ 10 月平均 ${point.climate.low}–${point.climate.high}°C</span><span class="today-weather-place">${escapeHtml(point.place)}${sun ? ` · 日落 ${escapeHtml(sun.sunset)}` : ''}</span><span class="today-weather-meta" data-weather-meta hidden></span></p>
+      <p class="today-weather-main"><span data-weather-summary hidden></span><span data-weather-fallback>🌥️ 10 月平均 ${point.climate.low}–${point.climate.high}°C</span><span class="today-weather-place"><span class="today-weather-name">${escapeHtml(point.place)}</span>${sun ? `<span class="today-weather-sun"> · 日落 ${escapeHtml(sun.sunset)}</span>` : ''}</span><span class="today-weather-meta" data-weather-meta hidden></span></p>
       <ul class="today-weather-tips" data-weather-tips data-weather-default><li>☂️ 備傘</li><li>🧥 帶外套</li></ul>
     </div>`;
 }
