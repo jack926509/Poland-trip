@@ -58,7 +58,7 @@ export const groceryBranches = [
     "hours": "待確認",
     "sundayOpen": false,
     "sundayNote": "非車站門市，非交易星期日應視為不營業。",
-    "sourceUrl": "https://www.lidl.pl/s/pl-PL/sklepy/warszawa/ul-wolska-19-25",
+    "sourceUrl": "https://www.google.com/maps/search/?api=1&query=warszawa%20ul%20wolska%2019%2025%20Lidl",
     "verificationStatus": "partial",
     "verifiedAt": "2026-09-22"
   },
@@ -103,7 +103,7 @@ export const groceryBranches = [
     "hours": "待確認",
     "sundayOpen": false,
     "sundayNote": "非車站門市，非交易星期日應視為不營業。",
-    "sourceUrl": "https://www.lidl.pl/s/pl-PL/sklepy/krakow/ul-mogilska-116",
+    "sourceUrl": "https://www.google.com/maps/search/?api=1&query=krakow%20ul%20mogilska%20116%20Lidl",
     "verificationStatus": "partial",
     "verifiedAt": "2026-09-22"
   },
@@ -148,7 +148,7 @@ export const groceryBranches = [
     "hours": "待確認",
     "sundayOpen": false,
     "sundayNote": "非車站門市，非交易星期日應視為不營業。",
-    "sourceUrl": "https://www.lidl.pl/s/pl-PL/sklepy/wroclaw/braniborska-82",
+    "sourceUrl": "https://www.google.com/maps/search/?api=1&query=wroclaw%20braniborska%2082%20Lidl",
     "verificationStatus": "partial",
     "verifiedAt": "2026-09-22"
   },
@@ -193,7 +193,7 @@ export const groceryBranches = [
     "hours": "待確認",
     "sundayOpen": false,
     "sundayNote": "非車站門市，非交易星期日應視為不營業。",
-    "sourceUrl": "https://www.lidl.pl/s/pl-PL/sklepy/poznan/ul-sw-marcin-24",
+    "sourceUrl": "https://www.google.com/maps/search/?api=1&query=poznan%20ul%20sw%20marcin%2024%20Lidl",
     "verificationStatus": "partial",
     "verifiedAt": "2026-09-22"
   },

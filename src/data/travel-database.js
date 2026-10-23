@@ -200,8 +200,8 @@ const databaseEntriesBase = [
   },
   {
     id: 'accommodation-confirmations', section: 'accommodation', category: 'practical', cityKey: 'ROUTE',
-    title: '當地 6 晚住宿；原首晚訂單退改另處理',
-    summary: '保留原 5 筆訂單紀錄共 7 晚；改班後 10/24 不在波蘭，當地實際住宿為 6 晚，原 10/24–10/25 Metropol 已透過 Agoda 申請取消、結果待回覆。原訂單：華沙 Hotel Metropol 兩段住宿（10/24–10/25、10/29–10/31）、克拉科夫 ibis budget Krakow Stare Miasto、樂斯拉夫 Piast、波茲南 Poznan Apartments Towarowa。公開版不保存訂房代碼、姓名或付款證明。',
+    title: '當地 6 晚住宿；已通知 Metropol，入住改晚一天',
+    summary: '保留原 5 筆訂單紀錄共 7 晚；改班後 10/24 不在波蘭，當地實際住宿為 6 晚，原 10/24–10/25 Metropol 已通知飯店，入住改晚一天。原訂單：華沙 Hotel Metropol 兩段住宿（10/24–10/25、10/29–10/31）、克拉科夫 ibis budget Krakow Stare Miasto、樂斯拉夫 Piast、波茲南 Poznan Apartments Towarowa。公開版不保存訂房代碼、姓名或付款證明。',
     status: 'private-required', sourceUrl: null, verifiedAt: null, recheckAt: '2026-10-10',
     offlineNote: '公開版已放飯店官網地址；另將 5 張訂房確認存入私人離線包，並向各住宿確認寄放行李與晚到方式。', private: true,
   },
@@ -386,7 +386,7 @@ export const dayOperations = {
     note: '桃園出發日，今天仍未抵波蘭；此處波蘭資料僅供抵達後參考。',
     addresses: [{ name: '桃園國際機場第二航廈', address: 'TPE 第二航廈（依 10/22 電子機票）', url: 'https://www.taoyuan-airport.com/', reliable: true, officialUrl: 'https://www.taoyuan-airport.com/', entranceNote: '依機票至第二航廈，香港航空報到櫃檯與登機門看當日電子牌。', stepLabels: ['桃園第二航廈報到'] }],
     navigation: [{ mode: '航空', route: 'TPE 第二航廈 → HKG 第一航廈', action: 'HX 283 10/24 21:45–23:45，香港轉機 1 小時 40 分接 QR 815；依登機證與現場登機門。' }],
-    dailyAlerts: ['原 10/24 華沙觀光不再執行；Hotel Metropol 原首晚訂單已透過 Agoda 申請取消、結果待回覆。', '新航班報到與行李直掛依櫃檯確認，電子機票及登機證存離線。'],
+    dailyAlerts: ['原 10/24 華沙觀光不再執行；Hotel Metropol 原首晚訂單已通知 Metropol，入住改晚一天。', '新航班報到與行李直掛依櫃檯確認，電子機票及登機證存離線。'],
     nightChecklist: ['香港抵達後直接依轉機指標前往 QR 815 登機門，不安排購物'],
   },
   2: {
@@ -424,7 +424,7 @@ export const dayOperations = {
       'Mr. Jerry 10/26 18:00 已訂位（2 位；威靈頓到店再點，無訂金）。',
       '行程內容沉重且戶外時間長，帶水、防雨保暖層，晚間不再加排高強度活動。',
     ],
-    nightChecklist: [...standardNightChecklist, '確認鹽礦 09:00 英文團票券 PDF 已存離線、06:55 退房寄行李、07:55 前到 Kraków Główny', '今晚在 Lajkonik 或 Żabka 備妥明早麵包，Sztolnia 午餐 11:00 開門、未訂位、現場入座，查 Samarqand 接單與車站 KFC 備案'],
+    nightChecklist: [...standardNightChecklist, '確認鹽礦 09:00 英文團票券 PDF 已存離線、06:55 退房寄行李、07:55 前到 Kraków Główny', '今晚在 Lajkonik 麵包店或 Żabka 備妥明早麵包，Sztolnia 午餐 11:00 開門、未訂位、現場入座，查 Samarqand 接單與車站 KFC 備案'],
   },
   4: {
     cityKey: 'wroclaw',
@@ -432,21 +432,19 @@ export const dayOperations = {
     addresses: [
       venueCard('krakow-glowny-station', 'Kraków Główny'),
       venueCard('krakow-wieliczka', '維利奇卡鹽礦'),
-      venueCard('krakow-plac-nowy', 'Plac Nowy'),
       { name: 'Sztolnia Wieliczka', address: diningPlaces['wieliczka-sztolnia'].address, url: diningPlaces['wieliczka-sztolnia'].map, officialUrl: diningPlaces['wieliczka-sztolnia'].sourceUrl, reliable: true, entranceNote: '依地址與現場招牌找入口。', stepLabels: ['午餐 · Sztolnia Wieliczka 豬肋排'] },
       { name: 'Obwarzanek Krakowski - Tunel', address: diningPlaces['krakow-obwarzanek-tunel'].address, url: diningPlaces['krakow-obwarzanek-tunel'].map, officialUrl: diningPlaces['krakow-obwarzanek-tunel'].sourceUrl, reliable: true, entranceNote: '依地址與現場招牌找入口。', stepLabels: ['買圈餅 · Obwarzanek Krakowski - Tunel'] },
-      venueCard('krakow-sukiennice', '紡織會館 Sukiennice'),
       venueCard('wroclaw-glowny-station', 'Wrocław Główny'),
-      accommodationAddress('krakow-stare-miasto', ['退房 + 行李寄旅館', '回 ibis 取行李（Kazimierz 選配收尾）']),
+      accommodationAddress('krakow-stare-miasto', ['退房 + 行李寄旅館', '回 ibis 取行李、休息']),
       accommodationAddress('wroclaw-piast', ['Piast 放行李']),
     ],
     navigation: [
-      { mode: 'KMŁ', route: 'Kraków Główny ↔ Wieliczka Rynek-Kopalnia', action: 'SKA1 去程 08:08 → 08:31（或 07:38 → 08:01），步行 5–8 分，08:45 前到 Daniłowicz Shaft；回程 13:41 → 14:03（每 30 分、22 分鐘），備案 14:11／14:41／15:11。70 分鐘 KMK+KMŁ 聯票 10／5 PLN，去回各買一張，車上有售票機。' },
-      { mode: 'PKP', route: 'Kraków Główny → Wrocław Główny', action: '已購 IC 3830 16:45，預計 19:50 抵 Wrocław Główny（Koleo）；15:15 結束 Kazimierz，搭電車約 15–20 分回 ibis（Pawia 11）取行李，16:10 前抵站。車廂與座位依票券詳細頁。' },
+      { mode: 'KMŁ', route: 'Kraków Główny ↔ Wieliczka Rynek-Kopalnia', action: 'SKA1 去程 08:08 → 08:31（或 07:38 → 08:01），步行 5–8 分，08:45 前到 Daniłowicz Shaft；回程 13:41 → 14:03（22 分鐘），備案 14:11／14:41，最晚 15:11。70 分鐘 KMK+KMŁ 聯票 10／5 PLN，去回各買一張，車上有售票機。' },
+      { mode: 'PKP', route: 'Kraków Główny → Wrocław Główny', action: '已購 IC 3830 16:45，預計 19:50 抵 Wrocław Główny（Koleo）；14:30 從圈餅店走回 ibis（約 3–5 分），16:10 前到站。車廂與座位依票券詳細頁。' },
     ],
     dailyAlerts: [
       '鹽礦全程階梯多、地下約 17–18°C；穿好走防滑鞋並攜薄外套。',
-      '克拉科夫→樂斯拉夫已購 IC 3830 16:45；Kazimierz 最遲 15:15 收尾，16:10 前到站。SKA1 回城最晚 15:11，搭這班就跳過圈餅與 Kazimierz；Sztolnia 肋排份量大，兩人分一份再加湯，13:20 前結帳。',
+      '克拉科夫→樂斯拉夫已購 IC 3830 16:45；14:30 回 ibis，16:10 前到站。SKA1 回城最晚 15:11，搭這班就跳過圈餅；Sztolnia 肋排份量大，兩人分一份再加湯，13:20 前結帳。',
     ],
     nightChecklist: [...standardNightChecklist, '抵達樂斯拉夫後在 Piast 櫃檯問隔天能不能寄放行李到傍晚，確認往波茲南的已購車票', '確認 Central Cafe 早餐供應，準備 Charlotte 備案；MAX 外帶最晚 18:15 取餐，18:35 前進站'],
   },
@@ -470,7 +468,7 @@ export const dayOperations = {
     dailyAlerts: [
       '點燈人沒有對外保證的出發分鐘；日落前到座堂島等待，不把 16:45 當成確定時刻。',
     ],
-    nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票', '照訂房確認拿 Poznan Apartments 鑰匙，順便問接待處明早 07:00 能不能寄行李（不能寄就用車站寄物櫃）；07:15 Charlotte Krysiewicza 早餐、08:00 搭電車去 Cytadela。晚餐 Arirang 當天先看 Google 地圖營業狀態，21:30 前不能入座改 Złote Tarasy 或 Ćma'],
+    nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票', '照訂房確認拿 Poznan Apartments 鑰匙，入住時問隔天寄放行李方式（接待到 22:00，預計 20:45 到；平日 08:00 起服務，寄放方式之後傳訊息確認；不能寄就用車站寄物櫃備案）；07:15 Charlotte Krysiewicza 早餐、08:00 搭電車去 Cytadela。晚餐 Arirang 當天先看 Google 地圖營業狀態，21:30 前不能入座改 Złote Tarasy 或 Ćma'],
   },
   6: {
     cityKey: 'warsaw',
@@ -612,7 +610,6 @@ const unresolvedStepReasons = {
   4: {
     '步行到 Wieliczka Rynek-Kopalnia': 'Sztolnia 至車站約 400 m，步行 6–8 分；車站位置見當日地圖，13:41 搭 SKA1。',
     '火車到 Wieliczka Rynek-Kopalnia': dynamicTransitReason,
-    'Kazimierz 快速散步（有餘裕才去）': '彈性散步路線；鹽礦延誤時跳過，直接回旅館取行李。',
     'IC 3830 前往樂斯拉夫': dynamicTransitReason,
     '★ Przejście「無名行人」雕像（選配）': '戶外雕像，在 Świdnicka 與 Piłsudskiego 路口兩側人行道上，由 Piast 步行即到。',
     '★ 中央廣場夜景（選配）': '戶外夜拍，沿 Świdnicka 往北走到中央廣場；選配行程，累了就略過。',
@@ -634,7 +631,7 @@ const unresolvedStepReasons = {
     'IC 260 前往波茲南': dynamicTransitReason,
   },
   6: {
-    '退房、寄放行李': '接待時間與行李寄放沒有事先確認，到了問接待處；地址見住宿卡。',
+    '退房、寄放行李': '接待平日 08:00 起；寄放方式之後傳訊息確認，備案 Poznań Główny 寄物櫃',
     '電車往 Armii Poznań 站': dynamicTransitReason,
     '★ Cytadela 公園「Nierozpoznani」': '戶外雕塑群在 Cytadela 公園內，由 Armii Poznań 電車站步行進園，依園內指標前往。',
     '叫 Bolt 或 Uber 到 Rondo Śródka': '叫車上下車點依 App 定位，不預填地址。',
@@ -645,7 +642,7 @@ const unresolvedStepReasons = {
     '自由廣場 Plac Wolności': '戶外廣場，由老城往南步行約 5 分。',
     'Okrąglak 圓形百貨外觀': '戶外建築外觀，在 Carla（Święty Marcin 34）往西去帝王城堡的路上。',
     'Kaponiera 圓環': '戶外圓環，「5 figur」人像在 ul. Roosevelta 22 附近；由帝王城堡往西步行即到。',
-    '取行李、前往 Poznań Główny': '公寓寄放與取行李地點須先向住宿確認，再前往車站。',
+    '取行李、前往 Poznań Główny': '16:15 依之後與公寓訊息確認的寄放地點取行李，再前往車站；若採 Poznań Główny 寄物櫃備案，就到車站領取。',
     '★ Złote Tarasy 玻璃波浪屋頂夜景': 'Złota 59，中央車站對面的商場，從 Arirang 步行約 10 分（Metropol 約 0.9 km），依現場指標進入；週一到週六 09:00–22:00。',
     '往回走，途經科學文化宮拍夜景': '戶外步行段，從 Złote Tarasy 往回走，順路在科學文化宮外拍夜景。',
     'EIC 8104 前往華沙': dynamicTransitReason,

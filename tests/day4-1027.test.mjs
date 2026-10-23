@@ -7,7 +7,7 @@ import { daySupplementaryPins, dayMapPlans, pinCoordinateCheckedAt } from '../sr
 import { mapPins, mapPinChecks } from '../src/data/cities.js';
 import { dayOperations } from '../src/data/travel-database.js';
 
-test('10/27 採 08:08 SKA1、Sztolnia 午餐與圈餅，保留 Kazimierz 選配及 16:45 IC 3830', () => {
+test('10/27 採 08:08 SKA1、Sztolnia 午餐與圈餅，回 ibis 取行李及 16:45 IC 3830', () => {
   const day = days.find(day => day.n === 4);
   for (const [time, label] of [
     ['08:08', '火車到 Wieliczka Rynek-Kopalnia'],
@@ -15,17 +15,19 @@ test('10/27 採 08:08 SKA1、Sztolnia 午餐與圈餅，保留 Kazimierz 選配�
     ['13:20', '步行到 Wieliczka Rynek-Kopalnia'],
     ['13:41', 'SKA1 回 Kraków Główny'],
     ['14:10', '買圈餅 · Obwarzanek Krakowski - Tunel'],
-    ['14:25', 'Kazimierz 快速散步（有餘裕才去）'],
-    ['15:15', '回 ibis 取行李（Kazimierz 選配收尾）'],
+    ['14:30', '回 ibis 取行李、休息'],
     ['16:10', '抵 Kraków Główny'],
     ['16:45', 'IC 3830 前往樂斯拉夫'],
   ]) assert.ok(day.steps.some(step => step.t === time && step.label === label), `${time} ${label}`);
-  assert.ok(day.hardConstraints.includes('13:41 SKA1 回 Kraków Główny（最晚 15:11，搭 15:11 就跳過圈餅與 Kazimierz）'));
-  assert.ok(day.hardConstraints.includes('15:15 結束 Kazimierz（選配）並回 ibis 取行李；16:10 前抵 Kraków Główny，IC 3830 16:45 發車'));
-  assert.ok(day.eat.some(item => item.placeId === 'krakow-cukiernia-michalek'));
-  assert.ok(day.eat.some(item => item.placeId === 'krakow-pierozki-u-vincenta'));
-  assert.ok(dayMapPlans[4].selections.krakow.includes('Kazimierz 猶太區'));
-  assert.ok(dayOperations[4].addresses.some(item => item.name === 'Plac Nowy'));
+  assert.ok(day.hardConstraints.includes('13:41 SKA1 回 Kraków Główny（最晚 15:11，搭 15:11 就跳過圈餅，直接回 ibis）'));
+  assert.ok(day.hardConstraints.includes('14:30 回 ibis 取行李、休息；16:10 前抵 Kraków Główny，IC 3830 16:45 發車'));
+  assert.equal(day.steps.find(step => step.t === '14:30').sub, '圈餅店走回 ibis 約 3–5 分；大廳或 Galeria Krakowska 休息，16:10 前到月台');
+  assert.doesNotMatch(JSON.stringify(dayOperations[4].addresses), /Plac Nowy|Sukiennice/);
+  assert.ok(!day.eat.some(item => item.placeId === 'krakow-cukiernia-michalek'));
+  assert.ok(!day.eat.some(item => item.placeId === 'krakow-pierozki-u-vincenta'));
+  assert.ok(!dayMapPlans[4].selections.krakow.includes('Kazimierz 猶太區'));
+  assert.ok(!dayOperations[4].addresses.some(item => item.name === 'Plac Nowy'));
+  assert.doesNotMatch(JSON.stringify(day), /Kazimierz|每 30 分/);
   const lunch = dayDining[4].find(item => item.placeId === 'wieliczka-sztolnia');
   assert.deepEqual([lunch.role, lunch.stepId, lunch.planStatus, lunch.meal, lunch.dayHours], ['午餐首選', 'd4-lunch', 'scheduled', 'lunch', '11:00–22:00']);
   const backup = dayDining[4].find(item => item.placeId === 'wieliczka-bistro-posolone');

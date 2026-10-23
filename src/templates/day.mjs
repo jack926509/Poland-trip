@@ -102,7 +102,12 @@ function renderDayFood(day) {
     `<a href="${cityGuides[city].file}#city-dining">${cityGuides[city].name}城市指南的完整餐廳清單 →</a>`).join('')}</p>` : '';
 
   // 候選客滿或太晚時的退路：當天所在城市的連鎖速食，預設收合不佔版面。
-  const fastFood = renderFastFoodDayList(cityKeysForDay(day), { branches: fastFoodBranches, chains: fastFoodChains, hubs: fastFoodHubs });
+  const dayBranches = day.n === 4
+    ? { ...fastFoodBranches, krakow: fastFoodBranches.krakow.filter(branch => ![
+      'krakow-berlin-doner-galeria-kazimierz', 'krakow-salad-story-galeria-kazimierz',
+    ].includes(branch.id)) }
+    : fastFoodBranches;
+  const fastFood = renderFastFoodDayList(cityKeysForDay(day), { branches: dayBranches, chains: fastFoodChains, hubs: fastFoodHubs });
 
   return `<article class="card day-dining" id="day-food" aria-labelledby="day-food-heading">
     <span class="eyebrow">Dining</span><h3 id="day-food-heading">當日餐飲</h3>
@@ -293,7 +298,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   // 重要風險原本是一整段 8–12 行的文字牆，手機上很難找到重點：
   // 依句號拆成條列，去回程退票提示併入前句；資料裡的 **粗體** 標記轉成 <b>。
   const warnItems = (day.warn || '')
-    .split(/(?<=。)(?!去回程退票規則見訂票頁。)/)
+    .split(/(?<=。)(?!去回程退票規則見『訂票與交通』頁。)/)
     .map(sentence => sentence.trim())
     .filter(Boolean)
     .map(sentence => sentence.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>'));

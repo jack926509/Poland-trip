@@ -77,13 +77,15 @@ test('可查購仍未完成，未記錄查核日期不冒用建置日期', () =>
   assert.equal(isOpenTodoStatus('已訂妥'), false);
   assert.equal(isOpenTodoStatus('已完成'), false);
   assert.equal(isOpenTodoStatus('已購票'), false);
+  assert.equal(isOpenTodoStatus('待聯絡'), true);
+  for (const status of ['已處理', '已報到', '已更新']) assert.equal(isOpenTodoStatus(status), false);
+  const open = todoGroups.flatMap(group => group.items).filter(item => !item.skip && isOpenTodoStatus(item.status));
+  assert.deepEqual(open.map(item => item.name), ['之後聯絡 Poznan Apartments']);
   const html = renderTodos({ todoGroups });
   assert.ok(html.includes('訂票狀態不是即時庫存'));
   assert.ok(!html.includes('最近人工查核'), '2026-10-20 起不顯示查核日期');
   // 2026-10-21 加聖安妮教堂觀景台：12 → 13 項待辦、21 → 22 項。
-  // 2026-10-22 出發前準備完成三項：13 → 10 項待辦；餐廳不訂位、不傳訊息、聖安妮複查後：10 → 1。
-  // Mr. Jerry 已確認訂位，移出待辦；未完成項目共 5 項。
-  assert.ok(html.includes('4 項待辦'));
+  assert.ok(html.includes('1 項待辦'));
   assert.ok(html.includes('共 24 項'));
   // Auschwitz 導覽與巴士、四段火車、10/10 查過的餐廳，
   // 以及 10/12 複查的 Mr. Jerry、Arirang、Rusiko 時段均已有人工核對日期；

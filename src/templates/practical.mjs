@@ -129,7 +129,7 @@ export function renderBookingStatusCard(todoGroups, deadlines = [], today = taip
       <div class="booking-status-card">
         <span class="eyebrow">待辦總覽</span>
         <h2>${stats.open ? `還沒處理 <b class="number" data-booking-open>${stats.open}</b> 項` : '待辦已全部處理完畢'}</h2>
-        <p>火車、Auschwitz 去回程巴士與鹽礦已購票；航班延後後當地住宿為 6 晚，原 10/24 飯店訂單退改另處理。</p>
+        <p>火車、Auschwitz 去回程巴士與鹽礦已購票；航班延後後當地住宿為 6 晚，原 10/24 飯店已通知處理。</p>
         <ul class="booking-status-groups">${rows}</ul>${standaloneHtml}
         <p class="action-links"><a class="booking-status-cta" href="todos.html">看待辦事項 →</a></p>
       </div>
@@ -271,7 +271,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
       <div class="grid-wide">${stayHtml}</div>
     </section>`;
 
-  return renderPracticalLayout('訂票與交通', 'Booking plan', '火車、Auschwitz 巴士、航班與住宿一頁看完。', content.replaceAll('退票規則見訂票頁', '見下方退票規則'), 'practical/booking.html');
+  return renderPracticalLayout('訂票與交通', 'Booking plan', '火車、Auschwitz 巴士、航班與住宿一頁看完。', content.replaceAll('退票規則見『訂票與交通』頁', '見下方退票規則'), 'practical/booking.html');
 }
 
 // 待辦日期寫成「10/25」；轉成可排序的數字，沒有日期的排最後。
@@ -288,6 +288,7 @@ function todoSortKey(item) {
 export function todoLinkLabel(item, group) {
   const url = String(item.url || '');
   if (/google\.[a-z.]+\/maps|maps\.app\.goo\.gl|goo\.gl\/maps/i.test(url)) return '地圖';
+  if (group.id === 'prep' || item.name.includes('Carla')) return '官網';
   if (group.id !== 'dining') return '購票頁';
   if (/rezerwac|reserv|booking|mojstolik|thefork|zjedz/i.test(url)) return '訂位';
   return '店家頁';
@@ -320,7 +321,7 @@ export function renderTodos({ todoGroups }) {
       <div class="section-heading"><span class="section-num">${group.eyebrow}</span><h2>${group.title}</h2></div>
       <p class="lead">${group.intro}</p>
       ${openItems.length ? `<ul class="todo-list" data-todo-open>${openItems.map(item => renderTodoItem(item, group)).join('')}</ul>` : '<p class="source-meta">這一類已全部完成。</p>'}
-      ${skippedItems.length ? `<details class="todo-done todo-skipped"><summary>線上訂不到、不再提醒 ${skippedItems.length} 項（仍排在行程）</summary><ul class="todo-list" data-todo-skipped>${skippedItems.map(item => renderTodoItem(item, group)).join('')}</ul></details>` : ''}
+      ${skippedItems.length ? `<details class="todo-done todo-skipped"><summary>線上售完／不排入，不需處理 ${skippedItems.length} 項</summary><ul class="todo-list" data-todo-skipped>${skippedItems.map(item => renderTodoItem(item, group)).join('')}</ul></details>` : ''}
       ${doneItems.length ? `<details class="todo-done"><summary>已完成 ${doneItems.length} 項</summary><ul class="todo-list" data-todo-done>${doneItems.map(item => renderTodoItem(item, group)).join('')}</ul></details>` : ''}
     </section>`;
   }).join('');

@@ -201,7 +201,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "Kazimierz 的 Bożego Ciała 12 分店；10/27 只有在鹽礦提早回城、走 Kazimierz 快速散步時才順路。Bronowice 的 Lea 114 本店太遠、平日 16:30 就關，不採用。"
+      "Kazimierz 的 Bożego Ciała 12 分店；保留為克拉科夫城市餐飲候選。Bronowice 的 Lea 114 本店太遠、平日 16:30 就關，不採用。"
     ],
     "verificationNote": "官網只列 Lea 114；Kazimierz 分店見 Yelp 官方頁，出發前確認。",
     "hoursNote": "Yelp 2026-08；本店 Lea 114 只開週一至週五 11:00–16:30",
@@ -941,7 +941,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "Krupnicza 6，在老城西側；10/27（週二）回城取行李前順路買。"
+      "Krupnicza 6，在老城西側；不在 10/27 動線上，城市延伸。"
     ],
     "hoursNote": "2026-04 目錄，各來源不一",
     "liveCheckedAt": "2026-10-12",
@@ -1247,7 +1247,7 @@ export const diningPlaces = {
       "韓日料理。",
       "Gyoza 煎餃、Honey Garlic Popcorn Chicken 蜂蜜蒜味炸雞、Kimbap 飯捲與 Bibimbap 拌飯；另有 Red jjamppong 辣湯麵。"
     ],
-    "verificationNote": "Michelin 推薦；多個來源週日 13:00–21:00，沒有店家官網，最後點餐時間未知。",
+    "verificationNote": "週日 13:00–21:00，最後點餐約 20:45；不用訂位，現場候位；出餐慢，一次點完。",
     "menuUrl": "https://guide.michelin.com/cz/en/lesser-poland/krakow/restaurant/hankki",
     "menuNote": "初稿提供餐點建議；當日供應與最後接單待確認。",
     "cuisine": "韓式",
@@ -1939,7 +1939,7 @@ export const diningPlaces = {
       "Stary Kleparz 市場旁的 Pimiento 小型熟食店兼 bistro：阿根廷牛排、Tatar、烤雞、Argentine burger；10/25 週日午餐首選，ibis 步行約 7 分。"
     ],
     "menuUrl": "https://pimiento.pl/wp-content/uploads/2025/10/pimiento-shop-and-bistro-menu-calosc.pdf",
-    "verificationNote": "營業時間來源：Google 地圖與 MapQuest 皆列週日 09:00–15:00；官網只列菜單時段、未列逐日時間，也查不到 10/25 特殊公告。午餐菜單 13:00 才開始，早餐菜單 09:00–13:00。官網線上訂位只涵蓋 Kazimierz 與 Stare Miasto 分店，Stary Kleparz 用官網表單或 Email pimiento@pimiento.pl 訂位。。 Google 地圖。",
+    "verificationNote": "營業時間來源：Google 地圖與 MapQuest 皆列週日 09:00–15:00；官網只列菜單時段、未列逐日時間，也查不到 10/25 特殊公告。午餐菜單 13:00 才開始，早餐菜單 09:00–13:00。官網線上訂位只涵蓋 Kazimierz 與 Stare Miasto 分店，Stary Kleparz 用官網表單或 Email pimiento@pimiento.pl 訂位。",
     "phone": "+48 517 475 818",
     "cuisine": "阿根廷牛排／熟食 bistro",
     "dishes": [
@@ -1957,7 +1957,7 @@ export const diningPlaces = {
     "address": "Ratajczaka 39, Poznań",
     "map": "https://www.google.com/maps/search/?api=1&query=Inna%20Piekarnia%2C%20Ratajczaka%2039%2C%20Pozna%C5%84",
     "hours": "週一至週六 08:30–19:00；週日休",
-    "sourceUrl": "https://visitpoznan.pl/en/sniadanie-en",
+    "sourceUrl": "https://www.google.com/maps/search/?api=1&query=Inna%20Piekarnia%20Ratajczaka%2039%20Pozna%C5%84",
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [

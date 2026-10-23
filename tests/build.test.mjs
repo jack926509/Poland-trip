@@ -130,7 +130,7 @@ test('5 筆已確認住宿區段完整涵蓋 7 晚並保留官方地址', () => 
   assert.equal(stay.reduce((total, item) => total + item.nights, 0), 7);
   for (const booking of stay) {
     assert.match(booking.officialUrl, /^https:\/\//);
-    assert.equal(booking.status, booking.id === 'warsaw-metropol-arrival' ? '取消申請中（Agoda，結果待回覆）' : '已確認');
+    assert.equal(booking.status, booking.id === 'warsaw-metropol-arrival' ? '已處理（已通知飯店）' : '已確認');
     assert.equal(booking.rooms, 1);
     assert.equal(typeof booking.coordinates?.lat, 'number');
     assert.equal(typeof booking.coordinates?.lng, 'number');
@@ -286,7 +286,8 @@ test('8 天每個行程步驟都有可靠地址或明確待確認原因', () => 
     }
   }
   assert.ok(!dayOperations[4].unresolvedSteps.some(item => item.label.includes('Sukiennice')));
-  assert.ok(!dayOperations[4].unresolvedSteps.some(item => item.label === '★ Kazimierz 白天散步'));
+  assert.doesNotMatch(JSON.stringify(dayOperations[4]), /Kazimierz|Sukiennice/);
+  assert.doesNotMatch(read('day-04.html'), /Kazimierz/);
   assert.ok(!dayOperations[6].addresses.some(item => item.name === '牛角麵包博物館'), '牛角麵包博物館已移出 Day 6');
   // 2026-10-14 新行程：帝王城堡只在帝王區步行時看外觀；Stary Browar 回到 Day 6（12:45）。
   assert.ok(dayOperations[6].addresses.some(item => item.name === '帝王城堡（外觀）' && item.stepLabels.includes('★ 聖馬丁街帝王區')));
@@ -775,9 +776,7 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
     total + group.items.filter(isTodoOpen).length, 0);
   // 2026-10-21 加聖安妮教堂觀景台（暫停開放・出發前待確認是否重新開放）：12 → 13。
   // 2026-10-22 航班線上報到、出國登錄、安裝 Jakdojade 與 Bolt 完成：13 → 10。
-  // 2026-10-22 餐廳不訂位、不傳訊息給波茲南公寓、聖安妮觀景台複查仍暫停開放：10 → 1（只剩 Lajkonik 回程）。
-  // Mr. Jerry 已確認訂位，移出待辦；未完成項目共 5 項。
-  assert.equal(todoCount, 4, '已購／已訂妥與線上已售完（不再提醒）的項目不可算進待辦');
+  assert.equal(todoCount, 1, '已購／已訂妥與線上已售完（不再提醒）的項目不可算進待辦');
 
   assert.ok(!html.includes('出發準備度'));
   assert.ok(!html.includes('00 / Readiness'));
@@ -1079,7 +1078,7 @@ test('Auschwitz 導覽已訂 10:30，去程巴士 08:25 已購票、回程 15:30
   const outbound = day3.steps.find(step => step.t === '08:25');
   assert.ok(outbound, '去程未改成已購的 08:25');
   assert.match(outbound.sub, /已購票/);
-  assert.match(outbound.sub, /退票規則見訂票頁/);
+  assert.match(outbound.sub, /退票規則見『訂票與交通』頁/);
   assert.match(outbound.cost, /47,50/);
   const arrival = day3.steps.find(step => step.t === '09:50');
   assert.ok(arrival, '缺少 09:50 抵達步驟');
@@ -1523,9 +1522,9 @@ test('所有拍照建議都有精確站位、方向與座標導航', () => {
     const html = read(`day-${String(index + 1).padStart(2, '0')}.html`);
     return html.slice(html.indexOf('<main'), html.indexOf('</main>'));
   }).join('\n');
-  assert.equal((pages.match(/開啟拍照站位 ↗/g) || []).length, 7);
-  assert.equal((pages.match(/精確站位/g) || []).length, 7);
-  assert.equal((pages.match(/拍攝方向/g) || []).length, 7);
+  assert.equal((pages.match(/開啟拍照站位 ↗/g) || []).length, 6);
+  assert.equal((pages.match(/精確站位/g) || []).length, 6);
+  assert.equal((pages.match(/拍攝方向/g) || []).length, 6);
   for (const spot of photoSpots.filter(item => item.day)) {
     assert.match(spot.mapUrl, /^https:\/\/www\.google\.com\/maps\/search\/\?api=1&query=\d{2}\.\d+%2C\d{2}\.\d+$/);
   }
@@ -2178,7 +2177,7 @@ test('Lajkonik 公開資料與重建頁面沒有錯誤退票承諾，回程明�
   pages.push(fs.readFileSync(standalonePath, 'utf8'));
   for (const text of [...sources, ...pages]) assert.doesNotMatch(text, /免費退改|可免費退|可退或改/);
   const inbound = todoGroups.find(group => group.id === 'rail').items.find(item => item.name.includes('Lajkonik 回程'));
-  assert.match(inbound.action, /退票規則見訂票頁/);
+  assert.match(inbound.action, /退票規則見『訂票與交通』頁/);
   assert.equal(inbound.status, '已購票');
   assert.equal(inbound.checkedAt, '2026-10-23');
   assert.equal(inbound.recheckAt, null);
@@ -2192,7 +2191,7 @@ test('Lajkonik 公開資料與重建頁面沒有錯誤退票承諾，回程明�
 
 test('Day 3 回程已購票且完整退票規則保留在訂票頁', () => {
   assert.doesNotMatch(read('day-03.html'), /選定的回程選項/);
-  assert.match(read('day-03.html'), /<li><b>回程已購 15:30 → 16:55，15:15 前到站牌<\/b>。去回程退票規則見訂票頁。<\/li>/);
+  assert.match(read('day-03.html'), /<li><b>回程已購 15:30 → 16:55，15:15 前到站牌<\/b>。去回程退票規則見『訂票與交通』頁。<\/li>/);
   const booking = read('practical/booking.html');
   for (const leg of [auschwitzBus.outbound, auschwitzBus.inbound]) {
     assert.equal(booking.split(leg.booked.refundRules).length - 1, 1);
@@ -2206,6 +2205,6 @@ test('訂票頁 Lajkonik 卡片顯示已購去回程時間且不提示現場購�
   assert.ok(card);
   assert.doesNotMatch(card, /現場購票/);
   assert.ok(card.includes('去程 08:25（D9）→ 09:50／回程 15:30 → 16:55'));
-  assert.doesNotMatch(booking, /退票規則見訂票頁/);
+  assert.doesNotMatch(booking, /退票規則見『訂票與交通』頁/);
   assert.match(booking, /見下方退票規則/);
 });

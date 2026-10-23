@@ -93,7 +93,7 @@ test('第 5 項：待辦頁每類先列未完成（依日期），已完成收�
     const done = group.items.filter(item => !item.skip && !isOpenTodoStatus(item.status));
     const skipped = group.items.filter(item => item.skip);
     if (skipped.length) {
-      assert.match(section, new RegExp(`線上訂不到、不再提醒 ${skipped.length} 項`));
+      assert.match(section, new RegExp(`線上售完／不排入，不需處理 ${skipped.length} 項`));
       const skippedBlock = section.slice(section.indexOf('data-todo-skipped'));
       for (const item of skipped) assert.ok(skippedBlock.includes(item.name), `${item.name} 應在不再提醒收合內`);
     }
@@ -118,14 +118,13 @@ test('第 6 項：行程說明不再夾帶查核筆記，資訊移到待辦；�
   // 行程步驟只寫要做什麼，官網查核日期與內容放在待辦。
   const d6 = days[5].steps.find(step => step.t === '07:00');
   assert.doesNotMatch(d6.sub, /2026-10-14|官網聯絡頁/);
-  // 2026-10-22 旅客決定不傳訊息給公寓：行程改寫「到了先問接待處」，車站寄物櫃為備案。
-  assert.match(d6.sub, /到了先問接待處/);
+  assert.match(d6.sub, /接待處平日 08:00 才開，寄放方式之後傳訊息問公寓/);
   assert.match(d6.sub, /寄物櫃/);
   assert.doesNotMatch(d6.sub, /打電話/, '外國旅客不打電話確認，改用訊息');
-  const apartment = todoGroups.flatMap(group => group.items).find(item => item.name.startsWith('傳訊息給 Poznan Apartments'));
-  assert.match(apartment.action, /官網聯絡頁沒寫接待時間和行李寄放/);
+  const apartment = todoGroups.flatMap(group => group.items).find(item => item.name.startsWith('之後聯絡 Poznan Apartments'));
+  assert.match(apartment.action, /之後傳訊息確認取鑰匙方式/);
   assert.doesNotMatch(apartment.action, /20\d\d-\d\d-\d\d/);
-  assert.match(apartment.action, /07:00/);
+  assert.match(apartment.action, /10\/29 早上能不能寄放行李/);
   // 2026-10-13 鹽礦已購 09:00 英文場；查核筆記不放行程說明，購票紀錄在待辦。
   const d4 = days[3].steps.find(step => step.t === '09:00' && step.label.includes('Wieliczka'));
   assert.doesNotMatch(d4.sub, /2026-10-06/);

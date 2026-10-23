@@ -7,7 +7,7 @@ export const dayMapPlans = {
   1: { focus: '出發日 · 波蘭地圖僅供抵達後參考', center: [52.202, 20.991], zoom: 12, selections: {} },
   2: { focus: '克拉科夫抵達與晚餐', center: [50.057, 19.944], zoom: 13, selections: { krakow: ['ibis budget Krakow Stare Miasto'] } },
   3: { focus: '奧斯威辛 Oświęcim／Brzezinka', center: [50.033, 19.192], zoom: 13, selections: {} },
-  4: { focus: '克拉科夫 Kraków＋Wieliczka', center: [50.040, 19.995], zoom: 12, selections: { krakow: ['Kazimierz 猶太區', 'ibis budget Krakow Stare Miasto'] } },
+  4: { focus: '克拉科夫 Kraków＋Wieliczka', center: [50.040, 19.995], zoom: 12, selections: { krakow: ['ibis budget Krakow Stare Miasto'] } },
   5: { focus: '樂斯拉夫 Wrocław', center: [51.110, 17.049], zoom: 13, selections: { wroclaw: ['中央市集廣場', '大教堂島 Ostrów Tumski', '百年廳 Hala Stulecia', 'Restauracja Wrocławska', 'Piast'] } },
   6: { focus: '波茲南 Poznań', center: [52.407, 16.930], zoom: 14, selections: { poznan: ['舊市集廣場 Stary Rynek', '大教堂島 Ostrów Tumski', 'Poznan Apartments Towarowa'] } },
   7: { focus: '華沙 Warszawa', center: [52.236, 21.010], zoom: 13, selections: { warsaw: ['皇家城堡', 'Hotel Metropol', '科學文化宮觀景台', 'Pijalnia Czekolady E.Wedel（巧克力）'] } },

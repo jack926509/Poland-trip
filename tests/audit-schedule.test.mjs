@@ -196,7 +196,7 @@ test('規則 7：dusk 必須真的橫跨日落', () => {
 
 test('真實拍照站位的光線宣告全部與當日日落相符', () => {
   const result = auditSchedule();
-  assert.ok(result.stats.photoLightChecked >= 7, '應涵蓋所有排入行程的拍照站位');
+  assert.ok(result.stats.photoLightChecked >= 6, '應涵蓋所有排入行程的拍照站位');
   assert.deepEqual(result.warnings.filter(item => item.includes('拍照光線')), []);
 });
 

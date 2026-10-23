@@ -167,3 +167,11 @@ test('米其林星級名單（star1／star2）每個店名都能對到門市主�
     }
   }
 });
+
+test('Lajkonik 巴士搜尋摘要逐段配對去回程時刻', () => {
+  const records = buildTravelSearchRecords({ ...trip });
+  const bus = records.find(record => record.type === 'bus');
+  assert.ok(bus);
+  assert.match(bus.meta, /08:25（D9） → 09:50／回程 15:30 → 16:55/);
+  assert.ok(!bus.meta.includes('15:30 → 09:50'));
+});

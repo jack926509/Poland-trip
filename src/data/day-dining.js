@@ -200,7 +200,7 @@ export const dayDiningPlans = {
       "placeId": "wieliczka-bistro-posolone",
       "role": "午餐備案",
       "cityGuide": false,
-      "note": "Sztolnia 客滿或出礦太晚時使用；最晚搭 15:11 SKA1，跳過圈餅與 Kazimierz。",
+      "note": "Sztolnia 客滿或出礦太晚時使用；最晚搭 15:11 SKA1，跳過圈餅。",
       "stepId": null,
       "planStatus": "candidate",
       "dayHours": "08:00–18:00"
@@ -654,7 +654,7 @@ export const selfCateredMeals = {
       "meal": "breakfast",
       "name": "自備早餐（前一天買好）",
       "stepId": "d3-breakfast",
-      "note": "07:15–07:35 在住宿吃完，07:35 出門；前一天 Lajkonik 採買的麵包搭飲品，07:55 巴士報到（08:25 發車）。"
+      "note": "07:15–07:35 在住宿吃完，07:35 出門；前一天在 Lajkonik 麵包店買的麵包搭飲品，07:55 巴士報到（08:25 發車）。"
     },
     {
       "meal": "lunch",
@@ -668,7 +668,7 @@ export const selfCateredMeals = {
       "meal": "breakfast",
       "name": "自備早餐（前晚買好）",
       "stepId": "d4-breakfast",
-      "note": "前晚在 Lajkonik（Basztowa 15）或 Żabka 買好麵包與飲品，07:05–07:45 在 ibis 吃完；車站只隔約 200 公尺，07:55 前到站。"
+      "note": "前晚在 Lajkonik 麵包店（Basztowa 15）或 Żabka 買好麵包與飲品，07:05–07:45 在 ibis 吃完；車站只隔約 200 公尺，07:55 前到站。"
     }
   ],
   "8": [

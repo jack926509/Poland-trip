@@ -119,7 +119,8 @@ export function buildTravelSearchRecords(data) {
       id: `${transportType}-${index + 1}-${slug(train.seg)}`,
       type: transportType,
       title: train.seg.replace(/WAW/g, '華沙').replace(/KRK/g, '克拉科夫').replace(/WRO/g, '樂斯拉夫').replace(/POZ/g, '波茲南'),
-      meta: compact([train.date, `${train.dep} → ${train.arr}`]),
+      // 巴士的 dep／arr 是「去程／回程」合併字串，逐段配對，避免讀成「回程 15:30 → 09:50」。
+      meta: compact([train.date, String(train.dep).split('／').map((dep, legIndex) => `${dep.trim()} → ${(String(train.arr).split('／')[legIndex] || '').replace(/^\s*回程\s*/, '').trim()}`).join('／')]),
       summary: compact([train.trainNo, train.name, train.type, train.dur, train.status, train.price]),
       href: 'practical/booking.html#rail-itinerary',
       keywords: isBus
