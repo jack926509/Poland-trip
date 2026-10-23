@@ -46,7 +46,7 @@ export const auschwitzBus = {
   outbound: {
     status: '已購票',
     checkedAt: '2026-10-13',
-    booked: { dep: '08:25', arr: '09:50', bay: 'D9（下層 dolna płyta）', tickets: '2 張全票', total: '47,50 zł', channel: 'moj-bus.pl（Lajkonik 線上售票）', refundRules: '線上票不能改期改班；要換班只能在票券管理頁退票（扣 20% 手續費）再重買。退票期限：線上售票規則寫發車前 12 小時、業者運送規章寫 24 小時，以較嚴格的 24 小時為準（去程 08:25 班＝10/25 08:25 波蘭時間前）。逾期不可退。' },
+    booked: { dep: '08:25', arr: '09:50', bay: 'D9（下層 dolna płyta）', tickets: '2 張全票', total: '47,50 zł', channel: 'moj-bus.pl（Lajkonik 線上售票）', refundRules: '發車 24 小時前申請可退，扣 20%；電子票不能改期，只能退票重買。去程截止 10/25 08:25（波蘭時間）。' },
     query: { from: 'Kraków', to: 'Oświęcim', date: '2026-10-26', passengers: 1 },
     services: [
       { dep: '07:10', arr: '08:35', dur: '1h25', bay: 'D10', fare: '25,00 zł', decision: '不採用', why: '原規劃首選；已定案 08:25 班' },
@@ -57,7 +57,7 @@ export const auschwitzBus = {
   inbound: {
     get status() { const word = inboundWord(); return word === '尚未購票' ? '已於官方售票頁查得／尚未購票' : word; },
     checkedAt: '2026-10-23',
-    booked: { dep: '15:30', arr: '16:55', tickets: '2 張全票', total: '47,50 zł', channel: 'moj-bus.pl', refundRules: '線上票不能改期改班；要換班只能在票券管理頁退票（扣 20% 手續費）再重買。退票期限：線上售票規則寫發車前 12 小時、業者運送規章寫 24 小時，以較嚴格的 24 小時為準（回程 15:30 班＝10/25 15:30 波蘭時間前）。逾期不可退。業者或平台責任造成退票時不扣款；退款於 10 個工作天內退回原卡或銀行帳戶。' },
+    booked: { dep: '15:30', arr: '16:55', tickets: '2 張全票', total: '47,50 zł', channel: 'moj-bus.pl', refundRules: '發車 24 小時前申請可退，扣 20%；電子票不能改期，只能退票重買。回程截止 10/25 15:30（波蘭時間）。' },
     threshold: '導覽約 14:15 結束，必須挑 14:15 之後發車的班次',
     query: { from: 'Oświęcim', to: 'Kraków', date: '2026-10-26', passengers: 1 },
     services: [

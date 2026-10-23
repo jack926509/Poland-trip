@@ -200,8 +200,8 @@ const databaseEntriesBase = [
   },
   {
     id: 'accommodation-confirmations', section: 'accommodation', category: 'practical', cityKey: 'ROUTE',
-    title: '當地 6 晚住宿；已通知 Metropol，入住改晚一天',
-    summary: '保留原 5 筆訂單紀錄共 7 晚；改班後 10/24 不在波蘭，當地實際住宿為 6 晚，原 10/24–10/25 Metropol 已通知飯店，入住改晚一天。原訂單：華沙 Hotel Metropol 兩段住宿（10/24–10/25、10/29–10/31）、克拉科夫 ibis budget Krakow Stare Miasto、樂斯拉夫 Piast、波茲南 Poznan Apartments Towarowa。公開版不保存訂房代碼、姓名或付款證明。',
+    title: '當地 6 晚住宿；10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認',
+    summary: '保留原 5 筆訂單紀錄共 7 晚；改班後 10/24 不在波蘭，當地實際住宿為 6 晚，原 Metropol 首晚：10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認。原訂單：華沙 Hotel Metropol 兩段住宿（10/24–10/25、10/29–10/31）、克拉科夫 ibis budget Krakow Stare Miasto、樂斯拉夫 Piast、波茲南 Poznan Apartments Towarowa。公開版不保存訂房代碼、姓名或付款證明。',
     status: 'private-required', sourceUrl: null, verifiedAt: null, recheckAt: '2026-10-10',
     offlineNote: '公開版已放飯店官網地址；另將 5 張訂房確認存入私人離線包，並向各住宿確認寄放行李與晚到方式。', private: true,
   },
@@ -386,7 +386,7 @@ export const dayOperations = {
     note: '桃園出發日，今天仍未抵波蘭；此處波蘭資料僅供抵達後參考。',
     addresses: [{ name: '桃園國際機場第二航廈', address: 'TPE 第二航廈（依 10/22 電子機票）', url: 'https://www.taoyuan-airport.com/', reliable: true, officialUrl: 'https://www.taoyuan-airport.com/', entranceNote: '依機票至第二航廈，香港航空報到櫃檯與登機門看當日電子牌。', stepLabels: ['桃園第二航廈報到'] }],
     navigation: [{ mode: '航空', route: 'TPE 第二航廈 → HKG 第一航廈', action: 'HX 283 10/24 21:45–23:45，香港轉機 1 小時 40 分接 QR 815；依登機證與現場登機門。' }],
-    dailyAlerts: ['原 10/24 華沙觀光不再執行；Hotel Metropol 原首晚訂單已通知 Metropol，入住改晚一天。', '新航班報到與行李直掛依櫃檯確認，電子機票及登機證存離線。'],
+    dailyAlerts: ['原 10/24 華沙觀光不再執行；Hotel Metropol 原首晚訂單：10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認。', '新航班報到與行李直掛依櫃檯確認，電子機票及登機證存離線。'],
     nightChecklist: ['香港抵達後直接依轉機指標前往 QR 815 登機門，不安排購物'],
   },
   2: {
@@ -468,7 +468,7 @@ export const dayOperations = {
     dailyAlerts: [
       '點燈人沒有對外保證的出發分鐘；日落前到座堂島等待，不把 16:45 當成確定時刻。',
     ],
-    nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票', '照訂房確認拿 Poznan Apartments 鑰匙，入住時問隔天寄放行李方式（接待到 22:00，預計 20:45 到；平日 08:00 起服務，寄放方式之後傳訊息確認；不能寄就用車站寄物櫃備案）；07:15 Charlotte Krysiewicza 早餐、08:00 搭電車去 Cytadela。晚餐 Arirang 當天先看 Google 地圖營業狀態，21:30 前不能入座改 Złote Tarasy 或 Ćma'],
+    nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票', '照訂房確認拿 Poznan Apartments 鑰匙，入住時問隔天寄放行李方式（預計約 20:45 到；接待到 22:00、平日 08:00 起，均出發前再確認；寄放方式之後傳訊息確認；不能寄就用車站寄物櫃備案）；07:15 Charlotte Krysiewicza 早餐、08:00 搭電車去 Cytadela。晚餐 Arirang 當天先看 Google 地圖營業狀態，21:30 前不能入座改 Złote Tarasy 或 Ćma'],
   },
   6: {
     cityKey: 'warsaw',
@@ -631,7 +631,7 @@ const unresolvedStepReasons = {
     'IC 260 前往波茲南': dynamicTransitReason,
   },
   6: {
-    '退房、寄放行李': '接待平日 08:00 起；寄放方式之後傳訊息確認，備案 Poznań Główny 寄物櫃',
+    '退房、寄放行李': '接待平日 08:00 起（出發前再確認）；寄放方式之後傳訊息確認，備案 Poznań Główny 寄物櫃',
     '電車往 Armii Poznań 站': dynamicTransitReason,
     '★ Cytadela 公園「Nierozpoznani」': '戶外雕塑群在 Cytadela 公園內，由 Armii Poznań 電車站步行進園，依園內指標前往。',
     '叫 Bolt 或 Uber 到 Rondo Śródka': '叫車上下車點依 App 定位，不預填地址。',

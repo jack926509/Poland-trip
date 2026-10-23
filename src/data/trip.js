@@ -79,11 +79,11 @@ const todoGroupsRaw = [
     id: 'prep', title: '出發前準備', eyebrow: 'Prep · 5 項',
     intro: '出發前事項已完成；之後聯絡 Poznan Apartments，確認取鑰匙方式及隔天早上能不能寄放行李。',
     items: [
-      {checkedAt:'2026-10-22', recheckAt:null, date:'10/28', name:'之後聯絡 Poznan Apartments', status:'尚未傳訊息', action:'10/28 約 20:45 抵達（接待到 22:00）；之後傳訊息確認取鑰匙方式，以及 10/29 早上能不能寄放行李', url:'https://www.poznanapartments.com/kontakt'},
+      {checkedAt:'2026-10-22', recheckAt:null, date:'10/28', name:'之後聯絡 Poznan Apartments', status:'尚未傳訊息', action:'10/28 約 20:45 抵達（接待到 22:00，出發前再確認）；之後傳訊息確認取鑰匙方式，以及 10/29 早上能不能寄放行李', url:'https://www.poznanapartments.com/kontakt'},
       {checkedAt:'2026-10-22', recheckAt:null, date:"10/24", name:"HX 283 改票後報到（10/24 21:45 桃園起飛）", status:'已完成', action:'旅客 10/23 確認已完成報到；登機證存離線。', url:"https://www.hongkongairlines.com/"},
       {checkedAt:'2026-10-22', recheckAt:null, date:"10/24", name:'外交部出國登錄', status:'已完成', action:'旅客 10/23 確認已更新出國登錄行程。', url:'https://www.boca.gov.tw/sp-abre-main-1.html'},
       {checkedAt:'2026-10-22', recheckAt:null, date:'10/24', name:'手機安裝 Jakdojade 與 Bolt', status:'已安裝', action:'Jakdojade 查三座城市的電車、地鐵路線並買車票；Bolt 叫車（10/29 早上 Cytadela → Rondo Śródka、雨天或天黑時用）。出發前在台灣先裝好、登入並綁好付款方式。', url:'https://jakdojade.pl/'},
-      {checkedAt:'2026-10-22', recheckAt:null, date:'10/24', name:'Agoda 預付 Metropol 10/24 那晚（約 NT$3,818）', status:'已完成', action:'已通知飯店，入住改晚一天', url:'https://www.agoda.com/'},
+      {checkedAt:'2026-10-22', recheckAt:null, date:'10/24', name:'Agoda 預付 Metropol 10/24 那晚（約 NT$3,818）', status:'已通知飯店', action:'10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認', url:'https://www.agoda.com/'},
     ],
   },
 ];
@@ -114,7 +114,7 @@ export const days = [
     title: '桃園出發 · HX 283 經香港轉多哈',
     headline: '21:45 桃園第二航廈起飛，23:45 抵香港第一航廈；去程延後一天，10/25 才抵華沙',
     tag: 'Flight', intensity: '中',
-    hardConstraints: ['18:45 前到桃園第二航廈（起飛前 3 小時規劃目標）', 'HX 283 21:45 起飛；香港轉機只有 1 小時 40 分，抵達後直接找 QR 815 登機門', '已通知 Metropol，入住改晚一天'],
+    hardConstraints: ['18:45 前到桃園第二航廈（起飛前 3 小時規劃目標）', 'HX 283 21:45 起飛；香港轉機只有 1 小時 40 分，抵達後直接找 QR 815 登機門', '10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認'],
     compressible: ['機場購物'],
     steps: [
       {t:'出發前', timingMode:'relative', id:'d1-breakfast', label:'早餐 · 自理', sub:'今天仍在臺灣，依出門時間安排'},
@@ -125,7 +125,7 @@ export const days = [
       {t:'23:45', label:'香港轉機', sub:'轉機 1 小時 40 分，接 10/25 01:25 QR 815；依轉機指標與登機證前往，不安排購物或離開機場', dur:'1 h 40 min'},
     ],
     eat: [], backup: [], practical: [],
-    warn: '去程已延後一天，原 10/24 華沙觀光與 Specjały 晚餐不再排入。10/24–10/25 Hotel Metropol 訂單仍保留紀錄，已通知 Metropol，入住改晚一天。香港轉機時間只有 1 小時 40 分，若首段延誤，依航空公司轉機服務處指示處理。',
+    warn: '去程已延後一天，原 10/24 華沙觀光與 Specjały 晚餐不再排入。10/24–10/25 Hotel Metropol 訂單仍保留紀錄，10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認。香港轉機時間只有 1 小時 40 分，若首段延誤，依航空公司轉機服務處指示處理。',
   },
   {
     n: 2, date: '10/25 (日)', city: '華沙機場 → 克拉科夫',
@@ -322,11 +322,11 @@ export const days = [
     headline: 'EIC 8104 已購票，17:40 發車；付費館只在外面拍照，上午 Cytadela 與教堂島，中午山羊秀',
     tag: 'Transit',
     intensity: '高',
-    hardConstraints: ['07:00 退房：接待處平日 08:00 才開，寄放方式之後傳訊息問公寓；不能寄就用 Poznań Główny 寄物櫃（備案）', '11:45 前抵達老城廣場卡位', '12:00 山羊鐘樓秀', '14:00 Carla 午餐（14:00 才開門），15:15 前結帳', '16:15 從 Kaponiera 圓環回去取行李', '17:05 前抵 Poznań Główny；搭乘已購 EIC 8104'],
+    hardConstraints: ['07:00 退房：接待處平日 08:00 才開（出發前再確認），寄放方式之後傳訊息問公寓；不能寄就用 Poznań Główny 寄物櫃（備案）', '11:45 前抵達老城廣場卡位', '12:00 山羊鐘樓秀', '14:00 Carla 午餐（14:00 才開門），15:15 前結帳', '16:15 從 Kaponiera 圓環回去取行李', '17:05 前抵 Poznań Główny；搭乘已購 EIC 8104'],
     compressible: ['Cytadela（時間不夠先刪，08:30 直接去教堂島）', '帝王區步行（只看帝王城堡外觀、跳過 Kaponiera）', 'Stary Browar 逛街時間'],
     train: {segmentId:'eic-8104'},
     steps: [
-      {t:'07:00', label:'退房、寄放行李', sub:'接待處平日 08:00 才開，寄放方式之後傳訊息問公寓；不能寄就用 Poznań Główny 寄物櫃（備案）', dur:'15 min'},
+      {t:'07:00', label:'退房、寄放行李', sub:'接待處平日 08:00 才開（出發前再確認），寄放方式之後傳訊息問公寓；不能寄就用 Poznań Główny 寄物櫃（備案）', dur:'15 min'},
       {t:'07:15', id:'d6-breakfast', label:'早餐 · Charlotte Krysiewicza', sub:'Krysiewicza 3a/27，07:00 開門；French Breakfast、可頌＋咖啡，Poznań rugelach 兩人分享。07:55 出發搭電車', dur:'40 min'},
       {t:'08:00', label:'電車往 Armii Poznań 站', sub:'約 15 分；用 Jakdojade 查當下車號', cost:'依當日票價', dur:'15 min'},
       {t:'08:15', label:'★ Cytadela 公園「Nierozpoznani」', sub:'Magdalena Abakanowicz 的 112 尊無頭鑄鐵人像，可以走進人像之間；公園秋色。時間不夠先刪這段，08:30 直接去教堂島', cost:'免費', dur:'45 min'},
@@ -478,11 +478,11 @@ export const stay = [
   {
     id:'warsaw-metropol-arrival', city:'華沙', name:'Hotel Metropol', itineraryActive:false,
     checkIn:'2026-10-24', checkOut:'2026-10-25', checkInTime:'15:00', checkOutTime:'12:00', nights:1,
-    address:'ul. Marszałkowska 99a, 00-693 Warszawa', addressVerified:true, rooms:1, status:'已處理（已通知飯店）',
+    address:'ul. Marszałkowska 99a, 00-693 Warszawa', addressVerified:true, rooms:1, status:'已通知飯店（不入住）',
     coordinates:{lat:52.22901, lng:21.01099, status:'已核對', checkedAt:'2026-08-11'},
     officialUrl:'https://www.hotelmetropol.com.pl/pl/',
     phone:'+48 22 32 53 100', phoneSource:{url:'https://www.hotelmetropol.com.pl/pl/', checkedAt:'2026-10-06'},
-    note:'原 10/24 訂單保留紀錄；去程改為 10/25 抵達後直接往克拉科夫，不入住此晚。已通知 Metropol，入住改晚一天。位置在 Marszałkowska／Metro Centrum 出口正對面，步行至 Warszawa Centralna 約 500 公尺；入住 15:00 起、退房 12:00 前，櫃檯可寄放行李。',
+    note:'原 10/24 訂單保留紀錄；去程改為 10/25 抵達後直接往克拉科夫。10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認。位置在 Marszałkowska／Metro Centrum 出口正對面，步行至 Warszawa Centralna 約 500 公尺；入住 15:00 起、退房 12:00 前，櫃檯可寄放行李。',
   },
   {
     id:'krakow-stare-miasto', city:'克拉科夫', name:'ibis budget Krakow Stare Miasto',
@@ -518,7 +518,7 @@ export const stay = [
     coordinates:{lat:52.22901, lng:21.01099, status:'已核對', checkedAt:'2026-08-11'},
     officialUrl:'https://www.hotelmetropol.com.pl/pl/',
     phone:'+48 22 32 53 100', phoneSource:{url:'https://www.hotelmetropol.com.pl/pl/', checkedAt:'2026-10-06'},
-    note:'10/29–10/31 華沙住宿；原 10/24 首晚因航班延後不入住，已通知 Metropol，入住改晚一天。10/29 EIC 8104 抵 Warszawa Centralna 後步行約 500 公尺即到；10/31 退房 12:00 前，當日 10:05 出門搭機不受影響。',
+    note:'10/29–10/31 華沙住宿照常入住；10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認。10/29 EIC 8104 抵 Warszawa Centralna 後步行約 500 公尺即到；10/31 退房 12:00 前，當日 10:05 出門搭機不受影響。',
   },
 ];
 
@@ -543,7 +543,7 @@ export const railOfficialLinks = [
     note: '可購買 PKP Intercity 各車種、選位並離線開啟已購票券。',
   },
   { name: 'Lajkonik 線上售票規則 §4', url: 'https://www.lajkonikbus.pl/regulamin-bilet-on-line.html', note: '線上退票規則；與運送規章不同時，以業者運送規章為準。' },
-  { name: 'Lajkonik 運送規章 §6', url: 'https://www.lajkonikbus.pl/regulamin.html', note: '退票最晚發車前 24 小時、扣 20%；電子票不能改期改班。' },
+  { name: 'Lajkonik 運送規章 §6', url: 'https://www.lajkonikbus.pl/regulamin.html', note: '發車 24 小時前申請可退，扣 20%；電子票不能改期，只能退票重買。' },
   {
     name: 'Lajkonik 官方售票網站（lajkonikbus.pl）',
     url: 'https://www.lajkonikbus.pl/',
@@ -620,7 +620,7 @@ export const reservations = [
   {when:'不訂位', what:'其餘餐廳現場入座；10/24 Specjały 與 10/25 Pimiento 因改班不再排入原時段。'},
   {when:'火車票：已購 4／4 段', what:"10/22 截圖確認：10/25 EIP 1306 西站 15:45–18:12（1 等）、10/27 IC 3830 16:45–19:50（1 等）、10/28 IC 260 19:10–20:29（2 等）、10/29 EIC 8104 17:40–19:59（2 等）。EIP 1306 第 1 車，24、26 號；截圖金額見各段交通卡，其餘車次車廂、座位與金額涵蓋人數看完整票券。"},
   {when:'不用訂了', what:'新行程付費景點只在外面拍照：樂斯拉夫全景畫、華沙起義博物館、華沙皇家城堡都不用買票；華沙水上宮殿週五免費，照樣可以進去。'},
-  {when:'之後傳訊息', what:'Poznan Apartments：確認 20:45 抵達取鑰匙（接待到 22:00）與隔天寄放行李'},
+  {when:'之後傳訊息', what:'Poznan Apartments：確認約 20:45 抵達取鑰匙（接待到 22:00，出發前再確認）與隔天寄放行李'},
   {when:'出發前 1 週', what:'臨時活動與維修可能變動，出門前看一下官網公告'},
   {when:"改班後調整", what:"10/25 18:12 才抵克拉科夫，Wawel、瓦維爾大教堂、辛德勒與 Pimiento 午餐不再排入當天行程，也不再安排現場試票。"},
 ];

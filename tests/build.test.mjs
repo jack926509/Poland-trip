@@ -130,7 +130,7 @@ test('5 筆已確認住宿區段完整涵蓋 7 晚並保留官方地址', () => 
   assert.equal(stay.reduce((total, item) => total + item.nights, 0), 7);
   for (const booking of stay) {
     assert.match(booking.officialUrl, /^https:\/\//);
-    assert.equal(booking.status, booking.id === 'warsaw-metropol-arrival' ? '已處理（已通知飯店）' : '已確認');
+    assert.equal(booking.status, booking.id === 'warsaw-metropol-arrival' ? '已通知飯店（不入住）' : '已確認');
     assert.equal(booking.rooms, 1);
     assert.equal(typeof booking.coordinates?.lat, 'number');
     assert.equal(typeof booking.coordinates?.lng, 'number');
@@ -2207,4 +2207,31 @@ test('訂票頁 Lajkonik 卡片顯示已購去回程時間且不提示現場購�
   assert.ok(card.includes('去程 08:25（D9）→ 09:50／回程 15:30 → 16:55'));
   assert.doesNotMatch(booking, /退票規則見『訂票與交通』頁/);
   assert.match(booking, /見下方退票規則/);
+});
+
+
+test('Metropol 首晚已通知且退款結果可見，首頁與待辦維持一件未完成', () => {
+  const todo = todoGroups.flatMap(group => group.items).find(item => item.name.includes('Agoda 預付 Metropol'));
+  assert.equal(todo.status, '已通知飯店');
+  assert.equal(isTodoOpen(todo), false);
+  assert.match(todo.action, /10\/24 這晚因航班改期不入住，已通知飯店；退款結果未確認/);
+  const arrival = stay.find(item => item.id === 'warsaw-metropol-arrival');
+  assert.equal(arrival.status, '已通知飯店（不入住）');
+  assert.match(arrival.note, /退款結果未確認/);
+  assert.match(read('index.html'), /data-home-open>1<\/b>/);
+  assert.match(read('practical/todos.html'), /1 項待辦<\/span>/);
+  assert.match(read('practical/todos.html'), /退款結果未確認/);
+  assert.match(read('practical/booking.html'), /退款結果未確認/);
+});
+
+test('Lajkonik 退票規則只保留指定規則與各程截止時間', () => {
+  const rule = '發車 24 小時前申請可退，扣 20%；電子票不能改期，只能退票重買。';
+  assert.equal(auschwitzBus.outbound.booked.refundRules, rule + '去程截止 10/25 08:25（波蘭時間）。');
+  assert.equal(auschwitzBus.inbound.booked.refundRules, rule + '回程截止 10/25 15:30（波蘭時間）。');
+  assert.doesNotMatch(read('practical/booking.html'), /12 小時|票券管理頁|逾期不可退|10 個工作天|不扣款/);
+});
+
+
+test('Hankki 最後點餐的推測標註在輸出頁面可見', () => {
+  assert.match(read('practical/dining.html'), /推測，出發前再確認/);
 });

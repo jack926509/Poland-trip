@@ -1244,10 +1244,10 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "韓日料理。",
+      "韓日料理。最後點餐約 20:45（推測，出發前再確認）；不用訂位，現場候位；出餐慢，一次點完。",
       "Gyoza 煎餃、Honey Garlic Popcorn Chicken 蜂蜜蒜味炸雞、Kimbap 飯捲與 Bibimbap 拌飯；另有 Red jjamppong 辣湯麵。"
     ],
-    "verificationNote": "週日 13:00–21:00，最後點餐約 20:45；不用訂位，現場候位；出餐慢，一次點完。",
+    "verificationNote": "週日 13:00–21:00，最後點餐約 20:45（推測，出發前再確認）；不用訂位，現場候位；出餐慢，一次點完。",
     "menuUrl": "https://guide.michelin.com/cz/en/lesser-poland/krakow/restaurant/hankki",
     "menuNote": "初稿提供餐點建議；當日供應與最後接單待確認。",
     "cuisine": "韓式",
