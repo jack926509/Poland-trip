@@ -21,7 +21,7 @@ export const privateSlots = [
   },
   {
     id: 'auschwitz-guide', day: 3, kind: 'ticket', label: 'Auschwitz 英文導覽入場證',
-    detail: '10/26 10:30 個人 educator 導覽，2 人', stepPattern: '導覽',
+    detail: '10/26 10:30 個人 educator 導覽，2 人', stepPattern: '官方導覽',
     publicNote: '入場憑電子入場證加護照，兩者缺一不可；電子入場證要存離線。',
   },
   {
