@@ -88,7 +88,7 @@ test('可查購仍未完成，未記錄查核日期不冒用建置日期', () =>
   assert.ok(html.includes('1 項待辦'));
   assert.ok(html.includes('共 24 項'));
   // Auschwitz 導覽與巴士、四段火車、10/10 查過的餐廳，
-  // 以及 10/12 複查的 Mr. Jerry、Arirang、Rusiko 時段均已有人工核對日期；
+  // 以及 10/12 複查的 Mr. Jerry、Arirang 時段均已有人工核對日期；
   // 2026-10-14 新增的選配午餐與出發前準備兩筆也記了查核日。
   // 2026-10-13 旅客逐項確認 15 項未完成項目仍未訂，原本沒有查核日的 Wawel、辛德勒、鹽礦也有了日期。
   assert.equal((html.match(/未記錄，請重查/g) || []).length, 0);

@@ -45,7 +45,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-07",
     "verificationStatus": "verified",
     "notes": [
-      "現代小盤：推薦 Chipotle 手撕牛肉吐司、Burrata 沙拉或檸檬醬烤鮭魚。10/29 晚餐改 Arirang 後，作為誤點超過 21:30 的 24 小時備案。"
+      "現代小盤：推薦 Chipotle 手撕牛肉吐司、Burrata 沙拉或檸檬醬烤鮭魚。10/29 晚餐改 Arirang 後，作為誤點超過 20:40 的 24 小時備案。"
     ],
     "verificationNote": "店家官網與 Hala Koszyki 店家頁皆標示 24/7；大廳本身週四 08:00–00:00，深夜入口以現場指示為準。24 小時營業不等於全部菜色全天供應，深夜接單與菜單仍需確認。2024 年續約 5 年，Tripadvisor 2026 年評論仍為 24 小時。",
     "menuUrl": "https://www.mateuszgessler.com.pl/wp-content/uploads/2026/03/Menu-Cma-Styczen-2026.pdf",
@@ -902,7 +902,7 @@ export const diningPlaces = {
     "notes": [
       "2010 年開業，克拉科夫第一家精品咖啡店，Kazimierz 自家烘豆。公開資料列一–五 08:00–20:00、六日 10:00–19:00。"
     ],
-    "hoursNote": "店家官網；karmaroasters.com 與 Yelp 一致，另一個網站 karmakrakow.pl 列平日 07:00–18:00，Day 3 17:20 出門前看 Google 地圖當日營業時間",
+    "hoursNote": "店家官網；karmaroasters.com 與 Yelp 一致，另一個網站 karmakrakow.pl 列平日 07:00–18:00，選配，未排入行程；營業時間兩個來源不一致，去之前看 Google 地圖",
     "liveCheckedAt": "2026-10-20",
     "phone": "+48 662 387 281",
     "cuisine": "自家烘焙咖啡",
@@ -1414,13 +1414,13 @@ export const diningPlaces = {
     "address": "Nowogrodzka 38, Warszawa",
     "map": "https://www.google.com/maps/search/?api=1&query=Arirang%20Restaurant%20Nowogrodzka%2038%2C%20Warszawa",
     "hours": "週四 12:00–22:00",
-    "sourceUrl": "https://www.yelp.com/biz/arirang-warszawa",
-    "checkedAt": "2026-10-12",
+    "sourceUrl": "https://gdziezjescwarszawa.com/miejsca/arirang-nowogrodzka-38/",
+    "checkedAt": "2026-10-23",
     "verificationStatus": "partial",
     "notes": [
       "韓式料理：Bulgogi 韓式烤牛肉、拌飯、Jajangmyeon 炸醬麵、海鮮煎餅或韓式湯鍋。"
     ],
-    "verificationNote": "多個目錄確認週四營業至 22:00；沒有店家官網，最後點餐時間未知；當天先看 Google 地圖營業狀態。",
+    "verificationNote": "Google 地圖資料轉載目錄（gdziezjescwarszawa、menuradar，2026-10-23 查）列週四 12:00–22:00、週二公休；無店家官網，最後點餐時間查不到，出發前再確認。",
     "cuisine": "韓式",
     "dishes": [
       "Bulgogi 韓式烤牛肉",
@@ -1429,8 +1429,8 @@ export const diningPlaces = {
       "Haemul pajeon 海鮮煎餅"
     ],
     "phone": "+48 22 881 78 51",
-    "liveCheckedAt": "2026-10-12",
-    "hoursNote": "Yelp 2026-05、gdziezjescwarszawa 一致；CityOn 列平日 11:00 起"
+    "liveCheckedAt": "2026-10-23",
+    "hoursNote": "Google 地圖資料轉載目錄列週四 12:00–22:00、週二公休；最後點餐時間查不到，出發前再確認。"
   },
   "warsaw-mei": {
     "id": "warsaw-mei",
@@ -2315,33 +2315,6 @@ export const diningPlaces = {
     "phone": "+48 730 285 522",
     "liveCheckedAt": "2026-10-12",
     "hoursNote": "官網"
-  },
-  "warsaw-rusiko": {
-    "id": "warsaw-rusiko",
-    "booking": "recommended",
-    "cityKey": "warsaw",
-    "name": "Rusiko",
-    "address": "Wierzbowa 11, Warszawa",
-    "map": "https://www.google.com/maps/search/?api=1&query=Rusiko%2C%20Wierzbowa%2011%2C%20Warszawa",
-    "hours": "官網公告 3/24 起停業至另行通知（要去先確認是否恢復營業）",
-    "sourceUrl": "https://www.rusiko.pl/kontakt/",
-    "checkedAt": "2026-10-21",
-    "verificationStatus": "partial",
-    "notes": [
-      "Michelin 推薦喬治亞菜：khachapuri 起司船形麵包、khinkali 湯包、chanakhi 燉羊腿。",
-      "10/30 晚餐原備選：官網 2026-10-21 仍公告 3/24 起停業至另行通知，不再當直接替補；要去先用 Email 或請飯店櫃檯確認有沒有營業。"
-    ],
-    "menuUrl": null,
-    "verificationNote": "官網與 Michelin 指南皆列 Wierzbowa 11（Michelin 推薦）；Yelp 仍顯示舊址 Al. Ujazdowskie 22，以官網為準。官網首頁與聯絡頁 2026-10-21 仍掛「od dnia 24 marca nasza restauracja pozostanie zamknięta do odwołania」（3/24 起停業至另行通知；公告未寫年份），不能依常規時段直接前往，要去先用 Email 或請飯店櫃檯確認。",
-    "cuisine": "喬治亞菜",
-    "dishes": [
-      "Khachapuri 起司船形麵包",
-      "Khinkali 喬治亞湯包",
-      "Chanakhi 燉羊腿"
-    ],
-    "phone": "+48 22 629 06 28",
-    "liveCheckedAt": "2026-10-12",
-    "hoursNote": "官網停業公告優先於頁面上的常規時段"
   },
   "warsaw-ceviche-bar": {
     "id": "warsaw-ceviche-bar",

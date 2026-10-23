@@ -83,21 +83,15 @@ test('首頁不再有建置當天快照的「下一個期限」（與待辦小�
   assert.match(read('practical/booking.html'), /id="countdown"/);
 });
 
-test('4 間住宿都有官方電話與來源，並在住宿、SOS、今日卡輸出 tel: 連結', () => {
-  assert.ok(trip.stay.length >= 4);
+test('住宿電話僅有私人欄位，公開緊急電話保留', () => {
   for (const item of trip.stay) {
-    assert.match(item.phone, /^\+48 [\d ]+$/, item.id);
-    assert.match(item.phoneSource.url, /^https:\/\//);
-    assert.equal(item.phoneSource.checkedAt, '2026-10-06');
-    assert.doesNotMatch(item.phoneSource.url, /booking\.com|agoda|expedia|hotels\.com|tripadvisor/);
+    assert.equal(item.phone, undefined);
+    assert.equal(item.phoneSource, undefined);
+    assert.ok(renderPrivatePanel().includes(`data-private-slot-field="stay-${item.id}:phone"`));
   }
-  const booking = read('practical/booking.html');
   const essentials = read('practical/essentials.html');
-  const today = read('today.html');
-  for (const digits of ['+48223253100', '+48123552950', '+48717966200', '+48531000209']) {
-    assert.ok(booking.includes(`href="tel:${digits}"`), `住宿頁缺 ${digits}`);
-    assert.ok(essentials.includes(`href="tel:${digits}"`), `SOS 缺 ${digits}`);
-    assert.ok(today.includes(`href="tel:${digits}"`), `今日卡缺 ${digits}`);
+  for (const number of ['112', '999', '+48222130060', '+48668027574', '+886800085095']) {
+    assert.ok(essentials.includes(`href="tel:${number}"`));
   }
 });
 

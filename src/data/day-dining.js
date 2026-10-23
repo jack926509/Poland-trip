@@ -416,11 +416,11 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-arirang-restaurant",
       "role": "晚餐首選（條件式）",
-      "note": "19:59（Koleo）抵華沙、20:15 入住放行李後，20:20 到 Nowogrodzka 38（從 Hotel Metropol 步行約 3 分／約 150–200 m）：Bulgogi 韓式烤牛肉、拌飯，或 Jajangmyeon、海鮮煎餅。20:40 前還沒能入座就改 Złote Tarasy 或 Ćma。",
+      "note": "19:59（Koleo）抵華沙、20:15 入住放行李後，20:20 到 Nowogrodzka 38（從 Hotel Metropol 步行約 3 分／約 150–200 m）：Bulgogi 韓式烤牛肉、拌飯，或 Jajangmyeon、海鮮煎餅。出發前再確認；20:40 前還沒能入座就改 Złote Tarasy 或 Ćma。",
       "stepId": "d6-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
-      "condition": "週四 12:00–22:00（多個目錄一致，無店家官網），最後點餐時間未查到；不用訂位，當天先看 Google 地圖營業狀態；20:20 到店、20:40 前還沒能入座就改 Złote Tarasy 或 Ćma。",
+      "condition": "週四 12:00–22:00（多個目錄一致，無店家官網），最後點餐時間未查到；不用訂位，當天先看 Google 地圖營業狀態；出發前再確認，20:20 到店；20:40 前還沒能入座就改 Złote Tarasy 或 Ćma。",
       "dayHours": "12:00–22:00"
     },
     {
@@ -442,7 +442,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-cma-hala-koszyki",
       "role": "晚餐備案",
-      "note": "原首選保留；24 小時營業，Arirang 21:30 前不能入座或誤點時改這間（Chipotle 手撕牛肉吐司、Burrata 沙拉或烤鮭魚），深夜先確認菜色。",
+      "note": "原首選保留；24 小時營業，Arirang 20:40 前不能入座或誤點時改這間（Chipotle 手撕牛肉吐司、Burrata 沙拉或烤鮭魚），深夜先確認菜色。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -511,13 +511,6 @@ export const dayDiningPlans = {
       "meal": "dinner",
       "condition": "店家 10/22 回信已確認訂位，威靈頓為店家已註記，未擴大解讀為供餐保證；確認信存離線。",
       "dayHours": "17:30–23:00（週五另有 12:00–16:30，下午休息）"
-    },
-    {
-      "placeId": "warsaw-rusiko",
-      "role": "晚餐備選（原首選）",
-      "note": "Wierzbowa 11（劇院廣場旁）。⚠️ 官網聯絡頁 2026-10-21 仍公告「3/24 起停業至另行通知」，不能直接走去，當天先看 Google 地圖營業狀態。原本是 Soul Kitchen 沒有威靈頓或客滿時的替補：khachapuri、khinkali、chanakhi 燉羊腿，由 Metropol 搭車約 10 分。",
-      "stepId": null,
-      "planStatus": "candidate"
     },
     {
       "placeId": "warsaw-primitivo",

@@ -15,8 +15,8 @@ export const privateSlots = [
     publicNote: '入境與登機都要出示護照。',
   },
   {
-    id: 'train-eip5300', day: 2, kind: 'train', label: 'EIP 1306 華沙西站 → 克拉科夫',
-    detail: '10/25 15:45 Warszawa Zachodnia 發車；第 1 車，24、26 號', stepPattern: 'EIP 1306',
+    id: 'train-eip5300', day: 2, kind: 'train', fields: [{ name: 'seat', label: '車廂／座位', type: 'text' }], label: 'EIP 1306 華沙西站 → 克拉科夫',
+    detail: '10/25 15:45 Warszawa Zachodnia 發車；座位見車票', stepPattern: 'EIP 1306',
     publicNote: '車票在 PKP Intercity App 的票券清單，出發前先存離線。',
   },
   {
@@ -40,17 +40,17 @@ export const privateSlots = [
     publicNote: '票券 PDF 隨付款確認信附上，先存離線；依票面提早到 Daniłowicz 礦井入口。',
   },
   {
-    id: 'train-ic3830', day: 4, kind: 'train', label: 'IC 3830 克拉科夫 → 樂斯拉夫',
+    id: 'train-ic3830', day: 4, kind: 'train', fields: [{ name: 'seat', label: '車廂／座位', type: 'text' }], label: 'IC 3830 克拉科夫 → 樂斯拉夫',
     detail: '10/27 16:45 Kraków Główny 發車', stepPattern: 'IC 3830',
     publicNote: '車票在 PKP Intercity App 的票券清單，出發前先存離線。',
   },
   {
-    id: 'train-ic260', day: 5, kind: 'train', label: 'IC 260 樂斯拉夫 → 波茲南',
+    id: 'train-ic260', day: 5, kind: 'train', fields: [{ name: 'seat', label: '車廂／座位', type: 'text' }], label: 'IC 260 樂斯拉夫 → 波茲南',
     detail: '10/28 19:10 Wrocław Główny 發車', stepPattern: 'IC 260',
     publicNote: '車票在 PKP Intercity App 的票券清單，出發前先存離線。',
   },
   {
-    id: 'train-eic8104', day: 6, kind: 'train', label: 'EIC 8104 波茲南 → 華沙',
+    id: 'train-eic8104', day: 6, kind: 'train', fields: [{ name: 'seat', label: '車廂／座位', type: 'text' }], label: 'EIC 8104 波茲南 → 華沙',
     detail: '10/29 17:40 Poznań Główny 發車', stepPattern: 'EIC 8104',
     publicNote: '車票在 PKP Intercity App 的票券清單，出發前先存離線。',
   },

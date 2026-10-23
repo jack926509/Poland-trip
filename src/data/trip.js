@@ -42,7 +42,7 @@ const todoGroupsRaw = [
     id: 'rail', title: '城際交通', eyebrow: 'Rail · 7 項',
     intro: null, // 由 railGroupIntro(todoGroupsRaw) 依 Lajkonik 回程那筆的狀態推導，見下方 todoGroups
     items: [
-      {checkedAt:"2026-10-22", recheckAt:null, date:'10/25', name:"EIP 1306｜Warszawa Zachodnia → Kraków Główny", status:'已購票', action:"15:45 Warszawa Zachodnia（西站）→ 18:12 Kraków Główny，1 等；13:10 飛抵華沙後直接轉西站。票券存離線，第 1 車，24、26 號。", url:'https://www.intercity.pl/en/'},
+      {checkedAt:"2026-10-22", recheckAt:null, date:'10/25', name:"EIP 1306｜Warszawa Zachodnia → Kraków Główny", status:'已購票', action:"15:45 Warszawa Zachodnia（西站）→ 18:12 Kraków Główny，1 等；13:10 飛抵華沙後直接轉西站。票券存離線，座位見車票。", url:'https://www.intercity.pl/en/'},
       {checkedAt:'2026-10-13', recheckAt:null, date:'10/26', name:`Lajkonik 去程 ${lajkonikOutboundAdopted.dep} 克拉科夫 → Auschwitz`, status:'已購票', action:`已在 moj-bus.pl 購得 2 張全票（線上總價 ${auschwitzBus.outbound.booked.total}）：${lajkonikOutboundAdopted.dep} 由 Kraków MDA（ul. Bosacka 18）下層 D9 站位發車、${lajkonikOutboundAdopted.arr} 抵 Więźniów Oświęcimia 55。業者要求發車前 15 分鐘到站牌，上車出示列印票或手機票（螢幕至少 4 吋）。要準時上車；09:50 下車後直接走到入口報到，導覽 10:30 開始。退票規則見『訂票與交通』頁。票號與票券管理連結只存私人資料。`, url:'https://moj-bus.pl/en'},
       {checkedAt:'2026-10-23', recheckAt:null, date:'10/26', name:`Lajkonik 回程 ${lajkonikInboundAdopted.dep} Auschwitz → 克拉科夫`, status:'已購票', action:`已在 moj-bus.pl 購得 2 張全票（線上總價 47,50 zł）：15:30 由 Więźniów Oświęcimia 55 發車 → 16:55 抵 Kraków MDA（ul. Bosacka 18）。業者要求發車前 15 分鐘（15:15）到站牌，上車出示列印票或手機票（螢幕至少 4 吋）。導覽延後趕不上時，16:30 需向司機或線上另買新票。退票規則見『訂票與交通』頁。票號與票券管理連結只存私人資料。`, url:'https://www.lajkonikbus.pl/'},
       {checkedAt:"2026-10-22", recheckAt:null, date:'10/27', name:'IC 3830｜Kraków Główny → Wrocław Główny', status:'已購票', action:'16:45 Kraków Główny → 19:50 Wrocław Główny。鹽礦後 Sztolnia 未訂位、現場入座，客滿改 Bistro Posolone；13:41 SKA1 回城、14:10 買圈餅，14:30 回 ibis 取行李休息，16:10 前到站。', url:'https://www.intercity.pl/en/'},
@@ -142,7 +142,7 @@ export const days = [
       {t:'機上或機場', timingMode:'relative', id:'d2-lunch', label:'午餐 · 機上或機場輕食', sub:'優先完成入境、提行李與西站轉乘，不繞路進市中心用餐'},
       {t:'13:10', label:'抵蕭邦機場 · 入境與提行李', sub:'首次入境登錄與行李等待時間不保證；領到行李後直接前往 Warszawa Zachodnia。行李未到須先向航空公司申報；15:05 還沒走出行李大廳就改搭下一班（見下一步）'},
       {t:'完成入境後', timingMode:'relative', label:'蕭邦機場 → Warszawa Zachodnia（西站）', sub:'用 Jakdojade 查當下直達西站的機場鐵路班次、停靠站及月台；等車過久就比較官方計程車或 Bolt 的預估抵達時間。不要搭到 Centralna 才找月台，也不繞 Metropol。交通耗時依現場情況'},
-      {t:'15:10 前', label:'抵 Warszawa Zachodnia（西站）', sub:'35 分鐘為規劃緩衝，月台依當日電子牌，第 1 車，24、26 號；15:05 還沒走出行李大廳 → 在 PKP Intercity App 改搭當天下一班 EIP 到克拉科夫（班次以 App 當下顯示為準），不保證免費改搭', dur:'35 min 緩衝'},
+      {t:'15:10 前', label:'抵 Warszawa Zachodnia（西站）', sub:'35 分鐘為規劃緩衝，月台依當日電子牌，座位見車票；15:05 還沒走出行李大廳 → 在 PKP Intercity App 改搭當天下一班 EIP 到克拉科夫（班次以 App 當下顯示為準），不保證免費改搭', dur:'35 min 緩衝'},
       {t:'抵達克拉科夫前', timingMode:'relative', id:'d2-prep', label:'買好隔日早餐、午餐與水', sub:'隔日 10/26 導覽日須自備餐食。10/25 是非營業週日、多數商店不開，所以抵達克拉科夫前先買好 10/26 早餐與午餐（與水）：杜哈機場、華沙蕭邦機場或西站都可以買。克拉科夫晚上再採買只當備案，週日營業時間未查證；買不齊就問旅館可取得的輕食'},
       {t:'15:45', label:'EIP 1306 前往克拉科夫', sub:'Warszawa Zachodnia → Kraków Główny，18:12 抵達，1 等；票券存離線', cost:'已購票', dur:'2 h 27 min'},
       {t:'18:12', label:'抵 Kraków Główny', sub:'約 200 公尺、步行約 5 分到 Pawia 11 的 ibis budget Krakow Stare Miasto，辦理入住'},
@@ -172,12 +172,10 @@ export const days = [
       {t:'依導覽休息', timingMode:'relative', id:'d3-lunch', label:'自備午餐 · 依允許的休息時段', sub:'攜帶三明治、水果與水；只在導覽允許的用餐區吃，不在參觀區進食或為午餐離團'},
       {t:'約 14:15', label:'導覽結束', sub:'比克瑙結束後搭免費接駁巴士回一號營區（回克拉科夫的巴士從一號營區旁發車），留意接駁班次，再走到停車站牌'},
       {t: lajkonikInboundAdopted.dep, label:'回程巴士返克拉科夫', sub:`${lajkonikInboundState}：15:30 由 Więźniów Oświęcimia 55 發車 → 16:55 抵 Kraków MDA（ul. Bosacka 18）。15:15 前到站牌，出示列印票或手機票（螢幕至少 4 吋）；導覽約 14:15 結束，14:00 班不可用。趕不上時 16:30 需另買新票。退票規則見『訂票與交通』頁。`, cost:`已購票（2 張全票 47,50 zł）`, dur: lajkonikInboundAdopted.dur},
-      {t: lajkonikInboundAdopted.arr, label:'抵 Kraków MDA · 休息', sub:'ul. Bosacka 18 Dworzec Autobusowy；先回旅館放東西與休息；回 ibis 前先在 Lajkonik 麵包店買明早麵包（20:00 關門）。晚餐 18:00 Mr. Jerry（已訂位）'},
-      {t:'17:20', label:'咖啡 · Karma Kawiarnia（選配）', sub:'Krupnicza 12/3，Karma Coffee Roasters 官網聯絡頁列平日 08:00–20:00（另一個網站 karmakrakow.pl 寫平日 07:00–18:00，若屬實 17:20 還趕得上；出門前看 Google 地圖當日營業時間，沒開就直接去晚餐）；由 ibis 步行約 15 分，喝完步行約 5 分到 Jagiellońska 5。巴士延誤或太累就略過，直接去晚餐', cost:'依店家', dur:'25 min'},
+      {t: lajkonikInboundAdopted.arr, label:'抵 Kraków MDA · 休息', sub:'ul. Bosacka 18 Dworzec Autobusowy；步行回 ibis 放東西、休息。途中在 Lajkonik 麵包店（麵包店，不是巴士公司）買明早麵包，20:00 關門。約 17:35 由 ibis 出發，步行到 Jagiellońska 5 的 Mr. Jerry（18:00 已訂位），出門前用地圖確認步行時間。'},
       {t:'18:00', id:'d3-dinner', label:'晚餐 · Mr. Jerry 威靈頓牛排', sub:'Jagiellońska 5（老城），18:00 已訂位（2 位、無訂金）；Beef Wellington 無法預點，到店再點；Pod Aniołami 保留為備案。', cost:'依店家菜單', dur:'1 h 15 min'},
     ],
     eat: [
-      snack({text:'17:20 晚餐前咖啡（巴士延誤就略過） @ Karma Kawiarnia（Krupnicza 12）', placeId:'krakow-karma-coffee-roasters'}),
     ],
     warn: `✅ 導覽已訂妥：10/26 10:30 英文個人 educator 導覽（Zwiedzanie indywidualne z edukatorem），官方標示約 3 小時 45 分，2 人。官方明載「入場證需搭配身分證件」，請把電子入場證存離線並帶護照。🚌 **去程巴士已購票**：**${lajkonikOutboundAdopted.dep} → ${lajkonikOutboundAdopted.arr}**，Kraków MDA 下層 D9 站位發車、2 張全票線上總價 ${auschwitzBus.outbound.booked.total}；業者要求發車前 15 分鐘到站牌，上車出示列印票或手機票。⚠ 官方要求導覽前至少 30 分鐘、即 **10:00 前到場**，這班 ${lajkonikOutboundAdopted.arr} 抵達只剩 10 分鐘餘裕：下車直接寄物、過安檢，不逛書店；巴士一誤點就可能趕不上。要準時上車；09:50 下車後直接走到入口報到，導覽 10:30 開始。**回程已購 15:30 → 16:55，15:15 前到站牌**。去回程退票規則見『訂票與交通』頁。`,
     // 回程選項。導覽約 14:15 結束，全部以「14:15 之後發車」為門檻。
@@ -350,7 +348,7 @@ export const days = [
       {t:'17:40', label:'EIC 8104 前往華沙', sub:'EIC 8104 已購票；17:40 → 19:59（Koleo，Peron II 抵達；列車名 BOLESŁAW PRUS），車廂與座位依票券詳細頁。上車前在波茲南站買吃的帶上車吃（19:59 才到華沙，晚餐排 20:20）', cost:'已購票', dur:'2 h 19 min'},
       {t:'19:59', label:'抵 Warszawa Centralna', sub:'Koleo 19:59 到；步行至 Hotel Metropol 約 500 公尺，拖行李預留 10–15 分鐘'},
       {t:'20:15', label:'入住 Hotel Metropol、放行李', sub:'先放行李、換輕便外套，不在房間久待；Metropol 退房時間 12:00 前', dur:'約 5 min'},
-      {t:'20:20', id:'d6-dinner', label:'晚餐 · Arirang 韓式', sub:'Nowogrodzka 38，從 Metropol 步行約 3 分／約 150–200 m；Bulgogi、拌飯或 Jajangmyeon。週四 12:00–22:00，最後點餐時間未查到；不用訂位，當天先看營業狀態，無法入座改 Złote Tarasy 或 Ćma', cost:'依店家', dur:'約 45 min'},
+      {t:'20:20', id:'d6-dinner', label:'晚餐 · Arirang 韓式', sub:'Nowogrodzka 38，從 Metropol 步行約 3 分／約 150–200 m；Bulgogi、拌飯或 Jajangmyeon。週四 12:00–22:00，最後點餐時間未查到；不用訂位，當天先看營業狀態，出發前再確認；20:40 前不能入座改 Złote Tarasy 或 Ćma', cost:'依店家', dur:'約 45 min'},
       {t:'21:15', label:'★ Złote Tarasy 玻璃波浪屋頂夜景', sub:'從 Arirang 步行約 10 分，Metropol 至商場約 0.9 km；看玻璃屋頂、買水與伴手禮，22:00 關門', cost:'免費', dur:'40 min'},
       {t:'21:55', label:'往回走，途經科學文化宮拍夜景', sub:'回程順路拍科學文化宮夜景', cost:'免費', dur:'15 min'},
       {t:'22:10', label:'回 Hotel Metropol', sub:'明早 07:20 出門，07:30 在 Zgoda 3 早餐，早點睡'},
@@ -481,7 +479,6 @@ export const stay = [
     address:'ul. Marszałkowska 99a, 00-693 Warszawa', addressVerified:true, rooms:1, status:'已通知飯店（不入住）',
     coordinates:{lat:52.22901, lng:21.01099, status:'已核對', checkedAt:'2026-08-11'},
     officialUrl:'https://www.hotelmetropol.com.pl/pl/',
-    phone:'+48 22 32 53 100', phoneSource:{url:'https://www.hotelmetropol.com.pl/pl/', checkedAt:'2026-10-06'},
     note:'原 10/24 訂單保留紀錄；去程改為 10/25 抵達後直接往克拉科夫。10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認。位置在 Marszałkowska／Metro Centrum 出口正對面，步行至 Warszawa Centralna 約 500 公尺；入住 15:00 起、退房 12:00 前，櫃檯可寄放行李。',
   },
   {
@@ -490,7 +487,6 @@ export const stay = [
     address:'ul. Pawia 11, 31-154 Kraków', addressVerified:true, rooms:1, status:'已確認',
     coordinates:{lat:50.07075, lng:19.946163, status:'已核對', checkedAt:'2026-08-11'},
     officialUrl:'https://all.accor.com/hotel/7165/index.en.shtml',
-    phone:'+48 12 355 29 50', phoneSource:{url:'https://all.accor.com/hotel/7165/index.en.shtml', checkedAt:'2026-10-06'},
     note:'位於 Kraków Główny 與 Galeria Krakowska 旁。10/06 官網確認入住 15:00 起、退房 12:00 前，提供寄物服務；私人訂房約定仍以確認信為準。',
   },
   {
@@ -499,7 +495,6 @@ export const stay = [
     address:'Piłsudskiego 98, Wrocław', addressVerified:true, rooms:1, status:'已確認',
     coordinates:{lat:51.10013, lng:17.03569, status:'已核對', checkedAt:'2026-08-11'},
     officialUrl:'https://piastwroclaw.pl/',
-    phone:'+48 71 796 62 00', phoneSource:{url:'https://piastwroclaw.pl/kontakt/', checkedAt:'2026-10-06'},
     note:'住宿訂單已確認，門牌 Piłsudskiego 98 已核對。',
   },
   {
@@ -508,7 +503,6 @@ export const stay = [
     address:'Towarowa 37/201, 61-896 Poznań', addressVerified:true, rooms:1, status:'已確認',
     coordinates:{lat:52.403903, lng:16.915609, status:'接待處座標已核對', checkedAt:'2026-08-11'},
     officialUrl:'https://www.poznanapartments.com/kontakt',
-    phone:'+48 531 000 209', phoneSource:{url:'https://www.poznanapartments.com/kontakt', checkedAt:'2026-10-06'},
     note:'此處為官方接待與取鑰匙地址；實際公寓門牌以私人訂房確認為準。',
   },
   {
@@ -517,7 +511,6 @@ export const stay = [
     address:'ul. Marszałkowska 99a, 00-693 Warszawa', addressVerified:true, rooms:1, status:'已確認',
     coordinates:{lat:52.22901, lng:21.01099, status:'已核對', checkedAt:'2026-08-11'},
     officialUrl:'https://www.hotelmetropol.com.pl/pl/',
-    phone:'+48 22 32 53 100', phoneSource:{url:'https://www.hotelmetropol.com.pl/pl/', checkedAt:'2026-10-06'},
     note:'10/29–10/31 華沙住宿照常入住；10/24 這晚因航班改期不入住，已通知飯店；退款結果未確認。10/29 EIC 8104 抵 Warszawa Centralna 後步行約 500 公尺即到；10/31 退房 12:00 前，當日 10:05 出門搭機不受影響。',
   },
 ];
@@ -592,7 +585,7 @@ export const bookingTiers = [
     {name:'Auschwitz 官方英文導覽（10/26 10:30 已訂妥）', url:ticketPurchaseById('krakow-auschwitz').purchaseUrl},
     {name:'Wieliczka 鹽礦英文團（10/27 09:00 已購票）', url:ticketPurchaseById('krakow-wieliczka').purchaseUrl},
     {name:`Lajkonik 巴士（去程 ${lajkonikOutboundAdopted.dep} → ${lajkonikOutboundAdopted.arr} 已購票；回程 ${lajkonikInboundAdopted.dep} → ${lajkonikInboundAdopted.arr} ${lajkonikInboundState}）`, url:'https://www.lajkonikbus.pl/'},
-    {name:'華沙 → 克拉科夫 EIP 1306（已購票；第 1 車，24、26 號）', url:'https://www.intercity.pl/en/'},
+    {name:'華沙 → 克拉科夫 EIP 1306（已購票；座位見車票）', url:'https://www.intercity.pl/en/'},
     {name:'克拉科夫 → 樂斯拉夫 IC 3830（已購票；車廂座位看完整票券）', url:'https://www.intercity.pl/en/'},
     {name:'樂斯拉夫 → 波茲南 IC 260（已購票；車廂座位看完整票券）', url:'https://www.intercity.pl/en/'},
     {name:'波茲南 → 華沙 EIC 8104（已購票；車廂座位看完整票券）', url:'https://www.intercity.pl/en/'},
@@ -618,7 +611,7 @@ export const reservations = [
   {when:'✅ 去回程已購', what:`Lajkonik 巴士 10/26 ${lajkonikOutboundAdopted.dep} → ${lajkonikOutboundAdopted.arr} 已購 2 張全票；回程 ${lajkonikInboundAdopted.dep} ${lajkonikInboundState}。`},
   {when:'✅ 已訂位', what:"Soul Kitchen 10/30 18:00–20:00、2 位已訂位，保留 15 分鐘，已註記 1 份威靈頓；Mr. Jerry 10/26 18:00 已訂位（2 位、無訂金）；Beef Wellington 無法預點，到店再點。"},
   {when:'不訂位', what:'其餘餐廳現場入座；10/24 Specjały 與 10/25 Pimiento 因改班不再排入原時段。'},
-  {when:'火車票：已購 4／4 段', what:"10/22 截圖確認：10/25 EIP 1306 西站 15:45–18:12（1 等）、10/27 IC 3830 16:45–19:50（1 等）、10/28 IC 260 19:10–20:29（2 等）、10/29 EIC 8104 17:40–19:59（2 等）。EIP 1306 第 1 車，24、26 號；截圖金額見各段交通卡，其餘車次車廂、座位與金額涵蓋人數看完整票券。"},
+  {when:'火車票：已購 4／4 段', what:"10/22 截圖確認：10/25 EIP 1306 西站 15:45–18:12（1 等）、10/27 IC 3830 16:45–19:50（1 等）、10/28 IC 260 19:10–20:29（2 等）、10/29 EIC 8104 17:40–19:59（2 等）。EIP 1306 座位見車票；截圖金額見各段交通卡，其餘車次車廂、座位與金額涵蓋人數看完整票券。"},
   {when:'不用訂了', what:'新行程付費景點只在外面拍照：樂斯拉夫全景畫、華沙起義博物館、華沙皇家城堡都不用買票；華沙水上宮殿週五免費，照樣可以進去。'},
   {when:'之後傳訊息', what:'Poznan Apartments：確認約 20:45 抵達取鑰匙（接待到 22:00，出發前再確認）與隔天寄放行李'},
   {when:'出發前 1 週', what:'臨時活動與維修可能變動，出門前看一下官網公告'},

@@ -128,7 +128,6 @@ function renderDayCard(day, { iso, stay, sun, dayHref, privateHref, tomorrow }) 
   const leaving = isDepartureDay(day);
   // 離境日的班機起飛時刻：從行程步驟（QR 000 起飛）推導，起飛後今日卡改顯示結束語。
   const flightStep = leaving ? steps.find(step => /起飛/.test(step.label) && /\b[A-Z]{2} \d+/.test(step.label)) : null;
-  const hotelPhone = bed?.phone ? { digits: bed.phone.replace(/[^\d+]/g, '') } : null;
   const hotelMap = bed?.addressVerified ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(bed.name+' '+bed.address)}` : null;
   const hotelNavLabel = bed?.id === 'poznan-towarowa' ? '接待處導航' : '住宿導航';
   const meals = (dayMeals[day.n] || []).map(item => ({ item, ...mealSchedule(day, item) }));
@@ -189,7 +188,7 @@ function renderDayCard(day, { iso, stay, sun, dayHref, privateHref, tomorrow }) 
     <section class="today-block today-stay${!bed && !leaving && !day.overnight ? ' today-block-alert' : ''}" data-today-stay><div class="today-block-head"><h3>${bed ? '回住宿' : leaving ? '離境與行李' : day.overnight ? '轉機與行李' : '今晚住宿：資料缺漏'}</h3></div>
       ${bed ? `<div class="today-next-main today-stay-main"><p class="today-next-title">${escapeHtml(bed.name)}</p>${hotelMap ? `<a class="today-next-nav" href="${escapeHtml(hotelMap)}" target="_blank" rel="noopener noreferrer" aria-label="${hotelNavLabel}">${hotelNavLabel} ↗</a>` : ''}</div>
         <p class="today-address" lang="pl">${escapeHtml(bed.address)}</p>
-        <p class="today-hotel-phone">${hotelPhone ? `<a href="tel:${escapeAttr(hotelPhone.digits)}">${escapeHtml(bed.phone)}</a>` : '電話請看訂房確認信'}${!bed.addressVerified ? '<span class="source-meta">門牌尚未確認，請先核對私人訂房資料；不提供精確導航。</span>' : bed.id === 'poznan-towarowa' ? '<span class="source-meta">此地址為接待與取鑰匙處；實際公寓門牌依私人訂房確認。</span>' : ''}</p>`
+        <p class="today-hotel-phone" data-private-slot="stay-${escapeAttr(bed.id)}"><span data-private-missing="phone">住宿電話：填在「我的私人資料」（只存在這支手機）</span><a data-private-has="phone" data-private-tel="phone" hidden class="private-tel"></a>${!bed.addressVerified ? '<span class="source-meta">門牌尚未確認，請先核對私人訂房資料；不提供精確導航。</span>' : bed.id === 'poznan-towarowa' ? '<span class="source-meta">此地址為接待與取鑰匙處；實際公寓門牌依私人訂房確認。</span>' : ''}</p>`
         : day.overnight ? `<p>${escapeHtml(day.overnight)}。電子機票、登機證存離線，抵香港後直接前往轉機登機門。</p>`
         : leaving ? `<p data-leaving-pre>今晚離境／機上過夜。先確認航班報到、退稅與機場交通。</p><p data-leaving-post hidden><b>旅程結束，一路順風。</b></p>`
         : `<p><b>這一天不是離境日，但查不到當晚住宿。</b>這是資料缺漏，不是「不用住」——請先補上訂房或確認安排。</p>`}

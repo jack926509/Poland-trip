@@ -28,7 +28,7 @@
 
 ## Day 3｜10/26（一）奧斯威辛－比克瑙
 
-搭 Lajkonik 巴士到 **Auschwitz-Birkenau**，參加英文官方導覽，走過奧斯威辛一館與比克瑙。回到克拉科夫後先休息，到 **Karma** 喝杯咖啡，晚餐在老城的 **Mr. Jerry** 吃威靈頓牛排。
+搭 Lajkonik 巴士到 **Auschwitz-Birkenau**，參加英文官方導覽，走過奧斯威辛一館與比克瑙。回到克拉科夫後先休息，晚餐在老城的 **Mr. Jerry** 吃威靈頓牛排。
 
 ## Day 4｜10/27（二）Wieliczka 鹽礦，晚上到樂斯拉夫
 

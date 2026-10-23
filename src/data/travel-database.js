@@ -89,7 +89,7 @@ const databaseEntriesBase = [
   {
     id: 'rail-trip-tickets', section: 'rail', category: 'transit', cityKey: 'ROUTE',
     title: '本次城際車票',
-    summary: '10/22 票券截圖確認四段均已購票，發到時間、艙等與截圖金額見交通主檔；10/25 改為 EIP 1306 西站 15:45–18:12，第 1 車，24、26 號。金額涵蓋人數看完整票券。',
+    summary: '10/22 票券截圖確認四段均已購票，發到時間、艙等與截圖金額見交通主檔；10/25 改為 EIP 1306 西站 15:45–18:12，座位見車票。金額涵蓋人數看完整票券。',
     status: 'pending', sourceUrl: null, verifiedAt: '2026-10-22', checkedAt: '2026-10-22', recheckAt: '2026-10-24',
     offlineNote: '請在臺灣出發日 10/24，也就是 10/25 首段城際火車前一日，保存四段車票離線副本並核對票面詳細資料；這是自行設定的查核期限，非官方期限。搭車前用 Passenger Portal 查月台與異動。', private: false,
   },
@@ -400,7 +400,7 @@ export const dayOperations = {
     ],
     navigation: [
       { mode: '機場鐵路／計程車', route: '華沙蕭邦機場 → Warszawa Zachodnia', action: '入境與提行李後用 Jakdojade 查直達西站班次；等車過久則比較官方計程車或 Bolt 的即時預估，不繞中央車站或 Metropol。15:05 還沒走出行李大廳 → 在 PKP Intercity App 改搭當天下一班 EIP 到克拉科夫（班次以 App 當下顯示為準）。' },
-      { mode: 'PKP', route: 'Warszawa Zachodnia → Kraków Główny', action: `EIP 1306 ${eip1306.dep}–${eip1306.arr}，1 等；第 1 車，24、26 號，月台看現場電子牌。` },
+      { mode: 'PKP', route: 'Warszawa Zachodnia → Kraków Główny', action: `EIP 1306 ${eip1306.dep}–${eip1306.arr}，1 等；座位見車票，月台看現場電子牌。` },
       { mode: '步行／叫車', route: 'Kraków Główny → ibis → Hankki', action: '18:12 抵站、約 200 公尺步行約 5 分入住 ibis，約 18:45 搭車往 Zabłocie 19A。19:15 晚餐保留，延誤就改近站快食。' },
     ],
     dailyAlerts: ['13:10 落地至 15:45 火車只有 2 小時 35 分，入境、行李或航班延誤可能接不上；無法保證免費改搭下一班。', '原 Wawel、辛德勒與 Pimiento 白天安排不再排入。10/25 是非營業週日、多數商店不開：10/26 早餐與午餐請在杜哈機場、華沙蕭邦機場或西站先買好；克拉科夫晚上採買只當備案（週日營業時間未查證）。'],
@@ -468,7 +468,7 @@ export const dayOperations = {
     dailyAlerts: [
       '點燈人沒有對外保證的出發分鐘；日落前到座堂島等待，不把任何固定分鐘當成確定時刻；15:45 上島就邊走邊留意（日落 16:34）。',
     ],
-    nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票', '照訂房確認拿 Poznan Apartments 鑰匙，入住時問隔天寄放行李方式（預計約 20:45 到；接待到 22:00、平日 08:00 起，均出發前再確認；寄放方式之後傳訊息確認；不能寄就用車站寄物櫃備案）；07:15 Charlotte Krysiewicza 早餐、08:00 搭電車去 Cytadela。晚餐 Arirang 當天先看 Google 地圖營業狀態，21:30 前不能入座改 Złote Tarasy 或 Ćma'],
+    nightChecklist: [...standardNightChecklist, '確認 10/29 山羊鐘樓卡位路線、波茲南行李寄放與返華沙車票', '照訂房確認拿 Poznan Apartments 鑰匙，入住時問隔天寄放行李方式（預計約 20:45 到；接待到 22:00、平日 08:00 起，均出發前再確認；寄放方式之後傳訊息確認；不能寄就用車站寄物櫃備案）；07:15 Charlotte Krysiewicza 早餐、08:00 搭電車去 Cytadela。晚餐 Arirang 出發前再確認，當天先看 Google 地圖營業狀態，20:40 前不能入座改 Złote Tarasy 或 Ćma'],
   },
   6: {
     cityKey: 'warsaw',
@@ -605,7 +605,6 @@ const unresolvedStepReasons = {
     'Lajkonik · 克拉科夫 → 奧斯威辛': dynamicTransitReason,
     '回程巴士返克拉科夫': '15:30 班已購票，由 Więźniów Oświęcimia 55（Muzeum Auschwitz）發車；15:15 前到站牌，站牌位置見當日地圖。',
     '抵 Kraków MDA · 休息': '抵達後的休息地點保持彈性，不需要固定導航地址。',
-    '咖啡 · Karma Kawiarnia（選配）': 'Krupnicza 12/3，Karma 官網聯絡頁列咖啡館平日 08:00–20:00（karmakrakow.pl 另列 07:00–18:00，出門前看 Google 地圖）；導航見當日餐飲點心。巴士延誤就略過。',
   },
   4: {
     '步行到 Wieliczka Rynek-Kopalnia': 'Sztolnia 至車站約 400 m，步行 6–8 分；車站位置見當日地圖，13:41 搭 SKA1。',

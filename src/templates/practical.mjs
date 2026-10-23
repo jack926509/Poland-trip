@@ -177,7 +177,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
       <span class="eyebrow">${escapeHtml(item.city)}</span><h3>${escapeHtml(item.name)} <span class="${statusTagClass(item.status)}">${escapeHtml(item.status)}</span></h3>
       <p><b>${escapeHtml(item.checkIn)}${item.checkInTime ? ` ${escapeHtml(item.checkInTime)}` : ''} → ${escapeHtml(item.checkOut)}${item.checkOutTime ? ` ${escapeHtml(item.checkOutTime)}` : ''}</b> · ${item.nights} 晚 · ${item.rooms} 間房</p>
       <p><b>地址：</b>${escapeHtml(item.address)}${item.addressVerified ? '' : ' <span class="tag-yellow">門牌待確認</span>'}</p>
-      <p><b>電話：</b>${item.phone ? `<a href="tel:${escapeHtml(item.phone.replace(/[^\d+]/g, ''))}">${escapeHtml(item.phone)}</a>` : '請看訂房確認信'}</p>
+      <p>住宿電話：填在「我的私人資料」（只存在這支手機）</p>
       ${(() => { const note = verified(item.note); return `${note.html ? `<p class="timeline-note">${note.html}</p>` : ''}${renderDataNote(note.notes)}`; })()}
       <p class="action-links">${mapUrl ? `<a href="${mapUrl}" target="_blank" rel="noopener noreferrer">地圖導航 →</a>` : ''}<a href="${escapeHtml(item.officialUrl)}" target="_blank" rel="noopener noreferrer">飯店官網 →</a></p>
     </article>`;
