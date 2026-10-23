@@ -291,9 +291,9 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
     ${confirmed.length ? `<details class="booking-done"><summary>已處理 ${confirmed.length} 項</summary><ul class="booking-items">${confirmed.map(bookingItem).join('')}</ul></details>` : ''}`;
 
   // 重要風險原本是一整段 8–12 行的文字牆，手機上很難找到重點：
-  // 依句號拆成條列，一句一行；資料裡的 **粗體** 標記轉成 <b>。
+  // 依句號拆成條列，去回程退票提示併入前句；資料裡的 **粗體** 標記轉成 <b>。
   const warnItems = (day.warn || '')
-    .split(/(?<=。)/)
+    .split(/(?<=。)(?!去回程退票規則見訂票頁。)/)
     .map(sentence => sentence.trim())
     .filter(Boolean)
     .map(sentence => sentence.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>'));

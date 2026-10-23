@@ -32,7 +32,7 @@
 
 ## Day 4｜10/27（二）Wieliczka 鹽礦，晚上到樂斯拉夫
 
-一早搭火車到 **Wieliczka 鹽礦**，走英文 Tourist Route，看地底的鹽雕禮拜堂，在礦區的 **Bistro Posolone** 吃午餐。回城後到 Kazimierz 散步，取行李搭城際火車往樂斯拉夫。
+一早搭火車到 **Wieliczka 鹽礦**，走英文 Tourist Route，看地底的鹽雕禮拜堂，到 **Sztolnia Wieliczka** 吃豬肋排午餐。回城後到 Kazimierz 散步（選配），取行李搭城際火車往樂斯拉夫。
 
 晚上抵達，晚餐吃 **Samarqand** 烏茲別克抓飯，再去看「無名行人」銅像、夜晚的中央廣場與 Neon Side Gallery 霓虹招牌。
 
@@ -67,7 +67,7 @@
 | 城市 | 正餐 | 咖啡與點心 |
 |---|---|---|
 | 華沙 | Arirang、Polka、Soul Kitchen | E.Wedel 熱巧克力、A. Blikle pączek、Bułkę przez Bibułkę 早餐 |
-| 克拉科夫 | Hankki、Mr. Jerry、Bistro Posolone | Plac Nowy zapiekanka、Karma |
+| 克拉科夫 | Hankki、Mr. Jerry、Sztolnia Wieliczka | Plac Nowy zapiekanka、Karma |
 | 樂斯拉夫 | Samarqand、Restauracja Wrocławska、MAX | Central Cafe、El Gato、Słodki Chłopak |
 | 波茲南 | Carla Trattoria Moderna | Charlotte、Weranda Caffe、聖馬丁牛角麵包 |
 

@@ -1276,6 +1276,49 @@ export const diningPlaces = {
       "鎮中心午餐安排，尚未指定餐廳。"
     ]
   },
+  "wieliczka-sztolnia": {
+    "id": "wieliczka-sztolnia",
+    "cityKey": "krakow",
+    "name": "Sztolnia Wieliczka",
+    "address": "ul. Zamkowa 5, 32-020 Wieliczka",
+    "map": "https://maps.app.goo.gl/P9NgnL6Qk6hmp4xKA",
+    "hours": "週一至週四、週日 11:00–22:00；週五、週六 11:00–23:00",
+    "sourceUrl": "https://maps.app.goo.gl/P9NgnL6Qk6hmp4xKA",
+    "menuUrl": "https://sztolniawieliczka.restaurants-info.com/menu",
+    "checkedAt": "2026-10-23",
+    "verificationStatus": "partial",
+    "booking": "walk-in",
+    "notes": [
+      "豬肋排份量大，兩人分一份再加湯；13:20 前結帳。",
+      "未訂位、現場入座；付款方式未查到，卡與少量現金都帶。"
+    ],
+    "dishes": [
+      "ŻEBERKA WIEPRZOWE 蜂蜜啤酒豬肋排 57 zł",
+      "ŻEBERKA WIEPRZOWE 蒜味豬肋排 57 zł",
+      "ŻEBERKA WOŁOWE BBQ 牛肋排 90 zł"
+    ],
+    "verificationNote": "營業時間與價格來自第三方；以現場菜單為準。OSM 列每日 11:00–20:00，與第三方不一致；午餐時段不受影響。OSM 社群資料標示收卡、建議訂位。"
+  },
+  "krakow-obwarzanek-tunel": {
+    "id": "krakow-obwarzanek-tunel",
+    "cityKey": "krakow",
+    "name": "Obwarzanek Krakowski - Tunel",
+    "address": "skrzyżowanie Basztowa – Lubicz – Westerplatte, Pawia lokal nr 2, Kraków",
+    "map": "https://maps.app.goo.gl/eYkM3UFkHK4ZfpUu5",
+    "hours": "每日 08:00–18:00",
+    "sourceUrl": "https://maps.app.goo.gl/eYkM3UFkHK4ZfpUu5",
+    "checkedAt": "2026-10-23",
+    "verificationStatus": "partial",
+    "booking": "walk-in",
+    "notes": [
+      "Basztowa／Lubicz 地下道的克拉科夫圈餅，先水煮再烤；可外帶當車上點心。",
+      "付款方式未查到，準備零錢。"
+    ],
+    "dishes": [
+      "芝麻或罌粟籽圈餅"
+    ],
+    "verificationNote": "營業時間來自第三方，以現場公告為準。"
+  },
   "wieliczka-bistro-posolone": {
     "id": "wieliczka-bistro-posolone",
     "cityKey": "wieliczka",

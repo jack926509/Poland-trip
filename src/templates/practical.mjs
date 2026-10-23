@@ -129,7 +129,7 @@ export function renderBookingStatusCard(todoGroups, deadlines = [], today = taip
       <div class="booking-status-card">
         <span class="eyebrow">待辦總覽</span>
         <h2>${stats.open ? `還沒處理 <b class="number" data-booking-open>${stats.open}</b> 項` : '待辦已全部處理完畢'}</h2>
-        <p>火車、Auschwitz 去程與鹽礦已購票；航班延後後當地住宿為 6 晚，原 10/24 飯店訂單退改另處理。</p>
+        <p>火車、Auschwitz 去回程巴士與鹽礦已購票；航班延後後當地住宿為 6 晚，原 10/24 飯店訂單退改另處理。</p>
         <ul class="booking-status-groups">${rows}</ul>${standaloneHtml}
         <p class="action-links"><a class="booking-status-cta" href="todos.html">看待辦事項 →</a></p>
       </div>
@@ -147,7 +147,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
   const trainCards = trains.map(train => {
     const leg = splitVerification(train.leg), note = splitVerification(train.note);
     const price = /未提供/.test(train.price) ? '' : /^\d/.test(train.price) && !/PLN|zł/.test(train.price) ? `PLN ${train.price}` : train.price;
-    const sale = train.status === '已購票' ? '' : train.saleOpens ? `${escapeHtml(train.saleOpens)} 起預售` : '現場購票';
+    const sale = String(train.status).split('／').every(part => /已購票$/.test(part.trim())) ? '' : train.saleOpens ? `${escapeHtml(train.saleOpens)} 起預售` : '現場購票';
     const extra = [
       train.dur ? `<p><b>車程：</b>${train.dur}</p>` : '',
       leg.main ? `<p>${leg.main}</p>` : '',
@@ -156,10 +156,13 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
       note.main ? `<p>${note.main}</p>` : '',
       renderDataNote([...leg.notes, ...(price ? [] : [escapeHtml(train.price)]), ...note.notes]),
     ].join('');
+    const time = train.id === 'bus-lajkonik' && auschwitzBus
+      ? `去程 ${auschwitzBus.outbound.booked.dep}（${auschwitzBus.outbound.booked.bay.split('（')[0]}）→ ${auschwitzBus.outbound.booked.arr}／回程 ${auschwitzBus.inbound.booked.dep} → ${auschwitzBus.inbound.booked.arr}`
+      : `${train.dep} → ${train.arr}`;
     const link = dayLink(train.date);
     return `
       <li class="rail-card" id="rail-${escapeHtml(train.id)}">
-        <p class="rail-card-time"><b class="number">${train.date}</b><b class="number">${train.dep} → ${train.arr}</b><span class="rail-card-code">${train.type}</span></p>
+        <p class="rail-card-time"><b class="number">${train.date}</b><b class="number">${time}</b><span class="rail-card-code">${train.type}</span></p>
         <p class="rail-card-route"><span>${train.seg}</span>${statusBadges(train.status)}</p>
         <div class="rail-card-foot">${link}<details class="rail-card-more"><summary>附註</summary>${extra}</details></div>
       </li>`;
@@ -246,6 +249,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
           </tr>`).join('')}</tbody>
       </table></div>
       ${bus.inbound.html ? `<p class="timeline-note">${bus.inbound.html}</p>` : ''}${renderDataNote([...bus.statusNote(auschwitzBus.inbound.status), ...bus.inbound.notes])}</details>
+      <p class="timeline-note"><b>退票規則：</b>去程：${escapeHtml(auschwitzBus.outbound.booked.refundRules)}<br>回程：${escapeHtml(auschwitzBus.inbound.booked.refundRules)}</p>
       <p class="action-links"><a href="${escapeHtml(auschwitzBus.site)}" target="_blank" rel="noopener noreferrer">到 lajkonikbus.pl 買票 →</a><a href="https://moj-bus.pl/en" target="_blank" rel="noopener noreferrer">Moj Bus 線上買票 →</a></p>
     </section>` : '';
 
@@ -267,7 +271,7 @@ export function renderBooking({ flights, trains, stay, todoGroups = [], deadline
       <div class="grid-wide">${stayHtml}</div>
     </section>`;
 
-  return renderPracticalLayout('訂票與交通', 'Booking plan', '火車、Auschwitz 巴士、航班與住宿一頁看完。', content, 'practical/booking.html');
+  return renderPracticalLayout('訂票與交通', 'Booking plan', '火車、Auschwitz 巴士、航班與住宿一頁看完。', content.replaceAll('退票規則見訂票頁', '見下方退票規則'), 'practical/booking.html');
 }
 
 // 待辦日期寫成「10/25」；轉成可排序的數字，沒有日期的排最後。

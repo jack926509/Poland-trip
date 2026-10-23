@@ -34,7 +34,9 @@ export const daySupplementaryPins = {
   ],
   4: [
     venuePin('krakow-wieliczka', { displayName: '維利奇卡鹽礦 Daniłowicz Shaft', label: '官方確認 Tourist Route 集合入口', category: 'sight', coordinateSource: 'https://www.wieliczka-saltmine.com/events/important-information/map-and-access', mapUrl: 'https://www.google.com/maps/search/?api=1&query=Wieliczka%20Salt%20Mine%2C%20Dani%C5%82owicza%2010%2C%20Wieliczka' }),
-    [49.982938, 20.054328, 'Wieliczka Rynek-Kopalnia 車站', 'KMŁ 下車站；步行前往 Daniłowicz Shaft', 'https://www.google.com/maps/search/?api=1&query=Wieliczka%20Rynek-Kopalnia%20railway%20station', 'transport', 'https://www.openstreetmap.org/?mlat=49.982938&mlon=20.054328'],
+    [49.9831039, 20.0599403, 'Sztolnia Wieliczka', 'ul. Zamkowa 5, 32-020 Wieliczka', diningPlaces['wieliczka-sztolnia'].map, 'food', 'https://www.openstreetmap.org/node/3038956835'],
+    [50.0646599, 19.944894, 'Obwarzanek Krakowski - Tunel', 'skrzyżowanie Basztowa – Lubicz – Westerplatte, Pawia lokal nr 2, Kraków', diningPlaces['krakow-obwarzanek-tunel'].map, 'food', diningPlaces['krakow-obwarzanek-tunel'].map],
+    [49.98565, 20.05665, 'Wieliczka Rynek-Kopalnia 車站', 'KMŁ 下車站；步行前往 Daniłowicz Shaft', 'https://www.google.com/maps/search/?api=1&query=Wieliczka%20Rynek-Kopalnia%20railway%20station', 'transport', 'https://www.openstreetmap.org/?mlat=49.98565&mlon=20.05665'],
     venuePin('krakow-glowny-station', { label: '取行李後的城際火車出發站', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=50.069918&mlon=19.947160' }),
   ],
   5: [
@@ -136,7 +138,9 @@ export const pinCoordinateCheckedAt = {
   },
   4: {
     "維利奇卡鹽礦 Daniłowicz Shaft": '2026-09-08',
-    "Wieliczka Rynek-Kopalnia 車站": '2026-09-08',
+    "Wieliczka Rynek-Kopalnia 車站": '2026-10-23',
+    "Sztolnia Wieliczka": '2026-10-23',
+    "Obwarzanek Krakowski - Tunel": '2026-10-23',
     "Kraków Główny": '2026-09-08',
   },
   5: {

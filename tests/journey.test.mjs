@@ -12,17 +12,17 @@ test('跨城日住宿按入住區間銜接，離境日不再顯示住宿', () =>
   assert.equal(nightStay(days[5]).city, '華沙');
   assert.equal(nightStay(days[7]), null);
 });
-test('已訂導覽不算待辦，但尚未購票的巴士仍待處理', () => {
+test('已訂導覽與去回程已購巴士都不算待辦', () => {
   const { confirmed, pending } = bookingProgress(days[2]);
   // 2026-10-13 起 Lajkonik 去程已購（rail）、Auschwitz 導覽已訂妥（attractions）。
   // Mr. Jerry 已確認訂位，移出待辦；未完成項目共 5 項。
-  assert.deepEqual(confirmed.map(item => item.groupId).sort(), ['attractions', 'dining', 'rail']);
+  assert.deepEqual(confirmed.map(item => item.groupId).sort(), ['attractions', 'dining', 'rail', 'rail']);
   assert.ok(confirmed.some(item => item.name.includes('Auschwitz')));
   assert.ok(confirmed.some(item => item.name.includes('Lajkonik 去程')));
-  // Day 3 的待辦＝待辦頁同日的 Lajkonik 回程，不再另抄一份。
-  assert.equal(pending.length, 1);
-  assert.deepEqual(pending.map(item => item.groupId).sort(), ['rail']);
-  assert.ok(pending.some(item => item.name.includes('Lajkonik 回程')));
+  // 回程已購，Day 3 已無待辦。
+  assert.equal(pending.length, 0);
+  assert.deepEqual(pending, []);
+  assert.ok(confirmed.some(item => item.name.includes('Lajkonik 回程')));
   assert.ok(confirmed.some(item => item.name.includes('Mr. Jerry')));
 });
 test('每日待訂數與待辦頁同源：八天加總等於待辦頁未完成數，且每筆待辦都歸到某一天', () => {

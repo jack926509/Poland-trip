@@ -77,7 +77,7 @@ test('訂票頁精簡卡的待辦數與各類計數等於正本', () => {
   const openItems = trip.todoGroups.flatMap(group => group.items.filter(isOpen));
   assert.equal((card.match(/<li><a href="todos\.html#/g) || []).length, openItems.length);
   for (const item of openItems) assert.ok(card.includes(escapeHtml(item.name)), `訂票頁缺少未完成項目 ${item.name}`);
-  assert.ok(card.includes('Lajkonik 回程'));
+  assert.ok(!card.includes('Lajkonik 回程'));
 });
 
 test('訂票頁不再重述待辦：沒有倒數表、優先順序、時程表，也沒有逾期假警報', () => {
@@ -191,34 +191,27 @@ test('狀態小卡的 hidden 有明寫 display: none，不會被 class 的 displ
   assert.match(css, /\.home-status-card\[hidden\]\s*\{\s*display:\s*none;/);
 });
 
-test('Lajkonik 回程的購票狀態只有 todoGroups 一個正本：改成已完成，推導結果不再出現「尚未購票」', () => {
+test('Lajkonik 回程的購票狀態只有 todoGroups 一個正本：已購與未購都依正本推導', () => {
   const lajkonik = trip.trains.find(item => item.id === 'bus-lajkonik');
-  // 現況：回程未購，各處推導出的字句都說「尚未購票」。
-  assert.equal(lajkonikInboundWord(trip.todoGroups), '尚未購票');
-  assert.match(railGroupIntro(trip.todoGroups), /回程尚未購票/);
-  assert.match(lajkonik.status, /回程尚未購票/);
-
-  // 複製一份 todoGroups，只把 Lajkonik 回程改成已完成。
-  const doneGroups = structuredClone(trip.todoGroups);
-  const inbound = doneGroups.find(g => g.id === 'rail').items.find(item => item.name.includes('Lajkonik 回程'));
-  inbound.status = '已購票';
-  assert.equal(lajkonikInboundWord(doneGroups), '已購票');
-  const derivedIntro = railGroupIntro(doneGroups);
-  assert.doesNotMatch(derivedIntro, /尚未購票/);
-  assert.match(derivedIntro, /回程已購票/);
-
-  // rail.js 的 Lajkonik 欄位（status／dayLeg／note、inbound.status）也跟著走：綁定複製版後重讀。
+  assert.equal(lajkonikInboundWord(trip.todoGroups), '已購票');
+  assert.match(railGroupIntro(trip.todoGroups), /回程已購票/);
+  assert.equal(lajkonik.status, '去程已購票／回程已購票');
+  const openGroups = structuredClone(trip.todoGroups);
+  const inbound = openGroups.find(g => g.id === 'rail').items.find(item => item.name.includes('Lajkonik 回程'));
+  inbound.status = '尚未購票';
+  assert.equal(lajkonikInboundWord(openGroups), '尚未購票');
+  assert.match(railGroupIntro(openGroups), /回程尚未購票/);
   try {
-    bindTodoGroups(doneGroups);
+    bindTodoGroups(openGroups);
     for (const text of [lajkonik.status, lajkonik.dayLeg, lajkonik.note, auschwitzBus.inbound.status]) {
-      assert.doesNotMatch(text, /尚未購票/, text.slice(0, 40));
+      assert.match(text, /尚未購票/);
     }
-    assert.equal(lajkonik.status, '去程已購票／回程已購票');
-    assert.equal(auschwitzBus.inbound.status, '已購票');
+    assert.equal(lajkonik.status, '去程已購票／回程尚未購票');
   } finally {
     bindTodoGroups(trip.todoGroups);
   }
-  assert.match(lajkonik.status, /回程尚未購票/);
+  assert.equal(lajkonik.status, '去程已購票／回程已購票');
+  assert.equal(auschwitzBus.inbound.status, '已購票');
 });
 
 test('全景畫（day-05）新行程只看外觀：待辦與倒數都不再要求購票', () => {

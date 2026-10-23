@@ -187,23 +187,32 @@ export const dayDiningPlans = {
       "planStatus": "candidate"
     },
     {
-      "placeId": "wieliczka-bistro-posolone",
-      "role": "午餐首選（條件式）",
+      "placeId": "wieliczka-sztolnia",
+      "role": "午餐首選",
       "cityGuide": false,
-      "note": "09:00 場約 11:30–12:00 出礦，點 Soup of the day、Halloumi Salad，或 Pizza 兩人分享，簡餐即可；12:45 收尾，另留走回車站與候車時間。",
+      "note": "12:00 吃蜂蜜啤酒或蒜味豬肋排 57 zł，兩人分一份再加湯；第三方價格，以現場菜單為準。13:20 前結帳，未訂位、現場入座；付款方式未查到，卡與少量現金都帶。",
       "stepId": "d4-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
-      "condition": "13:00 前出礦且有餘裕才坐下吃；較晚結束就外帶，略過 Kazimierz，保住 16:10 抵站。若取消鹽礦，不特地前往 Wieliczka，改在克拉科夫老城動線上找午餐。",
+      "dayHours": "11:00–22:00"
+    },
+    {
+      "placeId": "wieliczka-bistro-posolone",
+      "role": "午餐備案",
+      "cityGuide": false,
+      "note": "Sztolnia 客滿或出礦太晚時使用；最晚搭 15:11 SKA1，跳過圈餅與 Kazimierz。",
+      "stepId": null,
+      "planStatus": "candidate",
       "dayHours": "08:00–18:00"
     },
     {
-      "placeId": "wieliczka-wieliczka-鎮中心午餐",
-      "role": "午餐備案（鎮中心，店家待選）",
-      "note": "Bistro Posolone 客滿或想進鎮上時的備案；店家未選定，地圖只搜尋鎮中心餐廳，不代表已確認營業。",
-      "stepId": null,
-      "planStatus": "candidate",
-      "cityGuide": false
+      "placeId": "krakow-obwarzanek-tunel",
+      "role": "午後點心",
+      "cityGuide": false,
+      "note": "14:10 在 Basztowa／Lubicz 地下道買圈餅；搭 15:11 SKA1 就跳過。",
+      "stepId": "d4-snack",
+      "planStatus": "scheduled",
+      "dayHours": "08:00–18:00"
     },
     {
       "placeId": "wieliczka-karczma-gornicza",

@@ -120,7 +120,7 @@ test('訂票頁的 Auschwitz 巴士區塊完整反映官方售票頁查得的資
   }
 
   // 回程：三班都要列出，14:00 不可用、15:30 採用、16:30 備案
-  assert.equal(auschwitzBus.inbound.checkedAt, '2026-10-14');
+  assert.equal(auschwitzBus.inbound.checkedAt, '2026-10-23');
   assert.deepEqual(auschwitzBus.inbound.services.map(item => item.dep), ['14:00', '15:30', '16:30']);
   assert.deepEqual(auschwitzBus.inbound.services.map(item => item.decision), ['不採用', '採用', '備案']);
   for (const service of auschwitzBus.inbound.services) {

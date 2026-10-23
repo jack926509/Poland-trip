@@ -14,6 +14,7 @@ import { shopping, souvenirCards, souvenirShops, luxuryShopping, zabkaCards } fr
 import { fares, ticketsByCity } from '../src/data/tickets.js';
 import { airportTransit, passChecklist, practical, recommendedApps, transitFares, usefulRoutes } from '../src/data/transit.js';
 import {
+  auschwitzBus,
   bookingTiers,
   days,
   flights,
@@ -542,7 +543,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.equal(photoSpots.length, 10);
   assert.equal(photoCredits.length, 20);
   assert.deepEqual(Object.fromEntries(Object.entries(mapPins).map(([city, data]) => [city, data.points.length])), {
-    warsaw: 69, krakow: 31, wroclaw: 26, poznan: 18,
+    warsaw: 69, krakow: 33, wroclaw: 26, poznan: 18,
   });
   assert.deepEqual(Object.fromEntries(Object.entries(attractions).map(([city, items]) => [city, items.length])), {
     warsaw: 11, krakow: 6, wroclaw: 8, poznan: 9,
@@ -559,7 +560,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   // 2026-09-19 資料精煉切片 1：verifiedRestaurantHours 改由每日餐位（day-dining.js）中
   // 已核實／部分核實的門市直接推導（見 src/lib/dining.mjs 的 plannedVerifiedPlaces），
   // 不再是手寫子集，筆數會隨每日餐位調整自然變動。
-  assert.equal(verifiedRestaurantHours.length, 65); // 2026-10-14 新行程 Day 1 加 E.Wedel Krakowskie Przedmieście 45 咖啡選項（63 → 64）；2026-10-13 加威靈頓備選 Primitivo（62 → 63）；2026-10-12 新增 Pimiento、Carla、Pasibus Nowy Świat 三筆主檔（59 → 62）；餐飲 v5 整併加四家 Pasibus（31 → 35），同日逐店複查把 24 家待確認門市升為部分核實（35 → 59）
+  assert.equal(verifiedRestaurantHours.length, 67); // 2026-10-14 新行程 Day 1 加 E.Wedel Krakowskie Przedmieście 45 咖啡選項（63 → 64）；2026-10-13 加威靈頓備選 Primitivo（62 → 63）；2026-10-12 新增 Pimiento、Carla、Pasibus Nowy Świat 三筆主檔（59 → 62）；餐飲 v5 整併加四家 Pasibus（31 → 35），同日逐店複查把 24 家待確認門市升為部分核實（35 → 59）
   assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
     warsaw: 5, krakow: 7, wroclaw: 4, poznan: 7,
   });
@@ -591,7 +592,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
 
 test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', () => {
   const allPins = Object.entries(mapPins).flatMap(([city, data]) => data.points.map((point) => ({city, name:point[2]})));
-  assert.equal(allPins.length, 144);
+  assert.equal(allPins.length, 146);
   for (const pin of allPins) {
     assert.ok(mapPinChecks[pin.city]?.[pin.name], `${pin.city}/${pin.name} 缺少圖釘查證狀態`);
   }
@@ -604,7 +605,7 @@ test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', ()
   });
   const verifiedPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'coordinate-verified');
   const areaPins = allPins.filter(({city, name}) => mapPinChecks[city][name].status === 'area-reference');
-  assert.equal(verifiedPins.length, 106); // 2026-10-22 新增 62 個精確地標，原 44 個不變
+  assert.equal(verifiedPins.length, 108); // 2026-10-22 新增 62 個精確地標，原 44 個不變
   assert.deepEqual(
     areaPins.map(({name}) => name).sort(),
     [
@@ -776,7 +777,7 @@ test('首頁移除出發準備度與步調，直接列出資料層待辦', () =>
   // 2026-10-22 航班線上報到、出國登錄、安裝 Jakdojade 與 Bolt 完成：13 → 10。
   // 2026-10-22 餐廳不訂位、不傳訊息給波茲南公寓、聖安妮觀景台複查仍暫停開放：10 → 1（只剩 Lajkonik 回程）。
   // Mr. Jerry 已確認訂位，移出待辦；未完成項目共 5 項。
-  assert.equal(todoCount, 5, '已購／已訂妥與線上已售完（不再提醒）的項目不可算進待辦');
+  assert.equal(todoCount, 4, '已購／已訂妥與線上已售完（不再提醒）的項目不可算進待辦');
 
   assert.ok(!html.includes('出發準備度'));
   assert.ok(!html.includes('00 / Readiness'));
@@ -913,12 +914,12 @@ test('4 個已確認住宿地點皆出現在對應城市地圖，圖釘地址與
   }
 });
 
-test('4 個城市頁含正確 Leaflet 圖釘數，合計 144', () => {
+test('4 個城市頁含正確 Leaflet 圖釘數，合計 146', () => {
   // 2026-09-14：撤掉 5 個「地圖上有、餐廳表已無」的孤兒圖釘後由 53 降為 48
   // 2026-10-13：伴手禮不列琥珀、Bolesławiec 陶器，克拉科夫撤兩個圖釘（49 → 47）
   const expected = {
     'city-warszawa.html': 69,
-    'city-krakow.html': 31,
+    'city-krakow.html': 33,
     'city-wroclaw.html': 26,
     'city-poznan.html': 18,
   };
@@ -935,7 +936,7 @@ test('4 個城市頁含正確 Leaflet 圖釘數，合計 144', () => {
     assert.equal(points, count, `${file} 圖釘數錯誤`);
     total += points;
   }
-  assert.equal(total, 144);
+  assert.equal(total, 146);
 });
 
 test('城市頁完整呈現故事、景點、行程餐廳推薦與拍照資訊', () => {
@@ -1008,12 +1009,12 @@ test('Day 7 從最北邊往回逛：POLIN 外觀 → 新城 → 老城廣場 →
   assert.doesNotMatch(main, /17:00[^<]{0,80}皇家城堡/);
 });
 
-test('已購城際火車與未購交通分開標示，未知票面細節不臆測', () => {
+test('已購城際火車與往返巴士正確標示，未知票面細節不臆測', () => {
   for (const train of trains) {
-    // 截圖可確認四段已購，未提供的票價不能臆測；Auschwitz 巴士仍未購。
+    // 截圖可確認四段已購，未提供的票價不能臆測；Auschwitz 往返巴士也已購。
     if (train.date === '10/26') {
-      assert.match(train.status, /尚未購票/);
-      assert.match(train.price, /付款前重查/);
+      assert.equal(train.status, '去程已購票／回程已購票');
+      assert.equal(train.price, '去程 2 張 47,50 zł；回程 2 張 47,50 zł');
     } else if (train.status === '已購票') {
       assert.match(train.arr, /^\d{2}:\d{2}$/, '抵達時間已由 Koleo 2026-10-17 查得');
       assert.match(train.price, /PLN（截圖所示金額）/);
@@ -1067,7 +1068,7 @@ test('城際交通提供官方購票、官方時刻表與可操作的購票教�
   assert.ok(html.includes('Poznań Główny'));
 });
 
-test('Auschwitz 導覽已訂 10:30，去程巴士 08:25 已購票、回程 15:30 尚未購票', () => {
+test('Auschwitz 導覽已訂 10:30，去程巴士 08:25 已購票、回程 15:30 已購票', () => {
   const day3 = days.find(day => day.n === 3);
   const bus = trains.find(item => item.date === '10/26');
   // 已訂妥的導覽時間必須出現在行程與必訂清單
@@ -1078,7 +1079,7 @@ test('Auschwitz 導覽已訂 10:30，去程巴士 08:25 已購票、回程 15:30
   const outbound = day3.steps.find(step => step.t === '08:25');
   assert.ok(outbound, '去程未改成已購的 08:25');
   assert.match(outbound.sub, /已購票/);
-  assert.match(outbound.sub, /07:10/, '未保留緩衝較多的 07:10 改票選項');
+  assert.match(outbound.sub, /退票規則見訂票頁/);
   assert.match(outbound.cost, /47,50/);
   const arrival = day3.steps.find(step => step.t === '09:50');
   assert.ok(arrival, '缺少 09:50 抵達步驟');
@@ -1088,6 +1089,11 @@ test('Auschwitz 導覽已訂 10:30，去程巴士 08:25 已購票、回程 15:30
   assert.ok(inbound, '回程未採用查定的 15:30');
   assert.match(inbound.sub, /14:00/, '未說明 14:00 為何不可用');
   assert.match(inbound.sub, /16:30/, '未提供 16:30 備案');
+  assert.match(inbound.sub, /已購票/);
+  assert.match(inbound.sub, /15:15/);
+  assert.match(inbound.cost, /47,50/);
+  assert.doesNotMatch(outbound.sub, /改票|改票選項/);
+  assert.doesNotMatch(outbound.sub, /退票期限：/);
   assert.ok(day3.steps.some(step => step.t === '16:55'), '缺少 16:55 抵達步驟');
   assert.ok(day3.returnOptions?.length >= 3, '回程選項不足');
   for (const option of day3.returnOptions) {
@@ -1109,16 +1115,16 @@ test('Auschwitz 導覽已訂 10:30，去程巴士 08:25 已購票、回程 15:30
   const day3Html = read('day-03.html');
   assert.ok(day3Html.includes('回程選項'));
   for (const option of day3.returnOptions) assert.ok(day3Html.includes(option.name), `Day 3 頁缺回程選項：${option.name}`);
-  // 去程已購、回程未購——警語要把這條界線講清楚
+  // 去回程都已購票，警語須反映實際票券狀態
   assert.match(day3.warn, /去程巴士已購票/);
-  assert.match(day3.warn, /回程尚未購票/);
+  assert.match(day3.warn, /回程已購 15:30 → 16:55，15:15 前到站牌/);
   assert.match(day3.warn, /10:00 前到場/);
-  assert.match(bus.status, /去程已購票／回程尚未購票/);
+  assert.match(bus.status, /去程已購票／回程已購票/);
   assert.equal(bus.saleCheckedAt, '2026-09-09');
   assert.match(bus.dep, /08:25/);
   assert.match(bus.arr, /16:55/);
-  // 原首選 07:10 仍列為改票選項
-  assert.match(JSON.stringify(day3.steps), /07:10/);
+  // 原首選 07:10 只能退票再重買，維持 08:25
+  assert.match(read('practical/booking.html'), /07:10/);
 });
 
 test('餐飲、景點與地圖資料不保存無日期的動態 Google 星等', async () => {
@@ -2164,4 +2170,42 @@ test('public HTML excludes private ticket numbers', () => {
   for (const file of [...walk(distDir).filter(file => file.endsWith('.html')), standalonePath]) {
     assert.doesNotMatch(fs.readFileSync(file, 'utf8'), /\bWN\d{6,}\b|\bWH\d{6,}\b|157\s?2100\d+/, file);
   }
+});
+
+test('Lajkonik 公開資料與重建頁面沒有錯誤退票承諾，回程明載扣 20%', () => {
+  const sources = ['trip', 'rail', 'travel-database', 'private-slots'].map(name => fs.readFileSync(`src/data/${name}.js`, 'utf8'));
+  const pages = ['day-03.html', 'practical/booking.html', 'practical/todos.html'].map(read);
+  pages.push(fs.readFileSync(standalonePath, 'utf8'));
+  for (const text of [...sources, ...pages]) assert.doesNotMatch(text, /免費退改|可免費退|可退或改/);
+  const inbound = todoGroups.find(group => group.id === 'rail').items.find(item => item.name.includes('Lajkonik 回程'));
+  assert.match(inbound.action, /退票規則見訂票頁/);
+  assert.equal(inbound.status, '已購票');
+  assert.equal(inbound.checkedAt, '2026-10-23');
+  assert.equal(inbound.recheckAt, null);
+  assert.match(read('practical/booking.html'), /扣 20%/);
+  assert.match(read('practical/booking.html'), /10\/25 15:30/);
+  for (const text of pages) {
+    assert.match(text, /15:15/);
+    assert.doesNotMatch(text, /回程尚未購票/);
+  }
+});
+
+test('Day 3 回程已購票且完整退票規則保留在訂票頁', () => {
+  assert.doesNotMatch(read('day-03.html'), /選定的回程選項/);
+  assert.match(read('day-03.html'), /<li><b>回程已購 15:30 → 16:55，15:15 前到站牌<\/b>。去回程退票規則見訂票頁。<\/li>/);
+  const booking = read('practical/booking.html');
+  for (const leg of [auschwitzBus.outbound, auschwitzBus.inbound]) {
+    assert.equal(booking.split(leg.booked.refundRules).length - 1, 1);
+  }
+});
+
+
+test('訂票頁 Lajkonik 卡片顯示已購去回程時間且不提示現場購票', () => {
+  const booking = read('practical/booking.html');
+  const card = booking.match(/<li class="rail-card" id="rail-bus-lajkonik">[\s\S]*?<\/li>/)?.[0];
+  assert.ok(card);
+  assert.doesNotMatch(card, /現場購票/);
+  assert.ok(card.includes('去程 08:25（D9）→ 09:50／回程 15:30 → 16:55'));
+  assert.doesNotMatch(booking, /退票規則見訂票頁/);
+  assert.match(booking, /見下方退票規則/);
 });

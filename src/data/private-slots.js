@@ -30,6 +30,11 @@ export const privateSlots = [
     publicNote: '上車出示列印票或手機票（螢幕至少 4 吋）；發車前 15 分鐘到站牌。',
   },
   {
+    id: 'bus-lajkonik-in', day: 3, kind: 'ticket', label: 'Lajkonik 回程巴士',
+    detail: '10/26 15:30 Muzeum Auschwitz → 16:55 Kraków MDA，2 張全票', stepPattern: '回程巴士返克拉科夫',
+    publicNote: '上車出示列印票或手機票（螢幕至少 4 吋）；發車前 15 分鐘（15:15）到站牌。',
+  },
+  {
     id: 'wieliczka-tour', day: 4, kind: 'ticket', label: 'Wieliczka 鹽礦英文團',
     detail: '10/27 09:00 Tourist Route（English）', stepPattern: 'Wieliczka 鹽礦',
     publicNote: '票券 PDF 隨付款確認信附上，先存離線；依票面提早到 Daniłowicz 礦井入口。',

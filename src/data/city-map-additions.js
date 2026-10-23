@@ -123,4 +123,9 @@ export function addCityMapPins(pins, checks) {
       checks[city][name] = check;
     }
   }
+  for (const [placeId, lat, lon] of [['wieliczka-sztolnia', 49.9831039, 20.0599403], ['krakow-obwarzanek-tunel', 50.0646599, 19.944894]]) {
+    const place = diningPlaces[placeId];
+    pins.krakow.points.push([lat, lon, place.name, place.address, place.map, 'food', null, placeId]);
+    checks.krakow[place.name] = {status: 'coordinate-verified', checkedAt: '2026-10-23', coordinateSource: place.map, distanceMeters: 0};
+  }
 }
