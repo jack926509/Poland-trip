@@ -380,5 +380,14 @@ export const groceryPhotos = {
     "creditName": "Threads @jestem_li",
     "license": "網友截圖",
     "checkedAt": "2026-10-20"
+  },
+  "34": {
+    "src": "assets/photos/grocery-34.jpg",
+    "label": "Leibniz Cream Milk 可可餅乾牛奶夾心",
+    "width": 656,
+    "height": 480,
+    "sourceUrl": "https://world.openfoodfacts.org/product/4017100360015",
+    "license": "自行拍攝",
+    "checkedAt": "2026-10-24"
   }
 };

@@ -88,3 +88,7 @@ Open Food Facts 主站本輪無法連線，原始照片改由 Open Food Facts �
 - assets/photos/grocery-30.jpg：Kinder Chocofresh 2 入盒；截圖自 [Threads @lei_1648](https://www.threads.com/@lei_1648)。
 - assets/photos/grocery-31.jpg：FaceBoom Nutri Lip Balm；截圖自 [Threads @jestem_li](https://www.threads.com/@jestem_li)。
 - assets/photos/grocery-32.jpg：Your KAYA 唇油；截圖自 [Threads @jestem_li](https://www.threads.com/@jestem_li)。
+
+## 2026-10-24 使用者提供的照片
+
+- assets/photos/grocery-34.jpg：Bahlsen Leibniz Cream Milk 190 g；使用者提供照片，只裁切商品包裝、模糊人臉角落並縮放為高 480 px 的 JPEG；[商品頁](https://world.openfoodfacts.org/product/4017100360015)。

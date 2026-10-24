@@ -515,7 +515,7 @@ export const groceryProducts = [
     "id": 11,
     "name": "李子巧克力",
     "localName": "Śliwka Nałęczowska",
-    "packaging": "找 Śliwka Nałęczowska 品名；多種容量與禮盒外觀",
+    "packaging": "找 Śliwka Nałęczowska 品名；有深藍點點袋裝，也有同款深藍點點的 300 g 禮盒（盒上有 Solidarność 標誌）",
     "use": "伴手禮候選",
     "priority": true,
     "note": "裡面是一整顆西梅、外層裹巧克力，酸甜開胃；深藍點點袋上有兩顆李子圖案。品牌與容量很多，部分超市可秤重買。",
@@ -1213,6 +1213,33 @@ export const groceryProducts = [
       }
     ],
     "checkedAt": "2026-10-20"
+  },
+  {
+    "id": 34,
+    "name": "可可餅乾牛奶夾心",
+    "localName": "Leibniz Cream Milk",
+    "packaging": "黃色長條包裝、大字 LEIBNIZ 與 CREAM，畫面是可可色奶油餅乾夾白色牛奶餡；190 g",
+    "use": "常溫零食・旅途甜點",
+    "priority": false,
+    "supplement": true,
+    "localOnly": false,
+    "note": "Bahlsen 旗下 Leibniz 的兩片可可奶油餅乾夾牛奶奶油餡，餡料約占 47%。另有夾巧克力餡的 Cream Choco，包裝相似，認 Milk 字樣與白色內餡。含小麥、牛奶。",
+    "reason": "超市常見的德國老牌餅乾，波蘭生產、價格平實；分小包裝好帶，搭車或飯店配咖啡都方便。",
+    "sources": [
+      {
+        "title": "Rossmann｜Bahlsen Leibniz Cream Milk Kakaokeks",
+        "url": "https://www.rossmann.de/de/lebensmittel-bahlsen-leibniz-cream-milk-kakaokeks/p/4017100360015",
+        "date": "未標示發布日期；",
+        "kind": "零售商商品資料"
+      },
+      {
+        "title": "Kifli.hu｜Leibniz Milk Cream（標示波蘭產）",
+        "url": "https://www.kifli.hu/en-HU/106836-leibniz-milk-cream",
+        "date": "未標示發布日期；",
+        "kind": "零售商商品資料"
+      }
+    ],
+    "checkedAt": "2026-10-24"
   }
 // id 同時是錨點（#product-<id>）與照片鍵：groceryPhotos 與 assets/photos/grocery-NN.webp
 // 都以同一個編號對應。這個欄位原本叫 rank，但商品早就不按它排序
