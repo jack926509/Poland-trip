@@ -5,10 +5,10 @@ import { groceryBranches, groceryDrinkGuide, groceryProducts } from '../src/data
 import { cityRoutes } from '../src/lib/city-guide.mjs';
 import { normalizeText } from '../src/search/site-search-index.mjs';
 
-test('採買指南保留四城 12 個門市與三十項商品，每筆都標出核到哪一層', () => {
+test('採買指南保留四城 12 個門市與三十一項商品，每筆都標出核到哪一層', () => {
   assert.equal(groceryBranches.length, 12);
   assert.equal(new Set(groceryBranches.map(b => b.id)).size, 12);
-  assert.equal(groceryProducts.length, 30); // 2026-10-20 加 Kinder Chocofresh、FaceBoom、Your KAYA、Protein 花生糖
+  assert.equal(groceryProducts.length, 31); // 2026-10-20 加 Kinder Chocofresh、FaceBoom、Your KAYA、Protein 花生糖；2026-10-24 加 Leibniz Cream Milk
   for (const city of cityRoutes) assert.equal(groceryBranches.filter(b => b.cityKey === city.mapKey).length, 3);
   // 2026-09-22 逐店核對：Biedronka 四筆有官方逐日時間（verified），
   // Lidl 與 Żabka 八筆只核到地址（partial）。沒有任何一筆可以無來源地宣稱已核實。
