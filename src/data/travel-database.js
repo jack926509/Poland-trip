@@ -446,7 +446,7 @@ export const dayOperations = {
       '鹽礦全程階梯多、地下約 17–18°C；穿好走防滑鞋並攜薄外套。',
       '克拉科夫→樂斯拉夫已購 IC 3830 16:45；14:30 回 ibis，16:10 前到站。SKA1 回城最晚 15:11，搭這班就跳過圈餅；Sztolnia 肋排份量大，兩人分一份再加湯，13:20 前結帳。',
     ],
-    nightChecklist: [...standardNightChecklist, '抵達樂斯拉夫後在 Piast 櫃檯問隔天能不能寄放行李到傍晚，確認往波茲南的已購車票', '確認 Central Cafe 早餐供應，準備 Charlotte 備案；MAX 外帶最晚 18:15 取餐，18:35 前進站'],
+    nightChecklist: [...standardNightChecklist, '抵達樂斯拉夫後在 Piast 櫃檯問 12:00 後行李寄放（不行就用 Wrocław Główny 寄物櫃）；IC 260 車票存離線；Poznan Apartments 訊息見待辦「之後聯絡 Poznan Apartments」', '確認 Central Cafe 07:55 早餐供應，準備 Charlotte 備案；MAX 18:10 前離開，18:20 前到站（硬性限制 18:35）'],
   },
   5: {
     cityKey: 'poznan',

@@ -273,7 +273,7 @@ export const days = [
     headline: '12:00 Wrocławska 午餐、15:35 前到座堂島；17:00 離島、18:20 前到站，19:10 IC 260 → 波茲南約 20:29',
     tag: 'Transit',
     intensity: '高',
-    hardConstraints: ['07:30 Piast 出發；行李寄放：10/27 入住 Piast 時問櫃台', '12:00 午餐，13:00 結束去 Panorama', '15:35 前到座堂島；17:00 離島', '18:20 前到站為目標，18:35 為硬性限制；19:10 IC 260'],
+    hardConstraints: ['07:30 Piast 出發；行李寄放：10/27 入住時問櫃台，結果為準；不能寄就用車站寄物櫃', '12:00 午餐，13:00 結束去 Panorama', '15:35 前到座堂島；17:00 離島', '18:20 前到站為目標，18:35 為硬性限制；19:10 IC 260'],
     compressible: ['依序先砍大學區、El Gato、Hala Targowa、Słodowa 島', '可取消 MAX 晚餐，改車站簡餐'],
     train: {segmentId:'ic-260'},
     steps: [
@@ -283,7 +283,7 @@ export const days = [
       {t:'09:00', label:'鹽廣場 Plac Solny', sub:'花市；Paloma 可外帶，第三方營業時間 08:00–21:00，出發前再確認。步行約 2 分到 Rynek。', dur:'13 min'},
       {t:'09:15', label:'★ 中央廣場 Rynek + 紡織會館', sub:'舊市政廳外觀、天文鐘面、刑柱、彩色山形屋；不進市政廳博物館，沿路找小矮人。', dur:'30 min'},
       {t:'09:50', label:'糖果屋雙屋 → 聖伊莉莎白教堂外觀 → 屠夫巷 Jatki', sub:'糖果屋拱門拍高塔、Jatki 動物銅像；不登塔。Rynek 到 El Gato 約 3.4 分，含 Jatki 多約 1 分。', dur:'20 min'},
-      {t:'10:15', label:'咖啡休息 · El Gato Specialty Coffee', sub:'Odrzańska 8；官方 08:00–20:00，出發前再確認。步行約 5 分到大學。', dur:'25 min'},
+      {t:'10:15', label:'咖啡休息 · El Gato Specialty Coffee', sub:'Odrzańska 8；官方 08:00–20:00，出發前再確認。步行約 4 分到大學。', dur:'25 min'},
       {t:'10:45', label:'★ 大學區、大學橋河岸', sub:'劍客噴泉、大學主樓立面、大學橋河岸，只看外觀。時間不夠先刪。', dur:'35 min'},
       {t:'11:20', label:'午餐前緩衝', sub:'大學到 Wrocławska 步行約 5 分，11:50 前到；留時間休息與候位。', dur:'40 min'},
       {t:'12:00', label:'午餐 · Restauracja Wrocławska', sub:'Szewska 59/60；12:00 開門，出發前再確認。Śląskie niebo、Bigos、Pierogi；可訂位但非必要，預設現場候位；+48 71 305 12 28，12:00 起接聽。13:00 結束，步行約 10 分去 Panorama。', dur:'1 h', id:'d5-lunch'},
@@ -307,8 +307,8 @@ export const days = [
       snack({text:'13:20 甜點 30–40 分（免博物館門票） @ Słodki Chłopak', placeId:'wroclaw-slodki-chlopak-muzeum-narodowe'}),
       snack({text:'甜點候選（本日不另排時段） @ Dessert Boutique', placeId:'wroclaw-dessert-boutique'}),
     ],
-    warn: "✅ IC 260 已購票，10/27 前存離線。本日不排百年廳與 Neon Side Gallery（約 20:00 後才亮，10/27 晚上可選擇順路看）。點燈人約 15:20–16:05 之間開始，無固定場次，出發前再確認；官方來源互相矛盾：InfoCentrum 頁說日落前約 30 分（約 16:03），市府報導說冬季約 15:20。日落約 16:33–16:34。所有營業時間、票價出發前再確認；所有步行時間為 OSM 路由，第三方計算，未含紅綠燈與拍照。Piast 官方寄放說明未查到，10/27 入住時問櫃台；第三方稱有寄放與 24 小時櫃台，退房 12:00 也是訂房網站資料。",
-    backup: [{label:'行李寄放', where:'Wrocław Główny 寄物櫃', map:'https://www.google.com/maps/search/?api=1&query=Wrocław+Główny', why:"PKP 官方（https://www.pkp.pl/pl/dworce/bezpieczenstwo/bagaz）：中央隧道，每 24 小時 25/30/35 zł，出發前再確認；離 Piast 步行約 5 分（OSM 路由，第三方計算，未含紅綠燈與拍照）。"}, {label:'時間不足', where:'車站簡餐', map:'https://www.google.com/maps/search/?api=1&query=Wrocław+Główny', why:'取消 MAX，保留 18:20 前到站與 19:10 火車緩衝。'}],
+    warn: "✅ IC 260 已購票，10/27 前存離線。本日不排百年廳與 Neon Side Gallery（約 20:00 後才亮）。點燈人約 15:20–16:05 之間開始，無固定場次，出發前再確認；官方來源互相矛盾：InfoCentrum 頁說日落前約 30 分（約 16:03），市府報導說冬季約 15:20。日落約 16:33–16:34。所有營業時間、票價出發前再確認；所有步行時間為 OSM 路由，第三方計算，未含紅綠燈與拍照。Piast 官方寄放說明未查到，10/27 入住時問櫃台；第三方稱有寄放與 24 小時櫃台，退房 12:00 也是訂房網站資料。",
+    backup: [{label:'行李寄放', where:'Wrocław Główny 寄物櫃', map:'https://www.google.com/maps/search/?api=1&query=Wroc%C5%82aw%20G%C5%82%C3%B3wny', why:"PKP 官方（https://www.pkp.pl/pl/dworce/bezpieczenstwo/bagaz）：中央隧道，每 24 小時 25/30/35 zł，出發前再確認；離 Piast 步行約 5 分（OSM 路由，第三方計算，未含紅綠燈與拍照）。"}, {label:'時間不足', where:'車站簡餐', map:'https://www.google.com/maps/search/?api=1&query=Wroc%C5%82aw%20G%C5%82%C3%B3wny', why:'取消 MAX，保留 18:20 前到站與 19:10 火車緩衝。'}],
   },
   {
     n: 6, date: '10/29（四）', city: '波茲南 → 華沙',
