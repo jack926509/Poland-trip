@@ -803,9 +803,9 @@ test('高風險行程文字與餐廳候選不會誤導現場判斷', () => {
   const luggageStep = dayFive.steps.find(step => step.label.includes('取行李'));
   const warsawDining = cityDining.warsaw;
 
-  assert.match(luggageStep.sub, /座堂島 → 旅館約 25–30 分/);
-  assert.match(luggageStep.sub, /已購 IC 260 19:10 發車/);
-  assert.match(luggageStep.sub, /抵站後保留約 35 分鐘緩衝/);
+  assert.match(luggageStep.sub, /步行約 29 分/);
+  assert.ok(dayFive.steps.some(step => step.t === '19:10' && /IC 260/.test(step.label)));
+  assert.match(dayFive.steps.find(step => step.t === '18:20 前').dur, /50 min 緩衝/);
   assert.ok(!warsawDining.some(item => item.name.includes('/')), '餐廳候選不可把多個品牌合併成一筆');
   assert.ok(warsawDining.some(item => item.name === 'NUTA'));
 });
@@ -960,20 +960,21 @@ test('高風險校正：波茲南古市政廳整修閉館，不再顯示可購�
   assert.doesNotMatch(html, /古市政廳博物館[\s\S]{0,160}PLN 10/);
 });
 
-test('Day 5 百年廳只看外觀、全景畫不入內，保留座堂島點燈及已購火車', () => {
-  // 2026-10-14 新行程：付費景點只在外面拍照；百年廳回到下午（外觀＋電車來回），時間不夠先刪。
+test('Day 5 老城與甜點、座堂島點燈及已購火車', () => {
   const day = days.find(day => day.n === 5);
-  const hala = day.steps.find(step => step.label.startsWith('★') && /百年廳/.test(step.label));
-  assert.equal(hala.t, '13:55');
-  assert.match(hala.label, /外觀/);
-  assert.match(hala.sub, /大概率已停/, '噴泉說明改成大概率已停');
-  assert.ok(day.compressible.some(item => item.startsWith('百年廳')), '時間不夠先刪百年廳');
-  assert.ok(!day.steps.some(step => step.label === '★ 拉茨瓦維採全景畫'), '全景畫不入內');
+  assert.ok(!day.steps.some(step => /百年廳|Neon Side/.test(step.label)));
+  assert.equal(day.steps.find(step => step.id === 'd5-breakfast').t, '07:55');
   assert.equal(day.steps.find(step => step.id === 'd5-lunch').t, '12:00');
-  assert.match(day.steps.find(step => step.id === 'd5-lunch').sub, /13:10 離開/);
-  assert.ok(day.steps.some(step => step.t === '16:34' && /座堂島/.test(step.label)));
-  assert.ok(day.steps.some(step => step.t === '18:35 前'));
+  assert.match(day.steps.find(step => step.id === 'd5-lunch').sub, /13:00 結束/);
+  assert.ok(day.steps.some(step => step.t === '15:35' && /點燈人/.test(step.label)));
+  assert.ok(day.steps.some(step => step.t === '18:20 前'));
   assert.ok(day.steps.some(step => step.t === '19:10'));
+  for (const time of ['07:30', '08:40', '09:00', '09:15', '09:50', '10:15', '10:45', '11:20', '13:00', '13:20', '14:20', '14:40', '15:00', '15:20', '17:00', '17:35', '17:45']) {
+    assert.ok(day.steps.some(step => step.t === time), `缺少最終版步驟 ${time}`);
+  }
+  assert.match(JSON.stringify(day), /現場候位/);
+  assert.match(JSON.stringify(day), /\+48 71 305 12 28/);
+  assert.doesNotMatch(JSON.stringify(day), /電話確認|10\/13–11\/2/);
 });
 
 test('高風險校正：皇家城堡與辛德勒工廠已依官方時間修正', () => {

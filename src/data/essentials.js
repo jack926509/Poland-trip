@@ -44,7 +44,7 @@ export const daylight = [
   {day:2, date:'2026-10-25', city:'克拉科夫', tz:'CET',    sunrise:'06:17', sunset:'16:30', blueHourEnd:'17:04', note:'冬令時間首日；18:12 抵克拉科夫時天已黑，先入住及用餐，白天景點不再排入。'},
   {day:3, date:'2026-10-26', city:'克拉科夫', tz:'CET',    sunrise:'06:19', sunset:'16:28', blueHourEnd:'17:02', note:'Auschwitz 回程 16:55 抵克拉科夫時已過日落，當晚不安排戶外拍攝。'},
   {day:4, date:'2026-10-27', city:'克拉科夫', tz:'CET',    sunrise:'06:20', sunset:'16:27', blueHourEnd:'17:00', note:'下午 14:03 回城，買完圈餅就回 ibis 休息，日落前已在室內。'},
-  {day:5, date:'2026-10-28', city:'樂斯拉夫', tz:'CET',    sunrise:'06:36', sunset:'16:34', blueHourEnd:'17:08', note:'百年廳 13:55 拍外觀；座堂島煤氣燈：點燈人沒有對外保證的固定出發分鐘，通常在日落前約 30–40 分鐘出發，15:45 上島就邊走邊留意。'},
+  {day:5, date:'2026-10-28', city:'樂斯拉夫', tz:'CET',    sunrise:'06:36', sunset:'16:34', blueHourEnd:'17:08', note:"日落約 16:33–16:34。15:35 前到 InfoCentrum 等點燈人，約 15:20–16:05 之間開始，無固定場次，出發前再確認；官方來源互相矛盾：InfoCentrum 頁說日落前約 30 分（約 16:03），市府報導說冬季約 15:20。17:00 離島。"},
   {day:6, date:'2026-10-29', city:'波茲南', tz:'CET',    sunrise:'06:42', sunset:'16:29', blueHourEnd:'17:05', note:'Cytadela 與教堂島排在上午；16:00 Kaponiera 圓環是最後一站，16:15 就回去取行李往車站。'},
   {day:7, date:'2026-10-30', city:'華沙', tz:'CET',    sunrise:'06:27', sunset:'16:12', blueHourEnd:'16:47', note:'從 POLIN、新城、老城一路往南到瓦津基，付費館只看外觀。日落 16:12，在水上宮殿湖邊拍倒影；16:40 從 Agrykola 出口叫車回飯店，天色已暗。'},
   {day:8, date:'2026-10-31', city:'華沙', tz:'CET',    sunrise:'06:28', sunset:'16:10', blueHourEnd:'16:45', note:'10:05 出門搭機，不涉及傍晚戶外行程。'},

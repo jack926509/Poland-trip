@@ -48,7 +48,7 @@ export const cityNotices = {
     {status:'官方時間', level:'note', text:'辛德勒工廠週二至週日 09:00–20:00，最後入場為閉館前 90 分鐘；10/25 18:12 才抵站，Day 2 已不排入；僅保留城市延伸資訊。'},
   ],
   wroclaw: [
-    {status:'一般參觀提醒', level:'risk', text:'百年廳排在 Day 5 下午，只看外觀、時間不夠先刪；想入內請先查官方 availability calendar 的當日開放範圍。'},
+    {status:'一般參觀提醒', level:'risk', text:'百年廳不排 Day 5；想入內請先查官方 availability calendar 的當日開放範圍。'},
   ],
   poznan: [],
 };
@@ -92,7 +92,7 @@ export const cityStories = [
     history:'這座城市 1945 年前叫 Breslau，是德國第六大城。戰後國界西移，德裔居民被遷出，取而代之的是被蘇聯劃走的東部城市利沃夫（Lwów）的波蘭移民——整座城市的人口被「換血」。拉茨瓦維採全景畫正是從利沃夫一起搬來的鎮城之寶，Karczma Lwowska 餐廳的名字也是這段記憶。',
     stories:[
       {title:'小矮人是反抗軍', text:'城裡有逾 1,000 尊銅製小矮人（krasnale），但數量持續增加、無法精確統計。1980 年代反共團體「橙色替代」（Pomarańczowa Alternatywa）以塗鴉小矮人與荒誕街頭劇嘲諷政權——警察逮捕一個扮小矮人的人有多可笑，體制就有多可笑。2005 年起城市以銅像致敬這段歷史，每一尊都有名字與職業。'},
-      {title:'每晚的點燈儀式', text:'日落時分，披斗篷、持長桿的點燈人會逐一點亮 Ostrów Tumski 的瓦斯燈。10/28 日落約 16:34；點燈人沒有對外保證的固定出發分鐘，市立博物館介紹通常在日落前約 30–40 分鐘出發；Day 5 15:45 經座堂橋上島就邊走邊留意，16:34 日落前後在燈旁等候，17:15 離開。'},
+      {title:'每晚的點燈儀式', text:"點燈人約 15:20–16:05 之間開始，無固定場次，出發前再確認；官方來源互相矛盾：InfoCentrum 頁說日落前約 30 分（約 16:03），市府報導說冬季約 15:20。Day 5 15:35 前到 InfoCentrum 雙燈處，17:00 離島；日落約 16:33–16:34。"},
       {title:'混凝土的世界遺產', text:'百年廳（Hala Stulecia，1913）落成時擁有世界最大跨距的鋼筋混凝土圓頂，直接影響了現代主義建築的走向，2006 年列入 UNESCO——在古蹟之城看一座「未來古蹟」。'},
     ],
     onSite:[
@@ -126,7 +126,7 @@ export const photoSpots = [
   {id:'krk-wawel', lightPhase:'daylight', cityKey:'KRK', name:'Wawel 城堡河岸全景', day:null, bestTime:'城市延伸', viewpoint:'維斯瓦河北岸 Bulwar Czerwieński 河濱步道，Wawel 西南側城牆下（OSM way 114713971）', direction:'鏡頭朝東北仰拍城牆與大教堂塔樓；35 mm 左右可同時收河岸與城牆', light:'改班後 10/25 晚抵，未排入每日行程；如另行前往，以實際日落與現場光線安排。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.052653%2C19.933255'},
   {id:'krk-kazimierz', lightPhase:'daylight', cityKey:'KRK', name:'Kazimierz・Szeroka 街', day:null, bestTime:'城市延伸', viewpoint:'Szeroka 24 舊猶太會堂前廣場，面向 Szeroka 街北端', direction:'鏡頭朝西北，以老會堂磚牆或街邊招牌作前景；35 mm 比超廣角更能保留街道層次', light:'城市延伸攝影參考，未排入 10/27 動線。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.051531%2C19.949142'},
   {id:'wro-rynek', lightPhase:'daylight', cityKey:'WRO', name:'市政廳東立面與彩色老屋', day:5, bestTime:'09:00–10:15', viewpoint:'Aleksander Fredro 紀念碑北側、舊市政廳東立面前', direction:'鏡頭朝西北拍市政廳哥德山牆；再移到廣場西側回拍東側彩色商人屋', light:'上午先拍受光的市政廳東立面；彩色屋若逆光，改用 2× 鏡頭壓縮北側立面。', mapUrl:'https://www.google.com/maps/search/?api=1&query=51.109957%2C17.032141'},
-  {id:'wro-dwarfs', lightPhase:'dusk', cityKey:'WRO', name:'座堂島煤氣燈與點燈人', day:5, bestTime:'16:15–17:15', viewpoint:'Most Tumski 東端進入座堂島後，Katedralna 街第一排煤氣燈旁', direction:'鏡頭朝東，以煤氣燈作近景、主教座堂雙塔作消失點；看到點燈人時保持路徑暢通、不貼身跟拍', light:'10/28 日落約 16:34；點燈人沒有固定公開出發分鐘，通常日落前約 30–40 分鐘出發，16:15 先卡位。暗處先用夜景模式並鎖住高光。', mapUrl:'https://www.google.com/maps/search/?api=1&query=51.114364%2C17.045103'},
+  {id:'wro-dwarfs', lightPhase:'dusk', cityKey:'WRO', name:'座堂島煤氣燈與點燈人', day:5, bestTime:'15:35–17:00', viewpoint:'InfoCentrum（pl. Katedralny 1），大教堂入口右側雙燈處；座標未驗證，依地址找現場入口', direction:'鏡頭朝東，以煤氣燈作近景、主教座堂雙塔作消失點；看到點燈人時保持路徑暢通、不貼身跟拍', light:"點燈人約 15:20–16:05 之間開始，無固定場次，出發前再確認；官方來源互相矛盾：InfoCentrum 頁說日落前約 30 分（約 16:03），市府報導說冬季約 15:20。日落約 16:33–16:34，16:30–17:05 藍調時刻，17:00 離島。暗處用夜景模式並鎖住高光。", mapUrl:'https://www.google.com/maps/search/?api=1&query=51.114364%2C17.045103'},
   {id:'poz-rynek', lightPhase:'daylight', cityKey:'POZ', name:'舊市集廣場・市政廳與商人屋', day:6, bestTime:'11:00–12:15', viewpoint:'Prozerpina 噴泉西南側、面向市政廳東立面與彩色商人屋', direction:'鏡頭朝西北；11:45 後不要離開這一側，可同時卡位拍 12:00 山羊從塔樓上方出現', light:'接近正午時市政廳東立面較明亮；山羊很小，建議先準備 2×–3× 鏡頭或長焦。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.408527%2C16.935031'},
   {id:'poz-tumski', lightPhase:'daylight', cityKey:'POZ', name:'Jordan 橋上的波茲南主教座堂', day:6, bestTime:'09:00–10:30', viewpoint:'Most Biskupa Jordana 橋東側約三分之一處，靠 Śródka 一端', direction:'鏡頭朝西南，以橋欄杆引導視線到主教座堂雙塔；直幅可加入橋上行人增加尺度', light:'上午從 Śródka 側取景可得到側光；站在橋邊而非車道中央，避開通行中的單車與行人。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.412619%2C16.951091'},
 ];

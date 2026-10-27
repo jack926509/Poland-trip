@@ -71,8 +71,8 @@ test('關鍵餐段銜接保留已購車次，付費館只看外觀', () => {
   assert.ok(!days[6].steps.some(item=>/起義博物館/.test(item.label)));
   assert.ok(days[6].steps.some(item=>item.t==='08:35' && /POLIN 外觀/.test(item.label)));
   assert.equal(step(5,'d5-lunch').t, '12:00');
-  assert.match(step(5,'d5-lunch').sub, /13:10 離開/);
-  assert.ok(days[4].steps.some(item=>item.t==='18:35 前'));
+  assert.match(step(5,'d5-lunch').sub, /13:00 結束/);
+  assert.ok(days[4].steps.some(item=>item.t==='18:20 前'));
   assert.ok(days[3].steps.some(item=>item.t==='16:45'));
 });
 

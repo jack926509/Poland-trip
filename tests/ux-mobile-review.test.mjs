@@ -54,7 +54,7 @@ test('第 3 項：手機時間表為精簡版（不顯示欄名、時間大字�
   assert.match(nav, /展開全文/);
   // 沒有 JS 時全文仍在 HTML 中，收合只是畫面行為
   const day5 = read('day-05.html');
-  const step = days[4].steps.find(item => item.t === '13:55'); // 2026-10-14 新行程：百年廳外觀（長說明）
+  const step = days[4].steps.find(item => item.t === '15:35'); // 最終版：InfoCentrum 點燈人（長說明）
   // 2026-10-20 UX F3：說明拆成「第一句」＋「展開」兩段輸出，兩段都必須完整在 HTML 中。
   const row = day5.match(new RegExp(`<b>${step.t}</b>[\\s\\S]*?</tr>`))?.[0] || '';
   const notes = [...row.matchAll(/<span class="timeline-note">([^<]*)<\/span>/g)].map(match => match[1]);
@@ -122,7 +122,7 @@ test('第 6 項：行程說明不再夾帶查核筆記，資訊移到待辦；�
   assert.match(d6.sub, /寄物櫃/);
   assert.doesNotMatch(d6.sub, /打電話/, '外國旅客不打電話確認，改用訊息');
   const apartment = todoGroups.flatMap(group => group.items).find(item => item.name.startsWith('之後聯絡 Poznan Apartments'));
-  assert.match(apartment.action, /之後傳訊息確認取鑰匙方式/);
+  assert.match(apartment.action, /今晚傳訊息確認 20:45 取鑰匙方式/);
   assert.doesNotMatch(apartment.action, /20\d\d-\d\d-\d\d/);
   assert.match(apartment.action, /10\/29 早上能不能寄放行李/);
   // 2026-10-13 鹽礦已購 09:00 英文場；查核筆記不放行程說明，購票紀錄在待辦。

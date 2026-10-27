@@ -259,24 +259,24 @@ export const dayDiningPlans = {
     {
       "placeId": "wroclaw-central-cafe",
       "role": "早餐首選（條件式）",
-      "note": "07:00 出門走 Świdnicka 大街，07:30 入座：美式鬆餅、貝果或燕麥粥；08:10 收尾，接 08:15 四教派街區。",
+      "note": "07:30 Piast 出發，07:55 入座；08:35 收尾，08:40 白鸛會堂只看外觀。",
       "stepId": "d5-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
-      "condition": "先確認早餐供應起始；07:30 尚未供餐或需久候就改同街的 Charlotte Pokoyhof。",
-      "dayHours": "07:00–16:00"
+      "condition": "先確認早餐供應起始；07:55 尚未供餐或需久候就改同街的 Charlotte Pokoyhof。",
+      "dayHours": "07:00–21:00"
     },
     {
       "placeId": "wroclaw-charlotte-pokoyhof",
       "role": "早餐備案",
-      "note": "Central Cafe 尚未供餐時改 French Breakfast 或 Breakfast with egg；兩店擇一，仍於 08:10 前收尾。",
+      "note": "Central Cafe 尚未供餐時改 French Breakfast 或 Breakfast with egg；兩店擇一，仍於 08:35 前收尾。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "wroclaw-restauracja-wroclawska",
       "role": "午餐首選",
-      "note": "逛完 Hala Targowa 市場大廳，12:00 開門就進店、入座就點餐：必點 Śląskie niebo 果乾燉豬肉配 Wrocław dumplings＋Bigos Wrocławski 紅甘藍燉肉，胃口夠再加 Crayfish Soup。主菜現做約 30 分鐘，13:10 離開，13:20 全景畫外觀，13:30 搭電車往百年廳。",
+      "note": "12:00 午餐：Śląskie niebo、Bigos、Pierogi；可訂位但非必要，預設現場候位，+48 71 305 12 28（12:00 起接聽）。13:00 結束去 Panorama，只拍外觀；營業時間出發前再確認。",
       "stepId": "d5-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
@@ -306,7 +306,7 @@ export const dayDiningPlans = {
     {
       "placeId": "wroclaw-max-wroclavia",
       "role": "晚餐首選（條件式）",
-      "note": "取回行李後買 Frisco Burger 或 Halloumi 漢堡＋地瓜薯條外帶上車；18:15 前取餐，18:35 前到主站找月台。不要等到波茲南再吃：IC 260 預計 20:29 抵達，但已是晚上，車站旁 Avenida 21:00 就關。",
+      "note": "取回行李後買 Frisco Burger 或 Halloumi 漢堡＋地瓜薯條外帶上車；17:45 往 MAX 外帶，18:10 前取餐，18:20 前到主站找月台。不要等到波茲南再吃：IC 260 預計 20:29 抵達，但已是晚上，車站旁 Avenida 21:00 就關。",
       "stepId": "d5-dinner",
       "planStatus": "scheduled",
       "meal": "dinner",
