@@ -40,9 +40,11 @@ export const daySupplementaryPins = {
     venuePin('krakow-glowny-station', { label: '取行李後的城際火車出發站', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=50.069918&mlon=19.947160' }),
   ],
   5: [
-    // InfoCentrum（pl. Katedralny 1）座標未驗證，暫不新增圖釘；用行程地址找大教堂入口右側雙燈。
-    [51.108896, 17.026714, 'Papa Krasnal 小矮人', 'Świdnicka 地下道旁；小矮人尋寶的具體起點', 'https://www.google.com/maps/search/?api=1&query=Papa%20Krasnal%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/?mlat=51.108896&mlon=17.026714'],
-    [51.111690, 17.029114, '糖果屋雙屋 Jaś i Małgosia', 'Świętego Mikołaja 1', 'https://www.google.com/maps/search/?api=1&query=Hansel%20and%20Gretel%20Houses%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/?mlat=51.111690&mlon=17.029114'],
+    [51.1139403, 17.0458114, 'InfoCentrum', 'pl. Katedralny 1 · 此為 InfoCentrum 辦公室位置；「大教堂入口右側雙燈處」精確點未驗證（出發前再確認）', 'https://www.google.com/maps/search/?api=1&query=InfoCentrum%20pl.%20Katedralny%201%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/node/5246108121'],
+    [51.1107113, 17.0475408, '國家博物館 Słodki Chłopak', 'pl. Powstańców Warszawy 5 · 13:20 甜點', 'https://www.google.com/maps/search/?api=1&query=S%C5%82odki%20Ch%C5%82opak%2C%20pl.%20Powsta%C5%84c%C3%B3w%20Warszawy%205%2C%20Wroc%C5%82aw', 'food', 'https://www.openstreetmap.org/node/1452237509'],
+    // InfoCentrum 採已查證辦公室點；大教堂入口右側雙燈處的精確位置未驗證，出發前再確認。
+    [51.1075437, 17.0325128, 'Papa Krasnal 小矮人', 'Świdnicka／Kazimierza Wielkiego 路口；小矮人尋寶的具體起點', 'https://www.google.com/maps/search/?api=1&query=Papa%20Krasnal%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/node/309596819'],
+    [51.111148, 17.030584, '糖果屋雙屋 Jaś i Małgosia', 'Świętego Mikołaja 1', 'https://www.google.com/maps/search/?api=1&query=Hansel%20and%20Gretel%20Houses%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/way/101206992'],
     [51.111492, 17.029774, '聖伊莉莎白教堂', 'Świętej Elżbiety 1/2 · 只拍高塔外觀，不上塔', 'https://www.google.com/maps/search/?api=1&query=St.%20Elizabeth%20Church%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/?mlat=51.111492&mlon=17.029774'],
     venuePin('wroclaw-panorama', { displayName: '拉茨瓦維採全景畫（外觀）', label: 'Jana Ewangelisty Purkyniego 11 · 13:00 午餐後步行前往，不入內，只拍圓形館外景', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=51.110187&mlon=17.044488' }),
     venuePin('wroclaw-cathedral', { label: 'plac Katedralny 18 · 座堂島散步終點', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=51.114616&mlon=17.046989' }),
@@ -57,7 +59,6 @@ export const daySupplementaryPins = {
     [51.1160692, 17.0373468, 'Słodowa 島', '島嶼範圍中心 · 非單一入口', 'https://www.google.com/maps/search/?api=1&query=Wyspa%20S%C5%82odowa%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/way/32343150'],
     [51.1147184, 17.0422654, '座堂橋 Most Tumski', '橋身中段 · 通往大教堂島', 'https://www.google.com/maps/search/?api=1&query=Most%20Tumski%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/way/388043341'],
     [51.1121441, 17.0306343, '屠夫巷 Jatki', '小巷中心 · 非單一入口', 'https://www.google.com/maps/search/?api=1&query=Jatki%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/way/22727451'],
-    [51.1113645, 17.0235207, 'Dessert Boutique', 'Świętego Mikołaja 43 · 甜點', diningPlaces['wroclaw-dessert-boutique'].map, 'food', 'https://www.openstreetmap.org/node/5275535787'],
     [51.0964161, 17.0348220, 'Wroclavia 購物中心', '商場內 · MAX／Pasibus 外帶晚餐 · Sucha 1', diningPlaces['wroclaw-max-wroclavia'].map, 'food', 'https://www.openstreetmap.org/way/526922862'],
   ],
   6: [
@@ -137,8 +138,10 @@ export const pinCoordinateCheckedAt = {
     "Kraków Główny": '2026-09-08',
   },
   5: {
-    "Papa Krasnal 小矮人": '2026-09-08',
-    "糖果屋雙屋 Jaś i Małgosia": '2026-09-08',
+    "InfoCentrum": '2026-10-27',
+    "國家博物館 Słodki Chłopak": '2026-10-27',
+    "Papa Krasnal 小矮人": '2026-10-27',
+    "糖果屋雙屋 Jaś i Małgosia": '2026-10-27',
     "聖伊莉莎白教堂": '2026-09-08',
     "拉茨瓦維採全景畫（外觀）": '2026-09-08',
     "樂斯拉夫主教座堂": '2026-09-08',
@@ -154,7 +157,6 @@ export const pinCoordinateCheckedAt = {
     "Słodowa 島": '2026-10-17',
     "座堂橋 Most Tumski": '2026-10-17',
     "屠夫巷 Jatki": '2026-10-17',
-    "Dessert Boutique": '2026-10-17',
     "Wroclavia 購物中心": '2026-10-17',
   },
   6: {
@@ -213,3 +215,14 @@ export const pinCoordinateCheckedAt = {
 };
 // 對照表沒有登記的圖釘退回這個日期（原本全部圖釘共用的日期）。
 export const defaultPinCheckedAt = '2026-09-08';
+
+// 明確停留列可跨越距離／移動列篩選；陣列允許同一圖釘對應多次造訪。
+export const dayPinStepRows = {
+  5: {
+    'Piast': [1, 20],
+    'Papa Krasnal 小矮人': [1],
+    '白鸛猶太會堂': [3],
+    '拉茨瓦維採全景畫（外觀）': [11],
+    '樂斯拉夫主教座堂': [17],
+  },
+};

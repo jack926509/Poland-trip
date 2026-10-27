@@ -7,7 +7,7 @@ import path from 'node:path';
 import { makeDayMap, stepNumberForPin, pinLabels } from '../src/lib/day-map.mjs';
 import { days } from '../src/data/trip.js';
 import { mapPins } from '../src/data/cities.js';
-import { daySupplementaryPins, pinCoordinateCheckedAt } from '../src/data/day-maps.js';
+import { daySupplementaryPins, pinCoordinateCheckedAt, dayPinStepRows } from '../src/data/day-maps.js';
 
 const distDir = path.resolve('dist');
 const read = relativePath => fs.readFileSync(path.join(distDir, relativePath), 'utf8');
@@ -48,7 +48,10 @@ test('H2：每日地圖圖釘編號就是時間表列序，時間表只在有圖
       const n = point[8];
       if (n === null) continue;
       assert.ok(Number.isInteger(n) && n >= 1 && n <= day.steps.length, `Day ${day.n} ${point[2]} 編號超出時間表`);
-      numbers.add(n);
+      for (const row of point[10] || [n]) {
+        assert.ok(Number.isInteger(row) && row >= 1 && row <= day.steps.length);
+        numbers.add(row);
+      }
     }
     const html = read(`day-${String(day.n).padStart(2, '0')}.html`);
     const rows = html.slice(html.indexOf('<tbody>', html.indexOf('id="schedule"')), html.indexOf('</tbody>', html.indexOf('id="schedule"'))).split('<tr>').slice(1);
@@ -95,6 +98,10 @@ test('F3：景點與餐廳圖釘一律不指到移動列（車站與住宿可以
   for (const day of days) {
     for (const point of makeDayMap(day).points) {
       if (!point[8] || ['transport', 'hotel'].includes(point[5])) continue;
+      if (dayPinStepRows[day.n]?.[point[2]]) {
+        assert.ok(dayPinStepRows[day.n][point[2]].includes(point[8]), '明確宣告的停留列可包含前往');
+        continue;
+      }
       assert.doesNotMatch(day.steps[point[8] - 1].label, MOVEMENT_LABEL, `Day ${day.n} ${point[2]} 指到移動列 ${point[8]}`);
     }
   }
@@ -107,7 +114,7 @@ test('F3：同一天內不同地點不共用序號（同一列寫到、相距 40
     for (const point of makeDayMap(day).points) if (point[8]) groups.set(point[8], [...(groups.get(point[8]) || []), point]);
     for (const [n, group] of groups) {
       for (const a of group) for (const b of group) {
-        if (a !== b) assert.ok(km(a, b) <= 0.4, `Day ${day.n} 序號 ${n}：${a[2]} 與 ${b[2]} 相距 ${km(a, b).toFixed(2)} km，不是同一個地點`);
+        if (a !== b) assert.ok(km(a, b) <= 0.4 || (dayPinStepRows[day.n]?.[a[2]]?.includes(n) && dayPinStepRows[day.n]?.[b[2]]?.includes(n)), `Day ${day.n} 序號 ${n}：${a[2]} 與 ${b[2]} 相距 ${km(a, b).toFixed(2)} km，不是同一個地點`);
       }
     }
   }

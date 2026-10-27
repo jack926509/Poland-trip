@@ -1,5 +1,5 @@
 import { mapPins, mapPinChecks } from '../data/cities.js';
-import { dayMapPlans, daySupplementaryPins, pinCoordinateCheckedAt, defaultPinCheckedAt } from '../data/day-maps.js';
+import { dayMapPlans, daySupplementaryPins, pinCoordinateCheckedAt, defaultPinCheckedAt, dayPinStepRows } from '../data/day-maps.js';
 
 // UX 1017 H2：圖釘編號對回時間表。
 // 編號就是時間表的列序（第 N 列 → N），一顆圖釘取「最能對上它名稱」的那一列：
@@ -124,8 +124,13 @@ export function stepNumberForPin(name, steps, category = 'sight') {
 // 更遠的就不編號，免得把兩個不同地點標成同一站。
 const SAME_STOP_KM = 0.4;
 const distanceKm = (a, b) => Math.hypot((a[0] - b[0]) * 111.32, (a[1] - b[1]) * 111.32 * Math.cos(a[0] * Math.PI / 180));
-export function numberPins(points, steps, positions) {
-  const matches = points.map(point => matchPin(point[2], steps, point[5]));
+export function numberPins(points, steps, positions, explicitRows = {}) {
+  const matches = points.map(point => {
+    const rows = explicitRows[point[2]];
+    if (!rows) return matchPin(point[2], steps, point[5]);
+    if (!rows.length || rows.some(n => !Number.isInteger(n) || !steps[n - 1])) throw new Error(`無效圖釘列號：${point[2]}`);
+    return { number: rows[0], strength: 2000, at: matchDetail(pinNameKeys(point[2]), steps[rows[0] - 1].label).at };
+  });
   const anchors = new Map();
   matches.forEach((match, i) => {
     if (match.number === null) return;
@@ -136,7 +141,7 @@ export function numberPins(points, steps, positions) {
     if (positions) positions[i] = match.at;
     if (match.number === null) return null;
     const anchor = anchors.get(match.number);
-    return anchor === i || distanceKm(points[i], points[anchor]) <= SAME_STOP_KM ? match.number : null;
+    return (explicitRows[points[i][2]] || anchor === i || distanceKm(points[i], points[anchor]) <= SAME_STOP_KM) ? match.number : null;
   });
 }
 
@@ -191,12 +196,16 @@ export function makeDayMap(day) {
   for (const point of daySupplementaryPins[day.n] || []) checks[point[2]] = { status: 'coordinate-verified', checkedAt: pinCoordinateCheckedAt[day.n]?.[point[2]] || defaultPinCheckedAt, coordinateSource: point[6] };
   // point[7] 已被部分圖釘拿來放門市 ID，時間表序號放在 point[8]；複製陣列，不改到共用的城市圖釘資料。
   const positions = [];
-  const numbers = numberPins(points, day.steps, positions);
-  const labels = pinLabels(numbers, positions);
+  const explicitRows = dayPinStepRows[day.n] || {};
+  const numbers = numberPins(points, day.steps, positions, explicitRows);
+  const visits = points.flatMap((point, i) => (explicitRows[point[2]] || [numbers[i]]).map(number => ({ i, number, at: positions[i] })));
+  const visitLabels = pinLabels(visits.map(v => v.number), visits.map(v => v.at));
+  const labels = points.map((_, i) => visits.flatMap((v, j) => v.i === i && visitLabels[j] ? [visitLabels[j]] : []).join('·') || null);
   const numberedPoints = points.map((point, i) => {
     const copy = point.slice(0, 8);
     while (copy.length < 8) copy.push(null);
-    copy.push(numbers[i], labels[i]); // point[9]＝地圖上顯示的標籤（共用序號時為 7a／7b）
+    // point[10] 保留全部造訪列，供時間表標號（例如 Piast 的 1、20）。
+    copy.push(numbers[i], labels[i], explicitRows[point[2]] || (numbers[i] ? [numbers[i]] : [])); // point[9]＝地圖上顯示的標籤（共用序號時為 7a／7b）
     return copy;
   });
   return {
