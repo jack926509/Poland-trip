@@ -79,7 +79,7 @@ const todoGroupsRaw = [
     id: 'prep', title: '出發前準備', eyebrow: 'Prep · 5 項',
     intro: '出發前事項已完成；之後聯絡 Poznan Apartments，確認取鑰匙方式及隔天早上能不能寄放行李。',
     items: [
-      {checkedAt:'2026-10-22', recheckAt:null, date:'10/28', name:'之後聯絡 Poznan Apartments', status:'尚未傳訊息', action:'10/28 約 20:45 抵達（接待到 22:00，出發前再確認）；今晚傳訊息確認 20:45 取鑰匙方式，以及 10/29 早上能不能寄放行李；今晚入住 Piast 時問櫃台 12:00 後行李寄放，IC 260 車票存離線', url:'https://www.poznanapartments.com/kontakt'},
+      {checkedAt:'2026-10-22', recheckAt:null, date:'10/28', name:'之後聯絡 Poznan Apartments', status:'尚未傳訊息', action:'10/28 約 20:45 抵達（接待到 22:00，出發前再確認）；10/27 晚上傳訊息確認 20:45 取鑰匙方式，以及 10/29 早上能不能寄放行李；10/27 入住 Piast 時問櫃台 12:00 後行李寄放，IC 260 車票存離線', url:'https://www.poznanapartments.com/kontakt'},
       {checkedAt:'2026-10-22', recheckAt:null, date:"10/24", name:"HX 283 改票後報到（10/24 21:45 桃園起飛）", status:'已完成', action:'旅客 10/23 確認已完成報到；登機證存離線。', url:"https://www.hongkongairlines.com/"},
       {checkedAt:'2026-10-22', recheckAt:null, date:"10/24", name:'外交部出國登錄', status:'已完成', action:'旅客 10/23 確認已更新出國登錄行程。', url:'https://www.boca.gov.tw/sp-abre-main-1.html'},
       {checkedAt:'2026-10-22', recheckAt:null, date:'10/24', name:'手機安裝 Jakdojade 與 Bolt', status:'已安裝', action:'Jakdojade 查三座城市的電車、地鐵路線並買車票；Bolt 叫車（10/29 早上 Cytadela → Rondo Śródka、雨天或天黑時用）。出發前在臺灣先裝好、登入並綁好付款方式。', url:'https://jakdojade.pl/'},
@@ -273,11 +273,11 @@ export const days = [
     headline: '12:00 Wrocławska 午餐、15:35 前到座堂島；17:00 離島、18:20 前到站，19:10 IC 260 → 波茲南約 20:29',
     tag: 'Transit',
     intensity: '高',
-    hardConstraints: ['07:30 Piast 出發；行李寄放今晚入住時問櫃台', '12:00 午餐，13:00 結束去 Panorama', '15:35 前到座堂島；17:00 離島', '18:20 前到站為目標，18:35 為硬性限制；19:10 IC 260'],
+    hardConstraints: ['07:30 Piast 出發；行李寄放：10/27 入住 Piast 時問櫃台', '12:00 午餐，13:00 結束去 Panorama', '15:35 前到座堂島；17:00 離島', '18:20 前到站為目標，18:35 為硬性限制；19:10 IC 260'],
     compressible: ['依序先砍大學區、El Gato、Hala Targowa、Słodowa 島', '可取消 MAX 晚餐，改車站簡餐'],
     train: {segmentId:'ic-260'},
     steps: [
-      {t:'07:30', label:'Piast 出發 · 無名行人 → Papa Krasnal', sub:'沿路拍匿名行人雕塑與 Papa Krasnal，步行到 Central Cafe 約 22 分（OSM 路由，第三方計算，未含紅綠燈與拍照）。行李寄放今晚入住時問櫃台。', dur:'25 min'},
+      {t:'07:30', label:'Piast 出發 · 無名行人 → Papa Krasnal', sub:'沿路拍匿名行人雕塑與 Papa Krasnal，步行到 Central Cafe 約 22 分（OSM 路由，第三方計算，未含紅綠燈與拍照）。行李寄放：10/27 入住 Piast 時問櫃台。', dur:'25 min'},
       {t:'07:55', label:'早餐 · Central Cafe', sub:'Św. Antoniego 10；官方 07:00–21:00，出發前再確認。美式鬆餅、貝果或燕麥粥；08:35 收尾，步行約 3 分到白鸛會堂。', dur:'40 min', id:'d5-breakfast'},
       {t:'08:40', label:'★ 白鸛會堂外觀', sub:'Włodkowica 7；官方 10:00 才開，出發前再確認；只看外觀，庭院未確認。步行約 6 分到 Plac Solny。', dur:'10 min'},
       {t:'09:00', label:'鹽廣場 Plac Solny', sub:'花市；Paloma 可外帶，第三方營業時間 08:00–21:00，出發前再確認。步行約 2 分到 Rynek。', dur:'13 min'},
@@ -307,7 +307,7 @@ export const days = [
       snack({text:'13:20 甜點 30–40 分（免博物館門票） @ Słodki Chłopak', placeId:'wroclaw-slodki-chlopak-muzeum-narodowe'}),
       snack({text:'甜點候選（本日不另排時段） @ Dessert Boutique', placeId:'wroclaw-dessert-boutique'}),
     ],
-    warn: "✅ IC 260 已購票，今晚存離線。本日不排百年廳與 Neon Side Gallery（約 20:00 後才亮，10/27 今晚可選擇順路看）。點燈人約 15:20–16:05 之間開始，無固定場次，出發前再確認；官方來源互相矛盾：InfoCentrum 頁說日落前約 30 分（約 16:03），市府報導說冬季約 15:20。日落約 16:33–16:34。所有營業時間、票價出發前再確認；所有步行時間為 OSM 路由，第三方計算，未含紅綠燈與拍照。Piast 官方寄放說明未查到，今晚入住時問櫃台；第三方稱有寄放與 24 小時櫃台，退房 12:00 也是訂房網站資料。",
+    warn: "✅ IC 260 已購票，10/27 前存離線。本日不排百年廳與 Neon Side Gallery（約 20:00 後才亮，10/27 晚上可選擇順路看）。點燈人約 15:20–16:05 之間開始，無固定場次，出發前再確認；官方來源互相矛盾：InfoCentrum 頁說日落前約 30 分（約 16:03），市府報導說冬季約 15:20。日落約 16:33–16:34。所有營業時間、票價出發前再確認；所有步行時間為 OSM 路由，第三方計算，未含紅綠燈與拍照。Piast 官方寄放說明未查到，10/27 入住時問櫃台；第三方稱有寄放與 24 小時櫃台，退房 12:00 也是訂房網站資料。",
     backup: [{label:'行李寄放', where:'Wrocław Główny 寄物櫃', map:'https://www.google.com/maps/search/?api=1&query=Wrocław+Główny', why:"PKP 官方（https://www.pkp.pl/pl/dworce/bezpieczenstwo/bagaz）：中央隧道，每 24 小時 25/30/35 zł，出發前再確認；離 Piast 步行約 5 分（OSM 路由，第三方計算，未含紅綠燈與拍照）。"}, {label:'時間不足', where:'車站簡餐', map:'https://www.google.com/maps/search/?api=1&query=Wrocław+Główny', why:'取消 MAX，保留 18:20 前到站與 19:10 火車緩衝。'}],
   },
   {

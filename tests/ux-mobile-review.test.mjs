@@ -122,7 +122,7 @@ test('第 6 項：行程說明不再夾帶查核筆記，資訊移到待辦；�
   assert.match(d6.sub, /寄物櫃/);
   assert.doesNotMatch(d6.sub, /打電話/, '外國旅客不打電話確認，改用訊息');
   const apartment = todoGroups.flatMap(group => group.items).find(item => item.name.startsWith('之後聯絡 Poznan Apartments'));
-  assert.match(apartment.action, /今晚傳訊息確認 20:45 取鑰匙方式/);
+  assert.match(apartment.action, /10\/27 晚上傳訊息確認 20:45 取鑰匙方式/);
   assert.doesNotMatch(apartment.action, /20\d\d-\d\d-\d\d/);
   assert.match(apartment.action, /10\/29 早上能不能寄放行李/);
   // 2026-10-13 鹽礦已購 09:00 英文場；查核筆記不放行程說明，購票紀錄在待辦。
