@@ -1,3 +1,4 @@
+import { spawnSync } from 'node:child_process';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { days } from '../src/data/trip.js';
@@ -75,4 +76,16 @@ test('Day 5 補充點稽核涵蓋有限座標、範圍、HTTPS、來源、日期
 const otherDays = [[1,[]],[2,[["ibis budget Krakow Stare Miasto",11,"11"],["Kraków Główny",10,"10"]]],[3,[["Auschwitz I 訪客服務中心／入口",4,"4"],["Auschwitz II–Birkenau 主入口",null,null]]],[4,[["ibis budget Krakow Stare Miasto",9,"9"],["維利奇卡鹽礦 Daniłowicz Shaft",4,"4"],["Sztolnia Wieliczka",5,"5"],["Obwarzanek Krakowski - Tunel",8,"8"],["Wieliczka Rynek-Kopalnia 車站",6,"6"],["Kraków Główny",10,"10"]]],[6,[["舊市集廣場 Stary Rynek",11,"11"],["大教堂島 Ostrów Tumski",7,"7a"],["Poznan Apartments Towarowa",20,"20"],["波茲南主教座堂",7,"7b"],["波茲南市政廳・山羊鐘樓",12,"12"],["Stary Browar",15,"15"],["帝王城堡 Zamek Cesarski（外觀）",18,"18"],["Poznań Główny",21,"21"],["Charlotte Krysiewicza",2,"2"],["Cytadela「Nierozpoznani」",4,"4"],["Śródka 壁畫",6,"6"],["Weranda Caffe",10,"10"],["皇家城堡山丘（Przemysł 王城）",9,"9"],["ROGAL Świętomarciński",13,"13"],["自由廣場 Plac Wolności",14,"14"],["Okrąglak 圓形百貨",17,"17"],["Carla Trattoria Moderna",16,"16"],["Kaponiera「5 Figur」",19,"19"]]],[7,[["皇家城堡",15,"15"],["科學文化宮觀景台",2,"2b"],["Pijalnia Czekolady E.Wedel（巧克力）",31,"31"],["Hotel Metropol",28,"28"],["哥白尼紀念碑 Pomnik Kopernika",21,"21a"],["聖十字教堂 Kościół św. Krzyża",20,"20"],["總統府（外觀）",18,"18a"],["Café Bristol",18,"18b"],["訪親會教堂 Kościół Wizytek",19,"19a"],["普魯斯紀念碑",19,"19b"],["Ostrogski 宮（外觀）",21,"21b"],["河岸美人魚像 Syrena",22,"22"],["華沙老城市場廣場",11,"11"],["POLIN 波蘭猶太人歷史博物館（外觀）",4,"4"],["BUW 華沙大學圖書館屋頂花園",23,"23"],["瓦津基公園 · 蕭邦紀念碑",25,"25"],["Soul Kitchen",30,"30"],["Bułkę przez Bibułkę",1,"1"],["MSN 現代美術館",2,"2a"],["克拉辛斯基廣場・起義紀念碑",5,"5"],["新城廣場 Rynek Nowego Miasta",6,"6"],["聖母訪親教堂",7,"7"],["Freta 16 居禮夫人出生地",8,"8"],["甕城 Barbakan",9,"9"],["聖若望大教堂",13,"13"],["聖馬丁教堂",14,"14"],["聖安妮教堂（外觀）",16,"16"],["Polka",17,"17"],["水上宮殿 Pałac na Wyspie",26,"26"]]],[8,[["Hotel Metropol",1,"1"],["棕櫚樹圓環",9,"9"],["劇院廣場・大劇院",5,"5"],["無名塚 Grób Nieznanego Żołnierza",4,"4"],["Bułkę przez Bibułkę",7,"7"],["Warszawa Centralna",12,"12b"],["Warszawa Śródmieście",12,"12a"],["Warszawa Lotnisko Chopina 機場鐵路站",null,null]]]];
 test('其他天的圖釘編號保持原樣', () => {
   assert.deepEqual(days.filter(d=>d.n!==5).map(d=>[d.n,makeDayMap(d).points.map(p=>[p[2],p[8],p[9]])]), otherDays);
+});
+
+test('Day 5 補充點無效時 CLI exit 非零', () => {
+  const result = spawnSync(process.execPath, ['--input-type=module', '-e', `
+    import { daySupplementaryPins } from './src/data/day-maps.js';
+    daySupplementaryPins[5][0][0] = NaN;
+    process.argv[1] = new URL('./tools/audit-map-pins.mjs', import.meta.url).pathname;
+    await import('./tools/audit-map-pins.mjs');
+  `], { cwd: new URL('../', import.meta.url), encoding: 'utf8' });
+  assert.equal(result.status, 1, result.stderr);
+  assert.match(result.stdout, /Day 5 補充圖釘：19，錯誤 1/);
+  assert.match(result.stderr, /座標不在樂斯拉夫範圍/);
 });
