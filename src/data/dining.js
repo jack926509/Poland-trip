@@ -657,11 +657,11 @@ export const cafeGuide = [
     { placeId: 'krakow-cukiernia-michalek', type: '甜點', when: '不在 10/27 動線上，城市延伸' },
   ] },
   { cityKey: 'wroclaw', city: '樂斯拉夫', items: [
-    { placeId: 'wroclaw-central-cafe', type: '早餐 · 咖啡', when: 'Day 5 · 07:30 早餐（已排入）' },
+    { placeId: 'wroclaw-central-cafe', type: '早餐 · 咖啡', when: 'Day 5 · 07:55 早餐（已排入）' },
     { placeId: 'wroclaw-charlotte-pokoyhof', type: '法式早餐 · 麵包', when: 'Day 5 · Central Cafe 沒供餐時的同街備案' },
     { placeId: 'wroclaw-paloma-coffee', type: '精品咖啡', when: 'Day 5 · 08:50 鹽廣場順路外帶' },
-    { placeId: 'wroclaw-el-gato-specialty-coffee', type: '精品咖啡', when: 'Day 5 · 10:20 咖啡休息（已排入）' },
-    { placeId: 'wroclaw-slodki-chlopak-muzeum-narodowe', type: '蛋糕 · 外帶', when: 'Day 5 · 13:20 國家博物館外觀時順路外帶（已排入）' },
+    { placeId: 'wroclaw-el-gato-specialty-coffee', type: '精品咖啡', when: 'Day 5 · 10:15 咖啡休息（已排入）' },
+    { placeId: 'wroclaw-slodki-chlopak-muzeum-narodowe', type: '蛋糕 · 內用', when: 'Day 5 · 13:20 國家博物館甜點 30–40 分（已排入）' },
     { placeId: 'wroclaw-dessert-boutique', type: '精緻甜點', when: 'Day 5 · 有空才去（12:00 才開，與下午動線相反）' },
   ] },
   { cityKey: 'poznan', city: '波茲南', items: [

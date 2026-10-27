@@ -152,7 +152,7 @@ export const ticketPurchaseGroups = [
       entry('wroclaw-panorama', '拉茨瓦維採全景畫 Panorama Racławicka', {
         purchaseUrl: mnwrTickets,
         sourceUrl: 'https://mnwr.pl/oddzialy/panorama-raclawicka/bilety-informacje-praktyczne/',
-        note: '新行程只看外觀、不進館，不用買票；10/28 13:20 不入內，只在圓形館外拍外景。想入內：選指定日期與場次，每場約 30 分鐘。全景畫票含國家博物館、民族誌博物館與四穹頂館常設展，限參觀全景畫後 3 個月內使用。',
+        note: '新行程只看外觀、不進館，不用買票；10/28 13:00 午餐後前往，不入內，只在圓形館外拍外景。想入內：選指定日期與場次，每場約 30 分鐘。全景畫票含國家博物館、民族誌博物館與四穹頂館常設展，限參觀全景畫後 3 個月內使用。',
       }),
       entry('wroclaw-national-museum', '樂斯拉夫國家博物館', {
         method: 'included', otherDatesUrl: mnwrTickets,
@@ -169,7 +169,7 @@ export const ticketPurchaseGroups = [
       }),
       entry('wroclaw-hala-stulecia', '百年廳 Visitor Centre', {
         method: 'onsite',
-        note: '新行程 10/28 13:55 只看外觀、尖塔、柱廊與公園，不買票；多媒體噴泉大概率已停。想入內：多媒體展與含廳內看台的票種不同。先查官方 availability calendar，當日活動可能限制入內範圍。',
+        note: 'Day 5 不排百年廳；另日前往才考慮外觀、尖塔、柱廊與公園，出發前再確認；多媒體噴泉大概率已停。想入內：多媒體展與含廳內看台的票種不同。先查官方 availability calendar，當日活動可能限制入內範圍。',
       }),
       entry('wroclaw-zoo', '動物園＋Afrykarium', {
         purchaseUrl: 'https://bilety.zoo.wroclaw.pl/',

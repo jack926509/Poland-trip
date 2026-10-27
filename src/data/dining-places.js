@@ -637,7 +637,7 @@ export const diningPlaces = {
       "下西里西亞地方菜：Śląskie niebo 果乾燉豬肉配 Wrocław dumplings（65 PLN）、Bigos Wrocławski 紅甘藍燉肉（41 PLN）、Hekele 鯡魚前菜；胃口夠再加 Crayfish Soup。",
       "Day 5 午餐首選；菜單提醒主菜約需 30 分鐘，另留候位與交通。"
     ],
-    "verificationNote": "已讀出店家 DISH 官網完整週時段；廚房收單時間另以 wroclawska.com.pl/kontakt/ 核對。12:30 可安排午餐，但出餐速度未獲保證。英文聯絡頁僅列結束時刻，12:00 開門沿用 9/24 自管頁記錄，出發前再確認。週三 12:00–22:00 各來源一致。",
+    "verificationNote": "已讀出店家 DISH 官網完整週時段；廚房收單時間另以 wroclawska.com.pl/kontakt/ 核對。12:00 午餐、13:00 結束去 Panorama；可訂位但非必要，預設現場候位，12:00 起接聽，但出餐速度未獲保證。英文聯絡頁僅列結束時刻，12:00 開門沿用 9/24 自管頁記錄，出發前再確認。週三 12:00–22:00 各來源一致。",
     "menuUrl": "https://wroclawska.com.pl/wp-content/uploads/2026/09/Wroclawska-menuA4-20-EN-web.pdf",
     "cuisine": "下西里西亞菜",
     "dishes": [
@@ -1006,7 +1006,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-20",
     "verificationStatus": "partial",
     "notes": [
-      "樂斯拉夫在地甜點連鎖的博物館分店，店家頁註明不需博物館門票即可進入；Day 5 13:20 在全景畫外拍外景、看國家博物館外觀時，外帶一塊蛋糕到百年廳吃，不另加時段。"
+      "樂斯拉夫在地甜點連鎖的博物館分店，店家頁註明不需博物館門票即可進入；Day 5 13:20 在博物館內吃甜點 30–40 分；10/28 10:00–16:00 照常開放，16:00 前離開，出發前再確認。"
     ],
     "verificationNote": "地址與免票入店取自店家官網門市頁；國家博物館官網 Cafe 頁說明館內咖啡廳依博物館開放時間營業，冬季時段取自 mnwr.pl 官方參觀資訊頁（搜尋核對；本環境無法直接開啟官網，屬部分核實）。第三方目錄（Apple 地圖等）仍列夏季 10:00–17:00，以官方冬季時段為準；臨時閉館以博物館官網公告為準。",
     "cuisine": "甜點 · 咖啡",
@@ -1753,7 +1753,7 @@ export const diningPlaces = {
       "美式鬆餅、HUMMUS 鷹嘴豆泥貝果、水果核桃燕麥粥；魚類選 LOX NOVA。"
     ],
     "menuUrl": "https://cdn.website.dish.co/media/6b/d4/2420931/Central-Cafe-Menu.pdf",
-    "verificationNote": "本輪核對自管頁店址與時段；初稿指出菜單時段涉及自取／配送，不能視為確定開門時間。初稿提供餐點建議；當日供應與最後接單待確認。各來源一致平日 07:00 開門，10/28（週三）07:30 早餐可行。",
+    "verificationNote": "本輪核對自管頁店址與時段；初稿指出菜單時段涉及自取／配送，不能視為確定開門時間。初稿提供餐點建議；當日供應與最後接單待確認。各來源一致平日 07:00 開門，10/28（週三）07:55 早餐；官方週三 07:00–21:00，出發前再確認。",
     "cuisine": "美式早餐",
     "dishes": [
       "美式鬆餅",

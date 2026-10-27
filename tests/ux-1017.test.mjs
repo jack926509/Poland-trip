@@ -65,7 +65,7 @@ test('H2：圖釘對到正確的時間表列；說明裡的門牌、移動列與
   const day5 = days.find(day => day.n === 5);
   const label = name => day5.steps[stepNumberForPin(name, day5.steps) - 1].label;
   assert.match(label('Central Cafe'), /Central Cafe/);
-  assert.match(label('百年廳 Hala Stulecia'), /★ 百年廳/, '同分時應選真正停留的列，不是「電車往百年廳」');
+  assert.match(label('Hala Targowa 市場大廳'), /Hala Targowa/, '圖釘應選停留列，不是步行前往列');
   assert.match(label('Hala Targowa 市場大廳'), /Hala Targowa/);
   assert.match(label('大學主樓 Uniwersytet Wrocławski'), /大學區/, '「Bigos Wrocławski」不能讓大學主樓對到午餐');
   const day6 = days.find(day => day.n === 6);
@@ -149,7 +149,7 @@ test('H2：預設框住主要步行區、提供「全部地點」，座標資料
   assert.ok(day5.focusBounds, 'Day 5 應有主要步行區範圍');
   const [[south, west], [north, east]] = day5.focusBounds;
   const hala = day5.points.find(point => point[2] === '百年廳 Hala Stulecia');
-  assert.ok(hala[1] > east, '搭電車才到的百年廳不在預設步行區');
+  assert.equal(hala, undefined, '百年廳已移出 Day 5');
   assert.ok(day5.points.some(point => point[0] >= south && point[0] <= north && point[1] >= west && point[1] <= east && point[2] === '中央市集廣場'));
   // 座標與原始資料逐筆相同
   for (const day of days) {
@@ -256,12 +256,12 @@ test('N1：數字圖釘依編號疊層並在 zoomend 錯開，不再一律 zInde
   assert.match(css(), /\.trip-pin\.is-nudged::after \{/);
 });
 
-test('F3b：同一列的 a／b／c 依時間表文字先後標（Day 5 第 17 列 Słodowa 島 → 沙島；Day 2 城門 → 甕城）', () => {
+test('F3b：同一列的 a／b／c 依時間表文字先後標（Day 5 Słodowa 島與沙島分列；Day 2 城門 → 甕城）', () => {
   assert.deepEqual(pinLabels([7, 7, 7], [30, 5, Infinity]), ['7b', '7a', '7c'], '依位置排序，找不到位置的排最後');
   assert.deepEqual(pinLabels([7, 7, 7], [Infinity, Infinity, 3]), ['7b', '7c', '7a'], '同位置或都沒位置時維持原陣列順序');
   const label = (n, name) => makeDayMap(days.find(day => day.n === n)).points.find(point => point[2].startsWith(name))?.[9];
-  assert.equal(label(5, 'Słodowa 島'), '17a');
-  assert.equal(label(5, '沙上聖母堂'), '17b');
+  assert.equal(label(5, 'Słodowa 島'), '15');
+  assert.equal(label(5, '沙上聖母堂'), '16');
   assert.equal(label(2, '聖弗洛里安城門'), undefined);
   assert.equal(label(2, '甕城'), undefined);
   assert.equal(label(2, 'Pimiento'), undefined, '改班後白天午餐不再排入地圖');
