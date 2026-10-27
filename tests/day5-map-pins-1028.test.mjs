@@ -2,7 +2,7 @@ import { spawnSync } from 'node:child_process';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { days } from '../src/data/trip.js';
-import { daySupplementaryPins, pinCoordinateCheckedAt } from '../src/data/day-maps.js';
+import { daySupplementaryPins, dayPinStepRows, pinCoordinateCheckedAt } from '../src/data/day-maps.js';
 import { makeDayMap } from '../src/lib/day-map.mjs';
 import { auditDay5SupplementaryPins } from '../tools/audit-map-pins.mjs';
 const day = days.find(d => d.n === 5);
@@ -31,10 +31,11 @@ test('Day 5 六顆修正點採查證座標，新增點有 OSM 來源與日期', 
   assert.match(pin('InfoCentrum')[3], /辦公室.*未驗證.*出發前再確認/);
   assert.doesNotMatch(pin('Papa Krasnal 小矮人')[3], /地下道旁/);
   assert.ok(!pin('Dessert Boutique'));
-  for (const name of ['InfoCentrum', '國家博物館 Słodki Chłopak']) {
+  for (const [name, queryName] of [['InfoCentrum', 'InfoCentrum'], ['國家博物館 Słodki Chłopak', 'Słodki Chłopak']]) {
     assert.match(pin(name)[4], /search\/\?api=1&query=.*%/);
-    assert.ok(new URL(pin(name)[4]).searchParams.get('query').includes(name));
+    assert.ok(new URL(pin(name)[4]).searchParams.get('query').includes(queryName));
   }
+  assert.equal(new URL(pin('國家博物館 Słodki Chłopak')[4]).searchParams.get('query'), 'Słodki Chłopak, pl. Powstańców Warszawy 5, Wrocław');
 });
 
 const order = [
@@ -49,6 +50,14 @@ const order = [
 ];
 test('Day 5 每顆標籤對回時間表列序，走法依列號與 a/b/c 單調', () => {
   assert.equal(points.length, order.length);
+  const pinNames = new Set(points.map(p => p[2]));
+  for (const name of Object.keys(dayPinStepRows[5])) {
+    assert.ok(pinNames.has(name), `Day 5 列號對照的圖釘名稱不存在：${name}`);
+  }
+  for (const [row, text] of [[1, /Papa Krasnal/], [3, /白鸛/], [11, /Panorama/], [17, /座堂/], [20, /Piast/]]) {
+    const step = day.steps[row - 1];
+    assert.match(`${step.label} ${step.sub}`, text);
+  }
   for (const [name,label,rows] of order) {
     assert.equal(pin(name)[9], label);
     assert.deepEqual(pin(name)[10], rows);

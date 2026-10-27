@@ -41,7 +41,7 @@ export const daySupplementaryPins = {
   ],
   5: [
     [51.1139403, 17.0458114, 'InfoCentrum', 'pl. Katedralny 1 · 此為 InfoCentrum 辦公室位置；「大教堂入口右側雙燈處」精確點未驗證（出發前再確認）', 'https://www.google.com/maps/search/?api=1&query=InfoCentrum%20pl.%20Katedralny%201%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/node/5246108121'],
-    [51.1107113, 17.0475408, '國家博物館 Słodki Chłopak', 'pl. Powstańców Warszawy 5 · 13:20 甜點', 'https://www.google.com/maps/search/?api=1&query=%E5%9C%8B%E5%AE%B6%E5%8D%9A%E7%89%A9%E9%A4%A8%20S%C5%82odki%20Ch%C5%82opak%20pl.%20Powsta%C5%84c%C3%B3w%20Warszawy%205%2C%20Wroc%C5%82aw', 'food', 'https://www.openstreetmap.org/node/1452237509'],
+    [51.1107113, 17.0475408, '國家博物館 Słodki Chłopak', 'pl. Powstańców Warszawy 5 · 13:20 甜點', 'https://www.google.com/maps/search/?api=1&query=S%C5%82odki%20Ch%C5%82opak%2C%20pl.%20Powsta%C5%84c%C3%B3w%20Warszawy%205%2C%20Wroc%C5%82aw', 'food', 'https://www.openstreetmap.org/node/1452237509'],
     // InfoCentrum 採已查證辦公室點；大教堂入口右側雙燈處的精確位置未驗證，出發前再確認。
     [51.1075437, 17.0325128, 'Papa Krasnal 小矮人', 'Świdnicka／Kazimierza Wielkiego 路口；小矮人尋寶的具體起點', 'https://www.google.com/maps/search/?api=1&query=Papa%20Krasnal%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/node/309596819'],
     [51.111148, 17.030584, '糖果屋雙屋 Jaś i Małgosia', 'Świętego Mikołaja 1', 'https://www.google.com/maps/search/?api=1&query=Hansel%20and%20Gretel%20Houses%2C%20Wroc%C5%82aw', 'sight', 'https://www.openstreetmap.org/way/101206992'],
