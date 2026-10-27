@@ -1,3 +1,4 @@
+import { daySupplementaryPins, pinCoordinateCheckedAt } from '../src/data/day-maps.js';
 import { fastFoodDiningEntries } from '../src/templates/fast-food.mjs';
 import { pathToFileURL } from 'node:url';
 import { mapPins, mapPinChecks, pinCategoryLegend } from '../src/data/cities.js';
@@ -54,6 +55,22 @@ export function auditMapPins(pins, checks, legend) {
   }
 
   return {total, verified, areaReferences, pending, invalid, issues};
+}
+
+// Day 5 補充點也必須有來源；此處驗資料結構，不宣稱重新查證現地。
+export function auditDay5SupplementaryPins(points = daySupplementaryPins[5], dates = pinCoordinateCheckedAt[5]) {
+  const issues = [];
+  const names = new Set();
+  for (const [lat, lon, name, , url, category, source] of points) {
+    if (!Number.isFinite(lat) || !Number.isFinite(lon) || lat < 51.09 || lat > 51.13 || lon < 17.01 || lon > 17.06) issues.push(`${name} 座標不在樂斯拉夫範圍`);
+    if (!/^https:\/\//.test(url || '')) issues.push(`${name} 缺 HTTPS 導航`);
+    if (!/^https:\/\/www\.openstreetmap\.org\//.test(source || '')) issues.push(`${name} 缺 OSM 來源`);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dates[name] || '')) issues.push(`${name} 缺查證日期`);
+    if (!pinCategoryLegend[category]) issues.push(`${name} 分類無效`);
+    if (names.has(name)) issues.push(`${name} 重複名稱`);
+    names.add(name);
+  }
+  return { total: points.length, issues };
 }
 
 const CITY_NAMES = { warsaw: '華沙', krakow: '克拉科夫', wroclaw: '樂斯拉夫', poznan: '波茲南' };
@@ -167,6 +184,9 @@ function runCli() {
   if (result.pending.length) console.log(`未驗證清單：${result.pending.join('、')}`);
   if (result.invalid.length) console.log(`無效紀錄清單：${result.invalid.join('、')}`);
 
+  const supplementary = auditDay5SupplementaryPins();
+  console.log(`Day 5 補充圖釘：${supplementary.total}，錯誤 ${supplementary.issues.length}`);
+  result.issues.push(...supplementary.issues);
   const coverage = auditDiningPinCoverage();
   console.log('');
   console.log(`餐廳圖釘覆蓋：${coverage.covered}/${coverage.listed}（${Math.round(coverage.covered / coverage.listed * 100)}%）`);

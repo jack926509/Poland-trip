@@ -234,7 +234,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   };
   // UX 1017 H2：地圖圖釘的數字就是時間表第幾列；有圖釘的列在標題前標出同一個數字，方便對照。
   if (dayMap && !dayMap.points.length) dayMap = null;
-  const pinnedSteps = new Set((dayMap?.points || []).map(point => point[8]).filter(Boolean));
+  const pinnedSteps = new Set((dayMap?.points || []).flatMap(point => point[10] || [point[8]]).filter(Boolean));
   // 2026-10-20 UX F3／F21：每一步預設只顯示第一句（要做什麼），其餘收進「展開」；
   // 餐次列只留店名＋時間＋導航，店家細節看「當日餐飲」（店名連到餐廳卡），原說明仍收在「展開」裡不刪。
   // 第一句以句號／分號為界；超過 40 字時改在第 12 字之後的第一個逗號斷開，手機上維持一到兩行。

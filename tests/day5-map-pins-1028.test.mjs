@@ -1,0 +1,78 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { days } from '../src/data/trip.js';
+import { daySupplementaryPins, pinCoordinateCheckedAt } from '../src/data/day-maps.js';
+import { makeDayMap } from '../src/lib/day-map.mjs';
+import { auditDay5SupplementaryPins } from '../tools/audit-map-pins.mjs';
+const day = days.find(d => d.n === 5);
+const points = makeDayMap(day).points;
+const pin = name => points.find(p => p[2] === name);
+
+test('Day 5 六顆修正點採查證座標，新增點有 OSM 來源與日期', () => {
+  for (const [name, lat, lon] of [
+    ['Papa Krasnal 小矮人', 51.1075437, 17.0325128],
+    ['糖果屋雙屋 Jaś i Małgosia', 51.111148, 17.030584],
+    ['國家博物館 Słodki Chłopak', 51.1107113, 17.0475408],
+    ['InfoCentrum', 51.1139403, 17.0458114],
+    ['Piast', 51.10013, 17.03569],
+    ['樂斯拉夫主教座堂', 51.114616, 17.046989],
+  ]) assert.deepEqual(pin(name).slice(0, 2), [lat, lon]);
+  for (const [name, source] of [
+    ['Papa Krasnal 小矮人', 'node/309596819'], ['糖果屋雙屋 Jaś i Małgosia', 'way/101206992'],
+    ['國家博物館 Słodki Chłopak', 'node/1452237509'], ['InfoCentrum', 'node/5246108121'],
+  ]) {
+    assert.equal(pin(name)[6], `https://www.openstreetmap.org/${source}`);
+    assert.equal(pinCoordinateCheckedAt[5][name], '2026-10-27');
+  }
+  const meters = (a, b) => Math.hypot((a[0]-b[0])*111320, (a[1]-b[1])*111320*Math.cos(a[0]*Math.PI/180));
+  assert.ok(meters(pin('Papa Krasnal 小矮人'), [51.108896,17.026714]) > 100);
+  assert.ok(meters(pin('糖果屋雙屋 Jaś i Małgosia'), [51.11169,17.029114]) > 100);
+  assert.match(pin('InfoCentrum')[3], /辦公室.*未驗證.*出發前再確認/);
+  assert.doesNotMatch(pin('Papa Krasnal 小矮人')[3], /地下道旁/);
+  assert.ok(!pin('Dessert Boutique'));
+  for (const name of ['InfoCentrum', '國家博物館 Słodki Chłopak']) {
+    assert.match(pin(name)[4], /search\/\?api=1&query=.*%/);
+    assert.ok(new URL(pin(name)[4]).searchParams.get('query').includes(name));
+  }
+});
+
+const order = [
+  ['Piast','1a·20',[1,20]], ['Papa Krasnal 小矮人','1b',[1]], ['Central Cafe','2',[2]],
+  ['白鸛猶太會堂','3',[3]], ['鹽廣場 Plac Solny','4',[4]], ['中央市集廣場','5',[5]],
+  ['糖果屋雙屋 Jaś i Małgosia','6a',[6]], ['聖伊莉莎白教堂','6b',[6]], ['屠夫巷 Jatki','6c',[6]],
+  ['El Gato Specialty Coffee','7',[7]], ['大學主樓 Uniwersytet Wrocławski','8',[8]],
+  ['Restauracja Wrocławska','10',[10]], ['拉茨瓦維採全景畫（外觀）','11',[11]],
+  ['國家博物館 Słodki Chłopak','12',[12]], ['Hala Targowa 市場大廳','14',[14]], ['Słodowa 島','15',[15]],
+  ['沙上聖母堂','16',[16]], ['座堂橋 Most Tumski','17a',[17]], ['大教堂島 Ostrów Tumski','17b',[17]],
+  ['樂斯拉夫主教座堂','17c',[17]], ['InfoCentrum','18',[18]], ['Wroclavia 購物中心','21',[21]], ['Wrocław Główny','22',[22]],
+];
+test('Day 5 每顆標籤對回時間表列序，走法依列號與 a/b/c 單調', () => {
+  assert.equal(points.length, order.length);
+  for (const [name,label,rows] of order) {
+    assert.equal(pin(name)[9], label);
+    assert.deepEqual(pin(name)[10], rows);
+    for (const row of rows) assert.ok(day.steps[row-1]);
+    assert.deepEqual(label.split('·').map(s => Number.parseInt(s)), rows);
+  }
+  const actual = order.map(([name]) => pin(name)[9].split('·')[0]);
+  assert.deepEqual(actual, [...actual].sort((a,b)=>Number.parseInt(a)-Number.parseInt(b) || a.localeCompare(b)));
+  assert.ok(!points.some(p=>p[10].includes(19)));
+  assert.match(day.steps[10].label, /前往 Panorama/);
+  assert.match(day.steps[11].label, /國家博物館.*Słodki Chłopak/);
+  assert.match(day.steps[17].label, /InfoCentrum/);
+});
+
+test('Day 5 補充點稽核涵蓋有限座標、範圍、HTTPS、來源、日期與重名', () => {
+  assert.deepEqual(auditDay5SupplementaryPins().issues, []);
+  for (const [index,value] of [[0,NaN],[0,52],[1,18],[4,'http://example.com'],[6,null],[5,'invalid']]) {
+    const bad = daySupplementaryPins[5].map(p=>[...p]); bad[0][index]=value;
+    assert.ok(auditDay5SupplementaryPins(bad).issues.length);
+  }
+  assert.ok(auditDay5SupplementaryPins([...daySupplementaryPins[5],daySupplementaryPins[5][0]]).issues.length);
+  assert.ok(auditDay5SupplementaryPins(daySupplementaryPins[5], {}).issues.length);
+});
+
+const otherDays = [[1,[]],[2,[["ibis budget Krakow Stare Miasto",11,"11"],["Kraków Główny",10,"10"]]],[3,[["Auschwitz I 訪客服務中心／入口",4,"4"],["Auschwitz II–Birkenau 主入口",null,null]]],[4,[["ibis budget Krakow Stare Miasto",9,"9"],["維利奇卡鹽礦 Daniłowicz Shaft",4,"4"],["Sztolnia Wieliczka",5,"5"],["Obwarzanek Krakowski - Tunel",8,"8"],["Wieliczka Rynek-Kopalnia 車站",6,"6"],["Kraków Główny",10,"10"]]],[6,[["舊市集廣場 Stary Rynek",11,"11"],["大教堂島 Ostrów Tumski",7,"7a"],["Poznan Apartments Towarowa",20,"20"],["波茲南主教座堂",7,"7b"],["波茲南市政廳・山羊鐘樓",12,"12"],["Stary Browar",15,"15"],["帝王城堡 Zamek Cesarski（外觀）",18,"18"],["Poznań Główny",21,"21"],["Charlotte Krysiewicza",2,"2"],["Cytadela「Nierozpoznani」",4,"4"],["Śródka 壁畫",6,"6"],["Weranda Caffe",10,"10"],["皇家城堡山丘（Przemysł 王城）",9,"9"],["ROGAL Świętomarciński",13,"13"],["自由廣場 Plac Wolności",14,"14"],["Okrąglak 圓形百貨",17,"17"],["Carla Trattoria Moderna",16,"16"],["Kaponiera「5 Figur」",19,"19"]]],[7,[["皇家城堡",15,"15"],["科學文化宮觀景台",2,"2b"],["Pijalnia Czekolady E.Wedel（巧克力）",31,"31"],["Hotel Metropol",28,"28"],["哥白尼紀念碑 Pomnik Kopernika",21,"21a"],["聖十字教堂 Kościół św. Krzyża",20,"20"],["總統府（外觀）",18,"18a"],["Café Bristol",18,"18b"],["訪親會教堂 Kościół Wizytek",19,"19a"],["普魯斯紀念碑",19,"19b"],["Ostrogski 宮（外觀）",21,"21b"],["河岸美人魚像 Syrena",22,"22"],["華沙老城市場廣場",11,"11"],["POLIN 波蘭猶太人歷史博物館（外觀）",4,"4"],["BUW 華沙大學圖書館屋頂花園",23,"23"],["瓦津基公園 · 蕭邦紀念碑",25,"25"],["Soul Kitchen",30,"30"],["Bułkę przez Bibułkę",1,"1"],["MSN 現代美術館",2,"2a"],["克拉辛斯基廣場・起義紀念碑",5,"5"],["新城廣場 Rynek Nowego Miasta",6,"6"],["聖母訪親教堂",7,"7"],["Freta 16 居禮夫人出生地",8,"8"],["甕城 Barbakan",9,"9"],["聖若望大教堂",13,"13"],["聖馬丁教堂",14,"14"],["聖安妮教堂（外觀）",16,"16"],["Polka",17,"17"],["水上宮殿 Pałac na Wyspie",26,"26"]]],[8,[["Hotel Metropol",1,"1"],["棕櫚樹圓環",9,"9"],["劇院廣場・大劇院",5,"5"],["無名塚 Grób Nieznanego Żołnierza",4,"4"],["Bułkę przez Bibułkę",7,"7"],["Warszawa Centralna",12,"12b"],["Warszawa Śródmieście",12,"12a"],["Warszawa Lotnisko Chopina 機場鐵路站",null,null]]]];
+test('其他天的圖釘編號保持原樣', () => {
+  assert.deepEqual(days.filter(d=>d.n!==5).map(d=>[d.n,makeDayMap(d).points.map(p=>[p[2],p[8],p[9]])]), otherDays);
+});
