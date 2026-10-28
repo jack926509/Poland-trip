@@ -1,4 +1,7 @@
 import { test } from 'node:test';
+import { readFileSync } from 'node:fs';
+import { diningPlaces } from '../src/data/dining-places.js';
+import { dayOperations } from '../src/data/travel-database.js';
 import assert from 'node:assert/strict';
 import { days, todoGroups } from '../src/data/trip.js';
 import { dayDining } from '../src/data/day-dining.js';
@@ -36,6 +39,7 @@ test('Day 6 09:00 新時間線、餐段與已購列車及華沙晚間時間保�
 test('Day 6 置物櫃、電車資訊與舊行程及隱私防護', () => {
   const text = JSON.stringify({day, dining:dayDining[6], points, todos:todoGroups.flatMap(g => g.items).filter(i => i.date === '10/29')});
   assert.doesNotMatch(text, /Cytadela|Charlotte Krysiewicza|Weranda|Carla|Armii Poznań|Nierozpoznani|寄放公寓/);
+  assert.doesNotMatch(text, /需提早寄好行李/);
   assert.doesNotMatch(text, /PNR|訂位編號|票號[:：\s]*[A-Z0-9]|座位(?:號)?[:：\s]*\d|電話確認|打電話|颱風/);
   const storage = day.steps.find(s => s.t === '09:10').sub;
   for (const pattern of [/24 小時/, /20 zł/, /25 zł/, /TripAdvisor/, /感應付款/, /出發前再確認/, /Radical Storage Dworcowa 1/, /06:00–21:00/, /15 zł/]) assert.match(storage, pattern);
@@ -86,4 +90,32 @@ test('Day 6 新增圖釘使用 Nominatim 查證座標、具體 OSM 來源與日�
   assert.match(pin('Rogalowe Muzeum')[3], /門牌建物/);
   assert.ok(!points.some(p => /1956/.test(p[2])));
   assert.match(day.steps[15].sub, /1956 年六月事件紀念碑（座標未驗證）/);
+});
+
+
+test('Day 6 車站與公寓導航綁定新列名，按鈕數量不低於 main', () => {
+  const html = readFileSync(new URL('../dist/day-06.html', import.meta.url), 'utf8');
+  const operation = dayOperations[6];
+  for (const [time, name] of [['09:00', 'Poznan Apartments'], ['09:10', 'Poznań Główny'], ['16:00', 'Poznań Główny'], ['17:10', 'Poznań Główny']]) {
+    const step = day.steps.find(s => s.t === time);
+    assert.ok(operation.addresses.some(a => a.reliable && a.name.includes(name) && a.stepLabels.includes(step.label)), time);
+    assert.ok(!operation.unresolvedSteps.some(s => s.label === step.label), time);
+    const row = html.split('<tr').find(row => row.includes(`<b>${time}</b>`));
+    assert.match(row || '', /class="step-nav"/);
+    assert.ok(row.includes(`在新視窗開啟 ${name}`), time);
+  }
+  for (const [name, minimum] of [['Poznań Główny', 2], ['Poznan Apartments', 3]]) {
+    assert.ok([...html.matchAll(/aria-label="在新視窗開啟 ([^"]+?)(?: 的 Google Maps)? 導航"/g)].filter(m => m[1].includes(name)).length >= minimum, name);
+  }
+});
+
+test('Weranda 舊安排與無依據的餐廳備案及訂位標記不再出現', () => {
+  const standalone = readFileSync(new URL('../poland-travel-guide-2026.html', import.meta.url), 'utf8');
+  const city = readFileSync(new URL('../dist/city-poznan.html', import.meta.url), 'utf8');
+  const database = readFileSync(new URL('../src/data/travel-database.js', import.meta.url), 'utf8');
+  for (const text of [JSON.stringify(diningPlaces), standalone, city, database]) {
+    assert.doesNotMatch(text, /10\/29 11:05 從皇家城堡山丘下來進來坐|等 12:00 山羊秀|需提早寄好行李|Manekin 客滿/);
+  }
+  assert.match(diningPlaces['poznan-weranda-caffe'].notes.join(' '), /未排入 10\/29 主行程/);
+  for (const id of ['poznan-manekin', 'poznan-stary-browar-food-hall']) assert.ok(!Object.hasOwn(diningPlaces[id], 'booking'));
 });

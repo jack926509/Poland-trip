@@ -128,7 +128,7 @@ export const photoSpots = [
   {id:'wro-rynek', lightPhase:'daylight', cityKey:'WRO', name:'市政廳東立面與彩色老屋', day:5, bestTime:'09:00–10:15', viewpoint:'Aleksander Fredro 紀念碑北側、舊市政廳東立面前', direction:'鏡頭朝西北拍市政廳哥德山牆；再移到廣場西側回拍東側彩色商人屋', light:'上午先拍受光的市政廳東立面；彩色屋若逆光，改用 2× 鏡頭壓縮北側立面。', mapUrl:'https://www.google.com/maps/search/?api=1&query=51.109957%2C17.032141'},
   {id:'wro-dwarfs', lightPhase:'dusk', cityKey:'WRO', name:'座堂島煤氣燈與點燈人', day:5, bestTime:'15:35–17:00', viewpoint:'InfoCentrum（pl. Katedralny 1），大教堂入口右側雙燈處；座標未驗證，依地址找現場入口', direction:'鏡頭朝東，以煤氣燈作近景、主教座堂雙塔作消失點；看到點燈人時保持路徑暢通、不貼身跟拍', light:"點燈人約 15:20–16:05 之間開始，無固定場次，出發前再確認；官方來源互相矛盾：InfoCentrum 頁說日落前約 30 分（約 16:03），市府報導說冬季約 15:20。日落約 16:33–16:34，16:30–17:05 藍調時刻，17:00 離島。暗處用夜景模式並鎖住高光。", mapUrl:'https://www.google.com/maps/search/?api=1&query=51.114364%2C17.045103'},
   {id:'poz-rynek', lightPhase:'daylight', cityKey:'POZ', name:'舊市集廣場・市政廳與商人屋', day:6, bestTime:'11:55–12:05', viewpoint:'Prozerpina 噴泉西南側、面向市政廳東立面與彩色商人屋', direction:'鏡頭朝西北；11:55 就位後不要離開這一側，可同時卡位拍 12:00 山羊從塔樓上方出現', light:'接近正午時市政廳東立面較明亮；山羊很小，建議先準備 2×–3× 鏡頭或長焦。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.408527%2C16.935031'},
-  {id:'poz-tumski', lightPhase:'daylight', cityKey:'POZ', name:'Jordan 橋上的波茲南主教座堂', day:6, bestTime:'09:00–10:30', viewpoint:'Most Biskupa Jordana 橋東側約三分之一處，靠 Śródka 一端', direction:'鏡頭朝西南，以橋欄杆引導視線到主教座堂雙塔；直幅可加入橋上行人增加尺度', light:'上午從 Śródka 側取景可得到側光；站在橋邊而非車道中央，避開通行中的單車與行人。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.412619%2C16.951091'},
+  {id:'poz-tumski', lightPhase:'daylight', cityKey:'POZ', name:'Jordan 橋上的波茲南主教座堂', day:6, bestTime:'09:44–10:35', viewpoint:'Most Biskupa Jordana 橋東側約三分之一處，靠 Śródka 一端', direction:'鏡頭朝西南，以橋欄杆引導視線到主教座堂雙塔；直幅可加入橋上行人增加尺度', light:'上午從 Śródka 側取景可得到側光；站在橋邊而非車道中央，避開通行中的單車與行人。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.412619%2C16.951091'},
 ];
 
 // licenseUrl：CC 授權要求提供「授權條款本身」的 URI，不是照片來源頁（url 欄位）。
@@ -363,6 +363,6 @@ export const attractions = {
     {name:"大教堂島 Ostrów Tumski", tag:"古城", mapUrl:"https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E6%95%99%E5%A0%82%E5%B3%B6%20Ostr%C3%B3w%20Tumski%20Pozna%C5%84", venueId:null, extra:"波蘭建國搖籃"},
     {name:"Palmiarnia 棕櫚屋", tag:"暫時閉館", mapUrl:venues['poznan-palmiarnia'].map, venueId:"poznan-palmiarnia", extra:"因現代化與改建工程對外暫時閉館，官方未公布重開日期（公告見 palmiarnia.poznan.pl，另指向 pim.poznan.pl）。行程期間無法入內，也不要當雨天室內備案"},
     {name:"考古博物館", tag:"室內", mapUrl:venues['poznan-archaeological-museum'].map, venueId:"poznan-archaeological-museum", extra:"全票 20／優待 15、家庭票 50，與 Genius loci 聯票 30／25 · 官網列週二免費，平台摘要不同；10/29 先按付費規劃、購票前再查 · 學期季（9/1–6/30）二–四 09:00–16:00、五 10:00–17:00、六 11:00–18:00、日 12:00–16:00"},
-    {name:"Stary Browar · Śródka 壁畫", tag:"戶外／購物", mapUrl:venues['poznan-stary-browar'].map, venueId:"poznan-stary-browar", extra:"Śródka 有壁畫街拍點"},
+    {name:"Stary Browar · Malta 湖", tag:"戶外／購物", mapUrl:venues['poznan-stary-browar'].map, venueId:"poznan-stary-browar", extra:"Śródka 有壁畫街拍點"},
   ],
 };

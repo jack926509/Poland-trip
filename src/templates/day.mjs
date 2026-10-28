@@ -205,7 +205,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   // 時間表每列的導航：沿用「現場地址」(operation.addresses) 與三餐主安排的導航網址，
   // 不另建資料。一列只在恰好對到一個可靠地點時才給按鈕，對不到就不顯示，不猜。
   const stepNavigation = step => {
-    if (day.n === 6 && ['退房、寄放行李', '取行李、前往 Poznań Główny'].includes(step.label)) {
+    if (day.n === 6 && ['退房、離開 Poznan Apartments Towarowa'].includes(step.label)) {
       const apartment = operation.addresses.find(item => /Poznan Apartments/.test(item.name));
       const href = safeHttpsUrl(apartment?.url);
       if (href) return { href, name: apartment.name };
@@ -441,7 +441,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
         <span class="section-num">Day ${String(day.n).padStart(2, '0')} · ${escapeHtml(day.date)}</span>
         <h1>${keepShort(escapeHtml(day.title)).replaceAll(' + ', ' +\u00a0')}</h1>
         <p class="hero-dek">${escapeHtml(day.headline)}</p>
-        ${renderDayStayLine(day)}
+        ${renderDayStayLine(day, day.n === 6 ? operation?.addresses.find(item => /Poznan Apartments/.test(item.name)) : null)}
       </div>
 ${coverHtml}
     </header>

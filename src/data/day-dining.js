@@ -349,7 +349,7 @@ export const dayDiningPlans = {
     {
       "placeId": "poznan-inna-piekarnia",
       "role": "早餐備案（不列順位）",
-      "note": "Ratajczaka 39，週一至週六 08:30 起：Butter Croissant、麵包與咖啡；11:00 Manekin 客滿時的早餐備案。",
+      "note": "Ratajczaka 39，週一至週六 08:30 起：Butter Croissant、麵包與咖啡；只當早餐備案。",
       "stepId": null,
       "planStatus": "candidate"
     },

@@ -4,7 +4,6 @@
 export const diningPlaces = {
   "poznan-manekin": {
     "id": "poznan-manekin",
-    "booking": "walk-in",
     "cityKey": "poznan",
     "name": "Manekin",
     "address": "Kwiatowa 3, Poznań",
@@ -28,7 +27,6 @@ export const diningPlaces = {
   },
   "poznan-stary-browar-food-hall": {
     "id": "poznan-stary-browar-food-hall",
-    "booking": "walk-in",
     "cityKey": "poznan",
     "name": "Stary Browar Food Hall",
     "address": "Półwiejska 42, Poznań",
@@ -1130,7 +1128,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "Świętosławska 10，舊城市場旁，庭院座位安靜，全天供應早餐；週四 09:00 才開，不當早餐；10/29 11:05 從皇家城堡山丘下來進來坐，等 12:00 山羊秀。"
+      "Świętosławska 10，舊城市場旁，庭院座位安靜，全天供應早餐；週四 09:00 才開，不當早餐；未排入 10/29 主行程。"
     ],
     "verificationNote": "官網確認門市與時段；Stary Browar 另有分店。",
     "hoursNote": "Weranda Family 官網",
@@ -2006,7 +2004,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "Butter Croissant、麵包與咖啡；08:30 才開，作為 Manekin 客滿時的早餐備案。"
+      "Butter Croissant、麵包與咖啡；08:30 才開，作為 Manekin 之後的第二順位早餐。"
     ],
     "menuUrl": null,
     "verificationNote": "Ratajczaka 39 分店；另有 Garbary 26 分店。",
