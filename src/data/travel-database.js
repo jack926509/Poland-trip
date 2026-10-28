@@ -355,7 +355,7 @@ const addressStepLabels = {
   '百年廳 Hala Stulecia': [],
   '樂斯拉夫中央廣場': ['★ 中央廣場 Rynek + 紡織會館'],
   '樂斯拉夫主教座堂': ['★ 座堂橋 → 座堂島'],
-  'Poznań Główny': ['抵 Poznań Główny', 'Poznań Główny 置物櫃寄放行李', 'Poznań Główny 取行李', '抵 Poznań Główny 月台'],
+  'Poznań Główny': ['抵 Poznań Główny', '抵 Poznań Główny 月台'],
   '波茲南主教座堂': ['★ 教堂島 Ostrów Tumski'],
   '波茲南市政廳': ['廣場卡正面位置', '★ 山羊鐘樓秀'],
   '帝王城堡（外觀）': ['★ 聖馬丁街帝王區'],
@@ -489,7 +489,7 @@ export const dayOperations = {
         officialUrl: diningPlaces['poznan-rogal'].sourceUrl,
         stepLabels: ['★ 聖馬丁牛角麵包 (PGI)'],
       },
-      accommodationAddress('poznan-towarowa', ['退房、離開 Poznan Apartments Towarowa']),
+      accommodationAddress('poznan-towarowa'),
       accommodationAddress('warsaw-metropol', ['入住 Hotel Metropol、放行李', '回 Hotel Metropol']),
     ],
     navigation: [
@@ -632,6 +632,9 @@ const unresolvedStepReasons = {
     'IC 260 前往波茲南': dynamicTransitReason,
   },
   6: {
+    '退房、離開 Poznan Apartments Towarowa': '回原住宿退房，導航見時間表。',
+    'Poznań Główny 置物櫃寄放行李': '車站內置物櫃位置與空位依現場確認，車站導航見時間表。',
+    'Poznań Główny 取行李': '車站內領取行李，車站導航見時間表。',
     '電車 6 往 Rondo Śródka': '乘車站位與班次依當日 ZTM／Jakdojade 確認。',
     '★ Śródka 立體壁畫': '戶外壁畫，見當日地圖圖釘。',
     '走 Chwaliszewo 到 Manekin': '步行路段，目的地導航見早餐餐廳。',

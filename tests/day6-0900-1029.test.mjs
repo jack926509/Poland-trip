@@ -93,18 +93,19 @@ test('Day 6 新增圖釘使用 Nominatim 查證座標、具體 OSM 來源與日�
 });
 
 
-test('Day 6 車站與公寓導航綁定新列名，按鈕數量不低於 main', () => {
+test('Day 6 車站與公寓導航綁定新列名，每日頁保留逐列導航（公寓移除頁首重複連結）', () => {
   const html = readFileSync(new URL('../dist/day-06.html', import.meta.url), 'utf8');
   const operation = dayOperations[6];
   for (const [time, name] of [['09:00', 'Poznan Apartments'], ['09:10', 'Poznań Główny'], ['16:00', 'Poznań Główny'], ['17:10', 'Poznań Główny']]) {
     const step = day.steps.find(s => s.t === time);
-    assert.ok(operation.addresses.some(a => a.reliable && a.name.includes(name) && a.stepLabels.includes(step.label)), time);
-    assert.ok(!operation.unresolvedSteps.some(s => s.label === step.label), time);
+    assert.equal(operation.addresses.some(a => a.reliable && a.name.includes(name) && a.stepLabels.includes(step.label)), time === '17:10', time);
+    assert.equal(operation.unresolvedSteps.some(s => s.label === step.label), time !== '17:10', time);
     const row = html.split('<tr').find(row => row.includes(`<b>${time}</b>`));
     assert.match(row || '', /class="step-nav"/);
+    assert.equal((row.match(/class="step-nav"/g) || []).length, 1, time);
     assert.ok(row.includes(`在新視窗開啟 ${name}`), time);
   }
-  for (const [name, minimum] of [['Poznań Główny', 2], ['Poznan Apartments', 3]]) {
+  for (const [name, minimum] of [['Poznań Główny', 2], ['Poznan Apartments', 2]]) {
     assert.ok([...html.matchAll(/aria-label="在新視窗開啟 ([^"]+?)(?: 的 Google Maps)? 導航"/g)].filter(m => m[1].includes(name)).length >= minimum, name);
   }
 });
@@ -118,4 +119,28 @@ test('Weranda 舊安排與無依據的餐廳備案及訂位標記不再出現', 
   }
   assert.match(diningPlaces['poznan-weranda-caffe'].notes.join(' '), /未排入 10\/29 主行程/);
   for (const id of ['poznan-manekin', 'poznan-stary-browar-food-hall']) assert.ok(!Object.hasOwn(diningPlaces[id], 'booking'));
+});
+
+
+test('Day 6 今日下一站三筆行李列保留原 sub，17:10 顯示車站地址', () => {
+  const html = readFileSync(new URL('../dist/today.html', import.meta.url), 'utf8');
+  const card = html.split('<article class="today-card"').find(part => part.includes('data-today-date="2026-10-29"'));
+  assert.ok(card);
+  for (const time of ['09:00', '09:10', '16:00', '17:10']) {
+    const step = day.steps.find(s => s.t === time);
+    const minute = Number(time.slice(0, 2)) * 60 + Number(time.slice(3));
+    const block = card.split('<div class="today-next-step"').find(part => part.startsWith(` data-next-step data-plan-minute="${minute}"`));
+    assert.ok(block, time);
+    const sub = block.match(/<p class="today-next-sub"[^>]*>(.*?)<\/p>/s)?.[1];
+    if (time === '17:10') {
+      const station = dayOperations[6].addresses.find(a => a.name === 'Poznań Główny');
+      assert.equal(sub, `${station.address} · ${station.entranceNote}`);
+    } else {
+      assert.equal(sub, step.sub, time);
+      assert.doesNotMatch(sub, /取鑰匙/);
+    }
+  }
+  const daily = readFileSync(new URL('../dist/day-06.html', import.meta.url), 'utf8');
+  assert.doesNotMatch(daily, /退房住宿導航/);
+  assert.match(diningPlaces['poznan-inna-piekarnia'].notes.join(' '), /早餐備案（不列順位）/);
 });

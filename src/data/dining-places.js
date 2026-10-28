@@ -2004,7 +2004,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "Butter Croissant、麵包與咖啡；08:30 才開，作為 Manekin 之後的第二順位早餐。"
+      "Butter Croissant、麵包與咖啡；08:30 才開，早餐備案（不列順位）。"
     ],
     "menuUrl": null,
     "verificationNote": "Ratajczaka 39 分店；另有 Garbary 26 分店。",

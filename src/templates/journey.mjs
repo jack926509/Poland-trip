@@ -1,4 +1,3 @@
-import { safeHttpsUrl } from '../lib/html.mjs';
 import { escapeAttr as esc } from '../lib/html.mjs';
 import { days } from '../data/trip.js';
 import { nightStay, checkoutStay, dayHref, isDepartureDay } from '../lib/journey.mjs';
@@ -8,12 +7,10 @@ import { cityGuides } from '../lib/city-guide.mjs';
  * 每日頁頁首摘要卡裡的「今晚住哪」一行（2026-10-20 UX F1：住宿縮成一行併入摘要卡，
  * 讓時間表第一筆進得了手機第一屏）。門牌待確認、今天退房仍在同一行標出。
  */
-export function renderDayStayLine(day, checkoutNavigation = null) {
+export function renderDayStayLine(day) {
   const hotel = nightStay(day), checkout = checkoutStay(day);
   const text = hotel ? `${esc(hotel.city)} · ${esc(hotel.name)}（${esc(hotel.status)}）` : day.overnight ? esc(day.overnight) : isDepartureDay(day) ? '離境／機上過夜' : '⚠ 住宿資料缺漏，請確認';
-  const checkoutHref = safeHttpsUrl(checkoutNavigation?.url);
-  const checkoutLink = checkout && checkoutHref ? ` · <a href="${checkoutHref}" target="_blank" rel="noopener noreferrer" aria-label="在新視窗開啟 ${esc(checkout.name)} 導航">退房住宿導航 ↗</a>` : '';
-  return `<p class="day-stay-line"><b>今晚：</b>${text}${hotel && !hotel.addressVerified ? ' · 飯店門牌待確認' : ''}${checkout ? ` · 今天從 ${esc(checkout.name)} 退房` : ''}${checkoutLink}</p>`;
+  return `<p class="day-stay-line"><b>今晚：</b>${text}${hotel && !hotel.addressVerified ? ' · 飯店門牌待確認' : ''}${checkout ? ` · 今天從 ${esc(checkout.name)} 退房` : ''}</p>`;
 }
 
 /** 頁底的行程銜接：行李說明與「全程動線／城市指南／住宿與交通詳情」膠囊（F1 從頁首移到頁底）。 */
