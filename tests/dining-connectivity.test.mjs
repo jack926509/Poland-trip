@@ -97,8 +97,8 @@ test('餐段引用必須存在；未安排餐段必須明說，不自動假設�
   }
   assert.match(mealTiming(dayDining[5].find(x=>x.placeId==='wroclaw-restauracja-wroclawska'),trip.days[4]),/行程預留 12:00/);
   assert.match(mealTiming(dayDining[2].find(x=>x.placeId==='krakow-pimiento-shop-bistro'),trip.days[1]),/未排|不採用/);
-  assert.match(mealTiming(dayDining[6].find(x=>x.placeId==='poznan-carla-trattoria-moderna'),trip.days[5]),/行程預留 14:00/);
-  assert.match(mealTiming(dayDining[6].find(x=>x.placeId==='poznan-pyra-bar'),trip.days[5]),/未排|不採用/); // 10/29 午餐改 Carla，Pyra Bar 降為備案
+  assert.match(mealTiming(dayDining[6].find(x=>x.placeId==='poznan-stary-browar-food-hall'),trip.days[5]),/行程預留 13:00/);
+  assert.match(mealTiming(dayDining[6].find(x=>x.placeId==='poznan-pyra-bar'),trip.days[5]),/未排|不採用/); // 10/29 午餐改 Stary Browar Food Hall，Pyra Bar 降為備案
   // 2026-10-20 今日卡改一屏儀表板，完整餐飲（含候選）只在每日頁，這裡改驗每日頁。
   const html=fs.readFileSync(new URL('../dist/day-02.html',import.meta.url),'utf8');
   assert.ok(html.includes('候選未排時段'));

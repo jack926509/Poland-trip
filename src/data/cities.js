@@ -18,7 +18,7 @@ export const cities = [
   {key:'WAW', name:'華沙', pl:'Warszawa', tag:'CAPITAL', vibe:'鋼鐵摩天 × 重建老城', highlights:['Krakowskie Przedmieście','老城與城堡廣場','瓦津基水上宮殿（週五免費）'], photo:{hero:'assets/photos/warszawa-hero.webp',thumb:'assets/photos/warszawa-thumb.webp',og:'assets/og/warszawa-og.jpg'}},
   {key:'KRK', name:'克拉科夫', pl:'Kraków', tag:'OLD WORLD', vibe:'中世紀石板路 × 千年王城', highlights:['Wawel 城堡','中央市集 Rynek','Auschwitz 一日往返','Kazimierz 猶太區'], photo:{hero:'assets/photos/krakow-hero.webp',thumb:'assets/photos/krakow-thumb.webp',og:'assets/og/krakow-og.jpg'}},
   {key:'WRO', name:'樂斯拉夫', pl:'Wrocław', tag:'1000+ DWARFS', vibe:'千尊小矮人 × 煤氣燈點燈', highlights:['百年廳 UNESCO（外觀）','座堂島 Ostrów Tumski','糖果屋雙屋','大學區'], photo:{hero:'assets/photos/wroclaw-hero.webp',thumb:'assets/photos/wroclaw-thumb.webp',og:'assets/og/wroclaw-og.jpg',detail:'assets/photos/wroclaw-ostrow-tumski-night.webp',detailAlt:'夜色中的樂斯拉夫座堂島與河岸燈光',detailCaption:'座堂島入夜後的河岸燈光 · Day 5 日落前後散步重點',detailHeight:853,detailAuthor:'Jg44.89',detailLicense:'CC BY 4.0',detailLicenseUrl:'https://creativecommons.org/licenses/by/4.0/',detailSource:'https://commons.wikimedia.org/wiki/File:Ostr%C3%B3w_Tumski_Wroc%C5%82aw.jpg'}},
-  {key:'POZ', name:'波茲南', pl:'Poznań', tag:'CRADLE', vibe:'波蘭文明發源 × 山羊報時', highlights:['教堂島 Ostrów Tumski','12:00 山羊鐘樓秀','聖馬丁牛角麵包 PGI','Cytadela 無頭人像'], photo:{hero:'assets/photos/poznan-hero.webp',thumb:'assets/photos/poznan-thumb.webp',og:'assets/og/poznan-og.jpg',detail:'assets/photos/poznan-old-market.webp',detailAlt:'波茲南舊市集廣場周圍的彩色老屋',detailCaption:'舊市集廣場周圍的彩色老屋 · Day 6 正午山羊報時周邊',detailHeight:960,detailAuthor:'Mariochom',detailLicense:'CC BY-SA 4.0',detailLicenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',detailSource:'https://commons.wikimedia.org/wiki/File:Pozna%C5%84-Old_Market_Square.jpg'}},
+  {key:'POZ', name:'波茲南', pl:'Poznań', tag:'CRADLE', vibe:'波蘭文明發源 × 山羊報時', highlights:['教堂島 Ostrów Tumski','12:00 山羊鐘樓秀','聖馬丁牛角麵包 PGI','Fara 粉紅教堂'], photo:{hero:'assets/photos/poznan-hero.webp',thumb:'assets/photos/poznan-thumb.webp',og:'assets/og/poznan-og.jpg',detail:'assets/photos/poznan-old-market.webp',detailAlt:'波茲南舊市集廣場周圍的彩色老屋',detailCaption:'舊市集廣場周圍的彩色老屋 · Day 6 正午山羊報時周邊',detailHeight:960,detailAuthor:'Mariochom',detailLicense:'CC BY-SA 4.0',detailLicenseUrl:'https://creativecommons.org/licenses/by-sa/4.0/',detailSource:'https://commons.wikimedia.org/wiki/File:Pozna%C5%84-Old_Market_Square.jpg'}},
 ];
 
 Object.assign(cities.find(city => city.key === 'WAW').photo, {
@@ -111,9 +111,9 @@ export const cityStories = [
       {title:'一場陽台演說點燃的起義', text:'Stary Rynek 旁的 Hotel Bazar（1841）是波蘭民族運動的據點：1918 年 12 月 26 日鋼琴家帕德瑞夫斯基在此陽台向群眾演說，隔日爆發大波蘭起義，最終讓這片土地回歸波蘭。（常見的「蕭邦曾在此下榻」說法不成立——蕭邦 1830 年 11 月離開波蘭後終生未再返國，Bazar 晚了 11 年才開幕。）'},
     ],
     onSite:[
-      '11:45 前到 Stary Rynek 卡位看山羊（只演一次，錯過等明天）',
+      '11:55 到 Stary Rynek 卡位看 12:00 山羊鐘（另有 15:00 場，本次機械不動就不重排）',
       '市政廳文藝復興立面：波蘭最美的市政廳之一，1550s 義大利建築師 di Quadro 之作',
-      '帝王城堡由德皇威廉二世興建，二戰時曾改作希特勒行館——這趟只在帝王區步行時看外觀，16:15 從 Kaponiera 回 Towarowa 取行李趕車',
+      '帝王城堡由德皇威廉二世興建，二戰時曾改作希特勒行館——這趟只在帝王區步行時看外觀，15:45 從 Kaponiera 回 Główny、約 16:00 取行李趕車',
     ],
   },
 ];
@@ -127,7 +127,7 @@ export const photoSpots = [
   {id:'krk-kazimierz', lightPhase:'daylight', cityKey:'KRK', name:'Kazimierz・Szeroka 街', day:null, bestTime:'城市延伸', viewpoint:'Szeroka 24 舊猶太會堂前廣場，面向 Szeroka 街北端', direction:'鏡頭朝西北，以老會堂磚牆或街邊招牌作前景；35 mm 比超廣角更能保留街道層次', light:'城市延伸攝影參考，未排入 10/27 動線。', mapUrl:'https://www.google.com/maps/search/?api=1&query=50.051531%2C19.949142'},
   {id:'wro-rynek', lightPhase:'daylight', cityKey:'WRO', name:'市政廳東立面與彩色老屋', day:5, bestTime:'09:00–10:15', viewpoint:'Aleksander Fredro 紀念碑北側、舊市政廳東立面前', direction:'鏡頭朝西北拍市政廳哥德山牆；再移到廣場西側回拍東側彩色商人屋', light:'上午先拍受光的市政廳東立面；彩色屋若逆光，改用 2× 鏡頭壓縮北側立面。', mapUrl:'https://www.google.com/maps/search/?api=1&query=51.109957%2C17.032141'},
   {id:'wro-dwarfs', lightPhase:'dusk', cityKey:'WRO', name:'座堂島煤氣燈與點燈人', day:5, bestTime:'15:35–17:00', viewpoint:'InfoCentrum（pl. Katedralny 1），大教堂入口右側雙燈處；座標未驗證，依地址找現場入口', direction:'鏡頭朝東，以煤氣燈作近景、主教座堂雙塔作消失點；看到點燈人時保持路徑暢通、不貼身跟拍', light:"點燈人約 15:20–16:05 之間開始，無固定場次，出發前再確認；官方來源互相矛盾：InfoCentrum 頁說日落前約 30 分（約 16:03），市府報導說冬季約 15:20。日落約 16:33–16:34，16:30–17:05 藍調時刻，17:00 離島。暗處用夜景模式並鎖住高光。", mapUrl:'https://www.google.com/maps/search/?api=1&query=51.114364%2C17.045103'},
-  {id:'poz-rynek', lightPhase:'daylight', cityKey:'POZ', name:'舊市集廣場・市政廳與商人屋', day:6, bestTime:'11:00–12:15', viewpoint:'Prozerpina 噴泉西南側、面向市政廳東立面與彩色商人屋', direction:'鏡頭朝西北；11:45 後不要離開這一側，可同時卡位拍 12:00 山羊從塔樓上方出現', light:'接近正午時市政廳東立面較明亮；山羊很小，建議先準備 2×–3× 鏡頭或長焦。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.408527%2C16.935031'},
+  {id:'poz-rynek', lightPhase:'daylight', cityKey:'POZ', name:'舊市集廣場・市政廳與商人屋', day:6, bestTime:'11:55–12:05', viewpoint:'Prozerpina 噴泉西南側、面向市政廳東立面與彩色商人屋', direction:'鏡頭朝西北；11:55 就位後不要離開這一側，可同時卡位拍 12:00 山羊從塔樓上方出現', light:'接近正午時市政廳東立面較明亮；山羊很小，建議先準備 2×–3× 鏡頭或長焦。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.408527%2C16.935031'},
   {id:'poz-tumski', lightPhase:'daylight', cityKey:'POZ', name:'Jordan 橋上的波茲南主教座堂', day:6, bestTime:'09:00–10:30', viewpoint:'Most Biskupa Jordana 橋東側約三分之一處，靠 Śródka 一端', direction:'鏡頭朝西南，以橋欄杆引導視線到主教座堂雙塔；直幅可加入橋上行人增加尺度', light:'上午從 Śródka 側取景可得到側光；站在橋邊而非車道中央，避開通行中的單車與行人。', mapUrl:'https://www.google.com/maps/search/?api=1&query=52.412619%2C16.951091'},
 ];
 
@@ -363,6 +363,6 @@ export const attractions = {
     {name:"大教堂島 Ostrów Tumski", tag:"古城", mapUrl:"https://www.google.com/maps/search/?api=1&query=%E5%A4%A7%E6%95%99%E5%A0%82%E5%B3%B6%20Ostr%C3%B3w%20Tumski%20Pozna%C5%84", venueId:null, extra:"波蘭建國搖籃"},
     {name:"Palmiarnia 棕櫚屋", tag:"暫時閉館", mapUrl:venues['poznan-palmiarnia'].map, venueId:"poznan-palmiarnia", extra:"因現代化與改建工程對外暫時閉館，官方未公布重開日期（公告見 palmiarnia.poznan.pl，另指向 pim.poznan.pl）。行程期間無法入內，也不要當雨天室內備案"},
     {name:"考古博物館", tag:"室內", mapUrl:venues['poznan-archaeological-museum'].map, venueId:"poznan-archaeological-museum", extra:"全票 20／優待 15、家庭票 50，與 Genius loci 聯票 30／25 · 官網列週二免費，平台摘要不同；10/29 先按付費規劃、購票前再查 · 學期季（9/1–6/30）二–四 09:00–16:00、五 10:00–17:00、六 11:00–18:00、日 12:00–16:00"},
-    {name:"Stary Browar · Malta 湖 · Citadel 公園", tag:"戶外／購物", mapUrl:venues['poznan-stary-browar'].map, venueId:"poznan-stary-browar", extra:"Śródka 有壁畫街拍點"},
+    {name:"Stary Browar · Śródka 壁畫", tag:"戶外／購物", mapUrl:venues['poznan-stary-browar'].map, venueId:"poznan-stary-browar", extra:"Śródka 有壁畫街拍點"},
   ],
 };

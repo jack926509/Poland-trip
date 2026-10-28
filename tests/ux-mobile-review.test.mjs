@@ -116,15 +116,15 @@ test('第 5 項：待辦頁每類先列未完成（依日期），已完成收�
 test('第 6 項：行程說明不再夾帶查核筆記，資訊移到待辦；今日卡抵達時間未知只寫「發車」', () => {
   // 2026-10-14 新行程不進全景畫，原本以全景畫為例；改用 10/29 公寓寄放行李：
   // 行程步驟只寫要做什麼，官網查核日期與內容放在待辦。
-  const d6 = days[5].steps.find(step => step.t === '07:00');
+  const d6 = days[5].steps.find(step => step.t === '09:00');
   assert.doesNotMatch(d6.sub, /2026-10-14|官網聯絡頁/);
-  assert.match(d6.sub, /接待處平日 08:00 才開（出發前再確認），寄放方式之後傳訊息問公寓/);
-  assert.match(d6.sub, /寄物櫃/);
+  assert.match(d6.sub, /接待處 08:00–22:00.*出發前再確認/);
+  assert.match(d6.sub, /置物櫃/);
   assert.doesNotMatch(d6.sub, /打電話/, '外國旅客不打電話確認，改用訊息');
   const apartment = todoGroups.flatMap(group => group.items).find(item => item.name.startsWith('之後聯絡 Poznan Apartments'));
   assert.match(apartment.action, /10\/27 晚上傳訊息確認 20:45 取鑰匙方式/);
   assert.doesNotMatch(apartment.action, /20\d\d-\d\d-\d\d/);
-  assert.match(apartment.action, /10\/29 早上能不能寄放行李/);
+  assert.match(apartment.action, /10\/29 09:00 離開後使用車站置物櫃/);
   // 2026-10-13 鹽礦已購 09:00 英文場；查核筆記不放行程說明，購票紀錄在待辦。
   const d4 = days[3].steps.find(step => step.t === '09:00' && step.label.includes('Wieliczka'));
   assert.doesNotMatch(d4.sub, /2026-10-06/);

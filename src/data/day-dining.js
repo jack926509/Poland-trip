@@ -338,25 +338,18 @@ export const dayDiningPlans = {
   ],
   "6": [
     {
-      "placeId": "poznan-charlotte-krysiewicza",
+      "placeId": "poznan-manekin",
       "role": "早餐首選",
-      "note": "07:00 退房寄行李後，07:15–07:55：French Breakfast、可頌＋咖啡，Poznań rugelach 白罌粟籽小可頌兩人分享；08:00 搭電車去 Cytadela。07:00 開門。",
+      "note": "Kwiatowa 3；官方早餐週一至五 10:00–13:00，營業 10:00–22:00（menu.pl 寫 21:45）。炒蛋煎餅、起司煎餅、pancake burger 或 burrito 約 17.5–24 zł，咖啡約 6 zł；當日公休與價格出發前再確認。11:30 前離開。",
       "stepId": "d6-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
-      "dayHours": "07:00–24:00"
+      "dayHours": "10:00–22:00"
     },
     {
       "placeId": "poznan-inna-piekarnia",
       "role": "早餐備案（不列順位）",
-      "note": "Ratajczaka 39，週一至週六 08:30 起：Butter Croissant、麵包與咖啡；08:30 才開門，趕不上 08:00 去 Cytadela，只當備案。",
-      "stepId": null,
-      "planStatus": "candidate"
-    },
-    {
-      "placeId": "poznan-weranda-caffe",
-      "role": "山羊秀前咖啡",
-      "note": "Świętosławska 10，週四 09:00 開門；11:05 從皇家城堡山丘下來進來坐，11:45 再去廣場卡位。就在粉紅色 Fara 教堂那條街，從街上拍 Fara。",
+      "note": "Ratajczaka 39，週一至週六 08:30 起：Butter Croissant、麵包與咖啡；11:00 Manekin 客滿時的早餐備案。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -370,24 +363,23 @@ export const dayDiningPlans = {
     {
       "placeId": "poznan-cukiernia-kandulski",
       "role": "點心備選",
-      "note": "Plac Ratajskiego 1（週四 09:00–17:00），在老城往 Stary Browar、Carla 的路上；ROGAL 排隊或售完時改這間買。",
+      "note": "Plac Ratajskiego 1（週四 09:00–17:00），在老城往 Stary Browar 的路上；ROGAL 排隊或售完時改這間買。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
-      "placeId": "poznan-carla-trattoria-moderna",
-      "role": "午餐首選（條件式）",
-      "note": "Święty Marcin 34，14:00 開門即入座（飯後往西順路拍 Okrąglak，到帝王城堡約 17 分）：手工麵、披薩與小盤分享，兩人點兩道麵加一份分享即可。14:00–15:15 用餐，15:15 前結帳；15:30 還沒吃完，就把帝王區縮短到只看帝王城堡外觀、跳過 Kaponiera，先保 17:05 到站。",
+      "placeId": "poznan-stary-browar-food-hall",
+      "role": "午餐首選",
+      "note": "午餐 · Stary Browar Food Hall 與逛街；商場週一至六 09:00–21:00，Food Hall 週一至四 12:00–22:00，出發前再確認。舊啤酒廠紅磚建築與洗手間，14:00 離開。",
       "stepId": "d6-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
-      "condition": "週四 14:00 才開門，12:30 吃不到；不訂位，14:00 開門直接入座。近期有評論說上菜偏慢，15:30 還沒吃完，就把帝王區縮短到只看帝王城堡外觀、跳過 Kaponiera。客滿改 Pyra Bar。",
-      "dayHours": "14:00–22:30"
+      "dayHours": "12:00–22:00"
     },
     {
       "placeId": "poznan-pyra-bar",
       "role": "午餐備案",
-      "note": "Strzelecka 13，週四 11:00–21:00 全天有開。Carla 客滿時改這間：Pyry z bzikiem 與 Szare ale jare 兩人分享；可改回 12:15 吃午餐，時間比 Carla 方案寬鬆。",
+      "note": "Strzelecka 13，週四 11:00–21:00 全天有開。Stary Browar Food Hall 客滿時改這間：Pyry z bzikiem 與 Szare ale jare 兩人分享；13:00 午餐備案，仍保留 14:00 離開。",
       "stepId": null,
       "planStatus": "candidate",
       "dayHours": "11:00–21:00"
@@ -395,21 +387,21 @@ export const dayDiningPlans = {
     {
       "placeId": "poznan-zen-on",
       "role": "午餐備選",
-      "note": "Michelin 推薦拉麵，Święty Marcin 21，週四 12:00–20:00：拉麵、烏龍麵、bao；Carla 客滿時的另一個午餐備案，可改回 12:15 吃，尖峰常排隊。",
+      "note": "Michelin 推薦拉麵，Święty Marcin 21，週四 12:00–20:00：拉麵、烏龍麵、bao；Stary Browar Food Hall 客滿時的另一個午餐備案，13:00 用餐，尖峰常排隊。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "poznan-pasibus-swiety-marcin",
       "role": "午餐速食備案",
-      "note": "Święty Marcin 58/64，12:00–23:00；Carla 客滿、Pyra Bar 又排隊時改這間。",
+      "note": "Święty Marcin 58/64，12:00–23:00；Stary Browar Food Hall 客滿、Pyra Bar 又排隊時改這間。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
       "placeId": "poznan-hycka",
-      "role": "不當替補（Śródka 09:25 經過時未開）",
-      "note": "大波蘭菜、烤鴨配蒸糰；店在 Śródka，週四 11:00 才開，上午經過時還沒營業，中午從市中心折回又不順路。Carla 客滿改 Pyra Bar 或 Zen On。",
+      "role": "不當替補（Śródka 09:44 經過時未開）",
+      "note": "大波蘭菜、烤鴨配蒸糰；店在 Śródka，週四 11:00 才開，上午經過時還沒營業，中午從市中心折回又不順路。Stary Browar Food Hall 客滿改 Pyra Bar 或 Zen On。",
       "stepId": null,
       "planStatus": "unavailable"
     },

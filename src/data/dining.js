@@ -665,12 +665,12 @@ export const cafeGuide = [
     { placeId: 'wroclaw-dessert-boutique', type: '精緻甜點', when: 'Day 5 · 有空才去（12:00 才開，與下午動線相反）' },
   ] },
   { cityKey: 'poznan', city: '波茲南', items: [
-    { placeId: 'poznan-charlotte-krysiewicza', type: '法式早餐 · 可頌', when: 'Day 6 · 07:15 早餐（已排入）' },
-    { placeId: 'poznan-weranda-caffe', type: '咖啡 · 早午餐', when: 'Day 6 · 11:05 山羊秀前（已排入）' },
+    { placeId: 'poznan-manekin', type: '煎餅早餐', when: 'Day 6 · 11:00 早餐（已排入）' },
+    { placeId: 'poznan-stary-browar-food-hall', type: '美食廣場', when: 'Day 6 · 13:00 午餐（已排入）' },
     { placeId: 'poznan-lagacca-cafe-by-brisman', type: '精品咖啡', when: 'Day 6 · 舊市集廣場周邊順路' },
     { placeId: 'poznan-rogal', type: '聖馬丁牛角麵包', when: 'Day 6 · 12:05 山羊秀後點心（已排入）' },
     { placeId: 'poznan-cukiernia-kandulski', type: '聖馬丁牛角麵包', when: 'Day 6 · ROGAL 售完時改這間' },
-    { placeId: 'poznan-stragan-kawiarnia', type: '精品咖啡', when: 'Day 6 · 12:25 往 Stary Browar 路上外帶' },
+    { placeId: 'poznan-stragan-kawiarnia', type: '精品咖啡', when: 'Day 6 · 12:45 往 Stary Browar 路上外帶' },
   ] },
 ].map(group => ({ ...group, items: group.items.map(resolveDining) }));
 // 舊版是一份手寫子集，容易漏掉新排進行程的已核實門市（也漏掉真正 pending 的店卻被列進來）。

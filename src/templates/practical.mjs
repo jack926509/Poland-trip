@@ -289,7 +289,7 @@ function todoSortKey(item) {
 export function todoLinkLabel(item, group) {
   const url = String(item.url || '');
   if (/google\.[a-z.]+\/maps|maps\.app\.goo\.gl|goo\.gl\/maps/i.test(url)) return '地圖';
-  if (group.id === 'prep' || item.name.includes('Carla')) return '官網';
+  if (group.id === 'prep' || item.name.includes('Manekin')) return '官網';
   if (group.id !== 'dining') return '購票頁';
   if (/rezerwac|reserv|booking|mojstolik|thefork|zjedz/i.test(url)) return '訂位';
   return '店家頁';

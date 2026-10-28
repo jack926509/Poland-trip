@@ -120,15 +120,15 @@ test('F3：同一天內不同地點不共用序號（同一列寫到、相距 40
   }
 });
 
-test('F3：同一列共用序號的圖釘在地圖上標 7a／7b，同一頁不會有兩顆同標籤（Day 6 教堂島與主教座堂）', () => {
+test('F3：同一列共用序號的圖釘在地圖上標 5a／5b，同一頁不會有兩顆同標籤（Day 6 教堂島與主教座堂）', () => {
   assert.deepEqual(pinLabels([1, 7, null, 7, 3, 7]), ['1', '7a', null, '7b', '3', '7c']);
   for (const day of days) {
     const labels = makeDayMap(day).points.map(point => point[9]).filter(Boolean);
     assert.equal(new Set(labels).size, labels.length, `Day ${day.n} 有重複的圖釘標籤：${labels.join(',')}`);
   }
   const day6 = makeDayMap(days.find(day => day.n === 6)).points;
-  const sevens = day6.filter(point => point[8] === 7);
-  assert.deepEqual(sevens.map(point => point[9]).sort(), ['7a', '7b']);
+  const sevens = day6.filter(point => point[8] === 5);
+  assert.deepEqual(sevens.map(point => point[9]).sort(), ['5a', '5b']);
   assert.deepEqual(sevens.map(point => point[2]).sort(), ['大教堂島 Ostrów Tumski', '波茲南主教座堂'].sort());
 });
 

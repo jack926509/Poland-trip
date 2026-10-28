@@ -2,6 +2,51 @@
 // booking（選填）：required 必訂｜recommended 建議訂｜walk-in 免訂｜booked 已訂。
 // 只在店家說明或官方資料有明確依據時才填；沒有依據就不加欄位（不顯示徽章）。目前全部尚未訂位，不得填 booked。
 export const diningPlaces = {
+  "poznan-manekin": {
+    "id": "poznan-manekin",
+    "booking": "walk-in",
+    "cityKey": "poznan",
+    "name": "Manekin",
+    "address": "Kwiatowa 3, Poznań",
+    "map": "https://www.google.com/maps/search/?api=1&query=Manekin%2C%20Kwiatowa%203%2C%20Pozna%C5%84",
+    "hours": "週一至五早餐 10:00–13:00；營業 10:00–22:00（menu.pl 寫 21:45）；出發前再確認",
+    "sourceUrl": "https://manekin.pl/",
+    "menuUrl": "https://manekin.pl/wp-content/uploads/2026/01/Poznan-KWIATOWA-SNIADANIA-1.pdf",
+    "checkedAt": "2026-10-28",
+    "verificationStatus": "partial",
+    "notes": [
+      "官方早餐菜單時段與價格約 17.5–24 zł，咖啡約 6 zł，公休與價格出發前再確認。"
+    ],
+    "verificationNote": "官方早餐菜單時段與價格約 17.5–24 zł，咖啡約 6 zł，公休與價格出發前再確認。",
+    "cuisine": "煎餅早餐",
+    "dishes": [
+      "炒蛋煎餅",
+      "起司煎餅",
+      "pancake burger",
+      "burrito"
+    ]
+  },
+  "poznan-stary-browar-food-hall": {
+    "id": "poznan-stary-browar-food-hall",
+    "booking": "walk-in",
+    "cityKey": "poznan",
+    "name": "Stary Browar Food Hall",
+    "address": "Półwiejska 42, Poznań",
+    "map": "https://www.google.com/maps/search/?api=1&query=Stary%20Browar%20Food%20Hall%2C%20P%C3%B3%C5%82wiejska%2042%2C%20Pozna%C5%84",
+    "hours": "週一至四 12:00–22:00；商場週一至六 09:00–21:00；出發前再確認",
+    "sourceUrl": "https://starybrowar5050.com/wydarzenia/foodhall-stary-browar-otwarty/",
+    "checkedAt": "2026-10-28",
+    "verificationStatus": "partial",
+    "notes": [
+      "13:00 午餐與逛街，14:00 離開；各攤價格依現場標價，出發前再確認。"
+    ],
+    "verificationNote": "13:00 午餐與逛街，14:00 離開；各攤價格依現場標價，出發前再確認。",
+    "cuisine": "美食廣場",
+    "dishes": [
+      "依攤位選擇"
+    ]
+  },
+
   "krakow-massolit-books-cafe": {
     "id": "krakow-massolit-books-cafe",
     "cityKey": "krakow",
@@ -461,10 +506,10 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "verified",
     "notes": [
-      "現代義大利菜：手工麵、披薩、小盤分享；10/29 週四 14:00 開門才有位，午餐延後到 14:00，約 17 分步行到帝王城堡。"
+      "現代義大利菜：手工麵、披薩、小盤分享；未排入 10/29 主行程。"
     ],
     "menuUrl": null,
-    "verificationNote": "Google 地圖與 zjedz.my 一致週四 14:00–22:30；menu.pl 外送時段週四 14:00–21:30；店家 Instagram 表示 10/1 起新營業時間。近期有評論抱怨上菜慢，須保留 17:05 到站緩衝。行程決定不訂位、14:00 開門直接入座。",
+    "verificationNote": "Google 地圖與 zjedz.my 一致週四 14:00–22:30；menu.pl 外送時段週四 14:00–21:30；店家 Instagram 表示 10/1 起新營業時間。近期有評論抱怨上菜慢，出發前再確認。",
     "phone": "+48 796 200 002",
     "cuisine": "現代義大利菜",
     "dishes": [
@@ -712,14 +757,14 @@ export const diningPlaces = {
     "name": "ROGAL Świętomarciński",
     "address": "Stary Rynek 11/17, Poznań",
     "map": "https://www.google.com/maps/place/ROGAL+%C5%9Awi%C4%99tomarci%C5%84ski/@52.4079727,16.9340286,17z/data=!3m1!4b1!4m6!3m5!1s0x47045be6c6dec08b:0x2738305616ca929f!8m2!3d52.4079727!4d16.9340286!16s%2Fg%2F11wnltgtr4",
-    "hours": "週一至週四 09:00–20:00；週五 09:00–21:00",
+    "hours": "週一至週四 09:00–20:00；週五 09:00–21:00（第三方 Google 地圖，出發前再確認）",
     "sourceUrl": "https://visitpoznan.pl/en/rogal-swietomarcinski-stary-rynek-en",
     "checkedAt": "2026-10-17",
     "verificationStatus": "partial",
     "notes": [
       "PGI 聖馬丁可頌（Rogal świętomarciński）· 白罌粟籽餡；10/29 12:05 山羊秀後的點心站，兩人買一個分享即可。"
     ],
-    "verificationNote": "初稿引波茲南觀光局 Stary Rynek 11/17；營業與售完時間仍待確認，僅作順路外帶候選。店內每日烘焙，可外帶或內用；營業時間未查到。Google 地圖店家頁確認門牌 Stary Rynek 11/17、座標 52.40797,16.93403，只取得週一 09:00–20:00；週四與 10/29 特殊公告未查到，出發前看 facebook.com/ROGALSTARYRYNEK。不要和 Stary Rynek 41 的 Rogalowe Muzeum 混淆。Google 地圖週一至四 09:00–20:00、週五 09:00–21:00，10/29 週四 12:05 在營業時間內，未見特殊公告；仍只有 Google 一個來源。",
+    "verificationNote": "初稿引波茲南觀光局 Stary Rynek 11/17；營業與售完時間仍待確認，僅作順路外帶候選。店內每日烘焙，可外帶或內用；營業時間未查到。Google 地圖店家頁確認門牌 Stary Rynek 11/17、座標 52.40797,16.93403，只取得週一 09:00–20:00；週四與 10/29 特殊公告未查到，出發前看 facebook.com/ROGALSTARYRYNEK。不要和 Stary Rynek 41 的 Rogalowe Muzeum 混淆。Google 地圖週一至四 09:00–20:00、週五 09:00–21:00，10/29 週四 12:05 依第三方時段規劃；仍只有 Google 一個來源，出發前再確認。",
     "phone": "+48 573 465 226",
     "cuisine": "聖馬丁可頌",
     "dishes": [
@@ -1801,7 +1846,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-10",
     "verificationStatus": "partial",
     "notes": [
-      "麵包搭煙燻鱒魚抹醬、蛋沙拉與凝乳，或班尼迪克蛋。10/29 早餐改 Charlotte 後保留為備選。"
+      "麵包搭煙燻鱒魚抹醬、蛋沙拉與凝乳，或班尼迪克蛋。10/29 早餐改 Manekin 後保留為備選。"
     ],
     "menuUrl": "https://www.ptasieradio.pl/menu-restauracji/dania/",
     "verificationNote": "本輪官網確認店址與週四 08:00 開門；採用須另留前往教堂島的交通時間。初稿提供餐點建議；當日供應與最後接單待確認。",
@@ -1826,7 +1871,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-10",
     "verificationStatus": "partial",
     "notes": [
-      "French Breakfast、麵包籃、可頌與咖啡；Poznań rugelach（白罌粟籽小可頌）可兩人分享。10/29 早餐首選。"
+      "French Breakfast、麵包籃、可頌與咖啡；Poznań rugelach（白罌粟籽小可頌）可兩人分享。未排入主行程。"
     ],
     "menuUrl": "https://bistrocharlotte.com/pl/lokale/charlotte-krysiewicza-poznan/",
     "verificationNote": "本輪官網核對地址與時段；16:00 前不接受訂位，早餐候位依現場，趕行程改外帶。官網週四 07:00 開門，早餐全天供應。",
@@ -1961,7 +2006,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "Butter Croissant、麵包與咖啡；08:30 才開，作為 Charlotte 之後的第二順位早餐。"
+      "Butter Croissant、麵包與咖啡；08:30 才開，作為 Manekin 客滿時的早餐備案。"
     ],
     "menuUrl": null,
     "verificationNote": "Ratajczaka 39 分店；另有 Garbary 26 分店。",
@@ -2441,7 +2486,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-15",
     "verificationStatus": "partial",
     "notes": [
-      "波茲南精品咖啡的老字號，自有烘豆品牌；Ratajczaka 從自由廣場往 Stary Browar 的路上，10/29 12:25 往南走時可外帶一杯。"
+      "波茲南精品咖啡的老字號，自有烘豆品牌；Ratajczaka 從自由廣場往 Stary Browar 的路上，10/29 12:45 往南走時可外帶一杯。"
     ],
     "verificationNote": "門牌一致；週四 08:00 開門兩個來源都成立，打烊時間不一；未能連上店家官網確認。",
     "cuisine": "精品咖啡",

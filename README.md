@@ -46,9 +46,9 @@
 
 ## Day 6｜10/29（四）波茲南：山羊鐘樓與聖馬丁牛角麵包
 
-早餐在 **Charlotte**。上午到 Cytadela 公園看無頭人像群「Nierozpoznani」，再到 Śródka 看立體壁畫、走 **教堂島** 的波茲南主教座堂，經皇家城堡山丘回老城，在 **Weranda Caffe** 喝咖啡。
+09:00 離開公寓，在 Poznań Główny 置物櫃寄行李後搭電車去 Śródka 看立體壁畫、走 **教堂島**；11:00 在 **Manekin** 吃早餐，皇家城堡山丘為選配。
 
-中午在 **舊市集廣場** 看 12:00 山羊鐘樓秀，接著吃一個 **聖馬丁牛角麵包**。逛自由廣場與舊啤酒廠改建的 Stary Browar，午餐在 **Carla Trattoria Moderna** 吃義大利菜，再走 Okrąglak 圓形百貨與聖馬丁街帝王區，傍晚搭車回華沙（先在波茲南站買吃的帶上車），晚上逛 **Złote Tarasy** 與科學文化宮夜景，晚餐吃 **Arirang** 韓式。
+中午在 **舊市集廣場** 看 12:00 山羊鐘樓秀，接著吃一個 **聖馬丁牛角麵包**。逛 Fara 粉紅教堂、自由廣場，13:00 在舊啤酒廠改建的 **Stary Browar Food Hall** 午餐與逛街，再走 Okrąglak 圓形百貨與聖馬丁街帝王區、Kaponiera，15:45 回車站、約 16:00 取行李，傍晚搭車回華沙（先在波茲南站買吃的帶上車），晚上逛 **Złote Tarasy** 與科學文化宮夜景，晚餐吃 **Arirang** 韓式。
 
 ## Day 7｜10/30（五）華沙：新城、老城一路走到瓦津基
 
@@ -69,7 +69,7 @@
 | 華沙 | Arirang、Polka、Soul Kitchen | E.Wedel 熱巧克力、A. Blikle pączek、Bułkę przez Bibułkę 早餐 |
 | 克拉科夫 | Hankki、Mr. Jerry、Sztolnia Wieliczka | Karma、圈餅（Plac Nowy zapiekanka 為城市延伸） |
 | 樂斯拉夫 | Samarqand、Restauracja Wrocławska、MAX | Central Cafe、El Gato、Słodki Chłopak |
-| 波茲南 | Carla Trattoria Moderna | Charlotte、Weranda Caffe、聖馬丁牛角麵包 |
+| 波茲南 | Stary Browar Food Hall | Manekin 早餐、聖馬丁牛角麵包 |
 
 ---
 

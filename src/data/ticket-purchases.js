@@ -197,7 +197,7 @@ export const ticketPurchaseGroups = [
       }),
       entry('poznan-croissant-museum', '牛角麵包博物館 Rogalowe Muzeum', {
         purchaseUrl: 'https://rogalowemuzeum.pl/en/buy-ticket/',
-        note: '附件原規劃有排，最新主行程未排；如加入，需選展演日期、場次與語言。10/29 有無英文場仍待售票日曆確認。',
+        note: '10/29 在 Stary Rynek 41 只路過看外觀，不參加導覽、不用買票；若另日參團，需查售票日曆的日期、場次與語言。',
       }),
       entry('poznan-archaeological-museum', '考古博物館／Genius loci 考古保護區', {
         purchaseUrl: 'https://tobilet.pl/wystawy-prezentowane-w-muzeum-archeologicznym-w-poznaniu.html',
