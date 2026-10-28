@@ -49,7 +49,7 @@ test('新增點日期、OSM 來源、狀態、距離與城市範圍正確，研�
       }
     }
   }
-  assert.equal(count, 97);
+  assert.equal(count, 96);
 });
 
 test('同城不重名、不重複完全相同座標，也不重複同一餐飲 placeId', () => {

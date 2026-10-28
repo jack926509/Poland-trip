@@ -289,7 +289,7 @@ test('8 天每個行程步驟都有可靠地址或明確待確認原因', () => 
   assert.doesNotMatch(JSON.stringify(dayOperations[4]), /Kazimierz|Sukiennice/);
   assert.doesNotMatch(read('day-04.html'), /Kazimierz/);
   assert.ok(!dayOperations[6].addresses.some(item => item.name === '牛角麵包博物館'), '牛角麵包博物館已移出 Day 6');
-  // 2026-10-14 新行程：帝王城堡只在帝王區步行時看外觀；Stary Browar 回到 Day 6（12:45）。
+  // 2026-10-14 新行程：帝王城堡只在帝王區步行時看外觀；Stary Browar 午餐與逛街（13:00）。
   assert.ok(dayOperations[6].addresses.some(item => item.name === '帝王城堡（外觀）' && item.stepLabels.includes('★ 聖馬丁街帝王區')));
   assert.ok(!days[5].steps.some(step => step.label === '★ 帝王城堡'), '帝王城堡不再排入內參觀');
   assert.ok(dayOperations[6].addresses.some(item => item.name === 'Stary Browar' && item.stepLabels.includes('★ Stary Browar')), 'Stary Browar 回到 Day 6');
@@ -544,7 +544,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   assert.equal(photoSpots.length, 10);
   assert.equal(photoCredits.length, 20);
   assert.deepEqual(Object.fromEntries(Object.entries(mapPins).map(([city, data]) => [city, data.points.length])), {
-    warsaw: 69, krakow: 33, wroclaw: 26, poznan: 18,
+    warsaw: 69, krakow: 33, wroclaw: 26, poznan: 17,
   });
   assert.deepEqual(Object.fromEntries(Object.entries(attractions).map(([city, items]) => [city, items.length])), {
     warsaw: 11, krakow: 6, wroclaw: 8, poznan: 9,
@@ -561,7 +561,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   // 2026-09-19 資料精煉切片 1：verifiedRestaurantHours 改由每日餐位（day-dining.js）中
   // 已核實／部分核實的門市直接推導（見 src/lib/dining.mjs 的 plannedVerifiedPlaces），
   // 不再是手寫子集，筆數會隨每日餐位調整自然變動。
-  assert.equal(verifiedRestaurantHours.length, 66); // 2026-10-14 新行程 Day 1 加 E.Wedel Krakowskie Przedmieście 45 咖啡選項（63 → 64）；2026-10-13 加威靈頓備選 Primitivo（62 → 63）；2026-10-12 新增 Pimiento、Carla、Pasibus Nowy Świat 三筆主檔（59 → 62）；餐飲 v5 整併加四家 Pasibus（31 → 35），同日逐店複查把 24 家待確認門市升為部分核實（35 → 59）
+  assert.equal(verifiedRestaurantHours.length, 65); // 2026-10-14 新行程 Day 1 加 E.Wedel Krakowskie Przedmieście 45 咖啡選項（63 → 64）；2026-10-13 加威靈頓備選 Primitivo（62 → 63）；2026-10-12 新增 Pimiento、Carla、Pasibus Nowy Świat 三筆主檔（59 → 62）；餐飲 v5 整併加四家 Pasibus（31 → 35），同日逐店複查把 24 家待確認門市升為部分核實（35 → 59）；Day 6 改 Manekin 與 Food Hall，移出三家舊餐位，66 → 65。
   assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
     warsaw: 5, krakow: 7, wroclaw: 4, poznan: 7,
   });
@@ -593,7 +593,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
 
 test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', () => {
   const allPins = Object.entries(mapPins).flatMap(([city, data]) => data.points.map((point) => ({city, name:point[2]})));
-  assert.equal(allPins.length, 146);
+  assert.equal(allPins.length, 145);
   for (const pin of allPins) {
     assert.ok(mapPinChecks[pin.city]?.[pin.name], `${pin.city}/${pin.name} 缺少圖釘查證狀態`);
   }
@@ -638,7 +638,6 @@ test('地圖圖釘皆有查證狀態，已修正座標保留距離與日期', ()
       "Grunwaldzki 橋",
       "Stary Browar",
       "帝王城堡 Zamek Cesarski（外觀）",
-      "Cytadela「Nierozpoznani」",
       "皇家城堡山丘（Przemysł 王城）",
       "自由廣場 Plac Wolności",
       "Chwaliszewo 街",
@@ -913,14 +912,14 @@ test('4 個已確認住宿地點皆出現在對應城市地圖，圖釘地址與
   }
 });
 
-test('4 個城市頁含正確 Leaflet 圖釘數，合計 146', () => {
+test('4 個城市頁含正確 Leaflet 圖釘數，合計 145', () => {
   // 2026-09-14：撤掉 5 個「地圖上有、餐廳表已無」的孤兒圖釘後由 53 降為 48
   // 2026-10-13：伴手禮不列琥珀、Bolesławiec 陶器，克拉科夫撤兩個圖釘（49 → 47）
   const expected = {
     'city-warszawa.html': 69,
     'city-krakow.html': 33,
     'city-wroclaw.html': 26,
-    'city-poznan.html': 18,
+    'city-poznan.html': 17,
   };
   let total = 0;
   for (const [file, count] of Object.entries(expected)) {
@@ -935,7 +934,7 @@ test('4 個城市頁含正確 Leaflet 圖釘數，合計 146', () => {
     assert.equal(points, count, `${file} 圖釘數錯誤`);
     total += points;
   }
-  assert.equal(total, 146);
+  assert.equal(total, 145);
 });
 
 test('城市頁完整呈現故事、景點、行程餐廳推薦與拍照資訊', () => {

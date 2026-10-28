@@ -101,7 +101,6 @@ const additions = {
     ["波茲南市政廳・山羊鐘樓","way/30611684",52.4085774,16.9340166,"Stary Rynek 1","sight",null,false],
     ["Stary Browar","way/181129696",52.4024419,16.9253067,"範圍代表點；非單一入口","sight",null,true],
     ["帝王城堡 Zamek Cesarski（外觀）","relation/1483520",52.4080345,16.918695,"範圍代表點；非單一入口","sight",null,true],
-    ["Cytadela「Nierozpoznani」","way/430843991",52.4218633,16.9356334,"範圍代表點；非單一入口","sight",null,true],
     ["皇家城堡山丘（Przemysł 王城）","way/363747422",52.409156,16.9310337,"範圍代表點；非單一入口","sight",null,true],
     ["自由廣場 Plac Wolności","way/634296533",52.4081225,16.9277159,"範圍代表點；非單一入口","sight",null,true],
     ["Okrąglak 圓形百貨","way/246117826",52.4084134,16.9222469,"Seweryna Mielżyńskiego 14","sight",null,false],

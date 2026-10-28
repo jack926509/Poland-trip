@@ -659,7 +659,7 @@ export const venues = {
     map: "https://www.google.com/maps/search/?api=1&query=Poznan%20Town%20Hall%2C%20Stary%20Rynek%201%2C%20Poznan",
     officialUrl: "https://www.msu.mnp.art.pl/profile/wizyta-ratusz-muzeum-poznania",
     address: "Stary Rynek 1, 61-768 Poznań",
-    entranceNote: "本次在 Stary Rynek 1 外觀區看 12:00 山羊鐘樓秀；另有每日 15:00 場，可作錯過正午的備案，但要保留 16:15 取行李、17:05 到站的時間。博物館整修閉館。",
+    entranceNote: "本次在 Stary Rynek 1 外觀區看 12:00 山羊鐘樓秀；另有每日 15:00 場，本次 12:00 機械不動就不重排；15:45 回車站、約 16:00 取行李、17:15 前到月台。博物館整修閉館。",
     coords: [52.408265,16.93456],
     prices: null,
     hours: null,

@@ -205,10 +205,16 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
   // 時間表每列的導航：沿用「現場地址」(operation.addresses) 與三餐主安排的導航網址，
   // 不另建資料。一列只在恰好對到一個可靠地點時才給按鈕，對不到就不顯示，不猜。
   const stepNavigation = step => {
-    if (day.n === 6 && ['退房、寄放行李', '取行李、前往 Poznań Główny'].includes(step.label)) {
-      const apartment = operation.addresses.find(item => /Poznan Apartments/.test(item.name));
-      const href = safeHttpsUrl(apartment?.url);
-      if (href) return { href, name: apartment.name };
+    // Day 6 行李列只在每日頁提供導航，避免今日卡用地址取代退房／置物櫃說明。
+    if (day.n === 6) {
+      const destination = {
+        '退房、離開 Poznan Apartments Towarowa': 'Poznan Apartments Towarowa',
+        'Poznań Główny 置物櫃寄放行李': 'Poznań Główny',
+        'Poznań Główny 取行李': 'Poznań Główny',
+      }[step.label];
+      const place = operation?.addresses.find(item => item.reliable && item.name === destination);
+      const href = safeHttpsUrl(place?.url);
+      if (href) return { href, name: place.name };
     }
     const unresolved = operation?.unresolvedSteps?.find(item => item.label === step.label);
     if (unresolved || /票面/.test(step.label)) return null;
