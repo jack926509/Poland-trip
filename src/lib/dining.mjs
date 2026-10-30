@@ -33,8 +33,10 @@ export const displayAddress = address => (/^門牌待確認$/.test(String(addres
 export function renderDiningFacts(item, { includeHours = true } = {}) {
   const source = safeHttpsUrl(item.sourceUrl);
   const menu = safeHttpsUrl(item.menuUrl);
+  const official = safeHttpsUrl(item.officialUrl);
   return `${includeHours ? `<p class="food-map-note">營業時間：${escapeHtml(displayHours(item.hours))}</p>` : ''}
-    ${source ? `<p class="source-meta"><a href="${source}" target="_blank" rel="noopener noreferrer">店家資訊 ↗</a></p>` : ''}
+    ${source ? `<p class="source-meta"><a href="${source}" target="_blank" rel="noopener noreferrer">店家資訊 ↗</a></p>` : ''}${official && official !== source ? `
+    <p class="source-meta"><a href="${official}" target="_blank" rel="noopener noreferrer">官網 ↗</a></p>` : ''}
     ${menu ? `<p class="food-map-note"><a href="${menu}" target="_blank" rel="noopener noreferrer">菜單 ↗</a></p>` : ''}`;
 }
 

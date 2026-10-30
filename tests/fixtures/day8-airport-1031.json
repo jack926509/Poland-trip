@@ -1,0 +1,45 @@
+[
+  {
+    "t": "10:05",
+    "label": "出門 → Śródmieście（S2）或 Warszawa Centralna（S3）",
+    "sub": "以飯店旁約 250 m 的 Śródmieście 搭 S2 為主，若 S3 較早才改 Centralna；預留找月台時間",
+    "dur": "25 min"
+  },
+  {
+    "t": "10:30",
+    "label": "SKM S2／S3 目標班次",
+    "sub": "回程往機場方向：S2 由 Warszawa Śródmieście 上車、S3 由 Warszawa Centralna 上車（兩線停靠站不同，看清楚再上）。官方標示 75 分鐘第 1 區票；SKM 10 月班表未查證，需前一晚用 Jakdojade 確認 Śródmieście 往機場 S2 的確切時刻；錯過一班約晚 30 分，仍約 11:30 到機場",
+    "cost": "75 分第 1 區票 4.40",
+    "dur": "約 25–30 min"
+  },
+  {
+    "t": "11:00",
+    "label": "抵 Chopin 第一航廈",
+    "sub": "有退稅商品一到機場先處理退稅"
+  },
+  {
+    "t": "11:15",
+    "label": "退稅文件 + 報到 + 安檢",
+    "sub": "如有 TAX FREE 商品，依機場與電子文件指示辦理；託運商品須在交運前備妥供海關查驗",
+    "dur": "預留至少 60–90 min"
+  },
+  {
+    "t": "安檢與出境後",
+    "timingMode": "relative",
+    "id": "d8-lunch",
+    "label": "機場午餐 · 依登機區選擇",
+    "sub": "先確認登機門與截止時間，再找可通行區域內的餐廳；QR 260 往杜哈不把申根區 Gate One 當作主選"
+  },
+  {
+    "t": "14:40",
+    "label": "★ QR 260 起飛",
+    "sub": "WAW → DOH → HKG → TPE"
+  },
+  {
+    "t": "機上",
+    "timingMode": "relative",
+    "id": "d8-dinner",
+    "label": "機上晚餐",
+    "sub": "依實際航段供餐；轉機時先確認下一段登機門與截止"
+  }
+]

@@ -73,6 +73,22 @@ export function auditDay5SupplementaryPins(points = daySupplementaryPins[5], dat
   return { total: points.length, issues };
 }
 
+// Day 8 城市與機場補充點；驗資料結構，不宣稱重新查證現地。
+export function auditDay8SupplementaryPins(points = daySupplementaryPins[8], dates = pinCoordinateCheckedAt[8]) {
+  const issues = [];
+  const names = new Set();
+  for (const [lat, lon, name, , url, category, source] of points) {
+    if (!Number.isFinite(lat) || !Number.isFinite(lon) || lat < 52.15 || lat > 52.26 || lon < 20.96 || lon > 21.05) issues.push(`${name} 座標不在華沙範圍`);
+    if (!/^https:\/\//.test(url || '')) issues.push(`${name} 缺 HTTPS 導航`);
+    if (!/^https:\/\/(www\.openstreetmap\.org|portalpasazera\.pl)\//.test(source || '')) issues.push(`${name} 缺 OSM 或 PKP PLK 來源`);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(dates[name] || '')) issues.push(`${name} 缺查證日期`);
+    if (!pinCategoryLegend[category]) issues.push(`${name} 分類無效`);
+    if (names.has(name)) issues.push(`${name} 重複名稱`);
+    names.add(name);
+  }
+  return { total: points.length, issues };
+}
+
 const CITY_NAMES = { warsaw: '華沙', krakow: '克拉科夫', wroclaw: '樂斯拉夫', poznan: '波茲南' };
 
 function storeKey(name) {
@@ -187,6 +203,9 @@ function runCli() {
   const supplementary = auditDay5SupplementaryPins();
   console.log(`Day 5 補充圖釘：${supplementary.total}，錯誤 ${supplementary.issues.length}`);
   result.issues.push(...supplementary.issues);
+  const day8Supplementary = auditDay8SupplementaryPins();
+  console.log(`Day 8 補充圖釘：${day8Supplementary.total}，錯誤 ${day8Supplementary.issues.length}`);
+  result.issues.push(...day8Supplementary.issues);
   const coverage = auditDiningPinCoverage();
   console.log('');
   console.log(`餐廳圖釘覆蓋：${coverage.covered}/${coverage.listed}（${Math.round(coverage.covered / coverage.listed * 100)}%）`);

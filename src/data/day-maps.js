@@ -126,8 +126,8 @@ export const daySupplementaryPins = {
     // OSM 2026-10-30 查得：node/3037257659，public_transport=stop_position、network ZTM Warszawa、ref 709502；relation/2521904 往北方向（version 276，2026-09-06）。
     [52.2144281, 21.0264927, 'Łazienki Królewskie 02', '08:45 搭 116 往北約 3 站到 Plac Trzech Krzyży 02；出發前用 Jakdojade 確認', 'https://www.openstreetmap.org/node/3037257659', 'transport', 'https://www.openstreetmap.org/node/3037257659'],
     [52.2290438, 21.0178075, 'BAKEN piekarnia', 'Żurawia 6/12 · 09:00–09:35 早餐', 'https://www.openstreetmap.org/node/10912104601', 'food', 'https://www.openstreetmap.org/node/10912104601'],
-    venuePin('warsaw-centralna-station', { label: '由 Hotel Metropol 前往機場線的市中心交通錨點', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.228917&mlon=21.003315' }),
     [52.2294024, 21.0075880, 'Warszawa Śródmieście', 'SKM S2 上車站 · Hotel Metropol 旁約 250 公尺', 'https://www.google.com/maps/search/?api=1&query=Warszawa%20%C5%9Ar%C3%B3dmie%C5%9Bcie%20SKM', 'transport', 'https://www.openstreetmap.org/node/2351113017'],
+    venuePin('warsaw-centralna-station', { label: '由 Hotel Metropol 前往機場線的市中心交通錨點', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.228917&mlon=21.003315' }),
     [52.169709, 20.975785, 'Warszawa Lotnisko Chopina 機場鐵路站', 'PKP PLK 車站目錄座標 · 非航廈報到入口', 'https://www.google.com/maps/search/?api=1&query=Warszawa%20Lotnisko%20Chopina%20railway%20station%2C%20Warszawa%2C%20Poland', 'transport', 'https://portalpasazera.pl/en/KatalogStacji?stacja=Warszawa+Lotnisko+Chopina'],
   ],
 };
@@ -239,7 +239,7 @@ export const defaultPinCheckedAt = '2026-09-08';
 
 // 明確停留列可跨越距離／移動列篩選；陣列允許同一圖釘對應多次造訪。
 export const dayPinStepRows = {
-  8: { "Hotel Metropol": [1, 6, 7], "三十字廣場 Plac Trzech Krzyży": [1], "瓦津基公園 · 蕭邦紀念碑": [2, 3], "水上宮殿 Pałac na Wyspie": [3], "Łazienki Królewskie 02": [4], "BAKEN piekarnia": [5], "Warszawa Centralna": [8], "Warszawa Śródmieście": [8] },
+  8: { "Hotel Metropol": [1, 6, 7], "三十字廣場 Plac Trzech Krzyży": [1], "瓦津基公園 · 蕭邦紀念碑": [2, 3], "水上宮殿 Pałac na Wyspie": [3], "Łazienki Królewskie 02": [4], "BAKEN piekarnia": [5], "Warszawa Centralna": [8], "Warszawa Śródmieście": [8], "Warszawa Lotnisko Chopina 機場鐵路站": [10] },
   7: {
     "Hotel Metropol": [1, 21],
     "Bułkę przez Bibułkę": [2],

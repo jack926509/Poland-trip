@@ -420,9 +420,9 @@ export const days = [
     steps: [
       {t:'07:30', label:'從 Metropol 出發 → 三十字廣場 Plac Trzech Krzyży → Al. Ujazdowskie', sub:'沿 Al. Ujazdowskie 往南步行約 25 分（步行時間為推估）；出發前用 Jakdojade 確認', dur:'25 min'},
       {t:'07:55', label:'進瓦津基公園 Łazienki Królewskie', sub:'公園 06:00–21:00、免費（出發前再確認）', dur:'5 min'},
-      {t:'08:00', label:'蕭邦紀念碑 → 水上宮殿外觀 → 湖邊倒影', sub:'約 45 分，只看外觀、不進館；時間偏緊，累了可略過水上宮殿與湖邊，只看蕭邦紀念碑就回站牌', dur:'45 min'},
+      {t:'08:00', label:'蕭邦紀念碑 → 水上宮殿外觀 → 湖邊倒影', sub:'約 45 分，只看外觀、不進館；45 分含走回 Łazienki Królewskie 站的時間（推估）；時間偏緊，累了可略過水上宮殿與湖邊，只看蕭邦紀念碑就回站牌', dur:'45 min'},
       {t:'08:45', label:'Łazienki Królewskie 02 搭 116 往北 → Plac Trzech Krzyży 02', sub:'依 OSM relation/2521904（Bus 116: Wilanów => Chomiczówka，version 276，2026-09-06 更新）：Łazienki Królewskie 02 → Plac Na Rozdrożu 02 → Piękna 02 → Plac Trzech Krzyży 02，約 3 站、車程約 8 分（推估）；下車後步行約 5 分到 BAKEN（推估）。10/31 週六班表與站名，出發前用 Jakdojade 確認；不要依賴 180 路公車，10/31 改道；116 等太久就改走備案', cost:'20 分鐘票 3.40 zł（票價出發前再確認）；上車馬上打票或在 Jakdojade 啟用', dur:'15 min'},
-      {t:'09:00', id:'d8-breakfast', label:'早餐 · BAKEN piekarnia', sub:'Żurawia 6/12，丹麥風早餐、自家酸種麵包；第三方評論 4.4／約 1,400 則（評分來自第三方評論）；每日 08:00–16:30（Wanderlog 10/30 查，出發前再確認）', dur:'35 min'},
+      {t:'09:00', id:'d8-breakfast', label:'早餐 · BAKEN piekarnia', sub:'Żurawia 6/12，丹麥風早餐、自家酸種麵包；第三方評論 4.4／約 1,400 則（評分來自第三方評論）；每日 08:00–16:30（官網 10/30 查，出發前再確認）；不收訂位，現場排隊', dur:'35 min'},
       {t:'09:35', label:'步行回 Metropol', sub:'步行約 8 分（推估）；出發前用 Jakdojade 確認。行李前一晚已整理，確認護照、行李與退稅文件', dur:'8 min'},
       {t:'09:45', label:'辦理退房', sub:'確認行李、護照、退稅文件帶齊', dur:'20 min'},
       {t:'10:05', label:'出門 → Śródmieście（S2）或 Warszawa Centralna（S3）', sub:'以飯店旁約 250 m 的 Śródmieście 搭 S2 為主，若 S3 較早才改 Centralna；預留找月台時間', dur:'25 min'},
