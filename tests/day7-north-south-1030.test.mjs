@@ -58,6 +58,18 @@ test('Day 7 移除 Polka／Pyzy，早餐與午餐備案及評分快照標示來�
   assert.match(day.backup[0].why, /14:00/);
 });
 
+test('Day 7 Gościniec 備案銜接皇家大道、Tamka 叫車與日落', () => {
+  const backup = day.backup.find(e => /Gospoda 客滿 → Gościniec/.test(e.label));
+  const dining = dayDining[7].find(e => e.placeId === 'warsaw-gosciniec-polskie-pierogi');
+  const navigation = dayOperations[7].navigation.find(e => /POLIN →/.test(e.route));
+  for (const text of [backup.why, dining.note, navigation.action]) {
+    assert.match(text, /12:50 從城堡廣場.*皇家大道往南走.*總統府、Bristol、訪親會教堂、華沙大學/);
+    assert.match(text, /約 14:00 在 Krakowskie Przedmieście 29 吃午餐.*吃完接聖十字教堂、哥白尼紀念碑、Tamka 街蕭邦長椅/);
+    assert.match(text, /刪掉 BUW 屋頂花園和河邊美人魚.*從 Tamka 街直接叫車去瓦津基.*16:12 日落前到水上宮殿/);
+  }
+  assert.match(day.steps.find(s => s.id === 'd7-lunch').sub, /刪掉 BUW.*從 Tamka 街直接叫車.*16:12 日落前到水上宮殿/);
+});
+
 test('Day 7 保留查證說明、日落與訂位限制，公開內容不含敏感編號或禁用用語', () => {
   const text = JSON.stringify({day, food:dayDining[7], operation:dayOperations[7], points});
   assert.doesNotMatch(text, /PNR|訂位編號|票號[:：\s]*[A-Z0-9]|座位(?:號)?[:：\s]*\d|電話確認|打電話|颱風/);
@@ -100,7 +112,7 @@ test('Day 7 全部地圖圖釘對回新版列序，同行依走法標 a/b/c', ()
 test('Day 7 重建頁與 standalone 含新時間線及午餐', () => {
   for (const path of ['dist/day-07.html', 'poland-travel-guide-2026.html']) {
     const html = readFileSync(new URL('../'+path, import.meta.url),'utf8');
-    for (const value of ['Gospoda pod Zygmuntem', '15:25', '15:55', '評分來自第三方 Google 評論']) assert.ok(html.includes(value), `${path}: ${value}`);
+    for (const value of ['Gospoda pod Zygmuntem', '15:25', '15:55', '評分來自第三方 Google 評論', '刪掉 BUW 屋頂花園和河邊美人魚', '從 Tamka 街直接叫車去瓦津基', '16:12 日落前到水上宮殿']) assert.ok(html.includes(value), `${path}: ${value}`);
   }
 });
 

@@ -534,7 +534,7 @@ export const dayOperations = {
     ],
     navigation: [
       { mode: '地鐵 M1', route: 'Świętokrzyska → Ratusz Arsenał', action: '08:55 在站口拍 MSN 與科學文化宮，再搭 M1 只坐 1 站，下車步行約 10 分到 POLIN。' },
-      { mode: '步行', route: 'POLIN → 克拉辛斯基廣場 → 新城廣場 → Freta → 甕城 → 老城廣場 → 石階街／Gnojna Góra → 聖若望大教堂 → Piwna → 城堡廣場 → 聖安妮教堂（外觀） → Gospoda pod Zygmuntem → 總統府 → 聖十字教堂 → Tamka／Ostrogski 宮 → 美人魚像 → BUW', action: '09:25 後全程步行，由北往南採點，僅午餐小幅折返；午餐後沿皇家大道、Tamka 與河岸走到 BUW，再叫車去瓦津基；時間不夠先刪 BUW 屋頂花園與美人魚。' },
+      { mode: '步行', route: 'POLIN → 克拉辛斯基廣場 → 新城廣場 → Freta → 甕城 → 老城廣場 → 石階街／Gnojna Góra → 聖若望大教堂 → Piwna → 城堡廣場 → 聖安妮教堂（外觀） → Gospoda pod Zygmuntem → 總統府 → 聖十字教堂 → Tamka／Ostrogski 宮 → 美人魚像 → BUW', action: '09:25 後全程步行，由北往南採點，僅午餐小幅折返；午餐後沿皇家大道、Tamka 與河岸走到 BUW，再叫車去瓦津基；時間不夠先刪 BUW 屋頂花園與美人魚。如果改去 Gościniec：12:50 從城堡廣場慢慢沿皇家大道往南走，看總統府、Bristol、訪親會教堂、華沙大學，約 14:00 在 Krakowskie Przedmieście 29 吃午餐；吃完接聖十字教堂、哥白尼紀念碑、Tamka 街蕭邦長椅；這個情況下刪掉 BUW 屋頂花園和河邊美人魚，從 Tamka 街直接叫車去瓦津基，仍要在 16:12 日落前到水上宮殿。' },
       { mode: '叫車／步行', route: 'BUW → 瓦津基北門 → 水上宮殿 → Agrykola → Metropol → Soul Kitchen', action: '15:25 從 BUW 搭計程車／Bolt 約 15 分直達北門，北門看蕭邦紀念碑、15:55 抵水上宮殿等 16:12 日落；16:40 從 Agrykola 叫車回飯店，17:50 步行約 8 分到 Soul Kitchen，18:00 已訂位。' },
     ],
     dailyAlerts: [
