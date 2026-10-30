@@ -466,7 +466,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-kubus-piekarenka-marszalkowska",
       "role": "早餐備選",
-      "note": "Marszałkowska 19，08:00–20:00（出發前再確認）；離 Zgoda 約 1.8 km，需另留交通時間，座標未驗證，不加圖釘。",
+      "note": "Marszałkowska 19，08:00–20:00（出發前再確認）；離 Zgoda 約 1.8 km，需另留交通時間，座標未驗證。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -483,7 +483,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-gosciniec-polskie-pierogi",
       "role": "午餐備案",
-      "note": "Krakowskie Przedmieście 29，11:00–23:30（出發前再確認）；Gospoda 客滿約 14:00 在往南路上吃，Google 4.7／24,488 則評論，評分來自第三方 Google 評論。餐廳座標未驗證，不加圖釘。",
+      "note": "Krakowskie Przedmieście 29，11:00–23:30（出發前再確認）；Gospoda 客滿約 14:00 在往南路上吃，Google 4.7／24,488 則評論，評分來自第三方 Google 評論。餐廳座標未驗證。",
       "stepId": null,
       "planStatus": "candidate"
     },

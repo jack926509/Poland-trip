@@ -2095,7 +2095,7 @@ test('餐飲資料重整：24 家自選店全部落在資料層（每日餐位�
   }
 });
 
-test('POLIN 僅保留購票參考，主行程只看外觀不入館；Day 7 午餐仍為 Gospoda pod Zygmuntem', () => {
+test('POLIN 僅保留購票參考，主行程只看外觀不入館；Day 7 午餐改為 Gospoda pod Zygmuntem', () => {
   const walk = dir => fs.readdirSync(dir, { withFileTypes: true }).flatMap(entry => {
     const full = path.join(dir, entry.name);
     return entry.isDirectory() ? walk(full) : [full];
@@ -2128,7 +2128,7 @@ test('Day 7 城堡廣場後、Gospoda pod Zygmuntem 午餐前只拍聖安妮教�
   const castle = index('★ 城堡廣場（白天版）皇家城堡外觀＋聖安妮教堂外觀');
   const church = index('★ 城堡廣場（白天版）皇家城堡外觀＋聖安妮教堂外觀');
   const lunch = day.steps.findIndex(step => step.id === 'd7-lunch');
-  assert.ok(piwna >= 0 && castle === piwna + 1 && church === castle && lunch === church + 1, 'Piwna → 城堡廣場 → 聖安妮外觀 → Gospoda pod Zygmuntem，往南不走回頭路');
+  assert.ok(piwna >= 0 && castle === piwna + 1 && church === castle && lunch === church + 1, 'Piwna → 城堡廣場 → 聖安妮外觀 → Gospoda pod Zygmuntem，僅午餐小幅折返');
   assert.ok(!day.steps.some(step => /觀景台登塔/.test(step.label)), '觀景台暫停開放，主行程不排登塔');
   // 合併列的時間與停留長度對應新版規格。
   const at = label => day.steps[index(label)];

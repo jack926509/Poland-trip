@@ -534,7 +534,7 @@ export const dayOperations = {
     ],
     navigation: [
       { mode: '地鐵 M1', route: 'Świętokrzyska → Ratusz Arsenał', action: '08:55 在站口拍 MSN 與科學文化宮，再搭 M1 只坐 1 站，下車步行約 10 分到 POLIN。' },
-      { mode: '步行', route: 'POLIN → 克拉辛斯基廣場 → 新城廣場 → Freta → 甕城 → 老城廣場 → 石階街／Gnojna Góra → 聖若望大教堂 → Piwna → 城堡廣場 → 聖安妮教堂（外觀） → Gospoda pod Zygmuntem → 總統府 → 聖十字教堂 → Tamka／Ostrogski 宮 → 美人魚像 → BUW', action: '09:25 後全程步行，由北往南一路採點、不走回頭路；午餐後沿皇家大道、Tamka 與河岸走到 BUW，再叫車去瓦津基；時間不夠先刪 BUW 屋頂花園與美人魚。' },
+      { mode: '步行', route: 'POLIN → 克拉辛斯基廣場 → 新城廣場 → Freta → 甕城 → 老城廣場 → 石階街／Gnojna Góra → 聖若望大教堂 → Piwna → 城堡廣場 → 聖安妮教堂（外觀） → Gospoda pod Zygmuntem → 總統府 → 聖十字教堂 → Tamka／Ostrogski 宮 → 美人魚像 → BUW', action: '09:25 後全程步行，由北往南採點，僅午餐小幅折返；午餐後沿皇家大道、Tamka 與河岸走到 BUW，再叫車去瓦津基；時間不夠先刪 BUW 屋頂花園與美人魚。' },
       { mode: '叫車／步行', route: 'BUW → 瓦津基北門 → 水上宮殿 → Agrykola → Metropol → Soul Kitchen', action: '15:25 從 BUW 搭計程車／Bolt 約 15 分直達北門，北門看蕭邦紀念碑、15:55 抵水上宮殿等 16:12 日落；16:40 從 Agrykola 叫車回飯店，17:50 步行約 8 分到 Soul Kitchen，18:00 已訂位。' },
     ],
     dailyAlerts: [

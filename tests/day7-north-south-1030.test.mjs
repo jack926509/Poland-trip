@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { photoSpots } from '../src/data/cities.js';
 import { days } from '../src/data/trip.js';
 import { dayDining } from '../src/data/day-dining.js';
 import { diningPlaces } from '../src/data/dining-places.js';
@@ -18,10 +19,16 @@ test('Day 7 完整時間線依新版合併列，三餐卡對應正確 stepId', (
     ['12:05', /聖若望.*Piwna/], ['12:30', /城堡廣場.*聖安妮/], ['12:50', /Gospoda pod Zygmuntem/],
     ['13:50', /皇家大道/], ['14:15', /聖十字/], ['14:30', /哥白尼.*Tamka.*美人魚/],
     ['15:00', /BUW/], ['15:25', /叫 Bolt.*蕭邦紀念碑/], ['15:55', /水上宮殿/],
-    ['16:40', /Agrykola/], ['17:50', /Soul Kitchen/], ['18:00', /Soul Kitchen/], ['20:15', /E.Wedel/],
+    ['16:40', /Agrykola/], ['17:50', /步行前往 Soul Kitchen/], ['18:00', /最後晚餐.*Soul Kitchen/], ['20:15', /E.Wedel/],
   ];
   assert.equal(day.steps.length, timeline.length);
-  timeline.forEach(([time, label], i) => { assert.equal(day.steps[i].t, time); assert.match(day.steps[i].label, label); });
+  timeline.forEach(([time, label]) => {
+    const step = day.steps.find(s => label.test(s.label));
+    assert.ok(step, String(label));
+    assert.equal(step.t, time);
+    assert.match(step.label, label);
+  });
+  assert.deepEqual(day.steps.map(s => s.t), timeline.map(([time]) => time));
   for (const [id, placeId, time] of [
     ['d7-breakfast', 'warsaw-bulke-przez-bibulke-zgoda', '08:10'],
     ['d7-lunch', 'warsaw-gospoda-pod-zygmuntem', '12:50'], ['d7-dinner', 'warsaw-soul-kitchen', '18:00'],
@@ -29,8 +36,8 @@ test('Day 7 完整時間線依新版合併列，三餐卡對應正確 stepId', (
     assert.equal(dayDining[7].find(e => e.stepId === id).placeId, placeId);
     assert.equal(day.steps.find(s => s.id === id).t, time);
   }
-  assert.equal(day.steps[1].dur, '40 min');
-  assert.equal(day.steps[11].dur, '55 min');
+  assert.equal(day.steps.find(s => s.id === 'd7-breakfast').dur, '40 min');
+  assert.equal(day.steps.find(s => s.id === 'd7-lunch').dur, '55 min');
 });
 
 test('Day 7 移除 Polka／Pyzy，早餐與午餐備案及評分快照標示來源', () => {
@@ -54,11 +61,11 @@ test('Day 7 移除 Polka／Pyzy，早餐與午餐備案及評分快照標示來�
 test('Day 7 保留查證說明、日落與訂位限制，公開內容不含敏感編號或禁用用語', () => {
   const text = JSON.stringify({day, food:dayDining[7], operation:dayOperations[7], points});
   assert.doesNotMatch(text, /PNR|訂位編號|票號[:：\s]*[A-Z0-9]|座位(?:號)?[:：\s]*\d|電話確認|打電話|颱風/);
-  assert.match(day.steps[10].sub, /觀景台.*整修.*swanna\.waw\.pl/);
-  assert.match(day.steps[15].sub, /官方說法不一致.*18:00 保守規劃/);
+  assert.match(day.steps.find(s => /城堡廣場.*聖安妮/.test(s.label)).sub, /觀景台.*整修.*swanna\.waw\.pl/);
+  assert.match(day.steps.find(s => /BUW/.test(s.label)).sub, /官方說法不一致.*18:00 保守規劃/);
   assert.match(day.warn, /週五僅開放一樓/);
-  assert.match(day.steps[17].sub, /16:12 日落/);
-  assert.match(day.steps[20].sub, /保留訂位 15 分鐘.*1 份 Beef Wellington/);
+  assert.match(day.steps.find(s => /水上宮殿/.test(s.label)).sub, /16:12 日落/);
+  assert.match(day.steps.find(s => s.id === 'd7-dinner').sub, /保留訂位 15 分鐘.*1 份 Beef Wellington/);
   assert.match(dayOperations[6].nightChecklist.join(' '), /08:00 出門，08:10–08:50/);
 });
 
@@ -94,5 +101,26 @@ test('Day 7 重建頁與 standalone 含新時間線及午餐', () => {
   for (const path of ['dist/day-07.html', 'poland-travel-guide-2026.html']) {
     const html = readFileSync(new URL('../'+path, import.meta.url),'utf8');
     for (const value of ['Gospoda pod Zygmuntem', '15:25', '15:55', '評分來自第三方 Google 評論']) assert.ok(html.includes(value), `${path}: ${value}`);
+  }
+});
+
+test('Day 7 拍照建議起點落在對應行程列的時間窗內', () => {
+  const labels = {
+    'waw-oldtown': /老城廣場/,
+    'waw-castle': /城堡廣場.*聖安妮/,
+  };
+  const minutes = time => {
+    const [hours, mins] = time.split(':').map(Number);
+    return hours * 60 + mins;
+  };
+  for (const [id, label] of Object.entries(labels)) {
+    const spot = photoSpots.find(p => p.day === 7 && p.id === id);
+    const step = day.steps.find(s => label.test(s.label));
+    assert.ok(spot, id);
+    assert.ok(step, id);
+    assert.match(step.dur, /^\d+ min$/);
+    const start = minutes(spot.bestTime.split('–')[0]);
+    const stepStart = minutes(step.t);
+    assert.ok(start >= stepStart && start < stepStart + Number.parseInt(step.dur), `${id}: ${spot.bestTime} / ${step.t} + ${step.dur}`);
   }
 });

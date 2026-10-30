@@ -1201,6 +1201,7 @@ export const diningPlaces = {
     "cuisine": "波蘭菜",
     "dishes": []
   },
+  // OSM node/8842919282 僅為門牌，餐廳座標未驗證，不加餐廳圖釘。
   "warsaw-gosciniec-polskie-pierogi": {
     "id": "warsaw-gosciniec-polskie-pierogi",
     "cityKey": "warsaw",
@@ -1212,13 +1213,14 @@ export const diningPlaces = {
     "checkedAt": "2026-10-30",
     "verificationStatus": "partial",
     "notes": [
-      "Google 4.7／24,488 則評論，評分來自第三方 Google 評論。餐廳座標未驗證；OSM node/8842919282 僅為門牌，不加餐廳圖釘。"
+      "Google 4.7／24,488 則評論，評分來自第三方 Google 評論。座標未驗證。"
     ],
     "verificationNote": "依 10/30 使用者新版規格；營業時間出發前再確認。座標查證來源見 OSM；評分為第三方資訊。",
     "menuUrl": null,
     "cuisine": "波蘭菜",
     "dishes": []
   },
+  // 餐廳座標未驗證，不加圖釘。
   "warsaw-kubus-piekarenka-marszalkowska": {
     "id": "warsaw-kubus-piekarenka-marszalkowska",
     "cityKey": "warsaw",
@@ -1230,7 +1232,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-30",
     "verificationStatus": "partial",
     "notes": [
-      "早餐備案，離 Zgoda 約 1.8 km，需另留交通時間；餐廳座標未驗證，不加圖釘。"
+      "早餐備案，離 Zgoda 約 1.8 km，需另留交通時間；座標未驗證。"
     ],
     "verificationNote": "依 10/30 使用者新版規格；營業時間出發前再確認。座標查證來源見 OSM；評分為第三方資訊。",
     "menuUrl": null,
