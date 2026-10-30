@@ -573,7 +573,7 @@ export const dayOperations = {
       '離開 EU：如有 TAX FREE，先完成必要的出口確認與商品查驗，再交付託運行李。',
       '10/31 為諸聖節前夕；市區交通與機場營運以當日公告為準，不用平日末班資料倒推。',
     ],
-    nightChecklist: [...standardNightChecklist, '前一晚用 Jakdojade 查 10/31 週六 116 班表與站名、180 改道及電車 4／16／18 備案；早上 07:30 出發', '抵台後確認行李已全數取得，保留登機牌、TAX FREE 與必要收據至程序結束'],
+    nightChecklist: [...standardNightChecklist, '抵台後確認行李已全數取得，保留登機牌、TAX FREE 與必要收據至程序結束'],
   },
 };
 
@@ -665,10 +665,10 @@ const unresolvedStepReasons = {
     '哥白尼紀念碑 → Tamka 街蕭邦長椅、Ostrogski 宮外觀 → 河邊美人魚像': '戶外步行段，經 Ordynacka 轉 Tamka 街下坡；Ostrogski 宮（蕭邦博物館）整修閉館，只拍外觀。' + '；' + '戶外步行段，美人魚像在 Wybrzeże Kościuszkowskie 河岸，路過快拍。',
   },
   8: {
-    '從 Metropol 出發 → 三十字廣場 Plac Trzech Krzyży → Al. Ujazdowskie': '戶外步行與公車時間為推估；出發前用 Jakdojade 確認，公園 06:00–21:00 免費（出發前再確認）。',
-    '進瓦津基公園 Łazienki Królewskie': '戶外步行與公車時間為推估；出發前用 Jakdojade 確認，公園 06:00–21:00 免費（出發前再確認）。',
-    '蕭邦紀念碑 → 水上宮殿外觀 → 湖邊倒影': '戶外步行與公車時間為推估；出發前用 Jakdojade 確認，公園 06:00–21:00 免費（出發前再確認）。',
-    'Łazienki Królewskie 02 搭 116 往北 → Plac Trzech Krzyży 02': '戶外步行與公車時間為推估；出發前用 Jakdojade 確認，公園 06:00–21:00 免費（出發前再確認）。',
+    '從 Metropol 出發 → 三十字廣場 Plac Trzech Krzyży → Al. Ujazdowskie': '步行時間為推估；出發前用 Jakdojade 確認路線與所需時間。',
+    '進瓦津基公園 Łazienki Królewskie': '公園每日 06:00–21:00 免費；開放時間出發前再確認。',
+    '蕭邦紀念碑 → 水上宮殿外觀 → 湖邊倒影': '08:00–08:45 看蕭邦紀念碑、水上宮殿外觀與湖邊倒影；公園每日 06:00–21:00 免費，出發前再確認。',
+    'Łazienki Królewskie 02 搭 116 往北 → Plac Trzech Krzyży 02': '依 OSM relation/2521904，116 往北到 Plac Trzech Krzyży 02 約 3 站；車程與下車步行時間為推估。10/31 週六班表與站名，出發前用 Jakdojade 確認；180 路公車 10/31 改道。',
     'SKM S2／S3 目標班次': dynamicTransitReason,
   },
 };
@@ -684,7 +684,9 @@ for (const day of itineraryDays) {
     if (item.placeId && item.sourceUrl && item.verificationStatus !== 'pending' && !/待確認/.test(item.address)) {
       dayOperations[day.n].addresses.push({ name:item.name, address:item.address, url:item.map,
         officialUrl:item.sourceUrl, reliable:true, stepLabels:[step.label],
-        entranceNote:'依店家地址與現場招牌找入口；館內／商場店依樓層指標，營業與接單仍須確認。',
+        entranceNote:day.n === 8 && item.stepId === 'd8-breakfast'
+          ? '依 BAKEN 店家地址與現場招牌找入口；營業時間每日 08:00–16:30（第三方 Wanderlog 10/30 查），出發前再確認。'
+          : '依店家地址與現場招牌找入口；館內／商場店依樓層指標，營業與接單仍須確認。',
         note:item.condition || '行程預留，不代表已訂位。' });
     } else {
       unresolvedStepReasons[day.n][step.label] = item.placeId

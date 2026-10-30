@@ -119,9 +119,9 @@ export const daySupplementaryPins = {
   ],
   8: [
     [52.2290162, 21.0109879, 'Hotel Metropol', '07:30 出發、09:35 步行回飯店，約 09:43 抵達（推估）', 'https://www.openstreetmap.org/way/28759009', 'hotel', 'https://www.openstreetmap.org/way/28759009'],
-    // 使用者提供 Nominatim 查證座標，2026-10-30 採用；廣場僅作範圍代表點。
+    // 座標沿用 repo 既有 city-map-additions.js（OSM way/442135655）；廣場僅作範圍代表點。
     [52.2286979, 21.0225486, '三十字廣場 Plac Trzech Krzyży', '07:30 出發後經過，沿 Al. Ujazdowskie 往南；範圍代表點，非單一入口', 'https://www.openstreetmap.org/way/442135655', 'sight', 'https://www.openstreetmap.org/way/442135655'],
-    [52.2147016, 21.0280881, '瓦津基公園 · 蕭邦紀念碑', '07:55 入園、08:00 蕭邦紀念碑後往水上宮殿', 'https://www.openstreetmap.org/way/1448330230', 'sight', 'https://www.openstreetmap.org/way/1448330230'],
+    [52.2147016, 21.0280881, '瓦津基公園 · 蕭邦紀念碑', '07:55 入園、08:00–08:45 蕭邦紀念碑後往水上宮殿', 'https://www.openstreetmap.org/way/1448330230', 'sight', 'https://www.openstreetmap.org/way/1448330230'],
     [52.2150560, 21.0358058, '水上宮殿 Pałac na Wyspie', '08:00–08:45 外觀與湖邊倒影', 'https://www.openstreetmap.org/way/1325609735', 'sight', 'https://www.openstreetmap.org/way/1325609735'],
     // OSM 2026-10-30 查得：node/3037257659，public_transport=stop_position、network ZTM Warszawa、ref 709502；relation/2521904 往北方向（version 276，2026-09-06）。
     [52.2144281, 21.0264927, 'Łazienki Królewskie 02', '08:45 搭 116 往北約 3 站到 Plac Trzech Krzyży 02；出發前用 Jakdojade 確認', 'https://www.openstreetmap.org/node/3037257659', 'transport', 'https://www.openstreetmap.org/node/3037257659'],

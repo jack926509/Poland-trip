@@ -37,3 +37,18 @@ test('Day 8 地圖順序、查證座標與範圍代表點', () => {
   assert.deepEqual(map.points.slice(0,6).map(p=>p[10]), [[1,6,7],[1],[2,3],[3],[4],[5]]);
   assert.ok(!map.points.some(p=>p[2]==='Pl. Unii Lubelskiej'));
 });
+
+test('Day 8 地圖標籤保留早上時間與回飯店安排', () => {
+  const {points} = makeDayMap(day);
+  const label = name => points.find(p => p[2] === name)[3];
+  assert.match(label('瓦津基公園 · 蕭邦紀念碑'), /08:00–08:45/);
+  assert.match(label('水上宮殿 Pałac na Wyspie'), /08:00–08:45/);
+  assert.match(label('Łazienki Królewskie 02'), /08:45/);
+  assert.match(label('BAKEN piekarnia'), /09:00–09:35/);
+  assert.match(label('Hotel Metropol'), /07:30 出發/);
+  assert.match(label('Hotel Metropol'), /09:35 步行回飯店/);
+});
+test('查 10/31 交通的前一晚提醒保留在 Day 7，移出 Day 8', () => {
+  assert.doesNotMatch(JSON.stringify(dayOperations[8].nightChecklist), /Jakdojade 查 10\/31/);
+  assert.match(JSON.stringify(dayOperations[7].nightChecklist), /前一晚用 Jakdojade 查 10\/31/);
+});
