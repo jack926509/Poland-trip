@@ -659,7 +659,7 @@ const unresolvedStepReasons = {
     '★ 甕城 Barbakan＋城牆 → Szeroki Dunaj → Wąski Dunaj': '戶外城牆，在 Freta 街南端；小小起義者像在 Podwale。' + '；' + '老城西北側的戶外巷弄，由城牆內側往東走即接老城廣場。',
     '石階街 → Brzozowa → Gnojna Góra 觀景點': '戶外步行段：石階由老城廣場東北角往下，Gnojna Góra 在 Brzozowa 與 Celna 交口的高地。',
     'Kanonia 許願鐘 → 聖若望大教堂 → Piwna 街 → 聖馬丁教堂': '戶外步行段，教堂在 Piwna 9/11，由聖若望大教堂往西步行約 3 分，再沿 Piwna 往南走到城堡廣場。',
-    '沿皇家大道往南：總統府、Bristol、訪親會教堂、華沙大學': '戶外步行段，沿 Krakowskie Przedmieście 往南；E.Wedel 在對面，想外帶熱巧克力再進店。' + '；' + '戶外步行段，都在 Krakowskie Przedmieście 同一條街上，只拍外觀。',
+    '沿皇家大道往南：總統府、Bristol、訪親會教堂、華沙大學': '戶外步行段，沿 Krakowskie Przedmieście 往南先經密茨凱維奇紀念碑與加爾默羅會教堂；E.Wedel 在對面，想外帶熱巧克力再進店。' + '；' + '戶外步行段，都在 Krakowskie Przedmieście 同一條街上，只拍外觀。',
     '★ 聖十字教堂': '教堂在 Krakowskie Przedmieście 3，正殿通常免費可進，彌撒時不要拍照。',
     '哥白尼紀念碑 → Tamka 街蕭邦長椅、Ostrogski 宮外觀 → 河邊美人魚像': '戶外步行段，經 Ordynacka 轉 Tamka 街下坡；Ostrogski 宮（蕭邦博物館）整修閉館，只拍外觀。' + '；' + '戶外步行段，美人魚像在 Wybrzeże Kościuszkowskie 河岸，路過快拍。',
   },

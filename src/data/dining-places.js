@@ -2401,7 +2401,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "Zgoda 3 市中心早午餐：Bagel、Scrambled Eggs、Avocado Toast；平日 07:30 開門，10/30 08:10–08:50 早餐，08:55 拍外觀並搭地鐵往北。"
+      "Zgoda 3/5 市中心早午餐：Bagel、Scrambled Eggs、Avocado Toast；平日 07:30 開門，10/30 08:10–08:50 早餐，08:55 拍外觀並搭地鐵往北。"
     ],
     "menuUrl": null,
     "verificationNote": "官網分店頁列 Zgoda 3；第三方目錄週末時段不一。",
