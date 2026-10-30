@@ -154,7 +154,7 @@ test('「行程餐廳營業時間」表 = 每日餐位中已核實／部分核�
   const actual = new Set(dining.verifiedRestaurantHours.map(item => item.placeId));
   assert.deepEqual(actual, expected);
   assert.ok(actual.has('krakow-noah') && actual.has('krakow-pod-aniolami') && actual.has('poznan-pyra-bar') && actual.has('wroclaw-samarqand'));
-  assert.ok(actual.has('warsaw-polka'), 'Polka 已於 2026-10-12 由官網確認時段，應列入');
+  assert.ok(actual.has('warsaw-gospoda-pod-zygmuntem'), 'Gospoda 為新版午餐，部分核實時段應列入');
   assert.ok(!actual.has('wieliczka-karczma-gornicza'), 'Karczma Górnicza 仍是 pending，不該出現在已核實表');
 });
 

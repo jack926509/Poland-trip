@@ -90,10 +90,10 @@ export const daySupplementaryPins = {
     [52.2417276, 21.0163642, "普魯斯紀念碑", "Karowa", "https://www.google.com/maps/search/?api=1&query=52.2417276,21.0163642", "sight", "https://www.openstreetmap.org/way/1449391820"],
     [52.23648, 21.0229695, "Ostrogski 宮（外觀）", "Okólnik 1", "https://www.google.com/maps/search/?api=1&query=52.23648,21.0229695", "sight", "https://www.openstreetmap.org/way/188250947"],
     [52.2402594, 21.0320788, "河岸美人魚像 Syrena", "Tunel Wisłostrady", "https://www.google.com/maps/search/?api=1&query=52.2402594,21.0320788", "sight", "https://www.openstreetmap.org/way/432808623"],
-    venuePin('warsaw-old-town-square', { label: '10:40 老城廣場；前後是甕城、石階街、許願鐘與聖若望大教堂', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.249778&mlon=21.012151' }),
+    venuePin('warsaw-old-town-square', { label: '11:20 老城廣場；前後是甕城、石階街、許願鐘與聖若望大教堂', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.249778&mlon=21.012151' }),
     [52.2493716, 20.9931609, 'POLIN 波蘭猶太人歷史博物館（外觀）', 'Mordechaja Anielewicza 6 · 早上第一站，只看外觀', 'https://www.google.com/maps/search/?api=1&query=POLIN%20Museum%2C%20Mordechaja%20Anielewicza%206%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/186141946'],
-    [52.2426428, 21.0250683, 'BUW 華沙大學圖書館屋頂花園', 'Dobra 56/66 · 14:45 屋頂花園＋河岸步道', 'https://www.google.com/maps/search/?api=1&query=Biblioteka%20Uniwersytecka%20w%20Warszawie%2C%20Dobra%2056%2F66%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/relation/6414970'],
-    [52.2147016, 21.0280881, '瓦津基公園 · 蕭邦紀念碑', '15:30 進公園的第一站；水上宮殿在公園中央湖邊', 'https://www.google.com/maps/search/?api=1&query=Chopin%20Monument%2C%20%C5%81azienki%20Kr%C3%B3lewskie%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/1448330230'],
+    [52.2426428, 21.0250683, 'BUW 華沙大學圖書館屋頂花園', 'Dobra 56/66 · 15:00 屋頂花園＋河岸步道', 'https://www.google.com/maps/search/?api=1&query=Biblioteka%20Uniwersytecka%20w%20Warszawie%2C%20Dobra%2056%2F66%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/relation/6414970'],
+    [52.2147016, 21.0280881, '瓦津基公園 · 蕭邦紀念碑', '15:25 叫車後進公園的第一站；水上宮殿在公園中央湖邊', 'https://www.google.com/maps/search/?api=1&query=Chopin%20Monument%2C%20%C5%81azienki%20Kr%C3%B3lewskie%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/1448330230'],
     [52.2294483, 21.0148815, 'Soul Kitchen', 'Nowogrodzka 18A · 18:00–20:00 已訂妥，2 人', diningPlaces['warsaw-soul-kitchen'].map, 'food', 'https://www.openstreetmap.org/node/4373643390'],
     [52.2325833, 21.0140889, 'Bułkę przez Bibułkę', 'Zgoda 3 · 早餐', diningPlaces['warsaw-bulke-przez-bibulke-zgoda'].map, 'food', 'https://www.openstreetmap.org/node/316892293'],
     [52.2331288, 21.0089838, 'MSN 現代美術館', 'Marszałkowska 103', 'https://www.google.com/maps/search/?api=1&query=Museum%20of%20Modern%20Art%2C%20Marsza%C5%82kowska%20103%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/944207076'],
@@ -108,8 +108,9 @@ export const daySupplementaryPins = {
     [52.2482441, 21.0122221, '聖馬丁教堂', 'Piwna 9/11 門面 · 座標為教堂建物中心', 'https://www.google.com/maps/search/?api=1&query=Piwna%209%2F11%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/128808348'],
     // 2026-10-21 補聖安妮教堂（觀景台整修暫停開放，只拍外觀）：座標取 OSM way 25865144（Kościół pw. Świętej Anny，門牌 Krakowskie Przedmieście 68，
     // Nominatim 2026-10-21 以門牌查得），為教堂建物中心，觀景台入口依現場指標。
-    [52.2462123, 21.0143595, '聖安妮教堂（外觀）', 'Krakowskie Przedmieście 68 · 12:25 外觀拍照；座標為教堂建物中心', 'https://www.google.com/maps/search/?api=1&query=Ko%C5%9Bci%C3%B3%C5%82%20%C5%9Bw.%20Anny%2C%20Krakowskie%20Przedmie%C5%9Bcie%2068%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/25865144'],
-    [52.2482476, 21.0137690, 'Polka', 'Świętojańska 2 · 12:30 午餐', diningPlaces['warsaw-polka'].map, 'food', 'https://www.openstreetmap.org/node/416560107'],
+    [52.2462123, 21.0143595, '聖安妮教堂（外觀）', 'Krakowskie Przedmieście 68 · 12:30 外觀拍照；座標為教堂建物中心', 'https://www.google.com/maps/search/?api=1&query=Ko%C5%9Bci%C3%B3%C5%82%20%C5%9Bw.%20Anny%2C%20Krakowskie%20Przedmie%C5%9Bcie%2068%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/25865144'],
+    // 使用者提供 geo.txt：Nominatim 餐廳節點 node/447986211（非僅門牌），2026-10-30 採用。
+    [52.2486172, 21.0130097, 'Gospoda pod Zygmuntem', 'Świętojańska 15 · 12:50–13:45 午餐', diningPlaces['warsaw-gospoda-pod-zygmuntem'].map, 'food', 'https://www.openstreetmap.org/node/447986211'],
     [52.2150560, 21.0358058, '水上宮殿 Pałac na Wyspie', 'Agrykola 1 · 湖中島', 'https://www.google.com/maps/search/?api=1&query=Palace%20on%20the%20Isle%2C%20%C5%81azienki%20Kr%C3%B3lewskie%2C%20Agrykola%201%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/1325609735'],
   ],
   8: [
@@ -206,7 +207,7 @@ export const pinCoordinateCheckedAt = {
     "聖若望大教堂": '2026-10-17',
     "聖馬丁教堂": '2026-10-22',
     "聖安妮教堂（外觀）": '2026-10-21',
-    "Polka": '2026-10-17',
+    "Gospoda pod Zygmuntem": '2026-10-30',
     "水上宮殿 Pałac na Wyspie": '2026-10-17',
   },
   8: {
@@ -224,6 +225,37 @@ export const defaultPinCheckedAt = '2026-09-08';
 
 // 明確停留列可跨越距離／移動列篩選；陣列允許同一圖釘對應多次造訪。
 export const dayPinStepRows = {
+  7: {
+    "Hotel Metropol": [1],
+    "Bułkę przez Bibułkę": [2],
+    "MSN 現代美術館": [3],
+    "科學文化宮觀景台": [3],
+    "POLIN 波蘭猶太人歷史博物館（外觀）": [4],
+    "克拉辛斯基廣場・起義紀念碑": [5],
+    "新城廣場 Rynek Nowego Miasta": [6],
+    "聖母訪親教堂": [6],
+    "Freta 16 居禮夫人出生地": [6],
+    "甕城 Barbakan": [7],
+    "華沙老城市場廣場": [8],
+    "聖若望大教堂": [10],
+    "聖馬丁教堂": [10],
+    "皇家城堡": [11],
+    "聖安妮教堂（外觀）": [11],
+    "Gospoda pod Zygmuntem": [12],
+    "總統府（外觀）": [13],
+    "Café Bristol": [13],
+    "訪親會教堂 Kościół Wizytek": [13],
+    "普魯斯紀念碑": [13],
+    "聖十字教堂 Kościół św. Krzyża": [14],
+    "哥白尼紀念碑 Pomnik Kopernika": [15],
+    "Ostrogski 宮（外觀）": [15],
+    "河岸美人魚像 Syrena": [15],
+    "BUW 華沙大學圖書館屋頂花園": [16],
+    "瓦津基公園 · 蕭邦紀念碑": [17],
+    "水上宮殿 Pałac na Wyspie": [18],
+    "Soul Kitchen": [21],
+    "Pijalnia Czekolady E.Wedel（巧克力）": [22]
+  },
   6: {
     "Poznan Apartments Towarowa": [1],
     "Poznań Główny": [2, 19, 20],

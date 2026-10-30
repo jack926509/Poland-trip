@@ -64,12 +64,12 @@ test('關鍵餐段銜接保留已購車次，付費館只看外觀', () => {
   assert.equal(step(2,'d2-dinner').t, '19:15');
   assert.match(step(2,'d2-prep').sub, /隔日|隔天/);
   // 2026-10-14 新行程：Day 7 改看 POLIN 外觀（不進館），不再排起義博物館。
-  // 2026-10-15 採點版：上午先走完新城、老城，Polka 改 12:30 入座、13:15 離開；POLIN 外觀改 08:35。
-  assert.equal(step(7,'d7-lunch').t, '12:30');
-  assert.match(step(7,'d7-lunch').label, /Polka/);
+  // 10/30 新版：Gospoda 12:50–13:45 午餐，POLIN 外觀 09:25。
+  assert.equal(step(7,'d7-lunch').t, '12:50');
+  assert.match(step(7,'d7-lunch').label, /Gospoda pod Zygmuntem/);
   assert.ok(days[6].steps.filter(item=>/POLIN/i.test(item.label)).every(item=>/外觀/.test(item.label) && /不進館/.test(item.sub)));
   assert.ok(!days[6].steps.some(item=>/起義博物館/.test(item.label)));
-  assert.ok(days[6].steps.some(item=>item.t==='08:35' && /POLIN 外觀/.test(item.label)));
+  assert.ok(days[6].steps.some(item=>item.t==='09:25' && /POLIN 外觀/.test(item.label)));
   assert.equal(step(5,'d5-lunch').t, '12:00');
   assert.match(step(5,'d5-lunch').sub, /13:00 結束/);
   assert.ok(days[4].steps.some(item=>item.t==='18:20 前'));

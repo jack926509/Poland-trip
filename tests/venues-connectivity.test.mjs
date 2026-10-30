@@ -158,12 +158,12 @@ test('切片 4b：辛德勒工廠步驟的 sub 改由 venues.js 的 hours 動態
 
   // 2026-10-14 新行程只在城堡廣場拍外觀，Day 7 不再有入內步驟。
   assert.equal(findStep(7, '★ 皇家城堡'), undefined);
-  assert.ok(findStep(7, '★ 城堡廣場（白天版）').sub.includes('不進城堡'));
+  assert.ok(findStep(7, '★ 城堡廣場（白天版）皇家城堡外觀＋聖安妮教堂外觀').sub.includes('不進城堡'));
 
   // 精確檢查「不含票價數字」：這個步驟的 sub 不應含 PLN 金額（避免誤判無關數字，
   // 只鎖定「數字＋／＋數字」這種全票／優待並列的票價寫法，例如 47／35）。
   const priceListPattern = /\d+(?:\.\d+)?／\d+(?:\.\d+)?/;
-  for (const step of [findStep(7, '★ 城堡廣場（白天版）')]) {
+  for (const step of [findStep(7, '★ 城堡廣場（白天版）皇家城堡外觀＋聖安妮教堂外觀')]) {
     assert.doesNotMatch(step.sub, priceListPattern, `${step.label} 的 sub 仍殘留全票／優待並列的票價寫法`);
   }
 });

@@ -54,7 +54,7 @@
 
 早餐在飯店旁的 **Bułkę przez Bibułkę**。從 POLIN 博物館與猶太隔離區英雄紀念碑開始，經克拉辛斯基廣場、新城廣場、居禮夫人出生地所在的 Freta 街、甕城與城牆，走進 **老城廣場**，再到聖若望大教堂與 **城堡廣場**。
 
-午餐在 **Polka** 吃波蘭菜。下午沿皇家大道看總統府、聖十字教堂（蕭邦的心臟），經 Tamka 街到河邊看美人魚像、上 **BUW 屋頂花園**，再走回新世界街吃 **Blikle** 甜甜圈，經棕櫚樹圓環、三十字廣場一路往南到 **瓦津基公園** 看蕭邦紀念碑，在水上宮殿湖邊等日落。
+08:00 從 Metropol 出發，08:10–08:50 在 Bułkę przez Bibułkę 早餐；12:50–13:45 在 **Gospoda pod Zygmuntem** 午餐（客滿改 Gościniec，約 14:00 往南路上吃）。下午沿皇家大道看總統府、聖十字教堂（蕭邦的心臟），經 Tamka 街到河邊看美人魚像、上 **BUW 屋頂花園**，15:00 遊園，15:25 叫車到 **瓦津基公園** 看蕭邦紀念碑，15:55 抵水上宮殿湖邊等 16:12 日落，16:40 從 Agrykola 叫車回飯店。
 
 最後一晚 **Soul Kitchen 18:00–20:00、2 人已訂妥**，店家保留訂位 15 分鐘，已註記 1 份威靈頓牛排（未擴大解讀為供餐保證），飯後還有力氣就到 **E.Wedel** 本店再喝一杯熱巧克力。
 
@@ -66,7 +66,7 @@
 
 | 城市 | 正餐 | 咖啡與點心 |
 |---|---|---|
-| 華沙 | Arirang、Polka、Soul Kitchen | E.Wedel 熱巧克力、A. Blikle pączek、Bułkę przez Bibułkę 早餐 |
+| 華沙 | Arirang、Gospoda pod Zygmuntem、Soul Kitchen | E.Wedel 熱巧克力、A. Blikle pączek、Bułkę przez Bibułkę 早餐 |
 | 克拉科夫 | Hankki、Mr. Jerry、Sztolnia Wieliczka | Karma、圈餅（Plac Nowy zapiekanka 為城市延伸） |
 | 樂斯拉夫 | Samarqand、Restauracja Wrocławska、MAX | Central Cafe、El Gato、Słodki Chłopak |
 | 波茲南 | Stary Browar Food Hall | Manekin 早餐、聖馬丁牛角麵包 |

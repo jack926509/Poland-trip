@@ -92,7 +92,7 @@ export const ticketPurchaseGroups = [
       }),
       entry('warsaw-polin-reference', 'POLIN 波蘭猶太人歷史博物館', {
         plan: 'reference', purchaseUrl: 'https://bilety.polin.pl/', sourceUrl: 'https://polin.pl/en',
-        note: '附件原規劃有列；最新主行程未排入館，新行程只在 10/30 08:35 看建築外觀。只保留購票參考，若要入館須重新安排博物館時間。',
+        note: '附件原規劃有列；最新主行程未排入館，新行程只在 10/30 09:25 看建築外觀。只保留購票參考，若要入館須重新安排博物館時間。',
       }),
       entry('warsaw-chopin-museum', '蕭邦博物館', {
         plan: 'closed', method: 'closed', sourceUrl: 'https://muzeum.nifc.pl/en/muzeum/wizyta-informacje-miejsce/1_kontakt/',
