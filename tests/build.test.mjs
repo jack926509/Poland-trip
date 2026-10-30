@@ -1001,7 +1001,7 @@ test('Day 7 從最北邊往回逛：POLIN 外觀 → 新城 → 老城廣場 →
   const lunch = day.steps.find(item => item.id === 'd7-lunch');
   assert.equal(lunch.t, '12:50');
   assert.match(lunch.label, /Gospoda pod Zygmuntem/);
-  assert.equal(day.steps.find(step => step.label === '★ 瓦津基 · 水上宮殿').t, '15:55');
+  assert.equal(day.steps.find(step => step.label === '★ 瓦津基 · 水上宮殿').t, '15:58');
   assert.equal(day.intensity, '高');
   const html = read('day-07.html');
   const main = html.slice(html.indexOf('<main'), html.indexOf('</main>'));

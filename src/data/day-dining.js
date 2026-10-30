@@ -473,17 +473,17 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-gospoda-pod-zygmuntem",
       "role": "午餐首選",
-      "note": "Świętojańska 15，週五 11:00–23:00（出發前再確認）；Google 4.7／15,253 則評論，評分來自第三方 Google 評論。13:45 離開；客滿改 Gościniec Polskie Pierogi（Krakowskie Przedmieście 29，11:00–23:30，出發前再確認；Google 4.7／24,488 則評論，評分來自第三方 Google 評論），約 14:00 在往南路上吃；此備案刪掉 BUW 屋頂花園和河邊美人魚，從 Tamka 街直接叫車去瓦津基，仍要在 16:12 日落前到水上宮殿。",
+      "note": "Świętojańska 15，週五 11:00–23:00（出發前再確認）；Google 4.7／15,253 則評論，評分來自第三方 Google 評論。13:45 離開；客滿改 Gościniec Polskie Pierogi（Krakowskie Przedmieście 29，11:00–23:30，出發前再確認；Google 4.7／24,488 則評論，評分來自第三方 Google 評論），約 14:00 在往南路上吃；此備案刪掉 BUW 屋頂花園和河邊美人魚，從 Tamka 走回 Nowy Świat 搭 116 或 180 到 Łazienki Królewskie，仍要在 16:12 日落前到水上宮殿。",
       "stepId": "d7-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
-      "condition": "Gospoda 客滿 → Gościniec，約 14:00 在往南路上吃；此備案刪掉 BUW 屋頂花園和河邊美人魚，從 Tamka 街直接叫車去瓦津基，仍要在 16:12 日落前到水上宮殿。",
+      "condition": "Gospoda 客滿 → Gościniec，約 14:00 在往南路上吃；此備案刪掉 BUW 屋頂花園和河邊美人魚，從 Tamka 走回 Nowy Świat 搭 116 或 180 到 Łazienki Królewskie，仍要在 16:12 日落前到水上宮殿。",
       "dayHours": "11:00–23:00（出發前再確認）"
     },
     {
       "placeId": "warsaw-gosciniec-polskie-pierogi",
       "role": "午餐備案",
-      "note": "Krakowskie Przedmieście 29，11:00–23:30（出發前再確認）；Google 4.7／24,488 則評論，評分來自第三方 Google 評論。如果改去 Gościniec：12:50 從城堡廣場慢慢沿皇家大道往南走，看總統府、Bristol、訪親會教堂、華沙大學，約 14:00 在 Krakowskie Przedmieście 29 吃午餐；吃完接聖十字教堂、哥白尼紀念碑、Tamka 街蕭邦長椅；這個情況下刪掉 BUW 屋頂花園和河邊美人魚，從 Tamka 街直接叫車去瓦津基，仍要在 16:12 日落前到水上宮殿。餐廳座標未驗證。",
+      "note": "Krakowskie Przedmieście 29，11:00–23:30（出發前再確認）；Google 4.7／24,488 則評論，評分來自第三方 Google 評論。如果改去 Gościniec：12:50 從城堡廣場慢慢沿皇家大道往南走，看總統府、Bristol、訪親會教堂、華沙大學，約 14:00 在 Krakowskie Przedmieście 29 吃午餐；吃完接聖十字教堂、哥白尼紀念碑、Tamka 街蕭邦長椅；這個情況下刪掉 BUW 屋頂花園和河邊美人魚，從 Tamka 走回 Nowy Świat 搭 116 或 180 到 Łazienki Królewskie，仍要在 16:12 日落前到水上宮殿。餐廳座標未驗證。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -563,7 +563,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-qq-warsaw-matcha-korean-toasts",
       "role": "下午點心備選（10/30 新路線不排入）",
-      "note": "10/30 改為 BUW 後叫車到瓦津基，QQ 不在順路範圍；想吃抹茶與韓式吐司再自行安排。Żurawia 32/34，週五 11:00–20:00（店家 Instagram，另有目錄列週二休），前往前確認。",
+      "note": "10/30 改為 BUW 後步行接公車 116 或 180 到瓦津基，QQ 不在順路範圍；想吃抹茶與韓式吐司再自行安排。Żurawia 32/34，週五 11:00–20:00（店家 Instagram，另有目錄列週二休），前往前確認。",
       "stepId": null,
       "planStatus": "candidate"
     },

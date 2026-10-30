@@ -92,8 +92,8 @@ export const daySupplementaryPins = {
     [52.2402594, 21.0320788, "河岸美人魚像 Syrena", "Tunel Wisłostrady", "https://www.google.com/maps/search/?api=1&query=52.2402594,21.0320788", "sight", "https://www.openstreetmap.org/way/432808623"],
     venuePin('warsaw-old-town-square', { label: '11:20 老城廣場；前後是甕城、石階街、許願鐘與聖若望大教堂', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.249778&mlon=21.012151' }),
     [52.2493716, 20.9931609, 'POLIN 波蘭猶太人歷史博物館（外觀）', 'Mordechaja Anielewicza 6 · 早上第一站，只看外觀', 'https://www.google.com/maps/search/?api=1&query=POLIN%20Museum%2C%20Mordechaja%20Anielewicza%206%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/186141946'],
-    [52.2426428, 21.0250683, 'BUW 華沙大學圖書館屋頂花園', 'Dobra 56/66 · 15:00 屋頂花園＋河岸步道', 'https://www.google.com/maps/search/?api=1&query=Biblioteka%20Uniwersytecka%20w%20Warszawie%2C%20Dobra%2056%2F66%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/relation/6414970'],
-    [52.2147016, 21.0280881, '瓦津基公園 · 蕭邦紀念碑', '15:25 叫車後進公園的第一站；水上宮殿在公園中央湖邊', 'https://www.google.com/maps/search/?api=1&query=Chopin%20Monument%2C%20%C5%81azienki%20Kr%C3%B3lewskie%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/1448330230'],
+    [52.2426428, 21.0250683, 'BUW 華沙大學圖書館屋頂花園', 'Dobra 56/66 · 15:00–15:20 屋頂花園＋河岸步道', 'https://www.google.com/maps/search/?api=1&query=Biblioteka%20Uniwersytecka%20w%20Warszawie%2C%20Dobra%2056%2F66%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/relation/6414970'],
+    [52.2147016, 21.0280881, '瓦津基公園 · 蕭邦紀念碑', '15:20 從 BUW 步行接公車 116／180 後進公園的第一站；水上宮殿在公園中央湖邊', 'https://www.google.com/maps/search/?api=1&query=Chopin%20Monument%2C%20%C5%81azienki%20Kr%C3%B3lewskie%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/1448330230'],
     [52.2294483, 21.0148815, 'Soul Kitchen', 'Nowogrodzka 18A · 18:00–20:00 已訂妥，2 人', diningPlaces['warsaw-soul-kitchen'].map, 'food', 'https://www.openstreetmap.org/node/4373643390'],
     [52.2325833, 21.0140889, 'Bułkę przez Bibułkę', 'Zgoda 3/5 · 早餐', diningPlaces['warsaw-bulke-przez-bibulke-zgoda'].map, 'food', 'https://www.openstreetmap.org/node/316892293'],
     [52.2331288, 21.0089838, 'MSN 現代美術館', 'Marszałkowska 103', 'https://www.google.com/maps/search/?api=1&query=Museum%20of%20Modern%20Art%2C%20Marsza%C5%82kowska%20103%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/944207076'],
@@ -111,7 +111,7 @@ export const daySupplementaryPins = {
     [52.2462123, 21.0143595, '聖安妮教堂（外觀）', 'Krakowskie Przedmieście 68 · 12:30 外觀拍照；座標為教堂建物中心', 'https://www.google.com/maps/search/?api=1&query=Ko%C5%9Bci%C3%B3%C5%82%20%C5%9Bw.%20Anny%2C%20Krakowskie%20Przedmie%C5%9Bcie%2068%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/25865144'],
     // 使用者提供 geo.txt：Nominatim 餐廳節點 node/447986211（非僅門牌），2026-10-30 採用。
     [52.2486172, 21.0130097, 'Gospoda pod Zygmuntem', 'Świętojańska 15 · 12:50–13:45 午餐', diningPlaces['warsaw-gospoda-pod-zygmuntem'].map, 'food', 'https://www.openstreetmap.org/node/447986211'],
-    [52.2150560, 21.0358058, '水上宮殿 Pałac na Wyspie', 'Agrykola 1 · 湖中島', 'https://www.google.com/maps/search/?api=1&query=Palace%20on%20the%20Isle%2C%20%C5%81azienki%20Kr%C3%B3lewskie%2C%20Agrykola%201%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/1325609735'],
+    [52.2150560, 21.0358058, '水上宮殿 Pałac na Wyspie', '15:58–16:40 湖邊外觀 · 16:12 日落；回程沿主步道到北門', 'https://www.google.com/maps/search/?api=1&query=Palace%20on%20the%20Isle%2C%20%C5%81azienki%20Kr%C3%B3lewskie%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/1325609735'],
   ],
   8: [
     [52.2318536, 21.0208595, '棕櫚樹圓環', '09:20 Rondo de Gaulle，早餐後快拍', 'https://www.openstreetmap.org/node/1795659661', 'sight', 'https://www.openstreetmap.org/node/1795659661'],

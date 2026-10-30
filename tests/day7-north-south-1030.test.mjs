@@ -18,8 +18,8 @@ test('Day 7 完整時間線依新版合併列，三餐卡對應正確 stepId', (
     ['10:55', /甕城/], ['11:20', /老城廣場/], ['11:45', /石階街/],
     ['12:05', /聖若望.*Piwna/], ['12:30', /城堡廣場.*聖安妮/], ['12:50', /Gospoda pod Zygmuntem/],
     ['13:50', /皇家大道/], ['14:15', /聖十字/], ['14:30', /哥白尼.*Tamka.*美人魚/],
-    ['15:00', /BUW/], ['15:25', /叫 Bolt.*蕭邦紀念碑/], ['15:55', /水上宮殿/],
-    ['16:40', /Agrykola/], ['17:50', /步行前往 Soul Kitchen/], ['18:00', /最後晚餐.*Soul Kitchen/], ['20:15', /E.Wedel/],
+    ['15:00', /BUW/], ['15:20', /公車 116／180.*蕭邦紀念碑/], ['15:58', /水上宮殿/],
+    ['16:40', /電車 4／16／18.*Centrum/], ['17:50', /步行前往 Soul Kitchen/], ['18:00', /最後晚餐.*Soul Kitchen/], ['20:15', /E.Wedel/],
   ];
   assert.equal(day.steps.length, timeline.length);
   timeline.forEach(([time, label]) => {
@@ -58,16 +58,16 @@ test('Day 7 移除 Polka／Pyzy，早餐與午餐備案及評分快照標示來�
   assert.match(day.backup[0].why, /14:00/);
 });
 
-test('Day 7 Gościniec 備案銜接皇家大道、Tamka 叫車與日落', () => {
+test('Day 7 Gościniec 備案銜接皇家大道、Tamka 公車與日落', () => {
   const backup = day.backup.find(e => /Gospoda 客滿 → Gościniec/.test(e.label));
   const dining = dayDining[7].find(e => e.placeId === 'warsaw-gosciniec-polskie-pierogi');
   const navigation = dayOperations[7].navigation.find(e => /POLIN →/.test(e.route));
   for (const text of [backup.why, dining.note, navigation.action]) {
     assert.match(text, /12:50 從城堡廣場.*皇家大道往南走.*總統府、Bristol、訪親會教堂、華沙大學/);
     assert.match(text, /約 14:00 在 Krakowskie Przedmieście 29 吃午餐.*吃完接聖十字教堂、哥白尼紀念碑、Tamka 街蕭邦長椅/);
-    assert.match(text, /刪掉 BUW 屋頂花園和河邊美人魚.*從 Tamka 街直接叫車去瓦津基.*16:12 日落前到水上宮殿/);
+    assert.match(text, /刪掉 BUW 屋頂花園和河邊美人魚.*從 Tamka 走回 Nowy Świat 搭 116 或 180 到 Łazienki Królewskie.*16:12 日落前到水上宮殿/);
   }
-  assert.match(day.steps.find(s => s.id === 'd7-lunch').sub, /刪掉 BUW.*從 Tamka 街直接叫車.*16:12 日落前到水上宮殿/);
+  assert.match(day.steps.find(s => s.id === 'd7-lunch').sub, /刪掉 BUW.*從 Tamka 走回 Nowy Świat 搭 116 或 180 到 Łazienki Królewskie.*16:12 日落前到水上宮殿/);
 });
 
 test('Day 7 保留查證說明、日落與訂位限制，公開內容不含敏感編號或禁用用語', () => {
@@ -112,7 +112,7 @@ test('Day 7 全部地圖圖釘對回新版列序，同行依走法標 a/b/c', ()
 test('Day 7 重建頁與 standalone 含新時間線及午餐', () => {
   for (const path of ['dist/day-07.html', 'poland-travel-guide-2026.html']) {
     const html = readFileSync(new URL('../'+path, import.meta.url),'utf8');
-    for (const value of ['Gospoda pod Zygmuntem', '15:25', '15:55', '評分來自第三方 Google 評論', '刪掉 BUW 屋頂花園和河邊美人魚', '從 Tamka 街直接叫車去瓦津基', '16:12 日落前到水上宮殿']) assert.ok(html.includes(value), `${path}: ${value}`);
+    for (const value of ['Gospoda pod Zygmuntem', '15:20', '15:58', '評分來自第三方 Google 評論', '刪掉 BUW 屋頂花園和河邊美人魚', '從 Tamka 走回 Nowy Świat 搭 116 或 180 到 Łazienki Królewskie', '16:12 日落前到水上宮殿']) assert.ok(html.includes(value), `${path}: ${value}`);
   }
 });
 
@@ -135,4 +135,29 @@ test('Day 7 拍照建議起點落在對應行程列的時間窗內', () => {
     const stepStart = minutes(step.t);
     assert.ok(start >= stepStart && start < stepStart + Number.parseInt(step.dur), `${id}: ${spot.bestTime} / ${step.t} + ${step.dur}`);
   }
+});
+
+test('Day 7 下午全程大眾運輸、票券與北門回程鎖定', () => {
+  const bus = day.steps.find(s => s.t === '15:20');
+  const palace = day.steps.find(s => s.t === '15:58');
+  const tram = day.steps.find(s => s.t === '16:40');
+  assert.match(bus.label, /公車 116／180/);
+  assert.match(bus.sub, /Karowa.*上坡走 10–12 分.*Hotel Bristol 站（往 Wilanów 方向）.*116 或 180.*6 站約 12 分.*Łazienki Królewskie.*蕭邦紀念碑.*約 10 分.*水上宮殿/);
+  assert.match(bus.sub, /06:00–21:00 免費（出發前再確認）/);
+  assert.equal(bus.dur, '38 min');
+  assert.equal(day.steps.find(s => s.t === '15:00').dur, '20 min');
+  assert.match(palace.label, /水上宮殿/);
+  assert.match(palace.sub, /16:12 日落.*只排外觀/);
+  assert.equal(palace.dur, '42 min');
+  assert.match(tram.sub, /主步道.*北門（不走湖邊小路）.*Al. Ujazdowskie.*Pl. Unii Lubelskiej.*15–18 分.*Marszałkowska 往北.*電車 4、16、18.*4 站到 Centrum.*1–2 分.*約 17:05 到/);
+  assert.equal(tram.dur, '約 25 min');
+  for (const step of [bus, tram]) {
+    assert.match(step.cost, /20 分鐘票 3.40 zł.*上車馬上打票.*Jakdojade 啟用/);
+    assert.match(step.sub, /出發前用 Jakdojade 確認/);
+  }
+  assert.equal(day.steps.find(s => s.t === '08:55').cost, '75 分第 1 區票 4.40');
+  assert.doesNotMatch(JSON.stringify({steps:day.steps, hardConstraints:day.hardConstraints, compressible:day.compressible, backup:day.backup, warn:day.warn, navigation:dayOperations[7].navigation, points}), /Bolt|Uber|計程車|叫車|Agrykola|15:25|15:55/);
+  assert.match(day.compressible.join(' '), /從 Tamka 走回 Nowy Świat 搭 116 或 180 到 Łazienki Królewskie/);
+  assert.match(day.backup.find(b => b.label === '體力不足').where, /Nowy Świat 搭 116 或 180/);
+  assert.match(dayOperations[7].nightChecklist.join(' '), /出發前用 Jakdojade 確認/);
 });
