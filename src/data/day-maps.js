@@ -10,7 +10,7 @@ export const dayMapPlans = {
   4: { focus: '克拉科夫 Kraków＋Wieliczka', center: [50.040, 19.995], zoom: 12, selections: { krakow: ['ibis budget Krakow Stare Miasto'] } },
   5: { focus: '樂斯拉夫 Wrocław', center: [51.110, 17.049], zoom: 13, selections: { wroclaw: ['中央市集廣場', '大教堂島 Ostrów Tumski', 'Restauracja Wrocławska', 'Piast'] } },
   6: { focus: '波茲南 Poznań', center: [52.407, 16.930], zoom: 14, selections: { poznan: ['舊市集廣場 Stary Rynek', '大教堂島 Ostrów Tumski', 'Poznan Apartments Towarowa'] } },
-  7: { focus: '華沙 Warszawa', center: [52.236, 21.010], zoom: 13, selections: { warsaw: ['皇家城堡', 'Hotel Metropol', '科學文化宮觀景台', 'Pijalnia Czekolady E.Wedel（巧克力）'] } },
+  7: { focus: '華沙 Warszawa', center: [52.236, 21.010], zoom: 13, selections: { warsaw: ['皇家城堡', '科學文化宮觀景台'] } },
   8: { focus: '華沙 Warszawa＋蕭邦機場', center: [52.202, 20.991], zoom: 12, selections: { warsaw: ['Hotel Metropol'] } },
 };
 
@@ -82,6 +82,10 @@ export const daySupplementaryPins = {
     [52.4070893, 16.9116794, "Bałtyk 大樓", "Roosevelta 22 · 外觀", "https://www.google.com/maps/search/?api=1&query=Ba%C5%82tyk%20Pozna%C5%84%20Roosevelta", "sight", "https://www.openstreetmap.org/way/490881244"],
   ],
   7: [
+    [52.2333703, 21.0147273, "Pijalnia Czekolady E.Wedel（巧克力）", "Szpitalna 8", "https://www.openstreetmap.org/node/952332411", "cafe", "https://www.openstreetmap.org/node/952332411"],
+    [52.2300714, 21.0024449, "Złote Tarasy", "Złota 59；範圍代表點，Ziaja 不另設 pin", "https://www.openstreetmap.org/way/30611687", "sight", "https://www.openstreetmap.org/way/30611687"],
+    [52.236343, 21.0232557, "Tamka 街蕭邦長椅", "Tamka", "https://www.openstreetmap.org/node/13293462008", "sight", "https://www.openstreetmap.org/node/13293462008"],
+    [52.2290162, 21.0109879, "Hotel Metropol", "回飯店放購物袋", "https://www.openstreetmap.org/way/28759009", "hotel", "https://www.openstreetmap.org/way/28759009"],
     [52.2381578, 21.0179739, "哥白尼紀念碑 Pomnik Kopernika", "Mikołaja Kopernika", "https://www.google.com/maps/search/?api=1&query=52.2381578,21.0179739", "sight", "https://www.openstreetmap.org/node/282661680"],
     [52.2387357, 21.0167603, "聖十字教堂 Kościół św. Krzyża", "Krakowskie Przedmieście 3", "https://www.google.com/maps/search/?api=1&query=52.2387357,21.0167603", "sight", "https://www.openstreetmap.org/way/28092628"],
     [52.2430186, 21.0151657, "總統府（外觀）", "Krakowskie Przedmieście 46/48", "https://www.google.com/maps/search/?api=1&query=52.2430186,21.0151657", "sight", "https://www.openstreetmap.org/way/855256739"],
@@ -93,7 +97,7 @@ export const daySupplementaryPins = {
     venuePin('warsaw-old-town-square', { label: '11:20 老城廣場；前後是甕城、石階街、許願鐘與聖若望大教堂', category: 'sight', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.249778&mlon=21.012151' }),
     [52.2493716, 20.9931609, 'POLIN 波蘭猶太人歷史博物館（外觀）', 'Mordechaja Anielewicza 6 · 早上第一站，只看外觀', 'https://www.google.com/maps/search/?api=1&query=POLIN%20Museum%2C%20Mordechaja%20Anielewicza%206%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/186141946'],
     [52.2426428, 21.0250683, 'BUW 華沙大學圖書館屋頂花園', 'Dobra 56/66 · 15:00–15:20 屋頂花園＋河岸步道', 'https://www.google.com/maps/search/?api=1&query=Biblioteka%20Uniwersytecka%20w%20Warszawie%2C%20Dobra%2056%2F66%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/relation/6414970'],
-    [52.2147016, 21.0280881, '瓦津基公園 · 蕭邦紀念碑', '15:20 從 BUW 步行接公車 116／180 後進公園的第一站；水上宮殿在公園中央湖邊', 'https://www.google.com/maps/search/?api=1&query=Chopin%20Monument%2C%20%C5%81azienki%20Kr%C3%B3lewskie%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/1448330230'],
+    [52.2147016, 21.0280881, '瓦津基公園 · 蕭邦紀念碑', '15:45 蕭邦紀念碑；水上宮殿在公園中央湖邊', 'https://www.google.com/maps/search/?api=1&query=Chopin%20Monument%2C%20%C5%81azienki%20Kr%C3%B3lewskie%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/1448330230'],
     [52.2294483, 21.0148815, 'Soul Kitchen', 'Nowogrodzka 18A · 18:00–20:00 已訂妥，2 人', diningPlaces['warsaw-soul-kitchen'].map, 'food', 'https://www.openstreetmap.org/node/4373643390'],
     [52.2325833, 21.0140889, 'Bułkę przez Bibułkę', 'Zgoda 3/5 · 早餐', diningPlaces['warsaw-bulke-przez-bibulke-zgoda'].map, 'food', 'https://www.openstreetmap.org/node/316892293'],
     [52.2331288, 21.0089838, 'MSN 現代美術館', 'Marszałkowska 103', 'https://www.google.com/maps/search/?api=1&query=Museum%20of%20Modern%20Art%2C%20Marsza%C5%82kowska%20103%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/944207076'],
@@ -111,7 +115,7 @@ export const daySupplementaryPins = {
     [52.2462123, 21.0143595, '聖安妮教堂（外觀）', 'Krakowskie Przedmieście 68 · 12:30 外觀拍照；座標為教堂建物中心', 'https://www.google.com/maps/search/?api=1&query=Ko%C5%9Bci%C3%B3%C5%82%20%C5%9Bw.%20Anny%2C%20Krakowskie%20Przedmie%C5%9Bcie%2068%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/25865144'],
     // 使用者提供 geo.txt：Nominatim 餐廳節點 node/447986211（非僅門牌），2026-10-30 採用。
     [52.2486172, 21.0130097, 'Gospoda pod Zygmuntem', 'Świętojańska 15 · 12:50–13:45 午餐', diningPlaces['warsaw-gospoda-pod-zygmuntem'].map, 'food', 'https://www.openstreetmap.org/node/447986211'],
-    [52.2150560, 21.0358058, '水上宮殿 Pałac na Wyspie', '15:58–16:40 湖邊外觀 · 16:12 日落；回程沿主步道到北門', 'https://www.google.com/maps/search/?api=1&query=Palace%20on%20the%20Isle%2C%20%C5%81azienki%20Kr%C3%B3lewskie%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/1325609735'],
+    [52.2150560, 21.0358058, '水上宮殿 Pałac na Wyspie', '15:45–16:15 蕭邦紀念碑接水上宮殿；回程沿主步道到北門', 'https://www.google.com/maps/search/?api=1&query=Palace%20on%20the%20Isle%2C%20%C5%81azienki%20Kr%C3%B3lewskie%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/1325609735'],
   ],
   8: [
     [52.2318536, 21.0208595, '棕櫚樹圓環', '09:20 Rondo de Gaulle，早餐後快拍', 'https://www.openstreetmap.org/node/1795659661', 'sight', 'https://www.openstreetmap.org/node/1795659661'],
@@ -184,6 +188,10 @@ export const pinCoordinateCheckedAt = {
     "Bałtyk 大樓": '2026-10-28',
   },
   7: {
+    "Pijalnia Czekolady E.Wedel（巧克力）": '2026-10-30',
+    "Złote Tarasy": '2026-10-30',
+    "Tamka 街蕭邦長椅": '2026-10-30',
+    "Hotel Metropol": '2026-10-30',
     "哥白尼紀念碑 Pomnik Kopernika": '2026-10-19',
     "聖十字教堂 Kościół św. Krzyża": '2026-10-19',
     "總統府（外觀）": '2026-10-22',
@@ -226,7 +234,7 @@ export const defaultPinCheckedAt = '2026-09-08';
 // 明確停留列可跨越距離／移動列篩選；陣列允許同一圖釘對應多次造訪。
 export const dayPinStepRows = {
   7: {
-    "Hotel Metropol": [1],
+    "Hotel Metropol": [1, 21],
     "Bułkę przez Bibułkę": [2],
     "MSN 現代美術館": [3],
     "科學文化宮觀景台": [3],
@@ -249,12 +257,14 @@ export const dayPinStepRows = {
     "聖十字教堂 Kościół św. Krzyża": [14],
     "哥白尼紀念碑 Pomnik Kopernika": [15],
     "Ostrogski 宮（外觀）": [15],
+    "Tamka 街蕭邦長椅": [15],
+    "Złote Tarasy": [20],
     "河岸美人魚像 Syrena": [15],
     "BUW 華沙大學圖書館屋頂花園": [16],
-    "瓦津基公園 · 蕭邦紀念碑": [17],
+    "瓦津基公園 · 蕭邦紀念碑": [18],
     "水上宮殿 Pałac na Wyspie": [18],
-    "Soul Kitchen": [21],
-    "Pijalnia Czekolady E.Wedel（巧克力）": [22]
+    "Soul Kitchen": [23],
+    "Pijalnia Czekolady E.Wedel（巧克力）": [24]
   },
   6: {
     "Poznan Apartments Towarowa": [1],
@@ -286,4 +296,9 @@ export const dayPinStepRows = {
     '拉茨瓦維採全景畫（外觀）': [11],
     '樂斯拉夫主教座堂': [17],
   },
+};
+
+// 商場座標為使用者提供的已查證範圍代表點，非單一入口。
+export const dayPinCheckOverrides = {
+  7: { 'Złote Tarasy': { status: 'area-reference', note: '範圍代表點，非單一入口；Ziaja 不另設 pin。' } },
 };

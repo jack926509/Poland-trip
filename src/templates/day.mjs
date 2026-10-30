@@ -328,7 +328,7 @@ export function renderDay(day, photoSpotsForDay = [], operation = null, city = n
 
   // 10 月底的波蘭日落在 16:00 上下，戶外行程排不排得下由這張卡決定；
   // 數值取自 essentials.js 的 daylight，逐日頁不自行寫死時間。
-  const daylightHtml = daylightForDay ? `
+  const daylightHtml = daylightForDay && !day.hideDaylight ? `
       <article class="card">
         <span class="eyebrow">${escapeHtml(daylightForDay.tz)} · 戶外可用時間</span>
         <h3>日照</h3>

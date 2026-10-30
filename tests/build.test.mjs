@@ -1001,7 +1001,7 @@ test('Day 7 從最北邊往回逛：POLIN 外觀 → 新城 → 老城廣場 →
   const lunch = day.steps.find(item => item.id === 'd7-lunch');
   assert.equal(lunch.t, '12:50');
   assert.match(lunch.label, /Gospoda pod Zygmuntem/);
-  assert.equal(day.steps.find(step => step.label === '★ 瓦津基 · 水上宮殿').t, '15:58');
+  assert.equal(day.steps.find(step => step.label === '★ 瓦津基 · 蕭邦紀念碑 → 水上宮殿').t, '15:45');
   assert.equal(day.intensity, '高');
   const html = read('day-07.html');
   const main = html.slice(html.indexOf('<main'), html.indexOf('</main>'));
@@ -1255,6 +1255,10 @@ test('全站不出現把日落寫成 15:35–15:50 的錯誤敘述', () => {
   // 這裡只確認頁面真的把那份資料呈現出來，且各日頁與總表同源。
   for (const item of daylight) {
     const dayPage = read(`day-${String(item.day).padStart(2, '0')}.html`);
+    if (days.find(d => d.n === item.day).hideDaylight) {
+      assert.doesNotMatch(dayPage, /<h3>日照<\/h3>/);
+      continue;
+    }
     assert.ok(dayPage.includes(item.sunset), `Day ${item.day} 頁面的日落時間與日照表不一致`);
     assert.ok(dayPage.includes(item.sunrise), `Day ${item.day} 頁面的日出時間與日照表不一致`);
   }
@@ -2135,7 +2139,7 @@ test('Day 7 城堡廣場後、Gospoda pod Zygmuntem 午餐前只拍聖安妮教�
   assert.deepEqual(['★ 老城廣場', '石階街 → Brzozowa → Gnojna Góra 觀景點', 'Kanonia 許願鐘 → 聖若望大教堂 → Piwna 街 → 聖馬丁教堂', '★ 城堡廣場（白天版）皇家城堡外觀＋聖安妮教堂外觀'].map(label => [at(label).t, at(label).dur]),
     [['11:20', '25 min'], ['11:45', '20 min'], ['12:05', '25 min'], ['12:30', '20 min']]);
   assert.equal(day.steps[lunch].t, '12:50');
-  assert.equal(day.steps[lunch + 1].t, '13:50');
+  assert.equal(day.steps[lunch + 1].t, '13:45');
   const step = day.steps[church];
   assert.match(step.sub, /Krakowskie Przedmieście 68/);
   assert.match(step.sub, /觀景台 10 月上旬起整修暫停開放（直到另行公告）/);
