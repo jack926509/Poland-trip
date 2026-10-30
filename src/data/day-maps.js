@@ -118,12 +118,14 @@ export const daySupplementaryPins = {
     [52.2150560, 21.0358058, '水上宮殿 Pałac na Wyspie', '15:45–16:15 蕭邦紀念碑接水上宮殿；回程沿主步道到北門', 'https://www.google.com/maps/search/?api=1&query=Palace%20on%20the%20Isle%2C%20%C5%81azienki%20Kr%C3%B3lewskie%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/1325609735'],
   ],
   8: [
-    [52.2290162, 21.0109879, 'Hotel Metropol', '07:50 出發、約 09:40 回飯店收行李', 'https://www.openstreetmap.org/way/28759009', 'hotel', 'https://www.openstreetmap.org/way/28759009'],
+    [52.2290162, 21.0109879, 'Hotel Metropol', '07:30 出發、09:35 步行回飯店，約 09:43 抵達（推估）', 'https://www.openstreetmap.org/way/28759009', 'hotel', 'https://www.openstreetmap.org/way/28759009'],
     // 使用者提供 Nominatim 查證座標，2026-10-30 採用；廣場僅作範圍代表點。
-    [52.2290438, 21.0178075, 'BAKEN piekarnia', 'Żurawia 6/12 · 08:00 早餐', 'https://www.openstreetmap.org/node/10912104601', 'food', 'https://www.openstreetmap.org/node/10912104601'],
-    [52.2286979, 21.0225486, '三十字廣場 Plac Trzech Krzyży', '08:35 經過，沿 Al. Ujazdowskie 往南；範圍代表點，非單一入口', 'https://www.openstreetmap.org/way/442135655', 'sight', 'https://www.openstreetmap.org/way/442135655'],
-    [52.2147016, 21.0280881, '瓦津基公園 · 蕭邦紀念碑', '09:00 紀念碑；時間不夠就只看紀念碑', 'https://www.openstreetmap.org/way/1448330230', 'sight', 'https://www.openstreetmap.org/way/1448330230'],
-    [52.2135765, 21.0216761, 'Pl. Unii Lubelskiej', '09:20 步行接電車往北；範圍代表點，非月台位置', 'https://www.openstreetmap.org/way/462615854', 'transport', 'https://www.openstreetmap.org/way/462615854'],
+    [52.2286979, 21.0225486, '三十字廣場 Plac Trzech Krzyży', '07:30 出發後經過，沿 Al. Ujazdowskie 往南；範圍代表點，非單一入口', 'https://www.openstreetmap.org/way/442135655', 'sight', 'https://www.openstreetmap.org/way/442135655'],
+    [52.2147016, 21.0280881, '瓦津基公園 · 蕭邦紀念碑', '07:55 入園、08:00 蕭邦紀念碑後往水上宮殿', 'https://www.openstreetmap.org/way/1448330230', 'sight', 'https://www.openstreetmap.org/way/1448330230'],
+    [52.2150560, 21.0358058, '水上宮殿 Pałac na Wyspie', '08:00–08:45 外觀與湖邊倒影', 'https://www.openstreetmap.org/way/1325609735', 'sight', 'https://www.openstreetmap.org/way/1325609735'],
+    // OSM 2026-10-30 查得：node/3037257659，public_transport=stop_position、network ZTM Warszawa、ref 709502；relation/2521904 往北方向（version 276，2026-09-06）。
+    [52.2144281, 21.0264927, 'Łazienki Królewskie 02', '08:45 搭 116 往北約 3 站到 Plac Trzech Krzyży 02；出發前用 Jakdojade 確認', 'https://www.openstreetmap.org/node/3037257659', 'transport', 'https://www.openstreetmap.org/node/3037257659'],
+    [52.2290438, 21.0178075, 'BAKEN piekarnia', 'Żurawia 6/12 · 09:00–09:35 早餐', 'https://www.openstreetmap.org/node/10912104601', 'food', 'https://www.openstreetmap.org/node/10912104601'],
     venuePin('warsaw-centralna-station', { label: '由 Hotel Metropol 前往機場線的市中心交通錨點', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.228917&mlon=21.003315' }),
     [52.2294024, 21.0075880, 'Warszawa Śródmieście', 'SKM S2 上車站 · Hotel Metropol 旁約 250 公尺', 'https://www.google.com/maps/search/?api=1&query=Warszawa%20%C5%9Ar%C3%B3dmie%C5%9Bcie%20SKM', 'transport', 'https://www.openstreetmap.org/node/2351113017'],
     [52.169709, 20.975785, 'Warszawa Lotnisko Chopina 機場鐵路站', 'PKP PLK 車站目錄座標 · 非航廈報到入口', 'https://www.google.com/maps/search/?api=1&query=Warszawa%20Lotnisko%20Chopina%20railway%20station%2C%20Warszawa%2C%20Poland', 'transport', 'https://portalpasazera.pl/en/KatalogStacji?stacja=Warszawa+Lotnisko+Chopina'],
@@ -225,7 +227,8 @@ export const pinCoordinateCheckedAt = {
     "BAKEN piekarnia": '2026-10-30',
     "三十字廣場 Plac Trzech Krzyży": '2026-10-30',
     "瓦津基公園 · 蕭邦紀念碑": '2026-10-30',
-    "Pl. Unii Lubelskiej": '2026-10-30',
+    "水上宮殿 Pałac na Wyspie": '2026-10-30',
+    "Łazienki Królewskie 02": '2026-10-30',
     "Warszawa Centralna": '2026-09-08',
     "Warszawa Śródmieście": '2026-10-19',
     "Warszawa Lotnisko Chopina 機場鐵路站": '2026-09-08',
@@ -236,7 +239,7 @@ export const defaultPinCheckedAt = '2026-09-08';
 
 // 明確停留列可跨越距離／移動列篩選；陣列允許同一圖釘對應多次造訪。
 export const dayPinStepRows = {
-  8: { "Hotel Metropol": [1, 6], "BAKEN piekarnia": [2], "三十字廣場 Plac Trzech Krzyży": [3], "瓦津基公園 · 蕭邦紀念碑": [4], "Pl. Unii Lubelskiej": [5], "Warszawa Centralna": [8], "Warszawa Śródmieście": [8] },
+  8: { "Hotel Metropol": [1, 6, 7], "三十字廣場 Plac Trzech Krzyży": [1], "瓦津基公園 · 蕭邦紀念碑": [2, 3], "水上宮殿 Pałac na Wyspie": [3], "Łazienki Królewskie 02": [4], "BAKEN piekarnia": [5], "Warszawa Centralna": [8], "Warszawa Śródmieście": [8] },
   7: {
     "Hotel Metropol": [1, 21],
     "Bułkę przez Bibułkę": [2],
@@ -304,6 +307,6 @@ export const dayPinStepRows = {
 
 // 商場座標為使用者提供的已查證範圍代表點，非單一入口。
 export const dayPinCheckOverrides = {
-  8: { '三十字廣場 Plac Trzech Krzyży': {status:'area-reference', note:'範圍代表點，非單一入口。'}, 'Pl. Unii Lubelskiej': {status:'area-reference', note:'範圍代表點，非電車月台。'} },
+  8: { '三十字廣場 Plac Trzech Krzyży': {status:'area-reference', note:'範圍代表點，非單一入口。'} },
   7: { 'Złote Tarasy': { status: 'area-reference', note: '範圍代表點，非單一入口；Ziaja 不另設 pin。' } },
 };

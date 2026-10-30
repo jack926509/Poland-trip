@@ -6,7 +6,7 @@ export const diningPlaces = {
     id:'warsaw-baken', cityKey:'warsaw', verificationStatus:'partial', checkedAt:'2026-10-30', sourceUrl:'https://wanderlog.com/', verificationNote:'Wanderlog 10/30 查，出發前再確認；評分來自第三方評論。', name:'BAKEN piekarnia', address:'Żurawia 6/12, Warszawa',
     map:'https://www.google.com/maps/search/?api=1&query=BAKEN%20piekarnia%20%C5%BBurawia%206%2F12%20Warszawa',
     hours:'每日 08:00–16:30（Wanderlog 10/30 查，出發前再確認）',
-    notes:['丹麥風早餐、自家酸種麵包；第三方評論 4.4／約 1,400 則（評分來自第三方評論）'],
+    notes:['Day 8：瓦津基散步後搭 116 回三十字廣場，09:00–09:35 早餐；丹麥風早餐、自家酸種麵包；第三方評論 4.4／約 1,400 則（評分來自第三方評論）'],
   },
 
   "poznan-manekin": {

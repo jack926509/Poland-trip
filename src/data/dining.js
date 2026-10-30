@@ -647,6 +647,7 @@ export const cafeGuide = [
     { placeId: 'warsaw-qq-warsaw-matcha-korean-toasts', type: '抹茶 · 韓式吐司', when: '城市延伸備選（10/30 新路線不排入）' },
     { placeId: 'warsaw-wedel-szpitalna-8', type: '熱巧克力', when: 'Day 7 · 20:15 飯後選配' },
     { placeId: 'warsaw-bulke-przez-bibulke-zgoda', type: '早午餐 · 貝果', when: 'Day 7 · 08:10 早餐（已排入）' },
+    { placeId: 'warsaw-baken', type: '丹麥風早餐 · 酸種麵包', when: 'Day 8 · 09:00–09:35 早餐（瓦津基後搭 116 返回）' },
     { placeId: 'warsaw-charlotte-zlota', type: '法式早餐 · 麵包', when: 'Day 8 · 早餐備選（Złota 83 較遠，機場日不採用）' },
     { placeId: 'warsaw-cukiernia-zagozdzinski', type: '老派 pączek', when: '有半天餘裕才去（Wola 區，需搭電車）' },
   ] },

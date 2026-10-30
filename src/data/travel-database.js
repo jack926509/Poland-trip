@@ -542,13 +542,13 @@ export const dayOperations = {
       '15:45 蕭邦紀念碑接水上宮殿；週五個人參觀免費、只開一樓，最後入場 17:30；營業時間出發前再確認。',
       '10/31 為諸聖節前夕，今晚重查明日市區交通、機場與店家特別營運。SKM 10 月班表未查證，需前一晚用 Jakdojade 確認 Śródmieście 往機場 S2 的確切時刻；錯過一班約晚 30 分，仍約 11:30 到機場。',
     ],
-    nightChecklist: [...standardNightChecklist, '今日公車 116／180 與電車 4／16／18：出發前用 Jakdojade 確認；兩段各買 20 分鐘票 3.40 zł；上車馬上打票，或在 Jakdojade 啟用', '前一晚先整理好行李，10/31 早上只需收尾', '整理 TAX FREE 商品與文件，確認需海關查驗的託運品不先交運', '確認 QR 260 報到、行李額度、機場交通與護照收納位置', '明早 07:50 從 Metropol 出發去 BAKEN 早餐；09:45 退房、10:05 出門，11:00 前到機場', '前一晚用 Jakdojade 查 10/31 週六電車 4／16／18 班表與 180 改道'],
+    nightChecklist: [...standardNightChecklist, '今日公車 116／180 與電車 4／16／18：出發前用 Jakdojade 確認；兩段各買 20 分鐘票 3.40 zł；上車馬上打票，或在 Jakdojade 啟用', '前一晚先整理好行李，10/31 早上只需收尾', '整理 TAX FREE 商品與文件，確認需海關查驗的託運品不先交運', '確認 QR 260 報到、行李額度、機場交通與護照收納位置', '明早 07:30 從 Metropol 出發去瓦津基，08:45 搭 116 回三十字廣場、09:00 BAKEN 早餐；09:45 退房、10:05 出門，11:00 前到機場', '前一晚用 Jakdojade 查 10/31 週六 116 班表與站名、180 改道及電車 4／16／18 備案'],
   },
   8: {
     cityKey: 'warsaw',
     note: '離開 EU 前處理退稅；託運商品若需查驗，先完成海關程序。',
     addresses: [
-      accommodationAddress('warsaw-metropol', ['約 09:40 回 Metropol、整理行李', '辦理退房']),
+      accommodationAddress('warsaw-metropol', ['步行回 Metropol', '辦理退房']),
       venueCard('warsaw-centralna-station', 'Warszawa Centralna'),
       {
         name: 'Warszawa Śródmieście（SKM S2）',
@@ -564,16 +564,16 @@ export const dayOperations = {
       venueCard('taipei-representative-office-warsaw', '駐波蘭台北代表處', '僅供緊急狀況備援，不列為一般行程站點。'),
     ],
     navigation: [
-      { mode: '步行／電車', route: 'Metropol → BAKEN → Plac Trzech Krzyży → Al. Ujazdowskie → 蕭邦紀念碑 → Pl. Unii Lubelskiej → Centrum → Metropol', action: '07:50 出發，08:00 早餐，08:35 散步、09:00 紀念碑；09:20 步行接電車 4／16／18 往北 4 站，車程約 8 分；20 分鐘票 3.40 zł（出發前再確認），上車馬上打票，或在 Jakdojade 啟用；10/31 週六班表，出發前用 Jakdojade 確認；180 改道。約 09:40 回飯店。步行時間為推估，累了可略過 Ujazdowskie／瓦津基段。' },
+      { mode: '步行／公車', route: 'Metropol → Plac Trzech Krzyży → Al. Ujazdowskie → Łazienki Królewskie → 蕭邦紀念碑 → 水上宮殿 → Łazienki Królewskie 02 → BAKEN → Metropol', action: '07:30 出發、07:55 入園，08:00–08:45 外觀與湖邊倒影；08:45 搭 116 往北約 3 站到 Plac Trzech Krzyży 02，車程約 8 分、再步行約 5 分（皆為推估）；09:00 BAKEN 早餐、09:35 步行約 8 分回飯店（推估）。20 分鐘票 3.40 zł（出發前再確認），上車馬上打票或在 Jakdojade 啟用；10/31 週六班表與站名，出發前用 Jakdojade 確認；不要依賴 180 路公車，10/31 改道。時間偏緊，累了可略過水上宮殿與湖邊；116 不來或改道時，步行到 Pl. Unii Lubelskiej 搭電車 4／16／18 往北到 Centrum，再步行到 BAKEN（轉乘與步行時間為推估，出發前用 Jakdojade 確認）。' },
       { mode: 'SKM', route: '華沙市中心 → 蕭邦機場', action: 'SKM 10 月班表未查證，需前一晚用 Jakdojade 確認 Śródmieście 往機場 S2 的確切時刻；錯過一班約晚 30 分，仍約 11:30 到機場；當日再查月台與改道；如要退稅或託運商品查驗，比一般報到更早抵達。' },
       { mode: '航空／出境', route: 'WAW → DOH → HKG → TPE', action: '依電子機票與報到櫃檯確認行李直掛終點與轉機程序；每段登機牌離線保存。' },
     ],
     dailyAlerts: [
-      '早上 07:50 出發去 BAKEN 早餐，散步到蕭邦紀念碑後搭電車回飯店；約 09:40 收行李，09:45 退房、10:05 出門。',
+      '早上 07:30 出發去瓦津基，08:45 搭 116 往北、09:00 BAKEN 早餐，09:35 步行回飯店，09:45 退房、10:05 出門。',
       '離開 EU：如有 TAX FREE，先完成必要的出口確認與商品查驗，再交付託運行李。',
       '10/31 為諸聖節前夕；市區交通與機場營運以當日公告為準，不用平日末班資料倒推。',
     ],
-    nightChecklist: [...standardNightChecklist, '前一晚用 Jakdojade 查 10/31 週六電車 4／16／18 班表與 180 改道；早上 07:50 出發', '抵台後確認行李已全數取得，保留登機牌、TAX FREE 與必要收據至程序結束'],
+    nightChecklist: [...standardNightChecklist, '前一晚用 Jakdojade 查 10/31 週六 116 班表與站名、180 改道及電車 4／16／18 備案；早上 07:30 出發', '抵台後確認行李已全數取得，保留登機牌、TAX FREE 與必要收據至程序結束'],
   },
 };
 
@@ -665,10 +665,10 @@ const unresolvedStepReasons = {
     '哥白尼紀念碑 → Tamka 街蕭邦長椅、Ostrogski 宮外觀 → 河邊美人魚像': '戶外步行段，經 Ordynacka 轉 Tamka 街下坡；Ostrogski 宮（蕭邦博物館）整修閉館，只拍外觀。' + '；' + '戶外步行段，美人魚像在 Wybrzeże Kościuszkowskie 河岸，路過快拍。',
   },
   8: {
-    '從 Metropol 出發 → BAKEN': '步行約 8 分至 Żurawia 6/12，時間為推估。',
-    '經三十字廣場 Plac Trzech Krzyży → Al. Ujazdowskie': '戶外散步，廣場為範圍代表點，沿 Al. Ujazdowskie 往南。',
-    '瓦津基公園北側 · 蕭邦紀念碑': '戶外紀念碑，公園 06:00–21:00 免費（出發前再確認）。',
-    '步行到 Pl. Unii Lubelskiej → 電車回 Centrum': '廣場為範圍代表點，非已確認的往北月台；依 Jakdojade 與現場指標搭車。',
+    '從 Metropol 出發 → 三十字廣場 Plac Trzech Krzyży → Al. Ujazdowskie': '戶外步行與公車時間為推估；出發前用 Jakdojade 確認，公園 06:00–21:00 免費（出發前再確認）。',
+    '進瓦津基公園 Łazienki Królewskie': '戶外步行與公車時間為推估；出發前用 Jakdojade 確認，公園 06:00–21:00 免費（出發前再確認）。',
+    '蕭邦紀念碑 → 水上宮殿外觀 → 湖邊倒影': '戶外步行與公車時間為推估；出發前用 Jakdojade 確認，公園 06:00–21:00 免費（出發前再確認）。',
+    'Łazienki Królewskie 02 搭 116 往北 → Plac Trzech Krzyży 02': '戶外步行與公車時間為推估；出發前用 Jakdojade 確認，公園 06:00–21:00 免費（出發前再確認）。',
     'SKM S2／S3 目標班次': dynamicTransitReason,
   },
 };
