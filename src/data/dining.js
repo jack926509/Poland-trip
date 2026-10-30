@@ -640,13 +640,14 @@ export const snacksAndCafes = Object.fromEntries(Object.entries({
 // 門市事實（地址、營業時間、查核來源）一律在 dining-places.js，這裡只放分類與順路時段。
 export const cafeGuide = [
   { cityKey: 'warsaw', city: '華沙', items: [
-    { placeId: 'warsaw-a-blikle-1869', type: '甜點 · pączek', when: 'Day 8 · 09:10 甜甜圈（已排入）' },
+    { placeId: 'warsaw-a-blikle-1869', type: '甜點 · pączek', when: '城市甜點選配，未排入行程' },
     { placeId: 'warsaw-wedel-krakowskie-45', type: '熱巧克力', when: '城市延伸備選（改班後 10/24 不在波蘭）' },
     { placeId: 'warsaw-cafe-bristol', type: '咖啡 · 蛋糕', when: '城市延伸備選（改班後 10/24 不在波蘭）' },
     { placeId: 'warsaw-green-caffe-nero-centralny', type: '車站咖啡外帶', when: '城市延伸備選（改班後機場直接轉西站）' },
     { placeId: 'warsaw-qq-warsaw-matcha-korean-toasts', type: '抹茶 · 韓式吐司', when: '城市延伸備選（10/30 新路線不排入）' },
     { placeId: 'warsaw-wedel-szpitalna-8', type: '熱巧克力', when: 'Day 7 · 20:15 飯後選配' },
-    { placeId: 'warsaw-bulke-przez-bibulke-zgoda', type: '早午餐 · 貝果', when: 'Day 8 · 08:35 早餐（已排入；Day 7 08:10 早餐也在這家）' },
+    { placeId: 'warsaw-bulke-przez-bibulke-zgoda', type: '早午餐 · 貝果', when: 'Day 7 · 08:10 早餐（已排入）' },
+    { placeId: 'warsaw-baken', type: '丹麥風早餐 · 酸種麵包', when: 'Day 8 · 09:00–09:35 早餐（瓦津基後搭 116 返回）' },
     { placeId: 'warsaw-charlotte-zlota', type: '法式早餐 · 麵包', when: 'Day 8 · 早餐備選（Złota 83 較遠，機場日不採用）' },
     { placeId: 'warsaw-cukiernia-zagozdzinski', type: '老派 pączek', when: '有半天餘裕才去（Wola 區，需搭電車）' },
   ] },

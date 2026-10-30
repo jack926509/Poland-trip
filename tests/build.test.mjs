@@ -561,7 +561,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   // 2026-09-19 資料精煉切片 1：verifiedRestaurantHours 改由每日餐位（day-dining.js）中
   // 已核實／部分核實的門市直接推導（見 src/lib/dining.mjs 的 plannedVerifiedPlaces），
   // 不再是手寫子集，筆數會隨每日餐位調整自然變動。
-  assert.equal(verifiedRestaurantHours.length, 66); // 2026-10-14 新行程 Day 1 加 E.Wedel Krakowskie Przedmieście 45 咖啡選項（63 → 64）；2026-10-13 加威靈頓備選 Primitivo（62 → 63）；2026-10-12 新增 Pimiento、Carla、Pasibus Nowy Świat 三筆主檔（59 → 62）；餐飲 v5 整併加四家 Pasibus（31 → 35），同日逐店複查把 24 家待確認門市升為部分核實（35 → 59）；Day 6 改 Manekin 與 Food Hall，移出三家舊餐位，66 → 65；Day 7 換三家餐飲選項、Polka 不再排每日餐位，65 → 66。
+  assert.equal(verifiedRestaurantHours.length, 67); // Day 8 新增 BAKEN，舊早餐與甜點門市仍在其他天使用。 // 2026-10-14 新行程 Day 1 加 E.Wedel Krakowskie Przedmieście 45 咖啡選項（63 → 64）；2026-10-13 加威靈頓備選 Primitivo（62 → 63）；2026-10-12 新增 Pimiento、Carla、Pasibus Nowy Świat 三筆主檔（59 → 62）；餐飲 v5 整併加四家 Pasibus（31 → 35），同日逐店複查把 24 家待確認門市升為部分核實（35 → 59）；Day 6 改 Manekin 與 Food Hall，移出三家舊餐位，66 → 65；Day 7 換三家餐飲選項、Polka 不再排每日餐位，65 → 66。
   assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
     warsaw: 5, krakow: 7, wroclaw: 4, poznan: 7,
   });
@@ -2046,7 +2046,7 @@ test('餐飲資料重整：每日正餐候選（day-dining）與順路必吃（e
   }
 });
 
-test('餐飲資料重整：餐飲引用完整，機場日早餐改飯店旁 Bułkę przez Bibułkę 並保留趕機備案', async () => {
+test('餐飲資料重整：餐飲引用完整，機場日早餐改 BAKEN 並保留趕機備案', async () => {
   const { dayDining } = await import('../src/data/day-dining.js');
   for (const [day, items] of Object.entries(dayDining)) {
     for (const item of items) {
@@ -2060,10 +2060,10 @@ test('餐飲資料重整：餐飲引用完整，機場日早餐改飯店旁 Buł
     else if (n < 8) assert.ok((dayDining[String(n)] || []).some(item => /首選|早餐/.test(item.role)),
       `Day ${n} 沒有任何正餐首選`);
     else {
-      assert.ok(dayDining['8'].some(item => item.stepId === 'd8-breakfast' && item.placeId === 'warsaw-bulke-przez-bibulke-zgoda'));
+      assert.ok(dayDining['8'].some(item => item.stepId === 'd8-breakfast' && item.placeId === 'warsaw-baken'));
       assert.ok(days[7].backup.some(item => /早餐備案/.test(item.label)));
       assert.ok(!dayDining['8'].some(item => item.placeId === 'warsaw-cafe-bristol'));
-      assert.match(days[7].steps.find(item => item.id === 'd8-breakfast').label, /Bułkę przez Bibułkę/);
+      assert.match(days[7].steps.find(item => item.id === 'd8-breakfast').label, /BAKEN/);
     }
     const html = read(`day-${String(n).padStart(2, '0')}.html`);
     assert.ok(html.includes('id="day-food"'), `day-${String(n).padStart(2, '0')}.html 缺少當日餐飲卡`);

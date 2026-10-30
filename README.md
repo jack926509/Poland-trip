@@ -60,13 +60,13 @@
 
 ## Day 8｜10/31（六）返程
 
-一早從飯店走到劇院廣場、薩克森花園，08:00 看無名塚衛兵交接，再到 **Bułkę przez Bibułkę** 吃早餐，回飯店整理行李、09:40 退房，搭 SKM 到蕭邦機場，搭 14:40 QR 260 經多哈回臺灣；11/1 QR 818 改為 01:55–14:50，接 BR 872 19:40–21:25 回桃園。
+07:30 從 Metropol 出發，經三十字廣場 Plac Trzech Krzyży、沿 Al. Ujazdowskie 往南步行約 25 分（推估；出發前用 Jakdojade 確認），07:55 進瓦津基公園（06:00–21:00、免費，出發前再確認）；08:00–08:45 看蕭邦紀念碑、水上宮殿外觀與湖邊倒影，不進館。08:45 從 Łazienki Królewskie 02 搭 116 往北約 3 站到 Plac Trzech Krzyży 02，車程約 8 分、再步行約 5 分到 **BAKEN piekarnia**（皆為推估）；09:00–09:35 在 Żurawia 6/12 早餐，每日 08:00–16:30（Wanderlog 10/30 查，出發前再確認），第三方評論 4.4／約 1,400 則。20 分鐘票 3.40 zł（出發前再確認），上車馬上打票或在 Jakdojade 啟用；10/31 週六班表與站名，出發前用 Jakdojade 確認；不要依賴 180 路公車，10/31 改道。116 不來或改道時，步行到 Pl. Unii Lubelskiej 搭電車 4／16／18 往北到 Centrum，再步行到 BAKEN（轉乘與步行時間為推估，出發前用 Jakdojade 確認）。時間偏緊，累了可略過水上宮殿與湖邊，只看蕭邦紀念碑就回站牌。09:35 步行約 8 分回飯店（推估），09:45 退房、10:05 出門、11:00 前抵達華沙蕭邦機場，搭 SKM 到蕭邦機場，搭 14:40 QR 260 經多哈回臺灣；11/1 QR 818 改為 01:55–14:50，接 BR 872 19:40–21:25 回桃園。
 
 ## 這趟吃到的
 
 | 城市 | 正餐 | 咖啡與點心 |
 |---|---|---|
-| 華沙 | Arirang、Gospoda pod Zygmuntem、Soul Kitchen | E.Wedel 熱巧克力、A. Blikle pączek、Bułkę przez Bibułkę 早餐 |
+| 華沙 | Arirang、Gospoda pod Zygmuntem、Soul Kitchen | E.Wedel 熱巧克力、BAKEN 早餐、Bułkę przez Bibułkę（Day 7）早餐 |
 | 克拉科夫 | Hankki、Mr. Jerry、Sztolnia Wieliczka | Karma、圈餅（Plac Nowy zapiekanka 為城市延伸） |
 | 樂斯拉夫 | Samarqand、Restauracja Wrocławska、MAX | Central Cafe、El Gato、Słodki Chłopak |
 | 波茲南 | Stary Browar Food Hall | Manekin 早餐、聖馬丁牛角麵包 |
