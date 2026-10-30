@@ -833,7 +833,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-10",
     "verificationStatus": "partial",
     "notes": [
-      "波蘭牛奶吧早餐：jajecznica 炒蛋、naleśniki 可麗餅配 kompot，或菠菜歐姆蛋。平日 08:00 才開，10/30 改為早餐備選（行程 08:05 就要出發搭地鐵往北）。"
+      "波蘭牛奶吧早餐：jajecznica 炒蛋、naleśniki 可麗餅配 kompot，或菠菜歐姆蛋。平日 08:00 才開；城市一般選項，未排入 10/30 早餐，當日備案為 Kubuś Piekarenka。"
     ],
     "menuUrl": "https://barbambino.pl/sniadanie/",
     "verificationNote": "本輪官網確認 Hoża 19（餐飲 v5 稿列 Krucza 21，以官網為準）；早餐品項與當日供應再查菜單。官網平日 08:00–20:00、週末 09:00–18:00。",
@@ -1183,6 +1183,62 @@ export const diningPlaces = {
     "phone": "+48 22 831 10 13",
     "liveCheckedAt": "2026-10-12"
   },
+  "warsaw-gospoda-pod-zygmuntem": {
+    "id": "warsaw-gospoda-pod-zygmuntem",
+    "cityKey": "warsaw",
+    "name": "Gospoda pod Zygmuntem",
+    "address": "Świętojańska 15, Warszawa",
+    "map": "https://www.google.com/maps/search/?api=1&query=Gospoda%20pod%20Zygmuntem%2C%20%C5%9Awi%C4%99toja%C5%84ska%2015%2C%20Warszawa",
+    "hours": "週五 11:00–23:00（出發前再確認）",
+    "sourceUrl": "https://www.openstreetmap.org/node/447986211",
+    "checkedAt": "2026-10-30",
+    "verificationStatus": "partial",
+    "notes": [
+      "Google 4.7／15,253 則評論，評分來自第三方 Google 評論。"
+    ],
+    "verificationNote": "依 10/30 使用者新版規格；營業時間出發前再確認。座標查證來源見 OSM；評分為第三方資訊。",
+    "menuUrl": null,
+    "cuisine": "波蘭菜",
+    "dishes": []
+  },
+  // OSM node/8842919282 僅為門牌，餐廳座標未驗證，不加餐廳圖釘。
+  "warsaw-gosciniec-polskie-pierogi": {
+    "id": "warsaw-gosciniec-polskie-pierogi",
+    "cityKey": "warsaw",
+    "name": "Gościniec Polskie Pierogi",
+    "address": "Krakowskie Przedmieście 29, Warszawa",
+    "map": "https://www.google.com/maps/search/?api=1&query=Go%C5%9Bciniec%20Polskie%20Pierogi%2C%20Krakowskie%20Przedmie%C5%9Bcie%2029%2C%20Warszawa",
+    "hours": "11:00–23:30（出發前再確認）",
+    "sourceUrl": "https://www.openstreetmap.org/node/8842919282",
+    "checkedAt": "2026-10-30",
+    "verificationStatus": "partial",
+    "notes": [
+      "Google 4.7／24,488 則評論，評分來自第三方 Google 評論。座標未驗證。"
+    ],
+    "verificationNote": "依 10/30 使用者新版規格；營業時間出發前再確認。座標查證來源見 OSM；評分為第三方資訊。",
+    "menuUrl": null,
+    "cuisine": "波蘭菜",
+    "dishes": []
+  },
+  // 餐廳座標未驗證，不加圖釘。
+  "warsaw-kubus-piekarenka-marszalkowska": {
+    "id": "warsaw-kubus-piekarenka-marszalkowska",
+    "cityKey": "warsaw",
+    "name": "Kubuś Piekarenka",
+    "address": "Marszałkowska 19, Warszawa",
+    "map": "https://www.google.com/maps/search/?api=1&query=Kubu%C5%9B%20Piekarenka%2C%20Marsza%C5%82kowska%2019%2C%20Warszawa",
+    "hours": "08:00–20:00（出發前再確認）",
+    "sourceUrl": "https://www.openstreetmap.org/way/109388257",
+    "checkedAt": "2026-10-30",
+    "verificationStatus": "partial",
+    "notes": [
+      "早餐備案，離 Zgoda 約 1.8 km，需另留交通時間；座標未驗證。"
+    ],
+    "verificationNote": "依 10/30 使用者新版規格；營業時間出發前再確認。座標查證來源見 OSM；評分為第三方資訊。",
+    "menuUrl": null,
+    "cuisine": "麵包早餐",
+    "dishes": []
+  },
   "warsaw-polka": {
     "id": "warsaw-polka",
     "cityKey": "warsaw",
@@ -1194,7 +1250,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "傳統波蘭料理，Świętojańska 2 就在皇家城堡旁；10/30 走完 Piwna 街、城堡廣場與聖安妮教堂外觀，12:30 進來吃午餐，平日 12:00–16:00 有午間套餐。",
+      "傳統波蘭料理，Świętojańska 2 就在皇家城堡旁；城市一般選項，未排入 10/30 午餐。平日 12:00–16:00 有午間套餐，出發前再確認。",
       "不是 U Fukiera 的同一間店。"
     ],
     "cuisine": "波蘭菜（Magda Gessler）",
@@ -2338,14 +2394,14 @@ export const diningPlaces = {
     "id": "warsaw-bulke-przez-bibulke-zgoda",
     "cityKey": "warsaw",
     "name": "Bułkę przez Bibułkę | Zgoda",
-    "address": "Zgoda 3, Warszawa",
+    "address": "Zgoda 3/5, Warszawa",
     "map": "https://www.google.com/maps/search/?api=1&query=Bu%C5%82k%C4%99%20przez%20Bibu%C5%82k%C4%99%2C%20Zgoda%203%2C%20Warszawa",
     "hours": "週一至週五 07:30–23:00；週六、日 08:00–22:00",
     "sourceUrl": "https://bulkeprzezbibulke.pl/en/location/",
     "checkedAt": "2026-10-12",
     "verificationStatus": "partial",
     "notes": [
-      "Zgoda 3 市中心早午餐：Bagel、Scrambled Eggs、Avocado Toast；平日 07:30 開門，10/30 08:15 搭地鐵往北前的早餐首選。"
+      "Zgoda 3/5 市中心早午餐：Bagel、Scrambled Eggs、Avocado Toast；平日 07:30 開門，10/30 08:10–08:50 早餐，08:55 拍外觀並搭地鐵往北。"
     ],
     "menuUrl": null,
     "verificationNote": "官網分店頁列 Zgoda 3；第三方目錄週末時段不一。",

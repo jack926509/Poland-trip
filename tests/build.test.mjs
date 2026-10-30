@@ -561,7 +561,7 @@ test('資料盤點中的主要集合筆數完整且沒有搬遷遺漏', () => {
   // 2026-09-19 資料精煉切片 1：verifiedRestaurantHours 改由每日餐位（day-dining.js）中
   // 已核實／部分核實的門市直接推導（見 src/lib/dining.mjs 的 plannedVerifiedPlaces），
   // 不再是手寫子集，筆數會隨每日餐位調整自然變動。
-  assert.equal(verifiedRestaurantHours.length, 65); // 2026-10-14 新行程 Day 1 加 E.Wedel Krakowskie Przedmieście 45 咖啡選項（63 → 64）；2026-10-13 加威靈頓備選 Primitivo（62 → 63）；2026-10-12 新增 Pimiento、Carla、Pasibus Nowy Świat 三筆主檔（59 → 62）；餐飲 v5 整併加四家 Pasibus（31 → 35），同日逐店複查把 24 家待確認門市升為部分核實（35 → 59）；Day 6 改 Manekin 與 Food Hall，移出三家舊餐位，66 → 65。
+  assert.equal(verifiedRestaurantHours.length, 66); // 2026-10-14 新行程 Day 1 加 E.Wedel Krakowskie Przedmieście 45 咖啡選項（63 → 64）；2026-10-13 加威靈頓備選 Primitivo（62 → 63）；2026-10-12 新增 Pimiento、Carla、Pasibus Nowy Świat 三筆主檔（59 → 62）；餐飲 v5 整併加四家 Pasibus（31 → 35），同日逐店複查把 24 家待確認門市升為部分核實（35 → 59）；Day 6 改 Manekin 與 Food Hall，移出三家舊餐位，66 → 65；Day 7 換三家餐飲選項、Polka 不再排每日餐位，65 → 66。
   assert.deepEqual(Object.fromEntries(Object.entries(cityDining).map(([city, items]) => [city, items.length])), {
     warsaw: 5, krakow: 7, wroclaw: 4, poznan: 7,
   });
@@ -993,15 +993,15 @@ test('Day 7 從最北邊往回逛：POLIN 外觀 → 新城 → 老城廣場 →
   const times = order.map(name => day.steps.findIndex(step => step.label.startsWith('★') && step.label.includes(name)));
   assert.ok(times.every(index => index >= 0), `Day 7 缺少景點：${order.filter((_, i) => times[i] < 0)}`);
   assert.deepEqual([...times].sort((a, b) => a - b), times, 'Day 7 景點順序不對');
-  assert.equal(day.steps.find(step => step.label.includes('POLIN')).t, '08:35');
-  // 2026-10-21 Piwna 改在城堡廣場前（往南不走回頭路）；觀景台整修暫停開放，城堡廣場後只加 5 分聖安妮外觀，城堡廣場改 12:00，Polka 仍 12:30。
-  assert.equal(day.steps.find(step => step.label === '★ 城堡廣場（白天版）').t, '12:00');
+  assert.equal(day.steps.find(step => step.label.includes('POLIN')).t, '09:25');
+  // 10/30 新版：Piwna 併入大教堂列，城堡廣場與聖安妮合併，午餐 12:50。
+  assert.equal(day.steps.find(step => step.label === '★ 城堡廣場（白天版）皇家城堡外觀＋聖安妮教堂外觀').t, '12:30');
   assert.ok(!day.steps.some(step => /起義博物館|★ 皇家城堡$|國家博物館/.test(step.label)), 'Day 7 不再排付費館');
-  assert.equal(day.steps.find(step => step.id === 'd7-breakfast').t, '07:30');
+  assert.equal(day.steps.find(step => step.id === 'd7-breakfast').t, '08:10');
   const lunch = day.steps.find(item => item.id === 'd7-lunch');
-  assert.equal(lunch.t, '12:30');
-  assert.match(lunch.label, /Polka/);
-  assert.equal(day.steps.find(step => step.label === '★ 瓦津基 · 水上宮殿').t, '15:45');
+  assert.equal(lunch.t, '12:50');
+  assert.match(lunch.label, /Gospoda pod Zygmuntem/);
+  assert.equal(day.steps.find(step => step.label === '★ 瓦津基 · 水上宮殿').t, '15:58');
   assert.equal(day.intensity, '高');
   const html = read('day-07.html');
   const main = html.slice(html.indexOf('<main'), html.indexOf('</main>'));
@@ -1137,8 +1137,8 @@ test('餐飲、景點與地圖資料不保存無日期的動態 Google 星等', 
   assert.doesNotMatch(JSON.stringify(snacksAndCafes), dynamicRating);
 });
 
-test('行程餐廳推薦的評分只由連結帶去 Google Maps，不在站內存成數字', () => {
-  // 分數與評論數是每天都在變的快照，存進靜態站到了現場就是舊的。
+test('餐廳評分快照僅允許 Day 7 指定兩筆，且必須註明第三方來源', () => {
+  // 使用者指定保留 Day 7 兩筆第三方快照；其他店仍由連結查即時評分。
   const bakedRating = /★\s*\d(?:\.\d)?|\d\.\d\s*(?:顆星|星|\/\s*5)|\d+\s*則評論/;
   for (const file of ['city-warszawa.html', 'city-krakow.html', 'city-wroclaw.html', 'city-poznan.html']) {
     const html = read(file);
@@ -1155,8 +1155,14 @@ test('行程餐廳推薦的評分只由連結帶去 Google Maps，不在站內�
       assert.match(row, /aria-label="在新視窗開啟 [^"]+ 的 Google Maps"/,
         `${file} 店名連結缺少可辨識的 aria-label`);
     }
-    assert.doesNotMatch(table, bakedRating, `${file} 把 Google 評分寫死進表格`);
-    assert.ok(html.includes('評分與評論數本站不保存'), `${file} 未說明評分為何不存在站內`);
+    const snapshots = [...table.matchAll(/Google 4\.7／(?:15,253|24,488) 則評論，評分來自第三方 Google 評論/g)];
+    if (file === 'city-warszawa.html') {
+      assert.ok(snapshots.some(m => m[0].includes('15,253')));
+      assert.ok(snapshots.some(m => m[0].includes('24,488')));
+    } else assert.equal(snapshots.length, 0);
+    const withoutSnapshots = table.replace(/Google 4\.7／(?:15,253|24,488) 則評論，評分來自第三方 Google 評論/g, '');
+    assert.doesNotMatch(withoutSnapshots, bakedRating, `${file} 存入未標明來源的評分快照`);
+    assert.ok(html.includes('評分與評論數以 Google Maps 當下顯示為準；指定快照另註第三方來源'), `${file} 未說明評分為何不存在站內`);
   }
 
   // 手機改回全站共用的卡片版（一家一張卡），不得退回橫向捲 800px 以上的表格
@@ -2089,7 +2095,7 @@ test('餐飲資料重整：24 家自選店全部落在資料層（每日餐位�
   }
 });
 
-test('POLIN 僅保留購票參考，主行程只看外觀不入館；Day 7 午餐仍為 Polka', () => {
+test('POLIN 僅保留購票參考，主行程只看外觀不入館；Day 7 午餐改為 Gospoda pod Zygmuntem', () => {
   const walk = dir => fs.readdirSync(dir, { withFileTypes: true }).flatMap(entry => {
     const full = path.join(dir, entry.name);
     return entry.isDirectory() ? walk(full) : [full];
@@ -2099,7 +2105,7 @@ test('POLIN 僅保留購票參考，主行程只看外觀不入館；Day 7 午�
   const offenders = textFiles.filter(file => /warsze/i.test(fs.readFileSync(file, 'utf8')));
   assert.deepEqual(offenders, []);
   const itineraryFiles = ['index.html', 'today.html', ...days.map(day => `day-${String(day.n).padStart(2, '0')}.html`), ...['warszawa', 'krakow', 'wroclaw', 'poznan'].map(city => `city-${city}.html`)];
-  // 2026-10-14 新行程：Day 7 只在 POLIN 館外拍照（10/15 採點版改為 08:35），其他行程頁仍不應出現 POLIN。
+  // 2026-10-14 新行程：Day 7 只在 POLIN 館外拍照（10/30 新版改為 09:25），其他行程頁仍不應出現 POLIN。
   for (const file of itineraryFiles.filter(file => !['index.html', 'today.html', 'day-07.html', 'city-warszawa.html'].includes(file))) {
     const main = /<main\b[^>]*>([\s\S]*?)<\/main>/.exec(read(file))?.[1] || '';
     assert.doesNotMatch(main, /POLIN/i, `${file} 不應把購票參考當作主行程`);
@@ -2110,26 +2116,26 @@ test('POLIN 僅保留購票參考，主行程只看外觀不入館；Day 7 午�
   assert.ok(day7.steps.every(step => !/polin/i.test(step.sub || '') || /外觀|不進館|走約/.test(step.sub)), 'POLIN 只當外觀拍照點或步行目的地');
   assert.match(polinSteps[0].label, /外觀/);
   assert.match(polinSteps[0].sub, /不進館/);
-  assert.equal(day7.steps.find(step => step.id === 'd7-lunch').label, '午餐 · Polka');
+  assert.equal(day7.steps.find(step => step.id === 'd7-lunch').label, '午餐 · Gospoda pod Zygmuntem');
 });
 
-test('Day 7 城堡廣場後、Polka 午餐前只拍聖安妮教堂外觀：觀景台整修暫停開放，登塔改「若重新開放」延伸，不寫票價與觀景台時間', () => {
+test('Day 7 城堡廣場後、Gospoda pod Zygmuntem 午餐前只拍聖安妮教堂外觀：觀景台整修暫停開放，登塔改「若重新開放」延伸，不寫票價與觀景台時間', () => {
   // 2026-10-21 使用者確認（經 Tessa 轉達）。教區官網 swanna.waw.pl：觀景台 10/6 起整修暫停開放、直到另行公告；
   // 週五 10:00–13:00 教堂打掃、僅能進門廊。登塔心得來源為 Threads 網友 Delly Liu（@dellyliu），屬網友評論。
   const day = days.find(item => item.n === 7);
   const index = label => day.steps.findIndex(step => step.label === label);
-  const piwna = index('Piwna 街 → 聖馬丁教堂');
-  const castle = index('★ 城堡廣場（白天版）');
-  const church = index('聖安妮教堂外觀');
+  const piwna = index('Kanonia 許願鐘 → 聖若望大教堂 → Piwna 街 → 聖馬丁教堂');
+  const castle = index('★ 城堡廣場（白天版）皇家城堡外觀＋聖安妮教堂外觀');
+  const church = index('★ 城堡廣場（白天版）皇家城堡外觀＋聖安妮教堂外觀');
   const lunch = day.steps.findIndex(step => step.id === 'd7-lunch');
-  assert.ok(piwna >= 0 && castle === piwna + 1 && church === castle + 1 && lunch === church + 1, 'Piwna → 城堡廣場 → 聖安妮外觀 → Polka，往南不走回頭路');
+  assert.ok(piwna >= 0 && castle === piwna + 1 && church === castle && lunch === church + 1, 'Piwna → 城堡廣場 → 聖安妮外觀 → Gospoda pod Zygmuntem，僅午餐小幅折返');
   assert.ok(!day.steps.some(step => /觀景台登塔/.test(step.label)), '觀景台暫停開放，主行程不排登塔');
-  // 前面各站維持原本停留時間，只把 Piwna 改成單向。
+  // 合併列的時間與停留長度對應新版規格。
   const at = label => day.steps[index(label)];
-  assert.deepEqual(['★ 老城廣場', '石階街 → Brzozowa → Gnojna Góra 觀景點', 'Kanonia 許願鐘 → 聖若望大教堂', 'Piwna 街 → 聖馬丁教堂', '★ 城堡廣場（白天版）', '聖安妮教堂外觀'].map(label => [at(label).t, at(label).dur]),
-    [['10:40', '25 min'], ['11:05', '25 min'], ['11:30', '20 min'], ['11:50', '10 min'], ['12:00', '25 min'], ['12:25', '5 min']]);
-  assert.equal(day.steps[lunch].t, '12:30');
-  assert.equal(day.steps[lunch + 1].t, '13:30');
+  assert.deepEqual(['★ 老城廣場', '石階街 → Brzozowa → Gnojna Góra 觀景點', 'Kanonia 許願鐘 → 聖若望大教堂 → Piwna 街 → 聖馬丁教堂', '★ 城堡廣場（白天版）皇家城堡外觀＋聖安妮教堂外觀'].map(label => [at(label).t, at(label).dur]),
+    [['11:20', '25 min'], ['11:45', '20 min'], ['12:05', '25 min'], ['12:30', '20 min']]);
+  assert.equal(day.steps[lunch].t, '12:50');
+  assert.equal(day.steps[lunch + 1].t, '13:50');
   const step = day.steps[church];
   assert.match(step.sub, /Krakowskie Przedmieście 68/);
   assert.match(step.sub, /觀景台 10 月上旬起整修暫停開放（直到另行公告）/);
@@ -2155,10 +2161,10 @@ test('Day 7 城堡廣場後、Polka 午餐前只拍聖安妮教堂外觀：觀�
   assert.match(todo.action, /2026-10-22 出發前複查/);
   assert.match(todo.url, /^https:\/\/swanna\.waw\.pl\//);
   assert.doesNotMatch(todo.action, /PLN|zł|\d{1,2}:\d{2}/);
-  // POLIN 維持只看外觀，不加票券待辦；購票參考的外觀時間與行程一致（08:35）。
+  // POLIN 維持只看外觀，不加票券待辦；購票參考的外觀時間與行程一致（09:25）。
   assert.ok(!todoGroups.flatMap(group => group.items).some(item => /POLIN/.test(item.name)));
   const ticketSource = fs.readFileSync(path.resolve('src/data/ticket-purchases.js'), 'utf8');
-  assert.match(ticketSource, /10\/30 08:35 看建築外觀/);
+  assert.match(ticketSource, /10\/30 09:25 看建築外觀/);
   assert.doesNotMatch(ticketSource, /08:30 看建築外觀/);
   const html = read('day-07.html');
   assert.match(html, /聖安妮教堂外觀/);

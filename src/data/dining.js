@@ -646,7 +646,7 @@ export const cafeGuide = [
     { placeId: 'warsaw-green-caffe-nero-centralny', type: '車站咖啡外帶', when: '城市延伸備選（改班後機場直接轉西站）' },
     { placeId: 'warsaw-qq-warsaw-matcha-korean-toasts', type: '抹茶 · 韓式吐司', when: '城市延伸備選（10/30 新路線不排入）' },
     { placeId: 'warsaw-wedel-szpitalna-8', type: '熱巧克力', when: 'Day 7 · 20:15 飯後選配' },
-    { placeId: 'warsaw-bulke-przez-bibulke-zgoda', type: '早午餐 · 貝果', when: 'Day 8 · 08:35 早餐（已排入；Day 7 07:30 早餐也在這家）' },
+    { placeId: 'warsaw-bulke-przez-bibulke-zgoda', type: '早午餐 · 貝果', when: 'Day 8 · 08:35 早餐（已排入；Day 7 08:10 早餐也在這家）' },
     { placeId: 'warsaw-charlotte-zlota', type: '法式早餐 · 麵包', when: 'Day 8 · 早餐備選（Złota 83 較遠，機場日不採用）' },
     { placeId: 'warsaw-cukiernia-zagozdzinski', type: '老派 pączek', when: '有半天餘裕才去（Wola 區，需搭電車）' },
   ] },

@@ -457,33 +457,33 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-bulke-przez-bibulke-zgoda",
       "role": "早餐首選",
-      "note": "07:30 開門就進：Bagel、Scrambled Eggs 或 Avocado Toast＋咖啡，08:05 前結帳，走到 Świętokrzyska 站口拍 MSN 與科學文化宮，再搭 M1 到 Ratusz Arsenał。",
+      "note": "08:10–08:50 早餐，Zgoda 3/5；Bagel、Scrambled Eggs 或 Avocado Toast＋咖啡，接著 08:55 拍 MSN 與科學文化宮並搭 M1 往北。營業時間出發前再確認。",
       "stepId": "d7-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
       "dayHours": "07:30–23:00"
     },
     {
-      "placeId": "warsaw-bar-mleczny-bambino",
+      "placeId": "warsaw-kubus-piekarenka-marszalkowska",
       "role": "早餐備選",
-      "note": "Hoża 19，平日 08:00 才開；想吃牛奶吧早餐，後面從 08:35 POLIN 開始全部順延約 45 分，並刪掉 BUW 屋頂花園。",
+      "note": "Marszałkowska 19，08:00–20:00（出發前再確認）；離 Zgoda 約 1.8 km，需另留交通時間，座標未驗證。",
       "stepId": null,
       "planStatus": "candidate"
     },
     {
-      "placeId": "warsaw-polka",
+      "placeId": "warsaw-gospoda-pod-zygmuntem",
       "role": "午餐首選",
-      "note": "老城、新城上午走完，11:50 經 Piwna 街到城堡廣場，12:25 拍聖安妮教堂外觀，12:30 進城堡旁的店：平日 12:00–16:00 午間套餐，或點 Pierogi、Żurek；13:20 離開往總統府。客滿改甕城旁的 Pyzy Flaki Gorące。",
+      "note": "Świętojańska 15，週五 11:00–23:00（出發前再確認）；Google 4.7／15,253 則評論，評分來自第三方 Google 評論。13:45 離開；客滿改 Gościniec Polskie Pierogi（Krakowskie Przedmieście 29，11:00–23:30，出發前再確認；Google 4.7／24,488 則評論，評分來自第三方 Google 評論），約 14:00 在往南路上吃；此備案刪掉 BUW 屋頂花園和河邊美人魚，從 Tamka 走回 Nowy Świat 搭 116 或 180 到 Łazienki Królewskie，仍要在 16:12 日落前到水上宮殿。",
       "stepId": "d7-lunch",
       "planStatus": "scheduled",
       "meal": "lunch",
-      "condition": "客滿或候位超過 15 分就改甕城旁的 Pyzy Flaki Gorące 或老城廣場的 U Fukiera，或買外帶邊走邊吃。",
-      "dayHours": "12:00–22:00"
+      "condition": "Gospoda 客滿 → Gościniec，約 14:00 在往南路上吃；此備案刪掉 BUW 屋頂花園和河邊美人魚，從 Tamka 走回 Nowy Świat 搭 116 或 180 到 Łazienki Królewskie，仍要在 16:12 日落前到水上宮殿。",
+      "dayHours": "11:00–23:00（出發前再確認）"
     },
     {
-      "placeId": "warsaw-pyzy-flaki-gorace",
+      "placeId": "warsaw-gosciniec-polskie-pierogi",
       "role": "午餐備案",
-      "note": "Podwale 5（甕城旁），週一到週六 12:00 開門；Polka 客滿就改這間，吃華沙在地的 pyzy 馬鈴薯丸子。",
+      "note": "Krakowskie Przedmieście 29，11:00–23:30（出發前再確認）；Google 4.7／24,488 則評論，評分來自第三方 Google 評論。如果改去 Gościniec：12:50 從城堡廣場慢慢沿皇家大道往南走，看總統府、Bristol、訪親會教堂、華沙大學，約 14:00 在 Krakowskie Przedmieście 29 吃午餐；吃完接聖十字教堂、哥白尼紀念碑、Tamka 街蕭邦長椅；這個情況下刪掉 BUW 屋頂花園和河邊美人魚，從 Tamka 走回 Nowy Świat 搭 116 或 180 到 Łazienki Królewskie，仍要在 16:12 日落前到水上宮殿。餐廳座標未驗證。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -528,7 +528,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-u-fukiera",
       "role": "午／晚餐備選",
-      "note": "老城廣場 27：午餐 Polka 客滿時改這間；晚餐想在老城吃最後一晚也可以，綜合 Pierogi、Żurek、波蘭烤鴨。",
+      "note": "老城廣場 27：城市延伸選項；晚餐想在老城吃最後一晚也可以，綜合 Pierogi、Żurek、波蘭烤鴨。",
       "stepId": null,
       "planStatus": "candidate"
     },
@@ -563,7 +563,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-qq-warsaw-matcha-korean-toasts",
       "role": "下午點心備選（10/30 新路線不排入）",
-      "note": "10/30 改為 BUW 後叫車到瓦津基，QQ 不在順路範圍；想吃抹茶與韓式吐司再自行安排。Żurawia 32/34，週五 11:00–20:00（店家 Instagram，另有目錄列週二休），前往前確認。",
+      "note": "10/30 改為 BUW 後步行接公車 116 或 180 到瓦津基，QQ 不在順路範圍；想吃抹茶與韓式吐司再自行安排。Żurawia 32/34，週五 11:00–20:00（店家 Instagram，另有目錄列週二休），前往前確認。",
       "stepId": null,
       "planStatus": "candidate"
     },

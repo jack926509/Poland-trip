@@ -8,8 +8,8 @@ import { isOpenTodoStatus } from '../src/scripts/dashboard.js';
 test('皇家大道既有查證座標搬至 Day 7 並對回下午步驟', () => {
   const pins = makeDayMap(days[6]).points;
   for (const [name, lat, lon, row] of [
-    ['聖十字教堂 Kościół św. Krzyża', 52.2387357, 21.0167603, 20],
-    ['哥白尼紀念碑 Pomnik Kopernika', 52.2381578, 21.0179739, 21],
+    ['聖十字教堂 Kościół św. Krzyża', 52.2387357, 21.0167603, 14],
+    ['哥白尼紀念碑 Pomnik Kopernika', 52.2381578, 21.0179739, 15],
   ]) {
     const point = pins.find(p => p[2] === name);
     assert.deepEqual(point.slice(0, 2), [lat, lon]);

@@ -46,7 +46,7 @@ export const daylight = [
   {day:4, date:'2026-10-27', city:'克拉科夫', tz:'CET',    sunrise:'06:20', sunset:'16:27', blueHourEnd:'17:00', note:'下午 14:03 回城，買完圈餅就回 ibis 休息，日落前已在室內。'},
   {day:5, date:'2026-10-28', city:'樂斯拉夫', tz:'CET',    sunrise:'06:36', sunset:'16:34', blueHourEnd:'17:08', note:"日落約 16:33–16:34。15:35 前到 InfoCentrum 等點燈人，約 15:20–16:05 之間開始，無固定場次，出發前再確認；官方來源互相矛盾：InfoCentrum 頁說日落前約 30 分（約 16:03），市府報導說冬季約 15:20。17:00 離島。"},
   {day:6, date:'2026-10-29', city:'波茲南', tz:'CET',    sunrise:'06:42', sunset:'16:29', blueHourEnd:'17:05', note:'09:00 出發，上午 Śródka 與教堂島；15:08 Kaponiera，15:45 走回車站、約 16:00 取行李，17:15 前到月台。'},
-  {day:7, date:'2026-10-30', city:'華沙', tz:'CET',    sunrise:'06:27', sunset:'16:12', blueHourEnd:'16:47', note:'從 POLIN、新城、老城一路往南到瓦津基，付費館只看外觀。日落 16:12，在水上宮殿湖邊拍倒影；16:40 從 Agrykola 出口叫車回飯店，天色已暗。'},
+  {day:7, date:'2026-10-30', city:'華沙', tz:'CET',    sunrise:'06:27', sunset:'16:12', blueHourEnd:'16:47', note:'08:00 出發、08:10 早餐，09:25 從 POLIN、新城、老城一路往南到瓦津基，付費館只看外觀。15:00–15:20 BUW；15:20 步行到 Hotel Bristol 站搭公車 116 或 180 到 Łazienki Królewskie，15:58 抵水上宮殿湖邊，只排外觀，16:12 日落拍倒影；16:40 沿北門步行接電車 4、16、18 到 Centrum，約 17:05 到飯店。兩段各買 20 分鐘票 3.40 zł；上車馬上打票，或在 Jakdojade 啟用；出發前用 Jakdojade 確認。'},
   {day:8, date:'2026-10-31', city:'華沙', tz:'CET',    sunrise:'06:28', sunset:'16:10', blueHourEnd:'16:45', note:'10:05 出門搭機，不涉及傍晚戶外行程。'},
 ];
 

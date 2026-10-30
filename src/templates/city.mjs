@@ -120,7 +120,7 @@ export function renderCity({
     <section class="section" id="city-dining">
       <div class="section-heading"><span class="section-num">Dining</span><h2>行程餐廳推薦</h2></div>
       <p class="lead" id="city-dining-description">共 ${mergedDining.length} 家，${mergedDining.filter(item => item.selected || item.mustEat).length} 家已列入每日候選。分組展開：排進三餐的主選與順路必吃預設打開並標出日期（點 Day 回當日行程），備選、主推、備案、小吃咖啡、連鎖速食點標題即可展開。</p>
-      <p class="lead"><b>點店名開啟 Google Maps。</b>評分與評論數本站不保存；營業狀態出門前看 Google 地圖，連鎖與同名店先對門牌。</p>
+      <p class="lead"><b>點店名開啟 Google Maps。</b>評分與評論數以 Google Maps 當下顯示為準；指定快照另註第三方來源；營業狀態出門前看 Google 地圖，連鎖與同名店先對門牌。</p>
       <p class="city-dining-scroll-hint">平板可左右滑動看完整欄位，手機自動改為卡片。</p>
       ${diningGroupsHtml}
       <p class="action-links"><a href="practical/dining.html">米其林名單與訂位管道 →</a></p>
