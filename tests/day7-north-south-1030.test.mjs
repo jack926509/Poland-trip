@@ -144,6 +144,7 @@ test('Day 7 下午全程大眾運輸、票券與北門回程鎖定', () => {
   assert.match(bus.label, /公車 116／180/);
   assert.match(bus.sub, /Karowa.*Hotel Bristol.*116 或 180.*Łazienki Królewskie/);
   assert.match(bus.sub, /推估.*出發前用 Jakdojade 確認/);
+  assert.match(bus.sub, /06:00–21:00 免費（出發前再確認）/);
   assert.equal(bus.dur, '25 min');
   assert.equal(day.steps.find(s => s.t === '15:00').dur, '20 min');
   assert.match(palace.sub, /週五.*免費.*一樓.*最後入場 17:30/);
