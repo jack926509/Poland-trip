@@ -12,7 +12,7 @@ import { daylight, safety } from '../src/data/essentials.js';
 const day = days.find(d => d.n === 7);
 const hash = steps => createHash('sha256').update(JSON.stringify(steps)).digest('hex');
 test('Day 7 指定下午時間與上午 hash', () => {
-  assert.deepEqual(day.steps.filter(s => s.t >= '13:45').map(s => s.t), ['13:45','14:10','14:25','15:00','15:20','15:45','16:30','16:55','17:40','17:50','18:00','20:15']);
+  assert.deepEqual(day.steps.filter(s => s.t >= '13:45').map(s => s.t), ['13:45','14:10','14:25','15:00','15:20','15:45','16:15','16:45','17:30','17:50','18:00','20:15']);
   const morning = structuredClone(day.steps.filter(s => s.t < '13:45'));
   morning.at(-1).sub = morning.at(-1).sub.replace('接著到水上宮殿', '仍要在 16:12 日落前到水上宮殿');
   assert.equal(hash(morning), '019acb68f1529180758ace7b5105b7e88365d4319302ff1dab29fbaf737295f1');
@@ -40,4 +40,24 @@ test('Day 7 地圖依時間序列並保留已查證座標及商場範圍狀態',
   assert.deepEqual(rows, [14,15,15,15,16,18,18,20,23,24]);
   assert.deepEqual(map.points.find(p=>p[2] === 'Tamka 街蕭邦長椅').slice(0,2), [52.236343,21.0232557]);
   assert.equal(map.checks['Złote Tarasy'].status, 'area-reference');
+});
+
+test('Day 7 放寬回程時間，所有 Day 7 資料不殘留舊時間', () => {
+  const scoped = JSON.stringify({ day, food: dayDining[7], operations: dayOperations[7], points: makeDayMap(day).points, daylight: daylight.find(d => d.day === 7).note });
+  assert.doesNotMatch(scoped, /16:55|17:40/);
+  assert.doesNotMatch(JSON.stringify(day), /16:30/);
+  for (const [time, duration] of [['15:45', '30 min'], ['16:15', '30 min'], ['16:45', '45 min'], ['17:30', '20 min']]) {
+    assert.equal(day.steps.find(s => s.t === time).dur, duration);
+  }
+  assert.match(day.steps.find(s => s.t === '15:45').sub, /16:15 沿主步道往北門回程/);
+  const tram = day.steps.find(s => s.t === '16:15');
+  assert.match(tram.sub, /16:45 抵達.*步行與電車時間為推估.*Jakdojade/);
+  assert.doesNotMatch(tram.sub, /25 分鐘銜接偏緊/);
+  assert.match(day.steps.find(s => s.t === '16:45').sub, /16:45–17:30.*Ziaja.*1 樓.*144/);
+  assert.match(day.steps.find(s => s.t === '17:30').sub, /步行回 Metropol.*17:42.*放東西.*步行時間為推估.*17:50 出門/);
+  const html = readFileSync('dist/day-07.html', 'utf8');
+  assert.doesNotMatch(html, /16:55|17:40/);
+  const readme = readFileSync('README.md', 'utf8').split('\n').find(line => line.includes('16:45–17:30'));
+  assert.ok(readme);
+  assert.doesNotMatch(readme, /16:30|16:55|17:40|銜接偏緊/);
 });

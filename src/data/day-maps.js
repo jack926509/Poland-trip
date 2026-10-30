@@ -115,7 +115,7 @@ export const daySupplementaryPins = {
     [52.2462123, 21.0143595, '聖安妮教堂（外觀）', 'Krakowskie Przedmieście 68 · 12:30 外觀拍照；座標為教堂建物中心', 'https://www.google.com/maps/search/?api=1&query=Ko%C5%9Bci%C3%B3%C5%82%20%C5%9Bw.%20Anny%2C%20Krakowskie%20Przedmie%C5%9Bcie%2068%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/25865144'],
     // 使用者提供 geo.txt：Nominatim 餐廳節點 node/447986211（非僅門牌），2026-10-30 採用。
     [52.2486172, 21.0130097, 'Gospoda pod Zygmuntem', 'Świętojańska 15 · 12:50–13:45 午餐', diningPlaces['warsaw-gospoda-pod-zygmuntem'].map, 'food', 'https://www.openstreetmap.org/node/447986211'],
-    [52.2150560, 21.0358058, '水上宮殿 Pałac na Wyspie', '15:45–16:30 蕭邦紀念碑接水上宮殿；回程沿主步道到北門', 'https://www.google.com/maps/search/?api=1&query=Palace%20on%20the%20Isle%2C%20%C5%81azienki%20Kr%C3%B3lewskie%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/1325609735'],
+    [52.2150560, 21.0358058, '水上宮殿 Pałac na Wyspie', '15:45–16:15 蕭邦紀念碑接水上宮殿；回程沿主步道到北門', 'https://www.google.com/maps/search/?api=1&query=Palace%20on%20the%20Isle%2C%20%C5%81azienki%20Kr%C3%B3lewskie%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/1325609735'],
   ],
   8: [
     [52.2318536, 21.0208595, '棕櫚樹圓環', '09:20 Rondo de Gaulle，早餐後快拍', 'https://www.openstreetmap.org/node/1795659661', 'sight', 'https://www.openstreetmap.org/node/1795659661'],

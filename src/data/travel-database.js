@@ -535,7 +535,7 @@ export const dayOperations = {
     navigation: [
       { mode: '地鐵 M1', route: 'Świętokrzyska → Ratusz Arsenał', action: '08:55 在站口拍 MSN 與科學文化宮，再搭 M1 只坐 1 站，下車步行約 10 分到 POLIN。' },
       { mode: '步行', route: 'POLIN → 克拉辛斯基廣場 → 新城廣場 → Freta → 甕城 → 老城廣場 → 石階街／Gnojna Góra → 聖若望大教堂 → Piwna → 城堡廣場 → 聖安妮教堂（外觀） → Gospoda pod Zygmuntem → 總統府 → 聖十字教堂 → Tamka／Ostrogski 宮 → 美人魚像 → BUW', action: '09:25 後全程步行，由北往南採點，僅午餐小幅折返；午餐後沿皇家大道、Tamka 與河岸走到 BUW，再步行接公車 116 或 180 去瓦津基；時間不夠先刪 BUW 屋頂花園與美人魚。如果改去 Gościniec：12:50 從城堡廣場慢慢沿皇家大道往南走，看總統府、Bristol、訪親會教堂、華沙大學，約 14:00 在 Krakowskie Przedmieście 29 吃午餐；吃完接聖十字教堂、哥白尼紀念碑、Tamka 街蕭邦長椅；這個情況下刪掉 BUW 屋頂花園和河邊美人魚，從 Tamka 走回 Nowy Świat 搭 116 或 180 到 Łazienki Królewskie，接著到水上宮殿。' },
-      { mode: '公車／電車／步行', route: 'BUW → Hotel Bristol → Łazienki Królewskie → 蕭邦紀念碑 → 水上宮殿 → 北門 → Pl. Unii Lubelskiej → Centrum → Złote Tarasy → Metropol → Soul Kitchen', action: '15:20 從 BUW 沿 Karowa 街上坡走到 Hotel Bristol 站（往 Wilanów 方向），搭公車 116 或 180 到 Łazienki Królewskie 站。步行與公車時間為推估，25 分鐘銜接偏緊；出發前用 Jakdojade 確認。公園每日 06:00–21:00 免費（出發前再確認）；15:45 蕭邦紀念碑接水上宮殿（週五免費、只開一樓，最後入場 17:30；營業時間出發前再確認）；16:30 走主步道回蕭邦紀念碑旁的北門（不走湖邊小路），沿 Al. Ujazdowskie 走到 Pl. Unii Lubelskiej，搭 Marszałkowska 往北的電車 4、16、18 到 Centrum，再步行到 Złote Tarasy，預計 16:55 抵達。步行與電車時間為推估，25 分鐘銜接偏緊；出發前用 Jakdojade 確認；Ziaja 在 1 樓、店號 144（使用者提供店內資訊）；商場營業時間出發前再確認；17:40 回 Metropol 放東西，17:50 步行前往 Soul Kitchen；兩段各買 20 分鐘票 3.40 zł（出發前再確認）。' },
+      { mode: '公車／電車／步行', route: 'BUW → Hotel Bristol → Łazienki Królewskie → 蕭邦紀念碑 → 水上宮殿 → 北門 → Pl. Unii Lubelskiej → Centrum → Złote Tarasy → Metropol → Soul Kitchen', action: '15:20 從 BUW 沿 Karowa 街上坡走到 Hotel Bristol 站（往 Wilanów 方向），搭公車 116 或 180 到 Łazienki Królewskie 站。步行與公車時間為推估，25 分鐘銜接偏緊；出發前用 Jakdojade 確認。公園每日 06:00–21:00 免費（出發前再確認）；15:45 蕭邦紀念碑接水上宮殿（週五免費、只開一樓，最後入場 17:30；營業時間出發前再確認）；16:15 走主步道回蕭邦紀念碑旁的北門（不走湖邊小路），沿 Al. Ujazdowskie 走到 Pl. Unii Lubelskiej，搭 Marszałkowska 往北的電車 4、16、18 到 Centrum，再步行到 Złote Tarasy，預計 16:45 抵達。步行與電車時間為推估；出發前用 Jakdojade 確認；16:45–17:30 逛商場；Ziaja 在 1 樓、店號 144（使用者提供店內資訊）；商場營業時間出發前再確認；17:30 走回 Metropol，約 17:42 到、放東西（步行時間為推估），17:50 步行前往 Soul Kitchen；兩段各買 20 分鐘票 3.40 zł（出發前再確認）。' },
     ],
     dailyAlerts: [
       '收費館只路過拍外觀：MSN、POLIN、居禮夫人博物館、華沙博物館、皇家城堡、蕭邦博物館都不進；教堂正殿能不能進以現場告示為準，彌撒時不要進去拍照。',
@@ -649,9 +649,9 @@ const unresolvedStepReasons = {
     'EIC 8104 前往華沙': dynamicTransitReason,
   },
   7: {
-    'Złote Tarasy · Ziaja 採買': 'Złota 59；Ziaja 在 1 樓、店號 144（使用者提供店內資訊）；商場營業時間出發前再確認。',
+    'Złote Tarasy · Ziaja 採買': 'Złota 59；16:45–17:30 逛商場；Ziaja 在 1 樓、店號 144（使用者提供店內資訊）；商場營業時間出發前再確認。',
     '回 Metropol 放東西': '從 Złote Tarasy 步行回 Metropol，時間為推估。',
-    '沿北門步行接電車 4／16／18 到 Centrum、再走到 Złote Tarasy': '走主步道回蕭邦紀念碑旁的北門（不走湖邊小路），沿 Al. Ujazdowskie 走到 Pl. Unii Lubelskiej，搭 Marszałkowska 往北的電車 4、16、18 到 Centrum，再步行到 Złote Tarasy，預計 16:55 抵達。步行與電車時間為推估，25 分鐘銜接偏緊；出發前用 Jakdojade 確認；20 分鐘票 3.40 zł（出發前再確認）；上車馬上打票，或在 Jakdojade 啟用',
+    '沿北門步行接電車 4／16／18 到 Centrum、再走到 Złote Tarasy': '走主步道回蕭邦紀念碑旁的北門（不走湖邊小路），沿 Al. Ujazdowskie 走到 Pl. Unii Lubelskiej，搭 Marszałkowska 往北的電車 4、16、18 到 Centrum，再步行到 Złote Tarasy，預計 16:45 抵達。步行與電車時間為推估；出發前用 Jakdojade 確認；20 分鐘票 3.40 zł（出發前再確認）；上車馬上打票，或在 Jakdojade 啟用',
     '可選 · E.Wedel 本店熱巧克力': 'Szpitalna 8，20:15 選配；營業到 22:00（出發前再確認）。',
     'BUW 沿 Karowa 步行接公車 116／180 到 Łazienki Królewskie': '15:20 從 BUW 沿 Karowa 街上坡走 10–12 分到 Hotel Bristol 站（往 Wilanów 方向），搭公車 116 或 180，坐 6 站約 12 分，在 Łazienki Królewskie 下車，走到蕭邦紀念碑，再走約 10 分到水上宮殿；時間為推估，25 分鐘銜接偏緊；出發前用 Jakdojade 確認。公園每日 06:00–21:00 免費（出發前再確認）；20 分鐘票 3.40 zł；上車馬上打票，或在 Jakdojade 啟用',
     '步行前往 Soul Kitchen': '由 Metropol 步行約 8 分到 Nowogrodzka 18A，餐廳導航見當日已訂晚餐。',

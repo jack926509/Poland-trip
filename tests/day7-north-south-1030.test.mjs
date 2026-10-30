@@ -19,7 +19,7 @@ test('Day 7 完整時間線依新版合併列，三餐卡對應正確 stepId', (
     ['12:05', /聖若望.*Piwna/], ['12:30', /城堡廣場.*聖安妮/], ['12:50', /Gospoda pod Zygmuntem/],
     ['13:45', /皇家大道/], ['14:10', /聖十字/], ['14:25', /哥白尼.*Tamka.*美人魚/],
     ['15:00', /BUW/], ['15:20', /公車 116／180/], ['15:45', /水上宮殿/],
-    ['16:30', /電車 4／16／18.*Centrum/], ['16:55', /^Złote Tarasy/], ['17:40', /回 Metropol/], ['17:50', /步行前往 Soul Kitchen/], ['18:00', /最後晚餐.*Soul Kitchen/], ['20:15', /E.Wedel/],
+    ['16:15', /電車 4／16／18.*Centrum/], ['16:45', /^Złote Tarasy/], ['17:30', /回 Metropol/], ['17:50', /步行前往 Soul Kitchen/], ['18:00', /最後晚餐.*Soul Kitchen/], ['20:15', /E.Wedel/],
   ];
   assert.equal(day.steps.length, timeline.length);
   timeline.forEach(([time, label]) => {
@@ -140,7 +140,7 @@ test('Day 7 拍照建議起點落在對應行程列的時間窗內', () => {
 test('Day 7 下午全程大眾運輸、票券與北門回程鎖定', () => {
   const bus = day.steps.find(s => s.t === '15:20');
   const palace = day.steps.find(s => s.t === '15:45');
-  const tram = day.steps.find(s => s.t === '16:30');
+  const tram = day.steps.find(s => s.t === '16:15');
   assert.match(bus.label, /公車 116／180/);
   assert.match(bus.sub, /Karowa.*Hotel Bristol.*116 或 180.*Łazienki Królewskie/);
   assert.match(bus.sub, /推估.*出發前用 Jakdojade 確認/);
@@ -148,9 +148,9 @@ test('Day 7 下午全程大眾運輸、票券與北門回程鎖定', () => {
   assert.equal(bus.dur, '25 min');
   assert.equal(day.steps.find(s => s.t === '15:00').dur, '20 min');
   assert.match(palace.sub, /週五.*免費.*一樓.*最後入場 17:30/);
-  assert.equal(palace.dur, '45 min');
-  assert.match(tram.sub, /主步道.*北門.*Al. Ujazdowskie.*Pl. Unii Lubelskiej.*電車 4、16、18.*Centrum.*Złote Tarasy.*16:55.*推估/);
-  assert.equal(tram.dur, '25 min');
+  assert.equal(palace.dur, '30 min');
+  assert.match(tram.sub, /主步道.*北門.*Al. Ujazdowskie.*Pl. Unii Lubelskiej.*電車 4、16、18.*Centrum.*Złote Tarasy.*16:45.*推估/);
+  assert.equal(tram.dur, '30 min');
   for (const step of [bus, tram]) {
     assert.match(step.cost, /20 分鐘票 3.40 zł.*上車馬上打票.*Jakdojade 啟用/);
     assert.match(step.sub, /出發前用 Jakdojade 確認/);
