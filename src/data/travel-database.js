@@ -683,9 +683,9 @@ for (const day of itineraryDays) {
     if (alreadyCovered) continue;
     if (item.placeId && item.sourceUrl && item.verificationStatus !== 'pending' && !/待確認/.test(item.address)) {
       dayOperations[day.n].addresses.push({ name:item.name, address:item.address, url:item.map,
-        officialUrl:item.sourceUrl, reliable:true, stepLabels:[step.label],
+        officialUrl:item.officialUrl || item.sourceUrl, reliable:true, stepLabels:[step.label],
         entranceNote:day.n === 8 && item.stepId === 'd8-breakfast'
-          ? '依 BAKEN 店家地址與現場招牌找入口；營業時間每日 08:00–16:30（第三方 Wanderlog 10/30 查），出發前再確認。'
+          ? '依 BAKEN 店家地址與現場招牌找入口；每日 08:00–16:30（官網 10/30 查，出發前再確認）；不收訂位，現場排隊。'
           : '依店家地址與現場招牌找入口；館內／商場店依樓層指標，營業與接單仍須確認。',
         note:item.condition || '行程預留，不代表已訂位。' });
     } else {

@@ -579,7 +579,7 @@ export const dayDiningPlans = {
     {
       "placeId": "warsaw-baken",
       "role": "早餐首選",
-      "note": "Żurawia 6/12，09:00–09:35 丹麥風早餐、自家酸種麵包；第三方評論 4.4／約 1,400 則（評分來自第三方評論）；每日 08:00–16:30（Wanderlog 10/30 查，出發前再確認）。",
+      "note": "Żurawia 6/12，09:00–09:35 丹麥風早餐、自家酸種麵包。不收訂位，現場排隊。第三方評論 4.4／約 1,400 則（評分來自第三方評論）。",
       "stepId": "d8-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
