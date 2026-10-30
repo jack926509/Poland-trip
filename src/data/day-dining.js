@@ -577,16 +577,15 @@ export const dayDiningPlans = {
   ],
   "8": [
     {
-      "placeId": "warsaw-bulke-przez-bibulke-zgoda",
-      "role": "早餐首選（條件式）",
-      "note": "Zgoda 3，週六 08:00 開門；看完 08:00 無名塚衛兵交接與劇院廣場後，08:15 往東南步行約 1.4 km，08:35 到店：Bagel、炒蛋或 Avocado Toast；09:05 結帳，09:10 Blikle、09:20 棕櫚樹，09:35 回住宿整理行李，09:45 退房、10:05 出門。",
+      "placeId": "warsaw-baken",
+      "role": "早餐首選",
+      "note": "Żurawia 6/12，08:00–08:35 丹麥風早餐、自家酸種麵包；第三方評論 4.4／約 1,400 則（評分來自第三方評論）；每日 08:00–16:30（Wanderlog 10/30 查，出發前再確認）。",
       "stepId": "d8-breakfast",
       "planStatus": "scheduled",
       "meal": "breakfast",
-      "condition": "08:40 還無法入座就外帶或改車站沿線用餐；保住 11:00 到機場目標。",
-      "dayHours": "08:00–22:00"
+      "condition": "BAKEN 客滿時改外帶或車站沿線用餐，保留回飯店與退房時間。",
+      "dayHours": "08:00–16:30（出發前再確認）"
     },
-    {"placeId":"warsaw-a-blikle-1869", "role":"早餐後甜點", "dayHours":"09:00–21:00", "note":"10/31 09:10 早餐後到 Nowy Świat 33 外帶甜甜圈，09:00 開門；有目錄寫 10:00 開門，沒開就略過", "stepId":"d8-dessert", "planStatus":"scheduled"},
     {
       "placeId": "warsaw-charlotte-zlota",
       "role": "早餐備選（較遠）",

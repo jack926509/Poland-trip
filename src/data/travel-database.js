@@ -542,14 +542,13 @@ export const dayOperations = {
       '15:45 蕭邦紀念碑接水上宮殿；週五個人參觀免費、只開一樓，最後入場 17:30；營業時間出發前再確認。',
       '10/31 為諸聖節前夕，今晚重查明日市區交通、機場與店家特別營運。SKM 10 月班表未查證，需前一晚用 Jakdojade 確認 Śródmieście 往機場 S2 的確切時刻；錯過一班約晚 30 分，仍約 11:30 到機場。',
     ],
-    nightChecklist: [...standardNightChecklist, '今日公車 116／180 與電車 4／16／18：出發前用 Jakdojade 確認；兩段各買 20 分鐘票 3.40 zł；上車馬上打票，或在 Jakdojade 啟用', '前一晚先整理好行李，10/31 早上只需收尾', '整理 TAX FREE 商品與文件，確認需海關查驗的託運品不先交運', '確認 QR 260 報到、行李額度、機場交通與護照收納位置', '明早 07:20 從 Metropol 出發看 08:00 無名塚衛兵交接，08:35 在 Bułkę przez Bibułkę（Zgoda 3）早餐；08:40 未入座改外帶，09:45 退房、10:05 出門，11:00 前到機場'],
+    nightChecklist: [...standardNightChecklist, '今日公車 116／180 與電車 4／16／18：出發前用 Jakdojade 確認；兩段各買 20 分鐘票 3.40 zł；上車馬上打票，或在 Jakdojade 啟用', '前一晚先整理好行李，10/31 早上只需收尾', '整理 TAX FREE 商品與文件，確認需海關查驗的託運品不先交運', '確認 QR 260 報到、行李額度、機場交通與護照收納位置', '明早 07:50 從 Metropol 出發去 BAKEN 早餐；09:45 退房、10:05 出門，11:00 前到機場', '前一晚用 Jakdojade 查 10/31 週六電車 4／16／18 班表與 180 改道'],
   },
   8: {
     cityKey: 'warsaw',
     note: '離開 EU 前處理退稅；託運商品若需查驗，先完成海關程序。',
     addresses: [
-      accommodationAddress('warsaw-metropol', ['回 Metropol、整理行李', '辦理退房']),
-      { name: 'Blikle', stepLabels: ['Blikle 外帶甜甜圈'], address: 'Nowy Świat 33, Warszawa', url: diningPlaces['warsaw-a-blikle-1869'].map, note: '09:10 外帶甜甜圈，沒開就略過。', reliable: false },
+      accommodationAddress('warsaw-metropol', ['約 09:40 回 Metropol、整理行李', '辦理退房']),
       venueCard('warsaw-centralna-station', 'Warszawa Centralna'),
       {
         name: 'Warszawa Śródmieście（SKM S2）',
@@ -565,16 +564,16 @@ export const dayOperations = {
       venueCard('taipei-representative-office-warsaw', '駐波蘭台北代表處', '僅供緊急狀況備援，不列為一般行程站點。'),
     ],
     navigation: [
-      { mode: '步行', route: 'Metropol → 薩克森花園 → 無名塚 → 劇院廣場 → Zgoda 3 → Blikle → 棕櫚樹 → Metropol', action: '07:20 沿 Marszałkowska 往北；07:40 從花園西口往東，07:55 到無名塚等 08:00 換崗；08:10 劇院廣場（約 340 m），08:15 往東南約 1.4 km，08:35 早餐、09:05 結帳；09:10 Blikle、09:20 棕櫚樹、09:35 回飯店。' },
+      { mode: '步行／電車', route: 'Metropol → BAKEN → Plac Trzech Krzyży → Al. Ujazdowskie → 蕭邦紀念碑 → Pl. Unii Lubelskiej → Centrum → Metropol', action: '07:50 出發，08:00 早餐，08:35 散步、09:00 紀念碑；09:20 步行接電車 4／16／18 往北 4 站，車程約 8 分；20 分鐘票 3.40 zł（出發前再確認），上車馬上打票，或在 Jakdojade 啟用；10/31 週六班表，出發前用 Jakdojade 確認；180 改道。約 09:40 回飯店。步行時間為推估，累了可略過 Ujazdowskie／瓦津基段。' },
       { mode: 'SKM', route: '華沙市中心 → 蕭邦機場', action: 'SKM 10 月班表未查證，需前一晚用 Jakdojade 確認 Śródmieście 往機場 S2 的確切時刻；錯過一班約晚 30 分，仍約 11:30 到機場；當日再查月台與改道；如要退稅或託運商品查驗，比一般報到更早抵達。' },
       { mode: '航空／出境', route: 'WAW → DOH → HKG → TPE', action: '依電子機票與報到櫃檯確認行李直掛終點與轉機程序；每段登機牌離線保存。' },
     ],
     dailyAlerts: [
-      '早上沿 Marszałkowska 往北、從西口穿薩克森花園；08:00 換崗、08:10 劇院廣場、08:35 Zgoda 3、09:10 Blikle、09:20 棕櫚樹；09:45 退房、10:05 出門。',
+      '早上 07:50 出發去 BAKEN 早餐，散步到蕭邦紀念碑後搭電車回飯店；約 09:40 收行李，09:45 退房、10:05 出門。',
       '離開 EU：如有 TAX FREE，先完成必要的出口確認與商品查驗，再交付託運行李。',
       '10/31 為諸聖節前夕；市區交通與機場營運以當日公告為準，不用平日末班資料倒推。',
     ],
-    nightChecklist: [...standardNightChecklist, '抵台後確認行李已全數取得，保留登機牌、TAX FREE 與必要收據至程序結束'],
+    nightChecklist: [...standardNightChecklist, '前一晚用 Jakdojade 查 10/31 週六電車 4／16／18 班表與 180 改道；早上 07:50 出發', '抵台後確認行李已全數取得，保留登機牌、TAX FREE 與必要收據至程序結束'],
   },
 };
 
@@ -666,13 +665,10 @@ const unresolvedStepReasons = {
     '哥白尼紀念碑 → Tamka 街蕭邦長椅、Ostrogski 宮外觀 → 河邊美人魚像': '戶外步行段，經 Ordynacka 轉 Tamka 街下坡；Ostrogski 宮（蕭邦博物館）整修閉館，只拍外觀。' + '；' + '戶外步行段，美人魚像在 Wybrzeże Kościuszkowskie 河岸，路過快拍。',
   },
   8: {
-    '棕櫚樹圓環': '戶外圓環，Blikle 往南約 250 m，不用專程導航。',
-    '從 Metropol 沿 Marszałkowska 往北': '沿 Marszałkowska 往北約 1.4 km 到花園西口。',
-    '從西口進薩克森花園往東穿過': '從西口往東穿過約 0.5 km。',
-    '抵無名塚': 'plac Piłsudskiego，07:55 抵達等 08:00 換崗。',
-    '往東南步行約 1.4 km 到 Zgoda 3': '從劇院廣場往東南到 Zgoda 3，累了可刪劇院廣場。',
-    '劇院廣場': '戶外廣場，大劇院在 plac Teatralny 1，只拍外觀。',
-    '★ 無名塚衛兵交接': '位於 plac Piłsudskiego 的薩克森花園東側拱廊，開放戶外紀念地，衛兵整點換崗，依現場指標前往。',
+    '從 Metropol 出發 → BAKEN': '步行約 8 分至 Żurawia 6/12，時間為推估。',
+    '經三十字廣場 Plac Trzech Krzyży → Al. Ujazdowskie': '戶外散步，廣場為範圍代表點，沿 Al. Ujazdowskie 往南。',
+    '瓦津基公園北側 · 蕭邦紀念碑': '戶外紀念碑，公園 06:00–21:00 免費（出發前再確認）。',
+    '步行到 Pl. Unii Lubelskiej → 電車回 Centrum': '廣場為範圍代表點，非已確認的往北月台；依 Jakdojade 與現場指標搭車。',
     'SKM S2／S3 目標班次': dynamicTransitReason,
   },
 };

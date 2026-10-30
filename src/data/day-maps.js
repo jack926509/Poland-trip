@@ -11,7 +11,7 @@ export const dayMapPlans = {
   5: { focus: '樂斯拉夫 Wrocław', center: [51.110, 17.049], zoom: 13, selections: { wroclaw: ['中央市集廣場', '大教堂島 Ostrów Tumski', 'Restauracja Wrocławska', 'Piast'] } },
   6: { focus: '波茲南 Poznań', center: [52.407, 16.930], zoom: 14, selections: { poznan: ['舊市集廣場 Stary Rynek', '大教堂島 Ostrów Tumski', 'Poznan Apartments Towarowa'] } },
   7: { focus: '華沙 Warszawa', center: [52.236, 21.010], zoom: 13, selections: { warsaw: ['皇家城堡', '科學文化宮觀景台'] } },
-  8: { focus: '華沙 Warszawa＋蕭邦機場', center: [52.202, 20.991], zoom: 12, selections: { warsaw: ['Hotel Metropol'] } },
+  8: { focus: '華沙 Warszawa＋蕭邦機場', center: [52.202, 20.991], zoom: 12, selections: {} },
 };
 
 // 精煉切片 4b：有對到 src/data/venues.js 的補充圖釘改用 venuePin() 取座標與
@@ -118,10 +118,12 @@ export const daySupplementaryPins = {
     [52.2150560, 21.0358058, '水上宮殿 Pałac na Wyspie', '15:45–16:15 蕭邦紀念碑接水上宮殿；回程沿主步道到北門', 'https://www.google.com/maps/search/?api=1&query=Palace%20on%20the%20Isle%2C%20%C5%81azienki%20Kr%C3%B3lewskie%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/1325609735'],
   ],
   8: [
-    [52.2318536, 21.0208595, '棕櫚樹圓環', '09:20 Rondo de Gaulle，早餐後快拍', 'https://www.openstreetmap.org/node/1795659661', 'sight', 'https://www.openstreetmap.org/node/1795659661'],
-    [52.2436320, 21.0103460, '劇院廣場・大劇院', 'Plac Teatralny 1 · 08:10 外觀；建物內座標，非入口', 'https://www.google.com/maps/search/?api=1&query=Teatr%20Wielki%20Opera%20Narodowa%2C%20Plac%20Teatralny%201%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/node/8839947745'],
-    [52.2409328, 21.0113096, '無名塚 Grób Nieznanego Żołnierza', 'Plac Piłsudskiego · 08:00 衛兵交接；薩克森花園東緣', 'https://www.google.com/maps/search/?api=1&query=Tomb%20of%20the%20Unknown%20Soldier%2C%20Plac%20Pi%C5%82sudskiego%2C%20Warszawa', 'sight', 'https://www.openstreetmap.org/way/72833763'],
-    [52.2325833, 21.0140889, 'Bułkę przez Bibułkę', 'Zgoda 3 · 08:35 早餐，離 Metropol 步行約 8 分', diningPlaces['warsaw-bulke-przez-bibulke-zgoda'].map, 'food', 'https://www.openstreetmap.org/node/316892293'],
+    [52.2290162, 21.0109879, 'Hotel Metropol', '07:50 出發、約 09:40 回飯店收行李', 'https://www.openstreetmap.org/way/28759009', 'hotel', 'https://www.openstreetmap.org/way/28759009'],
+    // 使用者提供 Nominatim 查證座標，2026-10-30 採用；廣場僅作範圍代表點。
+    [52.2290438, 21.0178075, 'BAKEN piekarnia', 'Żurawia 6/12 · 08:00 早餐', 'https://www.openstreetmap.org/node/10912104601', 'food', 'https://www.openstreetmap.org/node/10912104601'],
+    [52.2286979, 21.0225486, '三十字廣場 Plac Trzech Krzyży', '08:35 經過，沿 Al. Ujazdowskie 往南；範圍代表點，非單一入口', 'https://www.openstreetmap.org/way/442135655', 'sight', 'https://www.openstreetmap.org/way/442135655'],
+    [52.2147016, 21.0280881, '瓦津基公園 · 蕭邦紀念碑', '09:00 紀念碑；時間不夠就只看紀念碑', 'https://www.openstreetmap.org/way/1448330230', 'sight', 'https://www.openstreetmap.org/way/1448330230'],
+    [52.2135765, 21.0216761, 'Pl. Unii Lubelskiej', '09:20 步行接電車往北；範圍代表點，非月台位置', 'https://www.openstreetmap.org/way/462615854', 'transport', 'https://www.openstreetmap.org/way/462615854'],
     venuePin('warsaw-centralna-station', { label: '由 Hotel Metropol 前往機場線的市中心交通錨點', category: 'transport', coordinateSource: 'https://www.openstreetmap.org/?mlat=52.228917&mlon=21.003315' }),
     [52.2294024, 21.0075880, 'Warszawa Śródmieście', 'SKM S2 上車站 · Hotel Metropol 旁約 250 公尺', 'https://www.google.com/maps/search/?api=1&query=Warszawa%20%C5%9Ar%C3%B3dmie%C5%9Bcie%20SKM', 'transport', 'https://www.openstreetmap.org/node/2351113017'],
     [52.169709, 20.975785, 'Warszawa Lotnisko Chopina 機場鐵路站', 'PKP PLK 車站目錄座標 · 非航廈報到入口', 'https://www.google.com/maps/search/?api=1&query=Warszawa%20Lotnisko%20Chopina%20railway%20station%2C%20Warszawa%2C%20Poland', 'transport', 'https://portalpasazera.pl/en/KatalogStacji?stacja=Warszawa+Lotnisko+Chopina'],
@@ -219,10 +221,11 @@ export const pinCoordinateCheckedAt = {
     "水上宮殿 Pałac na Wyspie": '2026-10-17',
   },
   8: {
-    "棕櫚樹圓環": '2026-10-22',
-    "Bułkę przez Bibułkę": '2026-10-17',
-    "劇院廣場・大劇院": '2026-10-17',
-    "無名塚 Grób Nieznanego Żołnierza": '2026-10-17',
+    "Hotel Metropol": '2026-10-30',
+    "BAKEN piekarnia": '2026-10-30',
+    "三十字廣場 Plac Trzech Krzyży": '2026-10-30',
+    "瓦津基公園 · 蕭邦紀念碑": '2026-10-30',
+    "Pl. Unii Lubelskiej": '2026-10-30',
     "Warszawa Centralna": '2026-09-08',
     "Warszawa Śródmieście": '2026-10-19',
     "Warszawa Lotnisko Chopina 機場鐵路站": '2026-09-08',
@@ -233,6 +236,7 @@ export const defaultPinCheckedAt = '2026-09-08';
 
 // 明確停留列可跨越距離／移動列篩選；陣列允許同一圖釘對應多次造訪。
 export const dayPinStepRows = {
+  8: { "Hotel Metropol": [1, 6], "BAKEN piekarnia": [2], "三十字廣場 Plac Trzech Krzyży": [3], "瓦津基公園 · 蕭邦紀念碑": [4], "Pl. Unii Lubelskiej": [5], "Warszawa Centralna": [8], "Warszawa Śródmieście": [8] },
   7: {
     "Hotel Metropol": [1, 21],
     "Bułkę przez Bibułkę": [2],
@@ -300,5 +304,6 @@ export const dayPinStepRows = {
 
 // 商場座標為使用者提供的已查證範圍代表點，非單一入口。
 export const dayPinCheckOverrides = {
+  8: { '三十字廣場 Plac Trzech Krzyży': {status:'area-reference', note:'範圍代表點，非單一入口。'}, 'Pl. Unii Lubelskiej': {status:'area-reference', note:'範圍代表點，非電車月台。'} },
   7: { 'Złote Tarasy': { status: 'area-reference', note: '範圍代表點，非單一入口；Ziaja 不另設 pin。' } },
 };

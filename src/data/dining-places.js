@@ -2,6 +2,13 @@
 // booking（選填）：required 必訂｜recommended 建議訂｜walk-in 免訂｜booked 已訂。
 // 只在店家說明或官方資料有明確依據時才填；沒有依據就不加欄位（不顯示徽章）。目前全部尚未訂位，不得填 booked。
 export const diningPlaces = {
+  'warsaw-baken': {
+    id:'warsaw-baken', cityKey:'warsaw', verificationStatus:'partial', checkedAt:'2026-10-30', sourceUrl:'https://wanderlog.com/', verificationNote:'Wanderlog 10/30 查，出發前再確認；評分來自第三方評論。', name:'BAKEN piekarnia', address:'Żurawia 6/12, Warszawa',
+    map:'https://www.google.com/maps/search/?api=1&query=BAKEN%20piekarnia%20%C5%BBurawia%206%2F12%20Warszawa',
+    hours:'每日 08:00–16:30（Wanderlog 10/30 查，出發前再確認）',
+    notes:['丹麥風早餐、自家酸種麵包；第三方評論 4.4／約 1,400 則（評分來自第三方評論）'],
+  },
+
   "poznan-manekin": {
     "id": "poznan-manekin",
     "cityKey": "poznan",
@@ -858,7 +865,7 @@ export const diningPlaces = {
     "checkedAt": "2026-10-21",
     "verificationStatus": "partial",
     "notes": [
-      "1869 年創立的波蘭國民甜點店，pączki 玫瑰果醬甜甜圈是招牌。10/31 09:10 早餐後外帶；品牌官網列 Nowy Świat 33 每日 09:00–21:00。"
+      "1869 年創立的波蘭國民甜點店，pączki 玫瑰果醬甜甜圈是招牌。品牌官網列 Nowy Świat 33 每日 09:00–21:00。"
     ],
     "cuisine": "百年甜點",
     "dishes": [

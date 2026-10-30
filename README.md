@@ -60,13 +60,13 @@
 
 ## Day 8｜10/31（六）返程
 
-一早從飯店走到劇院廣場、薩克森花園，08:00 看無名塚衛兵交接，再到 **Bułkę przez Bibułkę** 吃早餐，回飯店整理行李、09:40 退房，搭 SKM 到蕭邦機場，搭 14:40 QR 260 經多哈回臺灣；11/1 QR 818 改為 01:55–14:50，接 BR 872 19:40–21:25 回桃園。
+07:50 從飯店出發到 **BAKEN piekarnia**（Żurawia 6/12）早餐，經三十字廣場與 Al. Ujazdowskie 散步到蕭邦紀念碑，09:20 接電車回飯店，約 09:40 收行李、09:45 退房，搭 SKM 到蕭邦機場，搭 14:40 QR 260 經多哈回臺灣；11/1 QR 818 改為 01:55–14:50，接 BR 872 19:40–21:25 回桃園。
 
 ## 這趟吃到的
 
 | 城市 | 正餐 | 咖啡與點心 |
 |---|---|---|
-| 華沙 | Arirang、Gospoda pod Zygmuntem、Soul Kitchen | E.Wedel 熱巧克力、A. Blikle pączek、Bułkę przez Bibułkę 早餐 |
+| 華沙 | Arirang、Gospoda pod Zygmuntem、Soul Kitchen | E.Wedel 熱巧克力、BAKEN 早餐、Bułkę przez Bibułkę（Day 7）早餐 |
 | 克拉科夫 | Hankki、Mr. Jerry、Sztolnia Wieliczka | Karma、圈餅（Plac Nowy zapiekanka 為城市延伸） |
 | 樂斯拉夫 | Samarqand、Restauracja Wrocławska、MAX | Central Cafe、El Gato、Słodki Chłopak |
 | 波茲南 | Stary Browar Food Hall | Manekin 早餐、聖馬丁牛角麵包 |
